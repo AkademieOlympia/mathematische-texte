@@ -18,6 +18,20 @@ Installations-Images (`.dmg`), Prime-Caches (`.npy`) und sehr große CSV-Dateien
 pdflatex <datei>.tex
 ```
 
+## NotebookLM
+
+```bash
+# Einmalig (Login teilt sich mit eabc-renorm, falls dort schon eingerichtet)
+bash scripts/setup_notebooklm.sh
+.venv-notebooklm/bin/notebooklm login   # oder venv aus ~/Projects/eabc-renorm
+
+# Quellen hochladen (priorisiertes Bundle, max. ~45 Dateien + GitHub-Links)
+bash scripts/notebooklm_sync.sh
+
+# Artefakte zurückholen
+bash scripts/notebooklm_pull.sh
+```
+
 ## Verwandte Repositories
 
 - [eabc-renorm](https://github.com/AkademieOlympia/eabc-renorm) — formaler Lean-Kern der EABC-Renormierung
