@@ -100,7 +100,7 @@ manifest_lines += [
 overview = out / "00_overview.md"
 overview.write_text(
     "# Mathematische Texte — NotebookLM-Bundle\n\n"
-    "Priorisierte Auswahl (EABC, Root-Manuskripte, Markdown).\n"
+    "Priorisierte Auswahl (EABC-PDFs und Markdown; TeX nur im Git-Repo).\n"
     "Vollständiges Inventar: `MANIFEST.md`.\n",
     encoding="utf-8",
 )
