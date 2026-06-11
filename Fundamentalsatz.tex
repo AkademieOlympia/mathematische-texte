@@ -1,0 +1,306 @@
+\documentclass[a4paper,11pt]{article}
+
+% =========================================================
+% Standalone-Artikel: Quadratsummen-Embedding von Primquadraten
+% =========================================================
+
+% --- Sprache / Kodierung ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+
+% --- Mathe ---
+\usepackage{amsmath,amssymb,amsthm}
+
+% --- Layout / Links ---
+\usepackage{geometry}
+\geometry{left=25mm,right=25mm,top=25mm,bottom=25mm}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	urlcolor=blue,
+	citecolor=blue
+}
+
+% --- Grafiken (robust; "Serum-Sache" + safe include) ---
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./}{fig/}{figs/}{images/}{img/}}
+
+% Safe include macro: verhindert "File not found" / pdftex.def Ärger
+\newcommand{\includegraphicssafe}[2][]{%
+	\IfFileExists{#2}{\includegraphics[#1]{#2}}{%
+		\fbox{\parbox{0.95\linewidth}{\textbf{Missing graphic:} \texttt{#2}}}%
+	}%
+}
+
+% --- Theorem-Umgebungen (deutsch) ---
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{korollar}[satz]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+\newtheorem{beispiel}[satz]{Beispiel}
+
+% --- Kleiner Komfort ---
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Zi}{\mathbb{Z}[i]}
+\newcommand{\Norm}{\mathrm{N}}
+\newcommand{\Arg}{\mathrm{arg}}
+
+% --- Titel ---
+\title{\textbf{Quadratsummen-Embedding von Primquadraten in \(\Zi\)\\
+		und achsennahe Spiralisierung in der komplexen Ebene}}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir fassen ein Gedankenexperiment in einen mathematisch sauberen Rahmen: Primquadrate \(p^2\) werden als Normen
+		\(p^2=\Norm(z)\) von gaußschen ganzen Zahlen \(z\in\Zi\) aufgefasst. Daraus entsteht eine geometrische Repräsentation
+		als Gitterpunkte auf Kreisen \(|z|=p\) in der komplexen Ebene. Um den intuitiven Begriff eines ``Korridors entlang der
+		imaginären Achse'' zu operationalisieren, definieren wir kanonische Auswahlregeln für \(z_p\) und führen die
+		zugehörigen Winkel \(\theta_p=\Arg(z_p)\) in (log-)polaren Koordinaten einer Spiral-Auswertung zu. Klassische Sätze
+		(Summe zweier Quadrate, Restklassenfakten) werden dabei strikt von modellhaften Auswertungs-Definitionen getrennt.
+	\end{abstract}
+	
+	\tableofcontents
+	
+	\section{Einleitung: Von Quadratsummen zu Geometrie}
+	Eine Darstellung
+	\[
+	n=x^2+y^2
+	\]
+	ist nicht nur eine arithmetische Identität, sondern wird in den gaußschen ganzen Zahlen \(\Zi\) zur Normdarstellung
+	\[
+	n=\Norm(x+iy)=(x+iy)(x-iy).
+	\]
+	Damit lassen sich Zahlen (und speziell Primquadrate) als Punkte des quadratischen Gitters in der komplexen Ebene
+	interpretieren. Die zentrale Idee dieses Artikels ist:
+	
+	\begin{quote}
+		Primquadrate \(p^2\) werden über eine wohldefinierte Wahl \(z_p\in\Zi\) mit \(\Norm(z_p)=p^2\) in die komplexe Ebene
+		eingebettet. Eine ``achsennahe'' Wahl erzeugt eine Punktwolke in einem Korridor um die imaginäre Achse, deren Winkel
+		\(\theta_p\) über \(\log p\) auf spiralartige Strukturen hin untersucht werden können.
+	\end{quote}
+	
+	\section{Primklassen \(\bmod 12\) und der ``Quadrat-Kollaps'' nach \(1\)}
+	Für jede Primzahl \(p>3\) gilt \(p\equiv 1,5,7,11\pmod{12}\). Zur konsistenten Diskussion verwenden wir die vier Klassen:
+	\begin{definition}[Primklassen \(\bmod 12\)]
+		Für Primzahlen \(p>3\) definieren wir
+		\[
+		E:\ p\equiv 1\!\!\pmod{12},\quad
+		a:\ p\equiv 5\!\!\pmod{12},\quad
+		b:\ p\equiv 7\!\!\pmod{12},\quad
+		c:\ p\equiv 11\!\!\pmod{12}.
+		\]
+	\end{definition}
+	
+	\begin{lemma}[Quadrat-Kollaps]
+		\label{lem:kollaps}
+		Für jede Primzahl \(p>3\) gilt
+		\[
+		p^2\equiv 1\pmod{12}.
+		\]
+		Insbesondere liegen alle Primquadrate \(p^2\) in der Restklasse \(1\bmod 12\) (also in \(E\)).
+	\end{lemma}
+	
+	\begin{proof}
+		Für \(p>3\) ist \(\gcd(p,12)=1\). Dann gilt \(p^2\equiv 1\pmod{3}\) und \(p^2\equiv 1\pmod{4}\), also \(p^2\equiv 1\pmod{12}\).
+	\end{proof}
+	
+	\begin{bemerkung}
+		Lemma~\ref{lem:kollaps} formalisiert die intuitive Aussage: ``Quadrate von Primzahlen fallen in \(E\)''.
+		Die Restklasse allein liefert jedoch noch keine nichttriviale Geometrie; diese entsteht erst über Normdarstellungen
+		in \(\Zi\).
+	\end{bemerkung}
+	
+	\section{Quadratsummen als Normen in \(\Zi\)}
+	\begin{definition}[Gauß-Norm]
+		Für \(z=x+iy\in\Zi\) definieren wir
+		\[
+		\Norm(z)=z\overline z=(x+iy)(x-iy)=x^2+y^2\in\N.
+		\]
+		Eine Darstellung \(n=x^2+y^2\) ist äquivalent zu \(n=\Norm(z)\) mit \(z=x+iy\).
+	\end{definition}
+	
+	Der zentrale klassische Satz lautet:
+	
+	\begin{satz}[Summe zweier Quadrate]
+		\label{thm:sos}
+		Eine natürliche Zahl \(n\) ist genau dann Summe zweier Quadrate, wenn in der Primfaktorzerlegung von \(n\) jede
+		Primzahl \(q\equiv 3\pmod4\) mit geradem Exponenten auftritt.
+	\end{satz}
+	
+	\begin{korollar}[Primfälle und Primquadrate]
+		\label{cor:primquad}
+		Sei \(p\) eine Primzahl.
+		\begin{enumerate}
+			\item Ist \(p\equiv 1\pmod4\), so existieren \(u,v\in\Z\) mit \(uv\neq 0\) und \(p=u^2+v^2\).
+			\item Ist \(p\equiv 3\pmod4\), so ist \(p\) keine nichttriviale Quadratsumme, aber \(p^2\) ist Quadratsumme.
+			\item Für jede Primzahl \(p\) existiert mindestens eine Darstellung \(p^2=x^2+y^2\) (notfalls trivial \(p^2=p^2+0^2\)).
+		\end{enumerate}
+	\end{korollar}
+	
+	\begin{bemerkung}[Nichttrivialität]
+		Für \(p\equiv 3\pmod4\) ist die ``garantierte'' Darstellung von \(p^2\) oft trivial. Nichttriviale Darstellungen
+		von \(p^2\) sind besonders natürlich, wenn \(p\equiv 1\pmod4\), weil dann \(p=(u^2+v^2)\) bereits in \(\Zi\) zerfällt.
+	\end{bemerkung}
+	
+	\section{Von \(p=u^2+v^2\) zu \(p^2=x^2+y^2\): die Normquadratur}
+	\begin{lemma}[Quadratur-Identität]
+		\label{lem:square}
+		Gilt \(p=u^2+v^2\), dann gilt
+		\[
+		p^2=(u^2-v^2)^2+(2uv)^2.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		\[
+		(u^2+v^2)^2=u^4+2u^2v^2+v^4=(u^4-2u^2v^2+v^4)+4u^2v^2=(u^2-v^2)^2+(2uv)^2.
+		\]
+	\end{proof}
+	
+	\begin{bemerkung}[Interpretation in \(\Zi\)]
+		Lemma~\ref{lem:square} ist exakt die Aussage
+		\[
+		(u+iv)^2=(u^2-v^2)+i(2uv),\qquad \Norm\big((u+iv)^2\big)=\Norm(u+iv)^2=p^2.
+		\]
+		Damit ist die Quadratsummen-Darstellung von \(p^2\) eine unmittelbare Konsequenz der Multiplikation in \(\Zi\).
+	\end{bemerkung}
+	
+	\section{Korridor um die imaginäre Achse: Auswahlregeln für \(z_p\)}
+	Ohne zusätzliche Regeln ist \(z\) aus \(x^2+y^2=p^2\) nicht eindeutig (Symmetrien \(\pm z, \pm\overline z\)).
+	Für eine geometrische Auswertung benötigen wir eine kanonische Auswahl.
+	
+	\begin{definition}[\(\varepsilon\)-Korridor um die imaginäre Achse]
+		Fixiere \(\varepsilon\in(0,1)\). Ein Punkt \(z=x+iy\) mit \(|z|=p\) heißt \(\varepsilon\)-achsennahe, falls
+		\[
+		|x|\le \varepsilon p.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Quadratsummen-Embedding]
+		\label{def:embed}
+		Eine Abbildung \(\Phi\) ordnet jeder Primzahl \(p>3\) eine Gaußzahl \(z_p\in\Zi\) zu mit
+		\[
+		\Norm(z_p)=p^2.
+		\]
+		Sie heißt korridorbasiert, wenn \(z_p\) (soweit möglich) zusätzlich \(|\Re(z_p)|\le \varepsilon p\) erfüllt.
+	\end{definition}
+	
+	\subsection{Drei kanonische Regeln}
+	\begin{definition}[R1: Minimaler Realteil]
+		Wähle \(z_p=x+iy\) unter allen Lösungen von \(x^2+y^2=p^2\) so, dass \(|x|\) minimal ist; bei Gleichstand wähle \(y>0\).
+	\end{definition}
+	
+	\begin{definition}[R2: Minimaler Winkelabstand zur imaginären Achse]
+		Wähle \(z_p\) so, dass \(|\Arg(z_p)-\pi/2|\) minimal ist, unter der Nebenbedingung \(\Im(z_p)>0\).
+	\end{definition}
+	
+	\begin{definition}[R3: Normquadratur aus einer Darstellung von \(p\)]
+		Wenn \(p\equiv 1\pmod4\), bestimme eine kanonische Darstellung \(p=u^2+v^2\) (z.\,B.\ \(u\ge v\ge 0\)).
+		Setze
+		\[
+		z_p=(u+iv)^2=(u^2-v^2)+i(2uv).
+		\]
+		Wenn \(p\equiv 3\pmod4\), setze als Basisfall \(z_p=ip\) (trivial achsenliegend).
+	\end{definition}
+	
+	\begin{bemerkung}
+		R3 ist besonders strukturell: die Darstellung von \(p^2\) entsteht durch eine echte Multiplikation in \(\Zi\),
+		nicht durch eine nachträgliche ``Geometrisierung''.
+	\end{bemerkung}
+	
+	\section{Spiralraum: Log-Polarkoordinaten und Auswertungsgrößen}
+	\begin{definition}[Polar- und Log-Polar-Koordinaten]
+		Für \(z_p\neq 0\) definieren wir
+		\[
+		r_p:=|z_p|=p,\qquad \theta_p:=\Arg(z_p)\in(-\pi,\pi],\qquad \rho_p:=\log r_p=\log p.
+		\]
+		Die Datenpunkte \((\rho_p,\theta_p)\) bilden eine Punktwolke im \((\rho,\theta)\)-Raum.
+	\end{definition}
+	
+	\begin{definition}[Diskrete Spiralspur]
+		Ordne die Primzahlen aufsteigend \(p_1<p_2<\dots\). Die Folge
+		\[
+		(\rho_{p_k},\theta_{p_k})_{k\ge 1}
+		\]
+		heißt Spiralspur der Regel \(\Phi\).
+		Eine logarithmische Spiralstruktur entspricht (heuristisch) einer Näherung
+		\[
+		\rho_{p_k}\approx A\theta_{p_k}+B
+		\]
+		auf geeigneten Teilmengen oder in mehreren ``Armen'' (wegen der \(2\pi\)-Periodizität von \(\theta\)).
+	\end{definition}
+	
+	\begin{bemerkung}[Strikte Trennung]
+		Sätze wie Lemma~\ref{lem:kollaps} oder Satz~\ref{thm:sos} sind klassische Zahlentheorie.
+		Eine lineare Relation zwischen \(\log p\) und \(\Arg(z_p)\) ist hingegen eine Eigenschaft der gewählten Projektion \(\Phi\)
+		und damit ein Modell-/Auswertungskriterium.
+	\end{bemerkung}
+	
+	\section{Algorithmische Skizze (Operationalisierung)}
+	\begin{beispiel}[Pseudocode für R3 mit Korridor-Fallback]
+		\label{ex:pseudo}
+		Eingabe: Primzahl \(p>3\), Parameter \(\varepsilon\in(0,1)\).
+		
+		\begin{enumerate}
+			\item Falls \(p\equiv 1\pmod4\): finde \(u,v\in\N\) mit \(p=u^2+v^2\) (kanonisch \(u\ge v\)). Setze
+			\[
+			x=u^2-v^2,\qquad y=2uv,\qquad z_p=x+iy.
+			\]
+			\item Falls \(p\equiv 3\pmod4\): setze \(z_p=ip\) (d.\,h. \(x=0,y=p\)).
+			\item Falls \(|x|>\varepsilon p\) und eine strengere Achsennähe verlangt ist: ersetze \(z_p\) durch eine Wahl nach R1 oder R2.
+			\item Gib \(z_p\) aus und berechne \(\theta_p=\Arg(z_p)\), \(\rho_p=\log p\).
+		\end{enumerate}
+	\end{beispiel}
+	
+	\begin{bemerkung}[Wie findet man \(u,v\)?]
+		Für große Primzahlen \(p\equiv 1\pmod4\) verwendet man in der Praxis Algorithmen wie Cornacchia (oder verwandte Methoden),
+		um \(p=u^2+v^2\) effizient zu finden. Für moderate \(p\) genügt oft ein Test über \(u\le\sqrt{p}\).
+	\end{bemerkung}
+	
+	\section{Diskussion: ``links und rechts von Null'' und Symmetrien}
+	Ist \(z_p=x+iy\) eine Normdarstellung, dann sind \(\pm z_p,\pm \overline{z_p}\) ebenfalls Lösungen, und sie spiegeln
+	sich an der imaginären Achse bzw. reellen Achse. Das intuitive Bild ``links und rechts von der Null'' ist somit
+	formal die Transformation \(x\mapsto -x\). Eine Korridorwahl ist genau der Versuch, diese Symmetrie durch eine
+	kanonische Konvention zu brechen (z.\,B. \(\Im(z_p)>0\) und minimaler \(|\Re(z_p)|\)).
+	
+	\section{Ausblick: Verbindung zu multiplikativen Strukturen}
+	Die Normmechanik in \(\Zi\) ist der prototypische Fall eines multiplikativen Embeddings:
+	\[
+	\Norm(z_1z_2)=\Norm(z_1)\Norm(z_2).
+	\]
+	In Modellen, die quaternionische Multiplikation als Strukturprinzip nutzen, ist dies ein natürlicher Baustein:
+	Quadratsummen erscheinen dann nicht als Zufallsartefakt, sondern als Norm- und Phasenmechanik einer
+	arithmetisch-geometrischen Einbettung.
+	
+	\begin{thebibliography}{9}
+		
+		\bibitem{HardyWright}
+		G.~H. Hardy und E.~M. Wright,
+		\textit{An Introduction to the Theory of Numbers},
+		Oxford University Press, diverse Auflagen.
+		
+		\bibitem{IrelandRosen}
+		K.~Ireland und M.~Rosen,
+		\textit{A Classical Introduction to Modern Number Theory},
+		Springer, 2.\ Auflage.
+		
+		\bibitem{NivenZuckermanMontgomery}
+		I.~Niven, H.~S. Zuckerman, H.~L. Montgomery,
+		\textit{An Introduction to the Theory of Numbers},
+		Wiley, 5.\ Auflage.
+		
+	\end{thebibliography}
+	
+\end{document}

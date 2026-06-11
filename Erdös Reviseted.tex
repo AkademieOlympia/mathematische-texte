@@ -1,0 +1,748 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[ngerman]{babel}
+
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{mathtools}
+\usepackage{geometry}
+\geometry{margin=2.8cm}
+
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./}{fig/}{figs/}{images/}{img/}}
+
+\newcommand{\includegraphicssafe}[2][]{%
+	\IfFileExists{#2}{\includegraphics[#1]{#2}}{%
+		\fbox{\parbox[c][3cm][c]{0.8\linewidth}{\centering Grafik nicht gefunden: #2}}%
+	}%
+}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Satz}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Korollar}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Beispiel}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Bemerkung}
+
+\title{Zur EABC-quaternionischen Reformulierung einer Beweisstrategie\\
+	für gemeinsame Primteiler von Binomialkoeffizienten}
+\author{}
+\date{März 2026}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Wir formulieren eine Beweisstrategie für eine Erdős-Aussage über gemeinsame Primteiler von Binomialkoeffizienten im Rahmen des EABC-Quaternionenmodells neu. Ausgangspunkt ist die Behauptung, dass für ganze Zahlen
+		\[
+		1\le i<j\le \frac{n}{2}
+		\]
+		eine Primzahl \(p\ge i\) existiert mit
+		\[
+		p \mid \gcd\!\left(\binom{n}{i},\binom{n}{j}\right).
+		\]
+		Die vorliegende Arbeit beansprucht keinen vollständigen strengen Beweis dieser Aussage, sondern organisiert eine vorhandene Beweisarchitektur in der Sprache des EABC-Modells. Dabei werden klassische Werkzeuge --- insbesondere \(p\)-adische Bewertungen, Sylvester--Schur, das tame-Fenster und eine residuale Smooth-Pair-Reduktion --- als EABC-Moden, Blockaden und quaternionische Übergänge interpretiert. Wir formulieren Definitionen, Lemmata und programmatische Sätze, die den algebraischen Kern, das Bridge-Prinzip, den schwachen Cofactor-Escape-Mechanismus sowie das globale Smooth-Pair-Argument bündeln. Zugleich markieren wir offen die Stellen, an denen zusätzliche Strenge erforderlich ist.
+	\end{abstract}
+	
+	\tableofcontents
+	
+	\section{Einleitung}
+	
+	Wir betrachten das Problem, zu verstehen, wann zwei Binomialkoeffizienten
+	\[
+	\binom{n}{i}
+	\qquad\text{und}\qquad
+	\binom{n}{j}
+	\]
+	einen gemeinsamen Primteiler besitzen, und zwar einen Primteiler, der nicht unterhalb der unteren Blockschwelle \(i\) liegt.
+	
+	Die leitende Aussage ist die folgende.
+	
+	\begin{quote}
+		Für ganze Zahlen \(1\le i<j\le n/2\) existiert eine Primzahl \(p\ge i\), die sowohl \(\binom{n}{i}\) als auch \(\binom{n}{j}\) teilt.
+	\end{quote}
+	
+	Im klassischen Zugang wird dieses Problem über Produkte aufeinanderfolgender Zahlen, \(p\)-adische Bewertungen und Lokalisierung kritischer Primteiler untersucht. Im vorliegenden Text wird dieselbe Beweisarchitektur in das EABC-Quaternionenmodell übersetzt.
+	
+	Der Zweck dieser Übersetzung ist vierfach:
+	\begin{enumerate}[label=\arabic*)]
+		\item die vorhandene Fallstruktur begrifflich zu vereinheitlichen,
+		\item den Unterschied zwischen freien Hochmoden, tame-Moden und blockierten Konfigurationen modelltheoretisch zu schärfen,
+		\item den globalen Schluss über ein glattes Nachbarpaar direkt im \(i\)-Block zu organisieren,
+		\item die noch offenen Beweisbausteine in präziser Form sichtbar zu machen.
+	\end{enumerate}
+	
+	\section{Die klassische Zielaussage}
+	
+	\begin{theorem}[Zielaussage]
+		\label{thm:zielaussage}
+		Für ganze Zahlen \(n,i,j\) mit
+		\[
+		1\le i<j\le \frac{n}{2}
+		\]
+		existiert eine Primzahl \(p\ge i\) mit
+		\[
+		p \mid \gcd\!\left(\binom{n}{i},\binom{n}{j}\right).
+		\]
+	\end{theorem}
+	
+	\begin{remark}
+		Der vorliegende Text gibt keine abgeschlossene klassische Beweisführung von Satz~\ref{thm:zielaussage}, sondern eine EABC-quaternionische Reformulierung einer Beweisstrategie.
+	\end{remark}
+	
+	\section{Grundstruktur des EABC-Modells}
+	
+	\subsection{EABC-Zustände}
+	
+	\begin{definition}[EABC-Quaternion eines Terms]
+		Jedem \(m\in\mathbb N\) ordnen wir formal einen EABC-Quaternionen
+		\[
+		Q(m)=e(m)\,E+a(m)\,A+b(m)\,B+c(m)\,C
+		\]
+		zu. Dabei bezeichnen \(E,A,B,C\) die vier fundamentalen Richtungen des Modells, während die Koeffizienten \(e(m),a(m),b(m),c(m)\) die arithmetische Signatur des Terms \(m\) kodieren.
+	\end{definition}
+	
+	\begin{remark}
+		Für die vorliegende Arbeit wird keine endgültige axiomatische Festlegung der Abbildung \(m\mapsto Q(m)\) verlangt. Es genügt, dass \(Q(m)\) die arithmetische Tragstruktur eines Terms repräsentiert und insbesondere große Primteiler als aktive Moden sichtbar macht.
+	\end{remark}
+	
+	\begin{definition}[Norm und Aktivität]
+		Die quaternionische Größe
+		\[
+		\|Q(m)\|
+		\]
+		heißt die EABC-Norm des Terms \(m\). Eine Primzahl \(p\) heißt \emph{aktiv} in \(Q(m)\), wenn sie in der Primfaktorstruktur von \(m\) als nichttrivialer Modus auftritt.
+	\end{definition}
+	
+	\subsection{Blöcke}
+	
+	\begin{definition}[\(i\)-Block]
+		Für \(1\le i\le n\) definieren wir den \(i\)-Block
+		\[
+		\mathcal B_i(n):=(n,n-1,\dots,n-i+1).
+		\]
+		Sein klassisches Produkt ist
+		\[
+		P_i(n):=n(n-1)\cdots(n-i+1).
+		\]
+		Der zugehörige EABC-Block ist die geordnete Familie
+		\[
+		Q(\mathcal B_i(n)):=\bigl(Q(n),Q(n-1),\dots,Q(n-i+1)\bigr).
+		\]
+	\end{definition}
+	
+	\begin{definition}[Binomialzustand]
+		Der Binomialzustand zu \((n,i)\) ist formal das durch
+		\[
+		\binom{n}{i}=\frac{P_i(n)}{i!}
+		\]
+		repräsentierte EABC-Objekt. Große Primmoden des Zählers, die nicht vom Nenner neutralisiert werden, bleiben im Binomialzustand aktiv.
+	\end{definition}
+	
+	\section{Zeugen, Glattheit und Blockade}
+	
+	\begin{definition}[Zeuge]
+		Eine Primzahl \(p\ge i\) heißt \emph{Zeuge} für ein Tripel \((n,i,j)\), wenn
+		\[
+		p \mid \gcd\!\left(\binom{n}{i},\binom{n}{j}\right).
+		\]
+		Im EABC-Modell entspricht dies einem gemeinsam stabilen aktiven Primmodus in den beiden Zuständen
+		\[
+		Q\!\left(\binom{n}{i}\right)
+		\qquad\text{und}\qquad
+		Q\!\left(\binom{n}{j}\right).
+		\]
+	\end{definition}
+	
+	\begin{definition}[\(j\)-glatte Lage]
+		Der \(i\)-Block \(\mathcal B_i(n)\) heißt \emph{\(j\)-glatt}, wenn alle Primteiler des Produkts \(P_i(n)\) höchstens \(j\) sind.
+	\end{definition}
+	
+	\begin{remark}
+		Im EABC-Modell enthält der Block dann keinen freien Hochmodus oberhalb der \(j\)-Schwelle.
+	\end{remark}
+	
+	\begin{definition}[Tame-Primmodus]
+		Eine Primzahl \(p>i\) heißt \emph{tame relativ zu \((j,i)\)}, wenn sie \(\binom{j}{i}\) teilt. Der klassische Bereich solcher Primzahlen wird später präzisiert.
+	\end{definition}
+	
+	\begin{definition}[Lonely-Modus]
+		Ein tame-Primmodus \(q\) heißt \emph{lonely}, wenn sein Beitrag beim Übergang von \(\binom{n}{i}\) nach \(\binom{n}{j}\) nicht durch einen zusätzlichen \(q\)-Beitrag aus dem Restblock gestützt wird.
+	\end{definition}
+	
+	\begin{definition}[Voll blockierte EABC-Konfiguration]
+		Ein Tripel \((n,i,j)\) heißt \emph{voll blockiert}, wenn kein Primmodus \(p\ge i\) als Zeuge durchkommt.
+	\end{definition}
+	
+	\begin{remark}
+		Die Begriffe \emph{tame}, \emph{lonely} und \emph{voll blockiert} sind hier als Strukturbegriffe der Beweisstrategie formuliert. Eine vollständig klassische Formalisierung dieser Begriffe würde die \(p\)-adischen Bewertungsbedingungen explizit ausformulieren.
+	\end{remark}
+	
+	\section{Klassische Werkzeuge als EABC-Übergänge}
+	
+	\subsection{Kummer und Legendre}
+	
+	\begin{lemma}[Kummers Theorem]
+		Für eine Primzahl \(p\) und \(n\ge k\ge0\) ist
+		\[
+		v_p\!\left(\binom{n}{k}\right)
+		\]
+		gleich der Anzahl der Überträge beim Addieren von \(k\) und \(n-k\) in Basis \(p\).
+	\end{lemma}
+	
+	\begin{lemma}[Legendres Formel]
+		Für \(m\ge1\) und eine Primzahl \(p\) gilt
+		\[
+		v_p(m!)=\sum_{r\ge1}\left\lfloor \frac{m}{p^r}\right\rfloor.
+		\]
+	\end{lemma}
+	
+	\subsection{Sylvester--Schur}
+	
+	\begin{lemma}[Sylvester--Schur]
+		Für \(n\ge 2k\) besitzt das Produkt
+		\[
+		n(n-1)\cdots(n-k+1)
+		\]
+		einen Primfaktor \(>k\).
+	\end{lemma}
+	
+	\begin{remark}
+		Im EABC-Modell bedeutet dies: Jeder genügend lange Block trägt mindestens einen Modus oberhalb seiner inneren Eigenbreite.
+	\end{remark}
+	
+	\subsection{Der fundamentale Übergang}
+	
+	\begin{lemma}[EABC-Master-Übergang]
+		\label{lem:master}
+		Für \(n\ge j>i\ge1\) gilt
+		\[
+		\binom{n}{j}\binom{j}{i}
+		=
+		\binom{n}{i}\binom{n-i}{j-i}.
+		\]
+		Insbesondere folgt für jede Primzahl \(p\),
+		\[
+		v_p\!\left(\binom{n}{j}\right)
+		=
+		v_p\!\left(\binom{n}{i}\right)
+		+
+		v_p\!\left(\binom{n-i}{j-i}\right)
+		-
+		v_p\!\left(\binom{j}{i}\right).
+		\]
+	\end{lemma}
+	
+	\begin{remark}
+		Dieses Lemma ist der algebraische Kern der ganzen Architektur. Im EABC-Sinn beschreibt es die Umverteilung aktiver Primmoden zwischen Ausgangsblock, Korrekturblock und Restblock.
+	\end{remark}
+	
+	\section{Das tame-Fenster}
+	
+	\begin{lemma}[Tame-Fenster]
+		\label{lem:tame-fenster}
+		Sei \(p>i\) prim. Dann gilt
+		\[
+		p\mid \binom{j}{i}
+		\quad\Longleftrightarrow\quad
+		p\in (j-i,j].
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Für \(p>i\) kann \(p\) im Nenner \(i!\) nicht auftreten. Also teilt \(p\) genau dann \(\binom{j}{i}\), wenn im Produkt
+		\[
+		j(j-1)\cdots (j-i+1)
+		\]
+		ein Vielfaches von \(p\) liegt. Da die Blocklänge \(i\) kleiner als \(p\) ist, kann dies höchstens einmal geschehen. Genau dies entspricht der Bedingung \(p\in(j-i,j]\).
+	\end{proof}
+	
+	\begin{lemma}[Einfache tame-Bewertung]
+		\label{lem:tame-eins}
+		Ist \(q\in(j-i,j]\) prim und \(q>i\), dann gilt
+		\[
+		v_q\!\left(\binom{j}{i}\right)=1.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Wegen \(q>i\) liegt im \(i\)-Block
+		\[
+		j(j-1)\cdots(j-i+1)
+		\]
+		höchstens ein Vielfaches von \(q\). Da \(q\in(j-i,j]\), liegt genau eines vor. Im Nenner \(i!\) tritt \(q\) nicht auf. Also beträgt die \(q\)-adische Bewertung genau \(1\).
+	\end{proof}
+	
+	\begin{remark}
+		Das Intervall \((j-i,j]\) ist im EABC-Modell das einzige Spektralfenster, in dem große Primmoden durch den Korrekturblock absorbiert werden können.
+	\end{remark}
+	
+	\section{Freie Hochmoden und die erste Reduktion}
+	
+	\begin{lemma}[Freier Hochmodus]
+		\label{lem:freier-hochmodus}
+		Besitzt der \(i\)-Block \(\mathcal B_i(n)\) einen Primteiler \(p>j\), so ist \(p\) ein Zeuge für \((n,i,j)\).
+	\end{lemma}
+	
+	\begin{proof}
+		Da \(p>j\), tritt \(p\) weder in \(i!\) noch in \(j!\) auf. Weil \(p\mid P_i(n)\), folgt
+		\[
+		p\mid \binom{n}{i}.
+		\]
+		Da \(j\ge i\), enthält auch der \(j\)-Block
+		\[
+		n(n-1)\cdots(n-j+1)
+		\]
+		den ganzen \(i\)-Block als Teilprodukt, also insbesondere den Faktor, der durch \(p\) teilbar ist. Wieder gilt \(p\nmid j!\). Also
+		\[
+		p\mid \binom{n}{j}.
+		\]
+		Damit ist \(p\) ein gemeinsamer Primteiler.
+	\end{proof}
+	
+	\begin{corollary}
+		Ist \((n,i,j)\) voll blockiert, so ist der \(i\)-Block notwendig \(j\)-glatt.
+	\end{corollary}
+	
+	\section{Die algebraische Fallarchitektur}
+	
+	\begin{theorem}[EABC-Fallzerlegung]
+		\label{thm:fallzerlegung}
+		Sei
+		\[
+		1\le i<j\le \frac{n}{2}.
+		\]
+		Dann liegt genau eine der folgenden Situationen vor:
+		\begin{enumerate}[label=\textup{(\Alph*)}]
+			\item Der \(i\)-Block besitzt einen freien Hochmodus \(p>j\), also einen Zeugen.
+			\item Der \(i\)-Block ist \(j\)-glatt und besitzt einen Primmodus \(q\in(i,j]\).
+			\item Das Tripel ist voll blockiert; dann müssen alle relevanten großen Primmoden im tame-Fenster liegen und jeder verbleibende kritische Beitrag gehört zum lonely-Regime.
+		\end{enumerate}
+	\end{theorem}
+	
+	\begin{proof}
+		Fall (A) ist Lemma~\ref{lem:freier-hochmodus}. Liegt (A) nicht vor, so ist der Block \(j\)-glatt. Nach Sylvester--Schur besitzt \(P_i(n)\) dennoch einen Primteiler \(>i\), also einen Primmodus \(q\in(i,j]\). Ist dieser nicht tame, so liefert Lemma~\ref{lem:master} zusammen mit der Nichtteilbarkeit von \(\binom{j}{i}\) einen Zeugen. Bleibt kein Zeuge übrig, so ist die Konfiguration voll blockiert und alle relevanten großen Moden müssen im tame-Fenster leben.
+	\end{proof}
+	
+	\begin{remark}
+		Der letzte Schritt des Beweises ist programmatisch und nicht vollständig ausformuliert. Er beschreibt die intendierte Restfallreduktion.
+	\end{remark}
+	
+	\section{Das Bridge-Prinzip}
+	
+	\begin{lemma}[Prime-Power-Bridge im EABC-Modell]
+		\label{lem:bridge}
+		Sei \(p\) prim mit \(i\le p\le j\). Es gebe ein \(k\in\{0,\dots,i-1\}\) mit
+		\[
+		p^v\mid (n-k),\qquad v\ge2,\qquad p^v>j.
+		\]
+		Dann ist \(p\) ein Zeuge für \((n,i,j)\).
+	\end{lemma}
+	
+	\begin{proof}
+		Für den \(i\)-Block gilt: Da \(p\ge i\), enthält der Block \(n(n-1)\cdots(n-i+1)\) höchstens ein Vielfaches von \(p\), nämlich \(n-k\). Wegen \(v\ge2\) folgt
+		\[
+		v_p\!\left(n(n-1)\cdots(n-i+1)\right)\ge 2.
+		\]
+		Andererseits gilt \(v_p(i!)\le 1\), da \(p\ge i\). Also
+		\[
+		v_p\!\left(\binom{n}{i}\right)\ge 1.
+		\]
+		
+		Für den \(j\)-Block
+		\[
+		N_j:=n(n-1)\cdots(n-j+1)
+		\]
+		liegt ebenfalls der Faktor \(n-k\) vor, da \(k\le i-1<j\). Schreibe \(A_r\) für die Anzahl der durch \(p^r\) teilbaren Zahlen im \(j\)-Block. Dann gilt
+		\[
+		v_p(N_j)=\sum_{r\ge1} A_r.
+		\]
+		Nach Legendre ist
+		\[
+		v_p(j!)=\sum_{r\ge1}\left\lfloor \frac{j}{p^r}\right\rfloor.
+		\]
+		
+		Da \(p^v\mid (n-k)\) und \(p^v>j\), enthält der \(j\)-Block genau ein Vielfaches von \(p^v\). Also
+		\[
+		A_v=1
+		\qquad\text{und}\qquad
+		\left\lfloor \frac{j}{p^v}\right\rfloor=0.
+		\]
+		Für jedes \(r\ge1\) gilt außerdem
+		\[
+		A_r\ge \left\lfloor \frac{j}{p^r}\right\rfloor.
+		\]
+		Daher
+		\[
+		v_p(N_j)-v_p(j!)
+		=
+		\sum_{r\ge1}\left(A_r-\left\lfloor\frac{j}{p^r}\right\rfloor\right)\ge 1.
+		\]
+		Also
+		\[
+		v_p\!\left(\binom{n}{j}\right)\ge1.
+		\]
+		Somit teilt \(p\) beide Binomialkoeffizienten und ist ein Zeuge.
+	\end{proof}
+	
+	\begin{remark}
+		Dieses Lemma liefert den Abschluss des hohen lonely-Potenzfalls. Im EABC-Sinn ist \(p^v\) ein Hochstufen-Überschuss, der auf beiden Binomialebenen erhalten bleibt.
+	\end{remark}
+	
+	\section{Lonely-Cofaktoren und schwacher Escape-Mechanismus}
+	
+	\begin{definition}[Lonely-Cofaktor]
+		Sei \(q\) ein lonely tame-Primmodus und
+		\[
+		v_q(n-k_q)=1.
+		\]
+		Dann schreiben wir
+		\[
+		n-k_q=q\,m_q,\qquad \gcd(q,m_q)=1.
+		\]
+		Die Zahl \(m_q\) heißt der lonely-Cofaktor.
+	\end{definition}
+	
+	\begin{lemma}[Schwache Escape-Version]
+		\label{lem:weak_escape}
+		Seien \(1\le i<j\le n/2\) und sei \((n,i,j)\) voll blockiert. Sei ferner
+		\(q\in(j-i,j]\) ein lonely tame-Prim mit
+		\[
+		n-k_q=q\,m_q,\qquad \gcd(q,m_q)=1,\qquad v_q(n-k_q)=1.
+		\]
+		Dann gilt: Jeder Primteiler \(r>i\) von \(m_q\) liegt selbst im tame-Fenster,
+		also
+		\[
+		r\in(j-i,j].
+		\]
+		Insbesondere besitzt \(m_q\) keinen Primteiler \(>j\).
+	\end{lemma}
+	
+	\begin{proof}
+		Sei \(r\mid m_q\) mit \(r>i\). Dann gilt \(r\mid(n-k_q)\), also tritt \(r\) im \(i\)-Block auf. Wegen \(r>i\) gibt es dort höchstens ein Vielfaches von \(r\), also
+		\[
+		r\mid \binom{n}{i}.
+		\]
+		
+		Wäre \(r>j\), so wäre \(r\) ein freier Hochmodus und damit nach Lemma~\ref{lem:freier-hochmodus} ein Zeuge, im Widerspruch zur Vollblockiertheit. Also gilt \(r\le j\).
+		
+		Wäre \(r\notin(j-i,j]\), so wäre \(r\) nicht tame. Nach Lemma~\ref{lem:master} und der Nichtteilbarkeit von \(\binom{j}{i}\) durch \(r\) könnte der Korrekturblock den \(r\)-Modus nicht absorbieren; damit würde \(r\) im Übergang nach \(\binom{n}{j}\) nicht neutralisiert und erneut einen Zeugen liefern. Also muss
+		\[
+		r\in(j-i,j]
+		\]
+		gelten.
+	\end{proof}
+	
+	\begin{remark}
+		Lemma~\ref{lem:weak_escape} sagt nicht, dass lonely-Cofaktoren vollständig \(i\)-glatt sind. Es genügt jedoch für den globalen Schluss, dass \emph{alle} großen Primteiler der Cofaktoren in dasselbe schmale tame-Fenster gezwungen werden.
+	\end{remark}
+	
+	\section{Der globale Schluss über Tame-Knappheit und lokale Glättung}
+	
+	In diesem Abschnitt ersetzen wir die starke lokale Glattheitsaussage für jeden einzelnen lonely-Cofaktor durch ein schwächeres, aber robusteres Argument. Der wesentliche Gedanke ist, dass große Primmoden in einer voll blockierten Konfiguration nur im tame-Fenster auftreten können und dass dieses Fenster für \(i\ge 10\) zu klein ist, um alle Positionen des \(i\)-Blocks separat zu kontrollieren. Daraus folgen zwei benachbarte unkontrollierte Positionen, und diese liefern ein \(S_i\)-glattes Paar.
+	
+	\subsection{Knappheit des tame-Fensters}
+	
+	\begin{lemma}[Brun--Titchmarsh]
+		Für \(x\ge1\) und \(y\ge2\) gilt
+		\[
+		\pi(x+y)-\pi(x)\le \frac{2y}{\ln y}.
+		\]
+	\end{lemma}
+	
+	\begin{lemma}[Tame-Knappheit]
+		\label{lem:tame_scarcity_global}
+		Für \(i\ge10\) gilt
+		\[
+		\pi(j)-\pi(j-i)\le \left\lfloor \frac{2i}{\ln i}\right\rfloor \le i-2.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Die erste Ungleichung ist die Brun--Titchmarsh-Ungleichung mit \(x=j-i\) und \(y=i\). Die zweite ist eine elementare numerische Abschätzung für \(i\ge10\).
+	\end{proof}
+	
+	\begin{remark}
+		Damit gibt es für \(i\ge10\) höchstens \(i-2\) Primzahlen im tame-Fenster \((j-i,j]\). Diese Primzahlen sind die einzigen möglichen großen blockierenden Moden.
+	\end{remark}
+	
+	\subsection{Kontrollierte und unkontrollierte Positionen}
+	
+	\begin{definition}[Kontrollierte Position]
+		Eine Position \(t\in\{0,\dots,i-1\}\) des \(i\)-Blocks heißt \emph{kontrolliert}, wenn
+		der Blockterm \(n-t\) einen Primteiler \(r>i\) besitzt. Nach Lemma~\ref{lem:weak_escape}
+		muss dann notwendig
+		\[
+		r\in(j-i,j]
+		\]
+		gelten.
+	\end{definition}
+	
+	\begin{definition}[Unkontrollierte Position]
+		Eine Position \(t\in\{0,\dots,i-1\}\) heißt \emph{unkontrolliert}, wenn der Blockterm
+		\(n-t\) keinen Primteiler \(>i\) besitzt.
+	\end{definition}
+	
+	\begin{remark}
+		Da ein Prim \(r>i\) in einem Block der Länge \(i\) höchstens einmal auftreten kann,
+		kontrolliert jede große Primzahl \(r>i\) höchstens eine Position des \(i\)-Blocks.
+	\end{remark}
+	
+	\begin{lemma}[Adjazenzlemma]
+		\label{lem:adjacency_global}
+		Wenn höchstens \(i-2\) Positionen des \(i\)-Blocks kontrolliert sind, dann existieren
+		zwei benachbarte unkontrollierte Positionen.
+	\end{lemma}
+	
+	\begin{proof}
+		Der \(i\)-Block besitzt genau \(i\) Positionen. Sind höchstens \(i-2\) davon kontrolliert,
+		so bleiben mindestens zwei unkontrollierte Positionen.
+		
+		In einem linearen Block von Länge \(i\) können zwei unkontrollierte Positionen nur dann
+		stets voneinander getrennt werden, wenn mindestens \(i-1\) Positionen kontrolliert sind.
+		Da dies hier nicht der Fall ist, müssen zwei unkontrollierte Positionen benachbart sein.
+	\end{proof}
+	
+	\subsection{Lokale Glättung}
+	
+	\begin{definition}
+		Sei
+		\[
+		S_i:=\{\text{Primzahlen } \le i\}.
+		\]
+		Eine natürliche Zahl heißt \(S_i\)-glatt, wenn alle ihre Primteiler in \(S_i\) liegen.
+	\end{definition}
+	
+	\begin{lemma}[Lokale Glättung]
+		\label{lem:local_smoothing_global}
+		Jede unkontrollierte Position des \(i\)-Blocks ist \(S_i\)-glatt. Das heißt: Ist
+		\(t\in\{0,\dots,i-1\}\) unkontrolliert, so besitzen alle Primteiler von \(n-t\) die Schranke
+		\[
+		p\le i.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Dies ist unmittelbar die Definition von unkontrolliert. Eine unkontrollierte Position
+		trägt keinen Primteiler \(>i\), also nur Primteiler \(\le i\). Folglich ist der Term
+		\(n-t\) \(S_i\)-glatt.
+	\end{proof}
+	
+	\subsection{Existenz eines glatten Nachbarpaares}
+	
+	\begin{theorem}[Smooth-Pair-Existenz im Block]
+		\label{thm:smooth_pair_block}
+		Sei \(i\ge10\) und sei \((n,i,j)\) voll blockiert. Dann existieren zwei benachbarte
+		\(S_i\)-glatte Terme im \(i\)-Block.
+	\end{theorem}
+	
+	\begin{proof}
+		Nach Lemma~\ref{lem:tame_scarcity_global} gibt es höchstens \(i-2\) Primzahlen im tame-Fenster
+		\((j-i,j]\). Nach Lemma~\ref{lem:weak_escape} können große Primteiler in einer voll
+		blockierten Konfiguration nur aus diesem Fenster stammen. Da jede Primzahl \(r>i\) wegen
+		\(r>i\) im \(i\)-Block höchstens eine Position kontrollieren kann, folgen höchstens \(i-2\)
+		kontrollierte Positionen.
+		
+		Nach Lemma~\ref{lem:adjacency_global} existieren daher zwei benachbarte unkontrollierte
+		Positionen, also zwei benachbarte Terme
+		\[
+		n-t,\qquad n-(t+1),
+		\]
+		die nach Lemma~\ref{lem:local_smoothing_global} beide \(S_i\)-glatt sind.
+	\end{proof}
+	
+	\begin{corollary}[Glattes Nachbarpaar]
+		\label{cor:smooth_pair_xy}
+		Unter den Voraussetzungen von Satz~\ref{thm:smooth_pair_block} existiert ein Paar
+		aufeinanderfolgender natürlicher Zahlen
+		\[
+		x,\qquad x-1,
+		\]
+		die beide \(S_i\)-glatt sind.
+	\end{corollary}
+	
+	\begin{proof}
+		Setze \(x:=n-t\), wobei \(t\) wie in Satz~\ref{thm:smooth_pair_block} gewählt ist.
+		Dann sind \(x\) und \(x-1=n-(t+1)\) benachbart und beide \(S_i\)-glatt.
+	\end{proof}
+	
+	\subsection{Diophantische Schranke}
+	
+	\begin{definition}
+		Sei
+		\[
+		B(i):=\max\{x\in\mathbb N : x \text{ und } x-1 \text{ sind } S_i\text{-glatt}\}.
+		\]
+	\end{definition}
+	
+	\begin{theorem}[Globale Schranke aus dem glatten Nachbarpaar]
+		\label{thm:global_bound_from_smooth_pair}
+		Sei \(i\ge10\) und sei \((n,i,j)\) voll blockiert. Dann gilt
+		\[
+		n\le B(i)+i-1.
+		\]
+	\end{theorem}
+	
+	\begin{proof}
+		Nach Korollar~\ref{cor:smooth_pair_xy} existiert ein Paar benachbarter \(S_i\)-glatter Zahlen
+		\[
+		x,\qquad x-1
+		\]
+		mit \(x=n-t\) für ein \(t\in\{0,\dots,i-1\}\). Also gilt
+		\[
+		x\le B(i).
+		\]
+		Da \(x=n-t\), folgt
+		\[
+		n=x+t\le B(i)+(i-1).
+		\]
+		Dies ist die behauptete Schranke.
+	\end{proof}
+	
+	\begin{theorem}[Der große Fall]
+		\label{thm:large_i_case}
+		Für \(i\ge10\) ist jede voll blockierte Konfiguration \((n,i,j)\) durch
+		\[
+		n\le B(i)+i-1
+		\]
+		nach oben beschränkt.
+	\end{theorem}
+	
+	\begin{proof}
+		Dies ist genau Satz~\ref{thm:global_bound_from_smooth_pair}.
+	\end{proof}
+	
+	\section{Kleine Fälle}
+	
+	\begin{lemma}[Paritätsblockade für \(i=3\), programmatische Fassung]
+		\label{lem:i3}
+		Es existiert keine voll blockierte Konfiguration \((n,3,j)\) mit \(n>10\).
+	\end{lemma}
+	
+	\begin{proof}[Beweisidee]
+		Im Dreierblock
+		\[
+		n(n-1)(n-2)
+		\]
+		sind Parität und Dreiteilbarkeit so starr, dass kein vollständiger Blockademechanismus durch tame/lonely-Moden möglich bleibt. Eine saubere Version dieses Arguments würde nach Restklassen modulo \(2\), \(3\) oder \(6\) unterscheiden.
+	\end{proof}
+	
+	\begin{theorem}[Kleine Schalen \(4\le i\le 9\), programmatische Fassung]
+		Für \(4\le i\le9\) ist jede voll blockierte Konfiguration entweder durch Satz~\ref{thm:global_bound_from_smooth_pair} nach oben beschränkt oder durch direkte endliche Rechnung ausschließbar.
+	\end{theorem}
+	
+	\begin{remark}
+		Für diesen Teil gehört zu einem vollständigen Beweis notwendig eine reproduzierbare Computersektion mit Suchraum, Korrektheitskriterium und Dokumentation.
+	\end{remark}
+	
+	\section{Der EABC-Hauptsatz in programmatischer Form}
+	
+	\begin{theorem}[EABC-Hauptsatz, programmatische Fassung]
+		\label{thm:eabc-hauptsatz}
+		Für jedes Tripel ganzer Zahlen
+		\[
+		1\le i<j\le \frac{n}{2}
+		\]
+		existiert im EABC-Modell ein gemeinsam stabiler Primmodus \(p\ge i\), also eine Primzahl \(p\) mit
+		\[
+		p\mid \gcd\!\left(\binom{n}{i},\binom{n}{j}\right).
+		\]
+	\end{theorem}
+	
+	\begin{proof}[Beweisstrategie]
+		Die Strategie besteht aus sieben Schritten:
+		\begin{enumerate}[label=\arabic*)]
+			\item Freie Hochmoden \(p>j\) liefern durch Lemma~\ref{lem:freier-hochmodus} sofort Zeugen.
+			\item Im verbleibenden Fall ist der \(i\)-Block \(j\)-glatt.
+			\item Tame-Moden werden durch den Master-Übergang aus Lemma~\ref{lem:master} kontrolliert.
+			\item Lonely-Moden mit hoher Potenz werden durch das Bridge-Lemma~\ref{lem:bridge} erfasst.
+			\item Lonely-Moden mit Exponent \(1\) führen über das schwache Escape-Lemma~\ref{lem:weak_escape} dazu, dass große Restmoden nur im tame-Fenster auftreten können.
+			\item Für \(i\ge10\) erzwingen Tame-Knappheit, Adjazenz und lokale Glättung ein \(S_i\)-glattes Nachbarpaar und damit eine obere Schranke für \(n\).
+			\item Die kleinen Fälle werden separat behandelt.
+		\end{enumerate}
+	\end{proof}
+	
+	\begin{remark}
+		Satz~\ref{thm:eabc-hauptsatz} ist in der vorliegenden Fassung als \emph{programmatische Synthese} zu lesen. Die geschlossene logische Kette hängt wesentlich von der präzisen klassischen Ausarbeitung der Residualdefinitionen, des Übergangs vom nicht-tamen Fall zum Zeugen sowie der Behandlung der kleinen Fälle ab.
+	\end{remark}
+	
+	\section{Offene Beweisbausteine}
+	
+	Wir fassen die offenen Punkte der Strategie explizit zusammen.
+	
+	\begin{enumerate}[label=\arabic*)]
+		\item \textbf{Formale Residualdefinitionen:}  
+		Die Begriffe \emph{lonely} und \emph{voll blockiert} müssen in klassischer Sprache vollständig mit \(p\)-adischen Bedingungen fixiert werden.
+		
+		\item \textbf{Nicht-tame \(\Rightarrow\) Zeuge:}  
+		Mehrere Beweisschritte benutzen, dass ein Primmodus außerhalb des tame-Fensters nicht absorbiert werden kann. Dieser Übergang sollte in einem eigenen Lemma vollständig isoliert werden.
+		
+		\item \textbf{Großer Fall \(i\ge10\):}  
+		Die globale Struktur über Tame-Knappheit, Adjazenz und lokale Glättung ist klar, sollte aber noch von der Modellsprache vollständig in klassische Sprache zurückübersetzt werden.
+		
+		\item \textbf{Kleine Fälle:}  
+		Die Spezialfälle \(i=1,2,3\) und die Bereiche \(4\le i\le9\) sind in klassischer Sprache vollständig abzuschließen.
+		
+		\item \textbf{Computationale Verifikation:}  
+		Falls endliche Suche verwendet wird, muss sie mit Algorithmus, Suchraum und Zertifizierung dokumentiert werden.
+	\end{enumerate}
+	
+	\section{Schlussbemerkung}
+	
+	Die hier vorgelegte EABC-Reformulierung soll keine bloße metaphorische Umbenennung sein. Ihr eigentlicher Zweck ist, die vorhandene Beweisarchitektur in eine einheitliche Modellsemantik zu überführen:
+	
+	\begin{itemize}
+		\item große Primteiler als aktive Moden,
+		\item das tame-Fenster als Kompensationsspektrum,
+		\item lonely-Regime als Randkonfiguration,
+		\item schwacher Cofactor-Escape als Einengung großer Restmoden,
+		\item Tame-Knappheit als globale Ressourcenbegrenzung,
+		\item lokale Glättung als Entstehung benachbarter glatter Zustände.
+	\end{itemize}
+	
+	Ob aus dieser Struktur ein vollständiger klassischer Beweis folgt, hängt nicht von der Bildsprache, sondern von der präzisen Ausarbeitung der offenen Lemmata ab. Gerade darin liegt jedoch der heuristische Wert des EABC-Modells: Es markiert mit hoher Klarheit, \emph{wo} der Beweis wirklich gewonnen oder verloren wird.
+	
+	\begin{thebibliography}{99}
+		
+		\bibitem{baker-wustholz}
+		A.~Baker, G.~Wüstholz,
+		\emph{Logarithmic Forms and Diophantine Geometry},
+		Cambridge University Press, 2007.
+		
+		\bibitem{evertse}
+		J.-H.~Evertse,
+		On equations in \(S\)-units and the Thue--Mahler equation,
+		\emph{Inventiones Mathematicae} \textbf{75} (1984), 561--584.
+		
+		\bibitem{hardy-wright}
+		G.~H.~Hardy, E.~M.~Wright,
+		\emph{An Introduction to the Theory of Numbers},
+		6th ed., Oxford University Press, 2008.
+		
+		\bibitem{kummer}
+		E.~E.~Kummer,
+		Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen,
+		\emph{J. Reine Angew. Math.} \textbf{44} (1852), 93--146.
+		
+		\bibitem{nathanson}
+		M.~B.~Nathanson,
+		\emph{Elementary Methods in Number Theory},
+		Springer, 2000.
+		
+	\end{thebibliography}
+	
+\end{document}

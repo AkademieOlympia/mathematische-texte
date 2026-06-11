@@ -1,0 +1,188 @@
+\documentclass[11pt,a4paper]{article}
+
+% --- Basics ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{geometry}
+\geometry{margin=2.6cm}
+
+% --- Math ---
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm}
+
+% --- Links ---
+\usepackage{hyperref}
+
+% --- Theorem environments (deutsch) ---
+\theoremstyle{plain}
+\newtheorem{satz}{Satz}
+\newtheorem{lemma}{Lemma}
+\newtheorem{korollar}{Korollar}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{axiom}{Axiom}
+\newtheorem{conjecture}{Vermutung}
+
+\theoremstyle{remark}
+\newtheorem{bemerkung}{Bemerkung}
+
+% --- Convenience ---
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Hh}{\mathbb{H}}
+\newcommand{\Okt}{\mathbb{O}}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+
+\title{%
+Die kritische Achse als Dualit\"ats-Fixpunkt\\
+in den normierten Divisionsalgebren $\R,\C,\Hh,\Okt$\\
+(Paper A: mathematischer Satz + klar markierte Vermutung zur RH)
+}
+\author{Thomas Hoffbauer\\Bamberg, Deutschland}
+\date{12. Februar 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Wir isolieren einen rein mathematischen Kern: In jeder normierten Divisionsalgebra
+$\mathbb{A}\in\{\R,\C,\Hh,\Okt\}$ erzwingt die Norm-Dualit\"atsbedingung
+$\|x\|=\|1-x\|$ f\"ur ein Element $x$ in einem komplexen Slice $\C_u\subset\mathbb{A}$
+notwendig die Fixpunktlage $\Re(x)=1/2$.
+Dieser Satz ist elementar, aber strukturell bedeutsam: Er identifiziert die ``Einhalb'' als
+Symmetrieachse einer unitarit\"atsvertr\"aglichen Dualit\"at, unabh\"angig von Physik.
+
+Die Verbindung zur Riemannschen Vermutung wird strikt getrennt: Wir formulieren eine
+Vermutung, dass die nichttrivialen Nullstellen der (vollendeten) Zetafunktion genau solche
+universell dualit\"atsstabilen Resonanzen unter nat\"urlichen Lifts in $\Hh$ bzw.\ $\Okt$ sind.
+Damit wird ``Satz + Vermutung'' zu einem klaren, logisch transparenten Programm.
+\end{abstract}
+
+\section{Motivation und Claim}
+Dieses Paper macht \emph{keine} physikalische Behauptung \"uber Strahlungsspektren.
+Der Claim ist rein algebraisch-geometrisch:
+
+\begin{quote}
+\emph{Wenn ein (liftbarer) komplexer Parameter in einer normierten Divisionsalgebra die Norm-Dualit\"at
+$x\mapsto 1-x$ erf\"ullt, dann liegt sein skalarer Anteil zwingend auf $1/2$.}
+\end{quote}
+
+Das ist die mathematische Form dessen, was im fr\"uheren Manuskript als ``Hurwitz-Imperativ''
+auftauchte, nun jedoch als sauberer Satz mit expliziten Voraussetzungen.
+
+\section{Normierte Divisionsalgebren und komplexe Slices}
+
+\begin{definition}[Normierte Divisionsalgebra]
+Eine (reelle) Algebra $\mathbb{A}$ hei\ss t \emph{normierte Divisionsalgebra}, wenn es eine Norm
+$\|\cdot\|$ gibt mit \emph{Kompositionsgesetz} $\|xy\|=\|x\|\,\|y\|$ f\"ur alle $x,y\in\mathbb{A}$
+und jedes $x\neq 0$ invertierbar ist.
+Nach Hurwitz gilt $\mathbb{A}\in\{\R,\C,\Hh,\Okt\}$.
+\end{definition}
+
+\begin{definition}[Komplexer Slice]
+Sei $\mathbb{A}\in\{\Hh,\Okt\}$ und $u\in\mathrm{Im}(\mathbb{A})$ mit $u^2=-1$.
+Dann ist
+\[
+\C_u := \{\,\sigma + \gamma u : \sigma,\gamma\in\R\,\}\subset\mathbb{A}
+\]
+ein Unterraum, der als Algebra isomorph zu $\C$ ist (``complex slice'').
+\end{definition}
+
+\begin{definition}[Slice-Einbettung]
+Die kanonische Einbettung in den Slice sei
+\[
+\iota_u:\C\to\mathbb{A},\qquad \iota_u(\sigma+\ii\gamma)=\sigma+\gamma u.
+\]
+\end{definition}
+
+\begin{bemerkung}
+Die Norm in $\mathbb{A}$ reduziert sich auf dem Slice auf den euklidischen Betrag:
+\[
+\|\iota_u(\sigma+\ii\gamma)\|^2 = \sigma^2+\gamma^2 = |\sigma+\ii\gamma|^2.
+\]
+Dies ist elementar; die inhaltliche Frage liegt nicht in dieser Identit\"at, sondern darin,
+\emph{wann} und \emph{f\"ur welche} Parameter eine Dualit\"ats-Normbedingung physikalisch oder
+zahlentheoretisch motiviert ist.
+\end{bemerkung}
+
+\section{Dualit\"ats-Normfunktional und Fixpunkt}
+
+\begin{definition}[Dualit\"ats-Funktional]
+F\"ur $x\in\mathbb{A}$ definieren wir
+\[
+\Phi(x) := \big|\|x\|^2-\|1-x\|^2\big|.
+\]
+Auf einem Slice schreiben wir auch $\Phi_u(s):=\Phi(\iota_u(s))$.
+\end{definition}
+
+\begin{lemma}[Fixpunkt der Norm-Dualit\"at]\label{lem:fixpoint}
+Sei $\mathbb{A}\in\{\R,\C,\Hh,\Okt\}$ und $x=\sigma+\gamma u\in\C_u\subset\mathbb{A}$.
+Wenn $\Phi(x)=0$, dann gilt $\sigma=\tfrac12$.
+\end{lemma}
+
+\begin{proof}
+Auf dem Slice gilt $\|x\|^2=\sigma^2+\gamma^2$ und $\|1-x\|^2=(1-\sigma)^2+\gamma^2$.
+Aus $\Phi(x)=0$ folgt $\sigma^2+\gamma^2=(1-\sigma)^2+\gamma^2$, also $2\sigma=1$.
+\end{proof}
+
+\begin{satz}[Kritische Achse als Dualit\"ats-Fixpunkt]\label{thm:critical_axis}
+In jeder normierten Divisionsalgebra $\mathbb{A}\in\{\R,\C,\Hh,\Okt\}$ liegt jedes Element
+$x\in\C_u$ mit $\|x\|=\|1-x\|$ auf der Fixpunktachse $\Re(x)=1/2$.
+\end{satz}
+
+\begin{proof}
+Unmittelbar aus Lemma~\ref{lem:fixpoint}.
+\end{proof}
+
+\section{Universelle Stabilit\"at \"uber Slices}
+Das Theorem ist elementar, aber sein Nutzen entsteht, wenn man eine \emph{Universality}-Annahme
+formuliert: dass bestimmte ``Resonanzen'' gegen Wahl des Slices stabil sind.
+
+\begin{definition}[Universelle Dualit\"atsstabilit\"at]\label{def:universal}
+Sei $\mathbb{A}\in\{\Hh,\Okt\}$ und $\mathcal{U}$ eine Klasse zul\"assiger imagin\"arer Einheiten
+$u$ (z.B.\ alle $u$ mit $u^2=-1$ oder eine durch Strukturbedingungen eingeschr\"ankte Teilmenge).
+Ein Parameter $s\in\C$ hei\ss t \emph{universell dualit\"atsstabil} (bez\"uglich $\mathcal{U}$), wenn
+\[
+\Phi(\iota_u(s))=0\quad\text{f\"ur alle }u\in\mathcal{U}.
+\]
+\end{definition}
+
+\begin{korollar}[Universality $\Rightarrow$ kritische Linie]
+Jeder universell dualit\"atsstabile Parameter $s$ erf\"ullt $\Re(s)=1/2$.
+\end{korollar}
+
+\section{Vermutung zur Riemannschen Vermutung (klar markiert)}
+Wir trennen streng zwischen dem Satzteil (bewiesen) und der Br\"ucke zur Zetafunktion (offen).
+
+\begin{conjecture}[Division-Algebra Universality der nichttrivialen Nullstellen]
+Seien $\rho$ nichttriviale Nullstellen der vollendeten Zetafunktion (oder $\xi$-Funktion).
+Dann sind diese $\rho$ universell dualit\"atsstabil im Sinn von
+Definition~\ref{def:universal} f\"ur eine nat\"urliche Klasse $\mathcal{U}$ von Slices, die durch den
+Lift/Analytische Fortsetzung der Riemann-Funktion in $\Hh$ bzw.\ $\Okt$ kanonisch bestimmt ist.
+\end{conjecture}
+
+\begin{korollar}[Programm: Satz + Vermutung $\Rightarrow$ RH]
+Gilt die obige Vermutung, dann folgt f\"ur jede nichttriviale Nullstelle $\rho$:
+$\Re(\rho)=1/2$.
+\end{korollar}
+
+\section{Offene Punkte (was zu zeigen w\"are)}
+\begin{itemize}
+\item Eine kanonische (nichttriviale) Definition des ``Lifts'' der analytisch fortgesetzten Zeta-/
+$\xi$-Funktion in $\Hh$ und $\Okt$ (z.B.\ Slice-regular oder Stem-function Framework).
+\item Eine begr\"undete Wahl der Slice-Klasse $\mathcal{U}$, die die Zahlentheorie (Funktionalgleichung)
+und die Algebra (Automorphismen/Isometrien der Norm) zugleich reflektiert.
+\item Der Nachweis, dass die nichttrivialen Nullstellen die Universality-Bedingung erf\"ullen.
+\end{itemize}
+
+\section*{Hinweis zum Folgepaper (Paper B)}
+Der physikalische Teil (Strahlungsmodulation, Template-Matching, Metrologie) wird bewusst in einem
+separaten Manuskript behandelt, um die logische Struktur dieses Papers rein mathematisch zu halten.
+
+\end{document}

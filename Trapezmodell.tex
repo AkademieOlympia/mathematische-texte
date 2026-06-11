@@ -1,0 +1,200 @@
+ \documentclass[11pt,a4paper]{article}
+ \usepackage{inputenc}
+ \usepackage{fontenc}
+ \usepackage[ngerman]{babel}
+ \usepackage{amsmath,amssymb,amsthm}
+ \usepackage{geometry}
+ \geometry{margin=2.5cm}
+ 
+ % Theorem-Umgebungen
+ \newtheorem{satz}{Satz}
+ \newtheorem{lemma}{Lemma}
+ \newtheorem{korollar}{Korollar}
+ \theoremstyle{definition}
+ \newtheorem{definition}{Definition}
+ \newtheorem{beispiel}{Beispiel}
+ \newtheorem{bemerkung}{Bemerkung}
+ 
+ % Operatoren
+ \DeclareMathOperator{\ggT}{ggT}
+ \DeclareMathOperator{\rad}{rad}
+ 
+ \begin{document}
+ 	
+ 	\section{Arithmetisches Qubit und Trapezmodell}
+ 	
+ 	Es seien $A,B,C,E\subset\mathbb{P}\setminus\{2,3\}$ paarweise disjunkte Mengen von Primzahlen. Jede Primzahl $p\mid n$ mit $p>3$ liege in genau einer der vier Familien.
+ 	
+ 	\begin{definition}[$ABC$-/$E$-Zerlegung]
+ 		Sei $n\in\mathbb{N}$ mit
+ 		\[
+ 		\ggT(n,6)=1.
+ 		\]
+ 		Dann schreiben wir
+ 		\[
+ 		n=n_{ABC}\,\mathcal E(n),
+ 		\]
+ 		wobei $n_{ABC}$ das Produkt aller Primfaktorpotenzen von $n$ aus den Familien
+ 		$A,B,C$ und $\mathcal E(n)$ das Produkt aller Primfaktorpotenzen aus der Familie $E$ bezeichnet.
+ 		Diese Zerlegung ist nach dem vorherigen Satz eindeutig.
+ 	\end{definition}
+ 	
+ 	\begin{definition}[Arithmetisches Qubit]
+ 		Zu einer Zahl $n\in\mathbb{N}$ mit $\ggT(n,6)=1$ definieren wir den normierten Zweizustandsvektor
+ 		\[
+ 		|\psi(n)\rangle
+ 		:=
+ 		\alpha(n)\,|E\rangle+\beta(n)\,|ABC\rangle,
+ 		\]
+ 		wobei
+ 		\[
+ 		\alpha(n):=\frac{\mathcal E(n)}{\sqrt{\mathcal E(n)^2+n_{ABC}^2}},
+ 		\qquad
+ 		\beta(n):=\frac{n_{ABC}}{\sqrt{\mathcal E(n)^2+n_{ABC}^2}}.
+ 		\]
+ 		Wir nennen $|\psi(n)\rangle$ das \emph{arithmetische Qubit} von $n$.
+ 	\end{definition}
+ 	
+ 	\begin{lemma}[Normierung]
+ 		Für jedes $n\in\mathbb{N}$ mit $\ggT(n,6)=1$ gilt
+ 		\[
+ 		\alpha(n)^2+\beta(n)^2=1.
+ 		\]
+ 	\end{lemma}
+ 	
+ 	\begin{proof}
+ 		Direktes Einsetzen liefert
+ 		\[
+ 		\alpha(n)^2+\beta(n)^2
+ 		=
+ 		\frac{\mathcal E(n)^2}{\mathcal E(n)^2+n_{ABC}^2}
+ 		+
+ 		\frac{n_{ABC}^2}{\mathcal E(n)^2+n_{ABC}^2}
+ 		=1.
+ 		\]
+ 	\end{proof}
+ 	
+ 	\begin{definition}[Unterer Raum und Trapezmodell]
+ 		Sei
+ 		\[
+ 		n_{ABC}=n_A\,n_B\,n_C
+ 		\]
+ 		die weitere Zerlegung des $ABC$-Anteils nach den drei Familien $A,B,C$.
+ 		Wir definieren den \emph{unteren Raum} von $n$ durch die drei horizontalen Komponenten
+ 		\[
+ 		n_A,\qquad n_B,\qquad n_C
+ 		\]
+ 		und die Höhe
+ 		\[
+ 		h(n):=\rad(\mathcal E(n)).
+ 		\]
+ 		Das zugehörige \emph{arithmetische Trapez} $T(n)$ sei durch die vier Punkte
+ 		\[
+ 		P_1=(0,0),\qquad
+ 		P_2=(n_A+n_B+n_C,0),
+ 		\]
+ 		\[
+ 		P_3=(n_C+n_B,h(n)),\qquad
+ 		P_4=(n_C,h(n))
+ 		\]
+ 		gegeben.
+ 	\end{definition}
+ 	
+ 	\begin{bemerkung}
+ 		Die Punkte $P_1,P_2,P_3,P_4$ definieren tatsächlich ein Trapez, da die Strecken
+ 		\[
+ 		\overline{P_1P_2}
+ 		\quad\text{und}\quad
+ 		\overline{P_4P_3}
+ 		\]
+ 		parallel zur $x$-Achse verlaufen. Für $n_B>0$ handelt es sich um ein echtes Trapez, für $n_B=0$ entartet es zu einem Rechteck.
+ 	\end{bemerkung}
+ 	
+ 	\begin{satz}[Eindeutige Zuordnung eines arithmetischen Qubits und Trapezes]
+ 		Jede natürliche Zahl $n\in\mathbb{N}$ mit $\ggT(n,6)=1$ bestimmt eindeutig
+ 		\begin{enumerate}
+ 			\item ihr arithmetisches Qubit $|\psi(n)\rangle$,
+ 			\item ihr arithmetisches Trapez $T(n)$ im unteren Raum.
+ 		\end{enumerate}
+ 	\end{satz}
+ 	
+ 	\begin{proof}
+ 		Die Größen $n_{ABC}$ und $\mathcal E(n)$ sind durch die kanonische $ABC$-/$E$-Zerlegung eindeutig bestimmt. Damit sind auch
+ 		\[
+ 		\alpha(n),\qquad \beta(n)
+ 		\]
+ 		eindeutig bestimmt, also das arithmetische Qubit $|\psi(n)\rangle$.
+ 		
+ 		Ebenso ist die Zerlegung
+ 		\[
+ 		n_{ABC}=n_A\,n_B\,n_C
+ 		\]
+ 		nach den drei Familien eindeutig. Daraus folgen die Koordinaten
+ 		\[
+ 		P_1,\ P_2,\ P_3,\ P_4
+ 		\]
+ 		des Trapezes eindeutig, da auch
+ 		\[
+ 		h(n)=\rad(\mathcal E(n))
+ 		\]
+ 		eindeutig bestimmt ist. Also ist $T(n)$ eindeutig.
+ 	\end{proof}
+ 	
+ 	\begin{korollar}
+ 		Jede natürliche Zahl $n$ mit $\ggT(n,6)=1$ besitzt eine eindeutige zweifache Repräsentation:
+ 		\begin{enumerate}
+ 			\item algebraisch durch ihre kanonische Zerlegung
+ 			\[
+ 			n=n_{ABC}\,\mathcal E(n),
+ 			\]
+ 			\item geometrisch-qubitartig durch das Paar
+ 			\[
+ 			\bigl(|\psi(n)\rangle,\;T(n)\bigr).
+ 			\]
+ 		\end{enumerate}
+ 	\end{korollar}
+ 	
+ 	\begin{bemerkung}
+ 		Diese Konstruktion identifiziert eine Zahl nicht mit einem physikalischen Qubit, sondern mit
+ 		einem \emph{arithmetisch definierten Zwei-Zustands-Objekt}. Ebenso ist das Trapezmodell eine
+ 		kanonische geometrische Repräsentation der Zerlegung, nicht bereits eine zusätzliche
+ 		zahlentheoretische Invarianzbehauptung.
+ 	\end{bemerkung}
+ 	
+ 	\begin{beispiel}
+ 		Für
+ 		\[
+ 		n=5\cdot 7\cdot 11\cdot 13^2
+ 		\]
+ 		gilt
+ 		\[
+ 		n_A=5,\qquad n_B=7,\qquad n_C=11,
+ 		\qquad
+ 		\mathcal E(n)=13^2,
+ 		\]
+ 		also
+ 		\[
+ 		n_{ABC}=5\cdot 7\cdot 11=385.
+ 		\]
+ 		Damit ist
+ 		\[
+ 		|\psi(n)\rangle
+ 		=
+ 		\frac{169}{\sqrt{169^2+385^2}}\,|E\rangle
+ 		+
+ 		\frac{385}{\sqrt{169^2+385^2}}\,|ABC\rangle.
+ 		\]
+ 		Ferner ist
+ 		\[
+ 		h(n)=\rad(13^2)=13,
+ 		\]
+ 		und das zugehörige Trapez ist gegeben durch
+ 		\[
+ 		P_1=(0,0),\quad
+ 		P_2=(23,0),\quad
+ 		P_3=(18,13),\quad
+ 		P_4=(11,13).
+ 		\]
+ 	\end{beispiel}
+ 	
+ \end{document}

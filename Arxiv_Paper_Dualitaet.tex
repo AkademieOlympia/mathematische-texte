@@ -1,0 +1,112 @@
+\documentclass[11pt,a4paper,nofootinbib]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[german]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{cite}
+\usepackage{hyperref}
+
+\geometry{a4paper, margin=25mm}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Effektive arithmetisch-geometrische Dualitaet},
+    pdfpagemode=FullScreen,
+}
+
+\title{\textbf{Effektive arithmetisch-geometrische Dualität im quaternionischen Zahlenraum}\\
+\large --- Eine effektive Feldtheorie auf dem Hurwitz-Gitter (\#Energiedoku) ---}
+\author{\textbf{Thomas Hofbauer} \\
+\small Bamberg, Deutschland}
+\date{\small 29. Mai 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+In dieser Arbeit formulieren wir ein rigoroses mathematisches Framework, das die diskrete algebraische Faktorisierung natürlicher Zahlen über eine dynamische Dreikörper-Traktorie auf dem Hurwitz-Quaternionen-Gitter in eine kontinuierliche, pseudo-riemannsche Feldtheorie überführt. Wir zeigen, dass die aus dem mikroskopischen Gitterprozess gewonnene Uhrenpräzision $\eta$ als direkte Quelle für den makroskopischen Energie-Impuls-Tensor dient. Dies erlaubt die Herleitung einer arithmetischen Schwarzschild-Metrik, deren Krümmungsskala direkt durch die quantenhafte informationelle Stabilität des zugrundeliegenden Zahlenraums gesteuert wird.
+\end{abstract}
+
+\section{Einführung und kanonische Minkowski-Einbettung}
+Ein zentrales Anliegen des Bamberg-Modells (\#Energiedoku) ist die geometrische Rigideisierung des Zahlenraums zur Untersuchung arithmetischer Interferenzen. Jede natürliche Zahl $n \in \mathbb{N}$ lässt sich kanonisch anhand ihrer Primfaktorzerlegung in drei strukturell disjunkte Klassen unterteilen:
+\begin{enumerate}
+    \item \textbf{Das Fundament (2,3-Plattenanteil):} $n_{2,3} = 2^{\alpha} \cdot 3^{\beta}$
+    \item \textbf{Die Halbgruppe (5,7-Halb-Kleinscher Anteil):} $n_{5,7} = 5^{\gamma} \cdot 7^{\delta}$
+    \item \textbf{Der Kern (Ganz-Kleinscher Anteil):} $n_{>7} = \prod_{p_i > 7} p_i^{\epsilon_i}$
+\end{enumerate}
+
+Wir definieren eine Abbildung $\Psi: \mathbb{N} \to \mathbb{M}^{1,3}$ in den Minkowski-Raum mit der metrischen Signatur $(+,-,-,-)$. Die raumzeitlichen Koordinaten $x^\mu = (x^0, x^1, x^2, x^3)$ werden durch die logarithmischen Amplituden dieser arithmetischen Klassen besetzt, um die multiplikative Struktur in ein additives Vektorfeld zu überführen:
+\begin{align}
+    x^0(n) &= c \cdot \ln(n_{2,3}) \quad \text{(Chronologische Zeitachse)} \\
+    x^1(n) &= \ln(n_{5,7}) \\
+    x^2(n) &= \ln(n_{>7}) \\
+    x^3(n) &= \theta(n)
+\end{align}
+Hierbei repräsentiert $x^3(n) = \theta(n)$ einen phasen- und winkelabhängigen Term, welcher die relative Lage der Primzahlzyklen beschreibt.
+
+\section{Das geschlossene Dreikörperproblem der Zahlkomponenten}
+Innerhalb der Einbettung fassen wir die drei räumlichen Koordinatenkomponenten als wechselwirkende Punktmassen $m_1, m_2, m_3$ auf, deren Trägheit proportional zu ihrer arithmetischen Komplexität skaliert. Der gravitative Schwerpunkt $R^\mu$ dieses abgeschlossenen Systems entwickelt sich entlang der Eigenzeit $\tau$ (welche starr mit der $x^0$-Achse gekoppelt ist) nach:
+\begin{equation}
+    R^\mu(\tau) = \frac{\sum_{i=1}^3 m_i x_i^\mu(\tau)}{\sum_{i=1}^3 m_i}
+\end{equation}
+Die Evolution dieser Komponenten umeinander beschreibt eine deterministische Traktorie $\gamma_n(\tau)$ im Minkowski-Raum. Die Uberlagerung dieser Einzeltraktorien bei der Interferenz mehrerer Zahlen generiert ein kontinuierliches Hintergrundfeld mit dem kollektiven Energie-Impuls-Tensor:
+\begin{equation}
+    T_{\mu\nu} = \sum_{i} T_{\mu\nu}^{(n_i)}
+\end{equation}
+
+\section{Die Einsteinschen Feldgleichungen der Arithmetik}
+Die kollektive Dichte der Primzahlzyklen krümmt die asymptotisch flache Raumzeit. Die Geometrie (beschrieben durch den metrischen Tensor $g_{\mu\nu}$) folgt den Einsteinschen Feldgleichungen:
+\begin{equation}
+    G_{\mu\nu} + \Lambda g_{\mu\nu} = \kappa_{\text{eff}} T_{\mu\nu}^{(\text{Arith})}
+\end{equation}
+Für den Außenbereich isolierter Resonanzen setzen wir ein statisch-sphärisches Modell an. Die Geodätenbewegung einer Testzahl $m$ folgt der klassischen Gleichung:
+\begin{equation}
+    \frac{d^2 x^\mu}{d\tau^2} + \Gamma^\mu_{\alpha\beta} \frac{dx^\alpha}{d\tau} \frac{dx^\beta}{d\tau} = 0
+\end{equation}
+Die Christoffel-Symbole $\Gamma^\mu_{\alpha\beta}$ kodieren hierbei die Scheinkräfte der arithmetischen Verteilung. Numerische Simulationen in \texttt{SageMath 10.5} liefern für den Außenraum die exakten nicht-verschwindenden Komponenten:
+\begin{align}
+    \Gamma^t_{t,r} &= \frac{r_A}{2(r^2 - r \cdot r_A)} \\
+    \Gamma^r_{t,t} &= \frac{r \cdot r_A - r_A^2}{2r^3} \\
+    \Gamma^r_{r,r} &= -\frac{r_A}{2(r^2 - r \cdot r_A)}
+\end{align}
+
+\section{Hauptsatz: Effektive arithmetisch-geometrische Dualität}
+Das zentrale Ergebnis dieses Formalismus lässt sich in folgendem Theorem zusammenfassen:
+
+\medskip
+\noindent\textbf{Satz (Effektive arithmetisch-geometrische Dualität).}\\
+\textit{Sei $\eta = \frac{T}{S} > 0$ die aus einem abgeschlossenen Hurwitz-Gitterprozess gewonnene Uhrenpräzision (wobei $T$ die Anzahl der Quanten-Ticks und $S$ die generierte Gitter-Entropie bezeichnet). Definiere den arithmetischen Horizontradius $r_A = \alpha \eta$ mit dem Skalenfaktor $\alpha > 0$ und die effektive arithmetische Energiedichte $\rho_{\text{Arith}} = \hbar_{\text{eff}} \eta$.\\
+Dann existiert ein effektives, statisch-sphärisches Modell $(\mathcal{M}, g)$ mit
+\begin{equation}
+    G_{\mu\nu} + \Lambda g_{\mu\nu} = \kappa_{\text{eff}} T_{\mu\nu}^{(\text{Arith})},
+\end{equation}
+wobei der Energie-Impuls-Tensor stückweise definiert ist als:
+\begin{equation}
+    T_{\mu\nu}^{(\text{Arith})} = \begin{cases} 
+    \rho_{\text{Arith}} u_\mu u_\nu & \text{für } r \le r_A \quad \text{\small(Quellträger)} \\ 
+    0 & \text{für } r > r_A \quad \text{\small(Außenraum)} 
+    \end{cases}
+\end{equation}
+Im Außenbereich ist die Geodätenbewegung durch die zugehörigen Christoffel-Symbole eindeutig bestimmt; die mikroskopische Größe $\eta$ steuert die makroskopische Krümmungsskala $r_A$.}\\
+\medskip
+
+Die numerische Verifikation des Gitterprozesses lieferte unter einer Störungsamplitude von $0.18$ die stabilen Kennzahlen:
+\begin{equation}
+    T = 16, \quad S = 1.8096 \implies \eta \approx 8.8415 \text{ Ticks/Entropie}
+\end{equation}
+Dank der sphärisch-linearen Interpolation (\texttt{SLERP Norm = 1.0000}) bleibt die perfekte Rigidität auf der Einheits-Quaternionenkugel exakt gewahrt, was einen echten Volumenkollaps im Kernbereich ($r \le r_A$) mathematisch ausschließt.
+
+\section{Fazit und Ausblick}
+Das formulierte Modell zeigt, dass informationelle Masse als rein topologisches Phänomen der Gitterstabilität interpretiert werden kann. Zukünftige Arbeiten im Rahmen des \textit{Bamberger Protokolls} werden untersuchen, wie die Nullstellen der Riemannschen Zeta-Funktion als stabile Orbits oder Photonensphären auf der kritischen Resonanzlinie $r = 3 r_A$ lokalisiert werden können.
+
+\end{document}

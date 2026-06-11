@@ -1,0 +1,185 @@
+
+% ==========================================================
+% Study H27: From axioms to lemmas + strengthened bridge
+% ==========================================================
+
+\section{Study H27: Von Axiomen zu Lemmas (Spin-Zwang), und eine st\"arkere Br\"ucke Richtung RH}
+
+\subsection{Zielsetzung}
+Wir ersetzen die in H26 verwendeten \emph{Axiome} schrittweise durch \emph{ableitbare Lemmas}.
+Das Ziel ist eine BM-interne Kette
+\[
+\text{Off-Axis} \ \Rightarrow\ \text{wachsender Twist} \ \Rightarrow\ \text{Morley-Verletzung} \ \Rightarrow\ \bot,
+\]
+und parallel dazu eine Formulierung der Zwei-Komponenten-Hohlraumidee als \emph{Gate-Zerlegung} des Planck-Spektrums.
+
+\subsection{(I) Geometrische Bausteine: Kontraktion und Drehung (2er/3er)}
+\paragraph{2er-Kontraktion (``Halbierung'').}
+Wir definieren einen Operator $\mathcal C_2$ auf einem (orientierten) BM-Tetraeder $\Delta$:
+\[
+\mathcal C_2(\Delta;R) := \text{``inskribiere einen inneren Tetraeder mit Radius }R/2\text{''}.
+\]
+Die zugeh\"orige Drehung (Spinfixierung) sei eine Rotation um $\pi$ um eine ausgezeichnete Achse:
+\[
+\mathcal R_\pi: \Delta \mapsto \Delta^\pi.
+\]
+Die kombinierte 2er-Regel lautet:
+\[
+\Delta \xrightarrow{\ \mathcal C_2\ }\Delta_{1/2}\xrightarrow{\ \mathcal R_\pi\ }\Delta_{1/2}^\pi.
+\]
+\emph{Interpretation:} Die in den Rechnungen auftauchende ``eineinhalb''-Achse kann als \emph{Zweier-Kontraktion plus Drehung}
+verstanden werden: nicht nur L\"angenhalbierung, sondern \emph{Achsenneubildung} durch den $\pi$-Twist.
+
+\paragraph{3er-Kontraktion (``Drittelung'' + $180^\circ$-Fixierung).}
+Analog definieren wir $\mathcal C_3$:
+\[
+\mathcal C_3(\Delta;R):=\text{``innerer Tetraeder mit Radius }R/3\text{''},\qquad
+\mathcal R_\pi: \Delta \mapsto \Delta^\pi.
+\]
+Die beobachtete ``ABC-Elementarit\"at'' wird als Stabilit\"atsbedingung formuliert:
+\[
+\Delta \xrightarrow{\ \mathcal C_3\ }\Delta_{1/3}\xrightarrow{\ \mathcal R_\pi\ }\Delta_{1/3}^\pi,
+\quad \text{wobei ABC als Dreierstruktur invariant bleibt.}
+\]
+
+\paragraph{Glatte Zahlen / Hamming-Zahlen.}
+Die Halbr\"aume erzeugt durch wiederholte Anwendung von $\mathcal C_2,\mathcal C_3$ eine Skalenhalbgruppe
+\[
+\langle 2^{-a}3^{-b} : a,b\in\mathbb N_0\rangle,
+\]
+was genau die glatten Skalen (Hamming) repr\"asentiert.
+BM-intern wird damit die Entstehung der ``2'' und ``3'' als Skalenoperatoren formalisiert.
+
+\subsection{(II) Oktonischer Spin-Zwang als Winkelhalbierenden-Lemma}
+\paragraph{Spin-Zwang (informell).}
+Im oktonischen Erweiterungsschritt ist die Multiplikation nicht voll assoziativ; zul\"assig bleiben nur Produkte, deren
+Resultat geometrisch auf einer \emph{Winkelhalbierenden} liegt (``erzwungener Spin'').
+
+\begin{lemma}[Winkelhalbierenden-Kriterium (BM-Spin)]
+Seien $a,b,c$ die drei elementaren Achsen (ABC) im BM. Die Operationen $a\cdot b\mapsto c$, $a\cdot c\mapsto b$, etc.
+sind als \emph{zul\"assige additive Updates} genau dann stabil, wenn die entstehende Phase
+auf einer oktonischen Winkelhalbierenden liegt. Abweichungen erzeugen eine Phasendrift $\Delta\theta$,
+die sich additiv entlang der Skala akkumuliert.
+\end{lemma}
+
+\paragraph{Kosinus-$120^\circ$ und L\"angenhalbierung.}
+Die beobachtete Halbierung kann aus dem Vektoradditionsgesetz bei $120^\circ$ motiviert werden:
+\[
+\|u+v\|^2=\|u\|^2+\|v\|^2+2\|u\|\|v\|\cos 120^\circ
+=\|u\|^2+\|v\|^2-\|u\|\|v\|.
+\]
+F\"ur passende Normierung ergibt dies effektive Kontraktionsfaktoren, die als ``neue Achse'' wirken.
+
+\subsection{(III) Morley-Abweichung ist Lipschitz in den Winkeln (Stabilit\"atslemma)}
+Wir betrachten die Einbettung der BM-Phasen als Punkte auf dem Einheitskreis:
+\[
+P(\theta)=(\cos\theta,\sin\theta).
+\]
+Seien $A=P(\theta_A)$, $B=P(\theta_B)$, $C=P(\theta_C)$.
+
+\begin{lemma}[Lipschitz-Stabilit\"at der Morley-Abweichung]
+F\"ur nichtdegenerierte Dreiecke (Winkelabst\"ande $\ge \eta>0$) existiert eine Konstante $L(\eta)>0$ so dass
+\[
+|\delta_M(A,B,C(\theta_C+\Delta\theta))-\delta_M(A,B,C(\theta_C))|
+\ \ge\ L(\eta)\,|\Delta\theta|
+\]
+f\"ur alle hinreichend kleinen $\Delta\theta$ gilt.
+\end{lemma}
+
+\paragraph{Konsequenz.}
+Wenn ein Off-Axis-Mechanismus einen Twist $\Delta\theta$ erzeugt, ist die Morley-Verletzung im BM \emph{mindestens linear}
+in $|\Delta\theta|$, solange man Dreiecke mit guter Konditionierung w\"ahlt.
+
+\subsection{(IV) Existenz gut konditionierter Dreiecke (adversarial/Probabilistik)}
+\begin{lemma}[Existenz eines ``Zeugen''-Dreiecks]
+Unter einer milden Gleichverteilungsannahme der BM-Phasen in einer Zelle gibt es f\"ur jedes $\eta\in(0,\pi/3)$
+und hinreichend gro\ss es Indexset $\mathcal I_{m,\lambda}$ ein Tripel $(A,B,C)$ mit Winkelabst\"anden $\ge \eta$.
+\end{lemma}
+
+\paragraph{Kommentar.}
+Das ist die formale Version dessen, was wir in H23/H24 numerisch als adversarial Suche umgesetzt haben:
+statt \emph{ein beliebiges} Tripel zu nehmen, w\"ahlt man ein gut konditioniertes Tripel, das Twist-Effekte stark
+in $\Delta\delta_M$ \"ubersetzt.
+
+\subsection{(V) Cutoff-Lemma aus Twist-Wachstum}
+In H24 wurde Off-Axis als wachsender Twist modelliert:
+\[
+\Delta\theta(\gamma)=\varepsilon\,\frac{\gamma}{\gamma_0}\pi.
+\]
+Mit den Lemmas aus (III)--(IV) folgt:
+
+\begin{lemma}[Cutoff-Existenz aus wachsendem Twist]
+Es existiert ein $T^\*$, so dass f\"ur $T\ge T^\*$ in einem positiven Anteil der Zellen
+\[
+\Delta\delta_M^{\max}(T)>\tau
+\]
+gilt. Insbesondere w\"achst $\Delta\delta_M^{\max}(T)$ mindestens linear in $T$ bis zur Schranke $\tau$.
+\end{lemma}
+
+\paragraph{Numerischer Anker (H24).}
+Mit $\tau=2\hat h\approx 0.01818$ ergab sich:
+\[
+T_{50\%}\approx 800,\qquad T_{90\%}\approx 1400.
+\]
+
+\subsection{(VI) St\"arkere Br\"ucke als reines Index-Matching: Spektral-Residual aus Primdaten}
+Der Index-Matching-Schritt $p^\*(T)=p_{N(T)}$ ist praktisch, aber als Br\"ucke schwach.
+Eine st\"arkere Formulierung ist: definiere eine \emph{prime-Observable} $\mathcal O(X)$ aus den Primzahlen, die im BM
+direkt mit dem Spektralterm gekoppelt ist.
+
+\paragraph{Vorschlag (Explizite-Formel-Br\"ucke).}
+Nutze eine Chebyshev/``prime power''-Observable, z.\,B.
+\[
+\psi(X):=\sum_{p^k\le X}\log p.
+\]
+Die klassische explizite Formel (schematisch) lautet
+\[
+\psi(X)=X-\sum_{\rho}\frac{X^{\rho}}{\rho}+\text{(bekannte Neben\-terme)}.
+\]
+Ein Off-Axis-Nullstelle $\rho=\beta+i\gamma$ mit $\beta>\tfrac12$ erzeugt einen Beitrag der Gr\"o\ss enordnung
+\[
+\left|\frac{X^\rho}{\rho}\right|\sim \frac{X^\beta}{|\rho|},
+\]
+der f\"ur gro\ss es $X$ schneller w\"achst als jeder $\beta=\tfrac12$-Beitrag.
+
+\begin{lemma}[BM-Residual aus $\psi(X)$]
+Definiere den BM-Residual
+\[
+\mathcal R(X):=\frac{|\psi(X)-X|}{X^{1/2}}.
+\]
+Dann bedeutet Off-Axis ($\beta>\tfrac12$) heuristisch:
+\[
+\mathcal R(X)=\Omega\!\bigl(X^{\beta-1/2}\bigr),
+\]
+also unbeschr\"ankt wachsend.
+Wenn BM hingegen (Spin-Zwang) eine Schranke $\mathcal R(X)\le C(\tau)$ f\"ur alle $X$ fordert,
+entsteht ein Widerspruch \emph{ohne} Prime-Cutoff.
+\end{lemma}
+
+\paragraph{Interpretation.}
+Damit ersetzt man ``Prime-Cutoff'' durch eine klassische, arithmetische Form: Off-Axis w\"urde eine
+\emph{zu gro\ss e} Abweichung in einer Prime-Observable erzwingen.
+
+\subsection{(VII) Zwei-Komponenten-Planck: Gate und Datenindikator}
+Wir hatten in H26 die Gate-Zerlegung
+\[
+u_{\mathrm{b}}=u_P\cdot g,\qquad u_{\mathrm{d}}=u_P\cdot(1-g),
+\]
+mit $g$ als sigmoidale Stufe und $w\to 0$ als ``y-Achsen-Parallele''.
+Datenindikator: in H20 zeigt die \emph{dark fraction} einen Regimewechsel bei
+\[
+\lambda^\*\approx 0.20.
+\]
+Zus\"atz: die Click-Rate (H13) zeigt entlang $\lambda$ ebenfalls Struktur, allerdings nur moderat konsistent
+(auf 6 St\"utzstellen ist dies statistisch zart; Korrelationen sind klein).
+
+\subsection{Konkrete n\"achste Beweiselemente (H28)}
+Damit das Schema wirklich \emph{beweisbar} wird, sind drei harte Schritte zu liefern:
+\begin{enumerate}
+\item \textbf{Geometrie $\Rightarrow$ Morley-Schranke:} eine explizite Absch\"atzung $L(\eta)$ und ein Beweis, dass BM-Dreiecke
+in den relevanten Zellen mit $\eta$-Konditionierung existieren.
+\item \textbf{Off-Axis $\Rightarrow$ Twist-Wachstum:} Ableitung des Wachstums aus der oktonischen Nichtassoziativit\"at plus
+2er/3er-Kontraktionslogik (``1/2 + Drehung'' als Achsenneubildung).
+\item \textbf{Prime-Observable-Kopplung:} Festlegung einer BM-Observable $\mathcal O$ (z.\,B.\ aus $\psi(X)$ oder aus
+Sch\"utte-/Click-Gating), die eine \emph{globale Schranke} besitzt, die Off-Axis verletzen w\"urde.
+\end{enumerate}

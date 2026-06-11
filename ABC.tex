@@ -1,0 +1,129 @@
+\documentclass{article}
+\usepackage{inputenc}
+\usepackage{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+
+\title{Eine spektral-strukturelle Perspektive auf die ABC-Vermutung}
+\author{Thomas Hoffbauer}
+\date{}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Bemerkung}
+
+\newcommand{\rad}{\operatorname{rad}}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir schlagen einen Ansatz zur ABC-Vermutung vor, der große Abweichungen der klassischen Ungleichung mit einer strukturellen Einschränkung der Primfaktorverteilung verknüpft. Numerische Evidenz legt nahe, dass große Werte von $\Delta := \log c - \log \rad(abc)$ nur bei beschränkter Anzahl verschiedener Primfaktoren auftreten. Wir formulieren diese Beobachtung als Lemma und skizzieren, wie daraus in Verbindung mit bekannten Resultaten zu S-Unit-Gleichungen die ABC-Vermutung folgen könnte.
+	\end{abstract}
+	
+	\section{Einleitung}
+	Die ABC-Vermutung besagt, dass für teilerfremde $a,b \in \mathbb{N}$ mit $a+b=c$ und jedes $\varepsilon>0$ gilt:
+	\[
+	c \le K_\varepsilon \cdot \rad(abc)^{1+\varepsilon}.
+	\]
+	
+	Wir definieren
+	\[
+	\Delta(a,b,c) := \log c - \log \rad(abc).
+	\]
+	
+	\section{Empirische Beobachtung}
+	Numerische Experimente zeigen:
+	\begin{itemize}
+		\item $\Delta$ ist typischerweise negativ.
+		\item Große Werte von $\Delta$ sind selten.
+		\item Große $\Delta$ treten nur bei kleiner Anzahl verschiedener Primfaktoren auf.
+	\end{itemize}
+	
+	\section{Strukturelles Lemma}
+	\begin{lemma}[Strukturelle Enge]
+		Für jedes $\delta>0$ existiert $K(\delta)$ mit:
+		\[
+		\Delta(a,b,c) \ge \delta \;\Longrightarrow\; \omega(abc) \le K(\delta).
+		\]
+	\end{lemma}
+	
+	\section{Diophantische Schranken}
+	Für feste Primfaktormenge (S-Unit-Gleichungen) existieren bekannte Schranken:
+	\[
+	c \le C(k) \cdot \rad(abc)^{1+\varepsilon}.
+	\]
+	
+	\section{Beweisskizze}
+	Zerlege in zwei Fälle:
+	\begin{itemize}
+		\item $\Delta$ klein: direkte Abschätzung
+		\item $\Delta$ groß: Lemma $\Rightarrow$ beschränkte Primstruktur $\Rightarrow$ S-Unit-Theorie
+	\end{itemize}
+	
+	\begin{theorem}
+		Unter Annahme des strukturellen Lemmas folgt die ABC-Vermutung.
+	\end{theorem}
+	
+	\section{Diskussion}
+	Der Ansatz interpretiert ABC als Stabilitätsphänomen:
+	große Energie bei geringer struktureller Breite ist nicht möglich.
+	
+	\section{Ein Baker-basierter Ansatz zum strukturellen Lemma}
+	
+	Wir betrachten teilerfremde $a,b \in \mathbb{N}$ mit $a+b=c$ und definieren
+	\[
+	\Delta(a,b,c) := \log c - \log \rad(abc).
+	\]
+	Sei ferner
+	\[
+	S := \{p \text{ prim} : p \mid abc\}, \quad s := |S| = \omega(abc).
+	\]
+	Sei $P := \max S$ der größte Primteiler von $abc$.
+	
+	\subsection{Reduktion auf eine S-Unit-Gleichung}
+	
+	Setze
+	\[
+	x = \frac{a}{c}, \quad y = \frac{b}{c}.
+	\]
+	Dann gilt
+	\[
+	x + y = 1,
+	\]
+	wobei $x,y$ S-Einheiten sind:
+	\[
+	x = \prod_{p \in S} p^{u_p}, \quad
+	y = \prod_{p \in S} p^{v_p}, \quad u_p, v_p \in \mathbb{Z}.
+	\]
+	
+	\subsection{Anwendung von Baker-Theorie}
+	
+	Nach Resultaten von Evertse, Győry und Stewart zu S-Unit-Gleichungen gilt für jede Lösung von $x + y = 1$ mit $x,y$ aus der von $S$ erzeugten multiplikativen Gruppe:
+	\[
+	\max\{ \log |a|, \log |b|, \log c \} \le C(s) \cdot P \cdot (\log P)^s,
+	\]
+	wobei $C(s) = \exp(c_1 s^{c_2})$ mit absoluten Konstanten $c_1, c_2 > 0$.
+	
+	Insbesondere folgt für die Exponenten:
+	\[
+	\max_{p \in S} \{|u_p|, |v_p|\} \le C(s) \cdot P \cdot (\log P)^s.
+	\]
+	
+	Daraus ergibt sich für $\Delta$:
+	\[
+	\begin{aligned}
+		\Delta &= \log c - \sum_{p \in S} \log p \\
+		&\le C(s) \cdot P \cdot (\log P)^s - \log P \\
+		&\le C'(s) \cdot P \cdot (\log P)^s.
+	\end{aligned}
+	\]
+	
+	Soll also $\Delta \ge \delta$ gelten, so muss
+	\[
+	C'(s) \cdot P \cdot (\log P)^s \ge \delta.
+	\]
+	Für festes $\delta > 0$ erzwingt dies eine obere Schranke an $s = \omega(abc)$, da $P \ge s$ und der Ausdruck in $s$ superexponentiell wächst. Damit existiert $K(\delta)$ mit $\omega(abc) \le K(\delta)$.
+	
+\end{document}

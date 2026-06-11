@@ -1,0 +1,68 @@
+% Übergeordnetes Paper: mod-210-Familienstruktur + mod-420-Kanalasymmetrie
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{microtype}
+\usepackage{hyperref}
+
+\title{Primzahlvierlinge: Familienstruktur modulo $210$\\und Kanalasymmetrie modulo $420$}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{observation}{Beobachtung}
+\newtheorem{corollary}[theorem]{Korollar}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Primzahlvierlinge $(p,p+2,p+6,p+8)$ zeigen auf grober Skala eine
+$3{+}1$-Familienstruktur modulo $210$ und auf feiner Skala eine stationäre
+Asymmetrie auf sechs mod-$420$-Halbkanälen.
+Drei Resultate tragen die Analyse:
+\textbf{(A)}~Der kubische Charakter $\chi_3 \bmod 7$ stimmt auf den sechs
+Halbkanälen \emph{punktweise} mit dem $k{=}2$-DFT-Modus überein
+($\chi_3|_{\mathcal{R}}=\psi_2$), folglich $F_2=\langle\delta,\chi_3\rangle$.
+\textbf{(B)}~Der Bias $\delta$ zerfällt vollständig in Dirichlet-Charaktere
+modulo $420$ (Residuum $<10^{-36}$).
+\textbf{(C)}~Ein Skalierungstest bis $10^9$ zeigt keinen stabilen Drift
+gegen einen neuen Chebyshev-Bias.
+Klassische Primvierlinge tragen nur die Zwillingskonfigurationen
+$\mathrm{AB\text{-}CE}$ (Chiralität $\mathrm{ABCE}$) und
+$\mathrm{CE\text{-}AB}$ (Chiralität $\mathrm{CEAB}$).
+\end{abstract}
+
+\section{Die $3{+}1$-Struktur modulo $210$}
+
+Für Primzahlvierlinge $Q(p)=(p,p+2,p+6,p+8)$ reduziert die Zulässigkeit
+modulo $210=2\cdot 3\cdot 5\cdot 7$ die Startprimzahlen auf vier Restklassen:
+\[
+  p \equiv 5,\, 11,\, 101,\, 191 \pmod{210}.
+\]
+Die Klasse $5$ enthält den Ankervierling $(5,7,11,13)$; die drei Hauptfamilien
+$11$, $101$, $191$ tragen die statistische Population.
+Modulo $210$ ist damit die erste Ebene, auf der die Vierlinge in drei echte
+statistische Familien plus eine Ankerklasse zerfallen
+(vgl.\ \texttt{3\ 4er\ Primzahlfamilien.tex}).
+
+\section{Feinauflösung: sechs Halbkanäle modulo $420$}
+
+Modulo $420=4\cdot 3\cdot 5\cdot 7$ erscheinen auf der $C$-Seite des
+EABC-Gitters ($r\equiv 11\pmod{12}$) sechs beobachtete Halbkanäle
+\[
+  \mathcal{R}=\{11,101,191,221,311,401\}.
+\]
+Die nachfolgende Analyse untersucht die Besetzungsasymmetrie auf diesen
+sechs Kanälen und ihre Zerlegung in klassische Dirichlet-Charaktere.
+
+\input{eabc_paper_section_spectral_decomposition.tex}
+
+\end{document}

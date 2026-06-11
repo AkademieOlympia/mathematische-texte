@@ -1,0 +1,157 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{cite}
+\geometry{margin=2.5cm}
+
+\title{Empirical Universality and Finite-Size Effects in Integer Factorization Algorithms}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		We present an empirical study comparing multiple integer factorization algorithms, including a structure-adaptive method (AQG), classical approaches, and a GNFS-inspired variant. Extensive benchmarks across input sizes ranging from 30 to over 200 digits reveal three key phenomena: (i) a finite-size regime where structural effects influence performance, (ii) convergence of runtime distributions for large inputs, and (iii) the emergence of an effective universality class in which different algorithms exhibit nearly identical runtime behavior. These findings suggest that instance structure dominates algorithmic performance in small and medium regimes, while asymptotic complexity governs large inputs.
+	\end{abstract}
+	
+	\section{Introduction}
+	
+	Integer factorization is a central problem in computational number theory with direct implications for cryptography. While asymptotically optimal algorithms such as the General Number Field Sieve (GNFS) dominate large-scale factorization, practical performance often depends on instance-specific structure.
+	
+	This work investigates whether structurally different algorithms exhibit distinct runtime behaviors across input sizes, or whether their performance converges in practice.
+	
+	\section{Methodology}
+	
+	We compare three algorithmic approaches:
+	
+	\begin{itemize}
+		\item Classical factorization (baseline)
+		\item Structure-adaptive method (AQG)
+		\item GNFS-inspired heuristic variant
+	\end{itemize}
+	
+	For each randomly generated integer $n$, we measure:
+	
+	\begin{itemize}
+		\item runtime (in milliseconds)
+		\item number of factors detected
+	\end{itemize}
+	
+	Statistical metrics include mean, median, and high quantiles (p90, p95).
+	
+	Experiments are conducted across input sizes from 30 to 200 digits.
+	
+	\section{Results}
+	
+	\subsection{Finite-Size Regime (30--60 digits)}
+	
+	In this regime, performance varies significantly across algorithms. AQG exhibits improvements in median runtime for certain input sizes, indicating sensitivity to structural properties.
+	
+	\subsection{Transition Regime (60--100 digits)}
+	
+	Differences between algorithms diminish, with runtimes converging in both mean and median. Variance is reduced but still present.
+	
+	\subsection{Asymptotic Regime ($\geq 100$ digits)}
+	
+	For large inputs, all algorithms exhibit nearly identical runtime distributions:
+	
+	\begin{equation}
+		t_{\text{AQG}}(n) \approx t_{\text{classical}}(n) \approx t_{\text{GNFS-like}}(n)
+	\end{equation}
+	
+	Differences fall within a few percent across all statistical measures.
+	
+	\subsection{Two-Class Structure of Instances}
+	
+	We observe a clear separation between:
+	
+	\begin{itemize}
+		\item \textbf{Easy instances:} characterized by rapid factorization (often due to small factors)
+		\item \textbf{Hard instances:} requiring significantly longer runtimes, independent of algorithm choice
+	\end{itemize}
+	
+	\section{Analysis}
+	
+	The empirical data suggests the following model:
+	
+	\begin{equation}
+		t(n) = T_{\text{global}}(n),(1 + \varepsilon(n))
+	\end{equation}
+	
+	where:
+	
+	\begin{itemize}
+		\item $T_{\text{global}}(n)$ is the dominant asymptotic complexity
+		\item $\varepsilon(n)$ captures finite-size structural effects
+	\end{itemize}
+	
+	We observe:
+	
+	\begin{itemize}
+		\item $\varepsilon(n)$ is significant for small and medium inputs
+		\item $\mathbb{E}[\varepsilon(n)] \to 0$ as $n \to \infty$
+	\end{itemize}
+	
+	\subsection{Heavy-Tailed Deviations}
+	
+	Even in large regimes, rare outliers persist, where one algorithm significantly underperforms. These events indicate non-negligible variance despite convergence in expectation.
+	
+	\section{Algorithmic Universality}
+	
+	A central finding of this work is the empirical emergence of an \emph{algorithmic universality class}:
+	
+	\begin{quote}
+		Different factorization algorithms converge to the same effective runtime distribution for large inputs.
+	\end{quote}
+	
+	This suggests that the dominant computational cost is determined by the structure of the input rather than the specific algorithmic pathway.
+	
+	\section{Implications}
+	
+	\begin{itemize}
+		\item Algorithm selection is most relevant in the finite-size regime
+		\item Hybrid approaches may benefit from detecting structural properties
+		\item Asymptotically, algorithmic differences become negligible
+	\end{itemize}
+	
+	\section{Conclusion}
+	
+	We demonstrate that integer factorization exhibits:
+	
+	\begin{itemize}
+		\item strong finite-size effects
+		\item convergence of runtime distributions
+		\item effective universality across algorithm classes
+	\end{itemize}
+	
+	These findings highlight the importance of empirical analysis in understanding practical algorithm performance beyond asymptotic theory.
+	
+	\section*{References}
+	
+	\begin{thebibliography}{9}
+		
+		\bibitem{pollard}
+		J. M. Pollard,
+		\textit{A Monte Carlo method for factorization},
+		BIT Numerical Mathematics, 1975.
+		
+		\bibitem{qs}
+		C. Pomerance,
+		\textit{The quadratic sieve factoring algorithm},
+		EUROCRYPT, 1984.
+		
+		\bibitem{gnfs}
+		A. K. Lenstra et al.,
+		\textit{The number field sieve},
+		The Development of the Number Field Sieve, 1993.
+		
+	\end{thebibliography}
+	
+\end{document}

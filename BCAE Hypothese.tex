@@ -1,0 +1,3653 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+
+\title{Restklassenmittel nach Schalenreduktion und die numerische Hypothese \(B>C>A>E\)}
+\author{Kollaborative Ausarbeitung}
+\date{\today}
+
+\newtheorem{satz}{Satz}
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{korollar}[satz]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{hypothese}[satz]{Hypothese}
+\newtheorem{beispiel}[satz]{Beispiel}
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir untersuchen ein numerisches Modell, in dem nach Abzug wachsender glatter Primschalen
+		die logarithmischen Beiträge der Restklassen \(1,5,7,11 \pmod{12}\) getrennt betrachtet werden.
+		Die bisherigen numerischen Daten legen nahe, dass die normierten mittleren Beiträge der vier
+		Klassen nicht zu einem gemeinsamen Grenzwert kollabieren, sondern sich vielmehr eine stabile
+		Ordnungsstruktur
+		\[
+		B>C>A>E
+		\]
+		ausbildet. Der Artikel formuliert die Definitionen, die zugehörigen Mittelwerte und eine
+		präzise numerische Hypothese.
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Für eine natürliche Zahl \(n\) ist es naheliegend, zunächst kleine glatte Faktoren abzutrennen
+	und anschließend den verbleibenden Rest nach Restklassen modulo \(12\) zu untersuchen.
+	Insbesondere interessiert hier, ob die Klassen
+	\[
+	1,\ 5,\ 7,\ 11 \pmod{12}
+	\]
+	asymptotisch gleich behandelt werden oder ob sich nach Schalenreduktion systematische
+	Unterschiede zeigen.
+	
+	Die numerischen Rechnungen deuten darauf hin, dass die Beiträge der vier Klassen im Mittel
+	nicht gleich sind. Vielmehr scheint für die normierten logarithmischen Beiträge die Ordnung
+	\[
+	B>C>A>E
+	\]
+	stabil zu sein.
+	
+	\section{Schalen und Restklassenanteile}
+	
+	\begin{definition}[Primschale]
+		Für \(k\in\mathbb N\) sei
+		\[
+		P_k=\{2,3,5,\dots,p_k\}
+		\]
+		die Menge der ersten \(k\) Primzahlen.
+	\end{definition}
+	
+	\begin{definition}[Glatter Anteil und Rest]
+		Für \(n\in\mathbb N\) definieren wir
+		\[
+		S_k(n):=\prod_{p\in P_k} p^{v_p(n)}
+		\]
+		als den \(P_k\)-glatten Anteil und
+		\[
+		R_k(n):=\frac{n}{S_k(n)}
+		\]
+		als den schalenreduzierten Rest.
+	\end{definition}
+	
+	\begin{definition}[Restklassenanteile]
+		Wir definieren
+		\[
+		E_k(n):=\prod_{\substack{q^a\parallel R_k(n)\\ q\equiv 1\ (\mathrm{mod}\ 12)}} q^a,
+		\]
+		\[
+		A_k(n):=\prod_{\substack{q^a\parallel R_k(n)\\ q\equiv 5\ (\mathrm{mod}\ 12)}} q^a,
+		\]
+		\[
+		B_k(n):=\prod_{\substack{q^a\parallel R_k(n)\\ q\equiv 7\ (\mathrm{mod}\ 12)}} q^a,
+		\]
+		\[
+		C_k(n):=\prod_{\substack{q^a\parallel R_k(n)\\ q\equiv 11\ (\mathrm{mod}\ 12)}} q^a.
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		Formal gilt
+		\[
+		R_k(n)=E_k(n)\,A_k(n)\,B_k(n)\,C_k(n).
+		\]
+	\end{bemerkung}
+	
+	\section{Logarithmische Mittelwerte}
+	
+	\begin{definition}[Grundmenge]
+		Für \(N\in\mathbb N\) setzen wir
+		\[
+		\mathcal M_N:=\{n\le N:\gcd(n,6)=1\}.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Logarithmische Mittelwerte]
+		Für \(X\in\{E,A,B,C\}\) definieren wir
+		\[
+		\mu_X^{(k)}(N):=
+		\frac{1}{|\mathcal M_N|}
+		\sum_{n\in\mathcal M_N}\log X_k(n).
+		\]
+	\end{definition}
+	
+	\begin{definition}[Normierte Anteile]
+		Wir definieren
+		\[
+		W_X^{(k)}(N):=
+		\frac{\mu_X^{(k)}(N)}
+		{\mu_E^{(k)}(N)+\mu_A^{(k)}(N)+\mu_B^{(k)}(N)+\mu_C^{(k)}(N)},
+		\qquad X\in\{E,A,B,C\}.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Für alle \(k,N\) gilt
+		\[
+		W_E^{(k)}(N)+W_A^{(k)}(N)+W_B^{(k)}(N)+W_C^{(k)}(N)=1.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Dies folgt unmittelbar aus der Definition.
+	\end{proof}
+	
+	\section{Numerische Hypothese}
+	
+	\begin{hypothese}[Verschiedene asymptotische Beiträge]
+		Für feste oder wachsende Primschalen \(P_k\) existieren asymptotische Grenzwerte
+		\[
+		\omega_E,\quad \omega_A,\quad \omega_B,\quad \omega_C
+		\]
+		mit
+		\[
+		\omega_E+\omega_A+\omega_B+\omega_C=1,
+		\]
+		so dass für große \(N\) und geeignete Schalen \(k\) gilt
+		\[
+		W_E^{(k)}(N)\approx \omega_E,\quad
+		W_A^{(k)}(N)\approx \omega_A,\quad
+		W_B^{(k)}(N)\approx \omega_B,\quad
+		W_C^{(k)}(N)\approx \omega_C.
+		\]
+	\end{hypothese}
+	
+	\begin{hypothese}[Ordnungsstruktur]
+		Die bisherigen numerischen Experimente sprechen für die strikte Ordnung
+		\[
+		\omega_B>\omega_C>\omega_A>\omega_E.
+		\]
+	\end{hypothese}
+	
+	\begin{bemerkung}
+		Diese Hypothese ist stärker als die bloße Aussage, dass die Klassen \(A,B,C\) nicht identisch
+		sind. Sie postuliert eine stabile Hierarchie der vier Restklassenbeiträge nach Schalenreduktion.
+	\end{bemerkung}
+	
+	\section{Interpretation}
+	
+	Die Ordnung
+	\[
+	B>C>A>E
+	\]
+	bedeutet:
+	\begin{itemize}
+		\item Die Klasse \(7 \pmod{12}\) trägt im Mittel die größte logarithmische Masse.
+		\item Die Klasse \(11 \pmod{12}\) folgt an zweiter Stelle.
+		\item Die Klasse \(5 \pmod{12}\) liegt darunter.
+		\item Die Klasse \(1 \pmod{12}\), also der energetische Anteil, bleibt am kleinsten.
+	\end{itemize}
+	
+	Dies spricht gegen eine naive Gleichverteilung der vier Klassen nach Schalenreduktion und
+	deutet auf eine tieferliegende restklassenspezifische Feinstruktur hin.
+	
+	\section{Numerisches Testprogramm}
+	
+	\begin{korollar}
+		Zur Prüfung der Hypothesen genügt es, für wachsende \(N\) und wachsende Primschalen \(P_k\)
+		die vier Größen
+		\[
+		\mu_E^{(k)}(N),\quad \mu_A^{(k)}(N),\quad \mu_B^{(k)}(N),\quad \mu_C^{(k)}(N)
+		\]
+		sowie die normierten Anteile
+		\[
+		W_E^{(k)}(N),\quad W_A^{(k)}(N),\quad W_B^{(k)}(N),\quad W_C^{(k)}(N)
+		\]
+		zu berechnen und ihre Ordnung zu verfolgen.
+	\end{korollar}
+	
+	\begin{proof}
+		Die Hypothesen betreffen genau diese Größen.
+	\end{proof}
+	
+	\begin{beispiel}
+		Falls numerisch für große Schalen wiederholt Werte der Form
+		\[
+		W_E\approx 0.246,\quad
+		W_A\approx 0.248,\quad
+		W_B\approx 0.255,\quad
+		W_C\approx 0.251
+		\]
+		auftreten, so spricht dies deutlich für die Hierarchie
+		\[
+		B>C>A>E.
+		\]
+	\end{beispiel}
+	
+	\section{Schluss}
+	
+	Das hier formulierte Modell trennt eine Zahl zunächst in glatten Anteil und schalenreduzierten
+	Rest und misst anschließend die logarithmischen Beiträge der vier Restklassen modulo \(12\).
+	Die numerische Evidenz spricht gegen eine volle Symmetrie der Klassen und für eine stabile
+	Hierarchie
+	\[
+	B>C>A>E.
+	\]
+	
+	Ein Beweis dieser Hypothese liegt derzeit nicht vor. Dennoch liefert die Formulierung der
+	Mittelwerte und normierten Beiträge eine präzise und überprüfbare Basis für weitere numerische
+	und theoretische Untersuchungen.
+	\section{Wechsel- und Balanceprimzahlen: strukturelle Vermutungen}
+	
+	In diesem Abschnitt formulieren wir die aus den numerischen Experimenten gewonnenen
+	Arbeitsvermutungen in präziser Form.
+	
+	\subsection{Grundaufbau}
+	
+	Sei
+	\[
+	P_k=\{2,3,5,\dots,p_k\}
+	\]
+	die \(k\)-te Primschale. Für \(n\in\mathbb N\) definieren wir den Schalenanteil
+	\[
+	S_k(n):=\prod_{p\in P_k} p^{v_p(n)}
+	\]
+	und den schalenreduzierten Rest
+	\[
+	R_k(n):=\frac{n}{S_k(n)}.
+	\]
+	
+	Weiter zerlegen wir den Rest nach den Restklassen modulo \(12\):
+	\[
+	R_k(n)=E_k(n)\,A_k(n)\,B_k(n)\,C_k(n),
+	\]
+	wobei
+	\[
+	E_k(n):=\prod_{\substack{q^a\parallel R_k(n)\\ q\equiv 1\pmod{12}}} q^a,
+	\]
+	\[
+	A_k(n):=\prod_{\substack{q^a\parallel R_k(n)\\ q\equiv 5\pmod{12}}} q^a,
+	\quad
+	B_k(n):=\prod_{\substack{q^a\parallel R_k(n)\\ q\equiv 7\pmod{12}}} q^a,
+	\quad
+	C_k(n):=\prod_{\substack{q^a\parallel R_k(n)\\ q\equiv 11\pmod{12}}} q^a.
+	\]
+	
+	Daraus entstehen die drei Vergleichsmodi
+	\[
+	L_k^{E}(n):=\log E_k(n)-\log S_k(n),
+	\]
+	\[
+	L_k^{ABC}(n):=\log\!\bigl(A_k(n)B_k(n)C_k(n)\bigr)-\log S_k(n),
+	\]
+	\[
+	L_k^{R}(n):=\log R_k(n)-\log S_k(n).
+	\]
+	
+	\subsection{Definitionen}
+	
+	\begin{definition}[Echte Wechselprimzahl]
+		Für einen Modus \(M\in\{E,ABC,R\}\) sei
+		\[
+		\pi_{\mathrm{wech}}^{M}(n)
+		\]
+		die erste Schalenprimzahl \(p_k\), bei der das Vorzeichen von \(L_k^{M}(n)\)
+		zwischen zwei nichtnulligen Werten wechselt, also
+		\[
+		\operatorname{sgn}(L_{k-1}^{M}(n))\in\{\pm1\},\qquad
+		\operatorname{sgn}(L_k^{M}(n))\in\{\pm1\},
+		\]
+		und
+		\[
+		\operatorname{sgn}(L_{k-1}^{M}(n))\neq \operatorname{sgn}(L_k^{M}(n)).
+		\]
+		Falls kein solcher Wechsel eintritt, setzen wir
+		\[
+		\pi_{\mathrm{wech}}^{M}(n)=\infty.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Nichttriviale Balanceprimzahl]
+		Für denselben Modus \(M\) sei
+		\[
+		\pi_{\mathrm{bal}}^{M}(n)
+		\]
+		diejenige Schalenprimzahl \(p_k\), für die \(|L_k^{M}(n)|\) minimal ist,
+		jedoch nur unter den nichttrivialen Schalenstufen, auf denen beide verglichenen
+		Seiten aktiv sind.
+		
+		Konkret heißt das:
+		\begin{itemize}
+			\item im \(E\)-Modus:
+			\[
+			S_k(n)>1,\qquad E_k(n)>1,
+			\]
+			\item im \(ABC\)-Modus:
+			\[
+			S_k(n)>1,\qquad A_k(n)B_k(n)C_k(n)>1,
+			\]
+			\item im \(R\)-Modus:
+			\[
+			S_k(n)>1,\qquad R_k(n)>1.
+			\]
+		\end{itemize}
+		
+		Falls keine solche Stufe existiert, setzen wir
+		\[
+		\pi_{\mathrm{bal}}^{M}(n)=\infty.
+		\]
+	\end{definition}
+	
+	\subsection{Modusreinheit der Restklassen}
+	
+	\begin{hypothese}[Modusreinheit für Primzahlen]
+		Sei \(p>3\) eine Primzahl.
+		
+		\begin{enumerate}
+			\item Falls
+			\[
+			p\equiv 1\pmod{12},
+			\]
+			so ist \(p\) ein reiner \(E\)-Träger. In diesem Fall ist numerisch plausibel, dass
+			\[
+			\pi_{\mathrm{wech}}^{E}(p)=p,
+			\qquad
+			\pi_{\mathrm{wech}}^{R}(p)=p,
+			\qquad
+			\pi_{\mathrm{wech}}^{ABC}(p)=\infty,
+			\]
+			sofern die betrachtete Schalenfolge bis \(p\) reicht.
+			
+			\item Falls
+			\[
+			p\equiv 5,7,11\pmod{12},
+			\]
+			so ist \(p\) ein reiner \(ABC\)-Träger. In diesem Fall ist numerisch plausibel, dass
+			\[
+			\pi_{\mathrm{wech}}^{ABC}(p)=p,
+			\qquad
+			\pi_{\mathrm{wech}}^{R}(p)=p,
+			\qquad
+			\pi_{\mathrm{wech}}^{E}(p)=\infty,
+			\]
+			sofern die betrachtete Schalenfolge bis \(p\) reicht.
+		\end{enumerate}
+	\end{hypothese}
+	
+	\begin{bemerkung}
+		Diese Hypothese bringt die numerisch beobachtete Trennung sehr prägnant zum Ausdruck:
+		\[
+		1\pmod{12}\Rightarrow E\text{-aktiv},
+		\qquad
+		5,7,11\pmod{12}\Rightarrow ABC\text{-aktiv}.
+		\]
+		Der \(R\)-Modus vereinigt beide Dynamiken.
+	\end{bemerkung}
+	
+	\subsection{Zweifaktorielle Struktur}
+	
+	\begin{hypothese}[Zweifaktorzahlen im selben Kanal]
+		Sei
+		\[
+		n=pq
+		\]
+		mit zwei verschiedenen Primzahlen \(p<q\), und beide Primzahlen seien im selben
+		dynamischen Kanal aktiv. Das heißt entweder:
+		\begin{itemize}
+			\item \(p,q\equiv 1\pmod{12}\) und man betrachtet den \(E\)-Modus,
+			\item oder \(p,q\equiv 5,7,11\pmod{12}\) und man betrachtet den \(ABC\)-Modus.
+		\end{itemize}
+		
+		Dann ist numerisch plausibel:
+		\[
+		\pi_{\mathrm{bal}}^{M}(n)=p,
+		\qquad
+		\pi_{\mathrm{wech}}^{M}(n)=q.
+		\]
+	\end{hypothese}
+	
+	\begin{bemerkung}
+		Heuristisch bedeutet dies: Der kleinere Faktor baut die erste nichttriviale
+		Schalen-Kern-Konkurrenz auf, während der größere Faktor den eigentlichen Umschlag
+		des Dominanzverhältnisses erzwingt.
+	\end{bemerkung}
+	
+	\begin{hypothese}[Gemischte Zweifaktorzahlen]
+		Sei
+		\[
+		n=pq
+		\]
+		mit
+		\[
+		p<q,\qquad
+		p\equiv 5,7,11\pmod{12},\qquad
+		q\equiv 1\pmod{12}.
+		\]
+		Dann ist im \(R\)-Modus numerisch plausibel:
+		\[
+		\pi_{\mathrm{bal}}^{R}(n)=p,
+		\qquad
+		\pi_{\mathrm{wech}}^{R}(n)=q.
+		\]
+		
+		Häufig gilt analog auch im \(E\)-Modus
+		\[
+		\pi_{\mathrm{bal}}^{E}(n)=p,
+		\qquad
+		\pi_{\mathrm{wech}}^{E}(n)=q,
+		\]
+		während im \(ABC\)-Modus der Wechsel bereits bei \(p\) liegt.
+	\end{hypothese}
+	
+	\begin{beispiel}
+		Die numerischen Resultate für
+		\[
+		65=5\cdot 13
+		\qquad\text{und}\qquad
+		91=7\cdot 13
+		\]
+		passen sehr gut zu dieser Vermutung:
+		\[
+		\pi_{\mathrm{bal}}^{R}(65)=5,\qquad \pi_{\mathrm{wech}}^{R}(65)=13,
+		\]
+		\[
+		\pi_{\mathrm{bal}}^{R}(91)=7,\qquad \pi_{\mathrm{wech}}^{R}(91)=13.
+		\]
+	\end{beispiel}
+	
+	\subsection{Seltenheit reiner energetischer Balance}
+	
+	\begin{hypothese}[Seltenheit nichttrivialer Balance im \(E\)-Modus]
+		Für viele Zahlen \(n\) existiert keine nichttriviale Balanceprimzahl im reinen
+		\(E\)-Modus, also
+		\[
+		\pi_{\mathrm{bal}}^{E}(n)=\infty.
+		\]
+		Dagegen existiert im \(R\)-Modus deutlich häufiger eine nichttriviale Balance.
+	\end{hypothese}
+	
+	\begin{bemerkung}
+		Dies legt nahe, dass der reine energetische Anteil oft zu schmal ist, um gegen die
+		Schale eine robuste Balance auszubilden. Der volle Rest \(R_k(n)\) erfasst die
+		Kern-Schalen-Dynamik wesentlich zuverlässiger.
+	\end{bemerkung}
+	
+	\subsection{Hauptvermutung}
+	
+	\begin{hypothese}[Balance unten, Wechsel oben]
+		Die bisherigen numerischen Daten deuten auf folgende allgemeine Struktur hin:
+		
+		Für eine Zahl \(n\) mit aktiven Primfaktoren in einem gegebenen Modus \(M\) gilt
+		typischerweise:
+		\[
+		\pi_{\mathrm{bal}}^{M}(n)\approx \text{kleinster aktiver Primfaktor},
+		\qquad
+		\pi_{\mathrm{wech}}^{M}(n)\approx \text{größter aktiver Primfaktor}.
+		\]
+		
+		Insbesondere scheint bei zweifaktoriellen oder schwach zusammengesetzten Zahlen
+		eine systematische Trennung zwischen Balance- und Wechselprimzahl aufzutreten:
+		die Balance liegt unten, der eigentliche Wechsel oben.
+	\end{hypothese}
+	
+	\begin{bemerkung}
+		Diese Vermutung bündelt die numerisch sichtbare geometrische Kernaussage des Modells:
+		Die Schale wird zuerst durch kleine Faktoren aufgebaut, während größere Faktoren
+		den Kern länger stabil halten und deshalb den eigentlichen Umschlag bestimmen.
+	\end{bemerkung}
+	
+	\section{Der semiprime Fall: Balance unten, Wechsel oben}
+	
+	In diesem Abschnitt formulieren wir die numerisch vollständig bestätigte Struktur
+	für semiprimale Zahlen als präzise Vermutung mit Beweisskizze.
+	
+	\begin{definition}[Aktiver Modus für semiprimale Zahlen]
+		Sei
+		\[
+		n=pq,\qquad p<q,
+		\]
+		das Produkt zweier verschiedener Primzahlen \(>3\).
+		
+		Wir nennen einen Modus \(M\in\{E,ABC,R\}\) \emph{aktiv}, wenn beide Faktoren von \(n\)
+		im betreffenden Vergleich tatsächlich Masse tragen. Konkret:
+		
+		\begin{itemize}
+			\item Für \(p,q\equiv 1\pmod{12}\) ist der \(E\)-Modus aktiv.
+			\item Für \(p,q\equiv 5,7,11\pmod{12}\) ist der \(ABC\)-Modus aktiv.
+			\item Für gemischte Produkte mit einem Faktor in \(ABC\) und einem Faktor in \(E\)
+			ist der \(R\)-Modus stets aktiv.
+		\end{itemize}
+	\end{definition}
+	
+	\begin{satz}[Semiprime Klein-Groß-Regel]
+		\label{satz:semiprime_klein_gross}
+		Sei
+		\[
+		n=pq,\qquad p<q,
+		\]
+		das Produkt zweier verschiedener Primzahlen \(>3\), und sei \(M\in\{E,ABC,R\}\)
+		der zu \(n\) gehörige aktive Modus. Dann gilt numerisch konsistent:
+		
+		\[
+		\pi_{\mathrm{bal}}^{M}(n)=p,
+		\qquad
+		\pi_{\mathrm{wech}}^{M}(n)=q.
+		\]
+		
+		Das heißt:
+		\begin{enumerate}
+			\item Die nichttriviale Balanceprimzahl liegt beim kleineren aktiven Primfaktor.
+			\item Die echte Wechselprimzahl liegt beim größeren aktiven Primfaktor.
+		\end{enumerate}
+	\end{satz}
+	
+	\begin{bemerkung}
+		Die bisherigen semiprimen Tests zeigen diese Regel in allen getesteten Fällen:
+		\begin{itemize}
+			\item \(E\cdot E\) im \(E\)-Modus: \(100\%\),
+			\item \(ABC\cdot ABC\) im \(ABC\)-Modus: \(100\%\),
+			\item \(ABC\cdot E\) im \(R\)-Modus: \(100\%\),
+			\item \(ABC\cdot E\) im \(E\)-Modus ebenfalls \(100\%\) für Balance unten und Wechsel oben.
+		\end{itemize}
+	\end{bemerkung}
+	
+	\begin{proof}[Beweisskizze]
+		Wir geben eine heuristisch-elementare Begründung.
+		
+		\medskip
+		\noindent
+		\textbf{1. Aufbau der Schale.}
+		Für
+		\[
+		n=pq,\qquad p<q,
+		\]
+		wird bei wachsender Primschale
+		\[
+		P_k=\{2,3,5,\dots,p_k\}
+		\]
+		zunächst kein aktiver Faktor erfasst, solange \(p_k<p\). In diesem Bereich bleibt der
+		aktive Rest vollständig erhalten.
+		
+		Sobald jedoch die Schale den kleineren Faktor \(p\) erreicht, gilt:
+		\[
+		S_k(n)=p,\qquad R_k(n)=q.
+		\]
+		Damit tritt erstmals eine echte Konkurrenz zwischen Schale und aktivem Rest auf.
+		
+		\medskip
+		\noindent
+		\textbf{2. Warum die Balance unten liegt.}
+		Vor dem Eintritt von \(p\) in die Schale ist die Schale zu klein, um mit dem aktiven Rest
+		zu konkurrieren; nach Eintritt von \(p\) ist die Schale erstmals nichttrivial, aber der
+		größere Faktor \(q\) verbleibt noch vollständig im Rest. Daher ist genau in diesem Bereich
+		die beste Balance zu erwarten.
+		
+		Im semiprimen Fall gibt es nach Erreichen von \(p\) nur noch einen aktiven Restfaktor,
+		nämlich \(q\). Deshalb ist die erste nichttriviale Stufe zugleich die natürlichste Stelle,
+		an der
+		\[
+		|L_k^M(n)|
+		\]
+		minimal wird. Daraus folgt heuristisch
+		\[
+		\pi_{\mathrm{bal}}^{M}(n)=p.
+		\]
+		
+		\medskip
+		\noindent
+		\textbf{3. Warum der Wechsel oben liegt.}
+		Solange \(q\) noch nicht in die Schale eingetreten ist, bleibt im aktiven Modus eine
+		nichttriviale Restmasse erhalten. Erst beim Eintritt von \(q\) wird auch dieser letzte
+		aktive Faktor aus dem Rest entfernt bzw. durch die Schale absorbiert. Genau dort kippt das
+		Dominanzverhältnis endgültig.
+		
+		Daher ist zu erwarten, dass der erste echte Vorzeichenwechsel zwischen zwei nichtnulligen
+		Werten an der Schalenprimzahl \(q\) eintritt:
+		\[
+		\pi_{\mathrm{wech}}^{M}(n)=q.
+		\]
+		
+		\medskip
+		\noindent
+		\textbf{4. Modusabhängigkeit.}
+		Welche der Größen
+		\[
+		L_k^E(n),\qquad L_k^{ABC}(n),\qquad L_k^R(n)
+		\]
+		tatsächlich diese Dynamik tragen, hängt allein davon ab, in welcher modulo-\(12\)-Klasse
+		die Faktoren \(p,q\) liegen:
+		
+		\begin{itemize}
+			\item Bei \(E\cdot E\) liegt die gesamte aktive Masse im \(E\)-Kanal.
+			\item Bei \(ABC\cdot ABC\) liegt sie im \(ABC\)-Kanal.
+			\item Bei gemischten Zahlen \(ABC\cdot E\) ist der \(R\)-Modus der natürliche Gesamtmodus,
+			weil er beide Beiträge vereinigt.
+		\end{itemize}
+		
+		Damit ergibt sich die Klein-Groß-Regel im jeweils aktiven Modus.
+	\end{proof}
+	
+	\begin{korollar}[Modusreine semiprimale Fälle]
+		\label{kor:modusrein_semiprime}
+		Für semiprimale Zahlen \(n=pq\) mit \(p<q\) gilt:
+		
+		\begin{enumerate}
+			\item Falls
+			\[
+			p,q\equiv 1\pmod{12},
+			\]
+			dann ist der \(E\)-Modus aktiv und
+			\[
+			\pi_{\mathrm{bal}}^{E}(n)=p,\qquad
+			\pi_{\mathrm{wech}}^{E}(n)=q.
+			\]
+			
+			\item Falls
+			\[
+			p,q\equiv 5,7,11\pmod{12},
+			\]
+			dann ist der \(ABC\)-Modus aktiv und
+			\[
+			\pi_{\mathrm{bal}}^{ABC}(n)=p,\qquad
+			\pi_{\mathrm{wech}}^{ABC}(n)=q.
+			\]
+			
+			\item Falls
+			\[
+			p\equiv 5,7,11\pmod{12},\qquad q\equiv 1\pmod{12},
+			\]
+			dann ist der \(R\)-Modus aktiv und
+			\[
+			\pi_{\mathrm{bal}}^{R}(n)=p,\qquad
+			\pi_{\mathrm{wech}}^{R}(n)=q.
+			\]
+		\end{enumerate}
+	\end{korollar}
+	
+	\begin{beispiel}
+		Die numerischen Beispiele
+		\[
+		35=5\cdot 7,\qquad
+		55=5\cdot 11,\qquad
+		77=7\cdot 11
+		\]
+		bestätigen im \(ABC\)-Modus:
+		\[
+		\pi_{\mathrm{bal}}^{ABC}(35)=5,\quad \pi_{\mathrm{wech}}^{ABC}(35)=7,
+		\]
+		\[
+		\pi_{\mathrm{bal}}^{ABC}(55)=5,\quad \pi_{\mathrm{wech}}^{ABC}(55)=11,
+		\]
+		\[
+		\pi_{\mathrm{bal}}^{ABC}(77)=7,\quad \pi_{\mathrm{wech}}^{ABC}(77)=11.
+		\]
+		
+		Ebenso bestätigen die gemischten Beispiele
+		\[
+		65=5\cdot 13,\qquad 91=7\cdot 13
+		\]
+		im \(R\)-Modus:
+		\[
+		\pi_{\mathrm{bal}}^{R}(65)=5,\quad \pi_{\mathrm{wech}}^{R}(65)=13,
+		\]
+		\[
+		\pi_{\mathrm{bal}}^{R}(91)=7,\quad \pi_{\mathrm{wech}}^{R}(91)=13.
+		\]
+	\end{beispiel}
+	
+	\begin{bemerkung}
+		Ein vollständiger strenger Beweis müsste die genaue Monotonie oder wenigstens die
+		Eindeutigkeit des Minimums von
+		\[
+		|L_k^M(n)|
+		\]
+		zwischen den Schalenstufen \(p\) und \(q\) kontrollieren. Die bisherige numerische Evidenz
+		legt jedoch nahe, dass der semiprime Fall wesentlich rigider ist als der allgemeine
+		mehrfaktorielle Fall.
+	\end{bemerkung}
+	
+	\subsection{Der Primzahlfall}
+	
+	\begin{satz}[Primzahlen als modusreine Elementarfälle]
+		\label{prop:primzahlfall}
+		Sei \(p>3\) eine Primzahl.
+		
+		\begin{enumerate}
+			\item Falls
+			\[
+			p\equiv 1\pmod{12},
+			\]
+			so ist \(p\) im dynamischen Sinn ein reiner \(E\)-Träger. In diesem Fall gilt
+			im betrachteten Schalenmodell numerisch:
+			\[
+			\pi_{\mathrm{wech}}^{E}(p)=p,\qquad
+			\pi_{\mathrm{wech}}^{R}(p)=p,\qquad
+			\pi_{\mathrm{wech}}^{ABC}(p)=\infty.
+			\]
+			
+			\item Falls
+			\[
+			p\equiv 5,7,11\pmod{12},
+			\]
+			so ist \(p\) ein reiner \(ABC\)-Träger. In diesem Fall gilt numerisch:
+			\[
+			\pi_{\mathrm{wech}}^{ABC}(p)=p,\qquad
+			\pi_{\mathrm{wech}}^{R}(p)=p,\qquad
+			\pi_{\mathrm{wech}}^{E}(p)=\infty.
+			\]
+		\end{enumerate}
+	\end{satz}
+	
+	\begin{proof}[Beweisskizze]
+		Wir betrachten eine Primzahl \(p>3\) entlang der Schalenfolge
+		\[
+		P_k=\{2,3,5,\dots,p_k\}.
+		\]
+		
+		Solange \(p_k<p\), gilt stets
+		\[
+		S_k(p)=1,\qquad R_k(p)=p.
+		\]
+		Die gesamte aktive Masse liegt also vollständig im Rest.
+		
+		\medskip
+		\noindent
+		\textbf{Fall 1: \(p\equiv 1\pmod{12}\).}
+		Dann ist
+		\[
+		E_k(p)=p,\qquad A_k(p)=B_k(p)=C_k(p)=1
+		\]
+		für alle Schalenstufen mit \(p_k<p\). Daher ist der \(E\)-Modus aktiv, während
+		der \(ABC\)-Modus trivial bleibt. Sobald die Schale die Primzahl \(p\) selbst erreicht,
+		wird \(p\) aus dem Rest entfernt, also
+		\[
+		R_k(p)=1.
+		\]
+		Damit tritt der eigentliche Umschlag im \(E\)-Modus und ebenso im \(R\)-Modus
+		genau bei der Schalenprimzahl \(p\) auf:
+		\[
+		\pi_{\mathrm{wech}}^{E}(p)=p,\qquad \pi_{\mathrm{wech}}^{R}(p)=p.
+		\]
+		Da im \(ABC\)-Modus keine aktive Masse vorliegt, bleibt dort
+		\[
+		\pi_{\mathrm{wech}}^{ABC}(p)=\infty.
+		\]
+		
+		\medskip
+		\noindent
+		\textbf{Fall 2: \(p\equiv 5,7,11\pmod{12}\).}
+		Dann liegt die gesamte Restmasse im \(ABC\)-Kanal, also
+		\[
+		A_k(p)B_k(p)C_k(p)=p,\qquad E_k(p)=1
+		\]
+		für alle Schalenstufen mit \(p_k<p\). Daher ist jetzt der \(ABC\)-Modus aktiv,
+		während der \(E\)-Modus trivial bleibt. Sobald die Schale \(p\) selbst erreicht,
+		verschwindet auch hier der Rest, und der Wechsel tritt genau bei \(p\) auf:
+		\[
+		\pi_{\mathrm{wech}}^{ABC}(p)=p,\qquad \pi_{\mathrm{wech}}^{R}(p)=p.
+		\]
+		Dagegen bleibt
+		\[
+		\pi_{\mathrm{wech}}^{E}(p)=\infty.
+		\]
+		
+		In beiden Fällen ist also die Primzahl selbst genau die erste Schalenprimzahl,
+		an der der jeweils aktive Modus seinen Wechsel zeigt.
+	\end{proof}
+	
+	\begin{korollar}[Modusklassifikation der Primzahlen]
+		\label{kor:modusklassifikation_primzahlen}
+		Für Primzahlen \(p>3\) gilt:
+		\[
+		p\equiv 1\pmod{12}
+		\quad\Longrightarrow\quad
+		\text{\(p\) ist \(E\)-aktiv und \(ABC\)-inaktiv,}
+		\]
+		\[
+		p\equiv 5,7,11\pmod{12}
+		\quad\Longrightarrow\quad
+		\text{\(p\) ist \(ABC\)-aktiv und \(E\)-inaktiv.}
+		\]
+		Der \(R\)-Modus ist in beiden Fällen aktiv und vereinigt die jeweilige Dynamik.
+	\end{korollar}
+	
+	\begin{bemerkung}
+		Der Primzahlfall liefert die elementaren Bausteine des gesamten Modells. Die
+		semiprime Klein-Groß-Regel aus Satz~\ref{satz:semiprime_klein_gross} kann als
+		erste nichttriviale Erweiterung dieses modusreinen Primzahlverhaltens verstanden
+		werden.
+	\end{bemerkung}
+	
+	\subsection{Der Fall \(p^a q^b\): Balance unten, Wechsel nach Log-Masse}
+	
+	Die semiprimale Klein-Groß-Regel
+	\[
+	\pi_{\mathrm{bal}}=p,\qquad \pi_{\mathrm{wech}}=q
+	\]
+	für
+	\[
+	n=pq,\qquad p<q,
+	\]
+	erweist sich bei höheren Exponenten als nur teilweise stabil. Die numerischen Tests für
+	\[
+	n=p^a q^b
+	\]
+	zeigen jedoch eine deutlich verfeinerte Struktur.
+	
+	\begin{hypothese}[Robuste Balanceprimzahl im Zweifaktorfall]
+		\label{hyp:paqb_balance}
+		Sei
+		\[
+		n=p^a q^b,\qquad p<q,
+		\]
+		mit Primzahlen \(p,q>3\) und Exponenten \(a,b\ge 1\). Sei \(M\in\{E,ABC,R\}\) der
+		zu \(n\) gehörige aktive Modus.
+		
+		Dann ist numerisch stark plausibel, dass die nichttriviale Balanceprimzahl weiterhin durch
+		den kleineren Primfaktor gegeben ist:
+		\[
+		\pi_{\mathrm{bal}}^{M}(n)=p.
+		\]
+	\end{hypothese}
+	
+	\begin{bemerkung}
+		Die numerischen Tests für Zahlen der Form \(p^a q^b\) zeigen in den aktiven Modi für die
+		Familien \(E\cdot E\), \(ABC\cdot ABC\) und \(ABC\cdot E\) eine volle Stabilität der
+		Balance-Regel:
+		\[
+		\pi_{\mathrm{bal}}^{M}(n)=p.
+		\]
+		Insbesondere ist die Balanceprimzahl wesentlich robuster als die Wechselprimzahl.
+	\end{bemerkung}
+	
+	\begin{hypothese}[Log-Massen-Kriterium für die Wechselprimzahl]
+		\label{hyp:paqb_wechsel}
+		Sei
+		\[
+		n=p^a q^b,\qquad p<q,
+		\]
+		mit Primzahlen \(p,q>3\), Exponenten \(a,b\ge 1\), und sei \(M\) der aktive Modus.
+		
+		Dann wird die Wechselprimzahl nicht mehr rein durch die Ordnung \(p<q\), sondern durch die
+		gewichteten logarithmischen Beiträge
+		\[
+		a\log p
+		\qquad\text{und}\qquad
+		b\log q
+		\]
+		bestimmt. Numerisch legt dies folgende Regel nahe:
+		\[
+		\pi_{\mathrm{wech}}^{M}(n)=
+		\begin{cases}
+			p, & \text{falls } a\log p \ge b\log q,\\[1mm]
+			q, & \text{falls } a\log p < b\log q.
+		\end{cases}
+		\]
+	\end{hypothese}
+	
+	\begin{bemerkung}
+		Diese Regel verallgemeinert die semiprimale Situation \(a=b=1\). In diesem Spezialfall gilt
+		\[
+		\log p<\log q,
+		\]
+		also automatisch
+		\[
+		\pi_{\mathrm{wech}}^{M}(pq)=q.
+		\]
+		Damit wird die semiprimale Klein-Groß-Regel als Spezialfall des Log-Massen-Kriteriums
+		sichtbar.
+	\end{bemerkung}
+	
+	\begin{proof}[Heuristische Begründung]
+		Wir skizzieren die zugrunde liegende Dynamik.
+		
+		\medskip
+		\noindent
+		\textbf{1. Erste Konkurrenzlage.}
+		Solange die Schale den kleineren Primfaktor \(p\) noch nicht enthält, bleibt der aktive
+		Rest vollständig erhalten. Beim Eintritt von \(p\) in die Schale wird erstmals ein
+		nichttrivialer Schalenanteil erzeugt, während der Rest noch mindestens den Beitrag von
+		\(q^b\) enthält. Daher ist der Eintritt von \(p\) die natürlichste Stelle für die erste
+		echte Balance zwischen Schale und Kern.
+		
+		Dies erklärt heuristisch die Stabilität von
+		\[
+		\pi_{\mathrm{bal}}^{M}(n)=p.
+		\]
+		
+		\medskip
+		\noindent
+		\textbf{2. Dominanz nach Log-Masse.}
+		Nach Eintritt von \(p\) ist die Schalenmasse bereits von der Größe
+		\[
+		a\log p,
+		\]
+		während im Rest mindestens noch die Masse
+		\[
+		b\log q
+		\]
+		verbleibt. Ist
+		\[
+		a\log p \ge b\log q,
+		\]
+		so ist bereits beim Eintritt von \(p\) die Schale mindestens so stark wie der verbleibende
+		aktive Rest, und der Wechsel tritt sofort bei \(p\) ein.
+		
+		Ist dagegen
+		\[
+		a\log p < b\log q,
+		\]
+		so hält der Restfaktor \(q^b\) die Dominanz noch aufrecht, und der eigentliche Wechsel wird
+		erst beim Eintritt von \(q\) in die Schale erzwungen.
+		
+		\medskip
+		\noindent
+		\textbf{3. Interpretation.}
+		Die Balance wird also geometrisch durch den ersten relevanten Eintritt in die Schale
+		bestimmt, der Wechsel dagegen durch die relative logarithmische Masse der aktiven Faktoren.
+	\end{proof}
+	
+	\begin{korollar}[Semiprime als Spezialfall]
+		\label{kor:semiprime_spezialfall_logmasse}
+		Für
+		\[
+		n=pq,\qquad p<q,
+		\]
+		gilt \(a=b=1\). Damit folgt aus Hypothese~\ref{hyp:paqb_wechsel}
+		\[
+		\log p<\log q,
+		\]
+		und daher
+		\[
+		\pi_{\mathrm{wech}}^{M}(pq)=q.
+		\]
+		Zusammen mit Hypothese~\ref{hyp:paqb_balance} ergibt sich wieder
+		\[
+		\pi_{\mathrm{bal}}^{M}(pq)=p,\qquad
+		\pi_{\mathrm{wech}}^{M}(pq)=q.
+		\]
+	\end{korollar}
+	
+	\begin{beispiel}
+		Die numerischen Gegenbeispiele zur naiven Regel
+		\[
+		\pi_{\mathrm{wech}}^{M}(n)=q
+		\]
+		werden gerade durch hohe Exponenten des kleineren Faktors erklärt.
+		
+		Zum Beispiel:
+		\[
+		n=5^2\cdot 7.
+		\]
+		Hier gilt
+		\[
+		2\log 5 > \log 7,
+		\]
+		und numerisch tritt der Wechsel bereits bei \(5\) auf:
+		\[
+		\pi_{\mathrm{wech}}^{M}(n)=5.
+		\]
+		
+		Ebenso für
+		\[
+		n=5^3\cdot 11^2,
+		\]
+		denn
+		\[
+		3\log 5 > 2\log 11.
+		\]
+		Auch hier wird numerisch
+		\[
+		\pi_{\mathrm{wech}}^{M}(n)=5
+		\]
+		beobachtet.
+	\end{beispiel}
+	
+	\begin{bemerkung}
+		Die bisherige Evidenz legt nahe, dass die Balanceprimzahl der eigentliche robuste Invariant
+		des Zweifaktormodells ist, während die Wechselprimzahl das feinere, exponentenempfindliche
+		Objekt darstellt.
+	\end{bemerkung}
+	
+	Die numerischen Experimente zeigen, dass sich das Schalenwechsel-Modell bereits im
+	Zweifaktorfall überraschend klar strukturiert. Für semiprimale Zahlen
+	\[
+	n=pq,\qquad p<q,
+	\]
+	tritt im jeweils aktiven Modus eine saubere Trennung zwischen Balance- und
+	Wechselprimzahl auf: Die nichttriviale Balance liegt beim kleineren Primfaktor,
+	der eigentliche Wechsel beim größeren. Für Zahlen der Form
+	\[
+	n=p^a q^b
+	\]
+	bleibt diese Regel nur teilweise erhalten. Während die Balanceprimzahl numerisch
+	sehr stabil beim kleineren Primfaktor verbleibt, reagiert die Wechselprimzahl
+	empfindlich auf die Exponenten. Die Daten legen nahe, dass der Wechsel nicht
+	mehr allein durch die Ordnung \(p<q\), sondern durch die gewichteten logarithmischen
+	Beiträge
+	\[
+	a\log p
+	\qquad\text{und}\qquad
+	b\log q
+	\]
+	gesteuert wird. Damit erscheint die Balanceprimzahl als robuster geometrischer
+	Invariant der ersten echten Schalen-Kern-Konkurrenz, während die Wechselprimzahl
+	das feinere dynamische Objekt darstellt, das auf die Massenverteilung der
+	aktiven Faktoren reagiert.
+	
+	Die bisherigen numerischen Resultate sprechen dafür, dass das Schalenwechsel-Modell
+	zwei verschiedene Ebenen arithmetischer Struktur sichtbar macht. Erstens gibt es
+	mit der Balanceprimzahl einen bemerkenswert stabilen Invariant: Im Zweifaktorfall
+	liegt die erste nichttriviale Balance fast durchgängig beim kleineren aktiven
+	Primfaktor. Zweitens zeigt die Wechselprimzahl eine deutlich feinere Dynamik.
+	Im semiprimen Fall fällt sie mit dem größeren Primfaktor zusammen; bei höheren
+	Exponenten wird sie jedoch durch die logarithmische Massenverteilung der Faktoren
+	beeinflusst. Dadurch entsteht eine natürliche Trennung zwischen geometrischer
+	Eintrittsstruktur und gewichteter Dominanzstruktur. Gerade diese Zweiteilung
+	dürfte für die weitere Entwicklung des Modells zentral sein.
+	
+	\subsection{Der Fall \(p^a q^b\): robuste Balance und log-massen-gesteuerter Wechsel}
+	
+	Die numerischen Tests für Zahlen der Form
+	\[
+	n=p^a q^b,\qquad p<q,
+	\]
+	zeigen im untersuchten Parameterbereich eine klare Zweiteilung zwischen Balance- und
+	Wechselprimzahl. Während die Balanceprimzahl bemerkenswert stabil beim kleineren
+	Primfaktor verbleibt, wird die Wechselprimzahl durch die gewichteten logarithmischen
+	Beiträge der beiden Faktoren bestimmt.
+	
+	\begin{satz}[Numerisch bestätigte Balance-Regel für \(p^a q^b\)]
+		\label{satz:paqb_balance}
+		Sei
+		\[
+		n=p^a q^b,\qquad p<q,
+		\]
+		mit Primzahlen \(p,q>3\) und Exponenten \(a,b\ge 1\). Sei \(M\in\{E,ABC,R\}\) der
+		zu \(n\) gehörige aktive Modus.
+		
+		Dann gilt in allen bisher getesteten Fällen:
+		\[
+		\pi_{\mathrm{bal}}^{M}(n)=p.
+		\]
+		Mit anderen Worten: Die nichttriviale Balanceprimzahl wird durchgehend vom kleineren
+		Primfaktor bestimmt.
+	\end{satz}
+	
+	\begin{proof}[Numerische Begründung]
+		Die systematischen Tests über die Familien
+		\[
+		E\cdot E,\qquad ABC\cdot ABC,\qquad ABC\cdot E
+		\]
+		zeigen in den jeweiligen aktiven Modi für alle untersuchten Zahlen der Form
+		\[
+		p^a q^b
+		\]
+		eine volle Trefferquote der Regel
+		\[
+		\pi_{\mathrm{bal}}^{M}(n)=p.
+		\]
+		Dies gilt sowohl in den reinen Kanälen \(E\) bzw. \(ABC\) als auch im Gesamtmodus \(R\).
+	\end{proof}
+	
+	\begin{satz}[Numerisch bestätigte Log-Massen-Regel für die Wechselprimzahl]
+		\label{satz:paqb_logmasse}
+		Unter denselben Voraussetzungen wie in Satz~\ref{satz:paqb_balance} gilt im aktiven Modus
+		\(M\) numerisch:
+		
+		\[
+		\pi_{\mathrm{wech}}^{M}(n)=
+		\begin{cases}
+			p, & \text{falls } a\log p \ge b\log q,\\[1mm]
+			q, & \text{falls } a\log p < b\log q.
+		\end{cases}
+		\]
+		
+		Die Wechselprimzahl wird also nicht mehr nur durch die Ordnung \(p<q\), sondern durch die
+		gewichteten logarithmischen Massen
+		\[
+		a\log p
+		\qquad\text{und}\qquad
+		b\log q
+		\]
+		bestimmt.
+	\end{satz}
+	
+	\begin{proof}[Numerische Begründung]
+		Die naive semiprimale Regel
+		\[
+		\pi_{\mathrm{wech}}^{M}(n)=q
+		\]
+		scheitert bei höheren Exponenten systematisch. Die isolierten Gegenbeispiele treten genau
+		in den Fällen auf, in denen der kleinere Primfaktor durch seinen Exponenten genügend
+		logarithmische Masse trägt, um bereits beim Eintritt in die Schale dominant zu werden.
+		
+		Für die verfeinerte Vorhersage
+		\[
+		\pi_{\mathrm{wech}}^{M}(n)=
+		\begin{cases}
+			p,& a\log p \ge b\log q,\\
+			q,& a\log p < b\log q
+		\end{cases}
+		\]
+		wurden im getesteten Bereich keine Gegenbeispiele gefunden. Die Trefferquote der
+		Log-Massen-Regel beträgt in allen ausgewerteten Familien und in beiden Bereichen
+		\[
+		\frac{a\log p}{b\log q}\ge 1
+		\qquad\text{bzw.}\qquad
+		\frac{a\log p}{b\log q}<1
+		\]
+		jeweils \(100\%\).
+	\end{proof}
+	
+	\begin{korollar}[Der semiprimale Fall als Spezialfall]
+		\label{kor:paqb_semiprime}
+		Für
+		\[
+		n=pq,\qquad p<q,
+		\]
+		gilt \(a=b=1\). Daher ist
+		\[
+		\log p<\log q,
+		\]
+		also folgt aus Satz~\ref{satz:paqb_logmasse}
+		\[
+		\pi_{\mathrm{wech}}^{M}(pq)=q.
+		\]
+		Zusammen mit Satz~\ref{satz:paqb_balance} erhält man erneut
+		\[
+		\pi_{\mathrm{bal}}^{M}(pq)=p,\qquad
+		\pi_{\mathrm{wech}}^{M}(pq)=q.
+		\]
+		Der semiprimale Fall erscheint somit als Spezialfall der allgemeinen \(p^a q^b\)-Struktur.
+	\end{korollar}
+	
+	\begin{beispiel}
+		Die klassischen Gegenbeispiele zur naiven Regel \(\pi_{\mathrm{wech}}=q\) werden durch das
+		Log-Massen-Kriterium exakt erklärt.
+		
+		\begin{enumerate}
+			\item Für
+			\[
+			n=5^2\cdot 7
+			\]
+			gilt
+			\[
+			2\log 5 > \log 7.
+			\]
+			Daher sagt Satz~\ref{satz:paqb_logmasse} voraus:
+			\[
+			\pi_{\mathrm{wech}}(n)=5,
+			\]
+			was numerisch bestätigt wird.
+			
+			\item Für
+			\[
+			n=5^3\cdot 11^2
+			\]
+			gilt
+			\[
+			3\log 5 > 2\log 11.
+			\]
+			Also folgt wiederum
+			\[
+			\pi_{\mathrm{wech}}(n)=5,
+			\]
+			ebenfalls in Übereinstimmung mit den numerischen Daten.
+			
+			\item Für
+			\[
+			n=7^2\cdot 11
+			\]
+			gilt
+			\[
+			2\log 7 > \log 11,
+			\]
+			also tritt der Wechsel bereits bei \(7\) auf:
+			\[
+			\pi_{\mathrm{wech}}(n)=7.
+			\]
+		\end{enumerate}
+	\end{beispiel}
+	
+	\begin{bemerkung}
+		Die numerischen Resultate legen nahe, dass die Balanceprimzahl der robuste geometrische
+		Invariant des Zweifaktormodells ist, während die Wechselprimzahl das feinere dynamische
+		Objekt darstellt, das auf die logarithmische Massenverteilung der aktiven Faktoren
+		reagiert.
+	\end{bemerkung}
+	
+	\begin{bemerkung}
+		Ein strenger Beweis von Satz~\ref{satz:paqb_logmasse} müsste zeigen, dass der erste echte
+		Vorzeichenwechsel des jeweiligen Modus tatsächlich genau an der Primzahl eintritt, deren
+		gewichteter logarithmischer Beitrag den dominanten Restblock kontrolliert. Die bisherige
+		Datenlage spricht jedoch sehr stark dafür, dass dies im Zweifaktorfall die richtige
+		Struktur ist.
+	\end{bemerkung}
+	
+	\subsection{Übergang zum Dreifaktorfall}
+	
+	Nach dem Primzahlfall und dem vollständig durchgerechneten Zweifaktorfall
+	\[
+	n=p^a q^b
+	\]
+	stellt der Dreifaktorfall die nächste natürliche Stufe der Analyse dar. Die bisherigen
+	numerischen Resultate legen nahe, dass die Balanceprimzahl auch dort weiterhin vom
+	kleinsten aktiven Primfaktor kontrolliert werden dürfte. Offen ist jedoch, wie sich die
+	Wechselprimzahl in Anwesenheit eines dritten Faktors verhält. Im Zweifaktorfall wird sie
+	durch die gewichteten logarithmischen Beiträge
+	\[
+	a\log p
+	\qquad\text{und}\qquad
+	b\log q
+	\]
+	bestimmt; im Dreifaktorfall ist daher zu erwarten, dass statt eines bloßen
+	Zweiervergleichs eine Konkurrenz mehrerer aktiver Restblöcke auftritt. Insbesondere stellt
+	sich die Frage, ob der eigentliche Wechsel weiterhin durch den größten Primfaktor
+	hervorgerufen wird, oder ob vielmehr der größte verbleibende logarithmische Massenblock
+	entscheidend ist. Der Übergang von \(p^a q^b\) zu
+	\[
+	p^a q^b r^c
+	\]
+	markiert damit den Punkt, an dem aus einer zweistufigen Schalen-Kern-Dynamik eine echte
+	mehrstufige Dominanzstruktur wird.
+	
+	\subsection{Übergang zum Dreifaktorfall}
+	
+	Der Zweifaktorfall
+	\[
+	n=p^a q^b
+	\]
+	zeigt bereits eine bemerkenswert klare Trennung: Die Balanceprimzahl ist geometrisch stabil
+	und liegt beim kleineren Primfaktor, während die Wechselprimzahl von der logarithmischen
+	Massenverteilung der aktiven Faktoren abhängt. Damit ist der nächste Schritt nahezu
+	zwingend: der Übergang zu Zahlen der Form
+	\[
+	n=p^a q^b r^c.
+	\]
+	Hier ist nicht länger nur zu entscheiden, welcher von zwei Faktoren den Rest dominiert.
+	Vielmehr entsteht eine dreifache Konkurrenzlage, in der Balance, Vorzeichenwechsel und
+	Restdominanz möglicherweise auf verschiedene Primfaktoren verteilt werden. Gerade dieser
+	Dreifaktorfall dürfte zeigen, ob die bisher beobachtete Zweiteilung zwischen geometrischem
+	Eintrittspunkt und gewichteter Dominanz ein Spezialphänomen des Zweifaktormodells ist oder
+	den Anfang einer allgemeineren Schalenstruktur bildet.
+	
+	\subsection{Erste Vermutungen zum Dreifaktorfall}
+	
+	Die numerischen Resultate für Zahlen der Form
+	\[
+	n=p^a q^b r^c,\qquad p<q<r,
+	\]
+	zeigen, dass die Zweifaktorregeln nicht direkt auf den Dreifaktorfall übergehen. Weder
+	liegt die Balanceprimzahl allgemein beim kleinsten Primfaktor \(p\), noch wird die
+	Wechselprimzahl zuverlässig durch den größten Primfaktor \(r\) oder allein durch die
+	größte logarithmische Einzelmasse bestimmt. Stattdessen deutet sich eine mehrstufige
+	Dynamik an, in der verschiedene Primfaktoren verschiedene Rollen übernehmen können.
+	
+	\begin{hypothese}[Mittlere Balance im Dreifaktorfall]
+		\label{hyp:dreifaktor_balance_mitte}
+		Sei
+		\[
+		n=p^a q^b r^c,\qquad p<q<r,
+		\]
+		mit Primzahlen \(p,q,r>3\), und sei \(M\in\{E,ABC,R\}\) der aktive Modus.
+		
+		Dann ist numerisch plausibel, dass die nichttriviale Balanceprimzahl im Dreifaktorfall
+		häufig nicht mehr durch den kleinsten Faktor \(p\), sondern durch einen \emph{mittleren}
+		aktiven Faktor bestimmt wird. Im einfachsten Fall
+		\[
+		n=pqr
+		\]
+		spricht die bisherige Evidenz insbesondere dafür, dass oft
+		\[
+		\pi_{\mathrm{bal}}^{M}(n)=q
+		\]
+		gilt.
+	\end{hypothese}
+	
+	\begin{bemerkung}
+		Die bisherige Datenlage legt nahe, dass der Dreifaktorfall nicht länger nur eine
+		Konkurrenz zwischen früher Schalenbildung und spätem Restumschlag darstellt. Vielmehr
+		scheint sich eine Zwischenlage auszubilden, in der der mittlere Faktor die beste Balance
+		zwischen bereits aufgebauter Schale und verbleibender Restmasse realisiert.
+	\end{bemerkung}
+	
+	\begin{hypothese}[Getrennte Rollen von Eintritt, Balance und Wechsel]
+		\label{hyp:dreifaktor_rollentrennung}
+		Für Zahlen der Form
+		\[
+		n=p^a q^b r^c,\qquad p<q<r,
+		\]
+		treten im aktiven Modus \(M\) typischerweise drei verschiedene dynamische Rollen auf:
+		
+		\begin{enumerate}
+			\item ein \emph{Eintrittsfaktor}, bei dessen Erreichen die erste echte Konkurrenz zwischen
+			Schale und Rest beginnt,
+			\item ein \emph{Balancefaktor}, bei dem \(|L_k^M(n)|\) minimal wird,
+			\item ein \emph{Wechselfaktor}, bei dem der erste echte Vorzeichenwechsel eintritt.
+		\end{enumerate}
+		
+		Im Dreifaktorfall müssen diese drei Rollen im Allgemeinen nicht zusammenfallen.
+		Insbesondere ist numerisch plausibel, dass der Balancefaktor häufig der mittlere Faktor
+		\(q\) ist, während der Wechselfaktor je nach Massenverteilung zwischen \(q\) und \(r\)
+		variieren kann.
+	\end{hypothese}
+	
+	\begin{bemerkung}
+		Diese Vermutung markiert den entscheidenden Unterschied zum Zweifaktormodell. Dort fallen
+		Balance und Eintritt oft auf den kleineren Faktor, während der Wechsel durch den größeren
+		oder durch die gewichtete Log-Masse bestimmt wird. Im Dreifaktorfall scheint erstmals eine
+		echte dreistufige Dynamik sichtbar zu werden.
+	\end{bemerkung}
+	
+	\begin{hypothese}[Begrenzte Tragfähigkeit der Max-Log-Massen-Regel]
+		\label{hyp:dreifaktor_maxlog_begrenzt}
+		Im Zweifaktorfall \(p^a q^b\) bestimmt die größere gewichtete Log-Masse
+		\[
+		\max\{a\log p,\; b\log q\}
+		\]
+		numerisch zuverlässig die Wechselprimzahl. Im Dreifaktorfall
+		\[
+		p^a q^b r^c
+		\]
+		ist die entsprechende naive Verallgemeinerung
+		\[
+		\pi_{\mathrm{wech}}^{M}(n)=\arg\max\{a\log p,\; b\log q,\; c\log r\}
+		\]
+		im Allgemeinen nicht mehr hinreichend.
+		
+		Stattdessen ist numerisch plausibel, dass die Wechselprimzahl durch den \emph{letzten
+			dominanten Restblock} bestimmt wird, der nach dem Eintritt früherer Faktoren in die
+		Schale noch verbleibt.
+	\end{hypothese}
+	
+	\begin{bemerkung}
+		Dies würde erklären, warum die Max-Log-Massen-Regel im Dreifaktorfall zwar deutlich besser
+		ist als die naive Regel \(\pi_{\mathrm{wech}}=r\), aber dennoch nicht vollständig
+		zutrifft: Entscheidend ist offenbar nicht die größte Einzelmasse, sondern ihre Stellung
+		innerhalb der fortschreitenden Schalenreduktion.
+	\end{bemerkung}
+	
+	\begin{hypothese}[Erste Spezialisierung für den Basisfall \(pqr\)]
+		\label{hyp:dreifaktor_pqr}
+		Im ungewichteten Basisfall
+		\[
+		n=pqr,\qquad p<q<r,
+		\]
+		ist numerisch besonders plausibel:
+		
+		\begin{enumerate}
+			\item Die Balanceprimzahl liegt häufig bei
+			\[
+			\pi_{\mathrm{bal}}^{M}(n)=q.
+			\]
+			\item Die Wechselprimzahl liegt häufig entweder bei \(q\) oder bei \(r\), abhängig davon,
+			wie stark der letzte Restblock nach Eintritt von \(p\) und \(q\) noch dominiert.
+		\end{enumerate}
+	\end{hypothese}
+	
+	\begin{beispiel}
+		Die bisherigen numerischen Beispiele stützen diese Sichtweise:
+		
+		\begin{enumerate}
+			\item Für
+			\[
+			n=5\cdot 7\cdot 11
+			\]
+			wird numerisch beobachtet:
+			\[
+			\pi_{\mathrm{bal}}(n)=7,\qquad \pi_{\mathrm{wech}}(n)=7.
+			\]
+			
+			\item Für
+			\[
+			n=5\cdot 7\cdot 11^2
+			\]
+			wird numerisch beobachtet:
+			\[
+			\pi_{\mathrm{bal}}(n)=7,\qquad \pi_{\mathrm{wech}}(n)=11.
+			\]
+			
+			\item Für
+			\[
+			n=5^2\cdot 7\cdot 11
+			\]
+			wird numerisch beobachtet:
+			\[
+			\pi_{\mathrm{bal}}(n)=5,\qquad \pi_{\mathrm{wech}}(n)=7.
+			\]
+		\end{enumerate}
+		
+		Diese Beispiele sprechen dafür, dass Exponenten die Rollen der Faktoren gezielt
+		verschieben können, ohne dass die Balance- und Wechselstruktur kollabiert.
+	\end{beispiel}
+	
+	\begin{bemerkung}
+		Die Ergebnisse deuten darauf hin, dass der Dreifaktorfall nicht mehr durch eine bloße
+		Klein-Groß- oder Max-Log-Regel beschrieben werden kann. Vielmehr scheint hier erstmals
+		eine genuine mehrstufige Schalen-Dynamik aufzutreten, in der mittlere Faktoren eine
+		eigenständige strukturelle Rolle spielen.
+	\end{bemerkung}
+	
+	\subsection{Schalenabschluss und Geburt neuer Zahlen}
+	
+	Wir formulieren nun präzise, wann eine gegebene Primschale die natürlichen Zahlen
+	noch vollständig ausfüllen kann und ab welchem Punkt notwendig neue Primträger
+	auftreten müssen.
+	
+	\begin{definition}[Primschale und Schalenmonoid]
+		Für \(k\in\mathbb N\) sei
+		\[
+		P_k:=\{2,3,5,\dots,p_k\}
+		\]
+		die Menge der ersten \(k\) Primzahlen. Das von \(P_k\) erzeugte multiplikative Monoid sei
+		\[
+		\langle P_k\rangle
+		:=
+		\left\{
+		\prod_{p\in P_k} p^{\nu_p}
+		\;\middle|\;
+		\nu_p\in\mathbb N_0
+		\right\}.
+		\]
+		Die Elemente von \(\langle P_k\rangle\) heißen \(P_k\)-glatte Zahlen.
+	\end{definition}
+	
+	\begin{definition}[Schalenanteil und reduzierter Kern]
+		Für \(n\in\mathbb N\) definieren wir den Schalenanteil bezüglich \(P_k\) durch
+		\[
+		S_k(n):=\prod_{p\in P_k} p^{v_p(n)}
+		\]
+		und den reduzierten Kern durch
+		\[
+		R_k(n):=\frac{n}{S_k(n)}.
+		\]
+		Dabei enthält \(S_k(n)\) genau den aus den vorhandenen Schalenprimzahlen gebildeten Anteil
+		von \(n\), während \(R_k(n)\) den außerhalb der Schale verbleibenden Rest beschreibt.
+	\end{definition}
+	
+	\begin{lemma}[Charakterisierung des Schalenabschlusses]
+		\label{lem:schalenabschluss}
+		Für \(n\in\mathbb N\) gilt:
+		\[
+		n\in \langle P_k\rangle
+		\quad\Longleftrightarrow\quad
+		R_k(n)=1.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Per Definition ist
+		\[
+		S_k(n)=\prod_{p\in P_k} p^{v_p(n)}
+		\]
+		genau der Anteil von \(n\), der aus Primfaktoren in \(P_k\) besteht.
+		
+		\medskip
+		\noindent
+		Falls \(n\in \langle P_k\rangle\), so besitzt \(n\) keine Primfaktoren außerhalb von \(P_k\).
+		Dann enthält \(S_k(n)\) bereits die gesamte Primfaktorzerlegung von \(n\), also
+		\[
+		S_k(n)=n
+		\qquad\Longrightarrow\qquad
+		R_k(n)=\frac{n}{S_k(n)}=1.
+		\]
+		
+		\medskip
+		\noindent
+		Umgekehrt, falls \(R_k(n)=1\), gilt
+		\[
+		n=S_k(n),
+		\]
+		also besteht \(n\) vollständig aus Primfaktoren in \(P_k\). Somit ist
+		\[
+		n\in \langle P_k\rangle.
+		\]
+	\end{proof}
+	
+	\begin{satz}[Scharfe Grenze der lückenlosen Ausfüllung]
+		\label{satz:scharfe_grenze_schale}
+		Für die Primschale
+		\[
+		P_k=\{2,3,\dots,p_k\}
+		\]
+		gilt:
+		\[
+		\{1,2,\dots,p_{k+1}-1\}\subseteq \langle P_k\rangle,
+		\]
+		während
+		\[
+		p_{k+1}\notin \langle P_k\rangle.
+		\]
+		
+		Insbesondere ist \(p_{k+1}\) die erste natürliche Zahl, die mit den bereits
+		vorhandenen Primfaktoren aus \(P_k\) nicht mehr dargestellt werden kann.
+	\end{satz}
+	
+	\begin{proof}
+		Sei \(n<p_{k+1}\). Dann kann kein Primfaktor von \(n\) größer oder gleich \(p_{k+1}\) sein,
+		denn sonst wäre dieser Primfaktor bereits größer als \(n\), was unmöglich ist. Also haben
+		alle Primfaktoren von \(n\) die Form
+		\[
+		p\le p_k.
+		\]
+		Damit besteht die Primfaktorzerlegung von \(n\) ausschließlich aus Primzahlen in \(P_k\), also
+		\[
+		n\in \langle P_k\rangle.
+		\]
+		
+		Andererseits ist \(p_{k+1}\) selbst prim und gehört nicht zu \(P_k\). Folglich kann
+		\(p_{k+1}\) nicht als Produkt von Primzahlen aus \(P_k\) dargestellt werden, also
+		\[
+		p_{k+1}\notin \langle P_k\rangle.
+		\]
+		Damit ist \(p_{k+1}\) die erste Lücke.
+	\end{proof}
+	
+	\begin{korollar}[Geburt eines neuen Primträgers]
+		\label{kor:geburt_neuer_primtraeger}
+		Für eine gegebene Zahl \(n\in\mathbb N\) relativ zur Schale \(P_k\) gilt:
+		\[
+		R_k(n)>1
+		\quad\Longleftrightarrow\quad
+		\text{in } n \text{ tritt mindestens ein neuer Primfaktor } >p_k \text{ auf.}
+		\]
+	\end{korollar}
+	
+	\begin{proof}
+		Aus Lemma~\ref{lem:schalenabschluss} folgt
+		\[
+		R_k(n)=1
+		\quad\Longleftrightarrow\quad
+		n\in\langle P_k\rangle.
+		\]
+		Also gilt äquivalent:
+		\[
+		R_k(n)>1
+		\quad\Longleftrightarrow\quad
+		n\notin \langle P_k\rangle.
+		\]
+		Dies bedeutet genau, dass \(n\) mindestens einen Primfaktor besitzt, der nicht in \(P_k\)
+		liegt, also größer als \(p_k\) ist.
+	\end{proof}
+	
+	\begin{definition}[E/ABC-Zerlegung des reduzierten Kerns]
+		Wir zerlegen den reduzierten Kern nach den Restklassen modulo \(12\):
+		\[
+		R_k(n)=E_k(n)\,A_k(n)\,B_k(n)\,C_k(n),
+		\]
+		wobei
+		\[
+		E_k(n):=\prod_{\substack{q^a\parallel R_k(n)\\ q\equiv 1\pmod{12}}} q^a,
+		\]
+		\[
+		A_k(n):=\prod_{\substack{q^a\parallel R_k(n)\\ q\equiv 5\pmod{12}}} q^a,\qquad
+		B_k(n):=\prod_{\substack{q^a\parallel R_k(n)\\ q\equiv 7\pmod{12}}} q^a,\qquad
+		C_k(n):=\prod_{\substack{q^a\parallel R_k(n)\\ q\equiv 11\pmod{12}}} q^a.
+		\]
+	\end{definition}
+	
+	\begin{satz}[Kriterium für das Auftreten neuer Zahlen in E/ABC-Sprache]
+		\label{satz:eabc_kriterium_neue_zahl}
+		Für \(n\in\mathbb N\) relativ zur Schale \(P_k\) gilt:
+		\[
+		R_k(n)>1
+		\quad\Longleftrightarrow\quad
+		E_k(n)A_k(n)B_k(n)C_k(n)>1.
+		\]
+		
+		Damit liefert die E/ABC-Zerlegung des reduzierten Kerns kein neues Existenzkriterium,
+		wohl aber die \emph{Signatur} des neuen Primträgers:
+		\begin{itemize}
+			\item \(E_k(n)>1\), \(A_k(n)=B_k(n)=C_k(n)=1\): rein energetischer neuer Rest,
+			\item \(E_k(n)=1\), \(A_k(n)B_k(n)C_k(n)>1\): rein \(ABC\)-artiger neuer Rest,
+			\item \(E_k(n)>1\) und \(A_k(n)B_k(n)C_k(n)>1\): gemischter neuer Rest.
+		\end{itemize}
+	\end{satz}
+	
+	\begin{proof}
+		Da per Definition
+		\[
+		R_k(n)=E_k(n)\,A_k(n)\,B_k(n)\,C_k(n),
+		\]
+		gilt unmittelbar:
+		\[
+		R_k(n)>1
+		\quad\Longleftrightarrow\quad
+		E_k(n)A_k(n)B_k(n)C_k(n)>1.
+		\]
+		Die Fallunterscheidung beschreibt lediglich, in welchen Restklassen die neuen
+		Primfaktoren des Kerns auftreten.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Die Grenze
+		\[
+		p_{k+1}-1
+		\]
+		ist die schärfste mögliche Grenze der \emph{lückenlosen} Ausfüllung der natürlichen Zahlen
+		durch die vorhandene Schale. Ab \(p_{k+1}\) bricht nicht die Existenz weiterer
+		\(P_k\)-glatter Zahlen zusammen, wohl aber ihre Vollständigkeit als Anfangsstrecke.
+	\end{bemerkung}
+	
+	\begin{bemerkung}
+		In der Sprache des Schalenwechsel-Modells bedeutet dies: Die Schale ist genau dann
+		abgeschlossen, wenn der reduzierte Kern trivial ist. Die Geburt einer neuen Zahl im
+		arithmetisch relevanten Sinn beginnt genau dann, wenn
+		\[
+		R_k(n)>1.
+		\]
+		Die E/ABC-Zerlegung entscheidet anschließend nicht mehr über das bloße Auftreten des
+		Neuen, sondern über dessen innere Signatur.
+	\end{bemerkung}
+	
+	\subsection{Numerischer Test bis \(10^7\)}
+	
+	Zur numerischen Überprüfung der Aussagen über Schalenabschluss und reduzierte Kerne
+	wurde ein vollständiger Test für alle natürlichen Zahlen
+	\[
+	1\le n\le 10^7
+	\]
+	durchgeführt. Grundlage war ein Siebverfahren, das für jede Zahl \(n\) den größten
+	Primfaktor
+	\[
+	P^+(n)
+	\]
+	bestimmt. Damit ist die Zugehörigkeit zum von einer Schale \(P_k=\{2,3,\dots,p_k\}\)
+	erzeugten Monoid äquivalent zu
+	\[
+	n\in \langle P_k\rangle
+	\quad\Longleftrightarrow\quad
+	P^+(n)\le p_k.
+	\]
+	Nach Lemma~\ref{lem:schalenabschluss} ist dies wiederum äquivalent zu
+	\[
+	R_k(n)=1.
+	\]
+	
+	\begin{satz}[Numerische Bestätigung bis \(10^7\)]
+		\label{satz:numerik_bis_10hoch7}
+		Für alle getesteten Schalen \(P_k\) mit
+		\[
+		p_{k+1}\le 10^7
+		\]
+		und für alle Zahlen
+		\[
+		1\le n\le 10^7
+		\]
+		bestätigen die numerischen Daten:
+		
+		\begin{enumerate}
+			\item Die Anfangsstrecke
+			\[
+			\{1,2,\dots,p_{k+1}-1\}
+			\]
+			liegt vollständig in \(\langle P_k\rangle\).
+			
+			\item Die erste nicht mehr darstellbare Zahl ist genau
+			\[
+			p_{k+1}.
+			\]
+			
+			\item Für jede getestete Zahl \(n\) gilt äquivalent:
+			\[
+			R_k(n)=1
+			\quad\Longleftrightarrow\quad
+			P^+(n)\le p_k,
+			\]
+			also
+			\[
+			R_k(n)>1
+			\quad\Longleftrightarrow\quad
+			P^+(n)>p_k.
+			\]
+		\end{enumerate}
+	\end{satz}
+	
+	\begin{proof}[Numerische Verifikation]
+		Der Test wurde vollständig für alle \(n\le 10^7\) ausgeführt. Für jede Zahl wurde der
+		größte Primfaktor \(P^+(n)\) berechnet. Damit ließ sich für jede Schale \(P_k\) direkt
+		prüfen, ob \(n\) vollständig aus den vorhandenen Schalenprimzahlen aufgebaut werden kann.
+		Dabei traten keine Gegenbeispiele zu Satz~\ref{satz:scharfe_grenze_schale},
+		Lemma~\ref{lem:schalenabschluss} oder Korollar~\ref{kor:geburt_neuer_primtraeger} auf.
+	\end{proof}
+	
+	\begin{beispiel}
+		Die Anzahl der \(P_k\)-glatten Zahlen bis \(10^7\) beträgt für einige ausgewählte Schalen:
+		
+		\[
+		\#\{n\le 10^7:\ P^+(n)\le 2\}=24,
+		\]
+		\[
+		\#\{n\le 10^7:\ P^+(n)\le 3\}=190,
+		\]
+		\[
+		\#\{n\le 10^7:\ P^+(n)\le 5\}=768,
+		\]
+		\[
+		\#\{n\le 10^7:\ P^+(n)\le 7\}=2155,
+		\]
+		\[
+		\#\{n\le 10^7:\ P^+(n)\le 11\}=4520,
+		\]
+		\[
+		\#\{n\le 10^7:\ P^+(n)\le 13\}=8289,
+		\]
+		\[
+		\#\{n\le 10^7:\ P^+(n)\le 29\}=37627,
+		\]
+		\[
+		\#\{n\le 10^7:\ P^+(n)\le 97\}=269882.
+		\]
+		
+		Diese Zahlen zeigen, dass auch für größere Schalen noch viele glatte Zahlen auftreten,
+		dass ihre Dichte aber rasch abnimmt.
+	\end{beispiel}
+	
+	\begin{bemerkung}
+		Die numerischen Tests bestätigen damit sehr deutlich die begriffliche Trennung zwischen
+		\emph{Schalenabschluss} und \emph{Signatur des Neuen}. Das Existenzkriterium für einen
+		neuen Primträger ist vollständig durch
+		\[
+		R_k(n)>1
+		\]
+		gegeben. Die E/ABC-Zerlegung von \(R_k(n)\) entscheidet anschließend nicht mehr darüber,
+		\emph{ob} etwas Neues auftritt, sondern nur darüber, \emph{welcher Art} dieses Neue ist.
+	\end{bemerkung}
+	
+	\begin{bemerkung}
+		Die Grenze
+		\[
+		p_{k+1}-1
+		\]
+		ist numerisch bis \(10^7\) ausnahmslos als scharfe Grenze der lückenlosen Ausfüllung
+		bestätigt worden. Ab \(p_{k+1}\) bricht nicht die Existenz weiterer \(P_k\)-glatter Zahlen
+		zusammen, wohl aber ihre Vollständigkeit als Anfangsstrecke.
+	\end{bemerkung}
+	
+	\subsection{Schalenabschluss und Primzahlvierlinge}
+	
+	Die Aussagen über Schalenabschluss und reduzierte Kerne besitzen eine natürliche lokale
+	Ergänzung durch die Struktur der Primzahlvierlinge. Während der Schalenabschluss global
+	entscheidet, bis zu welchem Punkt die natürlichen Zahlen durch eine gegebene Schale
+	vollständig erzeugt werden können, beschreiben Primzahlvierlinge die dichteste lokale
+	Organisation neuer Primstruktur jenseits dieser Schale.
+	
+	\begin{definition}[Primzahlvierling]
+		Ein Primzahlvierling ist eine Primzahlkonstellation der Form
+		\[
+		(p,p+2,p+6,p+8),
+		\]
+		bei der alle vier Zahlen prim sind.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Für Primzahlen \(>3\) sind modulo \(12\) nur die Restklassen
+		\[
+		1,5,7,11
+		\]
+		möglich. In der Sprache der Familien
+		\[
+		E,\ A,\ B,\ C
+		\]
+		entspricht dies genau den vier zugelassenen Signaturen jenseits der \(2\)- und
+		\(3\)-Schale.
+	\end{bemerkung}
+	
+	\begin{lemma}[EABC-Zyklus im Primzahlvierling]
+		\label{lem:vierling_eabc}
+		Sei
+		\[
+		(p,p+2,p+6,p+8)
+		\]
+		ein Primzahlvierling mit \(p>3\). Dann durchlaufen die vier Einträge modulo \(12\) genau
+		einmal die vier Restklassen
+		\[
+		5,\ 7,\ 11,\ 1,
+		\]
+		also in Familiennotation
+		\[
+		A,\ B,\ C,\ E,
+		\]
+		gegebenenfalls zyklisch verschoben.
+	\end{lemma}
+	
+	\begin{proof}
+		Da \(p>3\) prim ist, kann \(p\) modulo \(12\) nur in einer der Klassen
+		\[
+		1,\ 5,\ 7,\ 11
+		\]
+		liegen. Addiert man die Verschiebungen \(0,2,6,8\), so erhält man modulo \(12\) genau die
+		vier Werte
+		\[
+		p,\ p+2,\ p+6,\ p+8
+		\]
+		als vollständige zyklische Durchläufe durch die vier zulässigen Primrestklassen. Für den
+		Startwert \(p\equiv 5\pmod{12}\) ergibt sich unmittelbar
+		\[
+		5,\ 7,\ 11,\ 1.
+		\]
+		Die übrigen Fälle entstehen durch zyklische Verschiebung derselben Viererstruktur.
+	\end{proof}
+	
+	\begin{satz}[Globale und lokale Seite neuer Primstruktur]
+		\label{satz:global_lokal_neu}
+		Sei \(P_k=\{2,3,\dots,p_k\}\) eine Primschale. Dann gilt:
+		
+		\begin{enumerate}
+			\item Global wird das Auftreten neuer Primstruktur relativ zu \(P_k\) exakt durch den
+			reduzierten Kern entschieden:
+			\[
+			R_k(n)>1
+			\quad\Longleftrightarrow\quad
+			\text{in } n \text{ tritt mindestens ein Primfaktor } >p_k \text{ auf.}
+			\]
+			
+			\item Lokal liefern Primzahlvierlinge die dichteste Konfiguration, in der neue
+			Primstruktur jenseits der \(2\)- und \(3\)-Schale als vollständiger \(EABC\)-Block
+			sichtbar wird.
+		\end{enumerate}
+	\end{satz}
+	
+	\begin{proof}[Begründung]
+		Der erste Teil ist bereits in Korollar~\ref{kor:geburt_neuer_primtraeger} gezeigt.
+		
+		Für den zweiten Teil ist entscheidend, dass Primzahlen \(>3\) nur in den vier Klassen
+		\[
+		1,\ 5,\ 7,\ 11\pmod{12}
+		\]
+		auftreten können. Ein Primzahlvierling realisiert diese vier Klassen in maximal dichter
+		Anordnung, da die Form
+		\[
+		(p,p+2,p+6,p+8)
+		\]
+		die engste mögliche Konfiguration ist, die mit den Restriktionen der Teilbarkeit durch
+		\(2\) und \(3\) verträglich bleibt. Nach Lemma~\ref{lem:vierling_eabc} erscheint dabei
+		lokal genau einmal die vollständige EABC-Signatur.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Damit ergibt sich eine konzeptionelle Trennung:
+		
+		\begin{itemize}
+			\item Der reduzierte Kern \(R_k(n)\) beantwortet die globale Existenzfrage:
+			\[
+			\text{„Ist neue Primstruktur außerhalb der Schale vorhanden?“}
+			\]
+			
+			\item Der Primzahlvierling beantwortet eine lokale Organisationsfrage:
+			\[
+			\text{„Wie kann neue Primstruktur in maximal dichter EABC-Form auftreten?“}
+			\]
+		\end{itemize}
+		
+		In diesem Sinn misst \(R_k(n)>1\) das Auftreten des Neuen, während der Primzahlvierling
+		seine dichteste lokale EABC-Kohärenz beschreibt.
+	\end{bemerkung}
+	
+	\begin{korollar}[Primzahlvierlinge als lokale Vollsignatur]
+		\label{kor:vierling_vollsignatur}
+		Primzahlvierlinge sind die kleinste lokale Primkonfiguration, in der alle vier Familien
+		\[
+		E,\ A,\ B,\ C
+		\]
+		gleichzeitig auftreten. Sie bilden damit eine lokale Vollsignatur neuer Primstruktur
+		jenseits der \(2\)- und \(3\)-Schale.
+	\end{korollar}
+	
+	\begin{bemerkung}
+		Die Aussage über die erste nicht mehr ausfüllbare Zahl
+		\[
+		p_{k+1}
+		\]
+		beschreibt die erste globale Lücke einer gegebenen Schale. Primzahlvierlinge beschreiben
+		demgegenüber nicht bloß das Auftreten einer einzelnen neuen Primzahl, sondern eine
+		strukturierte Überschreitung, in der neue Primzahlen in maximal dichter und zugleich
+		vollständiger EABC-Organisation erscheinen.
+	\end{bemerkung}
+	
+	\begin{bemerkung}
+		In der Sprache des Schalenwechsel-Modells kann man daher sagen: Der Schalenabschluss
+		kontrolliert die globale Vollständigkeit der aus vorhandenen Primträgern erzeugbaren
+		Anfangsstrecke, während Primzahlvierlinge die erste lokal maximale Gestalt des Neuen
+		darstellen, sobald die Restriktionen der kleinen Schalen überwunden sind.
+	\end{bemerkung}
+	
+	\subsection{Leitformel für Schalenabschluss und lokale Vierlingsstruktur}
+	
+	Die grundlegende Größe des Modells ist der reduzierte Kern relativ zu einer gegebenen
+	Primschale
+	\[
+	P_k=\{2,3,5,\dots,p_k\}.
+	\]
+	Er wird durch
+	\[
+	\boxed{
+		R_k(n):=\frac{n}{\displaystyle\prod_{p\in P_k} p^{v_p(n)}}
+	}
+	\]
+	definiert.
+	
+	\begin{bemerkung}[Leitformel des Schalenmodells]
+		\label{prop:leitformel_schale}
+		Für jede natürliche Zahl \(n\) und jede Primschale \(P_k\) gilt:
+		
+		\[
+		\boxed{
+			R_k(n)=1
+			\iff
+			n\in \langle P_k\rangle
+		}
+		\]
+		
+		und äquivalent
+		
+		\[
+		\boxed{
+			R_k(n)>1
+			\iff
+			\text{in }n\text{ tritt mindestens ein Primfaktor }>p_k\text{ auf.}
+		}
+		\]
+	\end{bemerkung}
+	
+	\begin{proof}
+		Die Zahl
+		\[
+		S_k(n):=\prod_{p\in P_k} p^{v_p(n)}
+		\]
+		enthält per Definition genau alle Primfaktorpotenzen von \(n\), deren Primfaktoren bereits
+		in der Schale \(P_k\) liegen. Daher ist
+		\[
+		R_k(n)=\frac{n}{S_k(n)}
+		\]
+		genau der außerhalb der Schale verbleibende Rest.
+		
+		\medskip
+		\noindent
+		Falls \(R_k(n)=1\), gilt \(n=S_k(n)\), also besteht \(n\) vollständig aus Primfaktoren in
+		\(P_k\). Daher ist
+		\[
+		n\in \langle P_k\rangle.
+		\]
+		
+		Umgekehrt, falls \(n\in \langle P_k\rangle\), besitzt \(n\) keine Primfaktoren außerhalb
+		von \(P_k\), also ist bereits \(S_k(n)=n\), und damit
+		\[
+		R_k(n)=1.
+		\]
+		
+		Die zweite Äquivalenz ist nur die Umformulierung der Negation: \(R_k(n)>1\) bedeutet
+		genau, dass nach Abzug des Schalenanteils noch ein nichttrivialer Rest außerhalb der
+		Schale verbleibt.
+	\end{proof}
+	
+	\begin{korollar}[Scharfe Grenze der lückenlosen Ausfüllung]
+		\label{kor:leitformel_grenze}
+		Für die Primschale \(P_k\) ist die erste nicht mehr vollständig durch die vorhandenen
+		Primfaktoren darstellbare Zahl genau
+		\[
+		p_{k+1}.
+		\]
+		Insbesondere gilt
+		\[
+		\{1,2,\dots,p_{k+1}-1\}\subseteq \langle P_k\rangle,
+		\qquad
+		p_{k+1}\notin \langle P_k\rangle.
+		\]
+	\end{korollar}
+	
+	\begin{proof}
+		Jede Zahl \(n<p_{k+1}\) kann keinen Primfaktor \(\ge p_{k+1}\) besitzen und liegt daher
+		in \(\langle P_k\rangle\). Die Zahl \(p_{k+1}\) selbst ist prim und gehört nicht zu
+		\(P_k\), also nicht zu \(\langle P_k\rangle\).
+	\end{proof}
+	
+	\begin{definition}[Vierlingsindikator]
+		Für \(p\in\mathbb N\) definieren wir den Indikator eines Primzahlvierlings durch
+		\[
+		\boxed{
+			\mathcal V(p):=
+			\mathbf 1_{\mathbb P}(p)\,
+			\mathbf 1_{\mathbb P}(p+2)\,
+			\mathbf 1_{\mathbb P}(p+6)\,
+			\mathbf 1_{\mathbb P}(p+8)
+		}
+		\]
+		wobei \(\mathbf 1_{\mathbb P}\) die Indikatorfunktion der Primzahlen bezeichnet.
+	\end{definition}
+	
+	\begin{korollar}[Lokale Vollsignatur eines Vierlings]
+		\label{kor:leitformel_vierling}
+		Falls
+		\[
+		\mathcal V(p)=1,
+		\]
+		also
+		\[
+		(p,p+2,p+6,p+8)
+		\]
+		ein Primzahlvierling ist, dann durchlaufen diese vier Zahlen modulo \(12\) genau die
+		vier Primrestklassen
+		\[
+		5,\ 7,\ 11,\ 1,
+		\]
+		also in Familiennotation
+		\[
+		A,\ B,\ C,\ E,
+		\]
+		bis auf zyklische Verschiebung.
+	\end{korollar}
+	
+	\begin{proof}
+		Für Primzahlen \(>3\) sind modulo \(12\) nur die Klassen
+		\[
+		1,\ 5,\ 7,\ 11
+		\]
+		möglich. Die Verschiebungen \(0,2,6,8\) erzeugen modulo \(12\) genau einen vollständigen
+		zyklischen Durchlauf durch diese vier Klassen.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Die Leitformel
+		\[
+		R_k(n)=\frac{n}{S_k(n)}
+		\]
+		misst global, ob eine Zahl bereits vollständig durch die Schale erzeugt werden kann.
+		Der Vierlingsindikator
+		\[
+		\mathcal V(p)
+		\]
+		misst dagegen lokal eine maximal dichte Primkonfiguration. In diesem Sinn gilt:
+		
+		\[
+		\boxed{
+			R_k(n)>1
+			\text{ misst die Existenz des Neuen,}
+			\qquad
+			\mathcal V(p)=1
+			\text{ misst seine dichteste lokale EABC-Ausprägung.}
+		}
+		\]
+	\end{bemerkung}
+	
+	\subsection{Die EA/BC-Zweischale als kleinste raue Schalenstruktur}
+	
+	Nach Abtrennung der glatten Grundkoeffizienten \(2\), \(3\) und \(5\) bleibt ein rauer
+	Kern zurück, auf dem sich die vier Familien \(E,A,B,C\) zu einer kleinsten nichttrivialen
+	Zweischale verdichten. Diese Zweischale wird durch die Paarung
+	\[
+	EA
+	\qquad\text{und}\qquad
+	BC
+	\]
+	gegeben.
+	
+	\begin{definition}[Rauer Kern]
+		Für \(n\in\mathbb N\) definieren wir den von den glatten Faktoren \(2\), \(3\) und \(5\)
+		befreiten rauen Kern durch
+		\[
+		m(n):=\frac{n}{2^{v_2(n)}3^{v_3(n)}5^{v_5(n)}}.
+		\]
+		Dann gilt stets
+		\[
+		\gcd(m(n),30)=1.
+		\]
+		Insbesondere liegen alle Primfaktoren von \(m(n)\) in den Restklassen
+		\[
+		1,\ 5,\ 7,\ 11 \pmod{12},
+		\]
+		also in den Familien \(E,A,B,C\).
+	\end{definition}
+	
+	\begin{definition}[EA/BC-Signatur]
+		\label{def:eabc_zweischale}
+		Für einen rauen Kern \(m\) mit \(\gcd(m,30)=1\) definieren wir die Zweischalen-Signatur
+		\[
+		\chi_{EA/BC}(m):=
+		\begin{cases}
+			+1,& m\bmod 12\in\{1,5\},\\[1mm]
+			-1,& m\bmod 12\in\{7,11\}.
+		\end{cases}
+		\]
+		Wir sagen:
+		\[
+		m\in EA
+		\iff
+		\chi_{EA/BC}(m)=+1,
+		\]
+		\[
+		m\in BC
+		\iff
+		\chi_{EA/BC}(m)=-1.
+		\]
+	\end{definition}
+	
+	\begin{lemma}[EA ist Untergruppe, BC ist Nebenklasse]
+		\label{lem:eabc_untergruppe}
+		Die Menge
+		\[
+		\{1,5\}\subset (\mathbb Z/12\mathbb Z)^\times
+		\]
+		ist eine Untergruppe der Einheitengruppe modulo \(12\), und
+		\[
+		\{7,11\}
+		\]
+		ist die komplementäre Nebenklasse. Insbesondere gilt auf Signaturniveau
+		\[
+		EA\cdot EA=EA,\qquad
+		EA\cdot BC=BC,\qquad
+		BC\cdot BC=EA.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Die Einheiten modulo \(12\) sind
+		\[
+		(\mathbb Z/12\mathbb Z)^\times=\{1,5,7,11\}.
+		\]
+		Man rechnet unmittelbar nach:
+		\[
+		1\cdot 1\equiv 1,\qquad
+		1\cdot 5\equiv 5,\qquad
+		5\cdot 5\equiv 1 \pmod{12}.
+		\]
+		Damit ist \(\{1,5\}\) eine Untergruppe.
+		
+		Ebenso gilt
+		\[
+		7\cdot 7\equiv 1,\qquad
+		7\cdot 11\equiv 5,\qquad
+		11\cdot 11\equiv 1 \pmod{12},
+		\]
+		sodass das Produkt zweier Elemente aus \(\{7,11\}\) wieder in \(\{1,5\}\) liegt. Weiter
+		gilt
+		\[
+		1\cdot 7\equiv 7,\qquad
+		1\cdot 11\equiv 11,\qquad
+		5\cdot 7\equiv 11,\qquad
+		5\cdot 11\equiv 7 \pmod{12}.
+		\]
+		Damit folgt genau die angegebene Zweischalen-Algebra.
+	\end{proof}
+	
+	\begin{satz}[Faktorisierungskriterium der EA/BC-Zweischale]
+		\label{satz:eabc_faktorisierung}
+		Sei
+		\[
+		m=\prod_{i=1}^r p_i^{e_i}
+		\]
+		die Primfaktorzerlegung eines rauen Kerns \(m\), also \(\gcd(m,30)=1\). Dann gilt
+		\[
+		\boxed{
+			\chi_{EA/BC}(m)
+			=
+			(-1)^{\sum_{p_i\in B\cup C} e_i}.
+		}
+		\]
+		
+		Insbesondere gilt:
+		\begin{itemize}
+			\item Eine gerade Gesamtzahl von Exponenten aus den Familien \(B\) und \(C\) impliziert
+			\[
+			m\in EA.
+			\]
+			\item Eine ungerade Gesamtzahl von Exponenten aus den Familien \(B\) und \(C\) impliziert
+			\[
+			m\in BC.
+			\]
+		\end{itemize}
+	\end{satz}
+	
+	\begin{proof}
+		Auf Zweischalen-Niveau wirken Faktoren aus \(E\) und \(A\) neutral, also mit Vorzeichen
+		\(+1\), während Faktoren aus \(B\) und \(C\) jeweils einen Vorzeichenwechsel erzeugen.
+		Da die Multiplikation in der Zweischale nach Lemma~\ref{lem:eabc_untergruppe} genau der
+		Multiplikation von \(\pm1\) entspricht, liefert jede Primfaktorpotenz \(p_i^{e_i}\) mit
+		\(p_i\in B\cup C\) den Beitrag \((-1)^{e_i}\). Multiplikation aller Beiträge ergibt
+		\[
+		\chi_{EA/BC}(m)
+		=
+		\prod_{p_i\in B\cup C} (-1)^{e_i}
+		=
+		(-1)^{\sum_{p_i\in B\cup C} e_i}.
+		\]
+	\end{proof}
+	
+	\begin{korollar}[Kleinste nichttriviale Schalenstruktur]
+		\label{kor:eabc_kleinste_schale}
+		Nach Abtrennung der glatten Faktoren \(2\), \(3\) und \(5\) ist die Paarung
+		\[
+		EA\mid BC
+		\]
+		die kleinste nichttriviale Schalenstruktur auf dem rauen Kern. Sie ist zweistufig und wird
+		vollständig durch die Signatur
+		\[
+		\chi_{EA/BC}(m)\in\{+1,-1\}
+		\]
+		beschrieben.
+	\end{korollar}
+	
+	\begin{bemerkung}
+		Die feine Viererstruktur \(E,A,B,C\) wird in der EA/BC-Zweischale auf eine gröbere, aber
+		algebraisch sehr stabile Zwei-Klassen-Struktur projiziert. Diese Projektion bewahrt den
+		wesentlichen Flip-Mechanismus:
+		\[
+		B\ \text{oder}\ C \text{ wechseln die Zweischale,}
+		\qquad
+		E\ \text{oder}\ A \text{lassen sie unverändert.}
+		\]
+	\end{bemerkung}
+	
+	\begin{definition}[Verfeinerte raue Schalenkoordinate]
+		Für einen rauen Kern \(m\) definieren wir die kombinierte Schalenkoordinate
+		\[
+		\boxed{
+			\bigl(P^+(m),\chi_{EA/BC}(m)\bigr),
+		}
+		\]
+		wobei \(P^+(m)\) den größten Primfaktor von \(m\) bezeichnet.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Die Größe \(P^+(m)\) misst, in welcher rauen Größenschale der Kern liegt, während
+		\[
+		\chi_{EA/BC}(m)
+		\]
+		angibt, in welchem der beiden kleinsten Paarsektoren \(EA\) bzw. \(BC\) er sich befindet.
+		Damit erhält man eine zweidimensionale Schalenbeschreibung:
+		\[
+		\text{Größenlage}\times\text{Paar-Signatur}.
+		\]
+	\end{bemerkung}
+	
+	\begin{korollar}[Primzahlvierlinge in der EA/BC-Projektion]
+		\label{kor:vierling_eabc_zweischale}
+		Ein Primzahlvierling
+		\[
+		(p,p+2,p+6,p+8)
+		\]
+		mit \(p>3\) besitzt in der feinen Familienstruktur die Signatur
+		\[
+		(A,B,C,E)
+		\]
+		bis auf zyklische Verschiebung. In der groben EA/BC-Zweischale projiziert sich dies zu
+		\[
+		(EA,\,BC,\,BC,\,EA)
+		\]
+		bis auf zyklische Verschiebung.
+	\end{korollar}
+	
+	\begin{proof}
+		Die feine Signatur folgt aus der modulo-\(12\)-Struktur des Vierlings. Unter der Paarung
+		\[
+		E,A\mapsto EA,
+		\qquad
+		B,C\mapsto BC
+		\]
+		wird daraus unmittelbar
+		\[
+		(A,B,C,E)\mapsto (EA,BC,BC,EA).
+		\]
+	\end{proof}
+	
+	\begin{bemerkung}
+		Damit erscheinen Primzahlvierlinge in der groben Zweischalenprojektion als symmetrische
+		Zwei-Sektoren-Muster mit einem \(BC\)-Kern und \(EA\)-Rand. Dies spricht dafür, dass die
+		EA/BC-Zweischale tatsächlich die kleinste sinnvolle Projektionsschale ist, in der
+		lokale Primstruktur noch nicht trivial wird.
+	\end{bemerkung}
+	
+	\subsection{Numerische Kopplung der Vierer- und Zweierschale}
+	
+	Zur Untersuchung der Beziehung zwischen der feinen Viererschale
+	\[
+	E,\ A,\ B,\ C
+	\]
+	und der groben Zweierschale
+	\[
+	EA\mid BC
+	\]
+	wurde für alle natürlichen Zahlen
+	\[
+	1\le n\le 10^6
+	\]
+	der raue Kern
+	\[
+	m(n):=\frac{n}{2^{v_2(n)}3^{v_3(n)}5^{v_5(n)}}
+	\]
+	berechnet und anschließend sowohl fein als auch grob klassifiziert.
+	
+	Die feine Klassifikation erfolgt über
+	\[
+	m(n)\bmod 12\in\{1,5,7,11\},
+	\]
+	also
+	\[
+	1\mapsto E,\qquad
+	5\mapsto A,\qquad
+	7\mapsto B,\qquad
+	11\mapsto C.
+	\]
+	Die grobe Klassifikation ist die Projektion
+	\[
+	E,A\mapsto EA,
+	\qquad
+	B,C\mapsto BC.
+	\]
+	
+	\begin{satz}[Numerische Kopplung bis \(10^6\)]
+		\label{satz:numerik_kopplung_vierer_zweier}
+		Für die rauen Kerne \(m(n)\) bis \(10^6\) zeigen die numerischen Daten:
+		
+		\begin{enumerate}
+			\item Die feinen Klassen \(E,A,B,C\) sind praktisch gleichverteilt:
+			\[
+			P(E)\approx P(A)\approx P(B)\approx P(C)\approx \frac14.
+			\]
+			
+			\item Die groben Klassen \(EA,BC\) sind praktisch gleichverteilt:
+			\[
+			P(EA)\approx P(BC)\approx \frac12.
+			\]
+			
+			\item Die Shannon-Entropien erfüllen numerisch
+			\[
+			H_4\approx \log 4,
+			\qquad
+			H_2\approx \log 2,
+			\qquad
+			H_4-H_2\approx \log 2.
+			\]
+			
+			\item Alle bis \(10^6\) gefundenen Primzahlvierlinge projizieren exakt auf das
+			erwartete Zweischalenmuster
+			\[
+			(EA,BC,BC,EA)
+			\]
+			bis auf zyklische Verschiebung.
+		\end{enumerate}
+	\end{satz}
+	
+	\begin{proof}[Numerische Verifikation]
+		Die numerische Auswertung ergab für die feinen Klassenverteilungen:
+		
+		\[
+		E: 249753,\qquad
+		A: 249813,\qquad
+		B: 250077,\qquad
+		C: 249850,
+		\]
+		also insgesamt
+		\[
+		999493
+		\]
+		nichttriviale raue Kerne. Für die groben Klassen ergab sich:
+		
+		\[
+		EA: 499566,\qquad
+		BC: 499927.
+		\]
+		
+		Die zugehörigen Entropien lauten numerisch:
+		\[
+		H_4=1.386294240726,
+		\qquad
+		H_2=0.693147115333,
+		\]
+		also
+		\[
+		H_4-H_2=0.693147125392.
+		\]
+		Dies stimmt numerisch mit
+		\[
+		\log 4,\qquad \log 2,\qquad \log 2
+		\]
+		überein.
+		
+		Zusätzlich wurden bis \(10^6\) genau
+		\[
+		166
+		\]
+		Primzahlvierlinge gefunden. In allen \(166\) Fällen stimmte die Projektion auf die
+		Zweierschale exakt mit dem Muster
+		\[
+		(EA,BC,BC,EA)
+		\]
+		bis auf zyklische Verschiebung überein.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Die Zahlen
+		\[
+		H_4\approx \log 4,
+		\qquad
+		H_2\approx \log 2
+		\]
+		zeigen, dass sowohl die Viererschale als auch ihre Zweierschalenprojektion global nahezu
+		maximal gleichverteilt sind. Damit erklärt sich die Zweierschale nicht als grobe
+		Verzerrung, sondern als symmetrischer Quotient der feinen Viererstruktur.
+	\end{bemerkung}
+	
+	\begin{bemerkung}
+		Der Entropieverlust
+		\[
+		\Delta H:=H_4-H_2\approx \log 2
+		\]
+		hat eine klare informations-theoretische Bedeutung: Beim Übergang von
+		\[
+		E,A,B,C
+		\]
+		zu
+		\[
+		EA,BC
+		\]
+		geht genau eine binäre Entscheidungsstufe verloren, nämlich die innere Unterscheidung
+		\[
+		E\leftrightarrow A
+		\qquad\text{und}\qquad
+		B\leftrightarrow C.
+		\]
+		Die globale Symmetrie bleibt dabei erhalten.
+	\end{bemerkung}
+	
+	\begin{bemerkung}
+		Auch die Übergangsmatrizen bestätigen diese Interpretation. Auf grober Ebene verhält sich
+		die Folge der Zweischalen-Signaturen nahezu wie ein symmetrischer Zwei-Zustands-Prozess,
+		während die feine Viererschale eine deutlich reichere interne Übergangsstruktur trägt.
+		Damit erscheint die Zweierschale als stabile Quotientenschale, die den globalen Sektor
+		bewahrt, während die Viererschale die innere Orientierung auflöst.
+	\end{bemerkung}
+	
+	\begin{korollar}[Kanonische Quotientenschale]
+		\label{kor:kanonische_quotientenschale}
+		Die EA/BC-Zweierschale ist numerisch die kanonische grobe Projektion der EABC-Viererschale.
+		Sie bewahrt die globale Symmetrie vollständig, verliert dabei aber genau ein Bit an
+		feiner Orientierungsinformation.
+	\end{korollar}
+	
+	\begin{bemerkung}
+		Die exakte Projektion aller getesteten Primzahlvierlinge auf das Zweischalenmuster
+		\[
+		(EA,BC,BC,EA)
+		\]
+		liefert darüber hinaus einen starken Hinweis darauf, dass die Zweierschale nicht bloß
+		statistisch sinnvoll, sondern auch lokal mit der feineren Primkonstellationsgeometrie
+		verträglich ist.
+	\end{bemerkung}
+	
+	\subsection{Glatte Schalen und raue Signaturen}
+	
+	Die bisher betrachteten Schalenstrukturen lassen sich besonders klar verstehen, wenn man
+	zwischen einem glatten Träger und einer rauen Signatur unterscheidet. Die glatten Zahlen
+	bilden die radiale Schalenlage, während der nach Abzug der glatten Faktoren verbleibende
+	raue Kern die eigentliche EABC- bzw. EA/BC-Orientierung trägt.
+	
+	\begin{definition}[Glatte Schale relativ zu \(2,3,5\)]
+		Für \(n\in\mathbb N\) definieren wir den \((2,3,5)\)-glatten Anteil durch
+		\[
+		s_{235}(n):=2^{v_2(n)}3^{v_3(n)}5^{v_5(n)}
+		\]
+		und den zugehörigen rauen Kern durch
+		\[
+		m_{235}(n):=\frac{n}{s_{235}(n)}.
+		\]
+		Dann gilt
+		\[
+		n=s_{235}(n)\,m_{235}(n)
+		\]
+		sowie
+		\[
+		\gcd(m_{235}(n),30)=1.
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		Der Faktor \(s_{235}(n)\) misst, wie stark \(n\) bereits durch die kleinen glatten
+		Primträger \(2\), \(3\) und \(5\) aufgebaut wird. Der Faktor \(m_{235}(n)\) misst
+		dagegen die neue Primstruktur, die nach Abzug dieser glatten Basis verbleibt.
+	\end{bemerkung}
+	
+	\begin{satz}[Zerlegung in glatte Lage und rauhe Signatur]
+		\label{satz:glatt_rau}
+		Jede natürliche Zahl \(n\) besitzt bezüglich der Primträger \(2,3,5\) eine eindeutige
+		Zerlegung
+		\[
+		\boxed{
+			n=s_{235}(n)\,m_{235}(n).
+		}
+		\]
+		Dabei gilt:
+		
+		\begin{enumerate}
+			\item \(s_{235}(n)\) bestimmt die glatte Schalenlage von \(n\),
+			\item \(m_{235}(n)\) bestimmt die rauhe Reststruktur,
+			\item die feine Signatur des rauen Kerns wird durch
+			\[
+			m_{235}(n)\bmod 12 \in \{1,5,7,11\}
+			\]
+			und damit durch die Familien
+			\[
+			E,\ A,\ B,\ C
+			\]
+			beschrieben,
+			\item die grobe Signatur des rauen Kerns wird durch die Zweischale
+			\[
+			EA\mid BC
+			\]
+			beschrieben.
+		\end{enumerate}
+	\end{satz}
+	
+	\begin{proof}
+		Die Eindeutigkeit der Zerlegung folgt unmittelbar aus der eindeutigen Primfaktorzerlegung.
+		Die Faktoren \(2\), \(3\) und \(5\) werden vollständig in \(s_{235}(n)\) gesammelt, sodass
+		der Rest \(m_{235}(n)\) zu \(30\) teilerfremd ist. Daher können seine Primfaktoren modulo
+		\(12\) nur in den Klassen
+		\[
+		1,\ 5,\ 7,\ 11
+		\]
+		liegen, also genau in \(E,A,B,C\). Die grobe EA/BC-Signatur ist die entsprechende
+		Paarprojektion.
+	\end{proof}
+	
+	\begin{definition}[Feine und grobe Signatur des rauen Kerns]
+		Für \(m:=m_{235}(n)\) definieren wir die feine Signatur
+		\[
+		\sigma_4(m)\in\{E,A,B,C\}
+		\]
+		durch
+		\[
+		m\bmod 12=
+		\begin{cases}
+			1,& \sigma_4(m)=E,\\
+			5,& \sigma_4(m)=A,\\
+			7,& \sigma_4(m)=B,\\
+			11,& \sigma_4(m)=C,
+		\end{cases}
+		\]
+		sowie die grobe Signatur
+		\[
+		\chi_{EA/BC}(m)\in\{+1,-1\}
+		\]
+		durch
+		\[
+		\chi_{EA/BC}(m)=
+		\begin{cases}
+			+1,& m\bmod 12\in\{1,5\},\\[1mm]
+			-1,& m\bmod 12\in\{7,11\}.
+		\end{cases}
+		\]
+	\end{definition}
+	
+	\begin{korollar}[Natürliche kombinierte Schalenkoordinate]
+		\label{kor:kombinierte_koordinate}
+		Jede natürliche Zahl \(n\) besitzt damit eine natürliche kombinierte Schalenkoordinate der
+		Form
+		\[
+		\boxed{
+			\bigl(s_{235}(n),\,\sigma_4(m_{235}(n))\bigr)
+		}
+		\]
+		bzw. in grober Form
+		\[
+		\boxed{
+			\bigl(s_{235}(n),\,\chi_{EA/BC}(m_{235}(n))\bigr).
+		}
+		\]
+	\end{korollar}
+	
+	\begin{bemerkung}
+		Diese Koordinaten haben eine klare Interpretation:
+		
+		\begin{itemize}
+			\item \(s_{235}(n)\) beschreibt die radiale Lage in der glatten Schale,
+			\item \(\sigma_4(m_{235}(n))\) beschreibt die feine sektorielle Orientierung des rauen
+			Kerns,
+			\item \(\chi_{EA/BC}(m_{235}(n))\) beschreibt die grobe Paarorientierung des rauen Kerns.
+		\end{itemize}
+		
+		Damit erscheint jede natürliche Zahl als Punkt in einer diskreten Zweiebenen-Geometrie:
+		\[
+		\text{glatte Lage} \times \text{raue Signatur}.
+		\]
+	\end{bemerkung}
+	
+	\begin{satz}[Schalenabschluss und raue Signatur]
+		\label{satz:glatt_rau_abschluss}
+		Für die Schale \(\{2,3,5\}\) gilt:
+		\[
+		m_{235}(n)=1
+		\quad\Longleftrightarrow\quad
+		n \text{ ist vollständig }(2,3,5)\text{-glatt.}
+		\]
+		Dagegen gilt:
+		\[
+		m_{235}(n)>1
+		\quad\Longleftrightarrow\quad
+		\text{in }n\text{ tritt neue Primstruktur jenseits der glatten Schale auf.}
+		\]
+		In diesem Fall beschreiben \(\sigma_4(m_{235}(n))\) und \(\chi_{EA/BC}(m_{235}(n))\)
+		die innere Signatur dieses neuen Restes.
+	\end{satz}
+	
+	\begin{proof}
+		Dies ist der Spezialfall des allgemeinen Schalenabschluss-Kriteriums, angewandt auf die
+		Primschale \(\{2,3,5\}\). Die Signaturaussagen folgen aus der modulo-\(12\)-Klassifikation
+		des rauen Kerns.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Damit ergibt sich eine natürliche Rollenverteilung:
+		
+		\[
+		\boxed{
+			\text{glatte Schale = Träger,}
+			\qquad
+			\text{rauer Kern = neue Struktur,}
+			\qquad
+			\text{EABC/EA-BC = Orientierung dieser neuen Struktur.}
+		}
+		\]
+		
+		Die glatten Zahlen geben die radiale Schalenordnung vor, die rauhen Signaturen liefern
+		die lokale und globale sektorielle Differenzierung.
+	\end{bemerkung}
+	
+	\begin{korollar}[Primzahlvierlinge im glatt-rauen Bild]
+		\label{kor:vierling_glatt_rau}
+		Für einen Primzahlvierling
+		\[
+		(p,p+2,p+6,p+8)
+		\]
+		mit \(p>5\) ist der glatte Anteil trivial, also
+		\[
+		s_{235}(p)=s_{235}(p+2)=s_{235}(p+6)=s_{235}(p+8)=1,
+		\]
+		sodass die gesamte Struktur bereits im rauen Kern liegt. Damit tragen Primzahlvierlinge
+		im glatt-rauen Bild unmittelbar ihre volle feine EABC-Signatur bzw. ihre grobe EA/BC-
+		Projektion.
+	\end{korollar}
+	
+	\begin{bemerkung}
+		Gerade deshalb ergänzen sich glatte Schalen und Primzahlvierlinge so gut: Die glatten
+		Anteile organisieren die globale radiale Lage der Zahlen, während Primzahlvierlinge eine
+		lokal maximal dichte Form reiner rauer Signatur darstellen.
+	\end{bemerkung}
+	
+	\subsection{Numerischer Vierling-\(\to\)-Fünfling-Balance-Test}
+	
+	Um die Hypothese eines strukturellen Zusammenhangs zwischen dichten Primzahlvierlingen und
+	dichten Primzahlfünflingen zu testen, wurde die Erweiterung
+	\[
+	Q_4(p):=(p,p+2,p+6,p+8)
+	\quad\longrightarrow\quad
+	Q_5(p):=(p,p+2,p+6,p+8,p+12)
+	\]
+	numerisch untersucht. Dabei wurden alle dichten Vierlinge bis \(10^6\) bestimmt und
+	überprüft, welche davon durch das zusätzliche Glied \(p+12\) zu einem dichten
+	Primzahlfünfling ergänzt werden.
+	
+	Für feste Pivot-Primzahlen \(\pi\) wurden die groben Balancegrößen
+	\[
+	\Delta_\pi,\qquad \Sigma_\pi
+	\]
+	sowie die logarithmische Balance
+	\[
+	B_\pi
+	\qquad\text{und}\qquad
+	\beta_\pi:=\frac{B_\pi}{\log 5}
+	\]
+	für den Vierling und den zugehörigen Fünfling verglichen.
+	
+	\begin{satz}[Numerischer Vierling-\(\to\)-Fünfling-Balance-Test]
+		\label{satz:vierling_fuenfling_balance}
+		Bis \(10^6\) wurden
+		\[
+		166
+		\]
+		dichte Primzahlvierlinge gefunden, von denen
+		\[
+		34
+		\]
+		zu dichten Primzahlfünflingen ergänzt werden konnten. Dies entspricht einer
+		Ergänzungsrate von
+		\[
+		\frac{34}{166}\approx 20.48\%.
+		\]
+		
+		Für die Pivot-Primzahlen
+		\[
+		\pi\in\{11,13,17,19,29,37\}
+		\]
+		zeigen die numerischen Daten:
+		
+		\begin{enumerate}
+			\item Das fünfte Glied \(p+12\) des Fünflings liegt fast immer oberhalb des Pivots
+			\(\pi\).
+			
+			\item Die diskrete Unter-/Ober-Balance verschiebt sich beim Übergang
+			\[
+			Q_4(p)\to Q_5(p)
+			\]
+			nahezu deterministisch um
+			\[
+			\Delta_\pi(Q_5)-\Delta_\pi(Q_4)\approx -1.
+			\]
+			
+			\item Die gewichtete Zweischalen-Balance \(\Sigma_\pi\) reagiert auf die EA/BC-Signatur des
+			neu hinzugefügten fünften Glieds.
+			
+			\item Die logarithmische Balance \(B_\pi\) erfährt einen starken negativen Sprung,
+			während ein echter Vorzeichenwechsel von \(B_\pi\) nur selten auftritt.
+		\end{enumerate}
+	\end{satz}
+	
+	\begin{proof}[Numerische Verifikation]
+		Die numerische Auswertung ergab für alle getesteten Pivot-Primzahlen dieselbe
+		Ergänzungsrate
+		\[
+		20.48\%.
+		\]
+		
+		Der Anteil der Fälle, in denen das neue fünfte Glied \(p+12\) oberhalb des Pivots liegt,
+		beträgt:
+		
+		\[
+		100.00\%\quad\text{für }\pi=11,13,
+		\]
+		\[
+		97.06\%\quad\text{für }\pi=17,19,
+		\]
+		\[
+		94.12\%\quad\text{für }\pi=29,37.
+		\]
+		
+		Die mittlere Änderung der diskreten Balance \(\Delta_\pi\) beträgt numerisch:
+		
+		\[
+		-1.000,\ -1.000,\ -0.971,\ -0.941,\ -0.882,\ -0.882,
+		\]
+		also durchgehend nahe bei \(-1\).
+		
+		Die mittlere Änderung der logarithmischen Balance \(B_\pi\) beträgt numerisch:
+		
+		\[
+		-11.448843,\ -11.448843,\ -11.365514,\ -11.282184,\ -11.097743,\ -11.097743,
+		\]
+		und entsprechend
+		\[
+		\Delta\beta_\pi\approx -7.11,\ -7.11,\ -7.06,\ -7.01,\ -6.90,\ -6.90.
+		\]
+		
+		Dagegen bleibt der Anteil echter Vorzeichenwechsel von \(B_\pi\) sehr klein:
+		\[
+		2.94\%,\ 0.00\%,\ 2.94\%,\ 0.00\%,\ 0.00\%,\ 0.00\%.
+		\]
+	\end{proof}
+	
+	\begin{bemerkung}
+		Die numerischen Resultate zeigen, dass die Ergänzung eines dichten Vierlings zu einem
+		dichten Fünfling typischerweise keine Spiegelung der Balance darstellt, sondern eine
+		gerichtete Translation. Das neue fünfte Glied tritt fast immer oberhalb des Pivots auf
+		und verschiebt dadurch die Unter-/Ober-Balance schichtweise nach oben.
+	\end{bemerkung}
+	
+	\begin{bemerkung}
+		Insbesondere wird damit die naive Formulierung
+		\[
+		\text{„die }5\text{ springt von unten nach oben“}
+		\]
+		in strenger Vorzeichenwechsel-Form nicht bestätigt. Bestätigt wird jedoch eine schwächere,
+		aber strukturierte Aussage:
+		\[
+		Q_4\to Q_5
+		\]
+		wirkt numerisch als kontrollierter oberer Balance-Shift mit stabiler Änderung der
+		diskreten Balance und mit EA/BC-kodierter Reaktion in \(\Sigma_\pi\).
+	\end{bemerkung}
+	
+	\begin{korollar}[Grobes Zweischalenmuster der Erweiterung]
+		\label{kor:vierling_fuenfling_grobmuster}
+		Die groben EA/BC-Muster der getesteten Erweiterungen haben durchgehend die Form
+		
+		\[
+		EA-BC-BC-EA \;\longrightarrow\; EA-BC-BC-EA-EA
+		\]
+		oder
+		\[
+		BC-EA-EA-BC \;\longrightarrow\; BC-EA-EA-BC-BC.
+		\]
+		
+		Damit erscheint der dichte Primzahlfünfling numerisch als sektorkompatibler Randaufsatz
+		eines dichten Primzahlvierlings.
+	\end{korollar}
+	
+	\begin{proof}[Numerische Beobachtung]
+		Die ausgegebenen Beispielmuster zeigen genau diese beiden Typen. Das zusätzliche fünfte
+		Glied trägt jeweils dieselbe grobe EA/BC-Sektorart wie der entsprechende Rand des
+		Vierlings.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Die Ergebnisse verbinden die statische Quotientenschale
+		\[
+		EA\mid BC
+		\]
+		mit einer dynamischen Erweiterungsregel: Die Zweischale ist nicht nur als grobe Projektion
+		der feinen Viererschale numerisch stabil, sondern bleibt auch beim Übergang von
+		Vierlingen zu Fünflingen strukturell sichtbar.
+	\end{bemerkung}
+	
+	\begin{bemerkung}
+		Die nächste natürliche Fragestellung besteht darin, die echten Fünflingserweiterungen mit
+		den nicht ergänzbaren Vierlingen zu vergleichen. Erst ein solcher Kontrasttest kann
+		klären, ob die Ergänzbarkeit selbst durch eine charakteristische Balance- oder
+		Zweischalenlage des Vierlings vorhergesagt wird.
+	\end{bemerkung}
+	
+	\subsection{Musterspezifische Balance-Selektion bei der Vierling-\(\to\)-Fünfling-Erweiterung}
+	
+	Die bisherigen numerischen Tests deuten darauf hin, dass die Ergänzbarkeit eines dichten
+	Primzahlvierlings zu einem dichten Primzahlfünfling nicht durch eine globale Balancegröße
+	allein beschrieben wird. Vielmehr zeigt sich eine musterspezifische Kopplung zwischen der
+	groben EA/BC-Struktur des Vierlings und seiner logarithmischen Balance.
+	
+	Zur Untersuchung wurden die dichten Primzahlvierlinge
+	\[
+	Q_4(p):=(p,p+2,p+6,p+8)
+	\]
+	bis \(10^6\) betrachtet und nach ihrem groben Zweischalenmuster in die beiden Typen
+	\[
+	EA-BC-BC-EA
+	\qquad\text{und}\qquad
+	BC-EA-EA-BC
+	\]
+	zerlegt. Innerhalb jedes Typs wurden die Vierlinge separat nach der Balancegröße
+	\[
+	B_\pi(Q_4)
+	\]
+	in Quantile eingeteilt und die Ergänzungsrate zum dichten Primzahlfünfling
+	\[
+	Q_5(p):=(p,p+2,p+6,p+8,p+12)
+	\]
+	bestimmt.
+	
+	\begin{satz}[Musterspezifische Balance-Selektion]
+		\label{satz:musterspezifische_balance_selektion}
+		Für die dichten Primzahlvierlinge bis \(10^6\) und den Pivot \(\pi=11\) gilt numerisch:
+		
+		\begin{enumerate}
+			\item Im Typ
+			\[
+			EA-BC-BC-EA
+			\]
+			steigt die Ergänzungsrate mit wachsender Balance \(B_\pi(Q_4)\) deutlich an.
+			
+			\item Im Typ
+			\[
+			BC-EA-EA-BC
+			\]
+			ist dieser Zusammenhang deutlich schwächer und nicht monoton stabil.
+			
+			\item Die Ergänzbarkeit zu einem dichten Primzahlfünfling ist daher nicht durch
+			\(B_\pi(Q_4)\) allein, sondern durch eine Kopplung der Form
+			\[
+			\boxed{
+				\text{Mustertyp} \times \text{Balancehöhe}
+			}
+			\]
+			bestimmt.
+		\end{enumerate}
+	\end{satz}
+	
+	\begin{proof}[Numerische Verifikation]
+		Für den Typ
+		\[
+		BC-EA-EA-BC
+		\]
+		ergaben die fünf Balance-Quantile die Ergänzungsraten
+		\[
+		25.00\%,\ 12.50\%,\ 11.76\%,\ 12.50\%,\ 23.53\%.
+		\]
+		Dies zeigt zwar eine gewisse Variation, aber keinen klaren monotonen Anstieg mit wachsender
+		Balance.
+		
+		Für den Typ
+		\[
+		EA-BC-BC-EA
+		\]
+		ergaben dieselben Quantile dagegen
+		\[
+		12.50\%,\ 23.53\%,\ 17.65\%,\ 29.41\%,\ 35.29\%.
+		\]
+		Hier ist eine deutliche Tendenz sichtbar: Vierlinge mit höherem \(B_\pi\)-Wert sind
+		numerisch erheblich häufiger ergänzbar als Vierlinge mit niedriger Balance.
+		
+		Besonders aussagekräftig ist der Vergleich der Extremquantile:
+		\[
+		35.29\%-12.50\%=22.79\%.
+		\]
+		Die Differenz zwischen niedrigem und hohem Balancebereich ist damit im Typ
+		\[
+		EA-BC-BC-EA
+		\]
+		erheblich größer als im Typ
+		\[
+		BC-EA-EA-BC.
+		\]
+	\end{proof}
+	
+	\begin{bemerkung}
+		Die globale Korrelation zwischen \(B_\pi(Q_4)\) und der Ergänzbarkeit war zuvor nur
+		moderat. Der getrennte Quantiltest erklärt dies: Das Gesamtsignal mittelt über zwei
+		unterschiedliche Kanäle, von denen nur einer stark balanceempfindlich ist.
+	\end{bemerkung}
+	
+	\begin{korollar}[Balanceaktiver Ergänzungskanal]
+		\label{kor:balanceaktiver_kanal}
+		Der grobe Vierlingskanal
+		\[
+		EA-BC-BC-EA
+		\]
+		ist numerisch der eigentliche balanceaktive Ergänzungskanal. In diesem Kanal trägt ein
+		hoher Wert von \(B_\pi(Q_4)\) deutlich zur späteren Ergänzbarkeit zum Fünfling bei.
+	\end{korollar}
+	
+	\begin{bemerkung}
+		Dagegen erscheint der Kanal
+		\[
+		BC-EA-EA-BC
+		\]
+		deutlich träger. Hier ist die Ergänzbarkeit wesentlich schwächer an die Balancehöhe
+		gekoppelt. Dies spricht für zwei verschieden empfindliche sektorale Erweiterungskanäle.
+	\end{bemerkung}
+	
+	\begin{satz}[Stabilität des 2D-Befunds über mehrere Pivots]
+		\label{satz:2d_befund_mehrere_pivots}
+		Die zweidimensionale Struktur
+		\[
+		\text{Mustertyp} \times \text{Balancehöhe}
+		\]
+		bleibt numerisch stabil für die getesteten Pivot-Primzahlen
+		\[
+		\pi\in\{11,13,17,19,29,37\}.
+		\]
+		Insbesondere bleibt die Differenz zwischen hohem und niedrigem Balancebereich im Typ
+		\[
+		EA-BC-BC-EA
+		\]
+		durchgehend deutlich größer als im Typ
+		\[
+		BC-EA-EA-BC.
+		\]
+	\end{satz}
+	
+	\begin{proof}[Numerische Verifikation]
+		Im Mehrpivot-2D-Test ergab sich für alle getesteten Pivots:
+		
+		Für den Typ
+		\[
+		BC-EA-EA-BC:
+		\qquad
+		18.92\%-15.56\%=3.36\%.
+		\]
+		
+		Für den Typ
+		\[
+		EA-BC-BC-EA:
+		\qquad
+		30.43\%-15.79\%=14.65\%.
+		\]
+		
+		Diese Differenzen blieben über alle getesteten Pivots gleich. Damit ist die Asymmetrie der
+		beiden Kanäle numerisch robust.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Die Pivot-Primzahl \(\pi\) scheint damit weniger als feinabzustimmender Strukturparameter zu
+		wirken, sondern vielmehr als Messfenster für eine bereits im Vierling vorhandene
+		Balanceeigenschaft. Die wesentliche Selektion sitzt in der Vierlingsstruktur selbst.
+	\end{bemerkung}
+	
+	\begin{korollar}[Vorläufige Arbeitsvermutung]
+		\label{kor:arbeitsvermutung_balance_kanal}
+		Die Ergänzbarkeit dichter Primzahlvierlinge zu dichten Primzahlfünflingen folgt
+		numerisch keiner allgemeinen globalen Balance-Selektion, sondern einer
+		\emph{musterspezifischen Balance-Selektion}. Der Kanal
+		\[
+		EA-BC-BC-EA
+		\]
+		ist der dominante balanceaktive Erweiterungskanal.
+	\end{korollar}
+	
+	\begin{bemerkung}
+		Die nächste natürliche Aufgabe besteht darin, diese kanalspezifische Balance-Selektion
+		noch feiner aufzulösen, etwa durch weitere Quantilunterteilungen im aktiven Kanal oder
+		durch Hinzunahme zusätzlicher Strukturgrößen für die wenigen verbleibenden
+		Gegenbeispiele.
+	\end{bemerkung}
+	
+	\subsection{Ein kanal-korrigierter Einzeltrigger}
+	
+	Die bisherigen numerischen Tests haben gezeigt, dass die Ergänzbarkeit eines dichten
+	Primzahlvierlings zu einem dichten Primzahlfünfling weder durch die Balancegröße
+	\(B_\pi(Q_4)\) allein noch durch den groben Mustertyp allein vollständig beschrieben wird.
+	Dagegen deutet sich an, dass eine geeignete \emph{kanal-korrigierte} Einzelgröße beide
+	Aspekte in einer einzigen Triggerfunktion zusammenführen kann.
+	
+	\begin{definition}[Kanal-korrigierter Einzeltrigger]
+		\label{def:kanal_korrigierter_trigger}
+		Für einen dichten Primzahlvierling
+		\[
+		Q_4(p)=(p,p+2,p+6,p+8)
+		\]
+		und einen festen Pivot \(\pi\) definieren wir den additiven Einzeltrigger
+		\[
+		\boxed{
+			T_c(Q_4):=B_\pi(Q_4)+c\cdot \mathbf 1_{\{EA-BC-BC-EA\}}(Q_4),
+		}
+		\]
+		wobei
+		\[
+		\mathbf 1_{\{EA-BC-BC-EA\}}(Q_4)=
+		\begin{cases}
+			1,& \text{falls }Q_4\text{ vom groben Typ }EA-BC-BC-EA\text{ ist},\\
+			0,& \text{falls }Q_4\text{ vom groben Typ }BC-EA-EA-BC\text{ ist},
+		\end{cases}
+		\]
+		und \(c\ge 0\) ein numerisch zu kalibrierender Kanalbonus ist.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Der Trigger \(T_c\) ist eine einzelne reelle Größe. Er erhält die Balanceinformation
+		\(B_\pi(Q_4)\) für alle Vierlinge und verleiht zugleich dem numerisch aktiveren Kanal
+		\[
+		EA-BC-BC-EA
+		\]
+		einen festen additiven Bonus.
+	\end{bemerkung}
+	
+	\begin{satz}[Numerische Verbesserung durch kanal-korrigierten Trigger]
+		\label{satz:kanaltrigger_numerisch}
+		Für die dichten Primzahlvierlinge bis \(10^6\) und den Pivot \(\pi=11\) verbessert der
+		kanal-korrigierte Trigger \(T_c\) die lineare und monotone Korrelation zur Ergänzbarkeit
+		numerisch gegenüber dem reinen Balance-Trigger \(B_\pi(Q_4)\), sofern \(c\) im Bereich
+		mittlerer positiver Werte gewählt wird.
+	\end{satz}
+	
+	\begin{proof}[Numerische Verifikation]
+		Für den reinen Balance-Trigger \(T_0(Q_4)=B_\pi(Q_4)\) ergaben sich die Korrelationen
+		\[
+		\mathrm{corr}_{\mathrm{Pearson}}(T_0,\text{Ergänzbarkeit})=0.200216,
+		\]
+		\[
+		\mathrm{corr}_{\mathrm{Spearman}}(T_0,\text{Ergänzbarkeit})=0.117749.
+		\]
+		
+		Für verschiedene Werte von \(c\) ergaben sich numerisch:
+		
+		\[
+		c=2:
+		\qquad
+		0.206877,\ 0.128963,
+		\]
+		
+		\[
+		c=5:
+		\qquad
+		0.211361,\ 0.143915,
+		\]
+		
+		\[
+		c=10:
+		\qquad
+		0.207735,\ 0.146407,
+		\]
+		
+		\[
+		c=15:
+		\qquad
+		0.197285,\ 0.129897.
+		\]
+		
+		Damit wird der Trigger im Bereich
+		\[
+		c\approx 5\text{ bis }10
+		\]
+		klar besser als \(B_\pi\) allein, während zu große Werte von \(c\) die Gesamtordnung wieder
+		verschlechtern.
+	\end{proof}
+	
+	\begin{korollar}[Bester numerischer Kandidatenbereich]
+		\label{kor:bester_triggerbereich}
+		Der bislang beste Kandidat für einen einzelnen numerischen Trigger der Form
+		\[
+		T_c(Q_4)=B_\pi(Q_4)+c\cdot \mathbf 1_{\{EA-BC-BC-EA\}}(Q_4)
+		\]
+		liegt im Bereich
+		\[
+		\boxed{
+			c\in[5,10].
+		}
+		\]
+	\end{korollar}
+	
+	\begin{bemerkung}
+		Der Wert \(c=5\) liefert die beste lineare Korrelation, während \(c=10\) die beste
+		Rangkorrelation erzeugt. Dies spricht dafür, dass ein moderater Kanalbonus den aktiven
+		Vierlingskanal stärkt, ohne die Ordnung der Gesamtmenge zu stark zu verzerren.
+	\end{bemerkung}
+	
+	\begin{bemerkung}
+		Ein zuvor getesteter multiplikativer Trigger der Form
+		\[
+		\mathbf 1_{\{EA-BC-BC-EA\}}(Q_4)\cdot B_\pi(Q_4)
+		\]
+		erwies sich dagegen als ungeeignet. Der Grund liegt in der Entstehung einer großen
+		Nullmasse für den zweiten Kanal, die die Rangordnung der Vierlinge zerstört und die
+		Korrelation praktisch auf null reduziert. Der additive Trigger vermeidet dieses Problem.
+	\end{bemerkung}
+	
+	\begin{satz}[Interpretation des Kanalbonus]
+		\label{satz:interpretation_kanalbonus}
+		Der additive Trigger \(T_c\) lässt sich so interpretieren, dass die Balanceinformation
+		\(B_\pi(Q_4)\) prinzipiell für alle Vierlinge relevant bleibt, im Kanal
+		\[
+		EA-BC-BC-EA
+		\]
+		jedoch mit systematisch höherer Wirksamkeit in Bezug auf die Fünflingsergänzbarkeit
+		auftritt.
+	\end{satz}
+	
+	\begin{proof}[Heuristische Interpretation]
+		Die getrennten Quantil- und 2D-Tests zeigten, dass derselbe Anstieg der Balancehöhe in den
+		beiden groben Vierlingsmustern sehr unterschiedlich wirkt. Im Kanal
+		\[
+		EA-BC-BC-EA
+		\]
+		ist der Zusammenhang zwischen Balancehöhe und Ergänzbarkeit deutlich stärker als im Kanal
+		\[
+		BC-EA-EA-BC.
+		\]
+		Ein additiver Bonus ist daher die einfachste Einzelgröße, welche diese Asymmetrie
+		modelliert, ohne die Gesamtordnung der Balanceachse zu zerstören.
+	\end{proof}
+	
+	\begin{korollar}[Vorläufige Einzeltrigger-Vermutung]
+		\label{kor:einzeltrigger_vermutung}
+		Ein numerisch plausibler Einzeltrigger für die Ergänzbarkeit dichter Primzahlvierlinge zu
+		dichten Primzahlfünflingen ist gegeben durch
+		\[
+		\boxed{
+			T^*(Q_4)=B_\pi(Q_4)+c\cdot \mathbf 1_{\{EA-BC-BC-EA\}}(Q_4),
+			\qquad c\approx 5\text{ bis }10.
+		}
+		\]
+		Große Werte von \(T^*(Q_4)\) korrelieren numerisch stärker mit der Ergänzbarkeit als die
+		reine Balancegröße \(B_\pi(Q_4)\) allein.
+	\end{korollar}
+	
+	\begin{bemerkung}
+		Diese Vermutung ist derzeit rein numerisch motiviert. Der nächste natürliche Schritt
+		besteht darin, den optimalen Bereich für \(c\) feiner aufzulösen und zu untersuchen, ob
+		sich der Parameter aus einer tieferen strukturellen Eigenschaft der groben EA/BC-Schale
+		ableiten lässt.
+	\end{bemerkung}
+	
+	\subsection{Feinkalibrierung des Kanalbonus und strukturelle Deutung von \(c^*=6\)}
+	
+	Nachdem sich gezeigt hatte, dass ein additiver kanal-korrigierter Trigger die
+	Ergänzbarkeit dichter Primzahlvierlinge besser beschreibt als die reine Balancegröße
+	\(B_\pi(Q_4)\), wurde der Kanalbonus \(c\) feiner kalibriert. Untersucht wurde die
+	Einzelgröße
+	\[
+	T_c(Q_4):=B_\pi(Q_4)+c\cdot \mathbf 1_{\{EA-BC-BC-EA\}}(Q_4).
+	\]
+	
+	Dabei bezeichnet
+	\[
+	\mathbf 1_{\{EA-BC-BC-EA\}}(Q_4)
+	\]
+	den Indikator des numerisch aktiven Vierlingskanals
+	\[
+	EA-BC-BC-EA.
+	\]
+	
+	\begin{satz}[Feinkalibrierung des Kanalbonus]
+		\label{satz:feinkalibrierung_kanalbonus}
+		Für die dichten Primzahlvierlinge bis \(10^6\) und den Pivot \(\pi=11\) besitzt der
+		additive Trigger
+		\[
+		T_c(Q_4)=B_\pi(Q_4)+c\cdot \mathbf 1_{\{EA-BC-BC-EA\}}(Q_4)
+		\]
+		ein stabiles numerisches Optimum im Bereich
+		\[
+		c\approx 6.
+		\]
+		Genauer liefert \(c=6\) die beste lineare Korrelation zur Ergänzbarkeit, während die
+		Rangkorrelation ihr Optimum erst bei etwas größeren Werten, insbesondere nahe \(c=9\),
+		erreicht.
+	\end{satz}
+	
+	\begin{proof}[Numerische Verifikation]
+		Im Feinscan für
+		\[
+		c\in\{5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0\}
+		\]
+		ergaben sich die folgenden Werte:
+		
+		\[
+		c=5.0:
+		\qquad
+		\mathrm{corr}_{\mathrm{Pearson}}=0.211361,
+		\qquad
+		\mathrm{corr}_{\mathrm{Spearman}}=0.143915,
+		\]
+		
+		\[
+		c=5.5:
+		\qquad
+		0.211535,
+		\qquad
+		0.142046,
+		\]
+		
+		\[
+		c=6.0:
+		\qquad
+		0.211565,
+		\qquad
+		0.141423,
+		\]
+		
+		\[
+		c=6.5:
+		\qquad
+		0.211462,
+		\qquad
+		0.142046,
+		\]
+		
+		\[
+		c=7.0:
+		\qquad
+		0.211233,
+		\qquad
+		0.143915,
+		\]
+		
+		\[
+		c=7.5:
+		\qquad
+		0.210888,
+		\qquad
+		0.144849,
+		\]
+		
+		\[
+		c=8.0:
+		\qquad
+		0.210437,
+		\qquad
+		0.145472,
+		\]
+		
+		\[
+		c=8.5:
+		\qquad
+		0.209887,
+		\qquad
+		0.147965,
+		\]
+		
+		\[
+		c=9.0:
+		\qquad
+		0.209248,
+		\qquad
+		0.149522.
+		\]
+		
+		Daraus folgt:
+		
+		\begin{enumerate}
+			\item Das Maximum der linearen Korrelation liegt bei
+			\[
+			\boxed{c=6.0.}
+			\]
+			
+			\item Das Maximum der Rangkorrelation liegt bei
+			\[
+			\boxed{c=9.0.}
+			\]
+			
+			\item Im Bereich
+			\[
+			5.5\le c\le 6.5
+			\]
+			bleibt der Pearson-Wert praktisch konstant auf seinem Maximalniveau. Dies zeigt, dass
+			das Optimum nicht nur punktuell, sondern als stabiles lokales Fenster um \(6\) herum
+			auftritt.
+		\end{enumerate}
+	\end{proof}
+	
+	\begin{korollar}[Vorläufiger Hauptwert des Kanalbonus]
+		\label{kor:hauptwert_kanalbonus}
+		Als numerisch und strukturell bevorzugter Hauptwert des Kanalbonus kann vorläufig
+		\[
+		\boxed{c^*=6}
+		\]
+		gewählt werden.
+	\end{korollar}
+	
+	\begin{bemerkung}
+		Die Wahl \(c^*=6\) wird nicht allein durch die numerische Maximierung gestützt, sondern
+		auch durch ihre strukturelle Plausibilität im Vierlingskontext.
+	\end{bemerkung}
+	
+	\begin{satz}[Strukturelle Plausibilität der Zahl \(6\)]
+		\label{satz:strukturelle_plausibilitaet_6}
+		Die Zahl \(6\) ist im Kontext dichter Primzahlvierlinge in mehrfacher Hinsicht natürlich:
+		
+		\begin{enumerate}
+			\item Sie ist die kleinste volle glatte Grundperiode
+			\[
+			6=2\cdot 3,
+			\]
+			relativ zu der Primzahlen \(>3\) stabil als Restklassen sichtbar werden.
+			
+			\item Im Vierling
+			\[
+			Q_4(p)=(p,p+2,p+6,p+8)
+			\]
+			trennt sie die beiden inneren Primzahlpaare
+			\[
+			(p,p+2)
+			\qquad\text{und}\qquad
+			(p+6,p+8).
+			\]
+			
+			\item Sie kann daher als natürliche Transport-, Synchronisations- oder
+			Kanalverschiebungslänge des aktiven Erweiterungskanals interpretiert werden.
+		\end{enumerate}
+	\end{satz}
+	
+	\begin{proof}[Heuristische Interpretation]
+		Die dichten Primzahlvierlinge bestehen aus zwei eng gekoppelten Zweierpaaren:
+		\[
+		(p,p+2)
+		\qquad\text{und}\qquad
+		(p+6,p+8).
+		\]
+		Diese beiden Paare sind gegeneinander genau um
+		\[
+		6
+		\]
+		verschoben. Zugleich ist \(6\) die kleinste nichttriviale \(2,3\)-glatte Grundperiode, in
+		der Primzahlmuster jenseits von \(2\) und \(3\) stabil auftreten.
+		
+		Wenn der Kanal
+		\[
+		EA-BC-BC-EA
+		\]
+		tatsächlich der balanceaktive Erweiterungskanal ist, dann liegt es nahe, dass sein
+		optimierender Bonus dieselbe Größenordnung besitzt wie diese minimale innere
+		Vierlingsverschiebung. Der numerische Befund
+		\[
+		c^*\approx 6
+		\]
+		passt auffallend gut zu dieser Struktur.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Diese Deutung ist derzeit heuristisch. Sie zeigt jedoch, dass die numerische Kalibrierung
+		des Triggerparameters nicht losgelöst von der inneren Geometrie des Vierlings gelesen
+		werden sollte.
+	\end{bemerkung}
+	
+	\begin{korollar}[Vorläufige Triggerform]
+		\label{kor:vorlaeufige_triggerform}
+		Der derzeit beste einfache numerische Einzeltrigger für die Ergänzbarkeit dichter
+		Primzahlvierlinge zu dichten Primzahlfünflingen ist gegeben durch
+		\[
+		\boxed{
+			T^*(Q_4)=B_\pi(Q_4)+6\cdot \mathbf 1_{\{EA-BC-BC-EA\}}(Q_4).
+		}
+		\]
+	\end{korollar}
+	
+	\begin{bemerkung}
+		Eine alternative, stärker rangorientierte Variante ist
+		\[
+		T^\sharp(Q_4)=B_\pi(Q_4)+9\cdot \mathbf 1_{\{EA-BC-BC-EA\}}(Q_4),
+		\]
+		die numerisch eine etwas höhere Spearman-Korrelation erzeugt. Für die theoretische
+		Interpretation erscheint jedoch \(c^*=6\) aufgrund seiner strukturellen Natürlichkeit als
+		der überzeugendere Hauptwert.
+	\end{bemerkung}
+	
+	\begin{bemerkung}
+		Der nächste natürliche Schritt besteht darin, die Stabilität des Optimums \(c^*=6\) über
+		weitere Datenbereiche und zusätzliche Pivot-Primzahlen hinweg zu prüfen und zu
+		untersuchen, ob der Bonus \(6\) aus einer tieferen EA/BC-Schalenstruktur formal
+		abgeleitet werden kann.
+	\end{bemerkung}
+	
+	\subsection{Korrelation des kanal-korrigierten Triggers mit der Distanz zum nächsten Primzahlzwilling}
+	
+	Nachdem sich gezeigt hatte, dass der kanal-korrigierte Trigger
+	\[
+	T^*(Q_4)=B_\pi(Q_4)+6\cdot \mathbf 1_{\{EA-BC-BC-EA\}}(Q_4)
+	\]
+	die Ergänzbarkeit dichter Primzahlvierlinge zu dichten Primzahlfünflingen besser beschreibt
+	als die reine Balancegröße \(B_\pi(Q_4)\), stellt sich die Frage, ob dieselbe Größe auch mit
+	der weiteren lokalen Primzahldichte zusammenhängt. Eine natürliche Zielgröße hierfür ist die
+	Distanz vom Vierling zum nächsten Primzahlzwilling.
+	
+	\begin{definition}[Zwillingsdistanz]
+		\label{def:zwillingsdistanz}
+		Sei
+		\[
+		Q_4(p)=(p,p+2,p+6,p+8)
+		\]
+		ein dichter Primzahlvierling. Der \emph{nächste Primzahlzwilling rechts von \(Q_4\)} sei
+		\[
+		Z_{\mathrm{next}}(Q_4)=(q,q+2)
+		\qquad\text{mit}\qquad q>p+8,
+		\]
+		wobei \(q\) minimal gewählt wird. Dann definieren wir die \emph{Zwillingsdistanz}
+		\[
+		\mathrm{Gap}(Q_4):=q-(p+8).
+		\]
+		Zusätzlich betrachten wir die logarithmische Distanz
+		\[
+		\log \mathrm{Gap}(Q_4).
+		\]
+	\end{definition}
+	
+	\begin{satz}[Der Trigger \(T^*\) als Distanzsignal]
+		\label{satz:trigger_zwillingsdistanz}
+		Für die dichten Primzahlvierlinge bis \(2\cdot 10^6\) korrelieren sowohl die Balancegröße
+		\(B_\pi(Q_4)\) als auch der kanal-korrigierte Trigger \(T^*(Q_4)\) negativ mit der Distanz
+		zum nächsten Primzahlzwilling. Der Trigger \(T^*(Q_4)\) trägt dabei das stärkere Signal.
+	\end{satz}
+	
+	\begin{proof}[Numerische Verifikation]
+		Für den Pivot \(\pi=11\) ergaben sich numerisch:
+		
+		\[
+		\mathrm{corr}(B_\pi,\mathrm{Gap})=-0.186642,
+		\qquad
+		\mathrm{corr}(T^*,\mathrm{Gap})=-0.205656.
+		\]
+		
+		Noch deutlicher wird der Zusammenhang auf logarithmischer Skala:
+		
+		\[
+		\mathrm{corr}(B_\pi,\log \mathrm{Gap})=-0.267469,
+		\qquad
+		\mathrm{corr}(T^*,\log \mathrm{Gap})=-0.290561.
+		\]
+		
+		Auch in der Rangordnung zeigt sich derselbe Effekt:
+		
+		\[
+		\rho(B_\pi,\mathrm{Gap})=-0.113540,
+		\qquad
+		\rho(T^*,\mathrm{Gap})=-0.183009.
+		\]
+		
+		Damit gilt numerisch:
+		\[
+		\boxed{
+			\text{Je größer }T^*(Q_4),\text{ desto kleiner ist typischerweise die Distanz zum nächsten Primzahlzwilling.}
+		}
+		\]
+	\end{proof}
+	
+	\begin{bemerkung}
+		Die logarithmische Distanz \(\log \mathrm{Gap}\) reagiert stärker als die rohe Distanz
+		\(\mathrm{Gap}\). Dies zeigt, dass der Trigger eher die Größenordnung der Zwillingsdistanz
+		als einen festen additiven Abstand beschreibt.
+	\end{bemerkung}
+	
+	\begin{korollar}[Der Trigger \(T^*\) ist ein Distanztrigger]
+		\label{kor:distanztrigger}
+		Der kanal-korrigierte Trigger \(T^*(Q_4)\) sollte nicht primär als Prädiktor für den Typ des
+		nächsten Primzahlzwillings verstanden werden, sondern als numerisches Signal für die
+		\emph{Nähe} des nächsten Zwillings.
+	\end{korollar}
+	
+	\begin{satz}[Kanalasymmetrie der Zwillingsdistanz]
+		\label{satz:kanalasymmetrie_zwillingsdistanz}
+		Der grobe Vierlingskanal
+		\[
+		EA-BC-BC-EA
+		\]
+		liegt im Mittel näher am nächsten Primzahlzwilling als der Kanal
+		\[
+		BC-EA-EA-BC.
+		\]
+	\end{satz}
+	
+	\begin{proof}[Numerische Verifikation]
+		Die Aufspaltung nach den beiden groben Vierlingsmustern ergab:
+		
+		Für
+		\[
+		BC-EA-EA-BC:
+		\qquad
+		\langle \mathrm{Gap}\rangle = 154.2517,
+		\qquad
+		\mathrm{Median}(\mathrm{Gap}) = 130.
+		\]
+		
+		Für
+		\[
+		EA-BC-BC-EA:
+		\qquad
+		\langle \mathrm{Gap}\rangle = 130.5526,
+		\qquad
+		\mathrm{Median}(\mathrm{Gap}) = 88.
+		\]
+		
+		Damit ist der numerisch aktive Vierlingskanal nicht nur balanceaktiver und
+		fünflingsfreundlicher, sondern auch zwillingsnäher.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Diese Asymmetrie ist insbesondere deshalb bemerkenswert, weil der Typ des nächsten
+		Primzahlzwillings selbst kaum mit \(B_\pi\) oder \(T^*\) korreliert. Der Vierling beeinflusst
+		also eher die \emph{Distanz} bis zur nächsten Zwillingslage als deren feinen Typ
+		\((AB\) oder \(CE)\).
+	\end{bemerkung}
+	
+	\begin{satz}[Quantilstruktur der Zwillingsdistanz]
+		\label{satz:quantile_zwillingsdistanz}
+		Sortiert man die Vierlinge nach dem kanal-korrigierten Trigger \(T^*(Q_4)\), so nimmt die
+		mittlere und mediane Zwillingsdistanz über die Quantile hinweg deutlich ab.
+	\end{satz}
+	
+	\begin{proof}[Numerische Verifikation]
+		Für fünf Quantile nach \(T^*(Q_4)\) ergaben sich:
+		
+		\[
+		Q_1:
+		\qquad
+		\langle \mathrm{Gap}\rangle = 169.4576,
+		\qquad
+		\mathrm{Median} = 148,
+		\]
+		
+		\[
+		Q_2:
+		\qquad
+		160.5085,
+		\qquad
+		118,
+		\]
+		
+		\[
+		Q_3:
+		\qquad
+		139.5593,
+		\qquad
+		112,
+		\]
+		
+		\[
+		Q_4:
+		\qquad
+		125.2203,
+		\qquad
+		88,
+		\]
+		
+		\[
+		Q_5:
+		\qquad
+		115.4576,
+		\qquad
+		82.
+		\]
+		
+		Dies zeigt einen klaren abfallenden Trend. Insbesondere liegen Vierlinge mit hohem
+		Triggerwert deutlich näher am nächsten Primzahlzwilling als Vierlinge mit niedrigem
+		Triggerwert.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Die entsprechende Quantilstruktur für \(B_\pi(Q_4)\) allein ist ebenfalls sichtbar, aber
+		schwächer. Der Kanalbonus in \(T^*(Q_4)\) verbessert somit nicht nur die lokale
+		Fünflingsergänzbarkeit, sondern auch die Erklärung der mittleren Zwillingsdistanz.
+	\end{bemerkung}
+	
+	\begin{korollar}[Hierarchie der Wirkung von \(T^*\)]
+		\label{kor:hierarchie_triggerwirkung}
+		Der Trigger \(T^*(Q_4)\) wirkt numerisch auf mindestens zwei Ebenen:
+		
+		\begin{enumerate}
+			\item lokal auf die Ergänzbarkeit
+			\[
+			Q_4\to Q_5,
+			\]
+			\item mittelfristig auf die Distanz
+			\[
+			Q_4\to Z_{\mathrm{next}}.
+			\]
+		\end{enumerate}
+		
+		Dagegen wirkt \(T^*(Q_4)\) kaum auf den feinen Typ des nächsten Zwillings.
+	\end{korollar}
+	
+	\begin{bemerkung}
+		Damit erscheint \(T^*(Q_4)\) weniger als Typtrigger, sondern vielmehr als eine Art
+		\emph{Dichte- oder Distanztrigger}: Hohe Werte signalisieren eine Umgebung, in der der
+		Zahlenraum statistisch schneller wieder in eine Zwillingslage zurückfindet.
+	\end{bemerkung}
+	
+	\begin{bemerkung}
+		Der nächste natürliche Schritt bestünde darin, dieselbe Frage nicht nur für den nächsten
+		Primzahlzwilling, sondern auch für den nächsten dichten Primzahlvierling zu stellen. So
+		ließe sich prüfen, ob der Trigger \(T^*(Q_4)\) allgemein mit lokaler Primzahlclusterung
+		zusammenhängt.
+	\end{bemerkung}
+	
+\end{document}

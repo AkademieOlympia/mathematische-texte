@@ -1,0 +1,194 @@
+% monopol_spektral_analyse.tex
+% Standalone-Abschnitt für das EABC-Monopol-Preprint (arXiv).
+% Einbindung im Hauptdokument: \input{monopol_spektral_analyse}
+% Voraussetzungen: amsmath, booktabs (ggf. hyperref für \ref)
+
+\input{monopol_preprint_results.txt}
+
+% Modellkonstanten (nicht laufzeitabhängig)
+\newcommand{\monopolQtot}{1796}
+\newcommand{\monopolFactor}{1036.92} % 1796/\sqrt{3}
+\newcommand{\monopolPressureNorm}{0.032292} % \monopolPressure / \monopolN
+
+% Konvergenzdaten (Teilstichproben, gleicher Lauf wie oben)
+\newcommand{\convFiftyVar}{0.172806}
+\newcommand{\convFiftyDelta}{0.068616}
+\newcommand{\convFiftyMean}{0.992296}
+\newcommand{\convHundredVar}{0.155540}
+\newcommand{\convHundredDelta}{0.051350}
+\newcommand{\convHundredMean}{0.995738}
+\newcommand{\convTwoHundredVar}{0.160372}
+\newcommand{\convTwoHundredDelta}{0.056182}
+\newcommand{\convTwoHundredMean}{0.998893}
+
+% Diagnosewerte der fehlerhaften Hauptterm-Pipeline (Referenzlauf, $t\in[5000,5140]$)
+\newcommand{\badMeanFixed}{2.9586}
+\newcommand{\badVarFixed}{7.33}
+\newcommand{\badMeanAdapt}{2.9962}
+\newcommand{\badVarAdapt}{7.88}
+\newcommand{\badCountInterval}{52}
+\newcommand{\goodCountInterval}{150}
+
+%=============================================================================
+\section{Methodische Richtigstellung zur numerischen Nullstellen-Asymptotik bei hohen Parametern}
+\label{sec:methodische-richtigstellung}
+%=============================================================================
+
+In der numerischen Verifikation des EABC-Monopolmodells im hochenergetischen Bereich
+($t \approx 5000$) zeigt sich eine methodische Divergenz, die für jede spektrale
+Auswertung zuerst geklärt werden muss.
+Eine Auswertung der Riemann-Siegel-Z-Funktion, die nur den asymptotischen Hauptterm
+verwendet und den Restterm $R(t)$ vernachlässigt, führt bei der Nullstellensuche
+über Vorzeichenwechsel zu systematischen Lücken in der Stichprobe.
+
+\begin{table}[htbp]
+\centering
+\caption{Vergleich numerischer Approximationsmethoden im Intervall $t \in [5000,\,5140]$.
+Die ersten beiden Zeilen verwenden den unvollständigen Hauptterm; die dritte Zeile die
+vollständige Implementierung \texttt{mpmath.siegelz} mit adaptiver Schrittweite
+und \texttt{brentq}-Verfeinerung (Stichprobe $N=50$).}
+\label{tab:siegel_vergleich}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Methode} &
+\textbf{Mittlerer norm.\ Abstand} &
+\textbf{Varianz $\sigma^2$} &
+\textbf{Gefundene Nullstellen} \\
+\midrule
+Hauptterm, Schrittweite $0{,}5$ &
+$\badMeanFixed$ & $\badVarFixed$ & $\sim\badCountInterval$ \\
+Hauptterm, adaptive Schrittweite &
+$\badMeanAdapt$ & $\badVarAdapt$ & $\sim\badCountInterval$ \\
+\texttt{mpmath.siegelz}, adaptiv &
+$\convFiftyMean$ & $\convFiftyVar$ & $\sim\goodCountInterval$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Tabelle~\ref{tab:siegel_vergleich} zeigt: Eine rein adaptive Schrittweite behebt das
+Problem nicht, solange $R(t)$ fehlt---es werden dieselben $\sim\badCountInterval$ Nullstellen
+gefunden wie mit fester Schrittweite $0{,}5$.
+Der scheinbare Faktor $\sim 3$ im mittleren normierten Abstand ist damit ein
+Aliasing-Effekt der Unterabtastung, kein spektraler Beitrag des Monopols.
+
+Erst unter Einbeziehung der vollständigen Riemann-Siegel-Asymptotik stellt sich
+Weyl-konformes Verhalten mit mittlerem Abstand $\approx 1$ ein.
+Eine Modifikation der globalen Zählfunktion der Form
+$N_{\mathrm{EABC}}(T) \approx \tfrac{1}{3}\,N_{\mathrm{standard}}(T)$
+--- oder jede daraus abgeleitete ``Drittel-Symmetrie'' der Nullstellendichte ---
+ist ohne unabhängige Evidenz nicht haltbar und wird verworfen.
+
+%=============================================================================
+\section{Spektrale Abweichungsanalyse und Monopol-Kopplung}
+\label{sec:spektrale-abweichung}
+%=============================================================================
+
+\subsection{Statistisches Setup}
+
+Nach der methodischen Korrektur werden $N=\monopolN$ aufeinanderfolgende nichttriviale
+Nullstellen $\{\gamma_n\}$ ab $t=\monopolTmin$ mit adaptiver \texttt{mpmath.siegelz}-Pipeline
+bestimmt (Laufzeit des Referenzlaufs: $106{,}6\,\mathrm{s}$).
+Die Entfaltung (Unfolding) folgt dem glatten Weyl-Hauptterm
+\begin{equation}
+  N(t) = \frac{t}{2\pi}\,\log\!\Bigl(\frac{t}{2\pi e}\Bigr) + \frac{7}{8},
+  \label{eq:weyl-unfold}
+\end{equation}
+und liefert $N-1$ normierte Abstände $s_n = N(\gamma_{n+1}) - N(\gamma_n)$.
+Als Referenz für das zweite Moment dient die GUE-Varianz
+$\sigma^2_{\mathrm{GUE}} = \monopolGUE$ der Wigner-Dyson-Verteilung
+(Poisson--GUE-Übergang, asymptotisch für große Matrizen).
+
+\subsection{Ergebnisse bei $N=500$}
+
+Im untersuchten Sektor $t \in [\monopolTmin,\,\monopolTmax]$ ergeben sich:
+
+\begin{itemize}
+  \item \textbf{Erstes Moment (Mittelwert):}
+        $\bar{s} = \monopolMeanSpacing \approx 1$ --- konsistent mit Weyl-Konformität;
+        der Monopol-Einfluss manifestiert sich hier \emph{nicht} als systematische
+        Verschiebung des mittleren Abstands.
+  \item \textbf{Zweites Moment (Varianz):}
+        $\sigma^2 = \monopolVariance$;
+        Abweichung vom GUE-Soll
+        $\Delta\sigma^2 = \sigma^2 - \sigma^2_{\mathrm{GUE}} = \monopolDeltaSigma
+        \approx +0{,}054$.
+  \item \textbf{Standardabweichung:}
+        $\monopolStdSpacing$.
+\end{itemize}
+
+Die beobachtete Varianz liegt damit etwa $51\,\%$ über dem GUE-Referenzwert
+($\monopolVariance / \monopolGUE \approx 1{,}52$).
+Dieser Überschuss im \emph{zweiten Moment} ist die numerisch gesicherte Größe,
+an der der Monopol-Kopplungseffekt im Preprint verankert wird --- nicht eine
+Verschiebung des mittleren Abstands um einen Faktor $\sim 3$.
+
+\subsection{Monopol-Modellgrößen und spektraler Druck}
+
+Im EABC-Monopolmodell bleibt das dominante Punkt-Monopol mit
+$Q_{\mathrm{tot}} = \monopolQtot$ und dem daraus abgeleiteten Skalierungsfaktor
+\begin{equation}
+  f_{\mathrm{mon}} = \frac{Q_{\mathrm{tot}}}{\sqrt{3}} \approx \monopolFactor
+  \label{eq:monopol-factor}
+\end{equation}
+als strukturelle Kopplungskonstante bestehen.
+Als aggregierte Kopplungsgröße wird der \emph{spektrale Monopol-Druck}
+\begin{equation}
+  P_N = \sum_{n=1}^{N} \sin\!\Bigl(\gamma_n \,\frac{\log f_{\mathrm{mon}}}{150}\Bigr)
+  \label{eq:monopol-pressure}
+\end{equation}
+aus dem numerischen Testskript berechnet.
+Für $N=\monopolN$ ergibt sich $P_N = \monopolPressure$.
+
+Da $P_N$ in \eqref{eq:monopol-pressure} als \emph{Summe} oszillierender Terme definiert ist,
+skaliert $|P_N|$ nicht linear mit $N$; die Phase der einzelnen $\gamma_n$ bestimmt
+konstruktive bzw.\ destruktive Interferenz
+(z.\,B.\ $P_{50}\approx 2{,}56$, $P_{500}=\monopolPressure$).
+Für vergleichende Angaben zwischen verschiedenen Stichproben ist daher stets die
+\emph{Stichprobengröße $N$} mitzuführen.
+Als heuristische Intensitätsgröße kann $P_N/N$ herangezogen werden
+($P_{500}/500 \approx \monopolPressureNorm$); wegen der Oszillation ist $P_N/N$
+für kleine $N$ nicht stabil und wird hier nicht als Konvergenzkennzahl verwendet.
+
+\subsection{Konvergenz der Varianz}
+
+Tabelle~\ref{tab:varianz-konvergenz} fasst Teilstichproben desselben Referenzlaufs
+zusammen. Der mittlere Abstand bleibt durchgängig nahe $1$; $\Delta\sigma^2$ stabilisiert
+sich im Bereich $+0{,}05$ bis $+0{,}07$ über $N$.
+
+\begin{table}[htbp]
+\centering
+\caption{Konvergenz normierter Abstandsstatistiken (gleicher Lauf, $t_0=5000$).
+$\sigma^2_{\mathrm{GUE}} = \monopolGUE$.}
+\label{tab:varianz-konvergenz}
+\begin{tabular}{rccc}
+\toprule
+$N$ & $\bar{s}$ & $\sigma^2$ & $\Delta\sigma^2$ \\
+\midrule
+50   & $\convFiftyMean$      & $\convFiftyVar$      & $+\convFiftyDelta$      \\
+100  & $\convHundredMean$     & $\convHundredVar$     & $+\convHundredDelta$     \\
+200  & $\convTwoHundredMean$  & $\convTwoHundredVar$  & $+\convTwoHundredDelta$  \\
+500  & $\monopolMeanSpacing$  & $\monopolVariance$    & $+\monopolDeltaSigma$    \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Interpretationsrahmen (ohne Spekulation)}
+
+Zusammenfassend gilt nach Eliminierung des numerischen Artefakts:
+
+\begin{enumerate}
+  \item Die \emph{globale} Nullstellenzählung bleibt Weyl-konform
+        ($\bar{s}\approx 1$); eine Dichte-Reduktion um den Faktor $1/3$ ist
+        nicht belegt.
+  \item Eine \emph{messbare} Abweichung vom GUE-Referenzensemble zeigt sich im
+        zweiten Moment der Abstandsverteilung ($\Delta\sigma^2 > 0$ bei
+        $N=\monopolN$).
+  \item Der Monopol-Kopplungsterm \eqref{eq:monopol-pressure} liefert eine
+        reelle, stichprobenabhängige Aggregatgröße; bei Vergleichen ist stets
+        $N$ mit anzugeben, da $P_N$ als oszillierende Summe nicht
+        trivial mit $N$ skaliert.
+\end{enumerate}
+
+Eine weitergehende Zuordnung von $\Delta\sigma^2$ zu konkreten Feldtheorie-Mechanismen
+(``Stark-Effekt'', Symmetriebrechung der Dichte usw.) wird bewusst zurückgestellt,
+bis unabhängige Reproduktionen und größere Stichproben vorliegen.

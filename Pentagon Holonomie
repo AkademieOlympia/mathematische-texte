@@ -1,0 +1,423 @@
+\documentclass[11pt,a4paper]{article}
+
+% -------------------------------------------------
+% Sprache / Kodierung
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{mathrsfs}
+\usepackage{bm}
+
+% -------------------------------------------------
+% Layout / Grafik
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.6cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,positioning}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{satz}[definition]{Satz}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{proposition}[definition]{Proposition}
+\theoremstyle{remark}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+\newtheorem{beispiel}[definition]{Beispiel}
+\newtheorem{hypothese}[definition]{Hypothese}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\OO}{\mathbb{O}}
+\newcommand{\Tcal}{\mathcal{T}}
+\newcommand{\Ical}{\mathcal{I}}
+\newcommand{\Dcal}{\mathcal{D}}
+\newcommand{\Pcal}{\mathcal{P}}
+\newcommand{\Scal}{\mathcal{S}}
+\newcommand{\Acal}{\mathcal{A}}
+\newcommand{\Hcal}{\mathcal{H}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\lcm}{\operatorname{lcm}}
+
+% -------------------------------------------------
+% Titel
+% -------------------------------------------------
+\title{Tetraederkern, Mikrosaeder, Dodekaederprojektion und Pentagon-Holonomie\\
+	\large Ein diskretes Evolutionsschema für die ABC-Kanäle im Bamberg-Modell}
+
+\author{Thomas Hoffbauer\\Bamberg, Deutschland}
+\date{\today}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir formulieren ein minimales diskretes Evolutionsschema für eine mehrschalige geometrische Dynamik, deren Ausgangspunkt ein zentraler Tetraeder ist. Dieser wird über diskrete Schütte-Erweiterungen zu einem inneren Mikrosaeder fortgesetzt, das dual auf ein äußeres Dodekaeder projiziert. Die drei sichtbaren Kanäle $A,B,C$ werden als von der Pentagonstellung der Dodekaederhülle abhängige Leitbahnen aufgefasst. Bei jedem Ikosaeder/Dodekaeder-Phasenumschlag wird eine Pentagonrotation ausgelöst, die zugleich eine zyklische Permutation der ABC-Kanäle bewirkt. Das resultierende Minimalmodell besitzt zwei verschränkte Zyklen, einen Pentagonzyklus der Länge $5$ und einen Kanalzyklus der Länge $3$, deren gemeinsame Rückkehrlänge $15$ beträgt. Wir geben Definitionen, ein elementares Evolutionsgesetz und eine operatorische Perspektive an, in der die Pentagonrotation als diskrete Holonomie und die Kanalumschaltung als sichtbare Phasendynamik erscheint.
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Der Grundgedanke dieses Artikels ist, dass die sichtbare Kanalstruktur des Bamberg-Modells nicht als statische Klassifikation zu lesen ist, sondern als Ergebnis einer diskreten geometrischen Dynamik. Diese Dynamik besitzt mehrere Schalen:
+	
+	\begin{enumerate}[label=(\arabic*)]
+		\item einen zentralen Tetraederkern,
+		\item eine diskrete Erweiterung zu einem inneren Mikrosaeder,
+		\item eine Projektion auf ein äußeres Dodekaeder,
+		\item eine sichtbare Aktivierung der drei ABC-Kanäle,
+		\item und eine bei jedem Phasenumschlag ausgelöste Pentagonrotation.
+	\end{enumerate}
+	
+	Das Ziel ist, diese fünf Stufen nicht nur intuitiv, sondern in einer minimalen formalen Sprache zu fassen. Der dabei leitende Gedanke lautet:
+	
+	\begin{quote}
+		Die ABC-Kanäle sind nicht primär statische Klassen, sondern dynamische Bilder einer pentagonalen Holonomie, die durch den periodischen Rollenwechsel von Ikosaeder und Dodekaeder angetrieben wird.
+	\end{quote}
+	
+	Der vorliegende Text ist bewusst minimalistisch angelegt. Er beansprucht nicht, bereits die vollständige Geometrie oder den endgültigen Operator des Modells zu liefern. Er soll vielmehr die innere Logik der Schalen- und Umschlagdynamik in eine klare, kompakte mathematische Form bringen.
+	
+	\section{Der Tetraederkern und die Schütte-Erweiterung}
+	
+	\subsection{Der Tetraeder als Minimalstruktur}
+	
+	Der Tetraeder ist der einfachste nichttriviale dreidimensionale Simplex. Er dient im vorliegenden Modell als lokaler Kern.
+	
+	\begin{definition}[Tetraederkern]
+		Ein \emph{Tetraederkern} ist ein diskreter Kernzustand
+		\[
+		\Tcal=(E;A,B,C),
+		\]
+		bestehend aus einem zentralen Anteil $E$ und drei ausgehenden Richtungen $A,B,C$.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Die Schreibweise $(E;A,B,C)$ ist hier strukturell gemeint. Sie soll keine metrischen Kantenlängen festlegen, sondern nur die minimale Viererordnung eines Kerns mit drei ausgehenden Kanälen bezeichnen.
+	\end{bemerkung}
+	
+	\subsection{Schütte-Erweiterung}
+	
+	Der Tetraeder bleibt nicht isoliert, sondern wird diskret erweitert.
+	
+	\begin{definition}[Schütte-Erweiterung]
+		Eine \emph{Schütte-Erweiterung} ist eine Folge diskreter Verfeinerungsschritte
+		\[
+		\Sigma_n:\Tcal \longmapsto \Ical_n,
+		\qquad n\in\N_0,
+		\]
+		wobei $\Ical_n$ die $n$-te innere Mikrosaeder-Stufe bezeichnet.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Die Bezeichnung \glqq Mikrosaeder\grqq{} soll ausdrücken, dass auf einer inneren Schale eine icosahedral-triangulierte Ordnung entsteht. Entscheidend ist, dass diese Ordnung nicht kontinuierlich, sondern über diskrete Schalenstufen aufgebaut wird.
+	\end{bemerkung}
+	
+	\section{Mikrosaeder und Dodekaederprojektion}
+	
+	\subsection{Dualität von Ikosaeder und Dodekaeder}
+	
+	Das Ikosaeder und das Dodekaeder bilden ein klassisches Dualitätspaar. Im hier betrachteten Modell erscheint diese Dualität nicht bloß als statische Symmetrie, sondern als dynamische Rollenverteilung.
+	
+	\begin{definition}[Innere und äußere Schale]
+		Zu jeder Mikrosaeder-Stufe $\Ical_n$ sei eine äußere Dodekaederhülle $\Dcal_n$ gegeben. Eine \emph{Dodekaederprojektion} ist eine Abbildung
+		\[
+		P_n:\Ical_n \to \Dcal_n.
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		Die innere Schale $\Ical_n$ trägt die triangulierte, aktive Innenlogik, während $\Dcal_n$ die pentagonale Außenlogik und Schließung repräsentiert.
+	\end{bemerkung}
+	
+	\subsection{Außenhülle und Kanalbetrieb}
+	
+	Die sichtbaren ABC-Kanäle werden nicht direkt vom Tetraeder abgelesen, sondern von der Stellung der Dodekaederhülle.
+	
+	\begin{definition}[Kanalabbildung]
+		Sei
+		\[
+		\Phi:\Pcal \to \{(A,B,C)\text{-Stellungen}\}
+		\]
+		eine Abbildung, die jeder Pentagonstellung $\Pi$ eine geordnete Kanalstellung zuordnet. Dann ist
+		\[
+		(A_\Pi,B_\Pi,C_\Pi):=\Phi(\Pi).
+		\]
+	\end{definition}
+	
+	Damit werden die Kanäle als von der pentagonalen Außenstellung abhängige Leitbahnen verstanden.
+	
+	\section{Pentagonphase und Phasenumschlag}
+	
+	\subsection{Diskrete Pentagonphase}
+	
+	Die Dodekaederhülle trägt Pentagonflächen. Deren relative Stellung wird als diskrete Phase modelliert.
+	
+	\begin{definition}[Pentagonphase]
+		Die \emph{Pentagonphase} ist ein Zustand
+		\[
+		\Pi_k,\qquad k\in\Z/5\Z.
+		\]
+		Ein elementarer Pentagonschritt ist die Rotation
+		\[
+		\Pi_k\mapsto \Pi_{k+1}.
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		Die fünf möglichen Phasenlagen sind der minimale diskrete Ausdruck einer pentagonalen Holonomie.
+	\end{bemerkung}
+	
+	\subsection{Ikosaeder/Dodekaeder-Umschlag}
+	
+	Zusätzlich zur Pentagonphase betrachten wir einen binären Phasenzustand, der festlegt, ob die icosahedrale oder die dodekaedrale Schale dynamisch dominiert.
+	
+	\begin{definition}[Dualitätsphase]
+		Die \emph{Dualitätsphase} ist ein Vorzeichen
+		\[
+		\varepsilon\in\{+1,-1\},
+		\]
+		wobei
+		\[
+		\varepsilon=+1 \quad \text{für \glqq Ikosaeder innen aktiv\grqq}
+		\]
+		und
+		\[
+		\varepsilon=-1 \quad \text{für \glqq Dodekaeder außen aktiv\grqq}
+		\]
+		steht.
+	\end{definition}
+	
+	\begin{definition}[Phasenumschlag]
+		Ein \emph{Ikosaeder/Dodekaeder-Umschlag} ist der Übergang
+		\[
+		\varepsilon\mapsto -\varepsilon.
+		\]
+		Gleichzeitig wird eine Pentagonrotation angestoßen:
+		\[
+		(\varepsilon,\Pi_k)\mapsto (-\varepsilon,\Pi_{k+1}).
+		\]
+	\end{definition}
+	
+	\section{ABC-Kanalumschaltung}
+	
+	\subsection{Zyklische Permutation}
+	
+	Wir modellieren die sichtbare Umschaltung der drei Kanäle durch einen Dreierzyklus.
+	
+	\begin{definition}[Kanalzyklus]
+		Sei $\sigma$ die Permutation
+		\[
+		\sigma=(ABC),
+		\]
+		also
+		\[
+		\sigma(A,B,C)=(B,C,A).
+		\]
+		Dann heißt
+		\[
+		(A,B,C)\mapsto(B,C,A)
+		\]
+		der \emph{elementare Kanalumschalt-Schritt}.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Diese Wahl ist die minimalste nichttriviale Dynamik auf drei Kanälen. Sie soll die beobachtbare Umschichtung der Kanalrollen bei einem Pentagonschritt modellieren.
+	\end{bemerkung}
+	
+	\subsection{Gekoppeltes Update}
+	
+	Wir koppeln nun Dualitätsumschlag, Pentagonrotation und Kanalpermutation.
+	
+	\begin{definition}[Elementares Evolutionsgesetz]
+		Das elementare Update $U$ sei definiert durch
+		\[
+		U:\ (\varepsilon,\Pi_k,A,B,C)\longmapsto(-\varepsilon,\Pi_{k+1},B,C,A).
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		Dies ist das minimale Evolutionsgesetz des Modells. Es sagt:
+		\begin{itemize}
+			\item bei jedem Schritt wechselt die aktive Innen/Außen-Rolle,
+			\item die Pentagonphase rückt um einen Schritt weiter,
+			\item und die sichtbaren Kanäle werden zyklisch umgeordnet.
+		\end{itemize}
+	\end{bemerkung}
+	
+	\section{Zwei verschränkte Zyklen und der 15er-Rückkehrsatz}
+	
+	Das Modell besitzt zwei natürliche diskrete Perioden:
+	
+	\begin{itemize}
+		\item einen Pentagonzyklus der Länge $5$,
+		\item einen Kanalzyklus der Länge $3$.
+	\end{itemize}
+	
+	Da $5$ und $3$ teilerfremd sind, entsteht eine gemeinsame Rückkehrlänge von $15$.
+	
+	\begin{lemma}[Rückkehrlänge]
+		Die gekoppelte Dynamik von Pentagonphase und Kanalzyklus besitzt die gemeinsame Periode
+		\[
+		\lcm(5,3)=15.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Nach $5$ elementaren Updates kehrt die Pentagonphase $\Pi_k$ zu ihrem Ausgangswert zurück, nach $3$ Updates die Kanalordnung $(A,B,C)$. Die kleinste Zahl, nach der beide zugleich wieder am Ausgangspunkt sind, ist das kleinste gemeinsame Vielfache von $5$ und $3$, also
+		\[
+		\lcm(5,3)=15.
+		\]
+	\end{proof}
+	
+	\begin{satz}[15er-Zyklus]
+		Unter dem Evolutionsgesetz
+		\[
+		U:\ (\varepsilon,\Pi_k,A,B,C)\mapsto(-\varepsilon,\Pi_{k+1},B,C,A)
+		\]
+		kehrt das Paar aus Pentagonstellung und Kanalordnung nach genau $15$ elementaren Schritten an seinen Ausgangspunkt zurück.
+	\end{satz}
+	
+	\begin{proof}
+		Die Pentagonstellung ist modulo $5$, die Kanalstellung modulo $3$ periodisch. Nach dem Lemma kehren beide nach $15$ Schritten gleichzeitig zurück.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Die Dualitätsphase $\varepsilon$ hat Periode $2$. Betrachtet man das vollständige Tupel $(\varepsilon,\Pi_k,A,B,C)$, so kann die volle Rückkehrlänge auch von der Kopplung an die Parität abhängen. Der hier formulierte 15er-Zyklus betrifft die geometrisch sichtbare Kopplung von Pentagonphase und Kanalordnung.
+	\end{bemerkung}
+	
+	\section{Energetische Minimalfassung}
+	
+	Die Dynamik kann durch eine diskrete Energie ergänzt werden.
+	
+	\begin{definition}[Schalen- und Phasenenergie]
+		Eine minimale Energie des Zustands $(n,\varepsilon,k)$ sei
+		\[
+		\mathcal E(n,\varepsilon,k)=E_T+E_\Sigma(n)+E_{\mathrm{dual}}(\varepsilon)+E_{\mathrm{pent}}(k),
+		\]
+		wobei
+		\begin{itemize}
+			\item $E_T$ die Kernenergie des Tetraeders,
+			\item $E_\Sigma(n)$ die Schütte-Schalenenergie,
+			\item $E_{\mathrm{dual}}(\varepsilon)$ die Energie des Ikosaeder/Dodekaeder-Regimes,
+			\item $E_{\mathrm{pent}}(k)$ die Pentagon-Phasenenergie
+		\end{itemize}
+		bezeichnet.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Diese Energiefassung ist bewusst minimal. Sie macht nur sichtbar, dass die Umschlagdynamik nicht bloß kombinatorisch, sondern auch energetisch gelesen werden kann.
+	\end{bemerkung}
+	
+	\section{Operatorische Perspektive}
+	
+	Die diskrete Dynamik kann durch einen Update-Operator beschrieben werden.
+	
+	\begin{definition}[Update-Operator]
+		Seien
+		\[
+		R_{\mathrm{dual}},\qquad R_{\mathrm{pent}},\qquad R_{\mathrm{ABC}}
+		\]
+		die Operatoren, die jeweils
+		\begin{itemize}
+			\item die Dualitätsphase umschalten,
+			\item die Pentagonphase rotieren,
+			\item die ABC-Kanäle permutieren.
+		\end{itemize}
+		Dann definieren wir formal
+		\[
+		U = R_{\mathrm{dual}}\,R_{\mathrm{pent}}\,R_{\mathrm{ABC}}.
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		In dieser Sprache erscheint die Pentagonrotation als diskrete Holonomie und die Kanalpermutation als sichtbare Phasenumschaltung.
+	\end{bemerkung}
+	
+	Ein effektiver Hamiltonian könnte dann heuristisch durch
+	\[
+	H_{\mathrm{eff}} \sim i\log U
+	\]
+	gewonnen werden, zumindest in einem geeigneten endlichen Modell oder in einer lokalen Approximation. In dieser Sicht ist die beobachtbare Dynamik nicht durch ein statisches Potential, sondern durch die zusammengesetzte Wirkung eines diskreten Update-Operators bestimmt.
+	
+	\section{Interpretation}
+	
+	Das Minimalmodell erlaubt nun eine präzise Lesart des Grundgedankens.
+	
+	\begin{enumerate}[label=(\arabic*)]
+		\item Der Tetraeder ist die minimale Keimzelle der Viererordnung.
+		\item Die Schütte-Erweiterung erzeugt eine diskrete innere Mikrosaeder-Schale.
+		\item Diese projiziert dual auf eine äußere Dodekaederhülle.
+		\item Die sichtbaren ABC-Kanäle hängen von der Pentagonstellung dieser Hülle ab.
+		\item Jeder Ikosaeder/Dodekaeder-Umschlag löst eine Pentagonrotation aus.
+		\item Diese Pentagonrotation bewirkt zugleich eine zyklische Umordnung der Kanäle.
+	\end{enumerate}
+	
+	Der zentrale inhaltliche Punkt lautet daher:
+	
+	\begin{quote}
+		Die ABC-Kanäle sind nicht primär statische arithmetische Klassen, sondern sichtbare Bilder einer diskreten Pentagon-Holonomie.
+	\end{quote}
+	
+	Gerade damit wird verständlich, weshalb in numerischen Experimenten Kantenphasen und Gauge-artige Kopplungen oft mehr Information tragen als bloße diagonale Potentiale: Die wesentliche Dynamik sitzt in der Holonomie, nicht im statischen Kanalwert.
+	
+	\section{Ausblick}
+	
+	Der hier formulierte Rahmen ist bewusst minimal. Mehrere Erweiterungen liegen nahe:
+	
+	\begin{itemize}
+		\item die explizite Konstruktion eines endlichen Schalenmodells $\Ical_n\to\Dcal_n$,
+		\item die Realisierung der Pentagonphase als konkrete Rotationsvariable auf Flächen,
+		\item die Einbettung der Kanalumschaltung in einen diskreten Dirac-Operator mit Kantenphasen,
+		\item die Untersuchung, ob der 15er-Zyklus in Spektren, Holonomien oder Übergangsmatrizen numerisch sichtbar wird,
+		\item und die Verbindung dieser Dynamik mit Morley-, Walter- und Kepler-Strukturen als innerem Tri-Kern, Vermittlungsgeometrie und äußerer Schließung.
+	\end{itemize}
+	
+	Damit erscheint das hier formulierte Evolutionsschema als eine plausible Minimalform der geometrischen Schalen- und Umschlagdynamik des Bamberg-Modells.
+	
+	\begin{thebibliography}{99}
+		
+		\bibitem{Coxeter}
+		H. S. M. Coxeter,
+		\emph{Regular Polytopes},
+		3rd ed., Dover, New York, 1973.
+		
+		\bibitem{ConwaySmith}
+		J. H. Conway, D. A. Smith,
+		\emph{On Quaternions and Octonions},
+		A. K. Peters, Natick, 2003.
+		
+		\bibitem{Baez}
+		J. C. Baez,
+		The octonions,
+		\emph{Bull. Amer. Math. Soc.} \textbf{39} (2002), 145--205.
+		
+		\bibitem{Nakahara}
+		M. Nakahara,
+		\emph{Geometry, Topology and Physics},
+		2nd ed., Taylor \& Francis, Boca Raton, 2003.
+		
+		\bibitem{Kepler}
+		J. Kepler,
+		\emph{Harmonices Mundi},
+		Linz, 1619.
+		
+	\end{thebibliography}
+	
+\end{document}

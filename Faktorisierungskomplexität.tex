@@ -1,0 +1,156 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[german]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\title{Eine zweiskalige Struktur der Faktorisierungskomplexität\
+	\large Empirische Evidenz für die Rolle arithmetischer Glattheit}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Wir untersuchen empirisch die Laufzeit von Faktorisierungsalgorithmen auf zufälligen ganzen Zahlen.
+		Die Daten zeigen deutlich, dass die Laufzeit nicht allein durch die Größe der Zahl bestimmt wird,
+		sondern stark von der arithmetischen Struktur abhängt, insbesondere vom größten Primfaktor.
+		Wir identifizieren eine zweiskalige Struktur: eine globale Skalierung durch $\log n$ und eine lokale Korrektur durch die Glattheit der Zahl.
+		Dies führt zu einer natürlichen Klassifikation von Zahlen in unterschiedliche ``Rechenphasen''.
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Die Komplexität der Faktorisierung ganzer Zahlen ist ein zentrales Problem der algorithmischen Zahlentheorie.
+	Klassische Resultate zeigen, dass moderne Verfahren eine asymptotische Laufzeit der Form
+	
+	\begin{equation}
+		T(n) \sim \exp\left( \sqrt{\log n \cdot \log \log n} \right)
+	\end{equation}
+	
+	aufweisen.
+	
+	Diese Beschreibung berücksichtigt jedoch nur die Größe der Zahl und ignoriert deren interne Struktur.
+	In dieser Arbeit zeigen wir, dass diese Struktur entscheidend ist.
+	
+	\section{Empirische Beobachtungen}
+	
+	Wir analysieren Laufzeiten verschiedener Faktorisierungsverfahren auf zufällig generierten Zahlen unterschiedlicher Größe.
+	
+	Die wichtigsten Beobachtungen sind:
+	
+	\begin{itemize}
+		\item Die Laufzeit zeigt deutliche Cluster.
+		\item Primzahlen und semiprime Zahlen sind signifikant schwerer zu faktorisieren.
+		\item Zahlen mit vielen kleinen Primfaktoren sind besonders leicht.
+	\end{itemize}
+	
+	Diese Struktur bleibt auch bei fixer Stellenzahl erhalten.
+	
+	\section{Glattheit als strukturgebender Parameter}
+	
+	Wir definieren die Glattheit einer Zahl über ihren größten Primfaktor:
+	
+	\begin{equation}
+		P_{\max}(n) = \max { p \mid p \text{ Primteiler von } n }
+	\end{equation}
+	
+	Empirisch zeigt sich eine starke Korrelation:
+	
+	\begin{equation}
+		\text{Runtime}(n) \sim \log(P_{\max}(n))
+	\end{equation}
+	
+	Insbesondere gilt:
+	
+	\begin{itemize}
+		\item Kleine $P_{\max}$ $\Rightarrow$ schnelle Faktorisierung
+		\item Große $P_{\max}$ $\Rightarrow$ langsame Faktorisierung
+	\end{itemize}
+	
+	\section{Zweiskaliges Modell}
+	
+	Wir schlagen folgendes Modell vor:
+	
+	\begin{equation}
+		T(n) \sim \exp\left(
+		\sqrt{\log n \cdot \log\log n}
+		\cdot g(P_{\max}(n))
+		\right)
+	\end{equation}
+	
+	wobei $g$ eine monotone Funktion ist.
+	
+	Eine einfache Näherung ist:
+	
+	\begin{equation}
+		T(n) \approx A \cdot \exp(B \cdot \sqrt{\log n \log\log n}) \cdot (P_{\max}(n))^\alpha
+	\end{equation}
+	
+	\section{Phasenstruktur}
+	
+	Die Daten legen nahe, dass Zahlen in drei Klassen zerfallen:
+	
+	\begin{enumerate}
+		\item Glatte Zahlen (kleine Primfaktoren)
+		\item Gemischte Zahlen
+		\item Primzahlartige Zahlen (große Primfaktoren)
+	\end{enumerate}
+	
+	Diese Klassen bilden klar getrennte Cluster im Merkmalsraum.
+	
+	\section{Maschinelles Lernen}
+	
+	Ein einfacher Random-Forest-Klassifikator kann die Schwierigkeit einer Faktorisierung mit hoher Genauigkeit vorhersagen, basierend auf:
+	
+	\begin{itemize}
+		\item modularen Restklassen
+		\item Ziffernentropie
+		\item kleinen Teilbarkeitstests
+	\end{itemize}
+	
+	Dies zeigt, dass die Struktur der Zahl bereits vor der Faktorisierung zugänglich ist.
+	
+	\section{Interpretation}
+	
+	Die Ergebnisse legen nahe:
+	
+	\begin{itemize}
+		\item Faktorisierung ist kein homogenes Problem
+		\item sondern ein strukturabhängiger Prozess
+		\item mit klaren ``Phasenübergängen''
+	\end{itemize}
+	
+	Der größte Primfaktor wirkt als eine Art ``Barriere'' im Rechenprozess.
+	
+	\section{Schlussfolgerung}
+	
+	Wir zeigen, dass die klassische Komplexitätstheorie durch einen strukturellen Term ergänzt werden muss.
+	Die Glattheit einer Zahl ist ein zentraler Parameter für die tatsächliche Rechenzeit.
+	
+	Dies eröffnet neue Möglichkeiten für:
+	
+	\begin{itemize}
+		\item adaptive Faktorisierungsalgorithmen
+		\item Vorhersagemodelle
+		\item theoretische Verallgemeinerungen
+	\end{itemize}
+	
+	\section*{Ausblick}
+	
+	Zukünftige Arbeiten sollten:
+	
+	\begin{itemize}
+		\item die Funktion $g$ explizit bestimmen
+		\item den Zusammenhang mit bekannten Verteilungen glatter Zahlen untersuchen
+		\item die Phasenstruktur theoretisch begründen
+	\end{itemize}
+	
+\end{document}

@@ -1,0 +1,184 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb}
+
+\title{EABC-Volumenkonstanz und dyadische Gitterteilung}
+\date{}
+
+\begin{document}
+\maketitle
+
+Wir betrachten das lokale Einheitsvolumen \(V_{\mathcal M}\) eines
+arithmetisch-geometrischen Quelltraegers. Dieses Volumen werde durch vier
+orthogonale EABC-Koordinatenrichtungen
+\[
+\hat{\mathbf e},\hat{\mathbf a},\hat{\mathbf b},\hat{\mathbf c}
+\]
+aufgespannt. Die vier Richtungen entsprechen den vier invertierbaren
+Restklassen modulo \(12\),
+\[
+E \equiv 1,\qquad A \equiv 5,\qquad B \equiv 7,\qquad C \equiv 11 \pmod{12}.
+\]
+
+Die dyadische Zerlegung des lokalen Einheitsvolumens erfolgt entlang eines
+periodischen Vierphasenpfades. Wir definieren die vektorielle
+Amplitudenreihe
+\[
+\boldsymbol{\Xi}
+=
+\sum_{k=0}^{\infty}
+\left(
+\frac{1}{2^{4k+1}}\hat{\mathbf e}
++
+\frac{1}{2^{4k+2}}\hat{\mathbf a}
++
+\frac{1}{2^{4k+3}}\hat{\mathbf b}
++
+\frac{1}{2^{4k+4}}\hat{\mathbf c}
+\right).
+\]
+
+Da nach vier Schritten derselbe EABC-Zyklus erneut beginnt, besitzt jede
+Koordinatenrichtung denselben geometrischen Skalenfaktor
+\[
+q=\frac{1}{2^4}=\frac{1}{16}.
+\]
+
+Damit ergeben sich die vier Komponenten
+\[
+\Xi_e
+=
+\sum_{k=0}^{\infty}\frac{1}{2^{4k+1}}
+=
+\frac{1}{2}\cdot\frac{1}{1-\frac{1}{16}}
+=
+\frac{8}{15},
+\]
+\[
+\Xi_a
+=
+\sum_{k=0}^{\infty}\frac{1}{2^{4k+2}}
+=
+\frac{1}{4}\cdot\frac{1}{1-\frac{1}{16}}
+=
+\frac{4}{15},
+\]
+\[
+\Xi_b
+=
+\sum_{k=0}^{\infty}\frac{1}{2^{4k+3}}
+=
+\frac{1}{8}\cdot\frac{1}{1-\frac{1}{16}}
+=
+\frac{2}{15},
+\]
+und
+\[
+\Xi_c
+=
+\sum_{k=0}^{\infty}\frac{1}{2^{4k+4}}
+=
+\frac{1}{16}\cdot\frac{1}{1-\frac{1}{16}}
+=
+\frac{1}{15}.
+\]
+
+Somit besitzt die EABC-Zerlegung die normierte Gesamtmasse
+\[
+\sum_{\mu\in\{e,a,b,c\}}\Xi_\mu
+=
+\frac{8}{15}
++
+\frac{4}{15}
++
+\frac{2}{15}
++
+\frac{1}{15}
+=
+1.
+\]
+
+Die Reihe definiert daher eine vollstaendige additive Zerlegung des lokalen
+Einheitsvolumens. Es entstehen weder Luecken noch Ueberdeckungen im Sinne
+der \(L^1\)-Norm.
+
+Die zugehoerige gewichtete Richtungsabbildung lautet
+\[
+\boldsymbol{\Xi}
+=
+\frac{8}{15}\hat{\mathbf e}
++
+\frac{4}{15}\hat{\mathbf a}
++
+\frac{2}{15}\hat{\mathbf b}
++
+\frac{1}{15}\hat{\mathbf c}.
+\]
+
+Da die vier Basisrichtungen orthogonal sind, besitzt dieser Vektor die
+euklidische Norm
+\[
+\lVert\boldsymbol{\Xi}\rVert_2^2
+=
+\frac{64+16+4+1}{225}
+=
+\frac{17}{45}.
+\]
+
+Die normierte SLERP-Richtung ist daher nicht \(\boldsymbol{\Xi}\) selbst,
+sondern
+\[
+\widehat{\boldsymbol{\Xi}}
+=
+\frac{\boldsymbol{\Xi}}{\lVert\boldsymbol{\Xi}\rVert_2}
+=
+\sqrt{\frac{45}{17}}\,\boldsymbol{\Xi}.
+\]
+
+Damit trennt das Modell sauber zwischen additiver Volumenkonstanz und
+geodaetischer Richtungsnormierung: Die dyadische EABC-Zerlegung erhaelt die
+Gesamtmasse exakt, waehrend die SLERP-Normierung die zugehoerige Richtung auf
+der Einheitssphaere des quaternionischen Koordinatenraums fixiert.
+
+Die Zahl \(15\) tritt in diesem Zusammenhang nicht zufaellig auf. Sie ist die
+Gesamtmasse der vier dyadischen Gewichte
+\[
+8+4+2+1=15
+\]
+und zugleich die Anzahl der nichtleeren Teilmengen eines Vierer-Systems. Im
+EABC-Modell kann sie daher als kombinatorischer Nenner der vollstaendigen
+Vierphasen-Zerlegung verstanden werden. Die vier Komponenten \((8,4,2,1)\)
+bilden dabei eine hierarchische Gewichtung der EABC-Achsen, ohne die
+Gesamtmasse des lokalen Quelltraegers zu veraendern.
+
+\paragraph{Lemma.}
+Die dyadische Vierphasen-Zerlegung des EABC-Koordinatenraums liefert eine
+eindeutig normierte additive Zerlegung des lokalen Einheitsvolumens:
+\[
+V_{\mathcal M}
+=
+\Xi_e+\Xi_a+\Xi_b+\Xi_c
+=
+1.
+\]
+
+Die zugehoerigen Koordinatengewichte sind
+\[
+(\Xi_e,\Xi_a,\Xi_b,\Xi_c)
+=
+\left(
+\frac{8}{15},
+\frac{4}{15},
+\frac{2}{15},
+\frac{1}{15}
+\right).
+\]
+
+Damit ist die unendliche dyadische Zerlegung im EABC-Raum konvergent,
+vollstaendig und volumenstabil im additiven Sinn. Eine zusaetzliche
+geodaetische Normierung erzeugt daraus eine Richtung auf der quaternionischen
+Einheitssphaere.
+
+\end{document}

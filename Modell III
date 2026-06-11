@@ -1,0 +1,857 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{enumitem}
+
+\geometry{margin=2.5cm}
+
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./}{fig/}{figs/}{images/}{img/}}
+
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{korollar}[satz]{Korollar}
+
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{beispiel}[satz]{Beispiel}
+
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+
+\title{
+	Bamberger Modell III\\
+	Eine tetraedrische Struktur auf den natürlichen Zahlen\\
+	Quaternionische Orientierung, modulare Phasen und ikosaedrische Geometrie
+}
+
+\author{
+	Thomas Hoffbauer
+}
+
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		
+		Diese Arbeit entwickelt eine geometrische Sichtweise auf die natürlichen Zahlen.
+		Ausgehend von den invertierbaren Restklassen modulo \(12\) wird eine vierstufige
+		Struktur konstruiert,
+		
+		\[
+		V_4
+		\rightarrow
+		Q_8
+		\rightarrow
+		\eta_{24}
+		\rightarrow
+		A_5,
+		\]
+		
+		welche Restklassenarithmetik, Quaternionen,
+		modulare Formen und Ikosaedersymmetrien miteinander verbindet.
+		
+		Im Zentrum steht die Beobachtung, dass die vier Klassen
+		
+		\[
+		1,5,7,11 \pmod{12}
+		\]
+		
+		eine natürliche tetraedrische Geometrie erzeugen.
+		Durch eine quaternionische Hebung entsteht eine orientierte Spinorstruktur.
+		Die Dedekindsche Eta-Funktion liefert eine diskrete
+		24-periodische Phasenstruktur,
+		während die Ikosaedergruppe \(A_5\)
+		eine natürliche Bahngeometrie bereitstellt.
+		
+		Die Arbeit formuliert einen geometrischen Rahmen,
+		in dem natürliche Zahlen durch Skala,
+		Spin,
+		Bindung,
+		Orbit
+		und Phase beschrieben werden können.
+		
+	\end{abstract}
+	
+	\tableofcontents
+	
+	\newpage
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\section{Einleitung}
+	
+	Die klassische Zahlentheorie beschreibt natürliche Zahlen
+	über ihre Größe,
+	ihre Teilbarkeit
+	und ihre Zerlegung in Primfaktoren.
+	
+	Seit Euklid gilt:
+	
+	\begin{quote}
+		Jede natürliche Zahl zerfällt eindeutig in Primzahlen.
+	\end{quote}
+	
+	Diese Tatsache bildet die Grundlage großer Teile der modernen Mathematik.
+	
+	Das vorliegende Modell geht von einer weiterführenden Frage aus:
+	
+	\begin{quote}
+		Besitzen Primfaktorisierungen neben ihrer arithmetischen
+		auch eine geometrische Struktur?
+	\end{quote}
+	
+	Die Arbeit untersucht die Möglichkeit,
+	dass Primzahlen nicht nur als Zahlen,
+	sondern zugleich als Träger einer verborgenen
+	Orientierungsstruktur verstanden werden können.
+	
+	Dabei entsteht die Hierarchie
+	
+	\[
+	V_4
+	\rightarrow
+	Q_8
+	\rightarrow
+	\eta_{24}
+	\rightarrow
+	A_5.
+	\]
+	
+	Diese verbindet vier klassische Gebiete der Mathematik:
+	
+	\begin{itemize}
+		\item Restklassenarithmetik,
+		\item Quaternionenalgebra,
+		\item modulare Formen,
+		\item Polyedersymmetrien.
+	\end{itemize}
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\section{Historische Wurzeln}
+	
+	\subsection{Euler und die Primzahlen}
+	
+	Die moderne Zahlentheorie beginnt mit Euler.
+	
+	Die Euler-Produktdarstellung
+	
+	\[
+	\zeta(s)
+	=
+	\prod_p
+	\frac{1}{1-p^{-s}}
+	\]
+	
+	macht deutlich,
+	dass Primzahlen die elementaren Bausteine
+	der natürlichen Zahlen darstellen.
+	
+	Alle natürlichen Zahlen entstehen aus deren Multiplikation.
+	
+	Im Bamberger Modell werden Primzahlen
+	als elementare Orientierungsträger betrachtet.
+	
+	\subsection{Hamilton und die Quaternionen}
+	
+	1843 entdeckte Hamilton die Quaternionenalgebra
+	
+	\[
+	\mathbb H
+	=
+	\langle 1,i,j,k\rangle.
+	\]
+	
+	Sie erfüllt
+	
+	\[
+	i^2=j^2=k^2=ijk=-1.
+	\]
+	
+	Zum ersten Mal erscheint eine Zahlstruktur,
+	in der die Multiplikation nicht kommutativ ist.
+	
+	Quaternionen bilden heute die Grundlage
+	von Rotationen und Spinoren.
+	
+	\subsection{Hurwitz}
+	
+	Hurwitz zeigte,
+	dass die Quaternionen 24 ausgezeichnete Einheiten besitzen.
+	
+	Diese bilden den berühmten 24-Zeller.
+	
+	Die Zahl
+	
+	\[
+	24
+	\]
+	
+	wird später in der Theorie
+	über die Eta-Funktion erneut auftreten.
+	
+	\subsection{Dedekind}
+	
+	Dedekind definierte die Eta-Funktion
+	
+	\[
+	\eta(\tau)
+	=
+	q^{1/24}
+	\prod_{n\ge1}(1-q^n).
+	\]
+	
+	Diese Funktion spielt eine fundamentale Rolle
+	in der Theorie modularer Formen.
+	
+	\subsection{Ramanujan}
+	
+	Ramanujan entdeckte tiefe Beziehungen zwischen
+	
+	\[
+	e^{-\pi},
+	\qquad
+	e^{-2\pi},
+	\qquad
+	\varphi
+	=
+	\frac{1+\sqrt5}{2}.
+	\]
+	
+	Insbesondere in den Rogers--Ramanujan-Identitäten
+	erscheinen diese Größen gemeinsam.
+	
+	\subsection{Klein}
+	
+	Felix Klein erkannte,
+	dass die Ikosaedergruppe
+	
+	\[
+	A_5
+	\]
+	
+	eng mit modularen Funktionen verbunden ist.
+	
+	Das Ikosaeder stellt die höchste reguläre
+	Rotationssymmetrie des dreidimensionalen Raumes dar.
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\section{Die EABC-Algebra}
+	
+	\begin{definition}
+		
+		Die invertierbaren Restklassen modulo \(12\)
+		
+		\[
+		(\mathbb Z/12\mathbb Z)^\times
+		=
+		\{1,5,7,11\}
+		\]
+		
+		werden bezeichnet durch
+		
+		\[
+		E,A,B,C.
+		\]
+		
+	\end{definition}
+	
+	Es gilt
+	
+	\[
+	E=1,
+	\qquad
+	A=5,
+	\qquad
+	B=7,
+	\qquad
+	C=11.
+	\]
+	
+	Ferner:
+	
+	\[
+	A^2=B^2=C^2=E.
+	\]
+	
+	Außerdem:
+	
+	\[
+	AB=C,
+	\]
+	
+	\[
+	BC=A,
+	\]
+	
+	\[
+	CA=B.
+	\]
+	
+	\begin{satz}
+		
+		Die Elemente
+		
+		\[
+		E,A,B,C
+		\]
+		
+		bilden die Klein-Vierergruppe
+		
+		\[
+		V_4.
+		\]
+		
+	\end{satz}
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\section{Das tetraedrische Spinmodell}
+	
+	Wir definieren
+	
+	\[
+	E=(1,1,1),
+	\]
+	
+	\[
+	A=(-1,-1,1),
+	\]
+	
+	\[
+	B=(1,-1,-1),
+	\]
+	
+	\[
+	C=(-1,1,-1).
+	\]
+	
+	\begin{satz}
+		
+		Die vier Zustände bilden die Ecken eines regulären Tetraeders.
+		
+	\end{satz}
+	
+	\begin{proof}
+		
+		Zwischen jedem Paar ergibt sich die Distanz
+		
+		\[
+		2\sqrt2.
+		\]
+		
+		Alle sechs Kanten sind gleich lang.
+		
+	\end{proof}
+	
+	\begin{korollar}
+		
+		Es gilt
+		
+		\[
+		E+A+B+C=0.
+		\]
+		
+	\end{korollar}
+	
+	Dies zeigt,
+	dass der vollständige Vierer spinneutral ist.
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\section{Kern-Hülle-Struktur}
+	
+	Die numerischen Untersuchungen legen folgende Interpretation nahe:
+	
+	\[
+	E=\text{Kern},
+	\]
+	
+	\[
+	B,C=\text{Hülle},
+	\]
+	
+	\[
+	A=\text{Bindung}.
+	\]
+	
+	Der elementare Hüllendipol lautet
+	
+	\[
+	D_{BC}=B+C.
+	\]
+	
+	Einsetzen ergibt
+	
+	\[
+	D_{BC}
+	=
+	(0,0,-2).
+	\]
+	
+	Die Gegenorientierung lautet
+	
+	\[
+	-D_{BC}
+	=
+	(0,0,2).
+	\]
+	
+	Damit besitzt die Hülle zwei natürliche Orientierungen.
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\section{Quaternionische Hebung}
+	
+	Die EABC-Algebra ist kommutativ.
+	
+	Zur Einführung einer Orientierung wird die Zuordnung
+	
+	\[
+	E\mapsto1,
+	\]
+	
+	\[
+	A\mapsto i,
+	\]
+	
+	\[
+	B\mapsto j,
+	\]
+	
+	\[
+	C\mapsto k
+	\]
+	
+	eingeführt.
+	
+	Dann gilt
+	
+	\[
+	jk=i,
+	\]
+	
+	aber
+	
+	\[
+	kj=-i.
+	\]
+	
+	Daraus folgt
+	
+	\[
+	BC=+A,
+	\]
+	
+	\[
+	CB=-A.
+	\]
+	
+	\begin{satz}
+		
+		Die quaternionische Hebung induziert
+		eine orientierte Spinorstruktur.
+		
+	\end{satz}
+	
+	Die Orientierung entsteht nicht in \(V_4\),
+	sondern erst in \(Q_8\).
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\section{Eta-24-Phasen}
+	
+	Die Dedekindsche Eta-Funktion erfüllt
+	
+	\[
+	\eta(\tau+1)
+	=
+	e^{\pi i/12}\eta(\tau).
+	\]
+	
+	Dies motiviert die Einführung einer Phase
+	
+	\[
+	\varepsilon
+	\in
+	\mathbb Z_{24}.
+	\]
+	
+	Wir setzen
+	
+	\[
+	+A
+	\leftrightarrow
+	0,
+	\]
+	
+	\[
+	-A
+	\leftrightarrow
+	12.
+	\]
+	
+	Die Vertauschung
+	
+	\[
+	BC
+	\leftrightarrow
+	CB
+	\]
+	
+	entspricht einem Halbumlauf
+	
+	\[
+	\varepsilon
+	\rightarrow
+	\varepsilon+12.
+	\]
+	
+	Nach zwei Vertauschungen
+	
+	\[
+	12+12=24
+	\]
+	
+	wird die Ausgangsphase wieder erreicht.
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\section{Ramanujan und der Goldene Schnitt}
+	
+	Ramanujans Arbeiten verbinden die Zahlen
+	
+	\[
+	e^{-2\pi}
+	\]
+	
+	und
+	
+	\[
+	\varphi.
+	\]
+	
+	Im Modell entsteht die Kette
+	
+	\[
+	\eta_{24}
+	\longrightarrow
+	e^{-2\pi}
+	\longrightarrow
+	\varphi.
+	\]
+	
+	Der Goldene Schnitt erscheint somit
+	als geometrische Manifestation
+	einer modularen Struktur.
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\section{Die ikosaedrische Erweiterung}
+	
+	Die Ikosaedergruppe
+	
+	\[
+	A_5
+	\]
+	
+	stellt die höchste reguläre Rotationssymmetrie
+	des dreidimensionalen Raumes dar.
+	
+	Ihre Geometrie enthält den Goldenen Schnitt intrinsisch.
+	
+	Die ikosaedrische Ebene wird als orbitale Erweiterung
+	des tetraedrischen Spinraums interpretiert.
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\section{Radix-Geometrie}
+	
+	Jede natürliche Zahl wird durch
+	
+	\[
+	n=(G,H,V,\varepsilon)
+	\]
+	
+	beschrieben.
+	
+	Dabei bezeichnet
+	
+	\[
+	G
+	\]
+	
+	den glatten Anteil,
+	
+	\[
+	H
+	\]
+	
+	den Spinanteil,
+	
+	\[
+	V
+	\]
+	
+	die Bindungs- und Orbitstruktur,
+	
+	und
+	
+	\[
+	\varepsilon
+	\]
+	
+	die Eta-Phase.
+	
+	Diese vier Größen bilden gemeinsam
+	den geometrischen Zustand einer Zahl.
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\section{Arithmetische Teilchenspektroskopie}
+	
+	Die folgenden Begriffe sind mathematische Definitionen
+	und keine physikalischen Identifikationen.
+	
+	\subsection{Spinoren}
+	
+	Eine einzelne Primzahl
+	
+	\[
+	p>3
+	\]
+	
+	wird als elementarer Spinor bezeichnet.
+	
+	\subsection{Mesonen}
+	
+	Zweierkombinationen
+	
+	\[
+	A+B,
+	\quad
+	A+C,
+	\quad
+	B+C
+	\]
+	
+	werden als Mesonen bezeichnet.
+	
+	\subsection{Baryonen}
+	
+	Dreierkombinationen
+	
+	\[
+	A+B+C
+	\]
+	
+	werden als Baryonen bezeichnet.
+	
+	\subsection{Singuletts}
+	
+	Der vollständige Vierer
+	
+	\[
+	E+A+B+C=0
+	\]
+	
+	bildet ein Singulett.
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\section{Masse als geometrische Rigidität}
+	
+	Im Modell wird Masse nicht als Substanzmenge verstanden.
+	
+	Masse beschreibt die Stabilität
+	einer gekoppelten Struktur.
+	
+	Formal schreiben wir
+	
+	\[
+	m
+	=
+	\Lambda(\eta,\varphi)
+	\left(
+	\Omega
+	+
+	\kappa \|S\|^2
+	+
+	\lambda \|L\|^2
+	\right).
+	\]
+	
+	Hierbei bezeichnet
+	
+	\[
+	\Omega
+	\]
+	
+	eine Faktorisierungstiefe,
+	
+	\[
+	S
+	\]
+	
+	die Spinstruktur,
+	
+	und
+	
+	\[
+	L
+	\]
+	
+	eine orbitale Struktur.
+	
+	Diese Formel besitzt derzeit heuristischen Charakter.
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\section{Spekulative physikalische Interpretation}
+	
+	Die bisherige Konstruktion ist rein mathematisch.
+	
+	Dennoch legen die numerischen Untersuchungen
+	eine mögliche Interpretation nahe:
+	
+	\[
+	E
+	\leftrightarrow
+	\text{Kern},
+	\]
+	
+	\[
+	B,C
+	\leftrightarrow
+	\text{Hülle},
+	\]
+	
+	\[
+	A
+	\leftrightarrow
+	\text{Bindung}.
+	\]
+	
+	Ebenso erinnern
+	
+	\[
+	1er,\;2er,\;3er,\;4er
+	\]
+	
+	an eine hierarchische Teilchenklassifikation.
+	
+	Ob diese Analogien physikalische Bedeutung besitzen,
+	bleibt offen.
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\section{Offene Probleme}
+	
+	Zu den wichtigsten offenen Fragen gehören:
+	
+	\begin{enumerate}
+		\item Zusammenhang mit SU(2).
+		\item Zusammenhang mit SU(3).
+		\item Dynamische Interpretation der Eta-Phase.
+		\item Zusammenhang mit der Zetafunktion.
+		\item Beziehung zu Hurwitz-Gittern.
+		\item Beziehung zur Leech-Struktur.
+		\item Herleitung realer Teilchenmassen.
+		\item Herleitung realer Ladungen.
+	\end{enumerate}
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\section{Schlussbemerkung}
+	
+	Das Bamberger Modell III beschreibt natürliche Zahlen
+	durch eine vierstufige Hierarchie
+	
+	\[
+	V_4
+	\rightarrow
+	Q_8
+	\rightarrow
+	\eta_{24}
+	\rightarrow
+	A_5.
+	\]
+	
+	Dabei liefert
+	
+	\[
+	V_4
+	\]
+	
+	die Restklasse,
+	
+	\[
+	Q_8
+	\]
+	
+	die Orientierung,
+	
+	\[
+	\eta_{24}
+	\]
+	
+	die Phase,
+	
+	und
+	
+	\[
+	A_5
+	\]
+	
+	die orbitale Geometrie.
+	
+	Ob diese Struktur lediglich eine mathematische Analogie
+	oder Ausdruck eines tieferen Zusammenhangs ist,
+	muss zukünftige Forschung zeigen.
+	
+	\bibliographystyle{plain}
+	
+	\begin{thebibliography}{9}
+		
+		\bibitem{euler}
+		Leonhard Euler.
+		\newblock Introductio in Analysin Infinitorum.
+		
+		\bibitem{hamilton}
+		William Rowan Hamilton.
+		\newblock Lectures on Quaternions.
+		
+		\bibitem{hurwitz}
+		Adolf Hurwitz.
+		\newblock Vorlesungen über Zahlentheorie.
+		
+		\bibitem{dedekind}
+		Richard Dedekind.
+		\newblock Erläuterungen zu den modularen Funktionen.
+		
+		\bibitem{ramanujan}
+		Srinivasa Ramanujan.
+		\newblock Collected Papers.
+		
+		\bibitem{klein}
+		Felix Klein.
+		\newblock Vorlesungen über das Ikosaeder.
+		
+	\end{thebibliography}
+	
+\end{document}

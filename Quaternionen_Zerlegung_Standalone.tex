@@ -1,0 +1,167 @@
+\documentclass[11pt, a4paper]{article}
+
+% ----------------------------------------------------------------------
+% PAKETE & EINSTELLUNGEN
+% ----------------------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath, amssymb, amsfonts, amsthm}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+
+\geometry{left=2cm, right=2cm, top=2cm, bottom=2.5cm}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.6em}
+
+% Code-Listing Stil
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{gray!5},
+    showstringspaces=false,
+}
+
+% Theorem-Umgebungen
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Bemerkung}
+
+% Titel-Metadaten
+\title{\textbf{Quaternionen-Zerlegung}\\[0.5em]
+\large Zerlegung natürlicher Zahlen in Prim-Quaternionen im Hurwitz-Quaternionen-Ring}
+
+\author{SageMath 10.8}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\noindent
+Dieser Artikel beschreibt die Zerlegung natürlicher Zahlen in ein Produkt von Prim-Quaternionen im Hurwitz-Quaternionen-Ring $\mathcal{H}$. Ausgehend vom Satz von Lagrange (jede natürliche Zahl ist Summe von vier Quadraten) wird ein Algorithmus vorgestellt, der zu gegebenem $n \in \mathbb{N}$ eine Faktorisierung in Prim-Quaternionen $\pi_1, \ldots, \pi_k$ mit $N(\pi_1) \cdots N(\pi_k) = n$ liefert. Die Implementierung erfolgt in SageMath.
+\end{abstract}
+
+% ----------------------------------------------------------------------
+\section{Import und Hurwitz-Quaternionen-Ring}
+% ----------------------------------------------------------------------
+
+Der Hurwitz-Quaternionen-Ring $\mathcal{H}$ ist die Quaternionen-Algebra über $\mathbb{Q}$ mit den Parametern $(-1,-1)$, d.\,h.\, $i^2 = j^2 = k^2 = ijk = -1$ (Hamilton). In SageMath wird er definiert durch:
+
+\begin{lstlisting}
+from sage.all import *
+from sage.arith.misc import four_squares
+
+# Definition des Hurwitz-Quaternionen-Rings uber Q
+H = QuaternionAlgebra(QQ, -1, -1)
+H
+\end{lstlisting}
+
+Ausgabe: \texttt{Quaternion Algebra (-1, -1) with base ring Rational Field}
+
+% ----------------------------------------------------------------------
+\section{Funktion: Zerlegung in Prim-Quaternionen}
+% ----------------------------------------------------------------------
+
+Die \textbf{Quaternionen-Norm} eines Elements $q = a + bi + cj + dk$ ist
+\[
+N(q) = a^2 + b^2 + c^2 + d^2.
+\]
+Nach dem \textbf{Satz von Lagrange} ist jede natürliche Zahl $n$ Summe von vier Quadraten: $n = a^2 + b^2 + c^2 + d^2$. Somit existiert stets ein Quaternion $q \in \mathcal{H}$ mit $N(q) = n$.
+
+Die Funktion \texttt{quaternions\_zerlegung(n)} zerlegt $n$ in eine Kette von Prim-Quaternionen, indem für jeden Primfaktor $p$ von $n$ ein Quaternion $\pi$ mit $N(\pi) = p$ gefunden wird (ebenfalls über \texttt{four\_squares}).
+
+\begin{lstlisting}
+def quaternions_zerlegung(n):
+    """
+    Zerlegt eine naturliche Zahl n in ein Produkt von Prim-Quaternionen.
+    Basiert auf dem Hurwitz-Quaternions-Ring (H).
+    """
+    # Wir suchen ein Quaternion q, dessen Norm n ist
+    # (Satz von Lagrange: Jede naturliche Zahl ist Summe von 4 Quadraten)
+    coords = four_squares(n)
+    q = H(coords)
+    
+    print(f"### #Energiedoku: Analyse von n = {n}")
+    print(f"Basis-Quaternion q: {q}")
+    print(f"Norm N(q): {q.reduced_norm()}")
+    print("-" * 30)
+    
+    # Zerlegung der Norm n in Primfaktoren p_i
+    # Fur jedes p_i ein zugehoriges Prim-Quaternion pi_i
+    faktoren_n = factor(n)
+    prim_quaternionen_kette = []
+    
+    for p, expo in faktoren_n:
+        p_coords = four_squares(p)
+        pi = H(p_coords)
+        for _ in range(expo):
+            prim_quaternionen_kette.append(pi)
+            
+    return prim_quaternionen_kette
+\end{lstlisting}
+
+% ----------------------------------------------------------------------
+\section{Beispiel}
+% ----------------------------------------------------------------------
+
+Für $n = 110567868768768768767$ erhält man:
+
+\begin{lstlisting}
+n_test = 110567868768768768767
+kette = quaternions_zerlegung(n_test)
+
+print("Zerlegung in Prim-Quadrupel (Familien-Komponenten):")
+for i, pi in enumerate(kette):
+    print(f"Faktor {i+1} (Prim-Quaternion): {pi} | Norm: {pi.reduced_norm()}")
+\end{lstlisting}
+
+\textbf{Ausgabe:}
+\begin{verbatim}
+### #Energiedoku: Analyse von n = 110567868768768768767
+Basis-Quaternion q: 66 + 1511*i + 92589*j + 10515125713*k
+Norm N(q): 110567868768768768767
+------------------------------
+Zerlegung in Prim-Quadrupel (Familien-Komponenten):
+Faktor 1 (Prim-Quaternion): 3 + 5*i + 177*j + 16188*k | Norm: 262082707
+Faktor 2 (Prim-Quaternion): 1 + 20*i + 402*j + 649524*k | Norm: 421881588581
+\end{verbatim}
+
+% ----------------------------------------------------------------------
+\section{Verifikation}
+% ----------------------------------------------------------------------
+
+Das Produkt der Normen der Prim-Quaternionen muss wieder $n$ ergeben:
+
+\begin{lstlisting}
+check_norm = prod(p.reduced_norm() for p in kette)
+print("-" * 30)
+print(f"Verifikation der Gesamt-Energie (Produkt der Normen): {check_norm}")
+print(f"Erwartet: {n_test} -> Korrekt: {check_norm == n_test}")
+\end{lstlisting}
+
+\textbf{Ausgabe:}
+\begin{verbatim}
+------------------------------
+Verifikation der Gesamt-Energie (Produkt der Normen): 110567868768768768767
+Erwartet: 110567868768768768767 -> Korrekt: True
+\end{verbatim}
+
+% ----------------------------------------------------------------------
+\section*{Zusammenfassung}
+% ----------------------------------------------------------------------
+
+Die Zerlegung natürlicher Zahlen in Prim-Quaternionen im Hurwitz-Ring nutzt den Satz von Lagrange und die Faktorisierung in $\mathbb{Z}$. Für jeden Primfaktor $p$ von $n$ wird ein Quaternion $\pi$ mit $N(\pi) = p$ gefunden; das Produkt der Normen aller Prim-Quaternionen ergibt $n$ und bestätigt die Korrektheit der Zerlegung.
+
+\end{document}

@@ -1,0 +1,334 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+
+\title{Chebyshev-artige Restklassenasymmetrie als mögliche Quelle einer Schalenbalance}
+\author{Kollaborative Ausarbeitung}
+\date{\today}
+
+\newtheorem{satz}{Satz}
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{korollar}[satz]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{hypothese}[satz]{Hypothese}
+\newtheorem{beispiel}[satz]{Beispiel}
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir formulieren ein Modell zur Untersuchung einer numerisch beobachteten Balance zwischen
+		einem glatten Anteil und einem energetischen Anteil natürlicher Zahlen. Dazu werden zu einer
+		wachsenden Primschale \(P_k\) der \(P_k\)-glatte Anteil \(S_k(n)\), der schalenreduzierte Rest
+		\(R_k(n)\) und dessen energetischer Anteil \(E_k(n)\) in der Restklasse \(1 \pmod{12}\)
+		definiert. Aus diesen Größen werden logarithmische und symmetrisch normierte Balancefunktionen
+		abgeleitet. Der Artikel formuliert die Arbeitshypothese, dass die beobachtete Schalenbalance
+		nicht allein ein Effekt der Glättung ist, sondern zumindest teilweise aus einer
+		Chebyshev-artigen Restklassenasymmetrie modulo \(12\) stammt, die durch die multiplikative
+		Struktur der Primfaktorzerlegung verstärkt sichtbar wird. Abschließend wird ein präzises
+		numerisches Testprogramm formuliert.
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Der klassische Chebyshev-Bias beschreibt die Beobachtung, dass Primzahlen auf endlichen Skalen
+	nicht immer gleichmäßig auf Restklassen verteilt erscheinen, obwohl asymptotisch Gleichverteilung
+	erwartet wird. Typischerweise betrifft dies Zählfunktionen der Form
+	\[
+	\pi(x;q,a),
+	\]
+	also die Anzahl der Primzahlen \(\le x\), die in einer festen Restklasse \(a \pmod q\) liegen.
+	
+	Im vorliegenden Zusammenhang geht es nicht um solche additiven Zählgrößen, sondern um ein
+	multiplikatives Modell. Für eine wachsende Primschale \(P_k\) wird zunächst der glatte Anteil
+	einer Zahl abgetrennt. Im verbleibenden Rest wird dann der Anteil der Primfaktorpotenzen in der
+	Klasse \(1 \pmod{12}\) isoliert. Die numerische Beobachtung ist, dass aus diesen Größen gebildete
+	Balancefunktionen auf bestimmten Grundmengen eine auffällige Drift in Richtung einer neutralen
+	Lage zeigen.
+	
+	Ziel dieses Artikels ist es, diese Beobachtung präzise zu formulieren und die Hypothese
+	auszusprechen, dass hier nicht nur ein Glättungseffekt, sondern eine verfeinerte,
+	multiplikative Erscheinungsform einer Chebyshev-artigen Restklassenasymmetrie vorliegt.
+	
+	\section{Schalen, Reste und energetische Anteile}
+	
+	\begin{definition}[Primschalen]
+		Für \(k\in\mathbb{N}\) sei
+		\[
+		P_k=\{2,3,5,\dots,p_k\}
+		\]
+		die Menge der ersten \(k\) Primzahlen.
+	\end{definition}
+	
+	\begin{definition}[Glatter Anteil und Rest]
+		Für \(n\in\mathbb{N}\) definieren wir den \(P_k\)-glatten Anteil durch
+		\[
+		S_k(n):=\prod_{p\in P_k} p^{v_p(n)}
+		\]
+		und den zugehörigen Rest durch
+		\[
+		R_k(n):=\frac{n}{S_k(n)}.
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		Der Anteil \(S_k(n)\) enthält genau die Primfaktorpotenzen von \(n\), deren Primzahlen in der
+		Schale \(P_k\) liegen. Der Rest \(R_k(n)\) ist zu allen Primzahlen aus \(P_k\) teilerfremd.
+	\end{bemerkung}
+	
+	\begin{definition}[Energetischer Anteil]
+		Der energetische Anteil des Restes \(R_k(n)\) sei definiert durch
+		\[
+		E_k(n):=\prod_{\substack{q^a\parallel R_k(n)\\ q\equiv 1\;(\mathrm{mod}\;12)}} q^a.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Restklassenanteile des Restes]
+		Zusätzlich definieren wir die drei weiteren Restklassenanteile
+		\[
+		A_k(n):=\prod_{\substack{q^a\parallel R_k(n)\\ q\equiv 5\;(\mathrm{mod}\;12)}} q^a,
+		\]
+		\[
+		B_k(n):=\prod_{\substack{q^a\parallel R_k(n)\\ q\equiv 7\;(\mathrm{mod}\;12)}} q^a,
+		\]
+		\[
+		C_k(n):=\prod_{\substack{q^a\parallel R_k(n)\\ q\equiv 11\;(\mathrm{mod}\;12)}} q^a.
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		Formal zerfällt der Rest \(R_k(n)\) in die vier modulo-\(12\)-Komponenten
+		\[
+		R_k(n)=E_k(n)\,A_k(n)\,B_k(n)\,C_k(n).
+		\]
+		Da \(R_k(n)\) bereits zu allen Primzahlen der Schale \(P_k\) teilerfremd ist, treten darin keine
+		weiteren Primfaktoren aus \(P_k\) auf.
+	\end{bemerkung}
+	
+	\section{Balancegrößen}
+	
+	\begin{definition}[Logarithmische Balance]
+		Wir definieren
+		\[
+		L_k(n):=\log E_k(n)-\log S_k(n).
+		\]
+	\end{definition}
+	
+	\begin{definition}[Symmetrisch normierte Balance]
+		Die zugehörige normierte Balancefunktion sei
+		\[
+		G_k(n):=\frac12+\frac1\pi\arctan\!\bigl(L_k(n)\bigr).
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		Die Funktion \(G_k(n)\) nimmt Werte im offenen Intervall \((0,1)\) an.
+		Dabei bedeutet
+		\[
+		G_k(n)=\frac12
+		\]
+		eine exakte Balance zwischen energetischem Anteil und glattem Anteil. Ferner gilt:
+		\[
+		G_k(n)>\frac12
+		\quad\Longleftrightarrow\quad
+		E_k(n)>S_k(n),
+		\]
+		\[
+		G_k(n)<\frac12
+		\quad\Longleftrightarrow\quad
+		E_k(n)<S_k(n).
+		\]
+	\end{bemerkung}
+	
+	\begin{definition}[Mittelwerte]
+		Für \(N\in\mathbb{N}\) definieren wir die Mittelwerte
+		\[
+		M_k(N):=\frac{1}{N}\sum_{n\le N}L_k(n),
+		\qquad
+		H_k(N):=\frac{1}{N}\sum_{n\le N}G_k(n).
+		\]
+		Auf der restringierten Grundmenge
+		\[
+		\mathcal N_6(N):=\{n\le N:\gcd(n,6)=1\}
+		\]
+		definieren wir analog
+		\[
+		M_k^\ast(N):=
+		\frac{1}{|\mathcal N_6(N)|}
+		\sum_{\substack{n\le N\\ \gcd(n,6)=1}}L_k(n),
+		\]
+		\[
+		H_k^\ast(N):=
+		\frac{1}{|\mathcal N_6(N)|}
+		\sum_{\substack{n\le N\\ \gcd(n,6)=1}}G_k(n).
+		\]
+	\end{definition}
+	
+	\section{Chebyshev-artige Restklassenasymmetrie}
+	
+	\begin{definition}[Chebyshev-artige Restklassenasymmetrie modulo \(12\)]
+		Wir sagen, dass auf der Ebene der Primfaktorbeiträge eine Chebyshev-artige
+		Restklassenasymmetrie modulo \(12\) vorliegt, wenn die Restklassen
+		\[
+		1,\ 5,\ 7,\ 11 \pmod{12}
+		\]
+		auf endlichen Skalen nicht symmetrisch zu den logarithmischen Beiträgen der Primfaktoren des
+		Restes \(R_k(n)\) beitragen, das heißt wenn die Größen
+		\[
+		\log E_k(n),\quad \log A_k(n),\quad \log B_k(n),\quad \log C_k(n)
+		\]
+		im Mittel systematisch verschieden verteilt sind.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Diese Definition betrifft nicht die klassische Primzahlzählung, sondern ein
+		multiplikativ-logarithmisches Modell. Sie ist also nicht identisch mit dem klassischen
+		Chebyshev-Bias, sondern als dessen verfeinerte, auf Primfaktorprodukte bezogene Variante zu
+		verstehen.
+	\end{bemerkung}
+	
+	\section{Heuristische Verstärkung durch Multiplikativität}
+	
+	\begin{lemma}[Heuristische Verstärkung]
+		Liegt auf den Resten \(R_k(n)\) eine Chebyshev-artige Restklassenasymmetrie modulo \(12\) vor,
+		so ist heuristisch zu erwarten, dass die Mittelwerte
+		\[
+		M_k(N)=\frac{1}{N}\sum_{n\le N}L_k(n)
+		\]
+		und damit auch
+		\[
+		H_k(N)=\frac{1}{N}\sum_{n\le N}G_k(n)
+		\]
+		systematisch von der neutralen Lage \(0\) beziehungsweise \(\frac12\) abweichen.
+	\end{lemma}
+	
+	\begin{proof}
+		Die Begründung ist heuristisch. Restklassenasymmetrien werden hier nicht additiv gezählt,
+		sondern über Produkte von Primfaktorpotenzen zu logarithmischen Summen verarbeitet. Dadurch
+		können kleine Unterschiede in Häufigkeit oder Größe von Primfaktoren aus der Klasse
+		\(1 \pmod{12}\) gegenüber den Klassen \(5,7,11 \pmod{12}\) in den Größen \(L_k(n)\) und
+		\(G_k(n)\) verstärkt sichtbar werden.
+	\end{proof}
+	
+	\section{Arbeitshypothese}
+	
+	\begin{hypothese}[Schalenbalance als Restklasseneffekt]
+		Die numerisch beobachtete Schalenbalance der Größen \(G_k(n)\) ist plausibel als
+		multiplikative, schalenmodulierte Erscheinungsform einer Chebyshev-artigen
+		Restklassenasymmetrie modulo \(12\) zu deuten. Genauer:
+		\begin{enumerate}
+			\item Die Schale \(S_k(n)\) entfernt systematisch kleine Primfaktoren.
+			\item Der Rest \(R_k(n)\) trägt die eigentliche restklassenspezifische Primfaktorstruktur.
+			\item Der energetische Anteil \(E_k(n)\) selektiert innerhalb dieses Restes genau die Klasse
+			\[
+			1\pmod{12}.
+			\]
+			\item Jede Asymmetrie dieser Klasse relativ zu den Klassen
+			\[
+			5,\ 7,\ 11 \pmod{12}
+			\]
+			kann in \(L_k(n)\) und \(G_k(n)\) multiplikativ verstärkt erscheinen.
+		\end{enumerate}
+	\end{hypothese}
+	
+	\begin{satz}[Heuristische Konsequenz]
+		Unter der vorstehenden Hypothese ist es plausibel, dass die Drift der Mittelwerte
+		\[
+		H_k(N)\quad\text{und}\quad H_k^\ast(N)
+		\]
+		mit wachsender Primschale nicht bloß ein reiner Glättungseffekt ist, sondern zumindest teilweise
+		durch eine tieferliegende Restklassenasymmetrie verursacht wird.
+	\end{satz}
+	
+	\begin{proof}
+		Dies ist keine strenge Deduktion, sondern eine strukturierte Schlussfolgerung aus der Hypothese
+		und dem heuristischen Lemma. Der Punkt ist, dass \(E_k(n)\) eine ausgezeichnete Restklasse
+		selektiert, während \(S_k(n)\) nur die kleinen Schalenfaktoren abzieht. Dadurch können sich
+		systematische Unterschiede der Restklassen im schalenreduzierten Rest in den Balancegrößen
+		niederschlagen.
+	\end{proof}
+	
+	\section{Numerisches Testprogramm}
+	
+	\begin{korollar}[Prüfbare Version der Hypothese]
+		Zur numerischen Prüfung der Hypothese genügt es, für wachsendes \(N\) und feste Schalen \(P_k\)
+		die Mittelwerte
+		\[
+		\frac{1}{N}\sum_{n\le N}\log E_k(n),\qquad
+		\frac{1}{N}\sum_{n\le N}\log A_k(n),\qquad
+		\frac{1}{N}\sum_{n\le N}\log B_k(n),\qquad
+		\frac{1}{N}\sum_{n\le N}\log C_k(n)
+		\]
+		sowie die daraus abgeleiteten Balancegrößen \(M_k(N)\), \(H_k(N)\), \(M_k^\ast(N)\),
+		\(H_k^\ast(N)\) miteinander zu vergleichen.
+	\end{korollar}
+	
+	\begin{proof}
+		Wenn die beobachtete Schalenbalance tatsächlich von einer restklassenspezifischen Asymmetrie
+		getrieben wird, dann sollte sich dies bereits auf der Ebene der vier logarithmischen
+		Restklassenanteile zeigen. Bleibt der Anteil \(E_k\) systematisch gegen \(A_k,B_k,C_k\)
+		verschoben, so spricht dies für einen restklassentheoretischen Ursprung des Effekts.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Insbesondere ist zu unterscheiden zwischen
+		\begin{enumerate}
+			\item der Vollmenge aller Zahlen \(n\le N\),
+			\item der restringierten Menge \(\{n\le N:\gcd(n,6)=1\}\).
+		\end{enumerate}
+		Wenn die Schalenbalance auf der zweiten Menge systematisch näher an eine neutrale Lage
+		\(\frac12\) heranrückt, auf der ersten aber nicht, dann spricht das für einen strukturellen
+		Zusammenhang zwischen der modulo-\(12\)-Zerlegung und der Entfernung kleiner glatter Faktoren.
+	\end{bemerkung}
+	
+	\section{Diskussion}
+	
+	Der klassische Chebyshev-Bias ist eine Aussage über Zählfunktionen von Primzahlen in
+	Restklassen. Das hier betrachtete Modell arbeitet hingegen mit Primfaktorprodukten,
+	logarithmischen Summen und glatten Schalen. Darum ist die passende Aussage nicht
+	\[
+	\text{Schalenbalance}=\text{Chebyshev-Bias},
+	\]
+	sondern vielmehr
+	\[
+	\text{Schalenbalance}
+	=
+	\text{Chebyshev-artige Restklassenasymmetrie}
+	+
+	\text{multiplikative Schalengeometrie}.
+	\]
+	
+	Gerade diese Kombination macht das Modell interessant. Die Glättung durch \(S_k(n)\) entfernt
+	kleine Primfaktoren, der Rest \(R_k(n)\) trägt die nichttriviale Restklassenstruktur, und die
+	Selektion auf \(E_k(n)\) hebt eine spezielle Restklasse hervor. Auf diese Weise könnte aus einem
+	schwachen restklassentheoretischen Bias ein deutlich sichtbarer Effekt in den Größen
+	\(L_k(n)\) und \(G_k(n)\) entstehen.
+	
+	\section{Schluss}
+	
+	Wir haben ein präzises Rahmenmodell formuliert, in dem die numerisch beobachtete Balance zwischen
+	glattem Anteil und energetischem Anteil mathematisch erfasst werden kann. Die zentrale
+	Arbeitshypothese lautet, dass diese Balance zumindest teilweise durch eine Chebyshev-artige
+	Restklassenasymmetrie modulo \(12\) erklärt werden kann, die durch die multiplikative Struktur
+	der Primfaktorzerlegung verstärkt wird.
+	
+	Der Artikel liefert keinen Beweis dieser Hypothese, wohl aber
+	\begin{enumerate}
+		\item eine saubere formale Definition der beteiligten Größen,
+		\item ein heuristisches Verstärkungslemma,
+		\item eine präzise formulierte Hypothese,
+		\item und ein konkretes numerisches Testprogramm.
+	\end{enumerate}
+	
+	Damit liegt eine belastbare Grundlage vor, um die beobachtete Schalenbalance weiter theoretisch
+	und numerisch zu untersuchen.
+	
+\end{document}

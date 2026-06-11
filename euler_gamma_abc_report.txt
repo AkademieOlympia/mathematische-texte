@@ -1,0 +1,61 @@
+Euler-Mascheroni-zentrierte Extrapolation + abc-Anschluss + Brückenmarker
+
+Zentraler Marker
+- Euler-Mascheroni-Konstante:
+  gamma = 0.5772156649015329
+- s=1-Fit:
+  Sum(X) ~ a*(log log X + gamma) + b
+
+Getestete s=1-Observablen:
+- K_add_abs
+- GP_235
+- BridgeP_M_abs
+- BridgeP_W_abs
+- e_distance
+
+Fit-Zusammenfassung:
+   observable  slope_vs_loglog_plus_gamma  intercept  last_residual  residual_range
+    K_add_abs                8.894907e-03   0.080357  -8.220946e-05    1.714573e-04
+       GP_235               -3.576705e-17   0.077016  -1.387779e-17    1.387779e-17
+BridgeP_M_abs                8.894907e-03   0.157373  -8.220946e-05    1.714573e-04
+BridgeP_W_abs                8.894907e-04   0.085052  -8.220946e-06    1.714573e-05
+   e_distance                5.205198e-03   0.626005  -8.525916e-05    1.592727e-04
+
+abc-Anschluss
+Verwendete primitive Relation:
+  (p^2-16) + 12 = (p^2-4)
+
+abc-Zusammenfassung:
+            metric     value
+        mean_abc_q  0.484879
+         max_abc_q  0.486478
+  mean_abc_eps_eff -0.515121
+       corr_eps_de -0.026043
+    corr_eps_K_add -0.012106
+   corr_eps_GP_235 -0.594347
+corr_eps_BridgeP_M  0.009702
+
+Brückenranking gegen die residuale Vierlings-Chebyshev-Spannung:
+     observable  corr_with_theta4_res  abs_corr
+     GP_235_res              0.570522  0.570522
+  BridgeP_W_res              0.034336  0.034336
+Bridge345_W_res              0.029896  0.029896
+  BridgeP_M_res              0.014325  0.014325
+Bridge345_M_res              0.013880  0.013880
+      K_add_res             -0.012098  0.012098
+
+Brückenranking im Fenstervergleich zur Nullstellenseite:
+     observable  corr_with_Delta_res  corr_with_Lambda_res  corr_with_thetaZ_res  score_abs_sum
+  BridgeP_W_res            -0.184597             -0.075817             -0.613273       0.873687
+Bridge345_W_res            -0.181328             -0.074945             -0.615215       0.871488
+  BridgeP_M_res            -0.169422             -0.071736             -0.621392       0.862550
+Bridge345_M_res            -0.169071             -0.071641             -0.621554       0.862266
+      K_add_res             0.167662              0.071258              0.622191       0.861111
+     GP_235_res            -0.314459             -0.093618             -0.078202       0.486278
+
+Kurzdeutung
+1) gamma steht explizit im Mittelpunkt des s=1-Regimes.
+2) Die Relation (p^2-16)+12=(p^2-4) liefert einen direkten abc-Anschluss der Vierlingsschalen.
+3) Der Abstand d_e zur nächsten E-Primstelle fungiert als endlicher Achsenabstieg e vs. ABC.
+4) Die Brückengrößen zwischen glattem und kleinschem Anteil lassen sich direkt gegen theta_res und die Nullstellenkanäle testen.
+5) Morley/Walter-Marker erscheinen hier als alternative Brückengewichte; Walter mit Faktor 1/10 ist eine feine Korrektur, nicht der Hauptterm.

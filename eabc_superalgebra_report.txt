@@ -1,0 +1,203 @@
+==============================================================================
+EABC Superalgebra-Analogie-Test
+==============================================================================
+
+EPISTEMOLOGISCHER HINWEIS
+----------------------------------------
+Dies ist ein struktureller Analogie-Test zwischen N=1 Super-Poincaré-
+Antikommutator-Relationen und EABC-Kanaloperatoren auf H = C^6.
+Kein Anspruch auf physikalische Supersymmetrie oder echte Super-Poincaré-
+Einbettung.
+
+1. VORHANDENER DIRAC-OPERATOR (Stiefel.py)
+----------------------------------------
+Stiefel.py definiert:
+  L = I - T   (6×6, T = zeilenstochastische Übergangsmatrix)
+  D = [[0, L], [Lᵀ, 0]]   (12×12, block-off-diagonal / „Dirac“)
+Es gibt keinen separaten Majorana-Operator; der 12×12-Block-D
+ist der einzige Dirac-ähnliche Operator. Kleinste Eigenwerte von D
+entsprechen √(eigenvalues of L Lᵀ)).
+
+2. EABC-DATEN
+----------------------------------------
+Kanäle R = [np.int64(11), np.int64(101), np.int64(191), np.int64(221), np.int64(311), np.int64(401)]
+Counts   = [np.int64(765), np.int64(831), np.int64(786), np.int64(809), np.int64(809), np.int64(767)]
+δ (prob) = [-0.00619, 0.00766, -0.00178, 0.00304, 0.00304, -0.00577]
+
+Übergangsmatrix T:
+  [    0.1529,     0.1765,     0.1817,     0.1542,     0.1621,     0.1725]
+  [    0.1745,     0.1540,     0.1625,     0.1697,     0.1889,     0.1504]
+  [    0.1654,     0.1527,     0.1565,     0.1654,     0.1552,     0.2048]
+  [    0.1496,     0.1928,     0.1607,     0.1619,     0.1965,     0.1384]
+  [    0.1644,     0.1805,     0.1693,     0.1965,     0.1384,     0.1508]
+  [    0.1540,     0.1906,     0.1593,     0.1697,     0.1762,     0.1501]
+
+Eigenwerte(T) (|λ| absteigend): [(1+0j), (-0.04361178327235757+0.003817000721236822j), (-0.04361178327235757-0.003817000721236822j), (-0.002042938372110217+0.022850950573646396j), (-0.002042938372110217-0.022850950573646396j), (0.005271833468953138+0j)]
+λ₂ = (-0.04361178327235757+0.003817000721236822j)
+Spektrallücke Δ = 1 - |λ₂| = 0.956221
+
+χ₃|_R = k=2 DFT-Modus (Theorem): identisch numerisch.
+  max|χ₃ - ψ₂| = 1.24e-15
+
+3. DEFINITIONEN DER GETESTETEN OPERATOREN
+----------------------------------------
+  [FFT_proj_k1_k5]
+    Q = P_{k=1}, Q̄ = P_{k=5} (DFT-Projektoren)
+  [FFT_nilpotent_k1_to_k5]
+    Q = |ψ1><ψ5|, Q̄ = |ψ5><ψ1| (nilpotent wegen Orthogonalität)
+  [FFT_shift_k1_k5]
+    Q = P_1 S, Q̄ = P_5 S†
+  [FFT_majorana_k1_k5]
+    Q, Q̄ aus Re/Im-Kopplung der k=1/k=5 DFT-Moden
+  [chi3_mult]
+    Q = M_{χ₃}, Q̄ = M_{χ̄₃} (Diagonal)
+  [chi3_nilpotent_kets]
+    Q = |χ₃><χ̄₃|, Q̄ = |χ̄₃><χ₃| (nilpotent-ähnlich)
+  [chi3_shift]
+    Q = M_{χ₃} S, Q̄ = M_{χ̄₃} S†
+  [chi3_neighbor]
+    Q_{ij} = χ₃(i)δ_{j,i+1} + χ̄₃(j)δ_{i,j+1} (zyklisch)
+  [clifford_JS]
+    Q = (S-S†)/2, Q̄ = i(S+S†)/2
+  [clifford_gamma_k2k4]
+    Q = (P₂-P₄)S, Q̄ = i(P₂-P₄)
+  [dirac_L_and_transpose]
+    Q = L = I-T, Q̄ = Lᵀ (Direkt aus dem Dirac-Block D abgeleitet)
+  [dirac_coupling_normalized]
+    Q = L/‖L‖, Q̄ = Lᵀ/‖L‖ (Dirac-Block-Kopplung, normalisiert)
+  [dirac_svd_rank1]
+    Q = u₁v₁† (Rang-1-SVD von L=I-T; i.A. nicht fermionisch nilpotent)
+  [delta_outer]
+    Q = δ·1ᵀ, Q̄ = 1·δ† (Rang-1 aus δ)
+
+  Π_r-Kandidaten (Translations-/Impuls-Analogien):
+    - S (zykl. Shift)
+    - S + S†
+    - i(S - S†)
+    - Re(S)
+    - Im(S)
+    - S^1 + S^-1
+    - S^2 + S^-2
+    - S^3 + S^-3
+    - L = I - T
+    - Lᵀ
+    - T - I
+    - T (Übergangsmatrix)
+    - Π_shift^0 (S^0)
+    - Π_shift^1 (S^1)
+    - Π_shift^2 (S^2)
+    - Π_shift^3 (S^3)
+    - Π_shift^4 (S^4)
+    - Π_shift^5 (S^5)
+    - Π_E (mod 12)
+    - Π_A (mod 12)
+    - Π_B (mod 12)
+    - Π_C (mod 12)
+    - Σ⁰(Π_A+Π_C)
+    - Σ¹(Π_C-Π_A)
+    - Σ³(Π_C+Π_A)
+
+4. FERMIONISCHE SCHLIESSUNG {Q,Q} = {Q̄,Q̄} = 0
+----------------------------------------
+Kandidat                    ‖{Q,Q}‖    ‖{Q̄,Q̄}‖ fermionisch?
+FFT_proj_k1_k5           2.0000e+00   2.0000e+00         NEIN
+FFT_nilpotent_k1_to_k5   3.0844e-16   2.8575e-16           JA
+FFT_shift_k1_k5          2.0000e+00   2.0000e+00         NEIN
+FFT_majorana_k1_k5       7.0711e-01   7.0711e-01         NEIN
+chi3_mult                4.8990e+00   4.8990e+00         NEIN
+chi3_nilpotent_kets      1.4988e-14   1.4988e-14           JA
+chi3_shift               4.8990e+00   4.8990e+00         NEIN
+chi3_neighbor            1.2000e+01   1.2000e+01         NEIN
+clifford_JS              3.0000e+00   3.0000e+00         NEIN
+clifford_gamma_k2k4      2.8284e+00   2.8284e+00         NEIN
+dirac_L_and_transpose    4.6417e+00   4.6417e+00         NEIN
+dirac_coupling_normalized   8.9578e-01   8.9578e-01         NEIN
+dirac_svd_rank1          1.9997e+00   1.9997e+00         NEIN
+delta_outer              3.3588e-18   3.3588e-18           JA
+
+5. ANTIKOMMUTATOR {Q,Q̄} vs Π-OPERATOREN
+----------------------------------------
+Kandidat               beste Π                    rel.Fehler rel.Fehler vs 2ΣS^r
+chi3_mult              Π_shift^0 (S^0)          +2.0000+0.0000j   1.2820e-16         1.7321e+00
+chi3_shift             Π_shift^0 (S^0)          -1.0000+1.7321j   1.2820e-16         1.7321e+00
+dirac_L_and_transpose  L = I - T                +2.0377+0.0000j   3.7997e-02         5.4430e+00
+dirac_coupling_normalized L = I - T                +0.3933+0.0000j   3.7997e-02         5.4430e+00
+FFT_proj_k1_k5         S + S†                   -0.0000+0.0000j   2.1153e-01         2.1183e-01
+FFT_shift_k1_k5        Π_A (mod 12)             -0.0000+0.0000j   4.6080e-01         4.6160e-01
+chi3_neighbor          Π_shift^0 (S^0)          +4.0000+0.0000j   7.0711e-01         2.2361e+00
+clifford_JS            Π_shift^2 (S^2)          +0.0000+0.5000j   1.0000e+00         2.6458e+00
+delta_outer            T (Übergangsmatrix)      +0.0009+0.0000j   1.0025e+00         1.1275e+00
+FFT_nilpotent_k1_to_k5 L = I - T                +0.3930-0.0000j   1.2245e+00         1.4142e+15
+chi3_nilpotent_kets    L = I - T                +14.0642+0.0000j   1.2365e+00         3.3166e+00
+clifford_gamma_k2k4    i(S - S†)                +0.5000+0.0000j   1.2910e+00         6.8557e+00
+dirac_svd_rank1        L = I - T                +0.4057+0.0000j   1.9208e+00         9.1988e+00
+FFT_majorana_k1_k5     L = I - T                +0.0962-0.0000j   2.0530e+00         5.0000e+14
+
+6. PAULI-ÄHNLICHE STRUKTUR 2 Σ^r Π_r
+----------------------------------------
+  [chi3_mult]
+    Σ⁰·I: rel.Fehler = 1.4142e+00
+    Σ³·(Π_A+Π_C): rel.Fehler = 1.4142e+00
+    Σ¹·(Π_C-Π_A): rel.Fehler = 4.8990e+15
+    Σ²·i(Π_C-Π_A): rel.Fehler = 4.8990e+15
+  [chi3_shift]
+    Σ⁰·I: rel.Fehler = 1.4142e+00
+    Σ³·(Π_A+Π_C): rel.Fehler = 1.4142e+00
+    Σ¹·(Π_C-Π_A): rel.Fehler = 4.8990e+15
+    Σ²·i(Π_C-Π_A): rel.Fehler = 4.8990e+15
+  [dirac_L_and_transpose]
+    Σ⁰·I: rel.Fehler = 2.9501e+00
+    Σ³·(Π_A+Π_C): rel.Fehler = 2.9501e+00
+    Σ¹·(Π_C-Π_A): rel.Fehler = 3.4402e+02
+    Σ²·i(Π_C-Π_A): rel.Fehler = 3.4402e+02
+  [dirac_coupling_normalized]
+    Σ⁰·I: rel.Fehler = 2.9501e+00
+    Σ³·(Π_A+Π_C): rel.Fehler = 2.9501e+00
+    Σ¹·(Π_C-Π_A): rel.Fehler = 3.4402e+02
+    Σ²·i(Π_C-Π_A): rel.Fehler = 3.4402e+02
+  [FFT_proj_k1_k5]
+    Σ¹·(Π_C-Π_A): rel.Fehler = 2.1245e-01
+    Σ²·i(Π_C-Π_A): rel.Fehler = 2.1245e-01
+    Σ⁰·I: rel.Fehler = 2.1250e-01
+    Σ³·(Π_A+Π_C): rel.Fehler = 2.1250e-01
+
+7. BESTER (NICHTTRIVIALER) KANDIDAT — NUMERISCHE {Q,Q̄}-MATRIX
+----------------------------------------
+Kandidat: delta_outer
+Konstruktion: Q = δ·1ᵀ, Q̄ = 1·δ† (Rang-1 aus δ)
+Beste Π-Analogie: T (Übergangsmatrix), c = (0.0009058365730594079+0j)
+Relativer Fehler: 1.0025e+00
+Rel. Fehler gegen 2Σ_(r=0..3) S^r: 1.1275e+00
+
+{Q, Q̄} =
+  [    0.0004,    -0.0001,     0.0002,     0.0000,     0.0000,     0.0004]
+  [   -0.0001,     0.0005,     0.0001,     0.0003,     0.0003,    -0.0001]
+  [    0.0002,     0.0001,     0.0002,     0.0001,     0.0001,     0.0002]
+  [    0.0000,     0.0003,     0.0001,     0.0002,     0.0002,     0.0000]
+  [    0.0000,     0.0003,     0.0001,     0.0002,     0.0002,     0.0000]
+  [    0.0004,    -0.0001,     0.0002,     0.0000,     0.0000,     0.0004]
+
+c · T (Übergangsmatrix) =
+  [    0.0001,     0.0002,     0.0002,     0.0001,     0.0001,     0.0002]
+  [    0.0002,     0.0001,     0.0001,     0.0002,     0.0002,     0.0001]
+  [    0.0001,     0.0001,     0.0001,     0.0001,     0.0001,     0.0002]
+  [    0.0001,     0.0002,     0.0001,     0.0001,     0.0002,     0.0001]
+  [    0.0001,     0.0002,     0.0002,     0.0002,     0.0001,     0.0001]
+  [    0.0001,     0.0002,     0.0001,     0.0002,     0.0002,     0.0001]
+
+8. SCHLUSSFOLGERUNG (ANALOGIE-TEST)
+----------------------------------------
+Schließt die Algebra? NEIN
+Keine getestete Konstruktion erfüllt simultan fermionische Schließung und {{Q,Q̄}} ≈ c·(2ΣᵣΠᵣ) mit kleinem Fehler.
+
+Beste Analogie zu {Q,Q̄} ~ P: delta_outer → T (Übergangsmatrix)
+
+Verbindung zu bekannten EABC-Ergebnissen:
+  λ₂ ≈ -0.0436 ± 0.0038i
+  Δ ≈ 0.9562  (kein Markov-Gedächtnis)
+  χ₃-Projektion: |⟨δ,χ₃⟩| = |F₂| = 0.016495
+  Varianzanteil χ₃+χ̄₃ ≈ 59.7 %
+
+Laufzeit: 2.89 s
+Skript: eabc_superalgebra_test.py
+Report: eabc_superalgebra_report.txt

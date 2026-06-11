@@ -1,0 +1,399 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage[a4paper,margin=2.6cm]{geometry}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{lmodern}
+\usepackage{csquotes}
+
+\hypersetup{
+	unicode=true,
+	colorlinks=true,
+	linkcolor={blue!50!black},
+	citecolor={blue!50!black},
+	urlcolor={blue!50!black},
+	pdftitle={Zwölf Außenflächen: Polyederschalen und Dodekaeder-Terminologie},
+	pdfauthor={Thomas Hoffbauer},
+	pdfsubject={Diskrete Geometrie; Polyeder},
+}
+
+\title{Zur geometrischen Einordnung einer spiegelsymmetrischen\\
+	Polyederschalen-Konstruktion mit zwölf Außenflächen}
+\author{Thomas Hoffbauer}
+\date{}
+
+% Satz/Lemma/Proposition: klassischer „plain“-Stil; Definitionen aufrecht; Bemerkungen kompakt
+\theoremstyle{plain}
+\newtheorem{satz}{Satz}
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{proposition}[satz]{Proposition}
+\newtheorem{korollar}[satz]{Korollar}
+\newtheorem{frage}[satz]{Frage}
+
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Ausgehend von einer graphischen Darstellung einer Polyederfigur---zusammengesetzt aus zwei kongruenten, spiegelbildlich gepaarten Halbschalen---wird eine präzise mathematische Einordnung vorgenommen. Die Darstellung beschreibt die Faltung eines ebenen Netzes zu einer räumlichen Halbschale mit hexagonaler Kontaktfläche; zwei kongruente Exemplare (eines gespiegelt) werden entlang dieser Fläche zu einem geschlossenen Körper verklebt. In der Vorlage wird der Körper als \enquote{special case of a halved dodecahedron} bezeichnet. Ohne Isometrie- oder Rekonstruktionsnachweis ist diese Terminologie nicht haltbar; angemessener ist die Klassifikation als \emph{nicht-regulärer}, spiegelsymmetrisch montierter Zwölfflächner. Ergänzend werden strukturelle Bedingungen formuliert, unter denen aus der Skizze ein mathematisch wohldefiniertes Polyederobjekt entstehen kann.
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Polyedrische Netze, Faltprozesse und Verklebungen entlang polygonaler Randkomponenten gehören zu den klassischen Themen der diskreten Geometrie. Von besonderem Interesse sind Konstruktionen, bei denen eine planare Figur durch Faltung in eine räumliche Schale überführt und anschließend durch Paarung mit einer kongruenten oder spiegelbildlich kongruenten Kopie zu einem geschlossenen Polyeder ergänzt wird.
+	
+	Die hier untersuchte Darstellung behauptet genau ein solches Konstruktionsprinzip. Sie suggeriert zugleich eine Nähe zum regulären Dodekaeder, indem sie von einem \enquote{halved dodecahedron} spricht. Gerade diese Benennung ist mathematisch problematisch. Denn zwischen
+	\begin{itemize}
+		\item einem regulären Dodekaeder,
+		\item einem allgemeinen Zwölfflächner,
+		\item und einem dodekaederartigen, aber nicht-regulären Polyeder
+	\end{itemize}
+	bestehen erhebliche begriffliche und strukturelle Unterschiede.
+	
+	Ziel dieses Beitrags ist es daher, die vorgelegte Figur nicht metaphorisch, sondern streng geometrisch zu interpretieren. Der Schwerpunkt liegt nicht auf einer metrischen Rekonstruktion des Objekts, sondern auf seiner korrekten \emph{begrifflichen Einordnung}.
+	
+	\section{Grundbegriffe}
+	
+	\begin{definition}
+		Ein \emph{Polyeder} sei ein aus endlich vielen ebenen Polygonflächen zusammengesetzter Flächenkomplex im dreidimensionalen Raum, bei dem zwei Flächen nur entlang gemeinsamer Kanten oder Eckpunkte zusammentreffen.
+	\end{definition}
+	
+	\begin{definition}
+		Ein \emph{reguläres Dodekaeder} ist ein konvexes Polyeder mit genau zwölf Flächen, wobei jede Fläche ein reguläres Pentagon ist und an jedem Eckpunkt genau drei Flächen zusammentreffen.
+	\end{definition}
+	
+	\begin{definition}
+		Eine \emph{Polyederschale} ist ein zusammenhängender polyedrischer Flächenkomplex mit nichtleerem Rand.
+	\end{definition}
+	
+	\begin{definition}
+		Eine \emph{Kontaktfläche} ist eine polygonale Randkomponente einer Polyederschale, entlang derer eine zweite Polyederschale kanten- und eckpunktweise identifiziert werden kann.
+	\end{definition}
+	
+	\begin{definition}
+		Zwei Polyederschalen heißen \emph{spiegelgepaart}, wenn die eine aus der anderen durch Spiegelung an einer Ebene hervorgeht und beide entlang kompatibler Kontaktflächen verklebt werden.
+	\end{definition}
+	
+	\begin{definition}
+		Ein \emph{nicht-regulärer Zwölfflächner} ist ein Polyeder mit genau zwölf Außenflächen, ohne dass Regularität, Flächenkongruenz oder Pentagonalität vorausgesetzt werden.
+	\end{definition}
+	
+	\section{Was aus der Darstellung tatsächlich ablesbar ist}
+	
+	Aus der graphischen Vorlage lassen sich, ohne zusätzliche metrische Daten, nur strukturelle Aussagen entnehmen:
+	\begin{enumerate}[label=(\roman*)]
+		\item Es gibt ein planares Netz mit markierten inneren Faltlinien.
+		\item Dieses Netz soll zu einer räumlichen Halbschale gefaltet werden.
+		\item Die Halbschale besitzt eine hexagonale Kontaktfläche.
+		\item Zwei kongruente Exemplare, eines davon gespiegelt, werden entlang dieser Kontaktfläche zusammengesetzt.
+		\item Das resultierende Objekt soll zwölf Außenflächen besitzen.
+		\item Die Außenflächen werden ausdrücklich als nicht-regulär beschrieben.
+	\end{enumerate}
+	
+	Diese sechs Punkte reichen für eine erste mathematische Klassifikation aus. Dagegen reichen sie \emph{nicht} aus, um metrische Aussagen über Konvexität, Kantenlängen, Dihedralwinkel oder Selbstschnittfreiheit zu begründen.
+	
+	\section{Abgrenzung vom regulären Dodekaeder}
+	
+	Die problematische Stelle der Vorlage ist der Ausdruck \enquote{halved dodecahedron}. Dieser legt nahe, man habe es mit einer echten Halbierung eines regulären Dodekaeders zu tun.
+	
+	\begin{lemma}\label{lem:nicht-halbdodekaeder}
+		Eine Polyederkonstruktion mit nicht-regulären Außenflächen und hexagonaler Kontaktfläche ist im Allgemeinen nicht mit einer Halbierung eines regulären Dodekaeders identisch.
+	\end{lemma}
+	
+	\begin{proof}
+		Das reguläre Dodekaeder besitzt ausschließlich reguläre pentagonale Flächen. Die hier betrachtete Konstruktion weist dagegen ausdrücklich nicht-reguläre Außenflächen auf und verwendet als zentrale Naht- bzw. Kontaktkomponente eine hexagonale Fläche. Damit weicht bereits die Flächenstruktur grundlegend von der des regulären Dodekaeders ab. Ohne zusätzlichen Nachweis einer expliziten Isometrie oder eines wohldefinierten Schnittprozesses durch ein reguläres Dodekaeder kann die Konstruktion folglich nicht als dessen Halbierung angesehen werden.
+	\end{proof}
+	
+	\begin{korollar}
+		Die Bezeichnung \enquote{halved dodecahedron} ist ohne weitergehenden geometrischen Nachweis terminologisch irreführend.
+	\end{korollar}
+	
+	\section{Das eigentliche Konstruktionsprinzip}
+	
+	Die Vorlage beschreibt vielmehr das folgende allgemeine Montageprinzip:
+	\begin{enumerate}[label=(\arabic*)]
+		\item Faltung eines ebenen Netzes zu einer nicht-regulären Halbschale,
+		\item Bildung einer gespiegelten kongruenten Kopie,
+		\item Verklebung beider Hälften entlang einer polygonalen Kontaktfläche,
+		\item Erzeugung eines geschlossenen Gesamtkörpers.
+	\end{enumerate}
+	
+	\begin{proposition}\label{prop:verklebung-spiegel}
+		Sind zwei Polyederschalen kongruent und spiegelgepaart, und stimmen ihre Kontaktflächen isometrisch überein, so ergibt ihre Verklebung einen geschlossenen polyedrischen Flächenkomplex mit einer Spiegelebene entlang der Naht.
+	\end{proposition}
+	
+	\begin{proof}
+		Die Kongruenz gewährleistet die Übereinstimmung der Randdaten beider Schalen. Die Spiegelung liefert eine involutive Symmetrie, welche die beiden Hälften vertauscht. Erfolgt die Verklebung entlang isometrischer Kontaktflächen kanten- und eckpunktweise, so entsteht ein zusammenhängender geschlossener Flächenkomplex. Die Spiegelung bleibt als Symmetrie des Gesamtkörpers erhalten und fixiert die Nahtmenge.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Die Proposition ist strukturell, nicht metrisch. Sie setzt weder Konvexität noch Regularität voraus.
+	\end{bemerkung}
+	
+	\section{Symmetrie}
+	
+	\begin{lemma}
+		Ein aus zwei spiegelgepaarten Halbschalen zusammengesetzter Körper besitzt mindestens eine Symmetrie involutiver Ordnung \(2\), nämlich die Spiegelung, welche die beiden Hälften vertauscht.
+	\end{lemma}
+	
+	\begin{proof}
+		Die zweite Hälfte ist per Konstruktion Spiegelbild der ersten. Die zugehörige Spiegelung bildet daher den Gesamtkörper auf sich selbst ab und vertauscht die beiden Schalen. Zweimalige Anwendung ergibt die Identität.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Hieraus folgt keine platonische oder ikosaedrische volle Symmetrie. Mehr Symmetrie wäre gesondert nachzuweisen.
+	\end{bemerkung}
+	
+	\section{Topologische Einordnung und Euler-Charakteristik}
+	
+	Für die topologische Klassifikation ist nicht die genaue Gestalt der Flächen entscheidend, sondern ob der Gesamtkörper als geschlossener, selbstschnittfreier, sphärenartiger Polyederkörper realisiert wird.
+	
+	\begin{satz}
+		Falls die dargestellte Konstruktion einen geschlossenen, selbstschnittfreien, sphärischen Polyederkörper mit \(F=12\) Außenflächen erzeugt, dann gilt
+		\[
+		V-E+12=2.
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Für jeden geschlossenen Polyederkörper, der topologisch zur Sphäre \(S^2\) homöomorph ist, gilt die Euler-Charakteristik
+		\[
+		V-E+F=2.
+		\]
+		Einsetzen von \(F=12\) ergibt die Behauptung.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Die graphische Vorlage allein beweist diese Voraussetzungen nicht. Insbesondere bleiben offen:
+		\begin{itemize}
+			\item die exakte Anzahl von Kanten und Ecken,
+			\item die Selbstschnittfreiheit,
+			\item die Konvexität oder Nichtkonvexität,
+			\item sowie die tatsächliche topologische Geschlossenheit des Endobjekts.
+		\end{itemize}
+	\end{bemerkung}
+	
+	\section{Was tatsächlich zu beweisen wäre}
+	
+	Soll aus der graphischen Darstellung ein mathematisch vollständig wohldefiniertes Objekt werden, so sind mindestens die folgenden Punkte nachzuweisen:
+	
+	\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*, itemsep=0.35em]
+		\item \textbf{Planare Konsistenz des Netzes.}  
+		Die polygonalen Teilbereiche des Netzes müssen in der Ebene widerspruchsfrei zusammenliegen.
+		
+		\item \textbf{Lokale Faltbarkeit.}  
+		Für jede markierte Faltkante müssen Dihedralwinkel existieren, die mit den benachbarten Flächen verträglich sind.
+		
+		\item \textbf{Globale Faltbarkeit.}  
+		Die gesamte Halbschale muss ohne Selbstüberschneidung im Raum realisierbar sein.
+		
+		\item \textbf{Nahtverträglichkeit.}  
+		Die Kontaktflächen beider Hälften müssen nach der Faltung isometrisch übereinstimmen.
+		
+		\item \textbf{Abschlussbedingung.}  
+		Die Verklebung muss einen geschlossenen Flächenkomplex ohne offene Randstücke erzeugen.
+		
+		\item \textbf{Polyedrische Wohldefiniertheit.}  
+		An allen Ecken und Kanten müssen die lokalen Raumwinkel mit einer zulässigen polyedrischen Struktur verträglich sein.
+		
+		\item \textbf{Explizite kombinatorische Daten.}  
+		Die Zahlen \(V,E,F\) sowie die Adjazenzrelationen der Flächen müssen vollständig bestimmt werden.
+		
+		\item \textbf{Metrische Rekonstruktion.}  
+		Eine Koordinatenbeschreibung aller Ecken oder eine äquivalente vollständige metrische Spezifikation ist anzugeben.
+	\end{enumerate}
+	
+	Erst nach Erfüllung dieser Bedingungen kann man von einem vollständig bestimmten Polyeder sprechen.
+	
+	\section{Hauptsatz zur begrifflichen Einordnung}
+	
+	\begin{satz}\label{thm:haupteinordnung}
+		Die in der Vorlage dargestellte Figur ist begrifflich als spiegelsymmetrisch montierter nicht-regulärer Zwölfflächner und nicht als halbiertes reguläres Dodekaeder zu klassifizieren.
+	\end{satz}
+	
+	\begin{proof}
+		Nach Lemma~\ref{lem:nicht-halbdodekaeder} ist die Gleichsetzung mit einer Halbierung des regulären Dodekaeders unzulässig. Nach Proposition~\ref{prop:verklebung-spiegel} beschreibt die Konstruktion vielmehr die Verklebung zweier spiegelgepaarter Halbschalen. Nach der Vorlage besitzt der resultierende Körper zwölf Außenflächen. Daraus folgt die behauptete Klassifikation.
+	\end{proof}
+	
+	\section{Terminologische Korrektur}
+	
+	Mathematisch präzisere Bezeichnungen wären etwa:
+	\begin{itemize}
+		\item \emph{spiegelsymmetrische Polyederschalen-Konstruktion eines Zwölfflächners},
+		\item \emph{nicht-regulärer dodekaederartiger Polyederkörper aus zwei spiegelgepaarten Halbschalen},
+		\item \emph{mirror-mated polyhedral shell construction yielding a non-regular 12-faced body}.
+	\end{itemize}
+	
+	Dagegen sollte die Bezeichnung \enquote{halved dodecahedron} vermieden werden, solange kein expliziter Nachweis vorliegt, dass das zugrundeliegende Objekt tatsächlich durch Halbierung eines regulären Dodekaeders entsteht.
+	
+	\section{Einordnung in den mathematischen Kontext}
+	
+	Die vorliegende Konstruktion liegt begrifflich im Schnittbereich mehrerer Themen:
+	\begin{itemize}
+		\item kombinatorische und diskrete Polyedergeometrie,
+		\item Faltungsgeometrie polyedrischer Netze,
+		\item topologische Invarianten geschlossener Flächenkomplexe,
+		\item Symmetriefragen bei durch Spiegelung erzeugten Verklebungen.
+	\end{itemize}
+	
+	Damit gehört sie nicht in erster Linie zur Theorie der platonischen Körper, sondern eher zur allgemeinen Theorie nicht-regulärer Polyeder und ihrer Realisierungen.
+	
+	\section{Zur Dualitätsbijektion und zum möglichen verzerrten Ikosaeder}
+	
+	In diesem Abschnitt beschreiben wir die Dualität nicht als metrische Ähnlichkeit, sondern als inzidenzumkehrende Bijektion zwischen den Zellen des betrachteten Polyeders und seines Duals.
+	
+	\subsection{Die duale Konstruktion}
+	
+	Sei \(Q\) ein geschlossener polyedrischer Randkomplex mit Eckenmenge \(V(Q)\), Kantenmenge \(E(Q)\) und Flächenmenge \(F(Q)\). Für jede Fläche \(f\in F(Q)\) wähle man einen inneren Repräsentanten \(c_f\). Das duale Zellgerüst \(Q^\ast\) wird dann wie folgt definiert:
+	\begin{enumerate}
+		\item Zu jeder Fläche \(f\in F(Q)\) gehört ein Eckpunkt \(c_f\in V(Q^\ast)\).
+		\item Zwei duale Eckpunkte \(c_{f_1}\) und \(c_{f_2}\) werden genau dann durch eine Kante verbunden, wenn die Flächen \(f_1\) und \(f_2\) in \(Q\) eine gemeinsame Kante besitzen.
+		\item Zu jeder Ecke \(v\in V(Q)\), an der die Flächen \(f_1,\dots,f_k\) zyklisch anliegen, gehört eine \(k\)-gonale Fläche
+		\[
+		\Phi_V(v)=\partial(c_{f_1},\dots,c_{f_k})
+		\]
+		in \(Q^\ast\).
+	\end{enumerate}
+	
+	Damit entstehen kanonische Bijektionen
+	\[
+	\Phi_F:F(Q)\to V(Q^\ast),\qquad
+	\Phi_E:E(Q)\to E(Q^\ast),\qquad
+	\Phi_V:V(Q)\to F(Q^\ast),
+	\]
+	welche die Inzidenz umkehren. Genauer gilt für jede Ecke \(v\in V(Q)\) und jede Fläche \(f\in F(Q)\):
+	\[
+	v\prec f
+	\quad\Longleftrightarrow\quad
+	\Phi_F(f)\prec \Phi_V(v).
+	\]
+	
+	\subsection{Lokale Grad- und Polygonzahlrelationen}
+	
+	Aus der Definition der Dualkonstruktion folgen die grundlegenden lokalen Relationen:
+	\[
+	\deg_{Q^\ast}(\Phi_F(f))=\#\partial f,
+	\]
+	also: Die Valenz des dualen Eckpunkts ist gleich der Zahl der Kanten der Ausgangsfläche, sowie
+	\[
+	\#\partial \Phi_V(v)=\deg_Q(v),
+	\]
+	also: Die Zahl der Kanten der dualen Fläche ist gleich der Valenz der Ausgangsecke.
+	
+	Diese beiden Gleichungen sind der kombinatorische Kern der Dodekaeder--Ikosaeder-Dualität.
+	
+	\begin{lemma}\label{lem:dual-kein-ikosaeder-flaeche}
+		Enthält \(Q\) eine Fläche \(f\) mit \(\#\partial f\neq 5\), so kann \(Q^\ast\) kein kombinatorisches Ikosaeder sein.
+	\end{lemma}
+	
+	\begin{proof}
+		Nach der obigen Relation gilt
+		\[
+		\deg_{Q^\ast}(\Phi_F(f))=\#\partial f.
+		\]
+		Im Ikosaeder besitzt jedoch jede Ecke Grad \(5\). Also muss notwendigerweise \(\#\partial f=5\) gelten.
+	\end{proof}
+	
+	\begin{lemma}
+		Enthält \(Q\) eine Ecke \(v\) mit \(\deg_Q(v)\neq 3\), so kann \(Q^\ast\) kein kombinatorisches Ikosaeder sein.
+	\end{lemma}
+	
+	\begin{proof}
+		Nach der zweiten lokalen Relation gilt
+		\[
+		\#\partial \Phi_V(v)=\deg_Q(v).
+		\]
+		Im Ikosaeder sind alle Flächen Dreiecke. Also muss jede duale Fläche genau drei Kanten besitzen, und damit \(\deg_Q(v)=3\) gelten.
+	\end{proof}
+	
+	\subsection{Kriterium für einen verzerrten Ikosaeder}
+	
+	Nun lässt sich präzise formulieren, wann das Dual von \(Q\) als verzerrter Ikosaeder verstanden werden darf.
+	
+	\begin{proposition}
+		Sei \(Q\) ein geschlossener sphärischer polyedrischer Randkomplex. Gilt
+		\begin{enumerate}
+			\item jede Fläche von \(Q\) ist ein Pentagon,
+			\item an jeder Ecke von \(Q\) treffen genau drei Flächen zusammen,
+		\end{enumerate}
+		so ist das Dual \(Q^\ast\) ein kombinatorisches Ikosaeder. Insbesondere darf \(Q^\ast\) als metrisch verzerrter Ikosaeder aufgefasst werden.
+	\end{proposition}
+	
+	\begin{proof}
+		Aus Voraussetzung (1) folgt mit der ersten lokalen Relation, dass jede Ecke von \(Q^\ast\) Grad \(5\) besitzt. Aus Voraussetzung (2) folgt mit der zweiten lokalen Relation, dass jede Fläche von \(Q^\ast\) ein Dreieck ist. Da \(Q\) sphärisch ist, ist auch \(Q^\ast\) sphärisch. Somit besitzt \(Q^\ast\) genau den kombinatorischen Typ des Ikosaeders.
+	\end{proof}
+	
+	\begin{korollar}
+		Ein Polyeder \(Q\) besitzt genau dann ein Dual, das als verzerrter Ikosaeder gelten kann, wenn \(Q\) kombinatorisch ein Dodekaeder ist.
+	\end{korollar}
+	
+	\subsection{Die Rolle der hexagonalen Naht}
+	
+	Für die in der vorliegenden Konstruktion ausgezeichnete hexagonale Nahtfläche ergibt sich daraus ein unmittelbarer Test. Es sind zwei Fälle zu unterscheiden.
+	
+	\begin{enumerate}
+		\item Die hexagonale Naht ist nur Teil der Montagebeschreibung und geht nicht als eigenständige Außenfläche in die kombinatorische Struktur des Endkörpers ein. Dann ist es möglich, dass der fertige Körper dennoch kombinatorisch dodekaedrisch bleibt.
+		\item Die hexagonale Naht ist tatsächlicher Bestandteil der Flächenstruktur des Endkörpers. Dann existiert in \(Q\) mindestens eine Fläche \(f\) mit \(\#\partial f=6\). Nach Lemma~\ref{lem:dual-kein-ikosaeder-flaeche} besitzt das Dual an der entsprechenden Stelle einen Eckpunkt vom Grad \(6\) und kann daher kein kombinatorisches Ikosaeder mehr sein.
+	\end{enumerate}
+	
+	Daraus folgt: Nicht die metrische Verzerrung an sich zerstört die Dodekaeder--Ikosaeder-Dualität, sondern der kombinatorische Bruch, insbesondere das Auftreten nicht-pentagonaler Flächen oder nicht-\(3\)-valenter Ecken.
+	
+	\subsection{Zusammenfassung}
+	
+	Die entscheidende Bijektion ist keine Abbildung des Körpers auf einen ähnlich aussehenden zweiten Körper, sondern eine inzidenzumkehrende Zellbijektion
+	\[
+	F(Q)\leftrightarrow V(Q^\ast),\qquad
+	E(Q)\leftrightarrow E(Q^\ast),\qquad
+	V(Q)\leftrightarrow F(Q^\ast).
+	\]
+	Ein verzerrter Ikosaeder entsteht genau dann als Dual, wenn die Flächen- und Eckstruktur von \(Q\) trotz metrischer Deformation die kombinatorische Dodekaederstruktur bewahrt.
+	
+	\section{Schluss}
+	
+	Die graphische Darstellung besitzt didaktische Klarheit: Sie zeigt nachvollziehbar den Übergang
+	\[
+	\text{Netz} \longrightarrow \text{Halbschale} \longrightarrow \text{Spiegelung} \longrightarrow \text{Verklebung} \longrightarrow \text{Zwölfflächner}.
+	\]
+	Ihr mathematisches Defizit liegt nicht im Konstruktionsgedanken, sondern in der Terminologie. Die Figur ist nicht als halbiertes reguläres Dodekaeder zu bezeichnen, sondern als eine eigene, nicht-reguläre, spiegelsymmetrisch montierte Polyederkonstruktion mit zwölf Außenflächen.
+	
+	\begin{thebibliography}{99}
+		
+		\bibitem{Alexandrov}
+		A.~D.~Alexandrov,
+		\emph{Convex Polyhedra},
+		Springer, Berlin, 2005.
+		
+		\bibitem{DemaineORourke}
+		E.~D.~Demaine and J.~O'Rourke,
+		\emph{Geometric Folding Algorithms: Linkages, Origami, Polyhedra},
+		Cambridge University Press, Cambridge, 2007.
+		
+		\bibitem{Grunbaum}
+		B.~Gr\"unbaum,
+		\emph{Convex Polytopes},
+		2nd ed., Springer, New York, 2003.
+		
+		\bibitem{Coxeter}
+		H.~S.~M.~Coxeter,
+		\emph{Regular Polytopes},
+		3rd ed., Dover Publications, New York, 1973.
+		
+		\bibitem{Ziegler}
+		G.~M.~Ziegler,
+		\emph{Lectures on Polytopes},
+		Springer, New York, 1995.
+		
+	\end{thebibliography}
+	
+\end{document}

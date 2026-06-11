@@ -1,0 +1,57 @@
+BM-IV Gesamttest: Schalterraum Z/8Z und Partikelraum V4
+
+Grundraum:
+H = l2(Z/8Z) ⊗ C^4, dim(H)=32
+Schalterraum: Z/8Z; Partikelraum: V4={E,A,B,C}; gemeinsame Periode lcm(8,12)=24
+
+1) EABC / Partikelraum
+TA^2=I: Fehlernorm 0.000e+00
+TB^2=I: Fehlernorm 0.000e+00
+TC^2=I: Fehlernorm 0.000e+00
+TA TB=TC: Fehlernorm 0.000e+00
+TB TC=TA: Fehlernorm 0.000e+00
+TC TA=TB: Fehlernorm 0.000e+00
+Befund: EABC-Algebra exakt erfüllt.
+
+2) Vierlinge / Partikelraum
+(5, 7, 11, 13) mod12=(5, 7, 11, 1) Klassen=('A', 'B', 'C', 'E') vollständig=True
+(11, 13, 17, 19) mod12=(11, 1, 5, 7) Klassen=('C', 'E', 'A', 'B') vollständig=True
+(101, 103, 107, 109) mod12=(5, 7, 11, 1) Klassen=('A', 'B', 'C', 'E') vollständig=True
+(191, 193, 197, 199) mod12=(11, 1, 5, 7) Klassen=('C', 'E', 'A', 'B') vollständig=True
+Befund: getestete Primvierlinge besetzen jeweils E,A,B,C vollständig.
+
+3) Stern-Gerlach / Schalterraum
+Spec(Sz) = {-0.5: 16, 0.5: 16}
+||[Sx,Sz]|| = 1.608038
+Befund: Zweifleckstruktur ±1/2, je 16-fach entartet; Achsen nichtkommutativ.
+
+4) Landau-Niveaus / Schalterraum
+Dimensionslose Niveaus E_n/Ω = n+1/2 für n=0..7:
+[(0, 0.5), (1, 1.5), (2, 2.5), (3, 3.5), (4, 4.5), (5, 5.5), (6, 6.5), (7, 7.5)]
+Abstände: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+Befund: äquidistante Halbtaktstruktur reproduziert.
+
+5) Sagnac / Schalterraum
+U_+ = exp(iθ)X, U_- = exp(-iθ)X^{-1}, θ=2π/24
+Δφ = 16θ mod 2π = 4.188790 rad = 1.333333 π
+Befund: Vorwärts-/Rückwärtsumlauf erzeugt orientierte Holonomiedifferenz.
+
+6) Aharonov-Bohm / Schalterraum + Holonomie
+Max Fehler Γ(P^-1)=Γ(P)^-1 über m=0..23: 1.241e-16
+Befund: diskrete AB-Inversionsstruktur exakt.
+
+7) Einstein-de Haas / Kopplung Schalter ↔ Partikel
+Max Fehler L_Gegenfläche=4S: 0.000e+00
+Max Bilanzfehler ΔS+(1/4)ΔL_body=0: 0.000e+00
+Befund: diskrete Spin-Bahn-Kopplung exakt.
+
+8) Neutrinooszillation / Schalterraum
+||X8^8-I|| = 0.000e+00
+Familienprojektion r mod 3 Beispielsequenz r=0..11: [0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2]
+Befund: reine Schalterrotation ist periodisch; eine 3-Familien-Projektion kann als r mod 3 gelesen werden, ist aber wegen 8 und 3 inkommensurabel und braucht für vollständige Rückkehr lcm(8,3)=24 Schritte.
+
+Gesamturteil:
+Die neue BM-IV-Aufteilung besteht alle internen Kinematiktests.
+Stark: EABC, Vierlinge, Stern-Gerlach, Landau, AB, Einstein-de Haas.
+Plausibel: Sagnac als orientierte Z8-Holonomie.
+Offen: Neutrinooszillation benötigt noch eine physikalische Mischmatrix; die arithmetische 24er-Rückkehr ist aber natürlich.

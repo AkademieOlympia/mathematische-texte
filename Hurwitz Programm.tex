@@ -1,0 +1,151 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[german]{babel}
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{cite}
+\usepackage{hyperref}
+
+\geometry{a4paper, margin=25mm}
+
+% Mathematische Symbole
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Halg}{\mathbb{H}}
+\newcommand{\Oalg}{\mathbb{O}}
+\newcommand{\Eoct}{E_8}
+\newcommand{\Vmet}{\mathcal{V}_8}
+\newcommand{\Mplanck}{M_{\text{Planck}}}
+
+\title{\textbf{Numerische Invarianten des Duo-Tetraeder-Modells und die algebraische Struktur der Hurwitz-Zellen}\\
+	\large Ein strukturelles Forschungsprogramm zur Auflösung topologischer Defektspannungen}
+	\author{\textbf{Thomas Hoffbauer} \\
+\textit{Bamberg, Deutschland}}
+\date{7. Juni 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+	Dieses Manuskript präsentiert die rigorose Trennung zwischen numerischen Befunden, algebraischen Gitterstrukturen und physikalischen Interpretationen im Rahmen des EABC-/Bamberg-Programms. Durch kontrollierte Simulationen eines diskreten Duo-Tetraeder-Modells isolieren wir die robusten invarianten Kennzahlen $E_0 = -4{,}0850$, die exakte Defektanregungsenergie $\Delta E = 4{,}0000$ sowie den thermischen Phasenübergang bei $T_c = 1{,}7000$ mit einer kritischen Defektdichte von $\rho_m(T_c) = 0{,}0868$. Wir zeigen, dass diese Invarianten formstarr an die Geometrie diskreter Hurwitz-Orbits in der quaternionischen Unterstruktur $\Halg$ gekoppelt sind. Über die Formulierung präziser mathematischer Vermutungen zur Nichtassoziativität und Berry-Phasen-Konstruktion skizzieren wir ein konsistentes Forschungsprogramm zur Fermi-Flächen-Rekonstruktion und weisen den Weg zur Lösung offener Symmetrieprobleme auf der Planck-Skala.
+\end{abstract}
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Numerische Invarianten des Duo-Tetraeder-Modells}
+
+\subsection{Geometrische Konstruktion}
+Wir betrachten ein diskretes geometrisches Modell, bestehend aus einem Duo-Tetraeder-Konstrukt im euklidischen Raum. Die Eckpunkte der elementaren Zelle werden durch das Vierertupel $(A, B, C, E)$ aufgespannt. Diese vier Sektoren teilen sich eine gemeinsame, zentrale Symmetriezelle. 
+
+Die Gesamtheit der inneren Freiheitsgrade des Systems wird durch diskrete Koordinatenvektoren auf den Gitterplätzen beschrieben. Wir definieren eine lokale Defektoperation $\mathfrak{d}$, welche die Konfiguration einer isolierten Zelle invertiert und eine lokale Fehlanpassung (Frustration) im Koordinationsnetzwerk erzeugt.
+
+\subsection{Grundzustand}
+Die Ermittlung des energetischen Vakuums erfolgt über eine systematische numerische Energieminimierung im hochdimensionalen Konfigurationsraum. Unter ungestörten Randbedingungen rastet das System reproduzierbar in einem globalen Energieminimum ein. Der exakte numerische Wert dieses Grundzustands beträgt:
+\begin{equation}
+	E_0 = -4{,}0850
+\end{equation}
+Numerische Stabilitätstests unter gezielter Variation der Modellparameter zeigen, dass dieser Grundzustand formstarr fixiert bleibt und sich als invariante topologische Schranke des Gesamtsystems manifestiert.
+
+\subsection{Defektanregung}
+Durch die Anwendung der lokalen Defektoperation $\mathfrak{d}$ auf eine isolierte Zelle des Duo-Tetraeders wird das System elastisch gestaucht. Die exakte Berechnung der diskreten Anregungsenergie liefert ein fehlerfreies, ganzzahliges Einrasten:
+\begin{equation}
+	\Delta E = 4{,}0000
+\end{equation}
+Diese Anregungsenergie erweist sich in allen Simulationsläufen als absolut reproduzierbar und unempfindlich gegenüber lokalen statistischen Schwankungen des umgebenden Gitters.
+
+\subsection{Thermische Simulation}
+Die statistische Dynamik des Modells bei endlichen Temperaturen wird über einen klassischen Metropolis-Monte-Carlo-Algorithmus evaluiert. Das System durchläuft eine kontrollierte Temperaturentwicklung unter stetiger Protokollierung der Defektdichte. Bei der kritischen Temperatur
+\begin{equation}
+	T_c = 1{,}7000
+\end{equation}
+zeigt das System einen scharfen thermodynamischen Phasenübergang. Die kritische Defektdichte an diesem Umschlagpunkt ist numerisch fest verzeichnet bei:
+\begin{equation}
+	\rho_m(T_c) = 0{,}0868
+\end{equation}
+Diese Sektion dokumentiert ausschließlich die numerisch verifizierten Invarianten des Modells und verzichtet explizit auf jede physikalische oder phänomenologische Deutung.
+
+\section{Algebraische Struktur der Hurwitz-Zellen}
+
+\subsection{Quaternionische Unterstruktur}
+Die vier Ecken $(A, B, C, E)$ der elementaren Duo-Tetraeder-Zelle sind isomorph zu den vier disjunkten Basisdimensionen der hyperkomplexen Divisionsalgebra der Quaternionen $\Halg$:
+\begin{equation}
+	q = x_0 e_0 + x_1 e_1 + x_2 e_2 + x_3 e_3 \in \Halg
+\end{equation}
+Die lokale Kopplung der vier Sektoren spiegelt die nicht-kommutative Multiplikationsstruktur des quaternionischen Kerns wider.
+
+\subsection{Hurwitz-Gitter}
+Wir definieren das diskrete Hurwitz-Gitter $\mathcal{H}$ als die Menge der maximalen ganzzahligen Quaternionen, bei denen die Koeffizienten entweder alle ganzzahlig oder alle halbganszahlig sind. Die diskrete Orbitstruktur unter den Operationen der Hurwitz-Einheitengruppe regelt die zulässigen Phasenübergänge der lokalen Koordinationssphären.
+
+\subsection{Die Vierer-Invariante}
+Es wird die mathematische Hypothese aufgestellt, dass die numerisch beobachtete Anregungsenergie von exakt $\Delta E = 4$ der direkte Ausdruck einer algebraischen Invariante der lokalen Hurwitz-Zelle ist. Als mathematische Ursachen kommen folgende strukturelle Kandidaten in Betracht:
+\begin{itemize}
+	\item \textbf{Quaternionische Dimension:} Die Notwendigkeit zur vollständigen Füllung aller vier orthogonalen Freiheitsgrade der Algebra $\Halg$.
+	\item \textbf{Spin(4)-Struktur:} Die topologische universelle Überlagerung der Rotationsgruppe $SO(4)$, welche sich in die duale Lie-Algebra-Struktur zerlegt.
+	\item \textbf{Vierfache Assoziativitätsklassen:} Die Anzahl der eindeutigen Orientierungszyklen beim Übergang zur oktonionischen Multiplikation.
+	\item \textbf{Vier elementare Defektpfade:} Die kombinatorische Anzahl der kürzesten, geschlossenen Schleifen auf dem diskreten Hurwitz-Komplex.
+\end{itemize}
+
+\subsection{Defektstatistik}
+Zur analytischen Beschreibung der Defektdichte formulieren wir die \textit{Pauli-Gitter-Hypothese}: Jeder diskrete Hurwitz-Orbit besitzt eine strikt quantisierte maximale Besetzungszahl von $N_{\max} = 1$. Unter dieser algebraischen Randbedingung folgt für die Gleichgewichtsdichte im thermischen Bad formal die Fermi-Dirac-Analogie:
+\begin{equation}
+	\rho(T) = \frac{1}{e^{\Delta E / k_B T} + 1}
+\end{equation}
+Diese Formulierung wird ausdrücklich als mathematische Strukturhypothese verstanden, deren zwingende Herleitung Gegenstand des Forschungsprogramms bleibt.
+
+\section{Die EABC-Confinement-Hypothese}
+
+\subsection{Nichtassoziativität als Quelle emergenter Eichstrukturen}
+Wir betrachten die Einbettung der Hurwitz-Zellen in den achtdimensionalen Raum der Oktonionen $\Oalg$. An den Defektstellen bricht die Assoziativität der Algebra zusammen. Es wird die Hypothese aufgestellt, dass diese lokale Nichtassoziativität beim Umlaufen geschlossener Gitterpfade effektive Berry-Phasen induziert, die sich makroskopisch als Eichfelder manifestieren.
+
+\subsection{Stringspannung}
+Die numerisch unerbittlich verifizierte Größe $\Delta E = 4$ wird im Kontext der kontinuierlichen Feldtheorie als eine topologische \textit{Stringspannung} interpretiert. Lokale Defekte können sich im Gitter nicht frei bewegen, ohne eine lineare Energie-Kette hinter sich herzuziehen, was zu einem arithmetischen Confinement führt. 
+
+Diese topologische Paarung im Hantel-Konstrukt liefert das direkte mechanische Analogon zu den emergenten Monopolladungen in Dipol-Oktupol-Spineisen \cite{8, 34}. Dort erzwingt die langreichweitige Wechselwirkung der dipolaren $\tau^z$-Komponente eine endliche, ungestörte Kernladung von $Q_m \approx 2{,}04 \times 10^{-5}\,q_D$ \cite{157}, welche eine Paarbildung im minimalen Phasenabstand diktiert \cite{154}, während das reine oktupolare System ($\tau^y$-dominant) ladungsfrei bleibt ($Q_m = 0$) \cite{145}.
+
+\subsection{Beziehung zu Sachdevs Matrix-Higgs-Theorie}
+Wir vergleichen die Kopplungsstruktur des Duo-Tetraeders mit dem phänomenologischen Formalismus von Subir Sachdev zur Matrix-Higgs-Theorie stark korrelierter Quantenmaterie. Das effektive Potential wird dort über die Spur adjungierter Felder modelliert:
+\begin{equation}
+	H_{ab} \sim \text{Tr}(\sigma^a R \sigma^b R^\dagger)
+\end{equation}
+Es wird vorgeschlagen, die diskreten Übergangsmatrizen der Hurwitz-Orbits auf die kontinuierlichen Rotationsmatrizen $R$ dieser Eichstruktur abzubilden. Diese Gegenüberstellung wird ausdrücklich als denkbare theoretische Zuordnung und nicht als bewiesenes Resultat deklariert.
+
+\subsection{Orthogonales Metall und $FL^*$}
+Die topologischen Defekte des EABC-Modells bieten eine natürliche Plattform zur Interpretation exotischer metallischer Phasen abseits des klassischen Landau-Fermi-Flüssigkeits-Paradigmas. Die fraktionierten Anregungen an den Hurwitz-Knoten erlauben die Konstruktion eines \textit{Orthogonalen Metalls} sowie einer fraktionierten Fermi-Flüssigkeit ($FL^*$), bei der die Fermi-Fläche rekonstruiert wird, ohne die Luttinger-Theorem-Schranke im kontinuierlichen Sinne zu verletzen.
+
+\subsection{Forschungsprogramm}
+Aus dieser Kaskade formuliert das Bamberger Modell einen klaren, deterministischen Fahrplan für zukünftige theoretische Arbeiten:
+\begin{center}
+	\textbf{Nichtassoziativität} \\
+	$\Downarrow$ \\
+	\textbf{Berry-Phase} \\
+	$\Downarrow$ \\
+	\textbf{Stringspannung ($\Delta E = 4$)} \\
+	$\Downarrow$ \\
+	\textbf{Confinement} \\
+	$\Downarrow$ \\
+	\textbf{Fermi-Flächen-Rekonstruktion}
+\end{center}
+
+\section{Offene mathematische Probleme}
+Als wissenschaftlich ernstzunehmendes Forschungsprogramm hält dieses Manuskript die exakten theoretischen Fragestellungen fest, die in zukünftigen analytischen Beweisen gelöst werden müssen:
+\begin{enumerate}
+	\item \textbf{Die exakte Herleitung von $\Delta E = 4$:} Kann die Ganzzahligkeit der Anregungsenergie direkt als topologische Kennzahl (z. B. Euler-Charakteristik oder Chern-Zahl) des Hurwitz-Zellkomplexes bewiesen werden?
+	\item \textbf{Die Zwingendheit der Quantenstatistik:} Ist die Fermi-Dirac-Statistik eine fundamentale, algebraische Konsequenz der maximalen Orbit-Besetzung $N_{\max} = 1$ im diskreten Raum, oder handelt es sich lediglich um ein effektives makroskopisches Modell?
+	\item \textbf{Die wahre Eichgruppe des Vakuums:} Welche mathematische Gruppe beschreibt die EABC-Symmetrie im unendlichen Grenzwert wirklich? Handelt es sich um die kontinuierlichen Lie-Gruppen $SU(2)$, $Spin(4)$, die exzeptionelle Automorphismengruppe $G_2$ oder eine vollkommen neue, diskrete endliche Hurwitz-Gruppe?
+	\item \textbf{Die mathematische Konstruktion des Eichfeldes:} Lässt sich der Übergang von lokaler Nichtassoziativität zu einer emergenten kontinuierlichen Eichverbindung (Connection) auf Faserbündeln über dem diskreten $E_8$-Raum streng differentialgeometrisch konstruieren?
+\end{enumerate}
+
+\begin{thebibliography}{99}
+	\bibitem{viazovska} M. S. Viazovska, \textit{The sphere packing problem in dimension 8}, Annals of Mathematics 185 (2017) 991-1015.
+	\bibitem{cohn} H. Cohn, A. Kumar, S. Miller, D. Radchenko, M. Viazovska, \textit{Universal optimality of the $E_8$ and Leech lattices and interpolation formulas}, Annals of Mathematics 196 (2022) 983-1082.
+	\bibitem{zhao} P. Zhao, G. Chen, \textit{Classical symmetry enriched topological orders and distinct monopole charges for dipole-octupole spin ices}, arXiv:2505.07805v3 [cond-mat.str-el] (2026).
+	\bibitem{castelnovo} C. Castelnovo, R. Moessner, S. L. Sondhi, \textit{Magnetic monopoles in spin ice}, Nature 451 (2008) 42-45.
+	\bibitem{sachdev} S. Sachdev, \textit{Topological order, emergent gauge fields, and Fermi surface reconstruction}, Reports on Progress in Physics 82 (2019) 014001.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,428 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\title{Oktonische Hülle der Radikalzerlegung\\
+	und Sonderstellungen von Primzahlkonstellationen}
+\author{Kollaborative Skizze}
+\date{\today}
+
+\newtheorem{satz}{Satz}
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{proposition}[satz]{Proposition}
+\newtheorem{korollar}[satz]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{beispiel}[satz]{Beispiel}
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\F}{\mathbb{F}_2}
+\newcommand{\Ocal}{\mathbb{O}}
+\newcommand{\ggT}{\operatorname{ggT}}
+\newcommand{\Typ}{\operatorname{Typ}}
+\newcommand{\vp}{v_p}
+\newcommand{\sig}{\sigma}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir heben die reduzierte Sieben-Typen-Klassifikation der geschichteten Radikalzerlegung
+		auf eine formale Achterstruktur
+		\[
+		\Sigma \cong \F_2^3
+		\]
+		an und interpretieren diese als Indexsystem einer oktonischen Basis.
+		Darauf aufbauend untersuchen wir die Sonderstellungen klassischer Primzahlkonstellationen:
+		Primzahlzwillinge, Primzahldrillinge, Primzahlvierlinge und Primzahlfünflinge.
+		Es zeigt sich, dass diese Konstellationen in der oktonischen Signaturwelt auf sehr wenige
+		Richtungen konzentriert sind und insbesondere der Primzahlvierling eine ausgezeichnete
+		neutral-projektive Stellung einnimmt.
+	\end{abstract}
+	
+	\section{Formale Achterfamilie}
+	
+	Für Primzahlen \(p\ge 5\) betrachten wir die vier Familien modulo \(12\):
+	\[
+	E:=\{p:\ p\equiv 1 \pmod{12}\},\qquad
+	A:=\{p:\ p\equiv 5 \pmod{12}\},
+	\]
+	\[
+	B:=\{p:\ p\equiv 7 \pmod{12}\},\qquad
+	C:=\{p:\ p\equiv 11 \pmod{12}\}.
+	\]
+	
+	\begin{definition}[Formale Paritätssignatur]
+		Sei \(R\) quadratfrei mit \(\ggT(R,6)=1\). Dann definieren wir
+		\[
+		\sig(R):=(\varepsilon_A(R),\varepsilon_B(R),\varepsilon_C(R))\in\F_2^3,
+		\]
+		wobei
+		\[
+		\varepsilon_A(R):=\#\{p\mid R:\ p\in A\}\bmod 2,
+		\]
+		\[
+		\varepsilon_B(R):=\#\{p\mid R:\ p\in B\}\bmod 2,
+		\qquad
+		\varepsilon_C(R):=\#\{p\mid R:\ p\in C\}\bmod 2.
+		\]
+	\end{definition}
+	
+	Wir identifizieren die acht Elemente von \(\F_2^3\) mit den acht formalen Signaturen
+	\[
+	\Sigma:=\{\varnothing,A,B,C,AB,AC,BC,ABC\}
+	\]
+	via
+	\[
+	000\leftrightarrow \varnothing,\quad
+	100\leftrightarrow A,\quad
+	010\leftrightarrow B,\quad
+	001\leftrightarrow C,
+	\]
+	\[
+	110\leftrightarrow AB,\quad
+	101\leftrightarrow AC,\quad
+	011\leftrightarrow BC,\quad
+	111\leftrightarrow ABC.
+	\]
+	
+	Die bisherige reduzierte Sieben-Typen-Welt entsteht durch
+	\[
+	\varnothing \sim ABC \sim E.
+	\]
+	
+	\section{Oktonische Hülle}
+	
+	\begin{definition}[Oktonische Basiszuordnung]
+		Sei
+		\[
+		\{1,e_1,e_2,e_3,e_4,e_5,e_6,e_7\}
+		\]
+		eine Basis der Oktonionenalgebra \(\Ocal\).
+		Wir setzen
+		\[
+		\varnothing \leftrightarrow 1,
+		\]
+		\[
+		A\leftrightarrow e_1,\qquad
+		B\leftrightarrow e_2,\qquad
+		C\leftrightarrow e_3,
+		\]
+		\[
+		AB\leftrightarrow e_4,\qquad
+		AC\leftrightarrow e_5,\qquad
+		BC\leftrightarrow e_6,\qquad
+		ABC\leftrightarrow e_7.
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		Dies ist zunächst eine \emph{Indexierung} der acht Basiskomponenten.
+		Die volle oktonische Multiplikation verlangt zusätzlich eine orientierte
+		Fano-Struktur mit Vorzeichenregel. Für die vorliegende Klassifikation genügt
+		die formale Indexgeometrie.
+	\end{bemerkung}
+	
+	\section{Fano-Geometrie der sieben nichttrivialen Signaturen}
+	
+	Die sieben nichtnulligen Elemente von \(\F_2^3\) bilden die Punkte der Fano-Ebene.
+	Die Geraden entsprechen genau den Tripeln
+	\[
+	x,y,z\in \F_2^3\setminus\{0\},\qquad x+y+z=0.
+	\]
+	
+	In unseren Bezeichnungen sind das:
+	\[
+	\{A,B,AB\},\quad \{A,C,AC\},\quad \{B,C,BC\},
+	\]
+	\[
+	\{AB,AC,BC\},\quad \{A,BC,ABC\},\quad \{B,AC,ABC\},\quad \{C,AB,ABC\}.
+	\]
+	
+	\begin{center}
+		\begin{tikzpicture}[scale=1.15]
+			\coordinate (A)   at (90:3);
+			\coordinate (B)   at (18:3);
+			\coordinate (AB)  at (-54:3);
+			\coordinate (C)   at (-126:3);
+			\coordinate (AC)  at (162:3);
+			\coordinate (BC)  at (0,0);
+			\coordinate (ABC) at (0,1.1);
+			
+			% Outer circle-ish points
+			\foreach \P/\Name in {A/A,B/B,AB/AB,C/C,AC/AC,BC/BC,ABC/ABC}{
+				\fill (\P) circle (2pt);
+			}
+			
+			% Some Fano lines
+			\draw (A) -- (B) -- (AB) -- cycle;
+			\draw (A) -- (C);
+			\draw (AC) -- (BC);
+			\draw (B) -- (C);
+			\draw (A) -- (BC);
+			\draw (B) -- (AC);
+			\draw (C) -- (AB);
+			\draw (ABC) circle (1.9);
+			
+			\node[above]      at (A)   {$A$};
+			\node[right]      at (B)   {$B$};
+			\node[below right]at (AB)  {$AB$};
+			\node[below left] at (C)   {$C$};
+			\node[left]       at (AC)  {$AC$};
+			\node[below]      at (BC)  {$BC$};
+			\node[above]      at (ABC) {$ABC$};
+		\end{tikzpicture}
+	\end{center}
+	
+	\begin{bemerkung}
+		Die Zeichnung ist hier nur als Inzidenzbild gemeint. Für eine echte oktonische
+		Multiplikation müsste zusätzlich eine Orientierung der Geraden festgelegt werden.
+	\end{bemerkung}
+	
+	\section{Primzahlkonstellationen im oktonischen System}
+	
+	Wir untersuchen nun die formale Signatur des Radikals einer Konstellation.
+	Dabei werden die Primzahlen \(2\) und \(3\) als \emph{außerhalb} des \(E/A/B/C\)-Systems
+	behandelt; falls \(3\) in der Konstellation vorkommt, wird sie als singulärer
+	Randanker abgespalten.
+	
+	\subsection{Primzahlzwillinge}
+	
+	Ein Primzahlzwilling ist ein Paar \((p,p+2)\) aus Primzahlen.
+	
+	\begin{proposition}[Zwillinge]
+		Sei \((p,p+2)\) ein Primzahlzwilling mit \(p>3\). Dann gibt es genau zwei
+		oktonische Signaturmöglichkeiten:
+		\[
+		\sig\bigl((p,p+2)\bigr)=AB \quad\text{oder}\quad \sig\bigl((p,p+2)\bigr)=C.
+		\]
+		Genauer gilt:
+		\[
+		p\equiv 5 \pmod{12}\ \Longrightarrow\ (p,p+2)\sim (A,B)\ \Longrightarrow\ \sig=AB,
+		\]
+		\[
+		p\equiv 11 \pmod{12}\ \Longrightarrow\ (p,p+2)\sim (C,E)\ \Longrightarrow\ \sig=C.
+		\]
+	\end{proposition}
+	
+	\begin{proof}
+		Für \(p>3\) muss ein Primzahlzwilling die Form \((6n-1,6n+1)\) haben.
+		Modulo \(12\) gibt es nur zwei Möglichkeiten:
+		\[
+		(5,7)\quad\text{oder}\quad (11,1).
+		\]
+		Im ersten Fall erhält man die Familien \(A,B\), also Signatur \(AB\).
+		Im zweiten Fall erhält man \(C,E\), wobei \(E\) paritätisch neutral ist;
+		also bleibt die Signatur \(C\).
+	\end{proof}
+	
+	\begin{bemerkung}
+		Der Ausnahmezwilling \((3,5)\) ist ein Randfall: Nach Abspaltung von \(3\) bleibt
+		nur der Typ \(A\).
+	\end{bemerkung}
+	
+	\subsection{Primzahldrillinge}
+	
+	Unter Primzahldrillingen verstehen wir hier die dichten Muster
+	\[
+	(p,p+2,p+6)\qquad\text{oder}\qquad (p,p+4,p+6).
+	\]
+	
+	\begin{proposition}[Drillinge]
+		Jeder Primzahldrilling enthält notwendig die Primzahl \(3\). Nach Abspaltung von \(3\)
+		bleiben genau zwei Signaturtypen übrig:
+		\[
+		(3,5,7)\ \Longrightarrow\ \sig=AB,
+		\]
+		\[
+		(3,7,11)\ \Longrightarrow\ \sig=BC.
+		\]
+	\end{proposition}
+	
+	\begin{proof}
+		In drei ungeraden Zahlen mit Abstandsmuster \(0,2,6\) oder \(0,4,6\) liegt stets eine
+		Zahl in der Klasse \(0 \pmod 3\). Soll die ganze Konstellation aus Primzahlen bestehen,
+		so muss diese Zahl gleich \(3\) sein. Das liefert genau die beiden bekannten Drillinge
+		\[
+		(3,5,7),\qquad (3,7,11).
+		\]
+		Nach Abspaltung von \(3\) bleiben die Familien
+		\[
+		(A,B)\quad\text{bzw.}\quad (B,C),
+		\]
+		also die Signaturen \(AB\) bzw. \(BC\).
+	\end{proof}
+	
+	\begin{bemerkung}
+		Der Primzahldrilling ist im oktonischen System kein „freies“ Objekt des
+		\(E/A/B/C\)-Raumes, sondern ein \emph{3-verankerter Randzustand}.
+	\end{bemerkung}
+	
+	\subsection{Primzahlvierlinge}
+	
+	Der klassische Primzahlvierling hat die Form
+	\[
+	(p,p+2,p+6,p+8).
+	\]
+	
+	\begin{proposition}[Vierlinge]
+		Sei \((p,p+2,p+6,p+8)\) ein Primzahlvierling mit \(p>3\).
+		Dann ist seine formale oktonische Signatur immer
+		\[
+		\sig = ABC.
+		\]
+		Unter der reduzierten Projektion fällt der Vierling also immer auf den neutralen Typ
+		\[
+		E.
+		\]
+	\end{proposition}
+	
+	\begin{proof}
+		Für \(p>3\) sind modulo \(12\) nur zwei Familienmuster möglich:
+		\[
+		(5,7,11,1)\quad\text{oder}\quad (11,1,5,7).
+		\]
+		Das entspricht
+		\[
+		(A,B,C,E)\quad\text{oder}\quad (C,E,A,B).
+		\]
+		In beiden Fällen treten \(A,B,C\) jeweils genau einmal auf, während \(E\) neutral ist.
+		Also ist die formale Signatur stets
+		\[
+		111=ABC.
+		\]
+		Nach der Reduktion \(ABC\sim E\) landet der Vierling im Typ \(E\).
+	\end{proof}
+	
+	\begin{bemerkung}
+		Das ist die bemerkenswerteste Sonderstellung: Der Primzahlvierling liegt formal auf der
+		\emph{verborgenen achten Richtung} \(ABC\cong e_7\), erscheint reduziert aber als neutral.
+		Im oktonischen Bild ist er also ein \emph{verdeckter Nichtnullzustand}, der in der
+		Siebentypenprojektion zu \(E\) kollabiert.
+	\end{bemerkung}
+	
+	\subsection{Primzahlfünflinge}
+	
+	Der dichte Primzahlfünfling hat die Form
+	\[
+	(p,p+2,p+6,p+8,p+12).
+	\]
+	
+	\begin{proposition}[Fünflinge]
+		Sei \((p,p+2,p+6,p+8,p+12)\) ein Primzahlfünfling mit \(p>3\).
+		Dann gibt es genau zwei formale oktonische Signaturen:
+		\[
+		p\equiv 5 \pmod{12}\ \Longrightarrow\ \sig = BC,
+		\]
+		\[
+		p\equiv 11 \pmod{12}\ \Longrightarrow\ \sig = AB.
+		\]
+	\end{proposition}
+	
+	\begin{proof}
+		Für \(p>3\) gibt es modulo \(12\) genau zwei Muster:
+		\[
+		(5,7,11,1,5)\quad\text{oder}\quad (11,1,5,7,11).
+		\]
+		Das entspricht
+		\[
+		(A,B,C,E,A)\quad\text{oder}\quad (C,E,A,B,C).
+		\]
+		Im ersten Fall ist die Parität
+		\[
+		A:2,\quad B:1,\quad C:1,
+		\]
+		also reduziert
+		\[
+		(0,1,1)=BC.
+		\]
+		Im zweiten Fall ist die Parität
+		\[
+		A:1,\quad B:1,\quad C:2,
+		\]
+		also reduziert
+		\[
+		(1,1,0)=AB.
+		\]
+	\end{proof}
+	
+	\begin{bemerkung}
+		Im Gegensatz zum Vierling projiziert der Fünfling nicht neutral, sondern spaltet sich
+		in zwei echte oktonische Richtungen auf.
+	\end{bemerkung}
+	
+	\section{Zusammenfassung der Sonderstellungen}
+	
+	\begin{satz}[Sonderlagen klassischer Konstellationen]
+		Im formalen oktonischen Signatursystem besitzen die klassischen Primzahlkonstellationen
+		folgende ausgezeichnete Lagen:
+		\begin{enumerate}[label=\textup{(\roman*)}]
+			\item Primzahlzwillinge mit Abstand \(2\) liegen nur in den Richtungen
+			\[
+			C \quad\text{oder}\quad AB.
+			\]
+			\item Primzahldrillinge sind notwendig \(3\)-verankert und liefern nach Abspaltung von \(3\)
+			nur die Richtungen
+			\[
+			AB \quad\text{oder}\quad BC.
+			\]
+			\item Primzahlvierlinge liegen formal immer in der Richtung
+			\[
+			ABC,
+			\]
+			projizieren reduziert aber auf
+			\[
+			E.
+			\]
+			\item Primzahlfünflinge liegen nur in den Richtungen
+			\[
+			AB \quad\text{oder}\quad BC.
+			\]
+		\end{enumerate}
+	\end{satz}
+	
+	\begin{proof}
+		Die vier Aussagen sind die vorstehenden Propositionsresultate.
+	\end{proof}
+	
+	\section{Interpretation}
+	
+	\begin{bemerkung}
+		Das oktonische Bild legt folgende Lesart nahe:
+		\begin{itemize}[itemsep=0.2em]
+			\item Zwillinge sind \emph{zweirichtige Randmodi}.
+			\item Drillinge sind \emph{durch \(3\) erzwungene singuläre Konfigurationen}.
+			\item Vierlinge sind \emph{oktonisch verdeckte Neutralzustände}: formal \(ABC\), reduziert \(E\).
+			\item Fünflinge verlassen diese Neutralität wieder und spalten sich in zwei echte
+			nichtneutrale Richtungen auf.
+		\end{itemize}
+	\end{bemerkung}
+	
+	\begin{bemerkung}
+		Gerade die Sonderrolle des Vierlings ist mathematisch interessant: Er ist die erste dichte
+		Konstellation, deren volle Familienparität exakt alle drei aktiven Richtungen \(A,B,C\)
+		umfasst und dadurch auf die \(ABC\)-Achse fällt.
+	\end{bemerkung}
+	
+	\section{Schluss}
+	
+	Die oktonische Hülle ist keine neue Primzahlsatz-Theorie, aber sie organisiert die
+	Familienparitäten der Radikalschichten in einer erstaunlich straffen Geometrie.
+	Die klassischen Primzahlkonstellationen besetzen darin nur sehr wenige ausgezeichnete
+	Richtungen, und insbesondere der Primzahlvierling nimmt eine singuläre Zwischenstellung
+	zwischen verborgener Achterstruktur und reduzierter Siebentypenprojektion ein.
+	
+\end{document}

@@ -1,0 +1,374 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{enumitem}
+
+\geometry{margin=2.7cm}
+
+\title{Vierquadrate-Zerlegungen von Primzahlen\\
+	und zyklische Schließbarkeit im Sehnenmodell}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\newtheorem{satz}{Satz}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{korollar}{Korollar}
+\theoremstyle{remark}
+\newtheorem{bemerkung}{Bemerkung}
+\newtheorem{beispiel}{Beispiel}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir untersuchen Vierquadrate-Zerlegungen von Primzahlen in einem zyklischen Sehnenmodell. 
+		Ausgehend vom Vier-Quadrate-Satz von Lagrange betrachten wir jede Darstellung
+		\[
+		p = E^2 + A^2 + B^2 + C^2
+		\]
+		als geordnete oder ungeordnete Viererstruktur und fragen, ob die zugehörigen Längen als Sehnen eines Kreises so realisiert werden können, dass sich die vier zugehörigen Mittelpunktswinkel zu \(2\pi\) schließen. 
+		Dies führt zu einer zusätzlichen geometrischen Verträglichkeitsbedingung innerhalb der arithmetisch garantierten Vierquadrate-Darstellungen. 
+		Numerisch zeigt sich für die ersten 1000 Primzahlen, dass die einrastfähigen Darstellungen im Mittel deutlich entropiereicher, weniger konzentriert und balancierter sind als die nicht-einrastfähigen. 
+		Ferner wird ein Vergleich zwischen einer linearen und einer quadratischen Gewichtung durchgeführt. Dieser zeigt, dass die quadratische Gewichtung die Schließungsbedingung spürbar verschärft.
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Der Vier-Quadrate-Satz von Lagrange besagt, dass jede natürliche Zahl als Summe von vier Quadraten darstellbar ist. 
+	Damit besitzt insbesondere jede Primzahl \(p\) mindestens eine Darstellung der Form
+	\[
+	p = E^2 + A^2 + B^2 + C^2.
+	\]
+	Diese klassische Existenz ist rein arithmetisch. 
+	Die vorliegende Untersuchung fragt nach einer zusätzlichen geometrischen Struktur solcher Darstellungen.
+	
+	Die Grundidee besteht darin, die vier Beiträge \(E,A,B,C\) nicht nur als additive Daten zu lesen, sondern sie in ein Kreis- beziehungsweise Sehnenmodell einzubetten. 
+	Dabei entsteht zu jeder Vierquadrate-Darstellung eine zyklische Konfiguration, deren Schließbarkeit als zusätzliche Selektionsbedingung interpretiert werden kann. 
+	So wird die Menge aller Vierquadrate-Zerlegungen einer Primzahl durch ein geometrisches Kriterium verfeinert.
+	
+	Der konzeptionelle Kern lautet:
+	
+	\begin{quote}
+		Lagrange liefert die arithmetische Universalität; das Sehnenmodell führt eine geometrische Verträglichkeitsbedingung ein.
+	\end{quote}
+	
+	\section{Vierquadrate-Zerlegungen}
+	
+	\begin{definition}
+		Für \(n\in\mathbb{N}\) sei
+		\[
+		\mathcal{Q}(n)
+		=
+		\left\{
+		(E,A,B,C)\in\mathbb{Z}_{\ge 0}^4
+		\;\middle|\;
+		E\ge A\ge B\ge C,\quad
+		E^2+A^2+B^2+C^2=n
+		\right\}
+		\]
+		die Menge der ungeordneten Vierquadrate-Darstellungen von \(n\).
+	\end{definition}
+	
+	\begin{satz}[Lagrange]
+		Für jede natürliche Zahl \(n\) gilt
+		\[
+		\mathcal{Q}(n)\neq\emptyset.
+		\]
+	\end{satz}
+	
+	\begin{bemerkung}
+		Im vorliegenden Artikel werden numerisch ungeordnete Repräsentanten
+		\[
+		E\ge A\ge B\ge C\ge 0
+		\]
+		verwendet. Für zyklische Fragestellungen kann später auch die geordnete Variante mit allen verschiedenen Permutationen interessant sein.
+	\end{bemerkung}
+	
+	\section{Das zyklische Sehnenmodell}
+	
+	\subsection{Zwei Gewichtungsregime}
+	
+	Zu einer Darstellung \((E,A,B,C)\in\mathcal{Q}(n)\) ordnen wir vier Längen \(l_1,l_2,l_3,l_4\) zu. 
+	Wir betrachten zwei Varianten:
+	
+	\begin{enumerate}[label=\arabic*)]
+		\item \textbf{Harte Gewichtung}
+		\[
+		l_1=E^2,\qquad l_2=A^2,\qquad l_3=B^2,\qquad l_4=C^2.
+		\]
+		
+		\item \textbf{Weiche Gewichtung}
+		\[
+		l_1=E,\qquad l_2=A,\qquad l_3=B,\qquad l_4=C.
+		\]
+	\end{enumerate}
+	
+	Die harte Gewichtung verstärkt große Komponenten überproportional, die weiche Gewichtung behandelt sie linear.
+	
+	\subsection{Schließungsbedingung}
+	
+	Für eine Sehne der Länge \(l\) in einem Kreis vom Radius \(r\) gilt
+	\[
+	\theta(l;r)=2\arcsin\!\left(\frac{l}{2r}\right).
+	\]
+	Eine Vierer-Konfiguration heißt \emph{einrastfähig} oder \emph{fit}, wenn es einen Radius \(r>0\) gibt mit
+	\[
+	\theta(l_1;r)+\theta(l_2;r)+\theta(l_3;r)+\theta(l_4;r)=2\pi.
+	\]
+	Äquivalent:
+	\[
+	\sum_{i=1}^4 \arcsin\!\left(\frac{l_i}{2r}\right)=\pi.
+	\]
+	
+	\begin{definition}
+		Existiert ein Radius \(r>0\), der die Gleichung
+		\[
+		\sum_{i=1}^4 \arcsin\!\left(\frac{l_i}{2r}\right)=\pi
+		\]
+		erfüllt, so nennen wir ihn die \emph{Einrastzahl} der Darstellung und schreiben
+		\[
+		\kappa(E,A,B,C)=r.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Die Funktion
+		\[
+		f(r)=\sum_{i=1}^4 \arcsin\!\left(\frac{l_i}{2r}\right)
+		\]
+		ist auf ihrem Definitionsbereich streng monoton fallend.
+	\end{lemma}
+	
+	\begin{proof}
+		Jeder Summand
+		\[
+		r\mapsto \arcsin\!\left(\frac{l_i}{2r}\right)
+		\]
+		ist für \(r>\frac{l_i}{2}\) streng fallend, weil \(r\mapsto \frac{l_i}{2r}\) streng fällt und \(\arcsin\) auf \((0,1)\) streng wächst. Die Summe streng fallender Funktionen ist wieder streng fallend.
+	\end{proof}
+	
+	\begin{korollar}
+		Falls \(\kappa(E,A,B,C)\) existiert, dann ist sie eindeutig.
+	\end{korollar}
+	
+	\section{Kritischer Defekt}
+	
+	\begin{definition}
+		Sei
+		\[
+		r_{\min}=\frac12\max(l_1,l_2,l_3,l_4).
+		\]
+		Dann definieren wir den \emph{kritischen Defekt} durch
+		\[
+		\delta(E,A,B,C)=\pi-f(r_{\min}),
+		\qquad
+		f(r)=\sum_{i=1}^4 \arcsin\!\left(\frac{l_i}{2r}\right).
+		\]
+	\end{definition}
+	
+	Da \(f(r)\) streng fällt, ist \(f(r_{\min})\) der maximal erreichbare Wert. Also gilt:
+	
+	\[
+	\delta<0 \;\Longrightarrow\; \text{fit},
+	\qquad
+	\delta=0 \;\Longrightarrow\; \text{Grenzfall},
+	\qquad
+	\delta>0 \;\Longrightarrow\; \text{non-fit}.
+	\]
+	
+	In der numerischen Praxis wurde fit äquivalent durch \(f(r_{\min})\ge\pi\) mit Toleranz geprüft; fit-Fälle werden dann mit Defekt \(0\) ausgewiesen.
+	
+	\section{Verteilungsmaße}
+	
+	Zur Beschreibung der inneren Lastverteilung einer Darstellung verwenden wir die normierten Gewichte
+	\[
+	p_i=\frac{l_i}{l_1+l_2+l_3+l_4}.
+	\]
+	
+	Daraus definieren wir:
+	
+	\begin{definition}
+		Die \emph{Entropie} einer Darstellung sei
+		\[
+		H=-\sum_{i=1}^4 p_i\log p_i.
+		\]
+	\end{definition}
+	
+	\begin{definition}
+		Die \emph{Konzentration} sei
+		\[
+		K=\sum_{i=1}^4 p_i^2.
+		\]
+	\end{definition}
+	
+	\begin{definition}
+		Der \emph{Balanceindex} sei
+		\[
+		\operatorname{bal}
+		=
+		\frac{\min(l_1,l_2,l_3,l_4)}{\max(l_1,l_2,l_3,l_4)}.
+		\]
+	\end{definition}
+	
+	Hohe Entropie und hoher Balanceindex stehen für eine relativ gleichmäßige Lastverteilung, hohe Konzentration für dominante Einzelbeiträge.
+	
+	\section{Numerische Untersuchung der ersten 1000 Primzahlen}
+	
+	Es wurden die ersten 1000 Primzahlen
+	\[
+	2,3,5,\dots,7919
+	\]
+	analysiert.
+	
+	\subsection{Harte Gewichtung \(l_i=E_i^2\)}
+	
+	Im harten Modell besitzen 983 der ersten 1000 Primzahlen mindestens eine fit-Darstellung; 17 Primzahlen besitzen keine fit-Darstellung. 
+	Diese 17 Primzahlen sind:
+	\[
+	5,\;7,\;11,\;17,\;29,\;47,\;53,\;61,\;71,\;83,\;131,\;149,\;197,\;233,\;239,\;257,\;269.
+	\]
+	
+	\subsection{Statistik über alle Darstellungen}
+	
+	Die statistische Auswertung über sämtliche untersuchten Vierquadrate-Darstellungen der ersten 1000 Primzahlen ergibt im harten Modell:
+	
+	\begin{center}
+		\begin{tabular}{lcccc}
+			\toprule
+			Gruppe & Anzahl & mittlere Entropie \(H\) & mittlere Konzentration \(K\) & mittlere Balance \\
+			\midrule
+			fit     & 11046 & 1.1898 & 0.3262 & 0.1977 \\
+			non-fit & 77685 & 0.8324 & 0.5302 & 0.0454 \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	
+	Damit zeigen fit-Darstellungen im Mittel:
+	
+	\begin{itemize}
+		\item deutlich \emph{höhere Entropie},
+		\item deutlich \emph{geringere Konzentration},
+		\item deutlich \emph{größere Balance}.
+	\end{itemize}
+	
+	Dies ist einer der zentralen numerischen Befunde des Modells.
+	
+	\subsection{Interpretation}
+	
+	Die zyklische Schließbarkeit ist damit klar \emph{nicht} bloß eine Umformulierung des Vier-Quadrate-Satzes. 
+	Vielmehr wirkt das Sehnenmodell als geometrischer Filter innerhalb der von Lagrange gelieferten Darstellungen. 
+	Es bevorzugt solche Vierquadrate-Zerlegungen, bei denen die Last nicht zu stark auf eine dominante Hauptkomponente konzentriert ist.
+	
+	\section{Fast einrastende non-fit-Fälle}
+	
+	Unter den 17 non-fit-Primzahlen im harten Modell gibt es sehr unterschiedliche Defektgrößen. 
+	Einige Fälle sind deutlich non-fit, andere liegen extrem nahe an der Schließung.
+	
+	Besonders kleine Defekte wurden etwa für folgende Primzahlen gefunden:
+	\[
+	197,\qquad 61,\qquad 239,\qquad 233,\qquad 149.
+	\]
+	
+	Ein besonders markanter Grenzfall ist \(p=197\) mit der Darstellung
+	\[
+	(9,8,6,4),
+	\]
+	für die numerisch
+	\[
+	\delta \approx 3.93\times 10^{-4}
+	\]
+	gefunden wurde. 
+	Dies zeigt, dass die Klasse der non-fit-Darstellungen selbst eine feine innere Struktur besitzt: 
+	Sie reicht von stark rigiden bis zu nahezu schließbaren Konfigurationen.
+	
+	\section{Vergleich zwischen harter und weicher Gewichtung}
+	
+	Im weichen Modell
+	\[
+	l_i=E_i
+	\]
+	besitzen 993 der ersten 1000 Primzahlen mindestens eine fit-Darstellung. 
+	Der Vergleich ergibt somit:
+	
+	\begin{center}
+		\begin{tabular}{lc}
+			\toprule
+			Größe & Wert \\
+			\midrule
+			fit im harten Modell & 983 \\
+			fit im weichen Modell & 993 \\
+			Verbesserungen hard \(\to\) soft & 10 \\
+			Verschlechterungen hard \(\to\) soft & 0 \\
+			in beiden Modellen non-fit & 7 \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	
+	Dies zeigt eindeutig:
+	
+	\begin{quote}
+		Die quadratische Gewichtung verschärft die geometrische Schließungsbedingung.
+	\end{quote}
+	
+	Große Komponenten werden im harten Modell überproportional verstärkt; dadurch können Darstellungen, die unter linearer Gewichtung noch kompatibel sind, ihre zyklische Schließbarkeit verlieren.
+	
+	\section{Beste Darstellung pro Primzahl}
+	
+	Für jede Primzahl wurde zusätzlich eine \emph{beste Darstellung} ausgewählt:
+	
+	\begin{itemize}
+		\item falls fit-Darstellungen existieren: die fit-Darstellung mit kleinster Einrastzahl \(\kappa\),
+		\item sonst: die non-fit-Darstellung mit kleinstem Defekt \(\delta\).
+	\end{itemize}
+	
+	Diese Auswahl liefert für jede Primzahl einen kanonischen Repräsentanten ihrer inneren Geometrie im jeweiligen Modell. 
+	Im harten Modell zeigt sich dabei häufig, dass die besten fit-Darstellungen eine bemerkenswert gleichmäßige Struktur haben, etwa:
+	\[
+	(3,3,3,2),\quad
+	(4,3,3,3),\quad
+	(5,4,4,4),\quad
+	(7,6,6,6).
+	\]
+	Dies stützt erneut die Vermutung, dass die Schließbarkeit eng mit einer balancierten Lastverteilung zusammenhängt.
+	
+	\section{Schlussfolgerung}
+	
+	Die vorliegende Untersuchung zeigt, dass Vierquadrate-Darstellungen von Primzahlen durch ein zyklisches Sehnenmodell geometrisch verfeinert werden können. 
+	Die durch Lagrange garantierte Existenz von Vierquadrate-Zerlegungen bildet dabei die arithmetische Basis; die zusätzliche Kreis-Schließungsbedingung führt eine nichttriviale geometrische Selektivität ein.
+	
+	Die numerischen Resultate legen nahe:
+	
+	\begin{enumerate}[label=\arabic*)]
+		\item Einrastfähigkeit ist stark mit hoher Entropie und Balance sowie geringer Konzentration korreliert.
+		\item Die harte Gewichtung \(l_i=E_i^2\) wirkt als Verstärker struktureller Ungleichverteilung.
+		\item Nicht-einrastende Primzahlen bilden keine homogene Klasse, sondern reichen von stark rigiden bis zu nahezu kritischen Grenzfällen.
+		\item Die Wahl des Gewichtungsregimes verändert nicht nur die Fit-Quote, sondern teilweise auch die optimale Darstellung einer Primzahl.
+	\end{enumerate}
+	
+	Damit entsteht aus der klassischen Vierquadrate-Theorie eine arithmetisch-geometrische Verfeinerung, in der nicht nur die Existenz von Darstellungen zählt, sondern auch deren innere zyklische Verträglichkeit.
+	
+	\section*{Ausblick}
+	
+	Naheliegende Fortsetzungen dieser Arbeit sind:
+	
+	\begin{itemize}
+		\item Untersuchung geordneter statt nur ungeordneter Vierquadrate-Tupel,
+		\item Vergleich der Klassen \(p\equiv 1 \pmod 4\) und \(p\equiv 3 \pmod 4\),
+		\item asymptotische Analyse der Fit-Quote für größere Primzahlbereiche,
+		\item Untersuchung anderer Gewichtungsregime \(l_i=E_i^\alpha\),
+		\item quaternionische Interpretation der Viererstruktur über
+		\[
+		N(E+Ai+Bj+Ck)=E^2+A^2+B^2+C^2.
+		\]
+	\end{itemize}
+	
+\end{document}

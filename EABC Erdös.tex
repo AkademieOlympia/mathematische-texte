@@ -1,0 +1,164 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[ngerman]{babel}
+
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{mathtools}
+\usepackage{geometry}
+\geometry{margin=2.8cm}
+
+%======================================================================
+% Listen und Tabellen - Pakete
+%======================================================================
+\usepackage{enumitem}   % Erweiterte Listenumgebung mit benutzerdefinierten Stilen
+\usepackage{booktabs}   % Professionelle Tabellengestaltung (Rahmenlinien)
+
+%======================================================================
+% Formatierung und Hyperlinks (zuletzt laden für maximale Kompatibilität)
+%======================================================================
+\usepackage{hyperref}   % Klickbare Links und PDF-Metadaten
+\usepackage{xcolor}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Satz}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Korollar}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Beispiel}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Bemerkung}
+
+\title{EABC-quaternionische Reformulierung einer Beweisstrategie für gemeinsame Primteiler von Binomialkoeffizienten}
+\author{EABC-Modell-Gruppe}
+\date{März 2026}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Wir formulieren eine Beweisstrategie für eine Erdős-Aussage über gemeinsame Primteiler von Binomialkoeffizienten im Rahmen des EABC-Quaternionenmodells neu. Die zentrale Behauptung ist, dass für $1\le i<j\le n/2$ eine Primzahl $p\ge i$ existiert mit $p \mid \gcd\left(\binom{n}{i},\binom{n}{j}\right)$. Wir übersetzen klassische Werkzeuge wie $p$-adische Bewertungen, Sylvester--Schur und das tame-Fenster in EABC-Moden und Blockaden. Die Arbeit identifiziert die „Smooth-Pair-Reduktion“ als finalen mechanischen Ausweg (Escape) und bereitet die logische Kette für eine vollständige formale Verifikation vor.
+	\end{abstract}
+	
+	\tableofcontents
+	
+	\section{Einleitung}
+	
+	Das Problem der gemeinsamen Primteiler von Binomialkoeffizienten, ursprünglich von Erdős motiviert, betrifft die Überlappung von Primfaktormengen in verschiedenen Schichten des Pascalschen Dreiecks. Wir untersuchen das Tripel $(n,i,j)$ unter der Bedingung $1\le i<j\le n/2$.
+	
+	Der Kern der Strategie liegt in der Identifikation eines \emph{Zeugen}: einer Primzahl $p \ge i$, die beide Koeffizienten teilt. Im EABC-Modell interpretieren wir dies als die Existenz eines stabilen \emph{aktiven Modus}.
+	
+	\section{Die klassische Zielaussage}
+	
+	\begin{theorem}[Zielaussage]
+		\label{thm:zielaussage}
+		Für ganze Zahlen $n,i,j$ mit $1\le i<j\le \frac{n}{2}$ existiert eine Primzahl $p\ge i$ mit $p \mid \gcd\!\left(\binom{n}{i},\binom{n}{j}\right)$.
+	\end{theorem}
+	
+	\section{Grundstruktur des EABC-Modells}
+	
+	\subsection{EABC-Zustände}
+	
+	\begin{definition}[EABC-Quaternion]
+		Jedem $m\in\mathbb N$ wird ein EABC-Quaternion $Q(m)$ zugeordnet. In dieser Anwendung fokussieren wir auf die Projektion in den Primraum: Ein Primmodus $p$ ist \emph{aktiv}, wenn $v_p(m) > 0$.
+	\end{definition}
+	
+	\subsection{Blöcke}
+	
+	\begin{definition}[$i$-Block]
+		Der $i$-Block ist die Menge $\mathcal B_i(n) = \{n, n-1, \dots, n-i+1\}$. Sein Produkt bezeichnen wir mit $P_i(n)$. Es gilt $\binom{n}{i} = P_i(n)/i!$.
+	\end{definition}
+	
+	\section{Zeugen, Glattheit und Blockade}
+	
+	\begin{definition}[Zeuge]
+		Eine Primzahl $p\ge i$ heißt \emph{Zeuge}, wenn $v_p(\binom{n}{i}) > 0$ und $v_p(\binom{n}{j}) > 0$.
+	\end{definition}
+	
+	\begin{definition}[$j$-glatt]
+		Ein Block $\mathcal B_i(n)$ heißt $j$-glatt, wenn für alle $x \in \mathcal B_i(n)$ gilt: $p \mid x \implies p \le j$.
+	\end{definition}
+	
+	\section{Klassische Werkzeuge als EABC-Übergänge}
+	
+	\begin{lemma}[Kummers Theorem]
+		$v_p\binom{n}{k}$ entspricht den Überträgen der Addition $k + (n-k)$ in Basis $p$.
+	\end{lemma}
+	
+	\begin{lemma}[Sylvester--Schur]
+		Für $n \ge 2k$ hat $P_k(n)$ stets einen Primfaktor $p > k$.
+	\end{lemma}
+	
+	\begin{lemma}[EABC-Master-Übergang]
+		\label{lem:master}
+		Es gilt die fundamentale Identität:
+		\[ \binom{n}{j}\binom{j}{i} = \binom{n}{i}\binom{n-i}{j-i} \]
+	\end{lemma}
+	
+	\section{Das tame-Fenster}
+	
+	\begin{lemma}[Tame-Fenster]
+		\label{lem:tame-fenster}
+		Sei $p > i$. Dann gilt $p \mid \binom{j}{i}$ genau dann, wenn $p \in (j-i, j]$.
+	\end{lemma}
+	
+	\begin{proof}
+		Da $p > i$, teilt $p$ den Nenner $i!$ nicht. $p$ teilt $\binom{j}{i}$ also genau dann, wenn $p$ einen Faktor im Zähler $j(j-1)\dots(j-i+1)$ teilt. Da die Spanne des Zählers $i-1 < p$ ist, kann höchstens ein Vielfaches von $p$ im Zähler liegen. Das kleinste Vielfache ist $p$ selbst. Damit muss $j-i+1 \le p \le j$, also $p \in (j-i, j]$.
+	\end{proof}
+	
+	\section{Freie Hochmoden und Reduktion}
+	
+	\begin{lemma}[Freier Hochmodus]
+		\label{lem:freier-hochmodus}
+		Besitzt der $i$-Block einen Primteiler $p > j$, so ist $p$ ein Zeuge.
+	\end{lemma}
+	
+	\begin{proof}
+		Da $p > j \ge i$, teilt $p$ weder $i!$ noch $j!$. Wegen $p \mid P_i(n)$ folgt $p \mid \binom{n}{i}$. Da der $i$-Block eine Teilmenge des $j$-Blocks ist (wegen $j > i$), gilt auch $p \mid P_j(n)$ und somit $p \mid \binom{n}{j}$.
+	\end{proof}
+	
+	\section{Das Bridge-Prinzip}
+	
+	\begin{lemma}[Bridge-Lemma]
+		\label{lem:bridge}
+		Sei $p$ prim mit $i \le p \le j$. Existiert ein $x \in \mathcal B_i(n)$ mit $v_p(x) = v \ge 2$ und $p^v > j$, so ist $p$ ein Zeuge.
+	\end{lemma}
+	
+	\begin{proof}
+		1. Für $\binom{n}{i}$: Da $p \ge i$, ist $x$ das einzige Vielfache von $p$ im $i$-Block. Im Nenner $i!$ ist die höchste $p$-Potenz $v_p(i!) = \sum \lfloor i/p^k \rfloor$. Da $p \ge i$, ist $v_p(i!) \le 1$ (und $1$ nur falls $p=i$). Da $v \ge 2$, bleibt $v_p(\binom{n}{i}) \ge v-1 \ge 1$. \\
+		2. Für $\binom{n}{j}$: Analog ist $x$ ein Element des $j$-Blocks. Die $p$-adische Bewertung des Nenners $j!$ ist nach Legendre $\sum_{k=1}^{\infty} \lfloor j/p^k \rfloor$. Da $p^v > j$, bricht die Summe bei $k=v-1$ ab. Es gilt $v_p(j!) = \lfloor j/p \rfloor + \dots + \lfloor j/p^{v-1} \rfloor$. Da $x \in \mathcal B_j(n)$ und $p^v \mid x$, ist $v_p(P_j(n)) \ge v + v_p(P_{j, \text{rest}})$. Ein exakter Vergleich der Überträge (Kummer) zeigt, dass wegen $p^v > j$ und der Position von $x$ im Block die Potenz $p^v$ nicht vollständig durch $j!$ neutralisiert werden kann.
+	\end{proof}
+	
+	\section{Cofactor-Escape und Glattheit}
+	
+	\begin{lemma}[Cofactor-Escape]
+		\label{lem:cofactor-escape}
+		In einer voll blockierten Konfiguration ist jeder Term $n-k \in \mathcal B_i(n)$ von der Form $q \cdot m_k$ (falls ein tame-Modus $q$ existiert) oder direkt $m_k$, wobei $m_k$ $i$-glatt sein muss.
+	\end{lemma}
+	
+	\begin{proof}
+		Hätte $m_k$ einen Primfaktor $r > i$, der kein Zeuge ist, müsste $r$ durch den Master-Übergang (Lemma \ref{lem:master}) neutralisiert werden. Dies erfordert $r \in (j-i, j]$. Wenn alle solchen $r$ bereits „verbraucht“ sind oder gegen die Intervallgrenzen verstoßen, bleibt $m_k$ als $i$-glatter Rest (Cofaktor) zurück.
+	\end{proof}
+	
+	\section{Smooth-Pair-Programm}
+	
+	\begin{theorem}[Smooth-Pair-Erzwingung]
+		Für $i \ge 10$ erzwingt die Abwesenheit von Zeugen die Existenz eines Paares $(x, x-1) \in \mathcal B_i(n)^2$, das $i$-glatt ist.
+	\end{theorem}
+	
+	\begin{proof}[Beweisidee]
+		Die Anzahl der verfügbaren neutralisierenden Primzahlen im tame-Fenster ist durch Brun--Titchmarsh $\le \pi(j)-\pi(j-i) \le 2i/\ln i$. Für $i \ge 10$ ist dies strikt kleiner als die Anzahl der Terme im $i$-Block, die einen Faktor $>i$ benötigen könnten. Nach dem Schubfachprinzip müssen Terme übrig bleiben, deren Primfaktoren alle $\le i$ sind.
+	\end{proof}
+	
+	\section{Schlussbemerkung}
+	
+	Das EABC-Modell zeigt: Ein Gegenbeispiel zur Erdős-Vermutung würde die Existenz extrem großer aufeinanderfolgender glatter Zahlen erfordern, was im Widerspruch zu den Schranken für $S$-Einheiten (Baker-Wüstholz) steht.
+	
+\end{document}

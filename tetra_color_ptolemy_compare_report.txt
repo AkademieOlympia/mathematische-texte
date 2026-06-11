@@ -1,0 +1,53 @@
+Vergleichstest C versus C_pt (tetraedrische Farbzerlegung / ptolemäische Rekonstruktion)
+
+Datenbasis
+- Riemann-Nullstellen: erste 100000 Ordinaten gamma_n aus zeros6.npy
+- Vierlingszentren bis X=200000: 52
+- Gewichtung: Normschüttespannung w_p ∝ (4p^2+40)/((p^2-4)(p^2-16))
+
+Definitionen
+E_n = 1/2 + i gamma_n
+A_n = (3 E_n^2)^(1/3),  B_n = ω A_n,  C_n = ω^2 A_n,  ω = exp(2π i / 3)
+C_pt,n = (B_n^2 - A_n^2) / (2 E_n)
+
+Prüfung der Modellgleichungen
+- max |A B C - 3 E^2| ≈ 7.149110e-05
+- max |B^2 - A^2 - 2 E C_pt| ≈ 4.165001e-09
+
+Farb- und Energiegrößen (Mittelwerte über n=1..100000)
+- mean_abs_E: 39693.702459864158
+- mean_abs_A: 1611.239319226739
+- mean_abs_B: 1611.239319226739
+- mean_abs_C: 1611.239319226739
+- mean_abs_Cpt: 58.653594537825
+- mean_abs_C_minus_Cpt: 1582.773645261745
+- mean_self_energy_A: 3007466.994151065126
+- mean_self_energy_B: 3007466.994151064660
+- mean_self_energy_C: 3007466.994151065126
+- mean_self_energy_Cpt: 3625.288468260159
+- Mittelwert des dimensionslosen ptolemäischen Quotienten |B^2-A^2|/(2|E||C_pt|): 1.000000000000
+- Mittelwert des analogen Quotienten mit kanonischem C: 0.041806415954
+
+Resonanzobservablen
+S_A      : innere Schale log(p^2-4) mit Im(A)
+S_B      : äußere Schale log(p^2-16) mit Im(B)
+S_C_can  : Zentrum log(p) mit |Im(C)|
+S_C_pt   : Zentrum log(p) mit |Im(C_pt)|
+S_mix_can: kombinierte Phase aus A, B, C
+S_mix_pt : kombinierte Phase aus A, B, C_pt
+
+Kurzbefund
+- Der ptolemäische Quotient ist numerisch exakt 1; die Rekonstruktion C_pt ist also intern konsistent.
+- Das kanonische C und das ptolemäische C_pt unterscheiden sich jedoch stark in ihrer Größenordnung:
+  mittleres |C| ≈ 1611.239, mittleres |C_pt| ≈ 58.654.
+- In den Resonanztests ist S_C_pt geringfügig anders verteilt als S_C_can, aber weder bei den Einzelschalen
+  noch bei den Mischphasen zeigt die Gruppe der echten Nullstellen ein klar separates globales Signal gegenüber
+  verschobenen oder zufälligen Kontrollfrequenzen.
+- Der interessanteste Unterschied bleibt die strukturelle Spannung zwischen symmetrischem C und ptolemäischem C_pt;
+  dort könnte eher Information liegen als in der bloßen globalen Amplitude.
+
+Empfehlung für den nächsten Schritt
+1. Blockweise Fensterung der Nullstellen (z.B. je 2000 oder 5000) statt nur globale Statistik.
+2. Direkte Korrelation von log|C/C_pt| mit log T(V_p) und log p.
+3. Visualisierung der Punktwolken E, A, B, C, C_pt in der komplexen Ebene.
+4. Test einer Observable, die explizit den Defekt C - C_pt verwendet.

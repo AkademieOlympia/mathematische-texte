@@ -1,0 +1,404 @@
+
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.7cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  urlcolor=blue,
+  pdftitle={Mehrschichtige Zerlegungsarchitektur und polynomiale Übergangsgeometrie},
+  pdfauthor={Thomas Hoffbauer}
+}
+
+\theoremstyle{definition}
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{korollar}[satz]{Korollar}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+\newtheorem{beispiel}[satz]{Beispiel}
+\newtheorem{hypothese}[satz]{Hypothese}
+\newtheorem{vermutung}[satz]{Vermutung}
+\newtheorem{arbeitsvermutung}[satz]{Arbeitsvermutung}
+\newtheorem{leitthese}[satz]{Leitthese}
+
+\title{Mehrschichtige Zerlegungsarchitektur der natürlichen Zahlen\\
+und polynomiale Übergangsgeometrie}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Dieses Dokument formuliert eine kompakte, standalone-fähige Fassung der polynomialen Übergangssicht im Bamberger Modell. Im Mittelpunkt stehen kanonische zentrierte Mehrlingspolynome, Übergänge zwischen Mehrlingsklassen, Symmetrieerhalt versus Symmetriebruch sowie eine mehrschichtige Zerlegungsarchitektur natürlicher Zahlen in glatte, additive und polynomiale Stränge. Die Aussagen werden bewusst in einer gemischten Sprache aus Definitionen, Lemmas, Arbeitsvermutungen und Leittheorien formuliert, um klar zwischen strengem Kern und heurischem Programm zu unterscheiden.
+\end{abstract}
+
+\tableofcontents
+
+\section{Kanonische Mehrlingspolynome}
+
+\begin{definition}[Zentrierung eines Mehrlingsmusters]
+Sei
+\[
+\omega=(a_1,\dots,a_k)\in\mathbb R^k
+\]
+ein geordnetes Mehrlingsmuster. Wir definieren seinen Schwerpunkt durch
+\[
+m(\omega):=\frac{1}{k}\sum_{\nu=1}^k a_\nu
+\]
+und die zentrierten Nullstellen durch
+\[
+b_\nu:=a_\nu-m(\omega)\qquad (\nu=1,\dots,k).
+\]
+\end{definition}
+
+\begin{definition}[Kanonisches Mehrlingspolynom]
+Zum Muster \(\omega=(a_1,\dots,a_k)\) definieren wir das zentrierte kanonische Mehrlingspolynom
+\[
+Q_\omega(y):=\prod_{\nu=1}^k (y-b_\nu),
+\]
+wobei \(b_\nu=a_\nu-m(\omega)\) die zentrierten Nullstellen sind.
+\end{definition}
+
+\begin{bemerkung}
+Die absolute Lage des Musters wird durch die Zentrierung eliminiert. Das Polynom \(Q_\omega\) hängt daher nur von der inneren Geometrie beziehungsweise vom Abstandsmuster des Mehrlings ab.
+\end{bemerkung}
+
+\begin{lemma}[Verschwinden des Terms \(y^{k-1}\)]
+Sei
+\[
+Q_\omega(y)=\prod_{\nu=1}^k (y-b_\nu)
+\]
+das zentrierte Mehrlingspolynom eines Musters \(\omega\). Dann verschwindet der Koeffizient von \(y^{k-1}\).
+\end{lemma}
+
+\begin{proof}
+Nach Definition der Zentrierung gilt
+\[
+\sum_{\nu=1}^k b_\nu=0.
+\]
+Der Koeffizient von \(y^{k-1}\) ist bis auf Vorzeichen gerade die Summe der Nullstellen. Also verschwindet dieser Koeffizient.
+\end{proof}
+
+\begin{lemma}[Charakterisierung symmetrischer Muster durch Parität]
+Sei
+\[
+Q_\omega(y)=\prod_{\nu=1}^k (y-b_\nu)
+\]
+das zentrierte kanonische Polynom eines Mehrlingsmusters \(\omega\).
+Dann gilt:
+\begin{enumerate}[leftmargin=2em]
+\item Ist \(k\) gerade, so ist \(Q_\omega\) genau dann gerade, wenn \(\omega\) symmetrisch ist.
+\item Ist \(k\) ungerade und \(0\) eine zentrierte Nullstelle, so ist \(Q_\omega\) genau dann ungerade, wenn \(\omega\) symmetrisch ist.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Ist die Nullstellenmenge unter \(b\mapsto -b\) invariant, so treten für jedes \(b\neq 0\) die Faktoren
+\[
+(y-b)(y+b)=y^2-b^2
+\]
+paarweise auf. Bei geradem Grad entsteht dadurch ein Produkt rein quadratischer Faktoren, also ein gerades Polynom. Bei ungeradem Grad und zusätzlicher Nullstelle \(0\) tritt ein zusätzlicher Faktor \(y\) auf, so dass das Gesamtpolynom ungerade ist.
+
+Umgekehrt erzwingt die Parität eines normierten Polynoms mit reellen Nullstellen die entsprechende Spiegelungssymmetrie der Nullstellenmenge.
+\end{proof}
+
+\section{Übergangskriterien zwischen Mehrlingsklassen}
+
+\begin{definition}[Mehrlingsklasse]
+Eine Mehrlingsklasse vom Grad \(k\) ist eine Familie geordneter Muster
+\[
+\omega=(a_1,\dots,a_k)
+\]
+mit festem Abstandstyp. Dem Muster ist das zentrierte kanonische Polynom
+\[
+Q_\omega(y)=\prod_{\nu=1}^k (y-b_\nu)
+\]
+zugeordnet, wobei
+\[
+b_\nu=a_\nu-\frac{1}{k}\sum_{j=1}^k a_j.
+\]
+\end{definition}
+
+\begin{definition}[Übergang zwischen Mehrlingsklassen]
+Ein Übergang von einer \(k\)-Mehrlingsklasse zu einer \((k+1)\)-Mehrlingsklasse ist die Ersetzung
+\[
+\omega_k \rightsquigarrow \omega_{k+1},
+\]
+bei der zu einem Muster \(\omega_k\) ein weiterer Punkt hinzugefügt wird und anschließend erneut zentriert wird. Auf der Ebene der Polynome wird dies durch
+\[
+Q_{\omega_k}(y)\rightsquigarrow Q_{\omega_{k+1}}(y)
+\]
+repräsentiert.
+\end{definition}
+
+\begin{definition}[Symmetrieklasse]
+Sei \(\omega=(a_1,\dots,a_k)\) ein Mehrlingsmuster mit zentrierten Nullstellen
+\[
+b_\nu=a_\nu-\frac{1}{k}\sum_{j=1}^k a_j.
+\]
+Wir nennen \(\omega\) symmetrisch, wenn die Nullstellenmenge
+\[
+\{b_1,\dots,b_k\}
+\]
+unter der Spiegelung \(b\mapsto -b\) invariant ist. Andernfalls heißt \(\omega\) asymmetrisch.
+\end{definition}
+
+\begin{definition}[Symmetrieindex]
+Sei \(Q_\omega\) das zentrierte Mehrlingspolynom eines Musters \(\omega\). Wir definieren den Symmetrieindex
+\[
+\mathfrak S(\omega):=
+\begin{cases}
+1,& \text{falls } Q_\omega(-y)=Q_\omega(y)\text{ oder }Q_\omega(-y)=-Q_\omega(y),\\
+0,& \text{sonst.}
+\end{cases}
+\]
+\end{definition}
+
+\begin{definition}[Zentrierte Momente]
+Für ein zentriertes Muster mit Nullstellen \(b_1,\dots,b_k\) definieren wir die Potenzsummen
+\[
+M_r(\omega):=\sum_{\nu=1}^k b_\nu^r
+\qquad (r\ge 1).
+\]
+\end{definition}
+
+\begin{definition}[Ungerader Momentendefekt]
+Für ein zentriertes Muster \(\omega\) definieren wir den ungeraden Momentendefekt durch
+\[
+\mathfrak M_{\mathrm{odd}}(\omega)
+:=
+\sum_{\substack{r\ge 3\\ r\ \mathrm{ungerade}}}
+w_r\,|M_r(\omega)|,
+\qquad
+w_r\ge 0.
+\]
+\end{definition}
+
+\begin{definition}[Diskriminante]
+Für ein Polynom
+\[
+P(y)=\prod_{i=1}^k (y-\alpha_i)
+\]
+mit paarweise verschiedenen Nullstellen \(\alpha_i\) definieren wir die Diskriminante durch
+\[
+\Delta(P):=\prod_{i<j}(\alpha_i-\alpha_j)^2.
+\]
+\end{definition}
+
+\begin{definition}[Diskriminantenkosten]
+Für einen Übergang \(\omega_k\rightsquigarrow\omega_{k+1}\) definieren wir die Diskriminantenkosten
+\[
+\mathfrak D(\omega_k,\omega_{k+1})
+:=
+\log \Delta(Q_{\omega_{k+1}})
+-\log \Delta(Q_{\omega_k}),
+\]
+sofern beide Diskriminanten positiv sind.
+\end{definition}
+
+\begin{definition}[Faktorisierungsdefekt]
+Der Faktorisierungsdefekt eines kanonischen Mehrlingspolynoms \(Q_\omega\) sei eine Größe
+\[
+\mathfrak F(\omega),
+\]
+die klein ist, wenn \(Q_\omega\) in einfache rationale oder quadratische Faktoren zerfällt, und größer wird, sobald diese elementare Faktorisierbarkeit verloren geht.
+\end{definition}
+
+\begin{definition}[Übergangskostenfunktional]
+Für einen Übergang \(\omega_k\rightsquigarrow\omega_{k+1}\) definieren wir formal die Übergangskosten
+\[
+\mathcal T(\omega_k,\omega_{k+1})
+:=
+\alpha\bigl(\mathfrak S(\omega_k)-\mathfrak S(\omega_{k+1})\bigr)^2
++\beta\,\mathfrak M_{\mathrm{odd}}(\omega_{k+1})
++\gamma\,\mathfrak D(\omega_k,\omega_{k+1})
++\delta\,\bigl(\mathfrak F(\omega_{k+1})-\mathfrak F(\omega_k)\bigr),
+\]
+mit nichtnegativen Gewichten \(\alpha,\beta,\gamma,\delta\).
+\end{definition}
+
+\section{Konkrete Übergangsbeispiele}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{llllll}
+\toprule
+Übergang & Typ & Ausgangspolynom & Zielpolynom & Symmetrie & qualitative Kosten \\
+\midrule
+\((0,2)\to(0,2,6)\)
+&
+Zwilling \(\to\) Drilling I
+&
+\(\displaystyle y^2-1\)
+&
+\(\displaystyle y^3-\frac{28}{3}y-\frac{160}{27}\)
+&
+\(1\to 0\)
+&
+hoch
+\\[0.8em]
+
+\((0,2,6,8)\to(0,2,6,8,12)\)
+&
+Vierling \(\to\) Fuenfling A
+&
+\(\displaystyle y^4-20y^2+64\)
+&
+\(\displaystyle y^5-\frac{228}{5}y^3-\frac{448}{25}y^2+\frac{40512}{125}y-\frac{387072}{3125}\)
+&
+\(1\to 0\)
+&
+sehr hoch
+\\[1.0em]
+
+\((0,2,6,8)\to(0,4,6,8,12)\)
+&
+Vierling \(\to\) Fuenfling B
+&
+\(\displaystyle y^4-20y^2+64\)
+&
+\(\displaystyle y^5-40y^3+144y = y(y^2-4)(y^2-36)\)
+&
+\(1\to 1\)
+&
+niedrig
+\\
+\bottomrule
+\end{tabular}
+\caption{Beispielhafte Übergänge zwischen Mehrlingsmustern. Symmetrieerhaltende Übergänge bleiben algebraisch deutlich günstiger als symmetriebrechende.}
+\end{table}
+
+\begin{bemerkung}
+Diese Beispiele zeigen bereits, dass die polynomiale Ebene nicht bloß ein Rechenhilfsmittel ist. Sie legt vielmehr offen, wann ein Übergang strukturell ruhig bleibt und wann er einen starken Defekt oder Symmetriebruch erzeugt.
+\end{bemerkung}
+
+\section{Mehrschichtige Zerlegungsarchitektur der natürlichen Zahlen}
+
+\begin{bemerkung}
+Natürliche Zahlen sollen im Bamberger Modell nicht nur unter dem Gesichtspunkt ihrer Primfaktorzerlegung betrachtet werden, sondern als Träger mehrerer ineinandergreifender Strukturstränge. Insbesondere treten eine glatte Schalenstruktur, additive Familienzerlegungen und polynomiale Übergangsnormalformen nebeneinander auf.
+\end{bemerkung}
+
+\begin{definition}[Glatte Schale relativ zu einer Primschranke]
+Sei \(p_i\) die \(i\)-te Primzahl. Für \(n\in\mathbb N\) definieren wir den \(p_i\)-glatten Anteil durch
+\[
+s_{\le p_i}(n):=\prod_{p\le p_i} p^{v_p(n)}
+\]
+und den reduzierten Restkern durch
+\[
+m_{>p_i}(n):=\frac{n}{s_{\le p_i}(n)}.
+\]
+Dann gilt
+\[
+n=s_{\le p_i}(n)\,m_{>p_i}(n).
+\]
+\end{definition}
+
+\begin{definition}[Additive \(E\)-Struktur]
+Wir sprechen heuristisch von einer additiven \(E\)-Struktur, wenn ein Zustand oder Kern \(e\) in einer Weise dargestellt werden kann, die mit einer Summen-von-zwei-Quadraten-Struktur verträglich ist:
+\[
+e=u^2+v^2,
+\]
+wobei die zugehörigen Summanden nach weiterer Reduktion wieder in einen modellverträglichen Kernraum zurückgeführt werden können.
+\end{definition}
+
+\begin{definition}[Additive \(A\)- bzw. Tripel-Struktur]
+Wir sprechen heuristisch von einer additiven \(A\)-Struktur, wenn ein Modellzustand über ein Tripel oder eine additiv vermittelte Kopplung
+\[
+a=x+y
+\]
+beziehungsweise über eine strukturell äquivalente Zerlegung in einen reduzierbaren Familienraum zurückgeführt werden kann, insbesondere unter Einbeziehung von \(A\)-getragenen Übergängen wie dem \(5\)-Twist zwischen \((2,3)\)- und \((2,3,5)\)-Reduktion.
+\end{definition}
+
+\begin{definition}[Kanonische polynomiale Übergangsnormalform]
+Zu einem Mehrlingsmuster
+\[
+\omega=(a_1,\dots,a_k)
+\]
+mit Schwerpunkt
+\[
+m(\omega)=\frac{1}{k}\sum_{\nu=1}^k a_\nu
+\]
+und zentrierten Nullstellen
+\[
+b_\nu=a_\nu-m(\omega)
+\]
+gehört das kanonische Polynom
+\[
+Q_\omega(y)=\prod_{\nu=1}^k (y-b_\nu).
+\]
+Wir interpretieren \(Q_\omega\) als lokale polynomiale Übergangsnormalform des Musters.
+\end{definition}
+
+\begin{bemerkung}
+Die polynomiale Sicht macht sichtbar, wie aus glatter Schale, additiver Binnenstruktur und lokaler Clustergeometrie eine Übergangsarchitektur entsteht. In diesem Sinn bilden die kanonischen Mehrlingspolynome mögliche Fenster auf die innere Kopplungsgeometrie der natürlichen Zahlen.
+\end{bemerkung}
+
+\section{Nummerierter Hypothesen- und Vermutungsblock}
+
+\begin{hypothese}[Mehrschichtige Zerlegung]
+Jede natürliche Zahl lässt sich relativ zu einer gewählten Primschranke und einer Familienstruktur zugleich unter mehreren komplementären Gesichtspunkten betrachten: als Produkt einer glatten Schale und eines reduzierten Kerns, als Träger additiver Binnenstrukturen und als Ausgangspunkt lokaler polynomialer Übergangsnormalformen.
+\end{hypothese}
+
+\begin{hypothese}[Kompatibilität von Schale und Kern]
+Primzahlcluster treten bevorzugt dort auf, wo glatte Schale und reduzierter Kern nicht gegeneinander arbeiten, sondern in einer Weise gekoppelt sind, die lokale Mehrlingsmuster stabilisiert.
+\end{hypothese}
+
+\begin{vermutung}[Additive \(E\)-Struktur]
+Die \(E\)-Welt besitzt einen ausgezeichneten additiven Binnenkanal, der mit Quadratsummendarstellungen und ihren reduzierten Varianten zusammenhängt. Dieser Kanal bildet eine natürliche Quelle symmetrischer lokaler Strukturen.
+\end{vermutung}
+
+\begin{vermutung}[Additive \(A\)- bzw. Tripel-Struktur]
+Die \(A\)-Familie wirkt im Modell als bevorzugter Vermittler zwischen Schalenwechseln, Tripelstrukturen und reduzierten Kernen. Insbesondere kodiert der \(5\)-Twist eine gerichtete Kopplung zwischen verschiedenen Reduktionswelten.
+\end{vermutung}
+
+\begin{vermutung}[Polynomiale Übergangsnormalformen]
+Lokale Mehrlingsmuster der natürlichen Zahlen besitzen kanonische zentrierte Polynomformen, in denen ihre wesentlichen Symmetrie-, Momenten- und Faktorisierungsstrukturen sichtbar werden. Diese Polynome bilden eine natürliche Normalform lokaler Clustergeometrie.
+\end{vermutung}
+
+\begin{arbeitsvermutung}[Symmetrieprinzip im Übergangsoperator]
+Symmetrieerhaltende Übergänge zwischen Mehrlingsklassen sind algebraisch günstiger als symmetriebrechende Übergänge. Insbesondere erzeugt der Verlust einer zentrierten \(\pm\)-Symmetrie einen strukturellen Defekt, der sich sowohl in ungeraden Momenten als auch in gerichteten Übergangsoperatoren manifestiert.
+\end{arbeitsvermutung}
+
+\begin{arbeitsvermutung}[Vierlingsstufe als Stabilitätsniveau]
+Der Primzahlvierling markiert im Modell eine besonders stabile Stufe, weil er zugleich
+\begin{enumerate}[leftmargin=2em]
+\item die kleinste vollständige ERABC-Besetzung realisiert,
+\item einen kanonischen quaternionischen Vollfamilienzustand trägt,
+\item und in der polynomialen Sicht eine hochsymmetrische, elementar faktorisierbare Normalform besitzt.
+\end{enumerate}
+\end{arbeitsvermutung}
+
+\begin{arbeitsvermutung}[Kritik des Übergangs \(4\to 5\)]
+Der Übergang vom Vierling zum Fuenfling ist genau dann strukturell kritisch, wenn die vorhandene Symmetrie des Vierlingspolynoms zerstört wird. Nicht der Grad \(5\) selbst ist problematisch, sondern die Möglichkeit, von geschlossenen symmetrischen Blockstrukturen in asymmetrische Muster überzugehen.
+\end{arbeitsvermutung}
+
+\begin{leitthese}[Operatorische Kopplungsstränge]
+Die eigentlichen Kopplungsstränge der natürlichen Zahlen liegen nicht allein in den Zahlen selbst, sondern in den gerichteten Übergängen zwischen ihren reduzierten, additiven und polynomialen Zuständen. Sie sollten daher eher durch Operatoren und Graphen als durch isolierte Einzelinvarianten beschrieben werden.
+\end{leitthese}
+
+\begin{leitthese}[Langfristige Perspektive]
+Die natürlichen Zahlen tragen eine verborgene Übergangsgeometrie, in der glatte Schalen, additive Familienstrukturen, polynomiale Normalformen und operatorische Relationen gemeinsam die bevorzugten lokalen und globalen Ordnungen des Zahlenraums bestimmen.
+\end{leitthese}
+
+\section{Schlussbemerkung}
+
+\begin{bemerkung}
+Das vorliegende Dokument erhebt nicht den Anspruch, bereits eine abgeschlossene Theorie der natürlichen Zahlen zu liefern. Sein Ziel ist bescheidener und zugleich produktiv: bekannte arithmetische Strukturen in einen gemeinsamen Rahmen zu stellen und eine Sprache bereitzustellen, in der Übergänge, Defekte, Symmetrieerhalt und Kopplungsmechanismen systematisch untersucht werden können.
+\end{bemerkung}
+
+\end{document}

@@ -1,0 +1,141 @@
+Vergleichstest: ptolemäischer/kanonischer C-Quotient gegen Chebyshev-Spannung
+==========================================================================
+
+Datenbasis
+----------
+- Verwendete Riemann-Nullstellen: erste N = 100000 Imaginärteile gamma_n aus zeros6.npy
+- Bereich: gamma_1 = 14.134725142000, gamma_100000 = 74920.827498993996
+- Zuordnung: E_n = 1/2 + i gamma_n
+
+Farbdefinitionen
+----------------
+Kanonische Farben:
+    A_n = (3 E_n^2)^(1/3)
+    B_n = omega A_n
+    C_n = omega^2 A_n
+mit omega = exp(2 pi i / 3)
+
+Ptolemäischer Kanal:
+    C_Pt,n = (B_n^2 - A_n^2) / (2 E_n)
+
+Verglichene spektrische Spannungsgrößen
+---------------------------------------
+1) ptolemäischer Anteil relativ zum kanonischen Anteil:
+       r_n = |C_Pt,n| / |C_n|
+
+2) Defekt relativ zum kanonischen Anteil:
+       d_n = |C_n - C_Pt,n| / |C_n|
+
+Wichtige algebraische Beobachtung
+---------------------------------
+Für die kanonische kubische Zerlegung gilt identisch
+
+    r_n = |B_n^2 - A_n^2| / (2 |E_n| |C_n|)
+        = (3^(5/6) / 2) * |E_n|^(-1/3).
+
+Der numerische Maximalfehler dieser geschlossenen Formel beträgt:
+    3.331e-16
+
+Damit ist r_n KEIN frei fluktuierender Resonanzwert, sondern eine deterministische Funktion
+der Nullstellenhöhe |E_n|. Das ist für den Vergleich mit Chebyshev-Bias wichtig:
+ein Teil der Korrelationen kann allein aus gemeinsamen Langsamtrends stammen.
+
+Globale Kennzahlen
+------------------
+- Mittelwert r_n:      0.041806415954
+- Median r_n:          0.036390578878
+- Minimum r_n:         0.029628081328
+- Maximum r_n:         0.516477505385
+- Mittelwert d_n:      0.979888548267
+
+Chebyshev-Spannungen
+--------------------
+Ich habe bis X = 74920 Primzahlen gesiebt und folgende arithmetische Spannungen berechnet:
+
+1) mod 12, ungewichtet:
+       Theta_12(X) = ((#B + #C) - (#E + #A)) / pi(X)
+
+2) mod 12, logarithmisch:
+       Theta_12_log(X)
+       = (sum_{p in B union C} log p - sum_{p in E union A} log p) / sum_{p <= X} log p
+
+3) mod 4, ungewichtet:
+       Theta_4(X) = (pi(X;4,3) - pi(X;4,1)) / (pi(X;4,3) + pi(X;4,1))
+
+4) mod 4, logarithmisch:
+       Theta_4_log(X)
+       = (sum_{p equiv 3 mod 4} log p - sum_{p equiv 1 mod 4} log p)
+         / (sum_{p equiv 3 mod 4} log p + sum_{p equiv 1 mod 4} log p)
+
+Zuordnung Nullstelle -> Primzahlbereich
+---------------------------------------
+Für den ersten Test wurde X_n = floor(gamma_n) gesetzt.
+
+Globale Korrelationen (ohne Detrending)
+---------------------------------------
+corr(r_n, Theta_12(X_n))      = 0.800939
+corr(r_n, Theta_12_log(X_n))  = 0.744349
+corr(r_n, Theta_4(X_n))       = 0.803741
+corr(r_n, Theta_4_log(X_n))   = 0.744786
+
+corr(d_n, Theta_12(X_n))      = -0.806088
+corr(d_n, Theta_12_log(X_n))  = -0.741930
+corr(d_n, Theta_4(X_n))       = -0.806773
+corr(d_n, Theta_4_log(X_n))   = -0.741504
+
+Fenstertest
+-----------
+Fensterbreite: W = 1000 Nullstellen
+Anzahl Fenster: 100
+
+Fenster-Korrelationen (Mittelwerte pro Fenster)
+-----------------------------------------------
+corr(r_bar, Theta_12_bar)      = 0.880420
+corr(r_bar, Theta_12_log_bar)  = 0.842778
+corr(r_bar, Theta_4_bar)       = 0.884041
+corr(r_bar, Theta_4_log_bar)   = 0.843814
+
+Detrended window correlations
+-----------------------------
+Nach linearer Entfernung des gemeinsamen log(gamma)-Trends:
+
+detr_corr(r_bar, Theta_12_bar)      = 0.431096
+detr_corr(r_bar, Theta_12_log_bar)  = 0.415317
+detr_corr(r_bar, Theta_4_bar)       = 0.454089
+detr_corr(r_bar, Theta_4_log_bar)   = 0.420700
+
+Interpretation
+--------------
+1) Der rohe Vergleich zeigt eine überraschend starke positive Korrelation zwischen
+   dem ptolemäischen/kanonischen Quotienten r_n und verschiedenen Chebyshev-Spannungen.
+   Für d_n ergibt sich entsprechend eine starke negative Korrelation.
+
+2) Diese Korrelationen dürfen NICHT naiv als tiefe Resonanz interpretiert werden,
+   weil r_n exakt als Potenz von |E_n| gegeben ist:
+       r_n ~ |E_n|^(-1/3).
+
+3) Ein Teil der Korrelation ist daher Trendkorrelation:
+   sowohl r_n als auch die arithmetischen Bias-Größen Theta(X_n) verändern sich
+   langsam mit der Skala.
+
+4) Dennoch bleibt nach einfachem Detrending eine mittlere Restkorrelation im Bereich
+   ungefähr 0.41 bis 0.45 bestehen. Das ist kein Beweis, aber ein Signal dafür,
+   dass der Vergleich nicht sofort trivial zusammenfällt.
+
+Vorläufiges Urteil
+------------------
+- Ja: Der Vergleich mit einer Chebyshev-Spannung ist sinnvoll und numerisch umsetzbar.
+- Ja: Es gibt im ersten Test eine deutliche numerische Kopplung.
+- Aber: Der stärkste Teil dieser Kopplung ist durch die geschlossene Formel für r_n
+  trendbedingt; er ist also nicht automatisch eine neue spektrale Information.
+
+Sinnvolle nächste Schritte
+--------------------------
+1) Bessere Skalenkopplung X_n statt nur floor(gamma_n), z.B. über die inverse
+   Riemann-von-Mangoldt-Skala.
+2) Lokale Differenzen statt Niveaus:
+       Delta r_n, Delta Theta(X_n)
+3) Vergleich des Defektkanals
+       d_n = |C - C_Pt| / |C|
+   mit lokalen Vorzeichenwechseln des Chebyshev-Bias.
+4) Verwendung der log-gewichteten mod-12-Spannung als Hauptobservable.

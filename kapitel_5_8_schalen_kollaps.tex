@@ -1,0 +1,60 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% KAPITEL 5: DIE ALGEBRAISCHE STRUKTUR DER HALBGLATTEN SCHICHT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Die algebraische Struktur der halbglatten Schicht $\mathcal{S}_{\mathrm{halb}}$}
+\label{sec:schalenstruktur}
+Nachdem in den vorigen Abschnitten die rationale Struktur des Kollaps-Operators $\Pi_\Gamma$ über $\mathbb{Q}$ numerisch verifiziert wurde, gilt es nun, den arithmetischen Träger in der halbglatten Schicht $\mathcal{S}_{\mathrm{halb}} = \langle 5, 7 \rangle$ exakt zu bestimmen. Ein naiver Lift des Vierzustandsraums in den Kreisteilungskörper $\mathbb{Q}(\zeta_5)$ induziert auf den rationalen Basen lediglich triviale Galois-Effekte, da die Zyklizität des Frobenius-Automorphismus modulo $5$ die geometrische Starrheit des Raums unberührt lässt.
+Wir betrachten daher den nichttrivialen algebraischen Lift auf die Hurwitz-Ordnung $\mathcal{H}$ des quaternionischen Gitters. Die elementaren Zustände $E, A, B, C$ werden hierbei mit der kanonischen Basis $\{1, i, j, k\}$ identifiziert. Ein allgemeiner lokaler Zustand $q \in \mathcal{S}_{\mathrm{klein}}$ formalisiert sich als:
+\begin{equation}
+    q = e \cdot 1 + a \cdot i + b \cdot j + c \cdot k \in \mathcal{H}
+\end{equation}
+Der über den geschlossenen Rundweg $\Gamma = R \cdot K$ definierte Mittelungsoperator
+\begin{equation}
+    \Pi_\Gamma = \frac{1}{4} \sum_{k=0}^{3} \Gamma^k = \begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & \frac{1}{2} & 0 & \frac{1}{2} \\ 0 & 0 & 1 & 0 \\ 0 & \frac{1}{2} & 0 & \frac{1}{2} \end{pmatrix}
+\end{equation}
+zerlegt den Raum $\mathbb{Q}^4$ in zwei disjunkte Eigenräume. Numerische Läufe (\texttt{run\_rundweg.sh}) bestätigen die rationale Eigenraumstruktur:
+\begin{align}
+    \mathcal{V}_{\lambda=1} &= \operatorname{span}_{\mathbb{Q}} \left\{ (1,0,0,0)^T, (0,0,1,0)^T, (0,1,0,1)^T \right\} \\
+    \mathcal{V}_{\lambda=0} &= \operatorname{span}_{\mathbb{Q}} \left\{ (0,1,0,-1)^T \right\}
+\end{align}
+Der Kern des Operators isoliert somit exakt den asymmetrischen Fluktuationsträger $q_{\mathrm{asym}} = i - k$, welcher der reinen Differenzkomponente $A - C$ entspricht.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% KAPITEL 8: KOLLAPSPRINZIP UND QUADRATISCHER SCHWUNG
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Das Kollapsprinzip und die arithmetische Resonanz}
+\label{sec:kollapsprinzip}
+Die numerische Untersuchung des Bamberger Modells für den zeitlichen Resonanzpunkt $M=113160$ zeigt, dass eine lineare Absorption des asymmetrischen Zustands $q_{\mathrm{asym}}$ innerhalb der reinen Linksideale $I_5 = \mathcal{H}\pi_5$ und $I_7 = \mathcal{H}\pi_7$ nicht stattfindet. Die rein lineare Teilbarkeit erweist sich als unzureichend, um das Zusammenspiel zwischen den diskreten Freiheitsgraden des Kerns und den kontinuierlichen globalen Zuständen abzubilden.
+Zur Auflösung dieses strukturellen Engpasses wird der Begriff der \textit{arithmetischen Resonanz} über den bilinearen \textit{quadratischen Schwung} $u$ erweitert.
+\begin{definition}[Quadratischer Schwung]
+Sei $q \in \mathcal{H}$ ein Zustand des Kleinschen Kerns und $q' \in \mathcal{H}$ ein zugeordneter Referenz- oder Nachbarzustand der Schale $\mathcal{S}_{\mathrm{halb}}$. Der quadratische Schwung $u$ ist definiert als das quaternionische Produkt:
+\begin{equation}
+    u = \bar{q} \cdot q'
+\end{equation}
+\end{definition}
+Ein arithmetischer Resonanzpunkt liegt vor, wenn nicht der Zustand selbst, sondern sein evolutionärer Schwung $u$ mit den maximalen Idealen der Primquaternionen interferiert. 
+\begin{theorem}[Erweitertes Kollaps-Theorem]
+\label{thm:kollaps-erweitert}
+Der Kollaps des EABC-Zustandsraums vollzieht sich entlang der Kette $4 \rightarrow 2 \rightarrow 1$. Die Reduktion der lokalen Fluktionen $q_{\mathrm{asym}} \in \mathcal{V}_{\lambda=0}$ auf die glatte Schicht $\mathcal{S}_{\mathrm{glatt}}$ wird durch die Bedingung induziert, dass der quadratische Schwung $u$ der invarianten Paare eine Normabsenkung modulo der halbzähligen Hurwitz-Primquaternionen erfährt:
+\begin{equation}
+    N(u) \equiv 0 \pmod{p} \quad \text{für } p \in \langle 5, 7 \rangle
+\end{equation}
+\end{theorem}
+Durch diesen Mechanismus werden die nichtinvarianten, zyklischen Komponenten destruktiv interferiert, während die makroskopische EABC-Bernoulli-Dynamik gegen den glatten Fixpunkt $\mathbf{p}_* = \frac{1}{4}(1,1,1,1)$ konvergiert.
+
+\subsection{Numerische Verifikation}
+\label{subsec:numerische-verifikation-schalen}
+
+\begin{proposition}[Befunde der Sage-Läufe]
+\label{prop:numverifikation-schalen}
+Die Skripte \texttt{run\_hurwitz\_resonanz.sh}, \texttt{run\_schwung\_resonanz.sh} und \texttt{masse\_konstitution\_test.sage} bestätigen die $\mathbb{Q}$-Spektralzerlegung und die Hurwitz-Normkriterien, stützen aber für Satz~\ref{thm:kollaps-erweitert} keinen vollständigen numerischen Nachweis am Bamberger-Anker $M=113160$:
+\begin{enumerate}
+    \item \textbf{Linear.} Für $q_{\mathrm{asym}}=i-k$ liegt kein nichttriviales rationales Vielfaches in $I_5 \cup I_7$ (lineare $I_5/I_7$-Resonanz negativ).
+    \item \textbf{Quadratisch, Referenzpaare.} Für $u=\bar{q}\,q'$ an Testpaaren $(q_{\mathrm{lokal}}, q_{\mathrm{glatt}})$ u.\,ä.\ gilt teils $N(u)\equiv 0 \pmod{5}$ (z.\,B.\ $N(u)\in\{885,30,60\}$), jedoch nie $\pmod{7}$ und nie $u\in I_5 \cup I_7$.
+    \item \textbf{Quadratisch, $M=113160$.} Über den Zeitwürfel-Schwung-Scan: kein Treffer mit $N(u)\equiv 0 \pmod{5,7}$ und kein Ideal-Treffer in $I_5 \cup I_7$.
+    \item \textbf{Masse-Konstitution (orthogonal).} Drei Kandidaten mit $q_{\mathrm{sicht}}=\Pi_\Gamma q\neq 0$ und $N(q_{\mathrm{sicht}})\ge 1$; das belegt sichtbare $\lambda=1$-Anteile, nicht die Ideal-Resonanz von $q_{\mathrm{asym}}$.
+\end{enumerate}
+\end{proposition}
+
+\begin{remark}
+Satz~\ref{thm:kollaps-erweitert} formuliert die Resonanz über $N(u)$ als strukturelle Erweiterung der linearen Ideal-Teilbarkeit. Die Null-Treffer bei $M=113160$ und die fehlende Ideal-Mitgliedschaft der getesteten Schwünge verbieten die Behauptung, der arithmetische Schalen-Kollaps sei in den Bamberger-Daten bereits realisiert; sie rechtfertigen höchstens die weitere Suche nach Paaren $(q,q')$ oder Einheitenklassen, für die $u\in I_p$ gilt.
+\end{remark}

@@ -1,0 +1,548 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{microtype}
+
+\geometry{margin=2.5cm}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./}{fig/}{figs/}{images/}{img/}}
+\newcommand{\includegraphicssafe}[2][]{\IfFileExists{#2}{\includegraphics[#1]{#2}}{\fbox{\texttt{Missing figure: #2}}}}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}[definition]{Beispiel}
+\newtheorem{remark}[definition]{Bemerkung}
+\theoremstyle{plain}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{corollary}[definition]{Korollar}
+
+\title{Flavor-Orbits, diskrete Polarisation und eine energetische Primzahl-Nuklidkarte}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir entwickeln ein diskretes Strukturmodell für Primzahlmuster auf Basis der mod-$12$-Flavor-Klassen
+		\[
+		E\equiv 1,\qquad A\equiv 5,\qquad B\equiv 7,\qquad C\equiv 11 \pmod{12}.
+		\]
+		Klassische Primzahlzwillinge, Primdrillinge und Primvierlinge werden als Kerne einer zyklischen Flavor-Geometrie beschrieben. Darauf aufbauend führen wir Orbitklassen, Dehnungsfamilien, multiplikative $E$-Schließung, diskrete Polarisationen im Log-Raum, eine effektive van-der-Waals-artige Energie sowie eine diskrete Kollapshierarchie $Z\to D\to Q$ ein. Numerische Auswertungen motivieren eine energetische Primzahl-Nuklidkarte mit Kernzonen, metastabilen Bahnen und Relaxationsbereichen.
+	\end{abstract}
+	
+	\tableofcontents
+	
+	\section{Einleitung}
+	
+	Admissible Primzahlmuster lassen sich nicht nur über ihre konkreten Differenzen, sondern auch über ihre Restklassenstruktur modulo $12$ ordnen. Für ungerade Primzahlen größer als $3$ kommen nur die vier Restklassen
+	\[
+	1,5,7,11 \pmod{12}
+	\]
+	in Frage. Diese Klassen werden im Folgenden als diskrete Flavor-Sektoren interpretiert. Daraus entsteht ein zyklischer Flavor-Ring, auf dem sich Drillinge und Vierlinge als lokale Fenster, Dehnungsfamilien als orbit-stabile Bahnen und degenerierte Restformen als äußere Relaxationszonen auffassen lassen.
+	
+	Das Ziel dieses Textes ist es, die zuvor einzeln motivierten Bausteine in einer einheitlichen Sprache zusammenzuführen: Flavor-Orbits, multiplikative $E$-Schließung, diskrete Polarisation, effektive Energie und Kollapshierarchie.
+	
+	\section{Der mod-$12$-Flavor-Ring}
+	
+	\begin{definition}[Flavor-Klassen]
+		Wir definieren die vier Flavor-Klassen
+		\[
+		E\equiv 1 \pmod{12},\qquad
+		A\equiv 5 \pmod{12},\qquad
+		B\equiv 7 \pmod{12},\qquad
+		C\equiv 11 \pmod{12}.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Flavor-Ring]
+		Der zugehörige zyklische Flavor-Ring ist
+		\[
+		\mathcal R=(E,A,B,C),
+		\]
+		verstanden als periodische Folge
+		\[
+		E,A,B,C,E,A,B,C,\dots
+		\]
+	\end{definition}
+	
+	Für jede ungerade Primzahl $p>3$ ist damit genau eine Flavor-Klasse definiert.
+	
+	\begin{definition}[Flavor-Fenster]
+		Für $k\ge 1$ und $r\in\mathbb Z/4\mathbb Z$ sei
+		\[
+		W_k(r):=(F_r,F_{r+1},\dots,F_{r+k-1}),
+		\]
+		wobei
+		\[
+		F_0=E,\quad F_1=A,\quad F_2=B,\quad F_3=C,
+		\]
+		und alle Indizes modulo $4$ genommen werden.
+	\end{definition}
+	
+	\begin{definition}[Flavor-Orbitklasse]
+		Die zyklische Orbitklasse eines $k$-Fensters ist
+		\[
+		\mathcal O_k:=\{W_k(r):r\in\mathbb Z/4\mathbb Z\}.
+		\]
+		Insbesondere gilt
+		\[
+		\mathcal O_3=\{EAB,ABC,BCE,CEA\},
+		\qquad
+		\mathcal O_4=\{EABC,ABCE,BCEA,CEAB\}.
+		\]
+	\end{definition}
+	
+	\section{Drillinge, Vierlinge und Dehnungsfamilien}
+	
+	\subsection{Primdrillinge als 3er-Fenster}
+	
+	Ein klassischer Primdrilling sei ein Tupel der Form
+	\[
+	(p,p+2,p+6)
+	\]
+	bestehend aus Primzahlen.
+	
+	\begin{lemma}[Flavor-Orbit der klassischen Primdrillinge]
+		Jeder klassische Primdrilling besitzt ein Flavor-Wort in
+		\[
+		\mathcal O_3=\{EAB,ABC,BCE,CEA\}.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Für $p>3$ und $p,p+2,p+6\in\mathbb P$ muss wegen der Vermeidung der Teilbarkeit durch $3$ gelten
+		\[
+		p\equiv 5\pmod 6.
+		\]
+		Also ist modulo $12$ entweder $p\equiv 5$ oder $p\equiv 11$. Im ersten Fall erhält man
+		\[
+		(p,p+2,p+6)\equiv(5,7,11)\pmod{12},
+		\]
+		also $ABC$, im zweiten Fall
+		\[
+		(p,p+2,p+6)\equiv(11,1,5)\pmod{12},
+		\]
+		also $CEA$.
+	\end{proof}
+	
+	\subsection{Primvierlinge als 4er-Fenster}
+	
+	Ein klassischer Primvierling sei ein Tupel der Form
+	\[
+	(p,p+2,p+6,p+8)
+	\]
+	bestehend aus Primzahlen.
+	
+	\begin{lemma}[Flavor-Orbit der klassischen Primvierlinge]
+		Jeder klassische Primvierling besitzt ein Flavor-Wort in
+		\[
+		\mathcal O_4=\{EABC,ABCE,BCEA,CEAB\}.
+		\]
+		In der aufsteigend verankerten Darstellung treten nur die beiden Wörter
+		\[
+		ABCE\qquad\text{und}\qquad CEAB
+		\]
+		auf.
+	\end{lemma}
+	
+	\begin{proof}
+		Wie zuvor gilt $p\equiv 5\pmod 6$. Also ist modulo $12$ entweder $p\equiv 5$ oder $p\equiv 11$. Im ersten Fall erhält man
+		\[
+		(p,p+2,p+6,p+8)\equiv (5,7,11,1)\pmod{12},
+		\]
+		also $ABCE$, im zweiten Fall
+		\[
+		(p,p+2,p+6,p+8)\equiv (11,1,5,7)\pmod{12},
+		\]
+		also $CEAB$.
+	\end{proof}
+	
+	\subsection{Symmetrische Dehnungsfamilien}
+	
+	\begin{definition}[Symmetrische Vierer-Dehnungsfamilie]
+		Für $m\in\mathbb N_0$ sei
+		\[
+		Q_m(p):=(p,\;p+2,\;p+6+12m,\;p+8+12m).
+		\]
+		Das Differenzmuster lautet
+		\[
+		(2,\;4+12m,\;2).
+		\]
+	\end{definition}
+	
+	\begin{proposition}[Flavor-Invarianz der Dehnungsfamilie]
+		Sei $Q_m(p)$ ein admissibles Primzahlmuster. Dann besitzt $Q_m(p)$ stets ein Flavor-Wort in der Orbitklasse
+		\[
+		\mathcal O_4.
+		\]
+		In der verankerten Darstellung treten nur $ABCE$ oder $CEAB$ auf.
+	\end{proposition}
+	
+	\begin{proof}
+		Da $12m\equiv 0\pmod{12}$, gilt
+		\[
+		Q_m(p)\equiv (p,p+2,p+6,p+8)\pmod{12}.
+		\]
+		Damit ist die Flavor-Folge identisch mit der des klassischen Vierlings.
+	\end{proof}
+	
+	\section{Multiplikative Flavor-Struktur und $E$-Schließung}
+	
+	\subsection{Flavor-Multiplikation}
+	
+	\begin{definition}[Flavor-Multiplikation]
+		Die Flavor-Klassen werden durch die Multiplikation modulo $12$ verknüpft. Es gilt
+		\[
+		E\cdot X=X\qquad (X\in\{E,A,B,C\}),
+		\]
+		sowie
+		\[
+		A^2=B^2=C^2=E,
+		\qquad
+		A\cdot B=C,\quad A\cdot C=B,\quad B\cdot C=A.
+		\]
+	\end{definition}
+	
+	\begin{remark}
+		Die Menge $\{E,A,B,C\}$ mit dieser Multiplikation ist isomorph zur Kleinschen Vierergruppe $V_4$.
+	\end{remark}
+	
+	\subsection{Multiplikativer $E$-Anker eines $ABC$-Tupels}
+	
+	\begin{definition}[Multiplikativer $E$-Anker]
+		Sei $(a,b,c)$ ein Tupel mit
+		\[
+		\mathrm{Fl}(a)=A,\qquad \mathrm{Fl}(b)=B,\qquad \mathrm{Fl}(c)=C.
+		\]
+		Dann definieren wir den zugehörigen multiplikativen $E$-Anker durch
+		\[
+		e_0(a,b,c):=abc.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Für jedes $ABC$-Tupel gilt
+		\[
+		\mathrm{Fl}(abc)=E.
+		\]
+		Außerdem ist
+		\[
+		a\cdot(bc)=b\cdot(ac)=c\cdot(ab)=abc.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Da $A\cdot B\cdot C=E$ im Flavor-Kalkül gilt, folgt $\mathrm{Fl}(abc)=E$. Die numerischen Gleichungen sind trivial.
+	\end{proof}
+	
+	\subsection{ABC-Tripel mit Zwillingspaar}
+	
+	\begin{proposition}[ABC-Tripel mit Zwillingskern, Drilling und Vierling]
+		Sei $(a,b,c)$ ein $ABC$-Primtripel. Angenommen, zwei Einträge bilden einen Primzahlzwilling. Dann gilt:
+		\begin{enumerate}[label=(\arabic*)]
+			\item Notwendig ist $(a,b)$ das Zwillingspaar.
+			\item Das Tripel besitzt die Form
+			\[
+			(a,b,c)=\bigl(p,\;p+2,\;p+6+12m\bigr),\qquad m\in\mathbb N_0,
+			\]
+			mit $p\equiv 5\pmod{12}$.
+			\item Für $m=0$ erhält man den klassischen Primdrilling $(p,p+2,p+6)$.
+			\item Falls zusätzlich $p+8+12m$ prim ist, entsteht der Vierling
+			\[
+			(p,p+2,p+6+12m,p+8+12m).
+			\]
+		\end{enumerate}
+	\end{proposition}
+	
+	\begin{proof}
+		Modulo $12$ können nur $A$ und $B$ den Abstand $2$ besitzen, da
+		\[
+		7-5\equiv 2,\qquad 11-5\equiv 6,\qquad 11-7\equiv 4 \pmod{12}.
+		\]
+		Damit ist $(a,b)=(p,p+2)$ mit $p\equiv 5\pmod{12}$. Da $c\equiv 11\pmod{12}$, folgt
+		\[
+		c=p+6+12m.
+		\]
+		Der Rest ist unmittelbar.
+	\end{proof}
+	
+	\section{Diskrete Polarisation und Energieniveaus}
+	
+	\subsection{Diskrete Polarisation}
+	
+	Sei
+	\[
+	T=(x_1,\dots,x_k)
+	\]
+	ein Primzahltupel. Wir definieren die zentrierte Log-Polarisation durch
+	\[
+	\pi_i:=\log x_i-\frac{1}{k}\sum_{j=1}^k \log x_j.
+	\]
+	Dann gilt stets
+	\[
+	\sum_{i=1}^k \pi_i=0.
+	\]
+	
+	\begin{definition}[Polarisationsmomente]
+		Für ein Tupel $T$ definieren wir
+		\[
+		P_2(T):=\sum_{i=1}^k \pi_i^2,
+		\qquad
+		P_3(T):=\sum_{i=1}^k \pi_i^3,
+		\qquad
+		P_4(T):=\sum_{i=1}^k \pi_i^4.
+		\]
+		Zur Vergleichbarkeit verschiedener Tupellängen setzen wir
+		\[
+		\widetilde P_2(T):=\frac{1}{k}P_2(T).
+		\]
+	\end{definition}
+	
+	\begin{remark}
+		Der Wert $\widetilde P_2(T)$ misst die multiplikative Spreizung eines Tupels. Zwillinge erscheinen dabei als nahezu perfekte Dipole, Drillinge als asymmetrische Dreierpolarisationen und Vierlinge als vollständigere, aber breitere Orbitkerne.
+	\end{remark}
+	
+	\subsection{Energieniveaus von $ABC$-Tripeln}
+	
+	Für ein Tripel $(a,b,c)$ definieren wir das globale Energieniveau
+	\[
+	E_{ABC}:=(abc)^{1/3}
+	\]
+	und die Paarniveaus
+	\[
+	E_{ab}:=\sqrt{ab},\qquad E_{ac}:=\sqrt{ac},\qquad E_{bc}:=\sqrt{bc}.
+	\]
+	
+	\begin{lemma}
+		Zwischen den Paarniveaus und dem globalen Tripelniveau gilt
+		\[
+		E_{ab}E_{ac}E_{bc}=E_{ABC}^3.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Es gilt
+		\[
+		\sqrt{ab}\sqrt{ac}\sqrt{bc}=abc=((abc)^{1/3})^3.
+		\]
+	\end{proof}
+	
+	\begin{definition}[Stabilitätsdefekt eines $ABC$-Tripels]
+		Der logarithmische Stabilitätsdefekt sei
+		\[
+		S_{ABC}:=(\log a-\log E_{ABC})^2+(\log b-\log E_{ABC})^2+(\log c-\log E_{ABC})^2.
+		\]
+	\end{definition}
+	
+	\begin{remark}
+		Für gedehnte Tripel $(p,p+2,p+6+12m)$ wächst $S_{ABC}$ typischerweise mit dem Dehnungsparameter $m$.
+	\end{remark}
+	
+	\section{Effektive van-der-Waals-artige Energie}
+	
+	\subsection{Definition}
+	
+	\begin{definition}[Orbit-Schließungszahl]
+		Wir setzen heuristisch
+		\[
+		C_{\mathrm{orbit}}(\text{Zwilling})=1,\qquad
+		C_{\mathrm{orbit}}(\text{Drilling})=2,\qquad
+		C_{\mathrm{orbit}}(\text{Vierling})=3.
+		\]
+		Für degenerierte Restformen kann $C_{\mathrm{orbit}}$ als Maß der strukturellen Vervollständigung gewählt werden.
+	\end{definition}
+	
+	\begin{definition}[Effektive Energie]
+		Für ein Primzahltupel $T$ definieren wir
+		\[
+		V_{\mathrm{eff}}(T)= -\alpha\,C_{\mathrm{orbit}}(T)+\beta\,\widetilde P_2(T),\qquad \alpha,\beta>0.
+		\]
+	\end{definition}
+	
+	Der erste Term belohnt strukturelle Schließung, der zweite bestraft Polarisationsspreizung.
+	
+	\begin{remark}
+		Es ergeben sich zwei Stabilitätsregime:
+		\begin{enumerate}[label=(\arabic*)]
+			\item polarisationsdominiert ($\beta\gg\alpha$): kompakte Zwillinge werden bevorzugt,
+			\item schließungsdominiert ($\alpha\gg\beta$): vollständige Viererkerne werden bevorzugt.
+		\end{enumerate}
+		Drillinge erscheinen zwischen beiden Regimen als Übergangs- oder Kompromisskerne.
+	\end{remark}
+	
+	\subsection{Numerische Tendenzen der drei Kernfamilien}
+	
+	\begin{proposition}[Polarisation und effektive Energie]
+		Numerische Tests an den ersten $500$ Primzahlzwillingen, klassischen Primdrillingen und klassischen Primvierlingen zeigen:
+		\begin{enumerate}[label=(\arabic*)]
+			\item Zwillinge besitzen den kleinsten mittleren normierten Polarisationsdefekt.
+			\item Drillinge tragen eine nichttriviale Schiefepolarisation und bilden asymmetrische Dreierkerne.
+			\item Vierlinge besitzen die größte Orbit-Schließung, zugleich aber eine größere mittlere Spreizung.
+		\end{enumerate}
+	\end{proposition}
+	
+	\begin{proof}[Numerische Evidenz]
+		Die numerisch erzeugten Tabellen und Grafiken bestätigen diese Ordnung sowohl für $\widetilde P_2(T)$ als auch für $V_{\mathrm{eff}}(T)$.
+	\end{proof}
+	
+	\section{Metastabile Bahnen und Relaxationszonen}
+	
+	\subsection{Gedehnte Drillinge und Vierlinge}
+	
+	\begin{proposition}[Energetische Wirkung der Dehnung]
+		Für die untersuchten gedehnten Drillinge und Vierlinge wächst der mittlere Polarisationsdefekt typischerweise mit dem Dehnungsparameter $m$. Damit bilden gedehnte Familien orbit-stabile, aber energetisch weiter außen liegende Bahnen.
+	\end{proposition}
+	
+	\begin{proof}[Numerische Evidenz]
+		Die numerische Auswertung der gedehnten Familien zeigt, dass die logarithmische Spreizung und damit $\widetilde P_2(T)$ mit wachsendem $m$ zunimmt, während die Flavor-Orbitklasse erhalten bleibt.
+	\end{proof}
+	
+	\subsection{Degenerierte Restformen}
+	
+	Neben klassischen und gedehnten Kernen treten in der EABC-Normalform degenerierte Restformen auf, etwa
+	\[
+	AB,\ AC,\ BC,\ ABC,\ ABBC,\ AABC,\ ABCC,\ EABB,\dots
+	\]
+	
+	\begin{definition}[Relaxationskanäle]
+		Die kanonischen Reduktionsschritte einer EABC-Form werden als Relaxationskanäle interpretiert:
+		\begin{enumerate}[label=(\arabic*)]
+			\item Herausziehen vollständiger $EABC$-Viererblöcke,
+			\item Herausziehen neutraler $ABC$-Blöcke,
+			\item Paarneutralisierung und Quadratneutralisierung,
+			\item Reduktion degenerierter Restformen in Richtung einfacherer Strukturen.
+		\end{enumerate}
+	\end{definition}
+	
+	\begin{remark}
+		Degenerierte Restformen bilden die äußeren Relaxationszonen der Primzahlkarte. Sie liegen strukturell weiter vom Stabilitätszentrum entfernt als klassische Drillinge oder Vierlinge.
+	\end{remark}
+	
+	\section{Kollapshierarchie von Zwillingen, Drillingen und Vierlingen}
+	
+	Sei
+	\[
+	Z=(p,p+2)
+	\]
+	ein Primzahlzwilling. Ein admissibler Drillingzustand ist
+	\[
+	D_m=(p,p+2,p+6+12m),
+	\]
+	ein admissibler Vierlingzustand ist
+	\[
+	Q_m=(p,p+2,p+6+12m,p+8+12m),
+	\]
+	sofern die entsprechenden zusätzlichen Einträge prim sind.
+	
+	\begin{definition}[Kollapsenergien]
+		Wir definieren
+		\[
+		\Delta_{Z\to D}^{\min}:=\min_m\bigl(V_{\mathrm{eff}}(D_m)-V_{\mathrm{eff}}(Z)\bigr),
+		\]
+		\[
+		\Delta_{Z\to Q}^{\min}:=\min_m\bigl(V_{\mathrm{eff}}(Q_m)-V_{\mathrm{eff}}(Z)\bigr),
+		\]
+		und
+		\[
+		\Delta_{D\to Q}^{\mathrm{best}}:=V_{\mathrm{eff}}(Q_{\mathrm{best}})-V_{\mathrm{eff}}(D_{\mathrm{best}}).
+		\]
+		Ein Kollaps ist energetisch begünstigt, wenn die entsprechende Differenz negativ ist.
+	\end{definition}
+	
+	\begin{proposition}[Dreistufige Kollapshierarchie]
+		Die Übergänge
+		\[
+		Z\to D,\qquad Z\to Q,\qquad D\to Q
+		\]
+		definieren drei natürliche Kollapskanäle der Primzahlkerne. Numerisch zeigt sich:
+		\begin{enumerate}[label=(\arabic*)]
+			\item Der Kollaps $Z\to D$ ist relevant, sobald admissible Drillinge existieren; typischerweise wird der kompakteste Kandidat mit kleinem $m$ bevorzugt.
+			\item Der Kanal $Z\to Q$ beschreibt die direkte Schließung zum Viererkern.
+			\item Der Kanal $D\to Q$ misst, ob ein vorhandener Drilling energetisch weiter zum Vierling vervollständigt wird.
+		\end{enumerate}
+	\end{proposition}
+	
+	\begin{remark}
+		Die Kollapsenergie beweist keine Primheit. Sie ordnet lediglich die energetische Richtung unter den bereits arithmetisch admissiblen Erweiterungen.
+	\end{remark}
+	
+	\section{Die energetische Primzahl-Nuklidkarte}
+	
+	Die bisherigen Resultate lassen sich in einer diskreten Stabilitätslandschaft zusammenfassen:
+	\begin{enumerate}[label=(\arabic*)]
+		\item \textbf{Kernzone:} klassische Primvierlinge
+		\[
+		(p,p+2,p+6,p+8),
+		\]
+		orbit-stabil und metrisch kompakt.
+		\item \textbf{Nahe stabile Zone:} klassische Primdrillinge
+		\[
+		(p,p+2,p+6),
+		\]
+		mit kanonischer $E$-Vervollständigungskandidatur.
+		\item \textbf{Metastabile Bahnen:} gedehnte Drillinge und Vierlinge mit $m>0$.
+		\item \textbf{Relaxationszonen:} degenerierte Flavor-Restformen.
+	\end{enumerate}
+	
+	\begin{proposition}[Energetische Primzahl-Nuklidkarte]
+		Durch die effektive Energie
+		\[
+		V_{\mathrm{eff}}(T)= -\alpha\,C_{\mathrm{orbit}}(T)+\beta\,\widetilde P_2(T)
+		\]
+		entsteht eine gemeinsame Stabilitätsskala für klassische Kerne, gedehnte Bahnen, Kollapskanäle und degenerierte Restformen. Klassische Drillinge und Vierlinge bilden energetisch bevorzugte Kernzonen, gedehnte Familien metastabile Bahnen und Restformen äußere Relaxationsbereiche.
+	\end{proposition}
+	
+	\begin{remark}[Leitbild]
+		Die resultierende Struktur kann als diskrete Primzahl-Nuklidkarte gelesen werden:
+		\[
+		\text{Restformen}
+		\;\rightsquigarrow\;
+		\text{Dreierkerne}
+		\;\rightsquigarrow\;
+		\text{Viererkerne},
+		\]
+		wobei vertikal dazu die metrische Relaxation
+		\[
+		m>0 \;\rightsquigarrow\; m=0
+		\]
+		in Richtung kompakter Kerne verläuft.
+	\end{remark}
+	
+	\section{Schlussbemerkung}
+	
+	Die hier entwickelte Sprache verbindet Flavor-Orbits, multiplikative $E$-Schließung, diskrete Polarisation, effektive Energie und Kollapshierarchie in einem einheitlichen diskreten Modell. Die numerischen Resultate legen nahe, dass Primzahlzwillinge, Primdrillinge und Primvierlinge als verschieden vollständige Kerne eines gemeinsamen Stabilitätsraums aufgefasst werden können. Gedehnte Familien erscheinen darin als metastabile Bahnen, degenerierte Restformen als Relaxationszonen. In dieser Perspektive ist die Primzahl-Nuklidkarte kein physikalisches, wohl aber ein strukturelles Analogon einer diskreten Stabilitätslandschaft.
+	
+\end{document}
+``` 
+
+Das ist jetzt bereits als Rohfassung eines eigenständigen Papers brauchbar. Wenn du möchtest, kann ich im nächsten Schritt daraus noch eine **komplette `.tex`-Datei mit den erzeugten Figuren als eingebundenen Abbildungen** machen. 
+
+Die vorhandenen Grafiken dafür sind:
+
+[Polarisation der Familien](sandbox:/mnt/data/diskrete_polarisation_familien.png)  
+[Effektive Energie der drei Familien](sandbox:/mnt/data/effektive_energie_familien.png)  
+[Stabilitätsdefekt der ABC-Tripel](sandbox:/mnt/data/abc_stabilitaetsdefekt_vs_m.png)  
+[Energetische Primzahl-Nuklidkarte](sandbox:/mnt/data/energetische_primzahl_nuklidkarte.png)  
+[Kollapshierarchie \(Z\to D\to Q\)](sandbox:/mnt/data/kollapshierarchie_z_d_q.png)  
+
+Und die Tabellen/Arbeitsmappen:
+
+[Diskrete Polarisation](sandbox:/mnt/data/diskrete_polarisation_zwillinge_drillinge_vierlinge.xlsx)  
+[Effektive Energie](sandbox:/mnt/data/effektive_energie_zwillinge_drillinge_vierlinge.xlsx)  
+[ABC-Stabilität](sandbox:/mnt/data/abc_energieniveaus_und_stabilitaet.xlsx)  
+[Energetische Nuklidkarte](sandbox:/mnt/data/energetische_primzahl_nuklidkarte.xlsx)  
+[Kollapshierarchie](sandbox:/mnt/data/kollapshierarchie_z_d_q.xlsx)

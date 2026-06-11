@@ -1,0 +1,390 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{inputenc}
+\usepackage{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{remark}{Bemerkung}[section]
+\newtheorem{interpretation}{Interpretation}[section]
+
+\title{Eine EABC-Kodierungstheorie für admissible Primzahl-Tupel}
+\author{}
+\date{13. April 2026}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Admissible Primzahl-Tupel werden als Wörter über dem Alphabet $\mathcal{A}=\{E,A,B,C\}$ kodiert, das den Restklassen $1,5,7,11 \bmod 12$ entspricht. Arithmetische Zulässigkeit wirkt dabei als harter Filter auf den Symbolraum. Der Artikel entwickelt die symbolische Dynamik dieser Sprache, bestimmt ihre topologische und Shannon-Entropie und erweitert das Modell um geometrische Gewichtungen aus Kugel- und Randfiltern. Das Resultat ist eine Gibbs-Shannon-Struktur, in der Kodierlängen sowohl arithmetische als auch geometrische Selektivität abbilden.
+	\end{abstract}
+	
+	\section{Motivation}
+	
+	Die bisherige Analyse admissibler Primzahl-Tupel legt nahe, dass diese nicht nur als arithmetische Konstellationen, sondern auch als \emph{strukturierte Symbolwörter} aufgefasst werden können. Grundlage ist die Zerlegung der Primzahlen \(p>3\) nach ihren Restklassen modulo \(12\):
+	\[
+	E \equiv 1 \pmod{12},\qquad
+	A \equiv 5 \pmod{12},\qquad
+	B \equiv 7 \pmod{12},\qquad
+	C \equiv 11 \pmod{12}.
+	\]
+	Damit wird jedes Primzahl-Tupel zu einem Wort über dem Alphabet
+	\[
+	\mathcal A=\{E,A,B,C\}.
+	\]
+	
+	Die entscheidende Beobachtung ist, dass admissible Primzahl-Tupel \emph{nicht} alle möglichen Wörter über \(\mathcal A\) realisieren, sondern nur eine stark eingeschränkte, hochstrukturierte Teilsprache. Diese Situation ist formal eng verwandt mit einer Shannon-artigen Kodierungstheorie: Eine Quelle produziert Zeichen, doch arithmetische Zulässigkeit wirkt als harter Filter auf den erlaubten Symbolraum.
+	
+	\section{Alphabet und Sprachraum}
+	
+	\begin{definition}[EABC-Alphabet]
+		Es sei
+		\[
+		\mathcal A=\{E,A,B,C\}
+		\]
+		das Alphabet der vier zulässigen Restklassen modulo \(12\) für Primzahlen größer als \(3\), mit
+		\[
+		E \leftrightarrow 1,\qquad
+		A \leftrightarrow 5,\qquad
+		B \leftrightarrow 7,\qquad
+		C \leftrightarrow 11 \pmod{12}.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Kodierung eines Tupels]
+		Für ein Primzahl-Tupel
+		\[
+		Q=(q_1,\dots,q_n)
+		\]
+		definieren wir seine EABC-Kodierung durch
+		\[
+		\Phi(Q)=(f(q_1),\dots,f(q_n))\in \mathcal A^n,
+		\]
+		wobei \(f(q_i)\in\{E,A,B,C\}\) die Familie der Primzahl \(q_i\) bezeichnet.
+	\end{definition}
+	
+	\begin{definition}[Zulässige Wortmenge]
+		Die Menge der durch admissible Primzahl-\(n\)-Tupel realisierten Wörter sei
+		\[
+		\mathcal W_n \subseteq \mathcal A^n.
+		\]
+		Die gesamte admissible Sprache ist dann
+		\[
+		\mathcal W=\bigcup_{n\ge 1}\mathcal W_n.
+		\]
+	\end{definition}
+	
+	Damit ist der Schritt von der Arithmetik zur Informationstheorie vollzogen: Primzahl-Tupel werden als Codewörter einer eingeschränkten symbolischen Quelle aufgefasst.
+	
+	\section{Beispiele und erste Struktur}
+	
+	Die minimale linke Kette dichter admissibler Tupel
+	\[
+	\{0,2\}
+	\subset
+	\{0,2,6\}
+	\subset
+	\{0,2,6,8\}
+	\subset
+	\{0,2,6,8,12\}
+	\subset
+	\{0,2,6,8,12,18\}
+	\subset
+	\{0,2,6,8,12,18,20\}
+	\subset
+	\{0,2,6,8,12,18,20,26\}
+	\]
+	liefert für geeignete Startklassen zyklische Familienwörter. Beispielsweise ergibt sich aus der Startklasse \(C\) die Folge
+	\[
+	CEABC,\quad CEABCA,\quad CEABCAB,\quad CEABCABE,\quad CEABCABEA,\dots
+	\]
+	Die zulässige Sprache ist somit weder zufällig noch frei, sondern besitzt eine eingebaute zyklische und geschachtelte Wortstruktur.
+	
+	\begin{remark}
+		In einem freien Vierer-Alphabet gäbe es \(4^n\) mögliche Wörter der Länge \(n\). Die admissiblen Tupel realisieren dagegen nur einen winzigen Teil davon. Dies ist der erste Hinweis auf eine stark reduzierte Entropie.
+	\end{remark}
+	
+	\section{Übergangsgraph und symbolische Dynamik}
+	
+	\begin{definition}[Übergangsgraph]
+		Die admissible Sprache \(\mathcal W\) werde durch einen gerichteten Graphen
+		\[
+		G=(\mathcal A,\mathcal E)
+		\]
+		modelliert, wobei eine Kante
+		\[
+		X \to Y
+		\]
+		genau dann existiert, wenn der Übergang von Familie \(X\) zu Familie \(Y\) in einem admissiblen Tupelwort vorkommen kann.
+	\end{definition}
+	
+	Im einfachsten zyklischen Modell gilt
+	\[
+	E\to A,\qquad A\to B,\qquad B\to C,\qquad C\to E.
+	\]
+	Dann erhält man die Adjazenzmatrix
+	\[
+	M=
+	\begin{pmatrix}
+		0&1&0&0\\
+		0&0&1&0\\
+		0&0&0&1\\
+		1&0&0&0
+	\end{pmatrix}
+	\]
+	in der Reihenfolge \((E,A,B,C)\).
+	
+	\begin{definition}[Zulässiges Wort]
+		Ein Wort
+		\[
+		w=w_1w_2\cdots w_n \in \mathcal A^n
+		\]
+		heißt zulässig, wenn alle Übergänge
+		\[
+		w_i \to w_{i+1}
+		\]
+		im Graphen \(G\) erlaubt sind.
+	\end{definition}
+	
+	Damit wird die EABC-Struktur zu einem Objekt der symbolischen Dynamik.
+	
+	\section{Symbolische Entropie}
+	
+	\begin{definition}[Shannon-Entropie auf \(\mathcal W_n\)]
+		Sei \(p_n(w)\) eine Wahrscheinlichkeitsverteilung auf \(\mathcal W_n\). Dann definieren wir die symbolische Entropie
+		\[
+		H_n=-\sum_{w\in\mathcal W_n} p_n(w)\log p_n(w).
+		\]
+	\end{definition}
+	
+	\begin{definition}[Gleichverteilungsentropie]
+		Falls alle zulässigen Wörter der Länge \(n\) gleich wahrscheinlich sind, also
+		\[
+		p_n(w)=\frac{1}{|\mathcal W_n|},
+		\]
+		dann gilt
+		\[
+		H_n=\log |\mathcal W_n|.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Entropierate]
+		Die asymptotische symbolische Entropierate sei
+		\[
+		h=\limsup_{n\to\infty}\frac{H_n}{n}.
+		\]
+	\end{definition}
+	
+	Im freien Fall über vier Symbolen wäre
+	\[
+	H_n^{\max}=n\log 4.
+	\]
+	Daraus ergibt sich als Maß der arithmetischen Einschränkung:
+	
+	\begin{definition}[Entropiereduktion]
+		Die arithmetische Entropiereduktion ist
+		\[
+		\Delta H_n = n\log 4 - H_n.
+		\]
+	\end{definition}
+	
+	\begin{interpretation}
+		\(\Delta H_n\) misst genau, wie stark die Zulässigkeitsbedingungen der Primzahl-Arithmetik die freie Symbolquelle einschränken.
+	\end{interpretation}
+	
+	\section{Topologische Entropie}
+	
+	\begin{proposition}
+		Ist die admissible Sprache durch eine endliche Adjazenzmatrix \(M\) beschrieben, dann ist ihre topologische Entropie
+		\[
+		h_{\mathrm{top}}=\log \lambda_{\max}(M),
+		\]
+		wobei \(\lambda_{\max}(M)\) der größte Eigenwert von \(M\) ist.
+	\end{proposition}
+	
+	\begin{proof}[Skizze]
+		Dies ist das Standardresultat aus der Theorie der Subshifts endlichen Typs: Die Anzahl der zulässigen Wörter wächst asymptotisch wie \(\lambda_{\max}(M)^n\). Durch Logarithmieren und Normieren auf \(n\) ergibt sich die Behauptung.
+	\end{proof}
+	
+	\begin{remark}
+		Im rein zyklischen Viererfall ist \(\lambda_{\max}(M)=1\), also
+		\[
+		h_{\mathrm{top}}=0.
+		\]
+		Das bedeutet: Die Sprache ist fast deterministisch, also maximal geordnet.
+	\end{remark}
+	
+	\section{Geometrische Gewichtung der Wörter}
+	
+	Die symbolische Sprache allein erfasst nur die arithmetische Zulässigkeit. Die numerischen Experimente mit Kugel- und Randfiltern legen nahe, zusätzlich eine geometrische Gewichtung einzuführen.
+	
+	\begin{definition}[Vierlings-\(S^3\)-Term]
+		Für einen Primzahlvierling \(Q=(q_1,q_2,q_3,q_4)\) definieren wir
+		\[
+		D_\Sigma = 4\,\frac{\sum_{i=1}^4 q_i^{3/4}}{\sum_{i=1}^4 q_i},
+		\qquad
+		S_4(Q)=\frac{1}{D_\Sigma}.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Fünflings-Filter]
+		Für einen Primzahlfünfling \(P=(p_1,\dots,p_5)\) definieren wir
+		\[
+		D_{5\to3}=\frac{15}{4}\,\frac{\sum_{i=1}^5 p_i^{3/5}}{\sum_{i=1}^5 p_i},
+		\qquad
+		S_5(P)=\frac{1}{D_{5\to3}}.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Ternäre Korrektur]
+		Für ein geeignet geordnetes Tupel definieren wir
+		\[
+		\chi
+		=
+		\log\!\left(
+		\frac{(q_1q_2q_3)^{1/3}+(q_2q_3q_4)^{1/3}}{2}
+		\right)
+		-\log m,
+		\]
+		wobei \(m\) ein geeignetes Zentrum des Tupels ist.
+	\end{definition}
+	
+	Diese Größen interpretieren wir als geometrische oder arithmetisch-geometrische \emph{Kosten} des zugehörigen Codeworts.
+	
+	\section{Gibbs-Shannon-Verteilung}
+	
+	\begin{definition}[Gewichtete Wortenergie]
+		Jedem zulässigen Wort \(w\in\mathcal W_n\) werde eine Energie
+		\[
+		E(w)=E_{\mathrm{sym}}(w)+E_{\mathrm{geom}}(w)
+		\]
+		zugeordnet. Beispielsweise kann man setzen
+		\[
+		E_{\mathrm{geom}}(w)
+		=
+		\alpha\,\widetilde{S_4}
+		+
+		\beta\,\widetilde{S_5}
+		+
+		\gamma\,\widetilde{\chi},
+		\]
+		wobei die Tilden normierte Versionen der jeweiligen Größen bezeichnen.
+	\end{definition}
+	
+	\begin{definition}[Gibbs-Shannon-Wahrscheinlichkeit]
+		Die Wahrscheinlichkeit eines zulässigen Wortes \(w\in\mathcal W_n\) sei
+		\[
+		p_n(w)=\frac{e^{-\tau E(w)}}{Z_n},
+		\qquad
+		Z_n=\sum_{u\in\mathcal W_n} e^{-\tau E(u)},
+		\]
+		wobei \(\tau>0\) ein inverser Temperaturparameter ist.
+	\end{definition}
+	
+	\begin{definition}[Arithmetisch-geometrische Entropie]
+		Die daraus entstehende gewichtete Shannon-Entropie ist
+		\[
+		H_n^{\mathrm{arith\text{-}geom}}
+		=
+		-\sum_{w\in\mathcal W_n} p_n(w)\log p_n(w).
+		\]
+	\end{definition}
+	
+	\begin{interpretation}
+		Diese Größe misst nicht nur die symbolische Freiheit der Quelle, sondern zugleich die geometrische Selektivität admissibler Tupel.
+	\end{interpretation}
+	
+	\section{Kodierlängen}
+	
+	Nach Shannon ist die ideale Kodierlänge eines Wortes proportional zu seinem negativen Logarithmus der Wahrscheinlichkeit.
+	
+	\begin{definition}[Ideale Kodierlänge]
+		Für ein zulässiges Wort \(w\) definieren wir
+		\[
+		L(w)\approx -\log p_n(w).
+		\]
+	\end{definition}
+	
+	Damit gilt:
+	\begin{itemize}
+		\item häufige und geometrisch billige Wörter sind kurz kodierbar,
+		\item seltene oder geometrisch teure Wörter benötigen längere Codes.
+	\end{itemize}
+	
+	Die Primzahl-Tupelsprache wird somit zu einer \emph{komprimierbaren, aber stark eingeschränkten Informationsquelle}.
+	
+	\section{Global-lokale Zerlegung}
+	
+	Die numerischen Befunde legen eine Zweiteilung nahe:
+	
+	\begin{itemize}
+		\item \textbf{globale Struktur:} Fünflingsfilter wie \(S_5\) und ternäre Korrekturen \(\chi\),
+		\item \textbf{lokale Struktur:} Vierlingsgrößen wie \(\delta\), \(\delta^3\) und \(S_4\).
+	\end{itemize}
+	
+	Dies motiviert eine Zerlegung
+	\[
+	E(w)=E_{\mathrm{glob}}(w)+E_{\mathrm{lok}}(w),
+	\]
+	etwa mit
+	\[
+	E_{\mathrm{glob}}(w)
+	=
+	a_1\,\widetilde{S_5}
+	+
+	a_2\,\widetilde{\chi}
+	+
+	a_3\,\widetilde{(S_4\chi)},
+	\]
+	und
+	\[
+	E_{\mathrm{lok}}(w)
+	=
+	b_1\,\delta
+	+
+	b_2\,\delta^3
+	+
+	b_3\,\widetilde{S_4}.
+	\]
+	
+	\begin{remark}
+		Diese Zerlegung ist konzeptionell wichtig: Die bisherigen numerischen Tests deuten darauf hin, dass globale Spektralskalierung und lokale Abstandsstruktur nicht von derselben Größe getragen werden.
+	\end{remark}
+	
+	\section{Zusammenfassung des Modells}
+	
+	Die EABC-Kodierungstheorie beruht damit auf vier Ebenen:
+	\begin{enumerate}
+		\item einem endlichen Alphabet \(\{E,A,B,C\}\),
+		\item einer arithmetisch admissiblen Teilsprache \(\mathcal W\),
+		\item einer symbolischen Entropie \(H_n\) bzw. topologischen Entropie \(h_{\mathrm{top}}\),
+		\item einer geometrischen Gewichtung durch Kugel- und Randfilter.
+	\end{enumerate}
+	
+	Der Kernsatz der Theorie lautet somit:
+	
+	\begin{quote}
+		Die EABC-Sprache admissibler Primzahl-Tupel ist eine symbolische Quelle mit arithmetisch reduzierter Entropie und geometrisch gewichteter Kodierstruktur.
+	\end{quote}
+	
+	\section{Ausblick}
+	
+	Die nächsten mathematisch natürlichen Schritte sind:
+	\begin{itemize}
+		\item explizite Bestimmung der Übergangsgraphen für \(4\)-, \(5\)-, \(6\)-, \(7\)-, \(8\)- und \(9\)-Tupel,
+		\item Berechnung der zugehörigen topologischen Entropien,
+		\item Aufbau einer gewichteten Gibbs-Struktur mit \(S_4\), \(S_5\) und \(\chi\),
+		\item Vergleich der resultierenden Kodierlängen mit den bereits beobachteten spektralen Korrelationsmustern.
+	\end{itemize}
+	
+	Damit entsteht eine erste Brücke zwischen
+	\begin{center}
+		\emph{admissibler Primzahl-Arithmetik, symbolischer Dynamik, Entropietheorie und geometrischer Filterstruktur.}
+	\end{center}
+	
+\end{document}

@@ -1,0 +1,149 @@
+\documentclass[11pt,a4paper]{article}
+
+% -------------------------------------------------
+% Pakete
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{hyperref}
+
+\geometry{margin=2.5cm}
+
+\title{
+	Ein geometrischer Laplace-Operator auf Primzahl-Vierlingen\\
+	und seine spektrale Beziehung zu Riemann-Nullstellen
+}
+
+\author{
+	Thomas Hoffbauer
+}
+
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Wir konstruieren einen geometrischen Operator auf der Menge der
+		Primzahl-Vierlinge $(p, p+2, p+6, p+8)$ durch Einbettung in einen
+		logarithmischen Raum. Auf diesem Raum wird ein gewichteter
+		Graph-Laplace-Operator definiert.
+		
+		Numerische Experimente zeigen eine hohe Korrelation zwischen
+		dem Spektrum dieses Operators und den nichttrivialen Nullstellen
+		der Riemannschen Zetafunktion.
+		
+		Eine Erweiterung durch zusätzliche interne Struktur (E8-artige
+		Koordinaten) verbessert die spektrale Übereinstimmung weiter
+		und legt eine geometrische Organisation der Primzahlen nahe.
+	\end{abstract}
+	
+	% -------------------------------------------------
+	\section{Einleitung}
+	
+	Die Verteilung der Primzahlen ist eines der zentralen Probleme
+	der Zahlentheorie. Die Hilbert--Pólya-Vermutung postuliert,
+	dass die nichttrivialen Nullstellen der Zetafunktion als
+	Eigenwerte eines selbstadjungierten Operators auftreten.
+	
+	Wir verfolgen einen konstruktiven Ansatz auf Basis von
+	Primzahl-Vierlingen.
+	
+	% -------------------------------------------------
+	\section{Primzahl-Vierlinge}
+	
+	Wir betrachten Vierlinge der Form
+	\[
+	(p, p+2, p+6, p+8)
+	\]
+	wobei alle vier Zahlen prim sind.
+	
+	Jeder Vierling wird in einen Vektor eingebettet:
+	\[
+	x = (\log p,\log(p+2),\log(p+6),\log(p+8)) \in \mathbb{R}^4.
+	\]
+	
+	% -------------------------------------------------
+	\section{Geometrischer Laplace-Operator}
+	
+	Wir definieren eine Gewichtsmatrix:
+	\[
+	W_{ij} = \exp\left(-\frac{\|x_i - x_j\|^2}{\sigma^2}\right).
+	\]
+	
+	Der Gradoperator ist:
+	\[
+	D_{ii} = \sum_j W_{ij}.
+	\]
+	
+	Der Laplace-Operator ergibt sich zu:
+	\[
+	L = D - W.
+	\]
+	
+	% -------------------------------------------------
+	\section{E8-Erweiterung}
+	
+	Zusätzlich definieren wir eine erweiterte Einbettung:
+	\[
+	x^{(8)} =
+	(\log p_1,\log p_2,\log p_3,\log p_4,
+	\log\frac{p_2}{p_1},\log\frac{p_3}{p_2},
+	\log\frac{p_4}{p_3},\log\frac{p_4}{p_1})
+	\in \mathbb{R}^8.
+	\]
+	
+	Dies kodiert sowohl absolute als auch relative Struktur.
+	
+	% -------------------------------------------------
+	\section{Operator-Kombination}
+	
+	Wir betrachten den Operator:
+	\[
+	D = L + \alpha K,
+	\]
+	
+	wobei $K$ ein Kernel auf Basis der erweiterten Einbettung ist.
+	
+	% -------------------------------------------------
+	\section{Numerische Ergebnisse}
+	
+	Die Eigenwerte des Operators werden mit den imaginären Teilen
+	der Riemann-Nullstellen verglichen.
+	
+	\subsection{Korrelation}
+	
+	\[
+	\text{corr}(\lambda_n,\gamma_n) \approx 0.94
+	\]
+	
+	\subsection{Interpretation}
+	
+	Dies deutet darauf hin, dass Primzahlen eine
+	geometrische Struktur besitzen, deren Spektrum mit den
+	Zetafunktionsnullstellen übereinstimmt.
+	
+	% -------------------------------------------------
+	\section{Diskussion}
+	
+	Der Laplace-Operator beschreibt die intrinsische Geometrie
+	des durch Primzahlen erzeugten Raumes. Die zusätzliche
+	Struktur verbessert die spektrale Übereinstimmung und
+	könnte auf eine tiefere algebraische Ordnung hinweisen.
+	
+	% -------------------------------------------------
+	\section{Fazit}
+	
+	Wir haben einen geometrischen Operator konstruiert,
+	dessen Spektrum stark mit den Riemann-Nullstellen korreliert.
+	
+	Dies liefert einen möglichen Zugang zur Hilbert--Pólya-Vermutung
+	über diskrete geometrische Modelle.
+	
+\end{document}

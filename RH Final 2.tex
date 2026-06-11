@@ -1,0 +1,146 @@
+\documentclass[11pt, a4paper]{article}
+
+% --- Pakete ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{cite}
+\usepackage{fancyhdr}
+\usepackage{braket} % Für Dirac-Notation
+
+% --- Seitenlayout ---
+\geometry{left=2.5cm, right=2.5cm, top=3cm, bottom=3cm}
+
+% --- Metadaten ---
+\title{\textbf{Das Bamberg-Protokoll:}\\ Ein experimenteller Zugang zur Riemannschen Vermutung durch spektrale Feinstrukturanalyse der Hohlraumstrahlung}
+
+\author{
+	\textbf{Independent Researcher (Bamberg)} \\
+	\textit{Projekt \#Energiedoku} \\
+	\texttt{Bamberg, Deutschland}
+}
+
+\date{16. Februar 2026}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		\noindent
+		\textbf{Zusammenfassung:} Diese Arbeit postuliert eine direkte physikalische Kopplung zwischen der Verteilung der nichttrivialen Nullstellen der Riemannschen Zeta-Funktion und der spektralen Energiedichte eines idealen Hohlraumstrahlers. Wir erweitern das klassische Plancksche Strahlungsgesetz $u_\nu(\nu,T)$ um eine multiplikative, zahlentheoretisch determinierte Modulationsfunktion $M(\ln (\nu/\nu_0))$. Zur empirischen Prüfung definieren wir das \glqq Bamberg-Protokoll\grqq, ein standardisiertes algorithmisches Verfahren, das Residuen-Analyse, logarithmische Transformation und Template-Matching mittels Kreuzkorrelation kombiniert. Um die statistische Signifikanz eines potenziellen Signals gegen Artefakte und den \textit{Look-Elsewhere-Effect} abzusichern, führen wir strenge Nullhypothesen-Tests mit \textit{shuffled zeros} und GUE-Surrogaten ein. Ein positiver, reproduzierbarer Nachweis dieser Signatur würde eine tiefe Verbindung zwischen der Quantenstatistik des Vakuums und der Arithmetik der Primzahlen nahelegen.
+	\end{abstract}
+	
+	\tableofcontents
+	\newpage
+	
+	% ----------------------------------------------------------------------
+	\section{Einleitung und historische Motivation}
+	% ----------------------------------------------------------------------
+	
+	Seit Bernhard Riemanns Arbeit \textit{„Ueber die Anzahl der Primzahlen unter einer gegebenen Grösse“} (1859) ist bekannt, dass die Verteilung der Primzahlen durch die komplexen Nullstellen der Zeta-Funktion $\zeta(s)$ gesteuert wird. Parallel dazu revolutionierte Max Planck im Jahr 1900 die Physik mit der Quantisierung der Energie. 
+	Die \textit{Hilbert-Pólya-Vermutung} legt nahe, dass die Imaginärteile $\gamma_n$ der Riemann-Nullstellen den Eigenwerten eines unbekannten hermiteschen Operators entsprechen könnten. Bislang fehlte jedoch ein physikalisches System, dessen Spektrum diese Frequenzen direkt abbildet.
+	
+	Die Motivation dieser Arbeit, die wir als \textbf{Bamberg-Hypothese} bezeichnen, ist die Annahme, dass die Zustandsdichte (DOS) des elektromagnetischen Vakuums selbst eine fundamentale, skaleninvariante Feinstruktur aufweist, die durch die Primzahlen kodiert ist.
+	
+	% ----------------------------------------------------------------------
+	\section{Mathematisches Modell}
+	% ----------------------------------------------------------------------
+	
+	\subsection{Das modifizierte Plancksche Gesetz}
+	Das klassische Planck-Gesetz lautet:
+	\begin{equation}
+		u_\nu^{0}(\nu,T) = \frac{8\pi h \nu^3}{c^3} \frac{1}{\exp\left(\frac{h\nu}{k_B T}\right)-1}
+	\end{equation}
+	Wir postulieren eine multiplikative Korrektur der Zustandsdichte $g(\nu)$:
+	\begin{equation}
+		u_\nu^{\text{mod}}(\nu,T) = u_\nu^{0}(\nu,T) \cdot \Bigl[ 1 + \varepsilon \cdot M(z) \Bigr]
+	\end{equation}
+	Hierbei ist $\varepsilon$ die Kopplungskonstante ($|\varepsilon| \ll 1$) und $z$ die logarithmische Skalenvariable.
+	
+	\subsection{Skaleninvarianz und Dimensionierung}
+	Um die Dimensionslosigkeit des Arguments der Modulationsfunktion zu gewährleisten, definieren wir $z$ relativ zu einer fundamentalen Referenzfrequenz $\nu_0$:
+	\begin{equation}
+		z = \ln\left(\frac{\nu}{\nu_0}\right)
+	\end{equation}
+	Die Frequenz $\nu_0$ ist a priori unbekannt und wird im Rahmen des Protokolls als freier Parameter $\nu_*$ durch den Korrelations-Peak bestimmt. Physikalisch könnte $\nu_0$ mit der Geometrie des Hohlraums (Cutoff-Frequenz) oder einer fundamentalen Skala des Vakuums verknüpft sein.
+	
+	\subsection{Konstruktion des Riemann-Templates}
+	Die Modulationsfunktion $M(z)$ wird als spektrale Superposition der ersten $N$ nichttrivialen Riemann-Nullstellen $\rho_j = \frac{1}{2} + i\gamma_j$ konstruiert. Zur Gewährleistung der physikalischen Konvergenz nutzen wir die Gewichtung mit dem Inversen des Betrags der Nullstelle:
+	\begin{equation}
+		M_{\text{RH}}(z) = \mathcal{N} \sum_{j=1}^{N} \frac{1}{\sqrt{\gamma_j^2 + 1/4}} \cos(\gamma_j \cdot z + \phi_j)
+	\end{equation}
+	Wir setzen $\phi_j=0$ (phasenstarre Kopplung). $\mathcal{N}$ dient der Normierung, sodass $\langle M^2 \rangle = 1$.
+	
+	% ----------------------------------------------------------------------
+	\section{Methodik: Das Bamberg-Protokoll}
+	% ----------------------------------------------------------------------
+	
+	Um Artefakte von echten Signaturen zu trennen, definieren wir ein strenges, mehrstufiges Analyseverfahren.
+	
+	\subsection{Phase I: Residuen-Extraktion (Whitening)}
+	Von den Messdaten $S_{\text{mess}}(\nu)$ wird der bestmögliche Planck-Fit $S_{\text{fit}}(\nu, T_{\text{eff}})$ subtrahiert. Die relativen Residuen $R(\nu)$ beschreiben die Abweichung vom thermischen Gleichgewicht:
+	\begin{equation}
+		R(\nu) = \frac{S_{\text{mess}}(\nu) - S_{\text{fit}}(\nu)}{S_{\text{fit}}(\nu)}
+	\end{equation}
+	Kritisch ist hierbei die Modellierung der Instrumenten-Antwortfunktion (Responsivity), um systematische Fehler des Detektors nicht als Signal zu missinterpretieren.
+	
+	\subsection{Phase II: Logarithmische Transformation}
+	Transformation in den $z$-Raum: $\nu \to z = \ln(\nu/\nu_{\text{mess, min}})$. Dies überführt die multiplikative Skaleninvarianz in eine additive Translationsinvarianz.
+	
+	\subsection{Phase III: Template-Matching}
+	Wir generieren das theoretische Template $T_{\text{RH}}(z)$ basierend auf den ersten $N=100.000$ Nullstellen (Datensatz \texttt{zeros6}). Die hohe Anzahl an Moden ist notwendig, um die Informationsentropie des Templates signifikant über das Hintergrundrauschen zu heben.
+	
+	\subsection{Phase IV: Kreuzkorrelation}
+	Die Teststatistik ist die Kreuzkorrelation $C(\tau)$:
+	\begin{equation}
+		C(\tau) = \int R(z) \cdot T_{\text{RH}}(z-\tau) \, dz
+	\end{equation}
+	Ein Signal gilt als detektiert, wenn $C(\tau)$ ein lokales Maximum bei $\tau_*$ aufweist.
+	
+	\subsection{Phase V: Statistische Signifikanz und Kontrolle}
+	Um den \textit{Look-Elsewhere-Effect} (das zufällige Auftreten von Peaks durch das Scannen vieler $\tau$-Werte) zu kontrollieren, fordern wir:
+	\begin{enumerate}
+		\item \textbf{Lokale Signifikanz:} Der Peak muss $\mu + 5\sigma$ des Rauschteppichs überschreiten.
+		\item \textbf{Surrogat-Test (Nullhypothese):} Wir wiederholen die Analyse mit $1000$ \textit{shuffled} Templates, bei denen die Abstände der $\gamma_j$ zufällig permutiert wurden, oder mit Spektren aus dem \textit{Gaussian Unitary Ensemble} (GUE). Der echte Peak muss signifikant stärker sein als jeder Peak in den Surrogat-Daten.
+	\end{enumerate}
+	
+	% ----------------------------------------------------------------------
+	\section{Diskussion und Ausblick}
+	% ----------------------------------------------------------------------
+	
+	\subsection{Interpretation eines positiven Befundes}
+	Sollte das Protokoll einen robusten, reproduzierbaren Peak bei einer Frequenz $\nu_*$ liefern, der den Surrogat-Tests standhält, so würde dies implizieren:
+	\begin{itemize}
+		\item Das Vakuum besitzt eine nicht-triviale spektrale Dichte, die isomorph zur Verteilung der Primzahlen ist.
+		\item Die Natur realisiert physikalisch die Riemannsche Vermutung, da eine Abweichung der Nullstellen von der kritischen Linie ($\text{Re}(\rho) \neq 1/2$) im physikalischen Spektrum zu Divergenzen führen würde, die thermodynamisch instabil wären.
+	\end{itemize}
+	
+	\subsection{Grenzen und Falsifizierbarkeit}
+	Wir betonen, dass ein bloßer Korrelations-Peak noch kein mathematischer Beweis der Riemannschen Vermutung im strengen Sinne ist. Er wäre jedoch ein \textit{physikalischer Beweis} dafür, dass das untersuchte System (Hohlraumstrahlung) durch einen Operator beschrieben wird, dessen Spektrum mit den $\gamma_n$ übereinstimmt.
+	Falsifizierbar ist die Hypothese durch den Nachweis, dass $C(\tau)$ für hochpräzise radiometrische Daten (unter Berücksichtigung aller systematischen Fehler) im Rauschen verschwindet.
+	
+	\section*{Danksagung}
+	Wir danken der wissenschaftlichen Gemeinschaft für die kritische Auseinandersetzung mit diesem Vorschlag. Besonderer Dank gilt den fiktiven Gutachtern (i.S.v. T. Tao, E. Witten, L. Susskind, A. Zeilinger), deren virtuelle Kritik maßgeblich zur Schärfung der Methodik beigetragen hat.
+	
+	% ----------------------------------------------------------------------
+	% Bibliographie
+	% ----------------------------------------------------------------------
+	\begin{thebibliography}{9}
+		
+		\bibitem{riemann1859}
+		B. Riemann, \textit{Ueber die Anzahl der Primzahlen...}, Monatsber. Berl. Akad., 1859.
+		\bibitem{planck1900}
+		M. Planck, \textit{Zur Theorie des Gesetzes der Energieverteilung...}, Verh. DPG, 1900.
+		\bibitem{odlyzko}
+		A. M. Odlyzko, \textit{The $10^{20}$-th zero of the Riemann zeta function}, 1989.
+		\bibitem{berrykeating}
+		M. V. Berry, J. P. Keating, \textit{The Riemann Zeros and Eigenvalue Asymptotics}, SIAM Review, 1999.
+		
+	\end{thebibliography}
+	
+\end{document}

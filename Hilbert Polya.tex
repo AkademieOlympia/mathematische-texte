@@ -1,0 +1,212 @@
+\documentclass[11pt,a4paper]{article}
+
+% -----------------------------
+% Kodierung & Sprache
+% -----------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -----------------------------
+% Mathematik
+% -----------------------------
+\usepackage{amsmath,amssymb,amsfonts,bm,mathtools}
+
+% -----------------------------
+% Layout, Grafik, Links
+% -----------------------------
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{caption}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	citecolor=blue,
+	urlcolor=blue,
+	pdftitle={Ein quaternionischer Dirac-Operator auf Primzahlvierlingen},
+	pdfauthor={Thomas Hoffbauer}
+}
+
+\title{Ein quaternionischer Dirac-Operator auf Primzahlvierlingen\\
+	und seine spektrale Beziehung zu den Riemannschen Nullstellen}
+
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Wir konstruieren einen diskreten Operator auf der Menge der Primzahlvierlinge
+		\[
+		(p,\; p+2,\; p+6,\; p+8),
+		\]
+		indem wir diese in eine quaternionische Struktur einbetten.
+		Übergänge zwischen aufeinanderfolgenden Vierlingen definieren eine
+		nichtkommutative Dynamik, aus der ein hermitescher Operator gewonnen wird.
+		
+		Numerische Experimente zeigen eine starke Korrelation zwischen dem resultierenden
+		Spektrum und den nichttrivialen Nullstellen der Riemannschen Zetafunktion.
+		Darüber hinaus weist die Phasenstruktur der Übergänge eine Clusterbildung auf,
+		die mit einer SU(3)-artigen Symmetrie konsistent ist und auf eine intrinsische
+		algebraische Organisation der Primzahlen hindeutet.
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Die Verteilung der Primzahlen gehört zu den zentralen Problemen der Zahlentheorie.
+	Die Hilbert--Pólya-Vermutung legt nahe, dass die nichttrivialen Nullstellen der
+	Riemannschen Zetafunktion als Spektrum eines geeigneten selbstadjungierten Operators
+	interpretiert werden können.
+	
+	In dieser Arbeit konstruieren wir einen solchen Operator auf Primzahlvierlingen
+	unter Verwendung quaternionischer Geometrie.
+	
+	\section{Primzahlvierlinge}
+	
+	Wir betrachten Primzahlvierlinge der Form
+	\[
+	(p,\; p+2,\; p+6,\; p+8).
+	\]
+	
+	Jeder Vierling wird in ein Quaternion eingebettet:
+	\[
+	Q = (p,\; p+2,\; p+6,\; p+8).
+	\]
+	
+	\section{Quaternionischer Übergangsoperator}
+	
+	Für zwei aufeinanderfolgende Vierlinge \(Q_i\) und \(Q_j\) definieren wir
+	\[
+	\Delta_{ij} = Q_i^{-1} Q_j.
+	\]
+	
+	Die relevanten Observablen sind
+	\[
+	\|\Delta_{ij}\|
+	\qquad \text{und} \qquad
+	\theta_{ij}
+	=
+	\arccos\!\left(
+	\frac{\mathrm{Re}(\Delta_{ij})}{\|\Delta_{ij}\|}
+	\right).
+	\]
+	
+	Aus diesen Größen definieren wir zunächst das komplexe Übergangsgewicht
+	\[
+	w_{ij}
+	=
+	\frac{1}{\|\Delta_{ij}\|}\, e^{i\theta_{ij}}.
+	\]
+	
+	Ein hermitescher Operator ergibt sich dann durch
+	\[
+	D_{ij} = w_{ij}, \qquad D_{ji} = \overline{w_{ij}}.
+	\]
+	
+	Damit ist \(D\) per Konstruktion hermitesch.
+	
+	\section{Numerische Ergebnisse}
+	
+	Wir berechnen die Eigenwerte von \(D\) und vergleichen diese mit den
+	Imaginärteilen der nichttrivialen Nullstellen der Riemannschen Zetafunktion.
+	
+	\subsection{Korrelation}
+	
+	Die beobachtete Korrelation beträgt näherungsweise
+	\[
+	\mathrm{corr}(\lambda_n,\gamma_n) \approx 0.97.
+	\]
+	
+	\subsection{Abstandsstatistik}
+	
+	Die Verteilung der nächsten Nachbarabstände wird mit den Vorhersagen
+	des Gaussian Unitary Ensemble (GUE) verglichen:
+	\[
+	P(s) \sim s^2 e^{-c s^2}.
+	\]
+	
+	\subsection{Paar-Korrelation}
+	
+	Wir vergleichen mit der Montgomeryschen Paar-Korrelationsfunktion:
+	\[
+	R_2(u)
+	=
+	1-
+	\left(
+	\frac{\sin(\pi u)}{\pi u}
+	\right)^2.
+	\]
+	
+	\section{SU(3)-artige Struktur}
+	
+	Primzahlen werden nach Restklassen modulo \(12\) klassifiziert:
+	\[
+	\{1,\,5,\,7,\,11\}.
+	\]
+	
+	Übergänge zwischen diesen Klassen zeigen eine strukturierte Phasenverteilung
+	mit Clustern nahe Winkeln von \(2\pi/3\), was auf eine zyklische Symmetrie
+	analog zu SU(3) hindeutet.
+	
+	\section{Abbildungen}
+	
+	Abbildung~\ref{fig:theta} zeigt die Verteilung der Übergangsphasen.
+	Abbildung~\ref{fig:spacing} zeigt die normierte Abstandsstatistik.
+	Abbildung~\ref{fig:paircorr} vergleicht die empirische Paar-Korrelation
+	mit der Montgomery-Kurve.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.78\textwidth]{theta_hist.png}
+		\caption{Histogramm der Übergangsphasen \(\theta_{ij}\). Peaks nahe
+			\(2\pi/3\) wären mit einer SU(3)-artigen Zyklusstruktur vereinbar.}
+		\label{fig:theta}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.78\textwidth]{spacing_hist.png}
+		\caption{Normierte Nearest-Neighbor-Abstände des Spektrums im Vergleich
+			zur GUE-Erwartung.}
+		\label{fig:spacing}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.78\textwidth]{pair_correlation.png}
+		\caption{Empirische Paar-Korrelationsfunktion des Spektrums im Vergleich
+			zur Montgomery-Formel.}
+		\label{fig:paircorr}
+	\end{figure}
+	
+	\section{Diskussion}
+	
+	Die Konstruktion liefert einen Kandidaten für einen diskreten Dirac-Operator
+	auf Primzahlkonfigurationen.
+	
+	Die spektrale Übereinstimmung mit den Riemannschen Nullstellen sowie das Auftreten
+	interner Symmetriestrukturen deuten auf eine tiefere geometrische Organisation
+	der Primzahlen hin. Zugleich muss betont werden, dass hohe numerische Korrelationen
+	allein noch keinen strengen mathematischen Zusammenhang beweisen; entscheidend sind
+	Robustheitstests, Vergleichsmodelle und die Stabilität gegenüber Modellvarianten.
+	
+	\section{Schlussfolgerung}
+	
+	Wir haben einen quaternionischen Operator auf Primzahlvierlingen eingeführt,
+	dessen Spektrum statistische und numerische Übereinstimmungen mit den
+	Riemannschen Nullstellen zeigt.
+	
+	Weitere Arbeiten sind erforderlich, um die analytischen Eigenschaften dieses
+	Operators rigoros zu untersuchen und seine Beziehung zu etablierten
+	zahlentheoretischen Rahmenwerken zu klären.
+	
+\end{document}

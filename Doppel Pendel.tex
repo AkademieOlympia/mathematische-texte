@@ -1,0 +1,251 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{bm}
+
+\title{
+	A Quaternionic Transport Interpretation of\\
+	Holt Prime Constellations:\\
+	Toward an Arithmetic Double Pendulum
+}
+
+\author{
+	Thomas Hoffbauer
+}
+
+\date{\today}
+
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{hypothesis}{Hypothesis}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		We propose a transport-geometric interpretation of the nonconvex prime constellations studied by Fred B. Holt in the cycles of gaps $G(p^\#)$ of Eratosthenes sieve.
+		Instead of viewing prime constellations merely as static admissible gap patterns, we interpret them as oriented transport paths on a discrete residue-state geometry derived from the modulo-$12$ prime classes.
+		This yields a natural quaternionic holonomy structure, a parent-child coupling operator, and an arithmetic analogue of a coupled double pendulum.
+		We formulate first structural lemmas and propose statistical tests for detecting non-isotropic long-range transport structure among admissible prime-gap configurations.
+	\end{abstract}
+	
+	\section{Introduction}
+	
+	Fred B. Holt recently analyzed admissible nonconvex prime constellations of type
+	\[
+	(458,3240), \qquad (459,3242),
+	\]
+	within the cycles of gaps $G(p^\#)$ arising in Eratosthenes sieve \cite{holt}.
+	These configurations evolve through primorial cycles via admissible residue transport.
+	
+	The present note proposes a reinterpretation of these structures as
+	\[
+	\textit{oriented transport systems}
+	\]
+	rather than merely admissible gap configurations.
+	
+	The central idea is that the geometric structure is carried not by individual primes, but by transitions between admissible residue states.
+	
+	\section{EABC Transport Geometry}
+	
+	We define four distinguished residue sectors modulo $12$:
+	\[
+	E \equiv 1,\qquad
+	A \equiv 5,\qquad
+	B \equiv 7,\qquad
+	C \equiv 11
+	\pmod{12}.
+	\]
+	
+	A prime-gap constellation
+	\[
+	s=(g_1,\dots,g_n)
+	\]
+	induces a transport path
+	\[
+	x_{k+1}=x_k+g_k \pmod{12}.
+	\]
+	
+	Thus every constellation defines a word
+	\[
+	W(s)=(x_0,x_1,\dots,x_n)
+	\]
+	in the discrete state space
+	\[
+	\mathcal S=\{E,A,B,C\}.
+	\]
+	
+	\section{Transition Matrices}
+	
+	\begin{definition}
+		For a constellation $s$, define its EABC transition matrix
+		\[
+		M_s(a,b)=\#(a\to b),
+		\]
+		where $a,b\in\mathcal S$.
+	\end{definition}
+	
+	This converts a prime-gap constellation into a discrete transport operator.
+	
+	The reversal symmetry of Holt constellations naturally yields:
+	\[
+	M_{s^{\mathrm{rev}}}=M_s^\top.
+	\]
+	
+	Hence the system possesses a discrete time-reversal symmetry.
+	
+	\section{Quaternionic Holonomy}
+	
+	We identify the EABC states with quaternionic units:
+	\[
+	E\leftrightarrow 1,\qquad
+	A\leftrightarrow i,\qquad
+	B\leftrightarrow j,\qquad
+	C\leftrightarrow k.
+	\]
+	
+	\begin{definition}
+		The quaternionic holonomy of a constellation $s$ is
+		\[
+		Q(s)=\prod_{m=1}^n q(x_m),
+		\]
+		where $q(x_m)\in\{1,i,j,k\}$.
+	\end{definition}
+	
+	Since quaternion multiplication is noncommutative,
+	\[
+	ij=k,\qquad
+	jk=i,\qquad
+	ki=j,
+	\]
+	the ordering of transitions carries genuine orientation information.
+	
+	\section{Parent-Child Coupling}
+	
+	Holt showed that every $(459,3242)$ constellation has the form
+	\[
+	[2\hat s2],
+	\]
+	while the $(458,3240)$ constellations arise by removing either the initial or terminal gap $2$ \cite{holt}.
+	
+	Define:
+	\[
+	P=[2\hat s2],
+	\qquad
+	H=[2\hat s],
+	\qquad
+	T=[\hat s2].
+	\]
+	
+	The removed boundary gap induces the transport
+	\[
+	C\to E.
+	\]
+	
+	\begin{lemma}[Boundary Coupling Operator]
+		For all Holt parent constellations,
+		\[
+		M(P)=M(H)+R_{CE},
+		\]
+		where
+		\[
+		R_{CE}=e_Ce_E^\top
+		\]
+		is a rank-$1$ boundary transport operator.
+	\end{lemma}
+	
+	This operator acts as the arithmetic coupling joint of the system.
+	
+	\section{Arithmetic Double Pendulum}
+	
+	We define the arithmetic double pendulum as:
+	\[
+	\mathcal D=(M,Q,R),
+	\]
+	where:
+	\begin{itemize}
+		\item $M$ is the EABC transport matrix,
+		\item $Q$ is the quaternionic holonomy,
+		\item $R=R_{CE}$ is the boundary coupling operator.
+	\end{itemize}
+	
+	The corresponding entanglement operators are:
+	\[
+	\Delta_H=Q(P)^{-1}Q(H),
+	\]
+	\[
+	\Delta_T=Q(P)^{-1}Q(T).
+	\]
+	
+	Preliminary computations indicate:
+	\[
+	\Delta_H=1,
+	\qquad
+	\Delta_T=k,
+	\]
+	suggesting that head modes remain synchronized while tail modes acquire nontrivial chiral holonomy.
+	
+	\section{Chiral Transport Hypothesis}
+	
+	\begin{hypothesis}[Chiral Double-Pendulum Hypothesis]
+		Among Holt prime constellations,
+		\[
+		P(\Delta_T\neq 1)
+		>
+		P(\Delta_H\neq 1).
+		\]
+		Furthermore, the tail modes preferentially occupy nontrivial quaternionic axes
+		\[
+		\{\pm i,\pm j,\pm k\}.
+		\]
+	\end{hypothesis}
+	
+	This would imply non-isotropic long-range transport structure within the primorial flow.
+	
+	\section{Discussion}
+	
+	The proposed framework suggests that:
+	\[
+	\text{prime constellations}
+	\]
+	may be interpreted as
+	\[
+	\text{topologically coupled transport resonators}.
+	\]
+	
+	In this picture:
+	\begin{itemize}
+		\item admissible residues define local transport channels,
+		\item quaternionic holonomies encode orientation,
+		\item parent structures induce boundary couplings,
+		\item reversal symmetry acts as discrete time reversal,
+		\item and long prime-gap constellations behave as coupled arithmetic oscillators.
+	\end{itemize}
+	
+	The essential open question is whether the induced quaternionic transport phases become asymptotically isotropic or exhibit statistically preferred axes.
+	
+	\section{Future Work}
+	
+	The next stage is numerical:
+	\begin{itemize}
+		\item compute holonomy distributions for all Holt constellations,
+		\item analyze reversal-pair spectra,
+		\item test isotropy of quaternionic axes,
+		\item correlate asymptotic populations with transport spectra,
+		\item and compare with genuine prime-gap data at large scales.
+	\end{itemize}
+	
+	\begin{thebibliography}{9}
+		
+		\bibitem{holt}
+		Fred B. Holt,
+		\textit{On Nonconvex Constellations Among Primes II: $(J,|s|)=(458,3240)$},
+		arXiv:2605.19165 (2026).
+		
+	\end{thebibliography}
+	
+\end{document}

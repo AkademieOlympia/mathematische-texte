@@ -1,0 +1,475 @@
+\documentclass[11pt,a4paper]{article}
+
+% -------------------------------------------------
+% Pakete
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{mathtools}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{microtype}
+
+\geometry{margin=2.6cm}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue!60!black,
+	citecolor=blue!60!black,
+	urlcolor=blue!60!black
+}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{proposition}[definition]{Proposition}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\corr}{\operatorname{corr}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\zetaZeros}{\{\gamma_n\}_{n\geq 1}}
+
+% -------------------------------------------------
+% Titel
+% -------------------------------------------------
+\title{
+	A Geometric Laplace Operator on Prime Quadruplets\\
+	and Experimental Spectral Correlations with Riemann Zeros
+}
+
+\author{
+	Thomas Hoffbauer
+}
+
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		We study a geometrically defined graph Laplacian on the discrete set of prime quadruplets
+		\[
+		(p,p+2,p+6,p+8).
+		\]
+		By embedding these configurations into a logarithmic feature space, we define a weighted similarity graph and its associated Laplace operator.
+		
+		We then perform numerical experiments comparing the low-lying nonzero eigenvalues of this operator with the imaginary parts of the nontrivial zeros of the Riemann zeta function. In the datasets considered, we observe nontrivial positive correlations after affine normalization.
+		
+		We emphasize that these observations are purely experimental. The present work does not provide a theoretical explanation of the observed spectral behavior, nor does it claim a Hilbert--P\'olya construction. Its purpose is to define a concrete operator framework on a natural arithmetic configuration and to document its spectral properties in a reproducible exploratory setting.
+	\end{abstract}
+	
+	\section{Introduction}
+	
+	The Hilbert--P\'olya heuristic suggests that the nontrivial zeros of the Riemann zeta function may arise as the spectrum of a self-adjoint operator. Although no such operator is known, the idea continues to motivate attempts to construct spectral objects on arithmetically defined spaces.
+	
+	A natural strategy is to begin with a discrete arithmetic configuration and to associate to it a canonical or at least well-defined operator whose spectral behavior can be studied numerically and theoretically. In this paper, we consider \emph{prime quadruplets},
+	\[
+	(p,p+2,p+6,p+8),
+	\]
+	that is, admissible prime constellations of minimal diameter. Rather than studying individual primes in isolation, we treat these quadruplets as elementary arithmetic configurations and use them to build a weighted graph.
+	
+	The main purpose of the paper is modest. We define a graph Laplacian on the first \(N\) prime quadruplets using a logarithmic geometric embedding and compare its low-lying spectrum with the imaginary parts of the first nontrivial zeros of the Riemann zeta function. The resulting correlations are numerically notable, but at present entirely unexplained.
+	
+	The paper is therefore exploratory in nature. It aims to separate clearly between:
+	\begin{enumerate}[label=(\roman*)]
+		\item the definition of the arithmetic dataset,
+		\item the construction of the operator,
+		\item the numerical comparison procedure,
+		\item the interpretation of the observed behavior.
+	\end{enumerate}
+	
+	\section{Prime Quadruplets}
+	
+	We begin by fixing the arithmetic configurations under consideration.
+	
+	\begin{definition}[Prime quadruplet]
+		A prime quadruplet is a 4-tuple of the form
+		\[
+		(p,p+2,p+6,p+8),
+		\]
+		where all four entries are prime numbers.
+	\end{definition}
+	
+	This pattern is the densest admissible constellation of four primes. For our purposes, the quadruplet is treated as an ordered arithmetic configuration determined by its initial prime \(p\).
+	
+	\begin{definition}[Ordered dataset \(Q_N\)]
+		For \(N\geq 1\), let
+		\[
+		Q_N = \{q_1,\dots,q_N\}
+		\]
+		denote the first \(N\) prime quadruplets, ordered by increasing initial prime. Thus
+		\[
+		q_k = (p_k,p_k+2,p_k+6,p_k+8),
+		\]
+		where \(p_1 < p_2 < \cdots < p_N\), and each of the four entries of \(q_k\) is prime.
+	\end{definition}
+	
+	Hence \(Q_N\) is a finite ordered set of arithmetic configurations. The order is important because later spectral comparisons will be made against ordered sequences of zeta zeros.
+	
+	\section{Geometric Embedding}
+	
+	To compare quadruplets geometrically, we embed them into Euclidean space using logarithmic coordinates.
+	
+	\subsection{Basic embedding}
+	
+	Define
+	\[
+	x:Q_N \to \R^4
+	\]
+	by
+	\[
+	x(q_k)
+	=
+	\bigl(
+	\log p_k,\,
+	\log(p_k+2),\,
+	\log(p_k+6),\,
+	\log(p_k+8)
+	\bigr).
+	\]
+	
+	The logarithm is used for two reasons. First, it compresses the global scale of the primes. Second, it makes relative multiplicative differences more comparable across different arithmetic sizes.
+	
+	We equip \(\R^4\) with its standard Euclidean norm. Thus the geometric distance between two quadruplets \(q_i\) and \(q_j\) is measured by
+	\[
+	\norm{x(q_i)-x(q_j)}.
+	\]
+	
+	\subsection{Extended embedding}
+	
+	To incorporate not only absolute scale but also internal relative structure, we also consider an extended feature map
+	\[
+	x^{(8)}:Q_N \to \R^8
+	\]
+	defined by
+	\[
+	x^{(8)}(q_k)
+	=
+	\left(
+	\log p_k,\,
+	\log(p_k+2),\,
+	\log(p_k+6),\,
+	\log(p_k+8),\,
+	\log\frac{p_k+2}{p_k},\,
+	\log\frac{p_k+6}{p_k+2},\,
+	\log\frac{p_k+8}{p_k+6},\,
+	\log\frac{p_k+8}{p_k}
+	\right).
+	\]
+	
+	The additional coordinates are dimensionless logarithmic ratios. They encode internal shape information of the quadruplet and complement the absolute location data.
+	
+	\begin{remark}
+		The present paper does not claim that either embedding is canonical. They are chosen as simple, explicit, and numerically stable feature maps suitable for exploratory spectral experiments.
+	\end{remark}
+	
+	\section{Weighted Graph and Laplace Operator}
+	
+	We now define the similarity graph on the dataset \(Q_N\).
+	
+	\subsection{Gaussian kernel}
+	
+	Given an embedding \(x(q_k)\in\R^d\), with \(d=4\) or \(d=8\), define the weight matrix \(W=(W_{ij})_{1\le i,j\le N}\) by
+	\[
+	W_{ij}
+	=
+	\exp\left(
+	-\frac{\norm{x(q_i)-x(q_j)}^2}{\sigma^2}
+	\right),
+	\]
+	where \(\sigma>0\) is a scale parameter.
+	
+	The Gaussian kernel is chosen because:
+	\begin{itemize}
+		\item it yields a symmetric positive similarity matrix,
+		\item it introduces a tunable notion of locality through the parameter \(\sigma\),
+		\item it is a standard choice in spectral graph theory and kernel-based data analysis.
+	\end{itemize}
+	
+	We do not claim that this kernel choice is canonical. It serves as a natural baseline for studying the induced spectral structure.
+	
+	\subsection{Degree matrix and Laplacian}
+	
+	Let \(D\) be the diagonal degree matrix defined by
+	\[
+	D_{ii} = \sum_{j=1}^N W_{ij}.
+	\]
+	We then define the graph Laplacian
+	\[
+	L = D - W.
+	\]
+	
+	\begin{proposition}
+		The matrix \(L\) is real symmetric and positive semidefinite.
+	\end{proposition}
+	
+	\begin{proof}
+		Since \(W_{ij}=W_{ji}\), the matrix \(W\) is symmetric, hence so is \(L\). For any \(v\in\R^N\),
+		\[
+		v^\top L v
+		=
+		\frac12 \sum_{i,j=1}^N W_{ij}(v_i-v_j)^2 \ge 0.
+		\]
+		Therefore \(L\) is positive semidefinite.
+	\end{proof}
+	
+	As usual, the constant vector belongs to the kernel of \(L\), so the smallest eigenvalue is
+	\[
+	\lambda_1=0.
+	\]
+	
+	\section{Spectral Comparison with Zeta Zeros}
+	
+	We now describe the numerical comparison procedure.
+	
+	\subsection{Eigenvalue ordering}
+	
+	Let
+	\[
+	0=\lambda_1 \le \lambda_2 \le \cdots \le \lambda_N
+	\]
+	be the ordered eigenvalues of the Laplacian \(L\).
+	
+	Since \(\lambda_1=0\) is the trivial Laplacian eigenvalue, we compare only the first \(m\) nonzero eigenvalues
+	\[
+	(\lambda_2,\dots,\lambda_{m+1}).
+	\]
+	
+	\subsection{Zeta zeros}
+	
+	Let
+	\[
+	(\gamma_1,\dots,\gamma_m)
+	\]
+	denote the imaginary parts of the first \(m\) nontrivial zeros of the Riemann zeta function, ordered increasingly:
+	\[
+	\zeta\!\left(\tfrac12+i\gamma_n\right)=0,
+	\qquad
+	0<\gamma_1<\gamma_2<\cdots.
+	\]
+	
+	\subsection{Normalization and correlation measure}
+	
+	Because the two sequences arise from different scales, we affinely normalize both:
+	\[
+	\widetilde{\lambda}_n
+	=
+	\frac{\lambda_{n+1}-\mu_\lambda}{s_\lambda},
+	\qquad
+	\widetilde{\gamma}_n
+	=
+	\frac{\gamma_n-\mu_\gamma}{s_\gamma},
+	\qquad n=1,\dots,m,
+	\]
+	where \(\mu_\lambda,\mu_\gamma\) are empirical means and \(s_\lambda,s_\gamma\) are empirical standard deviations.
+	
+	We then compute the Pearson correlation coefficient
+	\[
+	\corr(\widetilde{\lambda}_n,\widetilde{\gamma}_n).
+	\]
+	
+	\begin{remark}
+		This is a global linear comparison statistic. It does not capture finer spacing laws, local pair correlations, or unfolding-based random-matrix statistics. Those would require a separate analysis.
+	\end{remark}
+	
+	\section{Numerical Methodology}
+	
+	This section summarizes the computational protocol in a form intended to be reproducible.
+	
+	\subsection{Dataset generation}
+	
+	The first \(N\) prime quadruplets are generated in increasing order of \(p\). For each quadruplet \(q_k\), the chosen feature map \(x(q_k)\) or \(x^{(8)}(q_k)\) is computed. The full similarity matrix \(W\) is then assembled from pairwise Gaussian kernel values.
+	
+	\subsection{Parameter choice}
+	
+	The parameter \(\sigma\) controls the effective interaction scale of the graph. Since there is no canonical scale in the present framework, numerical experiments should be repeated for a range of values of \(\sigma\).
+	
+	A reasonable baseline strategy is to select \(\sigma\) from a small grid tied to empirical pairwise distances, for example:
+	\[
+	\sigma \in \{c\cdot \mathrm{median\,dist} : c\in C\},
+	\]
+	where \(C\) is a finite set of positive constants.
+	
+	\subsection{Comparison window}
+	
+	For a dataset of size \(N\), one chooses an integer \(m\) with
+	\[
+	1 \le m \le N-1
+	\]
+	and compares the first \(m\) nonzero Laplacian eigenvalues with the first \(m\) zeta zeros.
+	
+	In practical experiments, one should report \(N\), \(m\), the chosen embedding, and the value of \(\sigma\) together with the resulting correlation.
+	
+	\section{Validation and Baselines}
+	
+	Because isolated correlations can be misleading, baseline tests are essential.
+	
+	\subsection{Shuffle test}
+	
+	A first robustness check is to randomly permute the quadruplets before constructing the comparison alignment. If the observed correlation depends strongly on the arithmetic ordering and geometric structure, it should typically degrade under such shuffling.
+	
+	\subsection{Random baseline}
+	
+	A second check is to replace prime quadruplets by random integer 4-tuples or by artificial structured sequences of comparable numerical size. This tests whether the observed effect is a generic artifact of the embedding and kernel pipeline.
+	
+	\subsection{Parameter variation}
+	
+	A third check is to vary \(\sigma\) over a nontrivial range. If the effect appears only at one very finely tuned parameter, that weakens the case for structural significance. If it persists over a moderate interval, that strengthens it.
+	
+	\subsection{Reporting standard}
+	
+	A numerical study should ideally provide, for each configuration:
+	\begin{itemize}
+		\item dataset size \(N\),
+		\item comparison length \(m\),
+		\item embedding type (\(4\)-dimensional or \(8\)-dimensional),
+		\item scale parameter \(\sigma\),
+		\item observed Pearson correlation,
+		\item mean and variance over shuffle/random baselines.
+	\end{itemize}
+	
+	\begin{table}[ht]
+		\centering
+		\begin{tabular}{lcccc}
+			\toprule
+			Configuration & \(N\) & \(m\) & \(\sigma\) & Correlation \\
+			\midrule
+			4D embedding, original data & [to fill] & [to fill] & [to fill] & [to fill] \\
+			8D embedding, original data & [to fill] & [to fill] & [to fill] & [to fill] \\
+			Shuffle baseline            & [to fill] & [to fill] & [to fill] & [to fill] \\
+			Random baseline             & [to fill] & [to fill] & [to fill] & [to fill] \\
+			\bottomrule
+		\end{tabular}
+		\caption{Template for reporting numerical experiments. Placeholder values should be replaced by actual computed data.}
+		\label{tab:results}
+	\end{table}
+	
+	\section{Interpretation and Limitations}
+	
+	The numerical observations described above are suggestive, but their meaning remains unclear.
+	
+	\subsection{What is established}
+	
+	The present paper establishes only the following:
+	\begin{enumerate}[label=(\alph*)]
+		\item a finite arithmetic dataset \(Q_N\) of prime quadruplets,
+		\item an explicit logarithmic embedding into Euclidean feature space,
+		\item a corresponding weighted graph Laplacian \(L\),
+		\item a reproducible numerical comparison procedure against zeta zeros.
+	\end{enumerate}
+	
+	\subsection{What is not established}
+	
+	The paper does \emph{not} establish:
+	\begin{enumerate}[label=(\alph*)]
+		\item a canonical operator naturally attached to the zeta function,
+		\item a limiting operator as \(N\to\infty\),
+		\item a trace formula,
+		\item a Hilbert--P\'olya theorem,
+		\item any proof of a relation between the spectrum of \(L\) and the zeros of \(\zeta(s)\).
+	\end{enumerate}
+	
+	\subsection{On the meaning of correlation}
+	
+	A high correlation between two ordered sequences can arise for several reasons, including shared monotonic growth, scaling effects, and finite-size artifacts. Therefore, even substantial positive correlation should not be overinterpreted.
+	
+	To support a deeper claim, one would need significantly more structure, for example:
+	\begin{itemize}
+		\item stability under alternative embeddings and kernels,
+		\item asymptotic control as \(N\to\infty\),
+		\item local spacing comparisons after unfolding,
+		\item theoretical mechanisms linking prime quadruplet geometry to zeta zeros.
+	\end{itemize}
+	
+	\section{Possible Extensions}
+	
+	Several directions for future work suggest themselves.
+	
+	\subsection{Alternative graph constructions}
+	
+	One may replace the full Gaussian graph by:
+	\begin{itemize}
+		\item \(k\)-nearest-neighbor graphs,
+		\item sparse threshold graphs,
+		\item normalized Laplacians,
+		\item anisotropic kernels.
+	\end{itemize}
+	
+	This would help determine whether the observed phenomena are robust or model-dependent.
+	
+	\subsection{Other prime constellations}
+	
+	The same methodology could be applied to other admissible prime patterns, such as twin primes, prime triplets, or longer constellations.
+	
+	\subsection{Asymptotic questions}
+	
+	A more ambitious direction would be to ask whether a meaningful limiting operator or limiting spectral measure exists as \(N\to\infty\). At present this remains entirely open.
+	
+	\section{Conclusion}
+	
+	We introduced a geometrically defined graph Laplacian on the first \(N\) prime quadruplets using logarithmic embeddings into \(\R^4\) and \(\R^8\). We then described a numerical procedure for comparing the low-lying nonzero eigenvalues of this operator with the imaginary parts of the first nontrivial zeros of the Riemann zeta function.
+	
+	The resulting correlations are experimentally interesting, but currently unexplained. For that reason, the work should be viewed as an exploratory spectral study on an arithmetic dataset, not as evidence for a Hilbert--P\'olya construction in any rigorous sense.
+	
+	Its main contribution is to provide a concrete and reproducible operator framework that may serve as a basis for more systematic numerical and theoretical investigations.
+	
+	\section*{Acknowledgments}
+	
+	The author thanks the mathematical community for the broader Hilbert--P\'olya perspective that motivates this exploratory work.
+	
+	\begin{thebibliography}{99}
+		
+		\bibitem{Chung}
+		F. R. K. Chung,
+		\emph{Spectral Graph Theory},
+		CBMS Regional Conference Series in Mathematics, Vol. 92,
+		American Mathematical Society, 1997.
+		
+		\bibitem{BelkinNiyogi}
+		M. Belkin and P. Niyogi,
+		Laplacian eigenmaps for dimensionality reduction and data representation,
+		\emph{Neural Computation} \textbf{15} (2003), no. 6, 1373--1396.
+		
+		\bibitem{Montgomery}
+		H. L. Montgomery,
+		The pair correlation of zeros of the zeta function,
+		in \emph{Analytic Number Theory},
+		Proc. Sympos. Pure Math., Vol. 24,
+		American Mathematical Society, 1973, pp. 181--193.
+		
+		\bibitem{Odlyzko}
+		A. M. Odlyzko,
+		On the distribution of spacings between zeros of the zeta function,
+		\emph{Mathematics of Computation} \textbf{48} (1987), no. 177, 273--308.
+		
+		\bibitem{Edwards}
+		H. M. Edwards,
+		\emph{Riemann's Zeta Function},
+		Dover Publications, New York, 2001.
+		
+		\bibitem{Tao}
+		T. Tao,
+		254A, Notes 4: The Riemann zeta function and the prime number theorem,
+		available on the author's website.
+		
+		\bibitem{Connes}
+		A. Connes,
+		Trace formula in noncommutative geometry and the zeros of the Riemann zeta function,
+		\emph{Selecta Mathematica (N.S.)} \textbf{5} (1999), no. 1, 29--106.
+		
+	\end{thebibliography}
+	
+\end{document}

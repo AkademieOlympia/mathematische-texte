@@ -1,0 +1,539 @@
+% EABC_Monopol_Artikel.tex
+% Standalone-Preprint: EABC-Monopol und spektrale Riemann-Nullstellen-Analyse
+% Kompilierung: pdflatex EABC_Monopol_Artikel.tex
+
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{hyperref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!60!black,
+  urlcolor=blue!60!black,
+  citecolor=blue!60!black,
+}
+
+% --- Ergebnismakros N=150 (Referenzlauf EABC_Gross_Analyse.py) ---
+\input{monopol_preprint_results.txt}
+
+% --- Modellkonstanten (Postulat, nicht aus E8 abgeleitet) ---
+\newcommand{\monopolQtot}{1796}
+\newcommand{\monopolFactor}{1036.92} % 1796/\sqrt{3}
+
+% --- Konvergenz Teilstichproben (gleicher N=150-Lauf) ---
+\newcommand{\convFiftyVar}{0.172806}
+\newcommand{\convFiftyDelta}{0.068616}
+\newcommand{\convFiftyMean}{0.992296}
+\newcommand{\convHundredVar}{0.155540}
+\newcommand{\convHundredDelta}{0.051350}
+\newcommand{\convHundredMean}{0.995738}
+
+% --- Fehlerhafte Hauptterm-Pipeline (Diagnose, t in [5000,5140]) ---
+\newcommand{\badMeanFixed}{2.9586}
+\newcommand{\badVarFixed}{7.33}
+\newcommand{\badMeanAdapt}{2.9962}
+\newcommand{\badVarAdapt}{7.88}
+\newcommand{\badCountInterval}{52}
+\newcommand{\goodCountInterval}{150}
+
+% --- Ergebnismakros N=500 (Referenzlauf Monopol Test.py / n500_reference) ---
+\newcommand{\bulkFiveHundredN}{500}
+\newcommand{\bulkFiveHundredMean}{0.999869}
+\newcommand{\bulkFiveHundredVar}{0.157876}
+\newcommand{\bulkFiveHundredDelta}{0.053686}
+\newcommand{\bulkFiveHundredPm}{0.032292}
+\newcommand{\bulkFiveHundredPressureSum}{16.145954}
+\newcommand{\bulkFiveHundredTmax}{5466.4183}
+\newcommand{\bulkFiveHundredRuntime}{106.6}
+
+% --- Ergebnismakros N=1000 (bulk_results.json / EABC_Bulk_Evaluation.py) ---
+\newcommand{\bulkThousandN}{1000}
+\newcommand{\bulkThousandMean}{1.004083}
+\newcommand{\bulkThousandVar}{0.161290}
+\newcommand{\bulkThousandDelta}{0.057099}
+\newcommand{\bulkThousandPm}{0.018441}
+\newcommand{\bulkThousandTmax}{5931.5701}
+\newcommand{\bulkThousandRuntime}{606.9}
+\newcommand{\bulkGUE}{0.104192}
+
+% Block-Stabilität N=1000 (je 250 Nullstellen)
+\newcommand{\blkOneMean}{1.007297}
+\newcommand{\blkOneVar}{0.169773}
+\newcommand{\blkOneDelta}{0.065581}
+\newcommand{\blkOnePm}{0.130777}
+\newcommand{\blkTwoMean}{1.001638}
+\newcommand{\blkTwoVar}{0.156151}
+\newcommand{\blkTwoDelta}{0.051960}
+\newcommand{\blkTwoPm}{-0.057014}
+\newcommand{\blkThreeMean}{1.008279}
+\newcommand{\blkThreeVar}{0.165494}
+\newcommand{\blkThreeDelta}{0.061302}
+\newcommand{\blkThreePm}{-0.119749}
+\newcommand{\blkFourMean}{0.999098}
+\newcommand{\blkFourVar}{0.153654}
+\newcommand{\blkFourDelta}{0.049463}
+\newcommand{\blkFourPm}{0.124070}
+
+% --- t'Hooft-Monopolmasse (Referenzlauf hooft.py) ---
+\newcommand{\hooftAlphaInv}{137.035999177}
+\newcommand{\hooftMX}{2.0\times 10^{16}\,\mathrm{GeV}}
+\newcommand{\hooftMPlanck}{1.2209\times 10^{19}\,\mathrm{GeV}}
+\newcommand{\hooftMMPlanck}{0.224484}
+\newcommand{\hooftAlphaG}{0.050393}
+\newcommand{\hooftInvAlphaG}{19.84}
+
+\title{EABC-Magnetmonopol und spektrale Abweichungen\\
+  der Riemann-Nullstellen im hochenergetischen Fernfeld}
+\author{Thomas Hoffbauer\\[0.5em]
+  \small\textit{Preprint-Entwurf; numerische Begleitdokumentation zum EABC-Modell}}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+  Im Rahmen des EABC-Frameworks (Entanglement-ABC-Klassifikation quaternionischer
+  Zustände) wird ein \emph{Modell} magnetischer Monopole in zwei komplementären
+  Bildern diskutiert: ein globales Punkt-Monopol mit Postulat
+  $Q_{\mathrm{tot}}=1796$ sowie diskrete topologische Defekte im Hurwitz-Quaternionen-Gitter
+  (\texttt{MagMo.py}). Diese Größen sind \emph{nicht} aus einer E$_8$-Konstruktion
+  abgeleitet und stellen Modellparameter dar.
+
+  Zur empirischen Prüfung wird das Spektrum aufeinanderfolgender nichttrivialer
+  Riemann-Nullstellen ab $t_0=5000$ ausgewertet. Nach methodischer Korrektur
+  (vollständige \texttt{mpmath.siegelz}-Pipeline statt unvollständigem Siegel-Hauptterm)
+  bleibt der mittlere normierte Abstand Weyl-konform ($\bar{s}\approx 1$); eine
+  früher diskutierte ``Drittel-Regel'' der Nullstellendichte wird verworfen.
+  Die gesicherte Abweichung vom GUE-Referenzensemble zeigt sich im \emph{zweiten Moment}:
+  $\Delta\sigma^2 \approx +0{,}053$--$+0{,}057$ für Stichproben $N=150$, $500$ und $1000$.
+  Der normierte spektrale Monopol-Druck $P_m$ oszilliert stark und ist blockweise instabil.
+
+  Der Text erhebt keinen Anspruch auf experimentellen Nachweis eines magnetischen
+  Monopols im Labor; er dokumentiert numerische Korrelationen innerhalb eines
+  offenen theoretischen Modells.
+\end{abstract}
+
+%=============================================================================
+\section{Einleitung}
+\label{sec:einleitung}
+%=============================================================================
+
+Das EABC-Framework ordnet arithmetische und spektrale Strukturen über eine
+quaternionische Vier-Kanal-Klassifikation ($E,A,B,C$) und diskrete Gittermodelle.
+Im Kontext der Riemannschen Zeta-Funktion $\zeta(s)$ auf der kritischen Linie
+$\Re(s)=\tfrac12$ stellt sich die Frage, ob zusätzliche ``topologische'' Freiheitsgrade
+--- formal als magnetische Monopole modelliert --- im Nullstellen-Spektrum messbare
+Spuren hinterlassen.
+
+\paragraph{Monopol-Hypothese.}
+Wir unterscheiden zwei \emph{Modellbilder}, die derzeit \emph{nicht} in einer
+einheitlichen Feldtheorie verknüpft sind:
+\begin{enumerate}
+  \item ein \textbf{globales Punkt-Monopol} mit effektiver Gesamtladung
+        $Q_{\mathrm{tot}}=1796$ als Skalierungsparameter der spektralen Kopplung;
+  \item \textbf{diskrete Hurwitz-Defekte} im Quaternionen-Primgitter, identifiziert
+        durch verschwindenden Skalarteil reiner Imaginär-Primzahlen
+        (\texttt{MagMo.py}).
+\end{enumerate}
+Beide Bilder dienen der \emph{Hypothesenbildung}; keines davon folgt rigoros aus
+E$_8$ oder aus der analytischen Zahlentheorie der $\zeta$-Funktion.
+
+\paragraph{Numerische Strategie.}
+Als empirischer Zugang werden lückenlose Ketten von Nullstellen $\{\gamma_n\}$
+im Fernfeld $t\gtrsim 5000$ berechnet, über das Weyl-Gesetz entfaltet und mit
+der Wigner-Dyson-GUE-Referenz ($\sigma^2_{\mathrm{GUE}}\approx 0{,}104$) verglichen.
+Implementierungsdetails finden sich in \texttt{EABC\_Gross\_Analyse.py} ($N=150$),
+\texttt{Monopol Test.py} ($N=500$) und \texttt{EABC\_Bulk\_Evaluation.py} ($N=1000$).
+
+%=============================================================================
+\section{Eigenschaften des EABC-Monopols}
+\label{sec:monopol-eigenschaften}
+%=============================================================================
+
+\subsection{Globales Punkt-Monopol ($Q_{\mathrm{tot}}=1796$)}
+
+Im spektralen Testmodell wird ein dominantes, nicht kompensiertes Punkt-Monopol
+durch die \emph{Modellkonstante}
+\begin{equation}
+  Q_{\mathrm{tot}} = 1796
+  \label{eq:qtot}
+\end{equation}
+charakterisiert. Dieser Wert ist ein \textbf{Postulat} des EABC-Monopolmodells;
+eine Herleitung aus der Wurzelsystem-Dimension von E$_8$ oder aus einer
+Gauge-Theorie-Konstruktion liegt nicht vor.
+
+Daraus folgt der dimensionslose Skalierungsfaktor
+\begin{equation}
+  f_{\mathrm{mon}} = \frac{Q_{\mathrm{tot}}}{\sqrt{3}} \approx \monopolFactor,
+  \label{eq:fmon}
+\end{equation}
+der in den numerischen Skripten als ``asymptotische Feldkonstante'' für die
+Kopplung an die Nullstellen $\gamma_n$ verwendet wird. Physikalisch wäre ein
+magnetischer Monopol in einer kompakten Eichtheorie durch Dirac-Quantisierung
+diskret; hier wird \emph{kein} solcher Nachweis behauptet --- $Q_{\mathrm{tot}}$
+parametrisiert lediglich die Modellamplitude.
+
+\subsection{Hurwitz-Defekte im Quaternionen-Gitter (\texttt{MagMo.py})}
+
+Komplementär betrachtet \texttt{MagMo.py} Hurwitz-Quaternionen-Primzahlen bis
+einer Normschranke und isoliert ``Monopol-Kandidaten'' als Gitterpunkte mit
+verschwindendem Skalarteil $a_0=0$ (rein imaginäre Hurwitz-Primzahlen).
+Die akkumulierte ``Feld-Divergenz'' an einem Gitterknoten $(i,j,k)$ zählt
+lokale topologische Defekte; dieses Bild ist \emph{diskret} und \emph{ortsaufgelöst},
+im Gegensatz zum globalen $Q_{\mathrm{tot}}$-Postulat.
+
+Die beiden Beschreibungen --- globales $Q=1796$ und verteilte Hurwitz-Defekte ---
+sind derzeit \emph{nicht} vereinheitlicht. Eine offene Aufgabe ist die Abbildung
+der Gitter-Defektdichte auf einen effektiven spektralen Kopplungsterm
+(Abschnitt~\ref{sec:offene-fragen}).
+
+\subsection{Spektraler Monopol-Druck}
+
+Als aggregierte, stichprobenabhängige Größe definieren wir die \emph{Summe}
+\begin{equation}
+  S_N = \sum_{n=1}^{N} \sin\!\Bigl(\gamma_n \,\frac{\log f_{\mathrm{mon}}}{150}\Bigr)
+  \label{eq:pressure-sum}
+\end{equation}
+und den \emph{normierten} Druck
+\begin{equation}
+  P_m = \frac{S_N}{N}.
+  \label{eq:pressure-pm}
+\end{equation}
+Wegen der Oszillation einzelner Terme ist $P_m$ \emph{nicht} stabil gegenüber
+kleinen Stichproben und wechselt das Vorzeichen zwischen Datenblöcken
+(Tabelle~\ref{tab:block-stabilitaet}). Für Vergleiche ist stets $N$ anzugeben.
+
+%=============================================================================
+\section{t'Hooft-Monopolmasse und EABC-Gravitationsstrukturkonstante}
+\label{sec:hooft-monopolmasse}
+%=============================================================================
+
+Unabhängig vom spektralen EABC-Testmodell liefert die semiklassische
+t'Hooft--Polyakov-Konstruktion~\cite{thooft,polyakov} in einer
+SU(2)-Eichtheorie mit spontan gebrochener Symmetrie magnetische Monopole
+als topologisch stabile Solitonen. Ihre Masse skaliert mit der
+Symmetriebrechungsskala $M_X$ und der feinstrukturierten Kopplungskonstante
+$\alpha = e^2/(4\pi\varepsilon_0\hbar c)$:
+\begin{equation}
+  M_M \sim \frac{M_X}{\alpha}.
+  \label{eq:hooft-mass}
+\end{equation}
+Diese Relation ist \emph{nicht} aus dem Postulat $Q_{\mathrm{tot}}=1796$
+herleitbar; sie dient hier als externer Größenordnungsvergleich für
+physikalische Monopolmassen.
+
+\paragraph{Reproduzierbare Berechnung (\texttt{hooft.py}).}
+Das Begleitskript \texttt{hooft.py} wertet \eqref{eq:hooft-mass} mit den
+Eingabewerten $\alpha^{-1}=\hooftAlphaInv$, $M_X=\hooftMX$ und
+$M_{\mathrm{Planck}}=\hooftMPlanck$ aus und bildet das dimensionslose Verhältnis
+$M_M/M_{\mathrm{Planck}}$ sowie die EABC-Gravitationsstrukturkonstante
+\begin{equation}
+  \alpha_G^{\mathrm{EABC}} \equiv \Bigl(\frac{M_M}{M_{\mathrm{Planck}}}\Bigr)^2.
+  \label{eq:alpha-g-eabc}
+\end{equation}
+Tabelle~\ref{tab:hooft-ergebnisse} fasst die numerischen Resultate zusammen.
+
+\begin{table}[htbp]
+\centering
+\caption{t'Hooft-Monopolmasse und abgeleitete EABC-Größen
+(\texttt{hooft.py}, $36$-stellige Dezimalarithmetik).}
+\label{tab:hooft-ergebnisse}
+\begin{tabular}{ll}
+\toprule
+\textbf{Größe} & \textbf{Wert} \\
+\midrule
+$\alpha^{-1}$ & $\hooftAlphaInv$ \\
+$M_X$ & $\hooftMX$ \\
+$M_{\mathrm{Planck}}$ & $\hooftMPlanck$ \\
+$M_M/M_{\mathrm{Planck}}$ & $\hooftMMPlanck$ \\
+$\alpha_G^{\mathrm{EABC}} = (M_M/M_{\mathrm{Planck}})^2$ & $\hooftAlphaG$ \\
+$1/\alpha_G^{\mathrm{EABC}}$ & $\hooftInvAlphaG$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Vorsichtige Einordnung im EABC-Framework.}
+Die Größe $\alpha_G^{\mathrm{EABC}}\approx 0{,}050$ bzw.\ ihr Kehrwert
+$1/\alpha_G^{\mathrm{EABC}}\approx 19{,}8$ charakterisiert im EABC-Bild eine
+dimensionslose \emph{Gravitationsstrukturkonstante} auf Planck-Skala.
+Sie entsteht allein aus der t'Hooft-Massenskala und $M_{\mathrm{Planck}}$;
+eine numerische Koinzidenz oder Identifikation mit dem spektralen Postulat
+$Q_{\mathrm{tot}}=1796$ (Abschnitt~\ref{sec:monopol-eigenschaften}) wird
+\emph{nicht} behauptet. Beide Konstanten gehören zu verschiedenen
+Modellschichten --- $Q_{\mathrm{tot}}$ parametrisiert die Kopplung an
+Riemann-Nullstellen, während $M_M$ eine Feldtheorie-Massenskala beschreibt.
+Eine Vereinheitlichung bleibt Gegenstand offener Fragen
+(Abschnitt~\ref{sec:offene-fragen}).
+
+%=============================================================================
+\section{Methodische Richtigstellung}
+\label{sec:methodische-richtigstellung}
+%=============================================================================
+
+In der numerischen Verifikation im hochenergetischen Bereich ($t\approx 5000$)
+zeigt sich eine methodische Divergenz, die vor jeder spektralen Auswertung
+geklärt werden muss.
+Eine Nullstellensuche, die nur den asymptotischen Siegel-\emph{Hauptterm} nutzt
+und den Restterm $R(t)$ vernachlässigt, erzeugt systematische Lücken in der Stichprobe.
+
+\begin{table}[htbp]
+\centering
+\caption{Vergleich numerischer Approximationsmethoden im Intervall $t \in [5000,\,5140]$.
+Die ersten beiden Zeilen verwenden den unvollständigen Hauptterm; die dritte Zeile die
+vollständige Implementierung \texttt{mpmath.siegelz} mit adaptiver Schrittweite
+und \texttt{brentq}/Illinois-Verfeinerung.}
+\label{tab:siegel_vergleich}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Methode} &
+\textbf{Mittlerer norm.\ Abstand} &
+\textbf{Varianz $\sigma^2$} &
+\textbf{Gefundene Nullstellen} \\
+\midrule
+Hauptterm, Schrittweite $0{,}5$ &
+$\badMeanFixed$ & $\badVarFixed$ & $\sim\badCountInterval$ \\
+Hauptterm, adaptive Schrittweite &
+$\badMeanAdapt$ & $\badVarAdapt$ & $\sim\badCountInterval$ \\
+\texttt{mpmath.siegelz}, adaptiv &
+$\convFiftyMean$ & $\convFiftyVar$ & $\sim\goodCountInterval$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Tabelle~\ref{tab:siegel_vergleich} zeigt: Eine rein adaptive Schrittweite behebt das
+Problem nicht, solange $R(t)$ fehlt --- es werden dieselben $\sim\badCountInterval$ Nullstellen
+gefunden wie mit fester Schrittweite $0{,}5$.
+Der scheinbare Faktor $\sim 3$ im mittleren normierten Abstand ist ein
+Aliasing-Effekt der Unterabtastung, kein spektraler Beitrag des Monopols.
+
+Erst unter Einbeziehung der vollständigen Riemann-Siegel-Asymptotik stellt sich
+Weyl-konformes Verhalten mit mittlerem Abstand $\approx 1$ ein.
+Eine Modifikation der globalen Zählfunktion der Form
+$N_{\mathrm{EABC}}(T) \approx \tfrac{1}{3}\,N_{\mathrm{standard}}(T)$
+--- die sogenannte ``Drittel-Regel'' oder jede daraus abgeleitete
+``Drittel-Symmetrie'' der Nullstellendichte ---
+ist ohne unabhängige Evidenz \textbf{nicht haltbar und wird verworfen}.
+
+\paragraph{Korrigierte Pipeline.}
+Alle im Folgenden berichteten Ergebnisse verwenden \texttt{mpmath.siegelz} mit
+konservativer Schrittweite (ca.\ ein Fünftel des lokalen Weyl-Abstands),
+Vorzeichenwechsel-Detektion und Wurzelverfeinerung (\texttt{brentq} bzw.\ Illinois).
+Die Entfaltung folgt dem glatten Weyl-Hauptterm
+\begin{equation}
+  N(t) = \frac{t}{2\pi}\,\log\!\Bigl(\frac{t}{2\pi e}\Bigr) + \frac{7}{8},
+  \label{eq:weyl-unfold}
+\end{equation}
+und liefert $N-1$ normierte Abstände $s_n = N(\gamma_{n+1}) - N(\gamma_n)$.
+Als Referenz für das zweite Moment dient $\sigma^2_{\mathrm{GUE}} = \monopolGUE$
+(Wigner-Dyson-Verteilung im GUE-Limes).
+
+%=============================================================================
+\section{Numerische Ergebnisse}
+\label{sec:numerische-ergebnisse}
+%=============================================================================
+
+\subsection{Stichproben $N=150$, $500$ und $1000$}
+
+Tabelle~\ref{tab:haupt-ergebnisse} fasst drei unabhängige Läufe im Sektor
+$t_0=5000$ zusammen. Der mittlere normierte Abstand bleibt in allen Fällen
+nahe $1$ (Weyl-Konformität). Der Varianz-Exzess $\Delta\sigma^2 = \sigma^2 - \sigma^2_{\mathrm{GUE}}$
+liegt stabil im Bereich $+0{,}053$ bis $+0{,}057$.
+
+\begin{table}[htbp]
+\centering
+\caption{Spektralstatistiken nach korrigierter Pipeline ($t_0=5000$,
+$\sigma^2_{\mathrm{GUE}}\approx 0{,}104$).}
+\label{tab:haupt-ergebnisse}
+\begin{tabular}{rcccccc}
+\toprule
+$N$ & $t_{\max}$ & $\bar{s}$ & $\sigma^2$ & $\Delta\sigma^2$ & $P_m$ & Laufzeit \\
+\midrule
+150  & \monopolTmax      & \monopolMeanSpacing  & \monopolVariance   & $+\monopolDeltaSigma$   & $-0{,}0289$ & $31{,}3\,\mathrm{s}$ \\
+500  & \bulkFiveHundredTmax & \bulkFiveHundredMean & \bulkFiveHundredVar & $+\bulkFiveHundredDelta$ & $\bulkFiveHundredPm$ & $\bulkFiveHundredRuntime\,\mathrm{s}$ \\
+1000 & \bulkThousandTmax    & \bulkThousandMean    & \bulkThousandVar    & $+\bulkThousandDelta$    & $\bulkThousandPm$    & $\bulkThousandRuntime\,\mathrm{s}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent
+Für $N=150$ gilt $S_N=\monopolPressure$ und $P_m=S_N/150\approx -0{,}0289$.
+Für $N=500$ ist $S_N=\bulkFiveHundredPressureSum$ und $P_m=\bulkFiveHundredPm$.
+Die Bulk-Evaluation ($N=1000$) nutzt \texttt{mpmath\_dps=35} und Illinois-Solver
+(\texttt{EABC\_Bulk\_Evaluation.py}).
+
+\subsection{Konvergenz innerhalb eines Laufs}
+
+Teilstichproben des $N=150$-Referenzlaufs zeigen, dass $\bar{s}$ durchgängig nahe $1$
+bleibt und $\Delta\sigma^2$ sich im Bereich $+0{,}05$ bis $+0{,}07$ einpendelt
+(Tabelle~\ref{tab:varianz-konvergenz}).
+
+\begin{table}[htbp]
+\centering
+\caption{Konvergenz normierter Abstandsstatistiken (gleicher Lauf, $t_0=5000$).}
+\label{tab:varianz-konvergenz}
+\begin{tabular}{rccc}
+\toprule
+$N$ & $\bar{s}$ & $\sigma^2$ & $\Delta\sigma^2$ \\
+\midrule
+50   & $\convFiftyMean$      & $\convFiftyVar$      & $+\convFiftyDelta$      \\
+100  & $\convHundredMean$     & $\convHundredVar$     & $+\convHundredDelta$     \\
+150  & $\monopolMeanSpacing$  & $\monopolVariance$    & $+\monopolDeltaSigma$    \\
+500  & $\bulkFiveHundredMean$  & $\bulkFiveHundredVar$  & $+\bulkFiveHundredDelta$  \\
+1000 & $\bulkThousandMean$    & $\bulkThousandVar$    & $+\bulkThousandDelta$    \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Block-Stabilität bei $N=1000$}
+
+Zur Prüfung der Robustheit wurde die $N=1000$-Stichprobe in vier Blöcke à $250$
+Nullstellen zerlegt (Implementierung in \texttt{EABC\_Bulk\_Evaluation.py}).
+$\Delta\sigma^2$ bleibt in allen Blöcken positiv ($+0{,}049$ bis $+0{,}066$),
+$P_m$ wechselt jedoch das Vorzeichen und schwankt um eine Größenordnung
+--- ein Hinweis auf die oszillatorische Natur von \eqref{eq:pressure-sum},
+nicht auf eine konvergente ``Monopol-Stärke''.
+
+\begin{table}[htbp]
+\centering
+\caption{Blockweise Stabilität ($N=1000$, je 250 Nullstellen).}
+\label{tab:block-stabilitaet}
+\begin{tabular}{rcccc}
+\toprule
+Block & $\bar{s}$ & $\sigma^2$ & $\Delta\sigma^2$ & $P_m$ \\
+\midrule
+1 & $\blkOneMean$   & $\blkOneVar$   & $+\blkOneDelta$   & $\blkOnePm$   \\
+2 & $\blkTwoMean$   & $\blkTwoVar$   & $+\blkTwoDelta$   & $\blkTwoPm$   \\
+3 & $\blkThreeMean$ & $\blkThreeVar$ & $+\blkThreeDelta$ & $\blkThreePm$ \\
+4 & $\blkFourMean$  & $\blkFourVar$  & $+\blkFourDelta$  & $\blkFourPm$  \\
+\midrule
+\multicolumn{5}{l}{\textit{Gesamt:} $\bar{s}=\bulkThousandMean$,
+  $\sigma^2=\bulkThousandVar$,
+  $\Delta\sigma^2=+\bulkThousandDelta$,
+  $P_m=\bulkThousandPm$.}
+\end{tabular}
+\end{table}
+
+%=============================================================================
+\section{Interpretation}
+\label{sec:interpretation}
+%=============================================================================
+
+\paragraph{Varianz, nicht Mittelwert.}
+Die numerisch gesicherte Abweichung vom GUE-Referenzensemble manifestiert sich
+im \emph{zweiten Moment} der entfalteten Abstandsverteilung:
+$\Delta\sigma^2 \approx +0{,}054$--$+0{,}057$.
+Der mittlere Abstand $\bar{s}\approx 1$ bleibt Weyl-konform.
+Eine frühere Fehlinterpretation (Faktor $\sim 3$ im Mittelwert) resultierte
+ausschließlich aus unvollständiger Siegel-Approximation
+(Abschnitt~\ref{sec:methodische-richtigstellung}).
+
+\paragraph{Relative Größe des Exzesses.}
+Bei $N=1000$ beträgt $\sigma^2/\sigma^2_{\mathrm{GUE}} \approx 1{,}55$;
+der Varianz-Überschuss ist damit moderat, aber über Teilstichproben und
+Datenblöcke hinweg konsistent positiv. Ob dieser Exzess über größere $t$-Intervalle
+persistiert oder statistisch im Rahmen endlicher GUE-Fluktuationen liegt,
+bedarf weiterer Untersuchung.
+
+\paragraph{Kein Monopol-Nachweis.}
+Die Größe $P_m$ ist eine \emph{Modellgröße}, konstruiert aus den gefundenen
+Nullstellen und dem Postulat \eqref{eq:qtot}. Sie belegt weder die Existenz
+eines physikalischen magnetischen Monopols noch eine kausale Kopplung zwischen
+Hurwitz-Gitter-Defekten und Riemann-Nullstellen. Korrelationen zwischen
+$\Delta\sigma^2$ und $P_m$ wurden in diesem Preprint \emph{nicht} quantitativ
+getestet.
+
+\paragraph{Zurückhaltung bei Mechanismen.}
+Zuordnungen von $\Delta\sigma^2$ zu konkreten Feldtheorie-Bildern
+(Stark-Effekt, Symmetriebrechung der Dichte, Poisson-zu-GUE-Übergang mit
+zusätzlicher Breite) bleiben spekulativ und werden bis zu unabhängigen
+Reproduktionen zurückgestellt.
+
+%=============================================================================
+\section{Offene Fragen}
+\label{sec:offene-fragen}
+%=============================================================================
+
+\begin{enumerate}
+  \item \textbf{Herleitung von $Q_{\mathrm{tot}}=1796$.}
+        Welche arithmetische oder physikalische Begründung (jenseits des Modellpostulats)
+        rechtfertigt den Wert $1796$? Eine Verbindung zu E$_8$ ist nicht etabliert.
+
+  \item \textbf{Vereinheitlichung der Monopol-Bilder.}
+        Wie lässt sich das globale Punkt-Monopol mit den Hurwitz-Defekten aus
+        \texttt{MagMo.py} in einem gemeinsamen Kopplungsterm formulieren?
+
+  \item \textbf{Dirac-Monopol und Spektralstatistik.}
+        Unter welchen Annahmen würde ein Dirac-monopolarer Störterm die
+        \emph{Varianz} (nicht die mittlere Dichte) der Nullstellen-Abstände
+        erhöhen, ohne das Weyl-Gesetz zu verletzen?
+
+  \item \textbf{t'Hooft-Skala und $Q_{\mathrm{tot}}$.}
+        Lässt sich die t'Hooft-Monopolmasse $M_M\sim M_X/\alpha$
+        (Abschnitt~\ref{sec:hooft-monopolmasse}) mit dem Postulat
+        $Q_{\mathrm{tot}}=1796$ oder mit $\alpha_G^{\mathrm{EABC}}$ in einer
+        gemeinsamen EABC-Kopplungsgleichung formulieren?
+
+  \item \textbf{Skalenabhängigkeit.}
+        Bleibt $\Delta\sigma^2 > 0$ für größere $t$ und $N$ stabil?
+        Systematische Fenster-Scans oberhalb $t\approx 6000$ fehlen.
+
+  \item \textbf{Unabhängige Reproduktion.}
+        Die Pipeline ist in Python/mpmath dokumentiert; externe Replikation
+        mit alternativem Nullstellen-Solver (Odlyzko-Schönage, arb) wäre wünschenswert.
+\end{enumerate}
+
+%=============================================================================
+\section*{Danksagung und Hinweise}
+\addcontentsline{toc}{section}{Danksagung und Hinweise}
+%=============================================================================
+
+Die numerischen Skripte \texttt{EABC\_Gross\_Analyse.py},
+\texttt{EABC\_Bulk\_Evaluation.py}, \texttt{Monopol Test.py}, \texttt{MagMo.py}
+und \texttt{hooft.py} sind die primären Reproduktionsquellen. Ergebnismakros für $N=150$ stammen aus
+\texttt{monopol\_preprint\_results.txt}; Bulk-Daten aus \texttt{bulk\_results.json}.
+
+%=============================================================================
+\begin{thebibliography}{9}
+\bibitem{berry-keating}
+J.~P.~Keating und M.~C.~Gutzwiller,
+Spektralinterpretationen der Riemann-Nullstellen (Überblick).
+
+\bibitem{gue}
+M.~L.~Mehta,
+\emph{Random Matrices},
+Academic Press, 3.\ Aufl.
+
+\bibitem{odlyzko}
+A.~M.~Odlyzko,
+On the distribution of spacings between zeros of the zeta function,
+\emph{Math.\ Comp.} \textbf{48} (1987).
+
+\bibitem{dirac}
+P.~A.~M.~Dirac,
+Quantised singularities in the electromagnetic field,
+\emph{Proc.\ Roy.\ Soc.\ A} \textbf{133} (1931).
+
+\bibitem{thooft}
+G.~'t~Hooft,
+Magnetic monopoles in unified gauge theories,
+\emph{Nucl.\ Phys.\ B} \textbf{79} (1974), 276--284.
+
+\bibitem{polyakov}
+A.~M.~Polyakov,
+Particle spectrum in quantum field theory,
+\emph{JETP Lett.} \textbf{20} (1974), 194--195.
+
+\bibitem{hurwitz}
+A.~Hurwitz,
+Über die Komposition der quadratischen Formen,
+\emph{Math.\ Ann.} \textbf{88} (1923).
+\end{thebibliography}
+
+\end{document}

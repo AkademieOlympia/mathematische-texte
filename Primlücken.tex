@@ -1,0 +1,61 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm,amsfonts}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\geometry{margin=2.5cm}
+
+\title{\textbf{Primlücken als Rotationen auf einem zyklischen Vier-Zustands-Raum}}
+\author{\textbf{Thomas Hoffbauer} \\ \small Bamberg, Deutschland}
+\date{\today}
+
+\newtheorem{theorem}{Satz}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Bemerkung}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Wir betrachten Primlücken $g_n=p_{n+1}-p_n$ zwischen aufeinanderfolgenden Primzahlen $>3$ modulo $12$ \cite{hofbauer_gap}. Die zulässigen Restklassen sind $\{1,5,7,11\}=(\mathbb{Z}/12\mathbb{Z})^\times$ mit $(\mathbb{Z}/12\mathbb{Z})^\times\cong C_2\times C_2$; verwendet wird jedoch nur eine zusätzlich gewählte zyklische Ordnung dieser vier Klassen \cite{hofbauer_gap}. Der Hauptsatz zeigt, dass das zugehörige Rotationsinkrement auf einem gerichteten Kreisgraphen $C_4$ ausschließlich von $g_n\bmod 12$ abhängt \cite{hofbauer_gap}. Daraus folgt eine wohldefinierte Abbildung der sechs geraden Lückenklassen modulo $12$ auf vier Rotationszustände \cite{hofbauer_gap}. Die Konstruktion liefert damit eine exakte kombinatorische Kodierung von Primlücken als diskrete Rotationsdynamik \cite{hofbauer_gap}.
+	\end{abstract}
+	
+	\section{Einleitung}
+	Primlücken werden traditionell als arithmetische Größen untersucht, $g_n = p_{n+1}-p_n$, wobei $p_n$ und $p_{n+1}$ aufeinanderfolgende Primzahlen sind \cite{hofbauer_gap}. Das Ziel dieser Notiz ist zu zeigen, dass dieselbe Information eine natürliche geometrische Interpretation besitzt \cite{hofbauer_gap}. Anstatt Primlücken als Abstände auf der Zahlengeraden zu betrachten, interpretieren wir sie als Erzeuger von Rotationen auf einem zyklischen Vier-Zustands-System, das aus den zulässigen Restklassen modulo zwölf gewonnen wird \cite{hofbauer_gap}.
+	
+	Der mathematische Anspruch dieser Darstellung liegt in einer sauberen, exakten Umcodierung, nicht in einer neuen tiefen Struktur der Primzahlen \cite{hofbauer_gap}. Insbesondere wird keine neue Gruppenstruktur eingeführt; vielmehr wird auf einer endlichen Vierermenge eine zusätzliche zyklische Ordnung gewählt, die die Lückenstatistik in eine dynamische Sprache übersetzt \cite{hofbauer_gap}.
+	
+	\section{Der Restklassen-Zustandsraum}
+	Sei $U_{12} = (\mathbb{Z}/12\mathbb{Z})^\times = \{1,5,7,11\}$ \cite{hofbauer_gap}. Jede Primzahl $p>3$ gehört genau zu einer dieser Restklassen \cite{hofbauer_gap}. Als Gruppe gilt $U_{12}\cong C_2\times C_2$, also ist $U_{12}$ nicht zyklisch \cite{hofbauer_gap}. Die Verwendung eines Zyklus bezieht sich hier nur auf eine zusätzliche Ordnung dieser vier Elemente \cite{hofbauer_gap}.
+	
+	\begin{definition}
+		Definiere die Zustandsabbildung $\rho:U_{12}\rightarrow \mathbb{Z}_4$ durch $\rho(1)=0$, $\rho(5)=1$, $\rho(7)=2$, $\rho(11)=3$ \cite{hofbauer_gap}.
+	\end{definition}
+	
+	Damit bestimmt jede Primzahl $p>3$ einen Zustand $s(p)=\rho(p\bmod 12)\in\mathbb{Z}_4$ \cite{hofbauer_gap}. Geometrisch identifiziert dies die zulässigen Restklassen mit dem gerichteten Kreisgraphen $C_4: 0\rightarrow1\rightarrow2\rightarrow3\rightarrow0$ \cite{hofbauer_gap}. Äquivalent dazu wählen wir auf den ursprünglichen Restklassen die zyklische Ordnung $1\to5\to7\to11\to1$ \cite{hofbauer_gap}.
+	
+	\section{Darstellungssatz für Rotationen}
+	\begin{theorem}
+		Seien $p_n<p_{n+1}$ aufeinanderfolgende Primzahlen größer als drei \cite{hofbauer_gap}. Dann hängt das Rotationsinkrement $R_n=s(p_{n+1})-s(p_n)\pmod 4$ nur von der Restklasse der Primlücke modulo zwölf ab \cite{hofbauer_gap}. Genauer gilt $R_n=\Phi(g_n\bmod 12)$, wobei $\Phi(0)=0$, $\Phi(2)=1$, $\Phi(4)=1$, $\Phi(6)=2$, $\Phi(8)=3$, $\Phi(10)=3$ \cite{hofbauer_gap}.
+	\end{theorem}
+	
+	\section{Forschungsprogramm und Ausblick}
+	Aus dieser exakten Faktorisierung ergibt sich eine systematische Agenda für numerische Untersuchungen \cite{hofbauer_gap}:
+	\begin{enumerate}[label=\textbf{F\arabic*:}]
+		\item \textbf{Übergangsmatrix und Markov-Näherung:} Untersuchung der empirischen Übergangszahlen $N_{ij}(X)$ auf mögliche Asymmetrien zwischen Vorwärts- und Rückwärtsübergängen \cite{hofbauer_gap}.
+		\item \textbf{Häufigkeiten der Rotationsklassen:} Untersuchung der Grenzverhältnisse $\nu_1(X)/\nu_3(X)$ und Fehlerterme gegen ein Referenzmodell ohne Bias \cite{hofbauer_gap}.
+		\item \textbf{Vergleich mit Zufallsmodellen:} Abgleich der beobachteten Werte mit Cramér-artigen oder entkoppelten Restklassenmodellen zur Identifikation tieferer Korrelationen \cite{hofbauer_gap}.
+	\end{enumerate}
+	
+	\begin{thebibliography}{9}
+		\bibitem{hofbauer_gap} Hoffbauer, T.: \emph{Primlücken als Rotationen auf einem zyklischen Vier-Zustands-Raum}. Manuskript, 2026.
+	\end{thebibliography}
+	
+\end{document}

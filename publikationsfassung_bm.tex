@@ -1,0 +1,386 @@
+
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.6cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{csquotes}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  urlcolor=blue,
+  pdftitle={Mehrschichtige Zerlegungsarchitektur und polynomiale Uebergangsgeometrie},
+  pdfauthor={Thomas Hoffbauer}
+}
+
+\theoremstyle{definition}
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{korollar}[satz]{Korollar}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+\newtheorem{beispiel}[satz]{Beispiel}
+\newtheorem{hypothese}[satz]{Hypothese}
+\newtheorem{vermutung}[satz]{Vermutung}
+\newtheorem{arbeitsvermutung}[satz]{Arbeitsvermutung}
+\newtheorem{leitthese}[satz]{Leitthese}
+
+\title{Mehrschichtige Zerlegungsarchitektur der natürlichen Zahlen\\
+und polynomiale Uebergangsgeometrie\\
+\large Publikationsnahe Arbeitsfassung}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Diese Arbeit entwickelt eine publikationsnahe Arbeitsfassung eines algebraisch-operatorischen Programms innerhalb des Bamberger Modells. Im Zentrum stehen kanonische zentrierte Mehrlingspolynome, Uebergangskriterien zwischen Mehrlingsklassen und eine mehrschichtige Zerlegungsarchitektur natuerlicher Zahlen in glatte, additive und polynomiale Strukturen. Der zentrale methodische Gedanke besteht darin, lokale Primzahlcluster nicht nur ueber ihre Primfaktorzerlegung, sondern zugleich ueber Schalenreduktionen, additive Binnenkanaele, zentrierte Polynomnormalformen und gerichtete Uebergangsoperatoren zu beschreiben. Numerische Resultate zeigen, dass ein gerichteter Uebergangsoperator zwar keine robuste exklusive Naehe zu Zeta-Referenzdaten isoliert, intern jedoch stark durch Symmetrieerhalt organisiert ist: symmetrieerhaltende Uebergaenge sind signifikant guenstiger als symmetriebrechende. Die Arbeit versteht sich daher nicht als abgeschlossene Theorie, sondern als praezise Forschungsplattform fuer die weitere Untersuchung von Defekt, Reduktion, Symmetrie und operatorischen Kopplungsstraengen im Zahlenraum.
+\end{abstract}
+
+\tableofcontents
+
+\section{Einleitung}
+
+Die klassischen Zugriffe auf die natuerlichen Zahlen werden von zwei Leitmotiven getragen: der multiplikativen Primfaktorzerlegung und der additiven Struktur diskreter Muster. Beide Perspektiven sind grundlegend, aber sie erfassen unterschiedliche Schichten derselben arithmetischen Wirklichkeit. Das Bamberger Modell setzt an der Vermutung an, dass lokale Primzahlcluster, Schalenreduktionen, Familienresiduen und polynomiale Normalformen nicht isolierte Phaenomene sind, sondern Ausdruck einer gemeinsamen Uebergangsgeometrie.
+
+Im hier verfolgten Zugriff stehen insbesondere drei Fragen im Vordergrund. Erstens: Welche algebraischen Invarianten tragen kleine Mehrlingsmuster wie Zwillinge, Drillinge, Vierlinge und Fuenflinge nach Zentrierung? Zweitens: Welche Uebergaenge zwischen solchen Mustern sind strukturell guenstig, welche erzeugen Defekt? Drittens: Laesst sich daraus eine mehrschichtige Zerlegungsarchitektur formulieren, in der glatte Schalen, additive Binnenkanaele und polynomiale Normalformen zusammenwirken?
+
+Die Arbeit fuehrt dazu mehrere zuvor getrennte Straenge zusammen:
+\begin{itemize}[leftmargin=2em]
+\item glatte Schalen und reduzierte Kerne,
+\item additive Binnenstrukturen der \(E\)- und \(A\)-Welt,
+\item kanonische zentrierte Mehrlingspolynome,
+\item relationale Uebergangskosten und gerichtete Operatoren.
+\end{itemize}
+
+Der Ton dieser Arbeitsfassung ist bewusst doppelt: streng dort, wo saubere Definitionen und einfache Strukturresultate vorliegen, und programmatisch dort, wo erst numerische Befunde oder heuristische Leitthesen existieren. Gerade diese Trennung ist fuer die weitere Entwicklung des Modells entscheidend.
+
+\section{Kanonische Mehrlingspolynome}
+
+\begin{definition}[Zentrierung eines Mehrlingsmusters]
+Sei
+\[
+\omega=(a_1,\dots,a_k)\in\mathbb R^k
+\]
+ein geordnetes Mehrlingsmuster. Wir definieren seinen Schwerpunkt durch
+\[
+m(\omega):=\frac{1}{k}\sum_{\nu=1}^k a_\nu
+\]
+und die zentrierten Nullstellen durch
+\[
+b_\nu:=a_\nu-m(\omega)\qquad (\nu=1,\dots,k).
+\]
+\end{definition}
+
+\begin{definition}[Kanonisches Mehrlingspolynom]
+Zum Muster \(\omega=(a_1,\dots,a_k)\) definieren wir das zentrierte kanonische Mehrlingspolynom
+\[
+Q_\omega(y):=\prod_{\nu=1}^k (y-b_\nu),
+\]
+wobei \(b_\nu=a_\nu-m(\omega)\) die zentrierten Nullstellen sind.
+\end{definition}
+
+\begin{bemerkung}
+Die absolute Lage des Musters wird durch die Zentrierung eliminiert. Das Polynom \(Q_\omega\) haengt daher nur von der inneren Geometrie beziehungsweise vom Abstandsmuster des Mehrlings ab.
+\end{bemerkung}
+
+\begin{lemma}[Verschwinden des Terms \(y^{k-1}\)]
+Sei
+\[
+Q_\omega(y)=\prod_{\nu=1}^k (y-b_\nu)
+\]
+das zentrierte Mehrlingspolynom eines Musters \(\omega\). Dann verschwindet der Koeffizient von \(y^{k-1}\).
+\end{lemma}
+
+\begin{proof}
+Nach Definition der Zentrierung gilt
+\[
+\sum_{\nu=1}^k b_\nu=0.
+\]
+Der Koeffizient von \(y^{k-1}\) ist bis auf Vorzeichen gerade die Summe der Nullstellen. Also verschwindet dieser Koeffizient.
+\end{proof}
+
+\begin{lemma}[Charakterisierung symmetrischer Muster durch Paritaet]
+Sei
+\[
+Q_\omega(y)=\prod_{\nu=1}^k (y-b_\nu)
+\]
+das zentrierte kanonische Polynom eines Mehrlingsmusters \(\omega\).
+Dann gilt:
+\begin{enumerate}[leftmargin=2em]
+\item Ist \(k\) gerade, so ist \(Q_\omega\) genau dann gerade, wenn \(\omega\) symmetrisch ist.
+\item Ist \(k\) ungerade und \(0\) eine zentrierte Nullstelle, so ist \(Q_\omega\) genau dann ungerade, wenn \(\omega\) symmetrisch ist.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Ist die Nullstellenmenge unter \(b\mapsto -b\) invariant, so treten fuer jedes \(b\neq 0\) die Faktoren
+\[
+(y-b)(y+b)=y^2-b^2
+\]
+paarweise auf. Bei geradem Grad entsteht dadurch ein Produkt rein quadratischer Faktoren, also ein gerades Polynom. Bei ungeradem Grad und zusaetzlicher Nullstelle \(0\) tritt ein weiterer Faktor \(y\) auf, so dass das Gesamtpolynom ungerade ist.
+
+Umgekehrt erzwingt die Paritaet eines normierten Polynoms mit reellen Nullstellen die entsprechende Spiegelungssymmetrie der Nullstellenmenge.
+\end{proof}
+
+\section{Uebergangskriterien zwischen Mehrlingsklassen}
+
+\begin{definition}[Mehrlingsklasse]
+Eine Mehrlingsklasse vom Grad \(k\) ist eine Familie geordneter Muster
+\[
+\omega=(a_1,\dots,a_k)
+\]
+mit festem Abstandstyp. Dem Muster ist das zentrierte kanonische Polynom
+\[
+Q_\omega(y)=\prod_{\nu=1}^k (y-b_\nu)
+\]
+zugeordnet.
+\end{definition}
+
+\begin{definition}[Symmetrieindex]
+Sei \(Q_\omega\) das zentrierte Mehrlingspolynom eines Musters \(\omega\). Wir definieren den Symmetrieindex
+\[
+\mathfrak S(\omega):=
+\begin{cases}
+1,& \text{falls } Q_\omega(-y)=Q_\omega(y)\text{ oder }Q_\omega(-y)=-Q_\omega(y),\\
+0,& \text{sonst.}
+\end{cases}
+\]
+\end{definition}
+
+\begin{definition}[Diskriminantenkosten]
+Fuer einen Uebergang \(\omega_k\rightsquigarrow\omega_{k+1}\) definieren wir die Diskriminantenkosten
+\[
+\mathfrak D(\omega_k,\omega_{k+1})
+:=
+\log \Delta(Q_{\omega_{k+1}})
+-\log \Delta(Q_{\omega_k}),
+\]
+sofern beide Diskriminanten positiv sind.
+\end{definition}
+
+\begin{definition}[Uebergangskostenfunktional]
+Fuer einen Uebergang \(\omega_k\rightsquigarrow\omega_{k+1}\) definieren wir formal die Uebergangskosten
+\[
+\mathcal T(\omega_k,\omega_{k+1})
+:=
+\alpha\bigl(\mathfrak S(\omega_k)-\mathfrak S(\omega_{k+1})\bigr)^2
++\beta\,\mathfrak M_{\mathrm{odd}}(\omega_{k+1})
++\gamma\,\mathfrak D(\omega_k,\omega_{k+1})
++\delta\,\bigl(\mathfrak F(\omega_{k+1})-\mathfrak F(\omega_k)\bigr),
+\]
+mit nichtnegativen Gewichten \(\alpha,\beta,\gamma,\delta\).
+\end{definition}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{llllll}
+\toprule
+Uebergang & Typ & Ausgangspolynom & Zielpolynom & Symmetrie & qualitative Kosten \\
+\midrule
+\((0,2)\to(0,2,6)\)
+&
+Zwilling \(\to\) Drilling I
+&
+\(\displaystyle y^2-1\)
+&
+\(\displaystyle y^3-\frac{28}{3}y-\frac{160}{27}\)
+&
+\(1\to 0\)
+&
+hoch
+\\[0.8em]
+\((0,2,6,8)\to(0,2,6,8,12)\)
+&
+Vierling \(\to\) Fuenfling A
+&
+\(\displaystyle y^4-20y^2+64\)
+&
+\(\displaystyle y^5-\frac{228}{5}y^3-\frac{448}{25}y^2+\frac{40512}{125}y-\frac{387072}{3125}\)
+&
+\(1\to 0\)
+&
+sehr hoch
+\\[1.0em]
+\((0,2,6,8)\to(0,4,6,8,12)\)
+&
+Vierling \(\to\) Fuenfling B
+&
+\(\displaystyle y^4-20y^2+64\)
+&
+\(\displaystyle y^5-40y^3+144y = y(y^2-4)(y^2-36)\)
+&
+\(1\to 1\)
+&
+niedrig
+\\
+\bottomrule
+\end{tabular}
+\caption{Charakteristische Uebergaenge zwischen Mehrlingsmustern. Symmetrieerhaltende Uebergaenge bleiben algebraisch deutlich guenstiger als symmetriebrechende.}
+\end{table}
+
+\section{Mehrschichtige Zerlegungsarchitektur}
+
+\begin{definition}[Glatte Schale relativ zu einer Primschranke]
+Sei \(p_i\) die \(i\)-te Primzahl. Fuer \(n\in\mathbb N\) definieren wir den \(p_i\)-glatten Anteil durch
+\[
+s_{\le p_i}(n):=\prod_{p\le p_i} p^{v_p(n)}
+\]
+und den reduzierten Restkern durch
+\[
+m_{>p_i}(n):=\frac{n}{s_{\le p_i}(n)}.
+\]
+Dann gilt
+\[
+n=s_{\le p_i}(n)\,m_{>p_i}(n).
+\]
+\end{definition}
+
+\begin{definition}[Additive \(E\)-Struktur]
+Wir sprechen heuristisch von einer additiven \(E\)-Struktur, wenn ein Zustand oder Kern \(e\) in einer Weise dargestellt werden kann, die mit einer Summen-von-zwei-Quadraten-Struktur vertraeglich ist:
+\[
+e=u^2+v^2.
+\]
+\end{definition}
+
+\begin{definition}[Additive \(A\)- bzw. Tripel-Struktur]
+Wir sprechen heuristisch von einer additiven \(A\)-Struktur, wenn ein Modellzustand ueber ein Tripel oder eine additiv vermittelte Kopplung
+\[
+a=x+y
+\]
+beziehungsweise ueber eine strukturell aequivalente Zerlegung in einen reduzierbaren Familienraum zurueckgefuehrt werden kann.
+\end{definition}
+
+\begin{bemerkung}
+Die Arbeitshypothese lautet, dass glatte Schalen, additive Binnenstrukturen und polynomiale Uebergangsnormalformen nicht nebeneinanderstehen, sondern gemeinsam jene Kopplungsstraenge sichtbar machen, die in einer rein multiplikativen Sicht verborgen bleiben.
+\end{bemerkung}
+
+\section{Hypothesen- und Vermutungsblock}
+
+\begin{hypothese}[Mehrschichtige Zerlegung]
+Jede natuerliche Zahl laesst sich relativ zu einer gewaehlten Primschranke und einer Familienstruktur zugleich unter mehreren komplementaeren Gesichtspunkten betrachten: als Produkt einer glatten Schale und eines reduzierten Kerns, als Traeger additiver Binnenstrukturen und als Ausgangspunkt lokaler polynomialer Uebergangsnormalformen.
+\end{hypothese}
+
+\begin{hypothese}[Kompatibilitaet von Schale und Kern]
+Primzahlcluster treten bevorzugt dort auf, wo glatte Schale und reduzierter Kern nicht gegeneinander arbeiten, sondern in einer Weise gekoppelt sind, die lokale Mehrlingsmuster stabilisiert.
+\end{hypothese}
+
+\begin{vermutung}[Polynomiale Uebergangsnormalformen]
+Lokale Mehrlingsmuster der natuerlichen Zahlen besitzen kanonische zentrierte Polynomformen, in denen ihre wesentlichen Symmetrie-, Momenten- und Faktorisierungsstrukturen sichtbar werden.
+\end{vermutung}
+
+\begin{arbeitsvermutung}[Symmetrieprinzip im Uebergangsoperator]
+Symmetrieerhaltende Uebergaenge zwischen Mehrlingsklassen sind algebraisch guenstiger als symmetriebrechende Uebergaenge. Insbesondere erzeugt der Verlust einer zentrierten \(\pm\)-Symmetrie einen strukturellen Defekt, der sich sowohl in ungeraden Momenten als auch in gerichteten Uebergangsoperatoren manifestiert.
+\end{arbeitsvermutung}
+
+\begin{arbeitsvermutung}[Vierlingsstufe als Stabilitaetsniveau]
+Der Primzahlvierling markiert im Modell eine besonders stabile Stufe, weil er zugleich die kleinste vollstaendige ERABC-Besetzung realisiert, einen kanonischen quaternionischen Vollfamilienzustand traegt und in der polynomialen Sicht eine hochsymmetrische, elementar faktorisierbare Normalform besitzt.
+\end{arbeitsvermutung}
+
+\begin{leitthese}[Operatorische Kopplungsstraenge]
+Die eigentlichen Kopplungsstraenge der natuerlichen Zahlen liegen nicht allein in den Zahlen selbst, sondern in den gerichteten Uebergaengen zwischen ihren reduzierten, additiven und polynomialen Zustaenden.
+\end{leitthese}
+
+\section{Numerische Resultate zum gerichteten Uebergangsoperator}
+
+\subsection{Externe Spektralvergleiche}
+
+Es wurde ein gerichteter Uebergangsoperator \(T\) auf dem Raum kanonischer zentrierter Mehrlingspolynome konstruiert. Knoten des Graphen sind Muster verschiedener Grade, waehrend gerichtete Kanten genau dann zugelassen werden, wenn ein Muster \(\omega_{k+1}\) aus \(\omega_k\) durch Hinzufuegen eines weiteren Punkts hervorgeht. Die Kantengewichte werden durch ein Uebergangskostenfunktional bestimmt, das insbesondere Symmetrieverlust, Aktivierung ungerader Momente, Zuwachs der Diskriminante sowie Verlust einfacher Faktorisierbarkeit bestraft.
+
+Fuer den so konstruierten gerichteten Operator \(T\) wurden sowohl die Betraege seiner Eigenwerte als auch seine Singulaerwerte gegen die Referenzdaten aus \texttt{zeros6.npy} getestet. Dabei ergab sich kein Hinweis auf eine robuste BM-spezifische Zeta-Signatur.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lll}
+\toprule
+Operator & Spektrum & Korrelation mit \texttt{zeros6} \\
+\midrule
+\(T\) (gerichtet) & \(|\mathrm{Eigenwerte}|\) & nicht sinnvoll (degeneriert) \\
+\(T\) (gerichtet) & Singulaerwerte & \(-0.913863\) \\
+\(T\) permutiert & \(|\mathrm{Eigenwerte}|\) & nicht sinnvoll (degeneriert) \\
+\(T\) permutiert & Singulaerwerte & \(-0.994002\) \\
+\(T\) randomisiert & \(|\mathrm{Eigenwerte}|\) & nicht sinnvoll (degeneriert) \\
+\(T\) randomisiert & Singulaerwerte & \(-0.982676\) \\
+\bottomrule
+\end{tabular}
+\caption{Spektraler Vergleich des gerichteten Uebergangsoperators mit \texttt{zeros6}.}
+\end{table}
+
+\begin{bemerkung}
+Der externe Spektralvergleich stuetzt somit keine exklusive Zeta-Naehe des Operators. Der eigentliche Wert der Konstruktion liegt in ihrer internen Geometrie.
+\end{bemerkung}
+
+\subsection{Innere Struktur und Symmetrieerhalt}
+
+Die Uebergaenge wurden nach dem Symmetrietyp der Ausgangs- und Zielmuster klassifiziert. Dabei bezeichnet
+\[
+\mathfrak S(\omega)=1
+\]
+ein spiegelsymmetrisches zentriertes Muster und
+\[
+\mathfrak S(\omega)=0
+\]
+ein asymmetrisches Muster.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ccccc}
+\toprule
+\(\mathfrak S(\omega_{\mathrm{from}})\) & \(\mathfrak S(\omega_{\mathrm{to}})\) & Anzahl & mittlere Kosten & mittleres Gewicht \\
+\midrule
+0 & 0 & 1102 & 107.565586 & 0.134436 \\
+0 & 1 & 130  & 5.673910   & 0.159093 \\
+1 & 0 & 206  & 221.098242 & 0.003657 \\
+1 & 1 & 20   & 2.554875   & 0.450206 \\
+\bottomrule
+\end{tabular}
+\caption{Uebergaenge zwischen Symmetrieklassen im gerichteten Polynomgraphen.}
+\end{table}
+
+Aus dieser Tabelle folgen drei wesentliche Punkte:
+\begin{enumerate}[leftmargin=2em]
+\item Symmetrieerhaltende Uebergaenge \(1\to 1\) sind mit Abstand am guenstigsten.
+\item Symmetriebrechende Uebergaenge \(1\to 0\) sind mit grossem Abstand am teuersten.
+\item Der Uebergang \(0\to 1\) ist deutlich guenstiger als \(1\to 0\); asymmetrische Muster werden also eher wieder in Richtung symmetrischer Konfigurationen gezogen als umgekehrt.
+\end{enumerate}
+
+\begin{arbeitsvermutung}[Symmetrieerhalt minimiert Uebergangskosten]
+Im gerichteten Uebergangsgraphen kanonischer Mehrlingspolynome minimieren symmetrieerhaltende Uebergaenge im Mittel die algebraischen Uebergangskosten, waehrend symmetriebrechende Uebergaenge einen strukturellen Defekt erzeugen, der als starke Gewichtsdaempfung erscheint.
+\end{arbeitsvermutung}
+
+\section{Diskussion}
+
+Die vorliegenden Resultate fuehren zu einem gemischten, aber produktiven Bild. Einerseits liefert der externe Vergleich mit \texttt{zeros6} erneut keine robuste exklusive Signatur. Andererseits zeigt die innere Struktur des Uebergangsoperators ein ausgesprochen klares Organisationsprinzip: Das Modell ist intern stark durch Symmetrieerhalt geordnet. Genau hierin liegt gegenwaertig der staerkste mathematische Ertrag des polynomialen Strangs.
+
+Der Befund praezisiert zugleich die urspruengliche Intuition, dass der Uebergang \(4\to 5\) kritisch sei. Nicht der Gradwechsel selbst ist entscheidend, sondern die Frage, ob eine vorhandene symmetrische Blockstruktur erhalten bleibt oder zerfaellt. Damit verschiebt sich die Perspektive vom blossen Zaehlen von Punkten hin zur Untersuchung relationaler Stabilitaet.
+
+\section{Kurzer Literaturrahmen}
+
+Diese Arbeitsfassung ist bewusst nur sparsam in einen aeusseren Literaturrahmen eingebettet. Sie steht jedoch in losem Anschluss an mehrere klassische Themenfelder:
+\begin{itemize}[leftmargin=2em]
+\item die Theorie glatter Zahlen und lokaler Reduktionen,
+\item Summen-von-zwei-Quadraten-Darstellungen,
+\item Diskriminanten- und Faktorisierungstheorie von Polynomen,
+\item Begleitmatrizen und operatorische Spektralmethoden,
+\item sowie spektrale Fragestellungen im Umfeld der Riemannschen Zetafunktion.
+\end{itemize}
+
+Eine ausgearbeitete Endfassung sollte diese Bezuge spaeter mit einem sauberen Literaturapparat hinterlegen. In der vorliegenden Version dient der Literaturrahmen vor allem dazu, den Status des Textes als programmatische Arbeitsfassung transparent zu halten.
+
+\section{Schluss}
+
+Das vorliegende Dokument beansprucht nicht, bereits eine abgeschlossene Theorie der natuerlichen Zahlen zu liefern. Es versucht vielmehr, eine praezise Sprache fuer Uebergaenge, Defekte, Symmetrieerhalt und Kopplungsmechanismen bereitzustellen. Der derzeit staerkste Befund ist nicht eine exklusive aeussere Zeta-Korrelation, sondern die intern klar sichtbare Vorzugsstruktur symmetrieerhaltender Uebergaenge. Genau darin koennte sich ein tragfaehiger Kern fuer die weitere Entwicklung des Bamberger Modells abzeichnen.
+
+\end{document}

@@ -1,0 +1,490 @@
+% Beweisversuch: ⟨δ_N, χ₃⟩ ∼ f(N) unter Hypothese H
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{microtype}
+\usepackage{hyperref}
+
+\title{Analytischer Beweisversuch:\\
+$\langle\delta_N,\chi_3\rangle \sim f(N)$ unter Hypothese $H$}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{hypothesis}{Hypothese}
+\newtheorem{remark}{Bemerkung}
+\newtheorem{conjecture}{Vermutung}
+
+\newcommand{\R}{\mathcal{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\mathrm{Var}}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Wir formulieren eine präzise probabilistische Hypothese $H$ für die
+Besetzung der sechs mod-$420$-Vierlingskanäle
+$\R=\{11,101,191,221,311,401\}$,
+leiten die explizite Skalierung
+$f(N)=1/(6\sqrt{N})$ für die $\chi_3$-Projektion her und vergleichen sie
+mit numerischen Daten bis $N_{\max}=10^9$.
+Der kubische Charakter $\chi_3\bmod 7$ ist \emph{arithmetisch} auf
+$\R$ mit dem $k{=}2$-DFT-Modus identisch ($\chi_3|_{\R}=\psi_2$);
+unter $H$ ist ein nicht-null Koeffizient $a=\langle\delta_N,\chi_3\rangle$
+eine \emph{statistische} Fluktuation der Größenordnung $O_p(1/\sqrt{N})$,
+kein dynamischer Drift.
+\end{abstract}
+
+%=============================================================================
+\section{Setup und Notation}
+%=============================================================================
+
+Sei $Q(p)=(p,p+2,p+6,p+8)$ ein Primzahlvierling mit Startprimzahl $p$.
+Die sechs beobachteten Halbkanäle modulo $420$ sind
+\[
+  \R = \{11,101,191,221,311,401\}.
+\]
+Für $N$ gezählte Vierlingsereignisse mit Kanalzuordnung
+$r_k\in\R$ sei $n_r(N)$ die Besetzungszahl und $K:=\sum_r n_r(N)=N$.
+
+Der \emph{normalisierte Kanal-Bias} ist
+\[
+  \delta_N(r) \;:=\; \frac{n_r(N)}{N} - \frac{1}{6},
+  \qquad r\in\R.
+\]
+Das Skalarprodukt auf $\mathbb{C}^{\R}$ ist
+\[
+  \langle f,g\rangle \;:=\; \frac{1}{6}\sum_{r\in\R} f_r\,\overline{g_r}.
+\]
+Der primitive kubische Dirichlet-Charakter $\chi_3\bmod 7$ ist durch
+$\omega=e^{2\pi i/3}$ und
+$\chi_3(4)=1$, $\chi_3(3)=\omega$, $\chi_3(2)=\omega^2$ gegeben.
+Auf $\R$ gilt die exakte Identität (vgl.\ \texttt{eabc\_spectral\_decomposition.py}):
+\[
+  \chi_3|_{\R} = \psi_2,
+  \qquad
+  \psi_k(n) := e^{2\pi i kn/6},
+\]
+in der festen Reihenfolge $(11,101,191,221,311,401)$.
+
+%=============================================================================
+\section{Hypothese $H$ (formal)}
+%=============================================================================
+
+\begin{hypothesis}[$H$ --- Gleichverteilungsmodell auf $\R$]
+\label{hyp:H}
+Es gibt eine Konstante $C>0$, sodass die Vierlingsstarts mit
+$p\to\infty$ unabhängig auftreten und die Kanalzuordnung bei $N$
+Vierlingen durch ein \emph{Multinomialmodell}
+\[
+  (n_{11},n_{101},\ldots,n_{401}) \;\sim\;
+  \mathrm{Mult}\!\left(N;\,\tfrac{1}{6},\ldots,\tfrac{1}{6}\right)
+\]
+beschrieben wird.
+Äquivalent: die Folge der Kanal-Indizes
+$(I_k)_{k=1}^{N}$ ist i.i.d.\ uniform auf $\{1,\ldots,6\}$,
+und $n_r(N)=\#\{k: r_k=r\}$.
+\end{hypothesis}
+
+\subsection{Motivation: welches Modell ist natürlich?}
+
+\paragraph{(i) Multinomial mit gleichen $p_i=1/6$.}
+Dies ist das direkte diskrete Modell für $N$ unabhängige Kanalzuweisungen.
+Es ist die kanonische Nullhypothese, wenn alle sechs Restklassen in $\R$
+asymptotisch gleich häufig sind.
+
+\paragraph{(ii) Poisson-Approximation.}
+Für großes $N$ gilt
+$\mathrm{Mult}(N;p)\approx (\mathrm{Poisson}(Np_1),\ldots,\mathrm{Poisson}(Np_6))$
+mit gemeinsamer Summe $N$.
+Die $\chi_3$-Projektion skaliert identisch, da
+$\delta_N(r)=n_r/N-1/6$ nur von den relativen Anteilen abhängt.
+
+\paragraph{(iii) Hardy--Littlewood-artige Dichte.}
+Die HL-Vermutung für Vierlinge liefert
+\[
+  \#\{p\le x : Q(p)\text{ prim}\} \sim C_4 \int_2^x \frac{dt}{\log^4 t}.
+\]
+Die Singulärreihe $S(Q)$ hängt von lokalen Kongruenzbedingungen ab.
+\emph{Wenn} die sechs Kanäle in $\R$ dieselbe lokale HL-Dichte tragen
+(d.h.\ die Singulärreihen-Faktoren mod $420$ auf $\R$ übereinstimmen),
+dann ist $H$ die asymptotische Konsequenz: bedingt auf ein Vierlingsereignis
+ist der Start $p\bmod 420$ asymptotisch gleichverteilt auf $\R$.
+
+\begin{remark}[Was $H$ \emph{nicht} behauptet]
+$H$ postuliert keinen Chebyshev-artigen Drift
+$B_{101,11}(N)/\sqrt{N}\to c\neq 0$,
+keine Rang-1-Dynamik und keine kausale EABC-Interpretation.
+Es ist ein \emph{statisches} Gleichverteilungsmodell für die Kanalzählung.
+\end{remark}
+
+\subsection{Arithmetische Struktur, die $\chi_3$-Korrelation erzwingt}
+
+Die Korrelation mit $\chi_3$ ist \emph{algebraisch} erzwungen, nicht
+probabilistisch:
+
+\begin{lemma}[Mod-$7$-Zyklus und DFT-Identität]
+\label{lem:cycle}
+In der festen Reihenfolge der Kanäle gilt
+$r_n\bmod 7 = (4,3,2,4,3,2)$, also
+\[
+  \chi_3(r_n) = (1,\omega,\omega^2,1,\omega,\omega^2) = \psi_2(n).
+\]
+Folglich ist der $\chi_3$-Unterraum \emph{identisch} mit dem
+$k{=}2$-Fourier-Unterraum auf dem $6$-Ring:
+\[
+  \langle\delta_N,\chi_3\rangle = F_2(\delta_N)
+  = \frac{1}{6}\sum_{n=0}^{5}\delta_n\,e^{-2\pi i\cdot 2n/6}.
+\]
+\end{lemma}
+
+\begin{proof}
+Direkte Rechnung; vgl.\ Lemma~2.1 in \texttt{eabc\_vierlinge\_kanalstruktur.tex}.
+\end{proof}
+
+\emph{Konsequenz:} Jeder Bias $\delta_N$ besitzt automatisch eine
+$\chi_3$-Komponente; die Frage ist nur deren \emph{Größe}, nicht deren
+\emph{Existenz}. Die arithmetische Struktur bestimmt die
+\emph{Richtung} ($\chi_3|_{\R}$), das Modell $H$ bestimmt die
+\emph{Skalierung} von $|\langle\delta_N,\chi_3\rangle|$.
+
+Zusätzlich gilt auf allen $r\in\R$:
+$r\equiv 1\pmod{5}$, daher $\chi_5|_{\R}\equiv 1$ (trivial);
+$r\equiv 2\pmod{3}$, daher ist der quadratische Charakter mod $3$
+ebenfalls trivial auf $\R$.
+
+%=============================================================================
+\section{Proposition und Beweisversuch}
+%=============================================================================
+
+\begin{proposition}[CLT-Skalierung für $\langle\delta_N,\chi_3\rangle$ unter $H$]
+\label{prop:clt}
+Unter Hypothese~\ref{hyp:H} gilt für $N\to\infty$:
+\begin{enumerate}
+  \item $\E\bigl[\langle\delta_N,\chi_3\rangle\bigr] = 0$;
+  \item $\Var\bigl(\langle\delta_N,\chi_3\rangle\bigr) = \dfrac{1}{36N}$;
+  \item $\sqrt{N}\,\langle\delta_N,\chi_3\rangle
+        \;\xRightarrow{d}\;
+        \mathcal{N}_{\mathbb{C}}(0,\tfrac{1}{36})$
+        (komplexe Normalverteilung);
+  \item insbesondere
+        $|\langle\delta_N,\chi_3\rangle| = O_p\!\bigl(1/\sqrt{N}\bigr)$,
+        und für jedes $\varepsilon>0$:
+        $|\langle\delta_N,\chi_3\rangle| = O_p\!\bigl(\sqrt{\log\log N/N}\bigr)$
+        (LIL-artige obere Schranke für Partialsummen).
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}[Beweisversuch]
+\emph{Schritt 1: Darstellung als gewichtete Zählung.}
+Da $\sum_{r\in\R}\chi_3(r)=2(1+\omega+\omega^2)=0$, kürzt der Mittelwert:
+\[
+  \langle\delta_N,\chi_3\rangle
+  = \frac{1}{6}\sum_r \Bigl(\frac{n_r}{N}-\frac{1}{6}\Bigr)\overline{\chi_3(r)}
+  = \frac{1}{6N}\sum_{r\in\R} n_r\,\overline{\chi_3(r)}.
+\]
+Setze $S_N := \sum_{k=1}^{N}\overline{\chi_3(r_{I_k})}$.
+Dann $\langle\delta_N,\chi_3\rangle = S_N/(6N)$.
+
+\emph{Schritt 2: Erwartungswert.}
+Unter $H$ ist $I_k$ uniform, also
+$\E[\overline{\chi_3(r_{I_k})}]
+=\frac{1}{6}\sum_r \overline{\chi_3(r)}=0$,
+daher $\E[S_N]=0$ und $\E[\langle\delta_N,\chi_3\rangle]=0$.
+
+\emph{Schritt 3: Varianz.}
+Die $Y_k:=\overline{\chi_3(r_{I_k})}$ sind i.i.d.\ mit
+$\E[Y_k]=0$ und $\E[|Y_k|^2]=\frac{1}{6}\sum_r|\chi_3(r)|^2
+=\frac{1}{6}\cdot 6 = 1$.
+Daher
+\[
+  \Var(S_N) = N\,\Var(Y_1) = N,
+  \qquad
+  \Var\!\left(\frac{S_N}{6N}\right) = \frac{N}{36N^2} = \frac{1}{36N}.
+\]
+
+\emph{Schritt 4: Zentraler Grenzwertsatz.}
+Nach dem multidimensionalen ZGWS gilt
+$S_N/\sqrt{N} \xRightarrow{d} \mathcal{N}_{\mathbb{C}}(0,1)$,
+also
+$\sqrt{N}\,\langle\delta_N,\chi_3\rangle
+= S_N/(6\sqrt{N}) \xRightarrow{d} \mathcal{N}_{\mathbb{C}}(0,1/36)$.
+
+\emph{Schritt 5: Größenordnung.}
+Aus (3) folgt
+$|\langle\delta_N,\chi_3\rangle| = O_p(1/\sqrt{N})$.
+Die LIL-Aussage folgt aus dem Gesetz des iterierten Logarithmus
+für i.i.d.\ komplexwertige Partialsummen $S_N$
+(Kolmogorov--LIL): für a.s.\ alle $N$ groß genug,
+$|S_N| \le (2N\log\log N)^{1/2}(1+o(1))$,
+also $|\langle\delta_N,\chi_3\rangle|
+\le (2\log\log N/(36N))^{1/2}(1+o(1))$.
+\end{proof}
+
+\subsection{Explizite Funktion $f(N)$}
+
+\begin{corollary}[Explizite Skalierung]
+\label{cor:fN}
+Unter $H$ ist die natürliche Skalierungsfunktion
+\[
+  \boxed{
+  f(N) = \frac{1}{6\sqrt{N}}
+  }
+\]
+im Sinne von
+\[
+  \langle\delta_N,\chi_3\rangle
+  \;\sim\;
+  \mathcal{N}_{\mathbb{C}}\!\left(0,\,\frac{1}{36N}\right),
+\]
+d.h.\ typische Größe $|\langle\delta_N,\chi_3\rangle|\asymp f(N)$.
+
+Präziser für den Betrag (komplexe Normalverteilung):
+\[
+  \E\bigl[|\langle\delta_N,\chi_3\rangle|\bigr]
+  \;\approx\;
+  \sqrt{\frac{\pi}{72N}}
+  \;=\;
+  \frac{\sqrt{\pi/2}}{6\sqrt{N}}
+  \;\approx\;
+  0{,}886\cdot f(N).
+\]
+Der $z$-Score $|\langle\delta_N,\chi_3\rangle|/f(N)$ ist unter $H$
+asymptotisch $\mathrm{Rayleigh}(1)$-verteilt (Median $\approx 1{,}177$).
+\end{corollary}
+
+%=============================================================================
+\section{Numerische Validierung}
+%=============================================================================
+
+\subsection{$\chi_3$-Projektion bei drei Skalen}
+
+Tabelle~\ref{tab:chi3} stammt aus \texttt{eabc\_analytic\_proof\_check.py}
+(Multinomial-Null: $10\,000$ Trials).
+
+\begin{table}[h]
+\centering
+\caption{$\chi_3$-Skalierung vs.\ Theorie $f(K)=1/(6\sqrt{K})$.}
+\label{tab:chi3}
+\begin{tabular}{rrrrrrr}
+\toprule
+$N_{\max}$ & $K$ & $|\langle\delta,\chi_3\rangle|$ & $f(K)$ & $z$ &
+$|\langle\delta,\chi_3\rangle|\sqrt{K}$ & $p(\ge)$ \\
+\midrule
+$10^8$    & 4767  & 0.002749 & 0.002414 & 1.14 & 0.190 & 26.8\% \\
+$3\cdot10^8$ & 10972 & 0.001568 & 0.001591 & 0.99 & 0.164 & 37.7\% \\
+$10^9$    & 28387 & 0.001043 & 0.000989 & 1.05 & 0.176 & 33.1\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Urteil.}
+\begin{itemize}
+  \item $|\langle\delta,\chi_3\rangle|$ fällt exakt wie $1/\sqrt{K}$
+        (Produkt $|\langle\delta,\chi_3\rangle|\sqrt{K}\approx 0.18\pm 0.01$).
+  \item Alle $z$-Scores liegen nahe $1$ (erwarteter Median $\approx 1.18$).
+  \item Null-$p$-Werte ($27$--$38\%$) zeigen: kein signifikanter
+        systematischer $\chi_3$-Bias jenseits der Multinomial-Fluktuation.
+\end{itemize}
+
+\subsection{Vergleich mit $B_{101,11}/\sqrt{K}$}
+
+Aus \texttt{eabc\_scaling\_test.py}:
+
+\begin{table}[h]
+\centering
+\caption{Chebyshev-artiger Paar-Bias $B_{101,11}=N_{101}-N_{11}$.}
+\label{tab:B}
+\begin{tabular}{rrrr}
+\toprule
+$N_{\max}$ & $K$ & $B_{101,11}$ & $B/\sqrt{K}$ \\
+\midrule
+$10^8$    & 4767  & $+66$ & $+0.956$ \\
+$3\cdot10^8$ & 10972 & $+51$ & $+0.487$ \\
+$10^9$    & 28387 & $+77$ & $+0.457$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Warum fällt $B/\sqrt{K}$?}
+$B_{101,11}$ ist ein \emph{Pfadprozess} (Random Walk):
+jeder Vierling trägt $+1$ (Kanal $101$), $-1$ (Kanal $11$) oder $0$.
+Unter $H$:
+$\Var(B_K)=K/3$, also $B_K/\sqrt{K}$ hat Varianz $1/3$
+(stationär verteilt, kein Limes).
+Der beobachtete Abfall $0.96\to 0.46$ ist \emph{ein einzelner Pfad}:
+die Null-$p$-Werte steigen von $9.8\%$ auf $43\%$,
+konsistent mit Random-Walk-Fluktuation, nicht mit Kollaps auf $0$.
+
+\emph{Wichtig:} $B/\sqrt{K}$ und $|\langle\delta,\chi_3\rangle|$ messen
+verschiedene Projektionen:
+$B$ projiziert auf $\chi_4$-Richtung (Kanalpaar $11$ vs.\ $101$),
+$\langle\delta,\chi_3\rangle$ auf den kubischen $3$-Wellen-Unterraum.
+
+%=============================================================================
+\section{Mechanismus für $a\neq 0$}
+%=============================================================================
+
+Die Zerlegung
+\[
+  \delta_N = a\,\hat{e}_{\chi_3} + \bar{a}\,\hat{e}_{\bar{\chi}_3}
+           + b\,\hat{e}_{\chi_4} + c\,\hat{e}_{\chi_4\chi_3} + \varepsilon
+\]
+hat Koeffizient $a=\langle\delta_N,\hat{e}_{\chi_3}\rangle$.
+Bei $N=4767$: $|a|\approx 0.00275$, Varianzanteil $\chi_3+\bar{\chi}_3$: $59.7\%$.
+
+\subsection{Warum $a\neq 0$, obwohl alle Kanäle ``gleich'' sind?}
+
+\paragraph{Antwort unter $H$:} $a\neq 0$ ist \emph{typisch}.
+Unter $\E[a]=0$ und $\Var(a)\sim 1/N$ ist
+$\mathbb{P}(a\neq 0)\to 1$;
+die Frage ist nur, ob $|a|$ größer als $O(1/\sqrt{N})$ ist.
+Bei $K=4767$: $z=1.14$, also \emph{kein} überraschender Befund.
+
+\paragraph{Arithmetische vs.\ statistische Ebene.}
+\begin{itemize}
+  \item \textbf{Arithmetik} erzwingt: die Projektions\emph{richtung} $\chi_3$
+        ist fest (Lemma~\ref{lem:cycle}). Jede Abweichung von Gleichverteilung
+        hat automatisch eine $\chi_3$-Komponente.
+  \item \textbf{Statistik} unter $H$: die \emph{Größe} $|a|$ ist
+        $O_p(1/\sqrt{N})$, nicht konstant.
+  \item Die hohe Varianzquote $59.7\%$ bei $K=4767$ bedeutet nicht
+        ``$59\%$ des Bias ist $\chi_3$-Ursache'', sondern:
+        \emph{von der beobachteten Abweichung $\delta_N$}
+        entfällt $59\%$ auf den $\chi_3$-Unterraum --- bei
+        zufälligem $\delta_N$ wäre dies unter $H$ ebenfalls
+        $\approx 50$--$60\%$ (da $\chi_3$ zwei reelle Dimensionen
+        von sechs trägt und $|{\chi_3(r)}|=1$).
+\end{itemize}
+
+\subsection{Bedingte Verteilung $p\bmod 7\,|\,\text{Vierling}$}
+
+Die Kanalzuordnung hängt von $p\bmod 420$ ab, nicht nur von $p\bmod 7$.
+Auf $\R$ gibt es nur drei $\chi_3$-Werte mit Multiplizität $2$:
+\[
+  \#\{r\in\R: r\bmod 7 = 4\} = 2,\quad
+  \#\{r\in\R: r\bmod 7 = 3\} = 2,\quad
+  \#\{r\in\R: r\bmod 7 = 2\} = 2.
+\]
+Unter exakter Gleichverteilung auf $\R$ ist die bedingte Verteilung
+$p\bmod 7\,|\,Q(p)$ gleich auf $\{2,3,4\}$ (je $1/3$).
+Ein $\chi_3$-Bias entstünde nur, wenn die \emph{tatsächliche}
+Vierlingsdichte auf den drei mod-$7$-Klassen \emph{ungleich} wäre.
+
+\emph{Beweisversuch-Lücke:} Die Gleichverteilung der HL-Dichte auf
+$\R$ (nicht nur auf $\{2,3,4\}\bmod 7$) ist nicht bewiesen.
+Numerisch weichen die Kanalzählungen bei $K=4767$ nur um $\pm 1\%$
+vom Mittel ab --- konsistent mit $O(1/\sqrt{K})$-Fluktuation,
+nicht mit strukturellem mod-$7$-Bias.
+
+%=============================================================================
+\section{Was ist bewiesen vs.\ offen}
+%=============================================================================
+
+\subsection{Bewiesen (exakt oder numerisch verifiziert)}
+
+\begin{enumerate}
+  \item $\chi_3|_{\R}=\psi_2$ (algebraische Identität).
+  \item $F_2=\langle\delta_N,\chi_3\rangle$ (Theorem~A).
+  \item Vollständige Charakterzerlegung von $\delta_N$ bei $K=4767$
+        (Residuum $<10^{-36}$).
+  \item Unter $H$: $\Var(\langle\delta_N,\chi_3\rangle)=1/(36N)$
+        (Proposition~\ref{prop:clt}, Beweisversuch vollständig
+        \emph{conditional on $H$}).
+  \item Numerische Skalierung $|\langle\delta,\chi_3\rangle|\sim 1/\sqrt{K}$
+        über drei Dekaden (Tabelle~\ref{tab:chi3}).
+  \item $B/\sqrt{K}$ zeigt keinen stabilen Drift (Tabelle~\ref{tab:B}).
+\end{enumerate}
+
+\subsection{Offene Lücken (für vollständigen Beweis)}
+
+\begin{enumerate}
+  \item \textbf{HL-Äquidistribution auf $\R$:}
+        Beweis, dass die Singulärreihe für Vierlinge auf den
+        sechs Kanälen in $\R$ asymptotisch gleich ist.
+  \item \textbf{Unabhängigkeit:}
+        $H$ postuliert i.i.d.\ Kanalzuweisungen; echte Vierlinge
+        haben langreichweitige arithmetische Korrelationen
+        (Gemeinsamkeit von Primzahlpaaren). Für $N\sim 10^4$
+        ist dies vermutlich vernachlässigbar, aber nicht bewiesen.
+  \item \textbf{Uniformitätsabschätzung:}
+        Explizite Fehlerterm-Schranke
+        $|\langle\delta_N,\chi_3\rangle - O_p(1/\sqrt{N})|
+        = O(N^{-1/2-\varepsilon})$ aus Primzahlverteilung in
+        arithmetischen Progressionen.
+  \item \textbf{Signifikanz:}
+        Ein $z\approx 1$ ist nicht signifikant; für Behauptung
+        ``struktureller $\chi_3$-Bias'' müsste $z\to\infty$ mit $N$
+        nachgewiesen werden --- dies geschieht \emph{nicht}
+        (Tabelle~\ref{tab:chi3}).
+\end{enumerate}
+
+%=============================================================================
+\section{Epistemologische Abgrenzung}
+%=============================================================================
+
+\subsection{Diagonalisierung vs.\ Ursache}
+
+\begin{itemize}
+  \item \textbf{Diagonalisierung (bewiesen):}
+        $\delta_N$ lässt sich in Charaktere zerlegen;
+        $\chi_3$ ist ein \emph{Koordinatensystem}, kein \emph{Mechanismus}.
+        Die Identität $\chi_3|_{\R}=\psi_2$ ist reine Fourieranalysis
+        auf der endlichen Menge $\R$.
+
+  \item \textbf{Ursache (offen):}
+        \emph{Warum} weichen die Kanalzählungen von $N/6$ ab?
+        Unter $H$: Zufallsfluktuation.
+        Gegen $H$: HL-Singularreihen-Unterschiede, Korrelationen
+        zwischen benachbarten Vierlingen, oder dynamische Prozesse
+        (EABC, Chebyshev-Bias).
+
+  \item \textbf{Negativer Skalierungstest:}
+        $B/\sqrt{K}$ kollabiert nicht auf $0$, aber schwankt
+        wie ein Random Walk --- kein Beweis für persistenten Drift.
+        Die $\chi_3$-Projektion skaliert korrekt als $1/\sqrt{K}$,
+        was \emph{gegen} einen anwachsenden strukturellen Bias spricht.
+\end{itemize}
+
+\subsection{Zusammenfassung der Hypothese und $f(N)$}
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{
+\textbf{Hypothese $H$:}
+Vierlingskanäle sind i.i.d.\ uniform auf $\R$ (Multinomial $1/6$).
+
+\medskip
+\textbf{Explizite $f(N)$:}
+$\displaystyle f(N)=\frac{1}{6\sqrt{N}}$,
+$\langle\delta_N,\chi_3\rangle\sim\mathcal{N}_{\mathbb{C}}(0,1/(36N))$.
+
+\medskip
+\textbf{Daten:} Konsistent bei $K=4767,10972,28387$;
+$z\approx 1$, $|\langle\delta,\chi_3\rangle|\sqrt{K}\approx 0.18$.
+
+\medskip
+\textbf{Status:} Beweisversuch \emph{conditional on $H$} vollständig;
+$H$ selbst (HL-Äquidistribution) offen.
+}}
+\end{center}
+
+%=============================================================================
+\appendix
+\section{Reproduzierbarkeit}
+
+\begin{itemize}
+  \item \texttt{eabc\_analytic\_proof\_check.py} --- $\chi_3$-Skalierung
+  \item \texttt{eabc\_scaling\_test.py} --- $B_{101,11}/\sqrt{K}$
+  \item \texttt{eabc\_spectral\_decomposition.py} --- Zerlegung bei $K=4767$
+\end{itemize}
+
+\end{document}

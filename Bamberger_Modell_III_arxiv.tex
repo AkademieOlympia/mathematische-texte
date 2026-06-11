@@ -1,0 +1,613 @@
+\documentclass[11pt,a4paper]{article}
+
+% -----------------------------------------------------------------------------
+% Bamberger Modell III -- arXiv-style LaTeX main file
+% -----------------------------------------------------------------------------
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+\usepackage{amsmath,amssymb,amsfonts,amsthm,mathtools}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{csquotes}
+\usepackage{hyperref}
+\usepackage[nameinlink,capitalize,noabbrev]{cleveref}
+\usepackage{graphicx}
+
+\geometry{margin=2.7cm}
+
+% Robust graphics setup
+\DeclareGraphicsExtensions{.pdf,.png,.jpg,.jpeg}
+\graphicspath{{./}{fig/}{figs/}{images/}{img/}}
+\newcommand{\includegraphicssafe}[2][]{%
+  \IfFileExists{#2}{\includegraphics[#1]{#2}}{%
+    \fbox{\parbox{0.85\linewidth}{\centering Fehlende Grafik: \texttt{#2}}}%
+  }%
+}
+
+% Theorem environments -- deutsch benannt
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{korollar}[satz]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{hypothese}[satz]{Hypothese}
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+\newtheorem{beispiel}[satz]{Beispiel}
+
+% Operators and shortcuts
+\DeclareMathOperator{\rad}{rad}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\Area}{Area}
+\DeclareMathOperator{\Span}{span}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\HH}{\mathbb H}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\phig}{\varphi}
+\newcommand{\eabc}{EABC}
+\newcommand{\vect}[1]{\mathbf{#1}}
+
+\title{Bamberger Modell III\\
+Tetraedrische Spin-Geometrie, quaternionische Bindungen,\\
+ikosaedrische Bahnimpulse und modulare Phasenstrukturen\\
+auf den natuerlichen Zahlen}
+
+\author{Thomas Hoffbauer\\Bamberg, Deutschland}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Wir entwickeln eine arithmetisch-geometrische Struktur auf den natuerlichen Zahlen,
+die aus den invertierbaren Restklassen modulo 12, der Quaternionenalgebra, den
+regulaeren Polyedern, Morley-Dreiecken und modularen Formen hervorgeht. Im Zentrum
+steht die Beobachtung, dass die vier Einheiten
+\[
+(\Z/12\Z)^\times=\{1,5,7,11\}
+\]
+eine natuerliche tetraedrische Geometrie erzeugen. Diese wird mit Hamiltons
+Quaternionen, den Hurwitz-Einheiten, Dedekinds Eta-Funktion, den
+Rogers--Ramanujan-Identitaeten und der Ikosaedergeometrie Felix Kleins verknuepft.
+
+Das resultierende Modell trennt eine Zahl in Skala, Spin, Bindung, Orbit und
+Spinorphase. Daraus entsteht eine arithmetische Teilchenspektroskopie aus
+elementaren Spinoren, Mesonen, Baryonen und Singuletts. Die physikalischen
+Begriffe werden dabei als Modellanalogien eingefuehrt; die mathematische Basis
+besteht aus Restklassen, Gruppen, Tetraedergeometrie, Quaternionen und modularen
+Phasen.
+\end{abstract}
+
+\tableofcontents
+
+\section{Einleitung}
+
+Die klassische Zahlentheorie beschreibt natuerliche Zahlen vor allem durch ihre
+Groesse, ihre Teilbarkeit und ihre Primfaktorzerlegung. Das vorliegende Modell
+untersucht eine zusaetzliche Hypothese: Die Primfaktorisierung traegt eine
+geometrische Orientierungsstruktur. Diese Struktur beginnt bei den vier
+invertierbaren Restklassen modulo 12,
+\[
+1,5,7,11,
+\]
+und fuehrt ueber eine tetraedrische Geometrie zu Spin-, Bindungs- und
+Bahnimpulsanalogien.
+
+Der Begriff \enquote{Bamberger Modell III} bezeichnet in diesem Text keine
+abgeschlossene physikalische Theorie, sondern ein mathematisch strukturiertes
+Forschungsprogramm. Seine sichere Ebene ist die Algebra und Geometrie der
+Restklassen. Seine spekulative Ebene ist die Interpretation dieser Geometrie als
+arithmetische Vorform von Spin, Kern, Huelle, Bindung und Masse.
+
+\section{Historische Wurzeln}
+
+\subsection{Euler und die Primzahlen}
+
+Die moderne analytische Zahlentheorie beginnt wesentlich mit Eulers
+Produktdarstellung der Zetafunktion:
+\[
+\zeta(s)=\prod_p \frac{1}{1-p^{-s}}.
+\]
+Sie macht deutlich, dass Primzahlen die multiplikativen Atome der natuerlichen
+Zahlen sind. Im Bamberger Modell bleiben Primzahlen atomare Traeger, erhalten
+aber zusaetzlich eine Orientierung durch ihre Restklasse modulo 12.
+
+\subsection{Hamilton und die Quaternionen}
+
+Hamiltons Quaternionenalgebra
+\[
+\HH=\Span_{\R}\{1,i,j,k\}
+\]
+mit
+\[
+i^2=j^2=k^2=ijk=-1
+\]
+ist die klassische nichtkommutative Erweiterung der komplexen Zahlen. Sie ist
+fundamental fuer Rotationen und Spinoren, da die normierten Quaternionen eine
+Realisierung von \(SU(2)\) liefern. Diese Tatsache bildet den historischen und
+mathematischen Hintergrund fuer die spaetere Hebung der kommutativen
+\(EABC\)-Algebra in eine orientierte Quaternionenstruktur.
+
+\subsection{Hurwitz und die 24 Einheiten}
+
+Der Ring der Hurwitz-Quaternionen besitzt 24 Einheiten. Diese bilden die
+Scheitelpunkte des regulaeren 24-Zellers. Im Modell werden diese 24 Einheiten
+als geometrische Entsprechung einer modularen 24-Phase gelesen. Sie verbinden
+die Quaternionengeometrie mit der Eta-Struktur.
+
+\subsection{Dedekind und die Eta-Funktion}
+
+Die Dedekindsche Eta-Funktion lautet
+\[
+\eta(\tau)=q^{1/24}\prod_{n\ge 1}(1-q^n),\qquad q=e^{2\pi i\tau}.
+\]
+Sie besitzt die Transformation
+\[
+\eta(\tau+1)=e^{\pi i/12}\eta(\tau).
+\]
+Damit treten die Zahlen 12 und 24 auf natuerliche Weise auf. Im Modell liefert
+\(\eta\) die modulare Phasenhuelle ueber der sichtbaren Restklassenstruktur.
+
+\subsection{Ramanujan und die modulare Resonanz}
+
+Ramanujan fand tiefe Identitaeten zwischen modularen Funktionen,
+Kettenbruechen und speziellen Exponentialwerten. Besonders relevant ist der
+Rogers--Ramanujan-Kettenbruch
+\[
+R(q)=\frac{q^{1/5}}{1+\frac{q}{1+\frac{q^2}{1+\cdots}}}.
+\]
+Fuer Werte wie \(q=e^{-\pi}\) und \(q=e^{-2\pi}\) treten geschlossene Formen auf,
+die mit dem Goldenen Schnitt
+\[
+\phig=\frac{1+\sqrt5}{2}
+\]
+verknuepft sind. Im Modell wird diese Beziehung als Bruecke zwischen modularer
+Skala und ikosaedrischer Geometrie interpretiert.
+
+\subsection{Klein und das Ikosaeder}
+
+Felix Klein erkannte die zentrale Rolle des Ikosaeders und seiner
+Rotationsgruppe \(A_5\) fuer die Theorie modularer Funktionen. Da der Goldene
+Schnitt in den Koordinaten des Ikosaeders unvermeidlich erscheint, wird der
+Uebergang vom Tetraeder zum Ikosaeder im Bamberger Modell als goldene
+Verfeinerung der urspruenglichen Spin-Geometrie aufgefasst.
+
+\section{Die EABC-Algebra}
+
+\begin{definition}[EABC-Klassen]
+Die vier invertierbaren Restklassen modulo 12 werden bezeichnet durch
+\[
+E\equiv 1,\qquad A\equiv 5,\qquad B\equiv 7,\qquad C\equiv 11\pmod{12}.
+\]
+\end{definition}
+
+Die Multiplikation modulo 12 ergibt
+\[
+A^2=B^2=C^2=E,
+\]
+und
+\[
+AB=C,\qquad BC=A,\qquad CA=B.
+\]
+Diese Struktur ist isomorph zur Klein-Vierergruppe \(V_4\).
+
+\begin{bemerkung}
+Die \(EABC\)-Algebra ist zunaechst kommutativ. Sie beschreibt daher noch keine
+orientierte oder fermionische Struktur. Eine solche entsteht erst durch die
+quaternionische Hebung.
+\end{bemerkung}
+
+\section{Der tetraedrische Spinraum}
+
+Wir ordnen den vier \(EABC\)-Klassen die Vektoren
+\[
+E=(1,1,1),
+\]
+\[
+A=(-1,-1,1),
+\]
+\[
+B=(1,-1,-1),
+\]
+\[
+C=(-1,1,-1)
+\]
+zu.
+
+\begin{satz}[Tetraedersatz]
+Die vier Vektoren \(E,A,B,C\) bilden die Ecken eines regulaeren Tetraeders.
+\end{satz}
+
+\begin{proof}
+Fuer jedes verschiedene Paar \(X,Y\in\{E,A,B,C\}\) gilt
+\[
+\|X-Y\|=2\sqrt2.
+\]
+Alle sechs Kanten haben also dieselbe Laenge. Damit bilden die vier Punkte ein
+regulaeres Tetraeder.
+\end{proof}
+
+Zudem gilt
+\[
+E+A+B+C=0.
+\]
+Der vollstaendige Vierer ist daher spinneutral.
+
+\begin{definition}[EABC-Spin]
+Der tetraedrische Spin eines Halbklein-Zustands \(H\in\{E,A,B,C\}\) ist
+\[
+S(H)=H\in\R^3.
+\]
+\end{definition}
+
+\section{Primzahlen als elementare Spinoren}
+
+Jede Primzahl \(p>3\) liegt in genau einer der vier Klassen \(E,A,B,C\). Damit
+traegt jede solche Primzahl einen elementaren Tetraederspin. Diese Sichtweise
+motiviert die Bezeichnung \emph{arithmetischer Spinor} fuer eine einzelne
+quaternionisch reine Primklasse.
+
+\begin{definition}[Radix-Besetzung]
+Fuer eine natuerliche Zahl \(n\) sei
+\[
+\rad(n)=\prod_{p\mid n}p.
+\]
+Wir schreiben \((r_E,r_A,r_B,r_C)\) fuer die Anzahl verschiedener Primfaktoren
+\(p>3\) von \(n\) in den Klassen \(E,A,B,C\).
+\end{definition}
+
+Der Radix-Spin ist
+\[
+S_{\rad}(n)=r_EE+r_AA+r_BB+r_CC.
+\]
+
+\section{Mesonen, Baryonen und Singuletts}
+
+Die niedrigsten Kombinationsklassen ergeben eine arithmetische
+Teilchenspektroskopie.
+
+\subsection{Einer: Spinoren}
+
+Ein einzelner Zustand \(X\in\{E,A,B,C\}\) besitzt
+\[
+\|X\|^2=3.
+\]
+Er ist nicht neutral und wird als elementarer Spinor interpretiert.
+
+\subsection{Zweier: Mesonen}
+
+Zweierkombinationen erzeugen Achsenzustande:
+\[
+E+A=(0,0,2),\qquad E+B=(2,0,0),\qquad E+C=(0,2,0),
+\]
+\[
+A+B=(0,-2,0),\qquad A+C=(-2,0,0),\qquad B+C=(0,0,-2).
+\]
+Diese Paare werden als arithmetische Mesonen oder Dipole bezeichnet.
+
+\subsection{Dreier: Baryonen}
+
+Dreierkombinationen sind Lochzustaende:
+\[
+A+B+C=-E,
+\]
+\[
+E+B+C=-A,
+\]
+\[
+E+A+C=-B,
+\]
+\[
+E+A+B=-C.
+\]
+Sie tragen die Gegenrichtung des fehlenden vierten Zustands.
+
+\subsection{Vierer: Singuletts}
+
+Der vollstaendige Vierer erfuellt
+\[
+E+A+B+C=0.
+\]
+Er ist das arithmetische Singulett oder die geschlossene Schale des Modells.
+
+\section{Kern-Huelle-Struktur}
+
+Die numerischen und algebraischen Befunde legen folgende Kern-Huelle-Lesart nahe:
+\[
+E=\text{Kernkanal},
+\]
+\[
+B,C=\text{Huellendpolaritaeten},
+\]
+\[
+A=\text{Bindungskanal}.
+\]
+Der elementare Huellendipol ist
+\[
+D_{BC}=B+C=(0,0,-2).
+\]
+Seine Gegenorientierung ist
+\[
+-D_{BC}=(0,0,2).
+\]
+
+\begin{hypothese}[Kern-Huelle-Regel]
+Der Zustand \(E\) beschreibt den Kernkanal, das Paar \(B+C\) den elementaren
+Huellendipol und \(A\) den Bindungskanal zwischen Kern und Huelle.
+\end{hypothese}
+
+\section{Quaternionische Hebung und fermionische Vorzeichen}
+
+Die sichtbare \(EABC\)-Algebra ist kommutativ. Zur Orientierung wird sie gehoben
+nach
+\[
+E\mapsto 1,
+\qquad
+A\mapsto i,
+\qquad
+B\mapsto j,
+\qquad
+C\mapsto k.
+\]
+Dann gilt
+\[
+ij=k,
+\qquad
+jk=i,
+\qquad
+ki=j,
+\]
+aber
+\[
+ji=-k,
+\qquad
+kj=-i,
+\qquad
+ik=-j.
+\]
+Insbesondere:
+\[
+BC=+A,
+\qquad
+CB=-A.
+\]
+
+\begin{satz}[Fermionische Hebung]
+Die kommutative \(V_4\)-Struktur der sichtbaren \(EABC\)-Klassen wird durch die
+quaternionische Hebung zu einer orientierten \(Q_8\)-Struktur erweitert. Die
+Vertauschung zweier Huellenkomponenten erzeugt einen Vorzeichenwechsel.
+\end{satz}
+
+\section{Eta-24-Phase}
+
+Die Dedekindsche Eta-Funktion erzeugt durch
+\[
+\eta(\tau+1)=e^{\pi i/12}\eta(\tau)
+\]
+eine natuerliche 24-periodische Phase. Wir setzen daher
+\[
+\eps\in\Z/24\Z.
+\]
+Fuer den orientierten Bindungskanal wird definiert:
+\[
++A\leftrightarrow \eps=0,
+\qquad
+-A\leftrightarrow \eps=12\pmod{24}.
+\]
+Die Vertauschung
+\[
+BC\longrightarrow CB
+\]
+entspricht dem Halbumlauf
+\[
+\eps\longrightarrow \eps+12.
+\]
+Nach zwei Vertauschungen gilt
+\[
+12+12=24\equiv 0.
+\]
+Damit entsteht die spinorische Signatur
+\[
+360^\circ\mapsto -1,
+\qquad
+720^\circ\mapsto +1.
+\]
+
+\section{Morley-Kopplung}
+
+Fuer jede Dreiecksflache des Spin-Tetraeders kann das Morley-Dreieck gebildet
+werden. Der Morley-Skalar sei
+\[
+\mu_M=\frac{\Area(M)}{\Area(F)},
+\]
+wobei \(F\) die Ausgangsflaeche und \(M\) das Morley-Dreieck bezeichnet. In den
+bisherigen numerischen Modellrechnungen wird
+\[
+\mu_M\approx 0.03414827948
+\]
+verwendet.
+
+Der Morley-Skalar koppelt Spin- und Orbitstruktur:
+\[
+J=S+\mu_M L.
+\]
+
+\section{Goldene Verfeinerung und Ikosaeder}
+
+Der Goldene Schnitt
+\[
+\phig=\frac{1+\sqrt5}{2}
+\]
+erscheint nicht im Tetraeder selbst, sondern beim Uebergang zur
+Ikosaedergeometrie. Die Ecken des Ikosaeders koennen dargestellt werden als
+\[
+(0,\pm1,\pm\phig),
+\]
+\[
+(\pm1,\pm\phig,0),
+\]
+\[
+(\pm\phig,0,\pm1).
+\]
+Die Rotationsgruppe des Ikosaeders ist \(A_5\). Im Modell wird der Uebergang
+\[
+A_4\longrightarrow A_5
+\]
+als goldene Verfeinerung der tetraedrischen Spinstruktur interpretiert.
+
+\section{Bahnimpuls aus geschlossenen Umlaeufen}
+
+Fuer einen geschlossenen Umlauf
+\[
+P_1\to P_2\to\cdots\to P_m\to P_1
+\]
+wird der diskrete Bahnimpuls definiert durch
+\[
+L=\sum_{r=1}^{m}P_r\times P_{r+1}.
+\]
+Der Spin sitzt auf den Punkten des Tetraeders; der Bahnimpuls entsteht erst
+durch gerichtete Umlaeufe.
+
+\begin{bemerkung}
+Auf dem Tetraeder erzeugen die Dreiecksumlaeufe das duale Tetraeder. Die
+goldene Ikosaeder-Verfeinerung fuehrt zusaetzlich zu Fuenferumlaeufen und damit
+zu einer natuerlichen \(A_5\)-Orbitstruktur.
+\end{bemerkung}
+
+\section{Masse als arithmetische Rigiditaet}
+
+Masse wird im Modell nicht als Substanzmenge definiert, sondern als Rigiditaet
+einer gekoppelten Spin-Orbit-Bindungsstruktur.
+
+Eine erste Modellformel lautet
+\[
+m(n)=\Lambda(G,\eta)\left[\alpha\Omega(V)+\beta\|S_{\rad}(n)\|^2+
+\gamma\mu_M\|L_{\phig}(n)\|^2+\delta B_{\rm ary}(n)\right].
+\]
+Hier bezeichnet \(\Omega(V)\) die Faktorisierungstiefe, \(S_{\rad}\) den
+Radix-Spin, \(L_{\phig}\) den goldverfeinerten Bahnimpuls und \(B_{\rm ary}\)
+einen baryonischen Dreierbeitrag.
+
+\begin{hypothese}[Masse als Rigiditaet]
+Masse misst die eingefrorene Stabilitaet einer arithmetischen Struktur. Sie ist
+nicht identisch mit Spin, sondern entsteht aus Spinrest, Orbit, Bindung,
+Faktorisierungstiefe und modularer Phase.
+\end{hypothese}
+
+\section{Die vollstaendige Zerlegung einer Zahl}
+
+Eine natuerliche Zahl wird modellhaft beschrieben durch
+\[
+n=(G,H,V,\eps).
+\]
+Dabei bezeichnet
+\[
+G=2^a3^b
+\]
+den glatten Skalenanteil,
+\[
+H\in\{E,A,B,C\}
+\]
+den halbkleinen Spinanteil,
+\[
+V
+\]
+den vollkleinen Bindungs- und Orbitanteil, und
+\[
+\eps\in\Z/24\Z
+\]
+die modulare Spinorphase.
+
+\section{Hauptsatz des Bamberger Modells III}
+
+\begin{satz}[Struktur der natuerlichen Zahlen]
+Im Bamberger Modell III besitzt jede natuerliche Zahl eine vierstufige Struktur
+\[
+n=(G,H,V,\eps).
+\]
+Der glatte Anteil \(G\) liefert die Skala. Der halbkleine Anteil \(H\) liefert
+den tetraedrischen Spin. Der vollkleine Anteil \(V\) liefert Bindung und Orbit.
+Die Eta-Phase \(\eps\) speichert die spinorische Orientierung.
+\end{satz}
+
+\begin{korollar}
+Die sichtbare Restklassenstruktur wird durch \(V_4\) beschrieben, die
+fermionische Orientierung durch die quaternionische Hebung \(Q_8\), und die
+modulare Spinorphase durch \(\Z/24\Z\).
+\end{korollar}
+
+\section{Offene Probleme}
+
+Die folgenden Punkte bleiben offen:
+\begin{enumerate}[label=\arabic*.]
+\item eine exakte Herleitung physikalischer Massen aus der Rigiditaetsformel;
+\item die volle fermionische Antikommutationsalgebra;
+\item die Praezisierung des Zusammenhangs zu \(SU(2)\) und \(SU(3)\);
+\item die Einbettung in Hecke-Operatoren und modulare Formen;
+\item die Beziehung zu Riemann-Nullstellen und spektralen Trace-Formeln;
+\item die Rolle von Hurwitz-, 24-Zeller-, E8- und Leech-Strukturen;
+\item numerische Tests der Radix-Spektren bis grosse Schranken.
+\end{enumerate}
+
+\section{Schluss}
+
+Das Bamberger Modell III formuliert eine mehrschichtige Geometrie der
+natuerlichen Zahlen. Die Restklassen modulo 12 erzeugen ein Tetraeder. Die
+Quaternionen erzeugen Orientierung. Die Eta-Funktion erzeugt eine 24-Phase.
+Ramanujansche Identitaeten verbinden modulare Skalen mit dem Goldenen Schnitt.
+Die Ikosaedergeometrie liefert eine goldene Orbitverfeinerung. Daraus entsteht
+ein Modell von Skala, Spin, Bindung, Orbit, Masse und Phase auf der
+Faktorisierungsstruktur der natuerlichen Zahlen.
+
+\begin{thebibliography}{99}
+
+\bibitem{Euler}
+L. Euler,
+\emph{Introductio in analysin infinitorum}, 1748.
+
+\bibitem{Hamilton}
+W. R. Hamilton,
+\emph{On Quaternions}, Proceedings of the Royal Irish Academy, 1844.
+
+\bibitem{Hurwitz}
+A. Hurwitz,
+\emph{Ueber die Zahlentheorie der Quaternionen}, Nachrichten von der Gesellschaft der Wissenschaften zu Goettingen, 1896.
+
+\bibitem{Dedekind}
+R. Dedekind,
+\emph{Erlaeuterungen zu den Fragmenten XXVIII}, in: Bernhard Riemann's gesammelte mathematische Werke, 1876.
+
+\bibitem{Ramanujan}
+S. Ramanujan,
+\emph{Modular Equations and Approximations to \(\pi\)}, Quarterly Journal of Mathematics, 1914.
+
+\bibitem{Klein}
+F. Klein,
+\emph{Vorlesungen ueber das Ikosaeder und die Aufloesung der Gleichungen vom fuenften Grade}, Teubner, 1884.
+
+\bibitem{ConwaySmith}
+J. H. Conway and D. A. Smith,
+\emph{On Quaternions and Octonions}, A K Peters, 2003.
+
+\bibitem{Serre}
+J.-P. Serre,
+\emph{A Course in Arithmetic}, Springer, 1973.
+
+\bibitem{Apostol}
+T. M. Apostol,
+\emph{Modular Functions and Dirichlet Series in Number Theory}, Springer, 1990.
+
+\end{thebibliography}
+
+\end{document}

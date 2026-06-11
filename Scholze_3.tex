@@ -1,0 +1,381 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- Kodierung und Sprache ---
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% --- Mathematik ---
+\usepackage{amsmath,amssymb,amsfonts,amsthm,mathtools}
+
+% --- Layout ---
+\usepackage[a4paper,margin=2.8cm]{geometry}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  citecolor=blue!50!black,
+  urlcolor=blue!50!black,
+  pdftitle={Spektrale Starrheit, diskrete Hecke-Modelle und heuristische Langlands-Perspektiven},
+  pdfauthor={Thomas Hoffbauer}
+}
+
+% --- Grafik robust ---
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./}{fig/}{figs/}{images/}{img/}}
+\newcommand{\includegraphicssafe}[2][]{%
+  \IfFileExists{#2}{\includegraphics[#1]{#2}}{%
+    \fbox{\parbox[c][3cm][c]{0.8\linewidth}{\centering Grafik \texttt{#2} nicht gefunden}}%
+  }%
+}
+
+% --- Theoreme (Serum-Sache) ---
+\theoremstyle{plain}
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{korollar}[satz]{Korollar}
+\newtheorem{proposition}[satz]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{beispiel}[satz]{Beispiel}
+\newtheorem{hypothese}[satz]{Hypothese}
+
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+
+% --- Operatoren und Makros ---
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\HH}{\mathbb{H}}
+\newcommand{\OH}{\mathcal{O}_{\mathrm H}}
+\newcommand{\RN}{R_N}
+\newcommand{\SNp}{\Sigma_{N,p}}
+\newcommand{\GNp}{G(N,p)}
+\newcommand{\TNp}{T_{N,p}}
+\newcommand{\PN}{P_N}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\SL}{\operatorname{SL}}
+\newcommand{\PGL}{\operatorname{PGL}}
+\newcommand{\Gal}{\operatorname{Gal}}
+\newcommand{\Rep}{\operatorname{Rep}}
+\newcommand{\cH}{\mathcal{H}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\cBun}{\operatorname{Bun}}
+
+\title{\textbf{Spektrale Starrheit, diskrete Hecke-Modelle und heuristische Langlands-Perspektiven}\\
+\large Eine mathematisch präzisierte Standalone-Fassung mit vorsichtigem Scholze-Bezug}
+\author{Thomas Hoffbauer}
+\date{März 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Der vorliegende Text formuliert ein bewusst bescheidenes, aber mathematisch sauberes Minimalmodell aus der Theorie endlicher Quotienten der Hurwitz-Ordnung in der Hamiltonschen Quaternionenalgebra. Aus symmetrischen Erzeugermengen in den endlichen Gruppenquotienten werden reguläre Cayley-Graphen und die zugehörigen Adjazenzoperatoren konstruiert. Deren Spektrallücke wird als exakt definierte Größe interpretiert, welche die Geschwindigkeit der Durchmischung des zugehörigen Random Walks kontrolliert.
+
+Darauf aufbauend wird eine heuristische, jedoch nicht-technische Parallele zu Hecke-Operatoren, automorphen Spektren und zum Langlands-Programm formuliert. Der Bezug zu Arbeiten von Peter Scholze und zum Fargues--Scholze-Rahmen wird ausdrücklich methodologisch, nicht identifikatorisch verstanden: Das vorliegende Modell ist weder eine perfectoide noch eine prismatische Konstruktion und auch keine Realisierung der geometrisierten lokalen Langlands-Korrespondenz. Vielmehr dient die moderne arithmetisch-geometrische Perspektive als begriffliche Orientierung dafür, warum operatorielle und spektrale Strukturen arithmetische Bedeutung tragen können.
+\end{abstract}
+
+\section{Einleitung}
+Die mathematische Idee dieses Textes ist einfach: Arithmetische Information soll nicht durch vage physikalische Metaphern, sondern über klar definierte endliche Räume und Operatoren organisiert werden. Ausgangspunkt ist die Hurwitz-Ordnung \(\OH\) in der Quaternionenalgebra \(\HH\). Für jedes \(N\geq 1\) betrachtet man den endlichen Quotienten
+\[
+\RN = \OH/N\OH.
+\]
+Wählt man in \(\RN^\times\) eine symmetrische endliche Erzeugermenge \(\SNp\), so erhält man einen regulären Cayley-Graphen \(\GNp\) und damit einen selbstadjungierten Adjazenzoperator \(\TNp\) auf \(\ell^2(\RN)\).
+
+Der formale Kern liegt damit in Standardgegenständen der diskreten harmonischen Analyse: endliche Gruppen, Graphen, Random Walks, Spektralzerlegung. Neu ist hier nicht eine bereits bewiesene tiefe Theorie, sondern die disziplinierte Formulierung eines Minimalmodells, das arithmetisch inspirierte Operatorik in einer endlich-rechenbaren Umgebung zugänglich macht.
+
+Die vorliegende Fassung verschärft insbesondere die mathematische Diktion des Scholze-Bezugs. Dieser Bezug wird nicht als technische Abstammung behauptet, sondern als methodische Analogie verstanden: In moderner arithmetischer Geometrie wird Information häufig über Kategorien, Funktoren, Korrespondenzen und Operatoren organisiert. Das diskrete Modell dieses Artikels bleibt weit von dieser Tiefe entfernt, kann aber als endlicher Proberaum gelesen werden, in dem sich einige der strukturellen Motive in elementarer Gestalt zeigen.
+
+\section{Die algebraische Ausgangslage}
+Wir arbeiten in der Hamiltonschen Quaternionenalgebra
+\[
+\HH = \Q \oplus \Q i \oplus \Q j \oplus \Q k,
+\qquad i^2=j^2=k^2=ijk=-1.
+\]
+Die Hurwitz-Ordnung sei
+\[
+\OH := \Z\left[i,j,k,\frac{1+i+j+k}{2}\right].
+\]
+Sie ist eine \(\Z\)-Ordnung in \(\HH\), also ein endlich erzeugter \(\Z\)-Unterring von Rang \(4\), der \(\HH\) über \(\Q\) aufspannt.
+
+\begin{definition}
+Für \(x=a+bi+cj+dk\in \HH\) definieren wir die Standardinvolution durch
+\[
+\overline{x}=a-bi-cj-dk
+\]
+und die reduzierte Norm durch
+\[
+\operatorname{Nrd}(x)=x\overline{x}=a^2+b^2+c^2+d^2.
+\]
+\end{definition}
+
+\begin{bemerkung}
+Die reduzierte Norm ist multiplikativ. Für \(x\in \OH\) gilt \(\operatorname{Nrd}(x)\in \Z_{\ge 0}\). Damit entsteht eine natürliche arithmetische Größenordnung auf \(\OH\), die später zur Auswahl der Erzeugermengen herangezogen wird.
+\end{bemerkung}
+
+Für \(N\ge 1\) ist der Quotient \(\RN=\OH/N\OH\) ein endlicher Ring. Seine Einheitengruppe \(\RN^\times\) ist ebenfalls endlich.
+
+\begin{lemma}
+Für jedes \(N\ge 1\) ist \(\RN\) ein endlicher Ring mit \(|\RN|=N^4\).
+\end{lemma}
+
+\begin{proof}
+Als \(\Z\)-Modul ist \(\OH\) frei von Rang \(4\). Daher ist \(\OH/N\OH\) isomorph zu \((\Z/N\Z)^4\) als additiver Gruppe, woraus die Behauptung folgt.
+\end{proof}
+
+\section{Cayley-Graphen und Adjazenzoperatoren}
+Sei nun \(N\ge 1\) fest. Für eine endliche Teilmenge \(\SNp\subseteq \RN^\times\) verlangen wir:
+\begin{enumerate}[label=(\roman*)]
+\item \(\SNp\) ist symmetrisch, also mit \(s\in\SNp\) auch \(s^{-1}\in\SNp\),
+\item \(1\notin \SNp\),
+\item \(\SNp\) erzeugt die relevante Untergruppe von \(\RN^\times\), auf der der Random Walk laufen soll.
+\end{enumerate}
+
+\begin{definition}
+Der zu \(\SNp\) gehörige Cayley-Graph \(\GNp\) hat als Knotenmenge die endliche Menge \(\RN\) oder, je nach gewünschter Multiplikationsdynamik, eine geeignete \(\RN^\times\)-Nebenklasse. Zwei Knoten \(x,y\) werden verbunden, falls ein \(s\in \SNp\) existiert mit
+\[
+ y=sx 
+\quad\text{oder äquivalent}\quad
+ x=s^{-1}y.
+\]
+\end{definition}
+
+Für die folgende elementare Theorie genügt es, \(\GNp\) als einen endlichen \(d\)-regulären Graphen mit \(d=|\SNp|\) aufzufassen.
+
+\begin{definition}
+Der Adjazenzoperator \(\TNp\colon \ell^2(V(\GNp))\to \ell^2(V(\GNp))\) ist definiert durch
+\[
+(\TNp f)(x)=\sum_{y\sim x} f(y).
+\]
+Der normierte Markov-Operator ist
+\[
+\PN := \frac{1}{|\SNp|}\TNp.
+\]
+\end{definition}
+
+\begin{proposition}
+Ist \(\SNp\) symmetrisch, so ist \(\TNp\) selbstadjungiert auf \(\ell^2(V(\GNp))\). Insbesondere besitzt \(\TNp\) ein reelles Spektrum.
+\end{proposition}
+
+\begin{proof}
+Symmetrie der Erzeugermenge bedeutet Symmetrie der Nachbarschaftsrelation. Der Adjazenzoperator eines endlichen ungerichteten Graphen ist bezüglich des Standardskalarprodukts selbstadjungiert.
+\end{proof}
+
+\section{Spektrallücke und Durchmischung}
+Sei \(\lambda_1\ge \lambda_2\ge \dots \ge \lambda_n\) das Spektrum von \(\TNp\), wobei \(\lambda_1=d=|\SNp|\) für zusammenhängende reguläre Graphen gilt. Für den normierten Operator \(\PN\) liegen die Eigenwerte in \([-1,1]\).
+
+\begin{definition}
+Die \emph{Spektrallücke} des normierten Operators \(\PN\) sei
+\[
+\Delta(N,p):=1-\max\{ |\mu| : \mu\in \operatorname{Spec}(\PN),\ \mu\neq 1\}.
+\]
+\end{definition}
+
+\begin{satz}
+Ist \(\Delta(N,p)>0\), so konvergiert der von \(\PN\) erzeugte Random Walk exponentiell schnell gegen die stationäre Verteilung. Genauer gilt auf dem orthogonalen Komplement der Konstanten
+\[
+\|\PN^m f\|_2 \le (1-\Delta(N,p))^m \|f\|_2.
+\]
+\end{satz}
+
+\begin{proof}
+Dies ist die übliche Spektralabschätzung für selbstadjungierte Markov-Operatoren auf endlichen regulären Graphen. Auf dem orthogonalen Komplement der Konstanten ist die Operatornorm gleich dem größten Betrag eines nichttrivialen Eigenwerts.
+\end{proof}
+
+\begin{korollar}
+Eine positive Spektrallücke liefert in diesem Minimalmodell eine präzise mathematische Bedeutung von \emph{algorithmischer Effizienz}: lokale Information wird unter der Iteration von \(\PN\) schnell global verteilt.
+\end{korollar}
+
+\begin{bemerkung}
+Dieser Sprachgebrauch ist rein mathematisch gemeint. Er bezeichnet weder thermodynamische Effizienz noch eine physikalische Energieaussage, sondern ausschließlich die quantitative Mischungsrate eines diskreten dynamischen Systems.
+\end{bemerkung}
+
+\section{Hecke-artige Strukturmotive}
+Bis hierher ist die Theorie vollständig elementar. Dennoch drängt sich eine arithmetische Interpretation auf, sobald die Erzeugermengen \(\SNp\) nicht beliebig, sondern normgesteuert gewählt werden.
+
+\begin{definition}
+Eine Erzeugermenge \(\SNp\subseteq \RN^\times\) heiße \emph{normkompatibel vom Niveau \(p\)}, wenn sie aus Restklassen von Quaternionen \(x\in\OH\) mit \(\operatorname{Nrd}(x)=p\) gebildet wird, modulo Einheiten und gegebenenfalls modulo einer geeigneten Äquivalenzrelation, so dass \(\SNp\) symmetrisch ist.
+\end{definition}
+
+\begin{bemerkung}
+Sobald \(\SNp\) auf diese Weise aus Norm-\(p\)-Elementen stammt, erinnert der Operator \(\TNp\) formal an einen Hecke-Operator: Er aggregiert lokale Übergänge eines festen arithmetischen Typs. Diese Beobachtung ist heuristisch legitim, aber noch keine hecke-theoretische Identifikation.
+\end{bemerkung}
+
+\begin{hypothese}
+Es könnte Familien von Paaren \((N,p)\) geben, für die die Graphen \(\GNp\) nicht nur regulär und gut durchmischt sind, sondern eine tieferliegende arithmetische Struktur reflektieren, etwa in Richtung automorpher Spektren, Quaternionenalgebren über lokalen Körpern oder expliziter Hecke-Algebren.
+\end{hypothese}
+
+\section{Präzise Grenzen des formalen Gehalts}
+Die folgende Trennung ist für die Glaubwürdigkeit des Modells zentral.
+
+\begin{proposition}
+Unmittelbar bewiesen oder aus Standardresultaten ableitbar sind:
+\begin{enumerate}[label=\arabic*.]
+\item Die Hurwitz-Ordnung \(\OH\) ist eine wohldefinierte \(\Z\)-Ordnung in \(\HH\).
+\item Für jedes \(N\) ist \(\RN=\OH/N\OH\) endlich.
+\item Jede endliche symmetrische Erzeugermenge \(\SNp\) erzeugt einen endlichen regulären Cayley-Graphen.
+\item Der Adjazenzoperator \(\TNp\) ist selbstadjungiert.
+\item Eine positive Spektrallücke impliziert schnelle Durchmischung des zugehörigen Random Walks.
+\end{enumerate}
+\end{proposition}
+
+\begin{proposition}
+Nicht bewiesen werden in diesem Text hingegen:
+\begin{enumerate}[label=\arabic*.]
+\item eine explizite Ramanujan-Eigenschaft der Graphen \(\GNp\),
+\item eine kanonische Identifikation der Operatoren \(\TNp\) mit klassischen Hecke-Operatoren,
+\item irgendeine Folgerung zur Riemannschen Vermutung,
+\item eine technische Realisierung des Modells innerhalb der perfectoiden oder prismatischen Geometrie,
+\item eine Konstruktion motivischer, garbentheoretischer oder fargues--scholzescher Kategorien aus dem vorliegenden diskreten Ansatz,
+\item eine Ableitung der lokalen Langlands-Korrespondenz aus dem Modell.
+\end{enumerate}
+\end{proposition}
+
+\begin{bemerkung}
+Die Schärfe dieser Negativliste ist kein Mangel, sondern eine Tugend. Sie markiert den Abstand zwischen einem endlichen spektralen Minimalmodell und der modernen arithmetischen Geometrie, statt ihn rhetorisch zu verwischen.
+\end{bemerkung}
+
+\section{Langlands-Perspektive in diskreter Form}
+Das Langlands-Programm kann in einer sehr groben, aber für den vorliegenden Zusammenhang hilfreichen Weise als die Leitidee beschrieben werden, arithmetische Information über Darstellungen, Korrespondenzen, L-Faktoren und operatorielle Strukturen zu organisieren. In klassischen Situationen treten Hecke-Operatoren auf Räumen automorpher Formen auf; ihre Spektren tragen tiefe arithmetische Information.
+
+Das vorliegende Minimalmodell bewegt sich weit unterhalb dieses Niveaus, aber es teilt eine formale Grundintuition: Ein lokaler Bewegungsmechanismus, kodiert durch eine endliche Erzeugermenge, erzeugt einen globalen Operator; dessen Spektrum misst nicht nur kombinatorische, sondern potentiell auch arithmetisch relevante Struktur.
+
+\begin{bemerkung}
+Der Vergleich mit dem Langlands-Programm ist deshalb nur auf der Ebene des \emph{organisatorischen Schemas} gerechtfertigt:
+\[
+\text{lokale Daten} \longrightarrow \text{Operator} \longrightarrow \text{Spektrum} \longrightarrow \text{globale Information}.
+\]
+Technisch ersetzt dies weder automorphe Darstellungen noch Garben auf Moduliräumen noch die Sprache von \(L\)-Parametern.
+\end{bemerkung}
+
+\section{Scholze-Bezug in genauer mathematischer Diktion}
+Hier liegt der eigentliche Schwerpunkt der neuen Fassung.
+
+Peter Scholzes Arbeiten haben die moderne arithmetische Geometrie grundlegend verändert, insbesondere durch perfectoide Räume, prismatische Methoden, neue 6-Funktoren-Formalismen und die mit Laurent Fargues entwickelte Geometrisierung der lokalen Langlands-Korrespondenz. In diesen Theorien wird arithmetische Information nicht mehr primär über punktweise Formeln, sondern über geometrische Räume, Kategorien von Garben, Kohomologie und funktorielle Korrespondenzen organisiert.
+
+Für den vorliegenden Text ist daraus \emph{nicht} zu folgern, dass das diskrete Quaternionenmodell ein Spezialfall solcher Theorien sei. Die mathematisch korrekte Aussage ist schwächer und zugleich präziser:
+
+\begin{quote}
+Das hier konstruierte Modell ist ein endlicher spektraler Proberaum, in dem eine operatorielle Organisationsform arithmetisch motivierter Daten sichtbar wird. In diesem methodischen Sinn steht es unter demselben sehr allgemeinen Leitgedanken, der in Scholzes Arbeiten in ungleich tieferer und geometrisch reichhaltigerer Form realisiert wird.
+\end{quote}
+
+Diese Formulierung erlaubt drei Stufen der Nähe:
+\begin{enumerate}[label=\textbf{Stufe \Alph*.}]
+\item \textbf{Diskrete Ebene.} Endliche Quotienten, Cayley-Graphen, Adjazenzoperatoren, Spektrallücken.
+\item \textbf{Arithmetisch-operatorielle Ebene.} Hecke-artige Operatoren, automorphe Spektren, Quaternionenalgebren, Ramanujan-Phänomene.
+\item \textbf{Geometrisch-kategorielle Ebene.} Fargues--Fontaine-Kurve, geometrisierte lokale Langlands-Korrespondenz, motivische Koeffizienten, 6-Funktoren-Formalisme.
+\end{enumerate}
+
+Das vorliegende Papier liegt vollständig auf Stufe A, blickt heuristisch auf Stufe B und nimmt Stufe C als fernes methodisches Bezugssystem wahr.
+
+\begin{bemerkung}
+Gerade diese asymmetrische Formulierung ist mathematisch sauber. Unsauber wäre es dagegen, den Operator \(\TNp\) unmittelbar als Hecke-Operator \emph{im Sinne von Fargues--Scholze} zu deklarieren oder das zugrundeliegende endliche Modell als diskrete Version der Fargues--Fontaine-Kurve auszugeben. Dafür fehlt jede technische Konstruktion.
+\end{bemerkung}
+
+\subsection*{Neuere Arbeiten von Scholze als Hintergrundrahmen}
+Für die methodische Einordnung sind insbesondere die folgenden neueren Arbeiten relevant:
+\begin{enumerate}[label=\arabic*.]
+\item \emph{Geometrization of the local Langlands correspondence, motivically}: Hier wird die frühere geometrische Konstruktion mit \(\ell\)-adischen Koeffizienten motivisch angehoben. Der wesentliche Gesichtspunkt ist die Unabhängigkeit vom Hilfsprim \(\ell\) innerhalb eines geometrisch-kategoriellen Rahmens.
+\item \emph{Wild Betti sheaves}: Diese Arbeit erweitert die Landschaft der zulässigen Koeffizienten und macht sichtbar, dass auch irreguläre, \glqq wilde\grqq\ Phänomene in funktoriell kontrollierten Garbenkategorien organisiert werden können.
+\item \emph{Six-Functor Formalisms}: Hier wird die abstrakte operative Infrastruktur bereitgestellt, in der geometrische Korrespondenzen, Dualität und Kohomologie systematisch zusammenwirken.
+\item \emph{Analytic de Rham stacks of Fargues--Fontaine curves} (mit Anschütz, Bosco, Le Bras und Rodríguez Camargo): Diese Arbeit zeigt, wie stark der geometrische Apparat um die Fargues--Fontaine-Kurve weiterentwickelt wird und wie eng heutige \(p\)-adische Geometrie mit kategorischen De-Rham-Phänomenen verknüpft ist.
+\end{enumerate}
+
+Keine dieser Arbeiten wird hier verwendet, um Sätze des vorliegenden Papiers zu beweisen. Sie dienen ausschließlich dazu, die methodische Reichweite des Vergleichs korrekt zu bestimmen.
+
+\section{Ein möglicher mathematischer Ausbau}
+Soll der Übergang von heuristischer Analogie zu echter arithmetischer Substanz gelingen, so wären mindestens die folgenden Schritte erforderlich:
+\begin{enumerate}[label=\arabic*.]
+\item eine explizite und kanonische Konstruktion der Mengen \(\SNp\) aus Norm-\(p\)-Elementen der Hurwitz-Ordnung modulo Einheiten,
+\item eine systematische Analyse der lokalen Strukturen von \(\OH\otimes \Z_\ell\) und ihrer Beziehung zu Bruhat--Tits-Bäumen,
+\item der Nachweis, dass die Operatoren \(\TNp\) in geeigneten Familien tatsächlich aus einer Hecke-Algebra stammen,
+\item ein Vergleich der entstehenden Spektren mit bekannten automorphen oder Ramanujan-artigen Schranken,
+\item gegebenenfalls die Einbettung des diskreten Modells in eine echte moduli- oder garbentheoretische Umgebung.
+\end{enumerate}
+
+\begin{bemerkung}
+Erst auf einer solchen Grundlage wäre ein substanziellerer Bezug zum Langlands-Programm mathematisch tragfähig. Vorher bleibt der Vergleich eine orientierende Analogie.
+\end{bemerkung}
+
+\section{Schluss}
+Der Gewinn des vorliegenden Textes liegt nicht in einer sensationellen Behauptung, sondern in einer disziplinierten Klärung. Ein arithmetisch motiviertes diskretes Modell wurde so formuliert, dass seine gesicherten Aussagen klar von seinen offenen Deutungen getrennt sind. Damit wird ein Raum sichtbar, in dem Hecke-artige, spektrale und quaternionische Motive tatsächlich zusammen auftreten können, ohne dass man sich vorschnell auf unbegründete Großthesen festlegt.
+
+Gerade in dieser Zurückhaltung wird der Scholze-Bezug fruchtbar: nicht als Etikett, sondern als Standard der Präzision. Moderne arithmetische Geometrie lehrt, dass operatorielle Phänomene ihre tiefste Bedeutung meist erst innerhalb geeigneter geometrischer und kategorialer Umgebungen gewinnen. Das vorliegende Modell besitzt eine solche Umgebung noch nicht. Aber es formuliert einen endlichen, mathematisch sauberen Vorraum, in dem die Frage nach einer solchen Umgebung überhaupt erst seriös gestellt werden kann.
+
+\begin{thebibliography}{99}
+
+\bibitem{ConwaySloane}
+J. H. Conway und N. J. A. Sloane,
+\emph{Sphere Packings, Lattices and Groups},
+3. Auflage, Springer, 1999.
+
+\bibitem{Lubotzky}
+A. Lubotzky,
+\emph{Discrete Groups, Expanding Graphs and Invariant Measures},
+Birkhäuser, 1994.
+
+\bibitem{SerreTrees}
+J.-P. Serre,
+\emph{Trees},
+Springer, 1980.
+
+\bibitem{Terras}
+A. Terras,
+\emph{Fourier Analysis on Finite Groups and Applications},
+Cambridge University Press, 1999.
+
+\bibitem{Vigneras}
+M.-F. Vignéras,
+\emph{Arithmétique des algèbres de quaternions},
+Springer, 1980.
+
+\bibitem{Titchmarsh}
+E. C. Titchmarsh,
+\emph{The Theory of the Riemann Zeta-Function},
+2. Auflage, herausgegeben von D. R. Heath-Brown, Oxford University Press, 1986.
+
+\bibitem{ScholzeMotivicLL}
+P. Scholze,
+\emph{Geometrization of the local Langlands correspondence, motivically},
+arXiv:2501.07944, 2025.
+
+\bibitem{ScholzeWildBetti}
+P. Scholze,
+\emph{Wild Betti sheaves},
+arXiv:2505.24599, 2025.
+
+\bibitem{ScholzeSixFunctor}
+P. Scholze,
+\emph{Six-Functor Formalisms},
+arXiv:2510.26269, 2025.
+
+\bibitem{ABLRSFF}
+J. Anschütz, G. Bosco, A.-C. Le Bras, J. E. Rodríguez Camargo und P. Scholze,
+\emph{Analytic de Rham stacks of Fargues--Fontaine curves},
+arXiv:2510.15196, 2025.
+
+\bibitem{FarguesScholze}
+L. Fargues und P. Scholze,
+\emph{Geometrization of the local Langlands correspondence},
+verfügbar als Buchmanuskript und Preprint-Fassung, 2021 ff.
+
+\end{thebibliography}
+
+\end{document}

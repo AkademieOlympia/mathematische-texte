@@ -1,0 +1,341 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\title{Eine lokale Strukturtheorie des EABC-Gitters modulo \(12\)}
+\author{Kollaborativer Entwurf}
+\date{\today}
+
+\newtheorem{theorem}{Satz}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Beispiel}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Bemerkung}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\ind}{\mathbf{1}}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir führen das modulo-\(12\)-EABC-Gitter
+		\[
+		Q_n=(12n-11,\;12n-7,\;12n-5,\;12n-1),
+		\qquad n\in\N,
+		\]
+		ein und zeigen, dass es eine vollständige lokale Beschreibung kleiner Primzahlkonstellationen oberhalb von \(3\) liefert.
+		In diesem Rahmen liegen alle Primzahlzwillinge \(>3\) in genau zwei linearen Kanälen, alle dichten Primzahldrillinge werden durch den singulären Anker \(3\) erzwungen, blockübergreifende Primzahlvierlinge sind genau die Doppelaktivierungen beider Zwillingskanäle, und dichte Primzahlfünflinge sind genau die orientierten Erweiterungen solcher Doppelstellen.
+	\end{abstract}
+	
+	\section{Das EABC-Gitter}
+	
+	\begin{definition}[EABC-Familien]
+		Für \(n\in\N\) definieren wir
+		\[
+		E_n:=12n-11,\qquad
+		A_n:=12n-7,\qquad
+		B_n:=12n-5,\qquad
+		C_n:=12n-1.
+		\]
+		Wir nennen
+		\[
+		Q_n:=(E_n,A_n,B_n,C_n)
+		\]
+		den \(n\)-ten \emph{EABC-Block}.
+	\end{definition}
+	
+	\begin{lemma}[Primzerlegung modulo \(12\)]
+		Jede Primzahl \(p>3\) liegt in genau einer der vier Familien
+		\[
+		E,\quad A,\quad B,\quad C.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Eine Primzahl \(p>3\) ist weder durch \(2\) noch durch \(3\) teilbar. Daher gilt
+		\[
+		p\equiv 1,5,7,\text{ oder }11 \pmod{12}.
+		\]
+		Diese vier Restklassen werden disjunkt und vollständig parametrisiert durch
+		\[
+		12n-11,\quad 12n-7,\quad 12n-5,\quad 12n-1.
+		\]
+	\end{proof}
+	
+	\begin{corollary}
+		Die Menge der Primzahlen \(>3\) zerfällt als
+		\[
+		\PP\setminus\{2,3\}
+		=
+		(\PP\cap E)\,\dot\cup\,(\PP\cap A)\,\dot\cup\,(\PP\cap B)\,\dot\cup\,(\PP\cap C).
+		\]
+	\end{corollary}
+	
+	\section{Die beiden Zwillingskanäle}
+	
+	\begin{definition}[Zwillingskanäle]
+		Für jeden EABC-Block \(Q_n\) definieren wir den inneren und äußeren Zwillingskanal durch
+		\[
+		T_n^{\mathrm{int}}:=(A_n,B_n)=(12n-7,\;12n-5),
+		\]
+		\[
+		T_n^{\mathrm{ext}}:=(C_n,E_{n+1})=(12n-1,\;12n+1).
+		\]
+		Weiter definieren wir die \emph{Zwillingssignatur}
+		\[
+		\tau(Q_n):=
+		\bigl(
+		\ind_{T_n^{\mathrm{int}}\text{ ist ein Primzahlzwilling}},
+		\ind_{T_n^{\mathrm{ext}}\text{ ist ein Primzahlzwilling}}
+		\bigr)\in\{0,1\}^2.
+		\]
+	\end{definition}
+	
+	\begin{lemma}[Vollständigkeit der Zwillingskanäle]
+		Jeder Primzahlzwilling \((p,p+2)\) mit \(p>3\) liegt eindeutig in genau einem der beiden Muster
+		\[
+		(12n-7,12n-5)
+		\qquad\text{oder}\qquad
+		(12n-1,12n+1).
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Für \(p>3\) kann ein Primzahlzwilling modulo \(12\) nur das Restmuster
+		\[
+		(5,7)\quad\text{oder}\quad(11,1)
+		\]
+		haben.
+		Der erste Fall ist genau
+		\[
+		(A_n,B_n),
+		\]
+		der zweite Fall genau
+		\[
+		(C_n,E_{n+1}).
+		\]
+		Die Eindeutigkeit folgt aus der linearen Parametrisierung.
+	\end{proof}
+	
+	\begin{corollary}[Klassifikation der Primzahlzwillinge \(>3\)]
+		Alle Primzahlzwillinge \(>3\) sind genau die primen Realisierungen der beiden linearen Formen
+		\[
+		(12n-7,12n-5)
+		\qquad\text{und}\qquad
+		(12n-1,12n+1).
+		\]
+	\end{corollary}
+	
+	\section{Dichte Primzahldrillinge}
+	
+	\begin{definition}[Dichte Primzahldrillinge]
+		Ein \emph{dichter Primzahldrilling} ist ein Primzahltripel einer der beiden Formen
+		\[
+		(p,p+2,p+6)
+		\qquad\text{oder}\qquad
+		(p,p+4,p+6).
+		\]
+	\end{definition}
+	
+	\begin{lemma}[Jeder dichte Drilling enthält \(3\)]
+		Jeder dichte Primzahldrilling enthält notwendig die Primzahl \(3\).
+	\end{lemma}
+	
+	\begin{proof}
+		In jedem der beiden Muster
+		\[
+		p,\ p+2,\ p+6
+		\qquad\text{oder}\qquad
+		p,\ p+4,\ p+6
+		\]
+		ist mindestens eine der drei Zahlen durch \(3\) teilbar. Sind alle drei Zahlen prim, so muss diese Zahl gleich \(3\) sein.
+	\end{proof}
+	
+	\begin{corollary}[Klassifikation der dichten Drillinge]
+		Die einzigen dichten Primzahldrillinge sind
+		\[
+		(3,5,7)
+		\qquad\text{und}\qquad
+		(3,7,11).
+		\]
+	\end{corollary}
+	
+	\begin{remark}
+		Dichte Drillinge sind damit keine freien inneren Konfigurationen des EABC-Gitters, sondern singuläre Randphänomene, die durch die Ausnahmeprimzahl \(3\) erzwungen werden.
+	\end{remark}
+	
+	\section{Doppelstellen und Primzahlvierlinge}
+	
+	\begin{definition}[Doppelstelle]
+		Ein EABC-Block \(Q_n\) heißt \emph{Doppelstelle}, falls
+		\[
+		\tau(Q_n)=(1,1).
+		\]
+		Äquivalent bedeutet dies, dass
+		\[
+		A_n,\ B_n,\ C_n,\ E_{n+1}
+		\]
+		alle prim sind.
+	\end{definition}
+	
+	\begin{lemma}[Doppelstellen sind blockübergreifende Vierlinge]
+		Ein EABC-Block \(Q_n\) ist genau dann eine Doppelstelle, wenn
+		\[
+		(12n-7,\;12n-5,\;12n-1,\;12n+1)
+		\]
+		ein Primzahlvierling ist.
+	\end{lemma}
+	
+	\begin{proof}
+		Die Bedingung \(\tau(Q_n)=(1,1)\) bedeutet, dass sowohl
+		\[
+		(12n-7,12n-5)
+		\qquad\text{als auch}\qquad
+		(12n-1,12n+1)
+		\]
+		Primzahlzwillinge sind.
+		Das ist äquivalent zur Primheit aller vier Zahlen
+		\[
+		12n-7,\ 12n-5,\ 12n-1,\ 12n+1,
+		\]
+		und diese bilden das Muster
+		\[
+		p,\ p+2,\ p+6,\ p+8.
+		\]
+	\end{proof}
+	
+	\begin{corollary}
+		Die blockübergreifenden Primzahlvierlinge sind genau die gleichzeitigen Aktivierungen beider Zwillingskanäle.
+	\end{corollary}
+	
+	\section{Dichte Primzahlfünflinge}
+	
+	\begin{definition}[Dichter Primzahlfünfling]
+		Ein \emph{dichter Primzahlfünfling} ist eine Primzahlkonstellation der Form
+		\[
+		(p,p+2,p+6,p+8,p+12).
+		\]
+	\end{definition}
+	
+	\begin{lemma}[Zwei EABC-Formen der Fünflinge]
+		Jeder dichte Primzahlfünfling mit \(p>3\) besitzt genau eine der beiden Formen
+		\[
+		(A_n,B_n,C_n,E_{n+1},A_{n+1})
+		\]
+		oder
+		\[
+		(C_n,E_{n+1},A_{n+1},B_{n+1},C_{n+1})
+		\]
+		für ein eindeutig bestimmtes \(n\in\N\).
+	\end{lemma}
+	
+	\begin{proof}
+		Für \(p>3\) sind als Startreste modulo \(12\) nur \(5\) und \(11\) möglich.
+		
+		Falls
+		\[
+		p\equiv 5 \pmod{12},
+		\]
+		dann ist \(p=A_n\), also
+		\[
+		p+2=B_n,\quad p+6=C_n,\quad p+8=E_{n+1},\quad p+12=A_{n+1}.
+		\]
+		
+		Falls
+		\[
+		p\equiv 11 \pmod{12},
+		\]
+		dann ist \(p=C_n\), also
+		\[
+		p+2=E_{n+1},\quad p+6=A_{n+1},\quad p+8=B_{n+1},\quad p+12=C_{n+1}.
+		\]
+		
+		Die Startreste \(1\) und \(7\) sind unmöglich, da dann einer der Folgeterme durch \(3\) teilbar wäre.
+	\end{proof}
+	
+	\begin{lemma}[Jeder dichte Fünfling enthält genau eine Doppelstelle]
+		Jeder dichte Primzahlfünfling enthält genau einen blockübergreifenden Primzahlvierling.
+	\end{lemma}
+	
+	\begin{proof}
+		In der ersten Form
+		\[
+		(A_n,B_n,C_n,E_{n+1},A_{n+1})
+		\]
+		bilden die ersten vier Terme den Vierling.
+		
+		In der zweiten Form
+		\[
+		(C_n,E_{n+1},A_{n+1},B_{n+1},C_{n+1})
+		\]
+		bilden ebenfalls die ersten vier Terme den Vierling.
+		
+		Da ein dichter Fünfling nur fünf Einträge besitzt, kann er nicht zwei verschiedene Vierlinge dieses Typs enthalten.
+	\end{proof}
+	
+	\begin{corollary}
+		Jeder dichte Primzahlfünfling ist eine orientierte Erweiterung einer eindeutigen Doppelstelle.
+	\end{corollary}
+	
+	\section{Hauptsatz}
+	
+	\begin{theorem}[Lokale Vollständigkeit des EABC-Gitters]
+		Das EABC-Gitter
+		\[
+		Q_n=(12n-11,\;12n-7,\;12n-5,\;12n-1)
+		\]
+		liefert eine vollständige lokale Beschreibung kleiner Primzahlkonstellationen oberhalb von \(3\):
+		
+		\begin{enumerate}[label=\textup{(\roman*)}]
+			\item Jede Primzahl \(p>3\) liegt eindeutig in einer der vier Familien \(E,A,B,C\).
+			\item Jeder Primzahlzwilling \(>3\) liegt eindeutig in einem der beiden Kanäle
+			\[
+			(A_n,B_n)
+			\qquad\text{oder}\qquad
+			(C_n,E_{n+1}).
+			\]
+			\item Jeder dichte Primzahldrilling ist einer der beiden singulären, durch \(3\) verankerten Fälle
+			\[
+			(3,5,7),\qquad (3,7,11).
+			\]
+			\item Jede Doppelstelle \(\tau(Q_n)=(1,1)\) ist genau ein blockübergreifender Primzahlvierling
+			\[
+			(12n-7,12n-5,12n-1,12n+1).
+			\]
+			\item Jeder dichte Primzahlfünfling ist genau eine orientierte Erweiterung einer solchen Doppelstelle und besitzt daher eine der beiden Formen
+			\[
+			(A_n,B_n,C_n,E_{n+1},A_{n+1})
+			\qquad\text{oder}\qquad
+			(C_n,E_{n+1},A_{n+1},B_{n+1},C_{n+1}).
+			\]
+		\end{enumerate}
+		
+		Damit ist die gesamte lokale Zwillings-, Drillings-, Vierlings- und Fünflingsstruktur des Primzahlgitters modulo \(12\) vollständig beschrieben.
+	\end{theorem}
+	
+	\begin{proof}
+		Die Aussagen \textup{(i)} und \textup{(ii)} folgen aus den ersten beiden Lemmata.
+		Aussage \textup{(iii)} ist das Drillingskorollar.
+		Aussage \textup{(iv)} ist das Vierlingslemma.
+		Aussage \textup{(v)} folgt aus den beiden Fünflingslemmata.
+	\end{proof}
+	
+	\begin{remark}
+		In diesem Bild ist der Primzahlvierling die gleichzeitige Aktivierung beider Zwillingskanäle, während der Primzahlfünfling die erste echte gerichtete Fortsetzung einer solchen Doppelstelle darstellt.
+	\end{remark}
+	
+\end{document}

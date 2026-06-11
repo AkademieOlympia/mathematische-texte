@@ -1,0 +1,79 @@
+Erster tetraedrischer Farbtest mit den ersten 100000 Riemann-Nullstellen
+========================================================================
+Datenbasis
+- Nullstellen: gamma_1,...,gamma_100000 aus zeros6.npy
+- Vierlingszentren bis X=200000: 52
+- Vierlingszentren (erste 10): [9, 15, 105, 195, 825, 1485, 1875, 2085, 3255, 3465]
+
+Modell
+Jede Nullstelle wird als E-Wert E_n = 1/2 + i gamma_n betrachtet.
+Die kanonischen Farb-Nullstellen werden durch
+  A_n = (3 E_n^2)^(1/3),  B_n = ω A_n,  C_n = ω^2 A_n,
+mit ω = exp(2π i /3) definiert, so dass A_n B_n C_n = 3 E_n^2 gilt.
+
+Zusätzlich wurde die ptolemäische Rekonstruktion
+  C_n^(Pt) = (B_n^2 - A_n^2)/(2 E_n)
+getestet, entsprechend der Relation ||b^2-a^2|| = 2 e c.
+Damit ist der Ptolemäus-Residualterm |B_n^2-A_n^2-2E_n C_n^(Pt)| numerisch praktisch Null.
+
+Referenzwerte der Zetaregime
+- S_100000(2) = 1.644924066898227
+- zeta(2)    = 1.644934066848226
+- S_100000(1) - log(100000) = 0.577220664893202
+- Eulerprodukt P_100000(2)  = 1.644932747202728
+- S_100000(-1) = 5000050000
+
+Vierlingsschalen
+- Summe 1/T(V_p) über alle Vierlinge: 0.000221459312711
+- Summe Normschüttespannung N/T: 0.093558297412014
+
+Geometrie der Farb-Nullstellen (Mittelwerte)
+- E: Re-Mittel = 0.500000, Im-Mittel = 39693.702451, |.|-Mittel = 39693.702460
+- A: Re-Mittel = 805.633595, Im-Mittel = 1395.366136, |.|-Mittel = 1611.239319
+- B: Re-Mittel = -1611.239319, Im-Mittel = 0.016091, |.|-Mittel = 1611.239319
+- C: Re-Mittel = 805.605724, Im-Mittel = -1395.382227, |.|-Mittel = 1611.239319
+
+Ptolemäischer Test (actual)
+- mittlerer Residualterm: 4.757e-10
+- 95%-Quantil Residualterm: 1.863e-09
+- mittlere Abweichung |C_pt - C|: 1582.773645
+- Median |C_pt - C|: 1668.988205
+Interpretation: Die ptolemäische Relation definiert C_pt exakt aus A,B,E, sie reproduziert aber nicht die kanonische symmetrische Farbe C. Das heißt: beide Konstruktionen sind verschieden und liefern zwei konkurrierende C-Begriffe.
+
+Resonanztests mit tetraedrischen Farbfrequenzen
+Verwendet wurden die Imaginärteile der Farb-Nullstellen als Frequenzen,
+mit gewichteten Summen über die Vierlingsschalen:
+  S_A(n) = |Σ w_p (p^2-4)^(-1/2) exp(-i Im(A_n) log(p^2-4))|
+  S_B(n) = |Σ w_p (p^2-16)^(-1/2) exp(-i Im(B_n) log(p^2-16))|
+  S_C(n) = |Σ w_p p^(-1/2) exp(-i |Im(C_n)| log p)|
+  S_M(n) = gemischte mittlere Farbphase.
+
+SA:
+  actual : mean=0.110494, q95=0.127678, max=0.127923, argmax n=28672
+  shifted: mean=0.110494, q95=0.127678, max=0.127923, argmax n=82415
+  random : mean=0.110502, q95=0.127675, max=0.127923, argmax n=32852
+SB:
+  actual : mean=0.138134, q95=0.138136, max=0.138136, argmax n=100000
+  shifted: mean=0.138134, q95=0.138136, max=0.138136, argmax n=100000
+  random : mean=0.138134, q95=0.138136, max=0.138136, argmax n=100000
+SC:
+  actual : mean=0.324801, q95=0.389827, max=0.391133, argmax n=10093
+  shifted: mean=0.324801, q95=0.389822, max=0.391132, argmax n=10093
+  random : mean=0.324943, q95=0.389856, max=0.391133, argmax n=13515
+SM:
+  actual : mean=0.202547, q95=0.323797, max=0.377134, argmax n=4602
+  shifted: mean=0.202546, q95=0.323769, max=0.376748, argmax n=4602
+  random : mean=0.202370, q95=0.323937, max=0.376925, argmax n=6797
+
+Vorläufiges Fazit
+1. Die tetraedrische Farbzerlegung E -> (A,B,C) ist numerisch stabil und einfach aus den Nullstellen berechenbar.
+2. Die ptolemäische Rekonstruktion C_pt = (B^2-A^2)/(2E) funktioniert algebraisch exakt, erzeugt aber eine andere C-Komponente als die kanonische symmetrische Farbzerlegung.
+3. In den ersten 100000 Nullstellen zeigt sich auch mit tetraedrischen Farbfrequenzen noch kein klar vom shifted/random-Kontrollensemble abgesetztes globales Resonanzsignal.
+4. Der interessanteste Kanal ist S_C bzw. die gemischte Observable S_M; dort ist die Streuung am größten. Für einen nächsten Schritt wären lokale Nullstellenfenster, Gram-Punkte, sowie eine Kopplung an explizite Formeln der Zetafunktion sinnvoll.
+
+Empfohlene nächste Tests
+- lokale Fensterung in Blöcken von 1000 oder 5000 Nullstellen;
+- Vergleich actual vs. Gram-Punkte statt nur shifted/random;
+- Nutzung von C_pt statt C in den Resonanzsummen;
+- Test der Korrelation zwischen log|3E_n^2| und log T(V_p);
+- Visualisierung der vier Punktwolken E, A, B, C in der komplexen Ebene.

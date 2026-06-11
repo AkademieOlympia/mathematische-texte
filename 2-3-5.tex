@@ -1,0 +1,514 @@
+\documentclass[11pt,a4paper]{article}
+
+% -------------------------------------------------
+% Sprache / Kodierung
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{mathrsfs}
+\usepackage{bm}
+\usepackage{bbm}
+
+% -------------------------------------------------
+% Layout / Grafik
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.6cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,decorations.markings,positioning}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{satz}[definition]{Satz}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{korollar}[definition]{Korollar}
+\theoremstyle{remark}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+\newtheorem{beispiel}[definition]{Beispiel}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\HH}{\mathcal{H}}
+\newcommand{\OO}{\mathcal{O}}
+\newcommand{\Acal}{\mathcal{A}}
+\newcommand{\Fcal}{\mathcal{F}}
+\newcommand{\Dcal}{\mathcal{D}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\vtwo}{v_2}
+\newcommand{\vthree}{v_3}
+\newcommand{\vfive}{v_5}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+
+% -------------------------------------------------
+% Titel
+% -------------------------------------------------
+\title{Der $2$--$3$--$5$-Kanalraum als arithmetischer Träger topologischer und metrischer Strukturen\\
+	\large Eine motivierende Studie zur Trennung von Topologie und Metrik mit Hamilton- und Dirac-Operatoren}
+
+\author{Thomas Hoffbauer\\Bamberg, Deutschland}
+\date{\today}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir schlagen einen diskreten arithmetischen Zustandsraum vor, in dem jede natürliche Zahl durch ihre $2$-, $3$- und $5$-adischen Exponenten und einen zu $30$ teilerfremden Restfaktor beschrieben wird. Dieser \emph{$2$--$3$--$5$-Kanalraum} besitzt eine natürliche Wirkung der Permutationsgruppe $S_3$, aus der sechs objektiv äquivalente Darstellungen der natürlichen Zahlen entstehen. Der zentrale strukturelle Punkt besteht darin, dass die topologische Information des Modells allein durch die kombinatorische Nachbarschaft auf dem Exponentengitter codiert wird, während metrische Information separat über Gewichte, Längen und Kopplungsparameter eingebracht werden kann. Diese Trennung erlaubt die saubere Definition diskreter Hamilton-Operatoren, chiraler Dirac-Operatoren sowie einer Berry-Verbindung in endlichdimensionalen Bandmodellen. In einem periodisierten Modell auf dem dreidimensionalen Torus werden Chernzahlen und Berry-Krümmungen wohldefiniert. Wir geben explizite Rechenbeispiele, formulieren die Orbitstruktur des Kanalraums und erläutern, warum die Trennung von Topologie und Metrik den Zugang zu spektralen und topologischen Invarianten systematisiert.
+	\end{abstract}
+	
+	\section{Einleitung und Motivation}
+	
+	Die natürliche Zahlenfolge wird üblicherweise als lineare, additive Ordnung gelesen. Für viele arithmetische und spektrale Fragestellungen ist jedoch die multiplikative Struktur entscheidender als die additive. Insbesondere die kleinen Primzahlen $2$, $3$ und $5$ spielen eine privilegierte Rolle: Sie erzeugen die glatten Zahlen, stabilisieren Faktorisationsmuster und bilden den kleinsten nichttrivialen Satz von Primfaktoren, der sowohl binäre, triadische als auch pentagonale Struktur erlaubt.
+	
+	Die Grundidee der vorliegenden Arbeit ist, jede natürliche Zahl in einen \emph{glatten Kanalteil} und einen \emph{rauen Restteil} zu zerlegen. Die Exponenten von $2$, $3$ und $5$ bilden dabei einen diskreten Zustandsvektor $(a,b,c)\in\N_0^3$, der als Belegung dreier arithmetischer Kanäle gelesen wird. Der Restfaktor $m$, der zu $30$ teilerfremd ist, trägt die transversale oder schwere Information. Auf diese Weise entsteht ein arithmetischer Zustandsraum, der weder mit der Zahlengeraden identisch ist noch nur eine formale Umkodierung darstellt.
+	
+	Die Motivation ist dreifach:
+	\begin{enumerate}[label=(\roman*)]
+		\item Der Kanalraum legt eine innere \emph{Topologie} frei, die rein kombinatorisch aus der Adjazenz der Exponententripel entsteht.
+		\item Die metrische Information kann unabhängig davon über Gewichte, Kanalenergien, Anisotropien und Kopplungsstärken eingebracht werden.
+		\item Diese Trennung erlaubt die Definition operatorischer Strukturen, insbesondere eines Hamilton-Operators und eines chiralen Dirac-Operators, ohne topologische und metrische Anteile zu vermischen.
+	\end{enumerate}
+	
+	Im Hintergrund steht die physikalisch-mathematische Heuristik, dass diskrete topologische Information robust sein sollte, während metrische Verformungen Spektren ändern dürfen, ohne topologische Klassen notwendigerweise zu zerstören. Genau dieses Muster ist aus Bandtheorie, topologischen Isolatoren und der Theorie diskreter Dirac-Operatoren bekannt. Die vorliegende Arbeit übersetzt diese Denkfigur in einen arithmetischen Kontext.
+	
+	\section{Der $2$--$3$--$5$-Kanalraum}
+	
+	\begin{definition}[$2$--$3$--$5$-Zerlegung]
+		Zu jeder Zahl $n\in\N$ existieren eindeutig bestimmte Exponenten $a,b,c\in\N_0$ und ein Restfaktor $m\in\N$ mit
+		\begin{equation}
+			n = 2^a 3^b 5^c m,
+			\qquad \gcd(m,30)=1.
+		\end{equation}
+		Wir schreiben
+		\begin{equation}
+			a=\vtwo(n),\qquad b=\vthree(n),\qquad c=\vfive(n).
+		\end{equation}
+	\end{definition}
+	
+	\begin{definition}[Kanalraum]
+		Der \emph{$2$--$3$--$5$-Kanalraum} ist das Gitter
+		\begin{equation}
+			\K := \N_0^3.
+		\end{equation}
+		Jedem Punkt $(a,b,c)\in\K$ ist die glatte Zahl
+		\begin{equation}
+			\Phi(a,b,c)=2^a3^b5^c
+		\end{equation}
+		zugeordnet. Allgemeiner wird jede natürliche Zahl als Zustand $(a,b,c;m)$ aufgefasst.
+	\end{definition}
+	
+	Die drei Koordinaten des Kanalraums sind nicht symmetrisch im klassischen Sinn, aber sie werden von der Gruppe $S_3$ permutiert. Dies führt zu sechs äquivalenten Zahlenwelten.
+	
+	\begin{definition}[Permutationswirkung]
+		Für $\sigma\in S_3$ definieren wir
+		\begin{equation}
+			T_\sigma\bigl(2^a3^b5^cm\bigr):=p_{\sigma(1)}^a p_{\sigma(2)}^b p_{\sigma(3)}^c m,
+			\qquad (p_1,p_2,p_3)=(2,3,5).
+		\end{equation}
+		Der Orbit einer Zahl $n$ unter $S_3$ ist
+		\begin{equation}
+			\OO(n):=\{T_\sigma(n):\sigma\in S_3\}.
+		\end{equation}
+	\end{definition}
+	
+	\begin{lemma}[Orbitgrößen]
+		Sei $n=2^a3^b5^cm$ mit $\gcd(m,30)=1$. Dann gilt
+		\begin{equation}
+			|\OO(n)|=
+			\begin{cases}
+				1,& a=b=c,\\
+				3,& \text{genau zwei der Exponenten sind gleich},\\
+				6,& a,b,c\text{ sind paarweise verschieden}.
+			\end{cases}
+		\end{equation}
+	\end{lemma}
+	
+	\begin{proof}
+		Die Aussage folgt unmittelbar aus der Wirkung von $S_3$ auf dem Exponententripel $(a,b,c)$ und aus der Stabilisator-Orbit-Formel. Der Restfaktor $m$ bleibt unter allen Permutationen unverändert.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Damit zerfällt der Kanalraum in vollständig symmetrische, halbdegenerierte und generische Zonen. Geometrisch liegen diese auf der Hauptdiagonalen $a=b=c$, auf den Gleichheitsebenen $a=b$, $a=c$, $b=c$ und auf dem restlichen dreidimensionalen Gitter.
+	\end{bemerkung}
+	
+	\section{Topologie ohne Metrik: der kombinatorische Kern}
+	
+	Der grundlegende Schritt besteht darin, zuerst einen rein kombinatorischen Graphen auf dem Kanalraum zu definieren. Dies ist der topologische Kern des Modells.
+	
+	\begin{definition}[Kanalgraph]
+		Sei $\Gamma=(V,E)$ der Graph mit
+		\begin{equation}
+			V=\K
+		\end{equation}
+		und Kantenmenge
+		\begin{equation}
+			\{x,y\}\in E \iff x-y\in\{\pm e_1,\pm e_2,\pm e_3\},
+		\end{equation}
+		wobei $e_1=(1,0,0)$, $e_2=(0,1,0)$, $e_3=(0,0,1)$ die kanonischen Basisvektoren sind.
+	\end{definition}
+	
+	Dieser Graph hängt nur davon ab, welche Exponententripel als benachbart gelten. Es wird \emph{keine} Länge, kein Winkel und keine Gewichtung vorausgesetzt.
+	
+	\begin{definition}[Zellkomplex]
+		Aus $\Gamma$ gewinnen wir einen kubischen Zellkomplex $X$ durch das Anfügen aller Quadrate und Würfel, deren Kanten in $\Gamma$ liegen. Der zugrunde liegende Homotopietyp von $X$ ist die topologische Basis des Modells.
+	\end{definition}
+	
+	\begin{proposition}[Trennung von Topologie und Metrik]
+		Die topologische Information des Modells ist vollständig durch den Komplex $X$ bestimmt. Jede Wahl positiver Gewichte auf Kanten, Flächen oder Knoten verändert die Metrik, aber nicht die zugrunde liegende kombinatorische Topologie.
+	\end{proposition}
+	
+	\begin{proof}
+		Die Topologie von $X$ hängt nur von der Inzidenzstruktur seiner Zellen ab. Gewichte auf Kanten oder Knoten ändern weder die Menge der Zellen noch deren Verklebung. Sie beeinflussen daher metrische oder spektrale Größen, aber nicht Homologie, Euler-Charakteristik oder Homotopietyp.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Gerade diese Trennung ist der Grund, weshalb später sowohl Berry-Krümmung als auch Chernzahlen auf natürliche Weise definiert werden können: Die topologische Klasse wird durch die Faserung der Eigenräume über einem Parameterraum bestimmt, nicht durch eine willkürliche Wahl von Längenskalen im Exponentengitter.
+	\end{bemerkung}
+	
+	\section{Metrische Strukturen und gewichtete Hamiltonians}
+	
+	Nach der topologischen Festlegung des Kanalgraphen kann Metrik separat eingeführt werden. Dazu wählen wir positive Kanalgewichte $\alpha_1,\alpha_2,\alpha_3>0$ und eventuell einen skalaren Potentialterm $V$.
+	
+	\begin{definition}[Gewichteter Laplace-Operator]
+		Für eine Funktion $\psi:V\to\C$ definieren wir den gewichteten diskreten Laplace-Operator durch
+		\begin{equation}
+			(\Delta_{\alpha}\psi)(x)
+			:=\sum_{j=1}^3 \alpha_j\bigl(2\psi(x)-\psi(x+e_j)-\psi(x-e_j)\bigr),
+		\end{equation}
+		sofern alle beteiligten Knoten im betrachteten endlichen Ausschnitt enthalten sind.
+	\end{definition}
+	
+	\begin{definition}[Hamilton-Operator]
+		Ein arithmetischer Hamilton-Operator ist ein selbstadjungierter Operator der Form
+		\begin{equation}
+			H = \Delta_{\alpha}+V,
+		\end{equation}
+		mit einem reellen Potential $V:V\to\R$.
+	\end{definition}
+	
+	Für endliche Ausschnitte $\Lambda\subset\K$ erhält man eine hermitesche Matrix $H_\Lambda$. Ihre Spektren hängen empfindlich von den Gewichten ab, während die kombinatorische Topologie unverändert bleibt.
+	
+	\begin{beispiel}[Ein elementarer Block]
+		Betrachte den Würfel
+		\begin{equation}
+			\Lambda_1=\{0,1\}^3.
+		\end{equation}
+		Nummeriere die acht Knoten in lexikographischer Ordnung:
+		\begin{equation}
+			(0,0,0),(1,0,0),(0,1,0),(1,1,0),(0,0,1),(1,0,1),(0,1,1),(1,1,1).
+		\end{equation}
+		Für isotrope Gewichte $\alpha_1=\alpha_2=\alpha_3=1$ und $V\equiv 0$ ist der Laplace-Operator
+		\begin{equation}
+			\Delta = 3I - A,
+		\end{equation}
+		mit der Adjazenzmatrix
+		\begin{equation}
+			A=
+			\begin{pmatrix}
+				0&1&1&0&1&0&0&0\\
+				1&0&0&1&0&1&0&0\\
+				1&0&0&1&0&0&1&0\\
+				0&1&1&0&0&0&0&1\\
+				1&0&0&0&0&1&1&0\\
+				0&1&0&0&1&0&0&1\\
+				0&0&1&0&1&0&0&1\\
+				0&0&0&1&0&1&1&0
+			\end{pmatrix}.
+		\end{equation}
+		Die Eigenwerte von $A$ sind bekanntlich
+		\begin{equation}
+			3,1,1,1,-1,-1,-1,-3,
+		\end{equation}
+		und folglich besitzt $\Delta$ das Spektrum
+		\begin{equation}
+			0,2,2,2,4,4,4,6.
+		\end{equation}
+	\end{beispiel}
+	
+	Dieses Beispiel zeigt bereits, dass das Spektrum stark metrisch geprägt ist, während der zugrunde liegende Würfel als topologischer Träger unverändert bleibt.
+	
+	\section{Ein diskreter Dirac-Operator}
+	
+	Um chirale und topologische Information algebraisch zu erfassen, führen wir einen Dirac-Operator auf dem Kanalraum ein. Dazu verdoppeln wir den Zustandsraum und verwenden Pauli-Matrizen.
+	
+	\begin{definition}[Pauli-Matrizen]
+		Wir setzen
+		\begin{equation}
+			\sigma_1=
+			\begin{pmatrix}
+				0&1\\1&0
+			\end{pmatrix},
+			\qquad
+			\sigma_2=
+			\begin{pmatrix}
+				0&-i\\ i&0
+			\end{pmatrix},
+			\qquad
+			\sigma_3=
+			\begin{pmatrix}
+				1&0\\0&-1
+			\end{pmatrix}.
+		\end{equation}
+	\end{definition}
+	
+	\begin{definition}[Diskrete Ableitungen]
+		Für Funktionen $\psi:\Lambda\to\C^2$ definieren wir auf einem endlichen Ausschnitt $\Lambda\subset\K$ die symmetrischen Differenzen
+		\begin{equation}
+			(\partial_j\psi)(x):=\frac{1}{2}\bigl(\psi(x+e_j)-\psi(x-e_j)\bigr),\qquad j=1,2,3.
+		\end{equation}
+	\end{definition}
+	
+	\begin{definition}[Dirac-Operator]
+		Der diskrete Dirac-Operator im Kanalraum ist
+		\begin{equation}
+			D = i\sum_{j=1}^3 \beta_j\,\sigma_j\partial_j + M(x)\sigma_0,
+		\end{equation}
+		mit positiven Kanalgeschwindigkeiten $\beta_j>0$, Massenterm $M$ und $\sigma_0=I_2$.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Der Operator $D$ hängt von der Metrik über die Parameter $\beta_j$ und den Massenterm $M$ ab. Seine chirale Struktur ist hingegen an die Darstellung der Clifford-Algebra gekoppelt. Formal trennt sich damit wieder die kombinatorische Richtungstopologie vom metrischen Gewicht der Kanäle.
+	\end{bemerkung}
+	
+	\begin{proposition}
+		Für konstanten Massenterm $M\equiv m_0$ gilt formal
+		\begin{equation}
+			D^2 \approx -\sum_{j=1}^3 \beta_j^2\partial_j^2 + m_0^2,
+		\end{equation}
+		modulo Gitterkorrekturen und möglicher Randterme.
+	\end{proposition}
+	
+	\begin{proof}
+		Die Antikommutationsrelationen der Pauli-Matrizen liefern
+		\begin{equation}
+			\sigma_i\sigma_j+\sigma_j\sigma_i=2\delta_{ij}I_2.
+		\end{equation}
+		Daraus folgt durch Ausmultiplizieren, dass sich die Kreuzterme im quadratischen Anteil aufheben, während die Diagonalterme einen diskreten Laplace-Anteil ergeben.
+	\end{proof}
+	
+	\section{Berry-Verbindung und Chernzahlen in einem periodisierten Modell}
+	
+	Um Berry-Krümmung und Chernzahlen wohldefiniert zu erhalten, periodisieren wir den Kanalraum. Anstelle des halbraumartigen Gitters $\N_0^3$ betrachten wir zunächst den Torus
+	\begin{equation}
+		\T^3 = (\R/2\pi\Z)^3,
+	\end{equation}
+	mit Quasimomenten $k=(k_1,k_2,k_3)$. Auf diesem Parameterraum definieren wir ein zweibändiges Bloch-Hamiltonian.
+	
+	\begin{definition}[Bloch-Hamiltonian]
+		Sei
+		\begin{equation}
+			H(k)= d_1(k)\sigma_1+d_2(k)\sigma_2+d_3(k)\sigma_3,
+		\end{equation}
+		mit
+		\begin{equation}
+			d_1(k)=\sin k_1,
+			\qquad
+			d_2(k)=\sin k_2,
+			\qquad
+			d_3(k)=m+\cos k_1+\cos k_2,
+		\end{equation}
+		für einen Parameter $m\in\R$.
+	\end{definition}
+	
+	Dies ist das Standardmodell eines zweidimensionalen Chern-Isolators, hier als Schnitt des dreidimensionalen Kanalraums entlang der ersten beiden Kanäle zu lesen. Die dritte Richtung kann als Spektralparameter, Schichtindex oder zusätzliche Kanalrichtung fungieren.
+	
+	\begin{definition}[Berry-Verbindung und Berry-Krümmung]
+		Sei $|u_-(k)\rangle$ ein normierter Eigenvektor zum unteren Band von $H(k)$. Dann definieren wir die Berry-Verbindung
+		\begin{equation}
+			A(k)= i\,\langle u_-(k),\nabla_k u_-(k)\rangle,
+		\end{equation}
+		und die Berry-Krümmung
+		\begin{equation}
+			F_{12}(k)=\partial_{k_1}A_2(k)-\partial_{k_2}A_1(k).
+		\end{equation}
+	\end{definition}
+	
+	\begin{definition}[Chernzahl]
+		Die Chernzahl des unteren Bandes ist
+		\begin{equation}
+			\mathrm{Ch}_1 = \frac{1}{2\pi}\int_{\T^2}F_{12}(k)\,dk_1\,dk_2.
+		\end{equation}
+	\end{definition}
+	
+	\begin{satz}
+		Für das obige Zweibandmodell gilt
+		\begin{equation}
+			\mathrm{Ch}_1=
+			\begin{cases}
+				1,& -2<m<0,\\
+				-1,& 0<m<2,\\
+				0,& |m|>2,
+			\end{cases}
+		\end{equation}
+		sofern die Bandlücke offen bleibt.
+	\end{satz}
+	
+	\begin{bemerkung}
+		Die Chernzahl ist topologisch stabil unter stetigen metrischen Deformationen des Hamiltonians, solange sich die Bandlücke nicht schließt. Genau hierin zeigt sich der Nutzen der Trennung von Topologie und Metrik: Metrische Parameter ändern die Form des Spektrums und der Berry-Krümmung, nicht aber notwendig die topologische Klasse.
+	\end{bemerkung}
+	
+	\section{Warum die Trennung von Topologie und Metrik entscheidend ist}
+	
+	Dieser Punkt ist konzeptionell zentral. Wir fassen ihn systematisch zusammen.
+	
+	\subsection*{(a) Topologie}
+	Die Topologie des Kanalmodells wird durch folgende Daten festgelegt:
+	\begin{itemize}
+		\item die Menge der Zustände $(a,b,c)$ oder eines endlichen Ausschnitts davon,
+		\item die Nachbarschaftsrelationen im Gitter,
+		\item die daraus erzeugten Zellen, Schleifen und höheren Simplizes bzw. Würfel.
+	\end{itemize}
+	Diese Daten definieren Homologie, Fundamentalgruppen, Decktransformationen und periodisierte Parameteräume.
+	
+	\subsection*{(b) Metrik}
+	Die Metrik wird separat durch Größen wie
+	\begin{itemize}
+		\item Kantengewichte $\alpha_j$,
+		\item Kanalgeschwindigkeiten $\beta_j$,
+		\item Potentiale $V(x)$,
+		\item Massenterme $M(x)$,
+		\item komplexe Hopping-Phasen
+	\end{itemize}
+	festgelegt.
+	Diese Daten ändern Spektren, Eigenvektoren, Energielücken und Lokalisierungseffekte.
+	
+	\subsection*{(c) Topologische Observablen}
+	Gerade weil beide Ebenen getrennt sind, lassen sich topologische Observablen robust definieren:
+	\begin{itemize}
+		\item Chernzahlen als Klassen von Eigenraumbündeln,
+		\item Berry-Krümmung als Krümmung einer Verbindung auf dem Bandbündel,
+		\item Indexgrößen von Dirac-Operatoren,
+		\item spektrale Flüsse beim Durchlaufen von Parameterräumen.
+	\end{itemize}
+	Ohne diese Trennung wäre unklar, welche Eigenschaften invariant sind und welche nur Artefakte einer metrischen Parametrisierung darstellen.
+	
+	\section{Konkrete Rechenbeispiele}
+	
+	In diesem Abschnitt geben wir einige explizite Rechnungen, die die Struktur des Modells illustrieren.
+	
+	\subsection{Permutationsexperimente}
+	Betrachte die sechs Permutationen der Kanäle $(2,3,5)$. Für
+	\begin{equation}
+		n=12=2^2\cdot 3
+	\end{equation}
+	erhält man die Orbitwerte
+	\begin{equation}
+		12,20,18,45,50,75.
+	\end{equation}
+	Für
+	\begin{equation}
+		n=30=2\cdot 3\cdot 5
+	\end{equation}
+	bleibt der Orbit trivial:
+	\begin{equation}
+		\OO(30)=\{30\}.
+	\end{equation}
+	Für
+	\begin{equation}
+		n=6=2\cdot 3
+	\end{equation}
+	ergibt sich
+	\begin{equation}
+		\OO(6)=\{6,10,15\}.
+	\end{equation}
+	Diese Beispiele illustrieren direkt die Orbitgrößen $6$, $1$ und $3$.
+	
+	\subsection{Ein endlicher Kanalblock}
+	Betrachte den endlichen Ausschnitt
+	\begin{equation}
+		\Lambda_2=\{0,1,2\}\times\{0,1\}\times\{0,1\}.
+	\end{equation}
+	Dieser besitzt $12$ Knoten. Wählt man isotrope Gewichte und Dirichlet-Randbedingungen, so erhält man einen Hamilton-Operator der Form
+	\begin{equation}
+		H_{\Lambda_2}=\Delta_{\Lambda_2}+\mu\,\diag(a+b+c),
+	\end{equation}
+	mit einem linearen Potential in Kanalrichtung. Für $\mu>0$ werden Zustände mit großen Exponenten energetisch angehoben. Die Spektrallücke zwischen niedrigen und hohen Besetzungszuständen wächst dann mit $\mu$.
+	
+	\subsection{Ein zweibändiges topologisches Modell}
+	Wähle im Bloch-Hamiltonian den Parameter $m=-1$. Dann liegt man im topologisch nichttrivialen Bereich und erhält
+	\begin{equation}
+		\mathrm{Ch}_1=1.
+	\end{equation}
+	Für $m=3$ verschwindet die Chernzahl. Dieser Sprung kann nur auftreten, wenn die Lücke für einen kritischen Wert von $m$ schließt. Die Chernzahl hängt also nicht an metrischen Details, sondern an der globalen Bandstruktur.
+	
+	\section{Interpretation im Sinn eines arithmetischen Topologiemodells}
+	
+	Der Kanalraum macht sichtbar, dass sich aus der Faktorstruktur natürlicher Zahlen ein diskreter Zustandsraum aufbauen lässt, in dem drei Ebenen klar zu unterscheiden sind:
+	\begin{enumerate}[label=(\arabic*)]
+		\item die \emph{arithmetische Ebene}: Exponenten, Restfaktoren, Permutationsorbits,
+		\item die \emph{topologische Ebene}: Gitter, Nachbarschaft, Zellen, periodisierte Parameteräume,
+		\item die \emph{metrisch-operatorische Ebene}: Gewichte, Potentiale, Hamiltonians, Dirac-Operatoren.
+	\end{enumerate}
+	
+	Gerade diese Dreiteilung erlaubt es, arithmetische, geometrische und topologische Informationen nicht vorschnell zu identifizieren. Ein diskreter Hamiltonian lebt auf einem topologischen Träger, aber sein Spektrum ist metrisch. Ein Dirac-Operator trägt chirale Information, aber sein Index ist topologisch stabil. Eine Berry-Krümmung ist punktweise metrisch-analytisch, während die Chernzahl nur die globale Klasse des Bandbündels misst.
+	
+	\section{Ausblick}
+	
+	Die vorliegende Arbeit ist bewusst motivierend und programmatisch. Sie legt einen konsistenten Rahmen vor, in dem aus dem $2$--$3$--$5$-Kanalraum diskrete topologische und spektrale Strukturen gewonnen werden können. Naheliegende nächste Schritte sind:
+	\begin{itemize}
+		\item die systematische Untersuchung gewichteter endlicher Kanalblöcke und ihrer Spektralstatistik,
+		\item die Einbettung zusätzlicher Primkanäle als transversale Störmoden,
+		\item die Konstruktion quaternionischer oder oktonischer Erweiterungen,
+		\item die Analyse von Indexsätzen für diskrete Dirac-Operatoren auf periodisierten Kanalgittern,
+		\item der Vergleich mit bekannten Klassen topologischer Gittermodelle.
+	\end{itemize}
+	
+	Besonders interessant erscheint die Frage, ob arithmetisch ausgezeichnete Teilmengen des Kanalraums, etwa durch Primzahlvierlinge oder EABC-Familien, topologisch nichttriviale Unterkomplexe erzeugen. In diesem Fall könnte sich die Trennung von Topologie und Metrik als methodischer Schlüssel erweisen, um arithmetische Spektralmodelle präziser zu formulieren.
+	
+	\section*{Danksagung}
+	Der Verfasser dankt den zahlreichen Diskussionen über den Zusammenhang von glatten Zahlen, diskreter Geometrie, operatorischen Modellen und topologischen Invarianten, aus denen der konzeptionelle Rahmen dieser Arbeit hervorgegangen ist.
+	
+	\begin{thebibliography}{99}
+		
+		\bibitem{BernevigHughes}
+		B. A. Bernevig, T. L. Hughes,
+		\emph{Topological Insulators and Topological Superconductors},
+		Princeton University Press, 2013.
+		
+		\bibitem{HasanKane}
+		M. Z. Hasan, C. L. Kane,
+		Colloquium: Topological insulators,
+		\emph{Rev. Mod. Phys.} \textbf{82} (2010), 3045--3067.
+		
+		\bibitem{Nakahara}
+		M. Nakahara,
+		\emph{Geometry, Topology and Physics},
+		2nd ed., Taylor \& Francis, 2003.
+		
+		\bibitem{Tong}
+		D. Tong,
+		Lectures on the Quantum Hall Effect,
+		\emph{arXiv:1606.06687}.
+		
+		\bibitem{Wilson}
+		K. G. Wilson,
+		Confinement of quarks,
+		\emph{Phys. Rev. D} \textbf{10} (1974), 2445--2459.
+		
+	\end{thebibliography}
+	
+\end{document}

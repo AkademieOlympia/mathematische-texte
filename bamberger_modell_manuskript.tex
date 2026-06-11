@@ -1,0 +1,370 @@
+
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{float}
+
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./}{fig/}{figs/}{images/}{img/}}
+\newcommand{\includegraphicssafe}[2][]{%
+  \IfFileExists{#2}{\includegraphics[#1]{#2}}{\fbox{\texttt{Missing figure: #2}}}
+}
+
+\newtheorem{satz}{Satz}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{korollar}{Korollar}
+\newtheorem{bemerkung}{Bemerkung}
+\newtheorem{beispiel}{Beispiel}
+
+\title{Das Bamberger Modell:\\ERABC-Struktur, Hurwitz-Geometrie und spektrale Operatoren auf Primzahlmehrlingen}
+\author{Thomas Hoffbauer\\Kollaborative Forschungsarbeit: Mensch \& KI}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Wir entwickeln einen arithmetisch-geometrischen Rahmen zur Untersuchung von Primzahlmehrlingen auf Basis einer ERABC-Zerlegung rationaler Primzahlen modulo $12$, einer quaternionischen Einbettung in den Hurwitz-Raum und einer operatorischen Spektralkonstruktion auf Konfigurationsgraphen. Primzahlen werden dabei nicht nur als isolierte Zahlen, sondern als Träger diskreter Familienstruktur aufgefasst. Primzahlzwillinge, -drillinge und -vierlinge erscheinen als elementare Mehrlingszustände mit wachsender lokaler Familienvollständigkeit. Der Primzahlvierling besitzt eine ausgezeichnete Stellung: Sein aggregierter quaternionischer Zustand ist der kanonische Vollfamilienzustand $1+i+j+k$, dessen Hurwitz-Normalisierung eine Einheit der Hurwitz-Algebra bildet. Darauf aufbauend definieren wir Defektterme relativ zum Hurwitz-Gitter und führen einen BM-Laplace-Operator auf gewichteten Konfigurationsräumen ein. Numerische Parallelvergleiche mit Zeta-Referenzdaten zeigen stabile Spektralprofile, jedoch noch keine eindeutig vierlingsspezifische Dominanz. Daraus ergibt sich die Perspektive, das Modell in Richtung relationaler, reduktiver und genuin operatorischer Geometrien weiterzuentwickeln.
+\end{abstract}
+
+\tableofcontents
+
+\section{Einleitung}
+
+Primzahlen erscheinen in der klassischen Zahlentheorie zunächst als isolierte diskrete Objekte auf dem Zahlenstrahl. Zugleich bilden sie die elementaren multiplikativen Bausteine der natürlichen Zahlen und sind damit Träger einer tiefen globalen Ordnung, die sich in Dichtesätzen, Restklassensystemen, Euler-Produkten und spektralen Phänomenen der Zetafunktion manifestiert. Zwischen lokaler Irregularität und globaler Struktur besteht dabei ein Spannungsverhältnis, das zu den grundlegenden Themen der analytischen und algebraischen Zahlentheorie gehört.
+
+Das Bamberger Modell setzt an der Vermutung an, dass Primzahlen nicht nur als einzelne Punkte, sondern als Zustände eines diskreten, orientierten und arithmetisch-geometrischen Konfigurationsraums verstanden werden können. Ausgangspunkt ist die Beobachtung, dass für jede rationale Primzahl $p>3$ genau eine der vier Restklassen
+\[
+1,\ 5,\ 7,\ 11 \pmod{12}
+\]
+auftritt. Diese vier Restklassen werden im Modell als Familien
+\[
+E,\ A,\ B,\ C
+\]
+gedeutet und zu einer vierkomponentigen Innensignatur gebündelt.
+
+Die nächste strukturelle Verdichtung erfolgt durch die Einbettung dieser vier Familien in einen quaternionischen Raum. An die Stelle bloßer Klassenetiketten tritt ein Zustand der Form
+\[
+h=e+ai+bj+ck,
+\]
+wobei die Koeffizienten die ERABC-Komponenten tragen. In dieser Sprache erscheint die Arithmetik nicht mehr lediglich als Mengenlehre diskreter Zahlen, sondern als Konfigurationstheorie innerhalb eines algebraisch-geometrischen Trägerraums.
+
+Unter den lokalen Mehrlingsstrukturen besitzen Primzahlvierlinge eine ausgezeichnete Stellung. Sie realisieren im ERABC-Sinn die kleinste vollständige Besetzung aller vier Familien und erzeugen aggregiert den Zustand
+\[
+1+i+j+k.
+\]
+Seine Hurwitz-Normalisierung ist eine Einheit der Hurwitz-Algebra. Dadurch verbindet sich die lokale Mehrlingsstruktur der Primzahlen mit einer hochsymmetrischen quaternionischen Geometrie.
+
+Das Ziel des vorliegenden Manuskripts ist doppelt. Erstens wird ein formaler Rahmen entwickelt, der ERABC-Struktur, Schalenreduktion, Hurwitz-Geometrie und Defektbegriffe in einer gemeinsamen Sprache zusammenführt. Zweitens wird ein numerisches Spektralprogramm formuliert, in dem Konfigurationsräume von Primzahlmehrlingen über gewichtete Graphen und Laplace-Operatoren untersucht und mit externen Referenzspektren verglichen werden können.
+
+\section{Residuenfamilien und ERABC-Signatur}
+
+\begin{definition}[Residuenfamilien]
+Sei $p>3$ eine rationale Primzahl. Dann gilt
+\[
+p \equiv 1,5,7,11 \pmod{12}.
+\]
+Wir definieren die vier Residuenfamilien
+\[
+E := \{p \text{ prim} : p \equiv 1 \pmod{12}\},
+\]
+\[
+A := \{p \text{ prim} : p \equiv 5 \pmod{12}\},
+\]
+\[
+B := \{p \text{ prim} : p \equiv 7 \pmod{12}\},
+\]
+\[
+C := \{p \text{ prim} : p \equiv 11 \pmod{12}\}.
+\]
+\end{definition}
+
+\begin{definition}[ERABC-Signatur]
+Für eine Primzahl $p>3$ definieren wir ihre ERABC-Signatur als
+\[
+\Sigma(p)=(R(p);E(p),A(p),B(p),C(p)),
+\]
+wobei genau eine der vier Komponenten $E(p),A(p),B(p),C(p)$ gleich $1$ ist und die übrigen gleich $0$, entsprechend der Zugehörigkeit zu einer der vier Residuenfamilien. Der Parameter $R(p)$ bezeichnet einen zusätzlichen Residual-, Reduktions-, Resonanz- oder Radialanteil, der je nach Kontext spezifiziert wird.
+\end{definition}
+
+\section{Schalenreduktion und reduzierte Kerne}
+
+\begin{definition}[$(2,3)$- und $(2,3,5)$-glatte Schalen]
+Für $n\in\mathbb N$ seien $v_p(n)$ die üblichen $p$-adischen Bewertungen. Wir definieren
+\[
+s_{23}(n):=2^{v_2(n)}3^{v_3(n)},
+\qquad
+m_{23}(n):=\frac{n}{s_{23}(n)},
+\]
+sowie
+\[
+s_{235}(n):=2^{v_2(n)}3^{v_3(n)}5^{v_5(n)},
+\qquad
+m_{235}(n):=\frac{n}{s_{235}(n)}.
+\]
+\end{definition}
+
+\begin{lemma}[Schalenverknüpfung]
+Für jedes $n\in\mathbb N$ gilt
+\[
+m_{23}(n)=5^{v_5(n)}\,m_{235}(n).
+\]
+\end{lemma}
+
+\begin{proof}
+Aus den Definitionen folgt
+\[
+s_{235}(n)=s_{23}(n)\cdot 5^{v_5(n)}.
+\]
+Daher ist
+\[
+m_{235}(n)=\frac{n}{s_{235}(n)}
+=\frac{n}{s_{23}(n)\,5^{v_5(n)}}
+=\frac{m_{23}(n)}{5^{v_5(n)}},
+\]
+also äquivalent
+\[
+m_{23}(n)=5^{v_5(n)}\,m_{235}(n).
+\]
+\end{proof}
+
+\section{Quaternionische Einbettung}
+
+\begin{definition}[Quaternionischer ERABC-Zustand]
+Jedem arithmetischen Zustand $n$ ordnen wir formal ein Quaternion
+\[
+h(n):=E(n)+A(n)i+B(n)j+C(n)k
+\]
+zu.
+\end{definition}
+
+\begin{definition}[Norm]
+Die Norm eines quaternionischen ERABC-Zustands $h(n)$ ist definiert durch
+\[
+N(h(n)):=E(n)^2+A(n)^2+B(n)^2+C(n)^2.
+\]
+\end{definition}
+
+\section{Primzahlmehrlinge im ERABC-Formalismus}
+
+\begin{definition}[Zwillinge, Drillinge, Vierlinge]
+Eine geordnete Primzahlkonfiguration heißt
+\begin{itemize}[leftmargin=2em]
+\item Zwilling, wenn sie die Form $(p,p+2)$ besitzt,
+\item Drilling, wenn sie eine der Formen $(p,p+2,p+6)$ oder $(p,p+4,p+6)$ besitzt,
+\item Vierling, wenn sie die Form $(p,p+2,p+6,p+8)$ besitzt,
+\end{itemize}
+wobei jeweils alle Einträge Primzahlen sind.
+\end{definition}
+
+\begin{satz}[Residuenmuster eines Primzahlvierlings]
+Sei
+\[
+\omega=(p,p+2,p+6,p+8)
+\]
+ein Primzahlvierling mit $p>3$. Dann sind die vier Zahlen modulo $12$ genau die vier verschiedenen Restklassen
+\[
+1,\;5,\;7,\;11
+\]
+in einer zyklischen Reihenfolge. Insbesondere tritt jede der Familien $E,A,B,C$ genau einmal auf.
+\end{satz}
+
+\begin{korollar}[Quaternionischer Zustand eines Primzahlvierlings]
+Sei
+\[
+\omega=(p,p+2,p+6,p+8)
+\]
+ein Primzahlvierling mit $p>3$. Dann gilt für den aggregierten Quaternionenzustand
+\[
+H(\omega)=1+i+j+k.
+\]
+Insbesondere ist
+\[
+\mathcal N(\omega)=\|H(\omega)\|^2=4.
+\]
+\end{korollar}
+
+\section{Der kanonische Vierlingszustand}
+
+\begin{definition}[Kanonischer Vierlingszustand]
+Der Quaternion
+\[
+u:=1+i+j+k
+\]
+heißt der kanonische Vierlingszustand des ERABC-Raums.
+\end{definition}
+
+\begin{satz}[Norm und Normalisierung]
+Für den Zustand
+\[
+u=1+i+j+k
+\]
+gilt
+\[
+N(u)=u\bar u=4,
+\qquad
+\|u\|=2.
+\]
+Seine Hurwitz-Normalisierung
+\[
+\hat u:=\frac12(1+i+j+k)
+\]
+liegt in der Hurwitz-Quaternionenalgebra und besitzt Norm $1$. Insbesondere ist $\hat u$ eine Hurwitz-Einheit.
+\end{satz}
+
+\section{Hurwitz-Defekte und BM-Energien}
+
+\begin{definition}[Hurwitz-Gitter]
+Wir bezeichnen mit
+\[
+\mathcal H
+:=
+\left\{
+a+bi+cj+dk \in \mathbb H :
+a,b,c,d\in\mathbb Z
+\right\}
+\cup
+\left\{
+a+bi+cj+dk \in \mathbb H :
+a,b,c,d\in \mathbb Z+\frac12
+\right\}
+\]
+die Menge der Hurwitz-Quaternionen.
+\end{definition}
+
+\begin{definition}[Richtungsdefekt]
+Für $h\neq 0$ definieren wir den normierten Vollfamilien-Defekt durch
+\[
+\delta_{\mathrm{dir}}(h)
+:=
+\inf_{q\in\mathcal V_{\mathrm{full}}}
+\left\|
+\frac{h}{\|h\|}-q
+\right\|,
+\]
+wobei $\mathcal V_{\mathrm{full}}$ die Menge der halbzahligen Hurwitz-Einheiten $\frac12(\pm1\pm i\pm j\pm k)$ bezeichnet.
+\end{definition}
+
+\section{Verfeinerte Observablen auf dem Vierlingsraum}
+
+\begin{definition}[Vierlingsraum]
+Sei $\mathcal C_N^{(4)}$ die Menge der ersten $N$ Primzahlvierlinge
+\[
+\omega_p:=(p,p+2,p+6,p+8),
+\]
+wobei $p$ eine Primzahl ist und alle vier Einträge prim sind.
+\end{definition}
+
+\section{Konfigurationsräume, Ähnlichkeitskernel und BM-Laplace-Operator}
+
+\begin{definition}[BM-Ähnlichkeitskernel]
+Für $\omega,\omega'$ definieren wir den BM-Ähnlichkeitskernel durch
+\[
+K_\sigma(\omega,\omega')
+:=
+\exp\!\left(
+-\frac{d_{\mathrm{BM}}(\omega,\omega')^2}{2\sigma^2}
+\right),
+\]
+wobei $\sigma>0$ ein Skalenparameter ist.
+\end{definition}
+
+\begin{definition}[BM-Laplace-Operator]
+Sei $\mathcal C=\{\omega_1,\dots,\omega_N\}$ ein endlicher Konfigurationsraum. Die Gewichtsmatrix sei gegeben durch
+\[
+W_\sigma=(w_{mn}),
+\qquad
+w_{mn}=
+\begin{cases}
+K_\sigma(\omega_m,\omega_n), & m\neq n,\\
+0, & m=n.
+\end{cases}
+\]
+Mit der Gradmatrix
+\[
+D_\sigma=\operatorname{diag}(d_1,\dots,d_N),
+\qquad
+d_m=\sum_{n=1}^N w_{mn},
+\]
+definieren wir den unnormierten BM-Laplace-Operator durch
+\[
+L_\sigma:=D_\sigma-W_\sigma.
+\]
+\end{definition}
+
+\begin{lemma}[Positive Semidefinitheit]
+Der BM-Laplace-Operator $L_\sigma$ ist positiv semidefinit.
+\end{lemma}
+
+\begin{proof}
+Für $f\in\mathbb R^N$ gilt
+\[
+f^\top L_\sigma f
+=
+\frac12
+\sum_{m,n=1}^N
+w_{mn}(f_m-f_n)^2
+\ge 0.
+\]
+\end{proof}
+
+\section{Numerische Resultate}
+
+\subsection{Vierlingsraum gegen Zeta-Referenz}
+
+Die erste numerische Studie auf dem Vierlingsraum erzeugt stabile und glatte Korrelationsprofile gegenüber der Zeta-Referenz. Zugleich zeigt der Baseline-Vergleich, dass hohe Korrelationen allein noch keine BM-spezifische Aussage tragen.
+
+\begin{figure}[H]
+\centering
+\includegraphicssafe[width=0.8\textwidth]{heatmap_quadruplets_zeta.png}
+\caption{Heatmap des Vierlingsraums gegenüber der Zeta-Referenz.}
+\end{figure}
+
+\subsection{Parallelvergleich der Mehrlingsräume}
+
+Im direkten Vergleich von Zwillingen, Drillingen und Vierlingen zeigen alle Räume ein ähnliches Grundprofil. Die Korrelation steigt für kleine $\sigma$-Werte an, erreicht ihr Maximum typischerweise im Bereich $\sigma\approx 0.75$ bis $1.5$ und fällt danach wieder leicht ab. Eine eindeutige Dominanz des Vierlingsraums zeigt sich nicht.
+
+\begin{figure}[H]
+\centering
+\includegraphicssafe[width=0.8\textwidth]{parallel_comparison_zeta.png}
+\caption{Parallelvergleich verschiedener Mehrlingsräume gegenüber derselben Zeta-Referenz.}
+\end{figure}
+
+\subsection{Vierlingsspezifischer Härtetest}
+
+Auch bei spezielleren vierlingsbezogenen Features verbessert sich die Trennung gegenüber den Baselines nicht robust. Das spricht gegen die starke These, wonach Vierlinge bereits auf Ebene einfacher Einzelkonfigurations-Features eine singulär ausgezeichnete Zeta-nahe Signatur besitzen.
+
+\begin{figure}[H]
+\centering
+\includegraphicssafe[width=0.8\textwidth]{generic_vs_special_original.png}
+\caption{Generische versus vierlingsspezifische Features auf dem Vierlingsraum.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphicssafe[width=0.8\textwidth]{special_vs_baselines.png}
+\caption{Vierlingsspezifischer Härtetest im Vergleich zu Baselines.}
+\end{figure}
+
+\section{Diskussion und Ausblick}
+
+Die bisherigen numerischen Experimente führen zu einem Ergebnis, das zugleich ernüchternd und erkenntnisfördernd ist. Ernüchternd ist es insofern, als die anfängliche starke Erwartung, Primzahlvierlinge würden bereits auf der Ebene relativ einfacher Einzelkonfigurations-Features eine eindeutig privilegierte spektrale Nähe zu Zeta-Referenzdaten zeigen, durch die bisherigen Rechnungen nicht bestätigt wird. Erkenntnisfördernd ist dieser Befund jedoch deshalb, weil er den theoretischen Ort einer möglichen Signatur präziser bestimmt.
+
+Die Parallelvergleiche mit Zwillingen, Drillingen und Fünflingen sprechen gegen die starke Fassung der Vierlingshypothese. Daraus ergibt sich eine schwächere, derzeit plausiblere Hypothese: Lokale Primzahlmehrlingsräume besitzen möglicherweise eine gemeinsame spektrale Ordnung, während eine genuinely vierlingsspezifische Struktur, sofern vorhanden, auf einer tieferen, stärker relationalen oder operatorischen Ebene liegt.
+
+Der wichtigste nächste Schritt besteht daher im Übergang von punktweisen Feature-Vektoren zu relational definierten Konfigurationsräumen. Künftig sollte die Kantenstruktur arithmetischer Graphen selbst aus reduzierten Kernen, A-Twist-Mechanik, Hurwitz-Nähen, Faktormustern der Zwischenzahlen oder ptolemäisch-tetraedrischen Größen hervorgehen.
+
+\end{document}

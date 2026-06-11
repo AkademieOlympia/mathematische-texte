@@ -1,0 +1,145 @@
+{
+  "bm_dec_spec_version": "0.3",
+  "intent": "Zehntel(Walter/Marion) + Morley-Connection + DEC primal/dual operators on recursive icosahedron/dodecahedron sphere meshes",
+  "geometry": {
+    "base_polyhedra": {
+      "primal": "icosahedron",
+      "dual": "dodecahedron"
+    },
+    "radius_model": {
+      "type": "bm_radius",
+      "examples": [
+        {
+          "name": "BM1000",
+          "p": 7919,
+          "R": "ln(p)"
+        },
+        {
+          "name": "generic",
+          "R": "user_defined_or_ln(p_anchor)"
+        }
+      ]
+    },
+    "refinement": {
+      "scheme": "triangle_subdivision",
+      "variants": {
+        "outward": {
+          "name": "S_plus",
+          "description": "refine then project to sphere; interpret as inflation shell"
+        },
+        "inward": {
+          "name": "S_minus",
+          "description": "refine on dual or coarsen; interpret as deflation shell"
+        }
+      },
+      "level": 0,
+      "notes": "Provide explicit vertex/edge/face lists per level."
+    }
+  },
+  "zehntel_split": {
+    "theorem": "Marion(Walter) theorem: central hexagon has area = 1/10 of triangle",
+    "per_face": {
+      "area_weights": {
+        "W": 0.1,
+        "R": 0.9
+      },
+      "channels": {
+        "W": {
+          "name": "Walter_channel",
+          "interpretation": "coherent / low-entropy / phase-carrying"
+        },
+        "R": {
+          "name": "Rest_channel",
+          "interpretation": "incoherent / thermal / mass-pressure carrying"
+        }
+      },
+      "equalization": {
+        "enabled": false,
+        "rule": "optional: rescale channels so their total contribution is balanced; e.g. W*10 and R*(10/9)"
+      }
+    }
+  },
+  "morley_connection": {
+    "group": "U(1)",
+    "representation": "edge_phases",
+    "face_phase_rule": {
+      "theta_f": "computed from Morley trisectors or a rational invariant; store in radians",
+      "apply_zehntel_mix": "theta = 0.1*theta_W + 0.9*theta_R (or equalized half-sum)"
+    },
+    "edge_parallel_transport": {
+      "U_e": "exp(i * theta_e)",
+      "storage": "theta_e in [-pi, pi]"
+    }
+  },
+  "dec_operators": {
+    "cochains": {
+      "C0": "values on vertices",
+      "C1": "values on oriented edges",
+      "C2": "values on oriented faces"
+    },
+    "incidence": {
+      "d0": "edge-vertex incidence (|E| x |V|)",
+      "d1": "face-edge incidence (|F| x |E|)"
+    },
+    "hodge_star": {
+      "star0": "C0->C2* (diagonal with dual face areas / primal vertex dual areas)",
+      "star1": "C1->C1* (diagonal with |e*|/|e| weights)",
+      "star2": "C2->C0* (diagonal with dual vertex volumes / face areas)",
+      "zehntel": "use A_W and A_R to build star1_W, star1_R and mix: star1=0.1*star1_W+0.9*star1_R"
+    },
+    "laplacian": {
+      "type": "covariant_graph/dec_laplacian",
+      "formula": "Delta_A = d0^T * star1 * d0 with edge phases inserted (U(1) connection)",
+      "outputs": [
+        "eigenvalues",
+        "eigenvectors",
+        "degeneracy_structure"
+      ]
+    },
+    "primal_dual_coupling": {
+      "K": "star ∘ M : C2_primal -> C0_dual",
+      "strength_lambda": "user-defined or derived from zehntel/coherence fraction"
+    }
+  },
+  "time_and_units": {
+    "peano_time": {
+      "t": "integer tick",
+      "N_mapping": "option: N = t, or N = t0 + t, or N = floor(t^2) depending on scaling preference",
+      "tau": "sqrt(N) as renormalization time"
+    },
+    "hbar_effective": {
+      "definition": "hbar_eff = E0 * tau0 (action per tick)",
+      "calibration": "use AlphaFit to anchor EM sector; then choose E0 via pressure-energy budget or spectral gap"
+    }
+  },
+  "testsuite": {
+    "alpha_fit": [
+      "check alpha_inv_pred = alpha_inf + c/sqrt(N)",
+      "report delta to target",
+      "report d(alpha_inv)/dN at N"
+    ],
+    "coherence_alpha": [
+      "check f_coh = N_coherent/N_total ~ alpha",
+      "suggest nearest integer N_coherent to match alpha"
+    ],
+    "si_bridge": [
+      "derive eps0, mu0 from alpha using exact h,e,c",
+      "optionally compare to CODATA wallet values"
+    ],
+    "spectral": [
+      "compute Laplacian spectrum at level n",
+      "check approximate l(l+1) pattern",
+      "extract hbar_eff by matching L^2 ladder"
+    ]
+  },
+  "alpha_fit_binding": {
+    "source_file": "AQFT.json",
+    "fields": {
+      "target_alpha_inverse": "target_alpha_inverse",
+      "N": "parameters.N",
+      "alpha_inf": "parameters.alpha_inf",
+      "c": "parameters.c",
+      "coherence": "computed.{N_coherent_transitions,N_total_transitions} (optional)"
+    }
+  }
+}

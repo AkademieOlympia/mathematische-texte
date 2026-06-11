@@ -1,0 +1,281 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{mathtools}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\geometry{margin=2.6cm}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	citecolor=blue,
+	urlcolor=blue,
+	pdftitle={Thermische Reskalierung der Riemannschen Nullstellen},
+	pdfauthor={Thomas Hoffbauer}
+}
+
+\title{\textbf{Thermische Reskalierung der Riemannschen Nullstellen,\\
+		planckartige Hüllkurven und GUE-nahe Mikrospektralstruktur}}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\newtheorem{satz}{Satz}
+\newtheorem{lemma}{Lemma}
+\newtheorem{korollar}{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\theoremstyle{remark}
+\newtheorem{bemerkung}{Bemerkung}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Wir untersuchen ein Toy-Modell, in dem die imaginären Teile der nichttrivialen Riemannschen Nullstellen $\gamma_n$ auf eine thermische Spektralachse abgebildet werden. Ausgangspunkt ist die heuristische Frage, ob sich ein aus den Nullstellen konstruiertes Spektrum von einer hypothetischen hohen Temperaturskala auf eine niedrigere, etwa $5000\,\mathrm{K}$, ``herunterkühlen'' lasse und dabei eine planckartige Form annehme. Numerische Tests mit einer Datei von über zwei Millionen Nullstellen zeigen, dass eine solche thermische Reskalierung mathematisch problemlos möglich ist. Die entstehenden planckartigen Hüllkurven erweisen sich jedoch im Toy-Modell nicht als zeta-spezifisch, sondern lassen sich weitgehend durch allgemeine Spektraldichte, Glättung und den Planck-Faktor erklären. Dagegen bleibt die lokale Spektralstatistik der Nullstellen auch nach Transformation erhalten und zeigt im unfolded Regime eine deutliche Nähe zur GUE-Statistik sowie klare Abgrenzung gegenüber Poisson-Verhalten. Der eigentliche nichttriviale Gehalt der Konstruktion liegt daher nicht in der makroskopischen thermischen Hüllkurve, sondern in der mikroskopischen Korrelationsstruktur.
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Die nichttrivialen Nullstellen der Riemannschen Zetafunktion werden unter der Riemannschen Vermutung in der Form
+	\[
+	\rho_n=\frac12+i\gamma_n
+	\]
+	geschrieben, wobei $\gamma_n>0$ die imaginären Teile sind. Seit langem besteht die Vermutung, dass diese Nullstellen als Spektrum eines selbstadjungierten Operators interpretiert werden könnten. Parallel dazu ist aus der Statistik der Nullstellen bekannt, dass ihre lokale Spektralstruktur in bemerkenswerter Weise an Zufallsmatrizen aus dem GUE-Ensemble erinnert.
+	
+	Die vorliegende Untersuchung folgt einer anderen, heuristischen Spur: Kann man die Nullstellen auf eine thermische Achse abbilden und dadurch eine planckartige Spektralhülle erzeugen? Und falls ja: Ist diese Hülle spezifisch für die Riemann-Nullstellen oder ein allgemeiner Effekt geglätteter Spektren? Die Frage ist bewusst explorativ. Ziel ist nicht, eine physikalische Theorie der Nullstellen zu behaupten, sondern die Struktur eines solchen Transformationsansatzes numerisch und konzeptionell zu prüfen.
+	
+	\section{Konstruktion des Toy-Modells}
+	
+	Wir betrachten die ersten $N$ imaginären Teile $\gamma_n$ aus einer numerischen Datei mit insgesamt $2{,}001{,}052$ Nullstellen. Die thermische Abbildung erfolgt über
+	\[
+	x_n(T)=\lambda \frac{\gamma_n}{T},
+	\]
+	wobei $T$ ein formaler Temperaturparameter ist und $\lambda$ durch eine Referenzkalibrierung festgelegt wird. Zur Orientierung wurde $\lambda$ so gewählt, dass eine ausgewählte Referenznullstelle bei $T=5000$ in der Nähe des Maximums der dimensionslosen Planck-Kurve liegt.
+	
+	Aus den diskreten Punkten $x_n(T)$ wird eine geglättete Zustandsdichte erzeugt:
+	\[
+	\rho_\delta(x)=\sum_n \exp\!\left(-\frac{(x-x_n)^2}{2\delta^2}\right),
+	\]
+	wobei $\delta$ die Glättungsbreite bezeichnet.
+	
+	Die zugehörige zeta-thermische Intensität wird dann als
+	\[
+	I_T(x)=\rho_\delta(x)\,\frac{x^3}{e^x-1}
+	\]
+	definiert und normiert. Dies erlaubt einen direkten Vergleich mit der normierten Planck-Form
+	\[
+	P(x)\propto \frac{x^3}{e^x-1}.
+	\]
+	
+	\section{Erste numerische Beobachtungen}
+	
+	Im ersten Test wurden zwei Regime verglichen:
+	\begin{itemize}[leftmargin=1.5em]
+		\item ein ``heißes'' Regime bei $T=380000$,
+		\item ein ``kühles'' Regime bei $T=5000$.
+	\end{itemize}
+	
+	Die heiße Kurve lag im Toy-Modell oft relativ nahe an der Planck-Form, während die kühlere Kurve deutlich stärker von diskreter Resonanzstruktur geprägt blieb. Für eine einfache Kalibrierung ergaben sich etwa folgende L2-Abweichungen zur normierten Planck-Kurve:
+	\begin{itemize}[leftmargin=1.5em]
+		\item $T=380000$: L2 $\approx 0{,}043$,
+		\item $T=5000$: L2 $\approx 0{,}481$.
+	\end{itemize}
+	
+	Das deutet darauf hin, dass die Planck-Ähnlichkeit mit wachsender Spektralkompression und Glättung zunimmt. Bereits hier lag der Verdacht nahe, dass weniger die arithmetische Feinstruktur der Nullstellen als vielmehr die quasi-kontinuierliche Dichte im heißen Regime die Hüllkurve bestimmt.
+	
+	\section{Robustheit gegen Glättung, Nullstellenzahl und Kalibrierung}
+	
+	Anschließend wurde ein Parametersweep über
+	\begin{itemize}[leftmargin=1.5em]
+		\item verschiedene Nullstellenzahlen $N$,
+		\item verschiedene Glättungsbreiten $\delta$,
+		\item verschiedene Referenznullstellen $\gamma_1,\gamma_{100},\gamma_{1000}$
+	\end{itemize}
+	durchgeführt.
+	
+	Dabei zeigte sich:
+	\begin{enumerate}[leftmargin=1.5em]
+		\item Im heißen Regime verbessert sich die Planck-Approximation deutlich mit wachsender Nullstellenzahl.
+		\item Im kühlen Regime hängt die Güte der Approximation stark von der Referenzwahl ab.
+		\item Referenzen tiefer im Spektrum, etwa $\gamma_{100}$ oder $\gamma_{1000}$, liefern deutlich bessere Approximationen als die erste Nullstelle.
+	\end{enumerate}
+	
+	Dies ist bereits ein wichtiger Hinweis: Die unteren Nullstellen verhalten sich in dieser Konstruktion zu idiosynkratisch, während Kalibrierungen weiter im Spektrum eher die mittlere Dichte als die lokale Einzigartigkeit erfassen.
+	
+	\section{Diskrete Nullstellen gegen asymptotische zeta-Dichte}
+	
+	Um zu klären, ob die planckartige Form wirklich von den individuellen Nullstellen kommt, wurde das diskrete Modell mit einem asymptotischen Dichtemodell verglichen. Verwendet wurde die bekannte mittlere Nullstellendichte
+	\[
+	\rho_\zeta(t)\sim \frac{1}{2\pi}\log\!\left(\frac{t}{2\pi}\right).
+	\]
+	
+	Erstaunlicherweise stimmten die resultierenden Planck-Fits fast exakt mit denen des diskreten Modells überein. Beispielhaft ergaben sich im kühlen Regime:
+	\begin{center}
+		\begin{tabular}{lcc}
+			\toprule
+			Referenz & diskret & asymptotisch \\
+			\midrule
+			$\gamma_{100}$  & $0{,}060822$ & $0{,}060803$ \\
+			$\gamma_{500}$  & $0{,}045801$ & $0{,}045763$ \\
+			$\gamma_{1000}$ & $0{,}041170$ & $0{,}041136$ \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	
+	Damit wurde klar:
+	\begin{quote}
+		Die planckartige Hüllkurve ist im Toy-Modell kein spezifischer Fingerabdruck der Riemann-Nullstellen, sondern folgt bereits weitgehend aus der geglätteten mittleren Spektraldichte.
+	\end{quote}
+	
+	\section{Residuenanalyse und Kontrollspektren}
+	
+	Um zu prüfen, ob die Abweichungen von der Planck-Form wenigstens zeta-spezifisch sind, wurden Residuen
+	\[
+	R(x)=I_T(x)-P(x)
+	\]
+	und deren Fourier-Spektren betrachtet. Zunächst schienen die Residuen stabile niederfrequente Strukturen zu tragen. Ein strenger Kontrolltest mit künstlichen Spektren ergab jedoch:
+	\begin{itemize}[leftmargin=1.5em]
+		\item \textbf{Riemann-Nullstellen}: L2 $=0{,}041170$,
+		\item \textbf{nur log-Dichte}: L2 $=0{,}041170$,
+		\item \textbf{jittered log-Dichte}: L2 $=0{,}041090$.
+	\end{itemize}
+	
+	Sogar die dominanten Fourier-Peaks der Residuen blieben praktisch gleich. Demgegenüber ergab ein vollständig gleichmäßiges Spektrum in $t$ nahezu eine perfekte Planck-Kurve mit L2 $=0{,}000063$.
+	
+	Die Folgerung ist eindeutig:
+	\begin{quote}
+		Weder die planckartige Hüllkurve noch die groben Residuen sind im vorliegenden Modell spezifisch für die Riemann-Nullstellen.
+	\end{quote}
+	
+	\section{Lokale Abstandsstatistik}
+	
+	Die Lage änderte sich erst bei der mikroskopischen Spektralstruktur. Für normierte Nachbarabstände ergaben sich:
+	\begin{center}
+		\begin{tabular}{lcc}
+			\toprule
+			Spektrum & Varianz & Anteil $s<0.5$ \\
+			\midrule
+			Riemann-Nullstellen    & $0{,}183582$ & $0{,}102659$ \\
+			nur log-Dichte         & $0{,}019925$ & $0{,}000008$ \\
+			jittered log-Dichte    & $0{,}245365$ & $0{,}160026$ \\
+			gleichmäßig in $t$     & $0$          & $0$ \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	
+	Hier zeigt sich tatsächlich eine nichttriviale zeta-spezifische Struktur:
+	\begin{itemize}[leftmargin=1.5em]
+		\item Die bloße log-Dichte ist viel zu glatt.
+		\item Ein gejittertes Kontrollspektrum ist zu zufällig und produziert zu viele kleine Abstände.
+		\item Die Riemann-Nullstellen liegen dazwischen und zeigen klare Unterdrückung kleiner Abstände, also Level-Repulsion.
+	\end{itemize}
+	
+	Wichtig ist dabei: Die lineare thermische Transformation ändert diese normierte lokale Statistik im Wesentlichen nicht. Das heißt, die Transformation erzeugt diese Struktur nicht, sondern transportiert sie mit.
+	
+	\section{Vergleich mit GUE und Poisson}
+	
+	Zum Abschluss wurden die ersten $120000$ Nullstellen mittels der Riemann-von-Mangoldt-Asymptotik unfolded und mit GUE- und Poisson-Referenzen verglichen.
+	
+	Die Resultate:
+	\begin{itemize}[leftmargin=1.5em]
+		\item KS-Abstand Zeta vs.\ GUE: $0{,}019367$,
+		\item KS-Abstand Zeta vs.\ Poisson: $0{,}297977$.
+	\end{itemize}
+	
+	Anteil kleiner Abstände $s<0.5$:
+	\begin{itemize}[leftmargin=1.5em]
+		\item Zeta: $0{,}096459$,
+		\item GUE: $0{,}112243$,
+		\item Poisson: $0{,}393962$.
+	\end{itemize}
+	
+	Dies bestätigt deutlich das bekannte Bild:
+	\begin{quote}
+		Die lokale Spektralstatistik der Nullstellen liegt klar näher bei GUE als bei Poisson.
+	\end{quote}
+	
+	Damit ist auch die thermische Interpretation zu präzisieren: Die makroskopische thermische Hülle ist generisch, die mikroskopische Korrelationsstruktur dagegen hochgradig nichttrivial.
+	
+	\section{Interpretation}
+	
+	Die Untersuchung erlaubt eine klare Trennung zweier Ebenen.
+	
+	\subsection{Makroskopische Ebene}
+	Die planckartige Form ist weitgehend ein Effekt von
+	\begin{itemize}[leftmargin=1.5em]
+		\item Glättung,
+		\item mittlerer Spektraldichte,
+		\item und Multiplikation mit dem thermischen Faktor $x^3/(e^x-1)$.
+	\end{itemize}
+	
+	Sie ist daher im vorliegenden Modell kein belastbarer Hinweis auf eine besondere Physik der Riemann-Nullstellen.
+	
+	\subsection{Mikroskopische Ebene}
+	Die lokale Abstandsstatistik bleibt hingegen nichttrivial. Gerade dort zeigt sich der spezifische Charakter der Nullstellen:
+	\begin{itemize}[leftmargin=1.5em]
+		\item Unterdrückung kleiner Abstände,
+		\item Abweichung sowohl von gleichmäßiger Dichte als auch von simplem Zufallsjitter,
+		\item und deutliche Nähe zu GUE.
+	\end{itemize}
+	
+	Der eigentliche mathematische Gehalt einer thermischen Reskalierung liegt also nicht in der Hüllkurve, sondern darin, dass die nichttriviale Mikrokorrelation des zeta-Spektrums erhalten bleibt.
+	
+	\section{Fazit}
+	
+	Die Antwort auf die Ausgangsfrage lautet nach den numerischen Tests:
+	\begin{enumerate}[leftmargin=1.5em]
+		\item Ja, eine thermische Reskalierung der Riemannschen Nullstellen auf eine ``abgekühlte'' Skala ist mathematisch problemlos möglich.
+		\item Ja, daraus entstehen planckartige Hüllkurven.
+		\item Nein, diese Hüllkurven sind im Toy-Modell nicht spezifisch für die Riemann-Nullstellen.
+		\item Ja, die eigentliche nichttriviale Struktur liegt in der lokalen Spektralstatistik, nicht in der thermischen Makrohülle.
+		\item Ja, die unfolded Nullstellen zeigen klar GUE-nahe Statistik und deutliche Abgrenzung gegenüber Poisson.
+	\end{enumerate}
+	
+	Die sinnvollste Schlussfolgerung ist daher:
+	\begin{quote}
+		Eine thermische Abbildung der Riemannschen Nullstellen erzeugt keine eigenständige Schwarzkörperphysik, kann aber als Darstellungsrahmen dienen, in dem die universelle und nichttriviale Mikrospektralstruktur der Nullstellen sichtbar erhalten bleibt.
+	\end{quote}
+	
+	\section{Ausblick}
+	
+	Ein nächster sinnvoller Schritt wäre nicht die weitere Verbesserung der Hüllkurvenfits, sondern die Untersuchung von Observablen, die wirklich empfindlich auf arithmetische Feinstruktur reagieren, etwa:
+	\begin{itemize}[leftmargin=1.5em]
+		\item Zwei-Punkt-Korrelationsfunktionen im unfolded Regime,
+		\item Langbereichsstatistiken wie Number Variance oder Spectral Rigidity,
+		\item Vergleich mit GUE über größere Fenster,
+		\item sowie Tests, ob bestimmte thermisch gewichtete Observablen die GUE-Nähe verstärken oder abschwächen.
+	\end{itemize}
+	
+	\section*{Anhang: Numerische Eckwerte}
+	
+	Die den Rechnungen zugrunde liegende Nullstellendatei enthielt $2{,}001{,}052$ Werte. Für die Hauptvergleiche wurden typischerweise die ersten $120000$ Nullstellen verwendet. In der GUE/Poisson-Analyse wurde ein Unfolding mittels der Riemann-von-Mangoldt-Asymptotik
+	\[
+	N(t)\sim \frac{t}{2\pi}\log\!\left(\frac{t}{2\pi}\right)-\frac{t}{2\pi}+\frac78
+	\]
+	verwendet.
+	
+	\vspace{1em}
+	
+	\noindent
+	Die wichtigsten numerischen Resultate waren:
+	\begin{itemize}[leftmargin=1.5em]
+		\item KS(Zeta,GUE) $=0{,}019367$,
+		\item KS(Zeta,Poisson) $=0{,}297977$,
+		\item $P_{\text{Zeta}}(s<0.5)=0{,}096459$,
+		\item $P_{\text{GUE}}(s<0.5)=0{,}112243$,
+		\item $P_{\text{Poisson}}(s<0.5)=0{,}393962$.
+	\end{itemize}
+	
+\end{document}

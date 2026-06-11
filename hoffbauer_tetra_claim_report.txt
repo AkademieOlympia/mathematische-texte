@@ -1,0 +1,45 @@
+Hoffbauer-Behauptung zum tetraedrischen Projektionsbild
+
+Behauptung (heuristisch)
+Wenn die y-Achse der komplexen Ebene als E-Achse gelesen wird, dann bilden die vier Punkte
+- Zeta-Nullstelle E = 1/2 + i*gamma
+- A-Anteil
+- B-Anteil
+- C-Anteil
+
+die Projektionen eines Tetraeders. Ein primäres Vierling-Quadruplett (e,a,b,c) definiert dazu
+ein arithmetisches Referenztetraeder. Unter den lokalen Kandidaten entlang der E-Achse ist
+das Quadruplett mit der kleinsten Familien-Spannung der bevorzugte Träger, wenn sich der
+Ptolemäus-Defekt der vier Projektionskomponenten möglichst gut ausgleicht.
+
+Testdesign
+- Vierlinge bis 10^7
+- erste 100000 Nullstellen
+- lokale Auswahl entlang der E-Achse mit drei Regeln:
+  1) nearest_e
+  2) min_tension
+  3) combo = Achsennaehe + Familien-Spannung
+
+Projektionsdefekt
+Es wurde ein ptolemäusartiger Defekt auf dem Prim-Quadruplett und auf der
+kanonischen Nullstellen-Zerlegung berechnet.
+
+Zusammenfassung:
+     choice  mean_axis_distance  mean_family_tension  mean_prime_projection_defect  median_prime_projection_defect  mean_gap_vs_canonical  corr_defect_tension  corr_defect_axis_distance
+  nearest_e         1266.236479            33.776798                      0.970927                        0.975434               0.012733             0.673669                   0.272190
+min_tension        13734.451251            19.687402                      0.957557                        0.967799              -0.000636             0.858552                   0.309750
+      combo         4158.712521            24.866534                      0.967839                        0.972651               0.009646             0.748691                   0.199766
+
+Unterstuetzungsraten:
+                             metric   value
+    share_min_tension_beats_nearest 0.94169
+          share_combo_beats_nearest 0.48820
+      share_min_tension_beats_combo 0.74164
+share_combo_improves_gap_vs_nearest 0.48820
+
+Lesart
+1) Wenn min_tension oder combo im Mittel niedrigere Projektionsdefekte als nearest_e liefern,
+   stuetzt das die Hoffbauer-Behauptung.
+2) Wenn besonders combo gewinnt, dann zaehlen Achsennaehe und Familien-Spannung gemeinsam.
+3) Wenn min_tension alleine gewinnt, dann ist die kleinste Familien-Spannung der dominantere Faktor.
+4) Laufzeit: 10.2s

@@ -1,0 +1,415 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{enumitem}
+\usepackage{csquotes}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue,
+  pdftitle={Global Boundedness from Below in the Reduced Two Higgs Doublet Model},
+  pdfauthor={Thomas Hoffbauer}
+}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\DeclareMathOperator*{\arginf}{arginf}
+
+\title{\textbf{Global Boundedness from Below in the Reduced Two Higgs Doublet Model}\\[0.4em]
+\large A coercivity criterion for scale--direction potentials}
+\author{Thomas Hoffbauer\\Bamberg, Germany}
+\date{April 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We study lower boundedness of the reduced scalar potential in the two Higgs doublet model (2HDM), written in the standard form
+\[
+V(K_0,k)=K_0J_2(k)+K_0^2J_4(k),
+\qquad K_0>0,\quad k\in B^3.
+\]
+A recent formal verification showed that a directional criterion used in the literature is not sufficient for boundedness from below. The reason is that lower boundedness is not a purely directional property: it depends on the interaction between the scale variable $K_0$ and the direction variable $k$. We formulate this precisely in a general setting. For continuous functions $D,Q$ on a compact space $X$, we characterize when
+\[
+tD(x)+t^2Q(x)
+\]
+is uniformly bounded below for $t>0$, $x\in X$. The criterion is that $Q\ge 0$ and that $D^2/Q$ remain uniformly controlled on the region where $D<0$. Applied to the reduced 2HDM potential, this yields the corrected stability criterion. We also classify the possible mechanisms of instability and give explicit counterexamples showing why nonnegativity of the quadratic coefficient alone is insufficient.
+\end{abstract}
+
+\section{Introduction}
+
+The bounded-from-below problem for scalar potentials is a basic question in quantum field theory. In the two Higgs doublet model (2HDM), the quartic and quadratic contributions can be reduced to a function of a nonnegative scale variable $K_0$ and a direction variable $k$ in the closed unit ball $B^3\subset\mathbb{R}^3$. In this reduced description, the potential takes the form
+\begin{equation}\label{eq:reduced-potential}
+V(K_0,k)=K_0J_2(k)+K_0^2J_4(k),
+\end{equation}
+where $J_2$ is affine and $J_4$ is quadratic in $k$. This formulation is standard in the 2HDM literature \citep{Maniatis2006,ToobySmith2026}.
+
+A recent Lean formalization showed that a widely cited directional criterion is not sufficient to guarantee boundedness from below \citep{ToobySmith2026}. The issue is not technical but logical: once the potential has the form \eqref{eq:reduced-potential}, boundedness from below is not determined by the directional data alone. For each fixed direction $k$, one must minimize over the scale variable $K_0$, and the resulting lower bound depends quantitatively on the relation between $J_2(k)$ and $J_4(k)$, not merely on their signs.
+
+The aim of this note is to isolate this point in a self-contained way and to state the correct criterion in a form that is both elementary and conceptually transparent. Rather than beginning directly with the 2HDM, we first treat a general family of functions of the form
+\[
+F(t,x)=tD(x)+t^2Q(x),
+\qquad t>0,\ x\in X,
+\]
+where $X$ is compact and $D,Q$ are continuous. This separates the analytic core from the physical application. The reduced 2HDM stability problem then becomes an immediate corollary.
+
+The main message is simple: lower boundedness is equivalent to nonnegativity of the quadratic coefficient together with a uniform domination estimate for the negative part of the linear coefficient. This may be viewed as a basic coercivity principle for scale--direction potentials.
+
+For general background on the 2HDM and orbit-space methods, see for instance \citet{Branco2012,Ivanov2007,Ivanov2008}. For the reduced form used here and for the recently identified error in the literature, see \citet{Maniatis2006,ToobySmith2026}.
+
+\section{A general scale--direction lemma}
+
+Let $X$ be a compact topological space, and let
+\[
+D,Q:X\to\mathbb{R}
+\]
+be continuous functions. Define
+\[
+F:(0,\infty)\times X\to\mathbb{R},
+\qquad
+F(t,x)=tD(x)+t^2Q(x).
+\]
+We ask when $F$ is uniformly bounded from below on $(0,\infty)\times X$.
+
+\begin{definition}\label{def:global-lower-bounded}
+We say that $F$ is \emph{globally lower bounded} if there exists $m\in\mathbb{R}$ such that
+\[
+F(t,x)\ge m
+\qquad\text{for all }t>0,\ x\in X.
+\]
+\end{definition}
+
+For fixed $x\in X$, define
+\begin{equation}\label{eq:effective-energy-general}
+E(x):=\inf_{t>0}F(t,x).
+\end{equation}
+Then clearly $F$ is globally lower bounded if and only if
+\[
+\inf_{x\in X}E(x)>-\infty.
+\]
+
+The following lemma is elementary but fundamental.
+
+\begin{lemma}\label{lem:pointwise-minimization}
+For fixed $x\in X$, write
+\[
+D_x:=D(x),\qquad Q_x:=Q(x).
+\]
+Then
+\[
+E(x)=\inf_{t>0}(tD_x+t^2Q_x)
+\]
+is given by
+\[
+E(x)=
+\begin{cases}
+0, & D_x\ge 0,\ Q_x\ge 0,\\[1ex]
+-\dfrac{D_x^2}{4Q_x}, & D_x<0,\ Q_x>0,\\[2ex]
+-\infty, & Q_x<0,\\[1ex]
+-\infty, & Q_x=0,\ D_x<0,\\[1ex]
+0, & Q_x=0,\ D_x\ge 0.
+\end{cases}
+\]
+\end{lemma}
+
+\begin{proof}
+If $Q_x<0$, then $tD_x+t^2Q_x\to -\infty$ as $t\to\infty$. If $Q_x=0$, then the expression is linear in $t$, so the infimum is $0$ when $D_x\ge 0$ and $-\infty$ when $D_x<0$. If $Q_x>0$, then completing the square gives
+\[
+tD_x+t^2Q_x
+=
+Q_x\left(t+\frac{D_x}{2Q_x}\right)^2-\frac{D_x^2}{4Q_x}.
+\]
+If $D_x<0$, the minimizer lies in $(0,\infty)$, giving the value $-D_x^2/(4Q_x)$. If $D_x\ge 0$, the infimum is approached as $t\downarrow0$ and equals $0$.
+\end{proof}
+
+The lemma already shows that the lower boundedness problem has only three possible failure modes:
+\begin{enumerate}[label=(\roman*)]
+  \item $Q<0$ somewhere;
+  \item $Q=0$ and $D<0$ somewhere;
+  \item $Q>0$ but the ratio $D^2/Q$ becomes arbitrarily large along points with $D<0$.
+\end{enumerate}
+This leads to the main abstract theorem.
+
+\begin{theorem}\label{thm:abstract-criterion}
+The following are equivalent:
+\begin{enumerate}[label=(\arabic*)]
+  \item $F(t,x)=tD(x)+t^2Q(x)$ is globally lower bounded on $(0,\infty)\times X$;
+  \item the following two conditions hold:
+  \begin{enumerate}[label=(\alph*)]
+    \item $Q(x)\ge 0$ for all $x\in X$;
+    \item there exists $C\ge 0$ such that
+    \[
+    D(x)^2\le 4C\,Q(x)
+    \qquad\text{whenever }D(x)<0.
+    \]
+  \end{enumerate}
+\end{enumerate}
+Equivalently,
+\[
+F\text{ is globally lower bounded}
+\iff
+\Bigl(Q\ge0\ \text{everywhere and }\sup_{\{x:\,D(x)<0\}}\frac{D(x)^2}{Q(x)}<\infty\Bigr),
+\]
+with the understanding that a point where $Q(x)=0$ and $D(x)<0$ forces failure.
+\end{theorem}
+
+\begin{proof}
+Assume first that $F$ is globally lower bounded. Then there exists $m\in\mathbb{R}$ such that
+\[
+F(t,x)\ge m
+\qquad\text{for all }t>0,\ x\in X.
+\]
+Fix $x\in X$. If $Q(x)<0$, then by \cref{lem:pointwise-minimization} one has $E(x)=-\infty$, contradiction. Hence $Q\ge0$ everywhere.
+
+Now suppose $D(x)<0$. If $Q(x)=0$, then again $E(x)=-\infty$, contradiction. Hence $Q(x)>0$. By \cref{lem:pointwise-minimization},
+\[
+E(x)=-\frac{D(x)^2}{4Q(x)}.
+\]
+Since $E(x)\ge m$, we obtain
+\[
+-\frac{D(x)^2}{4Q(x)}\ge m.
+\]
+Setting $C:=\max\{0,-m\}$, we get
+\[
+D(x)^2\le 4C\,Q(x)
+\]
+whenever $D(x)<0$.
+
+Conversely, assume $Q\ge0$ everywhere and that there exists $C\ge0$ such that
+\[
+D(x)^2\le 4C\,Q(x)
+\qquad\text{whenever }D(x)<0.
+\]
+Fix $x\in X$. If $D(x)\ge0$, then
+\[
+F(t,x)=tD(x)+t^2Q(x)\ge0.
+\]
+If $D(x)<0$, then the assumed inequality implies in particular that $Q(x)>0$. Completing the square,
+\[
+F(t,x)
+=
+Q(x)\left(t+\frac{D(x)}{2Q(x)}\right)^2-\frac{D(x)^2}{4Q(x)}
+\ge -\frac{D(x)^2}{4Q(x)}
+\ge -C.
+\]
+Thus $F(t,x)\ge -C$ for all $t>0$ and all $x\in X$. Hence $F$ is globally lower bounded.
+\end{proof}
+
+\begin{corollary}[Classification of instability]\label{cor:instability-classification}
+The function $F$ fails to be globally lower bounded if and only if at least one of the following occurs:
+\begin{enumerate}[label=(\arabic*)]
+  \item there exists $x\in X$ with $Q(x)<0$;
+  \item there exists $x\in X$ with $Q(x)=0$ and $D(x)<0$;
+  \item there exists a sequence $x_n\in X$ such that
+  \[
+  D(x_n)<0,\qquad Q(x_n)>0,\qquad \frac{D(x_n)^2}{Q(x_n)}\to\infty.
+  \]
+\end{enumerate}
+\end{corollary}
+
+\section{Application to the reduced 2HDM potential}
+
+We now return to the reduced two Higgs doublet model. Let
+\[
+B^3:=\{k\in\mathbb{R}^3:\|k\|^2\le1\}.
+\]
+The reduced potential is
+\begin{equation}\label{eq:2hdm-reduced}
+V(K_0,k)=K_0J_2(k)+K_0^2J_4(k),
+\qquad K_0>0,\ k\in B^3,
+\end{equation}
+where $J_2$ is affine and $J_4$ is quadratic \citep{Maniatis2006,ToobySmith2026}.
+
+\begin{definition}\label{def:global-stability-2hdm}
+The reduced 2HDM potential is said to be \emph{globally stable} if there exists $m\in\mathbb{R}$ such that
+\[
+V(K_0,k)\ge m
+\qquad\text{for all }K_0>0,\ k\in B^3.
+\]
+\end{definition}
+
+Since $B^3$ is compact and $J_2,J_4$ are continuous, \cref{thm:abstract-criterion} applies directly with $X=B^3$, $D=J_2$, and $Q=J_4$. We obtain the corrected criterion in a clean form.
+
+\begin{theorem}[Corrected 2HDM criterion]\label{thm:2hdm-criterion}
+The reduced 2HDM potential is globally stable if and only if
+\begin{enumerate}[label=(\arabic*)]
+  \item $J_4(k)\ge0$ for all $k\in B^3$;
+  \item there exists $C\ge0$ such that
+  \[
+  J_2(k)^2\le 4C\,J_4(k)
+  \qquad\text{whenever }J_2(k)<0.
+  \]
+\end{enumerate}
+Equivalently, global stability holds if and only if
+\[
+J_4\ge0
+\quad\text{and}\quad
+\sup_{\{k\in B^3:\,J_2(k)<0\}}\frac{J_2(k)^2}{J_4(k)}<\infty.
+\]
+\end{theorem}
+
+\begin{corollary}[2HDM instability trichotomy]\label{cor:2hdm-instability-trichotomy}
+The reduced 2HDM potential fails to be globally stable if and only if at least one of the following occurs:
+\begin{enumerate}[label=(\arabic*)]
+  \item there exists $k\in B^3$ such that $J_4(k)<0$;
+  \item there exists $k\in B^3$ such that $J_4(k)=0$ and $J_2(k)<0$;
+  \item there exists a sequence $k_n\in B^3$ such that
+  \[
+  J_2(k_n)<0,\qquad J_4(k_n)>0,\qquad \frac{J_2(k_n)^2}{J_4(k_n)}\to\infty.
+  \]
+\end{enumerate}
+\end{corollary}
+
+This trichotomy is simply \cref{cor:instability-classification} specialized to the reduced 2HDM setting, but it is useful because it separates the different mechanisms by which boundedness from below can fail.
+
+\section{Explicit counterexamples and model behavior}
+
+A purely sign-based condition on $J_4$ is insufficient. The easiest illustration is one-dimensional.
+
+\begin{proposition}\label{prop:one-dimensional-counterexample}
+There exist continuous functions $D,Q:[0,1]\to\mathbb{R}$ such that
+\[
+Q(x)\ge0\quad\text{for all }x\in[0,1],
+\]
+but the function
+\[
+F(t,x)=tD(x)+t^2Q(x)
+\]
+is not globally lower bounded on $(0,\infty)\times[0,1]$.
+\end{proposition}
+
+\begin{proof}
+Take
+\[
+D(x)\equiv -1,\qquad Q(x)=x.
+\]
+Then $Q(x)\ge0$ for all $x\in[0,1]$. For $x>0$,
+\[
+\inf_{t>0}(-t+xt^2)=-\frac{1}{4x},
+\]
+which tends to $-\infty$ as $x\downarrow0$. Hence $F$ is not globally lower bounded.
+\end{proof}
+
+This example shows that even strict positivity of $Q(x)$ away from a limiting set is not enough. The correct quantity is not the sign of $Q$, but the behavior of $D^2/Q$.
+
+For closer contact with the 2HDM setting, one may embed the same phenomenon along any continuous path $\gamma:[0,1]\to B^3$ in direction space. If along such a path one has
+\[
+J_2(\gamma(s))<0,\qquad J_4(\gamma(s))\to0^+,
+\]
+while $J_2(\gamma(s))$ does not vanish comparably fast, then the potential becomes arbitrarily negative after minimizing in $K_0$. This is precisely the mechanism captured by the quotient condition.
+
+\section{Effective energy on direction space}
+
+The previous arguments suggest introducing the effective directional energy
+\begin{equation}\label{eq:effective-energy-2hdm}
+E(k):=\inf_{K_0>0}V(K_0,k).
+\end{equation}
+By \cref{lem:pointwise-minimization},
+\[
+E(k)=
+\begin{cases}
+0, & J_2(k)\ge0,\ J_4(k)\ge0,\\[1ex]
+-\dfrac{J_2(k)^2}{4J_4(k)}, & J_2(k)<0,\ J_4(k)>0,\\[2ex]
+-\infty, & J_4(k)<0,\\[1ex]
+-\infty, & J_4(k)=0,\ J_2(k)<0,\\[1ex]
+0, & J_4(k)=0,\ J_2(k)\ge0.
+\end{cases}
+\]
+Thus the original boundedness problem in the two variables $(K_0,k)$ reduces to the statement
+\[
+\inf_{k\in B^3}E(k)>-\infty.
+\]
+
+This point of view is economical for two reasons. First, it isolates the precise obstruction: all instability is encoded in the divergence of $E$ to $-\infty$. Second, it shows that the problem is not about directional positivity in isolation, but about the induced effective energy on the direction space after radial minimization.
+
+The expression
+\[
+E(k)=-\frac{J_2(k)^2}{4J_4(k)}
+\]
+on the region $\{k:J_2(k)<0,\ J_4(k)>0\}$ is the exact cost of the unstable radial drift. In this sense, the reduced stability problem is naturally a domination problem on direction space.
+
+\section{Interpretation as coercivity}
+
+It is convenient to summarize \cref{thm:2hdm-criterion} in a short piece of terminology.
+
+\begin{definition}\label{def:uniform-coercivity}
+We say that the pair $(J_2,J_4)$ is \emph{uniformly coercive on $B^3$} if
+\begin{enumerate}[label=(\arabic*)]
+  \item $J_4(k)\ge0$ for all $k\in B^3$;
+  \item there exists $C\ge0$ such that
+  \[
+  J_2(k)^2\le 4C\,J_4(k)
+  \qquad\text{whenever }J_2(k)<0.
+  \]
+\end{enumerate}
+\end{definition}
+
+\begin{corollary}\label{cor:coercivity-reformulation}
+The reduced 2HDM potential is globally stable if and only if $(J_2,J_4)$ is uniformly coercive on $B^3$.
+\end{corollary}
+
+The terminology is justified because the linear term $K_0J_2(k)$ is of lower order in the scale variable than the quadratic term $K_0^2J_4(k)$, and boundedness from below is equivalent to saying that the lower-order downward drift is uniformly controlled by the higher-order restoring contribution.
+
+This is the precise sense in which the problem is a scale--direction coercivity problem rather than a purely directional positivity problem.
+
+\section{Minimal quadratic-form reformulation}
+
+For bookkeeping purposes, one may encode the potential as a quadratic form. Define
+\[
+u(K_0):=\binom{1}{K_0},
+\qquad
+M(k):=
+\begin{pmatrix}
+0 & \tfrac12 J_2(k)\\[1ex]
+\tfrac12 J_2(k) & J_4(k)
+\end{pmatrix}.
+\]
+Then
+\[
+\nu(K_0)^TM(k)\nu(K_0)=K_0J_2(k)+K_0^2J_4(k)=V(K_0,k).
+\]
+
+This representation adds no new theorem, but it makes one feature explicit: the obstruction to lower boundedness is a failure of semiboundedness of a direction-dependent quadratic form along the ray $\nu(K_0)$. The off-diagonal contribution encodes the linear drift, while the lower-right entry encodes the restoring quadratic part.
+
+We keep this remark brief because the essential content of the paper lies in \cref{thm:abstract-criterion,thm:2hdm-criterion}.
+
+\section{Conclusion}
+
+The reduced 2HDM potential
+\[
+V(K_0,k)=K_0J_2(k)+K_0^2J_4(k)
+\]
+is governed by a simple but easily misstated principle. Boundedness from below is not a property of directional signs alone. It is a uniform statement coupling the scale variable and the direction variable.
+
+The correct criterion is obtained by minimizing in the scale variable. In abstract form, for any compact direction space $X$, the function
+\[
+tD(x)+t^2Q(x)
+\]
+is uniformly bounded below if and only if $Q\ge0$ and the quotient $D^2/Q$ remains uniformly bounded on the region where $D<0$. Applied to the reduced 2HDM potential, this yields the corrected stability criterion immediately.
+
+The failure of the older directional viewpoint can therefore be stated sharply: the sign of the quadratic coefficient is necessary, but without a uniform domination estimate it is not sufficient.
+
+\section*{Acknowledgment of source context}
+The conceptual starting point for this note is the recent formal verification work identifying an error in the classical 2006 criterion \citep{ToobySmith2026}, together with the original reduced 2HDM formulation of \citet{Maniatis2006}.
+
+\bibliographystyle{plainnat}
+\bibliography{2hdm_stability_final}
+
+\end{document}

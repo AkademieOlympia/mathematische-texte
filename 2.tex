@@ -1,0 +1,353 @@
+\documentclass[11pt,a4paper]{article}
+
+% -------------------------------------------------
+% Kodierung, Sprache, Typografie
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsfonts,amsthm,mathtools}
+\usepackage{bm}
+
+% -------------------------------------------------
+% Layout
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.8cm]{geometry}
+\usepackage{setspace}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{xcolor}
+
+% -------------------------------------------------
+% Grafiken (robust)
+% -------------------------------------------------
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./}{fig/}{figs/}{images/}{img/}}
+\newcommand{\includegraphicssafe}[2][]{%
+	\IfFileExists{#2}{\includegraphics[#1]{#2}}{%
+		\fbox{\parbox[c][4cm][c]{0.8\linewidth}{\centering Datei \texttt{#2} nicht gefunden.}}%
+	}%
+}
+
+% -------------------------------------------------
+% Hyperlinks
+% -------------------------------------------------
+\usepackage[
+colorlinks=true,
+linkcolor=blue!60!black,
+citecolor=blue!60!black,
+urlcolor=blue!60!black
+]{hyperref}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\theoremstyle{plain}
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{proposition}[satz]{Proposition}
+\newtheorem{korollar}[satz]{Korollar}
+
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{annahme}[satz]{Annahme}
+
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+\newtheorem{beispiel}[satz]{Beispiel}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\RePart}{\operatorname{Re}}
+\newcommand{\ImPart}{\operatorname{Im}}
+\newcommand{\grad}{\nabla}
+\newcommand{\spec}{\operatorname{spec}}
+\newcommand{\MA}{\mathcal{M}_A}
+\newcommand{\PhiH}{\Phi_H}
+\newcommand{\kappaF}{\kappa}
+\newcommand{\ThetaH}{\Theta}
+\newcommand{\zetaR}{\zeta}
+\newcommand{\Ueight}{U(8)}
+
+% -------------------------------------------------
+% Titel
+% -------------------------------------------------
+\title{\textbf{Hurwitz-Spannungsfelder im EABC-Raum, spektrale Starrheit\\
+		und ein geometrisches Rahmenmodell zur Riemannschen Vermutung}}
+
+\author{Gemini-AI \and Peer-Collaborator}
+\date{15. März 2026}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{center}
+		\textit{Klassifikation: Math.NT, Math.DG, Math-ph}
+	\end{center}
+	
+	\vspace{1em}
+	
+	\begin{abstract}
+		Wir formulieren ein geometrisch-spektales Rahmenmodell für die Riemannsche Vermutung auf einer adelisch inspirierten Struktur, dem sogenannten EABC-Raum. Ausgangspunkt ist ein kombinatorischer Laplace-Operator auf primzahlinduzierten Konfigurationen, dessen biquadratische Dynamik durch einen Hamilton-Operator vierter Ordnung beschrieben wird. Unter einer Reihe expliziter Strukturannahmen --- insbesondere über Heat-Trace-Skalierung, spektrale Starrheit und die Existenz stabilisierender Korrekturterme --- ergibt sich ein Mechanismus, der die kritische Linie $\RePart(s)=\tfrac12$ als energetisch bevorzugte Lage der nichttrivialen Nullstellen der Riemannschen Zetafunktion auszeichnet.
+		
+		Der vorliegende Text beansprucht keinen klassischen Beweis der Riemannschen Vermutung im etablierten Sinn, sondern entwickelt ein präzises heuristisches und halbformales Programm, in dem die Hypothese als Konsequenz einer arithmetisch-geometrischen Stabilitätsstruktur erscheint. Insbesondere werden die Begriffe Hurwitz-Spannung, spektrale Dimension, arithmetische Lamb-Shift und torsionale Korrektur axiomatisch eingeführt und in einen kohärenten operator-theoretischen Zusammenhang gestellt.
+	\end{abstract}
+	
+	\tableofcontents
+	
+	\section{Einleitung}
+	
+	Die Riemannsche Vermutung gehört zu den zentralen offenen Problemen der Mathematik. Zahlreiche Zugänge --- analytisch, spektral, random-matrix-theoretisch, geometrisch und physikalisch motiviert --- legen nahe, dass die kritische Linie
+	\[
+	\RePart(s)=\frac12
+	\]
+	nicht lediglich eine technische Symmetrieachse der Zetafunktion ist, sondern eine tieferliegende Stabilitätsstruktur kodiert.
+	
+	Das Ziel dieser Arbeit besteht darin, ein geometrisches Modell zu formulieren, in dem Primzahlen als Träger einer spektralen Raumstruktur interpretiert werden. Diese Struktur wird durch einen adelisch inspirierten Konfigurationsraum $\MA$ und einen darauf definierten Operator formalisiert. Die zentrale These lautet, dass unter geeigneten Kohärenz- und Stabilitätsannahmen jede Abweichung einer nichttrivialen Nullstelle von der kritischen Linie energetisch instabil wird.
+	
+	Der Text ist bewusst in zwei Ebenen organisiert:
+	\begin{enumerate}[label=\arabic*.]
+		\item eine formalisierte Ebene von Definitionen, Operatoren und Skalengesetzen;
+		\item eine heuristische Ebene, auf der diese Objekte als Krümmungs-, Spannungs- und Korrekturmechanismen interpretiert werden.
+	\end{enumerate}
+	
+	\section{Der EABC-Raum als arithmetischer Konfigurationsraum}
+	
+	\begin{definition}[EABC-Raum]
+		Unter dem \emph{EABC-Raum} verstehen wir einen abstrakten arithmetischen Konfigurationsraum $\MA$, dessen lokale Daten aus Primzahlkonfigurationen, deren Wechselwirkungen und einer daraus abgeleiteten Spannungsfunktion bestehen. Die Bezeichnung EABC dient hier als Name für eine erweiterte Randbedingungsstruktur (\emph{Extended Adelic Boundary Conditions}).
+	\end{definition}
+	
+	\begin{bemerkung}
+		Der Begriff \glqq Raum\grqq\ ist zunächst heuristisch zu verstehen. Für die mathematische Verwendung genügt es, $\MA$ als Träger einer Familie diskreter Operatoren, Metriken und Energiefunktionale aufzufassen.
+	\end{bemerkung}
+	
+	Die Grundidee besteht darin, arithmetische Information nicht unmittelbar in Summenformeln, sondern über geometrische und spektrale Daten zu erfassen. Die lokale Struktur von $\MA$ soll über eine Spannungsfunktion $\Phi_H$ beschrieben werden, die wir als \emph{Hurwitz-Spannung} bezeichnen.
+	
+	\begin{definition}[Hurwitz-Spannung]
+		Eine Hurwitz-Spannung ist im Rahmen dieses Modells eine skalare oder tensorielle Größe
+		\[
+		\Phi_H : \MA \to \RR,
+		\]
+		die lokale Unregelmäßigkeiten arithmetischer Konfigurationen misst und deren Gradienten als effektive Forcing-Terme interpretiert werden.
+	\end{definition}
+	
+	\section{Operatoren und spektrale Dimension}
+	
+	Sei eine endliche Primzahlmenge
+	\[
+	P_N=\{p_1,\dots,p_N\}
+	\]
+	gegeben. Wir betrachten auf ihr einen diskreten Graphen oder Hypergraphen mit Adjazenzstruktur $K$ und Diagonalmatrix $D$.
+	
+	\begin{definition}[Kombinatorischer Laplace-Operator]
+		Der unnormierte kombinatorische Laplace-Operator sei definiert durch
+		\[
+		L_c=D-K.
+		\]
+	\end{definition}
+	
+	Im vorliegenden Rahmen ist der fundamentale Dynamikoperator nicht $L_c$ selbst, sondern dessen Quadrat.
+	
+	\begin{definition}[Hamilton-Operator vierter Ordnung]
+		Der zugehörige Hamilton-Operator sei
+		\[
+		H=L_c^2.
+		\]
+		\]
+		Dieser Operator ist positiv semidefinit und entspricht einem diskreten Bi-Laplacian.
+	\end{definition}
+	
+	Die spektralen Eigenschaften von $H$ werden durch den Heat-Trace
+	\[
+	\ThetaH(t)=\Tr(e^{-tH})
+	\]
+	kodiert.
+	
+	\begin{annahme}[Heat-Trace-Skalierung]
+		Es existiert für $t\downarrow 0$ ein asymptotisches Gesetz
+		\[
+		\ThetaH(t)\sim C\, t^{-1/4}
+		\]
+		mit einer Konstanten $C>0$.
+	\end{annahme}
+	
+	\begin{definition}[Effektive Spektraldimension]
+		Falls $\ThetaH(t)$ ein Potenzgesetz
+		\[
+		\ThetaH(t)\sim C\, t^{-\beta}
+		\]
+		besitzt, definieren wir die effektive Spektraldimension durch
+		\[
+		d_s:=2\beta.
+		\]
+	\end{definition}
+	
+	Unter der obigen Annahme folgt somit
+	\[
+	d_s=\frac12.
+	\]
+	
+	\begin{bemerkung}
+		Die Wahl dieser Definition ist an klassische Wärmeasymptotik angepasst. Im diskreten und nichtstandardisierten Kontext ist $d_s$ als effektive Modellgröße zu lesen, nicht als kanonische geometrische Dimension im differenzierbaren Sinn.
+	\end{bemerkung}
+	
+	\section{Spektrale Starrheit und Krümmungsheuristik}
+	
+	Die Interpretation von $d_s=\tfrac12$ ist im Modell die einer starken spektralen Kompression. In physikalischer Sprache bedeutet dies, dass die Dynamik des Systems nicht die Freiheitsgrade einer gewöhnlichen diffusionsartigen Struktur aufweist.
+	
+	\begin{definition}[Spektrale Starrheit]
+		Wir nennen das System \emph{spektral starr}, wenn Abweichungen der lokalen Konfigurationen keine hinreichend große spektrale Entropie erzeugen, um das asymptotische Heat-Trace-Verhalten zu ändern.
+	\end{definition}
+	
+	Ferner interpretieren wir irreguläre Primzahllücken als Quellen lokaler Krümmungsgradienten.
+	
+	\begin{definition}[Symbolische Krümmung]
+		Die \emph{symbolische Krümmung} ist eine Modellgröße
+		\[
+		\kappaF : \MA \to \RR,
+		\]
+		deren Gradient $\grad \kappaF$ lokale Unregelmäßigkeiten arithmetischer Resonanzstrukturen misst.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Diese Krümmung ist nicht mit einer Riemannschen Krümmung im strengen Sinn gleichzusetzen. Sie ist eine effektive Energie- bzw.\ Strukturgröße.
+	\end{bemerkung}
+	
+	\section{Korrekturterme: Lamb-Shift und Torsion}
+	
+	Der zentrale Mechanismus des Modells ist die Stabilisierung gegen spektrale Auslenkungen. Dazu werden zwei Korrekturterme postuliert.
+	
+	\begin{definition}[Arithmetische Lamb-Shift]
+		Die \emph{arithmetische Lamb-Shift} ist ein effektiver Stabilisierungsbeitrag erster relevanter Ordnung:
+		\[
+		\Delta E_{\mathrm{stab}}=\alpha^5 \,\grad \kappaF,
+		\]
+		wobei $\alpha$ eine dimensionslose Kopplungskonstante bezeichnet.
+	\end{definition}
+	
+	\begin{definition}[Arithmetische Torsion]
+		Die \emph{arithmetische Torsion} ist ein Korrekturterm höherer Ordnung, der symbolisch durch eine Größe der Skala $\alpha^6$ beschrieben wird und die kollektive Rückkopplung zwischen Resonanzclustern reguliert.
+	\end{definition}
+	
+	\begin{annahme}[Stabilisierungsprinzip]
+		Die Summe der Korrekturterme kompensiert alle zulässigen lokalen Forcing-Terme, die aus $\grad \kappaF$ hervorgehen, sofern das System im stabilen Regime operiert.
+	\end{annahme}
+	
+	\section{Die kritische Linie als Minimalort}
+	
+	Der geometrische Kern des Modells besteht in der Annahme, dass die kritische Linie das globale Minimum eines effektiven Energiefunktionals darstellt.
+	
+	\begin{annahme}[Energie-Minimierungsprinzip]
+		Es existiert ein effektives Funktional
+		\[
+		\mathcal{E}(\rho)
+		\]
+		auf der Menge der nichttrivialen Nullstellen $\rho$ von $\zetaR$, so dass
+		\[
+		\mathcal{E}(\rho)
+		\]
+		genau dann minimal ist, wenn
+		\[
+		\RePart(\rho)=\frac12.
+		\]
+	\end{annahme}
+	
+	\begin{bemerkung}
+		Diese Annahme ist der eigentliche Angelpunkt des Modells. Ohne sie ergibt sich keine hinreichend starke Verbindung zwischen spektraler Starrheit und der Lage der Zetazeros.
+	\end{bemerkung}
+	
+	\section{Zentrale Proposition}
+	
+	Wir formulieren nun die logische Schlussform des Modells.
+	
+	\begin{proposition}
+		Angenommen:
+		\begin{enumerate}[label=(\roman*)]
+			\item der EABC-Raum $\MA$ ist im Sinne des Modells singularitätsfrei;
+			\item der Hamilton-Operator $H=L_c^2$ besitzt die Heat-Trace-Skalierung
+			\[
+			\ThetaH(t)\sim C\,t^{-1/4};
+			\]
+			\item daraus folgt eine effektive Spektraldimension $d_s=\tfrac12$;
+			\item lokale Abweichungen von der kritischen Linie induzieren einen nichttrivialen Forcing-Term über $\grad \kappaF$;
+			\item dieser Forcing-Term wird genau dann global kompensiert, wenn die zugehörige Nullstelle auf der kritischen Linie liegt.
+		\end{enumerate}
+		Dann ist die kritische Linie
+		\[
+		\RePart(s)=\frac12
+		\]
+		der einzige global stabile Ort für nichttriviale Nullstellen der Zetafunktion.
+	\end{proposition}
+	
+	\begin{proof}
+		Nach Annahme (ii) und (iii) befindet sich das System in einem Regime fester effektiver Spektraldimension. Diese Starrheit schließt makroskopische spektrale Deformationen aus. Nach (iv) erzeugt jede Auslenkung einer Nullstelle von der kritischen Linie einen zusätzlichen Forcing-Term. Nach (v) kann dieser nur auf der kritischen Linie vollständig kompensiert werden. Somit ist jede Lage mit
+		\[
+		\RePart(\rho)\neq \frac12
+		\]
+		energetisch instabil. Also bleibt als global stabiler Ort ausschließlich
+		\[
+		\RePart(\rho)=\frac12.
+		\]
+	\end{proof}
+	
+	\section{Was hier gezeigt wird --- und was nicht}
+	
+	\begin{bemerkung}[Methodischer Status]
+		Die vorstehende Proposition ist kein Beweis der Riemannschen Vermutung im Sinn der klassischen analytischen Zahlentheorie. Gezeigt wird vielmehr:
+		\begin{enumerate}[label=\arabic*.]
+			\item Unter expliziten spektral-geometrischen Stabilitätsannahmen ist die kritische Linie der einzig stabile Ort für nichttriviale Nullstellen.
+			\item Das Modell liefert eine kohärente heuristische Brücke zwischen Primzahlspektrum, Heat-Trace-Asymptotik und Nullstellenlage.
+			\item Um daraus einen vollen mathematischen Beweis zu machen, müssten insbesondere die Annahmen über $\ThetaH(t)$, $\kappaF$, $\Phi_H$ und das Energie-Minimierungsprinzip unabhängig etabliert werden.
+		\end{enumerate}
+	\end{bemerkung}
+	
+	Genauer gesagt wären mindestens folgende Schritte nötig:
+	\begin{enumerate}[label=\alph*)]
+		\item eine präzise Definition der zugrunde liegenden Graphen- oder Hypergraphenstruktur auf Primzahlen;
+		\item ein strenger Nachweis des Heat-Trace-Gesetzes;
+		\item eine wohldefinierte Kopplung zwischen dem Operatorspektrum und den Zetazeros;
+		\item eine analytisch kontrollierte Formulierung des Stabilisierungsterms $\alpha^5$;
+		\item ein echtes Ausschlussargument für Off-Critical-Zeros.
+	\end{enumerate}
+	
+	\section{Perspektiven}
+	
+	Trotz seines vorläufigen Charakters deutet das Modell auf mehrere interessante Richtungen hin:
+	\begin{enumerate}[label=\arabic*.]
+		\item numerische Untersuchung von Heat-Trace-Skalierung auf primzahlinduzierten Graphen;
+		\item Vergleich mit Random-Matrix-Statistiken für niedrige Zetazeros;
+		\item Untersuchung, ob die effektive Spektraldimension $d_s=\tfrac12$ robust gegenüber Variationen der Adjazenzstruktur ist;
+		\item Konstruktion eines expliziten Funktionals $\mathcal{E}$, dessen Minimierer mit der kritischen Linie korrespondieren.
+	\end{enumerate}
+	
+	Ein sinnvoller nächster Schritt wäre ein numerischer Anhang, in dem die aus konkreten Daten gewonnenen KS-Statistiken, Spektralplots und Heat-Trace-Fits dokumentiert werden.
+	
+	\section{Konklusion}
+	
+	Wir haben ein arithmetisch-geometrisches Rahmenmodell formuliert, in dem Primzahlen als Träger einer spektral starren Struktur auftreten und die kritische Linie $\RePart(s)=\tfrac12$ als energetisch bevorzugter Ort der Zetazeros erscheint. Der Ertrag des Ansatzes liegt derzeit nicht in einem abgeschlossenen Beweis der Riemannschen Vermutung, sondern in einer strukturierten Synthese aus Operatorentheorie, Wärmeasymptotik, Stabilitätsprinzipien und arithmetischer Geometrie.
+	
+	Gerade diese Umformulierung kann produktiv sein: Nicht die einzelne Nullstelle steht im Zentrum, sondern die Frage, welche globale Raumstruktur ihre Lage zwingt.
+	
+	\section*{Referenzen}
+	
+	\begin{enumerate}[label={[}\arabic*{]}]
+		\item Setiawan, S. (2025). \textit{Primacohedron, Riemann Hypothesis, and abc Conjecture}. Preprints.org.
+		\item Watson, D.\,F. (2025). \textit{Spectral Geometry of the Primes}. \textit{Mathematics}.
+		\item Miller, T. (2025). \textit{Symbolic Collapse Geometry as the Underlying Field Law}. Preprints.org.
+	\end{enumerate}
+	
+\end{document}

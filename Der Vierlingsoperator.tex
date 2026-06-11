@@ -1,0 +1,431 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	citecolor=blue,
+	urlcolor=blue,
+	pdftitle={Ein endlicher Vierlingsoperator auf dem neutralen Sektor der Klein-Vierergruppe},
+	pdfauthor={Thomas Hoffbauer}
+}
+
+\title{Ein endlicher Vierlingsoperator auf dem neutralen Sektor der Klein-Vierergruppe}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\newtheorem{definition}{Definition}[section]
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{corollary}[definition]{Korollar}
+\theoremstyle{remark}
+\newtheorem{remark}[definition]{Bemerkung}
+\newtheorem{example}[definition]{Beispiel}
+
+\newcommand{\V}{V_4}
+\newcommand{\X}{\mathcal X}
+\newcommand{\XE}{\mathcal X_E}
+\newcommand{\HE}{\mathcal H_E}
+\newcommand{\wt}{\mathrm{wt}}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Es wird ein endlicher Operator auf dem neutralen Vierlingssektor der Klein-Vierergruppe definiert. Der zugrunde liegende Zustandsraum besteht aus allen Vierlingen
+		\[
+		(\sigma_1,\sigma_2,\sigma_3,\sigma_4)\in \V^4
+		\]
+		mit
+		\[
+		\sigma_1\sigma_2\sigma_3\sigma_4=E.
+		\]
+		Auf dem zugehörigen komplexen Vektorraum wird ein selbstadjungierter Operator aus zyklischer Koordinatenverschiebung, doppelseitigen Gruppenmultiplikationen und einem diagonalen Term konstruiert. Der Zustandsraum besitzt eine natürliche Zerlegung in Orbits der zyklischen Verschiebung. Numerisch zeigt der Eigenvektor zum kleinsten Eigenwert einen Wechsel zwischen zwei Typklassen neutraler Vierlinge, nämlich ABCE- und AABB-Konfigurationen. Für die Parameterwahl
+		\[
+		t=1,\qquad \lambda=0.15,\qquad \mu=0.4
+		\]
+		liegt der Umschlag numerisch bei etwa
+		\[
+		\alpha_c\approx -0.72.
+		\]
+	\end{abstract}
+	
+	\section{Der endliche Zustandsraum}
+	
+	\begin{definition}
+		Sei
+		\[
+		\V=\{E,A,B,C\}
+		\]
+		die Klein-Vierergruppe mit Verknüpfung
+		\[
+		A^2=B^2=C^2=E,\qquad AB=C,\qquad AC=B,\qquad BC=A.
+		\]
+	\end{definition}
+	
+	\begin{definition}
+		Der volle Vierlingsraum ist
+		\[
+		\X=\V^4.
+		\]
+		Für
+		\[
+		X=(\sigma_1,\sigma_2,\sigma_3,\sigma_4)\in\X
+		\]
+		definieren wir
+		\[
+		Q(X):=\sigma_1\sigma_2\sigma_3\sigma_4\in\V.
+		\]
+	\end{definition}
+	
+	\begin{definition}
+		Der neutrale Sektor ist
+		\[
+		\XE:=\{X\in\X:Q(X)=E\}.
+		\]
+		Der zugehörige komplexe Vektorraum ist
+		\[
+		\HE:=\mathbb C[\XE].
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Es gilt
+		\[
+		|\XE|=64.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Drei Koordinaten können frei gewählt werden. Die vierte ist durch die Bedingung \(Q(X)=E\) eindeutig bestimmt.
+	\end{proof}
+	
+	\begin{lemma}
+		Jede Permutation der vier Koordinaten erhält \(\XE\).
+	\end{lemma}
+	
+	\begin{proof}
+		Da \(\V\) abelsch ist, hängt \(Q(X)\) nicht von der Reihenfolge der Faktoren ab.
+	\end{proof}
+	
+	\section{Elementare Operatoren}
+	
+	\begin{definition}
+		Der zyklische Verschiebungsoperator \(T\) auf \(\HE\) ist auf Basisvektoren definiert durch
+		\[
+		T|\sigma_1,\sigma_2,\sigma_3,\sigma_4\rangle
+		=
+		|\sigma_2,\sigma_3,\sigma_4,\sigma_1\rangle.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Der Operator \(T\) erhält \(\XE\) und erfüllt
+		\[
+		T^4=I.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Die Erhaltung von \(\XE\) folgt aus der Permutationsinvarianz. Die Relation \(T^4=I\) ist unmittelbar.
+	\end{proof}
+	
+	\begin{definition}
+		Für \(g\in\{A,B,C\}\) und \(1\le i<j\le 4\) definieren wir
+		\[
+		F_{ij}^{(g)}
+		|\sigma_1,\dots,\sigma_i,\dots,\sigma_j,\dots,\sigma_4\rangle
+		=
+		|\sigma_1,\dots,g\sigma_i,\dots,g\sigma_j,\dots,\sigma_4\rangle.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Jeder Operator \(F_{ij}^{(g)}\) erhält \(\XE\).
+	\end{lemma}
+	
+	\begin{proof}
+		Da \(g^2=E\), bleibt das Produkt aller vier Koordinaten unverändert.
+	\end{proof}
+	
+	\begin{definition}
+		Sei \(v:\XE\to\mathbb R\) eine Funktion. Dann sei \(D_v\) der diagonale Operator auf \(\HE\), gegeben durch
+		\[
+		D_v|X\rangle=v(X)|X\rangle.
+		\]
+	\end{definition}
+	
+	\section{Der Vierlingsoperator}
+	
+	\begin{definition}
+		Für \(t,\lambda\ge 0\) definieren wir
+		\[
+		H
+		=
+		-t(T+T^{-1})
+		-\lambda\sum_{1\le i<j\le 4}\sum_{g\in\{A,B,C\}}F_{ij}^{(g)}
+		+D_v.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Der Operator \(H\) ist wohldefiniert auf \(\HE\).
+	\end{lemma}
+	
+	\begin{proof}
+		Die Operatoren \(T\) und \(F_{ij}^{(g)}\) erhalten \(\XE\), und \(D_v\) ist diagonal.
+	\end{proof}
+	
+	\begin{remark}
+		In allen numerischen Rechnungen dieses Textes wird
+		\[
+		v(X)=\mu\,N_{\mathrm{nt}}(X)+\alpha\,I_{ABCE}(X)
+		\]
+		verwendet, wobei \(N_{\mathrm{nt}}(X)\) die Anzahl der nichttrivialen Einträge von \(X\) bezeichnet und \(I_{ABCE}\) die Indikatorfunktion der ABCE-Typklasse ist.
+	\end{remark}
+	
+	\section{Orbitzerlegung}
+	
+	\begin{definition}
+		Für \(X\in\XE\) sei
+		\[
+		\mathcal O(X):=\{T^kX:k=0,1,2,3\}
+		\]
+		der \(T\)-Orbit von \(X\).
+	\end{definition}
+	
+	\begin{lemma}
+		Jeder Orbit hat Länge \(1\), \(2\) oder \(4\).
+	\end{lemma}
+	
+	\begin{proof}
+		Dies folgt aus \(T^4=I\).
+	\end{proof}
+	
+	\begin{example}
+		Für
+		\[
+		X_0=(A,B,C,E)
+		\]
+		hat der Orbit Länge \(4\):
+		\[
+		(A,B,C,E),\quad (B,C,E,A),\quad (C,E,A,B),\quad (E,A,B,C).
+		\]
+	\end{example}
+	
+	\begin{lemma}
+		Auf einem Orbit der Länge \(4\) besitzt \(T\) die Eigenwerte
+		\[
+		1,\ i,\ -1,\ -i.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Auf einem Viererorbit wirkt \(T\) als zyklische Permutationsmatrix der Länge \(4\).
+	\end{proof}
+	
+	\begin{corollary}
+		Für den Operator
+		\[
+		-t(T+T^{-1})
+		\]
+		sind auf einem Orbit der Länge \(4\) die Eigenwerte
+		\[
+		-2t,\ 0,\ 0,\ 2t.
+		\]
+	\end{corollary}
+	
+	\begin{proof}
+		Einsetzen der vier Einheitswurzeln in \(-t(\omega+\omega^{-1})\).
+	\end{proof}
+	
+	\section{Typklassen}
+	
+	\begin{definition}
+		Ein Zustand \(X\in\XE\) heißt vom Typ \emph{EEEE}, falls
+		\[
+		X=(E,E,E,E).
+		\]
+	\end{definition}
+	
+	\begin{definition}
+		Ein Zustand \(X\in\XE\) heißt vom Typ \emph{AABB}, falls unter seinen vier Einträgen genau zwei verschiedene Gruppenelemente mit Vielfachheit \(2\) vorkommen.
+	\end{definition}
+	
+	\begin{definition}
+		Ein Zustand \(X\in\XE\) heißt vom Typ \emph{ABCE}, falls jedes Element von \(\{E,A,B,C\}\) genau einmal vorkommt.
+	\end{definition}
+	
+	\begin{remark}
+		Die Typklassen AABB und ABCE sind disjunkt und liegen beide vollständig in \(\XE\).
+	\end{remark}
+	
+	\section{Typgewichte von Eigenvektoren}
+	
+	\begin{definition}
+		Sei
+		\[
+		\psi=\sum_{X\in\XE} c_X |X\rangle
+		\]
+		ein normierter Vektor in \(\HE\). Für eine Teilmenge \(\mathcal T\subseteq \XE\) definieren wir das Gewicht von \(\mathcal T\) in \(\psi\) durch
+		\[
+		\wt_{\mathcal T}(\psi):=\sum_{X\in\mathcal T}|c_X|^2.
+		\]
+	\end{definition}
+	
+	\section{Numerische Resultate}
+	
+	Im Folgenden werden die Parameter
+	\[
+	t=1,\qquad \lambda=0.15,\qquad \mu=0.4
+	\]
+	fixiert, während \(\alpha\) variiert wird.
+	
+	\subsection{Kleinster Eigenwert für \texorpdfstring{$\alpha=-0.3$}{alpha=-0.3}}
+	
+	Für \(\alpha=-0.3\) ergibt die numerische Diagonalisierung
+	\[
+	E_0\approx -3.68503172,\qquad E_1\approx -2.22057451,
+	\]
+	wobei \(E_0\) der kleinste und \(E_1\) der zweitkleinste Eigenwert ist.
+	
+	Sei \(\psi_0\) ein normierter Eigenvektor zu \(E_0\). Dann gilt numerisch
+	\[
+	\wt_{AABB}(\psi_0)\approx 0.37584705,\qquad
+	\wt_{ABCE}(\psi_0)\approx 0.17788503,\qquad
+	\wt_{EEEE}(\psi_0)\approx 0.05361052.
+	\]
+	
+	Für einen normierten Eigenvektor \(\psi_1\) zu \(E_1\) gilt
+	\[
+	\wt_{EEEE}(\psi_1)\approx 0.67243007.
+	\]
+	
+	\begin{proposition}
+		Für \(\alpha=-0.3\) gilt für den Eigenvektor \(\psi_0\) zum kleinsten Eigenwert:
+		\[
+		\wt_{AABB}(\psi_0)>\wt_{ABCE}(\psi_0)>\wt_{EEEE}(\psi_0).
+		\]
+	\end{proposition}
+	
+	\begin{proof}
+		Dies folgt unmittelbar aus den angegebenen numerischen Werten.
+	\end{proof}
+	
+	\subsection{Scan in \texorpdfstring{$\alpha$}{alpha}}
+	
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{rcccc}
+			\toprule
+			$\alpha$ & $E_0$ & AABB & ABCE & EEEE \\
+			\midrule
+			$-1.00$ & $-4.00471086$ & $0.427823$ & $0.526006$ & $0.029035$ \\
+			$-0.75$ & $-3.87939297$ & $0.467105$ & $0.476415$ & $0.036655$ \\
+			$-0.50$ & $-3.76650374$ & $0.505010$ & $0.426820$ & $0.045587$ \\
+			$-0.25$ & $-3.66586282$ & $0.540303$ & $0.378661$ & $0.055726$ \\
+			$0.00$  & $-3.57694646$ & $0.572016$ & $0.333212$ & $0.066867$ \\
+			$0.25$  & $-3.49895031$ & $0.599557$ & $0.291426$ & $0.078731$ \\
+			$0.50$  & $-3.43088069$ & $0.622728$ & $0.253861$ & $0.091008$ \\
+			\bottomrule
+		\end{tabular}
+		\caption{Typgewichte des Eigenvektors zum kleinsten Eigenwert.}
+	\end{table}
+	
+	Ein Feinscan ergibt:
+	
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{rccccc}
+			\toprule
+			$\alpha$ & $E_0$ & AABB & ABCE & EEEE & ABCE$-$AABB \\
+			\midrule
+			$-0.80$ & $-3.90346289$ & $0.459317$ & $0.486381$ & $0.035024$ & $+0.027064$ \\
+			$-0.70$ & $-3.85582136$ & $0.474838$ & $0.466450$ & $0.038338$ & $-0.008389$ \\
+			$-0.60$ & $-3.81017142$ & $0.490097$ & $0.446565$ & $0.041861$ & $-0.043532$ \\
+			$-0.50$ & $-3.76650374$ & $0.505010$ & $0.426820$ & $0.045587$ & $-0.078190$ \\
+			$-0.40$ & $-3.72479970$ & $0.519502$ & $0.407307$ & $0.049507$ & $-0.112195$ \\
+			$-0.30$ & $-3.68503172$ & $0.533505$ & $0.388113$ & $0.053611$ & $-0.145392$ \\
+			$-0.20$ & $-3.64716380$ & $0.546957$ & $0.369319$ & $0.057883$ & $-0.177638$ \\
+			$-0.10$ & $-3.61115223$ & $0.559808$ & $0.350997$ & $0.062307$ & $-0.208811$ \\
+			$0.00$  & $-3.57694646$ & $0.572016$ & $0.333212$ & $0.066867$ & $-0.238804$ \\
+			$0.10$  & $-3.54449005$ & $0.583553$ & $0.316018$ & $0.071543$ & $-0.267535$ \\
+			\bottomrule
+		\end{tabular}
+		\caption{Feinscan des Bereichs, in dem sich die Dominanz von ABCE und AABB ändert.}
+	\end{table}
+	
+	\begin{proposition}
+		Für die oben angegebene Parameterwahl existiert ein numerischer Umschaltbereich, in dem die Dominanz des Eigenvektors zum kleinsten Eigenwert von der Typklasse ABCE auf die Typklasse AABB übergeht.
+	\end{proposition}
+	
+	\begin{proof}
+		Bei \(\alpha=-0.80\) gilt
+		\[
+		\wt_{ABCE}(\psi_0)-\wt_{AABB}(\psi_0)>0,
+		\]
+		bei \(\alpha=-0.70\) dagegen
+		\[
+		\wt_{ABCE}(\psi_0)-\wt_{AABB}(\psi_0)<0.
+		\]
+		Damit liegt der Vorzeichenwechsel zwischen diesen beiden Werten.
+	\end{proof}
+	
+	\begin{corollary}
+		Eine lineare Interpolation zwischen \(\alpha=-0.80\) und \(\alpha=-0.70\) liefert die numerische Schätzung
+		\[
+		\alpha_c\approx -0.724.
+		\]
+	\end{corollary}
+	
+	\begin{corollary}
+		Im untersuchten Bereich bleibt die Typklasse EEEE im Eigenvektor zum kleinsten Eigenwert untergeordnet.
+	\end{corollary}
+	
+	\begin{proof}
+		Dies folgt direkt aus den in den Tabellen angegebenen Gewichten.
+	\end{proof}
+	
+	\section{Zusammenfassung}
+	
+	Es wurde ein endlicher Operator auf dem neutralen Vierlingssektor der Klein-Vierergruppe definiert. Der zugehörige Zustandsraum hat Dimension \(64\) und besitzt eine natürliche Orbitzerlegung unter dem zyklischen Verschiebungsoperator. Für eine konkrete diagonale Parametrisierung zeigt der Eigenvektor zum kleinsten Eigenwert:
+	\begin{enumerate}[label=(\roman*)]
+		\item nichttriviale Gewichte auf mehreren Typklassen,
+		\item Konkurrenz der Typklassen AABB und ABCE,
+		\item einen numerisch lokalisierbaren Umschaltbereich in Abhängigkeit von \(\alpha\),
+		\item einen durchgehend kleinen Anteil der Typklasse EEEE.
+	\end{enumerate}
+	
+	Damit liegt ein explizites endliches Modell vor, in dem verschiedene neutrale Vierlingsordnungen spektral unterschieden werden.
+	
+	\section*{Ausblick}
+	
+	Naheliegende Folgeschritte sind:
+	\begin{enumerate}[label=(\arabic*)]
+		\item ein zweidimensionaler Scan in \((\alpha,\lambda)\),
+		\item die vollständige Klassifikation der \(T\)-Orbits in \(\XE\),
+		\item die Zerlegung von \(\HE\) nach Orbittypen,
+		\item die Untersuchung weiterer diagonaler Funktionen \(v:\XE\to\mathbb R\).
+	\end{enumerate}
+	
+	\begin{thebibliography}{9}
+		
+		\bibitem{ConwaySmith}
+		J. H. Conway, D. A. Smith,
+		\textit{On Quaternions and Octonions},
+		A K Peters, 2003.
+		
+	\end{thebibliography}
+	
+\end{document}

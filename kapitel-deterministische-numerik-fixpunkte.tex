@@ -1,0 +1,88 @@
+% Entwurf: Kapitel „Deterministische Numerik und spektrale Fixpunkte“ (#Energiedoku)
+% Quellen: Alle Kugeln.py, Black Hole Simulation.py, Neues Paper.py (Terminal-Log 2026-06-04)
+% Einfuegen z.\,B. in arxiv-hurwitz-double-sphere/main-de.tex nach \ref{sec:empirie-resonanz}
+
+\section{Deterministische Numerik und spektrale Fixpunkte}\label{sec:determ-numerik-fixpunkte}
+
+Dieser Abschnitt dokumentiert zwei unabhängige, reproduzierbare Rechenläufe: den asymptotischen Riemann-Resonanztest (\texttt{Alle Kugeln.py}, Datenbasis \texttt{zeros6.npy}) und die EABC-Kollapsheuristik (\texttt{Black Hole Simulation.py}). Beide sind \emph{numerische Experimente} innerhalb des \#Energiedoku-Programms; sie begründen weder einen Beweis der Riemannschen Vermutung noch eine physikalische Theorie extremaler Schwarzer Löcher.
+
+\subsection{Riemann-Resonanz bei asymptotischer Höhe}
+
+Mit $|\mathcal{Q}| = 2{,}001{,}052$ Imaginärteilen $\gamma_n$ aus \texttt{zeros6.npy} und vier positiven Moden $\omega_k$ des Lie-Hamiltons liefert der logarithmische Mangoldt-Lift
+\[
+  \omega_{\mathrm{lifted}} = \omega_k \cdot f(T), \qquad
+  f(T) = \frac{\delta(T)}{\overline{\mathrm{gap}}}, \quad
+  \delta(T) = \bigl(\tfrac{\mathrm{d}N}{\mathrm{d}T}\bigr)^{-1},
+\]
+bei repräsentativer Höhe $T = \gamma_{n/2} \approx 600558{,}54$ und $N(T) \approx 1{,}000526 \cdot 10^6$ (von-Mangoldt-Zählfunktion). Der Lauf vom 2026-06-04 meldet u.\,a.:
+\begin{itemize}
+  \item $E_2$: $\omega_{\mathrm{lifted}} \approx 0{,}390477$, lokales Nachbar-Gap $\Delta\gamma_{+1} \approx 0{,}3910$, Verhältnis $\approx 1{,}0013$ (nahe $1:1$ innerhalb Toleranz $0{,}08$);
+  \item $E_0$: $\omega_{\mathrm{lifted}} \approx 0{,}070996$, globales $\overline{\mathrm{gap}} \approx 0{,}5659$, Verhältnis $\approx 7{,}97$ (Ausgabe „$\sim 8$“).
+\end{itemize}
+Diese Treffer sind \textbf{post-hoc} gegen mehrere Gap-Definitionen und vier Moden; sie erfordern Hold-out-Validierung und Monte-Carlo-Multiplizitätskontrolle (\texttt{Alle\_Kugeln\_Scan.py}, vgl.\ Abschnitt~\ref{sec:empirie-resonanz}).
+
+\subsection{EABC-Kollaps-Simulation}
+
+Das Toy-Modell \texttt{EABCBlackHoleSimulation} (Seed~42, zehn Wellen, Resonanzfaktor $0{,}08$) erreicht bei Schritt~9 $\kappa = 0$ und Masse $M \approx 18{,}9933$. Die Ausgabe ist \emph{deterministisch} durch die feste Wellensequenz und die explizite Abbauformel für $\kappa$; sie modelliert keine Einstein-Gleichungen.
+
+\subsection{Quaternionischer Prim-Defekt und $\kappa(M)$ (\texttt{Neues Paper.py})}
+
+Am Fixpunkt $M = 113160$ zählt das Skript Primzahlen in den Familien $p \equiv 1 \pmod 3$ (A) und $p \equiv 2 \pmod 3$ (B). Der Dirichlet-Defekt $D = \#A - \#B$ und der Jitter-Gradient $g = D/(\#A+\#B)$ kalibrieren die effektive Kopplung über
+\[
+  \kappa(M) = 1 + \frac{\pi}{2}\, g
+  \quad\Longrightarrow\quad
+  \alpha_{\mathrm{intern}} = \alpha_0 \cdot \kappa(M),
+\]
+wobei $\alpha_0 = 1/(4\pi\zeta(3)\cdot 9)$ der asymptotische Vakuumwert ist. Die Vorzeichenwahl (Plus statt Minus vor $g$) ordnet $D<0$ (Übergewicht B) einer \emph{Absenkung} von $\kappa$ und damit einer Annäherung von $1/\alpha_{\mathrm{intern}}$ an CODATA zu.
+
+\begin{table}[ht]
+  \centering
+  \caption{Deterministischer Lauf \texttt{Neues Paper.py}, $M=113160$ (2026-06-04).}
+  \label{tab:eabc-fixpunkt-m113160}
+  \begin{tabular}{lrr}
+    \hline
+    Größe & Wert & Anmerkung \\
+    \hline
+    Dirichlet-Defekt $D$ & $-28$ & B-Übergewicht \\
+    Jitter-Gradient $g$ & $-0{,}002611$ & $D/(\#A+\#B)$ \\
+    $\kappa(M)$ & $0{,}995898$ & $1 + (\pi/2)\,g$ \\
+    $1/\alpha_{\mathrm{intern}}$ & $136{,}509$ & $\alpha_0 \cdot \kappa$ \\
+    Abweichung zu CODATA & $0{,}386\,\%$ & $1/137{,}036$ \\
+    \hline
+  \end{tabular}
+\end{table}
+
+Ein dynamischer $M$-Scan (\texttt{run\_dynamic\_eabc\_scan}, $M_{\max}=500000$) kartiert markante Fixpunkte; das globale Minimum der CODATA-Abweichung liegt bei $M=10000$ ($0{,}026\,\%$), nicht bei $113160$. Zwischen $50000$ und $200000$ steigt die Abweichung monoton; der Anker $113160$ ist unter den Testpunkten kein lokales Minimum, sondern ein Zwischenwert in einer oszillierenden Defektfolge.
+
+\begin{table}[ht]
+  \centering
+  \caption{Dynamischer $M$-Scan, \texttt{Neues Paper.py} (2026-06-04).}
+  \label{tab:eabc-m-scan}
+  \begin{tabular}{rrrrr}
+    \hline
+    $M$ & $D$ & $g$ & $1/\alpha_{\mathrm{intern}}$ & Abweichung \\
+    \hline
+    $10{,}000$ & $-6$ & $-0{,}004886$ & $137{,}001$ & $0{,}026\,\%$ \\
+    $50{,}000$ & $-20$ & $-0{,}003897$ & $136{,}787$ & $0{,}182\,\%$ \\
+    $113{,}160$ & $-28$ & $-0{,}002611$ & $136{,}509$ & $0{,}386\,\%$ \\
+    $200{,}000$ & $-7$ & $-0{,}000389$ & $136{,}033$ & $0{,}738\,\%$ \\
+    $300{,}000$ & $-56$ & $-0{,}002154$ & $136{,}411$ & $0{,}458\,\%$ \\
+    $400{,}000$ & $-75$ & $-0{,}002215$ & $136{,}424$ & $0{,}449\,\%$ \\
+    $500{,}000$ & $-71$ & $-0{,}001709$ & $136{,}315$ & $0{,}529\,\%$ \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\subsection{Heuristische Brücke (nicht bewiesen)}
+
+Im Forschungsprogramm wird \emph{hypothetisch} notiert, dass rationale Kopplungen der gelifteten Spektralmoden an lokale Nullstellen-Gaps
+\[
+  \omega_{\mathrm{lifted}} \in \mathbb{Q}\cdot \Delta\gamma
+  \quad\Longrightarrow\quad
+  \kappa \to 0
+\]
+als \textbf{Kollaps-Kriterium} für einen extremalen Zustand dienen \emph{könnten}. Dies ist eine Analogie zwischen diskreter Spektralstatistik und der parametrisierten $\kappa$-Dynamik; eine kausale oder unitäre Verknüpfung ist offen.
+
+\begin{remark}[Methodische Vorsicht]
+Koinzidenzen von Verhältnissen nahe $1$ oder $8$ können im Look-elsewhere-Sinne zufällig sein. Die \#Energiedoku hält an einem \emph{widerlegbaren} Programm fest: explizite Hypothesen, reproduzierbare Skripte, p-Wert-Heuristiken, keine Verkürzung zu „Beweis der RH“ oder „Beweis des extremalen Schwarzen Lochs“.
+\end{remark}

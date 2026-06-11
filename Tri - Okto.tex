@@ -1,0 +1,384 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman,english]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\geometry{margin=2.7cm}
+
+\title{Tri--Fib--Okto--Topo Structure of Prime Quadruplets}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\newtheorem{definition}{Definition}[section]
+\newtheorem{satz}[definition]{Satz}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+\newtheorem{proposition}[definition]{Proposition}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		We propose a structural framework for local prime clusters based on the four admissible residue classes modulo $12$ for primes greater than $3$, identified with the Klein four group $V_4$. Prime quadruplet frames induce occupancy states in a Hamming cube, together with bond, triple, and quadruplet closure data. We refine this by introducing terminal prime cores ($A$-core versus $BC$-core), tri-defects, Fibonacci closure defects, octo-defects, Sch\"utte tension, topological phases, and couplings to oscillatory signals generated from the nontrivial zeros of the Riemann zeta function. Genuine prime quadruplets emerge as maximally coherent states in this combined discrete, geometric, and topological model.
+	\end{abstract}
+	
+	\section{Residue classes and the Klein four group}
+	
+	For every prime $p>3$ one has
+	\[
+	p\equiv 1,5,7,11 \pmod{12}.
+	\]
+	We denote these classes by
+	\[
+	E,A,B,C.
+	\]
+	They form a structure identified with the Klein four group
+	\[
+	V_4=\{E,A,B,C\},
+	\qquad
+	A^2=B^2=C^2=E,\quad AB=C,\quad BC=A,\quad CA=B.
+	\]
+	
+	\section{Quadruplet frames and occupancy states}
+	
+	\begin{definition}[Prime quadruplet frame]
+		A quadruplet frame is
+		\[
+		\mathcal V(n)=(n,n+2,n+6,n+8),
+		\qquad n\equiv 5\pmod{12}.
+		\]
+		Its class path is
+		\[
+		A\to B\to C\to E.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Occupancy vector]
+		Let
+		\[
+		\sigma(m)=
+		\begin{cases}
+			1,&m\in\mathbb P,\\
+			0,&m\notin\mathbb P.
+		\end{cases}
+		\]
+		Define
+		\[
+		\varepsilon(n)=
+		(\sigma(n),\sigma(n+2),\sigma(n+6),\sigma(n+8))
+		\in\{0,1\}^4.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Hamming weight]
+		\[
+		w_H(\varepsilon)=\sigma(n)+\sigma(n+2)+\sigma(n+6)+\sigma(n+8).
+		\]
+	\end{definition}
+	
+	\section{Bond, triple, and quadruplet structure}
+	
+	\begin{definition}[Bond number]
+		\[
+		B(\varepsilon)=
+		\sigma(n)\sigma(n+2)
+		+\sigma(n+2)\sigma(n+6)
+		+\sigma(n+6)\sigma(n+8).
+		\]
+	\end{definition}
+	
+	\begin{definition}[Triple number]
+		\[
+		T(\varepsilon)=
+		\sigma(n)\sigma(n+2)\sigma(n+6)
+		+\sigma(n+2)\sigma(n+6)\sigma(n+8).
+		\]
+	\end{definition}
+	
+	\begin{definition}[Quadruplet closure]
+		\[
+		Q(\varepsilon)=\sigma(n)\sigma(n+2)\sigma(n+6)\sigma(n+8).
+		\]
+	\end{definition}
+	
+	\section{Terminal cores}
+	
+	\begin{definition}[Terminal prime core]
+		Let $a\equiv 5\pmod{12}$. Reduce the parities of the prime exponents in the nontrivial classes $A,B,C$. Then the terminal core satisfies
+		\[
+		\operatorname{core}(a)\in\{A,\ BC\}.
+		\]
+		We call these two possibilities the $A$-core and the $BC$-core.
+	\end{definition}
+	
+	\begin{satz}[Quadruplet start core]
+		If $n$ is the start of a genuine prime quadruplet, then
+		\[
+		\operatorname{core}(n)=A.
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		A genuine prime quadruplet starts at a prime $n\equiv 5\pmod{12}$. Hence its terminal core is necessarily the prime class $A$ itself.
+	\end{proof}
+	
+	\section{Laplacian and Dirac operator}
+	
+	The underlying path graph is
+	\[
+	A-B-C-E.
+	\]
+	Its adjacency matrix is
+	\[
+	\mathbf A=
+	\begin{pmatrix}
+		0&1&0&0\\
+		1&0&1&0\\
+		0&1&0&1\\
+		0&0&1&0
+	\end{pmatrix},
+	\]
+	its degree matrix is
+	\[
+	\mathbf D=
+	\begin{pmatrix}
+		1&0&0&0\\
+		0&2&0&0\\
+		0&0&2&0\\
+		0&0&0&1
+	\end{pmatrix},
+	\]
+	and the Laplacian is
+	\[
+	\mathbf L=\mathbf D-\mathbf A
+	=
+	\begin{pmatrix}
+		1&-1&0&0\\
+		-1&2&-1&0\\
+		0&-1&2&-1\\
+		0&0&-1&1
+	\end{pmatrix}.
+	\]
+	
+	The incidence matrix is
+	\[
+	\mathbf B=
+	\begin{pmatrix}
+		-1&0&0\\
+		1&-1&0\\
+		0&1&-1\\
+		0&0&1
+	\end{pmatrix},
+	\qquad
+	\mathbf L=\mathbf B\mathbf B^\top.
+	\]
+	
+	\begin{definition}[Discrete Dirac operator]
+		\[
+		\mathbf D_{\mathrm{Dirac}}=
+		\begin{pmatrix}
+			0 & \mathbf B\\
+			\mathbf B^\top & 0
+		\end{pmatrix}.
+		\]
+	\end{definition}
+	
+	\section{Tri, Fibonacci, and octo defects}
+	
+	\begin{definition}[Tri-defect]
+		\[
+		D_\triangle(\varepsilon)=2-T(\varepsilon).
+		\]
+	\end{definition}
+	
+	\begin{definition}[Morley--Walter adjusted tri-defect]
+		\[
+		D_\triangle^{MW}
+		=
+		2-T
+		+\lambda_1 D_{\mathrm{Morley}}
+		+\lambda_2\left|
+		\frac{A_{\mathrm{hex}}}{A_\triangle}-\frac1{10}
+		\right|.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Fibonacci defect]
+		Let $\varphi=\frac{1+\sqrt5}{2}$. For a suitable local recurrence sequence $x_n$ define
+		\[
+		D_{\mathrm{Fib}}=
+		\left|
+		\frac{x_{n+1}}{x_n}-\varphi
+		\right|
+		\]
+		or equivalently
+		\[
+		D_{\mathrm{Fib}}(x_n)=|x_{n+2}-x_{n+1}-x_n|.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Octo-state]
+		Define
+		\[
+		X(\varepsilon)=
+		(\sigma_0,\sigma_2,\sigma_6,\sigma_8;\,b_1,b_2,b_3,Q),
+		\]
+		where
+		\[
+		b_1=\sigma_0\sigma_2,\quad
+		b_2=\sigma_2\sigma_6,\quad
+		b_3=\sigma_6\sigma_8,\quad
+		Q=\sigma_0\sigma_2\sigma_6\sigma_8.
+		\]
+		Let
+		\[
+		X_\star=(1,1,1,1;\,1,1,1,1).
+		\]
+		Then
+		\[
+		D_8(\varepsilon)=d_H(X(\varepsilon),X_\star).
+		\]
+	\end{definition}
+	
+	\section{Orthogonal and packing calibration}
+	
+	\begin{definition}[Orthogonal calibration]
+		The Babylonian triple
+		\[
+		3^2+4^2=5^2
+		\]
+		provides the elementary orthogonal reference.
+	\end{definition}
+	
+	\begin{definition}[Kepler calibration]
+		The three-dimensional sphere packing density bound is
+		\[
+		\Delta_3=\frac{\pi}{\sqrt{18}}.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Extended octo-defect]
+		\[
+		D_8^{\mathrm{orth}}
+		=
+		D_8
+		+\mu_1|a^2+b^2-c^2|
+		+\mu_2\left|\delta-\frac{\pi}{\sqrt{18}}\right|.
+		\]
+	\end{definition}
+	
+	\section{Sch\"utte tension and the $E_8$ reference}
+	
+	\begin{definition}[Sch\"utte tension]
+		Let $I$ denote an icosahedral local reference and $J$ an actual jammed contact configuration. Then
+		\[
+		\Sigma_{\mathrm{Sch}}=\operatorname{dist}(J,I)
+		\]
+		measures the mismatch between local symmetry ideal and jammed realization.
+	\end{definition}
+	
+	\begin{bemerkung}
+		The integers $57,59,61$ are used as a model-based local transition trilogy indicating distinct nearby local packing regimes.
+	\end{bemerkung}
+	
+	\begin{definition}[$E_8$ reference]
+		The $E_8$ lattice serves as the higher-dimensional zero-defect reference, with optimal sphere packing density in dimension $8$.
+	\end{definition}
+	
+	\section{Topological phase structure}
+	
+	\begin{definition}[Phase-weighted occupancy]
+		\[
+		\Psi=
+		\begin{pmatrix}
+			\sigma_0 e^{i\theta_0}\\
+			\sigma_2 e^{i\theta_2}\\
+			\sigma_6 e^{i\theta_6}\\
+			\sigma_8 e^{i\theta_8}
+		\end{pmatrix}.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Topological quadruplet loop]
+		We formally close the path to
+		\[
+		\Gamma_{V_4}:A\to B\to C\to E\to A.
+		\]
+		Its topological phase is
+		\[
+		\Phi_{\mathrm{top}}=\sum_{e\in\Gamma_{V_4}}\alpha_e.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Topological speed]
+		\[
+		v_{\mathrm{top}}=\frac{d\Phi_{\mathrm{top}}}{dt},
+		\qquad
+		c_{\mathrm{top}}^{(d)}=\frac{\Delta\Phi_{\mathrm{top}}}{\Delta s_H}.
+		\]
+	\end{definition}
+	
+	\section{von Klitzing scaling}
+	
+	\begin{definition}[Topological conductivity]
+		Let
+		\[
+		R_K=\frac{h}{e^2}
+		\]
+		be the von Klitzing constant. Define
+		\[
+		\Sigma_{\mathrm{top}}=\nu_{\mathrm{cl}}\frac{e^2}{h}
+		=\frac{\nu_{\mathrm{cl}}}{R_K},
+		\]
+		where $\nu_{\mathrm{cl}}$ is a cluster coherence or winding number.
+	\end{definition}
+	
+	\section{Coupling to zeta zeros}
+	
+	Let
+	\[
+	\rho_m=\frac12+i\gamma_m
+	\]
+	be the nontrivial zeros of the Riemann zeta function. Define the oscillatory signal
+	\[
+	S_M(n)=\frac1{\sqrt M}\sum_{m\le M}\cos(\gamma_m\log n).
+	\]
+	
+	\begin{bemerkung}
+		Numerically, genuine prime quadruplets appear strongly enriched in the deep negative tails of $S_M$.
+	\end{bemerkung}
+	
+	\section{Master functional}
+	
+	We define
+	\[
+	\mathcal M_{\mathrm{tot}}
+	=
+	\alpha\,w_H
+	+\beta\,B
+	+\gamma\,T
+	+\delta\,Q
+	-\eta(C-1)
+	-\mu D_\triangle^{MW}
+	-\nu D_{\mathrm{Fib}}
+	-\xi D_8^{\mathrm{orth}}
+	-\zeta \Sigma_{\mathrm{Sch}}
+	+\rho_1\cos(\Phi_{\mathrm{top}})
+	+\rho_2\Sigma_{\mathrm{top}}
+	+\rho_3 c_{\mathrm{top}}
+	+\rho_4 S_M.
+	\]
+	
+	\section{Conclusion}
+	
+	Within this framework, genuine prime quadruplets are interpreted as maximally coherent local states on a $V_4$-supported Hamming and core space. Their structure is sharpened by the distinction between $A$-core and $BC$-core, refined by tri, Fibonacci, and octo defects, and extended by topological phase data. The numerical coupling to oscillatory signals derived from zeta zeros suggests that such local prime clusters are not randomly placed in the induced signal landscape, but preferentially occupy specific deep oscillatory valleys.
+	
+\end{document}

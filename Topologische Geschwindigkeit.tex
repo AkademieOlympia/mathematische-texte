@@ -1,0 +1,523 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{csquotes}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{lmodern}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue!60!black,
+	citecolor=blue!60!black,
+	urlcolor=blue!60!black,
+	pdftitle={Ein spektral-geometrischer Rahmen des Bamberg-Modells},
+	pdfauthor={Thomas Hoffbauer},
+	pdfsubject={Übersichtsartikel},
+	pdfkeywords={Bamberg-Modell, Riemann-Nullstellen, Oktonionen, Aharonov-Bohm, Minkowski-Metrik, Schüttespannung}
+}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{bemerkung}[definition]{Bemerkung}
+\newtheorem{beispiel}[definition]{Beispiel}
+\theoremstyle{plain}
+\newtheorem{satz}[definition]{Satz}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+
+\title{Ein spektral-geometrischer Rahmen des Bamberg-Modells\\
+	\large Oktonische Paarstruktur, komplexe Untergeometrie, Riemann-Resonanz und thermische Plateauzonen}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Dieser Übersichtsartikel entwickelt einen einheitlichen begrifflichen Rahmen für das sogenannte Bamberg-Modell (BM), das arithmetische Restklassenstrukturen, spektrale Phänomene, geometrische Dualitäten und phasenartige Übergänge miteinander verknüpfen möchte. Ausgangspunkt ist die Zerlegung der Primzahlen $p>3$ in vier Familien modulo $12$, die im Modell mit den Klassen $E,A,B,C$ bezeichnet werden. Darauf aufbauend wird eine singulär-dreifache Struktur vorgeschlagen, in der ein ausgezeichneter $E$-Pol einem dreifachen Gegenblock $ABC$ gegenübersteht. Diese Struktur wird additiv und oktonisch interpretiert, mit einer natürlichen komplexen Untergeometrie für die Klassen $E$ und $A$, die über Summen zweier Quadrate ausgezeichnet sind.
+		
+		Im nächsten Schritt wird diese innere Algebra mit einer globalen Geometrie verbunden: Ikosaeder--Dodekaeder-Dualität, goldene Rechtecke, Schalenlogik und eine effektive Minkowski-Signatur führen zu einer spektral-geometrischen Deutung balancierter Zustände. Vollschalen, Konkurrenzprofile und Mischsektoren werden als Elemente eines proto-periodischen BM-Systems beschrieben. Ergänzend wird ein phasenbasierter Zugang eingeführt, in dem Maxwell-artige Fernfeldmoden, Aharonov--Bohm-artige topologische Phasen, Tri-/Okto-Potentiale und von-Klitzing-artige Plateauzonen in einem gemeinsamen Rahmen erscheinen.
+		
+		Ein eigener Schwerpunkt liegt auf dem Vergleich mit den imaginären Teilen der nichttrivialen Riemann-Nullstellen. Es wird argumentiert, dass das BM-Modell drei Regime nahelegt: ein Vorspektrum unterhalb der ersten Nullstelle, eine Eintrittszone vollschalennaher Hybridisierung sowie eine Schütte-Resonanzzone im Fenster $57$--$61$. Dieses Fenster wird durch lokale Gap-Struktur, phasenartige Stabilität und thermisch gewichtete Zustandssummen besonders hervorgehoben. Der Artikel versteht sich ausdrücklich als begrifflich geordnete Übersicht und nicht als fertige Theorie des Standardmodells oder als Beweis tiefer zahlentheoretischer Vermutungen. Ziel ist vielmehr, ein konsistentes heuristisches Arbeitsprogramm zu formulieren, das arithmetische, geometrische und spektrale Beobachtungen innerhalb eines gemeinsamen Vokabulars ordnet.
+	\end{abstract}
+	
+	\tableofcontents
+	
+	\section{Einleitung}
+	
+	Das Bamberg-Modell (BM) ist als Versuch zu verstehen, arithmetische Restklassenstrukturen, spektrale Regularitäten, geometrische Ordnungsprinzipien und physikalisch inspirierte Begriffe wie Phase, Plateau, Schale und Konfinierung in einem gemeinsamen Rahmen zu versammeln. Der Ausgangspunkt ist elementar: Für Primzahlen $p>3$ kommen modulo $12$ nur die Restklassen
+	\[
+	1,5,7,11
+	\]
+	in Betracht. Im Modell werden diese vier Klassen mit
+	\[
+	E,\ A,\ B,\ C
+	\]
+	bezeichnet. Bereits diese Zerlegung erzeugt eine klare Viererstruktur, die sich algebraisch, geometrisch und spektral interpretieren lässt.
+	
+	Das Ziel dieses Artikels ist nicht, einen abgeschlossenen physikalischen Formalismus zu liefern. Stattdessen soll eine möglichst saubere Übersicht über mehrere zusammenhängende Gedankenexperimente gegeben werden, die sich im Verlauf der Modellbildung als besonders fruchtbar erwiesen haben:
+	\begin{itemize}[leftmargin=2em]
+		\item die singulär-dreifache Aufspaltung eines Vollkerns,
+		\item die komplexe Untergeometrie der Klassen $E$ und $A$,
+		\item die oktonische und dual-polyedrische Lesart der Viererstruktur,
+		\item die Rolle von Vollschalen und Konkurrenzprofilen,
+		\item die Einbindung von Phasen, Tri-/Okto-Potentialen und Plateauübergängen,
+		\item der Vergleich mit Riemann-Nullstellen,
+		\item sowie die thermische Heuristik eines arithmetischen Gases.
+	\end{itemize}
+	
+	Die leitende Haltung des Artikels ist ausdrücklich heuristisch. Gleichwohl wird Wert auf klare Begriffe, definierte Übergänge zwischen den Ebenen und eine konsistente interne Sprache gelegt.
+	
+	\section{Arithmetischer Ausgangspunkt: die vier Primklassen modulo $12$}
+	
+	\subsection{Definition der Klassen}
+	
+	Für Primzahlen $p>3$ definieren wir die vier Familien
+	\[
+	E=\{p\text{ prim}:p\equiv 1\pmod{12}\},
+	\qquad
+	A=\{p\text{ prim}:p\equiv 5\pmod{12}\},
+	\]
+	\[
+	B=\{p\text{ prim}:p\equiv 7\pmod{12}\},
+	\qquad
+	C=\{p\text{ prim}:p\equiv 11\pmod{12}\}.
+	\]
+	
+	\begin{bemerkung}
+		Diese Einteilung ist elementar, aber strukturell bereits sehr reich. Sie trennt insbesondere die beiden Klassen $E,A$, die zugleich $\equiv 1\pmod 4$ sind, von den Klassen $B,C$, die $\equiv 3\pmod 4$ sind.
+	\end{bemerkung}
+	
+	\subsection{Vollkerne und Viererprofile}
+	
+	Im BM-Modell ist ein prototypischer Vollkern von der Form
+	\[
+	N(i)=eabc,
+	\qquad e\in E,\ a\in A,\ b\in B,\ c\in C.
+	\]
+	Er trägt eine natürliche Viererstruktur, die zunächst rein arithmetisch ist, später aber in Zustandsprofile übersetzt wird. Formal lassen sich Besetzungen als Vektoren
+	\[
+	(w_E,w_A,w_B,w_C)
+	\]
+	notieren.
+	
+	Wichtige frühe Profile sind etwa
+	\[
+	(1,0,0,0),\ (0,1,0,0),\ (0,0,1,0),\ (0,0,0,1),
+	\]
+	als Ein-Kanal-Zustände,
+	\[
+	(1,1,1,1)
+	\]
+	als Vollschale,
+	sowie die balancierten Konkurrenzprofile
+	\[
+	(0,2,2,0),\qquad (2,0,0,2).
+	\]
+	
+	\section{Singulär-dreifache Struktur und oktonische Paarung}
+	
+	\subsection{Die Zerlegung $E_1=e$ und $E_2=abc$}
+	
+	Der zentrale algebraische Schritt besteht darin, den Vollkern
+	\[
+	N(i)=eabc
+	\]
+	nicht nur als Produkt von vier Faktoren, sondern als Paarung aus einem singulären Pol und einem dreifachen Gegenblock zu lesen:
+	\[
+	E_1:=e,
+	\qquad
+	E_2:=abc.
+	\]
+	Dies liefert eine elementare $1+3$-Struktur:
+	\begin{itemize}[leftmargin=2em]
+		\item $E_1$ ist ausgezeichnet, singulär, polartig,
+		\item $E_2$ trägt eine dreifache innere Kopplungsstruktur.
+	\end{itemize}
+	
+	\begin{bemerkung}
+		Diese Aufspaltung ist im Artikel ein Grundmotiv. Später wird sie
+		\begin{itemize}[leftmargin=2em]
+			\item geometrisch als Keim einer Signatur,
+			\item physikalisch als leptonisch--quarkartige Trennung,
+			\item und spektral als Ausgangspunkt von Plateau- und Resonanzbildern
+		\end{itemize}
+		gedeutet.
+	\end{bemerkung}
+	
+	\subsection{Additives oktonisches Modell}
+	
+	Zur geometrisch-algebraischen Einbettung wählen wir vier ausgezeichnete Richtungen einer oktonischen Algebra, symbolisch
+	\[
+	u_E,\ \nu_A,\ \nu_B,\ \nu_C.
+	\]
+	Ein Vollkern wird dann im additiven Modell als
+	\[
+	\mathcal N_i = e\,\nu_E + a\,\nu_A + b\,\nu_B + c\,\nu_C
+	\]
+	interpretiert. Alternativ bleibt die Paarstruktur sichtbar als
+	\[
+	\Pi_i=(\mathcal E_1,\mathcal E_2),
+	\qquad
+	\mathcal E_1=e\,\nu_E,
+	\qquad
+	\mathcal E_2=a\,\nu_A+b\,\nu_B+c\,\nu_C.
+	\]
+	
+	Dieses additive Modell ist bewusst robuster als eine sofortige multiplikative Oktonion-Interpretation. Es erlaubt bereits eine Norm, ein BM-Innenprodukt und klare Symmetriefragen, ohne die Nichtassoziativität zu früh technisch zu überladen.
+	
+	\subsection{Nichtassoziativität als Feinstrukturquelle}
+	
+	Wird der Dreierblock $abc$ multiplikativ gelesen, etwa als
+	\[
+	((a\nu_A)(b\nu_B))(c\nu_C),
+	\]
+	so wird die Nichtassoziativität der Oktonionen relevant. Dies eröffnet eine natürliche Quelle für Feinstruktur:
+	\begin{itemize}[leftmargin=2em]
+		\item verschiedene Koppelungsordnungen,
+		\item innere Aufspaltungen,
+		\item sowie Assoziator-basierte Spannungsmaße.
+	\end{itemize}
+	
+	Damit ist die Oktonion-Sprache im BM-Modell nicht bloße Dekoration, sondern potenziell Trägerin jener internen Struktur, die numerisch in Hybridisierungen und Konkurrenzlagen sichtbar wird.
+	
+	\section{Komplexe Unterstruktur der Klassen $E$ und $A$}
+	
+	\subsection{Zwei-Quadrate-Satz}
+	
+	Die Klassen $E$ und $A$ bestehen aus Primzahlen, die modulo $4$ gleich $1$ sind. Für jede Primzahl $p\in E\cup A$ gilt daher nach dem klassischen Zwei-Quadrate-Satz
+	\[
+	p=x_p^2+y_p^2,
+	\]
+	bis auf Reihenfolge und Vorzeichen eindeutig.
+	
+	Im Gegensatz dazu können Primzahlen aus $B$ und $C$ als $\equiv 3\pmod 4$ nicht als Summe zweier Quadrate dargestellt werden.
+	
+	\subsection{Komplexe BM-Pole}
+	
+	Zu jeder Primzahl $p\in E\cup A$ definieren wir einen komplexen BM-Pol
+	\[
+	z_p := x_p + i y_p,
+	\qquad |z_p|^2 = p.
+	\]
+	Für einen Vollkern $N(i)=eabc$ erhalten wir damit
+	\[
+	e = |z_E|^2,
+	\qquad
+	a = |z_A|^2.
+	\]
+	
+	\begin{bemerkung}
+		Damit tragen zwei der vier BM-Klassen eine natürliche komplexe Binnengeometrie, während $B$ und $C$ genuin nicht-zweiquadratische Klassen bleiben. Diese Asymmetrie ist für das Modell fundamental.
+	\end{bemerkung}
+	
+	\subsection{Bedeutung für die BM-Struktur}
+	
+	Die Gesamtstruktur wird dadurch geschichtet:
+	\begin{enumerate}[leftmargin=2em]
+		\item arithmetische Viererstruktur $E,A,B,C$,
+		\item komplexe Untergeometrie auf $E$ und $A$,
+		\item oktonische Gesamtgeometrie auf der singulär-dreifachen Paarung.
+	\end{enumerate}
+	
+	Insbesondere wird $A$ doppelt ausgezeichnet:
+	\begin{itemize}[leftmargin=2em]
+		\item durch seine Rolle als Klasse der Primzahl $5$ und der $25$-Schale,
+		\item sowie durch seine komplexe Normstruktur.
+	\end{itemize}
+	
+	\section{Geometrische Einbettung: Dualität, goldene Rechtecke und Schüttespannung}
+	
+	\subsection{Ikosaeder--Dodekaeder-Dualität}
+	
+	Als globale Geometrie des BM-Modells wird eine Einbettung in die Ikosaeder--Dodekaeder-Dualität vorgeschlagen. Diese ist nicht als fertiger Theoremsatz zu verstehen, sondern als strukturelle Hypothese:
+	\begin{itemize}[leftmargin=2em]
+		\item das eine Polyeder kodiert eher die kanalische Innenstruktur,
+		\item das duale Polyeder eher die resonante Gegenstruktur.
+	\end{itemize}
+	
+	Vollschalen und Konkurrenzprofile erscheinen in dieser Lesart als alternative Spannungs- oder Packungslagen innerhalb desselben globalen Dualraums.
+	
+	\subsection{Goldene Rechtecke des Ikosaeders}
+	
+	Ein reguläres Ikosaeder kann über drei zueinander orthogonale goldene Rechtecke beschrieben werden. In geeigneten Koordinaten lauten seine Ecken
+	\[
+	(0,\pm 1,\pm \varphi),
+	\qquad
+	(\pm 1,\pm \varphi,0),
+	\qquad
+	(\pm \varphi,0,\pm 1),
+	\]
+	mit dem goldenen Schnitt
+	\[
+	\varphi=\frac{1+\sqrt5}{2}.
+	\]
+	
+	Diese Darstellung ist für das BM-Modell besonders attraktiv, weil der dreifache Gegenblock $E_2=abc$ unmittelbar mit drei geometrischen Trägern verbunden werden kann. Dadurch wird die singulär-dreifache Struktur geometrisch konkret:
+	\begin{itemize}[leftmargin=2em]
+		\item ein singulärer Pol,
+		\item drei Rechteckträger als Gegenstruktur.
+	\end{itemize}
+	
+	\subsection{Schüttespannung}
+	
+	Die Schüttespannung dient als dynamisches Spannungsmaß, das über die bloße Balance hinausgeht. Modellhaft kann sie als Summe aus
+	\begin{itemize}[leftmargin=2em]
+		\item Signaturspannung,
+		\item Dualitätsspannung,
+		\item und Nichtassoziativitätsspannung
+	\end{itemize}
+	verstanden werden. Symbolisch etwa
+	\[
+	\Sigma_{\mathrm{Sch"utte}}
+	=
+	\lambda_1\bigl|\|\mathcal E_1\|^2-\|\mathcal E_2\|^2\bigr|
+	+\lambda_2\Delta_{\mathrm{dual}}
+	+\lambda_3\mathcal A,
+	\]
+	wobei $\Delta_{\mathrm{dual}}$ die Verletzung idealer Dualbalance und $\mathcal A$ einen Assoziator- oder Nichtassoziativitätsterm bezeichnet.
+	
+	\section{Signatur und reduzierter Minkowski-Rahmen}
+	
+	\subsection{Singulär-dreifache Signaturidee}
+	
+	Die Paarung $E_1$ gegen $E_2$ legt eine effektive Signatur nahe:
+	\[
+	\mathcal Q(\Pi_i)=\alpha\|\mathcal E_1\|^2-\beta\|\mathcal E_2\|^2.
+	\]
+	Dies ist als Keim einer emergenten Minkowski-artigen Metrik zu lesen. Bereits die singulär-dreifache Struktur deutet eine $1+3$-Organisation an.
+	
+	\subsection{Reduziertes AC-Bild}
+	
+	Als besonders fruchtbares Gedankenexperiment wird eine reduzierte Zweistrahl-Geometrie eingeführt, in der zwei BM-Richtungen, hier symbolisch $A$ und $C$, als zeit- bzw. raumartige Freiheitsgrade gelesen werden. Dann entsteht ein minimaler AC-Rahmen mit Metrik
+	\[
+	ds^2 = \alpha\, dA^2 - \beta\, dC^2.
+	\]
+	Im normierten Minimalbild schreiben wir
+	\[
+	ds^2 = c_M^2\, dA^2 - dC^2,
+	\]
+	wobei $c_M$ die effektive Maxwell-Geschwindigkeit des Regimes bezeichnet.
+	
+	\subsection{Geschwindigkeit, Beschleunigung, Krümmung}
+	
+	Im AC-Bild ist die elementare Geschwindigkeit
+	\[
+	v_{AC}=\frac{dC}{dA}.
+	\]
+	Ihre Ableitung liefert eine Beschleunigung
+	\[
+	a_{AC}=\frac{d^2 C}{dA^2}.
+	\]
+	Im topologisch-geometrischen BM-Raum ist diese zweite Ableitung zugleich als Krümmung einer Regime- oder Phasenbahn interpretierbar:
+	\[
+	a_{AC}\leadsto \kappa_{\mathrm{BM}}.
+	\]
+	
+	Genau an dieser Stelle wird Einsteins ursprünglicher Äquivalenzgedanke anschlussfähig: Was im dynamischen Bild als Beschleunigung erscheint, kann im geometrischen Bild als Krümmung gelesen werden.
+	
+	\section{Maxwell, Aharonov--Bohm und Tri-/Okto-Potentiale}
+	
+	\subsection{Zwei Potentiale}
+	
+	Zur Beschreibung phasenartiger Regime werden zwei effektive Potentiale eingeführt:
+	\[
+	\mathcal A_{\mathrm{tri}},
+	\qquad
+	\mathcal A_{\mathrm{okto}}.
+	\]
+	Das Tri-Potential lebt primär auf dem Dreierblock $abc$, das Okto-Potential auf der globalen Viererstruktur und insbesondere auf Vollschalen und Konkurrenzprofilen.
+	
+	\subsection{BM-Phase}
+	
+	Für einen BM-Zustand $\Psi$ definieren wir eine effektive Phase
+	\[
+	\Phi_{\mathrm{BM}}(\Psi)
+	=
+	q_{\mathrm{tri}}\oint \mathcal A_{\mathrm{tri}}\cdot d\ell
+	+
+	q_{\mathrm{okto}}\oint \mathcal A_{\mathrm{okto}}\cdot d\ell.
+	\]
+	Dies ist ausdrücklich in Analogie zum Aharonov--Bohm-Effekt zu verstehen: Nicht nur lokale Felder, sondern bereits Potentiale und ihre Holonomie tragen physikalisch bzw. strukturell wirksame Information.
+	
+	\subsection{Maxwell- und Phasengeschwindigkeit}
+	
+	Im reduzierten AC-Bild erscheinen zwei Geschwindigkeitsbegriffe im selben Rahmen:
+	\begin{itemize}[leftmargin=2em]
+		\item die Maxwell-Geschwindigkeit
+		\[
+		v_{\mathrm{Max}} = \frac{dC}{dA},
+		\]
+		\item sowie die Phasengeschwindigkeit einer Fläche konstanter Phase $\Phi(A,C)=\mathrm{const}$,
+		\[
+		v_\phi = -\frac{\partial_A \Phi}{\partial_C \Phi}.
+		\]
+	\end{itemize}
+	
+	Die Geschwindigkeit eines Regimewechsels kann dann als Bewegung der Front eines Ordnungsparameters gelesen werden, etwa
+	\[
+	\eta(A,C)=\frac{|\Phi_{\mathrm{AB}}|}{|\Phi_{\mathrm{Max}}|+|\Phi_{\mathrm{AB}}|}.
+	\]
+	Die Übergangsfront $\eta=\eta_c$ besitzt eine Geschwindigkeit und im gekrümmten Raum zugleich eine Krümmung.
+	
+	\section{Vollschalen, Konkurrenzprofile und ein proto-periodisches BM-System}
+	
+	\subsection{Die grundlegenden Familien}
+	
+	Ein erstes proto-periodisches BM-System kann durch äußere Schalenperioden und innere Profilfamilien beschrieben werden. Als Perioden erscheinen insbesondere:
+	\begin{itemize}[leftmargin=2em]
+		\item K0: Grundschale,
+		\item K2: dyadische Schale,
+		\item K3: triadische Schale,
+		\item K5: 25-/goldene Schale.
+	\end{itemize}
+	
+	Zu den grundlegenden Gruppen zählen:
+	\begin{itemize}[leftmargin=2em]
+		\item Ein-Kanal-Gruppen $E,A,B,C$,
+		\item Paar- und Zweikanalgruppen,
+		\item Konkurrenzgruppen mit Profilen $(0,2,2,0)$ und $(2,0,0,2)$,
+		\item Vollschalen $(1,1,1,1)$.
+	\end{itemize}
+	
+	\subsection{Vollschalen und Konkurrenzprofile}
+	
+	Die drei Profile
+	\[
+	(1,1,1,1),\qquad (0,2,2,0),\qquad (2,0,0,2)
+	\]
+	bilden eine balancierte Dreiermanigfaltigkeit. Sie sind im nackten Modell entartet, werden aber durch effektive Kopplung aufgespalten. Dadurch entsteht eine natürliche rechtsseitige Abschluss- und Konkurrenzzone des BM-Periodensystems.
+	
+	\begin{bemerkung}
+		Die Konkurrenzgruppe ist im BM-Modell kein Störfall, sondern ein zentrales Merkmal: Anders als in einer simplen Tafel isolierter Abschlusszustände sitzt die Vollschale hier in einer Zone direkter balancierter Konkurrenten.
+	\end{bemerkung}
+	
+	\section{BM-Vorspektrum, Eintrittszone und Schütte-Resonanzzone}
+	
+	\subsection{Ausgangspunkt}
+	
+	Die imaginären Teile der nichttrivialen Riemann-Nullstellen,
+	\[
+	\rho_n=\frac12+i\gamma_n,
+	\]
+	werden heuristisch als Spektrum eines arithmetischen Gases betrachtet. Dies erlaubt den Einsatz thermischer und spektraler Methoden, etwa Zustandssummen, Dichtefunktionen und Wärmekerne.
+	
+	\subsection{Thermische Heuristik}
+	
+	Mit einer formalen Temperatur $T$ definieren wir
+	\[
+	Z(\beta)=\sum_n e^{-\beta\gamma_n},
+	\qquad \beta=\frac{1}{k_B T}.
+	\]
+	Für ein Fenster $I=[a,b]$ setzen wir
+	\[
+	Z_I(\beta)=\sum_{\gamma_n\in I} e^{-\beta\gamma_n},
+	\]
+	und BM-verfeinert
+	\[
+	Z_I^{\mathrm{BM}}(\beta)
+	=
+	\sum_{\gamma_n\in I} A_n e^{-\beta\gamma_n} e^{i\Phi_n}.
+	\]
+	
+	\subsection{Drei Zonen}
+	
+	Die numerischen Tests legen drei Regime nahe:
+	\begin{enumerate}[leftmargin=2em]
+		\item \textbf{BM-Vorspektrum}: der Bereich unterhalb der ersten Nullstelle $\gamma_1\approx 14.1347$, in dem frühe Schalen- und Ein-Kanal-Strukturen noch keine direkte Nullstellenbesetzung haben.
+		\item \textbf{BM-Eintrittszone}: der Bereich etwa von $16$ bis $17.5$, in dem vollschalennahe Hybridisierung sichtbar wird und eine erste Annäherung an die spektrale Ordnung stattfindet.
+		\item \textbf{BM-Schütte-Resonanzzone}: das Fenster $57$--$61$, das sich durch Nullstellennähe, Gap-Struktur, BM-Phase und thermische Gewichtung hervorhebt.
+	\end{enumerate}
+	
+	\subsection{Schütte-Zahlen als Resonanzmarker}
+	
+	Die Zahlen
+	\[
+	57,\ 59,\ 61
+	\]
+	werden nicht als isolierte Punktwerte, sondern als Marker eines kritischen Resonanzfensters gelesen:
+	\begin{itemize}[leftmargin=2em]
+		\item $57$: Eintritt,
+		\item $59$: Resonanzkern,
+		\item $61$: stabiler Rand bzw. Auslauf.
+	\end{itemize}
+	
+	Gerade der Phasen- und Plateau-Test hebt $59$ als zentrales Plateauzentrum und $61$ als besonders stabilen Randwert hervor.
+	
+	\subsection{Wärmekern- und Hohlraumtest}
+	
+	Unter einer heuristischen Temperaturskala von etwa $380{,}000\,\mathrm K$ wurde ein Fenstervergleich vorgenommen. Das Schütte-Fenster $[57,61]$ enthält zwei Nullstellen und bleibt gegenüber Kontrollfenstern sowohl thermisch als auch BM-phasen-gewichtet bevorzugt. Besonders aufschlussreich ist der Temperaturscan: Der Schütte-Vorsprung bleibt über alle getesteten Temperaturen erhalten, ist jedoch bei niedrigen Temperaturen in der BM-gewichteten Zustandssumme am stärksten.
+	
+	Dies spricht dafür, das Schütte-Fenster als eine selektive arithmetisch-thermische Resonanzzone zu interpretieren.
+	
+	\section{Teilchenanaloge Gedankenexperimente}
+	
+	\subsection{Leptonischer und quarkartiger Sektor}
+	
+	Als heuristische physikalische Übersetzung des BM-Modells kann man den singulären Pol $E$ als leptonischen Freiheitsgrad und den Dreierblock $ABC$ als quarkartigen gebundenen Freiheitsgrad lesen. Diese Zuordnung ist nicht als direkte Ableitung des Standardmodells zu verstehen, aber als strukturelle Analogie sehr plausibel.
+	
+	\subsection{Maxwell, schwach, stark}
+	
+	In derselben Sprache ergeben sich:
+	\begin{itemize}[leftmargin=2em]
+		\item ein Maxwell-artiger linearer Fernfeldsektor,
+		\item ein schwacher Umwandlungs- bzw. Umklappsektor,
+		\item ein starker Bindungs- und Konfinierungssektor des $ABC$-Blocks.
+	\end{itemize}
+	
+	Gerade der Aharonov--Bohm-Anteil, die Tri-/Okto-Potentiale und die Plateauphasen legen nahe, dass topologische und feldgetragene Phasen nicht getrennt, sondern in einem gemeinsamen geometrischen Rahmen betrachtet werden sollten.
+	
+	\section{Diskussion}
+	
+	Der Artikel hat mehrere Schichten des BM-Modells in einen gemeinsamen Übersichtsrahmen gestellt:
+	\begin{enumerate}[leftmargin=2em]
+		\item arithmetische Viererstruktur $E,A,B,C$,
+		\item singulär-dreifache Paarung $E_1/E_2$,
+		\item komplexe Untergeometrie auf $E$ und $A$,
+		\item oktonische und dual-polyedrische Einbettung,
+		\item emergente Signatur und reduzierter Minkowski-Rahmen,
+		\item phasengetragene Dynamik mit Maxwell- und AB-Anteilen,
+		\item proto-periodische Ordnung,
+		\item sowie Riemann- und Wärmekern-vermittelte Resonanzzonen.
+	\end{enumerate}
+	
+	Wichtig ist, dass die meisten dieser Bausteine noch heuristisch sind. Dennoch ergibt sich bereits ein bemerkenswert konsistentes Bild: Frühe Schalen und Ein-Kanal-Zustände formen ein Vorspektrum, vollschalennahe Hybridisierung markiert eine Eintrittszone, und das Schütte-Fenster erscheint als erste robuste arithmetisch-thermische Resonanzzone.
+	
+	Die offene Aufgabe für zukünftige Arbeiten besteht darin,
+	\begin{itemize}[leftmargin=2em]
+		\item die Zustandsräume präziser zu definieren,
+		\item die Rolle der Tri-/Okto-Phasen mathematisch zu schärfen,
+		\item die Plateau- und Holonomiestruktur systematisch zu entwickeln,
+		\item und die Riemann-Kopplung jenseits heuristischer Fenstervergleiche tiefer zu testen.
+	\end{itemize}
+	
+	\section{Fazit}
+	
+	Das hier skizzierte Bamberg-Modell versteht sich als spektral-geometrisches Arbeitsprogramm. Es verbindet elementare Primzahlklassifikation modulo $12$ mit oktonischer Paarstruktur, komplexer Untergeometrie, dual-polyedrischer Globalordnung, phasengetriebener Plateauphysik und thermisch gewichteter Riemann-Resonanzanalyse.
+	
+	Sein Hauptgewinn liegt im gegenwärtigen Stadium weniger in einer fertigen Theorie als in einer geordneten Sprache für mehrere wiederkehrende Beobachtungen:
+	\begin{itemize}[leftmargin=2em]
+		\item die ausgezeichnete Rolle von Vollschalen und Konkurrenzprofilen,
+		\item die Asymmetrie zwischen komplexen und nicht-komplexen Primklassen,
+		\item die natürliche Einbettung von Maxwell- und Aharonov--Bohm-artigen Phasen,
+		\item die Bedeutung des Schütte-Fensters als Resonanzzone,
+		\item sowie die Möglichkeit, Spektrum, Geometrie und Topologie gemeinsam zu denken.
+	\end{itemize}
+	
+	In diesem Sinn ist das Modell gegenwärtig am überzeugendsten als \emph{Übersichts- und Forschungsrahmen}: Es schlägt vor, wie arithmetische, geometrische und spektrale Strukturen gemeinsam untersucht werden können, ohne vorschnell zu behaupten, dass ihr endgültiger physikalischer Gehalt bereits vollständig bestimmt wäre.
+	
+\end{document}
+``` 
+
+Wenn du möchtest, formatiere ich dir als Nächstes noch eine **arXiv-typische Version mit knapperem Abstract, MSC-/Keywords-Zeile und etwas strengerem Stil**.

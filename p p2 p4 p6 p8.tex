@@ -1,0 +1,684 @@
+\documentclass[11pt,a4paper,draft]{article}
+
+% -------------------------------------------------
+% Pakete
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{mathtools}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{listings}
+
+\geometry{margin=2.5cm}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue!60!black,
+	citecolor=blue!60!black,
+	urlcolor=blue!60!black
+}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{bemerkung}[definition]{Bemerkung}
+\newtheorem{proposition}[definition]{Proposition}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\corr}{\operatorname{corr}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+
+% -------------------------------------------------
+% Listings-Stil für Python
+% -------------------------------------------------
+\definecolor{codebg}{RGB}{248,248,248}
+\definecolor{codeframe}{RGB}{220,220,220}
+\definecolor{codekw}{RGB}{0,70,140}
+\definecolor{codecom}{RGB}{0,120,0}
+\definecolor{codestr}{RGB}{163,21,21}
+
+\lstdefinestyle{pythonstyle}{
+	language=Python,
+	backgroundcolor=\color{codebg},
+	basicstyle=\ttfamily\small,
+	keywordstyle=\color{codekw}\bfseries,
+	commentstyle=\color{codecom},
+	stringstyle=\color{codestr},
+	showstringspaces=false,
+	frame=single,
+	rulecolor=\color{codeframe},
+	frameround=tttt,
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=4,
+	numbers=left,
+	numberstyle=\tiny\color{gray},
+	numbersep=8pt,
+	xleftmargin=12pt,
+	xrightmargin=6pt,
+	aboveskip=1.2em,
+	belowskip=1.2em
+}
+
+\lstset{style=pythonstyle}
+
+% -------------------------------------------------
+% Titel
+% -------------------------------------------------
+\title{
+	Ein geometrischer Laplace-Operator auf Primzahlvierlingen\\
+	und experimentelle spektrale Korrelationen mit Riemannschen Nullstellen
+}
+
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+	
+	% -------------------------------------------------
+	\begin{abstract}
+		Wir untersuchen einen geometrisch definierten Graph-Laplace-Operator auf der diskreten Menge von Primzahlvierlingen
+		\[
+		(p,\,p+2,\,p+6,\,p+8).
+		\]
+		Mittels einer logarithmischen Einbettung dieser arithmetischen Konfigurationen in einen euklidischen Merkmalsraum konstruieren wir einen gewichteten Ähnlichkeitsgraphen und den zugehörigen Laplace-Operator.
+		
+		Numerisch vergleichen wir die ersten nichttrivialen Eigenwerte dieses Operators mit den imaginären Teilen der nichttrivialen Nullstellen der Riemannschen Zetafunktion. Dabei beobachten wir in den betrachteten Datensätzen positive Korrelationen, deren genaue Ausprägung vom Skalenparameter des Gauß-Kernels und von der Länge des Spektralvergleichs abhängt.
+		
+		Wir betonen ausdrücklich, dass diese Beobachtungen rein experimenteller Natur sind. Die vorliegende Arbeit liefert weder eine theoretische Erklärung der beobachteten spektralen Ähnlichkeiten noch eine Hilbert--Pólya-Konstruktion. Ihr Ziel besteht darin, eine reproduzierbare operatorielle Struktur auf einer natürlichen arithmetischen Datenmenge zu definieren und deren spektrales Verhalten systematisch zu untersuchen.
+	\end{abstract}
+	
+	% -------------------------------------------------
+	\section{Einleitung}
+	
+	Die Hilbert--Pólya-Heuristik postuliert die Existenz eines selbstadjungierten Operators, dessen Spektrum in enger Beziehung zu den nichttrivialen Nullstellen der Riemannschen Zetafunktion steht. Obwohl ein solcher Operator bis heute nicht bekannt ist, motiviert diese Heuristik weiterhin spektrale Konstruktionen auf arithmetisch definierten Räumen.
+	
+	In der vorliegenden Arbeit verfolgen wir einen bewusst explorativen Ansatz. Wir konstruieren einen Operator auf einer diskreten arithmetischen Struktur, nämlich auf Primzahlvierlingen, und untersuchen dessen spektrale Eigenschaften numerisch. Dabei geht es nicht um einen Beweis, sondern um die Definition eines konkreten und reproduzierbaren Modells, an dem sich die Frage nach möglichen spektralen Mustern studieren lässt.
+	
+	Die Arbeit trennt dabei klar zwischen:
+	\begin{enumerate}[label=(\roman*)]
+		\item der Definition der zugrunde liegenden arithmetischen Datenmenge,
+		\item der Konstruktion des Operators,
+		\item der numerischen Vergleichsmethodik,
+		\item der Interpretation der beobachteten Effekte.
+	\end{enumerate}
+	
+	% -------------------------------------------------
+	\section{Primzahlvierlinge}
+	
+	\begin{definition}[Primzahlvierling]
+		Ein Primzahlvierling ist ein Tupel der Form
+		\[
+		(p,\,p+2,\,p+6,\,p+8),
+		\]
+		bei dem alle vier Einträge Primzahlen sind.
+	\end{definition}
+	
+	Diese Konstellation ist das dichteste zulässige Muster aus vier Primzahlen.
+	
+	\begin{definition}[Geordnete Datenmenge \(Q_N\)]
+		Für \(N \ge 1\) bezeichne
+		\[
+		Q_N=\{q_1,\dots,q_N\}
+		\]
+		die Menge der ersten \(N\) Primzahlvierlinge, geordnet nach wachsender Anfangsprimzahl. Genauer sei
+		\[
+		q_k=(p_k,p_k+2,p_k+6,p_k+8),
+		\]
+		wobei
+		\[
+		p_1 < p_2 < \dots < p_N
+		\]
+		gilt und jeder der vier Einträge von \(q_k\) prim ist.
+	\end{definition}
+	
+	Damit ist \(Q_N\) eine endliche geordnete Menge arithmetischer Konfigurationen. Diese Ordnung ist für die spätere numerische Gegenüberstellung mit geordneten Folgen von Zeta-Nullstellen relevant.
+	
+	% -------------------------------------------------
+	\section{Geometrische Einbettung}
+	
+	\subsection{Grundlegende Einbettung}
+	
+	Wir definieren eine Abbildung
+	\[
+	x:Q_N \to \R^4
+	\]
+	durch
+	\[
+	x(q_k)
+	=
+	\bigl(
+	\log p_k,\,
+	\log(p_k+2),\,
+	\log(p_k+6),\,
+	\log(p_k+8)
+	\bigr).
+	\]
+	
+	Die logarithmische Darstellung dient dazu, die globale Wachstumsskala der Primzahlen zu komprimieren und relative Unterschiede über verschiedene Größenordnungen hinweg besser vergleichbar zu machen.
+	
+	Wir versehen \(\R^4\) mit der euklidischen Norm. Der geometrische Abstand zweier Primzahlvierlinge \(q_i\) und \(q_j\) ist dann gegeben durch
+	\[
+	\norm{x(q_i)-x(q_j)}.
+	\]
+	
+	\subsection{Erweiterte Einbettung}
+	
+	Optional betrachten wir eine erweiterte Einbettung
+	\[
+	x^{(8)}:Q_N \to \R^8,
+	\]
+	die zusätzlich dimensionslose Verhältnisinformationen innerhalb eines Vierlings kodiert:
+	\[
+	x^{(8)}(q_k)=
+	\left(
+	\log p_k,\,
+	\log(p_k+2),\,
+	\log(p_k+6),\,
+	\log(p_k+8),\,
+	\log\frac{p_k+2}{p_k},\,
+	\log\frac{p_k+6}{p_k+2},\,
+	\log\frac{p_k+8}{p_k+6},\,
+	\log\frac{p_k+8}{p_k}
+	\right).
+	\]
+	
+	\begin{bemerkung}
+		Weder die \(4\)-dimensionale noch die \(8\)-dimensionale Einbettung wird hier als kanonisch behauptet. Beide dienen als explizite und numerisch stabile Merkmalsräume für eine explorative spektrale Analyse.
+	\end{bemerkung}
+	
+	% -------------------------------------------------
+	\section{Laplace-Operator}
+	
+	\subsection{Gewichtsmatrix}
+	
+	Für eine gewählte Einbettung \(x(q_k)\in\R^d\), mit \(d=4\) oder \(d=8\), definieren wir die Gewichtsmatrix
+	\[
+	W=(W_{ij})_{1\le i,j\le N}
+	\]
+	durch
+	\[
+	W_{ij}
+	=
+	\exp\left(
+	-\frac{\norm{x(q_i)-x(q_j)}^2}{\sigma^2}
+	\right),
+	\]
+	wobei \(\sigma>0\) ein Skalenparameter ist.
+	
+	Der Gauß-Kernel wird verwendet, weil er
+	\begin{itemize}
+		\item eine symmetrische positive Ähnlichkeitsmatrix liefert,
+		\item über \(\sigma\) eine kontrollierbare Lokalitätsstruktur einführt,
+		\item ein Standardwerkzeug in der spektralen Graphtheorie und in kernelbasierten Methoden darstellt.
+	\end{itemize}
+	
+	Wir behaupten nicht, dass diese Wahl kanonisch ist; sie dient als natürlicher und transparenter Ausgangspunkt.
+	
+	\subsection{Graph-Laplacian}
+	
+	Sei \(D\) die diagonale Gradmatrix
+	\[
+	D_{ii}=\sum_{j=1}^N W_{ij}.
+	\]
+	Dann definieren wir den Graph-Laplacian durch
+	\[
+	L=D-W.
+	\]
+	
+	\begin{proposition}
+		Der Operator \(L\) ist symmetrisch und positiv semidefinit.
+	\end{proposition}
+	
+	\begin{proof}
+		Da \(W_{ij}=W_{ji}\) gilt, ist \(W\) symmetrisch und somit auch \(L\). Für jeden Vektor \(v\in\R^N\) gilt
+		\[
+		v^\top L v
+		=
+		\frac12 \sum_{i,j=1}^N W_{ij}(v_i-v_j)^2 \ge 0.
+		\]
+		Also ist \(L\) positiv semidefinit.
+	\end{proof}
+	
+	Insbesondere besitzt \(L\) den trivialen Eigenwert
+	\[
+	\lambda_1=0.
+	\]
+	
+	% -------------------------------------------------
+	\section{Spektraler Vergleich}
+	
+	Seien
+	\[
+	0=\lambda_1\le \lambda_2\le \dots \le \lambda_N
+	\]
+	die geordneten Eigenwerte des Laplace-Operators \(L\).
+	
+	Da \(\lambda_1=0\) dem trivialen Laplace-Eigenwert entspricht, vergleichen wir nur die ersten \(m\) nichttrivialen Eigenwerte
+	\[
+	(\lambda_2,\dots,\lambda_{m+1}).
+	\]
+	
+	Seien ferner
+	\[
+	(\gamma_1,\dots,\gamma_m)
+	\]
+	die imaginären Teile der ersten \(m\) nichttrivialen Nullstellen der Riemannschen Zetafunktion, also
+	\[
+	\zeta\!\left(\frac12+i\gamma_n\right)=0,
+	\qquad
+	0<\gamma_1<\gamma_2<\cdots.
+	\]
+	
+	Da beide Folgen auf unterschiedlichen Skalen leben, werden sie z-standardisiert:
+	\[
+	\widetilde{\lambda}_n
+	=
+	\frac{\lambda_{n+1}-\mu_\lambda}{s_\lambda},
+	\qquad
+	\widetilde{\gamma}_n
+	=
+	\frac{\gamma_n-\mu_\gamma}{s_\gamma},
+	\qquad n=1,\dots,m,
+	\]
+	wobei \(\mu_\lambda,\mu_\gamma\) die empirischen Mittelwerte und \(s_\lambda,s_\gamma\) die empirischen Standardabweichungen bezeichnen.
+	
+	Als globales Vergleichsmaß verwenden wir die Pearson-Korrelation
+	\[
+	\corr(\widetilde{\lambda}_n,\widetilde{\gamma}_n).
+	\]
+	
+	\begin{bemerkung}
+		Dieses Maß erfasst globale lineare Ähnlichkeiten geordneter Folgen. Es ersetzt keine Analyse lokaler Eigenwertabstände, keine Entfaltung des Spektrums und keine random-matrix-theoretische Untersuchung.
+	\end{bemerkung}
+	
+	% -------------------------------------------------
+	\section{Operatorimplementierung}
+	
+	Der Laplace-Operator wird numerisch aus einer vollständig bestimmten Pipeline konstruiert:
+	\begin{enumerate}
+		\item Generierung der ersten \(N\) Primzahlvierlinge,
+		\item logarithmische Einbettung in \(\R^4\) beziehungsweise \(\R^8\),
+		\item Konstruktion einer gewichteten Ähnlichkeitsmatrix mittels Gauß-Kernel,
+		\item Bildung des Graph-Laplacians \(L=D-W\),
+		\item Berechnung der geordneten Eigenwerte von \(L\).
+	\end{enumerate}
+	
+	Alle numerischen Experimente beruhen auf dieser reproduzierbaren Konstruktion.
+	
+	% -------------------------------------------------
+	\section{Baseline-Konstruktionen}
+	
+	Eine bloße Permutation der Reihenfolge der Knoten liefert im verwendeten Vollgraph-Modell keine sinnvolle spektrale Baseline, da der Laplace-Operator dabei nur bis auf Umbenennung der Knoten verändert wird und sein Spektrum invariant bleibt.
+	
+	Daher verwenden wir zwei strengere Baselines:
+	\begin{itemize}
+		\item \textbf{Mixed baseline:} Die vier Koordinatenspalten realer Primzahlvierlinge werden unabhängig voneinander permutiert. Dadurch bleibt der log-Skalenbereich erhalten, während die interne arithmetische Struktur zerstört wird.
+		\item \textbf{Random-range baseline:} Es werden Zufallsdaten im selben logarithmischen Skalenbereich wie die Originaldaten erzeugt, um generische Kernel- und Skalenartefakte zu testen.
+	\end{itemize}
+	
+	% -------------------------------------------------
+	\section{Numerische Ergebnisse}
+	
+	\subsection{Allgemeine Beobachtungen}
+	
+	In den betrachteten Datensätzen treten positive Korrelationen zwischen den normierten nichttrivialen Eigenwerten des Laplace-Operators und den normierten imaginären Teilen der ersten Riemannschen Nullstellen auf. Die Höhe dieser Korrelationen hängt von mehreren Modellparametern ab, insbesondere vom Skalenparameter \(\sigma\), von der Länge \(m\) des Spektralvergleichs sowie von der gewählten Einbettung.
+	
+	In einzelnen Modellvarianten können höhere Korrelationen beobachtet werden; solche Werte sind jedoch vorsichtig zu interpretieren, da sie empfindlich auf Parametrisierungen, Transformationen und die Wahl des Vergleichsfensters reagieren können.
+	
+	\subsection{Was durch die Numerik gestützt wird}
+	
+	Die numerischen Experimente stützen derzeit vor allem die folgende vorsichtige Aussage:
+	\begin{quote}
+		Im vorliegenden Modell scheint ein nichttrivialer numerischer Effekt vorzuliegen, der in den Originaldaten stärker ausgeprägt ist als in geeigneten Baselines.
+	\end{quote}
+	
+	Sie stützen dagegen nicht die Behauptung einer theoretisch verstandenen oder kanonischen Beziehung zwischen dem konstruierten Operator und den Nullstellen der Zetafunktion.
+	
+	% -------------------------------------------------
+	\section{Heatmap-Analyse}
+	
+	\subsection{Robustheitsanalyse im \((\sigma,m)\)-Raum}
+	
+	Zur Beurteilung der Stabilität der beobachteten Korrelationen wurde eine zweidimensionale Parameterstudie durchgeführt. Dabei bezeichnet \(\sigma\) den Skalenparameter des Gauß-Kernels, während \(m\) die Anzahl der verglichenen nichttrivialen Eigenwerte festlegt.
+	
+	Für jede Kombination \((\sigma,m)\) wurde die Pearson-Korrelation zwischen den z-standardisierten Folgen der Laplace-Eigenwerte und der z-standardisierten Folge der ersten Riemannschen Nullstellen berechnet.
+	
+	Zusätzlich wurden die beiden Baselines aus dem vorigen Abschnitt betrachtet.
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{heatmap_triptych.png}
+		\caption{Vergleich der Korrelationen zwischen den normierten nichttrivialen Eigenwerten des Laplace-Operators und den normierten imaginären Teilen der ersten Riemannschen Nullstellen im \((\sigma,m)\)-Parameterraum. Links: Originaldaten aus Primzahlvierlingen, Mitte: mixed baseline mit zerstörter interner Struktur, rechts: random-range baseline im gleichen logarithmischen Skalenbereich. Ein robuster numerischer Effekt würde sich durch einen breiteren Bereich erhöhter Korrelation in den Originaldaten bei gleichzeitig schwächeren und diffuseren Baselines zeigen.}
+		\label{fig:heatmap_triptych}
+	\end{figure}
+	
+	Ein stabiler Bereich erhöhter Korrelation in den Originaldaten bei zugleich schwächeren Baselines spricht für einen nichttrivialen numerischen Effekt. Gleichwohl liefert auch eine solche Heatmap keine theoretische Erklärung der beobachteten spektralen Ähnlichkeiten.
+	
+	% -------------------------------------------------
+	\section{Statistische Validierung}
+	
+	Zusätzlich zur Heatmap-Analyse kann die Korrelation der Originaldaten mit Verteilungen aus wiederholten Baseline-Läufen verglichen werden.
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=0.72\textwidth]{baseline_boxplot.png}
+		\caption{Verteilung der Pearson-Korrelationen für wiederholte Baseline-Läufe. Die Lage der Originaldaten relativ zu diesen Verteilungen dient als zusätzlicher Hinweis darauf, ob der beobachtete Effekt über triviale Zufalls- oder Mischstrukturen hinausgeht.}
+		\label{fig:baseline_boxplot}
+	\end{figure}
+	
+	Die Aussagekraft dieser Darstellung hängt unmittelbar von der Anzahl der Baseline-Läufe und der Stabilität der verwendeten Parameterbereiche ab.
+	
+	% -------------------------------------------------
+	\section{Diskussion}
+	
+	Die Ergebnisse zeigen eine reproduzierbare numerische Struktur, deren theoretische Erklärung derzeit offen ist. Die Arbeit etabliert:
+	\begin{enumerate}[label=(\alph*)]
+		\item eine klar definierte arithmetische Datenmenge \(Q_N\),
+		\item eine explizite geometrische Einbettung,
+		\item einen wohldefinierten Laplace-Operator,
+		\item eine reproduzierbare Vergleichsmethodik zu Zeta-Nullstellen.
+	\end{enumerate}
+	
+	Nicht etabliert sind hingegen:
+	\begin{enumerate}[label=(\alph*)]
+		\item ein kanonischer Operator im Sinne der Zetafunktion,
+		\item ein Grenzübergang \(N\to\infty\),
+		\item eine Spurformel,
+		\item eine Hilbert--Pólya-Konstruktion,
+		\item ein Beweis eines Zusammenhangs mit der Riemannschen Vermutung.
+	\end{enumerate}
+	
+	Wichtige offene Fragen sind insbesondere:
+	\begin{itemize}
+		\item Existiert ein sinnvoller asymptotischer Grenzübergang?
+		\item Wie robust ist der Effekt unter alternativen Kernen oder Graphkonstruktionen?
+		\item Lässt sich der beobachtete Effekt theoretisch aus arithmetischen Eigenschaften der Primzahlvierlinge ableiten?
+	\end{itemize}
+	
+	% -------------------------------------------------
+	\section{Schlussfolgerung}
+	
+	Die vorliegende Arbeit liefert eine reproduzierbare operatorielle und numerische Struktur auf der Menge der Primzahlvierlinge. Die beobachteten spektralen Korrelationen mit den ersten Riemannschen Nullstellen sind experimentell interessant, derzeit aber nicht theoretisch erklärt.
+	
+	Daher ist die Arbeit nicht als Beweis, sondern als explorative numerische Studie zu verstehen. Ihr Wert liegt in der Definition eines klaren Modells, das als Ausgangspunkt für weitergehende theoretische und numerische Untersuchungen dienen kann.
+	
+	% -------------------------------------------------
+	\appendix
+	
+	\section{Appendix: Numerische Implementierung}
+	
+	Dieser Appendix dokumentiert die wesentlichen numerischen Bausteine der Implementierung.
+	
+	\subsection{Erzeugung der Primzahlvierlinge}
+	
+	\begin{lstlisting}[caption={Erzeugung der ersten \(N\) Primzahlvierlinge.}]
+		import math
+		
+		def is_prime(n: int) -> bool:
+		if n < 2:
+		return False
+		if n == 2:
+		return True
+		if n % 2 == 0:
+		return False
+		limit = int(math.isqrt(n))
+		for d in range(3, limit + 1, 2):
+		if n % d == 0:
+		return False
+		return True
+		
+		def generate_quadruplets(N: int):
+		quads = []
+		p = 5
+		while len(quads) < N:
+		if is_prime(p) and is_prime(p + 2) and is_prime(p + 6) and is_prime(p + 8):
+		quads.append((p, p + 2, p + 6, p + 8))
+		p += 2
+		return quads
+	\end{lstlisting}
+	
+	\subsection{Logarithmische Einbettung}
+	
+	\begin{lstlisting}[caption={Einbettung der Primzahlvierlinge in \(\mathbb{R}^4\) oder \(\mathbb{R}^8\).}]
+		import math
+		import numpy as np
+		
+		def embed_quadruplets(quads, mode: str = "4D") -> np.ndarray:
+		X = []
+		
+		for (p1, p2, p3, p4) in quads:
+		if mode == "4D":
+		x = [
+		math.log(p1),
+		math.log(p2),
+		math.log(p3),
+		math.log(p4),
+		]
+		elif mode == "8D":
+		x = [
+		math.log(p1),
+		math.log(p2),
+		math.log(p3),
+		math.log(p4),
+		math.log(p2 / p1),
+		math.log(p3 / p2),
+		math.log(p4 / p3),
+		math.log(p4 / p1),
+		]
+		else:
+		raise ValueError("mode muss '4D' oder '8D' sein")
+		X.append(x)
+		
+		return np.array(X, dtype=float)
+	\end{lstlisting}
+	
+	\subsection{Konstruktion des Laplace-Operators}
+	
+	\begin{lstlisting}[caption={Aufbau der Gewichtsmatrix und des Graph-Laplacians.}]
+		import numpy as np
+		
+		def build_laplacian_from_embedding(X: np.ndarray, sigma: float) -> np.ndarray:
+		if sigma <= 0:
+		raise ValueError("sigma muss positiv sein")
+		
+		diff = X[:, None, :] - X[None, :, :]
+		dist2 = np.sum(diff**2, axis=2)
+		
+		W = np.exp(-dist2 / (sigma**2))
+		np.fill_diagonal(W, 0.0)
+		
+		D = np.diag(np.sum(W, axis=1))
+		L = D - W
+		return L
+		
+		def build_laplacian_eigenvalues(sigma: float, N: int = 150, mode: str = "4D") -> np.ndarray:
+		quads = generate_quadruplets(N)
+		X = embed_quadruplets(quads, mode=mode)
+		L = build_laplacian_from_embedding(X, sigma)
+		return np.linalg.eigvalsh(L)
+	\end{lstlisting}
+	
+	\subsection{Baseline-Modelle}
+	
+	\begin{lstlisting}[caption={Mixed baseline und random-range baseline.}]
+		import numpy as np
+		
+		def build_mixed_quadruplet_eigenvalues(sigma: float, N: int = 150, mode: str = "4D") -> np.ndarray:
+		quads = generate_quadruplets(N)
+		arr = np.array(quads, dtype=int)
+		
+		rng = np.random.default_rng()
+		mixed = np.empty_like(arr)
+		
+		for j in range(arr.shape[1]):
+		mixed[:, j] = rng.permutation(arr[:, j])
+		
+		if mode == "4D":
+		X = np.log(mixed.astype(float))
+		elif mode == "8D":
+		p1, p2, p3, p4 = mixed.T
+		X = np.column_stack([
+		np.log(p1),
+		np.log(p2),
+		np.log(p3),
+		np.log(p4),
+		np.log(p2 / p1),
+		np.log(p3 / p2),
+		np.log(p4 / p3),
+		np.log(p4 / p1),
+		])
+		else:
+		raise ValueError("mode muss '4D' oder '8D' sein")
+		
+		L = build_laplacian_from_embedding(X, sigma)
+		return np.linalg.eigvalsh(L)
+		
+		def build_random_range_eigenvalues(sigma: float, N: int = 150, mode: str = "4D") -> np.ndarray:
+		quads = generate_quadruplets(N)
+		X_real_4d = embed_quadruplets(quads, mode="4D")
+		
+		rng = np.random.default_rng()
+		mins = X_real_4d.min(axis=0)
+		maxs = X_real_4d.max(axis=0)
+		
+		X4 = rng.uniform(mins, maxs, size=(N, 4))
+		
+		if mode == "4D":
+		X = X4
+		elif mode == "8D":
+		raw = np.exp(X4)
+		p1, p2, p3, p4 = raw.T
+		X = np.column_stack([
+		np.log(p1),
+		np.log(p2),
+		np.log(p3),
+		np.log(p4),
+		np.log(p2 / p1),
+		np.log(p3 / p2),
+		np.log(p4 / p3),
+		np.log(p4 / p1),
+		])
+		else:
+		raise ValueError("mode muss '4D' oder '8D' sein")
+		
+		L = build_laplacian_from_embedding(X, sigma)
+		return np.linalg.eigvalsh(L)
+	\end{lstlisting}
+	
+	\subsection{Heatmap-Berechnung}
+	
+	\begin{lstlisting}[caption={Berechnung der Korrelationen im \((\sigma,m)\)-Raum.}]
+		import numpy as np
+		
+		def zscore(x):
+		x = np.asarray(x, dtype=float)
+		s = np.std(x)
+		if s == 0:
+		return np.full_like(x, np.nan, dtype=float)
+		return (x - np.mean(x)) / s
+		
+		def pearson_corr(x, y):
+		return float(np.corrcoef(x, y)[0, 1])
+		
+		def compute_heatmap(zeros, build_eigs_fn, sigma_values, m_values):
+		zeros = np.asarray(zeros, dtype=float)
+		heatmap = np.full((len(m_values), len(sigma_values)), np.nan)
+		
+		eig_cache = {}
+		for sigma in sigma_values:
+		eig_cache[sigma] = np.asarray(build_eigs_fn(float(sigma)), dtype=float)[1:]
+		
+		for j, sigma in enumerate(sigma_values):
+		lam = eig_cache[sigma]
+		for i, m in enumerate(m_values):
+		mm = min(int(m), len(lam), len(zeros))
+		if mm < 3:
+		continue
+		
+		lam_z = zscore(lam[:mm])
+		gam_z = zscore(zeros[:mm])
+		
+		if np.any(np.isnan(lam_z)) or np.any(np.isnan(gam_z)):
+		continue
+		
+		heatmap[i, j] = pearson_corr(lam_z, gam_z)
+		
+		return heatmap
+	\end{lstlisting}
+	
+	\subsection{Reproduzierbarkeit}
+	
+	Für eine vollständig reproduzierbare Fassung sollten zusätzlich dokumentiert werden:
+	\begin{itemize}
+		\item verwendete Python-Version,
+		\item Versionen von \texttt{numpy} und \texttt{matplotlib},
+		\item Größe des Datensatzes \(N\),
+		\item Einbettungstyp (\(4\)-dimensional oder \(8\)-dimensional),
+		\item verwendete Bereiche der \(\sigma\)- und \(m\)-Werte,
+		\item Quelle der verwendeten Zeta-Nullstellen.
+	\end{itemize}
+	
+	In einer späteren Version kann dieser Appendix entweder durch vollständigen Code oder durch einen Verweis auf ein öffentliches Repository ergänzt werden.
+	
+	% -------------------------------------------------
+	\section*{Danksagung}
+	
+	Der Autor dankt der mathematischen Gemeinschaft für die breitere Hilbert--Pólya-Perspektive, in deren Rahmen diese explorative Untersuchung motiviert ist.
+	
+	% -------------------------------------------------
+	\begin{thebibliography}{99}
+		
+		\bibitem{Chung}
+		F. R. K. Chung,
+		\emph{Spectral Graph Theory},
+		CBMS Regional Conference Series in Mathematics, Vol. 92,
+		American Mathematical Society, 1997.
+		
+		\bibitem{BelkinNiyogi}
+		M. Belkin and P. Niyogi,
+		Laplacian eigenmaps for dimensionality reduction and data representation,
+		\emph{Neural Computation} \textbf{15} (2003), no. 6, 1373--1396.
+		
+		\bibitem{Montgomery}
+		H. L. Montgomery,
+		The pair correlation of zeros of the zeta function,
+		in \emph{Analytic Number Theory},
+		Proc. Sympos. Pure Math., Vol. 24,
+		American Mathematical Society, 1973, pp. 181--193.
+		
+		\bibitem{Odlyzko}
+		A. M. Odlyzko,
+		On the distribution of spacings between zeros of the zeta function,
+		\emph{Mathematics of Computation} \textbf{48} (1987), no. 177, 273--308.
+		
+		\bibitem{Edwards}
+		H. M. Edwards,
+		\emph{Riemann's Zeta Function},
+		Dover Publications, New York, 2001.
+		
+		\bibitem{Connes}
+		A. Connes,
+		Trace formula in noncommutative geometry and the zeros of the Riemann zeta function,
+		\emph{Selecta Mathematica (N.S.)} \textbf{5} (1999), no. 1, 29--106.
+		
+	\end{thebibliography}
+	
+\end{document}

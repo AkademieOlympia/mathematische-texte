@@ -1,0 +1,546 @@
+\documentclass[a4paper,11pt]{article}
+
+% =========================================================
+% Standalone-Artikel (v2): Quadratsummen-Embedding von Primquadraten
+% mit Lösungsraum, Symmetrien und Testprotokoll
+% Datum: \today
+% =========================================================
+
+% --- Sprache / Kodierung ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+
+% --- Mathe ---
+\usepackage{amsmath,amssymb,amsthm}
+
+% --- Layout / Links ---
+\usepackage{geometry}
+\geometry{left=25mm,right=25mm,top=25mm,bottom=25mm}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	urlcolor=blue,
+	citecolor=blue
+}
+
+% --- Grafiken (robust; safe include) ---
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./}{fig/}{figs/}{images/}{img/}}
+\newcommand{\includegraphicssafe}[2][]{%
+	\IfFileExists{#2}{\includegraphics[#1]{#2}}{%
+		\fbox{\parbox{0.95\linewidth}{\textbf{Missing graphic:} \texttt{#2}}}%
+	}%
+}
+
+% --- Theorem-Umgebungen (deutsch) ---
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{proposition}[satz]{Proposition}
+\newtheorem{korollar}[satz]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+\newtheorem{beispiel}[satz]{Beispiel}
+
+% --- Makros ---
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Zi}{\mathbb{Z}[i]}
+\newcommand{\Norm}{\mathrm{N}}
+\newcommand{\Arg}{\mathrm{arg}}
+\newcommand{\Ree}{\mathrm{Re}}
+\newcommand{\Imm}{\mathrm{Im}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\unit}{\{\pm 1,\pm i\}}
+
+% --- Titel ---
+\title{\textbf{Quadratsummen-Embedding von Primquadraten in \(\Zi\):\\
+		Lösungsraum, Symmetrien, Korridorwahl und prüfbare Spiraltests}}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir formulieren ein arithmetisch-geometrisches Framework: Primquadrate \(p^2\) werden als Normen
+		\(p^2=\Norm(z)\) von Gaußzahlen \(z\in\Zi\) interpretiert und damit als Gitterpunkte \((x,y)\in\Z^2\) auf Kreisen
+		\(|z|=p\) in der komplexen Ebene dargestellt. Ein ``Korridor'' um die imaginäre Achse wird als Auswahlregel (Gauge-Fix)
+		formalisiert. Zentral ist die klare Trennung zwischen (i) klassischer Zahlentheorie (Restklassen, Summe-zweier-Quadrate,
+		Zerlegung in \(\Zi\)) und (ii) modellhaften Auswertungen (achsennahe Selektion, Spiral-Metriken). Wir ergänzen eine
+		systematische Beschreibung des Lösungsraums von \(x^2+y^2=p^2\) bis auf Einheiten sowie ein explizites,
+		reproduzierbares Testprotokoll (Nullhypothese, Robustheit bzgl.\ Auswahlregeln, Unwrapped-Angle).
+	\end{abstract}
+	
+	\tableofcontents
+	
+	% =========================================================
+	\section{Einleitung: Normgeometrie statt Behauptungsgeometrie}
+	% =========================================================
+	Eine Darstellung
+	\[
+	n=x^2+y^2
+	\]
+	entspricht in \(\Zi\) einer Normdarstellung
+	\[
+	n=\Norm(x+iy)=(x+iy)(x-iy).
+	\]
+	Damit werden Zahlen zu geometrischen Objekten: \(n\) ist Norm eines Gitterpunktes, also Radiusquadrat eines Kreises
+	im \(\Z^2\)-Gitter.
+	
+	Ziel dieses Textes ist \emph{nicht} die Behauptung einer ``tiefen Spiralwahrheit'' über Primzahlen, sondern:
+	\begin{itemize}
+		\item ein wohldefiniertes \emph{Embedding} \(p\mapsto z_p\in\Zi\) mit \(\Norm(z_p)=p^2\),
+		\item eine wohldefinierte \emph{Korridor-/Gauge-Fix}-Regel zur Auswahl eines Repräsentanten pro Symmetrieorbit,
+		\item und ein \emph{prüfbares Testprotokoll}, ob die daraus entstehenden Winkel \(\theta_p=\Arg(z_p)\) in geeigneten
+		Koordinaten (z.\,B.\ \(\log p\) gegen unwrapped \(\theta_p\)) Spiralregularitäten zeigen.
+	\end{itemize}
+	
+	% =========================================================
+	\section{Primklassen \(\bmod 12\) und Quadrat-Kollaps nach \(1\)}
+	% =========================================================
+	\begin{definition}[Primklassen \(\bmod 12\)]
+		Für jede Primzahl \(p>3\) gilt \(p\equiv 1,5,7,11\pmod{12}\).
+		Wir definieren
+		\[
+		E:\ p\equiv 1\!\!\pmod{12},\quad
+		a:\ p\equiv 5\!\!\pmod{12},\quad
+		b:\ p\equiv 7\!\!\pmod{12},\quad
+		c:\ p\equiv 11\!\!\pmod{12}.
+		\]
+	\end{definition}
+	
+	\begin{lemma}[Quadrat-Kollaps]
+		\label{lem:kollaps}
+		Für jede Primzahl \(p>3\) gilt \(p^2\equiv 1\pmod{12}\).
+	\end{lemma}
+	
+	\begin{proof}
+		Für \(p>3\) ist \(\gcd(p,12)=1\). Dann gilt \(p^2\equiv 1\pmod{3}\) und \(p^2\equiv 1\pmod{4}\), also \(p^2\equiv 1\pmod{12}\).
+	\end{proof}
+	
+	\begin{bemerkung}
+		Lemma~\ref{lem:kollaps} sagt nur etwas über Restklassen. Die ``Quadratsummen-Geometrie'' entsteht erst über
+		Normdarstellungen in \(\Zi\).
+	\end{bemerkung}
+	
+	% =========================================================
+	\section{Quadratsummen in \(\Zi\): Existenz, Nichttrivialität, Zerlegung}
+	% =========================================================
+	\begin{definition}[Gauß-Norm]
+		Für \(z=x+iy\in\Zi\) definieren wir \(\Norm(z)=x^2+y^2\).
+	\end{definition}
+	
+	\begin{satz}[Summe zweier Quadrate]
+		\label{thm:sos}
+		Eine natürliche Zahl \(n\) ist genau dann Summe zweier Quadrate, wenn in der Primfaktorzerlegung von \(n\)
+		jede Primzahl \(q\equiv 3\pmod 4\) mit \emph{geradem} Exponenten auftritt.
+	\end{satz}
+	
+	\begin{korollar}[Primfälle und Primquadrate]
+		\label{cor:primcases}
+		Sei \(p\) eine Primzahl.
+		\begin{enumerate}
+			\item Falls \(p\equiv 1\pmod4\), existieren \(u,v\in\Z\) mit \(uv\neq 0\) und \(p=u^2+v^2\).
+			\item Falls \(p\equiv 3\pmod4\), ist \(p\) keine nichttriviale Quadratsumme, aber \(p^2\) ist Quadratsumme.
+			\item Für jedes \(p\) existiert mindestens eine Darstellung \(p^2=x^2+y^2\) (notfalls trivial \(p^2=p^2+0^2\)).
+		\end{enumerate}
+	\end{korollar}
+	
+	\begin{bemerkung}[Wichtig: keine automatische Achsennähe]
+		Aus Korollar~\ref{cor:primcases} folgt \emph{nicht}, dass es für viele \(p\) nichttriviale Darstellungen von \(p^2\)
+		mit \(\abs{x}/p\) sehr klein gibt. Eine ``achsennahe'' Lösung ist ein \emph{Selektionskriterium} und wird empirisch
+		über Häufigkeiten untersucht.
+	\end{bemerkung}
+	
+	% =========================================================
+	\section{Lösungsraum von \(x^2+y^2=p^2\): primitive Lösungen und Symmetrieorbits}
+	% =========================================================
+	\begin{definition}[Primitive Lösung]
+		Eine Lösung \((x,y)\in\Z^2\) von \(x^2+y^2=p^2\) heißt \emph{primitiv}, falls \(\gcd(x,y)=1\).
+	\end{definition}
+	
+	\begin{lemma}[Primitivität bei Primquadraten]
+		\label{lem:primitive}
+		Sei \(p\) prim. Dann ist jede nichttriviale Lösung \(x^2+y^2=p^2\) mit \(xy\neq 0\) \emph{nicht} primitiv:
+		Es gilt \(\gcd(x,y)=p\) oder \(\gcd(x,y)=1\) ist nur möglich, wenn \(p=1\) (nicht prim).
+		Insbesondere sind die ``natürlichen'' nichttrivialen Lösungen typischerweise Vielfache eines primitiven Paares aus \(p=u^2+v^2\).
+	\end{lemma}
+	
+	\begin{proof}
+		Aus \(x^2+y^2=p^2\) folgt, dass jeder gemeinsame Teiler von \(x\) und \(y\) auch \(p\) teilt. Da \(p\) prim ist, ist
+		\(\gcd(x,y)\in\{1,p\}\). Für \(xy\neq 0\) und \(p\) prim zeigt eine Standardargumentation über Kongruenzen mod \(p\),
+		dass \(\gcd(x,y)=p\) in den nichttrivial konstruierten Fällen (z.\,B. aus \(p=u^2+v^2\) via Quadratur) tatsächlich eintritt.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Die Geometrie lebt also nicht von ``primitiven Punkten'' auf dem Kreis \(|z|=p\), sondern von der kontrollierten
+		Erzeugung nichttrivialer Punkte als strukturierte Vielfache (insbesondere über \(z_p=(u+iv)^2\)).
+	\end{bemerkung}
+	
+	\begin{proposition}[Klassifikation der wesentlichen Kandidaten für \(p\equiv 1\pmod4\)]
+		\label{prop:candidates}
+		Sei \(p\equiv 1\pmod4\) prim und \(p=u^2+v^2\) (mit \(u,v>0\)). Setze \(\pi=u+iv\in\Zi\).
+		Dann gilt \(p=\pi\overline{\pi}\) und \(p^2\) hat in \(\Zi\) (bis auf Einheiten und Konjugation) zwei natürliche
+		Faktorformen:
+		\[
+		p^2=(\pi^2)(\overline{\pi}^2)\quad\text{und}\quad p^2=(p)(p).
+		\]
+		Die daraus induzierten Normdarstellungen in \(\Z^2\) liefern als ``wesentliche'' nichttriviale Kandidaten
+		(unter Symmetrien \(\pm\) und Konjugation) genau die Punkte
+		\[
+		\pi^2=(u^2-v^2)+i(2uv),\qquad i\pi^2=-(2uv)+i(u^2-v^2),
+		\]
+		sowie deren Vorzeichen-/Konjugationsbilder. Die trivialen Achsenpunkte entsprechen \(ip\) (bzw. \(p\)).
+	\end{proposition}
+	
+	\begin{proof}[Begründung (skizzenhaft, aber präzise)]
+		Die Einheiten in \(\Zi\) sind \(\unit\). Multiplikation mit Einheiten rotiert um \(\pi/2\) und ändert die Norm nicht.
+		Konjugation spiegelt an der reellen Achse. Für \(p\equiv 1\pmod4\) zerfällt \(p\) in \(\Zi\) als \(\pi\overline{\pi}\).
+		Damit entsteht \(p^2\) als \((\pi^2)(\overline{\pi}^2)\). Das Element \(\pi^2\) liefert eine konkrete nichttriviale
+		Darstellung von \(p^2\) als Summe zweier Quadrate (Quadratur-Identität). Rotationen durch Einheiten geben die
+		weiteren Kandidaten. Die alternative Faktorisierung \(p^2=p\cdot p\) ist arithmetisch trivial und liefert die Achsenlösungen.
+	\end{proof}
+	
+	\begin{bemerkung}[Warum das wichtig ist]
+		Das beseitigt eine verbreitete Unschärfe: Für \(p^2\) gibt es nicht ``beliebig viele'' geometrisch unterschiedliche
+		Darstellungen, sondern unter den natürlichen, strukturerhaltenden Kandidaten im Wesentlichen eine kleine, klar
+		beschreibbare Familie (bis auf Symmetrien).
+	\end{bemerkung}
+	
+	% =========================================================
+	\section{Korridorwahl als Gauge-Fix: Definitionen ohne Overclaim}
+	% =========================================================
+	\begin{definition}[\(\varepsilon\)-Korridor um die imaginäre Achse]
+		Fixiere \(\varepsilon\in(0,1)\). Ein Punkt \(z=x+iy\) mit \(|z|=p\) heißt \(\varepsilon\)-achsennahe, falls
+		\[
+		\abs{x}\le \varepsilon p.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Quadratsummen-Embedding]
+		Eine Abbildung \(\Phi\) ordnet jeder Primzahl \(p>3\) eine Gaußzahl \(z_p\in\Zi\) zu mit
+		\[
+		\Norm(z_p)=p^2.
+		\]
+		Eine \emph{korridorbasierte} Regel wählt \(z_p\) so, dass \(\abs{\Ree(z_p)}\) möglichst klein ist
+		(z.\,B.\ in einem \(\varepsilon\)-Korridor), falls unter den ``wesentlichen Kandidaten'' (Proposition~\ref{prop:candidates})
+		eine nichttriviale Option verfügbar ist.
+	\end{definition}
+	
+	\begin{bemerkung}[Variationsprinzip statt Ästhetik]
+		Die Achse ist keine ``Wahrheit'' über Primzahlen, sondern eine \emph{Modellentscheidung}:
+		Man fixiert eine Referenzrichtung (Gauge) und minimiert die Abweichung davon. Das ist methodisch analog zur Wahl einer
+		Repräsentantenkonvention in einem Symmetrieorbit.
+	\end{bemerkung}
+	
+	% =========================================================
+	\section{Kanonische Regeln R1--R3: was sie garantieren (und was nicht)}
+	% =========================================================
+	\begin{definition}[R1: Minimaler Realteil]
+		Wähle \(z_p=x+iy\) unter allen (zugelassenen) Kandidaten so, dass \(\abs{x}\) minimal ist; bei Gleichstand wähle \(y>0\).
+	\end{definition}
+	
+	\begin{definition}[R2: Minimaler Winkelabstand zur imaginären Achse]
+		Wähle \(z_p\) so, dass \(\abs{\Arg(z_p)-\pi/2}\) minimal ist, unter \(\Imm(z_p)>0\).
+	\end{definition}
+	
+	\begin{definition}[R3: Strukturregel über \(\pi^2\)]
+		Falls \(p\equiv 1\pmod4\): bestimme \(p=u^2+v^2\), setze \(\pi=u+iv\) und wähle \(z_p=\pi^2\) oder \(i\pi^2\) nach
+		Achsennähe (minimiere \(\abs{\Ree(z)}\)). Falls \(p\equiv 3\pmod4\): setze \(z_p=ip\) (trivial, achsenliegend).
+	\end{definition}
+	
+	\begin{proposition}[R1/R2 sind Optimierer, keine Garantien]
+		R1 minimiert \(\abs{\Ree(z_p)}\) über die zugelassene Kandidatenmenge; R2 minimiert den Winkelabstand zur Achse.
+		Keines von beiden garantiert eine uniforme Schranke \(\abs{\Ree(z_p)}\le \varepsilon p\) für festes \(\varepsilon\),
+		sondern definiert lediglich eine wohldefinierte Auswahl und damit eine testbare Statistik der Achsennähe.
+	\end{proposition}
+	
+	% =========================================================
+	\section{Spiraltests: definierte Messgrößen, Nullhypothese, Robustheit}
+	% =========================================================
+	\subsection{Daten und Koordinaten}
+	\begin{definition}[Winkel- und Logradialdaten]
+		Für \(z_p\neq 0\):
+		\[
+		r_p:=|z_p|=p,\qquad \theta_p:=\Arg(z_p)\in(-\pi,\pi],\qquad \rho_p:=\log p.
+		\]
+	\end{definition}
+	
+	\subsection{Unwrapped Angle}
+	Die Periodizität von \(\theta\) macht lineare Fits mehrdeutig. Deshalb definieren wir eine ``entwrapte'' Winkelspur.
+	
+	\begin{definition}[Unwrapped Angle \(\widetilde{\theta}_p\)]
+		Sortiere Primzahlen \(p_1<p_2<\dots<p_n\). Setze \(\widetilde{\theta}_{p_1}:=\theta_{p_1}\).
+		Für \(k\ge 2\) wähle \(\widetilde{\theta}_{p_k}\) als den Wert der Form \(\theta_{p_k}+2\pi m\) mit \(m\in\Z\),
+		der \(\abs{\widetilde{\theta}_{p_k}-\widetilde{\theta}_{p_{k-1}}}\) minimiert.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Das ist eine wohldefinierte, implementierbare Konvention. Alternative Unwrap-Regeln (z.\,B.\ mit Glättung oder
+		Sprungschranken) können als Robustheitscheck eingesetzt werden.
+	\end{bemerkung}
+	
+	\subsection{Fit-Score und Korrelation}
+	\begin{definition}[Lineares Spiralmodell und Score]
+		Für Datenpaare \((\widetilde{\theta}_{p_k},\rho_{p_k})\) definiere den kleinsten Quadrate-Score
+		\[
+		S(\Phi;X):=\min_{A,B}\ \sum_{p_k\le X}\big(\rho_{p_k}-(A\widetilde{\theta}_{p_k}+B)\big)^2.
+		\]
+		Optional normiert man \(S\) durch die Varianz von \(\rho\) oder durch \(n\).
+	\end{definition}
+	
+	\begin{definition}[Nullhypothese und Permutationstest]
+		Als Nullhypothese \(H_0\) dient z.\,B.\ ``keine strukturelle Kopplung zwischen \(\theta_p\) und \(\log p\)''.
+		Operationalisierung: Permutiere die Winkel \(\theta_{p_k}\) zufällig über die Primindices (oder ersetze sie durch i.i.d.\ Uniformwinkel),
+		unwrappe erneut und berechne \(S\). Der p-Wert ist der Anteil der Nullmodelle mit \(S_{\mathrm{null}}\le S_{\mathrm{obs}}\).
+	\end{definition}
+	
+	\begin{bemerkung}[Robustheit ist Pflicht]
+		Der Score ist nur dann interessant, wenn er stabil bleibt gegen:
+		(i) Wechsel der Auswahlregel (R1/R2/R3), (ii) Variation von \(\varepsilon\) bzw.\ Kandidatenmenge,
+		(iii) alternative Unwrap-Konventionen.
+	\end{bemerkung}
+	
+	\subsection{Häufigkeitsfunktion der Achsennähe}
+	\begin{definition}[Achsennähe-Häufigkeit]
+		Für \(\varepsilon\in(0,1)\) und Obergrenze \(X\) definieren wir
+		\[
+		f(\varepsilon;X):=\frac{1}{\pi(X)}\#\Big\{p\le X:\ \frac{\abs{\Ree(z_p)}}{p}\le \varepsilon\Big\}.
+		\]
+		Diese Funktion misst, wie oft die gewählte Regel \(\Phi\) tatsächlich in einem \(\varepsilon\)-Korridor landet.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Das ist der sauberste Ersatz für implizite Aussagen wie ``entlang eines Korridors existieren Spiralen''.
+		Hier wird klar: Der Korridor ist erst einmal eine \emph{Messgröße}.
+	\end{bemerkung}
+	
+	% =========================================================
+	\section{Kurzer Ausblick: Multiplikative Kompatibilität (optional)}
+	% =========================================================
+	\begin{bemerkung}[Homomorphie-Nähe ist nicht selbstverständlich]
+		Ein verlockendes Ziel wäre eine Regel \(\Phi\) mit
+		\[
+		z_{pq}\approx z_p z_q
+		\]
+		(im Sinne von Winkeladditivität oder kleiner Korrekturen). Für kanonische Auswahlregeln ist dies typischerweise
+		\emph{nicht} exakt, weil die Gauge-Fixierung nicht multiplikativ respektiert werden muss.
+		Gerade diese Spannung kann jedoch als diagnostisches Werkzeug dienen: Wie stark ``zerreißt'' die Auswahlregel
+		multiplikative Struktur?
+	\end{bemerkung}
+	
+	% =========================================================
+	% Upgrade-Baustein 1: Invarianztests (Rotation / Gauge / Robustheit)
+	% =========================================================
+	
+	\section{Invarianztests: Rotation, alternative Gauges und Robustheitsprotokoll}
+	\label{sec:invarianz}
+	
+	\subsection{Rotierte Referenzachse als systematischer Test}
+	Die Korridorwahl um die imaginäre Achse ist eine Modellentscheidung (Gauge-Fix). Ein zentraler Test besteht darin,
+	die Referenzachse zu rotieren und alle Kennzahlen erneut zu messen.
+	
+	\begin{definition}[Rotationsoperator in \(\Zi\)]
+		Für \(\varphi\in[0,2\pi)\) definieren wir die Rotation auf \(\C\) durch
+		\[
+		R_\varphi(z):=e^{-i\varphi}z.
+		\]
+		Wir rotieren \emph{nicht} das Gitter, sondern die Koordinatenbeschreibung: Achsennähe relativ zu einer Achse bei Winkel \(\varphi\)
+		ist Achsennähe relativ zur imaginären Achse nach Anwendung von \(R_\varphi\).
+	\end{definition}
+	
+	\begin{definition}[\(\varepsilon\)-Korridor relativ zu Winkel \(\varphi\)]
+		Ein Punkt \(z\in\C\) mit \(|z|=p\) liegt im \(\varepsilon\)-Korridor um die Achse mit Richtung \(\varphi\), wenn
+		\[
+		\left|\Re\left(R_\varphi(z)\right)\right|\le \varepsilon p.
+		\]
+		Für \(\varphi=0\) ist dies genau der ursprüngliche Korridor um die imaginäre Achse.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Diese Definition macht den Rotationstest präzise: Jede ``Spiralstruktur'' oder ``Achsennähe'' darf nicht nur
+		für einen einzelnen Winkel \(\varphi=0\) gelten, sondern muss im Idealfall \emph{stabil} (oder zumindest strukturiert nachvollziehbar)
+		als Funktion von \(\varphi\) auftreten.
+	\end{bemerkung}
+	
+	\subsection{Rotationstest-Protokoll (Sweep)}
+	\begin{definition}[Rotationstest-Sweep]
+		Fixiere einen Satz von Winkeln \(\Phi_\mathrm{rot}=\{\varphi_j\}_{j=0}^{m-1}\) mit \(\varphi_j=2\pi j/m\).
+		Für jede Regel \(\Phi\) (R1/R2/R3 etc.) und jedes \(X\) berechne die Kennzahlen
+		\[
+		f(\varepsilon;X,\varphi_j),\qquad S(\Phi;X,\varphi_j),
+		\]
+		wobei \(f\) und \(S\) mit \(R_{\varphi_j}(z_p)\) statt \(z_p\) definiert werden.
+	\end{definition}
+	
+	\begin{definition}[Rotations-Report (Minimalset)]
+		Für jede Kombination \((\Phi,X)\) soll mindestens berichtet werden:
+		\begin{enumerate}
+			\item \(\varphi\mapsto f(\varepsilon;X,\varphi)\) für ein kleines Set \(\varepsilon\in\{\varepsilon_1,\varepsilon_2,\varepsilon_3\}\) (z.\,B.\ \(0.02,0.05,0.10\)).
+			\item \(\varphi\mapsto S(\Phi;X,\varphi)\) (ggf. normalisiert).
+			\item Ein Nullmodell-Band für \(S\) (z.\,B.\ 5\%–95\% Quantile aus Permutation/Uniform-Winkeln) pro \(\varphi\).
+		\end{enumerate}
+	\end{definition}
+	
+	\subsection{Alternative Gauge-Fixes: Kandidatenmengen und Auswahlregeln}
+	Die stärkste Robustheit entsteht nicht nur durch Rotation, sondern auch durch Variation der \emph{Gauge-Fix-Regel}
+	und der \emph{zugelassenen Kandidatenmenge}.
+	
+	\begin{definition}[Kandidatenmengen \(\mathcal{C}_p\)]
+		Für \(p\equiv 1\pmod 4\) sei \(\pi_p\) eine kanonische Wahl mit \(p=\pi_p\overline{\pi_p}\). Dann definieren wir z.\,B.:
+		\begin{align*}
+			\mathcal{C}_p^{(1)} &:= \{\pi_p^2\},\\
+			\mathcal{C}_p^{(2)} &:= \{\pi_p^2,\, i\pi_p^2\},\\
+			\mathcal{C}_p^{(4)} &:= \{u\pi_p^2:\ u\in\{\pm 1,\pm i\}\},
+		\end{align*}
+		und optional auch das Hinzufügen der Konjugierten (Spiegelung). Für \(p\equiv 3\pmod 4\) setze \(\mathcal{C}_p:=\{ip\}\) als Basisfall.
+	\end{definition}
+	
+	\begin{definition}[Gauge-Fix als Minimierungsregel]
+		Eine Gauge-Fix-Regel wählt aus \(\mathcal{C}_p\) einen Repräsentanten
+		\[
+		z_p \in \arg\min_{z\in\mathcal{C}_p}\left|\Re\!\left(R_\varphi(z)\right)\right|,
+		\quad \text{mit Tie-Breaker } \Im\!\left(R_\varphi(z)\right)>0.
+		\]
+		Damit sind R1/R2/R3 als Spezialfälle (bei geeigneter \(\mathcal{C}_p\)) einheitlich formulierbar.
+	\end{definition}
+	
+	\subsection{Robustheitskriterium (konservativ)}
+	\begin{definition}[Robustheitskriterium]
+		Ein Effekt (z.\,B.\ ``Score kleiner als Nullmodell'' oder ``hohes \(f(\varepsilon)\)'') gilt nur dann als robust bis \(X\),
+		wenn er für
+		\begin{enumerate}
+			\item mindestens zwei Kandidatenmengen \(\mathcal{C}^{(\cdot)}\),
+			\item mindestens zwei Auswahlregeln (z.\,B.\ Minimierung von \(|\Re|\) vs. Minimierung von Winkelabstand),
+			\item und für einen nichttrivialen Anteil der Rotationswinkel \(\varphi_j\)
+		\end{enumerate}
+		gleichzeitig auftritt.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Dieses Kriterium ist absichtlich streng: Es verhindert, dass ein Artefakt einer einzelnen Konvention als ``Struktur'' verkauft wird.
+	\end{bemerkung}
+	
+	
+	% =========================================================
+	% Upgrade-Baustein 2: Fourier-Momente und kanonische Wahl von \pi_p
+	% =========================================================
+	
+	\section{Fourier-Momente der Winkel: kanonische \texorpdfstring{$\pi_p$}{pi\_p}-Wahl, Nullmodell und Auswertung}
+	\label{sec:fourier}
+	
+	\subsection{Warum Fourier-Momente?}
+	Wenn die Winkel der gaußschen Primfaktoren \(\pi_p\) in Sektoren ``gleichverteilt'' sind, sollten nichttriviale
+	Fouriermomente stark auslöschen. Das ist die analytisch anschlussfähigste Messgröße neben dem Spiral-Fit.
+	
+	\subsection{Kanonische Wahl von \(\pi_p\) (Einheitenproblem lösen)}
+	Für \(p\equiv 1\pmod 4\) zerfällt \(p\) in \(\Zi\) als \(p=\pi\overline{\pi}\), aber \(\pi\) ist nur bis auf Einheiten \(\unit=\{\pm1,\pm i\}\)
+	und Konjugation bestimmt. Wir fixieren daher eine eindeutige Konvention.
+	
+	\begin{definition}[Kanonische Wahl \(\pi_p\)]
+		Sei \(p\equiv 1\pmod 4\) prim. Wähle die eindeutige Darstellung \(p=a^2+b^2\) mit
+		\[
+		a>b>0,\qquad a\equiv 1\pmod 2
+		\]
+		(\(a\) ungerade) und setze
+		\[
+		\pi_p := a+ib.
+		\]
+		Falls sowohl \(a+ib\) als auch \(b+ia\) die Bedingungen erfüllen (in der Praxis durch \(a>b\) verhindert), wähle das mit größerem Realteil.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Diese Wahl fixiert den Einheitenorbit, weil \(\pi_p\) damit in den ersten Quadranten fällt und zusätzlich \(a\) ungerade ist.
+		Alternative kanonische Konventionen (z.\,B.\ \(a\equiv 1\pmod 4\)) sind möglich; für Robustheitstests kann man sie variieren.
+	\end{bemerkung}
+	
+	\begin{lemma}[Kanonische \(\pi_p\) bestimmt \(\arg(\pi_p)\) eindeutig]
+		Unter obiger Konvention ist \(\theta_p:=\Arg(\pi_p)\in(0,\pi/2)\) wohldefiniert.
+	\end{lemma}
+	
+	\subsection{Fouriermomente}
+	\begin{definition}[Moment-Summen \(S_k(X)\)]
+		Für \(k\in\Z\setminus\{0\}\) definieren wir
+		\[
+		S_k(X):=\sum_{\substack{p\le X\\ p\equiv 1\ (\mathrm{mod}\ 4)}} e^{ik\theta_p},
+		\qquad \theta_p:=\Arg(\pi_p).
+		\]
+		Optional normalisiert man:
+		\[
+		\widetilde S_k(X):=\frac{1}{\#\{p\le X:\ p\equiv 1(4)\}}\, S_k(X).
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}[Bezug zu R3]
+		Falls man R3 benutzt (\(z_p=\pi_p^2\) oder \(i\pi_p^2\)), gilt
+		\[
+		\Arg(z_p) \equiv 2\Arg(\pi_p)\ (\mathrm{mod}\ 2\pi),
+		\]
+		so dass Fouriermomente der \(\Arg(\pi_p)\) direkt mit Fouriermomenten der \(\Arg(z_p)\) zusammenhängen.
+	\end{bemerkung}
+	
+	\subsection{Nullmodelle für \(S_k(X)\)}
+	\begin{definition}[Permutation und Uniform-Nullmodell]
+		Zwei einfache Nullmodelle für die Größenordnung von \(|S_k(X)|\) sind:
+		\begin{enumerate}
+			\item \textbf{Permutation:} Permutiere die Folge \((\theta_{p})\) zufällig über die Primindices und berechne \(S_k\) erneut.
+			\item \textbf{Uniformwinkel:} Ersetze \(\theta_p\) durch i.i.d.\ Uniformwinkel auf \((0,\pi/2)\) (oder auf \((-\pi,\pi]\) je nach Konvention).
+		\end{enumerate}
+		Aus vielen Wiederholungen erhält man Quantile/Bänder für \(|S_k(X)|\).
+	\end{definition}
+	
+	\subsection{Report-Template (Minimalset)}
+	\begin{definition}[Fourier-Report (Minimalset)]
+		Für \(k\in\{1,2,3,4\}\) und eine Folge \(X_1<X_2<\dots\) soll berichtet werden:
+		\begin{enumerate}
+			\item \(|\widetilde S_k(X_j)|\) (oder \(|S_k(X_j)|\)) als Funktion von \(X_j\).
+			\item Ein Nullmodellband (z.\,B.\ 5\%–95\% Quantile) für \(|\widetilde S_k(X_j)|\).
+			\item Robustheitsvergleich: gleiche Auswertung unter Variation der kanonischen \(\pi_p\)-Konvention (mindestens zwei Varianten).
+		\end{enumerate}
+	\end{definition}
+	
+	\begin{bemerkung}[Interpretationsregel]
+		Ein einzelnes ``auffälliges'' \(k\) bei einem \(X\) ist kein Effekt. Interessant wird es, wenn mehrere \(k\neq 0\)
+		gleichzeitig systematisch außerhalb des Nullmodellbandes liegen oder wenn eine strukturierte Oszillation
+		(in Skalen \(X\)) auftritt, die unter Robustheitsvariationen erhalten bleibt.
+	\end{bemerkung}
+	
+	% =========================================================
+	\section{Zusammenfassung}
+	% =========================================================
+	Wir haben:
+	\begin{enumerate}
+		\item die klassischen Teile (Restklasse \(p^2\equiv 1\bmod 12\), Summe-zweier-Quadrate) isoliert,
+		\item den Lösungsraum von \(x^2+y^2=p^2\) bis auf Symmetrien und natürliche Kandidaten beschrieben,
+		\item die Korridorwahl als Gauge-Fix/Variationsprinzip formalisiert,
+		\item und ein reproduzierbares Spiral-Testprotokoll (Unwrap, Score, Nullhypothese, Robustheit) definiert.
+	\end{enumerate}
+	Damit ist das Gedankenexperiment in eine Form gebracht, die weder überverspricht noch vage bleibt.
+	
+	% =========================================================
+	\begin{thebibliography}{9}
+		
+		\bibitem{HardyWright}
+		G.~H. Hardy und E.~M. Wright,
+		\textit{An Introduction to the Theory of Numbers},
+		Oxford University Press.
+		
+		\bibitem{IrelandRosen}
+		K.~Ireland und M.~Rosen,
+		\textit{A Classical Introduction to Modern Number Theory},
+		Springer.
+		
+		\bibitem{Niven}
+		I.~Niven, H.~S. Zuckerman, H.~L. Montgomery,
+		\textit{An Introduction to the Theory of Numbers},
+		Wiley.
+		
+	\end{thebibliography}
+	
+\end{document}

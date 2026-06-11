@@ -1,0 +1,68 @@
+Erster gewichteter Resonanztest mit den ersten 100000 Riemann-Nullstellen
+======================================================================
+
+Datenquelle:
+- zeros6.npy
+- verwendet wurden die ersten 100000 Imaginärteile gamma_n der Nullstellen 1/2 + i gamma_n
+
+Verwendete Primzahl-Trajektorien:
+- Zwillingszentren c bis X=200000 mit Trajektorie T_twin = c^2 - 1
+- Vierlingszentren c bis X=200000 mit
+    T4_in   = c^2 - 4
+    T4_out  = c^2 - 16
+    T4_prod = (c^2 - 4)(c^2 - 16)
+- Vierlings-Normschüttespannung
+    S4 = (4 c^2 + 40) / ((c^2 - 4)(c^2 - 16))
+
+Anzahlen:
+- Zwillingszentren bis 200000: 2160
+- Vierlingszentren bis 200000: 52
+
+Referenzwerte:
+- S_X(2), X=100000: 1.644924066898227
+- zeta(2):          1.644934066848226
+- Differenz:        -9.999949999839330e-06
+
+- S_X(1), X=100000: 12.090146129863431
+- S_X(1)-log(X):    0.577220664893202
+- Euler-gamma:      0.577215664901533
+- Differenz:        4.999991669474291e-06
+
+- S_X(-1), X=100000: 5000050000
+- zeta(-1):          -0.083333333333333
+
+- partielles Euler-Produkt P_X(2):    1.644932747202728
+- Differenz zu zeta(2):               -1.319645497988020e-06
+- partielles Euler-Produkt P_X(1.01): 18.445446599700844
+
+Stabile Trajektoriensummen:
+- sum 1/(c^2-1) über Zwillinge:            0.107983936831122
+- sum 1/(c^2-4) über Vierlinge:            0.017631632222528
+- sum 1/(c^2-16) über Vierlinge:           0.020289143975055
+- sum 1/((c^2-4)(c^2-16)) über Vierlinge:  0.000221459312711
+- sum Normschüttespannung:                  0.093558297412014
+
+Resonanzdefinition:
+Für Trajektorien T_j und Gewichte w_j wurde die normierte Amplitude
+    A(gamma) = |sum_j w_j exp(-i gamma log T_j)| / sqrt(sum_j |w_j|^2)
+verwendet.
+
+Verglichene Frequenzmengen:
+- real:   echte gamma_n
+- shift:  gamma_n + 0.37
+- random: gleich viele Zufallsfrequenzen im selben Bereich
+
+Kurzfazit:
+1. Die zeta-seitigen Referenztests bei s=2 und s=1 verhalten sich numerisch exakt wie erwartet.
+2. Die gewichteten Vierlings-Observablen mit Normschüttespannung sind numerisch sehr stabil.
+3. Im globalen Statistikvergleich (Mittelwert, Median, Quantile) zeigen die echten Nullstellen
+   in diesem ersten Test noch kein starkes, klar vom Kontrollensemble getrenntes Resonanzsignal.
+4. Das spricht nicht gegen die Strukturidee, sondern dafür, dass die Wahl der Observable
+   weiter verfeinert werden muss (z.B. Kombination mehrerer Schalen, zeta-zentrierte Gewichte,
+   lokale Fenster, Gram-Punkt-Kontrollen, explizite Formeln mit den Nullstellen).
+
+Empfohlene nächste Schritte:
+- gewichtete Kombinationen aus T4_in, T4_out und T4_prod
+- lokale Resonanzfenster statt globaler Mittel
+- Vergleich gegen Gram-Punkte
+- direkte Korrelation mit expliziten Formeln fuer psi(x) oder theta(x)

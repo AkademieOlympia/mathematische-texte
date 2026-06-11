@@ -1,0 +1,316 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{hyperref}
+
+\title{Kanonische \(ABC\)-/\(E\)-Zerlegung und energetische Radikalschichtung}
+\author{Kollaborative Ausarbeitung}
+\date{\today}
+
+\newtheorem{satz}{Satz}
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{korollar}[satz]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{beispiel}[satz]{Beispiel}
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\ggT}{\operatorname{ggT}}
+\newcommand{\vp}{v_p}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Für natürliche Zahlen \(n\), die weder durch \(2\) noch durch \(3\) teilbar sind, formulieren wir
+		eine kanonische Zerlegung in einen \(ABC\)-Anteil und einen energetischen \(E\)-Anteil.
+		Der \(ABC\)-Anteil besteht aus allen Primfaktorpotenzen der Familien \(A,B,C\), der
+		\(E\)-Anteil aus allen Primfaktorpotenzen der Familie \(E\). Darüber hinaus besitzt der
+		\(E\)-Anteil eine eindeutige geschichtete Radikalzerlegung. Damit ergibt sich eine saubere
+		zweistufige Struktur aus Familienzerlegung und energetischer Radikalschichtung.
+	\end{abstract}
+	
+	\section{Familien modulo \(12\)}
+	
+	\begin{definition}[Die vier Familien]
+		Für Primzahlen \(p>3\) definieren wir die vier Familien
+		\[
+		E:=\{p:\ p\equiv 1 \pmod{12}\},\qquad
+		A:=\{p:\ p\equiv 5 \pmod{12}\},
+		\]
+		\[
+		B:=\{p:\ p\equiv 7 \pmod{12}\},\qquad
+		C:=\{p:\ p\equiv 11 \pmod{12}\}.
+		\]
+	\end{definition}
+	
+	\begin{lemma}[Vollständigkeit der Familien]
+		Jede Primzahl \(p>3\) liegt eindeutig in genau einer der vier Familien \(E,A,B,C\).
+	\end{lemma}
+	
+	\begin{proof}
+		Eine Primzahl \(p>3\) ist weder durch \(2\) noch durch \(3\) teilbar. Daher gilt
+		\[
+		p\equiv 1,5,7,\text{ oder }11 \pmod{12}.
+		\]
+		Dies sind genau die vier obigen Familien. Die Restklassen sind disjunkt, also ist die Zuordnung eindeutig.
+	\end{proof}
+	
+	\section{Kanonische \(ABC\)-/\(E\)-Zerlegung}
+	
+	\begin{definition}[\(ABC\)-Anteil und energetischer Anteil]
+		Sei \(n\in\N\) mit
+		\[
+		\ggT(n,6)=1.
+		\]
+		Schreibe die Primfaktorzerlegung von \(n\) als
+		\[
+		n=\prod_{p\mid n} p^{\vp(n)}.
+		\]
+		Dann definieren wir den \(ABC\)-Anteil von \(n\) durch
+		\[
+		n_{ABC}:=
+		\prod_{\substack{p^{\vp(n)}\parallel n\\ p\equiv 5,7,11\;(\mathrm{mod}\;12)}} p^{\vp(n)},
+		\]
+		und den energetischen \(E\)-Anteil durch
+		\[
+		\mathcal E(n):=
+		\prod_{\substack{p^{\vp(n)}\parallel n\\ p\equiv 1\;(\mathrm{mod}\;12)}} p^{\vp(n)}.
+		\]
+	\end{definition}
+	
+	\begin{satz}[Kanonische \(ABC\)-/\(E\)-Zerlegung]
+		Für jede natürliche Zahl \(n\in\N\) mit
+		\[
+		\ggT(n,6)=1
+		\]
+		existiert eine eindeutige Zerlegung
+		\[
+		n=n_{ABC}\,\mathcal E(n),
+		\]
+		wobei
+		\[
+		n_{ABC}
+		\]
+		genau aus den Primfaktorpotenzen der Familien \(A,B,C\) und
+		\[
+		\mathcal E(n)
+		\]
+		genau aus den Primfaktorpotenzen der Familie \(E\) besteht.
+	\end{satz}
+	
+	\begin{proof}
+		Nach dem Fundamentalsatz der Arithmetik besitzt \(n\) eine eindeutige Primfaktorzerlegung
+		\[
+		n=\prod_{p\mid n} p^{\vp(n)}.
+		\]
+		Nach Lemma 1 liegt jede Primzahl \(p>3\), die \(n\) teilt, eindeutig in genau einer der vier Familien
+		\(E,A,B,C\). Daher lässt sich das Produkt eindeutig in zwei Teilprodukte zerlegen:
+		eines über alle Primzahlen der Familien \(A,B,C\) und eines über alle Primzahlen der Familie \(E\).
+		Dies liefert
+		\[
+		n=n_{ABC}\,\mathcal E(n).
+		\]
+		Da sowohl die Primfaktorzerlegung als auch die Familienzuordnung eindeutig sind, ist auch diese
+		Zerlegung eindeutig.
+	\end{proof}
+	
+	\begin{korollar}
+		Zu jedem \(n\in\N\) mit \(\ggT(n,6)=1\) sind die Zahlen
+		\[
+		n_{ABC}\qquad\text{und}\qquad \mathcal E(n)
+		\]
+		kanonisch und eindeutig bestimmt.
+	\end{korollar}
+	
+	\section{Energetische Radikalschichtung}
+	
+	\begin{definition}[Radikalschichten]
+		Sei \(m\in\N\) und
+		\[
+		m=\prod_{p\mid m} p^{\vp(m)}.
+		\]
+		Für
+		\[
+		h:=\max_{p\mid m}\vp(m)
+		\]
+		definieren wir die \(k\)-te Radikalschicht durch
+		\[
+		R_k(m):=
+		\prod_{\substack{p\mid m\\ \vp(m)\ge k}} p,
+		\qquad k=1,\dots,h.
+		\]
+	\end{definition}
+	
+	\begin{lemma}[Geschichtete Radikalzerlegung]
+		Für jedes \(m\in\N\) gilt
+		\[
+		m=\prod_{k=1}^{h} R_k(m),
+		\qquad
+		h=\max_{p\mid m}\vp(m).
+		\]
+		Außerdem ist jede Schicht \(R_k(m)\) quadratfrei.
+	\end{lemma}
+	
+	\begin{proof}
+		Eine Primzahl \(p\mid m\) tritt genau in denjenigen Schichten \(R_k(m)\) auf, für die
+		\[
+		\vp(m)\ge k
+		\]
+		gilt. Das sind genau \(\vp(m)\) viele Schichten. Also hat \(p\) im Gesamtprodukt
+		\[
+		\prod_{k=1}^{h}R_k(m)
+		\]
+		denselben Exponenten wie in \(m\). Daher stimmen beide Zahlen in ihrer Primfaktorzerlegung überein.
+		Da jede Primzahl in einer Schicht höchstens einmal vorkommt, ist jede Schicht quadratfrei.
+	\end{proof}
+	
+	\begin{satz}[Energetische Radikalschichtung]
+		Für jede natürliche Zahl \(n\in\N\) mit
+		\[
+		\ggT(n,6)=1
+		\]
+		besitzt der energetische Anteil
+		\[
+		\mathcal E(n)
+		\]
+		eine eindeutige geschichtete Radikalzerlegung
+		\[
+		\mathcal E(n)=\prod_{k=1}^{h_E}R_k^{(E)},
+		\]
+		wobei
+		\[
+		R_k^{(E)}:=
+		\prod_{\substack{p\mid \mathcal E(n)\\ \vp(\mathcal E(n))\ge k}} p
+		\]
+		quadratfrei ist und nur Primzahlen aus der Familie \(E\) enthält.
+	\end{satz}
+	
+	\begin{proof}
+		Dies ist eine unmittelbare Anwendung von Lemma 2 auf \(m=\mathcal E(n)\).
+		Da alle Primfaktoren von \(\mathcal E(n)\) per Definition in der Familie \(E\) liegen,
+		enthalten auch alle Radikalschichten \(R_k^{(E)}\) ausschließlich \(E\)-Primzahlen.
+		Die Eindeutigkeit folgt aus der Eindeutigkeit der Exponenten \(\vp(\mathcal E(n))\).
+	\end{proof}
+	
+	\section{Hauptsatz}
+	
+	\begin{satz}[Kanonische Zerlegung mit energetischer Radikalschichtung]
+		Jede natürliche Zahl \(n\in\N\), die weder durch \(2\) noch durch \(3\) teilbar ist, besitzt eine
+		eindeutige Darstellung
+		\[
+		n=n_{ABC}\,\mathcal E(n),
+		\]
+		wobei
+		\[
+		n_{ABC}=
+		\prod_{\substack{p^{\vp(n)}\parallel n\\ p\equiv 5,7,11\;(\mathrm{mod}\;12)}} p^{\vp(n)}
+		\]
+		der \(ABC\)-Anteil und
+		\[
+		\mathcal E(n)=
+		\prod_{\substack{p^{\vp(n)}\parallel n\\ p\equiv 1\;(\mathrm{mod}\;12)}} p^{\vp(n)}
+		\]
+		der energetische Anteil ist.
+		
+		Außerdem besitzt der energetische Anteil eine eindeutige geschichtete Radikalzerlegung
+		\[
+		\mathcal E(n)=\prod_{k=1}^{h_E}R_k^{(E)}.
+		\]
+		
+		Insbesondere ist jede solche Zahl durch ihren \(ABC\)-Anteil und die Radikalschichten ihres
+		energetischen Anteils eindeutig bestimmt.
+	\end{satz}
+	
+	\begin{proof}
+		Die Existenz und Eindeutigkeit der Zerlegung
+		\[
+		n=n_{ABC}\,\mathcal E(n)
+		\]
+		ist Satz 1. Die eindeutige geschichtete Radikalzerlegung von \(\mathcal E(n)\) ist Satz 2.
+		Daher ist \(n\) eindeutig durch diese beiden Komponenten bestimmt.
+	\end{proof}
+	
+	\section{Beispiele}
+	
+	\begin{beispiel}
+		Für
+		\[
+		n=5\cdot 7\cdot 11\cdot 13^2\cdot 37
+		\]
+		gilt
+		\[
+		n_{ABC}=5\cdot 7\cdot 11,
+		\qquad
+		\mathcal E(n)=13^2\cdot 37.
+		\]
+		Die energetische Radikalschichtung ist
+		\[
+		R_1^{(E)}=13\cdot 37,
+		\qquad
+		R_2^{(E)}=13.
+		\]
+		Also
+		\[
+		\mathcal E(n)=(13\cdot 37)\cdot 13.
+		\]
+	\end{beispiel}
+	
+	\begin{beispiel}
+		Für
+		\[
+		n=13\cdot 61^3
+		\]
+		ist
+		\[
+		n_{ABC}=1,
+		\qquad
+		\mathcal E(n)=13\cdot 61^3.
+		\]
+		Die energetischen Schichten sind
+		\[
+		R_1^{(E)}=13\cdot 61,\qquad
+		R_2^{(E)}=61,\qquad
+		R_3^{(E)}=61.
+		\]
+	\end{beispiel}
+	
+	\begin{beispiel}
+		Für
+		\[
+		n=5^2\cdot 7\cdot 29\cdot 31
+		\]
+		liegen alle Primfaktoren in den Familien \(A\) oder \(B\). Daher ist
+		\[
+		n_{ABC}=n,
+		\qquad
+		\mathcal E(n)=1.
+		\]
+		In diesem Fall ist der energetische Anteil trivial.
+	\end{beispiel}
+	
+	\section{Schlussbemerkung}
+	
+	Die hier formulierte Struktur trennt zwei Ebenen:
+	
+	\begin{enumerate}
+		\item die globale Zerlegung einer zu \(6\) teilerfremden Zahl in einen \(ABC\)-Anteil und einen
+		energetischen \(E\)-Anteil,
+		\item die innere geschichtete Radikalzerlegung des energetischen Anteils.
+	\end{enumerate}
+	
+	Damit erhält man keine Darstellung als Produkt \emph{einer einzigen} \(ABC\)-Primzahl und eines
+	Restes, sondern eine kanonische und vollständige Familienzerlegung, bei der der \(E\)-Anteil
+	zusätzlich eine eindeutige energetische Radikalschichtung trägt.
+	
+\end{document}

@@ -1,0 +1,411 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- Kodierung und Sprache ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+
+% --- Mathematik ---
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+
+% --- Layout ---
+\usepackage[a4paper,margin=2.7cm]{geometry}
+\usepackage{setspace}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{booktabs}
+
+% --- Verweise ---
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	citecolor=blue,
+	urlcolor=blue,
+	pdftitle={Endliche quaternionische Faltungsoperatoren und normgesteuerte Quotientengraphen},
+	pdfauthor={Thomas Hoffbauer}
+}
+
+% --- Grafiken robust ---
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./}{fig/}{figs/}{images/}{img/}}
+\newcommand{\includegraphicssafe}[2][]{%
+	\IfFileExists{#2}{\includegraphics[#1]{#2}}{\fbox{\texttt{Grafik nicht gefunden: #2}}}%
+}
+
+% --- Theorem-Umgebungen ---
+\theoremstyle{plain}
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{korollar}[satz]{Korollar}
+\newtheorem{proposition}[satz]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{beispiel}[satz]{Beispiel}
+
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+
+% --- Makros ---
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Fp}{\mathbb{F}_p}
+\newcommand{\OH}{\mathcal{O}_H}
+\newcommand{\Nrd}{\operatorname{Nrd}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\Cay}{\operatorname{Cay}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\ellz}{\ell^2}
+
+\title{\textbf{Endliche quaternionische Faltungsoperatoren und normgesteuerte Quotientengraphen}\\
+	\large Eine defensive Neufassung mit präzisierten Beweiszielen}
+\author{Thomas Hoffbauer}
+\date{März 2026}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir entwickeln eine neu gefasste Darstellung quaternionischer Faltungsoperatoren auf endlichen Quotienten der Hurwitz-Ordnung. Der mathematisch belastbare Kern liegt vollständig auf der Ebene endlicher Spektraltheorie: Aus symmetrischen Schrittmengen in endlichen Gruppen entstehen selbstadjungierte Faltungsoperatoren, reelle Spektren, Spektrallücken und Aussagen über Durchmischung. Die eigentliche Schwierigkeit liegt nicht in dieser endlichen Operatorik, sondern in der kanonischen Konstruktion normgesteuerter Erzeugermengen $\Sigma_{N,p}$.
+		
+		Der Artikel verfolgt drei Ziele. Erstens wird die formal gesicherte Struktur scharf isoliert. Zweitens werden alle stärkeren arithmetischen Deutungen auf das mathematisch Zulässige zurückgenommen. Drittens werden neue Beweisideen geprüft, insbesondere zur kanonischen Definition der Mengen $\Sigma_{N,p}$, zu einer möglichen Doppelnebenklassen-Interpretation und zu ersten Kommutativitäts- und Spektraltests in kleinen Familien.
+		
+		Die leitende These ist bewusst bescheiden: Das vorliegende Modell realisiert keine tiefe geometrische Theorie, sondern eine explizite endliche Operatorwelt, in der lokal normgesteuerte Daten globale Spektren organisieren. Genau in diesem Sinn ist der Ansatz mathematisch interessant.
+	\end{abstract}
+	
+	\tableofcontents
+	
+	\section{Einleitung}
+	Die vorliegende Fassung des Artikels verfolgt eine bewusst strengere sprachliche und mathematische Disziplin als frühere Versionen. Ausgangspunkt ist die Einsicht, dass der robuste Teil des Programms nicht in weitreichenden Analogien liegt, sondern in einer endlichen, expliziten und rechenbaren Operatorarchitektur auf Quotienten der Hurwitz-Ordnung. Sobald man diese Ebene nicht überlädt, entsteht ein klar umrissener mathematischer Gegenstand: endliche Gruppen, symmetrische Erzeugermengen, Cayley-Graphen, Faltungsoperatoren, Spektren und Spektrallücken.
+	
+	Das Grundproblem lautet dabei nicht, ob man interessante Graphen erzeugen kann. Das gelingt leicht. Die eigentliche Frage ist vielmehr, ob sich die Schrittmengen $\Sigma_{N,p}$ für Primzahlen $p$ so definieren lassen, dass sie nicht bloß normkompatibel, sondern auch intrinsisch, symmetrisch und lokal verträglich sind. Erst an diesem Punkt beginnt eine ernsthafte arithmetische Theorie.
+	
+	Die Leitfrage des Artikels lautet deshalb:
+	\begin{quote}
+		Wie weit trägt eine rein endliche Quaternionen-Arithmetik, bevor zusätzliche lokale oder idealtheoretische Struktur unverzichtbar wird?
+	\end{quote}
+	
+	Die Antwort ist zweigeteilt. Einerseits gibt es eine saubere Stufe elementarer endlicher Spektraltheorie. Andererseits sind die Übergänge zu stärkerer arithmetischer Struktur bislang offen. Gerade deshalb wird im Folgenden streng zwischen bewiesenem Kern, plausiblen Vermutungen und programmatischen Beweisideen unterschieden.
+	
+	\section{Algebraische Ausgangslage}
+	\subsection{Die Hamiltonsche Quaternionenalgebra}
+	Wir arbeiten in der Quaternionenalgebra
+	\[
+	\mathbb H = \Q \oplus \Q i \oplus \Q j \oplus \Q k,
+	\qquad i^2=j^2=k^2=ijk=-1.
+	\]
+	Die Standardinvolution ist gegeben durch
+	\[
+	\overline{a+bi+cj+dk}=a-bi-cj-dk.
+	\]
+	Die reduzierte Norm lautet
+	\[
+	\Nrd(a+bi+cj+dk)=a^2+b^2+c^2+d^2.
+	\]
+	Sie ist multiplikativ:
+	\[
+	\Nrd(xy)=\Nrd(x)\Nrd(y).
+	\]
+	
+	\subsection{Die Hurwitz-Ordnung}
+	Als arithmetisch natürliche Ordnung betrachten wir
+	\[
+	\OH = \Z\Bigl[i,j,k,\frac{1+i+j+k}{2}\Bigr].
+	\]
+	Dies ist eine maximale Ordnung in der Hamiltonschen Quaternionenalgebra. Als $\Z$-Modul besitzt sie Rang $4$.
+	
+	\subsection{Endliche Quotienten}
+	Für jede ganze Zahl $N\ge 1$ definieren wir den endlichen Quotientenring
+	\[
+	R_N := \OH/N\OH.
+	\]
+	Als additive Gruppe gilt
+	\[
+	R_N \cong (\Z/N\Z)^4,
+	\]
+	insbesondere
+	\[
+	|R_N|=N^4.
+	\]
+	Je nach Fragestellung kann man auf $R_N^\times$, auf normverträgigen Untergruppen oder auf projektivierten Varianten modulo Zentralanteilen arbeiten. Für die Grundstruktur des Artikels genügt die abstrakte Annahme, dass aus $R_N$ eine endliche Gruppe $G_N$ funktoriell gewonnen wird.
+	
+	\section{Cayley-Graphen und Faltungsoperatoren}
+	\begin{definition}
+		Sei $G$ eine endliche Gruppe und sei $\Sigma\subseteq G$ eine endliche Menge mit
+		\[
+		\Sigma=\Sigma^{-1}, \qquad e\notin \Sigma.
+		\]
+		Dann heißt
+		\[
+		\Gamma(G,\Sigma):=\Cay(G,\Sigma)
+		\]
+		der zugehörige Cayley-Graph. Der Faltungsoperator zu $\Sigma$ ist definiert durch
+		\[
+		(T_\Sigma f)(g)=\sum_{s\in\Sigma} f(gs)
+		\qquad (f\in \ellz(G)).
+		\]
+		Der normierte Operator lautet
+		\[
+		P_\Sigma := \frac{1}{|\Sigma|}T_\Sigma.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Ist $\Sigma=\Sigma^{-1}$, so ist $T_\Sigma$ selbstadjungiert auf $\ellz(G)$.
+	\end{lemma}
+	
+	\begin{proof}
+		Für $f,h\in \ellz(G)$ gilt
+		\begin{align*}
+			\langle T_\Sigma f,h\rangle
+			&= \sum_{g\in G}\sum_{s\in\Sigma} f(gs)\overline{h(g)} \\
+			&= \sum_{s\in\Sigma}\sum_{g\in G} f(g)\overline{h(gs^{-1})} \\
+			&= \sum_{g\in G} f(g)\overline{\sum_{s\in\Sigma} h(gs)}
+			= \langle f,T_\Sigma h\rangle,
+		\end{align*}
+		weil $\Sigma^{-1}=\Sigma$ gilt.
+	\end{proof}
+	
+	\begin{korollar}
+		Das Spektrum von $T_\Sigma$ ist reell.
+	\end{korollar}
+	
+	\begin{definition}
+		Für den normierten Operator $P_\Sigma$ sei
+		\[
+		1=\mu_1\ge \mu_2\ge \dots \ge \mu_n\ge -1
+		\]
+		das Spektrum mit Vielfachheiten. Die nichttriviale Spektralgröße definieren wir durch
+		\[
+		\lambda_2(\Sigma):=\max_{i\ge 2}|\mu_i|,
+		\]
+		die Spektrallücke durch
+		\[
+		\Delta(\Sigma):=1-\lambda_2(\Sigma).
+		\]
+	\end{definition}
+	
+	\begin{proposition}
+		Ist $\Delta(\Sigma)>0$, so gilt für jede mittelwertfreie Funktion $f\in\ellz(G)$ und jedes $m\ge 1$:
+		\[
+		\|P_\Sigma^m f\|_2\le (1-\Delta(\Sigma))^m\|f\|_2.
+		\]
+	\end{proposition}
+	
+	\begin{proof}
+		Auf dem orthogonalen Komplement der konstanten Funktionen ist die Operatornorm von $P_\Sigma$ gleich $\lambda_2(\Sigma)=1-\Delta(\Sigma)$. Iteration liefert die Behauptung.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Diese Ebene ist vollständig gesichert. Hier liegt die tatsächlich harte mathematische Substanz des gegenwärtigen Ansatzes.
+	\end{bemerkung}
+	
+	\section{Normgesteuerte Schrittmengen}
+	\subsection{Normschalen}
+	Für eine Primzahl $p$ definieren wir die Normschale
+	\[
+	X_p:=\{x\in \OH\colon \Nrd(x)=p\}.
+	\]
+	Da die reduzierte Norm in der Hamiltonschen Algebra eine Vierquadratestruktur hat, sind diese Mengen elementar arithmetisch beschreibbar.
+	
+	\subsection{Das Kernproblem}
+	Gesucht ist eine kanonische Menge
+	\[
+	\Sigma_{N,p}\subseteq G_N,
+	\]
+	die aus $X_p$ hervorgeht und folgende Eigenschaften möglichst gleichzeitig erfüllt:
+	\begin{enumerate}[label=(\roman*)]
+		\item Wohldefiniertheit modulo geeigneter Äquivalenzen,
+		\item Symmetrie $\Sigma_{N,p}=\Sigma_{N,p}^{-1}$,
+		\item Ausschluss des neutralen Elements,
+		\item gute Reduktion modulo $N$,
+		\item lokale Verträglichkeit für $p\nmid N$,
+		\item möglichst funktorisches Verhalten in $N$ und $p$.
+	\end{enumerate}
+	
+	Gerade dieser Punkt ist offen. Solange $\Sigma_{N,p}$ nur nachträglich gewählt oder durch ad-hoc-Symmetrisierungen stabilisiert wird, bleibt die daraus entstehende Operatorfamilie strukturell unterbestimmt.
+	
+	\begin{definition}
+		Ist eine symmetrische Menge $\Sigma_{N,p}\subseteq G_N$ gegeben, so definieren wir den normgesteuerten Faltungsoperator
+		\[
+		T_{N,p}f(g):=\sum_{s\in \Sigma_{N,p}} f(gs).
+		\]
+	\end{definition}
+	
+	\begin{satz}
+		Ist $\Sigma_{N,p}=\Sigma_{N,p}^{-1}$, so ist $T_{N,p}$ selbstadjungiert auf $\ellz(G_N)$.
+	\end{satz}
+	
+	\begin{proof}
+		Dies ist ein Spezialfall des vorigen Lemmas.
+	\end{proof}
+	
+	\section{Was bereits bewiesen ist}
+	Im gegenwärtigen Stand lassen sich die folgenden Aussagen sauber vertreten.
+	
+	\begin{satz}
+		Für jedes $N\ge 1$ ist $R_N$ ein endlicher Ring mit $N^4$ Elementen.
+	\end{satz}
+	
+	\begin{satz}
+		Jede symmetrische Schrittmengenwahl $\Sigma\subseteq G$ auf einer endlichen Gruppe erzeugt einen selbstadjungierten Faltungsoperator mit reellem Spektrum.
+	\end{satz}
+	
+	\begin{satz}
+		Eine positive Spektrallücke des normierten Operators impliziert exponentielle Durchmischung auf dem orthogonalen Komplement der konstanten Funktionen.
+	\end{satz}
+	
+	\begin{satz}
+		Jede wohldefinierte symmetrische normkompatible Menge $\Sigma_{N,p}$ erzeugt einen arithmetisch motivierten endlichen Operator $T_{N,p}$.
+	\end{satz}
+	
+	Diese Aussagen sind elementar, aber keineswegs trivial. Sie bilden die gesamte derzeit abgesicherte Grundarchitektur.
+	
+	\section{Was nicht bewiesen ist}
+	Ebenso wichtig ist eine klare Negativliste. Zur Zeit nicht bewiesen sind insbesondere:
+	\begin{enumerate}[label=(\arabic*)]
+		\item eine kanonische und funktorielle Definition von $\Sigma_{N,p}$,
+		\item eine Identifikation von $T_{N,p}$ mit einer echten Hecke-Wirkung,
+		\item ein Nachweis, dass die Graphen direkt aus lokalen Nachbarschaften eines Bruhat--Tits-Baums stammen,
+		\item Kommutativität ganzer Familien $\{T_{N,p}\}_p$,
+		\item Ramanujan-artige Schranken für nichttriviale Eigenwerte,
+		\item eine tiefergehende geometrische Interpretation über endliche Operatorik hinaus.
+	\end{enumerate}
+	
+	\begin{bemerkung}
+		Gerade diese Negativliste ist kein Mangel an Exposition, sondern ein methodischer Gewinn. Sie trennt den gesicherten Kern von noch nicht geschlossenen Brücken.
+	\end{bemerkung}
+	
+	\section{Neue Beweisideen}
+	Im Folgenden werden mehrere neue Beweiswege diskutiert. Das Ziel ist nicht, voreilig Vollständigkeit zu behaupten, sondern realistische mathematische Angriffspunkte zu identifizieren.
+	
+	\subsection{Beweisidee A: Doppelquotientierung der Normschale}
+	Eine natürliche Konstruktion beginnt mit der Hurwitz-Einheitengruppe
+	\[
+	U_H:=\OH^\times.
+	\]
+	Statt $X_p$ direkt modulo $N$ zu reduzieren, betrachtet man zunächst eine doppelte Quotientierung
+	\[
+	U_H\backslash X_p/U_H.
+	\]
+	Danach wird das Resultat modulo $N$ in $G_N$ abgebildet. Die Hoffnung lautet, dass sich so Mehrfachzählungen nicht künstlich, sondern strukturell eliminieren lassen.
+	
+	\paragraph{Zentrale Teilfrage.}
+	Ist die Reduktion
+	\[
+	U_H\backslash X_p/U_H \longrightarrow G_N
+	\]
+	für $p\nmid N$ endlich-to-one mit kontrollierter Fasergröße?
+	
+	Ein positiver Befund wäre ein erster echter Fortschritt hin zu einer intrinsischen Definition von $\Sigma_{N,p}$.
+	
+	\subsection{Beweisidee B: Lokale Split-Struktur bei ungeradem $p$}
+	Für ungerade Primzahlen $p$ ist die Quaternionenalgebra lokal gespalten; insbesondere gilt
+	\[
+	\OH\otimes \Z_p \cong M_2(\Z_p).
+	\]
+	Unter dieser Identifikation wird die reduzierte Norm zur Determinante. Daher liegt die Vermutung nahe, dass Norm-$p$-Elemente lokal in Matrizen der Determinante $p$ übergehen.
+	
+	Der mathematisch interessante Schritt wäre nun nicht, sofort eine große Interpretation zu behaupten, sondern zunächst die lokale Behauptung zu prüfen:
+	\begin{quote}
+		Trifft das Bild der Norm-$p$-Klassen modulo lokalen Einheiten genau eine kanonische Nachbarschaftsschale der Determinantenklasse $p$?
+	\end{quote}
+	
+	Diese Route ist attraktiv, aber technisch anspruchsvoll. Sie verlangt explizite lokale Isomorphismen, saubere Kontrolle der Einheitenwirkung und einen Vergleich der reduzierten globalen Klassen mit lokalen Bahnen.
+	
+	\subsection{Beweisidee C: Endliche Projektionen lokaler Nachbarschaften}
+	Eine schwächere und vielleicht realistischere Route besteht darin, nicht sofort Operatorgleichheit anzustreben, sondern lediglich Nachbarschaftsstrukturen zu vergleichen. Der Bruhat--Tits-Baum von $\mathrm{PGL}_2(\Q_p)$ ist $(p+1)$-regulär. Seine Nachbarschaften kodieren Index-$p$-Schritte von Gittern.
+	
+	Daraus ergibt sich die Frage, ob $\Sigma_{N,p}$ wenigstens als Projektion einer einzelnen lokalen Nachbarschaftsschale auf einen endlichen Quotienten aufgefasst werden kann. Dies wäre deutlich schwächer als eine echte Operatoridentifikation, aber stärker als die bisherige rein motivische Heuristik.
+	
+	\subsection{Beweisidee D: Darstellungstheoretische Spektralanalyse}
+	Selbst ohne zusätzliche Struktur kann man $T_{N,p}$ über die irreduziblen Darstellungen von $G_N$ untersuchen. Für eine irreduzible Darstellung $\rho$ wirkt der Operator im Fourier-Bild als
+	\[
+	\widehat{T_{N,p}}(\rho)=\sum_{s\in\Sigma_{N,p}}\rho(s).
+	\]
+	Damit wird die Eigenwertfrage auf endlichdimensionale Matrixnormen zurückgeführt. Dieser Zugang hat zwei Vorteile:
+	\begin{enumerate}[label=(\alph*)]
+		\item Für kleine Werte von $N$ und $p$ kann man das Spektrum explizit ausrechnen.
+		\item Man erhält erste Informationen darüber, ob die nichttrivialen Eigenwerte systematisch vom trivialen Eigenwert getrennt bleiben.
+	\end{enumerate}
+	
+	Dieser Weg ist kurzfristig besonders fruchtbar, weil er keine tiefere lokale Theorie voraussetzt.
+	
+	\subsection{Beweisidee E: Kommutativitätstests in kleinen Familien}
+	Eine besonders aufschlussreiche Testfrage ist:
+	\[
+	T_{N,p}T_{N,\ell}\stackrel{?}{=}T_{N,\ell}T_{N,p}
+	\qquad (p\neq \ell,\ p\ell\nmid 2N).
+	\]
+	Tritt in kleinen Niveaus systematisch Kommutativität auf, wäre das ein starkes Indiz für eine verborgene algebraische Organisation. Treten systematisch Gegenbeispiele auf, zeigt dies präzise, dass die Konstruktion von $\Sigma_{N,p}$ noch nicht kanonisch genug ist.
+	
+	\subsection{Beweisidee F: Verfeinerte Theta-Organisation der Normschalen}
+	Da die Mengen $X_p$ durch Vierquadratrepräsentationen beschrieben werden, liegt eine generierende Funktion nahe:
+	\[
+	\Theta(q)=\sum_{x\in \OH} q^{\Nrd(x)}.
+	\]
+	Die Koeffizienten zählen Normschalen. Eine verfeinerte Theta-Idee wäre, nicht nur die Größen $|X_p|$, sondern die Orbitstruktur unter $U_H$ zu kodieren. Damit könnte man die Größe und Gestalt der Mengen $\Sigma_{N,p}$ arithmetisch kontrollieren, ohne bereits stärkere Theorie zu benötigen.
+	
+	\section{Ein realistischer Hauptsatzkandidat}
+	Der nächste substanzielle Fortschritt wäre vermutlich kein großer Strukturtheoremsatz, sondern ein kleiner, aber harter Kanonizitätssatz.
+	
+	\begin{proposition}[Hauptsatzkandidat]
+		Sei $p\neq 2$ eine Primzahl und $N\ge 1$ mit $(N,p)=1$. Angenommen, $\Sigma_{N,p}$ wird als Reduktionsbild der doppelten Einheitenquotienten der primitiven Norm-$p$-Elemente aus $\OH$ definiert. Dann gilt unter geeigneten Zusatzannahmen:
+		\begin{enumerate}[label=(\roman*)]
+			\item $\Sigma_{N,p}$ ist wohldefiniert,
+			\item $\Sigma_{N,p}=\Sigma_{N,p}^{-1}$,
+			\item der Operator $T_{N,p}$ ist selbstadjungiert,
+			\item der Grad des zugehörigen Graphen wird durch eine explizite arithmetische Funktion von $p$ kontrolliert.
+		\end{enumerate}
+	\end{proposition}
+	
+	\begin{bemerkung}
+		Diese Proposition ist gegenwärtig ein realistisches Ziel, aber noch kein bewiesener Satz. Ihre Bedeutung liegt darin, den Übergang von bloßer Normkompatibilität zu echter struktureller Definition sichtbar zu machen.
+	\end{bemerkung}
+	
+	\section{Empfohlene Forschungsreihenfolge}
+	Die Analyse der Beweisideen legt eine klare Priorisierung nahe.
+	
+	\subsection*{Phase 1: Härtung der elementaren Ebene}
+	\begin{itemize}
+		\item exakte Wahl der Gruppen $G_N$,
+		\item saubere Definition von $\Sigma_{N,p}$,
+		\item Zusammenhang, Grad und Bipartitheit der Graphen,
+		\item numerische Spektren für kleine $N$ und $p$.
+	\end{itemize}
+	
+	\subsection*{Phase 2: Kanonische Normschalen}
+	\begin{itemize}
+		\item Orbitstruktur von $X_p$ unter $U_H$,
+		\item Fasergrößen der Reduktion modulo $N$,
+		\item Inversionssymmetrie,
+		\item Verhalten bei Variation von $N$.
+	\end{itemize}
+	
+	\subsection*{Phase 3: Lokale Modelle}
+	\begin{itemize}
+		\item explizite Isomorphismen nach $M_2(\Z_p)$,
+		\item Vergleich mit Determinantenklassen,
+		\item Projektion lokaler Nachbarschaften auf endliche Quotienten.
+	\end{itemize}
+	
+	\subsection*{Phase 4: Familien und Operatoralgebra}
+	\begin{itemize}
+		\item Kommutativität,
+		\item simultane Diagonalisierung,
+		\item numerische Eigenwertschranken,
+		\item Vergleich verschiedener Primzahlen $p$.
+	\end{itemize}
+	
+	\section{Schluss}
+	Die mathematisch stärkste Form des Projekts ist nicht die rhetorisch größte, sondern die begrifflich härteste. Sein eigentlicher Wert liegt in einer expliziten endlichen Quaternionenwelt, in der normgesteuerte lokale Daten globale Operatoren und Spektren erzeugen. Genau dort ist die Theorie gegenwärtig tragfähig.
+	
+	Der richtige nächste Schritt besteht daher nicht in weiteren Fernanalogien, sondern in der Schließung der einen wirklich kritischen Lücke: einer kanonischen Konstruktion der Mengen $\Sigma_{N,p}$. Gelingt dieser Schritt, dann wächst aus einer interessanten endlichen Spektralarchitektur eine echte kleine arithmetische Theorie. Bis dahin sollte der Text offen sagen, was er ist:
+	\begin{quote}
+		kein großer geometrischer Anspruch, sondern ein ernstzunehmendes endliches Labor für arithmetisch motivierte Faltungsoperatoren.
+	\end{quote}
+	
+\end{document}

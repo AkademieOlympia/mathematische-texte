@@ -1,0 +1,184 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\usepackage{graphicx}
+\geometry{margin=1in}
+
+\title{Prime Quadruplets as Complete Cycles in $(\mathbb{Z}/12\mathbb{Z})^\times$ \\
+and Their Interpretation via Dirichlet Characters}
+
+\author{Thomas Hoffbauer}
+\date{}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We study the structure of prime quadruplets $(p,p+2,p+6,p+8)$ via residue classes modulo $12$. 
+We show that all admissible quadruplets correspond to complete cycles in the multiplicative group 
+$(\mathbb{Z}/12\mathbb{Z})^\times$. This classification can be expressed naturally in terms of 
+Dirichlet characters modulo $12$. 
+
+We further compare this local arithmetic structure with global spectral properties associated 
+with the Riemann zeta function. Numerical experiments indicate that while quadruplet structure 
+is fully explained by local congruence constraints, no direct correlation with spectral spacing 
+statistics is observed.
+\end{abstract}
+
+\section{Introduction}
+
+Prime constellations are constrained by congruence conditions modulo small integers. 
+In this work, we analyze prime quadruplets
+\[
+(p, p+2, p+6, p+8)
+\]
+using residue classes modulo $12$.
+
+We introduce a four-state classification of primes and show that quadruplets correspond 
+to complete cycles in this system.
+
+\section{Residue Classes Modulo 12}
+
+For primes $p > 3$, one has
+\[
+p \equiv 1,5,7,11 \pmod{12}.
+\]
+
+Define:
+\[
+E := 1,\quad A := 5,\quad B := 7,\quad C := 11.
+\]
+
+\begin{proposition}
+The set $(\mathbb{Z}/12\mathbb{Z})^\times = \{1,5,7,11\}$ forms a group 
+isomorphic to $C_2 \times C_2$.
+\end{proposition}
+
+\begin{proof}
+Direct computation shows closure and that each element has order $2$. 
+Hence the group is the Klein four group.
+\end{proof}
+
+\section{Dirichlet Character Representation}
+
+Let $\chi_1, \chi_2$ be two independent Dirichlet characters modulo $12$.
+Then every prime $p>3$ can be mapped to
+\[
+p \mapsto (\chi_1(p), \chi_2(p)) \in \{\pm1\}^2.
+\]
+
+\begin{proposition}
+The assignment
+\[
+E \leftrightarrow (+1,+1),\quad
+A \leftrightarrow (-1,+1),\quad
+B \leftrightarrow (+1,-1),\quad
+C \leftrightarrow (-1,-1)
+\]
+defines a bijection between residue classes and character values.
+\end{proposition}
+
+\section{Prime Quadruplets}
+
+\begin{theorem}
+Let $(p,p+2,p+6,p+8)$ be a prime quadruplet with $p>3$. 
+Then the residues modulo $12$ form a cyclic permutation of $(E,A,B,C)$.
+\end{theorem}
+
+\begin{proof}
+Checking all admissible residues modulo $12$ shows that only 
+$p \equiv 5$ or $11 \pmod{12}$ can yield quadruplets. 
+Explicit evaluation gives:
+\[
+5 \to 7 \to 11 \to 1, \quad
+11 \to 1 \to 5 \to 7.
+\]
+Thus all quadruplets traverse all four residue classes exactly once.
+\end{proof}
+
+\begin{corollary}
+Prime quadruplets are minimal complete cycles in $(\mathbb{Z}/12\mathbb{Z})^\times$.
+\end{corollary}
+
+\section{Dirichlet L-functions}
+
+For a Dirichlet character $\chi$, define
+\[
+L(s,\chi) = \prod_{p} (1 - \chi(p)p^{-s})^{-1}.
+\]
+
+The Riemann zeta function is
+\[
+\zeta(s) = \prod_p (1 - p^{-s})^{-1}.
+\]
+
+\subsection{Interpretation}
+
+The zeta function aggregates all primes, while $L(s,\chi)$ isolates 
+arithmetic information associated with residue classes.
+
+\section{Numerical Experiments}
+
+We analyze a dataset of Riemann zeros $\gamma_n$.
+
+\subsection{Spacing Distribution}
+
+Define
+\[
+s_n = \gamma_{n+1} - \gamma_n.
+\]
+
+Normalized spacings follow the expected GUE-type distribution.
+
+\subsection{Quadruplet Analysis}
+
+Quadruplets were computed up to a cutoff $N$. Observations:
+
+\begin{itemize}
+\item Only two cyclic patterns occur (corresponding to starting residues $5$ and $11$)
+\item All quadruplets realize full cycles in $(\mathbb{Z}/12\mathbb{Z})^\times$
+\end{itemize}
+
+\subsection{Correlation Test}
+
+We compare quadruplet locations with spacing data.
+
+\begin{proposition}
+No statistically significant correlation between quadruplet positions 
+and normalized zeta spacing was detected.
+\end{proposition}
+
+\section{Discussion}
+
+The results indicate a clear separation:
+
+\begin{itemize}
+\item Local structure: governed by congruence constraints modulo $12$
+\item Global structure: governed by spectral properties of $\zeta(s)$
+\end{itemize}
+
+Prime quadruplets arise purely from local admissibility conditions.
+
+\section{Conclusion}
+
+We have shown:
+
+\[
+\text{Prime quadruplets} \leftrightarrow \text{complete cycles in } (\mathbb{Z}/12\mathbb{Z})^\times
+\]
+
+and:
+
+\[
+\text{EABC classification} \leftrightarrow \text{Dirichlet character decomposition}.
+\]
+
+This provides a minimal and exact structural explanation of quadruplets.
+
+\end{document}

@@ -1,0 +1,520 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.6cm]{geometry}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	citecolor=blue,
+	urlcolor=blue,
+	pdftitle={Ein diskretes Vierlingsmodell im Bamberger Modell},
+	pdfauthor={Thomas Hoffbauer},
+	pdfsubject={BM-Vierlingsmodell, Holonomie, diskreter Hamiltonoperator, numerischer Ordnungswechsel},
+	pdfkeywords={Bamberger Modell, Vierlingsmodell, Klein-Vierergruppe, Hamiltonoperator, Holonomie, Aharonov-Bohm, von Klitzing}
+}
+
+\title{Ein diskretes Vierlingsmodell im Bamberger Modell\\
+	\large Holonomie, neutraler Sektor und numerischer Ordnungswechsel}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{remark}[definition]{Bemerkung}
+
+\newcommand{\X}{\mathcal X}
+\newcommand{\HE}{\mathcal H_E}
+\newcommand{\wt}{\mathrm{wt}}
+\newcommand{\Hol}{\mathrm{Hol}}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir formulieren ein diskretes Vierlingsmodell im Rahmen des Bamberger Modells. Die lokalen Freiheitsgrade nehmen Werte in der Klein-Vierergruppe
+		\[
+		\Sigma=\{E,A,B,C\}
+		\]
+		an, und der neutrale Vierlingssektor wird durch die Bedingung
+		\[
+		\sigma_1\sigma_2\sigma_3\sigma_4=E
+		\]
+		definiert. Auf diesem Sektor konstruieren wir einen diskreten Hamiltonoperator aus einem zyklischen Shift, klassenerhaltenden Paarflip-Operatoren und einem diagonalen Potential. Das Modell besitzt eine natürliche Holonomiestruktur auf Viererorbits und erlaubt eine numerische Analyse konkurrierender neutraler Ordnungsformen. Insbesondere zeigt der Grundzustand einen Regimewechsel zwischen einer ABCE-dominierten voll gemischten neutralen Ordnung und einer AABB-dominierten paarig kompensierten Ordnung. Der Umschlag liegt numerisch bei einem kritischen Potentialparameter von ungefähr \(\alpha_c\approx -0.72\). Der vollständig triviale Zustand \(EEEE\) bleibt im gesamten untersuchten Bereich untergeordnet. Damit liefert das Modell einen ersten expliziten Spektralansatz, in dem verschiedene Typen globaler Neutralität miteinander konkurrieren.
+	\end{abstract}
+	
+	\tableofcontents
+	
+	\section{Einleitung}
+	
+	Das Bamberger Modell verfolgt die Leitidee, arithmetische und spektrale Strukturen nicht allein lokal, sondern als Projektionen globaler Ordnungsformen zu verstehen. In dieser Perspektive erscheinen lokale Klassen, Übergänge und Observablen als sichtbare Anteile einer umfassenderen diskreten Gesamtstruktur.
+	
+	Ein erster minimaler Zugang zu dieser Idee besteht darin, nicht isolierte Einzelsignaturen zu betrachten, sondern gebundene Vierlingskonfigurationen. Dies ist aus zwei Gründen natürlich. Erstens erlauben Viererverbünde eine nichttriviale globale Neutralitätsbedingung. Zweitens erzeugt die zyklische Struktur eines Vierlings bereits eine diskrete Holonomie- und Resonanzsprache.
+	
+	In der vorliegenden Notiz wird ein solches Vierlingsmodell formalisiert. Die lokalen Zustände liegen in der Klein-Vierergruppe \(\Sigma=\{E,A,B,C\}\). Der neutrale Sektor wird durch die Bedingung definiert, dass das Gesamtprodukt gleich \(E\) ist. Auf diesem Sektor konstruieren wir einen diskreten Hamiltonoperator
+	\[
+	H=-t(T+T^{-1})-\lambda\sum F_{ij}^{(g)}+V,
+	\]
+	dessen Spektrum numerisch untersucht wird.
+	
+	Die wesentliche Beobachtung lautet: Der Grundzustand ist nicht trivial, sondern trägt überwiegend strukturierte neutrale Konfigurationen. Zudem tritt ein Parameterbereich auf, in dem zwei verschiedene globale Ordnungsformen miteinander konkurrieren:
+	\begin{enumerate}[label=(\roman*)]
+		\item eine voll gemischte neutrale Ordnung vom Typ ABCE,
+		\item eine paarig kompensierte neutrale Ordnung vom Typ AABB.
+	\end{enumerate}
+	Dies ist der erste explizite Hinweis darauf, dass Neutralität im BM-Sinn keine eindeutige Kategorie ist, sondern mehrere interne Organisationsformen besitzen kann.
+	
+	\section{Algebraische Grundstruktur}
+	
+	\begin{definition}[Signaturraum]
+		Sei
+		\[
+		\Sigma=\{E,A,B,C\}
+		\]
+		mit der Multiplikationsstruktur der Klein-Vierergruppe versehen:
+		\[
+		A^2=B^2=C^2=E,\qquad AB=C,\qquad AC=B,\qquad BC=A.
+		\]
+	\end{definition}
+	
+	\begin{remark}
+		Die Gruppe \(\Sigma\) ist abelsch, und jedes nichttriviale Element ist sein eigenes Inverses. Diese beiden Eigenschaften sind für die Konstruktion des neutralen Vierlingssektors und der klassenerhaltenden Operatoren entscheidend.
+	\end{remark}
+	
+	\begin{definition}[Vierlingsraum]
+		Der volle diskrete Vierlingsraum ist
+		\[
+		\X=\Sigma^4.
+		\]
+		Ein Element von \(\X\) wird als
+		\[
+		(\sigma_1,\sigma_2,\sigma_3,\sigma_4),\qquad \sigma_i\in\Sigma,
+		\]
+		geschrieben.
+	\end{definition}
+	
+	\begin{definition}[Gesamtsignatur]
+		Für \(X=(\sigma_1,\sigma_2,\sigma_3,\sigma_4)\in\X\) definieren wir
+		\[
+		Q(X):=\sigma_1\sigma_2\sigma_3\sigma_4\in\Sigma.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Neutraler Vierlingssektor]
+		Der neutrale Sektor sei
+		\[
+		\X_E=\left\{(\sigma_1,\sigma_2,\sigma_3,\sigma_4)\in\Sigma^4:\sigma_1\sigma_2\sigma_3\sigma_4=E\right\}.
+		\]
+		Der zugehörige komplexe Zustandsraum ist
+		\[
+		\HE=\mathbb C[\X_E].
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Es gilt
+		\[
+		|\X_E|=4^3=64.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Wählt man drei Einträge \(\sigma_1,\sigma_2,\sigma_3\in\Sigma\) frei, so ist der vierte durch
+		\[
+		\sigma_4=\sigma_1\sigma_2\sigma_3
+		\]
+		eindeutig bestimmt, da jedes Element sein eigenes Inverses ist und \(Q(X)=E\) gelten soll. Also gibt es genau \(4^3=64\) neutrale Vierlinge.
+	\end{proof}
+	
+	\begin{lemma}
+		Jede Permutation der vier Plätze erhält die Gesamtsignatur \(Q\).
+	\end{lemma}
+	
+	\begin{proof}
+		Da \(\Sigma\) abelsch ist, hängt das Produkt
+		\[
+		\sigma_1\sigma_2\sigma_3\sigma_4
+		\]
+		nicht von der Reihenfolge der Faktoren ab.
+	\end{proof}
+	
+	\section{Operatoren auf dem neutralen Sektor}
+	
+	\subsection{Zyklischer Transport}
+	
+	\begin{definition}[Shiftoperator]
+		Der zyklische Shift \(T\) wirke auf Basiszuständen durch
+		\[
+		T|\sigma_1,\sigma_2,\sigma_3,\sigma_4\rangle
+		=
+		|\sigma_2,\sigma_3,\sigma_4,\sigma_1\rangle.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Der Operator \(T\) erhält \(\X_E\) und erfüllt \(T^4=I\).
+	\end{lemma}
+	
+	\begin{proof}
+		Die Invarianz von \(\X_E\) folgt aus der Permutationsinvarianz von \(Q\). Nach vier zyklischen Verschiebungen kehrt jede Konfiguration in ihre Ausgangslage zurück.
+	\end{proof}
+	
+	\begin{remark}
+		Die Eigenwerte von \(T\) liegen in
+		\[
+		\{1,i,-1,-i\},
+		\]
+		was auf Viererorbits eine diskrete Holonomiestruktur erzeugt.
+	\end{remark}
+	
+	\subsection{Klassenerhaltende Paarflips}
+	
+	\begin{definition}[Paarflip-Operator]
+		Für \(g\in\{A,B,C\}\) und \(1\le i<j\le 4\) definieren wir
+		\[
+		F_{ij}^{(g)}
+		|\sigma_1,\dots,\sigma_i,\dots,\sigma_j,\dots,\sigma_4\rangle
+		=
+		|\sigma_1,\dots,g\sigma_i,\dots,g\sigma_j,\dots,\sigma_4\rangle.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Jeder Operator \(F_{ij}^{(g)}\) erhält den neutralen Sektor \(\X_E\).
+	\end{lemma}
+	
+	\begin{proof}
+		Da \(g^2=E\), gilt
+		\[
+		(g\sigma_i)(g\sigma_j)=g^2\sigma_i\sigma_j=\sigma_i\sigma_j.
+		\]
+		Also bleibt das Gesamtprodukt aller vier Einträge unverändert.
+	\end{proof}
+	
+	\subsection{Diagonales Potential}
+	
+	\begin{definition}[Potentialterm]
+		Der diagonale Potentialterm \(V\) werde durch eine Funktion
+		\[
+		v:\X_E\to\mathbb R
+		\]
+		gegeben, so dass
+		\[
+		V|X\rangle=v(X)|X\rangle.
+		\]
+		In den numerischen Experimenten wird \(v\) aus zwei Beiträgen zusammengesetzt:
+		\begin{enumerate}[label=(\alph*)]
+			\item einer Gewichtung der Anzahl nichttrivialer Einträge,
+			\item einer zusätzlichen Gewichtung der ABCE-Konfigurationen durch einen Parameter \(\alpha\).
+		\end{enumerate}
+	\end{definition}
+	
+	\section{Der diskrete BM-Hamiltonoperator}
+	
+	\begin{definition}[Hamiltonoperator]
+		Auf \(\HE\) definieren wir
+		\[
+		H
+		=
+		-t(T+T^{-1})
+		-\lambda \sum_{1\le i<j\le 4}\sum_{g\in\{A,B,C\}}F_{ij}^{(g)}
+		+V.
+		\]
+	\end{definition}
+	
+	\begin{remark}
+		Die drei Summanden besitzen eine klare strukturelle Interpretation:
+		\begin{itemize}
+			\item \(T+T^{-1}\): zyklischer Vierlings-Transport,
+			\item \(\sum F_{ij}^{(g)}\): klassenerhaltende interne Umbauten,
+			\item \(V\): energetische Bevorzugung bestimmter neutraler Vierlingstypen.
+		\end{itemize}
+	\end{remark}
+	
+	\begin{lemma}
+		Der Operator \(H\) erhält \(\HE\).
+	\end{lemma}
+	
+	\begin{proof}
+		Der Shift \(T\) erhält \(\X_E\), ebenso jeder Paarflip \(F_{ij}^{(g)}\). Der Potentialterm \(V\) ist diagonal und verändert keine Basiszustände. Also bleibt \(\HE\) invariant.
+	\end{proof}
+	
+	\section{Holonomie und Viererorbit}
+	
+	Betrachte den neutralen Vierling
+	\[
+	X_0=(A,B,C,E).
+	\]
+	Sein Orbit unter \(T\) lautet
+	\[
+	X_0,\quad T(X_0)=(B,C,E,A),\quad T^2(X_0)=(C,E,A,B),\quad T^3(X_0)=(E,A,B,C).
+	\]
+	Die Restriktion von \(T\) auf diesen Orbit ist durch die \(4\times 4\)-Matrix
+	\[
+	T=
+	\begin{pmatrix}
+		0&0&0&1\\
+		1&0&0&0\\
+		0&1&0&0\\
+		0&0&1&0
+	\end{pmatrix}
+	\]
+	gegeben.
+	
+	Für den reinen Transportterm
+	\[
+	H_{\mathrm{trans}}=-t(T+T^{-1})
+	\]
+	ergibt sich auf diesem Orbit
+	\[
+	H_{\mathrm{trans}}
+	=
+	-t
+	\begin{pmatrix}
+		0&1&0&1\\
+		1&0&1&0\\
+		0&1&0&1\\
+		1&0&1&0
+	\end{pmatrix},
+	\]
+	mit den Eigenwerten
+	\[
+	-2t,\ 0,\ 0,\ 2t.
+	\]
+	
+	\begin{remark}
+		Dies ist die diskrete Minimalform einer Holonomiestruktur: Der geschlossene Umlauf eines Vierlings trägt eine nichttriviale zyklische Phasenklassifikation. Im Modell erscheint diese Struktur nicht als kontinuierliche Phase, sondern als diskrete Viererresonanz.
+	\end{remark}
+	
+	\section{Typklassen neutraler Vierlinge}
+	
+	Zur Interpretation numerischer Eigenzustände klassifizieren wir neutrale Vierlinge in drei Haupttypen.
+	
+	\begin{definition}[EEEE-Typ]
+		Der triviale Typ ist
+		\[
+		(E,E,E,E).
+		\]
+	\end{definition}
+	
+	\begin{definition}[AABB-Typ]
+		Ein neutraler Vierling heiße vom AABB-Typ, wenn seine Häufigkeitsstruktur die Form \((2,2)\) besitzt, also zwei Klassen jeweils doppelt auftreten. Beispiele sind
+		\[
+		(A,A,B,B),\qquad (A,A,E,E),\qquad (B,B,C,C),
+		\]
+		sowie Permutationen.
+	\end{definition}
+	
+	\begin{definition}[ABCE-Typ]
+		Ein neutraler Vierling heiße vom ABCE-Typ, wenn jede der vier Klassen \(E,A,B,C\) genau einmal vorkommt. Beispiele sind
+		\[
+		(A,B,C,E),\qquad (E,A,B,C),
+		\]
+		und alle Permutationen.
+	\end{definition}
+	
+	\begin{remark}
+		Diese drei Typen bilden im vorliegenden Modell die dominanten Organisationsformen des Grundzustands. Insbesondere konkurrieren AABB- und ABCE-Strukturen als zwei verschiedene Formen strukturierter Neutralität.
+	\end{remark}
+	
+	\section{Numerische Resultate}
+	
+	In allen Rechnungen dieses Abschnitts werden die Parameter
+	\[
+	t=1,\qquad \lambda=0.15,\qquad \mu=0.4
+	\]
+	fixiert. Variiert wird der Potentialparameter \(\alpha\), welcher die ABCE-Typen energetisch gewichtet.
+	
+	\subsection{Grundzustandsstruktur bei \texorpdfstring{$\alpha=-0.3$}{alpha=-0.3}}
+	
+	Für \(\alpha=-0.3\) liefert die numerische Diagonalisierung im neutralen Sektor die ersten Eigenwerte
+	\[
+	E_0\approx -3.68503172,\qquad E_1\approx -2.22057451.
+	\]
+	
+	Die Typgewichte des Grundzustands lauten:
+	\[
+	\wt_{AABB}(E_0)\approx 0.37584705,\qquad
+	\wt_{ABCE}(E_0)\approx 0.17788503,\qquad
+	\wt_{EEEE}(E_0)\approx 0.05361052.
+	\]
+	
+	Dagegen ist der erste angeregte Zustand stark durch den EEEE-Typ geprägt:
+	\[
+	\wt_{EEEE}(E_1)\approx 0.67243007.
+	\]
+	
+	\begin{proposition}[Nichttriviale Grundzustandsordnung]
+		Für \(\alpha=-0.3\) ist der Grundzustand des BM-Vierlingsmodells nicht trivial. Sein Gewicht liegt überwiegend auf strukturierten neutralen Konfigurationen, insbesondere vom AABB-Typ, mit signifikanter Beimischung des ABCE-Typs. Der vollständig triviale Typ EEEE bleibt deutlich untergeordnet.
+	\end{proposition}
+	
+	\begin{proof}[Numerische Evidenz]
+		Die expliziten Typgewichte zeigen
+		\[
+		\wt_{AABB}(E_0)>\wt_{ABCE}(E_0)\gg \wt_{EEEE}(E_0).
+		\]
+		Damit ist der Grundzustand nicht als Leerkonfiguration, sondern als strukturierte neutrale Ordnung zu interpretieren.
+	\end{proof}
+	
+	\subsection{Alpha-Scan}
+	
+	Die folgende Tabelle zeigt den Grundzustandswert \(E_0\) sowie die Typgewichte von AABB, ABCE und EEEE für verschiedene Werte von \(\alpha\).
+	
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{rcccc}
+			\toprule
+			$\alpha$ & $E_0$ & AABB & ABCE & EEEE \\
+			\midrule
+			$-1.00$ & $-4.00471086$ & $0.427823$ & $0.526006$ & $0.029035$ \\
+			$-0.75$ & $-3.87939297$ & $0.467105$ & $0.476415$ & $0.036655$ \\
+			$-0.50$ & $-3.76650374$ & $0.505010$ & $0.426820$ & $0.045587$ \\
+			$-0.25$ & $-3.66586282$ & $0.540303$ & $0.378661$ & $0.055726$ \\
+			$0.00$  & $-3.57694646$ & $0.572016$ & $0.333212$ & $0.066867$ \\
+			$0.25$  & $-3.49895031$ & $0.599557$ & $0.291426$ & $0.078731$ \\
+			$0.50$  & $-3.43088069$ & $0.622728$ & $0.253861$ & $0.091008$ \\
+			\bottomrule
+		\end{tabular}
+		\caption{Typgewichte des Grundzustands im BM-Vierlingsmodell.}
+	\end{table}
+	
+	Man erkennt:
+	\begin{itemize}
+		\item Für stark negatives \(\alpha\) ist der Grundzustand ABCE-dominiert.
+		\item Für größere \(\alpha\) wird der AABB-Typ dominant.
+		\item Der EEEE-Typ bleibt im gesamten Bereich klein.
+	\end{itemize}
+	
+	\subsection{Feinscan im Umschaltbereich}
+	
+	Ein Feinscan ergibt:
+	
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{rccccc}
+			\toprule
+			$\alpha$ & $E_0$ & AABB & ABCE & EEEE & ABCE$-$AABB \\
+			\midrule
+			$-0.80$ & $-3.90346289$ & $0.459317$ & $0.486381$ & $0.035024$ & $+0.027064$ \\
+			$-0.70$ & $-3.85582136$ & $0.474838$ & $0.466450$ & $0.038338$ & $-0.008389$ \\
+			$-0.60$ & $-3.81017142$ & $0.490097$ & $0.446565$ & $0.041861$ & $-0.043532$ \\
+			$-0.50$ & $-3.76650374$ & $0.505010$ & $0.426820$ & $0.045587$ & $-0.078190$ \\
+			$-0.40$ & $-3.72479970$ & $0.519502$ & $0.407307$ & $0.049507$ & $-0.112195$ \\
+			$-0.30$ & $-3.68503172$ & $0.533505$ & $0.388113$ & $0.053611$ & $-0.145392$ \\
+			$-0.20$ & $-3.64716380$ & $0.546957$ & $0.369319$ & $0.057883$ & $-0.177638$ \\
+			$-0.10$ & $-3.61115223$ & $0.559808$ & $0.350997$ & $0.062307$ & $-0.208811$ \\
+			$0.00$  & $-3.57694646$ & $0.572016$ & $0.333212$ & $0.066867$ & $-0.238804$ \\
+			$0.10$  & $-3.54449005$ & $0.583553$ & $0.316018$ & $0.071543$ & $-0.267535$ \\
+			\bottomrule
+		\end{tabular}
+		\caption{Feinscan des Grundzustands im Umschaltbereich.}
+	\end{table}
+	
+	\begin{proposition}[Numerischer Ordnungswechsel]
+		Im BM-Vierlingsmodell mit
+		\[
+		t=1,\qquad \lambda=0.15,\qquad \mu=0.4
+		\]
+		zeigt der Grundzustand einen Regimewechsel zwischen einer ABCE-dominierten voll gemischten neutralen Ordnung und einer AABB-dominierten paarig kompensierten Ordnung. Der Umschlag liegt numerisch bei
+		\[
+		\alpha_c\approx -0.72.
+		\]
+	\end{proposition}
+	
+	\begin{proof}[Numerische Evidenz]
+		Für \(\alpha=-0.80\) gilt
+		\[
+		\wt_{ABCE}(E_0)-\wt_{AABB}(E_0)>0,
+		\]
+		während für \(\alpha=-0.70\) bereits
+		\[
+		\wt_{ABCE}(E_0)-\wt_{AABB}(E_0)<0
+		\]
+		ist. Der Vorzeichenwechsel lokalisiert den Umschlagspunkt zwischen diesen beiden Werten. Eine lineare Interpolation ergibt näherungsweise
+		\[
+		\alpha_c\approx -0.724.
+		\]
+	\end{proof}
+	
+	\section{Interpretation}
+	
+	Der numerische Befund legt nahe, dass im neutralen Vierlingssektor mindestens zwei verschiedene globale Ordnungsformen konkurrieren:
+	\begin{enumerate}[label=(\roman*)]
+		\item \textbf{voll gemischte Neutralität} vom Typ ABCE,
+		\item \textbf{paarig kompensierte Neutralität} vom Typ AABB.
+	\end{enumerate}
+	
+	Bemerkenswert ist, dass der vollständig triviale Typ
+	\[
+	(E,E,E,E)
+	\]
+	im gesamten untersuchten Parameterbereich untergeordnet bleibt. Das Modell bevorzugt also nicht triviale Leere, sondern strukturierte Neutralität.
+	
+	Im Sinne des Bamberger Modells kann man dies wie folgt lesen:
+	\begin{quote}
+		Neutralität ist keine eindimensionale Kategorie. Sie besitzt mindestens zwei interne Organisationsformen, deren Dominanz durch einen globalen Potentialparameter gesteuert werden kann.
+	\end{quote}
+	
+	Damit entsteht eine erste explizite Spektralsprache für Vierlingsobjekte:
+	\begin{itemize}
+		\item lokale Signaturen in \(\Sigma\),
+		\item globale Neutralitätsbedingung \(Q=E\),
+		\item zyklischer Transport mit diskreter Holonomie,
+		\item und konkurrierende Grundordnungen.
+	\end{itemize}
+	
+	\section{Ausblick}
+	
+	Die vorliegenden Resultate sind ein Spielzeugmodell, aber sie markieren einen methodisch sauberen Übergang von heuristischen BM-Ideen zu einem expliziten diskreten Operatoransatz. Die naheliegenden nächsten Schritte sind:
+	
+	\begin{enumerate}[label=(\arabic*)]
+		\item ein zweidimensionaler Parameter-Scan in \((\alpha,\lambda)\), um eine kleine Phasenkarte zu erzeugen;
+		\item eine genauere Analyse der Entartungen und der zugrunde liegenden Symmetrien;
+		\item die Definition lokaler Observablen und ihrer Erwartungswerte in den globalen Eigenzuständen;
+		\item die Konstruktion verallgemeinerter Holonomie-Terme;
+		\item der Vergleich mit echten Primzahlvierlingen, sofern eine belastbare Zuordnung von arithmetischen Objekten zu Signaturvierlingen formuliert werden kann.
+	\end{enumerate}
+	
+	Das BM-Vierlingsmodell zeigt damit bereits in seiner einfachsten Form, dass globale Neutralität verschiedene interne Gestalten annehmen kann und dass diese Gestalten spektral unterscheidbar sind.
+	
+	\begin{thebibliography}{9}
+		
+		\bibitem{hall}
+		K. v. Klitzing, G. Dorda, M. Pepper,
+		\textit{New Method for High-Accuracy Determination of the Fine-Structure Constant Based on Quantized Hall Resistance},
+		Phys. Rev. Lett. \textbf{45} (1980), 494--497.
+		
+		\bibitem{aharonovbohm}
+		Y. Aharonov, D. Bohm,
+		\textit{Significance of Electromagnetic Potentials in the Quantum Theory},
+		Phys. Rev. \textbf{115} (1959), 485--491.
+		
+		\bibitem{conway}
+		J. H. Conway, D. A. Smith,
+		\textit{On Quaternions and Octonions},
+		A K Peters, 2003.
+		
+		\bibitem{halltop}
+		D. Tong,
+		\textit{Lectures on the Quantum Hall Effect},
+		verfügbar als Vorlesungsnotizen.
+		
+		\bibitem{bmnote}
+		T. Hoffbauer,
+		\textit{Arbeitsnotizen zum Bamberger Modell},
+		unveröffentlicht.
+		
+	\end{thebibliography}
+	
+\end{document}

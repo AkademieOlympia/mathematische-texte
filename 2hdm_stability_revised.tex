@@ -1,0 +1,427 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{enumitem}
+\usepackage{xcolor}
+
+\geometry{margin=2.7cm}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./}{fig/}{figs/}{images/}{img/}}
+\newcommand{\includegraphicssafe}[2][]{%
+  \IfFileExists{#2}{\includegraphics[#1]{#2}}{\fbox{\texttt{Missing figure: #2}}}%
+}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  citecolor=blue!50!black,
+  urlcolor=blue!50!black,
+  pdftitle={Global Stability in the Two Higgs Doublet Model as a Uniform Coercivity Problem},
+  pdfauthor={Thomas Hoffbauer}
+}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\norm}[1]{\lVert #1 \rVert}
+\newcommand{\infk}{\inf_{k\in B^3}}
+
+\title{\textbf{Global Stability in the Two Higgs Doublet Model as a Uniform Coercivity Problem}\\
+\large A corrected analytic formulation of the reduced potential}
+\author{Thomas Hoffbauer\\Bamberg, Germany}
+\date{April 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+A recent formal verification of the reduced stability problem in the two Higgs doublet model (2HDM) showed that a widely cited directional criterion is not sufficient for boundedness from below of the full scalar potential. The underlying issue is structural: once the potential is reduced to the form
+\[
+V(K_0,k)=K_0J_2(k)+K_0^2J_4(k),
+\]
+global stability is no longer a purely directional question. It is a uniform coercivity problem coupling the scale variable $K_0>0$ to the direction variable $k\in B^3$. In this note we derive the corrected criterion directly and self-containedly by minimizing in the scale variable. We give a complete proof of the equivalence between global boundedness from below and a uniform domination estimate of the form $J_2(k)^2\le 4c\,J_4(k)$ on the region where $J_2(k)<0$. We also exhibit an explicit family showing why directional nonnegativity of $J_4$ alone is insufficient. The result is best understood as a coercivity statement: the linear drift term must be uniformly controlled by the quadratic curvature term.
+\end{abstract}
+
+\section{Introduction}
+
+The question whether a scalar potential is bounded from below is fundamental in classical and quantum field theory. In the two Higgs doublet model (2HDM), this question admits a standard reduction to a scalar scale parameter $K_0>0$ and a direction variable $k\in \R^3$ constrained by $\norm{k}^2\le 1$. In reduced form, the potential becomes
+\[
+V(K_0,k)=K_0J_2(k)+K_0^2J_4(k),
+\]
+where $J_2$ is affine and $J_4$ is quadratic in $k$ \cite{Maniatis2006,ToobySmith2026}.
+
+A recent formal analysis has shown that a criterion stated only in terms of directional information is not sufficient for global boundedness from below \cite{ToobySmith2026}. The point is elementary but important: for fixed direction $k$, the behavior of $V(K_0,k)$ depends not only on the sign of $J_4(k)$, but on the quantitative relation between $J_2(k)$ and $J_4(k)$.
+
+The aim of this note is to formulate this correctly in a self-contained analytic way. We show that global stability is equivalent to a uniform coercivity estimate on direction space. In particular, it is not enough that the quartic part be directionally nonnegative; rather, the negative part of the linear term must be uniformly dominated by the quadratic part.
+
+For general background on 2HDMs and orbit-space formulations, see for example \cite{Branco2012,Ivanov2007,Ivanov2008}. The present note is deliberately narrower in scope: it focuses only on the logic of the reduced bounded-from-below problem.
+
+\section{Reduced potential and global stability}
+
+Let
+\[
+B^3:=\{k\in \R^3:\norm{k}^2\le 1\}.
+\]
+The reduced 2HDM potential has the form
+\begin{equation}\label{eq:reduced-potential}
+V(K_0,k)=K_0J_2(k)+K_0^2J_4(k),
+\qquad K_0>0,\ k\in B^3,
+\end{equation}
+where $J_2:B^3\to\R$ is affine and $J_4:B^3\to\R$ is quadratic \cite{Maniatis2006,ToobySmith2026}.
+
+\begin{definition}
+The reduced potential $V$ is called \emph{globally stable} if there exists $c\in\R$ such that
+\[
+V(K_0,k)\ge c
+\qquad\text{for all }K_0>0,\ k\in B^3.
+\]
+\end{definition}
+
+This is a genuinely global condition with quantifier pattern
+\[
+\exists c\in\R\ \forall k\in B^3\ \forall K_0>0.
+\]
+Already at this level one sees that a statement involving only directional signs cannot automatically imply global boundedness unless the dependence on $K_0$ has been analyzed uniformly.
+
+For fixed $k$, define
+\[
+f_k(t):=tJ_2(k)+t^2J_4(k),\qquad t>0.
+\]
+The stability problem is therefore equivalent to the existence of a uniform lower bound for the family $(f_k)_{k\in B^3}$.
+
+\section{Minimization in the scale variable}
+
+We begin with the elementary one-dimensional minimization problem.
+
+\begin{lemma}\label{lem:radial-infimum}
+Fix $k\in B^3$, and write
+\[
+D:=J_2(k),\qquad Q:=J_4(k).
+\]
+Then
+\[
+\inf_{t>0}(tD+t^2Q)=
+\begin{cases}
+0, & D\ge 0,\ Q\ge 0,\\[1ex]
+-\dfrac{D^2}{4Q}, & D<0,\ Q>0,\\[2ex]
+-\infty, & Q<0,\\[1ex]
+-\infty, & Q=0,\ D<0,\\[1ex]
+0, & Q=0,\ D\ge 0.
+\end{cases}
+\]
+\end{lemma}
+
+\begin{proof}
+We distinguish cases.
+
+\begin{enumerate}[label=\arabic*.,leftmargin=2em]
+\item \textbf{Case $Q<0$.} Then $tD+t^2Q\to -\infty$ as $t\to\infty$, so the infimum is $-\infty$.
+
+\item \textbf{Case $Q=0$.} Then $f_k(t)=tD$. If $D<0$, then $tD\to -\infty$ as $t\to\infty$. If $D\ge 0$, then $\inf_{t>0}tD=0$, approached as $t\downarrow 0$.
+
+\item \textbf{Case $Q>0$.} Completing the square gives
+\[
+tD+t^2Q
+=
+Q\left(t+\frac{D}{2Q}\right)^2-\frac{D^2}{4Q}.
+\]
+If $D<0$, the minimizer $t_*=-D/(2Q)$ lies in $(0,\infty)$, and the infimum equals $-D^2/(4Q)$. If $D\ge 0$, then $t_*\le 0$, so on the domain $t>0$ the infimum is attained only in the limit $t\downarrow 0$, hence equals $0$.
+\end{enumerate}
+\end{proof}
+
+The preceding lemma motivates the following definition.
+
+\begin{definition}
+Define the \emph{effective radial functional}
+\[
+E(k):=\inf_{K_0>0}V(K_0,k)=\inf_{t>0}(tJ_2(k)+t^2J_4(k)).
+\]
+\end{definition}
+
+By \cref{lem:radial-infimum} we obtain the explicit formula
+\[
+E(k)=
+\begin{cases}
+0, & J_2(k)\ge 0,\ J_4(k)\ge 0,\\[1ex]
+-\dfrac{J_2(k)^2}{4J_4(k)}, & J_2(k)<0,\ J_4(k)>0,\\[2ex]
+-\infty, & J_4(k)<0,\\[1ex]
+-\infty, & J_4(k)=0,\ J_2(k)<0,\\[1ex]
+0, & J_4(k)=0,\ J_2(k)\ge 0.
+\end{cases}
+\]
+Hence the global stability problem is exactly the question whether
+\[
+\infk E(k)>-\infty.
+\]
+
+This already isolates the essential obstruction: it is not enough to know that $J_4(k)\ge 0$; one must control the ratio $J_2(k)^2/J_4(k)$ on the set where $J_2(k)<0$.
+
+\section{Corrected global stability criterion}
+
+We now state and prove the main result in self-contained form.
+
+\begin{theorem}[Corrected global stability criterion]\label{thm:main}
+The reduced potential
+\[
+V(K_0,k)=K_0J_2(k)+K_0^2J_4(k)
+\]
+is globally stable if and only if there exists $c\ge 0$ such that for every $k\in B^3$,
+\[
+J_4(k)\ge 0,
+\]
+and whenever $J_2(k)<0$, one has
+\[
+J_2(k)^2\le 4c\,J_4(k).
+\]
+\end{theorem}
+
+\begin{proof}
+Assume first that $V$ is globally stable. Then there exists $m\in\R$ such that
+\[
+V(K_0,k)\ge m
+\qquad\text{for all }K_0>0,\ k\in B^3.
+\]
+
+We first show that $J_4(k)\ge 0$ for all $k\in B^3$. If there existed $k_0$ with $J_4(k_0)<0$, then
+\[
+V(K_0,k_0)=K_0J_2(k_0)+K_0^2J_4(k_0)\to -\infty
+\quad\text{as }K_0\to\infty,
+\]
+contradicting the lower bound.
+
+Next, suppose $k\in B^3$ satisfies $J_2(k)<0$. Since we already know $J_4(k)\ge 0$, there are two possibilities.
+
+If $J_4(k)=0$, then
+\[
+V(K_0,k)=K_0J_2(k)\to -\infty
+\quad\text{as }K_0\to\infty,
+\]
+again impossible. Hence $J_4(k)>0$. Therefore \cref{lem:radial-infimum} applies and gives
+\[
+E(k)=\inf_{K_0>0}V(K_0,k)=-\frac{J_2(k)^2}{4J_4(k)}.
+\]
+Since $V\ge m$, we have $E(k)\ge m$, hence
+\[
+-\frac{J_2(k)^2}{4J_4(k)}\ge m.
+\]
+Let $c:=\max\{0,-m\}$. Then $c\ge 0$ and
+\[
+\frac{J_2(k)^2}{4J_4(k)}\le c,
+\]
+that is,
+\[
+J_2(k)^2\le 4c\,J_4(k).
+\]
+This proves necessity.
+
+Conversely, assume there exists $c\ge 0$ such that for all $k\in B^3$:
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item $J_4(k)\ge 0$,
+\item if $J_2(k)<0$, then $J_2(k)^2\le 4cJ_4(k)$.
+\end{enumerate}
+We must prove that $V(K_0,k)\ge -c$ for all $K_0>0$ and $k\in B^3$.
+
+Fix $k\in B^3$.
+
+If $J_2(k)\ge 0$, then since $J_4(k)\ge 0$,
+\[
+V(K_0,k)=K_0J_2(k)+K_0^2J_4(k)\ge 0\ge -c.
+\]
+
+If $J_2(k)<0$, then by assumption $J_4(k)\ge 0$. In fact $J_4(k)>0$, because otherwise $J_2(k)^2\le 4cJ_4(k)=0$ would imply $J_2(k)=0$, contradiction. Hence we may complete the square:
+\[
+V(K_0,k)
+=
+J_4(k)\left(K_0+\frac{J_2(k)}{2J_4(k)}\right)^2
+-\frac{J_2(k)^2}{4J_4(k)}.
+\]
+The square term is nonnegative, so
+\[
+V(K_0,k)\ge -\frac{J_2(k)^2}{4J_4(k)}\ge -c.
+\]
+Thus for all $k$ and all $K_0>0$,
+\[
+V(K_0,k)\ge -c.
+\]
+Hence $V$ is globally stable.
+\end{proof}
+
+\section{Why directional positivity alone fails}
+
+The previous theorem shows that the decisive object is the ratio
+\[
+\frac{J_2(k)^2}{J_4(k)}
+\]
+on directions with $J_2(k)<0$, not merely the sign of $J_4(k)$. We now make this failure explicit.
+
+\begin{proposition}[Explicit obstruction]\label{prop:counterexample}
+There exist continuous functions $J_2,J_4$ on the interval $[0,1]$ such that
+\begin{itemize}[leftmargin=1.8em]
+\item $J_4(x)\ge 0$ for all $x\in[0,1]$,
+\item $J_4(x)>0$ for all $x>0$,
+\item but the reduced potential
+\[
+V(t,x)=tJ_2(x)+t^2J_4(x)
+\]
+is not globally bounded from below on $t>0$, $x\in[0,1]$.
+\end{itemize}
+\end{proposition}
+
+\begin{proof}
+Take
+\[
+J_2(x)\equiv -1,\qquad J_4(x)=x.
+\]
+Then $J_4(x)\ge 0$ for all $x\in[0,1]$, and $J_4(x)>0$ for every $x>0$. However, for each $x>0$,
+\[
+\inf_{t>0}( -t + xt^2 ) = -\frac{1}{4x}.
+\]
+As $x\downarrow 0$, this tends to $-\infty$. Hence
+\[
+\inf_{x\in(0,1]} \inf_{t>0}( -t + xt^2 )=-\infty.
+\]
+Therefore $V$ is not globally bounded from below.
+\end{proof}
+
+This example captures the entire issue. Directional nonnegativity of the quadratic coefficient does not prevent instability if the coefficient degenerates too quickly relative to the linear term.
+
+The same phenomenon can be phrased more generally.
+
+\begin{corollary}\label{cor:sequence-obstruction}
+Suppose there exists a sequence $k_n\in B^3$ such that
+\[
+J_2(k_n)<0,\qquad J_4(k_n)>0,\qquad
+\frac{J_2(k_n)^2}{J_4(k_n)}\to\infty.
+\]
+Then $V$ is not globally stable.
+\end{corollary}
+
+\begin{proof}
+By \cref{lem:radial-infimum},
+\[
+E(k_n)=-\frac{J_2(k_n)^2}{4J_4(k_n)}\to -\infty.
+\]
+Hence $\inf_{k\in B^3}E(k)=-\infty$, so no global lower bound exists.
+\end{proof}
+
+\section{Reformulation as uniform coercivity}
+
+The correct structural interpretation is that global stability is a coercivity statement for a coupled scale-direction system.
+
+Set
+\[
+D(k):=J_2(k),\qquad Q(k):=J_4(k).
+\]
+
+\begin{definition}
+We say that the pair $(D,Q)$ is \emph{uniformly coercive} on $B^3$ if there exists $c\ge 0$ such that
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item $Q(k)\ge 0$ for all $k\in B^3$,
+\item whenever $D(k)<0$, one has
+\[
+D(k)^2\le 4c\,Q(k).
+\]
+\end{enumerate}
+\end{definition}
+
+Then \cref{thm:main} becomes the following reformulation.
+
+\begin{corollary}\label{cor:coercivity}
+The reduced 2HDM potential is globally stable if and only if the pair $(D,Q)$ is uniformly coercive on $B^3$.
+\end{corollary}
+
+This is the correct replacement for a merely directional positivity statement. The role of the two terms is transparent:
+\begin{itemize}[leftmargin=1.8em]
+\item $D$ is a \emph{drift term}: if negative, it pushes the potential downward along the radial variable;
+\item $Q$ is a \emph{curvature term}: it provides the upward quadratic restoration;
+\item stability occurs exactly when the downward drift cannot dominate the upward curvature uniformly across directions.
+\end{itemize}
+Thus the issue is not geometric positivity alone, but quantitative domination.
+
+\section{A finite-dimensional quadratic-form viewpoint}
+
+The structure can also be encoded in a direction-dependent quadratic form. For fixed $k$, define
+\[
+u(K_0):=\binom{1}{K_0},
+\qquad
+M(k):=
+\begin{pmatrix}
+0 & \tfrac12 J_2(k)\\[1ex]
+\tfrac12 J_2(k) & J_4(k)
+\end{pmatrix}.
+\]
+Then
+\[
+u(K_0)^TM(k)\nu(K_0)=K_0J_2(k)+K_0^2J_4(k)=V(K_0,k).
+\]
+
+This does not add new content, but it highlights the mechanism: boundedness from below is a semiboundedness property of a family of quadratic forms restricted to the ray $\nu(K_0)$, and failure occurs when the off-diagonal contribution $J_2(k)$ is not uniformly dominated by the diagonal restoring term $J_4(k)$.
+
+This finite-dimensional reformulation should be understood as an alternative bookkeeping device, not as a new theorem.
+
+\section{Heuristic outlook}
+
+The preceding discussion suggests a more general principle that appears far beyond the 2HDM setting. Consider a scale-dependent family
+\[
+H(t)=tD_1+t^2D_2,
+\qquad t>0,
+\]
+where $D_1$ and $D_2$ are suitable symmetric forms or operators on a Hilbert space. One expects semiboundedness of $H(t)$ to require a relative control of the lower-order contribution by the higher-order one. In the scalar setting treated here, this appears exactly as the estimate
+\[
+|D(k)|^2\lesssim Q(k).
+\]
+
+We stress that this is only a heuristic analogy in the present note. No general infinite-dimensional theorem is claimed here. The purpose of the comparison is simply to situate the reduced 2HDM problem within a familiar pattern: global lower boundedness is typically a domination problem, not a sign problem.
+
+\section{Conclusion}
+
+The reduced 2HDM potential
+\[
+V(K_0,k)=K_0J_2(k)+K_0^2J_4(k)
+\]
+makes the central point transparent: global stability is not a purely directional property. It is a uniform statement coupling direction and scale.
+
+The correct analytic criterion is obtained by minimizing in the scale variable. One finds:
+\begin{enumerate}[label=\arabic*.,leftmargin=2em]
+\item $J_4(k)\ge 0$ is necessary, but not sufficient;
+\item the true obstruction is the possible blow-up of $J_2(k)^2/J_4(k)$;
+\item global stability is equivalent to the uniform coercivity estimate
+\[
+J_2(k)^2\le 4cJ_4(k)
+\quad\text{on the region }J_2(k)<0.
+\]
+\end{enumerate}
+Thus the corrected principle is:
+\begin{quote}
+\emph{Global boundedness from below is equivalent to uniform domination of drift by curvature.}
+\end{quote}
+That is the structural content behind the correction.
+
+\paragraph{Acknowledgment of source context.}
+The conceptual starting point for this note is the recent formal verification work identifying an error in the classical 2006 criterion \cite{ToobySmith2026}, together with the original reduced 2HDM formulation of Maniatis, von Manteuffel, Nachtmann, and Nagel \cite{Maniatis2006}.
+
+\bibliographystyle{alpha}
+\bibliography{2hdm_stability_revised}
+
+\end{document}

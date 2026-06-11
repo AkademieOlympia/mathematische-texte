@@ -1,0 +1,49 @@
+Ranking-Test der besten Observablen + additive/multiplikative Umschaltung
+
+Ziel
+Vergleich der derzeit besten Kandidaten gegen dieselben residualen Zielgroessen:
+- Vierlingsseite: theta4_res
+- Nullstellenseite in 10k-Fenstern: Delta_res, Lambda_res, thetaZ_res
+
+Kandidaten
+- idx_spread_res
+- idx_var_res
+- dir_obs2_res
+- cyc_energy_res
+- master_pc1_res
+- f5_axis2_res
+- f5_axis3_res
+- switch_res_235_vs_additive
+
+Der Schaltkanal switch_res_235_vs_additive
+- additive Seite: zyklische Indexdifferenzen |dEA|+|dAB|+|dBC|+|dCE|
+- multiplikative Seite: 2-,3-,5-adische Bewertungen von T=(p^2-4)(p^2-16)
+- mit Kleinschem Orientierungszeichen multipliziert
+- danach gegen log(center) detrendet
+
+Ranking gegen theta4_res:
+                observable  corr_with_theta4_res  abs_corr_with_theta4_res          std
+            idx_spread_res              0.555032                  0.555032    41.886857
+            master_pc1_res             -0.527387                  0.527387     1.707230
+               idx_var_res              0.515350                  0.515350  2332.054532
+            cyc_energy_res              0.489188                  0.489188 26717.831000
+switch_res_235_vs_additive              0.014325                  0.014325     5.709387
+              f5_axis3_res             -0.010435                  0.010435     0.922353
+              f5_axis2_res              0.003622                  0.003622    23.325897
+              dir_obs2_res              0.000978                  0.000978     0.312461
+
+Ranking im Fenstervergleich gegen Delta_res, Lambda_res, thetaZ_res:
+                observable  corr_with_Delta_res  corr_with_Lambda_res  corr_with_thetaZ_res  score_abs_sum
+              f5_axis2_res            -0.231398             -0.159465             -0.630635       1.021497
+              f5_axis3_res             0.135326              0.050217              0.701008       0.886552
+switch_res_235_vs_additive            -0.169422             -0.071736             -0.621392       0.862550
+               idx_var_res             0.149933              0.369366             -0.302188       0.821487
+            cyc_energy_res             0.146222              0.366323             -0.302813       0.815357
+            master_pc1_res            -0.139298             -0.358582              0.287903       0.785782
+            idx_spread_res             0.124256              0.342533             -0.263516       0.730305
+              dir_obs2_res             0.155950              0.081665              0.209668       0.447283
+
+Kurzdeutung
+1) Das Ranking zeigt, welche Observable auf der Vierlingsseite selbst am engsten mit der residualen Chebyshev-Spannung mitlaeuft.
+2) Der Fenstervergleich zeigt, welche Groessen zugleich am ehesten mit den residualen Nullstellenkanälen Delta/Lambda korrespondieren.
+3) Der neue Schaltkanal nutzt explizit die Idee, zwischen einem additiven Bild und einem multiplikativen 2,3,5-Bild umzuschalten.

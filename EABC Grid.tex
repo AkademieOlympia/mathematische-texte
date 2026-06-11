@@ -1,0 +1,340 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\title{A Local Structure Theory of the EABC Grid Modulo \(12\)}
+\author{Collaborative Draft}
+\date{\today}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\ind}{\mathbf{1}}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		We introduce the modulo-\(12\) EABC grid
+		\[
+		Q_n=(12n-11,\;12n-7,\;12n-5,\;12n-1),
+		\qquad n\in\N,
+		\]
+		and show that it provides a complete local description of small prime constellations above \(3\).
+		In this framework, all prime twins \(>3\) lie in exactly two linear channels, all dense prime triplets
+		are forced by the singular anchor \(3\), block-crossing prime quadruplets are precisely the double
+		activation points of both twin channels, and dense prime quintuplets are exactly the oriented
+		extensions of such double points.
+	\end{abstract}
+	
+	\section{The EABC grid}
+	
+	\begin{definition}[EABC families]
+		For \(n\in\N\), define
+		\[
+		E_n:=12n-11,\qquad
+		A_n:=12n-7,\qquad
+		B_n:=12n-5,\qquad
+		C_n:=12n-1.
+		\]
+		We call
+		\[
+		Q_n:=(E_n,A_n,B_n,C_n)
+		\]
+		the \(n\)-th \emph{EABC block}.
+	\end{definition}
+	
+	\begin{lemma}[Prime decomposition modulo \(12\)]
+		Every prime \(p>3\) lies in exactly one of the four families
+		\[
+		E,\quad A,\quad B,\quad C.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		A prime \(p>3\) is divisible by neither \(2\) nor \(3\). Hence
+		\[
+		p\equiv 1,5,7,\text{ or }11 \pmod{12}.
+		\]
+		These four residue classes are parametrized disjointly and exhaustively by
+		\[
+		12n-11,\quad 12n-7,\quad 12n-5,\quad 12n-1.
+		\]
+	\end{proof}
+	
+	\begin{corollary}
+		The set of primes \(>3\) decomposes as
+		\[
+		\PP\setminus\{2,3\}
+		=
+		(\PP\cap E)\,\dot\cup\,(\PP\cap A)\,\dot\cup\,(\PP\cap B)\,\dot\cup\,(\PP\cap C).
+		\]
+	\end{corollary}
+	
+	\section{The two twin channels}
+	
+	\begin{definition}[Twin channels]
+		For each EABC block \(Q_n\), define the internal and external twin channels by
+		\[
+		T_n^{\mathrm{int}}:=(A_n,B_n)=(12n-7,\;12n-5),
+		\]
+		\[
+		T_n^{\mathrm{ext}}:=(C_n,E_{n+1})=(12n-1,\;12n+1).
+		\]
+		We further define the \emph{twin signature}
+		\[
+		\tau(Q_n):=
+		\bigl(
+		\ind_{T_n^{\mathrm{int}}\text{ is a twin prime pair}},
+		\ind_{T_n^{\mathrm{ext}}\text{ is a twin prime pair}}
+		\bigr)\in\{0,1\}^2.
+		\]
+	\end{definition}
+	
+	\begin{lemma}[Completeness of the twin channels]
+		Every twin prime pair \((p,p+2)\) with \(p>3\) lies uniquely in exactly one of the two patterns
+		\[
+		(12n-7,12n-5)
+		\qquad\text{or}\qquad
+		(12n-1,12n+1).
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		For \(p>3\), a twin prime pair can only have residue pattern
+		\[
+		(5,7)\quad\text{or}\quad(11,1)\pmod{12}.
+		\]
+		The first case is exactly
+		\[
+		(A_n,B_n),
+		\]
+		and the second case is exactly
+		\[
+		(C_n,E_{n+1}).
+		\]
+		Uniqueness follows from the linear parametrization.
+	\end{proof}
+	
+	\begin{corollary}[Classification of twin primes \(>3\)]
+		All twin primes \(>3\) are exactly the prime realizations of the two linear forms
+		\[
+		(12n-7,12n-5)
+		\qquad\text{and}\qquad
+		(12n-1,12n+1).
+		\]
+	\end{corollary}
+	
+	\section{Dense prime triplets}
+	
+	\begin{definition}[Dense prime triplets]
+		A \emph{dense prime triplet} is a prime triple of one of the two forms
+		\[
+		(p,p+2,p+6)
+		\qquad\text{or}\qquad
+		(p,p+4,p+6).
+		\]
+	\end{definition}
+	
+	\begin{lemma}[Every dense triplet contains \(3\)]
+		Every dense prime triplet necessarily contains the prime \(3\).
+	\end{lemma}
+	
+	\begin{proof}
+		In either pattern
+		\[
+		p,\ p+2,\ p+6
+		\qquad\text{or}\qquad
+		p,\ p+4,\ p+6,
+		\]
+		at least one of the three numbers is divisible by \(3\). If all three are prime, that number must be \(3\).
+	\end{proof}
+	
+	\begin{corollary}[Classification of dense triplets]
+		The only dense prime triplets are
+		\[
+		(3,5,7)
+		\qquad\text{and}\qquad
+		(3,7,11).
+		\]
+	\end{corollary}
+	
+	\begin{remark}
+		Thus dense triplets are not free internal configurations of the EABC grid. They are singular boundary
+		phenomena forced by the exceptional prime \(3\).
+	\end{remark}
+	
+	\section{Double points and prime quadruplets}
+	
+	\begin{definition}[Double point]
+		An EABC block \(Q_n\) is called a \emph{double point} if
+		\[
+		\tau(Q_n)=(1,1).
+		\]
+		Equivalently, this means that
+		\[
+		A_n,\ B_n,\ C_n,\ E_{n+1}
+		\]
+		are all prime.
+	\end{definition}
+	
+	\begin{lemma}[Double points are block-crossing quadruplets]
+		An EABC block \(Q_n\) is a double point if and only if
+		\[
+		(12n-7,\;12n-5,\;12n-1,\;12n+1)
+		\]
+		is a prime quadruplet.
+	\end{lemma}
+	
+	\begin{proof}
+		The condition \(\tau(Q_n)=(1,1)\) means that both
+		\[
+		(12n-7,12n-5)
+		\qquad\text{and}\qquad
+		(12n-1,12n+1)
+		\]
+		are twin prime pairs. This is equivalent to the primality of all four numbers
+		\[
+		12n-7,\ 12n-5,\ 12n-1,\ 12n+1,
+		\]
+		which form the pattern
+		\[
+		p,\ p+2,\ p+6,\ p+8.
+		\]
+	\end{proof}
+	
+	\begin{corollary}
+		The block-crossing prime quadruplets are exactly the simultaneous activations of the two twin channels.
+	\end{corollary}
+	
+	\section{Dense prime quintuplets}
+	
+	\begin{definition}[Dense prime quintuplet]
+		A \emph{dense prime quintuplet} is a prime constellation of the form
+		\[
+		(p,p+2,p+6,p+8,p+12).
+		\]
+	\end{definition}
+	
+	\begin{lemma}[Two EABC forms of quintuplets]
+		Every dense prime quintuplet with \(p>3\) has exactly one of the two forms
+		\[
+		(A_n,B_n,C_n,E_{n+1},A_{n+1})
+		\]
+		or
+		\[
+		(C_n,E_{n+1},A_{n+1},B_{n+1},C_{n+1})
+		\]
+		for a unique \(n\in\N\).
+	\end{lemma}
+	
+	\begin{proof}
+		For \(p>3\), only the starting residues \(5\) and \(11\) modulo \(12\) are possible.
+		
+		If
+		\[
+		p\equiv 5 \pmod{12},
+		\]
+		then \(p=A_n\), hence
+		\[
+		p+2=B_n,\quad p+6=C_n,\quad p+8=E_{n+1},\quad p+12=A_{n+1}.
+		\]
+		
+		If
+		\[
+		p\equiv 11 \pmod{12},
+		\]
+		then \(p=C_n\), hence
+		\[
+		p+2=E_{n+1},\quad p+6=A_{n+1},\quad p+8=B_{n+1},\quad p+12=C_{n+1}.
+		\]
+		
+		The starting residues \(1\) and \(7\) are impossible, since then one of the subsequent terms would be divisible by \(3\).
+	\end{proof}
+	
+	\begin{lemma}[Every dense quintuplet contains exactly one double point]
+		Every dense prime quintuplet contains exactly one block-crossing prime quadruplet.
+	\end{lemma}
+	
+	\begin{proof}
+		In the first form
+		\[
+		(A_n,B_n,C_n,E_{n+1},A_{n+1}),
+		\]
+		the first four terms form the quadruplet.
+		
+		In the second form
+		\[
+		(C_n,E_{n+1},A_{n+1},B_{n+1},C_{n+1}),
+		\]
+		the first four terms form the quadruplet.
+		
+		A dense quintuplet has only five entries, so it cannot contain two distinct quadruplets of this type.
+	\end{proof}
+	
+	\begin{corollary}
+		Every dense prime quintuplet is an oriented extension of a unique double point.
+	\end{corollary}
+	
+	\section{Main theorem}
+	
+	\begin{theorem}[Local completeness of the EABC grid]
+		The EABC grid
+		\[
+		Q_n=(12n-11,\;12n-7,\;12n-5,\;12n-1)
+		\]
+		provides a complete local description of small prime constellations above \(3\):
+		
+		\begin{enumerate}[label=\textup{(\roman*)}]
+			\item Every prime \(p>3\) lies uniquely in one of the four families \(E,A,B,C\).
+			\item Every twin prime pair \(>3\) lies uniquely in one of the two channels
+			\[
+			(A_n,B_n)
+			\qquad\text{or}\qquad
+			(C_n,E_{n+1}).
+			\]
+			\item Every dense prime triplet is one of the two singular \(3\)-anchored cases
+			\[
+			(3,5,7),\qquad (3,7,11).
+			\]
+			\item Every double point \(\tau(Q_n)=(1,1)\) is exactly a block-crossing prime quadruplet
+			\[
+			(12n-7,12n-5,12n-1,12n+1).
+			\]
+			\item Every dense prime quintuplet is exactly an oriented extension of such a double point, hence has one of the two forms
+			\[
+			(A_n,B_n,C_n,E_{n+1},A_{n+1})
+			\qquad\text{or}\qquad
+			(C_n,E_{n+1},A_{n+1},B_{n+1},C_{n+1}).
+			\]
+		\end{enumerate}
+		
+		Therefore the full local twin-, triplet-, quadruplet-, and quintuplet-structure of the prime grid modulo \(12\) is completely described.
+	\end{theorem}
+	
+	\begin{proof}
+		Statements \textup{(i)} and \textup{(ii)} follow from the first two lemmas. Statement \textup{(iii)} is the triplet corollary. Statement \textup{(iv)} is the quadruplet lemma. Statement \textup{(v)} follows from the two quintuplet lemmas.
+	\end{proof}
+	
+	\begin{remark}
+		In this picture, the prime quadruplet is the simultaneous activation of both twin channels, while the prime quintuplet is the first genuinely directed continuation of such a double point.
+	\end{remark}
+	
+\end{document}

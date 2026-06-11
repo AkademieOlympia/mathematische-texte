@@ -1,0 +1,185 @@
+\documentclass[11pt,a4paper]{article}
+
+% -------------------------------------------------
+% Encoding / Language
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+% -------------------------------------------------
+% Math
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm}
+
+% -------------------------------------------------
+% Layout
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{hyperref}
+
+% -------------------------------------------------
+% Theorems
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{remark}[definition]{Remark}
+
+% -------------------------------------------------
+% Title
+% -------------------------------------------------
+\title{
+	Global Stability vs.\ Directional Positivity in the 2HDM \\
+	\large A Structural Correction and a Coupling-Based Framework
+}
+
+\author{
+	Thomas Hoffbauer \\
+	\small Bamberg, Germany
+}
+
+\date{}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		A recent formal verification of the two Higgs doublet model (2HDM) has revealed an error in a widely cited stability criterion. The error originates from replacing a global boundedness condition with local directional constraints. In this paper, we show that the correct condition follows directly from quadratic completion and necessarily involves a coupling inequality between linear and quadratic contributions. We further propose a structural interpretation in which stability is understood as a resonance condition in a coupled system. This perspective naturally extends to an operator-theoretic framework.
+	\end{abstract}
+	
+	\section{Introduction}
+	
+	The stability of scalar potentials is a central problem in quantum field theory. In the context of the 2HDM, a widely used condition for stability has recently been shown to be incorrect via formal verification in Lean.
+	
+	The issue is conceptual: a global condition has been replaced by local directional checks. This paper argues that the mistake is structurally visible and that the correct condition follows from elementary analysis.
+	
+	\section{Reduction to a One-Parameter Problem}
+	
+	The 2HDM potential can be written as a function of a scaling parameter $K_0 > 0$ and a normalized direction $\vec{k}$ with $\|\vec{k}\|^2 \leq 1$:
+	\begin{equation}
+		V(K_0,\vec{k}) = K_0 J_2(\vec{k}) + K_0^2 J_4(\vec{k}).
+	\end{equation}
+	
+	Thus, for fixed $\vec{k}$, stability reduces to a one-dimensional problem.
+	
+	\section{Stability as a Global Property}
+	
+	\begin{definition}
+		The potential is stable if there exists $c \in \mathbb{R}$ such that
+		\[
+		c \leq V(K_0,\vec{k})
+		\quad \text{for all } K_0 > 0, \ \|\vec{k}\|^2 \leq 1.
+		\]
+	\end{definition}
+	
+	This involves a mixed quantifier structure:
+	\[
+	\exists c \ \forall K_0 \ \forall \vec{k}.
+	\]
+	
+	\section{Quadratic Completion}
+	
+	\begin{lemma}
+		For fixed $\vec{k}$, the function
+		\[
+		f(K_0) = K_0 J_2(\vec{k}) + K_0^2 J_4(\vec{k})
+		\]
+		is bounded from below if and only if:
+		\[
+		J_4(\vec{k}) \geq 0
+		\quad \text{and} \quad
+		J_2(\vec{k})^2 \leq 4c\,J_4(\vec{k})
+		\]
+		for some $c \geq 0$.
+	\end{lemma}
+	
+	\begin{proof}
+		Completing the square:
+		\[
+		f(K_0) = J_4(\vec{k})\left(K_0 + \frac{J_2(\vec{k})}{2J_4(\vec{k})}\right)^2 
+		- \frac{J_2(\vec{k})^2}{4J_4(\vec{k})}.
+		\]
+		The minimum is finite if and only if $J_4(\vec{k}) \geq 0$, and the lower bound is controlled by the second term.
+	\end{proof}
+	
+	\section{Failure of Directional Positivity}
+	
+	The incorrect claim replaces global boundedness with purely directional conditions on $J_2$ and $J_4$.
+	
+	However, the dependence on $K_0$ cannot be eliminated.
+	
+	\begin{theorem}
+		Directional positivity conditions are not sufficient for global stability.
+	\end{theorem}
+	
+	\begin{remark}
+		This has been formally demonstrated by constructing explicit counterexamples satisfying directional constraints but violating boundedness. :contentReference[oaicite:0]{index=0}
+	\end{remark}
+	
+	\section{Coupling Interpretation}
+	
+	The potential naturally decomposes into:
+	\begin{itemize}
+		\item Linear term: $J_2(\vec{k})$
+		\item Quadratic term: $J_4(\vec{k})$
+	\end{itemize}
+	
+	Stability requires not only positivity but a coupling condition:
+	\[
+	J_2^2 \lesssim J_4.
+	\]
+	
+	\section{Bamberg Model Perspective}
+	
+	We reinterpret the structure dynamically:
+	
+	\begin{itemize}
+		\item $J_2$: drift (Tri-component)
+		\item $J_4$: curvature (Okto-component)
+		\item $K_0$: scaling (energy axis)
+	\end{itemize}
+	
+	\begin{definition}
+		A system is stable if its components satisfy a resonance condition:
+		\[
+		(\text{Tri})^2 \lesssim (\text{Okto}).
+		\]
+	\end{definition}
+	
+	Thus, stability is not a geometric property of directions but a dynamical balance across scales.
+	
+	\section{Operator-Theoretic Outlook}
+	
+	The structure suggests an operator formulation:
+	
+	\begin{equation}
+		H = K_0 D_1 + K_0^2 D_2,
+	\end{equation}
+	
+	where $D_1$ and $D_2$ encode linear and quadratic contributions.
+	
+	Stability corresponds to spectral boundedness of $H$, which requires compatibility between $D_1$ and $D_2$.
+	
+	This aligns with Hilbert--Pólya-type ideas, where spectral properties encode global constraints.
+	
+	\section{Conclusion}
+	
+	The error identified through formalization reflects a structural issue: replacing global constraints with local checks.
+	
+	We have shown that:
+	
+	\begin{itemize}
+		\item Stability reduces to a quadratic minimization problem
+		\item The correct condition is a coupling inequality
+		\item Stability is inherently a resonance phenomenon
+	\end{itemize}
+	
+	\bigskip
+	
+	\noindent
+	\textbf{Key Insight:} Stability is not local positivity, but global coupling.
+	
+\end{document}

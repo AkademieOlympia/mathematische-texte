@@ -1,0 +1,226 @@
+\documentclass[11pt]{article}
+
+% -------------------------------------------------
+% Packages
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{booktabs}
+
+\geometry{margin=2.5cm}
+
+\title{
+	A Geometric Laplace Operator on Prime Quadruplets\\
+	and Experimental Spectral Correlations with Riemann Zeros
+}
+
+\author{
+	Thomas Hoffbauer
+}
+
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+	
+	% -------------------------------------------------
+	\begin{abstract}
+		We study a geometrically defined operator on the discrete set of prime quadruplets $(p, p+2, p+6, p+8)$.
+		
+		By embedding these configurations into a logarithmic space, we define a weighted graph Laplacian that induces geometric similarity relations between quadruplets.
+		
+		Numerical experiments indicate a strong correlation between the spectrum of this operator and the imaginary parts of the nontrivial zeros of the Riemann zeta function.
+		
+		We emphasize that this observation is purely experimental. The purpose of this work is to define a precise operator framework and to investigate its spectral behavior in a reproducible setting.
+	\end{abstract}
+	
+	% -------------------------------------------------
+	\section{Introduction}
+	
+	The Hilbert--Pólya conjecture suggests that the nontrivial zeros of the Riemann zeta function may arise as the spectrum of a self-adjoint operator.
+	
+	A possible approach is to construct operators on arithmetically defined discrete structures and to study their spectral properties.
+	
+	In this work, we consider prime quadruplets
+	\[
+	(p, p+2, p+6, p+8),
+	\]
+	which form the densest admissible prime constellations.
+	
+	Rather than working with individual primes, we treat these quadruplets as structured objects and define a geometric operator on their configuration space.
+	
+	% -------------------------------------------------
+	\section{Prime Quadruplets}
+	
+	For $N \ge 1$, let
+	\[
+	Q_N = \{q_1, \dots, q_N\}
+	\]
+	denote the first $N$ prime quadruplets, ordered by increasing initial prime.
+	
+	Each element
+	\[
+	q_k = (p_k, p_k+2, p_k+6, p_k+8)
+	\]
+	is defined by a prime $p_k$ such that all four numbers
+	\[
+	p_k,\; p_k+2,\; p_k+6,\; p_k+8
+	\]
+	are prime.
+	
+	% -------------------------------------------------
+	\section{Geometric Embedding}
+	
+	We define an embedding
+	\[
+	x : Q_N \to \mathbb{R}^4,
+	\quad
+	x(q_k) = (\log p_k, \log(p_k+2), \log(p_k+6), \log(p_k+8)).
+	\]
+	
+	This embedding maps each quadruplet to a point in Euclidean space.
+	
+	% -------------------------------------------------
+	\section{Graph Laplacian}
+	
+	We define a weight matrix
+	\[
+	W_{ij} = \exp\left(-\frac{\|x_i - x_j\|^2}{\sigma^2}\right).
+	\]
+	
+	The Gaussian kernel is chosen because:
+	\begin{itemize}
+		\item it yields a symmetric positive similarity matrix,
+		\item it provides a controllable locality scale via $\sigma$,
+		\item it is standard in spectral graph theory.
+	\end{itemize}
+	
+	The degree matrix is
+	\[
+	D_{ii} = \sum_j W_{ij},
+	\]
+	
+	and the Laplace operator is
+	\[
+	L = D - W.
+	\]
+	
+	This operator is self-adjoint and positive semidefinite.
+	
+	% -------------------------------------------------
+	\section{Extended Embedding}
+	
+	To incorporate internal structural information, we define an extended embedding:
+	\[
+	x^{(8)} =
+	(\log p_1,\log p_2,\log p_3,\log p_4,
+	\log\frac{p_2}{p_1},\log\frac{p_3}{p_2},
+	\log\frac{p_4}{p_3},\log\frac{p_4}{p_1}).
+	\]
+	
+	The additional coordinates encode dimensionless relative relationships within each quadruplet.
+	
+	% -------------------------------------------------
+	\section{Spectral Comparison}
+	
+	Let
+	\[
+	0 = \lambda_1 \le \lambda_2 \le \cdots \le \lambda_N
+	\]
+	denote the eigenvalues of $L$.
+	
+	We consider the first $m$ nonzero eigenvalues:
+	\[
+	(\lambda_2, \dots, \lambda_{m+1}).
+	\]
+	
+	Let
+	\[
+	(\gamma_1, \dots, \gamma_m)
+	\]
+	denote the imaginary parts of the first $m$ nontrivial zeros of $\zeta(s)$.
+	
+	Both sequences are affinely rescaled to mean zero and unit variance.
+	
+	We compute the Pearson correlation coefficient:
+	\[
+	\mathrm{corr}(\lambda_n, \gamma_n).
+	\]
+	
+	% -------------------------------------------------
+	\section{Numerical Results}
+	
+	Representative numerical experiments suggest correlations on the order of
+	\[
+	\mathrm{corr} \approx 0.9.
+	\]
+	
+	A detailed parameter study and full numerical tables will be provided in the accompanying code repository.
+	
+	% -------------------------------------------------
+	\section{Validation}
+	
+	We test robustness using:
+	
+	\begin{itemize}
+		\item Shuffle test (random permutation of $Q_N$)
+		\item Random baseline (random integer tuples)
+		\item Parameter variation of $\sigma$
+	\end{itemize}
+	
+	Preliminary experiments indicate that the observed correlation is not reproduced under these baseline modifications.
+	
+	% -------------------------------------------------
+	\section{Discussion}
+	
+	The observed spectral similarity is notable but does not imply a structural connection between the operator and the zeta function.
+	
+	Key open questions include:
+	\begin{itemize}
+		\item whether the operator is canonical,
+		\item whether a meaningful limit exists as $N \to \infty$,
+		\item and whether connections to known analytic frameworks can be established.
+	\end{itemize}
+	
+	The present work should therefore be viewed as exploratory.
+	
+	% -------------------------------------------------
+	\section{Conclusion}
+	
+	We introduced a geometrically defined Laplace operator on prime quadruplets and investigated its spectral properties numerically.
+	
+	The results suggest that geometric approaches to structured prime configurations may provide a useful experimental framework for studying spectral phenomena related to the Riemann zeta function.
+	
+	% -------------------------------------------------
+	\begin{thebibliography}{9}
+		
+		\bibitem{Montgomery}
+		H. L. Montgomery,
+		The pair correlation of zeros of the zeta function,
+		Proc. Symp. Pure Math. 24 (1973).
+		
+		\bibitem{Odlyzko}
+		A. Odlyzko,
+		The $10^{20}$-th zero of the Riemann zeta function.
+		
+		\bibitem{Connes}
+		A. Connes,
+		Trace formula in noncommutative geometry,
+		Selecta Mathematica (1999).
+		
+		\bibitem{Chung}
+		F. Chung,
+		Spectral Graph Theory,
+		CBMS, AMS (1997).
+		
+		\bibitem{Belkin}
+		M. Belkin and P. Niyogi,
+		Laplacian eigenmaps,
+		Neural Computation (2003).
+		
+	\end{thebibliography}
+	
+\end{document}

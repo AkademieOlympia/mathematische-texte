@@ -1,0 +1,815 @@
+\documentclass[12pt,a4paper]{article}
+
+% -------------------------------------------------
+% Pakete
+% -------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsfonts,amsthm,mathtools}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{csquotes}
+
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\PGL}{\operatorname{PGL}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\trd}{\operatorname{trd}}
+\newcommand{\vol}{\operatorname{vol}}
+\newcommand{\diag}{\operatorname{diag}}
+
+\geometry{margin=2.7cm}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue!50!black,
+	citecolor=blue!50!black,
+	urlcolor=blue!50!black,
+	pdftitle={Quaternionische Quotientengraphen, Hecke-Faltungsoperatoren und spektrale Vorstufen lokaler Langlands-Geometrie},
+	pdfauthor={Thomas Hoffbauer}
+}
+
+% -------------------------------------------------
+% Robuste Grafikeinbindung
+% -------------------------------------------------
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./}{fig/}{figs/}{images/}{img/}}
+\newcommand{\includegraphicssafe}[2][]{%
+	\IfFileExists{#2}{\includegraphics[#1]{#2}}{\fbox{\texttt{Grafik nicht gefunden: #2}}}
+}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\theoremstyle{plain}
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{proposition}[satz]{Proposition}
+\newtheorem{korollar}[satz]{Korollar}
+
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{hypothese}[satz]{Hypothese}
+
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+\newtheorem{beispiel}[satz]{Beispiel}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Fp}{\mathbb{F}_p}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\OH}{\mathcal{O}_H}
+\newcommand{\HN}{\mathbb{H}}
+\newcommand{\Nrd}{\operatorname{Nrd}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\elltwo}{\ell^2}
+\newcommand{\cH}{\mathcal{H}}
+\newcommand{\cT}{\mathcal{T}}
+\newcommand{\cU}{\mathcal{U}}
+
+% -------------------------------------------------
+% Titel
+% -------------------------------------------------
+\title{\textbf{Quaternionische Quotientengraphen, Hecke-Faltungsoperatoren\\
+		und spektrale Vorstufen lokaler Langlands-Geometrie}\\[0.5em]
+	\large Eine mathematisch vertiefte Spektrum-nahe Fassung}
+\author{Thomas Hoffbauer}
+\date{März 2026}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Dieser Text untersucht eine elementare, aber arithmetisch motivierte Modellwelt:
+		endliche Quotienten der Hurwitz-Ordnung in der Hamiltonschen Quaternionenalgebra
+		und die daraus hervorgehenden regulären Graphen sowie Faltungsoperatoren.
+		Im Ausgangspunkt ist die Konstruktion diskret und vollständig endlich.
+		Sobald die Erzeugermengen jedoch nicht beliebig, sondern über reduzierte Normen
+		vorgegeben werden, tritt eine formale Nähe zu Hecke-Operatoren hervor.
+		
+		Die zentrale These des Artikels lautet nicht, dass hier bereits Langlands-Geometrie
+		oder gar ein Spezialfall der Arbeiten von Fargues--Scholze vorliegt.
+		Die präzisere Aussage ist bescheidener und mathematisch robuster:
+		Das Modell realisiert eine endliche Operatorwelt, in der lokale arithmetische
+		Übergänge globale Spektren erzeugen. Diese Architektur ist im schwachen,
+		methodischen Sinn verwandt mit einem Grundmotiv moderner arithmetischer Geometrie:
+		\[
+		\text{lokale Daten}
+		\longrightarrow
+		\text{Operator}
+		\longrightarrow
+		\text{Spektrum}
+		\longrightarrow
+		\text{globale Struktur}.
+		\]
+		
+		Der Text gliedert sich in drei Schichten.
+		Zunächst werden die algebraischen Grundlagen der Hurwitz-Ordnung,
+		endlicher Quotienten und Cayley-Graphen entwickelt.
+		Dann werden die Operatoren als Faltungen auf endlichen Quotienten beschrieben
+		und ihre spektralen Konsequenzen präzisiert.
+		Schließlich wird erläutert, in welchem Sinn die normgesteuerten Operatoren
+		als endliche Vorstufe heckeartiger Phänomene gelesen werden können,
+		ohne dass dadurch bereits eine echte automorphe oder fargues--scholzesche
+		Theorie behauptet würde.
+		
+		Der Artikel ist daher zugleich konstruktiv und disziplinierend:
+		Er vertieft den mathematischen Kern der diskreten Konstruktion,
+		markiert aber ebenso klar die Grenze zwischen gesicherter Spektraltheorie
+		und weiterführender arithmetisch-geometrischer Perspektive.
+	\end{abstract}
+	
+	\tableofcontents
+	
+	\section{Einleitung}
+	
+	Manchmal beginnt Mathematik nicht mit maximaler Allgemeinheit,
+	sondern mit einer kontrollierten Verkleinerung.
+	Gerade in der Zahlentheorie ist dies oft produktiv:
+	Man ersetzt einen tiefen, schwer zugänglichen Zusammenhang
+	durch ein endliches Modell, das strukturell ähnlich organisiert ist,
+	aber vollständig explizit bleibt.
+	
+	Im vorliegenden Text geschieht dies ausgehend von der Hurwitz-Ordnung
+	in der Hamiltonschen Quaternionenalgebra.
+	Für jedes Niveau \(N\ge 1\) betrachten wir den endlichen Quotienten
+	\[
+	R_N := \OH / N\OH,
+	\]
+	sowie auf geeigneten Teilmengen definierte Faltungsoperatoren,
+	deren Erzeugermengen über reduzierte Normbedingungen ausgewählt werden.
+	Bereits auf dieser endlichen Ebene treten drei Motive zusammen:
+	diskrete Dynamik, Spektraltheorie und Arithmetik.
+	
+	Der erste mathematische Gewinn ist elementar, aber präzise:
+	Reguläre Graphen führen auf selbstadjungierte Operatoren,
+	deren Spektrallücke exponentielle Durchmischung kontrolliert.
+	Der zweite Gewinn ist konzeptionell:
+	Sobald die Erzeugermengen aus Quaternionen fester reduzierter Norm
+	stammen, entsteht eine Operatorfamilie, die formal an Hecke-Operatoren erinnert.
+	Sie ist noch keine Hecke-Algebra im klassischen Sinn,
+	aber sie besitzt dieselbe Organisationsidee:
+	lokal standardisierte Schritte erzeugen global auswertbare Spektren.
+	
+	Gerade hier wird der Bezug zur modernen arithmetischen Geometrie interessant.
+	Die Arbeiten von Peter Scholze und Laurent Fargues zeigen in großer Tiefe,
+	dass arithmetische Information oft nicht als lose Sammlung lokaler Formeln,
+	sondern in operatorischen, geometrischen und kategorialen Strukturen
+	organisiert werden muss.
+	Der vorliegende Text behauptet ausdrücklich \emph{nicht},
+	dass das hier behandelte diskrete Quaternionenmodell bereits eine Instanz
+	dieser Welt sei.
+	Er beansprucht nur, ein endlicher Vorraum zu sein,
+	in dem ein ähnliches Grundmuster sichtbar wird.
+	
+	\section{Die algebraische Ausgangslage}
+	
+	\subsection{Die Hamiltonsche Quaternionenalgebra}
+	
+	Wir arbeiten in der Quaternionenalgebra
+	\[
+	B := (-1,-1)_{\Q}
+	= \Q \oplus \Q i \oplus \Q j \oplus \Q k,
+	\]
+	mit Relationen
+	\[
+	i^2=j^2=k^2=ijk=-1.
+	\]
+	Die Standardinvolution ist gegeben durch
+	\[
+	\overline{a+bi+cj+dk}=a-bi-cj-dk.
+	\]
+	Die reduzierte Spur und die reduzierte Norm lauten
+	\[
+	\trd(x)=x+\bar{x}, \qquad \Nrd(x)=x\bar{x}.
+	\]
+	Für \(x=a+bi+cj+dk\) ergibt sich explizit
+	\[
+	\Nrd(x)=a^2+b^2+c^2+d^2.
+	\]
+	
+	\begin{bemerkung}
+		Die reduzierte Norm ist multiplikativ:
+		\[
+		\Nrd(xy)=\Nrd(x)\Nrd(y).
+		\]
+		Damit besitzt \(B\) eine natürliche arithmetische Größenfunktion,
+		die sowohl lokal als auch global zentral ist.
+	\end{bemerkung}
+	
+	\subsection{Die Hurwitz-Ordnung}
+	
+	Wir betrachten die Hurwitz-Ordnung
+	\[
+	\OH := \Z\!\left[i,j,k,\frac{1+i+j+k}{2}\right].
+	\]
+	Sie ist eine maximale Ordnung in \(B\).
+	Als \(\Z\)-Modul hat \(\OH\) Rang \(4\).
+	
+	\begin{lemma}
+		Die Menge \(\OH\) ist eine \(\Z\)-Ordnung in \(B\), also ein
+		endlich erzeugter \(\Z\)-Unterring, der \(B\) über \(\Q\) aufspannt.
+	\end{lemma}
+	
+	\begin{proof}
+		Dies ist Standard für die Hurwitz-Ordnung.
+		Sie enthält \(1\), ist unter Addition und Multiplikation abgeschlossen
+		und erzeugt \(B\) als \(\Q\)-Vektorraum.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Für \(x\in \OH\) gilt \(\Nrd(x)\in \Z_{\ge 0}\).
+		Diese ganzzahlige Norm ist der Ausgangspunkt für die spätere
+		Konstruktion normgesteuerter Operatoren.
+	\end{bemerkung}
+	
+	\subsection{Endliche Quotienten}
+	
+	Für \(N\ge 1\) definieren wir den Quotientenring
+	\[
+	R_N := \OH/N\OH.
+	\]
+	
+	\begin{lemma}
+		Als additive Gruppe gilt
+		\[
+		R_N \cong (\Z/N\Z)^4.
+		\]
+		Insbesondere hat \(R_N\) genau \(N^4\) Elemente.
+	\end{lemma}
+	
+	\begin{proof}
+		Da \(\OH\) als \(\Z\)-Modul frei vom Rang \(4\) ist,
+		folgt
+		\[
+		\OH/N\OH \cong (\Z/N\Z)^4
+		\]
+		als additive Gruppen.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Der Ring \(R_N\) ist endlich, also auch seine Einheitengruppe \(R_N^\times\).
+		Damit steht eine endliche Bühne für diskrete Operatoren bereit.
+	\end{bemerkung}
+	
+	\section{Cayley-Graphen und Faltungsoperatoren}
+	
+	\subsection{Von Erzeugermengen zu Graphen}
+	
+	Sei \(G_N\) eine endliche Gruppe, etwa \(R_N^\times\) oder
+	eine geeignete durch Normbedingungen ausgewählte Untergruppe.
+	Sei ferner \(\Sigma \subseteq G_N\) eine endliche Teilmenge mit
+	\[
+	\Sigma=\Sigma^{-1}, \qquad 1\notin \Sigma.
+	\]
+	
+	\begin{definition}
+		Der zu \((G_N,\Sigma)\) gehörige Cayley-Graph \(\mathrm{Cay}(G_N,\Sigma)\)
+		hat Knotenmenge \(G_N\), und zwei Knoten \(g,h\in G_N\) werden verbunden,
+		falls \(h=sg\) für ein \(s\in \Sigma\).
+	\end{definition}
+	
+	Ist \(\Sigma\) symmetrisch, so handelt es sich um einen ungerichteten
+	\(|\Sigma|\)-regulären Graphen.
+	
+	\subsection{Der Operator als Faltung}
+	
+	Der entscheidende Schritt besteht darin, den Adjazenzoperator nicht nur
+	kombinatorisch, sondern algebraisch zu lesen.
+	
+	\begin{definition}
+		Für eine endliche Gruppe \(G\) und eine symmetrische Teilmenge \(\Sigma\subseteq G\)
+		definieren wir den Faltungsoperator
+		\[
+		T_\Sigma : \ell^2(G)\to \ell^2(G),\qquad
+		(T_\Sigma f)(g)=\sum_{s\in \Sigma} f(s^{-1}g).
+		\]
+		Der normierte Markov-Operator ist
+		\[
+		P_\Sigma := \frac{1}{|\Sigma|}T_\Sigma.
+		\]
+	\end{definition}
+	
+	\begin{proposition}
+		Ist \(\Sigma=\Sigma^{-1}\), so ist \(T_\Sigma\) selbstadjungiert
+		bezüglich des Standardskalarprodukts auf \(\ell^2(G)\).
+		Insbesondere ist das Spektrum von \(T_\Sigma\) reell.
+	\end{proposition}
+	
+	\begin{proof}
+		Für \(f,h\in \ell^2(G)\) gilt
+		\[
+		\langle T_\Sigma f,h\rangle
+		=
+		\sum_{g\in G}\sum_{s\in\Sigma}f(s^{-1}g)\overline{h(g)}.
+		\]
+		Mit der Substitution \(u=s^{-1}g\) folgt
+		\[
+		\langle T_\Sigma f,h\rangle
+		=
+		\sum_{u\in G}\sum_{s\in\Sigma}f(u)\overline{h(su)}.
+		\]
+		Da \(\Sigma=\Sigma^{-1}\), ist dies gleich
+		\[
+		\sum_{u\in G} f(u)\overline{\sum_{s\in\Sigma} h(s^{-1}u)}
+		=
+		\langle f,T_\Sigma h\rangle.
+		\]
+	\end{proof}
+	
+	\begin{bemerkung}
+		Der übliche Adjazenzoperator eines Cayley-Graphen ist also ein
+		spezifischer Faltungsoperator im Gruppenring \(\C[G]\).
+		Diese Beobachtung ist für die spätere Hecke-Analogie zentral.
+	\end{bemerkung}
+	
+	\section{Spektrum, Spektrallücke und Durchmischung}
+	
+	\subsection{Normierte Spektren}
+	
+	Sei \(G\) ein endlicher \(|\Sigma|\)-regulärer Graph mit Adjazenzoperator \(T_\Sigma\)
+	und normiertem Operator \(P_\Sigma\).
+	Dann gilt
+	\[
+	\|P_\Sigma\| \le 1.
+	\]
+	Schreiben wir das Spektrum von \(P_\Sigma\) als
+	\[
+	1=\mu_1 \ge \mu_2 \ge \cdots \ge \mu_n \ge -1,
+	\]
+	so ist die konstante Funktion stets Eigenfunktion zum Eigenwert \(1\).
+	
+	\begin{definition}
+		Die Spektrallücke des normierten Operators \(P_\Sigma\) sei
+		\[
+		\Delta(\Sigma):=
+		1-\max_{i\ge 2}|\mu_i|.
+		\]
+	\end{definition}
+	
+	\begin{satz}
+		Ist \(\Delta(\Sigma)>0\), so gilt für jede Funktion \(f\in \ell^2(G)\)
+		mit Mittelwert \(0\):
+		\[
+		\|P_\Sigma^m f\|_2 \le (1-\Delta(\Sigma))^m \|f\|_2
+		\qquad (m\ge 0).
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Auf dem orthogonalen Komplement der Konstanten ist die Operatornorm von
+		\(P_\Sigma\) gleich dem größten Betrag eines nichttrivialen Eigenwertes.
+		Daher
+		\[
+		\|P_\Sigma^m\|_{\ell^2_0\to \ell^2_0}
+		=
+		\left(\max_{i\ge 2}|\mu_i|\right)^m
+		=
+		(1-\Delta(\Sigma))^m.
+		\]
+	\end{proof}
+	
+	\begin{korollar}
+		Eine positive Spektrallücke impliziert exponentielle Durchmischung des
+		zugehörigen Random Walks und damit eine präzise Form diskreter
+		algorithmischer Effizienz.
+	\end{korollar}
+	
+	\begin{bemerkung}
+		Mit \enquote{Effizienz} ist hier ausschließlich die Mischungsrate des
+		diskreten dynamischen Systems gemeint.
+		Physikalische oder thermodynamische Energiebegriffe sind damit
+		nicht verbunden.
+	\end{bemerkung}
+	
+	\section{Normgesteuerte Operatoren aus Quaternionen}
+	
+	\subsection{Norm-\texorpdfstring{$p$}{p}-Elemente}
+	
+	Bis hierhin war \(\Sigma\) eine beliebige symmetrische Erzeugermenge.
+	Der arithmetische Gehalt beginnt erst, wenn \(\Sigma\) aus der Quaternionenalgebra
+	selbst stammt.
+	
+	\begin{definition}
+		Sei \(p\) eine Primzahl.
+		Wir definieren die Menge der Norm-\(p\)-Elemente in \(\OH\) durch
+		\[
+		X_p := \{x\in \OH \;:\; \Nrd(x)=p\}.
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		Da \(\Nrd\) multiplikativ ist, sind diese Elemente natürliche
+		lokale Schrittgeneratoren eines festen arithmetischen Typs.
+		Will man daraus Operatoren auf \(R_N\) oder \(R_N^\times\) bauen,
+		muss man modulo \(N\OH\) reduzieren und zugleich Einheitenquotienten
+		berücksichtigen, um Mehrfachzählungen zu kontrollieren.
+	\end{bemerkung}
+	
+	\begin{definition}
+		Eine Teilmenge \(\Sigma_{N,p}\subseteq R_N^\times\) heiße
+		\emph{normkompatibel vom Niveau \(p\)}, wenn sie aus Reduktionsklassen
+		von Elementen aus \(X_p\) erzeugt wird, modulo Einheiten und gegebenenfalls
+		einer weiteren symmetrisierenden Äquivalenzrelation, so dass
+		\[
+		\Sigma_{N,p}^{-1}=\Sigma_{N,p}
+		\]
+		gilt.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Hier liegt einer der mathematisch sensibelsten Punkte des gesamten Ansatzes.
+		Für eine wirklich starke Theorie genügt nicht irgendeine normkompatible Wahl;
+		notwendig wäre eine \emph{kanonische} Konstruktion der Mengen \(\Sigma_{N,p}\),
+		die mit lokaler Algebra und Doppelnebenklassenformalismus verträglich ist.
+	\end{bemerkung}
+	
+	\subsection{Die zugehörigen Operatoren}
+	
+	Zu einer normkompatiblen Menge \(\Sigma_{N,p}\) definieren wir
+	\[
+	T_{N,p}:=T_{\Sigma_{N,p}},\qquad
+	P_{N,p}:=\frac{1}{|\Sigma_{N,p}|}T_{N,p}.
+	\]
+	
+	\begin{proposition}
+		Ist \(\Sigma_{N,p}\) symmetrisch, so ist \(T_{N,p}\) selbstadjungiert.
+		Falls \(\Sigma_{N,p}\) die betrachtete Komponente erzeugt,
+		ist der zugehörige Cayley-Graph regulär und zusammenhängend.
+	\end{proposition}
+	
+	\begin{proof}
+		Die Selbstadjungiertheit folgt wie zuvor aus der Symmetrie.
+		Die Regulärität ist Cayley-graphisch unmittelbar.
+		Zusammenhang folgt aus der Erzeugereigenschaft.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Formal sammelt \(T_{N,p}\) also lokale arithmetische Schritte fester Norm
+		zu einem globalen Operator. Genau hierin beginnt die Nähe zur Hecke-Philosophie.
+	\end{bemerkung}
+	
+	\section{Lokale Quaternionenalgebra und Hecke-Hintergrund}
+	
+	\subsection{Lokale Struktur von \texorpdfstring{$B$}{B}}
+	
+	Die Hamiltonsche Quaternionenalgebra \(B=(-1,-1)_\Q\) ist global nicht trivial,
+	aber lokal an fast allen Stellen gesplittet.
+	
+	\begin{satz}
+		Für jede ungerade Primzahl \(p\) gilt
+		\[
+		B\otimes_\Q \Q_p \cong M_2(\Q_p).
+		\]
+		Dagegen ist \(B\) an \(p=2\) und an der reellen Stelle ramifiziert.
+	\end{satz}
+	
+	\begin{bemerkung}
+		Für \(p\neq 2\) ist also auch eine maximale Ordnung lokal isomorph zu
+		\[
+		\OH\otimes_\Z \Z_p \cong M_2(\Z_p).
+		\]
+		Dies ist der eigentliche Eintrittspunkt lokaler Hecke-Geometrie.
+		Denn in der gesplitteten Situation erscheinen Normbedingungen als
+		Determinantenbedingungen für Matrizen.
+	\end{bemerkung}
+	
+	\subsection{Doppelnebenklassen als kontinuierliche Vorlage}
+	
+	Die klassische Hecke-Theorie für \(\PGL_2(\Q_p)\) arbeitet mit
+	kompakt gestützten \(K\)-biinvarianten Funktionen,
+	wobei
+	\[
+	K = \PGL_2(\Z_p)
+	\]
+	eine maximale kompakte Untergruppe ist.
+	Der Hecke-Operator der Stufe \(p\) entspricht formal der Doppelnebenklasse
+	\[
+	K \diag(p,1) K.
+	\]
+	
+	\begin{bemerkung}
+		Die zentrale Idee lautet: Man mittelt nicht über beliebige Gruppenelemente,
+		sondern über eine lokal kanonische Bahn fester Determinante.
+		Gerade deshalb tragen Hecke-Operatoren tiefe arithmetische Information.
+	\end{bemerkung}
+	
+	\begin{proposition}[heuristische Brücke]
+		Sind die Mengen \(\Sigma_{N,p}\) tatsächlich aus Reduktionsklassen
+		von Norm-\(p\)-Elementen konstruiert und lokal mit der gesplitteten Struktur
+		\(\OH\otimes \Z_p \cong M_2(\Z_p)\) kompatibel, dann ist \(T_{N,p}\)
+		als endliche Schattenversion eines Hecke-Typs zu lesen:
+		nicht als echter Hecke-Operator, wohl aber als diskreter Quotientenoperator,
+		der dieselbe lokale Organisationsidee nachahmt.
+	\end{proposition}
+	
+	\begin{proof}[Kommentar statt Beweis]
+		Hier liegt derzeit kein vollständiger mathematischer Beweis vor,
+		sondern ein Programm.
+		Die Aussage ist als präzise formulierte Heuristik zu verstehen,
+		deren Belastbarkeit von einer kanonischen Konstruktion von \(\Sigma_{N,p}\),
+		lokalen Identifikationen und Kompatibilitätsnachweisen abhängt.
+	\end{proof}
+	
+	\section{Bruhat--Tits-Bäume und die geometrische Lesart}
+	
+	\subsection{Der lokale Baum}
+	
+	Für \(p\neq 2\) besitzt \(\PGL_2(\Q_p)\) seinen Bruhat--Tits-Baum \(\mathcal{T}_p\),
+	einen \((p+1)\)-regulären Baum.
+	Seine Knoten können als Homothetyklassen von \(\Z_p\)-Gittern in \(\Q_p^2\)
+	aufgefasst werden.
+	Nachbarschaft entspricht dann einem elementaren Index-\(p\)-Schritt.
+	
+	\begin{bemerkung}
+		Die klassische Hecke-Nachbarschaftsrelation auf diesem Baum ist genau die
+		lokale Geometrie, aus der viele arithmetische Graphkonstruktionen hervorgehen.
+		Insbesondere entstehen Ramanujan-Graphen in berühmten Beispielen
+		durch geeignete arithmetische Quotienten solcher Bäume.
+	\end{bemerkung}
+	
+	\subsection{Diskrete Reduktion als endlicher Schatten}
+	
+	Der vorliegende Ansatz arbeitet nicht direkt mit \(\mathcal{T}_p\),
+	sondern mit endlichen Quotienten \(R_N\).
+	Gerade deshalb ist er schwächer, aber expliziter.
+	
+	\begin{hypothese}
+		Es gibt eine präzise Konstruktion, in der die normkompatiblen Mengen
+		\(\Sigma_{N,p}\) als endliche Reduktionsspuren lokaler Nachbarschaften
+		des Bruhat--Tits-Baums verstanden werden können.
+	\end{hypothese}
+	
+	\begin{bemerkung}
+		Wäre eine solche Brücke hergestellt, dann erhielte der Operator \(T_{N,p}\)
+		eine geometrische Lesart:
+		Er wäre nicht mehr bloß Adjazenz auf einem künstlich gewählten Graphen,
+		sondern der endliche Reflex einer lokal kanonischen \(p\)-Nachbarschaft.
+	\end{bemerkung}
+	
+	\section{Spektrale Konsequenzen und mögliche Ramanujan-Perspektiven}
+	
+	\subsection{Vom endlichen Spektrum zur arithmetischen Schranke}
+	
+	Solange \(T_{N,p}\) nur ein selbstadjungierter Operator auf einem endlichen Graphen ist,
+	kontrolliert seine Spektrallücke die Durchmischung.
+	Entsteht er jedoch aus einer echten Hecke-Algebra,
+	so tragen seine Eigenwerte potentiell automorphe Information.
+	
+	\begin{bemerkung}
+		Die Ramanujan-Philosophie besagt grob,
+		dass nichttriviale Eigenwerte solcher Operatoren
+		durch das lokale Temperiertheitsverhalten
+		automorpher Darstellungen kontrolliert werden.
+		Im diskreten Modell wäre dies die Stelle,
+		an der eine bloß graphentheoretische Spektrallücke
+		in eine arithmetische Eigenwertschranke übergeht.
+	\end{bemerkung}
+	
+	\begin{hypothese}
+		Für geeignete Familien \((N,p)\) könnten die Operatoren \(T_{N,p}\)
+		nach angemessener Normierung Spektren besitzen,
+		deren nichttriviale Eigenwerte Schranken erfüllen,
+		die an Ramanujan-artige Phänomene erinnern.
+	\end{hypothese}
+	
+	\begin{bemerkung}
+		Der vorliegende Text beweist eine solche Schranke nicht.
+		Er markiert nur den mathematisch richtigen Ort,
+		an dem eine solche Frage gestellt werden müsste.
+	\end{bemerkung}
+	
+	\section{Langlands als Organisationsidee}
+	
+	Das Langlands-Programm ist in seiner vollen Gestalt zu groß,
+	um hier dargestellt zu werden.
+	Für den vorliegenden Zusammenhang genügt ein minimales,
+	aber tragfähiges Strukturmotiv:
+	lokale Daten werden durch Operatoren in globale Spektren übersetzt.
+	
+	Dieses Motiv erscheint im diskreten Modell in der Form
+	\[
+	\text{Norm-}p\text{-Elemente}
+	\longrightarrow
+	T_{N,p}
+	\longrightarrow
+	\Spec(T_{N,p})
+	\longrightarrow
+	\text{globale Mischungs- und Strukturinformation}.
+	\]
+	Natürlich ist dies nur ein endlicher Schatten der eigentlichen Theorie.
+	An die Stelle automorpher Darstellungen treten Funktionen auf endlichen Gruppen;
+	an die Stelle lokaler Korrespondenzen treten normgesteuerte Übergänge;
+	an die Stelle geometrischer Kategorien treten Quotientengraphen.
+	
+	\begin{bemerkung}
+		Gerade diese Schwäche ist aber erkenntnisfördernd.
+		Denn sie zeigt, welche Teile der Organisationsidee bereits auf rein endlicher Ebene
+		sichtbar werden und welche erst in echter geometrischer Tiefe entstehen.
+	\end{bemerkung}
+	
+	\section{Der Scholze-Bezug in präziser mathematischer Form}
+	
+	Hier ist begriffliche Disziplin entscheidend.
+	Peter Scholzes Arbeiten zu perfectoiden Räumen,
+	prismatischen Methoden, geometrisierter lokaler Langlands-Korrespondenz,
+	Wild-Betti-Garben und neuen Sechs-Funktoren-Formalismsen
+	haben den begrifflichen Horizont der arithmetischen Geometrie tief verschoben.
+	Dort wird arithmetische Information nicht mehr als lose Ansammlung
+	punktweiser Invarianten behandelt,
+	sondern in funktoriell organisierten geometrischen und kategorialen Räumen.
+	
+	Für das vorliegende Modell folgt daraus jedoch gerade \emph{nicht},
+	dass es bereits ein Spezialfall dieser Theorien wäre.
+	Die mathematisch korrekte Formulierung ist schärfer und bescheidener:
+	
+	\begin{quote}
+		Das hier konstruierte Quaternionenmodell ist ein endlicher spektraler Proberaum.
+		Es zeigt, wie lokal arithmetisch motivierte Schritte einen globalen Operator erzeugen,
+		dessen Spektrum strukturelle Information trägt.
+		In diesem methodischen, aber nicht technischen Sinn
+		steht es unter einem Leitgedanken,
+		der in den Arbeiten von Scholze und Fargues in weit tieferer Form verwirklicht wird.
+	\end{quote}
+	
+	Es ist hilfreich, drei Ebenen streng auseinanderzuhalten:
+	
+	\begin{description}[leftmargin=2.3cm,style=nextline]
+		\item[Stufe A.] Endliche Quotienten, Cayley-Graphen, Faltungsoperatoren,
+		Spektrallücken, Random Walks.
+		\item[Stufe B.] Hecke-artige Operatoren, lokale Quaternionenalgebren,
+		Bruhat--Tits-Bäume, automorphe Spektren, Ramanujan-Phänomene.
+		\item[Stufe C.] Fargues--Fontaine-Kurve, geometrisierte lokale Langlands-Korrespondenz,
+		motivische Koeffizienten, Garbenkategorien, Sechs-Funktoren-Formalismen.
+	\end{description}
+	
+	Der vorliegende Artikel gehört vollständig zu Stufe A,
+	entwickelt eine präzisere Brücke zu Stufe B
+	und nimmt Stufe C nur als fernes, aber instruktives Bezugssystem wahr.
+	
+	\begin{bemerkung}
+		Unsauber wäre es, \(T_{N,p}\) bereits als Hecke-Operator
+		im Sinn von Fargues--Scholze auszugeben oder
+		den Quotientengraphen \(\mathrm{Cay}(G_N,\Sigma_{N,p})\)
+		als diskrete Version der Fargues--Fontaine-Geometrie zu bezeichnen.
+		Genau gegen eine solche Überdehnung richtet sich die saubere Architektur des Textes.
+	\end{bemerkung}
+	
+	\section{Was formal gesichert ist -- und was nicht}
+	
+	\begin{proposition}
+		Im Rahmen dieses Artikels sind die folgenden Aussagen formal gesichert:
+		\begin{enumerate}[label=\arabic*.]
+			\item Die Hurwitz-Ordnung \(\OH\) ist eine maximale \(\Z\)-Ordnung in \(B\).
+			\item Für jedes \(N\ge 1\) ist \(R_N=\OH/N\OH\) ein endlicher Ring mit \(N^4\) Elementen.
+			\item Jede symmetrische endliche Erzeugermenge \(\Sigma\) erzeugt einen endlichen
+			regulären Cayley-Graphen und einen selbstadjungierten Faltungsoperator \(T_\Sigma\).
+			\item Eine positive Spektrallücke impliziert exponentielle \(\ell^2\)-Durchmischung.
+			\item Normgesteuerte Mengen \(\Sigma_{N,p}\) liefern eine arithmetisch motivierte
+			Operatorfamilie \(T_{N,p}\), deren formale Struktur heckeartig gelesen werden kann.
+		\end{enumerate}
+	\end{proposition}
+	
+	\begin{proposition}
+		Nicht bewiesen werden in diesem Text:
+		\begin{enumerate}[label=\arabic*.]
+			\item eine kanonische und vollständig funktorielle Konstruktion von \(\Sigma_{N,p}\),
+			\item eine Identifikation von \(T_{N,p}\) mit klassischen Hecke-Operatoren,
+			\item eine Ramanujan-Eigenschaft der entstehenden Graphen,
+			\item ein Vergleich mit automorphen Spektren im strengen Sinn,
+			\item eine Einbettung in perfectoide, prismatische oder garbentheoretische Geometrie,
+			\item eine Realisierung der lokalen Langlands-Korrespondenz aus dem diskreten Modell.
+		\end{enumerate}
+	\end{proposition}
+	
+	\begin{bemerkung}
+		Diese Negativliste ist kein Mangel,
+		sondern eine methodische Stärke.
+		Sie trennt bewiesene endliche Spektraltheorie
+		von weiterführender arithmetischer Vision.
+	\end{bemerkung}
+	
+	\section{Wie aus der Analogie mehr werden könnte}
+	
+	Soll aus der gegenwärtigen Heuristik eine belastbare arithmetische Theorie werden,
+	dann wären mindestens die folgenden Schritte erforderlich:
+	
+	\begin{enumerate}[label=\arabic*.]
+		\item Eine \emph{kanonische} Konstruktion der Mengen \(\Sigma_{N,p}\)
+		aus Norm-\(p\)-Elementen der Hurwitz-Ordnung modulo Einheiten.
+		\item Eine genaue Analyse der lokalen Ringe
+		\[
+		\OH\otimes \Z_\ell
+		\]
+		und ihrer Beziehung zu \(\PGL_2(\Q_\ell)\) sowie zu Bruhat--Tits-Bäumen.
+		\item Der Nachweis, dass die Operatoren \(T_{N,p}\) in geeigneten Familien
+		aus einer echten Hecke-Algebra stammen.
+		\item Eine simultane spektrale Analyse dieser Operatorfamilien,
+		idealerweise mit Vergleich zu automorphen oder Ramanujan-artigen Schranken.
+		\item Eine Einbettung des diskreten Modells in eine moduli-,
+		garben- oder korrespondenztheoretische Umgebung.
+	\end{enumerate}
+	
+	\begin{bemerkung}
+		Erst auf dieser Grundlage wäre ein stärkerer Langlands- oder Scholze-Bezug
+		mathematisch voll belastbar.
+		Vorher bleibt die Analogie produktiv, aber begrenzt.
+	\end{bemerkung}
+	
+	\section{Schluss}
+	
+	Der eigentliche Gewinn des vorliegenden Ansatzes liegt nicht in einer
+	spektakulären Großbehauptung,
+	sondern in einer präzisen Zwischenebene:
+	Er zeigt, dass man aus einer maximalen Quaternionenordnung
+	durch endliche Reduktion, normgesteuerte Erzeugermengen und Faltungsoperatoren
+	eine nichttriviale spektrale Welt erzeugen kann,
+	in der lokale arithmetische Information global lesbar wird.
+	
+	Gerade dadurch gewinnt der Bezug zu moderner arithmetischer Geometrie an Schärfe.
+	Nicht weil das Modell bereits geometric Langlands,
+	Fargues--Fontaine oder Scholzes Sechs-Funktoren-Welt realisierte,
+	sondern weil es in endlicher Form ein Motiv isoliert,
+	das dort in hoher begrifflicher Dichte wiederkehrt:
+	die Übersetzung lokaler Struktur in globale Operatorik.
+	
+	So gelesen ist das vorliegende Quaternionenmodell weder bloß
+	elementare Graphentheorie noch schon tiefe Langlands-Geometrie.
+	Es ist etwas Drittes:
+	ein endlicher spektraler Vorraum,
+	in dem die Frage nach echter arithmetischer Tiefe
+	überhaupt erst in einer mathematisch kontrollierten Form gestellt werden kann.
+	
+	\begin{thebibliography}{99}
+		
+		\bibitem{ConwaySloane}
+		J. H. Conway und N. J. A. Sloane,
+		\emph{Sphere Packings, Lattices and Groups},
+		3. Auflage, Springer, 1999.
+		
+		\bibitem{Lubotzky}
+		A. Lubotzky,
+		\emph{Discrete Groups, Expanding Graphs and Invariant Measures},
+		Birkhäuser, 1994.
+		
+		\bibitem{SerreTrees}
+		J.-P. Serre,
+		\emph{Trees},
+		Springer, 1980.
+		
+		\bibitem{Terras}
+		A. Terras,
+		\emph{Fourier Analysis on Finite Groups and Applications},
+		Cambridge University Press, 1999.
+		
+		\bibitem{Vigneras}
+		M.-F. Vignéras,
+		\emph{Arithmétique des algèbres de quaternions},
+		Springer, 1980.
+		
+		\bibitem{Titchmarsh}
+		E. C. Titchmarsh,
+		\emph{The Theory of the Riemann Zeta-Function},
+		2. Auflage, herausgegeben von D. R. Heath-Brown,
+		Oxford University Press, 1986.
+		
+		\bibitem{ScholzeMotivic}
+		P. Scholze,
+		\emph{Geometrization of the local Langlands correspondence, motivically},
+		arXiv:2501.07944, 2025.
+		
+		\bibitem{ScholzeWildBetti}
+		P. Scholze,
+		\emph{Wild Betti sheaves},
+		arXiv:2505.24599, 2025.
+		
+		\bibitem{ScholzeSixFunctor}
+		P. Scholze,
+		\emph{Six-Functor Formalisms},
+		arXiv:2510.26269, 2025.
+		
+		\bibitem{AnschutzBoscoLeBrasRodriguezCamargoScholze}
+		J. Anschütz, G. Bosco, A.-C. Le Bras, J. E. Rodríguez Camargo und P. Scholze,
+		\emph{Analytic de Rham stacks of Fargues--Fontaine curves},
+		arXiv:2510.15196, 2025.
+		
+		\bibitem{FarguesScholze}
+		L. Fargues und P. Scholze,
+		\emph{Geometrization of the local Langlands correspondence},
+		Buchmanuskript / Preprint, 2021 ff.
+		
+	\end{thebibliography}
+	
+\end{document}

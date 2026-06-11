@@ -1,0 +1,155 @@
+\begin{satz}[Skaleninvariantes Sinus-Integral auf Primzahlvierlingen]
+	Sei
+	\[
+	(E,a,b,c)=(p,p+2,p+6,p+8)
+	\]
+	ein Primzahlvierling. Für jedes
+	\[
+	q\in\{E,a,b,c\}
+	\]
+	definiere die Funktion
+	\[
+	f_q:[0,q]\to\mathbb{R},\qquad
+	f_q(x)=\frac{1}{q}\sin\!\left(\frac{\pi x}{q}\right).
+	\]
+	Dann gilt
+	\[
+	\int_0^E f_E(x)\,dx
+	=
+	\int_0^a f_a(x)\,dx
+	=
+	\int_0^b f_b(x)\,dx
+	=
+	\int_0^c f_c(x)\,dx
+	=
+	\frac{2}{\pi}.
+	\]
+	Außerdem gilt für jedes \(q\in\{E,a,b,c\}\) die Spiegelsymmetrie
+	\[
+	\int_0^q f_q(q-x)\,dx=\int_0^q f_q(x)\,dx.
+	\]
+\end{satz}
+
+\begin{beweis}
+	Fixiere zunächst ein beliebiges \(q>0\). Wir betrachten
+	\[
+	f_q(x)=\frac{1}{q}\sin\!\left(\frac{\pi x}{q}\right).
+	\]
+	
+	\textbf{Schritt 1: Bestimmung einer Stammfunktion.}
+	Setze
+	\[
+	F_q(x):=-\frac{1}{\pi}\cos\!\left(\frac{\pi x}{q}\right).
+	\]
+	Dann folgt mit der Kettenregel
+	\[
+	F_q'(x)
+	=
+	-\frac{1}{\pi}\left(-\sin\!\left(\frac{\pi x}{q}\right)\right)\frac{\pi}{q}
+	=
+	\frac{1}{q}\sin\!\left(\frac{\pi x}{q}\right)
+	=
+	f_q(x).
+	\]
+	Also ist \(F_q\) eine Stammfunktion von \(f_q\).
+	
+	\textbf{Schritt 2: Auswertung des Integrals.}
+	Nach dem Hauptsatz der Differential- und Integralrechnung gilt
+	\[
+	\int_0^q f_q(x)\,dx
+	=
+	\left[
+	-\frac{1}{\pi}\cos\!\left(\frac{\pi x}{q}\right)
+	\right]_0^q.
+	\]
+	Einsetzen der Grenzen liefert
+	\[
+	\int_0^q f_q(x)\,dx
+	=
+	-\frac{1}{\pi}\cos(\pi)+\frac{1}{\pi}\cos(0)
+	=
+	-\frac{1}{\pi}(-1)+\frac{1}{\pi}(1)
+	=
+	\frac{2}{\pi}.
+	\]
+	Da dies für jedes \(q>0\) gilt, folgt insbesondere für
+	\[
+	q\in\{E,a,b,c\}
+	\]
+	die Gleichheit
+	\[
+	\int_0^E f_E(x)\,dx
+	=
+	\int_0^a f_a(x)\,dx
+	=
+	\int_0^b f_b(x)\,dx
+	=
+	\int_0^c f_c(x)\,dx
+	=
+	\frac{2}{\pi}.
+	\]
+	
+	\textbf{Schritt 3: Spiegelungssymmetrie.}
+	Nun berechnen wir
+	\[
+	f_q(q-x)
+	=
+	\frac{1}{q}\sin\!\left(\frac{\pi(q-x)}{q}\right)
+	=
+	\frac{1}{q}\sin\!\left(\pi-\frac{\pi x}{q}\right).
+	\]
+	Wegen der elementaren Identität
+	\[
+	\sin(\pi-u)=\sin(u)
+	\]
+	folgt
+	\[
+	f_q(q-x)=\frac{1}{q}\sin\!\left(\frac{\pi x}{q}\right)=f_q(x).
+	\]
+	Daher ist \(f_q\) bezüglich der Mitte \(x=q/2\) spiegelsymmetrisch. Insbesondere erhält man
+	\[
+	\int_0^q f_q(q-x)\,dx=\int_0^q f_q(x)\,dx.
+	\]
+	Damit ist alles bewiesen.
+\end{beweis}
+
+\begin{korollar}
+	Für den ersten Primzahlvierling
+	\[
+	(E,a,b,c)=(5,7,11,13)
+	\]
+	gilt
+	\[
+	\int_0^5 \frac{1}{5}\sin\!\left(\frac{\pi x}{5}\right)\,dx
+	=
+	\int_0^7 \frac{1}{7}\sin\!\left(\frac{\pi x}{7}\right)\,dx
+	=
+	\int_0^{11} \frac{1}{11}\sin\!\left(\frac{\pi x}{11}\right)\,dx
+	=
+	\int_0^{13} \frac{1}{13}\sin\!\left(\frac{\pi x}{13}\right)\,dx
+	=
+	\frac{2}{\pi}.
+	\]
+	Numerisch ist
+	\[
+	\frac{2}{\pi}\approx 0.63661977236758.
+	\]
+\end{korollar}
+
+\begin{bemerkung}
+	Die Gleichheit der Integrale ist keine spezifische Folge der Primzahleigenschaft, sondern folgt aus der skaleninvarianten Form der Funktionen
+	\[
+	f_q(x)=\frac{1}{q}\,\phi\!\left(\frac{x}{q}\right)
+	\]
+	mit
+	\[
+	\phi(u)=\sin(\pi u).
+	\]
+	Allgemein gilt nämlich für jede integrierbare Funktion \(\phi:[0,1]\to\mathbb{R}\):
+	\[
+	\int_0^q \frac{1}{q}\phi\!\left(\frac{x}{q}\right)\,dx
+	=
+	\int_0^1 \phi(u)\,du.
+	\]
+	Der hier behandelte Sinusfall ist also ein spezielles Beispiel eines allgemeineren Skalenprinzips.
+\end{bemerkung}

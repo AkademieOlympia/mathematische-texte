@@ -1,0 +1,166 @@
+\documentclass[11pt,a4paper]{article}
+
+% -------------------------------------------------
+% Encoding / Sprache
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm}
+
+% -------------------------------------------------
+% Layout
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{hyperref}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{remark}[definition]{Remark}
+
+% -------------------------------------------------
+% Titel
+% -------------------------------------------------
+\title{
+	On the Structural Origin of the Stability Condition in the Two Higgs Doublet Model \\
+	\large A Coupling-Based Perspective via Quadratic Completion
+}
+
+\author{
+	Thomas Hoffbauer\\
+	\small Bamberg, Germany
+}
+
+\date{}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Recent formalization of the stability analysis of the two Higgs doublet model (2HDM) potential has revealed an error in a widely cited result from 2006. The error originates from replacing a global boundedness condition with local directional positivity constraints. In this paper, we argue that this mistake is structurally visible at the level of the potential itself. We show that the stability problem reduces to a quadratic minimization problem, and that the correct condition is a coupling inequality between linear and quadratic components. We further reinterpret this condition within a dynamical framework, highlighting that stability is inherently a resonance phenomenon rather than a purely geometric one.
+	\end{abstract}
+	
+	\section{Introduction}
+	
+	The stability of scalar potentials is a fundamental requirement in quantum field theory. In the context of the two Higgs doublet model (2HDM), this problem has been extensively studied.
+	
+	A recent formal verification effort has shown that a previously accepted characterization of stability is incorrect. The issue arises from an implicit assumption that local positivity conditions along directions are sufficient to ensure global boundedness.
+	
+	In this paper, we argue that this error is not subtle, but rather structurally evident from the form of the potential itself.
+	
+	\section{Structure of the Potential}
+	
+	The 2HDM potential can be written in the form
+	\begin{equation}
+		V = K_0 J_2(\vec{k}) + K_0^2 J_4(\vec{k}),
+	\end{equation}
+	where $K_0 > 0$ is a scaling parameter and $\vec{k}$ is a normalized vector satisfying $\|\vec{k}\|^2 \leq 1$.
+	
+	\section{Stability as a Global Condition}
+	
+	\begin{definition}
+		The potential is said to be stable if there exists $c \in \mathbb{R}$ such that
+		\[
+		c \leq V(K_0, \vec{k})
+		\quad \text{for all } K_0 > 0, \ \|\vec{k}\|^2 \leq 1.
+		\]
+	\end{definition}
+	
+	This is a global condition involving both scale and direction.
+	
+	\section{Quadratic Completion}
+	
+	\begin{lemma}
+		For fixed $\vec{k}$, the function
+		\[
+		f(K_0) = K_0 J_2(\vec{k}) + K_0^2 J_4(\vec{k})
+		\]
+		is bounded from below if and only if
+		\[
+		J_4(\vec{k}) \geq 0
+		\quad \text{and} \quad
+		J_2(\vec{k})^2 \leq 4c\,J_4(\vec{k})
+		\]
+		for some $c \geq 0$.
+	\end{lemma}
+	
+	\begin{proof}
+		Completing the square:
+		\[
+		f(K_0) = J_4(\vec{k})\left(K_0 + \frac{J_2(\vec{k})}{2J_4(\vec{k})}\right)^2 - \frac{J_2(\vec{k})^2}{4J_4(\vec{k})}.
+		\]
+		The minimum exists and is finite if and only if $J_4(\vec{k}) \geq 0$. The lower bound is then controlled by the second term.
+	\end{proof}
+	
+	\section{Main Result}
+	
+	\begin{theorem}
+		The stability of the potential is equivalent to the condition
+		\[
+		\forall \vec{k}:\quad J_4(\vec{k}) \geq 0
+		\quad \text{and} \quad
+		(J_2(\vec{k}) < 0 \Rightarrow J_2(\vec{k})^2 \leq 4c\,J_4(\vec{k})).
+		\]
+	\end{theorem}
+	
+	\begin{remark}
+		This condition is global and cannot be reduced to purely directional positivity constraints.
+	\end{remark}
+	
+	\section{Interpretation as a Coupled System}
+	
+	The structure of the potential naturally separates into two components:
+	\begin{itemize}
+		\item $J_2(\vec{k})$: linear contribution
+		\item $J_4(\vec{k})$: quadratic contribution
+	\end{itemize}
+	
+	Stability arises not from their individual positivity, but from their coupling.
+	
+	\section{Bamberg Model Interpretation}
+	
+	We reinterpret the structure dynamically:
+	
+	\begin{itemize}
+		\item $J_2$: directional drift (``Tri-component'')
+		\item $J_4$: stabilizing curvature (``Okto-component'')
+		\item $K_0$: energy scale (``E-axis'')
+	\end{itemize}
+	
+	\begin{definition}
+		A system is stable if its components satisfy a resonance condition of the form
+		\[
+		(\text{Tri})^2 \lesssim (\text{Okto}).
+		\]
+	\end{definition}
+	
+	This expresses stability as a balance between drift and curvature.
+	
+	\section{Discussion}
+	
+	The incorrect argument replaces a global condition with local tests. This overlooks the dependence on the scaling variable.
+	
+	The correct perspective is that stability is a coupled phenomenon in the full parameter space.
+	
+	\section{Conclusion}
+	
+	The error identified through formalization reflects a deeper structural issue: the tendency to replace global constraints with local intuition.
+	
+	We have shown that the correct stability condition follows directly from quadratic completion and naturally leads to a coupling interpretation.
+	
+	\bigskip
+	
+	\noindent
+	\textbf{Key Insight:} Stability is not a geometric property of directions, but a resonance condition in the full system.
+	
+\end{document}

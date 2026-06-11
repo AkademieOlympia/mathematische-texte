@@ -1,0 +1,77 @@
+========================================================================
+EABC kumulative Kanal-Bias-Analyse mod 420
+========================================================================
+Prim-Obergrenze: 100,000,000
+Kanäle: [11, 101, 191, 221, 311, 401]
+
+Vierlingssuche: 2.97s
+Kanal-Extraktion gesamt: 2.97s
+Gültige Kanal-Ereignisse K = 4,767
+Endzählungen N_i(K): [765, 831, 786, 809, 809, 767]
+Summe: 4767
+
+--- B_{101,11}(k) ---
+  Start: B(1) = -1
+  Ende:  B(K) = +66
+  min/max: -32 / +69
+
+  Meilensteine (k, p, B, B/√k):
+    k=   10  p=       5,651  B=   +1  B/√k=+0.3162
+    k=   50  p=     194,861  B=   +3  B/√k=+0.4243
+    k=  100  p=     477,011  B=   -2  B/√k=-0.2000
+    k=  500  p=   4,377,671  B=   +0  B/√k=+0.0000
+    k= 1000  p=  11,740,031  B=  -10  B/√k=-0.3162
+    k= 2000  p=  31,252,931  B=   -9  B/√k=-0.2012
+    k= 3000  p=  54,148,811  B=  +43  B/√k=+0.7851
+    k= 4000  p=  78,986,441  B=  +49  B/√k=+0.7748
+    k= 4767  p=  99,982,241  B=  +66  B/√k=+0.9559
+
+  ASCII B/√k:  =-++++==---::  ......:----=++++*######%####*######%%%%%%%%%
+
+--- Vorzeichenwechsel B_{101,11} ---
+  Anzahl: 13
+  Erste Wechsel: k=9 (B=+0→+1), k=86 (B=+0→-1), k=232 (B=+0→+1), k=502 (B=+0→-1), k=509 (B=+0→+1), k=522 (B=+0→-1), k=533 (B=+0→+1), k=540 (B=+0→-1), k=543 (B=+0→+1), k=547 (B=+0→-1), k=2057 (B=+0→+1), k=2065 (B=+0→-1), k=2185 (B=+0→+1)
+
+--- Drift / linearer Trend ---
+  B/√k ~ 3.163941e-04·k + -0.500085  (R²=0.595206)
+  B ~ 1.415083·√k + -47.1020  (R²=0.598573)  [erwartet ~ konstant×√k bei RW]
+  B/√k (zweite Hälfte): Steigung 1.625959e-04, R²=0.443672
+
+--- √k-Skalierung & LIL ---
+  max |B|/√k = 1.0388  bei k=4412
+  final B/√K = +0.9559
+  LIL-Grenze √(2K log log K) ≈ 142.72
+  |B(K)| / LIL ≈ 0.4624
+  max |B| / LIL ≈ 0.4835
+  B/√k bounded (max < 5): ja
+
+--- B_{{j,i}}(K) für alle Kanalpaare ---
+  B_{101,11} = +66  (B/√K = +0.9559)
+  B_{401,101} = -64  (B/√K = -0.9270)
+  B_{191,101} = -45  (B/√K = -0.6518)
+  B_{221,11} = +44  (B/√K = +0.6373)
+  B_{311,11} = +44  (B/√K = +0.6373)
+  B_{401,221} = -42  (B/√K = -0.6083)
+  B_{401,311} = -42  (B/√K = -0.6083)
+  B_{221,191} = +23  (B/√K = +0.3331)
+  B_{311,191} = +23  (B/√K = +0.3331)
+  B_{221,101} = -22  (B/√K = -0.3186)
+  B_{311,101} = -22  (B/√K = -0.3186)
+  B_{191,11} = +21  (B/√K = +0.3042)
+  B_{401,191} = -19  (B/√K = -0.2752)
+  B_{401,11} = +2  (B/√K = +0.0290)
+  B_{311,221} = +0  (B/√K = +0.0000)
+
+--- Nullhypothese: symmetrischer 6-Kanal-Random-Walk (5000 Trials) ---
+  Beobachtet max|B|/√k = 1.0388
+  Null: max|B|/√k  Mittel=1.2524, 95%-Quantil=1.7961, 99%-Quantil=2.0737
+  p-Wert (max ≥ beobachtet): 72.1%
+  Beobachtet |B/√K| = 0.9559
+  Null |B/√K|: Mittel=0.4638, 95%-Quantil=1.1442
+  p-Wert (|final| ≥ beobachtet): 10.4%
+  Beobachtet Vorzeichenwechsel: 13
+  Null Vorzeichenwechsel: Mittel=15.5, Median=13
+  p-Wert (Wechsel ≥ beobachtet): 52.3%
+
+CSV: /Users/thomashoffbauer/Desktop/Mathematische Texte/eabc_cumulative_bias.csv
+Plot: /Users/thomashoffbauer/Desktop/Mathematische Texte/eabc_cumulative_bias_B101_11.png

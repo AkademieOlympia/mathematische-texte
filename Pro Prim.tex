@@ -1,0 +1,1318 @@
+\documentclass[12pt,a4paper]{article}
+
+% -------------------------------------------------
+% Zeichensatz, Sprache, Satzspiegel
+% -------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.7cm]{geometry}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,amsfonts,mathtools}
+
+% -------------------------------------------------
+% Tabellen, Listen, Farben, Verweise
+% -------------------------------------------------
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+
+% -------------------------------------------------
+% Satzumgebungen
+% -------------------------------------------------
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{proposition}[satz]{Proposition}
+\newtheorem{korollar}[satz]{Korollar}
+
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{beispiel}[satz]{Beispiel}
+\newtheorem{frage}[satz]{Frage}
+\newtheorem{programm}[satz]{Programm}
+\newtheorem{konjektur}[satz]{Konjektur}
+
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Fam}{\operatorname{Fam}}
+\newcommand{\rang}{\operatorname{rang}}
+\newcommand{\Masse}{\operatorname{M}}
+\newcommand{\signatur}{\sigma}
+\newcommand{\QE}{Q_E}
+\newcommand{\QA}{Q_A}
+\newcommand{\QB}{Q_B}
+\newcommand{\QC}{Q_C}
+\newcommand{\QK}{Q_K}
+\newcommand{\Vorgaenger}{\operatorname{Vorg}}
+\newcommand{\Huelle}{\operatorname{H}}
+\newcommand{\Rest}{\operatorname{R}}
+\newcommand{\Kern}{\operatorname{K}}
+\newcommand{\argmin}{\operatorname*{argmin}}
+
+% -------------------------------------------------
+% Titelangaben
+% -------------------------------------------------
+\title{\textbf{Pro Prim}\\[1ex]
+	\large Eine arithmetische Periodentafel der Primzahlen,\\
+	Clustergeometrie und Fortsetzungsregeln im EABC-System}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir entwickeln eine arithmetische Periodentafel auf Grundlage der vier Primfamilien
+		\[
+		E=\{p\text{ prim}:p\equiv 1\pmod{12}\},\qquad
+		A=\{p\text{ prim}:p\equiv 5\pmod{12}\},
+		\]
+		\[
+		B=\{p\text{ prim}:p\equiv 7\pmod{12}\},\qquad
+		C=\{p\text{ prim}:p\equiv 11\pmod{12}\}.
+		\]
+		Das System trägt eine natürliche Signatur über die Kleinsche Vierergruppe und erlaubt die Einführung von Familienrang, Kernladung, Neutronenzahl und Isotopenfamilien. Darauf aufbauend wird eine lokale Clustergeometrie der Primzahlen entwickelt: Primzwillinge erscheinen als minimale Zweierkomplexe, primitive Primdrillinge als fortsetzungsbedürftige Dreierkomplexe und echte Primvierlinge als kompakte Vierercluster.
+		
+		Ein zentrales Ergebnis lautet, dass primitive Primdrillinge genau vier Familientypen besitzen und dass für sie die fehlende Familie mit der Endsignatur übereinstimmt. Ferner zeigen wir, dass echte Primvierlinge genau die beiden Zyklen
+		\[
+		(A,B,C,E)\qquad\text{und}\qquad(C,E,A,B)
+		\]
+		realisieren und sich in der lokalen kompakten Viererwelt durch die maximale Kettenstruktur
+		\[
+		t_2(Q)=2,\qquad t_3(Q)=2
+		\]
+		charakterisieren lassen.
+		
+		Ergänzend formulieren wir eine Hülltheorie über lineare und quadratische Familienhüllen, eine gaußsche und eisensteinsche Begleitgeometrie sowie ein nichtassoziatives Fortsetzungsprinzip im oktonionischen Rahmen. Das Manuskript trennt bewusst zwischen vollständig bewiesenen elementaren Aussagen und weiterführenden programmatischen Deutungen.
+	\end{abstract}
+	
+	\tableofcontents
+	
+	\section{Einleitung}
+	
+	Primzahlen werden gewöhnlich als isolierte arithmetische Objekte behandelt. Für viele Fragestellungen sind jedoch nicht nur einzelne Primzahlen, sondern lokale Cluster von Bedeutung: Zwillinge, Drillinge, Vierlinge und allgemein Prim-\(k\)-Tupel. Die vorliegende Arbeit geht von der Vermutung aus, dass solche Cluster in einem diskreten arithmetischen Schalenraum geordnet werden können.
+	
+	Ausgangspunkt ist die Zerlegung aller Primzahlen \(p>3\) in vier Familien modulo \(12\). Diese Familien tragen eine einfache, aber reichhaltige innere Algebra. Auf dieser Grundlage entstehen mehrere Ebenen:
+	\begin{enumerate}[label=\arabic*.]
+		\item eine periodische Ebene aus Familien, Rang, Kernladung und Neutronenzahl,
+		\item eine lokale Clusterebene aus Primzwillingen, primitiven Primdrillingen und Primvierlingen,
+		\item eine Hüllebene aus linearen und quadratischen Familienhüllen,
+		\item eine Begleitgeometrie über gaußsche und eisensteinsche Normen,
+		\item eine nichtassoziative Deutung lokaler Fortsetzungszwänge.
+	\end{enumerate}
+	
+	Ziel der Arbeit ist zunächst eine scharfe lokale Strukturtheorie. Es wird ausdrücklich nicht behauptet, dass damit bereits ein globaler Erzeugungsmechanismus für alle Primzahlen vorliegt.
+	
+	\section{Die vier Primfamilien und ihre Algebra}
+	
+	\begin{definition}[Primfamilien]
+		Für Primzahlen \(p>3\) definieren wir
+		\[
+		E:=\{p\text{ prim}:p\equiv 1\pmod{12}\},\qquad
+		A:=\{p\text{ prim}:p\equiv 5\pmod{12}\},
+		\]
+		\[
+		B:=\{p\text{ prim}:p\equiv 7\pmod{12}\},\qquad
+		C:=\{p\text{ prim}:p\equiv 11\pmod{12}\}.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Familienzerlegung]
+		Für jede Zahl \(n>1\) mit Primfaktorzerlegung
+		\[
+		n=\prod_{p^\nu\parallel n} p^\nu
+		\]
+		bezeichnen wir mit \(n_E,n_A,n_B,n_C\) die Teilprodukte der Primfaktoren aus den vier Familien. Damit schreiben wir
+		\[
+		n=n_E\,n_A\,n_B\,n_C.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Endsignatur]
+		Die Endsignatur \(\signatur(n)\in\{E,A,B,C\}\) wird über die Kleinsche Vierergruppe bestimmt durch
+		\[
+		E^2=E,\qquad A^2=B^2=C^2=E,
+		\]
+		\[
+		AB=C,\qquad AC=B,\qquad BC=A.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Familienrang]
+		Für \(n>1\) setzen wir
+		\[
+		\Fam(n):=\{X\in\{E,A,B,C\}:n_X>1\},
+		\qquad
+		\rang(n):=|\Fam(n)|.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Masse, Kernladung und Neutronenzahl]
+		Für \(n>1\) definieren wir
+		\[
+		\Masse(n):=n,
+		\qquad
+		\QK(n):=\QA(n)+\QB(n)+\QC(n),
+		\qquad
+		\QE(n):=\#\{p\in E:p\mid n\},
+		\]
+		wobei \(\QA,\QB,\QC\) analog die Anzahl verschiedener Primfaktoren aus \(A,B,C\) bezeichnen.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Die Sprache von Kern und Schale ist in dieser Arbeit arithmetisch-metaphorisch. Gemeint ist die Trennung zwischen nichtneutralen Familienfaktoren \((A,B,C)\) und neutralen \(E\)-Anteilen.
+	\end{bemerkung}
+	
+	\section{Die arithmetische Periodentafel}
+	
+	\begin{definition}[Zellen der Periodentafel]
+		Für \(r\in\{1,2,3,4\}\) und \(\tau\in\{E,A,B,C\}\) definieren wir
+		\[
+		\mathcal C_{r,\tau}:=\{n>1:\rang(n)=r,\ \signatur(n)=\tau\}.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Isotope]
+		Zwei Zahlen \(m,n>1\) heißen isotop, wenn sie dieselbe Endsignatur und dieselbe Kernladung besitzen, sich aber im \(E\)-Anteil unterscheiden.
+	\end{definition}
+	
+	\begin{satz}[Neutronenanlagerung]
+		Ist \(q\in E\) prim und \(n>1\), so gilt
+		\[
+		\signatur(qn)=\signatur(n),\qquad \QK(qn)=\QK(n).
+		\]
+		Ist zusätzlich \(q\nmid n\), so erhöht sich die Neutronenzahl um eins.
+	\end{satz}
+	
+	\begin{proof}
+		Da \(q\) signaturneutral ist, verändert der neue Faktor weder Endsignatur noch Kernladung. Bei einem neuen \(E\)-Primfaktor wächst \(\QE\) genau um eins.
+	\end{proof}
+	
+	\section{Kanonische Familienhüllen}
+	
+	\begin{definition}[Lineare und quadratische Familienhüllen]
+		Für eine Zahl \(n>1\), eine Familie \(X\in\{E,A,B,C\}\) und \(k\in\{1,2\}\) definieren wir
+		\[
+		\Huelle_{X,k}(n):=\min\{p^k:p\in X,\ p^k>n\},
+		\qquad
+		\Rest_{X,k}(n):=\Huelle_{X,k}(n)-n.
+		\]
+	\end{definition}
+	
+	\begin{satz}[Existenz und Eindeutigkeit]
+		Für jede Zahl \(n>1\), jede Familie \(X\in\{E,A,B,C\}\) und \(k\in\{1,2\}\) existiert genau eine kanonische Hülle \(\Huelle_{X,k}(n)\).
+	\end{satz}
+	
+	\begin{proof}
+		Jede Familie enthält unendlich viele Primzahlen. Daher ist die Menge aller \(X\)-Primzahlpotenzen oberhalb von \(n\) nichtleer und besitzt als Teilmenge von \(\N\) ein eindeutiges Minimum.
+	\end{proof}
+	
+	\begin{definition}[Dominante Hüllfamilien]
+		Für einen Cluster \(C\) mit Masse \(\Masse(C)\) definieren wir
+		\[
+		\Delta_1(C):=\min_{X\in\{E,A,B,C\}}\Rest_{X,1}(\Masse(C)),
+		\qquad
+		X_1(C):=\argmin_{X\in\{E,A,B,C\}}\Rest_{X,1}(\Masse(C)),
+		\]
+		und analog
+		\[
+		\Delta_2(C):=\min_{X\in\{E,A,B,C\}}\Rest_{X,2}(\Masse(C)),
+		\qquad
+		X_2(C):=\argmin_{X\in\{E,A,B,C\}}\Rest_{X,2}(\Masse(C)).
+		\]
+	\end{definition}
+	
+	\section{Elementare Semiprimes aus Primzwillingen}
+	
+	\begin{definition}[Elementares Semiprime]
+		Ein elementares Semiprime ist ein Semiprime der Form
+		\[
+		n=p(p+2),
+		\]
+		wobei \((p,p+2)\) ein Primzwilling ist.
+	\end{definition}
+	
+	\begin{satz}[Familientypen regulärer Primzwillinge]
+		Jeder Primzwilling \((p,p+2)\) mit \(p>3\) besitzt genau einen der beiden Familientypen
+		\[
+		(A,B)\qquad\text{oder}\qquad(C,E).
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Die möglichen Startreste modulo \(12\) liefern bei Verschiebung um \(+2\) nur die Übergänge \(5\to7\) und \(11\to1\).
+	\end{proof}
+	
+	\begin{proposition}[Signatur elementarer Semiprimes]
+		Ist \(n=p(p+2)\) ein elementares Semiprime mit \(p>3\), so gilt
+		\[
+		\signatur(n)=C.
+		\]
+	\end{proposition}
+	
+	\begin{proof}
+		Im Fall \((A,B)\) gilt \(AB=C\), im Fall \((C,E)\) gilt \(CE=C\).
+	\end{proof}
+	
+	\begin{korollar}
+		Nicht jedes Semiprime der Signaturklasse \(C\) ist elementar.
+	\end{korollar}
+	
+	\section{Primitive Primdrillinge}
+	
+	\begin{definition}[Primitiver Primdrilling]
+		Ein primitiver Primdrilling ist ein Primtripel der Form
+		\[
+		(p,p+2,p+6)
+		\qquad\text{oder}\qquad
+		(p,p+4,p+6).
+		\]
+	\end{definition}
+	
+	\begin{satz}[Die vier primitiven Drillings-Typen]
+		Jeder primitive Primdrilling mit Einträgen \(>3\) besitzt genau einen der vier Familientypen
+		\[
+		(A,B,C),\qquad(C,E,A),\qquad(E,A,B),\qquad(B,C,E).
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Die Behauptung folgt aus der Restklassenanalyse modulo \(12\) für die beiden primitiven Drillingsformen.
+	\end{proof}
+	
+	\begin{definition}[Fehlende Familie]
+		Für einen primitiven Primdrilling \(T\) sei \(\mu(T)\) diejenige Familie aus \(\{E,A,B,C\}\), die in seinem Familientyp nicht vorkommt.
+	\end{definition}
+	
+	\begin{proposition}[Fehlende Familie und Endsignatur]
+		Für jeden primitiven Primdrilling \(T\) gilt
+		\[
+		\mu(T)=\signatur(T).
+		\]
+	\end{proposition}
+	
+	\begin{proof}
+		Die direkte Rechnung der vier Typen liefert
+		\[
+		ABC=E,\qquad CEA=B,\qquad EAB=C,\qquad BCE=A.
+		\]
+		Damit stimmt in jedem Fall die fehlende Familie mit der Endsignatur überein.
+	\end{proof}
+	
+	\begin{korollar}[Kanonische Vierlingshülle primitiver Drillinge]
+		Jeder primitive Primdrilling besitzt genau eine kanonische Vierlingshülle:
+		\[
+		(p,p+2,p+6)\longmapsto(p,p+2,p+6,p+8),
+		\]
+		\[
+		(p,p+4,p+6)\longmapsto(p-2,p,p+4,p+6).
+		\]
+		Diese Hülle ist genau dann ein echter Primvierling, wenn der fehlende Ergänzungspunkt prim ist.
+	\end{korollar}
+	
+	\section{Zwilling--Drilling--Vierling-Ketten}
+	
+	\begin{definition}[Zwillings- und Drillingszahl]
+		Für ein geordnetes Prim-4-Tupel \(Q\) sei \(t_2(Q)\) die Zahl der in \(Q\) enthaltenen Primzwillinge und \(t_3(Q)\) die Zahl der in \(Q\) enthaltenen primitiven Primdrillinge.
+	\end{definition}
+	
+	\begin{satz}[Zwei primitive Drillingshüllen eines Zwillings]
+		Jeder Primzwilling \((p,p+2)\) besitzt genau zwei primitive Drillingshüllen:
+		\[
+		(p,p+2,p+6)
+		\qquad\text{und}\qquad
+		(p-4,p,p+2).
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Ein Primzwilling kann in einem primitiven Drilling nur als linkes oder rechtes Zwillingsfenster auftreten. Das liefert genau die beiden angegebenen Möglichkeiten.
+	\end{proof}
+	
+	\begin{korollar}[Primärgenese im EABC-System]
+		Die beiden Zwillingstypen verzweigen in genau vier primitive Drillingshüllen:
+		\[
+		(A,B)\leadsto(A,B,C)\ \text{und}\ (E,A,B),
+		\]
+		\[
+		(C,E)\leadsto(C,E,A)\ \text{und}\ (B,C,E).
+		\]
+	\end{korollar}
+	
+	\section{Echte Primvierlinge}
+	
+	\begin{definition}[Echter Primvierling]
+		Ein echter Primvierling ist ein Prim-4-Tupel der Form
+		\[
+		Q=(p,p+2,p+6,p+8).
+		\]
+	\end{definition}
+	
+	\begin{satz}[Zyklentypen echter Primvierlinge]
+		Jeder echte Primvierling realisiert genau einen der beiden EABC-Zyklen
+		\[
+		(A,B,C,E)
+		\qquad\text{oder}\qquad
+		(C,E,A,B).
+		\]
+		Insbesondere gilt
+		\[
+		\rang(Q)=4,
+		\qquad
+		\signatur(Q)=E,
+		\qquad
+		(n_{EA}(Q),n_{BC}(Q))=(2,2).
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Die möglichen Familienfolgen ergeben sich unmittelbar aus den Restklassen modulo \(12\) und der kompakten Abstandssignatur \((2,6,8)\).
+	\end{proof}
+	
+	\begin{lemma}[Zwei Primzwillinge in einem geordneten Vierer]
+		Sei \(Q=(q_1,q_2,q_3,q_4)\) ein geordnetes Prim-4-Tupel. Enthält \(Q\) genau zwei Primzwillinge, so müssen diese die beiden Randpaare
+		\[
+		(q_1,q_2)\qquad\text{und}\qquad(q_3,q_4)
+		\]
+		sein.
+	\end{lemma}
+	
+	\begin{proof}
+		Ein Abstand von \(2\) kann in einem geordneten Vierer nur zwischen benachbarten Einträgen auftreten. Zwei benachbarte Zwillingsabstände würden ein Tripel \((x,x+2,x+4)\) erzeugen, was für Primzahlen \(>3\) wegen der Teilbarkeit durch \(3\) unmöglich ist.
+	\end{proof}
+	
+	\begin{lemma}[Zwei primitive Drillinge erzwingen Abstand \(6\)]
+		Ein geordneter Primvierer der Form
+		\[
+		(q_1,q_1+2,q_1+d,q_1+d+2)
+		\]
+		enthält genau zwei primitive Primdrillinge genau dann, wenn \(d=6\).
+	\end{lemma}
+	
+	\begin{proof}
+		Man vergleicht die vier 3-elementigen Teilmengen direkt mit den beiden primitiven Drillingsmustern.
+	\end{proof}
+	
+	\begin{proposition}[Charakterisierung durch maximale Kettenstruktur]
+		Sei \(Q\) ein geordnetes Prim-4-Tupel. Wenn
+		\[
+		t_2(Q)=2,\qquad t_3(Q)=2,
+		\]
+		gilt, dann ist \(Q\) ein echter Primvierling.
+	\end{proposition}
+	
+	\begin{proof}
+		Aus dem ersten Lemma folgt die Form \((q_1,q_1+2,q_1+d,q_1+d+2)\), aus dem zweiten Lemma folgt \(d=6\). Also ist \(Q=(p,p+2,p+6,p+8)\).
+	\end{proof}
+	
+	\section{Unechte Primvierlinge}
+	
+	\begin{definition}[Unechter Primvierling]
+		Ein unechter Primvierling ist ein geordnetes Prim-4-Tupel
+		\[
+		Q=(p,p+h_1,p+h_2,p+h_3)
+		\]
+		mit \(0<h_1<h_2<h_3\), das nicht die kompakte Form \((2,6,8)\) besitzt.
+	\end{definition}
+	
+	\begin{definition}[Admissibles Vierermuster]
+		Ein Abstandsmuster \(\{0,h_1,h_2,h_3\}\) heißt admissibel, wenn keine Primzahl \(\ell\) alle Restklassen modulo \(\ell\) trifft.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Echte Primvierlinge bilden innerhalb der admissiblen Vierermuster eine hochsymmetrische Spitzenklasse. Unechte Vierlinge können andere Rang-, Signatur-, Ketten- und Hüllprofile besitzen.
+	\end{bemerkung}
+	
+	\section{Typinterner Abstiegsprozess}
+	
+	\begin{definition}[Reine Typen]
+		Reine Zweierkomplexe sind die Zwillingstypen \((A,B)\) und \((C,E)\), reine Dreierkomplexe die vier primitiven Drillings-Typen und reine Viererkomplexe die beiden echten Vierlingszyklen.
+	\end{definition}
+	
+	\begin{proposition}[Minimale reine Komplexe]
+		Die minimalen Vertreter der reinen Typen sind
+		\[
+		(5,7),\ (11,13)
+		\]
+		für die Zweierkomplexe,
+		\[
+		(5,7,11),\ (11,13,17),\ (13,17,19),\ (7,11,13)
+		\]
+		für die Dreierkomplexe und
+		\[
+		(5,7,11,13),\ (11,13,17,19)
+		\]
+		für die Viererkomplexe.
+	\end{proposition}
+	
+	\begin{satz}[Eindeutiger typinterner Abstieg]
+		Ordnet man die Komplexe eines festen reinen Typs nach ihrer kleinsten Primzahl oder nach ihrer Produktmasse, so besitzt jeder nichtminimale Komplex einen eindeutig bestimmten Vorgänger. Durch Iteration gelangt man zum minimalen Vertreter des Typs.
+	\end{satz}
+	
+	\begin{proof}
+		Die Menge der Komplexe eines festen Typs ist wohldefiniert und kann eindeutig geordnet werden. Daraus ergibt sich der eindeutige Vorgängerprozess.
+	\end{proof}
+	
+	\section{Gaußsche und eisensteinsche Begleitgeometrie}
+	
+	\begin{definition}[Lineares Zwillingsprodukt und gaußsche Norm]
+		Für einen Primzwilling \(Z=(p,p+2)\) definieren wir
+		\[
+		L(Z):=p(p+2),
+		\qquad
+		G(Z):=(p+2i)(p-2i)=p^2+4.
+		\]
+	\end{definition}
+	
+	\begin{proposition}
+		Für jeden regulären Primzwilling gilt
+		\[
+		\signatur(L(Z))=C,
+		\qquad
+		\signatur(G(Z))=A.
+		\]
+	\end{proposition}
+	
+	\begin{proof}
+		Die erste Aussage wurde bereits gezeigt. Für die zweite gilt bei \(p>3\): \(p^2\equiv1\pmod{12}\), also \(p^2+4\equiv5\pmod{12}\).
+	\end{proof}
+	
+	\begin{bemerkung}
+		Damit besitzt jeder reguläre Primzwilling einen linearen Begleiter in \(C\) und einen gaußschen Normbegleiter in \(A\). Für primitive Drillinge und Vierlinge legt dies eine weiterführende eisensteinsche Begleitgeometrie nahe.
+	\end{bemerkung}
+	
+	\section{Nichtassoziativität und Fortsetzungszwang}
+	
+	\begin{definition}[Fortsetzungsbedürftiges Tripel]
+		Ein primitives EABC-Tripel heißt fortsetzungsbedürftig, wenn es lokal nicht abgeschlossen ist, sondern genau eine fehlende Familie besitzt, durch deren Ergänzung ein neutrales Rang-4-Objekt entsteht.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Die Nichtassoziativität der Oktonionen erzeugt nicht direkt Primzahlen. Plausibel ist jedoch die schwächere These, dass sie die Nichtabschließbarkeit primitiver EABC-Tupel und damit deren Fortsetzungsregeln modellieren kann.
+	\end{bemerkung}
+	
+	\begin{proposition}[Programmatisches Nichtabschließbarkeitsprinzip]
+		Ein nichtverschwindender oktonionischer Assoziator
+		\[
+		[x,y,z]=(xy)z-x(yz)
+		\]
+		kann als algebraischer Marker für die Nichtabschließbarkeit primitiver EABC-Tripel interpretiert werden.
+	\end{proposition}
+	
+	\section{Ein einfacher EABC-Dirac-Operator}
+	
+	\begin{definition}[Freier arithmetischer Dirac-Operator]
+		Auf dem Hilbertraum \(\ell^2(\N_{>1},\C^4)\) definieren wir formal
+		\[
+		(D_0\psi)(n):=\Gamma^+\psi(n+1)+\Gamma^-\psi(n-1),
+		\]
+		wobei \(\Gamma^\pm\) feste \(4\times4\)-Matrizen sind.
+	\end{definition}
+	
+	\begin{definition}[EABC-Potential]
+		Sei \(V(n)\) eine diagonale Matrix, deren Einträge von den Familien der Primfaktoren von \(n\) abhängen. Dann heißt
+		\[
+		D:=D_0+V
+		\]
+		ein EABC-Dirac-Operator.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Der Operator wird hier als heuristischer spektraler Rahmen verstanden. Er soll die periodensystematische und clustergeometrische Information in eine operatorische Sprache überführen.
+	\end{bemerkung}
+	
+	
+	
+	\section{Numerische Programme und offene Fragen}
+	
+	Die bisherige Theorie legt das folgende Arbeitsprogramm nahe:
+	\begin{enumerate}[label=\arabic*.]
+		\item Analyse aller Primzahlen bis zu einer Schranke \(X\) nach Familienzugehörigkeit,
+		\item Bestimmung aller Primzwillinge, primitiven Drillinge und echten Vierlinge,
+		\item Test der Regeln
+		\[
+		\mu(T)=\signatur(T),\qquad t_2(Q)=t_3(Q)=2,
+		\]
+		\item Auswertung der Hüllprofile \((X_1,\Delta_1,X_2,\Delta_2)\),
+		\item Vergleich echter und unechter Vierlinge.
+	\end{enumerate}
+	
+	\begin{bemerkung}
+		Nach allen bisherigen Überlegungen ist die lokale EABC-Kettengeometrie robuster als die reine Hüllgeometrie. Die Hüllprofile liefern Feinstruktur, die eigentliche Trennschärfe echter Vierlinge liegt jedoch in der maximalen lokalen Kettenstruktur.
+	\end{bemerkung}
+	
+	\documentclass[12pt,a4paper]{article}
+	
+	% -------------------------------------------------
+	% Zeichensatz, Sprache, Satzspiegel
+	% -------------------------------------------------
+	\usepackage[utf8]{inputenc}
+	\usepackage[T1]{fontenc}
+	\usepackage[ngerman]{babel}
+	\usepackage{lmodern}
+	\usepackage[a4paper,margin=2.7cm]{geometry}
+	
+	% -------------------------------------------------
+	% Mathematik
+	% -------------------------------------------------
+	\usepackage{amsmath,amssymb,amsthm,amsfonts,mathtools}
+	
+	% -------------------------------------------------
+	% Tabellen, Listen, Farben, Verweise
+	% -------------------------------------------------
+	\usepackage{array}
+	\usepackage{booktabs}
+	\usepackage{longtable}
+	\usepackage{enumitem}
+	\usepackage{xcolor}
+	\usepackage{hyperref}
+	\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+	
+	% -------------------------------------------------
+	% Satzumgebungen
+	% -------------------------------------------------
+	\newtheorem{satz}{Satz}[section]
+	\newtheorem{lemma}[satz]{Lemma}
+	\newtheorem{proposition}[satz]{Proposition}
+	\newtheorem{korollar}[satz]{Korollar}
+	
+	\theoremstyle{definition}
+	\newtheorem{definition}[satz]{Definition}
+	\newtheorem{beispiel}[satz]{Beispiel}
+	\newtheorem{frage}[satz]{Frage}
+	\newtheorem{programm}[satz]{Programm}
+	\newtheorem{konjektur}[satz]{Konjektur}
+	
+	\theoremstyle{remark}
+	\newtheorem{bemerkung}[satz]{Bemerkung}
+	
+	% -------------------------------------------------
+	% Makros
+	% -------------------------------------------------
+	\newcommand{\N}{\mathbb{N}}
+	\newcommand{\Z}{\mathbb{Z}}
+	\newcommand{\C}{\mathbb{C}}
+	\newcommand{\Fam}{\operatorname{Fam}}
+	\newcommand{\rang}{\operatorname{rang}}
+	\newcommand{\Masse}{\operatorname{M}}
+	\newcommand{\signatur}{\sigma}
+	\newcommand{\QE}{Q_E}
+	\newcommand{\QA}{Q_A}
+	\newcommand{\QB}{Q_B}
+	\newcommand{\QC}{Q_C}
+	\newcommand{\QK}{Q_K}
+	\newcommand{\Vorgaenger}{\operatorname{Vorg}}
+	\newcommand{\Huelle}{\operatorname{H}}
+	\newcommand{\Rest}{\operatorname{R}}
+	\newcommand{\Kern}{\operatorname{K}}
+	\newcommand{\argmin}{\operatorname*{argmin}}
+	
+	% -------------------------------------------------
+	% Titelangaben
+	% -------------------------------------------------
+	\title{\textbf{Pro Prim}\\[1ex]
+		\large Eine arithmetische Periodentafel der Primzahlen,\\
+		Clustergeometrie und Fortsetzungsregeln im EABC-System}
+	\author{Thomas Hoffbauer}
+	\date{\today}
+	
+	\begin{document}
+		\maketitle
+		
+		\begin{abstract}
+			Wir entwickeln eine arithmetische Periodentafel auf Grundlage der vier Primfamilien
+			\[
+			E=\{p\text{ prim}:p\equiv 1\pmod{12}\},\qquad
+			A=\{p\text{ prim}:p\equiv 5\pmod{12}\},
+			\]
+			\[
+			B=\{p\text{ prim}:p\equiv 7\pmod{12}\},\qquad
+			C=\{p\text{ prim}:p\equiv 11\pmod{12}\}.
+			\]
+			Das System trägt eine natürliche Signatur über die Kleinsche Vierergruppe und erlaubt die Einführung von Familienrang, Kernladung, Neutronenzahl und Isotopenfamilien. Darauf aufbauend wird eine lokale Clustergeometrie der Primzahlen entwickelt: Primzwillinge erscheinen als minimale Zweierkomplexe, primitive Primdrillinge als fortsetzungsbedürftige Dreierkomplexe und echte Primvierlinge als kompakte Vierercluster.
+			
+			Ein zentrales Ergebnis lautet, dass primitive Primdrillinge genau vier Familientypen besitzen und dass für sie die fehlende Familie mit der Endsignatur übereinstimmt. Ferner zeigen wir, dass echte Primvierlinge genau die beiden Zyklen
+			\[
+			(A,B,C,E)\qquad\text{und}\qquad(C,E,A,B)
+			\]
+			realisieren und sich in der lokalen kompakten Viererwelt durch die maximale Kettenstruktur
+			\[
+			t_2(Q)=2,\qquad t_3(Q)=2
+			\]
+			charakterisieren lassen.
+			
+			Ergänzend formulieren wir eine Hülltheorie über lineare und quadratische Familienhüllen, eine gaußsche und eisensteinsche Begleitgeometrie sowie ein nichtassoziatives Fortsetzungsprinzip im oktonionischen Rahmen. Das Manuskript trennt bewusst zwischen vollständig bewiesenen elementaren Aussagen und weiterführenden programmatischen Deutungen.
+		\end{abstract}
+		
+		\tableofcontents
+		
+		\section{Einleitung}
+		
+		Primzahlen werden gewöhnlich als isolierte arithmetische Objekte behandelt. Für viele Fragestellungen sind jedoch nicht nur einzelne Primzahlen, sondern lokale Cluster von Bedeutung: Zwillinge, Drillinge, Vierlinge und allgemein Prim-\(k\)-Tupel. Die vorliegende Arbeit geht von der Vermutung aus, dass solche Cluster in einem diskreten arithmetischen Schalenraum geordnet werden können.
+		
+		Ausgangspunkt ist die Zerlegung aller Primzahlen \(p>3\) in vier Familien modulo \(12\). Diese Familien tragen eine einfache, aber reichhaltige innere Algebra. Auf dieser Grundlage entstehen mehrere Ebenen:
+		\begin{enumerate}[label=\arabic*.]
+			\item eine periodische Ebene aus Familien, Rang, Kernladung und Neutronenzahl,
+			\item eine lokale Clusterebene aus Primzwillingen, primitiven Primdrillingen und Primvierlingen,
+			\item eine Hüllebene aus linearen und quadratischen Familienhüllen,
+			\item eine Begleitgeometrie über gaußsche und eisensteinsche Normen,
+			\item eine nichtassoziative Deutung lokaler Fortsetzungszwänge.
+		\end{enumerate}
+		
+		Ziel der Arbeit ist zunächst eine scharfe lokale Strukturtheorie. Es wird ausdrücklich nicht behauptet, dass damit bereits ein globaler Erzeugungsmechanismus für alle Primzahlen vorliegt.
+		
+		\section{Die vier Primfamilien und ihre Algebra}
+		
+		\begin{definition}[Primfamilien]
+			Für Primzahlen \(p>3\) definieren wir
+			\[
+			E:=\{p\text{ prim}:p\equiv 1\pmod{12}\},\qquad
+			A:=\{p\text{ prim}:p\equiv 5\pmod{12}\},
+			\]
+			\[
+			B:=\{p\text{ prim}:p\equiv 7\pmod{12}\},\qquad
+			C:=\{p\text{ prim}:p\equiv 11\pmod{12}\}.
+			\]
+		\end{definition}
+		
+		\begin{definition}[Familienzerlegung]
+			Für jede Zahl \(n>1\) mit Primfaktorzerlegung
+			\[
+			n=\prod_{p^\nu\parallel n} p^\nu
+			\]
+			bezeichnen wir mit \(n_E,n_A,n_B,n_C\) die Teilprodukte der Primfaktoren aus den vier Familien. Damit schreiben wir
+			\[
+			n=n_E\,n_A\,n_B\,n_C.
+			\]
+		\end{definition}
+		
+		\begin{definition}[Endsignatur]
+			Die Endsignatur \(\signatur(n)\in\{E,A,B,C\}\) wird über die Kleinsche Vierergruppe bestimmt durch
+			\[
+			E^2=E,\qquad A^2=B^2=C^2=E,
+			\]
+			\[
+			AB=C,\qquad AC=B,\qquad BC=A.
+			\]
+		\end{definition}
+		
+		\begin{definition}[Familienrang]
+			Für \(n>1\) setzen wir
+			\[
+			\Fam(n):=\{X\in\{E,A,B,C\}:n_X>1\},
+			\qquad
+			\rang(n):=|\Fam(n)|.
+			\]
+		\end{definition}
+		
+		\begin{definition}[Masse, Kernladung und Neutronenzahl]
+			Für \(n>1\) definieren wir
+			\[
+			\Masse(n):=n,
+			\qquad
+			\QK(n):=\QA(n)+\QB(n)+\QC(n),
+			\qquad
+			\QE(n):=\#\{p\in E:p\mid n\},
+			\]
+			wobei \(\QA,\QB,\QC\) analog die Anzahl verschiedener Primfaktoren aus \(A,B,C\) bezeichnen.
+		\end{definition}
+		
+		\begin{bemerkung}
+			Die Sprache von Kern und Schale ist in dieser Arbeit arithmetisch-metaphorisch. Gemeint ist die Trennung zwischen nichtneutralen Familienfaktoren \((A,B,C)\) und neutralen \(E\)-Anteilen.
+		\end{bemerkung}
+		
+		\section{Die arithmetische Periodentafel}
+		
+		\begin{definition}[Zellen der Periodentafel]
+			Für \(r\in\{1,2,3,4\}\) und \(\tau\in\{E,A,B,C\}\) definieren wir
+			\[
+			\mathcal C_{r,\tau}:=\{n>1:\rang(n)=r,\ \signatur(n)=\tau\}.
+			\]
+		\end{definition}
+		
+		\begin{definition}[Isotope]
+			Zwei Zahlen \(m,n>1\) heißen isotop, wenn sie dieselbe Endsignatur und dieselbe Kernladung besitzen, sich aber im \(E\)-Anteil unterscheiden.
+		\end{definition}
+		
+		\begin{satz}[Neutronenanlagerung]
+			Ist \(q\in E\) prim und \(n>1\), so gilt
+			\[
+			\signatur(qn)=\signatur(n),\qquad \QK(qn)=\QK(n).
+			\]
+			Ist zusätzlich \(q\nmid n\), so erhöht sich die Neutronenzahl um eins.
+		\end{satz}
+		
+		\begin{proof}
+			Da \(q\) signaturneutral ist, verändert der neue Faktor weder Endsignatur noch Kernladung. Bei einem neuen \(E\)-Primfaktor wächst \(\QE\) genau um eins.
+		\end{proof}
+		
+		\section{Kanonische Familienhüllen}
+		
+		\begin{definition}[Lineare und quadratische Familienhüllen]
+			Für eine Zahl \(n>1\), eine Familie \(X\in\{E,A,B,C\}\) und \(k\in\{1,2\}\) definieren wir
+			\[
+			\Huelle_{X,k}(n):=\min\{p^k:p\in X,\ p^k>n\},
+			\qquad
+			\Rest_{X,k}(n):=\Huelle_{X,k}(n)-n.
+			\]
+		\end{definition}
+		
+		\begin{satz}[Existenz und Eindeutigkeit]
+			Für jede Zahl \(n>1\), jede Familie \(X\in\{E,A,B,C\}\) und \(k\in\{1,2\}\) existiert genau eine kanonische Hülle \(\Huelle_{X,k}(n)\).
+		\end{satz}
+		
+		\begin{proof}
+			Jede Familie enthält unendlich viele Primzahlen. Daher ist die Menge aller \(X\)-Primzahlpotenzen oberhalb von \(n\) nichtleer und besitzt als Teilmenge von \(\N\) ein eindeutiges Minimum.
+		\end{proof}
+		
+		\begin{definition}[Dominante Hüllfamilien]
+			Für einen Cluster \(C\) mit Masse \(\Masse(C)\) definieren wir
+			\[
+			\Delta_1(C):=\min_{X\in\{E,A,B,C\}}\Rest_{X,1}(\Masse(C)),
+			\qquad
+			X_1(C):=\argmin_{X\in\{E,A,B,C\}}\Rest_{X,1}(\Masse(C)),
+			\]
+			und analog
+			\[
+			\Delta_2(C):=\min_{X\in\{E,A,B,C\}}\Rest_{X,2}(\Masse(C)),
+			\qquad
+			X_2(C):=\argmin_{X\in\{E,A,B,C\}}\Rest_{X,2}(\Masse(C)).
+			\]
+		\end{definition}
+		
+		\section{Elementare Semiprimes aus Primzwillingen}
+		
+		\begin{definition}[Elementares Semiprime]
+			Ein elementares Semiprime ist ein Semiprime der Form
+			\[
+			n=p(p+2),
+			\]
+			wobei \((p,p+2)\) ein Primzwilling ist.
+		\end{definition}
+		
+		\begin{satz}[Familientypen regulärer Primzwillinge]
+			Jeder Primzwilling \((p,p+2)\) mit \(p>3\) besitzt genau einen der beiden Familientypen
+			\[
+			(A,B)\qquad\text{oder}\qquad(C,E).
+			\]
+		\end{satz}
+		
+		\begin{proof}
+			Die möglichen Startreste modulo \(12\) liefern bei Verschiebung um \(+2\) nur die Übergänge \(5\to7\) und \(11\to1\).
+		\end{proof}
+		
+		\begin{proposition}[Signatur elementarer Semiprimes]
+			Ist \(n=p(p+2)\) ein elementares Semiprime mit \(p>3\), so gilt
+			\[
+			\signatur(n)=C.
+			\]
+		\end{proposition}
+		
+		\begin{proof}
+			Im Fall \((A,B)\) gilt \(AB=C\), im Fall \((C,E)\) gilt \(CE=C\).
+		\end{proof}
+		
+		\begin{korollar}
+			Nicht jedes Semiprime der Signaturklasse \(C\) ist elementar.
+		\end{korollar}
+		
+		\section{Primitive Primdrillinge}
+		
+		\begin{definition}[Primitiver Primdrilling]
+			Ein primitiver Primdrilling ist ein Primtripel der Form
+			\[
+			(p,p+2,p+6)
+			\qquad\text{oder}\qquad
+			(p,p+4,p+6).
+			\]
+		\end{definition}
+		
+		\begin{satz}[Die vier primitiven Drillings-Typen]
+			Jeder primitive Primdrilling mit Einträgen \(>3\) besitzt genau einen der vier Familientypen
+			\[
+			(A,B,C),\qquad(C,E,A),\qquad(E,A,B),\qquad(B,C,E).
+			\]
+		\end{satz}
+		
+		\begin{proof}
+			Die Behauptung folgt aus der Restklassenanalyse modulo \(12\) für die beiden primitiven Drillingsformen.
+		\end{proof}
+		
+		\begin{definition}[Fehlende Familie]
+			Für einen primitiven Primdrilling \(T\) sei \(\mu(T)\) diejenige Familie aus \(\{E,A,B,C\}\), die in seinem Familientyp nicht vorkommt.
+		\end{definition}
+		
+		\begin{proposition}[Fehlende Familie und Endsignatur]
+			Für jeden primitiven Primdrilling \(T\) gilt
+			\[
+			\mu(T)=\signatur(T).
+			\]
+		\end{proposition}
+		
+		\begin{proof}
+			Die direkte Rechnung der vier Typen liefert
+			\[
+			ABC=E,\qquad CEA=B,\qquad EAB=C,\qquad BCE=A.
+			\]
+			Damit stimmt in jedem Fall die fehlende Familie mit der Endsignatur überein.
+		\end{proof}
+		
+		\begin{korollar}[Kanonische Vierlingshülle primitiver Drillinge]
+			Jeder primitive Primdrilling besitzt genau eine kanonische Vierlingshülle:
+			\[
+			(p,p+2,p+6)\longmapsto(p,p+2,p+6,p+8),
+			\]
+			\[
+			(p,p+4,p+6)\longmapsto(p-2,p,p+4,p+6).
+			\]
+			Diese Hülle ist genau dann ein echter Primvierling, wenn der fehlende Ergänzungspunkt prim ist.
+		\end{korollar}
+		
+		\section{Zwilling--Drilling--Vierling-Ketten}
+		
+		\begin{definition}[Zwillings- und Drillingszahl]
+			Für ein geordnetes Prim-4-Tupel \(Q\) sei \(t_2(Q)\) die Zahl der in \(Q\) enthaltenen Primzwillinge und \(t_3(Q)\) die Zahl der in \(Q\) enthaltenen primitiven Primdrillinge.
+		\end{definition}
+		
+		\begin{satz}[Zwei primitive Drillingshüllen eines Zwillings]
+			Jeder Primzwilling \((p,p+2)\) besitzt genau zwei primitive Drillingshüllen:
+			\[
+			(p,p+2,p+6)
+			\qquad\text{und}\qquad
+			(p-4,p,p+2).
+			\]
+		\end{satz}
+		
+		\begin{proof}
+			Ein Primzwilling kann in einem primitiven Drilling nur als linkes oder rechtes Zwillingsfenster auftreten. Das liefert genau die beiden angegebenen Möglichkeiten.
+		\end{proof}
+		
+		\begin{korollar}[Primärgenese im EABC-System]
+			Die beiden Zwillingstypen verzweigen in genau vier primitive Drillingshüllen:
+			\[
+			(A,B)\leadsto(A,B,C)\ \text{und}\ (E,A,B),
+			\]
+			\[
+			(C,E)\leadsto(C,E,A)\ \text{und}\ (B,C,E).
+			\]
+		\end{korollar}
+		
+		\section{Echte Primvierlinge}
+		
+		\begin{definition}[Echter Primvierling]
+			Ein echter Primvierling ist ein Prim-4-Tupel der Form
+			\[
+			Q=(p,p+2,p+6,p+8).
+			\]
+		\end{definition}
+		
+		\begin{satz}[Zyklentypen echter Primvierlinge]
+			Jeder echte Primvierling realisiert genau einen der beiden EABC-Zyklen
+			\[
+			(A,B,C,E)
+			\qquad\text{oder}\qquad
+			(C,E,A,B).
+			\]
+			Insbesondere gilt
+			\[
+			\rang(Q)=4,
+			\qquad
+			\signatur(Q)=E,
+			\qquad
+			(n_{EA}(Q),n_{BC}(Q))=(2,2).
+			\]
+		\end{satz}
+		
+		\begin{proof}
+			Die möglichen Familienfolgen ergeben sich unmittelbar aus den Restklassen modulo \(12\) und der kompakten Abstandssignatur \((2,6,8)\).
+		\end{proof}
+		
+		\begin{lemma}[Zwei Primzwillinge in einem geordneten Vierer]
+			Sei \(Q=(q_1,q_2,q_3,q_4)\) ein geordnetes Prim-4-Tupel. Enthält \(Q\) genau zwei Primzwillinge, so müssen diese die beiden Randpaare
+			\[
+			(q_1,q_2)\qquad\text{und}\qquad(q_3,q_4)
+			\]
+			sein.
+		\end{lemma}
+		
+		\begin{proof}
+			Ein Abstand von \(2\) kann in einem geordneten Vierer nur zwischen benachbarten Einträgen auftreten. Zwei benachbarte Zwillingsabstände würden ein Tripel \((x,x+2,x+4)\) erzeugen, was für Primzahlen \(>3\) wegen der Teilbarkeit durch \(3\) unmöglich ist.
+		\end{proof}
+		
+		\begin{lemma}[Zwei primitive Drillinge erzwingen Abstand \(6\)]
+			Ein geordneter Primvierer der Form
+			\[
+			(q_1,q_1+2,q_1+d,q_1+d+2)
+			\]
+			enthält genau zwei primitive Primdrillinge genau dann, wenn \(d=6\).
+		\end{lemma}
+		
+		\begin{proof}
+			Man vergleicht die vier 3-elementigen Teilmengen direkt mit den beiden primitiven Drillingsmustern.
+		\end{proof}
+		
+		\begin{proposition}[Charakterisierung durch maximale Kettenstruktur]
+			Sei \(Q\) ein geordnetes Prim-4-Tupel. Wenn
+			\[
+			t_2(Q)=2,\qquad t_3(Q)=2,
+			\]
+			gilt, dann ist \(Q\) ein echter Primvierling.
+		\end{proposition}
+		
+		\begin{proof}
+			Aus dem ersten Lemma folgt die Form \((q_1,q_1+2,q_1+d,q_1+d+2)\), aus dem zweiten Lemma folgt \(d=6\). Also ist \(Q=(p,p+2,p+6,p+8)\).
+		\end{proof}
+		
+		\section{Unechte Primvierlinge}
+		
+		\begin{definition}[Unechter Primvierling]
+			Ein unechter Primvierling ist ein geordnetes Prim-4-Tupel
+			\[
+			Q=(p,p+h_1,p+h_2,p+h_3)
+			\]
+			mit \(0<h_1<h_2<h_3\), das nicht die kompakte Form \((2,6,8)\) besitzt.
+		\end{definition}
+		
+		\begin{definition}[Admissibles Vierermuster]
+			Ein Abstandsmuster \(\{0,h_1,h_2,h_3\}\) heißt admissibel, wenn keine Primzahl \(\ell\) alle Restklassen modulo \(\ell\) trifft.
+		\end{definition}
+		
+		\begin{bemerkung}
+			Echte Primvierlinge bilden innerhalb der admissiblen Vierermuster eine hochsymmetrische Spitzenklasse. Unechte Vierlinge können andere Rang-, Signatur-, Ketten- und Hüllprofile besitzen.
+		\end{bemerkung}
+		
+		\section{Typinterner Abstiegsprozess}
+		
+		\begin{definition}[Reine Typen]
+			Reine Zweierkomplexe sind die Zwillingstypen \((A,B)\) und \((C,E)\), reine Dreierkomplexe die vier primitiven Drillings-Typen und reine Viererkomplexe die beiden echten Vierlingszyklen.
+		\end{definition}
+		
+		\begin{proposition}[Minimale reine Komplexe]
+			Die minimalen Vertreter der reinen Typen sind
+			\[
+			(5,7),\ (11,13)
+			\]
+			für die Zweierkomplexe,
+			\[
+			(5,7,11),\ (11,13,17),\ (13,17,19),\ (7,11,13)
+			\]
+			für die Dreierkomplexe und
+			\[
+			(5,7,11,13),\ (11,13,17,19)
+			\]
+			für die Viererkomplexe.
+		\end{proposition}
+		
+		\begin{satz}[Eindeutiger typinterner Abstieg]
+			Ordnet man die Komplexe eines festen reinen Typs nach ihrer kleinsten Primzahl oder nach ihrer Produktmasse, so besitzt jeder nichtminimale Komplex einen eindeutig bestimmten Vorgänger. Durch Iteration gelangt man zum minimalen Vertreter des Typs.
+		\end{satz}
+		
+		\begin{proof}
+			Die Menge der Komplexe eines festen Typs ist wohldefiniert und kann eindeutig geordnet werden. Daraus ergibt sich der eindeutige Vorgängerprozess.
+		\end{proof}
+		
+		\section{Gaußsche und eisensteinsche Begleitgeometrie}
+		
+		\begin{definition}[Lineares Zwillingsprodukt und gaußsche Norm]
+			Für einen Primzwilling \(Z=(p,p+2)\) definieren wir
+			\[
+			L(Z):=p(p+2),
+			\qquad
+			G(Z):=(p+2i)(p-2i)=p^2+4.
+			\]
+		\end{definition}
+		
+		\begin{proposition}
+			Für jeden regulären Primzwilling gilt
+			\[
+			\signatur(L(Z))=C,
+			\qquad
+			\signatur(G(Z))=A.
+			\]
+		\end{proposition}
+		
+		\begin{proof}
+			Die erste Aussage wurde bereits gezeigt. Für die zweite gilt bei \(p>3\): \(p^2\equiv1\pmod{12}\), also \(p^2+4\equiv5\pmod{12}\).
+		\end{proof}
+		
+		\begin{bemerkung}
+			Damit besitzt jeder reguläre Primzwilling einen linearen Begleiter in \(C\) und einen gaußschen Normbegleiter in \(A\). Für primitive Drillinge und Vierlinge legt dies eine weiterführende eisensteinsche Begleitgeometrie nahe.
+		\end{bemerkung}
+		
+		\section{Nichtassoziativität und Fortsetzungszwang}
+		
+		\begin{definition}[Fortsetzungsbedürftiges Tripel]
+			Ein primitives EABC-Tripel heißt fortsetzungsbedürftig, wenn es lokal nicht abgeschlossen ist, sondern genau eine fehlende Familie besitzt, durch deren Ergänzung ein neutrales Rang-4-Objekt entsteht.
+		\end{definition}
+		
+		\begin{bemerkung}
+			Die Nichtassoziativität der Oktonionen erzeugt nicht direkt Primzahlen. Plausibel ist jedoch die schwächere These, dass sie die Nichtabschließbarkeit primitiver EABC-Tupel und damit deren Fortsetzungsregeln modellieren kann.
+		\end{bemerkung}
+		
+		\begin{proposition}[Programmatisches Nichtabschließbarkeitsprinzip]
+			Ein nichtverschwindender oktonionischer Assoziator
+			\[
+			[x,y,z]=(xy)z-x(yz)
+			\]
+			kann als algebraischer Marker für die Nichtabschließbarkeit primitiver EABC-Tripel interpretiert werden.
+		\end{proposition}
+		
+		\section{Ein einfacher EABC-Dirac-Operator}
+		
+		\begin{definition}[Freier arithmetischer Dirac-Operator]
+			Auf dem Hilbertraum \(\ell^2(\N_{>1},\C^4)\) definieren wir formal
+			\[
+			(D_0\psi)(n):=\Gamma^+\psi(n+1)+\Gamma^-\psi(n-1),
+			\]
+			wobei \(\Gamma^\pm\) feste \(4\times4\)-Matrizen sind.
+		\end{definition}
+		
+		\begin{definition}[EABC-Potential]
+			Sei \(V(n)\) eine diagonale Matrix, deren Einträge von den Familien der Primfaktoren von \(n\) abhängen. Dann heißt
+			\[
+			D:=D_0+V
+			\]
+			ein EABC-Dirac-Operator.
+		\end{definition}
+		
+		\begin{bemerkung}
+			Der Operator wird hier als heuristischer spektraler Rahmen verstanden. Er soll die periodensystematische und clustergeometrische Information in eine operatorische Sprache überführen.
+		\end{bemerkung}
+		
+		\section{Numerische Auswertung bis \\(10^6\\)}
+		
+		Wir testen die in dieser Arbeit entwickelten Begriffsbildungen an allen Primzahlen
+		\\[
+		p\\le 10^6.
+		\\]
+		Dies sind insgesamt
+		\\[
+		\\pi(10^6)=78498
+		\\]
+		Primzahlen.
+		
+		\\subsection{Familienverteilung}
+		
+		Für die Primzahlen \\(p>3\\) ergibt sich die Verteilung auf die vier Familien zu
+		\\[
+		E:19564,\\qquad A:19611,\\qquad B:19667,\\qquad C:19654.
+		\\]
+		Dazu kommen die Sonderprimzahlen \\(2\\) und \\(3\\). Die vier Familien sind damit bis \\(10^6\\) nahezu gleichmäßig besetzt.
+		
+		\\subsection{Primzwillinge und elementare Semiprimes}
+		
+		Bis \\(10^6\\) gibt es insgesamt
+		\\[
+		8169
+		\\]
+		Primzwillinge. Davon ist
+		\\[
+		(3,5)
+		\\]
+		der singuläre Sonderfall, und
+		\\[
+		8168
+		\\]
+		sind reguläre Primzwillinge mit \\(p>3\\).
+		
+		Ihre Familientypen verteilen sich genau auf die beiden erwarteten Klassen:
+		\\[
+		(A,B):4046,
+		\\qquad
+		(C,E):4122.
+		\\]
+		Damit wird die Regel bestätigt, dass reguläre Primzwillinge genau die Typen \\((A,B)\\) oder \\((C,E)\\) besitzen.
+		
+		Zu jedem solchen Zwilling gehört das elementare Semiprime
+		\\[
+		n=p(p+2).
+		\\]
+		In allen \\(8168\\) regulären Fällen gilt
+		\\[
+		\\signatur(n)=C.
+		\\]
+		
+		\\begin{proposition}
+		Bis \\(10^6\\) liegen alle elementaren Semiprimes aus regulären Primzwillingen in der Signaturklasse \\(C\\).
+		\\end{proposition}
+		
+		\\subsection{Primitive Primdrillinge}
+		
+		Für die beiden primitiven Drillingsformen erhält man bis \\(10^6\\):
+		\\[
+		\\#\\{(p,p+2,p+6)\\}=1393,
+		\\qquad
+		\\#\\{(p,p+4,p+6)\\}=1444.
+		\\]
+		Insgesamt gibt es also
+		\\[
+		2837
+		\\]
+		primitive Primdrillinge.
+		
+		Die Familientypen verteilen sich wie folgt:
+		\\[
+		(A,B,C):697,
+		\\qquad
+		(C,E,A):696,
+		\\]
+		\\[
+		(E,A,B):711,
+		\\qquad
+		(B,C,E):733.
+		\\]
+		Damit werden genau die vier theoretisch erwarteten Typen realisiert.
+		
+		\\begin{proposition}
+		Für alle \\(2837\\) primitiven Primdrillinge bis \\(10^6\\) gilt
+		\\[
+		\\mu(T)=\\signatur(T).
+		\\]
+		\\end{proposition}
+		
+		\\begin{proof}[Numerischer Befund]
+		Die Gleichheit wurde in allen \\(2837\\) Fällen bestätigt.
+		\\end{proof}
+		
+		\\subsection{Echte Primvierlinge}
+		
+		Bis \\(10^6\\) gibt es
+		\\[
+		166
+		\\]
+		echte Primvierlinge der Form
+		\\[
+		(p,p+2,p+6,p+8).
+		\\]
+		Die beiden EABC-Zyklen treten mit den Häufigkeiten
+		\\[
+		(A,B,C,E):84,
+		\\qquad
+		(C,E,A,B):82
+		\\]
+		auf.
+		
+		Für alle \\(166\\) echten Primvierlinge gilt:
+		\\[
+		\\rang(Q)=4,
+		\\qquad
+		\\signatur(Q)=E,
+		\\qquad
+		(n_{EA}(Q),n_{BC}(Q))=(2,2).
+		\\]
+		
+		\\subsection{Lokale Kettenstruktur}
+		
+		Für alle \\(166\\) echten Primvierlinge gilt numerisch
+		\\[
+		t_2(Q)=2,
+		\\qquad
+		t_3(Q)=2.
+		\\]
+		Jeder echte Primvierling enthält also genau zwei Primzwillinge und genau zwei primitive Primdrillinge.
+		
+		Betrachtet man alle geordneten Prim-4-Tupel mit Spannweite \\(\\le 8\\), so erhält man bis \\(10^6\\) insgesamt
+		\\[
+		168
+		\\]
+		solche Tupel. Sie bestehen aus
+		\\begin{itemize}
+		\\item \\(166\\) echten Primvierlingen,
+		\\item dem Sonderfall \\((2,3,5,7)\\),
+		\\item dem Sonderfall \\((3,5,7,11)\\).
+		\\end{itemize}
+		Die Verteilung der lokalen Invarianten \\((t_2,t_3)\\) lautet:
+		\\[
+		(2,2):166,
+		\\qquad
+		(2,1):1,
+		\\qquad
+		(2,0):1.
+		\\]
+		
+		\\begin{proposition}
+		In der lokalen kompakten Viererwelt bis \\(10^6\\) charakterisiert
+		\\[
+		t_2(Q)=t_3(Q)=2
+		\\]
+		genau die echten Primvierlinge.
+		\\end{proposition}
+		
+		\\subsection{Drillingshüllen der Primzwillinge}
+		
+		Für die \\(8168\\) regulären Primzwillinge ergibt sich die Zahl ihrer primitiven Drillingshüllen wie folgt:
+		\\[
+		0\\text{ Hüllen}:5705,
+		\\qquad
+		1\\text{ Hülle}:2294,
+		\\qquad
+		2\\text{ Hüllen}:169.
+		\\]
+		Nur ein vergleichsweise kleiner Teil der Zwillinge ist also lokal maximal fortsetzbar.
+		
+		\\subsection{Hüllprofile als Feinstruktur}
+		
+		Die linearen und quadratischen Familienhüllen sowie die dominanten Hüllfamilien
+		\\[
+		X_1,\\Delta_1,\\qquad X_2,\\Delta_2
+		\\]
+		wurden für typische Cluster ausgewertet. Die numerischen Befunde zeigen:
+		\\begin{itemize}
+		\\item Hüllprofile sind informative Feininvarianten,
+		\\item sie charakterisieren echte Primvierlinge jedoch nicht allein,
+		\\item die eigentliche Trennschärfe liegt in der lokalen Kettenstruktur \\(t_2=t_3=2\\).
+		\\end{itemize}
+		
+		\\begin{bemerkung}
+		Die numerische Auswertung bis \\(10^6\\) stützt die lokale EABC-Kettengeometrie deutlich stärker als jede isolierte Hüllinvariante.
+		\\end{bemerkung}
+		
+		\\section{Numerische Programme und offene Fragen}
+		
+		Die bisherige Theorie legt das folgende Arbeitsprogramm nahe:
+		\begin{enumerate}[label=\arabic*.]
+			\item Analyse aller Primzahlen bis zu einer Schranke \(X\) nach Familienzugehörigkeit,
+			\item Bestimmung aller Primzwillinge, primitiven Drillinge und echten Vierlinge,
+			\item Test der Regeln
+			\[
+			\mu(T)=\signatur(T),\qquad t_2(Q)=t_3(Q)=2,
+			\]
+			\item Auswertung der Hüllprofile \((X_1,\Delta_1,X_2,\Delta_2)\),
+			\item Vergleich echter und unechter Vierlinge.
+		\end{enumerate}
+		
+		\begin{bemerkung}
+			Nach allen bisherigen Überlegungen ist die lokale EABC-Kettengeometrie robuster als die reine Hüllgeometrie. Die Hüllprofile liefern Feinstruktur, die eigentliche Trennschärfe echter Vierlinge liegt jedoch in der maximalen lokalen Kettenstruktur.
+		\end{bemerkung}
+		
+		\section{Schlussbemerkung}
+		
+		Das vorliegende Manuskript entwickelt einen neu geordneten Rahmen für eine arithmetische Periodentafel der Primzahlen. Sein Hauptgewinn liegt nicht in einem globalen Primzahlbeweis, sondern in einer erstaunlich rigiden lokalen Theorie: Zwillinge, primitive Drillinge und echte Vierlinge erscheinen als präzise organisierte Schalen- und Clusterzustände im EABC-System.
+		
+		Die stärksten gesicherten Aussagen betreffen die lokale Kettengeometrie. Darüber hinaus öffnen Hülltheorie, komplexe Begleitgeometrie, operatorische Ansätze und nichtassoziative Deutungen ein Forschungsprogramm, das arithmetische Struktur, Geometrie und spektrale Interpretation zusammenführt.
+		
+	\end{document}
+	
+	
+	\section{Schlussbemerkung}
+	
+	Das vorliegende Manuskript entwickelt einen neu geordneten Rahmen für eine arithmetische Periodentafel der Primzahlen. Sein Hauptgewinn liegt nicht in einem globalen Primzahlbeweis, sondern in einer erstaunlich rigiden lokalen Theorie: Zwillinge, primitive Drillinge und echte Vierlinge erscheinen als präzise organisierte Schalen- und Clusterzustände im EABC-System.
+	
+	Die stärksten gesicherten Aussagen betreffen die lokale Kettengeometrie. Darüber hinaus öffnen Hülltheorie, komplexe Begleitgeometrie, operatorische Ansätze und nichtassoziative Deutungen ein Forschungsprogramm, das arithmetische Struktur, Geometrie und spektrale Interpretation zusammenführt.
+	
+\end{document}

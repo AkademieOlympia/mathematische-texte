@@ -1,0 +1,64 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[german]{babel}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=2.5cm}
+
+\title{Das BM-Treppen-Theorem: Ein konditionales Framework für die quantitative Gitter-Perkolation von Primzahlzwillingen}
+\author{Thomas Hoffbauer}
+\date{Bamberg, \today}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{hypothesis}{Hypothese}
+\newtheorem{definition}{Definition}
+
+\begin{document}
+	
+	\maketitle
+	
+	\section{Einführung und Definitionen}
+	
+	Das vorliegende Framework überführt die arithmetische Frage nach der Unendlichkeit von Primzahlzwillingen in ein topologisches Problem der Gitter-Perkolation.
+	
+	\begin{definition}[Twin-Kanal $\mathcal{T}$]
+		Wir definieren den Raum der Kandidaten $\mathcal{T}$ als die Menge $\{n \in \mathbb{N} : n \equiv 5, 11 \pmod{12}\}$. In einem Gitter der Breite $W=48$ besetzen diese Kandidaten 16 deterministische Spalten.
+	\end{definition}
+	
+	\begin{definition}[z-Offenheit]
+		Ein Kandidat $n \in \mathcal{T}$ heißt $z$-offen, falls gilt:
+		\[ \forall p \in \mathbb{P}, 5 \le p \le z: n \not\equiv 0 \pmod p \land n \not\equiv -2 \pmod p \]
+	\end{definition}
+	
+	\section{Die kombinatorischen Lemmata}
+	
+	\begin{lemma}[Diskrete Pfad-Dualität]
+		In jedem endlichen Abschnitt eines $b \times b$ Blockgitters existiert entweder ein vertikaler offener Pfad (Verbindung von $y_{min}$ nach $y_{max}$) oder eine horizontale geschlossene Sperrwand (Links-Rechts-Verbindung).
+	\end{lemma}
+	
+	\begin{lemma}[Primzahl-Induktion]
+		Ein $z$-offener Kandidat $n$ ist ein echter Primzahlzwilling, falls gilt:
+		\[ n + 2 < z^2 \implies (n, n+2) \in \mathbb{P}^2 \]
+	\end{lemma}
+	
+	\section{Das Haupttheorem}
+	
+	\begin{theorem}[Konditionale Zwillings-Existenz]
+		Es existiere eine Wachstumsfunktion $b(z)$ für die notwendige Blockgröße, um einen vertikalen Pfad im $z$-gesiebten Gitter zu garantieren. Falls für diese Funktion gilt:
+		\[ b(z) = O(z^\alpha) \quad \text{mit } \alpha < 2 \]
+		dann ist die Menge der Primzahlzwillinge unendlich.
+	\end{theorem}
+	
+	\begin{proof}[Beweisgang (Widerspruch)]
+		Angenommen, es gäbe einen letzten Zwilling bei $q$. Wir wählen $z$ hinreichend groß, sodass $z^2 \gg b(z) + q$. Da $b(z)$ subquadratisch wächst, existiert nach der Voraussetzung im Intervall $[q, z^2]$ ein offener Block. Dieser enthält mindestens einen $z$-offenen Kandidaten $n$. Da $n+2 < z^2$, muss $(n, n+2)$ nach Lemma 2 ein echter Primzahlzwilling sein, was im Widerspruch zur Annahme $n > q$ steht.
+	\end{proof}
+	
+	\section{Forschungsfrage und numerische Indikation}
+	
+	Die Verifizierung der Primzahlzwillingsvermutung ist damit auf die Prüfung der folgenden Hypothese reduziert:
+	\begin{hypothesis}
+		Die maximale vertikale Ausdehnung $H_{max}$ einer horizontalen Sperrwand im EABC-Gitter wächst asymptotisch langsamer als $z^2$.
+	\end{hypothesis}
+	
+\end{document}

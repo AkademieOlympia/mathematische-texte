@@ -1,0 +1,439 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[a4paper,margin=2.4cm]{geometry}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+
+\title{Das EABC-Gitter modulo \(12\):\\
+	Zwillinge, Drillinge und blockübergreifende Vierlinge}
+\author{Kollaborative Ausarbeitung}
+\date{\today}
+
+\newtheorem{satz}{Satz}
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{korollar}[satz]{Korollar}
+\newtheorem{proposition}[satz]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{beispiel}[satz]{Beispiel}
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\pp}{\mathbb{P}}
+\newcommand{\ind}{\mathbf{1}}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir betrachten die Zerlegung der natürlichen Zahlen \(>3\) nach ihren Restklassen modulo \(12\)
+		in die vier Familien \(E,A,B,C\). Auf dieser Basis wird das zugehörige EABC-Gitter
+		\[
+		Q_n=(12n-11,\,12n-7,\,12n-5,\,12n-1)
+		\]
+		eingeführt. Es wird gezeigt, dass alle Primzahlzwillinge \(>3\) eindeutig in genau zwei
+		Kanälen des Gitters liegen, dass alle Primzahldrillinge vollständig durch die beiden
+		\(3\)-verankerten Ausnahmefälle \((3,5,7)\) und \((3,7,11)\) beschrieben sind, und dass die
+		gleichzeitige Aktivierung beider Zwillingskanäle genau den blockübergreifenden
+		Primzahlvierlingen entspricht. Damit erhält man eine vollständige lokale Strukturtheorie
+		dieser niedrigen Primzahlkonstellationen im modulo-\(12\)-Gitter.
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Jede Primzahl \(p>3\) ist weder durch \(2\) noch durch \(3\) teilbar. Daher kann sie modulo \(12\)
+	nur in einer der vier Restklassen
+	\[
+	1,\ 5,\ 7,\ 11
+	\]
+	liegen. Diese vier Klassen definieren ein natürliches vierteiliges Gitter der Primzahlen.
+	Schreibt man sie in der Reihenfolge
+	\[
+	E \equiv 1,\qquad A \equiv 5,\qquad B \equiv 7,\qquad C \equiv 11 \pmod{12},
+	\]
+	so entstehen lokale Viererblöcke
+	\[
+	Q_n=(E_n,A_n,B_n,C_n),
+	\]
+	innerhalb derer sich die niedrigsten Primzahlkonstellationen --- insbesondere Zwillinge,
+	Drillinge und Vierlinge --- in bemerkenswert straffer Weise organisieren lassen.
+	
+	Ziel dieses Textes ist eine konsistente Definition--Lemma--Satz--Beweis-Folge, in der diese
+	lokale Struktur vollständig beschrieben wird.
+	
+	\section{Die vier Familien}
+	
+	\begin{definition}[EABC-Familien]
+		Für \(n\in\N\) definieren wir
+		\[
+		E_n:=12n-11,\qquad
+		A_n:=12n-7,\qquad
+		B_n:=12n-5,\qquad
+		C_n:=12n-1.
+		\]
+		Wir nennen
+		\[
+		Q_n:=(E_n,A_n,B_n,C_n)
+		\]
+		den \(n\)-ten \emph{EABC-Vierertruppel}.
+	\end{definition}
+	
+	\begin{lemma}[Vollständige Zerlegung der Primzahlen \(>3\)]
+		Jede Primzahl \(p>3\) liegt eindeutig in genau einer der vier Familien
+		\[
+		E,\quad A,\quad B,\quad C.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Ist \(p>3\) prim, so ist \(p\) weder durch \(2\) noch durch \(3\) teilbar. Daher kann
+		\[
+		p \equiv 1,5,7,\text{ oder }11 \pmod{12}
+		\]
+		gelten und keine andere Restklasse. Die vier Folgen
+		\[
+		12n-11,\quad 12n-7,\quad 12n-5,\quad 12n-1
+		\]
+		parametrisieren diese vier Klassen disjunkt und vollständig. Also liegt jede Primzahl \(p>3\)
+		eindeutig in genau einer dieser Familien.
+	\end{proof}
+	
+	\begin{korollar}
+		Die Menge der Primzahlen \(>3\) zerfällt disjunkt in
+		\[
+		\pp\setminus\{2,3\}
+		=
+		(\pp\cap E)\,\dot\cup\,(\pp\cap A)\,\dot\cup\,(\pp\cap B)\,\dot\cup\,(\pp\cap C).
+		\]
+	\end{korollar}
+	
+	\section{Die beiden Zwillingskanäle}
+	
+	\begin{definition}[Zwillingskanäle]
+		Zu jedem Vierertruppel
+		\[
+		Q_n=(E_n,A_n,B_n,C_n)
+		\]
+		definieren wir zwei natürliche Zwillingskanäle:
+		\[
+		T_n^{\mathrm{int}}:=(A_n,B_n)=(12n-7,\,12n-5),
+		\]
+		\[
+		T_n^{\mathrm{rand}}:=(C_n,E_{n+1})=(12n-1,\,12n+1).
+		\]
+		Weiter definieren wir die \emph{Zwillingssignatur}
+		\[
+		\tau(Q_n)
+		:=
+		\bigl(
+		\ind_{T_n^{\mathrm{int}}\text{ ist Primzahlzwilling}},
+		\ind_{T_n^{\mathrm{rand}}\text{ ist Primzahlzwilling}}
+		\bigr)
+		\in\{0,1\}^2.
+		\]
+	\end{definition}
+	
+	\begin{lemma}[Es gibt genau zwei Zwillingskanäle]
+		Jeder Primzahlzwilling \((p,p+2)\) mit \(p>3\) liegt eindeutig in genau einem der beiden Kanäle:
+		\[
+		(p,p+2)=(A_n,B_n)
+		\quad\text{oder}\quad
+		(p,p+2)=(C_n,E_{n+1})
+		\]
+		für ein eindeutig bestimmtes \(n\).
+	\end{lemma}
+	
+	\begin{proof}
+		Sei \((p,p+2)\) ein Primzahlzwilling mit \(p>3\). Da beide Zahlen prim sind, sind sie ungerade
+		und nicht durch \(3\) teilbar. Modulo \(12\) kommen daher nur die Muster
+		\[
+		(5,7)\quad\text{oder}\quad(11,1)
+		\]
+		in Frage.
+		
+		Im ersten Fall gilt
+		\[
+		p=12n-7=A_n,\qquad p+2=12n-5=B_n
+		\]
+		für ein eindeutig bestimmtes \(n\).
+		
+		Im zweiten Fall gilt
+		\[
+		p=12n-1=C_n,\qquad p+2=12n+1=E_{n+1}
+		\]
+		für ein eindeutig bestimmtes \(n\).
+		
+		Andere Restklassenmuster sind für Primzahlzwillinge \(>3\) unmöglich.
+	\end{proof}
+	
+	\begin{satz}[Vollständige Klassifikation der Primzahlzwillinge \(>3\)]
+		Die Primzahlzwillinge \(>3\) sind genau die primen Realisierungen der beiden linearen Muster
+		\[
+		(12n-7,12n-5)
+		\qquad\text{und}\qquad
+		(12n-1,12n+1).
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Dies folgt unmittelbar aus dem vorigen Lemma.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Damit ist jeder Primzahlzwilling \(>3\) im EABC-Gitter entweder ein
+		\emph{interner Zwilling} vom Typ \(A\!-\!B\) oder ein \emph{Randzwilling} vom Typ \(C\!-\!E\).
+	\end{bemerkung}
+	
+	\section{Primzahldrillinge}
+	
+	\begin{definition}[Dichte Drillingsmuster]
+		Unter einem \emph{Primzahldrilling} verstehen wir ein Primzahltripel einer der beiden Formen
+		\[
+		(p,p+2,p+6)
+		\qquad\text{oder}\qquad
+		(p,p+4,p+6).
+		\]
+	\end{definition}
+	
+	\begin{lemma}[Jeder Primzahldrilling ist \(3\)-verankert]
+		Jeder Primzahldrilling enthält notwendig die Primzahl \(3\).
+	\end{lemma}
+	
+	\begin{proof}
+		Betrachte eines der beiden Muster
+		\[
+		p,\ p+2,\ p+6
+		\qquad\text{oder}\qquad
+		p,\ p+4,\ p+6.
+		\]
+		Modulo \(3\) enthält ein solches Tripel stets mindestens eine Zahl, die zu \(0\pmod 3\)
+		kongruent ist. Soll diese Zahl prim sein, so muss sie gleich \(3\) sein.
+	\end{proof}
+	
+	\begin{satz}[Vollständige Klassifikation der Primzahldrillinge]
+		Die einzigen Primzahldrillinge sind
+		\[
+		(3,5,7)
+		\qquad\text{und}\qquad
+		(3,7,11).
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Nach dem vorherigen Lemma muss jeder Primzahldrilling die Primzahl \(3\) enthalten.
+		Dann bleiben für die beiden dichten Muster nur die beiden Möglichkeiten
+		\[
+		(3,5,7)
+		\qquad\text{und}\qquad
+		(3,7,11).
+		\]
+		Beide Tripel bestehen tatsächlich aus Primzahlen. Weitere Fälle gibt es nicht.
+	\end{proof}
+	
+	\begin{korollar}
+		Nach Abspaltung des singulären Ankers \(3\) entsprechen die beiden Primzahldrillinge genau den
+		Familienpaaren
+		\[
+		(A_1,B_1)=(5,7)
+		\qquad\text{und}\qquad
+		(B_1,C_1)=(7,11).
+		\]
+	\end{korollar}
+	
+	\begin{bemerkung}
+		Primzahldrillinge sind damit keine freien inneren Konfigurationen des EABC-Gitters, sondern
+		vollständig durch den Ausnahmepunkt \(3\) erzwungene Randphänomene.
+	\end{bemerkung}
+	
+	\section{Doppelstellen und blockübergreifende Vierlinge}
+	
+	\begin{definition}[Doppelstelle]
+		Ein Vierertruppel \(Q_n\) heißt \emph{Doppelstelle}, wenn beide Zwillingskanäle aktiv sind, also
+		\[
+		\tau(Q_n)=(1,1).
+		\]
+		Das ist äquivalent dazu, dass
+		\[
+		A_n,\ B_n,\ C_n,\ E_{n+1}
+		\]
+		alle prim sind.
+	\end{definition}
+	
+	\begin{lemma}[Doppelstellen sind genau blockübergreifende Vierlinge]
+		Ein Vierertruppel \(Q_n\) ist genau dann eine Doppelstelle, wenn
+		\[
+		(12n-7,\ 12n-5,\ 12n-1,\ 12n+1)
+		\]
+		ein Primzahlvierling ist.
+	\end{lemma}
+	
+	\begin{proof}
+		Nach Definition bedeutet
+		\[
+		\tau(Q_n)=(1,1),
+		\]
+		dass sowohl
+		\[
+		(12n-7,12n-5)
+		\]
+		als auch
+		\[
+		(12n-1,12n+1)
+		\]
+		Primzahlzwillinge sind. Dies ist genau dann der Fall, wenn alle vier Zahlen
+		\[
+		12n-7,\ 12n-5,\ 12n-1,\ 12n+1
+		\]
+		prim sind. Diese bilden das Muster
+		\[
+		p,\ p+2,\ p+6,\ p+8,
+		\]
+		also einen Primzahlvierling.
+	\end{proof}
+	
+	\begin{satz}[Vierlinge als Kopplung beider Zwillingskanäle]
+		Die Doppelstellen des EABC-Gitters sind genau die blockübergreifenden Primzahlvierlinge.
+		Insbesondere ist ein Primzahlvierling im EABC-Gitter genau die lokale Konfiguration, in der
+		\[
+		(A_n,B_n)
+		\quad\text{und}\quad
+		(C_n,E_{n+1})
+		\]
+		gleichzeitig als Primzahlzwillinge auftreten.
+	\end{satz}
+	
+	\begin{proof}
+		Dies folgt unmittelbar aus dem vorherigen Lemma.
+	\end{proof}
+	
+	\section{Hauptsatz}
+	
+	\begin{satz}[Lokale Vollständigkeit des EABC-Gitters]
+		Das EABC-Gitter
+		\[
+		Q_n=(12n-11,12n-7,12n-5,12n-1)
+		\]
+		liefert eine vollständige lokale Strukturtheorie der Primzahlkonstellationen niedriger Ordnung:
+		
+		\begin{enumerate}[label=\textup{(\roman*)}]
+			\item Alle Primzahlen \(>3\) liegen eindeutig in genau einer der vier Familien
+			\[
+			E,\ A,\ B,\ C.
+			\]
+			
+			\item Alle Primzahlzwillinge \(>3\) entstehen eindeutig in genau einem von zwei Kanälen:
+			\[
+			(A_n,B_n)=(12n-7,12n-5)
+			\quad\text{oder}\quad
+			(C_n,E_{n+1})=(12n-1,12n+1).
+			\]
+			
+			\item Alle Primzahldrillinge sind singuläre \(3\)-verankerte Randphänomene und bestehen genau aus
+			\[
+			(3,5,7)
+			\quad\text{und}\quad
+			(3,7,11).
+			\]
+			
+			\item Alle lokalen Doppelkopplungen beider Zwillingskanäle sind genau die blockübergreifenden
+			Primzahlvierlinge
+			\[
+			(12n-7,12n-5,12n-1,12n+1).
+			\]
+		\end{enumerate}
+		
+		Damit ist die gesamte lokale Zwillings-, Drillings- und Vierlingskopplungsstruktur des
+		Primzahlgitters modulo \(12\) vollständig beschrieben.
+	\end{satz}
+	
+	\begin{proof}
+		Aussage \textup{(i)} ist Lemma 1. Aussage \textup{(ii)} ist der Klassifikationssatz über die
+		beiden Zwillingskanäle. Aussage \textup{(iii)} ist der Klassifikationssatz der Primzahldrillinge.
+		Aussage \textup{(iv)} ist der Vierlingssatz über die Doppelstellen. Damit sind alle genannten
+		lokalen Konfigurationsklassen vollständig erfasst.
+	\end{proof}
+	
+	\section{Beispiele}
+	
+	\begin{beispiel}[Zwilling im inneren Kanal]
+		Für \(n=2\) ist
+		\[
+		Q_2=(13,17,19,23).
+		\]
+		Hier ist
+		\[
+		(A_2,B_2)=(17,19)
+		\]
+		ein Primzahlzwilling.
+	\end{beispiel}
+	
+	\begin{beispiel}[Zwilling am Randkanal]
+		Für \(n=5\) ist
+		\[
+		Q_5=(49,53,55,59),
+		\]
+		und
+		\[
+		(C_5,E_6)=(59,61)
+		\]
+		ist ein Primzahlzwilling.
+	\end{beispiel}
+	
+	\begin{beispiel}[Drilling]
+		Der Primzahldrilling
+		\[
+		(3,5,7)
+		\]
+		entspricht nach Abspaltung von \(3\) genau dem inneren Zwillingspaar
+		\[
+		(A_1,B_1)=(5,7).
+		\]
+	\end{beispiel}
+	
+	\begin{beispiel}[Doppelstelle]
+		Für \(n=9\) gilt
+		\[
+		Q_9=(97,101,103,107).
+		\]
+		Dann sind
+		\[
+		(A_9,B_9)=(101,103)
+		\]
+		und
+		\[
+		(C_9,E_{10})=(107,109)
+		\]
+		beide Primzahlzwillinge. Also ist \(Q_9\) eine Doppelstelle, und
+		\[
+		(101,103,107,109)
+		\]
+		ist ein blockübergreifender Primzahlvierling.
+	\end{beispiel}
+	
+	\section{Schlussbemerkung}
+	
+	Die modulo-\(12\)-Zerlegung in die vier Familien \(E,A,B,C\) erzeugt ein natürliches lokales Gitter,
+	in dem die kleinsten Primzahlkonstellationen eine bemerkenswert einfache und vollständige Struktur
+	besitzen:
+	
+	\begin{itemize}[itemsep=0.25em]
+		\item Primzahlen \(>3\) füllen genau die vier Familien,
+		\item Primzahlzwillinge laufen genau über zwei Kanäle,
+		\item Primzahldrillinge sind vollständig durch den singulären Anker \(3\) bestimmt,
+		\item und Primzahlvierlinge erscheinen genau als Doppelkopplung beider Zwillingskanäle.
+	\end{itemize}
+	
+	Damit wird das EABC-Gitter zu einer sehr kompakten lokalen Beschreibung der niedrigsten
+	Primzahlmuster.
+	
+\end{document}

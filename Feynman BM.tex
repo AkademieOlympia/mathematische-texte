@@ -1,0 +1,779 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{enumitem}
+
+\geometry{margin=2.7cm}
+
+\title{Lagrange-Vierlinge im Primzahlraum \(p>3\)\\
+	und zyklische Schließbarkeit im Sehnenmodell}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\newtheorem{satz}{Satz}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{korollar}{Korollar}
+\theoremstyle{remark}
+\newtheorem{bemerkung}{Bemerkung}
+\newtheorem{beispiel}{Beispiel}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir untersuchen Vierquadrate-Zerlegungen von Primzahlen \(p>3\) und interpretieren sie als \emph{Lagrange-Vierlinge} im Primzahlraum. Jede solche Darstellung
+		\[
+		p = E^2 + A^2 + B^2 + C^2
+		\]
+		wird als Viererstruktur aufgefasst, deren Komponenten in ein zyklisches Sehnenmodell eingebettet werden. Dies führt zu einer zusätzlichen geometrischen Schließungsbedingung, die innerhalb der arithmetisch durch Lagrange garantierten Darstellungen selektiv wirkt.
+		
+		Für die ersten 1000 Primzahlen wurde numerisch untersucht, welche Lagrange-Vierlinge im harten Modell \(l_i = E_i^2\) beziehungsweise im weichen Modell \(l_i = E_i\) zyklisch schließbar sind. Dabei zeigt sich, dass einrastfähige Vierlinge im Mittel deutlich höhere Entropie, geringere Konzentration und größere Balance aufweisen als nicht-einrastfähige. Zugleich verschärft die quadratische Gewichtung die Schließungsbedingung spürbar: Im harten Modell besitzen 983 der ersten 1000 Primzahlen mindestens einen fit-Vierling, im weichen Modell 993.
+		
+		Damit erscheint der Primzahlraum \(p>3\) nicht nur als Menge arithmetisch darstellbarer Objekte, sondern als Raum innerer Vierer-Geometrien mit unterschiedlich ausgeprägter zyklischer Verträglichkeit.
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Der Vier-Quadrate-Satz von Lagrange garantiert, dass jede natürliche Zahl als Summe von vier Quadraten darstellbar ist. Für Primzahlen \(p>3\) ergibt sich damit eine universelle Viererstruktur
+	\[
+	p = E^2 + A^2 + B^2 + C^2.
+	\]
+	Im Folgenden nennen wir jede solche Darstellung einen \emph{Lagrange-Vierling} von \(p\).
+	
+	Die klassische Aussage Lagranges ist rein existenziell: Sie sichert das Vorhandensein einer Vierquadrate-Zerlegung, sagt aber zunächst nichts über die innere Gestalt dieser Zerlegung aus. Die leitende Idee der vorliegenden Arbeit besteht darin, Lagrange-Vierlinge nicht nur als additive Repräsentationen, sondern als geometrisch interpretierbare Vierer-Konfigurationen aufzufassen.
+	
+	Dazu werden die vier Beiträge in ein zyklisches Sehnenmodell eingebettet. Hieraus entsteht eine zusätzliche Schließungsbedingung: Nur ein Teil der arithmetisch möglichen Lagrange-Vierlinge ist geometrisch kompatibel. Auf diese Weise wird der Primzahlraum \(p>3\) zu einem Raum innerer Vierer-Geometrien, in dem zwischen schließbaren, beinahe schließbaren und deutlich nicht-schließbaren Konfigurationen unterschieden werden kann.
+	
+	Der konzeptionelle Ausgangspunkt lautet daher:
+	\begin{quote}
+		Lagrange liefert die arithmetische Universalität, das Sehnenmodell führt eine geometrische Selektivität ein.
+	\end{quote}
+	
+	Numerisch zeigt sich, dass diese Selektivität keineswegs zufällig ist. Vielmehr korreliert zyklische Schließbarkeit stark mit einer balancierten Verteilung der inneren Lasten eines Lagrange-Vierlings. Dadurch entsteht im Primzahlraum eine zusätzliche arithmetisch-geometrische Feinstruktur.
+	
+	\section{Lagrange-Vierlinge}
+	
+	\begin{definition}
+		Sei \(p>3\) eine Primzahl. Ein \emph{Lagrange-Vierling} von \(p\) ist ein Tupel
+		\[
+		(E,A,B,C)\in \mathbb Z_{\ge 0}^4
+		\]
+		mit
+		\[
+		E \ge A \ge B \ge C
+		\qquad\text{und}\qquad
+		E^2 + A^2 + B^2 + C^2 = p.
+		\]
+		Die Menge aller Lagrange-Vierlinge von \(p\) bezeichnen wir mit
+		\[
+		\mathcal L(p).
+		\]
+	\end{definition}
+	
+	\begin{satz}[Lagrange]
+		Für jede natürliche Zahl \(n\) existiert eine Darstellung
+		\[
+		n = x_1^2 + x_2^2 + x_3^2 + x_4^2
+		\]
+		mit \(x_i \in \mathbb Z\). Insbesondere gilt für jede Primzahl \(p>3\):
+		\[
+		\mathcal L(p)\neq\emptyset.
+		\]
+	\end{satz}
+	
+	\begin{bemerkung}
+		Im numerischen Teil werden ungeordnete Repräsentanten
+		\[
+		E \ge A \ge B \ge C \ge 0
+		\]
+		verwendet. Für feinere zyklische Fragestellungen kann später auch die Menge aller verschiedenen Permutationen eines Lagrange-Vierlings betrachtet werden.
+	\end{bemerkung}
+	
+	\section{Das zyklische Sehnenmodell}
+	
+	\subsection{Zwei Gewichtungsregime}
+	
+	Zu einem Lagrange-Vierling \((E,A,B,C)\in\mathcal L(p)\) ordnen wir vier Längen \(l_1,l_2,l_3,l_4\) zu. Wir betrachten zwei Varianten:
+	
+	\begin{enumerate}[label=\arabic*)]
+		\item \textbf{Harte Gewichtung}
+		\[
+		l_1 = E^2,\qquad l_2 = A^2,\qquad l_3 = B^2,\qquad l_4 = C^2.
+		\]
+		
+		\item \textbf{Weiche Gewichtung}
+		\[
+		l_1 = E,\qquad l_2 = A,\qquad l_3 = B,\qquad l_4 = C.
+		\]
+	\end{enumerate}
+	
+	Die harte Gewichtung verstärkt große Komponenten überproportional, die weiche Gewichtung behandelt sie linear.
+	
+	\subsection{Schließungsbedingung}
+	
+	Für eine Sehne der Länge \(l\) in einem Kreis vom Radius \(r\) gilt
+	\[
+	\theta(l;r)=2\arcsin\!\left(\frac{l}{2r}\right).
+	\]
+	Ein Lagrange-Vierling heißt \emph{einrastfähig} oder kurz \emph{fit}, wenn es einen Radius \(r>0\) gibt mit
+	\[
+	\theta(l_1;r)+\theta(l_2;r)+\theta(l_3;r)+\theta(l_4;r)=2\pi.
+	\]
+	Äquivalent:
+	\[
+	\sum_{i=1}^4 \arcsin\!\left(\frac{l_i}{2r}\right)=\pi.
+	\]
+	
+	\begin{definition}
+		Existiert ein Radius \(r>0\), der die Gleichung
+		\[
+		\sum_{i=1}^4 \arcsin\!\left(\frac{l_i}{2r}\right)=\pi
+		\]
+		erfüllt, so nennen wir ihn die \emph{Einrastzahl} des Lagrange-Vierlings und schreiben
+		\[
+		\kappa(E,A,B,C)=r.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Die Funktion
+		\[
+		f(r)=\sum_{i=1}^4 \arcsin\!\left(\frac{l_i}{2r}\right)
+		\]
+		ist auf ihrem Definitionsbereich streng monoton fallend.
+	\end{lemma}
+	
+	\begin{proof}
+		Jeder Summand
+		\[
+		r\mapsto \arcsin\!\left(\frac{l_i}{2r}\right)
+		\]
+		ist für \(r>\frac{l_i}{2}\) streng fallend, weil \(r\mapsto \frac{l_i}{2r}\) streng fällt und \(\arcsin\) auf \((0,1)\) streng wächst. Die Summe streng fallender Funktionen ist wieder streng fallend.
+	\end{proof}
+	
+	\begin{korollar}
+		Falls \(\kappa(E,A,B,C)\) existiert, dann ist sie eindeutig.
+	\end{korollar}
+	
+	\section{Kritischer Defekt und Defektgeometrie}
+	
+	\begin{definition}
+		Sei
+		\[
+		r_{\min}=\frac12\max(l_1,l_2,l_3,l_4).
+		\]
+		Dann definieren wir den \emph{kritischen Defekt} eines Lagrange-Vierlings durch
+		\[
+		\delta(E,A,B,C)=\pi-f(r_{\min}),
+		\qquad
+		f(r)=\sum_{i=1}^4 \arcsin\!\left(\frac{l_i}{2r}\right).
+		\]
+	\end{definition}
+	
+	Da \(f(r)\) streng fällt, ist \(f(r_{\min})\) der maximal erreichbare Wert. Daher gilt:
+	
+	\[
+	\delta>0 \;\Longrightarrow\; \text{non-fit},
+	\qquad
+	\delta=0 \;\Longrightarrow\; \text{Grenzfall},
+	\qquad
+	\delta<0 \;\Longrightarrow\; \text{fit}.
+	\]
+	
+	Numerisch wurde fit äquivalent durch \(f(r_{\min})\ge\pi\) mit Toleranz geprüft; fit-Fälle erscheinen dann mit Defekt \(0\).
+	
+	\begin{bemerkung}
+		Der kritische Defekt erlaubt es, auch non-fit-Fälle auf einer kontinuierlichen Skala zu ordnen. Kleine positive Werte entsprechen beinahe schließbaren Konfigurationen, große Werte deutlich rigiden Konfigurationen.
+	\end{bemerkung}
+	
+	\section{Verteilungsmaße eines Lagrange-Vierlings}
+	
+	Zur Beschreibung der inneren Lastverteilung verwenden wir die normierten Gewichte
+	\[
+	p_i=\frac{l_i}{l_1+l_2+l_3+l_4}.
+	\]
+	
+	Daraus definieren wir:
+	
+	\begin{definition}
+		Die \emph{Entropie} eines Lagrange-Vierlings sei
+		\[
+		H=-\sum_{i=1}^4 p_i\log p_i.
+		\]
+	\end{definition}
+	
+	\begin{definition}
+		Die \emph{Konzentration} sei
+		\[
+		K=\sum_{i=1}^4 p_i^2.
+		\]
+	\end{definition}
+	
+	\begin{definition}
+		Der \emph{Balanceindex} sei
+		\[
+		\operatorname{bal}
+		=
+		\frac{\min(l_1,l_2,l_3,l_4)}{\max(l_1,l_2,l_3,l_4)}.
+		\]
+	\end{definition}
+	
+	Hohe Entropie und hoher Balanceindex entsprechen einer relativ gleichmäßigen Lastverteilung; hohe Konzentration entspricht einer dominanten Hauptkomponente.
+	
+	\section{Numerische Untersuchung der ersten 1000 Primzahlen}
+	
+	Es wurden die ersten 1000 Primzahlen
+	\[
+	2,3,5,\dots,7919
+	\]
+	numerisch untersucht. Im Mittelpunkt stehen die Primzahlen \(p>3\); die kleinen Fälle \(2\) und \(3\) wurden der Vollständigkeit halber mitgeführt.
+	
+	\subsection{Harte Gewichtung \(l_i=E_i^2\)}
+	
+	Im harten Modell besitzen 983 der ersten 1000 Primzahlen mindestens einen fit-Lagrange-Vierling; 17 Primzahlen besitzen keinen fit-Vierling. Diese 17 Primzahlen sind:
+	\[
+	5,\;7,\;11,\;17,\;29,\;47,\;53,\;61,\;71,\;83,\;131,\;149,\;197,\;233,\;239,\;257,\;269.
+	\]
+	
+	\subsection{Statistik über alle Darstellungen}
+	
+	Die statistische Auswertung über sämtliche untersuchten Lagrange-Vierlinge der ersten 1000 Primzahlen ergibt im harten Modell:
+	
+	\begin{center}
+		\begin{tabular}{lcccc}
+			\toprule
+			Gruppe & Anzahl & mittlere Entropie \(H\) & mittlere Konzentration \(K\) & mittlere Balance \\
+			\midrule
+			fit     & 11046 & 1.1898 & 0.3262 & 0.1977 \\
+			non-fit & 77685 & 0.8324 & 0.5302 & 0.0454 \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	
+	Damit zeigen fit-Vierlinge im Mittel:
+	
+	\begin{itemize}
+		\item deutlich \emph{höhere Entropie},
+		\item deutlich \emph{geringere Konzentration},
+		\item deutlich \emph{größere Balance}.
+	\end{itemize}
+	
+	\subsection{Interpretation}
+	
+	Die zyklische Schließbarkeit ist damit klar \emph{nicht} bloß eine Umformulierung des Vier-Quadrate-Satzes. Vielmehr wirkt das Sehnenmodell als geometrischer Filter innerhalb der von Lagrange garantierten Darstellungen. Es bevorzugt solche Lagrange-Vierlinge, bei denen die Last nicht zu stark auf eine dominante Hauptkomponente konzentriert ist.
+	
+	Der zentrale numerische Befund lautet daher:
+	\begin{quote}
+		Einrastfähigkeit korreliert stark mit einer ausgeglicheneren Lastverteilung des Lagrange-Vierlings.
+	\end{quote}
+	
+	\section{Fast einrastende non-fit-Fälle}
+	
+	Unter den 17 non-fit-Primzahlen im harten Modell gibt es sehr unterschiedliche Defektgrößen. Einige Fälle sind deutlich non-fit, andere liegen extrem nahe an der Schließung.
+	
+	Besonders kleine Defekte wurden etwa für folgende Primzahlen gefunden:
+	\[
+	197,\qquad 61,\qquad 239,\qquad 233,\qquad 149.
+	\]
+	
+	Ein markanter Grenzfall ist \(p=197\) mit dem Lagrange-Vierling
+	\[
+	(9,8,6,4),
+	\]
+	für den numerisch
+	\[
+	\delta \approx 3.93\times 10^{-4}
+	\]
+	gefunden wurde. Dies zeigt, dass die Klasse der non-fit-Vierlinge selbst eine feine innere Struktur besitzt: Sie reicht von stark rigiden bis zu nahezu schließbaren Konfigurationen.
+	
+	\section{Vergleich zwischen harter und weicher Gewichtung}
+	
+	Im weichen Modell
+	\[
+	l_i=E_i
+	\]
+	besitzen 993 der ersten 1000 Primzahlen mindestens einen fit-Vierling. Der Vergleich ergibt somit:
+	
+	\begin{center}
+		\begin{tabular}{lc}
+			\toprule
+			Größe & Wert \\
+			\midrule
+			fit im harten Modell & 983 \\
+			fit im weichen Modell & 993 \\
+			Verbesserungen hard \(\to\) soft & 10 \\
+			Verschlechterungen hard \(\to\) soft & 0 \\
+			in beiden Modellen non-fit & 7 \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	
+	Dies zeigt eindeutig:
+	\begin{quote}
+		Die quadratische Gewichtung verschärft die geometrische Schließungsbedingung.
+	\end{quote}
+	
+	Große Komponenten werden im harten Modell überproportional verstärkt; dadurch können Lagrange-Vierlinge, die unter linearer Gewichtung noch kompatibel sind, ihre zyklische Schließbarkeit verlieren.
+	
+	\section{Beste Darstellung pro Primzahl}
+	
+	Für jede Primzahl wurde zusätzlich eine \emph{beste Darstellung} ausgewählt:
+	
+	\begin{itemize}
+		\item falls fit-Vierlinge existieren: der fit-Vierling mit kleinster Einrastzahl \(\kappa\),
+		\item sonst: der non-fit-Vierling mit kleinstem Defekt \(\delta\).
+	\end{itemize}
+	
+	Diese Auswahl liefert für jede Primzahl einen kanonischen Repräsentanten ihrer inneren Geometrie im jeweiligen Modell. Im harten Modell zeigt sich dabei häufig, dass die besten fit-Vierlinge eine bemerkenswert gleichmäßige Struktur haben, etwa:
+	\[
+	(3,3,3,2),\quad
+	(4,3,3,3),\quad
+	(5,4,4,4),\quad
+	(7,6,6,6).
+	\]
+	Dies stützt erneut die Vermutung, dass Schließbarkeit eng mit einer balancierten Lastverteilung zusammenhängt.
+	
+	Zugleich zeigt der Vergleich zwischen harter und weicher Gewichtung, dass sich nicht nur die Fit-Quote, sondern teilweise auch der optimale Vierling einer Primzahl ändert. Das Modell reagiert also empfindlich auf das gewählte Gewichtungsregime.
+	
+	\section{Schlussfolgerung}
+	
+	Die vorliegende Untersuchung zeigt, dass Vierquadrate-Zerlegungen von Primzahlen \(p>3\) durch ein zyklisches Sehnenmodell geometrisch verfeinert werden können. Die durch Lagrange garantierte Existenz von Vierquadrate-Zerlegungen bildet dabei die arithmetische Basis; die zusätzliche Kreis-Schließungsbedingung führt eine nichttriviale geometrische Selektivität ein.
+	
+	Die numerischen Resultate legen nahe:
+	
+	\begin{enumerate}[label=\arabic*)]
+		\item Einrastfähigkeit ist stark mit hoher Entropie und Balance sowie geringer Konzentration korreliert.
+		\item Die harte Gewichtung \(l_i = E_i^2\) wirkt als Verstärker struktureller Ungleichverteilung.
+		\item Nicht-einrastende Primzahlen bilden keine homogene Klasse, sondern reichen von stark rigiden bis zu nahezu kritischen Grenzfällen.
+		\item Die Wahl des Gewichtungsregimes verändert nicht nur die Fit-Quote, sondern teilweise auch die optimale Darstellung einer Primzahl.
+	\end{enumerate}
+	
+	Damit entsteht aus der klassischen Vierquadrate-Theorie eine arithmetisch-geometrische Verfeinerung, in der nicht nur die Existenz von Darstellungen zählt, sondern auch deren innere zyklische Verträglichkeit.
+	
+	\section*{Ausblick}
+	
+	Naheliegende Fortsetzungen dieser Arbeit sind:
+	
+	\begin{itemize}
+		\item Untersuchung geordneter statt nur ungeordneter Lagrange-Vierlinge,
+		\item Vergleich der Klassen \(p\equiv 1 \pmod 4\) und \(p\equiv 3 \pmod 4\),
+		\item asymptotische Analyse der Fit-Quote für größere Primzahlbereiche,
+		\item Untersuchung anderer Gewichtungsregime \(l_i = E_i^\alpha\),
+		\item quaternionische Interpretation der Viererstruktur über
+		\[
+		N(E+Ai+Bj+Ck)=E^2+A^2+B^2+C^2.
+		\]
+	\end{itemize}
+	
+	\section{Diskrete Pfade, Transferoperator und BM-Variationsprinzip}
+	
+	\subsection{Motivation}
+	
+	Die formale Feynman-Darstellung eines Propagators als Summe über alle Pfade
+	\[
+	K(x,y;T)=\int_{\gamma(0)=x}^{\gamma(T)=y}
+	\exp\!\left(\frac{i}{\hbar}S[\gamma]\right)\,\mathcal D\gamma
+	\]
+	ist konzeptionell außerordentlich fruchtbar, aber analytisch oft schwer kontrollierbar. 
+	Im Rahmen des Bamberger Modells liegt daher die Idee nahe, das Pfadintegral nicht als Summe über beliebige kontinuierliche Kurven, sondern als \emph{diskrete Zustandssumme über strukturierte Pfade} zu formulieren.
+	
+	Der leitende Gedanke lautet:
+	\begin{quote}
+		Nicht jeder formal mögliche Pfad trägt im gleichen Maße zur Dynamik bei. 
+		Vielmehr sollen solche Pfade bevorzugt werden, die im Sinne des Modells strukturell kohärent und defektarm sind.
+	\end{quote}
+	
+	Damit tritt an die Stelle der Summation über beliebige Bahnen eine Summation über diskrete Historien im Zustandsraum des Modells, gewichtet durch Phase und Defekt.
+	
+	\subsection{BM-Zustandsraum}
+	
+	\begin{definition}
+		Ein \emph{BM-Zustand} ist ein Element eines diskreten Zustandsraums
+		\[
+		\mathcal S.
+		\]
+		In einer minimalen Version kann ein Zustand bereits durch einen Lagrange-Vierling
+		\[
+		X=(E,A,B,C)
+		\]
+		repräsentiert werden. 
+		In reicheren Versionen können zusätzliche Komponenten wie Modulo-Klassen, Shell-Lagen, Phasenmarken oder quaternionische Orientierungen hinzutreten, etwa
+		\[
+		X=(E,A,B,C;\sigma,\mu,\nu,\dots).
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		Für den hier skizzierten Ansatz genügt es, \(\mathcal S\) als diskrete Menge strukturierter Zustände aufzufassen. 
+		Die konkrete Wahl der Zustandskoordinaten kann je nach Ausbaustufe des Bamberger Modells verfeinert werden.
+	\end{bemerkung}
+	
+	\subsection{Erlaubte Übergänge und diskrete Pfade}
+	
+	\begin{definition}
+		Es sei
+		\[
+		\rightsquigarrow \;\subseteq\; \mathcal S\times\mathcal S
+		\]
+		eine Übergangsrelation auf \(\mathcal S\). 
+		Ein Ausdruck
+		\[
+		X\rightsquigarrow Y
+		\]
+		bedeutet, dass der Übergang von \(X\) nach \(Y\) im Sinne des Modells erlaubt ist.
+	\end{definition}
+	
+	\begin{definition}
+		Ein \emph{diskreter BM-Pfad} der Länge \(N\) von \(X\) nach \(Y\) ist eine Folge
+		\[
+		\gamma=(X_0,X_1,\dots,X_N)
+		\]
+		mit
+		\[
+		X_0=X,\qquad X_N=Y,
+		\qquad X_k\rightsquigarrow X_{k+1}\quad (k=0,\dots,N-1).
+		\]
+		Die Menge aller solcher Pfade sei
+		\[
+		\Gamma_N(X,Y).
+		\]
+	\end{definition}
+	
+	Damit wird der Pfadraum des Modells nicht durch willkürliche Kurven, sondern durch Wege in einem diskreten Strukturgraphen beschrieben.
+	
+	\subsection{Lokaler Defekt und lokale Phase}
+	
+	Um Beiträge einzelner Pfade zu gewichten, werden zwei lokale Größen eingeführt: ein Defekt und eine Phase.
+	
+	\begin{definition}
+		Zu jedem erlaubten Übergang
+		\[
+		X\rightsquigarrow Y
+		\]
+		gehöre ein \emph{lokaler Defekt}
+		\[
+		d(X,Y)\ge 0
+		\]
+		und eine \emph{lokale Phase}
+		\[
+		\phi(X,Y)\in\mathbb R.
+		\]
+	\end{definition}
+	
+	Der Defekt misst, wie stark ein Übergang gegen die innere Struktur des Modells verstößt; die Phase kodiert den oszillatorischen Anteil der Dynamik.
+	
+	In einer ersten Ausbaustufe kann der Defekt aus einem lokalen Vierlingsdefekt, aus Modulo-Inkompatibilitäten, aus Shell-Wechseln oder aus topologischen Nichtschließungen zusammengesetzt werden, etwa in der Form
+	\[
+	d(X,Y)
+	=
+	\alpha\, d_{\mathrm{quad}}(X,Y)
+	+\beta\, d_{\mathrm{mod}}(X,Y)
+	+\gamma\, d_{\mathrm{top}}(X,Y).
+	\]
+	
+	\subsection{Lagrange-Vierlinge als lokales Defektmodul}
+	
+	Ist ein Zustand \(X\) durch einen Lagrange-Vierling
+	\[
+	X=(E,A,B,C)
+	\]
+	gegeben, so kann der zuvor eingeführte kritische Defekt
+	\[
+	\delta(E,A,B,C)=\pi-f(r_{\min})
+	\]
+	mit
+	\[
+	f(r)=\sum_{i=1}^4 \arcsin\!\left(\frac{l_i}{2r}\right)
+	\]
+	als lokales Strukturmaß benutzt werden.
+	
+	Eine einfache Wahl ist
+	\[
+	d_{\mathrm{quad}}(X)=\max(0,\delta(E,A,B,C)).
+	\]
+	Alternativ kann auch der Übergang selbst mit einem Defekt bewertet werden, etwa durch
+	\[
+	d_{\mathrm{quad}}(X,Y)
+	=
+	d_{\mathrm{quad}}(Y)
+	+\eta\,|d_{\mathrm{quad}}(Y)-d_{\mathrm{quad}}(X)|.
+	\]
+	
+	Damit gehen die zuvor untersuchten Lagrange-Vierlinge unmittelbar als lokales Mikromodul in die Pfadbeschreibung ein.
+	
+	\subsection{Diskrete BM-Wirkung}
+	
+	\begin{definition}
+		Die \emph{diskrete BM-Lagrangefunktion} sei eine Funktion
+		\[
+		L_{\mathrm{BM}}:\mathcal S\times\mathcal S\to\mathbb C
+		\]
+		der Form
+		\[
+		L_{\mathrm{BM}}(X,Y)
+		=
+		\phi(X,Y)+ i\lambda\, d(X,Y),
+		\qquad \lambda>0.
+		\]
+	\end{definition}
+	
+	\begin{definition}
+		Für einen diskreten Pfad
+		\[
+		\gamma=(X_0,\dots,X_N)
+		\]
+		definieren wir die \emph{BM-Wirkung}
+		\[
+		\mathcal S_{\mathrm{BM}}[\gamma]
+		=
+		\sum_{k=0}^{N-1}L_{\mathrm{BM}}(X_k,X_{k+1}).
+		\]
+		Schreibt man
+		\[
+		\Phi[\gamma]
+		=
+		\sum_{k=0}^{N-1}\phi(X_k,X_{k+1}),
+		\qquad
+		\Delta[\gamma]
+		=
+		\sum_{k=0}^{N-1}d(X_k,X_{k+1}),
+		\]
+		so gilt
+		\[
+		\mathcal S_{\mathrm{BM}}[\gamma]
+		=
+		\Phi[\gamma]+ i\lambda\,\Delta[\gamma].
+		\]
+	\end{definition}
+	
+	Daraus ergibt sich als Pfadamplitude
+	\[
+	\mathcal A(\gamma)
+	=
+	\exp\!\left(i\mathcal S_{\mathrm{BM}}[\gamma]\right)
+	=
+	\exp\!\left(i\Phi[\gamma]-\lambda\Delta[\gamma]\right).
+	\]
+	
+	\begin{bemerkung}
+		Die Phase \(\Phi[\gamma]\) erzeugt Interferenz, der Defekt \(\Delta[\gamma]\) dämpft strukturell unverträgliche Pfade. 
+		Das Modell verbindet damit eine oszillatorische mit einer selektiven Komponente.
+	\end{bemerkung}
+	
+	\subsection{Diskreter BM-Propagator}
+	
+	\begin{definition}
+		Für \(X,Y\in\mathcal S\) definieren wir den BM-Propagator der Pfadlänge \(N\) durch
+		\[
+		K_N(X,Y)
+		=
+		\sum_{\gamma\in\Gamma_N(X,Y)}
+		\mathcal A(\gamma)
+		=
+		\sum_{\gamma\in\Gamma_N(X,Y)}
+		\exp\!\left(i\Phi[\gamma]-\lambda\Delta[\gamma]\right).
+		\]
+	\end{definition}
+	
+	Formal ergibt sich daraus der volle Propagator
+	\[
+	K(X,Y)
+	=
+	\sum_{N\ge 0}K_N(X,Y),
+	\]
+	gegebenenfalls mit zusätzlicher Längenstrafe \(\alpha^N\), \(0<\alpha\le 1\).
+	
+	\subsection{Transferoperator}
+	
+	\begin{definition}
+		Der \emph{BM-Transferoperator} \(T\) sei durch seine Matrixelemente
+		\[
+		T_{XY}
+		=
+		\chi(X\rightsquigarrow Y)\,
+		\exp\!\left(i\phi(X,Y)-\lambda d(X,Y)\right)
+		\]
+		gegeben, wobei \(\chi(X\rightsquigarrow Y)\in\{0,1\}\) die Übergangsrelation kodiert.
+	\end{definition}
+	
+	\begin{satz}
+		Für jedes \(N\in\mathbb N\) gilt
+		\[
+		(T^N)_{XY}
+		=
+		\sum_{\gamma\in\Gamma_N(X,Y)}
+		\exp\!\left(i\Phi[\gamma]-\lambda\Delta[\gamma]\right).
+		\]
+		Insbesondere ist
+		\[
+		(T^N)_{XY}=K_N(X,Y).
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Für \(N=1\) ist die Aussage genau die Definition von \(T\). 
+		Der Induktionsschritt folgt aus
+		\[
+		(T^{N+1})_{XY}
+		=
+		\sum_{Z\in\mathcal S}(T^N)_{XZ}T_{ZY},
+		\]
+		also aus der Zerlegung jedes \((N+1)\)-Schritt-Pfades in einen \(N\)-Schritt-Pfad von \(X\) nach \(Z\) und einen letzten Schritt von \(Z\) nach \(Y\).
+	\end{proof}
+	
+	\begin{bemerkung}
+		Damit wird die explizite Summation über alle Pfade operatorisch komprimiert. 
+		Die Pfadsumme ist nun in den Potenzen eines Transferoperators enthalten. 
+		Dies eröffnet den Zugang zu Spektralmethoden, dominanten Sektoren und asymptotischen Reduktionen.
+	\end{bemerkung}
+	
+	\subsection{Diskrete Variationsrechnung}
+	
+	Die bisherige Konstruktion liefert eine Zustandssumme. Um ein Dynamikprinzip zu erhalten, wird nun eine diskrete Variationsrechnung eingeführt.
+	
+	\begin{definition}
+		Sei
+		\[
+		\gamma=(X_0,\dots,X_N)
+		\]
+		ein diskreter BM-Pfad. 
+		Eine \emph{lokale Variation} von \(\gamma\) an der Stelle \(k\in\{1,\dots,N-1\}\) ist die Ersetzung des inneren Zustands \(X_k\) durch einen Zustand \(Y\in\mathcal S\) mit
+		\[
+		X_{k-1}\rightsquigarrow Y\rightsquigarrow X_{k+1}.
+		\]
+		Der variierte Pfad sei
+		\[
+		\gamma^{(k\to Y)}
+		=
+		(X_0,\dots,X_{k-1},Y,X_{k+1},\dots,X_N).
+		\]
+	\end{definition}
+	
+	Da nur die beiden an \(X_k\) angrenzenden Kanten verändert werden, lautet die Wirkungsänderung
+	\[
+	\Delta_k(Y)
+	=
+	\mathcal S_{\mathrm{BM}}[\gamma^{(k\to Y)}]
+	-
+	\mathcal S_{\mathrm{BM}}[\gamma]
+	\]
+	explizit
+	\[
+	\Delta_k(Y)
+	=
+	L_{\mathrm{BM}}(X_{k-1},Y)
+	+
+	L_{\mathrm{BM}}(Y,X_{k+1})
+	-
+	L_{\mathrm{BM}}(X_{k-1},X_k)
+	-
+	L_{\mathrm{BM}}(X_k,X_{k+1}).
+	\]
+	
+	\begin{definition}
+		Ein diskreter BM-Pfad
+		\[
+		\gamma=(X_0,\dots,X_N)
+		\]
+		heißt \emph{lokal BM-stationär}, wenn für jeden inneren Index \(k\) der Zustand \(X_k\) ein lokaler Minimierer der Funktion
+		\[
+		Y\mapsto
+		L_{\mathrm{BM}}(X_{k-1},Y)+L_{\mathrm{BM}}(Y,X_{k+1})
+		\]
+		über alle zulässigen \(Y\) ist.
+	\end{definition}
+	
+	Dies ist die diskrete BM-Version einer Euler-Lagrange-Bedingung.
+	
+	\begin{satz}[diskrete BM-Euler-Lagrange-Bedingung]
+		Ein diskreter BM-Pfad \(\gamma=(X_0,\dots,X_N)\) ist genau dann lokal BM-stationär, wenn für jeden inneren Index \(k\) gilt:
+		\[
+		X_k \in \operatorname*{arg\,min}_{Y:\,X_{k-1}\rightsquigarrow Y\rightsquigarrow X_{k+1}}
+		\Bigl(
+		L_{\mathrm{BM}}(X_{k-1},Y)+L_{\mathrm{BM}}(Y,X_{k+1})
+		\Bigr).
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Dies ist eine unmittelbare Umformulierung der lokalen Variationsbedingung \(\Delta_k(Y)\ge 0\) im Sinne des gewählten Ordnungs- beziehungsweise Minimierungsprinzips.
+	\end{proof}
+	
+	\subsection{Reelle Zielfunktion als Alternativform}
+	
+	Da \(L_{\mathrm{BM}}\) komplexwertig ist, kann es für numerische oder modelltheoretische Zwecke nützlich sein, eine reelle Zielfunktion einzuführen. Eine mögliche Wahl ist
+	\[
+	\mathcal J[\gamma]
+	=
+	\alpha\,\Delta[\gamma]
+	-
+	\beta\,\mathrm{Coh}[\gamma],
+	\]
+	wobei
+	\[
+	\mathrm{Coh}[\gamma]
+	=
+	\left|
+	\sum_{k=0}^{N-1}e^{i\phi(X_k,X_{k+1})}
+	\right|
+	\]
+	ein Kohärenzmaß bezeichnet. Dann lautet das Variationsprinzip:
+	\[
+	\gamma_\star
+	=
+	\operatorname*{arg\,min}_{\gamma\in\Gamma(X,Y)}
+	\mathcal J[\gamma].
+	\]
+	
+	Diese Formulierung macht explizit, dass gute Pfade zugleich
+	\begin{itemize}
+		\item geringen kumulierten Defekt und
+		\item hohe Phasenkohärenz
+	\end{itemize}
+	aufweisen sollen.
+	
+	\subsection{Spektrale Reduktion}
+	
+	Der Transferoperator eröffnet die Möglichkeit, die Forderung ``alle Pfade berücksichtigen'' analytisch zu entschärfen. 
+	Statt alle Pfade explizit zu summieren, kann man das Spektrum von \(T\) untersuchen. 
+	Falls \(T\) einen dominanten kohärenten Sektor besitzt, so ist für große \(N\) heuristisch
+	\[
+	T^N \approx T_{\mathrm{coh}}^N,
+	\]
+	wobei \(T_{\mathrm{coh}}\) auf einem defektarmen Unterraum operiert. 
+	In diesem Sinn reduziert sich die volle Pfadsumme effektiv auf spektral dominante und strukturell verträgliche Klassen.
+	
+	\subsection{Interpretation}
+	
+	Die hier skizzierte Konstruktion verbindet drei Ebenen:
+	
+	\begin{enumerate}[label=\arabic*)]
+		\item \textbf{diskreter Pfadraum:} Pfade sind Folgen von BM-Zuständen;
+		\item \textbf{Variationsprinzip:} lokal stationäre Pfade minimieren eine diskrete BM-Wirkung;
+		\item \textbf{operatorische Kompression:} der Transferoperator kodiert die gesamte Pfadsumme in seinen Potenzen.
+	\end{enumerate}
+	
+	Damit entsteht ein erster analytischer Rahmen, in dem das Bamberger Modell eine Pfadintegral-ähnliche Dynamik formulieren kann, ohne auf eine buchstäbliche Summation über alle kontinuierlichen Bahnen angewiesen zu sein.
+	
+	\subsection{Ausblick}
+	
+	Die Lagrange-Vierlinge liefern in diesem Rahmen ein natürliches lokales Defektmodul. 
+	Ein nächster Schritt wäre, konkrete BM-Zustandsräume zu fixieren und die Übergangsrelation \(\rightsquigarrow\) explizit aus den internen Regeln des Modells abzuleiten. 
+	Darauf aufbauend könnten
+	\begin{itemize}
+		\item konkrete Transferoperatoren,
+		\item spektrale Kohärenzsektoren,
+		\item und numerische Minimierungsverfahren für BM-stationäre Pfade
+	\end{itemize}
+	systematisch untersucht werden.
+	
+\end{document}

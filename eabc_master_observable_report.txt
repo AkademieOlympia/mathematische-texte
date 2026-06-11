@@ -1,0 +1,52 @@
+Master-Observable-Test fuer gerichtete EABC-Vierlinge
+
+Konstruktion
+- Vierlingsseite: Residualgroessen spread_res, var_res, dir2_res, energy_res
+- Drei Master-Observablen:
+  1) master_pc1  = erste Hauptkomponente der standardisierten Residualgroessen
+  2) master_eq   = gleichgewichtetes Mittel der standardisierten Residualgroessen
+  3) master_or   = orientationsgewichtete Mischgroesse (dir2/energy etwas staerker)
+
+Datenbasis
+- Vierlinge bis 10^7: 899
+- Nullstellen: erste 100000 (bis X_floor <= 10^7)
+- Gemeinsame 10k-Fenster: 8
+
+PC1-Ladungen
+- spread_res : -0.574983
+- var_res    : -0.581975
+- dir2_res   : -0.001366
+- energy_res : -0.575063
+
+Vierlingsseite gegen lokale Theta_log12
+Raw:
+- corr(master_pc1, theta) = -0.378037
+- corr(master_eq,  theta) = 0.358195
+- corr(master_or,  theta) = 0.118125
+
+Detrended:
+- corr(master_pc1_res, theta_res) = -0.527387
+- corr(master_eq_res,  theta_res) = 0.499706
+- corr(master_or_res,  theta_res) = 0.039700
+
+Fenstervergleich Vierlinge <-> Nullstellenseite
+Raw means:
+- corr(pc1_mean, Delta_mean)   = 0.989294
+- corr(pc1_mean, Lambda_mean)  = 0.994012
+- corr(eq_mean, Delta_mean)    = -0.968267
+- corr(eq_mean, Lambda_mean)   = -0.969329
+- corr(or_mean, Delta_mean)    = -0.300328
+- corr(or_mean, Lambda_mean)   = -0.255893
+
+Residual means:
+- corr(pc1_res_mean, Delta_res_mean)   = -0.139298
+- corr(pc1_res_mean, Lambda_res_mean)  = -0.358582
+- corr(eq_res_mean, Delta_res_mean)    = 0.167077
+- corr(eq_res_mean, Lambda_res_mean)   = 0.373542
+- corr(or_res_mean, Delta_res_mean)    = 0.336658
+- corr(or_res_mean, Lambda_res_mean)   = 0.277977
+
+Kurzdeutung
+1) Die Master-Observable verdichtet die gerichtete EABC-Struktur besser als Einzelgroessen.
+2) Besonders wichtig ist, ob die residuale Korrelation zur lokalen Theta-Spannung stabil bleibt.
+3) Der Fenstervergleich mit Delta/Lambda ist wegen weniger Fenster weiterhin vorsichtig zu lesen; starke Betraege sind Hinweise.

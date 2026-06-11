@@ -1,0 +1,458 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\title{Klassifikation geschichteter Radikalzerlegungen\\ und ihrer Radikalreste}
+\author{Kollaborative Ausarbeitung}
+\date{\today}
+
+\newtheorem{satz}{Satz}
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{proposition}[satz]{Proposition}
+\newtheorem{korollar}[satz]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{beispiel}[satz]{Beispiel}
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\F}{\mathbb{F}_2}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\Typ}{\operatorname{Typ}}
+\newcommand{\RRest}{\mathcal{R}}
+\newcommand{\vp}{v_p}
+\newcommand{\ggT}{\operatorname{ggT}}
+\newcommand{\epsA}{\varepsilon_A}
+\newcommand{\epsB}{\varepsilon_B}
+\newcommand{\epsC}{\varepsilon_C}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Nach Abspaltung der Faktoren \(2\) und \(3\) besitzt jede natürliche Zahl eine eindeutige
+		geschichtete Radikalzerlegung. Jede Radikalschicht ist quadratfrei und zu \(6\) teilerfremd.
+		Durch Reduktion der Primteiler modulo \(12\) auf die Familien \(E,A,B,C\) und anschließende
+		Paritätsreduktion erhält jede Schicht genau einen reduzierten Typ in
+		\[
+		\mathcal T:=\{E,A,B,C,AB,AC,BC\}.
+		\]
+		Die Folge dieser Typen heißt Radikalrest der Zahl. Der zentrale Klassifikationssatz besagt,
+		dass die Menge aller reduzierten Radikalreste genau aus den endlichen Wörtern über dem Alphabet
+		\(\mathcal T\) besteht.
+	\end{abstract}
+	
+	\section{Geschichtete Radikalzerlegung}
+	
+	\begin{definition}[Abspaltung des \(2\)- und \(3\)-Anteils]
+		Für \(n\in\N\) setzen wir
+		\[
+		\alpha:=v_2(n),\qquad \beta:=v_3(n),\qquad m:=\frac{n}{2^\alpha 3^\beta}.
+		\]
+		Dann gilt
+		\[
+		n=2^\alpha 3^\beta m
+		\qquad\text{und}\qquad
+		\ggT(m,6)=1.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Radikal]
+		Für \(x\in\N\) definieren wir
+		\[
+		\rad(x):=\prod_{p\mid x} p.
+		\]
+		Insbesondere ist \(\rad(x)\) quadratfrei.
+	\end{definition}
+	
+	\begin{definition}[Radikalschichten]
+		Sei \(m\in\N\) mit \(\ggT(m,6)=1\) und
+		\[
+		m=\prod_p p^{v_p(m)}.
+		\]
+		Für
+		\[
+		h:=\max_{p\mid m} v_p(m)
+		\]
+		definieren wir die \(k\)-te Radikalschicht durch
+		\[
+		R_k(m):=\prod_{\substack{p\mid m\\ v_p(m)\ge k}} p,
+		\qquad k=1,\dots,h.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Für jedes \(m\in\N\) mit \(\ggT(m,6)=1\) gilt
+		\[
+		m=\prod_{k=1}^{h}R_k(m).
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Eine Primzahl \(p\mid m\) erscheint genau in denjenigen Schichten \(R_k(m)\), für die
+		\(v_p(m)\ge k\) gilt. Dies sind genau \(v_p(m)\) viele Schichten. Also ist der Exponent von \(p\)
+		im Produkt \(\prod_{k=1}^{h}R_k(m)\) gleich \(v_p(m)\). Damit stimmen beide Seiten in ihrer
+		Primfaktorzerlegung überein.
+	\end{proof}
+	
+	\begin{lemma}
+		Die Folge der Radikalschichten ist divisibilitätsabsteigend:
+		\[
+		R_{k+1}(m)\mid R_k(m)
+		\qquad\text{für alle }k=1,\dots,h-1.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Ist \(p\mid R_{k+1}(m)\), so gilt \(v_p(m)\ge k+1\), also insbesondere \(v_p(m)\ge k\). Daher
+		folgt \(p\mid R_k(m)\). Also teilt \(R_{k+1}(m)\) die Schicht \(R_k(m)\).
+	\end{proof}
+	
+	\begin{satz}[Eindeutige geschichtete Radikalzerlegung]
+		Zu jeder natürlichen Zahl \(n\in\N\) existieren eindeutig bestimmte nichtnegative ganze Zahlen
+		\(\alpha,\beta\) und eindeutig bestimmte quadratfreie Zahlen
+		\[
+		R_1,\dots,R_h
+		\]
+		mit
+		\[
+		n=2^\alpha 3^\beta \prod_{k=1}^{h}R_k,
+		\qquad
+		R_{k+1}\mid R_k,
+		\qquad
+		\ggT(R_k,6)=1.
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Die Zahlen \(\alpha=v_2(n)\) und \(\beta=v_3(n)\) sind eindeutig bestimmt. Damit ist
+		\(m=n/(2^\alpha 3^\beta)\) eindeutig gegeben. Die Radikalschichten \(R_k=R_k(m)\) sind
+		definitionsgemäß eindeutig und erfüllen nach den beiden vorigen Lemmata die gewünschten
+		Eigenschaften.
+	\end{proof}
+	
+	\section{Die Familien \(E,A,B,C\) modulo \(12\)}
+	
+	\begin{definition}[Primfamilien]
+		Für Primzahlen \(p\ge 5\) definieren wir
+		\[
+		E:=\{p:\ p\equiv 1 \pmod{12}\},\qquad
+		A:=\{p:\ p\equiv 5 \pmod{12}\},
+		\]
+		\[
+		B:=\{p:\ p\equiv 7 \pmod{12}\},\qquad
+		C:=\{p:\ p\equiv 11 \pmod{12}\}.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		In \((\mathbb Z/12\mathbb Z)^\times\) gelten die Relationen
+		\[
+		A^2=B^2=C^2=E,
+		\]
+		\[
+		AB=C,\qquad AC=B,\qquad BC=A,
+		\]
+		\[
+		ABC=E.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Dies folgt direkt aus
+		\[
+		5^2\equiv 7^2\equiv 11^2\equiv 1 \pmod{12},
+		\]
+		\[
+		5\cdot 7\equiv 11,\qquad 5\cdot 11\equiv 7,\qquad 7\cdot 11\equiv 5 \pmod{12},
+		\]
+		sowie
+		\[
+		5\cdot 7\cdot 11\equiv 1 \pmod{12}.
+		\]
+	\end{proof}
+	
+	\begin{definition}[Paritätssignatur]
+		Sei \(R\) quadratfrei mit \(\ggT(R,6)=1\). Dann setzen wir
+		\[
+		\epsA(R):=\#\{p\mid R:\ p\in A\}\bmod 2,
+		\]
+		\[
+		\epsB(R):=\#\{p\mid R:\ p\in B\}\bmod 2,
+		\]
+		\[
+		\epsC(R):=\#\{p\mid R:\ p\in C\}\bmod 2.
+		\]
+		Die Paritätssignatur von \(R\) ist
+		\[
+		\sigma(R):=(\epsA(R),\epsB(R),\epsC(R))\in\F^3.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Reduzierter Typ]
+		Wir definieren
+		\[
+		\mathcal T:=\{E,A,B,C,AB,AC,BC\}.
+		\]
+		Für eine quadratfreie Zahl \(R\) mit \(\ggT(R,6)=1\) sei \(\Typ(R)\in\mathcal T\) gegeben durch
+		\[
+		(0,0,0)\mapsto E,\quad
+		(1,0,0)\mapsto A,\quad
+		(0,1,0)\mapsto B,\quad
+		(0,0,1)\mapsto C,
+		\]
+		\[
+		(1,1,0)\mapsto AB,\quad
+		(1,0,1)\mapsto AC,\quad
+		(0,1,1)\mapsto BC,\quad
+		(1,1,1)\mapsto E.
+		\]
+	\end{definition}
+	
+	\begin{proposition}[Siebentypen-Klassifikation]
+		Jede quadratfreie Zahl \(R\) mit \(\ggT(R,6)=1\) besitzt genau einen reduzierten Typ
+		\[
+		\Typ(R)\in\mathcal T.
+		\]
+		Insbesondere gibt es genau sieben reduzierte Typen.
+	\end{proposition}
+	
+	\begin{proof}
+		Die Paritätssignatur \(\sigma(R)\) ist durch \(R\) eindeutig bestimmt. Formal ergeben sich acht
+		binäre Muster in \(\F^3\). Die beiden Muster \((0,0,0)\) und \((1,1,1)\) werden jedoch wegen
+		\(ABC=E\) demselben neutralen Typ \(E\) zugeordnet. Daher bleiben genau sieben reduzierte Typen.
+	\end{proof}
+	
+	\section{Radikalreste}
+	
+	\begin{definition}[Radikalrest]
+		Sei
+		\[
+		n=2^\alpha 3^\beta \prod_{k=1}^{h}R_k
+		\]
+		die geschichtete Radikalzerlegung von \(n\). Dann heißt
+		\[
+		\RRest(n):=\bigl(\Typ(R_1),\Typ(R_2),\dots,\Typ(R_h)\bigr)
+		\]
+		der \emph{Radikalrest} von \(n\).
+	\end{definition}
+	
+	\begin{satz}[Existenz und Eindeutigkeit des Radikalrestes]
+		Zu jeder natürlichen Zahl \(n\in\N\) existiert genau ein Radikalrest
+		\[
+		\RRest(n)\in\mathcal T^{<\infty},
+		\]
+		also genau ein endliches Wort über dem Alphabet \(\mathcal T\).
+	\end{satz}
+	
+	\begin{proof}
+		Die geschichtete Radikalzerlegung von \(n\) ist eindeutig. Jede Schicht besitzt nach der vorigen
+		Proposition einen eindeutig bestimmten reduzierten Typ. Folglich ist die gesamte Typenfolge
+		eindeutig bestimmt.
+	\end{proof}
+	
+	\section{Klassifikation aller Radikalreste}
+	
+	\begin{definition}[Endliche Wörter]
+		Für eine Menge \(\mathcal T\) bezeichne
+		\[
+		\mathcal T^{<\infty}
+		\]
+		die Menge aller endlichen Wörter über \(\mathcal T\), also aller endlichen Folgen
+		\[
+		(t_1,\dots,t_h),\qquad h\ge 1,\quad t_k\in\mathcal T.
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		Man kann auf Wunsch auch das leere Wort zulassen und ihm die Zahl \(1\) zuordnen. Im vorliegenden
+		Text betrachten wir für \(n\ge 2\) nur nichtleere Radikalreste.
+	\end{bemerkung}
+	
+	\begin{satz}[Klassifikation der reduzierten Radikalreste]
+		Die Menge aller reduzierten Radikalreste natürlicher Zahlen ist genau
+		\[
+		\mathcal T^{<\infty}.
+		\]
+		Das heißt:
+		\begin{enumerate}[label=\textup{(\roman*)}]
+			\item Zu jeder natürlichen Zahl \(n\) ist \(\RRest(n)\) ein endliches Wort über \(\mathcal T\).
+			\item Umgekehrt wird jedes endliche Wort über \(\mathcal T\) als Radikalrest einer geeigneten
+			natürlichen Zahl realisiert.
+		\end{enumerate}
+	\end{satz}
+	
+	\begin{proof}
+		Aussage \textup{(i)} ist bereits gezeigt.
+		
+		Für \textup{(ii)} sei
+		\[
+		(t_1,\dots,t_h)\in\mathcal T^{<\infty}
+		\]
+		ein beliebiges Wort. Wir wählen eine kanonische Hebung
+		\[
+		\lambda:\mathcal T\to\F^3
+		\]
+		durch
+		\[
+		\lambda(E)=000,\quad \lambda(A)=100,\quad \lambda(B)=010,\quad \lambda(C)=001,
+		\]
+		\[
+		\lambda(AB)=110,\quad \lambda(AC)=101,\quad \lambda(BC)=011.
+		\]
+		Setze
+		\[
+		s_k:=\lambda(t_k)\in\F^3
+		\qquad (k=1,\dots,h),
+		\qquad
+		s_{h+1}:=000.
+		\]
+		Definiere ferner
+		\[
+		q_k:=s_k+s_{k+1}\in\F^3
+		\qquad (k=1,\dots,h),
+		\]
+		wobei die Addition in \(\F^3\) komponentenweise modulo \(2\) erfolgt.
+		
+		Nun wählen wir für jedes \(k\) eine quadratfreie Zahl \(Q_k\) mit \(\ggT(Q_k,6)=1\), deren
+		Paritätssignatur gerade \(q_k\) ist. Dies ist stets möglich. Beispielsweise kann man nehmen:
+		\[
+		000\rightsquigarrow 13,\quad
+		100\rightsquigarrow 5,\quad
+		010\rightsquigarrow 7,\quad
+		001\rightsquigarrow 11,
+		\]
+		\[
+		110\rightsquigarrow 5\cdot 7,\quad
+		101\rightsquigarrow 5\cdot 11,\quad
+		011\rightsquigarrow 7\cdot 11.
+		\]
+		Setze nun
+		\[
+		m:=\prod_{k=1}^{h}Q_k^k.
+		\]
+		Dann ist
+		\[
+		R_k(m)=\prod_{j\ge k}Q_j.
+		\]
+		Die Paritätssignatur von \(R_k(m)\) ist daher
+		\[
+		q_k+q_{k+1}+\cdots+q_h
+		=(s_k+s_{k+1})+(s_{k+1}+s_{k+2})+\cdots+(s_h+s_{h+1})
+		=s_k+s_{h+1}=s_k,
+		\]
+		da sich alle Zwischenterme in \(\F^3\) paarweise aufheben und \(s_{h+1}=000\) ist. Also gilt
+		\[
+		\Typ(R_k(m))=t_k
+		\qquad\text{für alle }k=1,\dots,h.
+		\]
+		Somit ist
+		\[
+		\RRest(m)=(t_1,\dots,t_h),
+		\]
+		und das Wort wird realisiert.
+	\end{proof}
+	
+	\begin{korollar}
+		Es gibt keine weiteren verborgenen Konsistenzbedingungen für reduzierte Radikalreste: Jede endliche
+		Folge von Symbolen aus
+		\[
+		\{E,A,B,C,AB,AC,BC\}
+		\]
+		tritt als Radikalrest mindestens einer natürlichen Zahl auf.
+	\end{korollar}
+	
+	\section{Beispiele}
+	
+	\begin{beispiel}
+		Für
+		\[
+		n=2^2\cdot 3\cdot 5^3\cdot 7^2\cdot 13
+		\]
+		ist
+		\[
+		m=\frac{n}{2^2\cdot 3}=5^3\cdot 7^2\cdot 13,
+		\]
+		also
+		\[
+		R_1=5\cdot 7\cdot 13,\qquad R_2=5\cdot 7,\qquad R_3=5.
+		\]
+		Daraus folgt
+		\[
+		\Typ(R_1)=AB,\qquad \Typ(R_2)=AB,\qquad \Typ(R_3)=A,
+		\]
+		also
+		\[
+		\RRest(n)=(AB,AB,A).
+		\]
+	\end{beispiel}
+	
+	\begin{beispiel}
+		Das Wort
+		\[
+		(A,AB,E,C)
+		\]
+		ist realisierbar. Wähle dazu
+		\[
+		s_1=100,\quad s_2=110,\quad s_3=000,\quad s_4=001,\quad s_5=000.
+		\]
+		Dann erhält man
+		\[
+		q_1=010,\quad q_2=110,\quad q_3=001,\quad q_4=001.
+		\]
+		Man kann also wählen
+		\[
+		Q_1=7,\quad Q_2=5\cdot 7,\quad Q_3=11,\quad Q_4=11.
+		\]
+		Damit ist
+		\[
+		m=Q_1^1Q_2^2Q_3^3Q_4^4
+		\]
+		eine Zahl mit
+		\[
+		\RRest(m)=(A,AB,E,C).
+		\]
+	\end{beispiel}
+	
+	\begin{beispiel}
+		Für
+		\[
+		n=5\cdot 7\cdot 11
+		\]
+		gibt es nur eine Schicht
+		\[
+		R_1=5\cdot 7\cdot 11.
+		\]
+		Das formale Muster ist \(ABC\), reduziert sich aber zu \(E\). Also
+		\[
+		\RRest(n)=(E).
+		\]
+	\end{beispiel}
+	
+	\section{Schluss}
+	
+	Die hier dargestellte Theorie trennt vier Ebenen:
+	\begin{enumerate}[label=\arabic*.]
+		\item die gewöhnliche Primfaktorzerlegung,
+		\item die geschichtete Radikalzerlegung,
+		\item die Reduktion jeder Schicht auf einen der sieben Typen,
+		\item die Klassifikation aller Radikalreste als freie Wörter über dem Sieben-Typen-Alphabet.
+	\end{enumerate}
+	
+	Damit erhält jede natürliche Zahl eine kanonische endliche Signaturfolge
+	\[
+	\RRest(n)\in\{E,A,B,C,AB,AC,BC\}^{<\infty},
+	\]
+	und umgekehrt kommt jede solche Folge tatsächlich vor.
+	
+\end{document}

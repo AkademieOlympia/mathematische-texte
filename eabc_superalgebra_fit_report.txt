@@ -1,0 +1,186 @@
+==============================================================================
+EABC Superalgebra-Fit: {Q,Q̄} ≈ Σ α_k Π_k
+==============================================================================
+
+EPISTEMOLOGISCHER HINWEIS
+----------------------------------------
+Struktureller Analogie-Test auf H = C^6. Kein Anspruch auf physikalische Supersymmetrie oder Super-Poincaré-Einbettung.
+
+1. Π-BASEN
+----------------------------------------
+  P_shift (6 Operatoren): I, S, S^2, S^3, S^4, S^5
+  P_mod12 (4 Operatoren): Π_E, Π_A, Π_B, Π_C
+  P_T (5 Operatoren): I, T, T^T, L, L^T
+  P_combined (14 Operatoren): I, S, S^2, S^3, S^4, S^5, Π_E, Π_A, Π_B, Π_C, T, T^T, L, L^T
+
+2. FIT-METHODE
+----------------------------------------
+  A = {Q, Q̄}
+  vec(A) = M @ α,  Spalten von M = vec(Π_k)
+  Least Squares (komplex), rel.Fehler = ||A - Σα_k Π_k||_F / ||A||_F
+  R² = 1 - ||Residuum||² / ||A||²_F
+  Dominantes Π_k: max_k |α_k| · ||Π_k||_F
+
+3. ERGEBNISSE — ALLE KANDIDATEN (bester Fit über alle Basen)
+----------------------------------------
+Kandidat                   ferm?   rel.Fehler       R²        Basis   dom. Π
+chi3_shift                  NEIN   2.3515e-16 1.000000          P_T        I
+    α: I:-0.5000+0.8660j, L:-0.2500+0.4330j, L^T:-0.2500+0.4330j, T:-0.2500+0.4330j
+chi3_mult                   NEIN   3.1402e-16 1.000000      P_shift        I
+    α: I:+2.0000
+clifford_JS                 NEIN   3.5108e-16 1.000000      P_shift      S^2
+    α: S^2:+0.0000+0.5000j, S^4:+0.0000-0.5000j
+chi3_nilpotent_kets           JA   3.9087e-16 1.000000      P_shift        I
+    α: I:+12.0000, S^3:+12.0000, S:-6.0000, S^2:-6.0000
+FFT_nilpotent_k1_to_k5        JA   1.1576e-15 1.000000      P_shift        I
+    α: I:+0.3333, S^3:-0.3333, S^2:-0.1667, S:+0.1667
+clifford_gamma_k2k4         NEIN   1.1772e-15 1.000000      P_shift        S
+    α: S:+0.0000+0.6667j, S^4:-0.0000+0.6667j, I:-0.0000-0.3333j, S^2:+0.0000-0.3333j
+dirac_L_and_transpose       NEIN   8.3282e-03 0.999931   P_combined      L^T
+    α: L^T:+1.0484, L:+1.0484, T:-0.8722, T^T:-0.8722
+dirac_coupling_normalized   NEIN   8.3282e-03 0.999931   P_combined      L^T
+    α: L^T:+0.2023, L:+0.2023, T:-0.1683, T^T:-0.1683
+FFT_proj_k1_k5              NEIN   2.0376e-01 0.958481   P_combined        I
+    α: I:-0.0000, L^T:+0.0000, S^3:+0.0000, S^5:+0.0000
+FFT_shift_k1_k5             NEIN   4.2142e-01 0.822405   P_combined        I
+    α: I:+0.0000, S^3:-0.0000, S^5:-0.0000, S:-0.0000
+chi3_neighbor               NEIN   5.7694e-01 0.667142   P_combined        L
+    α: L:+1.4387+0.7559j, L^T:+1.4387-0.7559j, I:+1.4402, S^3:+0.4970
+delta_outer                   JA   5.8639e-01 0.656143   P_combined        I
+    α: I:+0.0008, T:+0.0014, T^T:+0.0014, S:-0.0005
+FFT_majorana_k1_k5          NEIN   6.3256e-01 0.599865   P_combined      S^3
+    α: S^3:-0.4883, I:+0.4591, S^4:-0.4135, S^2:-0.4135
+dirac_svd_rank1             NEIN   6.7329e-01 0.546679   P_combined      S^3
+    α: S^3:+2.5414, I:-2.4321, S^2:+2.3516, S^4:+2.3516
+
+4. FIT NUR FERMIONISCHE KANDIDATEN ({Q,Q}≈0, {Q̄,Q̄}≈0)
+----------------------------------------
+Kandidat                   ferm?   rel.Fehler       R²        Basis   dom. Π
+chi3_nilpotent_kets           JA   3.9087e-16 1.000000      P_shift        I
+    α: I:+12.0000, S^3:+12.0000, S:-6.0000, S^2:-6.0000
+FFT_nilpotent_k1_to_k5        JA   1.1576e-15 1.000000      P_shift        I
+    α: I:+0.3333, S^3:-0.3333, S^2:-0.1667, S:+0.1667
+delta_outer                   JA   5.8639e-01 0.656143   P_combined        I
+    α: I:+0.0008, T:+0.0014, T^T:+0.0014, S:-0.0005
+
+5. DETAIL — FIT PRO Π-BASIS (rel.Fehler)
+----------------------------------------
+Kandidat                         P_shift       P_mod12           P_T    P_combined
+chi3_shift                    2.9374e-16    8.1650e-01    2.3515e-16    8.9019e-16
+chi3_mult                     3.1402e-16    8.1650e-01    3.3728e-16    1.0965e-15
+clifford_JS                   3.5108e-16    1.0000e+00    9.9885e-01    1.9656e-15
+chi3_nilpotent_kets           3.9087e-16    1.0000e+00    7.7733e-01    1.2927e-15
+FFT_nilpotent_k1_to_k5        1.1576e-15    1.0000e+00    7.7436e-01    1.6294e-15
+clifford_gamma_k2k4           1.1772e-15    1.0000e+00    9.4774e-01    1.6823e-15
+dirac_L_and_transpose         5.6515e-02    9.4707e-01    2.7854e-02    8.3282e-03
+dirac_coupling_normalized     5.6515e-02    9.4707e-01    2.7854e-02    8.3282e-03
+FFT_proj_k1_k5                2.1086e-01    2.1244e-01    2.1123e-01    2.0376e-01
+FFT_shift_k1_k5               4.6064e-01    4.6075e-01    4.6141e-01    4.2142e-01
+chi3_neighbor                 5.7735e-01    8.8192e-01    5.7717e-01    5.7694e-01
+delta_outer                   6.1906e-01    8.3296e-01    6.2044e-01    5.8639e-01
+FFT_majorana_k1_k5            7.0711e-01    1.0000e+00    8.9871e-01    6.3256e-01
+dirac_svd_rank1               8.3393e-01    9.5861e-01    8.8633e-01    6.7329e-01
+
+6. RANK-ANALYSE: LIEGT A IN DER LINEAREN HÜLLE?
+----------------------------------------
+Kandidat                          Basis  rank(M)         cond  in Hülle?   rel.Fehler
+chi3_shift                      P_shift        6     1.00e+00         JA   2.9374e-16
+chi3_shift                      P_mod12        2          inf       NEIN   8.1650e-01
+chi3_shift                          P_T        3          inf         JA   2.3515e-16
+chi3_shift                   P_combined        9          inf         JA   8.9019e-16
+chi3_mult                       P_shift        6     1.00e+00         JA   3.1402e-16
+chi3_mult                       P_mod12        2          inf       NEIN   8.1650e-01
+chi3_mult                           P_T        3          inf         JA   3.3728e-16
+chi3_mult                    P_combined        9          inf         JA   1.0965e-15
+clifford_JS                     P_shift        6     1.00e+00         JA   3.5108e-16
+clifford_JS                     P_mod12        2          inf       NEIN   1.0000e+00
+clifford_JS                         P_T        3          inf       NEIN   9.9885e-01
+clifford_JS                  P_combined        9          inf         JA   1.9656e-15
+chi3_nilpotent_kets             P_shift        6     1.00e+00         JA   3.9087e-16
+chi3_nilpotent_kets             P_mod12        2          inf       NEIN   1.0000e+00
+chi3_nilpotent_kets                 P_T        3          inf       NEIN   7.7733e-01
+chi3_nilpotent_kets          P_combined        9          inf         JA   1.2927e-15
+FFT_nilpotent_k1_to_k5          P_shift        6     1.00e+00         JA   1.1576e-15
+FFT_nilpotent_k1_to_k5          P_mod12        2          inf       NEIN   1.0000e+00
+FFT_nilpotent_k1_to_k5              P_T        3          inf       NEIN   7.7436e-01
+FFT_nilpotent_k1_to_k5       P_combined        9          inf         JA   1.6294e-15
+clifford_gamma_k2k4             P_shift        6     1.00e+00         JA   1.1772e-15
+clifford_gamma_k2k4             P_mod12        2          inf       NEIN   1.0000e+00
+clifford_gamma_k2k4                 P_T        3          inf       NEIN   9.4774e-01
+clifford_gamma_k2k4          P_combined        9          inf         JA   1.6823e-15
+dirac_L_and_transpose           P_shift        6     1.00e+00       NEIN   5.6515e-02
+dirac_L_and_transpose           P_mod12        2          inf       NEIN   9.4707e-01
+dirac_L_and_transpose               P_T        3          inf       NEIN   2.7854e-02
+dirac_L_and_transpose        P_combined        9          inf       NEIN   8.3282e-03
+dirac_coupling_normalized       P_shift        6     1.00e+00       NEIN   5.6515e-02
+dirac_coupling_normalized       P_mod12        2          inf       NEIN   9.4707e-01
+dirac_coupling_normalized           P_T        3          inf       NEIN   2.7854e-02
+dirac_coupling_normalized    P_combined        9          inf       NEIN   8.3282e-03
+FFT_proj_k1_k5                  P_shift        6     1.00e+00       NEIN   2.1086e-01
+FFT_proj_k1_k5                  P_mod12        2          inf       NEIN   2.1244e-01
+FFT_proj_k1_k5                      P_T        3          inf       NEIN   2.1123e-01
+FFT_proj_k1_k5               P_combined        9          inf       NEIN   2.0376e-01
+FFT_shift_k1_k5                 P_shift        6     1.00e+00       NEIN   4.6064e-01
+FFT_shift_k1_k5                 P_mod12        2          inf       NEIN   4.6075e-01
+FFT_shift_k1_k5                     P_T        3          inf       NEIN   4.6141e-01
+FFT_shift_k1_k5              P_combined        9          inf       NEIN   4.2142e-01
+chi3_neighbor                   P_shift        6     1.00e+00       NEIN   5.7735e-01
+chi3_neighbor                   P_mod12        2          inf       NEIN   8.8192e-01
+chi3_neighbor                       P_T        3          inf       NEIN   5.7717e-01
+chi3_neighbor                P_combined        9          inf       NEIN   5.7694e-01
+delta_outer                     P_shift        6     1.00e+00       NEIN   6.1906e-01
+delta_outer                     P_mod12        2          inf       NEIN   8.3296e-01
+delta_outer                         P_T        3          inf       NEIN   6.2044e-01
+delta_outer                  P_combined        9          inf       NEIN   5.8639e-01
+FFT_majorana_k1_k5              P_shift        6     1.00e+00       NEIN   7.0711e-01
+FFT_majorana_k1_k5              P_mod12        2          inf       NEIN   1.0000e+00
+FFT_majorana_k1_k5                  P_T        3          inf       NEIN   8.9871e-01
+FFT_majorana_k1_k5           P_combined        9          inf       NEIN   6.3256e-01
+dirac_svd_rank1                 P_shift        6     1.00e+00       NEIN   8.3393e-01
+dirac_svd_rank1                 P_mod12        2          inf       NEIN   9.5861e-01
+dirac_svd_rank1                     P_T        3          inf       NEIN   8.8633e-01
+dirac_svd_rank1              P_combined        9          inf       NEIN   6.7329e-01
+
+  Basis-Dimensionen und Ränge der Design-Matrizen M:
+    P_shift: 6 Spalten, rank(M) = 6
+    P_mod12: 4 Spalten, rank(M) = 2
+    P_T: 5 Spalten, rank(M) = 3
+    P_combined: 14 Spalten, rank(M) = 9
+
+7. VERGLEICH DER BASEN
+----------------------------------------
+  P_shift: min=2.9374e-16, median=5.6515e-02, max=8.3393e-01, mean=2.5157e-01
+  P_mod12: min=2.1244e-01, median=9.4707e-01, max=1.0000e+00, mean=8.4813e-01
+  P_T: min=2.3515e-16, median=5.9880e-01, max=9.9885e-01, mean=5.1495e-01
+  P_combined: min=8.9019e-16, median=8.3282e-03, max=6.7329e-01, mean=2.2222e-01
+  → Beste Basis (Median rel.Fehler): P_combined
+
+8. STABILE PARAMETRISIERUNG?
+----------------------------------------
+  P_shift: TEILWEISE (dom. Π=I, Konsistenz=71%, median err=5.6515e-02)
+  P_mod12: TEILWEISE (dom. Π=Π_A, Konsistenz=50%, median err=9.4707e-01)
+  P_T: NEIN (dom. Π=L, Konsistenz=43%, median err=5.9880e-01)
+  P_combined: TEILWEISE (dom. Π=I, Konsistenz=36%, median err=8.3282e-03)
+
+  Gesamturteil (P_combined, alle Q): teilweise
+  Gesamturteil (P_combined, nur fermionisch): teilweise
+
+9. BESTER KANDIDAT & ANALOGIE
+----------------------------------------
+  Bester Fit (global): chi3_shift
+    rel.Fehler = 2.3515e-16, R² = 1.000000
+    Basis = P_T, dominantes Π = I
+    α: I:-0.5000+0.8660j, L:-0.2500+0.4330j, L^T:-0.2500+0.4330j, T:-0.2500+0.4330j
+
+  Bester fermionischer Fit: chi3_nilpotent_kets
+    rel.Fehler = 3.9087e-16, Basis = P_shift
+    dominantes Π = I, α: I:+12.0000, S^3:+12.0000, S:-6.0000, S^2:-6.0000
+
+10. SCHLUSSFOLGERUNG
+----------------------------------------
+Starke lineare Analogie: {Q,Q̄} ≈ Σα_k Π_k für chi3_shift (rel.Fehler 2.3515e-16) in P_T.
+
+λ₂ ≈ (-0.04361178327235757+0.003817000721236822j), Spektrallücke Δ ≈ 0.956221
+Laufzeit: 2.97 s
+Skript: eabc_superalgebra_fit.py
+Report: eabc_superalgebra_fit_report.txt

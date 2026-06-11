@@ -1,0 +1,435 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{hyperref}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	citecolor=blue,
+	urlcolor=blue,
+	pdftitle={Hoffbauers Zwölf-Linie bei ungeraden negativen Zetawerten},
+	pdfauthor={Thomas Hoffbauer und ChatGPT},
+	pdfsubject={Bernoulli-Zahlen, Zetafunktion, Nennerstruktur},
+	pdfkeywords={Riemannsche Zetafunktion, Bernoulli-Zahlen, von Staudt-Clausen, negative Spezialwerte}
+}
+
+\title{\textbf{Hoffbauers Zwölf-Linie bei ungeraden negativen Zetawerten}\\
+	\large Eine strukturierende Beobachtung zur Nennerarithmetik von $\zeta(-(2m-1))$}
+\author{Thomas Hoffbauer \and ChatGPT}
+\date{\today}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{beispiel}[definition]{Beispiel}
+
+\theoremstyle{plain}
+\newtheorem{satz}[definition]{Satz}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+\newtheorem{vermutung}[definition]{Vermutung}
+\newtheorem{empirischebehauptung}[definition]{Empirische Behauptung}
+
+\theoremstyle{remark}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir untersuchen die vollständig gekürzten Nenner der ungeraden negativen Spezialwerte der Riemannschen Zetafunktion
+		\[
+		\zeta(-(2m-1))=-\frac{B_{2m}}{2m}.
+		\]
+		Dabei zeigt sich numerisch eine auffällige Teilmenge von Indizes $m$, für die der Endnenner genau gleich $12$ ist. Diese Teilmenge wird im Folgenden als \emph{Hoffbauers Zwölf-Linie} bezeichnet. Ausgehend von der von-Staudt--Clausenschen Nennerstruktur der Bernoulli-Zahlen formulieren wir eine exakte Teilbarkeitscharakterisierung der entsprechenden Indizes und leiten daraus mehrere empirische Vermutungen über Kongruenzklassen, Restfaktoren und Fast-Zwölf-Fälle ab.
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Die negativen ganzzahligen Spezialwerte der Riemannschen Zetafunktion sind durch die Bernoulli-Zahlen gegeben:
+	\[
+	\zeta(-n)=-\frac{B_{n+1}}{n+1}.
+	\]
+	Für ungerade negative Stellen erhält man insbesondere
+	\[
+	\zeta(-(2m-1))=-\frac{B_{2m}}{2m}
+	\qquad (m\ge 1).
+	\]
+	Diese Werte sind rational und besitzen daher, nach vollständiger Kürzung, wohldefinierte Zähler und Nenner.
+	
+	Die vorliegende Notiz betrachtet nicht die Größenordnung dieser Werte, sondern ihre \emph{arithmetische Feinstruktur im Nenner}. Dabei fällt numerisch auf, dass der Nenner $12$ in bemerkenswerter Weise wiederkehrt. Der prototypische Fall
+	\[
+	\zeta(-1)=-\frac{1}{12}
+	\]
+	ist seit langem bekannt; überraschend ist jedoch, dass dieselbe Nennerstruktur auch an deutlich höheren ungeraden negativen Stellen erneut erscheint. Diese Beobachtung motiviert die Einführung einer eigenen Terminologie.
+	
+	\section{Grundstruktur}
+	
+	Schreiben wir die Bernoulli-Zahl $B_{2m}$ in vollständig gekürzter Form als
+	\[
+	B_{2m}=\frac{A_{2m}}{D_{2m}},
+	\]
+	wobei
+	\[
+	A_{2m}\in\mathbb{Z},\qquad D_{2m}\in\mathbb{N},\qquad \gcd(A_{2m},D_{2m})=1,
+	\]
+	so folgt
+	\[
+	\zeta(-(2m-1))=-\frac{A_{2m}}{(2m)D_{2m}}.
+	\]
+	
+	Der Satz von von Staudt--Clausen liefert den Nenner $D_{2m}$ explizit:
+	\[
+	D_{2m}=\prod_{p-1\mid 2m} p,
+	\]
+	wobei das Produkt über alle Primzahlen $p$ läuft, deren Vorgänger $p-1$ ein Teiler von $2m$ ist.
+	
+	Damit ist der \emph{Rohnenner} des Zetawertes gegeben durch
+	\[
+	R_m:=(2m)D_{2m}.
+	\]
+	
+	\begin{definition}
+		Sei
+		\[
+		\zeta(-(2m-1))=\frac{P_m}{Q_m}
+		\]
+		in vollständig gekürzter Form mit
+		\[
+		P_m\in\mathbb{Z},\qquad Q_m\in\mathbb{N},\qquad \gcd(P_m,Q_m)=1.
+		\]
+		Dann nennen wir:
+		\begin{itemize}
+			\item $m$ einen \emph{Zwölf-Index}, falls $Q_m=12$,
+			\item $m$ einen \emph{Fast-Zwölf-Index}, falls $Q_m=12r$ mit einem ganzzahligen $r>1$.
+		\end{itemize}
+		Die Menge aller Zwölf-Indizes nennen wir \emph{Hoffbauers Zwölf-Linie} und bezeichnen sie mit
+		\[
+		\mathcal Z_{12}:=\{m\in\mathbb N : Q_m=12\}.
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		Der Name ``Zwölf-Linie'' ist hier als Arbeitsbegriff für die beobachtete Nennerklasse gemeint. Er bezeichnet keine etablierte Standardterminologie, sondern eine strukturierende Sichtweise auf eine wiederkehrende arithmetische Erscheinung.
+	\end{bemerkung}
+	
+	\section{Exakte Charakterisierung der Zwölf-Indizes}
+	
+	\begin{proposition}
+		Mit den obigen Bezeichnungen gilt:
+		\[
+		Q_m=12
+		\quad\Longleftrightarrow\quad
+		\frac{(2m)D_{2m}}{12}\mid A_{2m}.
+		\]
+	\end{proposition}
+	
+	\begin{proof}
+		Da
+		\[
+		\zeta(-(2m-1))=-\frac{A_{2m}}{(2m)D_{2m}},
+		\]
+		ist der vollständig gekürzte Nenner
+		\[
+		Q_m=\frac{(2m)D_{2m}}{\gcd(A_{2m},(2m)D_{2m})}.
+		\]
+		Also gilt $Q_m=12$ genau dann, wenn
+		\[
+		\gcd(A_{2m},(2m)D_{2m})=\frac{(2m)D_{2m}}{12}.
+		\]
+		Dies ist äquivalent dazu, dass
+		\[
+		\frac{(2m)D_{2m}}{12}\mid A_{2m}.
+		\]
+	\end{proof}
+	
+	\begin{bemerkung}
+		Diese Charakterisierung ist exakt. Sie zeigt, dass Hoffbauers Zwölf-Linie vollständig durch eine Teilbarkeitsbedingung am Bernoulli-Zähler beschrieben wird.
+	\end{bemerkung}
+	
+	\section{Empirische Gestalt der Zwölf-Linie}
+	
+	Die numerische Untersuchung der ersten hundert ungeraden negativen Zetawerte legt eine deutliche Kongruenzstruktur nahe.
+	
+	\begin{empirischebehauptung}
+		Für alle numerisch untersuchten Zwölf-Indizes $m\le 100$ gilt
+		\[
+		m\equiv 1 \text{ oder } 5 \pmod 6.
+		\]
+		Äquivalent dazu erfüllen die zugehörigen Bernoulli-Indizes
+		\[
+		2m\equiv 2 \text{ oder } 10 \pmod{12}.
+		\]
+	\end{empirischebehauptung}
+	
+	\begin{bemerkung}
+		Im untersuchten Bereich bedeutet dies: Die Zwölf-Linie tritt nur dort auf, wo $m$ ungerade ist und zugleich nicht durch $3$ teilbar wird.
+	\end{bemerkung}
+	
+	Noch stärker scheint die Restklasse
+	\[
+	m\equiv 1 \pmod 6
+	\]
+	bevorzugt zu sein.
+	
+	\begin{vermutung}[Dominanzvermutung]
+		Innerhalb der beiden zulässigen Klassen
+		\[
+		m\equiv 1,5 \pmod 6
+		\]
+		wird die Zwölf-Linie asymmetrisch realisiert: Die Restklasse
+		\[
+		m\equiv 1\pmod 6
+		\]
+		liefert deutlich häufiger Zwölf-Indizes als die Klasse
+		\[
+		m\equiv 5\pmod 6.
+		\]
+	\end{vermutung}
+	
+	\section{Fast-Zwölf-Fälle und Restfaktoren}
+	
+	Die Fast-Zwölf-Fälle
+	\[
+	Q_m=12r
+	\]
+	sind besonders informativ, da sie oft nur um einen einzelnen kleinen Restfaktor vom echten Zwölf-Fall entfernt sind.
+	
+	\begin{definition}
+		Sei
+		\[
+		R_m=(2m)D_{2m}=12K_m.
+		\]
+		Dann nennen wir
+		\[
+		r_m:=\frac{Q_m}{12}
+		\]
+		den \emph{Restfaktor} des Index $m$.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Ist $m$ ein Zwölf-Index, so gilt $r_m=1$. Ist $m$ ein Fast-Zwölf-Index, so misst $r_m$ genau den Anteil von $K_m$, der durch den Bernoulli-Zähler $A_{2m}$ nicht absorbiert wird.
+	\end{bemerkung}
+	
+	\begin{vermutung}[Fast-Zwölf-Phänomen]
+		Fast-Zwölf-Indizes entstehen typischerweise dadurch, dass im Rohnenner
+		\[
+		(2m)D_{2m}=12K_m
+		\]
+		nicht alle Primfaktoren von $K_m$ im Bernoulli-Zähler $A_{2m}$ erscheinen. In vielen numerischen Beispielen bleibt nur ein einzelner kleiner Primfaktor oder ein kleines Primprodukt übrig.
+	\end{vermutung}
+	
+	\section{Von-Staudt-induzierte Restfaktoren}
+	
+	Der Nenner
+	\[
+	D_{2m}=\prod_{p-1\mid 2m} p
+	\]
+	erzeugt Zusatzfaktoren auf natürliche Weise. Sobald für eine Primzahl $p$ die Bedingung
+	\[
+	p-1\mid 2m
+	\]
+	gilt, tritt $p$ automatisch im Nenner $D_{2m}$ auf. Ob dieser Faktor im gekürzten Nenner verbleibt, hängt dann ausschließlich davon ab, ob er zugleich den Bernoulli-Zähler $A_{2m}$ teilt.
+	
+	\begin{bemerkung}
+		Numerisch erscheinen insbesondere Faktoren wie $11$ und $23$ gehäuft als Restfaktoren. Dies ist heuristisch dadurch erklärbar, dass sie über die Bedingungen
+		\[
+		10\mid 2m
+		\qquad\text{bzw.}\qquad
+		22\mid 2m
+		\]
+		natürlich in den Nenner eingespeist werden.
+	\end{bemerkung}
+	
+	\begin{vermutung}[Von-Staudt-Kaskade]
+		Die Fast-Zwölf-Fälle werden in vielen Beispielen durch eine Kaskade von Primzahlen kontrolliert, die über Teilbarkeitsbedingungen der Form
+		\[
+		p-1\mid 2m
+		\]
+		in den Nenner eintreten. Die beobachteten Restfaktoren sind daher häufig keine zufälligen Störgrößen, sondern strukturell erzeugte, vom Bernoulli-Zähler nicht absorbierte von-Staudt-Faktoren.
+	\end{vermutung}
+	
+	\section{Der prototypische Fall \texorpdfstring{$\zeta(-1)=-1/12$}{zeta(-1)=-1/12}}
+	
+	Der Wert
+	\[
+	\zeta(-1)=-\frac{1}{12}
+	\]
+	nimmt innerhalb der Zwölf-Linie eine besondere Stellung ein. Einerseits ist er der historisch bekannteste regulierte Spezialwert der Zetafunktion. Andererseits ist er zugleich der elementarste Zwölf-Fall überhaupt.
+	
+	Denn aus
+	\[
+	B_2=\frac16
+	\]
+	folgt unmittelbar
+	\[
+	\zeta(-1)=-\frac{B_2}{2}=-\frac{1}{12}.
+	\]
+	Hier entsteht der Nenner $12$ direkt aus der Bernoulli-Struktur selbst, ohne eine zusätzliche komplizierte Kürzung. In diesem Sinne kann $\zeta(-1)=-1/12$ als \emph{Urform} von Hoffbauers Zwölf-Linie angesehen werden.
+	
+	\section{Interpretation}
+	
+	Die Zwölf-Linie kann als arithmetisch dünne Zone maximaler oder nahezu maximaler Kürzung gelesen werden. Der Rohnenner
+	\[
+	(2m)D_{2m}
+	\]
+	trägt die vollständige von-Staudt--Clausensche Information, während der Bernoulli-Zähler $A_{2m}$ darüber entscheidet, welche dieser Faktoren nach der Kürzung übrig bleiben. Die Zwölf-Linie markiert somit jene Indizes, bei denen fast die gesamte Zusatzstruktur kollabiert und nur die Minimalbasis
+	\[
+	12=2^2\cdot 3
+	\]
+	erhalten bleibt.
+	
+	\section{Ausblick}
+	
+	Die hier formulierten Beobachtungen legen mehrere weiterführende Fragen nahe:
+	\begin{itemize}
+		\item Besitzt Hoffbauers Zwölf-Linie eine asymptotisch beschreibbare Dichte innerhalb geeigneter Kongruenzklassen?
+		\item Lässt sich die Dominanz der Klasse $m\equiv 1\pmod 6$ theoretisch begründen?
+		\item Welche Rolle spielen reguläre und irreguläre Primzahlen für die Restfaktoren der Fast-Zwölf-Fälle?
+		\item Kann die Restfaktor-Landschaft systematisch als Funktion der von-Staudt--Clausenschen Nennerdaten beschrieben werden?
+	\end{itemize}
+	
+	Die Zwölf-Linie erscheint damit als kleines, aber bemerkenswert präzises Fenster in die Arithmetik der Bernoulli-Zahlen und der negativen Spezialwerte der Riemannschen Zetafunktion.
+	
+	\section{Euler-Charakter arithmetischer Komplexe}
+	
+	Die klassische Polyederformel von Euler
+	\[
+	V-E+F=2
+	\]
+	ist keine primär metrische, sondern eine topologische Aussage: Sie erfasst die kombinatorische Struktur eines Polyeders über die Anzahl seiner Ecken, Kanten und Flächen. Diese Perspektive legt nahe, auch arithmetische Konfigurationen nicht nur als Mengen von Zahlen, sondern als diskrete Komplexe mit Inzidenzstruktur aufzufassen.
+	
+	\subsection{Arithmetische Zellkomplexe}
+	
+	Sei \(X\) eine endliche Menge arithmetischer Objekte, etwa Primzahlen, Primzahlpaare oder Primzahlvierlinge. Wir definieren einen zu \(X\) gehörigen arithmetischen Zellkomplex
+	\[
+	\mathcal{K}=(V,E,F),
+	\]
+	wobei gilt:
+	\begin{itemize}
+		\item \(V\) ist die Menge der Knoten, die den betrachteten arithmetischen Objekten entspricht,
+		\item \(E\subseteq V\times V\) ist die Menge der Kanten, welche ausgezeichnete Relationen zwischen diesen Objekten kodiert,
+		\item \(F\) ist eine Menge von \(2\)-Zellen, die durch geschlossene Relationenzyklen erzeugt wird.
+	\end{itemize}
+	
+	Die Relation, die Kanten erzeugt, hängt vom gewählten Modell ab. Im hier betrachteten Kontext kommen insbesondere folgende Möglichkeiten in Betracht:
+	\begin{enumerate}
+		\item gleiche Restklasse modulo \(12\),
+		\item Übergänge mit festem Differenzmuster, etwa \(q-p=2\), \(q-p=4\), \(q-p=6\) oder \(q-p=8\),
+		\item gemeinsame Zugehörigkeit zu einem Primzahlzwilling oder Primzahlvierling,
+		\item Verträglichkeit mit einer vorgegebenen Endsignaturstruktur.
+	\end{enumerate}
+	
+	\begin{definition}[Euler-Charakteristik]
+		Für einen endlichen arithmetischen Zellkomplex
+		\[
+		\mathcal{K}=(V,E,F)
+		\]
+		definieren wir die Euler-Charakteristik durch
+		\[
+		\chi(\mathcal{K}) := |V|-|E|+|F|.
+		\]
+	\end{definition}
+	
+	Diese Größe misst nicht metrische Details, sondern die globale kombinatorische Struktur des Komplexes.
+	
+	\subsection{E/A/B/C-Familien als Strukturtypen}
+	
+	Für Primzahlen \(p>3\) betrachten wir die vier Restklassen modulo \(12\):
+	\[
+	E \equiv 1 \pmod{12},\qquad
+	A \equiv 5 \pmod{12},\qquad
+	B \equiv 7 \pmod{12},\qquad
+	C \equiv 11 \pmod{12}.
+	\]
+	Diese vier Klassen werden als diskrete Strukturtypen interpretiert. Damit kann man Knoten, Kanten und Flächen auf verschiedenen Abstraktionsebenen definieren.
+	
+	\begin{itemize}
+		\item Ein Knoten kann eine einzelne Primzahl, ihre Familienzugehörigkeit oder ein zusammengesetztes Objekt wie einen Primzahlzwilling oder Primzahlvierling repräsentieren.
+		\item Eine Kante kann durch eine definierte arithmetische Relation gegeben sein, etwa durch eine feste Differenz oder durch gemeinsame Zugehörigkeit zu einem Muster.
+		\item Eine Fläche kann durch einen geschlossenen Zyklus solcher Relationen entstehen.
+	\end{itemize}
+	
+	\subsection{Primzahlvierlinge als elementare \(2\)-Zellen}
+	
+	Ein besonders natürlicher Kandidat für eine elementare Fläche ist ein echter Primzahlvierling
+	\[
+	Q(p)=(p,p+2,p+6,p+8),
+	\]
+	sofern alle vier Einträge Primzahlen sind. In diesem Fall kann man die vier beteiligten Primzahlen als Ecken eines geschlossenen Zyklus auffassen. Die zugehörigen Differenzrelationen bilden den Rand einer \(2\)-Zelle.
+	
+	\begin{definition}[Vierlingszelle]
+		Sei
+		\[
+		Q(p)=(p,p+2,p+6,p+8)
+		\]
+		ein echter Primzahlvierling. Dann heißt die durch diese vier Primzahlen und die zugehörigen Randrelationen erzeugte \(2\)-Zelle eine \emph{Vierlingszelle}.
+	\end{definition}
+	
+	Jede solche Vierlingszelle erhöht den Flächenanteil \(F\) um \(1\). In dieser Weise erscheinen Primzahlvierlinge nicht nur als additive Muster, sondern als topologische Schließungen im arithmetischen Netzwerk.
+	
+	\subsection{Strukturelle Interpretation der Euler-Charakteristik}
+	
+	Die Größe
+	\[
+	\chi(\mathcal{K})=|V|-|E|+|F|
+	\]
+	kann im arithmetischen Kontext als Bilanz zwischen elementaren Zuständen, binären Bindungen und geschlossenen Mustern gelesen werden:
+	\begin{itemize}
+		\item \( |V| \): Anzahl elementarer arithmetischer Einheiten,
+		\item \( |E| \): Anzahl direkter Relationen,
+		\item \( |F| \): Anzahl geschlossener Strukturmuster.
+	\end{itemize}
+	
+	Eine Konfiguration mit vielen isolierten Knoten und wenigen Relationen besitzt typischerweise große Euler-Charakteristik, während eine stark vernetzte Konfiguration mit vielen Zyklen und Flächen kleinere Werte annimmt. In diesem Sinn kann \(\chi(\mathcal{K})\) als topologischer Ordnungsparameter interpretiert werden.
+	
+	\begin{lemma}
+		Sei \(\mathcal{K}\) ein arithmetischer Zellkomplex. Fügt man eine neue Vierlingszelle hinzu, ohne neue Knoten einzuführen und ohne den Rand zu verändern, so erhöht sich die Euler-Charakteristik um \(1\).
+	\end{lemma}
+	
+	\begin{proof}
+		In diesem Fall bleiben \(|V|\) und \(|E|\) unverändert, während \(|F|\) um \(1\) zunimmt. Also gilt
+		\[
+		\chi_{\mathrm{neu}}-\chi_{\mathrm{alt}}
+		=
+		(|V|-|E|+(|F|+1))-(|V|-|E|+|F|)=1.
+		\]
+	\end{proof}
+	
+	\begin{proposition}
+		Wird ein endlicher Abschnitt des Primzahluniversums durch einen arithmetischen Zellkomplex \(\mathcal{K}_X\) modelliert, dessen \(2\)-Zellen genau den in diesem Abschnitt auftretenden elementaren geschlossenen Mustern entsprechen, so ist
+		\[
+		\chi(X):=\chi(\mathcal{K}_X)
+		\]
+		ein globaler topologischer Strukturparameter dieses Abschnitts.
+	\end{proposition}
+	
+	\begin{proof}
+		Die Größe \(\chi(X)\) hängt definitionsgemäß nur von der Anzahl der Knoten, Kanten und Flächen ab und ist damit eine kombinatorische Invariante des zugrunde liegenden Zellkomplexes. Sie misst folglich nicht einzelne metrische oder numerische Details, sondern die globale Organisationsform der betrachteten arithmetischen Struktur.
+	\end{proof}
+	
+	\subsection{Ausblick}
+	
+	Für weitere Untersuchungen bietet es sich an, für jedes \(X\geq 2\) einen endlichen Komplex \(\mathcal{K}_X\) zu definieren, der alle Primzahlen \(p\leq X\) sowie ausgewählte Relationen zwischen ihnen umfasst, und dann die Funktion
+	\[
+	X\longmapsto \chi(\mathcal{K}_X)
+	\]
+	numerisch und theoretisch zu untersuchen. Dabei stellen sich unter anderem die folgenden Fragen:
+	\begin{enumerate}
+		\item Wie wächst \(\chi(\mathcal{K}_X)\) mit \(X\)?
+		\item Welche Beiträge liefern die verschiedenen Familien \(E,A,B,C\)?
+		\item Korrelieren Änderungen in \(\chi(\mathcal{K}_X)\) mit dem Auftreten von Primzahlzwillingen oder Primzahlvierlingen?
+		\item Welche Unterschiede ergeben sich zwischen verschiedenen Definitionsweisen der Kanten- und Flächenstruktur?
+	\end{enumerate}
+	
+	Damit erscheint die Euler-Charakteristik als natürlicher Zugang zu einer diskreten Topologie arithmetischer Muster.
+	
+\end{document}

@@ -1,0 +1,353 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\title{Ein \(E\!\)-/\(ABC\)-Invarianter aus der geschichteten Radikalzerlegung}
+\author{Kollaborative Ausarbeitung}
+\date{\today}
+
+\newtheorem{satz}{Satz}
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{korollar}[satz]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{beispiel}[satz]{Beispiel}
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\ggT}{\operatorname{ggT}}
+\newcommand{\Typ}{\operatorname{Typ}}
+\newcommand{\Rest}{\mathcal{R}}
+\newcommand{\rad}{\operatorname{rad}}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir formulieren eine kanonische Zerlegung natürlicher Zahlen in einen \(2\)-Anteil, einen
+		\(3\)-Anteil, einen neutralen \(E\)-Anteil und einen reduzierten \(ABC\)-Anteil.
+		Aus dieser Zerlegung wird ein rationaler \(E\!\)-/\(ABC\)-Invarianter konstruiert.
+		Dabei ist nicht die Zahl selbst ein Quotient ihres \(ABC\)- und \(E\)-Anteils,
+		sondern der Quotient ist ein aus der Zahl eindeutig abgeleiteter Strukturinvariant.
+	\end{abstract}
+	
+	\section{Ausgangslage}
+	
+	Wir schreiben für \(n\in\N\)
+	\[
+	n = 2^\alpha 3^\beta m,
+	\qquad
+	\alpha := v_2(n),\quad \beta := v_3(n),\quad \ggT(m,6)=1.
+	\]
+	Für den zu \(6\) teilerfremden Anteil \(m\) betrachten wir die geschichtete Radikalzerlegung
+	\[
+	m=\prod_{k=1}^h R_k,
+	\qquad
+	R_k:=\prod_{\substack{p\mid m\\ v_p(m)\ge k}} p.
+	\]
+	Jede Schicht \(R_k\) ist quadratfrei und zu \(6\) teilerfremd.
+	
+	Die Primzahlen \(p\ge 5\) zerfallen modulo \(12\) in die vier Familien
+	\[
+	E:=\{p:\ p\equiv 1 \pmod{12}\},\qquad
+	A:=\{p:\ p\equiv 5 \pmod{12}\},
+	\]
+	\[
+	B:=\{p:\ p\equiv 7 \pmod{12}\},\qquad
+	C:=\{p:\ p\equiv 11 \pmod{12}\}.
+	\]
+	
+	\section{Kanonische Repräsentanten der reduzierten Typen}
+	
+	\begin{definition}[Sieben reduzierte Typen]
+		Wir setzen
+		\[
+		\mathcal{T}:=\{E,A,B,C,AB,AC,BC\}.
+		\]
+		Jede Radikalschicht \(R_k\) besitzt genau einen reduzierten Typ
+		\[
+		\Typ(R_k)\in\mathcal{T}.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Kanonische numerische Repräsentanten]
+		Wir definieren eine Abbildung
+		\[
+		\rho:\mathcal{T}\to\N
+		\]
+		durch
+		\[
+		\rho(E)=1,\qquad \rho(A)=5,\qquad \rho(B)=7,\qquad \rho(C)=11,
+		\]
+		\[
+		\rho(AB)=5\cdot 7=35,\qquad
+		\rho(AC)=5\cdot 11=55,\qquad
+		\rho(BC)=7\cdot 11=77.
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		Die Wahl von \(\rho\) ist eine Konvention. Sie macht die reduzierten Typen numerisch fassbar.
+		Andere feste Repräsentantensysteme wären ebenfalls möglich. Die nachfolgenden Invarianten sind
+		also relativ zu dieser kanonischen Wahl definiert.
+	\end{bemerkung}
+	
+	\section{Kanonische \(E\)-/Rest-Zerlegung jeder Schicht}
+	
+	\begin{definition}[Schichtweiser \(E\)-Anteil]
+		Für eine Radikalschicht \(R_k\) sei
+		\[
+		E_k:=\prod_{\substack{p\mid R_k\\ p\equiv 1\;(\mathrm{mod}\;12)}} p
+		\]
+		das Produkt aller Primteiler der Schicht aus der Familie \(E\).
+	\end{definition}
+	
+	\begin{definition}[Schichtweiser reduzierter Restfaktor]
+		Für eine Radikalschicht \(R_k\) definieren wir
+		\[
+		X_k:=\rho\bigl(\Typ(R_k)\bigr).
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		Der Faktor \(X_k\) ist kein echter Teiler von \(R_k\), sondern ein numerischer Repräsentant
+		des reduzierten Typs der Schicht. Er speichert also nicht die ganze arithmetische Information
+		der Schicht, sondern nur ihre reduzierte \(ABC\)-Signatur.
+	\end{bemerkung}
+	
+	\section{Globale \(E\)- und \(ABC\)-Invarianten}
+	
+	\begin{definition}[Globaler \(E\)-Anteil]
+		Wir definieren den globalen \(E\)-Anteil von \(n\) durch
+		\[
+		E_{\mathrm{tot}}(n):=\prod_{k=1}^h E_k.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Globaler reduzierter \(ABC\)-Anteil]
+		Wir definieren den globalen reduzierten \(ABC\)-Anteil von \(n\) durch
+		\[
+		ABC_{\mathrm{tot}}(n):=\prod_{k=1}^h X_k
+		=\prod_{k=1}^h \rho\bigl(\Typ(R_k)\bigr).
+		\]
+	\end{definition}
+	
+	\begin{definition}[\(E\!\)-/\(ABC\)-Invarianter]
+		Der zu \(n\) gehörige rationale \(E\!\)-/\(ABC\)-Invarianter ist
+		\[
+		I_{E/ABC}(n):=\frac{ABC_{\mathrm{tot}}(n)}{E_{\mathrm{tot}}(n)}\in\Q_{>0}.
+		\]
+	\end{definition}
+	
+	\section{Eindeutigkeit}
+	
+	\begin{satz}[Kanonische Bestimmtheit]
+		Zu jeder natürlichen Zahl \(n\in\N\) sind die Größen
+		\[
+		E_{\mathrm{tot}}(n),\qquad ABC_{\mathrm{tot}}(n),\qquad I_{E/ABC}(n)
+		\]
+		eindeutig bestimmt.
+	\end{satz}
+	
+	\begin{proof}
+		Die Zahlen \(v_2(n)\) und \(v_3(n)\) sind eindeutig bestimmt. Damit ist der zu \(6\) teilerfremde
+		Anteil
+		\[
+		m=\frac{n}{2^{v_2(n)}3^{v_3(n)}}
+		\]
+		eindeutig festgelegt. Die Radikalschichten \(R_1,\dots,R_h\) sind dadurch ebenfalls eindeutig.
+		
+		Für jede Schicht \(R_k\) ist das Produkt \(E_k\) aller \(E\)-Primteiler eindeutig definiert.
+		Zugleich ist der reduzierte Typ \(\Typ(R_k)\) eindeutig bestimmt, also auch sein numerischer
+		Repräsentant \(X_k=\rho(\Typ(R_k))\). Folglich sind die Produkte
+		\[
+		E_{\mathrm{tot}}(n)=\prod_{k=1}^h E_k
+		\qquad\text{und}\qquad
+		ABC_{\mathrm{tot}}(n)=\prod_{k=1}^h X_k
+		\]
+		eindeutig. Damit ist auch der Quotient
+		\[
+		I_{E/ABC}(n)=\frac{ABC_{\mathrm{tot}}(n)}{E_{\mathrm{tot}}(n)}
+		\]
+		eindeutig bestimmt.
+	\end{proof}
+	
+	\section{Die richtige Interpretation}
+	
+	\begin{satz}[Produktzerlegung mit rationalem Strukturinvarianten]
+		Jede natürliche Zahl \(n\) besitzt eine kanonische Zerlegung der Form
+		\[
+		n = 2^{v_2(n)}\,3^{v_3(n)}\,m,
+		\qquad
+		m=\prod_{k=1}^h R_k,
+		\]
+		und daraus einen eindeutig bestimmten rationalen Strukturinvarianten
+		\[
+		I_{E/ABC}(n)=\frac{ABC_{\mathrm{tot}}(n)}{E_{\mathrm{tot}}(n)}.
+		\]
+		Im Allgemeinen gilt jedoch nicht
+		\[
+		n=\frac{ABC_{\mathrm{tot}}(n)}{E_{\mathrm{tot}}(n)}.
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Die Existenz und Eindeutigkeit der Zerlegung sowie des Invarianten wurde bereits gezeigt.
+		Dass im Allgemeinen
+		\[
+		n\neq \frac{ABC_{\mathrm{tot}}(n)}{E_{\mathrm{tot}}(n)}
+		\]
+		gilt, sieht man schon an einem einfachen Beispiel: Für \(n=5\cdot 7\cdot 13\) ist
+		\[
+		E_{\mathrm{tot}}(n)=13,\qquad ABC_{\mathrm{tot}}(n)=35,
+		\]
+		also
+		\[
+		I_{E/ABC}(n)=\frac{35}{13},
+		\]
+		während
+		\[
+		n=455.
+		\]
+	\end{proof}
+	
+	\begin{bemerkung}
+		Die richtige Aussage lautet also nicht:
+		\[
+		n=\frac{\text{\(ABC\)-Anteil}}{\text{\(E\)-Anteil}},
+		\]
+		sondern:
+		\[
+		n \longmapsto \frac{\text{kanonischer reduzierter \(ABC\)-Anteil}}{\text{kanonischer \(E\)-Anteil}}
+		\]
+		definiert einen rationalen Invarianten.
+	\end{bemerkung}
+	
+	\section{Alternative symbolische Schreibweise}
+	
+	\begin{definition}[Symbolische Signaturform]
+		Mit
+		\[
+		\Rest(n)=\bigl(\Typ(R_1),\dots,\Typ(R_h)\bigr)
+		\]
+		kann man \(n\) symbolisch auch in der Form
+		\[
+		n \sim \bigl(v_2(n),\,v_3(n);\;E_{\mathrm{tot}}(n),\,\Rest(n)\bigr)
+		\]
+		auffassen.
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		Diese symbolische Form ist oft konzeptionell klarer als der Quotient \(I_{E/ABC}(n)\), weil sie
+		den gesamten reduzierten Rest als Wort über dem Alphabet
+		\[
+		\{E,A,B,C,AB,AC,BC\}
+		\]
+		sichtbar macht, statt ihn in einer einzelnen rationalen Zahl zusammenzufassen.
+	\end{bemerkung}
+	
+	\section{Beispiele}
+	
+	\begin{beispiel}
+		Für
+		\[
+		n=5\cdot 7\cdot 13
+		\]
+		gibt es nur eine Schicht
+		\[
+		R_1=5\cdot 7\cdot 13.
+		\]
+		Dann ist
+		\[
+		E_1=13,\qquad \Typ(R_1)=AB,\qquad X_1=\rho(AB)=35.
+		\]
+		Also
+		\[
+		E_{\mathrm{tot}}(n)=13,\qquad
+		ABC_{\mathrm{tot}}(n)=35,
+		\qquad
+		I_{E/ABC}(n)=\frac{35}{13}.
+		\]
+	\end{beispiel}
+	
+	\begin{beispiel}
+		Für
+		\[
+		n=2^2\cdot 3\cdot 5^3\cdot 7^2\cdot 13
+		\]
+		ist der zu \(6\) teilerfremde Anteil
+		\[
+		m=5^3\cdot 7^2\cdot 13.
+		\]
+		Die Radikalschichten sind
+		\[
+		R_1=5\cdot 7\cdot 13,\qquad
+		R_2=5\cdot 7,\qquad
+		R_3=5.
+		\]
+		Daraus folgt
+		\[
+		E_1=13,\qquad E_2=1,\qquad E_3=1,
+		\]
+		sowie
+		\[
+		\Typ(R_1)=AB,\qquad \Typ(R_2)=AB,\qquad \Typ(R_3)=A.
+		\]
+		Also
+		\[
+		ABC_{\mathrm{tot}}(n)=35\cdot 35\cdot 5=6125,
+		\]
+		\[
+		E_{\mathrm{tot}}(n)=13,
+		\]
+		und damit
+		\[
+		I_{E/ABC}(n)=\frac{6125}{13}.
+		\]
+	\end{beispiel}
+	
+	\begin{beispiel}
+		Für die Primzahl
+		\[
+		n=13
+		\]
+		gilt
+		\[
+		R_1=13,\qquad E_1=13,\qquad \Typ(R_1)=E,\qquad X_1=\rho(E)=1.
+		\]
+		Also
+		\[
+		I_{E/ABC}(13)=\frac{1}{13}.
+		\]
+	\end{beispiel}
+	
+	\section{Schluss}
+	
+	Jede natürliche Zahl besitzt nach Abspaltung des \(2\)- und \(3\)-Anteils eine eindeutige
+	geschichtete Radikalzerlegung. Aus dieser ergibt sich kanonisch
+	
+	\begin{enumerate}[label=\arabic*.]
+		\item ein globaler \(E\)-Anteil \(E_{\mathrm{tot}}(n)\),
+		\item ein globaler reduzierter \(ABC\)-Anteil \(ABC_{\mathrm{tot}}(n)\),
+		\item sowie der rationale Strukturinvariant
+		\[
+		I_{E/ABC}(n)=\frac{ABC_{\mathrm{tot}}(n)}{E_{\mathrm{tot}}(n)}.
+		\]
+	\end{enumerate}
+	
+	Damit erhält man keine Bruchdarstellung der Zahl selbst, wohl aber eine eindeutig definierte
+	rationale Signatur der Zahl relativ zu ihrer \(E\)-/\(ABC\)-Struktur.
+	
+\end{document}

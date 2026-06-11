@@ -1,0 +1,224 @@
+
+% ==========================================================
+% Study H28: Proof skeleton with explicit constants
+% ==========================================================
+
+\section{Study H28: Beweis-Skelett (BM) mit expliziten Konstanten und st\"arker Br\"ucke}
+
+\subsection{Ziel}
+Wir machen aus dem Schema H26/H27 ein \emph{beweisbares} Ger\"ust:
+\[
+\text{Off-Axis}\Rightarrow \text{Twist-Wachstum}\Rightarrow \text{Morley-/Spin-Verletzung}\Rightarrow \bot,
+\]
+und koppeln das mit einer arithmetischen Observable (Chebyshev $\psi$) als strengere Br\"ucke als reines Index-Matching.
+
+\subsection{Fixierte numerische Anker aus den bisherigen Runs}
+\[
+\hat h \approx 0.00909016,\qquad \tau := 2\hat h \approx 0.01818032.
+\]
+Aus H24/H25 (ein Lauf mit $\varepsilon=0.02$, $\gamma_0=200$):
+\[
+T_{50\%}\approx 800, \quad N(T_{50\%})=491 \Rightarrow p^\*_{50\%}=3517,
+\]
+\[
+T_{90\%}\approx 1400, \quad N(T_{90\%})=983 \Rightarrow p^\*_{90\%}=7753.
+\]
+Als Skalenindikator der Zwei-Komponenten-Struktur (H20):
+\[
+\lambda^\*\approx 0.20.
+\]
+
+% ==========================================================
+\subsection{Teil I: Explizite Morley-/Spin-Schranke als Geometrie-Lemma}
+
+\subsubsection{Definition: ``Morley-Abweichung'' als Equilateralness-Funktional}
+Wir arbeiten (wie in den Numerikstudien) mit der Abweichung eines Dreiecks von der Gleichseitigkeit. Sei
+\[
+P(\theta)=(\cos\theta,\sin\theta)\in \mathbb S^1.
+\]
+F\"ur Winkel $\theta_A,\theta_B,\theta_C$ definieren wir die (Chord-)Seitenl\"angen
+\[
+d_{AB}= \|P(\theta_A)-P(\theta_B)\|=2\sin\!\Bigl(\frac{|\theta_A-\theta_B|}{2}\Bigr),
+\quad \text{analog } d_{BC},d_{CA}.
+\]
+Dann setzen wir
+\[
+\mu:=\frac{d_{AB}+d_{BC}+d_{CA}}{3},\qquad
+s:=\sqrt{\frac{(d_{AB}-\mu)^2+(d_{BC}-\mu)^2+(d_{CA}-\mu)^2}{3}},
+\]
+\[
+\delta_M := \frac{s}{\mu}.
+\]
+(Hinweis: $\delta_M=0$ genau f\"ur gleichseitige Dreiecke.)
+
+\subsubsection{Konditionierung}
+Fixiere $\eta\in(0,\pi)$ und fordere (Nichtdegeneration)
+\[
+|\theta_A-\theta_B|,\ |\theta_B-\theta_C|,\ |\theta_C-\theta_A| \in [\eta,2\pi-\eta].
+\]
+Dann gilt insbesondere
+\[
+\mu \ \ge\ \mu_{\min}(\eta):= 2\sin(\eta/2).
+\]
+
+\subsubsection{Lemma H28.1 (Explizite Lipschitz-Konstante)}
+\begin{lemma}[Explizite Lipschitz-Absch\"atzung]
+Unter der $\eta$-Konditionierung gilt f\"ur eine Winkelst\"orung $\theta_C\mapsto\theta_C+\Delta\theta$:
+\[
+|\delta_M(\theta_A,\theta_B,\theta_C+\Delta\theta)-\delta_M(\theta_A,\theta_B,\theta_C)|
+\ \le\ L(\eta)\,|\Delta\theta|,
+\]
+mit einer expliziten (konservativen) Wahl
+\[
+L(\eta):=\frac{\sqrt 2}{\mu_{\min}(\eta)}+\frac{2/3}{\mu_{\min}(\eta)^2},
+\qquad \mu_{\min}(\eta)=2\sin(\eta/2).
+\]
+\end{lemma}
+
+\paragraph{Beweisskizze.}
+Nur die beiden Seiten $d_{BC},d_{CA}$ \"andern sich. Da
+\[
+\frac{\mathrm d}{\mathrm d\theta}\bigl(2\sin(\tfrac{\theta}{2})\bigr)=\cos(\tfrac{\theta}{2})\le 1,
+\]
+gilt $|\,\Delta d_{BC}\,|\le |\Delta\theta|$ und $|\,\Delta d_{CA}\,|\le|\Delta\theta|$.
+Damit ist die Vektor\"anderung der Seitenl\"angen in $\ell_2$ durch $\sqrt 2|\Delta\theta|$ beschr\"ankt.
+Die Standardabweichung $s$ ist 1-Lipschitz bzgl.\ $\ell_2$ (konservativ), also $|\Delta s|\le \sqrt 2|\Delta\theta|$.
+Die Mittelwert\"anderung erf\"ullt $|\Delta \mu|\le \tfrac{2}{3}|\Delta\theta|$. Mit $\mu\ge \mu_{\min}(\eta)$ folgt die Quotientenabsch\"atzung.
+
+\paragraph{Zahlenbeispiel (Orientierung).}
+F\"ur $\eta=20^\circ$ ist $\mu_{\min}=2\sin(10^\circ)\approx 0.3473$ und damit
+$L(20^\circ)\approx 9.29$ (konservativ).
+Diese Konstante ist \emph{berechenbar} und kann je nach Dreiecksraum weiter gesch\"arft werden.
+
+\subsubsection{Lemma H28.2 (Morley-/Spin-Schranke aus Planck-Defektbudget)}
+\begin{lemma}[Defektbudget]
+Wenn die BM-Geometrie fordert, dass zul\"assige Konfigurationen im Fixraum $H$ eine Defektschranke
+\[
+\Delta\delta_M \le \tau=2\hat h
+\]
+erf\"ullen m\"ussen, dann folgt f\"ur jede konditionierte Zelle (mit Parameter $\eta$):
+\[
+|\Delta\theta|\ \le\ \tau/L(\eta).
+\]
+\end{lemma}
+
+\paragraph{Interpretation.}
+$\tau$ ist ein \emph{Winkelbudget}. Eine Off-Axis-Konstruktion, die einen Twist $|\Delta\theta|$ erzwingt, kann nur bis zur
+Skala funktionieren, bei der $|\Delta\theta|$ das Budget $\tau/L(\eta)$ \"uberschreitet.
+
+% ==========================================================
+\subsection{Teil II: Off-Axis $\Rightarrow$ Twist-Wachstum (aus Kontraktion + Oktonik)}
+
+\subsubsection{Baustein: 2er-Kontraktion als Achsenneubildung (``1/2 + $\pi$-Twist'')}
+Wir modellieren die Zweier-Kontraktion als Operator $\mathcal C_2$ (Radius $R\mapsto R/2$) plus Rotation $\mathcal R_\pi$:
+\[
+\Delta \xrightarrow{\mathcal C_2} \Delta_{1/2} \xrightarrow{\mathcal R_\pi} \Delta_{1/2}^\pi.
+\]
+\emph{BM-Punkt:} Die neue oktonische Achse entsteht nicht durch Halbierung allein, sondern durch die \emph{zus\"atzliche}
+$\pi$-Drehung (Spinfixierung). Das ist die formale Version der Beobachtung
+``die 1/2-Achse ist eigentlich eine Zweier-Kontraktion \emph{mit} Winkeldrehung''.
+
+\subsubsection{Baustein: Oktonischer Winkelhalbierenden-Zwang}
+Die (nichtassoziative) Oktonik erlaubt nur in einer Winkelhalbierenden-Unterstruktur stabile additive Updates.
+Au\ss erhalb entsteht ein orthogonaler Driftterm (Associator-Komponente)
+\[
+[a,b,c] := (ab)c-a(bc),
+\]
+der als zus\"atzlicher Twist in der Phasenabbildung erscheint.
+
+\subsubsection{Lemma H28.3 (Twist-Wachstum aus Off-Axis)}
+\begin{lemma}[Twist-Wachstum]
+Angenommen, es existiert eine Off-Axis-Nullstelle $\rho=\beta+i\gamma$ mit $\beta\neq \tfrac12$.
+Dann erzwingt die Kombination aus (i) oktonischer Winkelhalbierenden-Projektion und (ii) wiederholter 2er/3er-Kontraktion
+eine additiv akkumulierte Phasendrift
+\[
+\Delta\theta(\gamma)\ \gtrsim\ c_0\,\varepsilon\,\frac{\gamma}{\gamma_0},
+\]
+wobei $c_0>0$ eine geometrische Konstante ist, die aus der Associator-Projektion folgt.
+\end{lemma}
+
+\paragraph{Beweisskizze (Br\"ucke zur expliziten Formel).}
+In der expliziten Formel treten Terme $\sim X^\rho/\rho$ auf. Deren Phase ist $\gamma\log X$.
+Ein Off-Axis-Beitrag (\(\beta\neq\tfrac12\)) verst\"arkt diese Terme relativ zum kritischen Fall und wirkt wie eine effektive,
+skalierende Zusatzrotation. BM-intern wird dies als ``Twist-Wachstum entlang $\gamma$'' implementiert.
+Die 2er/3er-Kontraktion liefert die diskrete Skalenleiter, auf der die Drift kumuliert.
+
+% ==========================================================
+\subsection{Teil III: Cutoff-Beweis und zwei Varianten des Widerspruchs}
+
+\subsubsection{Lemma H28.4 (Cutoff aus Budget + Wachstum)}
+\begin{lemma}[Cutoff-Existenz]
+Unter den Lemmas H28.1--H28.3 existiert ein endliches $T^\*$ so dass f\"ur $T\ge T^\*$ gilt:
+\[
+\Delta\delta_M^{\max}(T)>\tau.
+\]
+Eine (konservative) Cutoff-Absch\"atzung ist
+\[
+T^\* \ \lesssim\ \frac{\gamma_0}{c_0\,\varepsilon}\cdot \frac{\tau}{L(\eta)}.
+\]
+\end{lemma}
+
+\paragraph{Interpretation.}
+Das Budget $\tau/L(\eta)$ ist fix; das Twist-Wachstum ist unbeschr\"ankt; daher muss ein Cutoff existieren.
+
+\subsubsection{Variante 1 (BM-Prime-Cutoff)}
+Als BM-Arbeitsabbildung (H25) dient
+\[
+p^\*(T):=p_{N(T)}.
+\]
+Dann folgt Off-Axis $\Rightarrow$ endliches $T^\*$ $\Rightarrow$ endliches $p^\*$.
+Wenn BM gleichzeitig fordert, dass Primstruktur ohne Cutoff konsistent repr\"asentiert wird, entsteht ein Widerspruch.
+
+\subsubsection{Variante 2 (st\"arkere Br\"ucke): Chebyshev-Residual}
+Definiere die Prime-Observable
+\[
+\psi(X)=\sum_{p^k\le X}\log p,
+\qquad
+\mathcal R(X):=\frac{|\psi(X)-X|}{X^{1/2}}.
+\]
+Aus der expliziten Formel folgt heuristisch:
+Off-Axis mit $\beta>\tfrac12$ impliziert
+\[
+\mathcal R(X)=\Omega\!\bigl(X^{\beta-1/2}\bigr)\to\infty.
+\]
+Wenn BM aus dem Defektbudget fordert, dass f\"ur alle Skalen
+\[
+\mathcal R(X)\ \le\ C(\tau)
+\]
+gilt (globale Schranke), folgt der Widerspruch \emph{ohne} Prime-Cutoff.
+
+% ==========================================================
+\subsection{Teil IV: Zwei-Komponenten-Planck (barionisch + dunkel) als Gate-Modell}
+
+\subsubsection{Gate-Zerlegung}
+Mit $x=h\nu/(kT)$ und Planckfunktion $u_P(\nu,T)$ setzen wir
+\[
+g(x;x^\*(T),w)=\frac{1}{1+\exp\left(\frac{x-x^\*(T)}{w}\right)},
+\]
+\[
+u_b(\nu,T)=u_P(\nu,T)\,g(x;x^\*(T),w),\qquad
+u_d(\nu,T)=u_P(\nu,T)\,(1-g(x;x^\*(T),w)).
+\]
+Im Grenzfall $w\to0^+$ entsteht am Cutoff $x^\*(T)$ eine steile Flanke (``y-Achsen-Parallele'').
+BM-Deutung: $u_b$ tr\"agt die beobachtbare EM-Strahlung (Aufstieg), $u_d$ tr\"agt den energetischen Tail (Abstieg),
+koppelt aber nicht elektromagnetisch aus.
+
+\subsubsection{Kopplung an Defekt/Planck}
+Die BM-Kopplungshypothese lautet:
+\[
+x^\*(T)\ \text{wird durch } \tau=2\hat h \text{ fixiert (Defektbudget)}.
+\]
+Praktisch: $x^\*(T)$ wird so bestimmt, dass an der Schwelle
+\[
+\Delta\delta_M^{\max}(T)\approx\tau
+\]
+gilt, sobald eine Skalenabbildung $\lambda\leftrightarrow x$ bzw.\ $\gamma\leftrightarrow \nu$ fixiert ist.
+
+% ==========================================================
+\subsection{Teil V: Konkreter Arbeitsplan (H29)}
+\begin{enumerate}
+\item \textbf{Sch\"arfung von $L(\eta)$:} empirische Unter-/Oberabsch\"atzung der Jacobian-Norm von $\delta_M$ auf dem relevanten Dreiecksraum.
+\item \textbf{Bestimmung von $c_0$:} Projektion des Associators auf die Winkelhalbierenden-Unterstruktur (Oktonik) und Quantifizierung der Drift pro Skalenstep.
+\item \textbf{Skalenabbildung:} Fixiere $\lambda\leftrightarrow x$ und $\gamma\leftrightarrow \nu$ durch ein BM-Physikpostulat (z.\,B.\ Click-Gating/Sch\"utte-Spannung).
+\item \textbf{Residual-Schranke:} Formuliere $C(\tau)$ aus dem Defektbudget als globale Schranke f\"ur $\mathcal R(X)$.
+\end{enumerate}

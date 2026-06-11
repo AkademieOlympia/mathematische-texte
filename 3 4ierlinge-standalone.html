@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Primzahlvierlinge Standalone</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        background: #020617;
+        color: #e2e8f0;
+      }
+      .page { min-height: 100vh; padding: 1.2rem; }
+      .container { max-width: 1120px; margin: 0 auto; }
+      .row {
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 0.8rem; margin-bottom: 1rem;
+      }
+      .buttons { display: flex; gap: 0.5rem; }
+      .btn {
+        border: 1px solid #475569; background: #1e293b; color: #e2e8f0;
+        border-radius: 0.7rem; padding: 0.45rem 0.8rem; cursor: pointer;
+      }
+      .card {
+        background: rgba(15, 23, 42, 0.7);
+        border: 1px solid #334155; border-radius: 1rem; margin-top: 0.8rem;
+      }
+      .card-content { padding: 1rem; }
+      .grid {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 0.7rem; margin-top: 1rem;
+      }
+      .small { font-size: 0.9rem; color: #94a3b8; }
+      .strong { font-size: 1.2rem; font-weight: 600; margin-top: 0.25rem; }
+      svg {
+        width: 100%; height: 560px; border-radius: 0.8rem;
+        background: linear-gradient(to bottom, rgb(2,6,23), rgb(15,23,42));
+      }
+      h1 { margin: 0; font-size: clamp(1.25rem, 3vw, 2rem); }
+      p { line-height: 1.55; }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="container">
+        <div class="row">
+          <div>
+            <h1>Primzahlvierlinge als gekruemmte arithmetische Raumzeit</h1>
+            <p>
+              Einsteinische Lesart: Vierlinge entstehen als lokale Geodaeten in einer durch
+              Siebung und Restklassen gekruemmten Zahlraumzeit.
+            </p>
+          </div>
+          <div class="buttons">
+            <button id="toggle" class="btn">Pause</button>
+            <button id="reset" class="btn">Reset</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-content">
+            <svg id="scene" viewBox="0 0 840 520" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="well" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="white" stop-opacity="0.16"></stop>
+                  <stop offset="70%" stop-color="white" stop-opacity="0.04"></stop>
+                  <stop offset="100%" stop-color="white" stop-opacity="0"></stop>
+                </radialGradient>
+                <filter id="glow">
+                  <feGaussianBlur stdDeviation="4" result="coloredBlur"></feGaussianBlur>
+                  <feMerge>
+                    <feMergeNode in="coloredBlur"></feMergeNode>
+                    <feMergeNode in="SourceGraphic"></feMergeNode>
+                  </feMerge>
+                </filter>
+              </defs>
+              <g id="grid"></g>
+              <path id="curve-main" fill="none" stroke="white" stroke-opacity="0.34" stroke-width="3"></path>
+              <path id="curve-glow" fill="none" stroke="white" stroke-opacity="0.08" stroke-width="14" filter="url(#glow)"></path>
+              <g id="dynamic"></g>
+              <line id="front-line" y1="60" y2="460" stroke="white" stroke-opacity="0.25" stroke-dasharray="6 7"></line>
+              <text x="55" y="488" fill="white" opacity="0.65" font-size="13">
+                Zahlraum, logarithmisch komprimiert
+              </text>
+              <text x="500" y="488" fill="white" opacity="0.65" font-size="13">
+                Zeit / Entstehungsfolge der sechs Vierlings-Geodaeten
+              </text>
+            </svg>
+          </div>
+        </div>
+
+        <div id="cards" class="grid"></div>
+
+        <div class="card">
+          <div class="card-content">
+            <p>
+              Modellidee: Jeder Primzahlvierling erzeugt eine lokale Kruemmungsmulde. Die
+              elliptische Bahn ist eine Geodaete in dieser Mulde. Die sichtbare Periheldrehung
+              wird als Messsignal der arithmetischen Raumzeitkruemmung interpretiert: vom
+              Urvierling (5,7,11,13) ueber den ueberlappenden Vierling (11,13,17,19) bis zu
+              (101,103,107,109), (191,193,197,199), (821,823,827,829) und
+              (1481,1483,1487,1489).
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const NS = "http://www.w3.org/2000/svg";
+      const quadruplets = [
+        { p: 5, values: [5, 7, 11, 13], phase: "A-B-C-E", angle: 0 },
+        { p: 11, values: [11, 13, 17, 19], phase: "C-E-A-B", angle: 42 },
+        { p: 101, values: [101, 103, 107, 109], phase: "A-B-C-E", angle: 112 },
+        { p: 191, values: [191, 193, 197, 199], phase: "C-E-A-B", angle: 156 },
+        { p: 821, values: [821, 823, 827, 829], phase: "A-B-C-E", angle: 218 },
+        { p: 1481, values: [1481, 1483, 1487, 1489], phase: "A-B-C-E", angle: 272 },
+      ];
+
+      let running = true;
+      let t = 0;
+      let lastTs = performance.now();
+
+      const curveMain = document.getElementById("curve-main");
+      const curveGlow = document.getElementById("curve-glow");
+      const dynamic = document.getElementById("dynamic");
+      const cards = document.getElementById("cards");
+      const frontLine = document.getElementById("front-line");
+      const toggleBtn = document.getElementById("toggle");
+      const resetBtn = document.getElementById("reset");
+      const grid = document.getElementById("grid");
+
+      function xMap(n) {
+        return 70 + (Math.log(n - 1) / Math.log(1490)) * 680;
+      }
+
+      function yCurvature(n, tt) {
+        const centers = [9, 15, 105, 195, 825, 1485];
+        let y = 250 + 18 * Math.sin(0.018 * n + tt * 0.8);
+        for (const c of centers) {
+          const d = Math.log(Math.abs(n - c) + 1);
+          y += 48 * Math.exp((-d * d) / 1.2);
+        }
+        return y;
+      }
+
+      function orbitPoints(cx, cy, rx, ry, angleDeg) {
+        const a = (angleDeg * Math.PI) / 180;
+        const pts = [];
+        for (let i = 0; i <= 160; i++) {
+          const u = (i / 160) * Math.PI * 2;
+          const x = rx * Math.cos(u);
+          const y = ry * Math.sin(u);
+          const xr = cx + x * Math.cos(a) - y * Math.sin(a);
+          const yr = cy + x * Math.sin(a) + y * Math.cos(a);
+          pts.push([xr, yr]);
+        }
+        return pts;
+      }
+
+      function dFromPoints(pts) {
+        return `M ${pts.map((p) => `${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(" L ")} Z`;
+      }
+
+      function makeSvg(tag, attrs) {
+        const el = document.createElementNS(NS, tag);
+        for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, String(v));
+        return el;
+      }
+
+      function initGrid() {
+        for (let i = 0; i < 12; i++) {
+          grid.appendChild(makeSvg("line", {
+            x1: 60 + i * 65, y1: 65, x2: 60 + i * 65, y2: 455,
+            stroke: "white", "stroke-opacity": 0.06
+          }));
+        }
+        for (let i = 0; i < 8; i++) {
+          grid.appendChild(makeSvg("line", {
+            x1: 50, y1: 90 + i * 50, x2: 790, y2: 90 + i * 50,
+            stroke: "white", "stroke-opacity": 0.06
+          }));
+        }
+      }
+
+      function renderCards(activeIndex, tt) {
+        cards.innerHTML = "";
+        quadruplets.forEach((q, i) => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.style.borderColor = i === activeIndex ? "#ffffff" : "#334155";
+          card.innerHTML = `
+            <div class="card-content">
+              <div class="small">Vierling ${i + 1}</div>
+              <div class="strong">(${q.values.join(", ")})</div>
+              <div style="font-size:0.9rem;margin-top:0.45rem;">EABC-Phase: ${q.phase}</div>
+              <div class="small" style="margin-top:0.45rem;">
+                Perihelwinkel: ca. ${Math.round(q.angle + 22 * Math.sin(tt * 2 + i))}°
+              </div>
+            </div>
+          `;
+          cards.appendChild(card);
+        });
+      }
+
+      function renderScene(tt) {
+        const activeIndex = Math.min(5, Math.floor(tt));
+        const localT = tt - activeIndex;
+
+        const curvePoints = [];
+        for (let n = 2; n <= 1500; n += n < 220 ? 2 : 10) {
+          curvePoints.push([xMap(n), yCurvature(n, tt)]);
+        }
+        const curveD = "M " + curvePoints.map((p) => `${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(" L ");
+        curveMain.setAttribute("d", curveD);
+        curveGlow.setAttribute("d", curveD);
+
+        dynamic.innerHTML = "";
+        quadruplets.forEach((q, i) => {
+          const cx = xMap(q.values[0] + 4);
+          const cy = yCurvature(q.values[0] + 4, tt);
+          const visible = i <= activeIndex;
+          const pulse = i === activeIndex ? 1 + 0.1 * Math.sin(localT * Math.PI * 2) : 1;
+          const alpha = visible ? 1 : 0.18;
+
+          const g = makeSvg("g", { opacity: alpha });
+          g.appendChild(makeSvg("ellipse", {
+            cx, cy: cy + 8, rx: 72 * pulse, ry: 48 * pulse, fill: "url(#well)"
+          }));
+
+          const angle = q.angle + 22 * Math.sin(tt * 2 + i);
+          const pathD = dFromPoints(orbitPoints(cx, cy - 8, 58, 27, angle));
+          g.appendChild(makeSvg("path", {
+            d: pathD, fill: "none", stroke: "white",
+            "stroke-opacity": visible ? 0.75 : 0.18, "stroke-width": 2.5
+          }));
+          g.appendChild(makeSvg("path", {
+            d: pathD, fill: "none", stroke: "white",
+            "stroke-opacity": visible ? 0.18 : 0.04, "stroke-width": 10, filter: "url(#glow)"
+          }));
+
+          const rad = (angle * Math.PI) / 180;
+          g.appendChild(makeSvg("line", {
+            x1: cx, y1: cy - 8, x2: cx + 58 * Math.cos(rad), y2: cy - 8 + 58 * Math.sin(rad),
+            stroke: "white", "stroke-opacity": visible ? 0.8 : 0.16, "stroke-width": 2
+          }));
+
+          const t1 = makeSvg("text", {
+            x: cx - 58, y: cy - 62, fill: "white",
+            opacity: visible ? 0.9 : 0.25, "font-size": 14
+          });
+          t1.textContent = `(${q.values.join(", ")})`;
+          g.appendChild(t1);
+
+          const t2 = makeSvg("text", {
+            x: cx - 42, y: cy - 43, fill: "white",
+            opacity: visible ? 0.55 : 0.18, "font-size": 12
+          });
+          t2.textContent = `Phase: ${q.phase}`;
+          g.appendChild(t2);
+
+          q.values.forEach((n) => {
+            g.appendChild(makeSvg("circle", {
+              cx: xMap(n), cy: yCurvature(n, tt), r: visible ? 5.2 : 3,
+              fill: "white", opacity: visible ? 0.95 : 0.24
+            }));
+            const txt = makeSvg("text", {
+              x: xMap(n) - 7, y: yCurvature(n, tt) + 24, fill: "white",
+              opacity: visible ? 0.72 : 0.2, "font-size": 11
+            });
+            txt.textContent = String(n);
+            g.appendChild(txt);
+          });
+
+          dynamic.appendChild(g);
+        });
+
+        const x = xMap(5 + tt * 250);
+        frontLine.setAttribute("x1", x.toFixed(2));
+        frontLine.setAttribute("x2", x.toFixed(2));
+        frontLine.setAttribute("stroke-opacity", (0.3 + 0.15 * Math.sin(tt * Math.PI * 2)).toFixed(2));
+
+        renderCards(activeIndex, tt);
+      }
+
+      function tick(now) {
+        const dt = Math.min(0.05, (now - lastTs) / 1000);
+        lastTs = now;
+        if (running) t = (t + dt * 0.4375) % 6;
+        renderScene(t);
+        requestAnimationFrame(tick);
+      }
+
+      toggleBtn.addEventListener("click", () => {
+        running = !running;
+        toggleBtn.textContent = running ? "Pause" : "Start";
+      });
+
+      resetBtn.addEventListener("click", () => {
+        t = 0;
+        renderScene(t);
+      });
+
+      initGrid();
+      renderScene(t);
+      requestAnimationFrame(tick);
+    </script>
+  </body>
+</html>

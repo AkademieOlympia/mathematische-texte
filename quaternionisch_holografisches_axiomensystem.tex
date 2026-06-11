@@ -1,0 +1,233 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{abstract}
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./}{fig/}{figs/}{images/}{img/}}
+\newcommand{\includegraphicssafe}[2][]{\IfFileExists{#2}{\includegraphics[#1]{#2}}{\fbox{\texttt{Missing image: #2}}}}
+
+\newtheorem{satz}{Satz}
+\newtheorem{lemma}{Lemma}
+\newtheorem{korollar}{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{axiom}{Axiom}
+\newtheorem{beispiel}{Beispiel}
+\theoremstyle{remark}
+\newtheorem{bemerkung}{Bemerkung}
+
+\title{Ein minimales Axiomensystem einer quaternionisch-holografischen Korrespondenz}
+\author{Kollaborative Forschungsnotiz: Mensch \& KI}
+\date{20. April 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Wir formulieren ein minimales Gerüst für eine quaternionisch-holografische Korrespondenz. Ausgangspunkt ist ein quaternionischer Bulk-Zustandsraum, dessen interne Struktur über ausgezeichnete Teilgeometrien --- etwa drei goldene Rechtecke --- in eine sphärische Randrepräsentation kodiert wird. Das Ziel ist nicht eine naive Verdopplung von Zuständen, sondern eine präzise Kodierung, deren Observablen, Operatoren, Rekonstruktionsregeln und Invarianten kontrolliert auf eine Boundary-Seite übertragen werden. Besonderes Gewicht erhält das Nicht-Duplikationsprinzip: Eine holografische Randbeschreibung ist als Code oder Dualbild des Bulk-Zustands zu verstehen, nicht als unabhängige zweite Kopie. Damit wird der Rahmen mit dem Geist des No-Cloning-Theorems verträglich gemacht.
+\end{abstract}
+
+\section{Leitidee}
+Gesucht ist eine Struktur, in der ein vierdimensionaler quaternionischer Zustand nicht bloß projiziert, sondern so auf einem Randraum kodiert wird, dass wesentliche geometrische, dynamische und informationelle Eigenschaften erhalten oder rekonstruierbar bleiben. Die Holographie besteht dabei nicht in einer doppelten Existenz desselben Zustands, sondern in einer dualen Beschreibung desselben physikalisch-mathematischen Gehalts.
+
+\section{Grundräume und Kodierung}
+
+\begin{definition}[Bulk-Zustandsraum]
+Es sei $\mathcal{B}$ ein Zustandsraum zulässiger Bulk-Zustände. Im einfachsten Fall ist $\mathcal{B}$ ein geeigneter Unterraum oder Quotientenraum der Quaternionen
+\[
+\mathbb{H}=\{q=e+ai+bj+ck\mid e,a,b,c\in\mathbb{R}\},
+\]
+versehen mit zusätzlichen Strukturbedingungen.
+\end{definition}
+
+\begin{definition}[Boundary-Zustandsraum]
+Es sei $\mathcal{S}$ ein Raum sphärischer Randdaten. Typische Realisierungen sind Funktionen auf $S^2$, markierte Konfigurationen auf $S^2$, harmonische Koeffizienten oder Äquivalenzklassen sphärischer Kartenbilder.
+\end{definition}
+
+\begin{definition}[Interne Zerlegung]
+Jedem Bulk-Zustand $q\in\mathcal{B}$ sei eine ausgezeichnete Zerlegung
+\[
+\Xi(q)=(\Xi_1(q),\Xi_2(q),\Xi_3(q))
+\]
+zugeordnet. Im geometrischen Spezialfall können $\Xi_1,\Xi_2,\Xi_3$ als drei goldene Rechtecke interpretiert werden, die eine kanonische Teilstruktur des Zustands tragen.
+\end{definition}
+
+\begin{definition}[Boundary-Kodierung]
+Eine Kodierungsabbildung
+\[
+\Phi:\mathcal{B}\to\mathcal{S}
+\]
+heißt quaternionisch-holografische Kodierung, wenn sie als Komposition
+\[
+\Phi=\Pi_{\mathrm{sph}}\circ\Pi_{\mathrm{kart}}\circ\Xi
+\]
+verstanden werden kann, wobei $\Pi_{\mathrm{kart}}$ eine kartographische Darstellung und $\Pi_{\mathrm{sph}}$ die Überführung in eine sphärische Randrepräsentation beschreibt.
+\end{definition}
+
+\begin{axiom}[Nichttrivialität der Kodierung]
+Die Abbildung $\Phi$ erhält einen nichtleeren Satz relevanter Strukturdaten des Bulk-Zustands.
+\end{axiom}
+
+\section{Observablen, Operatoren und Invarianten}
+
+\begin{definition}[Bulk- und Boundary-Observablen]
+Es seien $\mathcal{O}_{\mathrm{bulk}}$ und $\mathcal{O}_{\mathrm{bdry}}$ Klassen zulässiger Observablen auf $\mathcal{B}$ bzw. $\mathcal{S}$. Dazu können gehören: Normen, Orientierungen, Krümmungsmaße, Spektren, Entropien, harmonische Moden oder Kopplungsmaße.
+\end{definition}
+
+\begin{axiom}[Korrespondenz ausgewählter Observablen]
+Zu einer relevanten Bulk-Observablen $O_{\mathrm{bulk}}$ existiert eine Boundary-Observabel $O_{\mathrm{bdry}}$ und eine Transformationsregel $F_O$ mit
+\[
+O_{\mathrm{bdry}}(\Phi(q))=F_O\bigl(O_{\mathrm{bulk}}(q)\bigr)
+\]
+für alle zulässigen $q\in\mathcal{B}$.
+\end{axiom}
+
+\begin{definition}[Bulk-Operatoralgebra]
+Es sei $\mathfrak{A}_{\mathrm{bulk}}$ eine Algebra von Operatoren auf $\mathcal{B}$. Dazu können Symmetrieoperatoren, Rotationen, Projektionsoperatoren, Dynamikgeneratoren und Splitoperatoren gehören.
+\end{definition}
+
+\begin{definition}[Boundary-Operatoralgebra]
+Es sei $\mathfrak{A}_{\mathrm{bdry}}$ eine Algebra von Operatoren auf $\mathcal{S}$, die die sphärischen, harmonischen oder informationsgeometrischen Gegenstücke der Bulk-Operatoren enthält.
+\end{definition}
+
+\begin{axiom}[Operatorielle Korrespondenz]
+Zu jedem relevanten Operator $A\in\mathfrak{A}_{\mathrm{bulk}}$ existiert ein korrespondierender Operator $\widetilde A\in\mathfrak{A}_{\mathrm{bdry}}$ mit
+\[
+\Phi\circ A\approx \widetilde A\circ\Phi.
+\]
+Hier bezeichnet $\approx$ exakte Gleichheit auf einem geeigneten Sektor oder Gleichheit bis auf Eichung, Symmetrie oder kontrollierte Approximation.
+\end{axiom}
+
+\begin{definition}[Invariantenklasse]
+Eine Klasse $\mathcal{I}$ von Größen heißt ausgezeichnete Invariantenklasse, wenn für jedes $I\in\mathcal{I}$ eine mit der Randbeschreibung verträgliche Größe $I'$ existiert, so dass
+\[
+I(q)=I'(\Phi(q))
+\]
+oder allgemeiner eine kontrollierte Transformationsregel gilt.
+\end{definition}
+
+\section{Rekonstruktion}
+
+\begin{definition}[Rekonstruktionsabbildung]
+Eine Abbildung
+\[
+\mathcal{R}:\mathcal{S}\to\mathcal{B}_{\mathrm{eff}}
+\]
+auf einen rekonstruierbaren Bulk-Sektor $\mathcal{B}_{\mathrm{eff}}\subseteq\mathcal{B}$ heißt Rekonstruktionsabbildung, wenn
+\[
+\mathcal{R}(\Phi(q))\sim q
+\]
+für alle $q$ in einem geeigneten Zustandsbereich gilt. Dabei bezeichnet $\sim$ Gleichheit bis auf die natürliche Äquivalenzrelation des Modells.
+\end{definition}
+
+\begin{axiom}[Stabilität der Rekonstruktion]
+Die Rekonstruktion soll lokal stabil gegenüber kleinen Boundary-Störungen sein.
+\end{axiom}
+
+\begin{satz}[Minimalbedingung einer holografischen Korrespondenz]
+Eine Boundary-Kodierung $\Phi$ liefert erst dann ein holografisches Bild im starken Sinn, wenn zusätzlich eine Rekonstruktionsabbildung $\mathcal{R}$ existiert, so dass die Komposition $\mathcal{R}\circ\Phi$ den relevanten Bulk-Sektor bis auf die natürliche Äquivalenzrelation wiederherstellt.
+\end{satz}
+
+\begin{proof}
+Ohne Rekonstruktion liefert $\Phi$ lediglich eine Projektion oder Visualisierung. Erst die Existenz einer wohldefinierten Rückgewinnung des Bulk-Gehalts zeigt, dass die Randseite nicht nur ein Bild, sondern ein informativer Code des Bulk ist. Die Aussage folgt unmittelbar aus der Definition des holografischen Anspruchs.
+\end{proof}
+
+\section{Dynamischer und gebundener Anteil}
+
+\begin{definition}[Splitoperator]
+Jedem Bulk-Zustand $q\in\mathcal{B}$ sei eine Zerlegung
+\[
+q\mapsto (K(q),P(q))
+\]
+zugeordnet, wobei $K(q)$ den dynamischen oder kinetischen Anteil und $P(q)$ den gebundenen oder potenziellen Anteil bezeichnet.
+\end{definition}
+
+\begin{definition}[Spiegelinvolution]
+Eine Abbildung
+\[
+\Theta:\mathcal{B}\to\mathcal{B}
+\]
+heißt energetische Spiegelinvolution, wenn
+\[
+\Theta^2=\mathrm{id},\qquad K(\Theta q)=P(q),\qquad P(\Theta q)=K(q)
+\]
+gilt.
+\end{definition}
+
+\begin{bemerkung}
+In relativistischer Interpretation vertauscht $\Theta$ nicht bloß Zahlenwerte, sondern Bewegungs- und Bindungsstruktur, also eine dynamische und eine geometrisierte Lesart desselben Zustands.
+\end{bemerkung}
+
+\section{Dynamik}
+
+\begin{definition}[Bulk-Dynamik]
+Eine Familie von Abbildungen
+\[
+U_t:\mathcal{B}\to\mathcal{B}
+\]
+heißt Bulk-Dynamik, wenn sie die zeitliche oder iterierte Entwicklung der Bulk-Zustände beschreibt.
+\end{definition}
+
+\begin{definition}[Boundary-Dynamik]
+Eine Familie
+\[
+V_t:\mathcal{S}\to\mathcal{S}
+\]
+heißt korrespondierende Randdynamik, wenn
+\[
+\Phi\circ U_t\approx V_t\circ\Phi
+\]
+für alle relevanten Zeiten oder Iterationsschritte gilt.
+\end{definition}
+
+\section{Informationsstruktur und Nicht-Duplikation}
+
+\begin{axiom}[Kodierungs- statt Kopierprinzip]
+Die Randrepräsentation $\Phi(q)$ ist keine zweite unabhängige Instanz des Bulk-Zustands, sondern eine kodierte Darstellung desselben physikalisch-mathematischen Gehalts.
+\end{axiom}
+
+\begin{axiom}[Nicht-Duplikationsaxiom]
+Die Rekonstruktion $\mathcal{R}(\Phi(q))$ ist als Auslesen oder Dekodieren zu verstehen und nicht als Erzeugung einer zweiten unabhängigen ontologischen Kopie.
+\end{axiom}
+
+\begin{axiom}[Verteilte Randinformation]
+Die am Rand vorhandene Information darf redundant, nichtlokal und sektoriell verteilt sein, sofern diese Redundanz als Kodierungsstruktur und nicht als triviale Verdopplung interpretiert wird.
+\end{axiom}
+
+\begin{satz}[Rolle des No-Cloning-Theorems]
+Das No-Cloning-Theorem wirkt in diesem Rahmen nicht als Verbot einer holografischen Korrespondenz, sondern als Schranke gegen die Interpretation von Bulk und Boundary als zwei unabhängige vollständige Kopien desselben unbekannten Zustands.
+\end{satz}
+
+\begin{proof}
+Eine holografische Korrespondenz beansprucht hier nicht die gleichzeitige Existenz zweier unabhängiger identischer Zustandsträger, sondern die Existenz einer Kodierung $\Phi$ und einer Rekonstruktionsregel $\mathcal{R}$. Dies ist begrifflich von einer physikalischen Kopieroperation zu unterscheiden. Das No-Cloning-Theorem grenzt daher die zulässige Interpretation ein, ohne die Kodierungs- und Rekonstruktionsidee selbst zu verbieten.
+\end{proof}
+
+\section{Kriterium eines klaren Bildes}
+
+\begin{definition}[Klarheitskriterium]
+Von einem klaren holografischen Bild darf genau dann gesprochen werden, wenn zugleich erfüllt sind:
+\begin{enumerate}[label=(\arabic*)]
+    \item präzise Definition von Bulk- und Boundary-Zuständen,
+    \item wohldefinierte Operatoren auf beiden Seiten,
+    \item identifizierte Observablen,
+    \item nachgewiesene operatorielle Korrespondenz,
+    \item wohldefinierte Rekonstruktion,
+    \item kontrollierte Invarianten oder Kovarianzen,
+    \item kompatible Dynamik,
+    \item informationsgeometrisch saubere Nicht-Duplikation.
+\end{enumerate}
+\end{definition}
+
+\section{Schluss}
+Das hier formulierte Minimalgerüst liefert noch keine vollständige Theorie, wohl aber eine scharfe Architektur. Es trennt sauber zwischen Projektion, Kodierung, Operatorenkorrespondenz, Rekonstruktion und Informationsinterpretation. Gerade dadurch wird sichtbar, dass die eigentliche Schwierigkeit einer quaternionisch-holografischen Theorie nicht nur in der Definition einzelner Operatoren liegt, sondern in der gleichzeitigen Beherrschung von Geometrie, Dynamik, Invarianten und Nicht-Duplikation.
+
+\end{document}

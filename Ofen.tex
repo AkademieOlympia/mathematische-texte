@@ -1,0 +1,207 @@
+\documentclass[11pt]{article}
+
+% --------------------------------------------------
+% Sprache, Encoding, Typografie
+% --------------------------------------------------
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% --------------------------------------------------
+% Mathematik
+% --------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm}
+
+% Theorem-Umgebungen (deutsch)
+\newtheorem{satz}{Satz}
+\newtheorem{lemma}{Lemma}
+\newtheorem{korollar}{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\theoremstyle{remark}
+\newtheorem{bemerkung}{Bemerkung}
+\newtheorem{beispiel}{Beispiel}
+
+% --------------------------------------------------
+% Layout
+% --------------------------------------------------
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+% --------------------------------------------------
+% Links
+% --------------------------------------------------
+\usepackage{hyperref}
+
+% --------------------------------------------------
+% Tabellen
+% --------------------------------------------------
+\usepackage{booktabs}
+
+% --------------------------------------------------
+% Grafiken (robust)
+% --------------------------------------------------
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./}{fig/}{figs/}{images/}{img/}}
+\newcommand{\includegraphicssafe}[2][]{%
+	\IfFileExists{#2}{\includegraphics[#1]{#2}}{%
+		\fbox{\parbox[c][0.3\textheight][c]{0.8\textwidth}{\centering Datei nicht gefunden: #2}}%
+	}%
+}
+
+% --------------------------------------------------
+% Titel
+% --------------------------------------------------
+\title{Primfaktorbasierte Dynamik natürlicher Zahlen\
+	\large Eine empirische Analyse der EABC-Struktur}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+% --------------------------------------------------
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir untersuchen eine Klassifikation natürlicher Zahlen basierend auf der Zerlegung ihrer Primfaktoren in vier Restklassen modulo 12. Daraus definieren wir eine Signatur $\sigma(n) = (e,a,b,c)$, welche die Häufigkeit der Primfaktoren in den Klassen $E \equiv 1$, $A \equiv 5$, $B \equiv 7$ und $C \equiv 11 \pmod{12}$ beschreibt.
+		
+		Numerische Experimente zeigen, dass dynamische Eigenschaften arithmetischer Funktionen — insbesondere spektrale Modulation (FFT) und Persistenz (lag1-Autokorrelation) — systematisch durch diese Signatur strukturiert werden.
+		
+		Dabei tritt eine klare Dichotomie auf: Primfaktoren der Klassen $A$ und $E$ korrelieren mit erhöhter Modulation, während $B$ und $C$ stabilisierend wirken. Die Ergebnisse legen nahe, dass der Zahlraum eine nichttriviale, diskrete Dynamikstruktur besitzt.
+	\end{abstract}
+	
+	% --------------------------------------------------
+	\section{Einleitung}
+	
+	Die klassische Zahlentheorie beschreibt Primzahlen über globale analytische Werkzeuge wie die Riemannsche Zetafunktion. Diese Methoden erfassen jedoch primär globale Verteilungen.
+	
+	In dieser Arbeit betrachten wir einen komplementären Zugang: die Untersuchung lokaler Strukturen über die Primfaktorzerlegung einzelner Zahlen.
+	
+	% --------------------------------------------------
+	\section{EABC-Signatur}
+	
+	\begin{definition}
+		Für $n \in \mathbb{N}$ mit Primfaktorzerlegung
+		\[
+		n = \prod_i p_i,
+		\]
+		definieren wir die Signatur
+		\[
+		\sigma(n) = (e,a,b,c),
+		\]
+		wobei
+		\[
+		\begin{aligned}
+			e &= \#\{p_i \equiv 1 \pmod{12}\}, \\
+			a &= \#\{p_i \equiv 5 \pmod{12}\}, \\
+			b &= \#\{p_i \equiv 7 \pmod{12}\}, \\
+			c &= \#\{p_i \equiv 11 \pmod{12}\}.
+		\end{aligned}
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		Diese Klassifikation entspricht der natürlichen Zerlegung der Primzahlen modulo 12 für $p>3$.
+	\end{bemerkung}
+	
+	% --------------------------------------------------
+	\section{Dynamische Observablen}
+	
+	Wir betrachten zwei Größen:
+	
+	\begin{itemize}
+		\item Spektrale Modulation (FFT)
+		\item Persistenz (lag1-Autokorrelation)
+	\end{itemize}
+	
+	\begin{definition}
+		Die spektrale Modulation ist die dominante Frequenzkomponente einer diskreten Fourier-Transformation.
+	\end{definition}
+	
+	\begin{definition}
+		Die Persistenz ist die Autokorrelation erster Ordnung.
+	\end{definition}
+	
+	% --------------------------------------------------
+	\section{Empirische Ergebnisse}
+	
+	\begin{satz}[empirisch]
+		Die Größen FFT und lag1 hängen systematisch von der Signatur $\sigma(n)$ ab.
+	\end{satz}
+	
+	\begin{bemerkung}
+		Insbesondere gilt:
+		\begin{itemize}
+			\item Kombinationen von $A$ und $E$ zeigen maximale Modulation.
+			\item Dominanz von $B$ und $C$ führt zu hoher Stabilität.
+		\end{itemize}
+	\end{bemerkung}
+	
+	% --------------------------------------------------
+	\section{Modell}
+	
+	Wir schlagen folgendes Modell vor:
+	\[
+	D(n) =
+	\alpha_A a + \alpha_E e - \beta_B b - \beta_C c
+	+ \gamma_{AE} ae + \gamma_{AC} ac + \gamma_{BC} bc
+	\]
+	
+	\begin{satz}[empirisch]
+		Dieses Modell erreicht in numerischen Tests eine Vorhersagegüte von
+		\[
+		R^2 \approx 0.3 - 0.4.
+		\]
+	\end{satz}
+	
+	% --------------------------------------------------
+	\section{Schalenmodell}
+	
+	Die Daten legen eine dreistufige Struktur nahe:
+	
+	\begin{itemize}
+		\item Glatte Zone (hohe Stabilität)
+		\item Übergangszone (hohe Modulation)
+		\item BC-Kern (strukturstabil)
+	\end{itemize}
+	
+	% --------------------------------------------------
+	\section{Diskussion}
+	
+	Die Ergebnisse zeigen:
+	
+	\begin{itemize}
+		\item Primfaktorstruktur beeinflusst Dynamik messbar
+		\item Familien sind nicht äquivalent
+		\item Kombinationen erzeugen emergente Effekte
+	\end{itemize}
+	
+	\begin{bemerkung}
+		Eine direkte Verbindung zur Zetafunktion wird hier nicht behauptet.
+	\end{bemerkung}
+	
+	% --------------------------------------------------
+	\section{Fazit}
+	
+	\[
+	\boxed{
+		\text{Der Zahlraum besitzt eine messbare primfaktorbasierte Dynamikstruktur}
+	}
+	\]
+	
+	% --------------------------------------------------
+	\appendix
+	
+	\section{Appendix: Beispielcode}
+	
+	\begin{verbatim}
+		import numpy as np
+		
+		def build_features(sig):
+		e,a,b,c = sig
+		return np.array([e,a,b,c,ae,ac,b*c])
+	\end{verbatim}
+	
+\end{document}

@@ -1,0 +1,303 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+
+\geometry{margin=2.5cm}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg,.jpeg}
+\graphicspath{{./}{fig/}{figs/}{images/}{img/}}
+\newcommand{\includegraphicssafe}[2][]{%
+  \IfFileExists{#2}{\includegraphics[#1]{#2}}{%
+    \fbox{\parbox[c][0.28\textheight][c]{0.9\linewidth}{\centering Abbildung \texttt{#2} nicht gefunden.}}%
+  }%
+}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  citecolor=blue!50!black,
+  urlcolor=blue!60!black,
+  pdftitle={Arithmetische Signaturgeometrie faktorisierbarer Zahlen},
+  pdfauthor={Thomas Hoffbauer \& KI-gestützte Ausarbeitung}
+}
+
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{korollar}[satz]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{beispiel}[satz]{Beispiel}
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+\newtheorem{hypothese}[satz]{Hypothese}
+\newtheorem{proposition}[satz]{Proposition}
+
+\title{Arithmetische Signaturgeometrie faktorisierbarer Zahlen\\
+\large Restkern-Fasern, diskrete Entropieschichten und mehrskalige Kleinträgerprofile}
+\author{Thomas Hoffbauer \and KI-gestützte Ausarbeitung}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Wir schlagen eine signaturtheoretische Sicht auf faktorisierbare Zahlen vor, in der der lineare Zahlenwert nicht als primärer Strukturraum, sondern als Projektion einer reicheren arithmetischen Geometrie aufgefasst wird. Relativ zu einer festen Glattheitsbasis $B$ wird jede Zahl $n$ in einen glatten Träger $s_B(n)$ und einen Restkern $m_B(n)$ zerlegt. Der Restkern trägt zusätzlich eine orientierte Familienverteilung modulo $12$ sowie eine mehrskalige Kleinträgersignatur. Auf dieser Basis definieren wir strukturtheoretische Größen wie den Restkernanteil $\varepsilon_B(n)$, die familienbasierte Entropie $C_{\mathrm{fam}}(n)$, balancierte und massenartige Krümmungsmaße sowie gestufte Kleinträgerprofile $\vec\kappa(n)=(\kappa_5,\kappa_7,\kappa_{11},\kappa_{13})$. Numerische Auswertungen für den Bereich $2\le n\le 10^5$ zeigen vier robuste Phänomene: natürliche Restkern-Fasern, diskrete Entropieschichten nach Familienzahl, monotone Dämpfung der sichtbaren Krümmung entlang einer Faser und zusätzliche Tiefenprofile innerhalb gleicher Entropieschichten. Diese Resultate stützen die Strukturthese, dass die natürliche Zahlenachse Werte ordnet, aber nicht die eigentliche innere Geometrie faktorisierbarer Zahlen beschreibt.
+\end{abstract}
+
+\section{Einleitung}
+Die lineare Ordnung der natürlichen Zahlen ist für viele arithmetische Fragestellungen natürlich, aber strukturell grob. Zwei Zahlen können auf der Zahlenachse weit auseinanderliegen und dennoch eine eng verwandte Faktorisationssignatur besitzen; umgekehrt können benachbarte Zahlen intern stark verschiedene Restkern-, Familien- und Kleinträgerprofile tragen. Diese Beobachtung motiviert die folgende Leitidee:
+
+\begin{quote}
+Die Zahlenachse ordnet Werte, aber nicht Strukturen. Die innere Geometrie faktorisierbarer Zahlen liegt nicht primär in ihrer linearen Größe, sondern in ihrer Faktorisationssignatur: im Zusammenspiel von glattem Träger, Restkern, Familienorientierung und mehrskaliger Kleinträgervermittlung.
+\end{quote}
+
+Ziel dieser Arbeit ist es, diese Strukturthese begrifflich zu formulieren und anhand numerischer Evidenz zu präzisieren. Wir arbeiten relativ zur Basis $B=\{2,3\}$, da diese Wahl den glatten Träger besonders transparent von der restkernartigen Struktur trennt. Die Konstruktion verallgemeinert sich jedoch unmittelbar auf andere feste Basen.
+
+\section{Grundbegriffe}
+
+\begin{definition}[Glatter Träger und Restkern]
+Sei $B$ eine endliche Menge von Primzahlen. Für $n\in\mathbb N$ definieren wir den glatten Anteil relativ zu $B$ durch
+\[
+ s_B(n):=\prod_{p\in B} p^{v_p(n)}
+\]
+und den zugehörigen Restkern durch
+\[
+ m_B(n):=\frac{n}{s_B(n)}.
+\]
+Im Folgenden arbeiten wir überwiegend mit $B=\{2,3\}$ und schreiben entsprechend $s_{23}(n)$ und $m_{23}(n)$.
+\end{definition}
+
+\begin{definition}[Normierte Träger- und Restkernanteile]
+Für $n>1$ setzen wir
+\[
+ \sigma_B(n):=\frac{\log s_B(n)}{\log n},
+ \qquad
+ \varepsilon_B(n):=\frac{\log m_B(n)}{\log n}.
+\]
+Dann gilt stets
+\[
+ \sigma_B(n)+\varepsilon_B(n)=1.
+\]
+\end{definition}
+
+\begin{bemerkung}
+Der Anteil $\sigma_B(n)$ misst die Stärke der glatten Bühne, während $\varepsilon_B(n)$ die Dominanz des Restkerns ausdrückt. In der hier vertretenen Interpretation fungiert die glatte Hülle als Hintergrundmetrik, der Restkern als tiefere Signaturschicht.
+\end{bemerkung}
+
+\subsection{Familienorientierung modulo 12}
+Für Primzahlen $p>3$ treten nur die Restklassen
+\[
+1,\ 5,\ 7,\ 11 \pmod{12}
+\]
+auf. Wir bezeichnen sie mit
+\[
+E\equiv 1\pmod{12},\qquad
+A\equiv 5\pmod{12},\qquad
+B\equiv 7\pmod{12},\qquad
+C\equiv 11\pmod{12}.
+\]
+
+\begin{definition}[Familiengewichte]
+Sei $m_B(n)>1$ und zerlege den Restkern in die vier Familienanteile
+\[
+ m_B(n)=m_E(n)\,m_A(n)\,m_B^{\ast}(n)\,m_C(n),
+\]
+wobei jeder Faktor das Produkt der Primfaktoren aus der jeweiligen Restklasse (mit Vielfachheiten) bezeichnet. Die normierten logarithmischen Gewichte seien
+\[
+ \rho_E(n):=\frac{\log m_E(n)}{\log m_B(n)},\quad
+ \rho_A(n):=\frac{\log m_A(n)}{\log m_B(n)},\quad
+ \rho_B(n):=\frac{\log m_B^{\ast}(n)}{\log m_B(n)},\quad
+ \rho_C(n):=\frac{\log m_C(n)}{\log m_B(n)}.
+\]
+Dann gilt
+\[
+ \rho_E(n)+\rho_A(n)+\rho_B(n)+\rho_C(n)=1.
+\]
+Wir schreiben ferner
+\[
+ \vec\rho_B(n):=(\rho_E(n),\rho_A(n),\rho_B(n),\rho_C(n)).
+\]
+\end{definition}
+
+\begin{definition}[Familienbasierte Entropie]
+Für $m_B(n)>1$ definieren wir
+\[
+ C_{\mathrm{fam}}(n):=-\sum_{X\in\{E,A,B,C\}} \rho_X(n)\log \rho_X(n),
+\]
+mit der Konvention $0\log 0:=0$.
+\end{definition}
+
+\begin{bemerkung}
+Die Größe $C_{\mathrm{fam}}$ misst nicht bloß Größe, sondern interne Verzweigung. Monofamilien-Restkerne haben $C_{\mathrm{fam}}=0$; die maximal mögliche Vierfamilien-Entropie liegt bei $\log 4$.
+\end{bemerkung}
+
+\subsection{Mehrskalige Kleinträgersignatur}
+
+\begin{definition}[Kleinträgeranteile]
+Für eine Primschranke $\Lambda$ sei
+\[
+ k_\Lambda(n):=\prod_{p\le \Lambda} p^{v_p(n)},
+ \qquad
+ \kappa_\Lambda(n):=\frac{\log k_\Lambda(n)}{\log n}.
+\]
+Im Folgenden verwenden wir die mehrskalige Signatur
+\[
+ \vec\kappa(n):=(\kappa_5(n),\kappa_7(n),\kappa_{11}(n),\kappa_{13}(n)).
+\]
+\end{definition}
+
+\begin{bemerkung}
+Die Staffelung $\vec\kappa$ liefert eine echte zusätzliche Tiefenachse: Zahlen gleicher Familienentropie können stark verschiedene Kleinträgerprofile besitzen.
+\end{bemerkung}
+
+\section{Krümmungsmaße und Strukturdistanz}
+
+\begin{definition}[Balancierte Krümmung]
+\[
+ K_{\mathrm{bal}}(n):=\varepsilon_B(n)\,C_{\mathrm{fam}}(n).
+\]
+\end{definition}
+
+\begin{definition}[Massenkrümmung]
+Für $m_B(n)>1$ definieren wir
+\[
+ K_{\mathrm{mass}}(n):=\frac{\log m_B(n)}{\log(1+s_B(n))}\,C_{\mathrm{fam}}(n),
+\]
+und setzen andernfalls $K_{\mathrm{mass}}(n):=0$.
+\end{definition}
+
+\begin{definition}[Kleinträger-modulierte Krümmung]
+\[
+ K_{\mathrm{small}}(n):=K_{\mathrm{bal}}(n)\,\kappa_{13}(n).
+\]
+\end{definition}
+
+\begin{definition}[Strukturdistanz]
+Für zwei Zahlen $n,m$ definieren wir heuristisch eine Strukturdistanz durch
+\[
+ d_{\mathrm{str}}(n,m):=
+ \Bigl(
+ w_\varepsilon(\varepsilon_B(n)-\varepsilon_B(m))^2
+ +w_\rho\lVert\vec\rho_B(n)-\vec\rho_B(m)\rVert_2^2
+ +w_\kappa\lVert\vec\kappa(n)-\vec\kappa(m)\rVert_2^2
+ \Bigr)^{1/2},
+\]
+mit positiven Gewichtungsparametern $w_\varepsilon,w_\rho,w_\kappa$.
+\end{definition}
+
+\begin{bemerkung}
+Diese Distanz ist nicht als kanonische arithmetische Metrik gemeint, sondern als empirisch motivierte Strukturmetrik auf dem Signaturraum. Ihre Hauptfunktion besteht darin, Restkern-Fasern, Familienverwandtschaften und Tiefenprofile sichtbar zu machen.
+\end{bemerkung}
+
+\section{Strukturthese}
+
+\begin{definition}[Strukturthese]
+Relativ zu einer festen Basis $B$ besitzen faktorisierbare Zahlen eine faserartige Signaturgeometrie. Jede Zahl zerfällt in einen glatten Träger und einen Restkern; der Restkern trägt eine orientierte Familienverteilung und ein mehrskalig aufgelöstes Kleinträgerprofil. Daraus folgt, dass die natürliche Zahlenordnung nur die sichtbare Projektion einer reicheren arithmetischen Struktur ist. Numerische Nähe ist im Allgemeinen nicht strukturelle Nähe.
+\end{definition}
+
+\begin{proposition}[Empirische Ausprägung der Strukturthese]
+Die numerischen Auswertungen im Bereich $2\le n\le 10^5$ zeigen:
+\begin{enumerate}[label=(\roman*)]
+\item konstante Restkerne erzeugen natürliche Fasern,
+\item die familienbasierte Entropie bildet diskrete Schichten nach Familienzahl,
+\item die glatte Hülle dämpft entlang einer Faser die sichtbare Krümmung monoton,
+\item die mehrskalige Kleinträgerskala löst Zahlen gleicher Entropieschicht weiter in Tiefenprofile auf.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}[Begründung]
+Die Aussage ist empirisch und folgt aus der numerischen Auswertung der Größen $s_B(n)$, $m_B(n)$, $\vec\rho_B(n)$, $\vec\kappa(n)$, $C_{\mathrm{fam}}(n)$, $K_{\mathrm{bal}}(n)$ und $K_{\mathrm{mass}}(n)$ für alle $n\le 10^5$ sowie aus den zugehörigen Streudiagrammen, Faserplots und Distanz-Heatmaps.
+\end{proof}
+
+\begin{korollar}[Projektionscharakter der Zahlenachse]
+Die numerische Distanz $|n-m|$ ist im Allgemeinen kein adäquates Maß struktureller Nähe. Vielmehr wird strukturelle Nähe besser durch die Signatur $\Sigma_B(n):=(\sigma_B(n),\varepsilon_B(n),\vec\rho_B(n),\vec\kappa(n),C_{\mathrm{fam}}(n))$ erfasst.
+\end{korollar}
+
+\section{Empirische Beobachtungen}
+Die numerischen Daten zeigen vier besonders robuste Phänomene.
+
+\subsection{Restkern-Fasern}
+Für festen Restkern
+\[
+\mathcal F_B(m;N):=\{n\le N: m_B(n)=m\}
+\]
+entsteht eine natürliche Faser, entlang derer die orientierte Reststruktur erhalten bleibt, während die glatte Hülle variiert. Beispiele wie die Fasern $m_B=35$, $77$ und $143$ zeigen eine geordnete monotone Entwicklung der Krümmungsmaße bei konstantem Familien-Support.
+
+\subsection{Diskrete Entropieschichten}
+Die Familienentropie bildet keine einzelnen diskreten Werte, wohl aber diskrete Bänder. Ihre Obergrenzen werden durch
+\[
+\log 1,\qquad \log 2,\qquad \log 3,\qquad \log 4
+\]
+markiert und entsprechen Ein-, Zwei-, Drei- und Vierfamilien-Support. Die genaue Lage innerhalb eines Bandes wird durch die Gewichtsverteilung $\vec\rho_B(n)$ bestimmt.
+
+\subsection{Monotone Dämpfung durch die glatte Hülle}
+Entlang einer festen Faser sinken $K_{\mathrm{bal}}$ und insbesondere $K_{\mathrm{mass}}$ monoton mit wachsendem $\sigma_B(n)$. Dies legt nahe, den glatten Anteil als dämpfende Hintergrundmetrik zu interpretieren.
+
+\subsection{Mehrskalige Tiefenprofile}
+Die Größen $\kappa_5,\kappa_7,\kappa_{11},\kappa_{13}$ trennen Zahlen gleicher Entropiestufe weiter. So können Vierfamilien-Zahlen in ihrer Entropie fast gleich sein, zugleich aber stark verschiedene Kleinträgerprofile besitzen. Damit beschreibt $\vec\kappa$ eine zusätzliche Tiefenachse, die weder im Restkern allein noch in der Entropie aufgeht.
+
+\section{Abbildungen}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphicssafe[width=0.92\linewidth]{plot_scatter_epsilon_Cfam.png}
+    \caption{Strukturraum faktorisierbarer Zahlen bis $10^5$ relativ zu $B=\{2,3\}$. Horizontal steht der Restkernanteil $\varepsilon_B(n)$, vertikal die familienbasierte Entropie $C_{\mathrm{fam}}(n)$. Die Farbe kodiert $\kappa_{13}(n)$, die Punktgröße das Maß $K_{\mathrm{mass}}(n)$. Sichtbar werden diskrete Entropiestufen, die Ein-, Zwei-, Drei- und Vierfamilienklassen entsprechen.}
+    \label{fig:scatter}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphicssafe[width=0.32\linewidth]{plot_fiber_mB_35.png}\hfill
+    \includegraphicssafe[width=0.32\linewidth]{plot_fiber_mB_77.png}\hfill
+    \includegraphicssafe[width=0.32\linewidth]{plot_fiber_mB_143.png}
+    \caption{Krümmungsmaße entlang der Restkern-Fasern $m_B=35$, $77$ und $143$. Mit wachsendem $\sigma_B(n)$ nehmen die sichtbaren Krümmungsmaße systematisch ab. Dies stützt die Interpretation des glatten Anteils als dämpfende Hintergrundmetrik bei konstanter innerer Signatur.}
+    \label{fig:fiber-curvature}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphicssafe[width=0.32\linewidth]{plot_heatmap_mB_35.png}\hfill
+    \includegraphicssafe[width=0.32\linewidth]{plot_heatmap_mB_77.png}\hfill
+    \includegraphicssafe[width=0.32\linewidth]{plot_heatmap_mB_143.png}
+    \caption{Strukturdistanz-Heatmaps innerhalb der Restkern-Fasern $m_B=35$, $77$ und $143$. Die nahezu bandförmige Ordnung zeigt, dass die Faser nicht nur als Menge, sondern als natürlich geordneter metrischer Zusammenhang erscheint.}
+    \label{fig:fiber-heatmaps}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphicssafe[width=0.32\linewidth]{plot_kappas_mB_35.png}\hfill
+    \includegraphicssafe[width=0.32\linewidth]{plot_kappas_mB_77.png}\hfill
+    \includegraphicssafe[width=0.32\linewidth]{plot_kappas_mB_143.png}
+    \caption{Mehrskalen-Kleinträgersignaturen entlang der Restkern-Fasern $m_B=35$, $77$ und $143$. Die gestaffelten Verläufe von $\kappa_5$, $\kappa_7$, $\kappa_{11}$ und $\kappa_{13}$ zeigen, dass dieselbe Restkern-Faser ein charakteristisches Tiefenprofil der kleinträgernahen Vermittlung besitzt.}
+    \label{fig:fiber-kappa}
+\end{figure}
+
+\section{Diskussion}
+Die numerischen Ergebnisse legen eine mehrschichtige Sicht auf faktorisierbare Zahlen nahe. Restkern-Fasern erzeugen natürliche Signaturklassen, die durch Familien-Support und Kleinträgerprofile weiter gegliedert werden. Die lineare Zahlenachse bleibt als globale Ordnung erhalten, verliert jedoch ihre Stellung als primärer Strukturraum. Besonders aufschlussreich ist die klare Trennung der Rollen von Restkerndominanz, Familienverzweigung und Kleinträgernähe: keine dieser Größen allein beschreibt die gesamte interne Geometrie, wohl aber ihr Zusammenspiel.
+
+Die hier verwendeten Krümmungsmaße sind explorativ motiviert. Ihre Stabilität entlang der Restkern-Fasern und die deutlichen Entropieschichten sprechen jedoch dafür, dass die zugrunde liegende Signaturgeometrie keine rein artefaktische Erscheinung ist. Vielmehr deutet alles darauf hin, dass faktorisierbare Zahlen relativ zu einer festen Basis durch eine diskrete, faserartige und mehrskalige Struktur organisiert sind.
+
+\section{Ausblick}
+Naheliegende nächste Schritte sind:
+\begin{enumerate}[label=(\alph*)]
+\item die Ausweitung des numerischen Bereichs auf $10^6$ und darüber,
+\item der Vergleich verschiedener Basen $B$,
+\item die Untersuchung weiterer Distanzformen auf dem Signaturraum,
+\item sowie die systematische Analyse der Vierfamilien-Zahlen als Kandidaten maximaler balancierter Strukturkrümmung.
+\end{enumerate}
+
+\bigskip
+\noindent\textbf{Leitsatz.} Nicht der Zahlenwert ist die Struktur, sondern die Faktorisationssignatur. Der Wert ordnet, die Signatur erklärt.
+
+\end{document}

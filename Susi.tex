@@ -1,0 +1,131 @@
+\documentclass{article}
+\usepackage{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+
+\title{Ein diskretes Transport- und Krümmungsmodell auf arithmetischen Strukturen}
+\author{Thomas Hoffbauer}
+\date{}
+
+\newtheorem{definition}{Definition}
+\newtheorem{satz}{Satz}
+\newtheorem{lemma}{Lemma}
+\newtheorem{bemerkung}{Bemerkung}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Wir formulieren ein diskretes Transportmodell auf einem kombinatorischen Komplex, in dem arithmetische Strukturen als lokale Zustände kodiert werden. Die Dynamik wird durch eine Wirkung definiert, die Transportholonomie, lokale Abweichung und Phasenkopplung umfasst. Ziel ist es, eine spektrale Struktur zu gewinnen, die mit nichttrivialen Nullstellen der Riemannschen Zetafunktion in Beziehung steht.
+	\end{abstract}
+	
+	\section{Der kombinatorische Raum}
+	
+	\begin{definition}
+		Sei
+		\[
+		K = (V,E,F,T)
+		\]
+		ein simplizialer Komplex mit Knoten $V$, Kanten $E$, Dreiecken $F$ und Tetraedern $T$.
+	\end{definition}
+	
+	Jedem Knoten $i \in V$ wird ein Zustand zugeordnet:
+	\[
+	X_i = (\rho_i, \theta_i, \chi_i, \sigma_i)
+	\]
+	
+	mit:
+	\begin{itemize}
+		\item $\rho_i$: skalare Last
+		\item $\theta_i$: diskrete Phase
+		\item $\chi_i$: topologischer Zweigzustand
+		\item $\sigma_i$: Klassenzugehörigkeit
+	\end{itemize}
+	
+	\section{Diskrete Transportstruktur}
+	
+	\begin{definition}
+		Für jede Kante $(i,j) \in E$ sei ein Transportoperator
+		\[
+		U_{ij} \in G
+		\]
+		gegeben, wobei $G$ eine endliche Gruppe ist.
+	\end{definition}
+	
+	Für einen Weg $P$ definieren wir:
+	\[
+	U(P) = \prod_{(i,j)\in P} U_{ij}
+	\]
+	
+	\section{Holonomie und Krümmung}
+	
+	\begin{definition}
+		Für eine geschlossene Schleife $C$ definieren wir die Holonomie:
+		\[
+		U_C = \prod_{(i,j)\in C} U_{ij}
+		\]
+	\end{definition}
+	
+	Die Krümmung wird durch:
+	\[
+	\mathcal{K}(C) = \operatorname{Tr}(I - U_C)
+	\]
+	gemessen.
+	
+	\section{Die Wirkung}
+	
+	Die diskrete Wirkung sei gegeben durch:
+	\begin{align*}
+		S ={} & \sum_C \kappa_C \operatorname{Tr}(I - U_C) \\
+		& + \sum_i \lambda (\rho_i - \rho_0)^2 \\
+		& + \sum_{(i,j)} \eta (\theta_i - \theta_j)^2
+	\end{align*}
+	
+	\begin{itemize}
+		\item erster Term: Krümmung / Holonomie
+		\item zweiter Term: lokale Relaxation
+		\item dritter Term: Phasenkopplung
+	\end{itemize}
+	
+	\section{Arithmetische Spezialisierung}
+	
+	Wir wählen:
+	\[
+	\theta_i \in \{1,5,7,11\} \subset \mathbb{Z}_{12}
+	\]
+	
+	und identifizieren die Transportgruppe mit der Kleinschen Vierergruppe:
+	\[
+	G \cong V_4
+	\]
+	
+	\begin{satz}
+		Unter dieser Spezialisierung entspricht die Holonomie entlang geschlossener Schleifen der Komposition arithmetischer Klassenwechsel.
+	\end{satz}
+	
+	\section{Spektrale Hypothese}
+	
+	\begin{satz}[Spektrale Vermutung]
+		Es existiert ein selbstadjungierter Operator $\mathcal{D}$ auf dem Komplex $K$, dessen Spektrum durch die Holonomiestruktur bestimmt ist und dessen Eigenwerte asymptotisch mit den nichttrivialen Nullstellen der Zetafunktion korrelieren.
+	\end{satz}
+	
+	\section{Interpretation}
+	
+	\begin{itemize}
+		\item Krümmung $\leftrightarrow$ arithmetische Defekte
+		\item Transport $\leftrightarrow$ Klassenübergänge
+		\item Schleifen $\leftrightarrow$ Primzahlkonfigurationen
+	\end{itemize}
+	
+	\section{Ausblick}
+	
+	Zukünftige Arbeit umfasst:
+	\begin{itemize}
+		\item numerische Spektralanalyse
+		\item Konstruktion eines expliziten Dirac-Operators
+		\item Vergleich mit bekannten Zetadaten
+	\end{itemize}
+	
+\end{document}

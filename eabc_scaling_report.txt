@@ -1,0 +1,57 @@
+========================================================================
+EABC Skalierungstest — Chebyshev-artiger Bias B_{101,11}
+========================================================================
+Grenzen: ['100,000,000', '300,000,000', '1,000,000,000']
+Kanäle mod 420: [11, 101, 191, 221, 311, 401]
+Random-Walk-Null: 5000 Trials pro Grenze
+Zeitbudget pro Grenze: 30 min
+
+--- N_max = 100,000,000 ---
+  Laufzeit: 3.41s (Sieb: 3.41s)
+  K = 4,767
+  N_i = [765, 831, 786, 809, 809, 767]
+  B_101,11 = +66, B/√K = +0.9559
+  max|B|/√k = 1.0388 bei k=4412
+  δ(B>0) = 0.6180, Vorzeichenwechsel = 13
+  max Paar: B_{401,221} mit max|B|/√k = 1.5000
+  Null p-Werte: |final|=9.8%, max=72.7%
+
+--- N_max = 300,000,000 ---
+  Laufzeit: 10.31s (Sieb: 10.30s)
+  K = 10,972
+  N_i = [1801, 1852, 1775, 1860, 1863, 1821]
+  B_101,11 = +51, B/√K = +0.4869
+  max|B|/√k = 1.1373 bei k=7274
+  δ(B>0) = 0.8340, Vorzeichenwechsel = 13
+  max Paar: B_{401,221} mit max|B|/√k = 1.5000
+  Null p-Werte: |final|=39.9%, max=63.9%
+
+  Geschätzte Zeit für 10^9: 34.4s (0.6 min)
+--- N_max = 1,000,000,000 ---
+  Laufzeit: 36.47s (Sieb: 36.47s)
+  K = 28,387
+  N_i = [4724, 4801, 4682, 4742, 4762, 4676]
+  B_101,11 = +77, B/√K = +0.4570
+  max|B|/√k = 1.1373 bei k=7274
+  δ(B>0) = 0.9359, Vorzeichenwechsel = 13
+  max Paar: B_{401,221} mit max|B|/√k = 1.5000
+  Null p-Werte: |final|=43.1%, max=68.3%
+
+
+         N_max        K  B_101,11     B/√K  max|B|/√k   δ(B>0)   VZW   Zeit[s]  extr.
+-------------------------------------------------------------------------------------
+   100,000,000    4,767       +66  +0.9559     1.0388   0.6180    13      3.41   nein
+   300,000,000   10,972       +51  +0.4869     1.1373   0.8340    13     10.31   nein
+ 1,000,000,000   28,387       +77  +0.4570     1.1373   0.9359    13     36.47   nein
+
+--- Skalierungsurteil ---
+GEMISCHT: B/√K von +0.956 nach +0.457; Trend pro Stufe -0.2495.
+  N_max=100,000,000: p(|B/√K|≥beob.)=9.8%, p(max|B|/√k≥beob.)=72.7%
+  N_max=300,000,000: p(|B/√K|≥beob.)=39.9%, p(max|B|/√k≥beob.)=63.9%
+  N_max=1,000,000,000: p(|B/√K|≥beob.)=43.1%, p(max|B|/√k≥beob.)=68.3%
+
+--- Random-Walk bei K=28,387 (1,000,000,000) ---
+  Beobachtet: B/√K=+0.4570, max|B|/√k=1.1373
+  Null p(|final|): 43.1%, p(max): 68.3%
+
+CSV: /Users/thomashoffbauer/Desktop/Mathematische Texte/eabc_scaling_report.csv

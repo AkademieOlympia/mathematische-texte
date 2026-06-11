@@ -1,0 +1,198 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+% Robuste Grafikeinbindung
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./}{fig/}{figs/}{images/}{img/}}
+\newcommand{\includegraphicssafe}[2][]{%
+	\IfFileExists{#2}{\includegraphics[#1]{#2}}{%
+		\fbox{\parbox[c][4cm][c]{0.8\linewidth}{\centering Grafikdatei \texttt{#2} nicht gefunden}}%
+	}%
+}
+
+% Theorem-Umgebungen
+\theoremstyle{plain}
+\newtheorem{satz}{Satz}
+\newtheorem{lemma}{Lemma}
+\newtheorem{korollar}{Korollar}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{beispiel}{Beispiel}
+
+\theoremstyle{remark}
+\newtheorem{bemerkung}{Bemerkung}
+
+\title{\textbf{Tabellen zu Zwillingen, Drillingen und Vierlingen\\
+		mit Heimatfamilien und Familienindizes}}
+\author{Kollaborative Ausarbeitung}
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+	
+	\section{Vorbemerkung}
+	
+	Wir verwenden die mod-\(12\)-Klassifikation
+	\[
+	E \equiv 1 \pmod{12},\qquad
+	A \equiv 5 \pmod{12},\qquad
+	B \equiv 7 \pmod{12},\qquad
+	C \equiv 11 \pmod{12}.
+	\]
+	
+	Für eine Primzahl \(q>3\) bezeichne \(F_i\) den Index von \(q\) innerhalb ihrer Heimatfamilie \(F\in\{E,A,B,C\}\). Beispielsweise gilt:
+	\[
+	5=A_1,\qquad 7=B_1,\qquad 11=C_1,\qquad 13=E_1,
+	\]
+	\[
+	17=A_2,\qquad 19=B_2,\qquad 23=C_2,\qquad 37=E_2.
+	\]
+	
+	Die Primzahl \(3\) wird gesondert notiert, da sie nicht zu den vier Familien \(E,A,B,C\) gehört.
+	
+	\section{Tabelle der ersten Zwillinge}
+	
+	\begin{longtable}{>{\raggedleft\arraybackslash}p{1.2cm} >{\centering\arraybackslash}p{4.0cm} p{8.2cm}}
+		\toprule
+		Nr. & Zwilling & Familienindizes \\
+		\midrule
+		\endfirsthead
+		\toprule
+		Nr. & Zwilling & Familienindizes \\
+		\midrule
+		\endhead
+		\bottomrule
+		\endfoot
+		
+		1  & $(3,5)$       & $3=\text{Sonderfall},\ 5=A_{1}$ \\
+		2  & $(5,7)$       & $5=A_{1},\ 7=B_{1}$ \\
+		3  & $(11,13)$     & $11=C_{1},\ 13=E_{1}$ \\
+		4  & $(17,19)$     & $17=A_{2},\ 19=B_{2}$ \\
+		5  & $(29,31)$     & $29=A_{3},\ 31=B_{3}$ \\
+		6  & $(41,43)$     & $41=A_{4},\ 43=B_{4}$ \\
+		7  & $(59,61)$     & $59=C_{4},\ 61=E_{3}$ \\
+		8  & $(71,73)$     & $71=C_{5},\ 73=E_{4}$ \\
+		9  & $(101,103)$   & $101=A_{7},\ 103=B_{7}$ \\
+		10 & $(107,109)$   & $107=C_{7},\ 109=E_{6}$ \\
+		11 & $(137,139)$   & $137=A_{9},\ 139=B_{9}$ \\
+		12 & $(149,151)$   & $149=A_{10},\ 151=B_{10}$ \\
+		
+	\end{longtable}
+	
+	\section{Tabelle der ersten Drillinge}
+	
+	Hier sind die engen Primzahldrillinge der Formen
+	\[
+	(p,p+2,p+6)\qquad\text{oder}\qquad (p,p+4,p+6),
+	\]
+	einschließlich des Sonderfalls \((3,5,7)\).
+	
+	\begin{longtable}{>{\raggedleft\arraybackslash}p{1.2cm} >{\centering\arraybackslash}p{4.7cm} p{7.6cm}}
+		\toprule
+		Nr. & Drilling & Familienindizes \\
+		\midrule
+		\endfirsthead
+		\toprule
+		Nr. & Drilling & Familienindizes \\
+		\midrule
+		\endhead
+		\bottomrule
+		\endfoot
+		
+		1  & $(3,5,7)$       & $3=\text{Sonderfall},\ 5=A_{1},\ 7=B_{1}$ \\
+		2  & $(5,7,11)$      & $5=A_{1},\ 7=B_{1},\ 11=C_{1}$ \\
+		3  & $(7,11,13)$     & $7=B_{1},\ 11=C_{1},\ 13=E_{1}$ \\
+		4  & $(11,13,17)$    & $11=C_{1},\ 13=E_{1},\ 17=A_{2}$ \\
+		5  & $(13,17,19)$    & $13=E_{1},\ 17=A_{2},\ 19=B_{2}$ \\
+		6  & $(17,19,23)$    & $17=A_{2},\ 19=B_{2},\ 23=C_{2}$ \\
+		7  & $(37,41,43)$    & $37=E_{2},\ 41=A_{4},\ 43=B_{4}$ \\
+		8  & $(41,43,47)$    & $41=A_{4},\ 43=B_{4},\ 47=C_{3}$ \\
+		9  & $(67,71,73)$    & $67=B_{5},\ 71=C_{5},\ 73=E_{4}$ \\
+		10 & $(97,101,103)$  & $97=E_{5},\ 101=A_{7},\ 103=B_{7}$ \\
+		11 & $(101,103,107)$ & $101=A_{7},\ 103=B_{7},\ 107=C_{7}$ \\
+		12 & $(103,107,109)$ & $103=B_{7},\ 107=C_{7},\ 109=E_{6}$ \\
+		
+	\end{longtable}
+	
+	\section{Tabelle der ersten Vierlinge}
+	
+	Wir betrachten Primzahlvierlinge der Form
+	\[
+	(p,p+2,p+6,p+8).
+	\]
+	
+	\begin{longtable}{>{\raggedleft\arraybackslash}p{1.2cm} >{\centering\arraybackslash}p{5.2cm} p{7.0cm}}
+		\toprule
+		Nr. & Vierling & Familienindizes \\
+		\midrule
+		\endfirsthead
+		\toprule
+		Nr. & Vierling & Familienindizes \\
+		\midrule
+		\endhead
+		\bottomrule
+		\endfoot
+		
+		1  & $(5,7,11,13)$            & $5=A_{1},\ 7=B_{1},\ 11=C_{1},\ 13=E_{1}$ \\
+		2  & $(11,13,17,19)$          & $11=C_{1},\ 13=E_{1},\ 17=A_{2},\ 19=B_{2}$ \\
+		3  & $(101,103,107,109)$      & $101=A_{7},\ 103=B_{7},\ 107=C_{7},\ 109=E_{6}$ \\
+		4  & $(191,193,197,199)$      & $191=C_{11},\ 193=E_{9},\ 197=A_{12},\ 199=B_{12}$ \\
+		5  & $(821,823,827,829)$      & $821=A_{38},\ 823=B_{38},\ 827=C_{35},\ 829=E_{32}$ \\
+		6  & $(1481,1483,1487,1489)$  & $1481=A_{61},\ 1483=B_{61},\ 1487=C_{59},\ 1489=E_{54}$ \\
+		7  & $(1871,1873,1877,1879)$  & $1871=C_{73},\ 1873=E_{68},\ 1877=A_{71},\ 1879=B_{75}$ \\
+		8  & $(2081,2083,2087,2089)$  & $2081=A_{79},\ 2083=B_{80},\ 2087=C_{81},\ 2089=E_{74}$ \\
+		9  & $(3251,3253,3257,3259)$  & $3251=C_{117},\ 3253=E_{110},\ 3257=A_{118},\ 3259=B_{114}$ \\
+		10 & $(3461,3463,3467,3469)$  & $3461=A_{123},\ 3463=B_{121},\ 3467=C_{124},\ 3469=E_{117}$ \\
+		
+	\end{longtable}
+	
+	\section{Interpretation}
+	
+	Diese Tabellen machen zwei Dinge gleichzeitig sichtbar:
+	
+	\begin{enumerate}
+		\item die \emph{Familienform} einer Konstellation, also welche der Klassen \(E,A,B,C\) überhaupt besetzt sind,
+		\item den \emph{intrafamiliären Rang} der jeweiligen Primzahl innerhalb ihrer Heimatfamilie.
+	\end{enumerate}
+	
+	Damit erhält jede Primzahl in der Konstellation nicht nur eine Familienzugehörigkeit, sondern auch eine zweite Koordinate:
+	\[
+	q \longmapsto (F,i),
+	\]
+	wobei \(F\in\{E,A,B,C\}\) die Heimatfamilie und \(i\) der Familienindex ist.
+	
+	Beispielsweise wird
+	\[
+	197 \longmapsto (A,12),\qquad 193 \longmapsto (E,9).
+	\]
+	
+	\section{Strukturelle Beobachtung}
+	
+	Die Tabellen illustrieren erneut die abgestufte Besetzung des EABC-Raums:
+	
+	\begin{itemize}
+		\item Zwillinge besetzen genau zwei Familien,
+		\item Drillinge besetzen genau drei Familien,
+		\item Vierlinge besetzen alle vier Familien.
+	\end{itemize}
+	
+	Die Familienindizes zeigen darüber hinaus, dass die Konstellationen zwar die Familienstruktur geordnet durchlaufen, die Zählstände innerhalb der Familien aber nicht notwendig synchron verlaufen.
+	
+\end{document}

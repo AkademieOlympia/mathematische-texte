@@ -1,0 +1,150 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{physics}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\newcommand{\modtwelve}{\ (\mathrm{mod}\ 12)}
+\newcommand{\omegaT}{\omega_{12}}
+
+\title{\textbf{Messprotokoll: Phasenprogrammierung (mod 12) und Rekonstruktion von $\gamma$}}
+\author{}
+\date{}
+
+\begin{document}
+	\maketitle
+	
+	\section{Inputs und Konstanten}
+	
+	\paragraph{Inputs.}
+	\begin{itemize}
+		\item \textbf{Phasen-Lookup-Tabellen pro Kanal:} $\mathrm{DAC}_i(K)$ für $i\in\{E,A,B,C\}$ und $K\in\{0,\dots,11\}$.
+		\item \textbf{Gewichte (Kalibration):} $w_E,w_A,w_B,w_C$ (Startwert z.\,B. $w_i\approx 1/4$).
+		\item \textbf{Globaler Phasenoffset:} $\phi_0$ (aus Referenzmessung).
+		\item \textbf{Messkampagnenliste:} Einträge $(K_E,K_A,K_B,R)$.
+	\end{itemize}
+	
+	\paragraph{Konstante.}
+	\[
+	\omegaT \coloneqq e^{2\pi i/12}.
+	\]
+	
+	\section{Definitionen: Mess- und Modellgröße}
+	
+	\paragraph{Gemessene komplexe Größe.}
+	Aus den nichtselektiven Messungen von $\expval{\sigma_x}$ und $\expval{\sigma_y}$ auf dem System $S$ wird
+	\[
+	\gamma_{\mathrm{meas}}
+	\;\coloneqq\;
+	\bigl(s_x + i\,s_y\bigr)\,e^{-i\phi_0}
+	\quad\text{mit}\quad
+	s_x=\expval{\sigma_x},\;\; s_y=\expval{\sigma_y}.
+	\]
+	
+	\paragraph{Vorhersage aus programmierten Phasen (Gewichtssuperposition).}
+	Für die programmierte Wahl $(K_E,K_A,K_B,K_C)$ definiere
+	\[
+	\gamma_{\mathrm{pred}}
+	\;\coloneqq\;
+	w_E\,\omegaT^{K_E}
+	+
+	w_A\,\omegaT^{K_A}
+	+
+	w_B\,\omegaT^{K_B}
+	+
+	w_C\,\omegaT^{K_C}.
+	\]
+	
+	\section{Kampagnen-Ablauf (Algorithmus)}
+	
+	\begin{algorithm}[h]
+		\caption{Phasenprogrammierung (mod 12), Experiment, Rekonstruktion von $\gamma$}
+		\begin{algorithmic}[1]
+			\Require Lookup-Tabellen $\mathrm{DAC}_i(K)$; Gewichte $w_E,w_A,w_B,w_C$; Offset $\phi_0$; Kampagnenliste $(K_E,K_A,K_B,R)$
+			\Ensure Datensätze $\{K_E,K_A,K_B,K_C,R,\gamma_{\mathrm{meas}},\gamma_{\mathrm{pred}}\}$
+			
+			\ForAll{Kampagneneinträge $(K_E,K_A,K_B,R)$}
+			\State \textbf{(1) Bestimme $K_C$ durch Nebenbedingung}
+			\State $K_C \gets (R - K_E - K_A - K_B)\modtwelve$
+			\Statex
+			
+			\State \textbf{(2) Programmiere Phasen (über DAC)}
+			\State $\texttt{set\_phase}(E,\,\mathrm{DAC}_E(K_E))$
+			\State $\texttt{set\_phase}(A,\,\mathrm{DAC}_A(K_A))$
+			\State $\texttt{set\_phase}(B,\,\mathrm{DAC}_B(K_B))$
+			\State $\texttt{set\_phase}(C,\,\mathrm{DAC}_C(K_C))$
+			\Statex
+			
+			\State \textbf{(3) Experiment ausführen}
+			\State Präpariere Systemzustand $\ket{+}$
+			\State Koppelung $S \leftrightarrow \text{Record}$ applizieren
+			\State Record-Ausgänge ignorieren (nichtselektiv)
+			\State Messe $s_x=\expval{\sigma_x}$ und $s_y=\expval{\sigma_y}$ auf $S$
+			\State Speichere $(s_x,s_y)$
+			\Statex
+			
+			\State \textbf{(4) Rekonstruiere $\gamma_{\mathrm{meas}}$ (global-phasen-korrigiert)}
+			\State $\gamma_{\mathrm{meas}} \gets (s_x + i\,s_y)\,e^{-i\phi_0}$
+			\Statex
+			
+			\State \textbf{(5) Berechne $\gamma_{\mathrm{pred}}$ aus $(K_E,K_A,K_B,K_C)$}
+			\State $\gamma_{\mathrm{pred}} \gets w_E\omegaT^{K_E} + w_A\omegaT^{K_A} + w_B\omegaT^{K_B} + w_C\omegaT^{K_C}$
+			\Statex
+			
+			\State \textbf{(6) Datensatz speichern}
+			\State $\texttt{save}\{K_E,K_A,K_B,K_C,R,\gamma_{\mathrm{meas}},\gamma_{\mathrm{pred}}\}$
+			\EndFor
+		\end{algorithmic}
+	\end{algorithm}
+	
+	\section{Postprocessing}
+	
+	\paragraph{(A) Komplexebene.}
+	Plotte die Punkte $\gamma_{\mathrm{meas}}$ in der Ebene $(\Re,\Im)$, gruppiert nach
+	\begin{itemize}
+		\item festem $R$ (``$R$-Slices''), und/oder
+		\item festen Tripeln $(K_E,K_A,K_B)$ (Trajektorien in $R$).
+	\end{itemize}
+	
+	\paragraph{(B) Fehlermaß.}
+	Definiere den Betragfehler
+	\[
+	\Delta \;\coloneqq\; \abs{\gamma_{\mathrm{meas}} - \gamma_{\mathrm{pred}}}.
+	\]
+	Optional zusätzlich: komponentenweise Fehler $(\Re,\Im)$ oder Winkel-/Radiusfehler.
+	
+	\paragraph{(C) Clustering.}
+	Cluster $\gamma_{\mathrm{meas}}$ mittels Distanzschwelle $\varepsilon$ (aus Phasenjitter geschätzt),
+	z.\,B. in der komplexen Ebene mit euklidischer Distanz.
+	Berichte pro Cluster $c$:
+	\[
+	\mu_c = \text{Clusterzentrum},\qquad
+	\Sigma_c = \text{Varianz/Kovarianz} \quad (\text{oder Radiusvarianz}).
+	\]
+	
+	\paragraph{(D) Report.}
+	\begin{itemize}
+		\item Anzahl Cluster pro $R$.
+		\item Clusterzentren und Varianzen pro $R$.
+		\item $R$-Sweep-Trajektorien $\gamma(R)$ für feste Tripel $(K_E,K_A,K_B)$.
+	\end{itemize}
+	
+	\paragraph{Nulltest (Minimale Amplitude und Muster).}
+	Finde Einstellungen mit minimaler Amplitude
+	\[
+	\abs{\gamma_{\mathrm{meas}}}\ \text{minimal} \quad \text{(oder }\abs{\gamma_{\mathrm{pred}}}\text{ minimal).}
+	\]
+	Prüfe, ob diese Minimierer bevorzugt dem Muster
+	\[
+	\{u,\ v,\ u+6,\ v+6\}\modtwelve
+	\]
+	entsprechen (``Gegenphasen-Paarung'' um $6$).
+	
+\end{document}

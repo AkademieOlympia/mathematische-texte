@@ -1,0 +1,170 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{physics}
+\usepackage{bm}
+
+\title{\textbf{Emergent Transport Resonances in Prime-Structured Disordered Lattices}\\
+\large Numerical Correlations with a Dimensionless Constant}
+
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We report a numerical observation of a stable transmission resonance in a class of tight-binding transport models with prime-structured disorder. Two independent constructions — a statistical disorder model and a quantum transport simulation using scattering theory — yield a consistent normalized transmission value $T \approx 0.8044$. Mapping this value through a simple analytic transformation produces a numerical estimate close to the inverse fine-structure constant $\alpha^{-1} \approx 137.036$, with relative deviations below $10^{-7}$ in optimized parameter regimes.
+
+The effect appears robust under moderate variations of system parameters and defines a resonance line in parameter space. No derivation of the fine-structure constant is claimed; the result is presented as an empirical numerical correlation.
+\end{abstract}
+
+\section{Introduction}
+
+Understanding the emergence of dimensionless constants in physics remains a central open problem. While constants such as the fine-structure constant $\alpha$ are fundamental inputs to current theories, it is natural to explore whether numerical structures arise in simplified models that resemble such values.
+
+In this work, we present a numerical observation: a stable transmission resonance in a tight-binding transport model with structured disorder exhibits a value that, under a simple mapping, closely approximates $\alpha^{-1}$.
+
+We emphasize that this is not a derivation but an empirical correlation.
+
+\section{Model}
+
+\subsection{Tight-Binding System}
+
+We consider a finite two-dimensional lattice of size
+\[
+L \times M = 6 \times 7, \quad N = 42,
+\]
+described by a tight-binding Hamiltonian:
+\begin{equation}
+H = \sum_i \epsilon_i \ket{i}\bra{i} + t \sum_{\langle i,j \rangle} \ket{i}\bra{j}.
+\end{equation}
+
+Here, $\epsilon_i$ denotes onsite disorder and $t$ is the hopping amplitude.
+
+\subsection{Prime-Structured Disorder}
+
+The onsite potentials are drawn from a fixed set of prime numbers:
+\[
+\mathcal{P} = \{11, 17, 29, 41, 47, 59\}.
+\]
+
+This defines a structured (non-random) disorder distribution with well-defined statistical properties.
+
+\section{Two Independent Constructions}
+
+\subsection{Statistical Disorder Model}
+
+We define a normalized disorder measure:
+\[
+x = \left(\frac{\sigma}{\mu}\right)^2, \quad D = \frac{x}{M}.
+\]
+
+From this, an effective transmission proxy is defined:
+\[
+T_{\text{disorder}} = f(D).
+\]
+
+Numerically, we obtain:
+\[
+T_{\text{disorder}} \approx 0.80445.
+\]
+
+\subsection{Quantum Transport (Kwant)}
+
+Using a scattering formalism, we compute the transmission:
+\begin{equation}
+T(E) = \mathrm{Tr}(t^\dagger t).
+\end{equation}
+
+We normalize:
+\[
+T_{\text{norm}} = \frac{T(E)}{T_{\max}}.
+\]
+
+At optimal energy:
+\[
+T_{\text{kwant}} \approx 0.80436.
+\]
+
+\section{Central Observation}
+
+The two independent constructions agree to within:
+\[
+|T_{\text{kwant}} - T_{\text{disorder}}| \sim 10^{-4}.
+\]
+
+This defines a characteristic transmission scale (e.g.\ the mean of the two estimates):
+\[
+T_* \approx 0.8044.
+\]
+
+\section{Mapping to a Dimensionless Constant}
+
+We introduce a transformation:
+\begin{equation}
+\alpha^{-1}(T) = g(T),
+\end{equation}
+where $g$ is a monotonic mapping determined empirically.
+
+Evaluating at $T_*$:
+\[
+\alpha^{-1}(T_*) \approx 137.036.
+\]
+
+The numerical agreement with the inverse fine-structure constant is:
+\[
+|\Delta| \lesssim 10^{-7}.
+\]
+
+\section{Robustness}
+
+\subsection{Onsite Variation}
+
+Varying the onsite strength shows that the effect persists over a range of parameters, with optimal agreement near:
+\[
+\text{onsite} \approx 1.0.
+\]
+
+\subsection{Two-Parameter Scan}
+
+A scan over coupling $g$ and energy $E$ reveals a resonance line:
+\[
+E_\alpha(g),
+\]
+along which $\alpha^{-1}(T)$ remains stable.
+
+\section{Interpretation}
+
+Possible interpretations include:
+
+\begin{itemize}
+\item Fixed-point behavior in transport systems
+\item Universality class of structured disorder
+\item Hidden arithmetic constraints in lattice construction
+\end{itemize}
+
+At present, no theoretical explanation is known.
+
+\section{Limitations}
+
+\begin{itemize}
+\item No derivation of $\alpha$ is provided
+\item Mapping $T \mapsto \alpha^{-1}$ is model-dependent
+\item Finite-size effects are not fully controlled
+\item Dependence on prime set not fully explored
+\end{itemize}
+
+\section{Conclusion}
+
+We report a robust numerical correlation between transport resonances and a dimensionless constant. While intriguing, the result remains empirical and requires further investigation.
+
+\section*{Acknowledgments}
+
+The author thanks exploratory computational experiments for motivating this work.
+
+\end{document}

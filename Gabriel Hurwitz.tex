@@ -1,0 +1,274 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{siunitx}
+\usepackage{xcolor}
+
+\geometry{left=28mm,right=28mm,top=28mm,bottom=30mm}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!55!black,
+  urlcolor=blue!55!black,
+  citecolor=blue!55!black,
+  pdftitle={Gabriel--Hurwitz-Protokoll},
+  pdfauthor={Thomas Hoffbauer}
+}
+
+\sisetup{
+  locale = DE,
+  output-decimal-marker = {,},
+  group-separator = {.}
+}
+
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\piPrime}{\pi}
+\newcommand{\HurwitzStates}{\mathcal{H}}
+\newcommand{\Deviation}{\Delta}
+\newcommand{\Koch}{B_{\mathrm{Koch}}}
+
+\title{\textbf{Gabriel--Hurwitz-Protokoll}\\
+\large Arithmetische Interferenz, Hurwitz-Quaternionen und der Eichpunkt \(x=1422\)}
+\author{Dr. Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Dieses Protokoll verbindet das klassische Paradoxon von Gabriels Horn mit einer
+gewichteten Primzahlgeometrie über Hurwitz-Quaternionen. Ausgangspunkt ist die
+Fluktuation
+\[
+  \Deviation(x) = \piPrime(x)-\Li(x),
+\]
+also die Abweichung der realen Primzahlzählfunktion vom glatten
+Integrallogarithmus. Numerisch zeigt sich im Bereich \(1000 \leq x < 3000\) ein
+kritischer Eichpunkt bei \(x=1422\). Dort liegt die lokale Auslastung der
+verwendeten Rigiditätsskala bei \(\num{119.92}\,\%\). Im Modell wird diese
+Kompression durch eine Primzahllücke zwischen \(1409\) und \(1423\) und durch
+die gewichtete Hurwitz-Masse \(24p\) der angrenzenden Primzahlschalen
+interpretiert.
+\end{abstract}
+
+\section{Gabriels Horn als Kontinuumsmodell}
+
+Gabriels Horn entsteht, wenn der Graph
+\[
+  y=\frac{1}{x}, \qquad x \geq 1,
+\]
+um die \(x\)-Achse rotiert. Das Volumen dieses unendlich langen Körpers ist
+endlich:
+\[
+  V=\pi\int_{1}^{\infty}\frac{1}{x^2}\,\mathrm{d}x=\pi.
+\]
+Die Mantelfläche divergiert dagegen:
+\[
+  A=2\pi\int_{1}^{\infty}\frac{1}{x}\sqrt{1+\frac{1}{x^4}}\,\mathrm{d}x
+  =\infty.
+\]
+Damit liefert Gabriels Horn eine präzise mathematische Metapher: Ein
+kontinuierliches System kann global endlich und lokal dennoch unerschöpflich
+sein. Genau diese Spannung zwischen Kontinuum und diskreter Struktur tritt in
+der Primzahlgeometrie erneut auf.
+
+\section{Primzahltrend und arithmetische Fluktuation}
+
+Die glatte Näherung an die Primzahlzählfunktion wird durch den
+Integrallogarithmus beschrieben:
+\[
+  \Li(x)=\int_{2}^{x}\frac{1}{\log t}\,\mathrm{d}t.
+\]
+Die reale Primzahlzählung \(\piPrime(x)\) ist hingegen eine Treppenfunktion.
+Die zentrale Messgröße des Modells ist deshalb
+\[
+  \Deviation(x)=\piPrime(x)-\Li(x).
+\]
+Als Vergleichsskala verwenden wir die im Skript getestete von-Koch-artige
+Rigiditätsskala
+\[
+  \Koch(x)=\frac{1}{8\pi}\sqrt{x}\log x.
+\]
+Die normierte Kompression ist
+\[
+  R(x)=\frac{|\Deviation(x)|}{\Koch(x)}.
+\]
+Sie misst nicht eine bewiesene globale Schranke, sondern die lokale Auslastung
+der im Modell verwendeten Rigiditätsskala.
+
+\section{Numerischer Eichpunkt}
+
+Im Suchfenster \(1000\leq x<3000\) ergibt die Diagnose den maximalen
+Kompressionspunkt
+\[
+  x_\ast=1422.
+\]
+Die zugehörigen Kennzahlen lauten:
+
+\begin{table}[htbp]
+\centering
+\caption{Kritischer Eichpunkt des Bamberger Modells}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Größe & Wert \\
+\midrule
+Suchfenster & \(1000 \leq x < 3000\) \\
+Eichpunkt \(x_\ast\) & \(1422\) \\
+Abweichung \(|\Deviation(x_\ast)|\) & \(\num{13.0627}\) \\
+Rigiditätsskala \(\Koch(x_\ast)\) & \(\num{10.8927}\) \\
+Auslastung \(R(x_\ast)\) & \(\num{119.92}\,\%\) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Der Wert \(x=1422\) liegt unmittelbar vor der nächsten Primzahl \(1423\).
+Dadurch bleibt \(\piPrime(x)\) lokal konstant, während \(\Li(x)\) stetig
+weiterwächst. Die Kompression erreicht daher genau am Ende der primzahlfreien
+Zone ihr lokales Maximum.
+
+\section[Kritisches Fenster 1400 bis 1450]{Kritisches Fenster \(1400\leq x\leq 1450\)}
+
+Die Primzahlen im kritischen Fenster sind
+\[
+  1409,\ 1423,\ 1427,\ 1429,\ 1433,\ 1439,\ 1447.
+\]
+Die lokalen Lücken lauten:
+
+\begin{table}[htbp]
+\centering
+\caption{Lokale Lückenstruktur im kritischen Fenster}
+\begin{tabular}{@{}ccc@{}}
+\toprule
+Vorherige Primzahl & Nächste Primzahl & Lücke \\
+\midrule
+1409 & 1423 & 14 \\
+1423 & 1427 & 4 \\
+1427 & 1429 & 2 \\
+1429 & 1433 & 4 \\
+1433 & 1439 & 6 \\
+1439 & 1447 & 8 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Die maximale arithmetische Spannung im Fenster ist somit die Lücke
+\[
+  1423-1409=14.
+\]
+Im Bild des Modells ist das Intervall \(1410,\dots,1422\) ein lokales
+arithmetisches Vakuum: kein neuer Primzahlknoten tritt auf, obwohl das
+kontinuierliche Hintergrundpotential weiter anwächst.
+
+\section{Hurwitz-Gewichtung}
+
+Für eine Primzahl \(p\) wird die algebraische Zustandszahl der zugehörigen
+Hurwitz-Sphäre im Modell durch
+\[
+  \HurwitzStates(p)=24p
+\]
+gewichtet. Damit wird aus der bloßen Zählung von Primzahlen eine gewichtete
+Massendichte des Gitters.
+
+Für die globale Schnittstelle bis \(x=2000\) ergibt die Diagnose:
+
+\begin{table}[htbp]
+\centering
+\caption{Quaternionische Feld-Schnittstelle bis \(x=2000\)}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Größe & Wert \\
+\midrule
+Anzahl der Primzahlknoten & \(303\) \\
+Kontinuierliches Hintergrundpotential \(\Li(2000)\) & \(\num{313.7641}\) \\
+Gesamtzahl der Hurwitz-Zustände & \(\num{6649200}\) \\
+Globale Energiedichte & \(\num{21191.72}\) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Die lokalen Massenpunkte um den Eichpunkt sind:
+
+\begin{table}[htbp]
+\centering
+\caption{Lokale Hurwitz-Massen im kritischen Fenster}
+\begin{tabular}{@{}ccc@{}}
+\toprule
+Primzahl \(p\) & Hurwitz-Zustände \(24p\) & Anteil an der Gesamtmasse \\
+\midrule
+1409 & 33816 & \(\num{0.5086}\,\%\) \\
+1423 & 34152 & \(\num{0.5136}\,\%\) \\
+1427 & 34248 & \(\num{0.5151}\,\%\) \\
+1429 & 34296 & \(\num{0.5158}\,\%\) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Die 14er-Lücke zwischen \(1409\) und \(1423\) ist damit nicht nur eine Lücke in
+der Primzahlzählung, sondern ein massenfreies Intervall zwischen zwei stark
+gewichteten Hurwitz-Knoten.
+
+\section{Fernfeldkontrolle}
+
+Als Fernfeld-Stichprobe wurde \(x=100000\) berechnet:
+
+\begin{table}[htbp]
+\centering
+\caption{Fernfeld-Stichprobe}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Größe & Wert \\
+\midrule
+\(\piPrime(100000)\) & \(9592\) \\
+\(\Li(100000)\) & \(\num{9628.76}\) \\
+\(\Deviation(100000)\) & \(\num{-36.76}\) \\
+\(\Koch(100000)\) & \(\pm\num{144.86}\) \\
+Auslastung & \(\num{25.38}\,\%\) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Im Fernfeld ist die relative Auslastung der Rigiditätsskala deutlich kleiner.
+Das unterstützt die Modellinterpretation, dass der Bereich um \(x=1422\) ein
+lokaler Eichpunkt des Nahfeldes ist.
+
+\section{Resonanzdiagnose}
+
+Zur groben Orientierung wurde außerdem eine abgeschnittene Zeta-Welle aus den
+ersten drei nichttrivialen Nullstellen-Frequenzen verwendet:
+\[
+  W(x)=\sum_{\gamma\in\{14.134725,\,21.022040,\,25.010858\}}
+  \frac{2\sin(\gamma\log x)}{\gamma\sqrt{x}}.
+\]
+Die Werte lauten:
+\[
+  W(1500)=\num{0.0029},\qquad W(8000)=\num{0.0011}.
+\]
+Diese Größe ist nicht die Fluktuation selbst, sondern eine normierte
+Resonanzsonde für die im Plot sichtbaren Oszillationsanteile.
+
+\section{Modellfazit}
+
+Das Gabriel--Hurwitz-Protokoll lässt sich in drei Schritten lesen:
+
+\begin{enumerate}
+  \item Gabriels Horn liefert das Kontinuumsbild: endliches Volumen bei
+  unendlicher Oberfläche.
+  \item Der Integrallogarithmus \(\Li(x)\) liefert den glatten Primzahlstrom,
+  während \(\piPrime(x)\) die diskrete Treppenstruktur zeigt.
+  \item Die Hurwitz-Gewichtung \(24p\) macht aus Primzahlen gewichtete
+  Gitterknoten. Die Lücke \(1409\to1423\) erzeugt dadurch im Modell ein lokales
+  massenfreies Intervall zwischen zwei schweren algebraischen Zustandsknoten.
+\end{enumerate}
+
+Der Eichpunkt \(x=1422\) ist damit der numerisch isolierte Ort maximaler lokaler
+Kompression im untersuchten Nahfeld. Er erklärt, warum die Kurve
+\(\piPrime(x)-\Li(x)\) dort besonders stark an die gewählte Rigiditätsskala
+heranläuft und anschließend wieder in den stabileren Korridor zurückkehrt.
+
+\end{document}

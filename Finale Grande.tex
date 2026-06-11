@@ -1,0 +1,820 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsfonts,amsthm,mathtools}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{graphicx}
+
+\geometry{margin=2.5cm}
+
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{korollar}[satz]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{hypothese}[satz]{Hypothese}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+
+\title{
+	Von Divisionsalgebren zu Holonomiespektren\\
+	\large Ein EABC-basiertes Forschungsprogramm zur Verbindung von Algebra, Topologie, Zahlentheorie und mathematischer Physik
+}
+
+\author{Thomas Hoffbauer}
+
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Diese Arbeit formuliert ein mathematisch-physikalisches Forschungsprogramm auf Grundlage der Einheitengruppe modulo \(12\), der normierten Divisionsalgebren, diskreter Holonomien, Hecke-artiger Operatoren und der Ikosaeder--Dodekaeder-Dualität. Ausgangspunkt ist die Viererstruktur
+		\[
+		(\mathbb Z/12\mathbb Z)^\times=\{1,5,7,11\},
+		\]
+		die als EABC-Algebra bezeichnet und geometrisch als regulärer Tetraeder dargestellt wird. Durch eine quaternionische Hebung entsteht Chiralität; durch diskrete Phasen eine Holonomiestruktur; durch Ikosaeder und Dodekaeder eine Orbit-Flächen-Dualität.
+		
+		Die zentrale Hypothese lautet: Teilchenartige Zustände sind nicht primär punktförmige Objekte, sondern stabile Eigenmoden diskreter Holonomieschleifen. Spin, Familienstruktur, Neutrinooszillation, Van-der-Waals-Wechselwirkungen und spektrale Stabilität erscheinen als verschiedene Projektionen derselben zugrunde liegenden Operatorstruktur.
+		
+		Das Modell erhebt keinen Anspruch auf eine abgeschlossene physikalische Theorie. Es versteht sich als mathematisch strukturiertes Forschungsprogramm, das klare Definitionen, testbare Hypothesen und offene Probleme formuliert.
+	\end{abstract}
+	
+	\tableofcontents
+	
+	\newpage
+	
+	\section{Einleitung}
+	
+	Die moderne mathematische Physik kennt mehrere zentrale Leitmotive: Symmetrie, Spektrum, Topologie und Geometrisierung. Die klassische Mechanik wird durch Variationsprinzipien beschrieben, die Elektrodynamik durch Eichfelder, die Quantenmechanik durch Operatoren, die Relativitätstheorie durch Geometrie und die moderne Festkörperphysik zunehmend durch topologische Invarianten.
+	
+	Das hier entwickelte Bamberger Modell III, im Folgenden BM III, versucht, diese Motive in einer diskreten arithmetischen Struktur zusammenzuführen. Der Ausgangspunkt ist einfach: Die Einheitengruppe modulo \(12\) besitzt vier Elemente. Diese vier Elemente bilden algebraisch die Kleinsche Vierergruppe, geometrisch ein reguläres Tetraeder und nach quaternionischer Hebung eine orientierte Spinorstruktur.
+	
+	Die leitende Vermutung lautet:
+	\[
+	\boxed{\text{Nicht Teilchen sind fundamental, sondern Holonomieschleifen.}}
+	\]
+	Teilchen, Familien, Massen und Wechselwirkungen werden in diesem Modell als stabile oder metastabile Eigenmoden eines diskreten Holonomieoperators verstanden.
+	
+	\section{Historischer Hintergrund}
+	
+	\subsection{Pythagoras, Platon und die Geometrie der Zahl}
+	
+	Bereits in der antiken Mathematik wurde Zahl nicht nur als Zählgröße, sondern auch als Form verstanden. Pythagoreische Zahlenfiguren, platonische Körper und harmonische Verhältnisse zeigen eine frühe Verbindung von Arithmetik, Geometrie und Naturbeschreibung.
+	
+	Die platonischen Körper liefern bis heute zentrale Symmetriemodelle. Insbesondere Tetraeder, Ikosaeder und Dodekaeder erscheinen in diesem Modell als elementare innere und äußere Geometrieschichten.
+	
+	\subsection{Hamilton und die Quaternionen}
+	
+	Hamiltons Entdeckung der Quaternionen im Jahr 1843 führte zu einer Algebra, in der die Reihenfolge der Multiplikation wesentlich wird:
+	\[
+	i^2=j^2=k^2=ijk=-1.
+	\]
+	Damit entsteht Nichtkommutativität. Genau diese Nichtkommutativität wird im BM III zur Quelle der Chiralität:
+	\[
+	BC=+A,\qquad CB=-A.
+	\]
+	
+	\subsection{Cayley und die Oktonionen}
+	
+	Cayley erweiterte die Quaternionen zu den Oktonionen \(\mathbb O\). Diese sind nicht mehr assoziativ, aber noch normiert. Die Oktonionen besitzen Dimension \(8\) und bilden eine natürliche Brücke zur \(E_8\)-Geometrie.
+	
+	\subsection{Hurwitz und die normierten Divisionsalgebren}
+	
+	Der Satz von Hurwitz ist für das Modell zentral.
+	
+	\begin{satz}[Hurwitz]
+		Die einzigen endlichdimensionalen normierten reellen Divisionsalgebren sind
+		\[
+		\mathbb R,\qquad \mathbb C,\qquad \mathbb H,\qquad \mathbb O.
+		\]
+		Ihre Dimensionen sind
+		\[
+		1,\quad 2,\quad 4,\quad 8.
+		\]
+	\end{satz}
+	
+	Im BM III wird diese Kette interpretiert als
+	\[
+	\mathbb R=\text{Skala},\qquad
+	\mathbb C=\text{Phase},\qquad
+	\mathbb H=\text{Spin},\qquad
+	\mathbb O=\text{Holonomie und Packung}.
+	\]
+	
+	\subsection{Hecke, Ramanujan und spektrale Arithmetik}
+	
+	Hecke-Operatoren wirken auf Modulformen und erzeugen arithmetisch bedeutsame Eigenwerte. Ramanujans Arbeiten über Modulformen, Thetafunktionen, Partitionszahlen und unendliche Reihen zeigen, dass arithmetische Information oft spektral organisiert ist.
+	
+	Die BM-III-Analogie lautet:
+	\[
+	T_p\psi=\lambda_p\psi,
+	\]
+	wobei \(T_p\) ein arithmetischer Übergangsoperator und \(\lambda_p\) ein Ramanujan-artiger Eigenwert ist.
+	
+	\subsection{Dirac, Aharonov--Bohm, Onsager und von Klitzing}
+	
+	Dirac führte Spinoren und einen Operator ein, dessen Quadrat eine Hamiltonstruktur liefert. Aharonov und Bohm zeigten, dass eine Phase physikalisch wirksam sein kann, auch wenn lokal kein Feld messbar ist. Onsager formulierte Reziprozitätsrelationen. Von Klitzing zeigte, dass Leitfähigkeit topologisch quantisiert sein kann.
+	
+	Diese drei Aspekte erscheinen im BM III als:
+	\[
+	\Gamma(P)=\text{Holonomie},
+	\]
+	\[
+	\nu(P)=\text{Windungszahl},
+	\]
+	\[
+	\Omega(P)=\text{Reziprozitätsanteil}.
+	\]
+	
+	\section{Die EABC-Algebra}
+	
+	\begin{definition}
+		Die vier Einheiten modulo \(12\) werden bezeichnet durch
+		\[
+		E\equiv1,\qquad A\equiv5,\qquad B\equiv7,\qquad C\equiv11\pmod{12}.
+		\]
+	\end{definition}
+	
+	Es gilt
+	\[
+	A^2=B^2=C^2=E,
+	\]
+	und
+	\[
+	AB=C,\qquad AC=B,\qquad BC=A.
+	\]
+	
+	\begin{satz}
+		Die Menge \(\{E,A,B,C\}\) mit der Multiplikation modulo \(12\) ist isomorph zur Kleinschen Vierergruppe
+		\[
+		V_4\cong(\mathbb Z/2\mathbb Z)^2.
+		\]
+	\end{satz}
+	
+	\section{Tetraedrische Darstellung}
+	
+	Wir setzen
+	\[
+	E=(1,1,1),
+	\]
+	\[
+	A=(-1,-1,1),
+	\]
+	\[
+	B=(1,-1,-1),
+	\]
+	\[
+	C=(-1,1,-1).
+	\]
+	
+	Dann gilt
+	\[
+	E+A+B+C=0.
+	\]
+	
+	\begin{satz}
+		Die vier Punkte \(E,A,B,C\) bilden ein reguläres Tetraeder.
+	\end{satz}
+	
+	\begin{proof}
+		Für jedes Paar verschiedener Punkte beträgt die quadratische Distanz
+		\[
+		d^2=8.
+		\]
+		Also sind alle sechs Kanten gleich lang.
+	\end{proof}
+	
+	Die Zahl
+	\[
+	8
+	\]
+	erscheint damit als erste fundamentale geometrische Spannung.
+	
+	\section{Quaternionische Hebung}
+	
+	Die EABC-Algebra ist kommutativ. Chiralität entsteht erst durch eine Hebung in \(Q_8\).
+	
+	Wir setzen
+	\[
+	E\mapsto\pm1,\qquad
+	A\mapsto\pm i,\qquad
+	B\mapsto\pm j,\qquad
+	C\mapsto\pm k.
+	\]
+	
+	Wesentlich ist:
+	\[
+	V_4\simeq Q_8/\{\pm1\}.
+	\]
+	
+	Dann gilt
+	\[
+	BC=+A,\qquad CB=-A.
+	\]
+	
+	\begin{definition}
+		Der chirale Bindungsspinor des \(A\)-Kanals ist
+		\[
+		A_R=BC,\qquad A_L=CB.
+		\]
+	\end{definition}
+	
+	Analog entstehen
+	\[
+	B_R=CA,\qquad B_L=AC,
+	\]
+	und
+	\[
+	C_R=AB,\qquad C_L=BA.
+	\]
+	
+	\section{Glatt--Halbklein--Vollklein}
+	
+	\begin{definition}
+		Jede natürliche Zahl \(n\) wird zerlegt als
+		\[
+		n=G(n)H(n)K(n),
+		\]
+		wobei
+		\[
+		G(n)=2^a3^b,
+		\]
+		\[
+		H(n)=\operatorname{rad}_{>3}(n),
+		\]
+		und
+		\[
+		K(n)=\frac{n}{G(n)H(n)}.
+		\]
+	\end{definition}
+	
+	Die Interpretation lautet:
+	\[
+	G=\text{Skala},
+	\]
+	\[
+	H=\text{Orientierung},
+	\]
+	\[
+	K=\text{Eigenenergietiefe}.
+	\]
+	
+	\begin{hypothese}
+		Die halbkleine Radix \(H(n)\) trägt die EABC-Orientierung, während die vollkleine Struktur \(K(n)\) die energetische Tiefe eines Zustands beschreibt.
+	\end{hypothese}
+	
+	\section{Spinstruktur}
+	
+	Für eine Zahl \(n\) seien \(r_E,r_A,r_B,r_C\) die Besetzungszahlen der EABC-Klassen in \(H(n)\). Dann definieren wir
+	\[
+	S(n)=r_EE+r_AA+r_BB+r_CC.
+	\]
+	
+	Der vollständige Vierer ist spinneutral:
+	\[
+	E+A+B+C=0.
+	\]
+	
+	\begin{bemerkung}
+		Die Spinstruktur ist lokal. Sie lebt auf dem EABC-Tetraeder. Dagegen lebt Bahndrehimpuls auf geschlossenen Umläufen.
+	\end{bemerkung}
+	
+	\section{Bahndrehimpuls}
+	
+	Für einen geschlossenen Pfad
+	\[
+	P=(P_1,P_2,\ldots,P_m,P_1)
+	\]
+	definieren wir
+	\[
+	L(P)=\sum_{r=1}^{m}P_r\times P_{r+1}.
+	\]
+	
+	Damit gilt:
+	\[
+	S=\text{Punkt},
+	\]
+	\[
+	L=\text{Umlauf}.
+	\]
+	
+	\begin{satz}
+		Für die Gegenfläche eines Tetraederpunktes gilt
+		\[
+		L_{\mathrm{Gegenfläche}}=4S.
+		\]
+	\end{satz}
+	
+	Dies liefert eine diskrete Analogie zur Kopplung von Spin und Bahndrehimpuls, wie sie experimentell im Einstein--de-Haas-Effekt sichtbar wird.
+	
+	\section{Ikosaeder--Dodekaeder-Dualität}
+	
+	Die äußere Orbitstruktur wird nicht allein durch das Ikosaeder beschrieben, sondern durch das duale Paar
+	\[
+	(I,D)=(\text{Ikosaeder},\text{Dodekaeder}).
+	\]
+	
+	Das Ikosaeder besitzt
+	\[
+	12\text{ Ecken},\quad30\text{ Kanten},\quad20\text{ Flächen}.
+	\]
+	Das Dodekaeder besitzt
+	\[
+	20\text{ Ecken},\quad30\text{ Kanten},\quad12\text{ Flächen}.
+	\]
+	
+	Ein ikosaedrischer Umlauf erzeugt eine duale Dodekaederfläche.
+	
+	Wir definieren
+	\[
+	A_D(P)=\frac12\|L_\varphi(P)\|.
+	\]
+	
+	\section{Sagnac-Holonomie}
+	
+	Für einen rotierenden Umlauf lautet die Sagnac-Phase
+	\[
+	\Delta\phi=\frac{8\pi A\Omega}{\lambda c}.
+	\]
+	
+	Im BM III wird diese als dodekaedrische Holonomie geschrieben:
+	\[
+	\Gamma_D(P)=
+	\exp\left(
+	i\frac{4\pi}{\lambda c}A_D(P)\Omega
+	\right).
+	\]
+	
+	Für den Gegenumlauf gilt
+	\[
+	\Gamma_D(P^{-1})=
+	\exp\left(
+	-i\frac{4\pi}{\lambda c}A_D(P)\Omega
+	\right).
+	\]
+	
+	Damit
+	\[
+	\arg\frac{\Gamma_D(P)}{\Gamma_D(P^{-1})}
+	=
+	\frac{8\pi A_D(P)\Omega}{\lambda c}.
+	\]
+	
+	\section{Ptolemäische Schließung und Schütte-Kiss-Sprung}
+	
+	Für vier Punkte \(a,b,c,d\) definieren wir
+	\[
+	\Pi(a,b,c,d)=|ac||bd|-|ab||cd|-|bc||da|.
+	\]
+	
+	Für den inneren EABC-Tetraeder ergibt sich
+	\[
+	\Pi_T=-8.
+	\]
+	
+	Die äußere Kussschale besitzt \(12\) Freiheitsrichtungen, während der Tetraeder \(4\) besitzt:
+	\[
+	12-4=8.
+	\]
+	
+	\begin{definition}
+		Der Schütte-Kiss-Sprung wird definiert als
+		\[
+		\Delta_{SK}=8.
+		\]
+	\end{definition}
+	
+	\begin{definition}
+		Das Ikosameter eines Pfades ist
+		\[
+		I_{20}(P)=\Delta_{SK}A_D(P).
+		\]
+		Mit \(\Delta_{SK}=8\) folgt
+		\[
+		I_{20}(P)=8A_D(P)=4\|L_\varphi(P)\|.
+		\]
+	\end{definition}
+	
+	\section{Holonomie}
+	
+	Jedem gerichteten Übergang \(i\to j\) wird ein Phasenfaktor
+	\[
+	U_{ij}=e^{2\pi i m_{ij}/24}
+	\]
+	zugeordnet.
+	
+	Die Holonomie eines geschlossenen Pfades lautet
+	\[
+	\Gamma(P)=\prod_{(ij)\in P}U_{ij}.
+	\]
+	
+	Die Windungszahl ist
+	\[
+	\nu(P)=\sum_{(ij)\in P}m_{ij}\pmod{24}.
+	\]
+	
+	Damit
+	\[
+	\Gamma(P)=e^{2\pi i\nu(P)/24}.
+	\]
+	
+	\section{Aharonov--Bohm, von Klitzing und Onsager}
+	
+	\subsection{Aharonov--Bohm}
+	
+	Die Aharonov--Bohm-Phase zeigt, dass nicht nur lokale Felder, sondern globale Umlaufphasen physikalisch wirksam sind:
+	\[
+	\Gamma=e^{i\oint A\cdot dl}.
+	\]
+	
+	Im BM III ist
+	\[
+	\Gamma(P)
+	\]
+	die diskrete Entsprechung.
+	
+	\subsection{Von Klitzing}
+	
+	Im Quanten-Hall-Effekt erscheint eine topologische Ganzzahl:
+	\[
+	R_H=\frac{h}{e^2}\frac1\nu.
+	\]
+	
+	Im BM III wird \(\nu(P)\) als diskrete Holonomieklasse interpretiert.
+	
+	\subsection{Onsager}
+	
+	Für den inversen Pfad gilt
+	\[
+	\Gamma(P^{-1})=\Gamma(P)^{-1}.
+	\]
+	
+	Die reziproke Komponente ist
+	\[
+	\Omega(P)=\frac12\left(\Gamma(P)+\Gamma(P^{-1})\right)=\cos\phi.
+	\]
+	
+	\section{Hecke-Operatoren}
+	
+	Die klassische Hecke-Theorie betrachtet Operatoren \(T_n\) auf Modulformen. Im BM III werden Hecke-artige Operatoren auf EABC-Zuständen eingeführt:
+	\[
+	T_A,\qquad T_B,\qquad T_C.
+	\]
+	
+	Diese wirken auf Zustandsfunktionen
+	\[
+	\psi:\{E,A,B,C\}\to\mathbb C.
+	\]
+	
+	Eine Eigenwertgleichung lautet
+	\[
+	T_\alpha\psi=\lambda_\alpha\psi.
+	\]
+	
+	Die Werte \(\lambda_\alpha\) werden als Ramanujan-artige Eigenwerte interpretiert.
+	
+	\section{Ramanujan-Schicht}
+	
+	Ramanujans Arbeiten über Modulformen, Thetafunktionen und Partitionszahlen zeigen, dass arithmetische Objekte oft durch Spektren organisiert sind.
+	
+	Im BM III erscheint eine Ramanujan-artige Struktur in der Gleichung
+	\[
+	T_p\psi=\lambda_p\psi.
+	\]
+	
+	Die \(\lambda_p\) kodieren arithmetische Übergangsintensitäten. Der Heegner--Ramanujan-Anker
+	\[
+	e^{\pi\sqrt{163}}
+	\]
+	wird als Hinweis auf die tiefe Verbindung von Modulformen, komplexer Multiplikation und Spektren betrachtet.
+	
+	\section{Familienstruktur}
+	
+	Wir postulieren einen universellen Leptonspinor
+	\[
+	L=(BC,CB).
+	\]
+	
+	Die drei Familien entstehen nicht durch drei verschiedene Leptonenbausteine, sondern durch drei Kernmodulatoren:
+	\[
+	K_A,\qquad K_B,\qquad K_C.
+	\]
+	
+	Daraus:
+	\[
+	e=(L|K_A),
+	\]
+	\[
+	\mu=(L|K_B),
+	\]
+	\[
+	\tau=(L|K_C).
+	\]
+	
+	\begin{hypothese}
+		Elektron, Myon und Tau besitzen denselben chiralen Leptonspinor, unterscheiden sich aber durch unterschiedliche Kernmodulation.
+	\end{hypothese}
+	
+	\section{Neutrinos}
+	
+	Neutrinos besitzen im Modell keinen Kernflip:
+	\[
+	\nu_A=(0|K_A),
+	\]
+	\[
+	\nu_B=(0|K_B),
+	\]
+	\[
+	\nu_C=(0|K_C).
+	\]
+	
+	Der Zyklus
+	\[
+	K_A\to K_B\to K_C\to K_A
+	\]
+	beschreibt eine Familien-Holonomie.
+	
+	\begin{hypothese}
+		Neutrinooszillationen sind Rotationen im Raum der Kernmodulatoren.
+	\end{hypothese}
+	
+	\section{Cerenkov-Bias und Skalendepression}
+	
+	Der Cerenkov-Effekt besitzt die Bedingung
+	\[
+	v>\frac{c}{n}.
+	\]
+	
+	Im BM III wird der Brechungsindex als lokale Skalendepression interpretiert:
+	\[
+	D_{8\to3}\to D_{8\to3}(n).
+	\]
+	
+	Die Laufzeitfunktion
+	\[
+	\tau(P)
+	\]
+	wird als fehlender, aber notwendiger Begriff eingeführt.
+	
+	\section{Van-der-Waals-Hypothese}
+	
+	Die London-Form lautet
+	\[
+	V(r)=-\frac{C_6}{r^6}.
+	\]
+	
+	Im BM III wird vorgeschlagen:
+	\[
+	E_{vdW}=
+	-\kappa\frac{\langle\delta\Omega_A\delta\Omega_B\rangle}{r^6}.
+	\]
+	
+	Alternativ:
+	\[
+	E_{vdW}=
+	-\alpha\frac{I_{20}^{(1)}I_{20}^{(2)}}{r^6}.
+	\]
+	
+	Damit erscheint die Van-der-Waals-Kraft als Synchronisation von Holonomieschwankungen.
+	
+	\section{Hamiltonoperator}
+	
+	Der BM-Hamiltonoperator wird definiert als
+	\[
+	H_{BM}
+	=
+	\Delta_{\mathcal G}
+	+
+	\alpha\log G
+	+
+	\beta\|S\|^2
+	+
+	\gamma\Omega(K)
+	+
+	\lambda\|L\|^2
+	+
+	\chi(\Gamma).
+	\]
+	
+	Eigenzustände erfüllen
+	\[
+	H_{BM}\psi=E\psi.
+	\]
+	
+	\section{Diracoperator}
+	
+	Analog zu Dirac wird ein Operator eingeführt:
+	\[
+	D_{BM}
+	=
+	iT_A+jT_B+kT_C+\omega T_\Gamma,
+	\]
+	mit
+	\[
+	\omega=e^{2\pi i/24}.
+	\]
+	
+	Die zentrale Beziehung lautet
+	\[
+	H_{BM}=D_{BM}^2.
+	\]
+	
+	\begin{bemerkung}
+		Die genaue Definition der Operatoren \(T_A,T_B,T_C,T_\Gamma\) ist eine der wichtigsten offenen Aufgaben des Modells.
+	\end{bemerkung}
+	
+	\section{E8, Kepler-Füllung und Skalendepression}
+	
+	Die oktonische Schicht entspricht
+	\[
+	\mathbb O\simeq\mathbb R^8.
+	\]
+	
+	Die \(E_8\)-Packungsdichte lautet
+	\[
+	\rho_8=\frac{\pi^4}{384}.
+	\]
+	
+	Die Kepler-Packungsdichte in Dimension \(3\) ist
+	\[
+	\rho_3=\frac{\pi}{\sqrt{18}}.
+	\]
+	
+	Die sichtbare Welt wird als Projektion
+	\[
+	\Pi_{8\to3}:\mathbb R^8\to\mathbb R^3
+	\]
+	verstanden.
+	
+	\begin{hypothese}
+		Masse entsteht aus skalendepressierter \(E_8\)-Rigidität.
+	\end{hypothese}
+	
+	\section{Atomstabilität}
+	
+	Atome sind stabil, solange die neutrale Familien-Holonomieschleife die geladenen EABC-Zustände homogenisieren kann.
+	
+	Wir definieren einen Homologieindex
+	\[
+	H_{\rm nuc}=\frac{\rho_\nu}{\rho_Q}.
+	\]
+	
+	Dann gilt modellhaft:
+	\[
+	H_{\rm nuc}>1\quad\text{stabil},
+	\]
+	\[
+	H_{\rm nuc}\approx1\quad\text{grenzstabil},
+	\]
+	\[
+	H_{\rm nuc}<1\quad\text{instabil}.
+	\]
+	
+	\section{Zentrale Hypothese}
+	
+	Die leitende Hypothese des Modells lautet:
+	\[
+	\boxed{
+		\text{Teilchen sind stabile Eigenmoden diskreter Holonomieschleifen.}
+	}
+	\]
+	
+	Dabei gilt:
+	\[
+	\Gamma=\text{Holonomie},
+	\]
+	\[
+	\nu=\text{Windungszahl},
+	\]
+	\[
+	\Omega=\text{Onsager-Reziprozität},
+	\]
+	\[
+	D_{BM}=\text{Diracstruktur},
+	\]
+	\[
+	H_{BM}=\text{Energiespektrum}.
+	\]
+	
+	\section{Offene Probleme}
+	
+	Die wichtigsten offenen Begriffe sind:
+	\[
+	U_{ij},
+	\]
+	\[
+	T_A,T_B,T_C,
+	\]
+	\[
+	T_\Gamma,
+	\]
+	\[
+	\chi(\Gamma),
+	\]
+	\[
+	\Pi_{8\to3},
+	\]
+	\[
+	D_{8\to3},
+	\]
+	\[
+	\tau(P).
+	\]
+	
+	Ferner fehlen quantitative Tests gegen:
+	\begin{itemize}
+		\item Leptonmassen,
+		\item Neutrinomischwinkel,
+		\item Van-der-Waals-Koeffizienten,
+		\item Kernstabilitätsgrenzen,
+		\item Spektren der Riemann-Nullstellen.
+	\end{itemize}
+	
+	\section{Schlussfolgerung}
+	
+	BM III ist kein fertiges physikalisches Modell, sondern ein mathematisch strukturiertes Forschungsprogramm. Seine stärkste Achse ist die Verbindung von
+	\[
+	\Gamma,\quad \nu,\quad \Omega,
+	\]
+	also Holonomie, Windungszahl und Reziprozität.
+	
+	Die EABC-Algebra erzeugt die lokale Tetraederstruktur. Die Quaternionen erzeugen Chiralität. Die Ikosaeder--Dodekaeder-Dualität erzeugt Orbit und Fläche. Die Divisionsalgebren liefern die historische und mathematische Tiefenstruktur. Hecke-Operatoren und Ramanujan-artige Eigenwerte weisen auf eine spektrale Arithmetik.
+	
+	Die zentrale Frage lautet:
+	\[
+	\boxed{
+		\text{Ist die Physik das Spektrum eines diskreten Holonomieoperators?}
+	}
+	\]
+	
+	\begin{thebibliography}{99}
+		
+		\bibitem{Hamilton}
+		W. R. Hamilton,
+		\emph{Lectures on Quaternions},
+		Dublin, 1853.
+		
+		\bibitem{Cayley}
+		A. Cayley,
+		On Jacobi's Elliptic Functions, in reply to the Rev. B. Bronwin; and on Quaternions,
+		\emph{Philosophical Magazine}, 1845.
+		
+		\bibitem{Hurwitz}
+		A. Hurwitz,
+		\emph{Vorlesungen über die Zahlentheorie der Quaternionen},
+		Springer, 1919.
+		
+		\bibitem{Klein}
+		F. Klein,
+		\emph{Vorlesungen über das Ikosaeder und die Auflösung der Gleichungen vom fünften Grade},
+		Teubner, 1884.
+		
+		\bibitem{Hecke}
+		E. Hecke,
+		Über Modulfunktionen und die Dirichletschen Reihen mit Eulerscher Produktentwicklung,
+		\emph{Mathematische Annalen}, 1937.
+		
+		\bibitem{Ramanujan}
+		S. Ramanujan,
+		\emph{Collected Papers of Srinivasa Ramanujan},
+		Cambridge University Press, 1927.
+		
+		\bibitem{Dirac}
+		P. A. M. Dirac,
+		The quantum theory of the electron,
+		\emph{Proceedings of the Royal Society A}, 1928.
+		
+		\bibitem{AharonovBohm}
+		Y. Aharonov and D. Bohm,
+		Significance of electromagnetic potentials in the quantum theory,
+		\emph{Physical Review}, 1959.
+		
+		\bibitem{Onsager}
+		L. Onsager,
+		Reciprocal relations in irreversible processes,
+		\emph{Physical Review}, 1931.
+		
+		\bibitem{Klitzing}
+		K. von Klitzing, G. Dorda, M. Pepper,
+		New method for high-accuracy determination of the fine-structure constant based on quantized Hall resistance,
+		\emph{Physical Review Letters}, 1980.
+		
+		\bibitem{Connes}
+		A. Connes,
+		\emph{Noncommutative Geometry},
+		Academic Press, 1994.
+		
+		\bibitem{Viazovska}
+		M. Viazovska,
+		The sphere packing problem in dimension 8,
+		\emph{Annals of Mathematics}, 2017.
+		
+	\end{thebibliography}
+	
+\end{document}

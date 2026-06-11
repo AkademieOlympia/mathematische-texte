@@ -1,0 +1,566 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{lmodern}
+
+\geometry{left=2.6cm,right=2.6cm,top=2.7cm,bottom=2.7cm}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue,pdftitle={Euler-Charakter arithmetischer Komplexe},pdfauthor={}}
+
+\newtheorem{theorem}{Satz}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Beispiel}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Bemerkung}
+
+\newcommand{\Efam}{\mathrm{E}}
+\newcommand{\Afam}{\mathrm{A}}
+\newcommand{\Bfam}{\mathrm{B}}
+\newcommand{\Cfam}{\mathrm{C}}
+\newcommand{\VX}{V_X}
+\newcommand{\EX}{E_X}
+\newcommand{\FX}{F_X}
+\newcommand{\KX}{\mathcal{K}_X}
+\newcommand{\ChiX}{\chi(X)}
+
+\title{Euler-Charakter arithmetischer Komplexe\\[0.4em]
+	\large Ein topologischer Zugang zu modulo-$12$-Familien und Primzahlvierlingen}
+\author{}
+\date{}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir entwickeln einen diskret-topologischen Rahmen zur Untersuchung arithmetischer Muster auf der Menge der Primzahlen. Ausgangspunkt ist die Zerlegung der ungeraden zu $12$ teilerfremden Restklassen in vier Familien
+		\[
+		\Efam\equiv 1,\qquad \Afam\equiv 5,\qquad \Bfam\equiv 7,\qquad \Cfam\equiv 11 \pmod{12},
+		\]
+		welche unter der Multiplikation modulo $12$ eine Gruppe bilden, die isomorph zur Klein-Vierergruppe ist. Auf dieser Grundlage definieren wir arithmetische Zellkomplexe, deren Knoten Primzahlen, deren Kanten ausgewählte arithmetische Relationen und deren Flächen geschlossene signaturneutrale Muster repräsentieren. Ein besonderer Fokus liegt auf echten Primzahlvierlingen $Q(p)=(p,p+2,p+6,p+8)$, die im vorliegenden Formalismus als elementare $2$-Zellen erscheinen. Für endliche Primzahlabschnitte definieren wir eine Euler-Charakteristik
+		\[
+		\chi(\mathcal K)=|V|-|E|+|F|,
+		\]
+		und diskutieren ihre Interpretation als globalen topologischen Ordnungsparameter. Der Artikel ist bewusst grundlegend angelegt: Er führt die Begriffe präzise ein, trennt strukturelle Aussagen von asymptotischen Vermutungen und formuliert ein minimales, in sich konsistentes Modell als Ausgangspunkt für weitere numerische und theoretische Untersuchungen.
+	\end{abstract}
+	
+	\tableofcontents
+	
+	\section{Einleitung}
+	
+	Die klassische Polyederformel von Euler
+	\[
+	V-E+F=2
+	\]
+	ist eine der grundlegenden Beziehungen der diskreten Geometrie. Ihre Bedeutung liegt nicht in metrischen Details, sondern in der Tatsache, dass sie eine globale kombinatorische Bilanz für geeignete topologische Objekte liefert. Diese Beobachtung motiviert die Frage, ob auch arithmetische Strukturen --- insbesondere die Verteilung von Primzahlen und das Auftreten spezieller Primzahlmuster --- mit Hilfe diskreter topologischer Invarianten beschrieben werden können.
+	
+	Der vorliegende Text entwickelt einen solchen Rahmen in einer besonders einfachen, aber strukturell nichttrivialen Situation. Für Primzahlen $p>3$ kommen modulo $12$ nur die Restklassen
+	\[
+	1,5,7,11
+	\]
+	vor. Wir bezeichnen diese vier Klassen mit
+	\[
+	\Efam,\Afam,\Bfam,\Cfam,
+	\]
+	und fassen sie als diskrete Strukturtypen auf. Die Multiplikation modulo $12$ induziert auf diesen Typen eine algebraische Struktur, die genau der Klein-Vierergruppe entspricht. Diese Gruppenstruktur dient im Folgenden als algebraischer Unterbau eines topologischen Modells.
+	
+	Die zentrale Idee lautet: Man ersetzt die bloße Betrachtung einzelner Primzahlen durch einen endlichen Zellkomplex, in dem
+	\begin{itemize}[itemsep=0.2em]
+		\item Knoten arithmetische Objekte repräsentieren,
+		\item Kanten ausgewählte Relationen zwischen diesen Objekten kodieren,
+		\item Flächen geschlossene, algebraisch verträgliche Muster erfassen.
+	\end{itemize}
+	Insbesondere erscheinen echte Primzahlvierlinge
+	\[
+	Q(p)=(p,p+2,p+6,p+8)
+	\]
+	als natürliche Kandidaten für elementare $2$-Zellen.
+	
+	Der Artikel verfolgt drei Ziele. Erstens werden die notwendigen Begriffe sauber eingeführt. Zweitens wird gezeigt, dass Primzahlvierlinge im modulo-$12$-Rahmen eine kanonische neutrale Signatur besitzen. Drittens wird für endliche Primzahlabschnitte eine Euler-Charakteristik definiert, deren Verhalten als globaler Strukturparameter interpretiert werden kann.
+	
+	Es ist wichtig, den Status der Resultate klar zu benennen. Der Text enthält keine asymptotischen Beweise über die Häufigkeit von Primzahlvierlingen und keinen Zugang zu unbewiesenen tiefen Vermutungen der analytischen Zahlentheorie. Er liefert vielmehr ein formal präzises Modell, in dem bestimmte arithmetische Muster topologisch organisiert werden. Dieses Modell kann anschließend numerisch getestet, verfeinert und gegebenenfalls mit spektralen oder homologischem Methoden erweitert werden.
+	
+	\section{Modulo-$12$-Familien und ihre Algebra}
+	
+	\subsection{Die vier Familien}
+	
+	Für Primzahlen $p>3$ gilt notwendig $\gcd(p,12)=1$. Damit liegt $p$ in genau einer der vier Restklassen
+	\[
+	1,5,7,11 \pmod{12}.
+	\]
+	Wir führen dafür folgende Notation ein.
+	
+	\begin{definition}[Modulo-$12$-Familien]
+		Für eine Primzahl $p>3$ definieren wir ihre Familienklasse $X(p)\in\{\Efam,\Afam,\Bfam,\Cfam\}$ durch
+		\[
+		\Efam \equiv 1 \pmod{12},\qquad
+		\Afam \equiv 5 \pmod{12},\qquad
+		\Bfam \equiv 7 \pmod{12},\qquad
+		\Cfam \equiv 11 \pmod{12}.
+		\]
+	\end{definition}
+	
+	Diese Bezeichnungen sind im Kern nur eine Umbenennung der vier zulässigen Restklassen. Ihr Nutzen liegt darin, dass sie eine algebraische und später topologische Sprache nahelegen.
+	
+	\subsection{Multiplikative Struktur}
+	
+	Die Menge $\{1,5,7,11\}$ ist unter Multiplikation modulo $12$ abgeschlossen. Daraus folgt sofort eine induzierte Verknüpfung auf den vier Familien.
+	
+	\begin{definition}[Familienprodukt]
+		Für $X,Y\in\{\Efam,\Afam,\Bfam,\Cfam\}$ sei $X\cdot Y$ diejenige Familie, deren Restklasse durch das Produkt der zugehörigen Repräsentanten modulo $12$ gegeben ist.
+	\end{definition}
+	
+	Explizit gilt
+	\[
+	\Efam\cdot\Efam=\Efam,\qquad \Efam\cdot\Afam=\Afam,\qquad \Efam\cdot\Bfam=\Bfam,\qquad \Efam\cdot\Cfam=\Cfam,
+	\]
+	sowie
+	\[
+	\Afam^2=\Bfam^2=\Cfam^2=\Efam,
+	\]
+	und ferner
+	\[
+	\Afam\cdot\Bfam=\Cfam,\qquad
+	\Afam\cdot\Cfam=\Bfam,\qquad
+	\Bfam\cdot\Cfam=\Afam.
+	\]
+	
+	\begin{proposition}
+		Die Menge
+		\[
+		\{\Efam,\Afam,\Bfam,\Cfam\}
+		\]
+		bildet bezüglich des Familienprodukts eine abelsche Gruppe, isomorph zur Klein-Vierergruppe
+		\[
+		V_4\cong \mathbb Z_2\times \mathbb Z_2.
+		\]
+	\end{proposition}
+	
+	\begin{proof}
+		Abgeschlossenheit folgt aus der Multiplikation modulo $12$ auf $\{1,5,7,11\}$. Das Element $\Efam\equiv 1\pmod{12}$ ist neutral. Jedes der drei nichttrivialen Elemente erfüllt $X^2=\Efam$, hat also Ordnung $2$. Kommutativität und Assoziativität werden von der Multiplikation modulo $12$ geerbt. Damit liegt genau die Klein-Vierergruppe vor.
+	\end{proof}
+	
+	\begin{remark}
+		Diese Gruppenstruktur ist eine einfache, aber robuste algebraische Information. Sie ist unabhängig von feineren analytischen Fragen der Primzahlverteilung und steht daher als diskreter Organisationsrahmen unmittelbar zur Verfügung.
+	\end{remark}
+	
+	\section{Arithmetische Zellkomplexe}
+	
+	\subsection{Grundidee}
+	
+	Wir wollen Primzahlen und Primzahlmuster nicht bloß als isolierte Zahlen, sondern als Elemente eines diskreten Inzidenzsystems betrachten.
+	
+	\begin{definition}[Arithmetischer Zellkomplex]
+		Ein \emph{arithmetischer Zellkomplex} ist ein endlicher $2$-dimensionaler Zellkomplex
+		\[
+		\mathcal K=(V,E,F),
+		\]
+		bei dem
+		\begin{itemize}[itemsep=0.2em]
+			\item $V$ eine endliche Menge arithmetischer Objekte ist,
+			\item $E$ eine Menge von Kanten ist, die ausgewählte arithmetische Relationen zwischen Objekten aus $V$ kodiert,
+			\item $F$ eine Menge von $2$-Zellen ist, die durch geschlossene Relationenzyklen erzeugt wird.
+		\end{itemize}
+	\end{definition}
+	
+	Im einfachsten Fall sind die Knoten Primzahlen. Denkbar sind jedoch auch komplexere Knotenobjekte, etwa Primzahlzwillinge, Vierlinge oder aggregierte Familienzustände. Da wir hier einen minimalen Standalone-Rahmen entwickeln, bleiben wir zunächst bei Primzahlen als Knoten.
+	
+	\subsection{Euler-Charakteristik}
+	
+	\begin{definition}[Euler-Charakteristik]
+		Für einen endlichen arithmetischen Zellkomplex
+		\[
+		\mathcal K=(V,E,F)
+		\]
+		definieren wir die Euler-Charakteristik durch
+		\[
+		\chi(\mathcal K):=|V|-|E|+|F|.
+		\]
+	\end{definition}
+	
+	\begin{remark}
+		Im Gegensatz zur klassischen Polyederformel wird hier nicht behauptet, dass $\chi(\mathcal K)=2$ gilt. Für arithmetische Komplexe ist $\chi(\mathcal K)$ vielmehr eine freie kombinatorische Invariante, deren Größe von der gewählten Kanten- und Flächenstruktur abhängt.
+	\end{remark}
+	
+	\subsection{Knoten, Kanten, Flächen}
+	
+	Der entscheidende Modellierungsschritt besteht in der Festlegung von Kanten und Flächen. Im vorliegenden Text unterscheiden wir bewusst zwischen allgemeiner Definition und einem später konkret fixierten Minimalmodell.
+	
+	\begin{definition}[Knotensignatur]
+		Ist $V$ eine Menge von Primzahlen $>3$, so nennen wir die Abbildung
+		\[
+		X:V\to\{\Efam,\Afam,\Bfam,\Cfam\},\qquad p\mapsto X(p),
+		\]
+		die \emph{Knotensignatur} des Komplexes.
+	\end{definition}
+	
+	\begin{definition}[Kantensignatur]
+		Für eine Kante $(p,q)\in E$ definieren wir ihre Signatur durch
+		\[
+		\sigma(p,q):=X(p)\cdot X(q)\in\{\Efam,\Afam,\Bfam,\Cfam\}.
+		\]
+	\end{definition}
+	
+	\begin{remark}
+		Die Kantensignatur ist nicht die einzige mögliche Wahl. Man könnte Kanten auch durch Differenzen, Orientierungen oder Übergangsmatrizen signieren. Für die folgenden Resultate genügt jedoch die einfache Gruppenmarkierung durch das Produkt der Endklassen.
+	\end{remark}
+	
+	\section{Zyklen und Signaturneutralität}
+	
+	\subsection{Zyklussignaturen}
+	
+	\begin{definition}[Knotensignatur eines Zyklus]
+		Sei
+		\[
+		\gamma=(v_1,v_2,\dots,v_m,v_1)
+		\]
+		ein geschlossener Zyklus in einem knotensignierten arithmetischen Graphen. Dann definieren wir die Knotensignatur von $\gamma$ durch
+		\[
+		\Sigma_V(\gamma):=X(v_1)X(v_2)\cdots X(v_m).
+		\]
+	\end{definition}
+	
+	Da die zugrundeliegende Gruppe abelsch ist und jedes nichttriviale Element Ordnung $2$ besitzt, hängt die Signatur nur von der Parität des Auftretens der drei Familien $\Afam,\Bfam,\Cfam$ ab.
+	
+	\begin{lemma}
+		Für einen geschlossenen Zyklus $\gamma$ gilt genau dann
+		\[
+		\Sigma_V(\gamma)=\Efam,
+		\]
+		wenn sich die Beiträge der nichttrivialen Familien in der Klein-Vierergruppe neutralisieren.
+	\end{lemma}
+	
+	\begin{proof}
+		Da $\Afam^2=\Bfam^2=\Cfam^2=\Efam$ gilt, heben sich doppelt auftretende Faktoren paarweise auf. Damit ist das Produkt genau dann gleich dem neutralen Element $\Efam$, wenn die Gesamtparität der nichttrivialen Anteile trivial ist.
+	\end{proof}
+	
+	\begin{definition}[Signaturneutraler Zyklus]
+		Ein geschlossener Zyklus $\gamma$ heißt \emph{signaturneutral}, wenn
+		\[
+		\Sigma_V(\gamma)=\Efam
+		\]
+		gilt.
+	\end{definition}
+	
+	\begin{definition}[Signaturneutrale Fläche]
+		Eine $2$-Zelle heißt \emph{signaturneutral}, wenn ihr Randzyklus signaturneutral ist.
+	\end{definition}
+	
+	Diese Definition liefert ein einfaches Selektionsprinzip: Nicht jeder geschlossene Zyklus wird als Fläche zugelassen, sondern bevorzugt solche Zyklen, die algebraisch neutral abschließen.
+	
+	\section{Primzahlvierlinge als elementare $2$-Zellen}
+	
+	\subsection{Echte Primzahlvierlinge}
+	
+	\begin{definition}[Echter Primzahlvierling]
+		Ein \emph{echter Primzahlvierling} ist ein Tupel der Form
+		\[
+		Q(p)=(p,p+2,p+6,p+8),
+		\]
+		bei dem alle vier Zahlen Primzahlen sind.
+	\end{definition}
+	
+	Es ist eine elementare, aber wichtige Beobachtung, dass die modulo-$12$-Familien eines solchen Vierlings vollständig festgelegt sind.
+	
+	\begin{lemma}[Familienmuster echter Primzahlvierlinge]
+		Sei
+		\[
+		Q(p)=(p,p+2,p+6,p+8)
+		\]
+		ein echter Primzahlvierling mit $p>3$. Dann gilt notwendig
+		\[
+		p\equiv 5\pmod{12},
+		\]
+		und damit
+		\[
+		X(p)=\Afam,\qquad X(p+2)=\Bfam,\qquad X(p+6)=\Cfam,\qquad X(p+8)=\Efam.
+		\]
+		Insbesondere ist die Familienfolge eines echten Primzahlvierlings stets
+		\[
+		\Afam\to\Bfam\to\Cfam\to\Efam.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Für Primzahlen $>3$ sind nur die Klassen $1,5,7,11\pmod{12}$ möglich. Prüft man die vier Startmöglichkeiten für $p$, so ergibt sich:
+		\begin{itemize}[itemsep=0.2em]
+			\item Ist $p\equiv 1\pmod{12}$, so ist $p+2\equiv 3\pmod{12}$ und damit durch $3$ teilbar.
+			\item Ist $p\equiv 7\pmod{12}$, so ist $p+8\equiv 3\pmod{12}$ und damit durch $3$ teilbar.
+			\item Ist $p\equiv 11\pmod{12}$, so ist $p+4\equiv 3\pmod{12}$; das Muster kann also nicht vollständig in zulässigen Primklassen liegen.
+			\item Bleibt $p\equiv 5\pmod{12}$, so folgt
+			\[
+			p\equiv 5,\quad p+2\equiv 7,\quad p+6\equiv 11,\quad p+8\equiv 1\pmod{12},
+			\]
+			also genau die behauptete Familienfolge.
+		\end{itemize}
+		Damit bleibt nur die Startklasse $5\pmod{12}$.
+	\end{proof}
+	
+	\subsection{Der Vierlingszyklus}
+	
+	\begin{definition}[Vierlingszyklus]
+		Zu einem echten Primzahlvierling
+		\[
+		Q(p)=(p,p+2,p+6,p+8)
+		\]
+		definieren wir den zugehörigen orientierten $4$-Zyklus
+		\[
+		\gamma_Q:=(p,p+2,p+6,p+8,p).
+		\]
+	\end{definition}
+	
+	\begin{proposition}[Neutralität des Vierlingszyklus]
+		Sei $Q(p)$ ein echter Primzahlvierling. Dann ist der zugehörige Vierlingszyklus knotensignaturneutral, das heißt
+		\[
+		\Sigma_V(\gamma_Q)=\Efam.
+		\]
+	\end{proposition}
+	
+	\begin{proof}
+		Nach dem vorigen Lemma ist die Familienfolge des Vierlingszyklus gleich $\Afam,\Bfam,\Cfam,\Efam$. Also gilt
+		\[
+		\Sigma_V(\gamma_Q)=\Afam\cdot\Bfam\cdot\Cfam\cdot\Efam.
+		\]
+		Wegen $\Afam\cdot\Bfam=\Cfam$ und $\Cfam\cdot\Cfam=\Efam$ folgt
+		\[
+		\Afam\cdot\Bfam\cdot\Cfam\cdot\Efam
+		=\Cfam\cdot\Cfam\cdot\Efam
+		=\Efam\cdot\Efam
+		=\Efam.
+		\]
+	\end{proof}
+	
+	\begin{definition}[Vierlingszelle]
+		Die von einem Vierlingszyklus $\gamma_Q$ begrenzte signaturneutrale $2$-Zelle heißt \emph{Vierlingszelle}.
+	\end{definition}
+	
+	\begin{theorem}[Primzahlvierlinge als elementare neutrale Flächen]
+		Jeder echte Primzahlvierling erzeugt in einem entsprechend definierten arithmetischen Zellkomplex eine ausgezeichnete signaturneutrale $2$-Zelle.
+	\end{theorem}
+	
+	\begin{proof}
+		Der Randzyklus eines echten Primzahlvierlings ist nach der vorigen Proposition signaturneutral. Definiert man den Flächenraum des Komplexes so, dass signaturneutrale $4$-Zyklen als $2$-Zellen zugelassen sind, dann erzeugt jeder echte Primzahlvierling genau eine ausgezeichnete Fläche.
+	\end{proof}
+	
+	\begin{remark}
+		Dieser Satz ist strukturell zu verstehen. Er macht keine asymptotische Aussage über die Anzahl von Primzahlvierlingen, sondern präzisiert nur ihre Rolle innerhalb des eingeführten topologischen Formalismus.
+	\end{remark}
+	
+	\section{Ein explizites Minimalmodell}
+	
+	\subsection{Definition des Vierlingsrandmodells}
+	
+	Um die bisher allgemeinen Begriffe in eine konkret berechenbare Form zu bringen, fixieren wir nun ein besonders einfaches Modell.
+	
+	\begin{definition}[Primzahlabschnittskomplex im Vierlingsrandmodell]
+		Für $X\ge 2$ definieren wir den arithmetischen Zellkomplex
+		\[
+		\KX=(\VX,\EX,\FX)
+		\]
+		wie folgt:
+		\begin{enumerate}[label=(\roman*),itemsep=0.2em]
+			\item $\VX$ ist die Menge aller Primzahlen $p\le X$ mit $p>3$.
+			\item $\EX$ besteht genau aus denjenigen ungeordneten Paaren $\{u,v\}\subseteq \VX$, die als benachbarte Eckpunkte im Rand mindestens eines echten Primzahlvierlings mit oberem Eckpunkt $\le X$ auftreten.
+			\item $\FX$ besteht aus allen Vierlingszellen, die durch echte Primzahlvierlinge $Q(p)$ mit $p+8\le X$ erzeugt werden.
+		\end{enumerate}
+	\end{definition}
+	
+	\begin{remark}
+		Dieses Modell ist bewusst restriktiv. Es verzichtet auf zusätzliche Kanten etwa aus Primzahlzwillingen oder Differenzrelationen und sorgt dadurch für eine direkte Konsistenz zwischen Kanten- und Flächenraum.
+	\end{remark}
+	
+	\subsection{Vierlingszählfunktion}
+	
+	\begin{definition}[Vierlingszählfunktion]
+		Für $X\ge 2$ sei
+		\[
+		Q_4(X):=\#\{p\le X-8\colon p,p+2,p+6,p+8\text{ sind Primzahlen}\}.
+		\]
+	\end{definition}
+	
+	Aus der Definition des Minimalmodells folgt sofort:
+	
+	\begin{proposition}
+		Im Vierlingsrandmodell gilt
+		\[
+		|\FX|=Q_4(X).
+		\]
+	\end{proposition}
+	
+	\begin{proof}
+		Jeder echte Primzahlvierling mit $p+8\le X$ erzeugt genau eine Vierlingszelle, und jede Vierlingszelle des Modells stammt per Definition aus genau einem solchen Vierling.
+	\end{proof}
+	
+	\subsection{Euler-Charakteristik endlicher Primzahlabschnitte}
+	
+	\begin{definition}[Euler-Charakteristik des Primzahlabschnitts]
+		Für das Vierlingsrandmodell definieren wir
+		\[
+		\ChiX:=\chi(\KX)=|\VX|-|\EX|+|\FX|.
+		\]
+	\end{definition}
+	
+	\begin{proposition}[Explizite Euler-Bilanz]
+		Im Vierlingsrandmodell gilt
+		\[
+		\ChiX=|\VX|-|\EX|+Q_4(X).
+		\]
+	\end{proposition}
+	
+	\begin{proof}
+		Dies folgt unmittelbar aus $|\FX|=Q_4(X)$ und der Definition der Euler-Charakteristik.
+	\end{proof}
+	
+	\begin{remark}
+		Die Flächenzahl ist damit vollständig kontrolliert. Die eigentliche modellabhängige Freiheit liegt in der Kantenzahl $|\EX|$, also in der Frage, wie stark sich die Ränder verschiedener Primzahlvierlinge überlappen.
+	\end{remark}
+	
+	\section{Lokale und globale Bilanzformeln}
+	
+	\subsection{Lokale Beiträge}
+	
+	\begin{lemma}[Lokaler Flächenbeitrag]
+		Entsteht beim Übergang von einem Komplex $\mathcal K$ zu einem erweiterten Komplex $\mathcal K'$ genau eine neue Vierlingszelle, ohne dass neue Knoten oder Kanten hinzukommen, so gilt
+		\[
+		\chi(\mathcal K')-\chi(\mathcal K)=1.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Unter der Voraussetzung bleiben $|V|$ und $|E|$ unverändert, während $|F|$ um $1$ wächst. Also erhöht sich auch die Euler-Charakteristik um $1$.
+	\end{proof}
+	
+	\begin{lemma}[Allgemeine Bilanzformel]
+		Für zwei endliche arithmetische Zellkomplexe $\mathcal K=(V,E,F)$ und $\mathcal K'=(V',E',F')$ gilt
+		\[
+		\chi(\mathcal K')-\chi(\mathcal K)=(|V'|-|V|)-(|E'|-|E|)+(|F'|-|F|).
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Die Formel entsteht durch einfache Subtraktion der beiden Euler-Charakteristiken.
+	\end{proof}
+	
+	\subsection{Interpretation}
+	
+	Die Größe $\ChiX$ lässt sich als makroskopischer Ordnungsparameter des Primzahlabschnitts bis $X$ lesen. Große positive Werte sprechen für eine relativ dünne Struktur mit vielen Knoten im Verhältnis zu Kanten und Flächen. Kleinere oder stärker oszillierende Werte weisen auf dichtere Vernetzung und häufigere Schließungen hin.
+	
+	Besonders wichtig ist, dass $Q_4(X)$ im Minimalmodell die Zahl der elementaren geschlossenen neutralen Muster misst. In diesem Sinn trennt die Euler-Bilanz drei Ebenen:
+	\begin{enumerate}[label=(\arabic*),itemsep=0.2em]
+		\item die Existenz einzelner Primzahlen als Knoten,
+		\item ihre direkte Verbindung durch Randkanten von Vierlingen,
+		\item ihre Schließung zu elementaren Flächen durch echte Primzahlvierlinge.
+	\end{enumerate}
+	
+	\begin{corollary}
+		Jeder echte Primzahlvierling mit oberem Eckpunkt $\le X$ trägt im Vierlingsrandmodell positiv zum Flächenanteil und damit direkt zur Euler-Bilanz von $\KX$ bei.
+	\end{corollary}
+	
+	\begin{proof}
+		Jeder solche Vierling erzeugt genau eine Vierlingszelle und erhöht daher $|\FX|$ um $1$.
+	\end{proof}
+	
+	\section{Beispiele}
+	
+	\subsection{Das erste Beispiel}
+	
+	Der kleinste echte Primzahlvierling ist
+	\[
+	(5,7,11,13).
+	\]
+	Seine Familienfolge ist
+	\[
+	\Afam,\Bfam,\Cfam,\Efam,
+	\]
+	und damit ist seine Knotensignatur neutral. Im Vierlingsrandmodell liefert er genau eine Vierlingszelle.
+	
+	Der zugehörige Primzahlabschnittskomplex für $X=13$ besitzt also
+	\[
+	\VX=\{5,7,11,13\},\qquad |\VX|=4,
+	\]
+	und enthält eine Vierlingsfläche. Die genaue Zahl der Kanten hängt davon ab, welche Randsegmente als Kanten aufgefasst werden. Wählt man den reinen zyklischen Rand
+	\[
+	\{5,7\},\ \{7,11\},\ \{11,13\},\ \{13,5\},
+	\]
+	so erhält man $|\EX|=4$ und damit
+	\[
+	\chi(\mathcal K_{13})=4-4+1=1.
+	\]
+	
+	\begin{remark}
+		Dieser Wert ist kein universeller topologischer Wert, sondern ein Modellwert. Er zeigt jedoch bereits, dass das arithmetische Objekt ``Primzahlvierling'' konsistent als kleinste Fläche eines Zellkomplexes interpretiert werden kann.
+	\end{remark}
+	
+	\subsection{Überlappende Vierlinge}
+	
+	Sobald mehrere Primzahlvierlinge in einem größeren Abschnitt auftreten, können sie Knoten und Kanten teilen. Dann wächst die Zahl der Flächen nicht unabhängig von der Zahl der Kanten. Genau diese Überlagerung macht die Euler-Charakteristik interessant: Sie reagiert nicht nur auf die Häufigkeit einzelner Muster, sondern auf ihre kombinatorische Wechselwirkung.
+	
+	\section{Mögliche Verfeinerungen}
+	
+	Der bisherige Formalismus ist bewusst minimal. Er kann in mehrere Richtungen erweitert werden.
+	
+	\subsection{Familienweise Teilcharakteristiken}
+	
+	Man kann versuchen, Knoten oder Kanten nach Familienbeiträgen zu gewichten und daraus verfeinerte Größen wie
+	\[
+	\chi_\Efam(X),\quad \chi_\Afam(X),\quad \chi_\Bfam(X),\quad \chi_\Cfam(X)
+	\]
+	abzuleiten. Solche Größen könnten sichtbar machen, ob bestimmte Familien systematisch andere topologische Rollen spielen als andere.
+	
+	\subsection{Alternative Kantenmodelle}
+	
+	Neben dem Vierlingsrandmodell sind andere Modelle denkbar:
+	\begin{enumerate}[label=(\alph*),itemsep=0.2em]
+		\item \textbf{Differenzmodell:} Eine Kante zwischen $p$ und $q$ wird zugelassen, wenn $q-p\in\{2,4,6,8\}$ gilt.
+		\item \textbf{Familienmodell:} Kanten werden durch zulässige Gruppenrelationen zwischen den Familien definiert.
+		\item \textbf{Hybridmodell:} Vierlingsränder bilden die Grundstruktur, weitere Relationen werden ergänzend hinzugefügt.
+	\end{enumerate}
+	
+	Jedes dieser Modelle führt zu einer anderen Kantenzahl und damit zu einer anderen Euler-Charakteristik. Die Wahl des Modells ist daher Teil der mathematischen Fragestellung und kein nebensächliches technisches Detail.
+	
+	\subsection{Homologische und spektrale Erweiterungen}
+	
+	Hat man einen expliziten Zellkomplex festgelegt, so kann man über die Euler-Charakteristik hinausgehen und Homologiegruppen, Randoperatoren oder Laplace-Operatoren untersuchen. In diesem Sinn kann der vorliegende Text als Vorstufe eines umfassenderen spektral-topologischen Programms gelesen werden.
+	
+	\section{Grenzen des Modells}
+	
+	Der Nutzen eines neuen Formalismus hängt wesentlich davon ab, dass seine Reichweite nicht überschätzt wird. Deshalb halten wir die folgenden Punkte ausdrücklich fest.
+	
+	\begin{enumerate}[label=(\arabic*),itemsep=0.25em]
+		\item Die hier eingeführten Resultate sind kombinatorisch und strukturell. Sie liefern keine neuen asymptotischen Aussagen über Primzahlvierlinge.
+		\item Die Euler-Charakteristik hängt von der Modellwahl ab, insbesondere von der Definition des Kantenraums.
+		\item Die modulo-$12$-Familien erfassen nur Endklasseninformation. Feinere analytische Eigenschaften der Primzahlen bleiben darin unsichtbar.
+		\item Der Formalismus ist am stärksten, wenn er als Organisationssprache für arithmetische Muster verwendet wird, nicht als Ersatz etablierter analytischer Methoden.
+	\end{enumerate}
+	
+	Gerade diese Einschränkungen sind jedoch produktiv: Sie zwingen dazu, das Modell präzise zu halten und seine Aussagen klar von weitergehenden Hypothesen zu trennen.
+	
+	\section{Ausblick}
+	
+	Ausgehend vom hier entwickelten Standalone-Modell ergeben sich mehrere präzise nächste Schritte.
+	
+	\begin{enumerate}[label=(\arabic*),itemsep=0.25em]
+		\item \textbf{Numerische Implementierung.} Für wachsendes $X$ kann der Komplex $\KX$ explizit konstruiert und $\ChiX$ berechnet werden.
+		\item \textbf{Vergleich konkurrierender Kantenmodelle.} Es ist zu prüfen, welche qualitative Stabilität die Euler-Charakteristik unter Modellvariationen besitzt.
+		\item \textbf{Überlappungsstatistik von Vierlingen.} Besonders relevant ist die Frage, wie sich gemeinsame Kanten oder Knoten mehrerer Vierlinge auf $|\EX|$ und damit auf $\ChiX$ auswirken.
+		\item \textbf{Homologische Erweiterung.} Nach der Euler-Stufe liegt der Übergang zu Betti-Zahlen und Randoperatoren nahe.
+		\item \textbf{Spektrale Operatoren.} Aus dem Komplex können Adjazenz- und Laplace-Operatoren konstruiert werden, deren Spektren mit arithmetischen Strukturen verglichen werden können.
+	\end{enumerate}
+	
+	Der eigentliche mathematische Wert des Ansatzes liegt dabei nicht in einer spektakulären Einzelbehauptung, sondern in der sauberen Verbindung dreier Ebenen: Kongruenzstruktur modulo $12$, endliche Gruppenstruktur der Familien und topologische Bilanz auf Zellkomplexen.
+	
+	\section*{Danksagung}
+	
+	Diese Fassung ist als bewusst grundlegender, eigenständiger Text angelegt. Sie soll vor allem die Begriffsbildung stabilisieren und einen präzisen Startpunkt für spätere numerische, homologische und spektrale Untersuchungen bereitstellen.
+	
+\end{document}

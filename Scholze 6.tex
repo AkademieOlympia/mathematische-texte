@@ -1,0 +1,612 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- Kodierung und Sprache ---
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+
+% --- Mathematik ---
+\usepackage{amsmath,amssymb,amsfonts,amsthm,mathtools}
+\usepackage{bm}
+
+% --- Layout ---
+\usepackage[a4paper,margin=2.7cm]{geometry}
+\usepackage{microtype}
+\usepackage{setspace}
+\onehalfspacing
+
+% --- Tabellen / Links ---
+\usepackage{booktabs}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	citecolor=blue,
+	urlcolor=blue,
+	pdftitle={Von Hurwitz-Raeumen zu quantenartigen Hilbertraumstrukturen},
+	pdfauthor={Thomas Hoffbauer},
+	pdfsubject={Forschungsprogramm zur Bruecke zwischen Hurwitz-Operatorik und Quantenmechanik}
+}
+
+% --- Grafikeinbindung robust ---
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./}{fig/}{figs/}{images/}{img/}}
+\newcommand{\includegraphicssafe}[2][]{%
+	\IfFileExists{#2}{\includegraphics[#1]{#2}}{%
+		\fbox{\parbox[c][3cm][c]{0.8\linewidth}{\centering Grafik \texttt{#2} nicht gefunden.}}%
+	}%
+}
+
+% --- Theorem-Umgebungen ---
+\theoremstyle{plain}
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{proposition}[satz]{Proposition}
+\newtheorem{korollar}[satz]{Korollar}
+\newtheorem{konjektur}[satz]{Konjektur}
+
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{beispiel}[satz]{Beispiel}
+\newtheorem{programm}[satz]{Programm}
+\newtheorem{problem}[satz]{Problem}
+
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+
+% --- Makros ---
+\newcommand{\OH}{\mathcal O_H}
+\newcommand{\HN}{\mathcal H_N}
+\newcommand{\Hinf}{\mathcal H_\infty}
+\newcommand{\GN}{G_N}
+\newcommand{\RN}{R_N}
+\newcommand{\ZN}{\mathbb Z/N\mathbb Z}
+\newcommand{\Zp}{\mathbb Z_p}
+\newcommand{\Cp}{\mathbb C}
+\newcommand{\Hp}{\mathbb H}
+\newcommand{\elltwo}{\ell^2}
+\newcommand{\nrd}{\operatorname{Nrd}}
+\newcommand{\spec}{\operatorname{Spec}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\id}{\mathrm{id}}
+
+\title{\textbf{Von Hurwitz-Räumen zu quantenartigen Hilbertraumstrukturen}\\
+	\large Ein Forschungsprogramm zwischen endlicher Operatorik, lokaler Arithmetik und Quantenmechanik}
+\author{Thomas Hoffbauer}
+\date{März 2026}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Dieses Exposé formuliert ein präzises Forschungsprogramm zur Frage, ob und in welchem Sinn
+		sich aus endlichen Quotienten der Hurwitz-Ordnung und den darauf definierten normgesteuerten
+		Faltungsoperatoren eine Brücke zur Quantenmechanik auf Hilberträumen schlagen lässt.
+		Ausgangspunkt ist eine bereits gesicherte endliche Spektralarchitektur: symmetrische
+		Schrittmengen auf endlichen Gruppen erzeugen selbstadjungierte Faltungsoperatoren mit
+		reellem Spektrum und spektraler Durchmischungsdynamik. Ziel ist es, die noch offenen
+		Bausteine --- insbesondere die kanonische Definition der Normschalenoperatoren, ihre
+		lokale arithmetische Interpretation, einen geeigneten Grenzübergang sowie eine
+		quantenmechanische Zustands- und Messstruktur --- in eine kohärente Reihenfolge zu bringen.
+		Der Text unterscheidet systematisch zwischen bewiesenem Kern, plausiblen Konjekturen
+		und physikalischen Zusatzhypothesen.
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Die Quantenmechanik ist klassisch auf komplexen Hilberträumen formuliert. Zustände werden
+	durch normierte Vektoren modulo Phase oder allgemeiner durch positive Spurklasseoperatoren
+	beschrieben, Observablen durch selbstadjungierte Operatoren, und die Zeitentwicklung ist
+	unitär. Diese Struktur ist außerordentlich erfolgreich, wirft aber weiterhin die Frage auf,
+	ob sie tieferliegende diskrete, arithmetische oder geometrische Unterlagen besitzt.
+	
+	Parallel dazu tritt im hurwitzschen Kontext eine endliche Operatorarchitektur auf, die
+	bemerkenswerte strukturelle Analogien besitzt: endliche Quotienten der Hurwitz-Ordnung,
+	normgesteuerte Schrittmengen, selbstadjungierte Faltungsoperatoren und spektrale Dynamik.
+	Diese Analogien reichen jedoch noch nicht aus, um eine physikalische Theorie zu begründen.
+	Das Ziel dieses Exposés ist daher nicht, vorschnell eine neue Quantenmechanik zu behaupten,
+	sondern den mathematischen Weg von einer endlichen hurwitzschen Spektralstruktur zu einer
+	quantenartig interpretierbaren Hilbertraumstruktur in klaren Etappen zu formulieren.
+	
+	\section{Ausgangslage und Leitfrage}
+	
+	\subsection{Leitfrage}
+	
+	Die zentrale Frage lautet:
+	
+	\begin{quote}
+		Kann aus einer kanonisch definierten Familie hurwitzscher Operatoren auf endlichen Quotienten
+		ein Grenzobjekt konstruiert werden, das eine echte Hilbertraumstruktur mit selbstadjungierten
+		Observablen, Wahrscheinlichkeitsinterpretation und reversibler Dynamik trägt?
+	\end{quote}
+	
+	Diese Leitfrage zerfällt in drei Teilfragen:
+	\begin{enumerate}
+		\item Gibt es eine intrinsische, funktorielle und lokal verträgliche Definition der
+		Normschalen \(\Sigma_{N,p}\subseteq G_N\)?
+		\item Erzeugen die zugehörigen Operatoren \(T_{N,p}\) eine stabile Algebra mit
+		kontrollierter lokaler und globaler Struktur?
+		\item Lässt sich daraus ein quantenartiger Zustands- und Messformalismus gewinnen?
+	\end{enumerate}
+	
+	\subsection{Methodische Vorsicht}
+	
+	Es ist entscheidend, zwischen drei Ebenen zu unterscheiden:
+	\begin{enumerate}
+		\item \textbf{Bewiesene endliche Operatorik:} selbstadjungierte Faltungsoperatoren,
+		endliche Spektren, Spektrallücken, Durchmischung.
+		\item \textbf{Arithmetisch-geometrische Konjekturen:} kanonische Normschalen, Hecke-Wirkung,
+		Bruhat--Tits-Interpretation, Ramanujan-artige Schranken.
+		\item \textbf{Physikalische Interpretation:} Zustände, Bornsche Regel, Dynamik,
+		Tensorprodukt und Verschränkung.
+	\end{enumerate}
+	
+	\section{Die gesicherte Grundarchitektur}
+	
+	\subsection{Hurwitz-Ordnung und endliche Quotienten}
+	
+	\begin{definition}[Hurwitz-Ordnung]
+		Sei \(\OH\) die Hurwitz-Ordnung in der Hamiltonschen Quaternionenalgebra. Für \(N\geq 1\)
+		definieren wir den endlichen Quotientenring
+		\[
+		R_N := \OH / N\OH.
+		\]
+		Aus \(R_N\) werde durch eine festgelegte Konstruktion eine endliche Gruppe \(G_N\) gewonnen.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Die genaue Definition von \(G_N\) kann je nach Modellierung variieren. Für das folgende
+		Programm genügt, dass \(G_N\) endlich ist und eine wohldefinierte Gruppenstruktur trägt.
+	\end{bemerkung}
+	
+	\begin{satz}[Endlichkeit]
+		Für jedes \(N\geq 1\) ist \(R_N\) ein endlicher Ring. Insbesondere ist \(G_N\) endlich.
+	\end{satz}
+	
+	\begin{proof}[Beweisskizze]
+		Da \(\OH\) als \(\mathbb Z\)-Modul Rang \(4\) besitzt, hat der Quotient \(R_N\) die Größe
+		\(N^4\). Endlichkeit von \(G_N\) folgt aus seiner Konstruktion aus \(R_N\).
+	\end{proof}
+	
+	\subsection{Hilbertraum auf endlicher Ebene}
+	
+	\begin{definition}
+		Für jedes \(N\) sei
+		\[
+		\HN := \elltwo(G_N,\Cp)
+		\]
+		der komplexe Hilbertraum aller komplexwertigen Funktionen auf \(G_N\) mit dem Standardskalarprodukt
+		\[
+		\langle f,h\rangle := \sum_{g\in G_N} f(g)\,\overline{h(g)}.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Jeder Raum \(\HN\) ist ein endlichdimensionaler komplexer Hilbertraum.
+	\end{lemma}
+	
+	\begin{proof}
+		Da \(G_N\) endlich ist, ist \(\elltwo(G_N,\Cp)\cong \Cp^{|G_N|}\).
+	\end{proof}
+	
+	\subsection{Normschalen und Faltungsoperatoren}
+	
+	\begin{definition}[Normschale]
+		Für eine Primzahl \(p\) sei
+		\[
+		X_p := \{x\in \OH : \nrd(x)=p\}
+		\]
+		die Normschale vom Niveau \(p\).
+	\end{definition}
+	
+	\begin{definition}[Schrittmengen und Faltung]
+		Ist \(\Sigma\subseteq G\) eine symmetrische Menge in einer endlichen Gruppe \(G\), so definieren wir
+		\[
+		(T_\Sigma f)(g):=\sum_{s\in\Sigma} f(gs).
+		\]
+		Der normierte Operator ist
+		\[
+		P_\Sigma := \frac{1}{|\Sigma|}T_\Sigma.
+		\]
+	\end{definition}
+	
+	\begin{lemma}[Selbstadjungiertheit]
+		Ist \(\Sigma=\Sigma^{-1}\), so ist \(T_\Sigma\) selbstadjungiert auf \(\elltwo(G)\).
+	\end{lemma}
+	
+	\begin{proof}
+		Für \(f,h\in\elltwo(G)\) gilt
+		\[
+		\langle T_\Sigma f,h\rangle
+		=
+		\sum_{g\in G}\sum_{s\in\Sigma} f(gs)\overline{h(g)}
+		=
+		\sum_{g\in G} f(g)\overline{\sum_{s\in\Sigma} h(gs^{-1})}
+		=
+		\langle f,T_\Sigma h\rangle,
+		\]
+		weil \(\Sigma^{-1}=\Sigma\).
+	\end{proof}
+	
+	\begin{korollar}
+		Das Spektrum von \(T_\Sigma\) ist reell.
+	\end{korollar}
+	
+	\begin{proposition}[Spektrallücke und Durchmischung]
+		Ist \(\Delta(\Sigma)>0\) die Spektrallücke des normierten Operators \(P_\Sigma\), so gilt
+		auf dem orthogonalen Komplement der konstanten Funktionen exponentielle Kontraktion:
+		\[
+		\|P_\Sigma^m f\|_2 \le (1-\Delta(\Sigma))^m \|f\|_2.
+		\]
+	\end{proposition}
+	
+	\section{Der eigentliche Engpass}
+	
+	\subsection{Das Kernproblem}
+	
+	Die gesicherte Theorie beginnt erst, \emph{wenn} eine wohldefinierte symmetrische Menge
+	\(\Sigma_{N,p}\subseteq G_N\) gegeben ist. Das eigentliche offene Problem ist daher die
+	Konstruktion solcher Mengen aus den globalen Normschalen \(X_p\).
+	
+	\begin{definition}[Kernproblem]
+		Gesucht ist für \(p\nmid N\) eine kanonische Menge
+		\[
+		\Sigma_{N,p}\subseteq G_N,
+		\]
+		die zugleich folgende Eigenschaften besitzt:
+		\begin{enumerate}
+			\item Wohldefiniertheit modulo natürlicher Äquivalenzen,
+			\item Symmetrie \(\Sigma_{N,p}=\Sigma_{N,p}^{-1}\),
+			\item Ausschluss des neutralen Elements,
+			\item gute Reduktion modulo \(N\),
+			\item lokale Verträglichkeit für \(p\nmid N\),
+			\item funktorisches Verhalten in \(N\) und \(p\).
+		\end{enumerate}
+	\end{definition}
+	
+	\begin{bemerkung}
+		Gerade diese Definition ist im gegenwärtigen Stand die wichtigste Lücke. Solange sie nicht
+		intrinsisch gelöst ist, bleibt die ganze Theorie zwar interessant, aber noch nicht natürlich.
+	\end{bemerkung}
+	
+	\section{Das Forschungsprogramm}
+	
+	\begin{programm}[Von Hurwitz zu Hilbert]
+		Wir formulieren das Gesamtziel als Kette von neun Stufen:
+		\begin{enumerate}
+			\item Konstruktion kanonischer Normschalen \(\Sigma_{N,p}\).
+			\item Aufbau einer natürlichen Operatorfamilie \(T_{N,p}\).
+			\item Nachweis lokaler arithmetischer Verträglichkeit.
+			\item Vergleich mit Hecke- und Bruhat--Tits-Strukturen.
+			\item Untersuchung von Kommutativität und gemeinsamer Spektralstruktur.
+			\item Konstruktion eines Grenzhilbertraums \(\Hinf\).
+			\item Definition von Zuständen und Observablen.
+			\item Formulierung einer quantenartigen Dynamik.
+			\item Aufbau einer Tensorstruktur für Mehrteilchensysteme.
+		\end{enumerate}
+	\end{programm}
+	
+	\subsection{Stufe I: Kanonische Normschalen}
+	
+	\begin{konjektur}[Kanonizität]
+		Für jede ungerade Primzahl \(p\) und jedes \(N\) mit \(p\nmid N\) existiert eine intrinsische,
+		symmetrische und funktorielle Menge \(\Sigma_{N,p}\subseteq G_N\), die aus den Norm-\(p\)-Elementen
+		von \(\OH\) hervorgeht.
+	\end{konjektur}
+	
+	\begin{bemerkung}
+		Ein natürlicher Kandidat ist eine Doppelquotientierung
+		\[
+		\OH^\times \backslash X_p / \OH^\times
+		\]
+		mit anschließender Reduktion modulo \(N\). Hier stellt sich die Schlüsselfrage, ob diese
+		Reduktion endlich-zu-eins mit kontrollierter Fasergröße ist.
+	\end{bemerkung}
+	
+	\subsection{Stufe II: Die Operatorfamilie}
+	
+	\begin{definition}
+		Ist \(\Sigma_{N,p}\) gegeben, so definieren wir
+		\[
+		T_{N,p}f(g):=\sum_{s\in \Sigma_{N,p}} f(gs)
+		\qquad (f\in\HN).
+		\]
+	\end{definition}
+	
+	\begin{satz}
+		Ist \(\Sigma_{N,p}\) symmetrisch, so ist \(T_{N,p}\) selbstadjungiert auf \(\HN\).
+	\end{satz}
+	
+	\begin{bemerkung}
+		Die Selbstadjungiertheit ist bereits auf endlicher Ebene gesichert. Offen ist jedoch die
+		\emph{familienweise} Struktur der Operatoren.
+	\end{bemerkung}
+	
+	\begin{konjektur}[Kommutativität]
+		Für feste \(N\) kommutieren die Operatoren \(T_{N,p}\) und \(T_{N,q}\) für alle Primzahlen
+		\(p,q\nmid N\), zumindest nach geeigneter Normierung oder Projektion.
+	\end{konjektur}
+	
+	\begin{bemerkung}
+		Ein positiver Nachweis würde den Übergang von bloßer diskreter Operatorik zu einer echten
+		Observablenfamilie entscheidend stärken.
+	\end{bemerkung}
+	
+	\subsection{Stufe III: Lokale Arithmetik}
+	
+	\begin{konjektur}[Lokale Split-Struktur]
+		Für jede ungerade Primzahl \(p\) gilt lokal
+		\[
+		\OH \otimes \Zp \cong M_2(\Zp),
+		\]
+		wobei die reduzierte Norm zur Determinante wird. Unter dieser Identifikation gehen
+		Norm-\(p\)-Klassen in Matrizen der Determinante \(p\) über.
+	\end{konjektur}
+	
+	\begin{konjektur}[Lokale Nachbarschaft]
+		Das Bild der globalen Norm-\(p\)-Klassen modulo lokalen Einheiten trifft genau eine
+		kanonische Nachbarschaftsschale der Determinantenklasse \(p\).
+	\end{konjektur}
+	
+	\begin{bemerkung}
+		Dies wäre der erste echte Schritt in Richtung einer Bruhat--Tits-Interpretation. Er würde
+		nicht sofort eine vollständige Gleichheit von Operatoren liefern, aber eine saubere lokale
+		Geometrie bereitstellen.
+	\end{bemerkung}
+	
+	\subsection{Stufe IV: Hecke-Interpretation}
+	
+	\begin{konjektur}[Hecke-Brücke]
+		Die Operatoren \(T_{N,p}\) lassen sich nach geeigneter kanonischer Konstruktion mit endlichen
+		Projektionen einer Hecke-Wirkung identifizieren.
+	\end{konjektur}
+	
+	\begin{bemerkung}
+		Diese Stufe ist mathematisch tief. Sie würde aus einem diskreten, arithmetisch motivierten
+		Graphoperator einen echten automorphen oder lokal harmonischen Operator machen.
+	\end{bemerkung}
+	
+	\subsection{Stufe V: Grenzübergang}
+	
+	\begin{problem}
+		Die Familie \(\{\HN\}_N\) bildet noch keinen einzigen physikalischen Zustandsraum. Es muss
+		ein Grenzübergang konstruiert werden.
+	\end{problem}
+	
+	\begin{konjektur}[Grenzhilbertraum]
+		Es existiert ein separabler komplexer Hilbertraum \(\Hinf\) sowie eine Familie kompatibler
+		Einbettungen
+		\[
+		\iota_{N,M}:\HN \hookrightarrow \mathcal H_M
+		\qquad (N\mid M),
+		\]
+		so dass die Operatoren \(T_{N,p}\) gegen selbstadjungierte Grenzoperatoren
+		\[
+		T_{\infty,p}:\Hinf \to \Hinf
+		\]
+		konvergieren.
+	\end{konjektur}
+	
+	\begin{bemerkung}
+		Hier sind mehrere Wege denkbar: direkter Limes, projektiver Limes, adelische Vervollständigung
+		oder eine renormierte lokale Konstruktion. Welche dieser Varianten tragfähig ist, ist
+		selbst Teil des Programms.
+	\end{bemerkung}
+	
+	\subsection{Stufe VI: Zustände}
+	
+	\begin{definition}[Vorläufiger reiner Zustand]
+		Ein vorläufiger reiner Zustand auf endlicher Ebene ist ein normierter Vektor
+		\[
+		\psi\in\HN, \qquad \|\psi\|=1.
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		Dies ist zunächst nur eine \emph{formale} Analogie zur Quantenmechanik. Eine tiefere
+		Frage lautet, ob der hurwitzsche Hintergrund eine genuin quaternionische Zustandsstruktur
+		nahelegt oder ob der komplexe Hilbertraum die natürlichere Ebene bleibt.
+	\end{bemerkung}
+	
+	\begin{problem}
+		Soll die Theorie wirklich quaternionisch formuliert werden, so müssen Nichtkommutativität,
+		Links-/Rechtsmodulstruktur und Phasenäquivalenz neu geklärt werden.
+	\end{problem}
+	
+	\subsection{Stufe VII: Observablen und Bornsche Regel}
+	
+	\begin{definition}
+		Eine vorläufige Observable ist ein selbstadjungierter Operator \(A\) in der von den
+		\(T_{N,p}\) erzeugten Algebra.
+	\end{definition}
+	
+	\begin{definition}[Born-ähnliche Regel]
+		Ist \(A=\sum_\lambda \lambda P_\lambda\) die Spektralzerlegung von \(A\) und \(\psi\) ein
+		normierter Zustand, so definieren wir
+		\[
+		\mathbb P_A(\lambda\mid \psi):=\langle \psi,P_\lambda\psi\rangle.
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		Formal ist diese Regel auf endlicher Ebene immer möglich. Physikalisch interessant wird
+		sie aber erst, wenn die Operatoren \(A\) nicht künstlich gewählt, sondern natürlich aus
+		der hurwitzschen Struktur entstehen.
+	\end{bemerkung}
+	
+	\subsection{Stufe VIII: Dynamik}
+	
+	\begin{definition}[Hamiltonoperator]
+		Sei \(S\) eine endliche Menge von Primzahlen und \(a_p\in\mathbb R\). Dann definieren wir
+		\[
+		H_N := \sum_{p\in S} a_p T_{N,p}.
+		\]
+	\end{definition}
+	
+	\begin{satz}
+		Ist \(H_N\) selbstadjungiert, so erzeugt
+		\[
+		U_N(t):=e^{-itH_N}
+		\]
+		eine unitäre Dynamik auf \(\HN\).
+	\end{satz}
+	
+	\begin{proof}
+		Dies ist eine Standardfolge des Spektralsatzes in endlichdimensionalen Hilberträumen.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Hier entsteht erstmals eine echte quantenartige Zeitentwicklung. Ob sie mehr ist als ein
+		formaler Transfer des Spektralsatzes, hängt davon ab, ob \(H_N\) arithmetisch kanonisch
+		bestimmt werden kann.
+	\end{bemerkung}
+	
+	\subsection{Stufe IX: Mehrteilchenstruktur}
+	
+	\begin{problem}
+		Eine ernsthafte physikalische Theorie benötigt ein Tensorprodukt:
+		\[
+		\mathcal H_{AB} \cong \mathcal H_A \otimes \mathcal H_B.
+		\]
+		Im hurwitzschen Kontext ist keineswegs klar, wie eine solche Struktur natürlich entstehen
+		soll.
+	\end{problem}
+	
+	\begin{konjektur}
+		Es gibt eine monoidale Struktur auf der Kategorie geeigneter hurwitzscher Operatorräume,
+		die auf Hilbertraumebene ein natürliches Tensorprodukt induziert.
+	\end{konjektur}
+	
+	\begin{bemerkung}
+		Ohne diese Stufe bleibt das gesamte Programm bestenfalls eine Einteilchentheorie.
+	\end{bemerkung}
+	
+	\section{Minimalziele und Testfälle}
+	
+	Bevor an eine große physikalische Deutung zu denken ist, sollten elementare Modelle
+	rekonstruiert werden:
+	
+	\begin{enumerate}
+		\item ein Zweiniveausystem,
+		\item eine Spin-\(\frac12\)-artige Algebra,
+		\item Interferenz in einem kleinen Invarianzunterraum,
+		\item nichtkommutierende Observablen,
+		\item diskrete Spektralaufspaltung,
+		\item einfache Übergangsamplituden unter unitärer Entwicklung.
+	\end{enumerate}
+	
+	\begin{bemerkung}
+		Scheitert schon diese Ebene, so ist das Programm physikalisch zu schwach; gelingt sie,
+		so lohnt der nächste Schritt.
+	\end{bemerkung}
+	
+	\section{Was zu beweisen ist}
+	
+	Die mathematische Arbeit konzentriert sich auf die folgenden Hauptsätze.
+	
+	\begin{satz}[Zielsatz A: Kanonische Normschale]
+		Für \(p\nmid N\) existiert eine kanonische symmetrische Menge \(\Sigma_{N,p}\subseteq G_N\),
+		die funktoriell in \(N\) und lokal verträglich in \(p\) ist.
+	\end{satz}
+	
+	\begin{satz}[Zielsatz B: Lokale Nachbarschaft]
+		Die Mengen \(\Sigma_{N,p}\) entsprechen lokal einer kanonischen Nachbarschaftsschale der
+		Determinantenklasse \(p\) in \(M_2(\Zp)\).
+	\end{satz}
+	
+	\begin{satz}[Zielsatz C: Operatorfamilie]
+		Die Operatoren \(T_{N,p}\) erzeugen für festes \(N\) eine strukturierte Algebra, idealerweise
+		eine kommutative Hecke-artige Algebra.
+	\end{satz}
+	
+	\begin{satz}[Zielsatz D: Hilbertraumlimes]
+		Die Familie \((\HN,T_{N,p})_N\) besitzt einen wohldefinierten Grenzübergang zu einer
+		selbstadjungierten Operatoralgebra auf einem separablen Hilbertraum \(\Hinf\).
+	\end{satz}
+	
+	\begin{satz}[Zielsatz E: Quantenartige Interpretation]
+		Für eine nichttriviale Klasse von Minimalmodellen trägt \(\Hinf\) eine Zustands-,
+		Observablen- und Dynamikstruktur, die einer endlichdimensionalen Quantenmechanik
+		äquivalent oder zumindest eng verwandt ist.
+	\end{satz}
+	
+	\section{Was ausdrücklich noch nicht behauptet werden darf}
+	
+	Methodisch wichtig ist eine Negativliste. Gegenwärtig darf \emph{nicht} behauptet werden:
+	
+	\begin{enumerate}
+		\item dass \(\Sigma_{N,p}\) bereits kanonisch konstruiert sei,
+		\item dass \(T_{N,p}\) schon als echte Hecke-Operatoren identifiziert seien,
+		\item dass die zugehörigen Graphen nachweislich aus Bruhat--Tits-Nachbarschaften stammen,
+		\item dass die ganze Familie \(\{T_{N,p}\}_p\) kommutiert,
+		\item dass bereits Ramanujan-artige Schranken vorliegen,
+		\item dass damit schon eine physikalische Alternative zur Quantenmechanik erreicht sei.
+	\end{enumerate}
+	
+	\begin{bemerkung}
+		Gerade diese methodische Zurückhaltung ist kein Defizit, sondern wissenschaftliche
+		Stärke. Sie trennt den bewiesenen Kern von den ambitionierten Brücken.
+	\end{bemerkung}
+	
+	\section{Arbeitsplan}
+	
+	\subsection*{Phase 1: Arithmetische Konstruktion}
+	\begin{enumerate}
+		\item Explizite Berechnung von \(X_p\) für kleine Primzahlen.
+		\item Untersuchung der Doppelquotientierung \(\OH^\times\backslash X_p/\OH^\times\).
+		\item Kontrolle der Reduktion modulo \(N\).
+		\item Test auf Symmetrie, Vielfachheiten und Neutralitätsausschluss.
+	\end{enumerate}
+	
+	\subsection*{Phase 2: Numerische Operatorik}
+	\begin{enumerate}
+		\item Erzeugung von \(T_{N,p}\) für kleine \(N,p\).
+		\item Berechnung von Spektren und Kommutatoren.
+		\item Suche nach gemeinsamen Eigenbasen.
+		\item Untersuchung spektraler Lücken und Multiplizitäten.
+	\end{enumerate}
+	
+	\subsection*{Phase 3: Lokale Struktur}
+	\begin{enumerate}
+		\item Konstruktion expliziter Isomorphismen \(\OH\otimes\Zp \cong M_2(\Zp)\) für kleine \(p\).
+		\item Vergleich der globalen Normklassen mit lokalen Determinantenbahnen.
+		\item Test auf Bruhat--Tits-artige Nachbarschaften.
+	\end{enumerate}
+	
+	\subsection*{Phase 4: Hilbertraum und Dynamik}
+	\begin{enumerate}
+		\item Entwicklung eines Limes \(\Hinf\).
+		\item Konstruktion natürlicher Hamiltonoperatoren \(H_N\).
+		\item Analyse unitärer Dynamik auf kleinen invarianten Unterräumen.
+	\end{enumerate}
+	
+	\subsection*{Phase 5: Physikalische Minimalmodelle}
+	\begin{enumerate}
+		\item Zweiniveausysteme.
+		\item Spin-\(\frac12\)-Modelle.
+		\item Interferenz und Übergangswahrscheinlichkeiten.
+		\item erste Tensorproduktansätze.
+	\end{enumerate}
+	
+	\section{Schluss}
+	
+	Die Idee einer Abbildung zwischen Quantenmechanik im Hilbertraum und einem hurwitzschen
+	Raum ist mathematisch ernstzunehmen, aber nur unter einer klaren Bedingung:
+	Sie darf nicht als fertige Identifikation präsentiert werden, sondern muss als
+	mehrstufiges Programm verstanden werden.
+	
+	Der gegenwärtig gesicherte Kern ist eine endliche Spektraltheorie symmetrischer
+	Faltungsoperatoren auf Quotienten der Hurwitz-Ordnung. Der entscheidende nächste
+	Schritt besteht in der intrinsischen Konstruktion der Normschalen \(\Sigma_{N,p}\).
+	Erst danach werden die Brücken zu lokaler Arithmetik, Hecke-Theorie, Hilbertraumlimes
+	und quantenartiger Interpretation sinnvoll und prüfbar.
+	
+	In diesem Sinn ist das Programm weder bloße Metapher noch schon vollendete Theorie,
+	sondern ein präzise formulierbares mathematisches Forschungsprojekt.
+	
+\end{document}

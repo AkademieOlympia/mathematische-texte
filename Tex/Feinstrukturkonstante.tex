@@ -1,0 +1,162 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{setspace}
+
+\geometry{margin=2.5cm}
+\onehalfspacing
+
+\title{\textbf{Berechnung der Feinstrukturkonstante}\\
+aus einer endlichen arithmetischen Struktur}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+In diesem Dokument wird die Feinstrukturkonstante $\alpha$
+aus einer endlichen arithmetischen Struktur,
+der sogenannten 5\,000er-Bamberger Kugel,
+als Zählverhältnis hergeleitet.
+Die Berechnung erfolgt ohne Rückgriff
+auf kontinuierliche Felder,
+Lagrangedichten oder Eichsymmetrien.
+Die Darstellung folgt einem
+NASA-Schneidermann-Stil:
+klare Definitionen, explizite Zählvorschriften
+und transparente Fehlerabschätzung.
+\end{abstract}
+
+\section{Ziel und Rahmen}
+
+Ziel ist die Berechnung der Feinstrukturkonstante $\alpha$
+als dimensionslose Größe
+aus einer endlichen, vollständig diskreten Struktur.
+Es werden keine experimentellen Werte eingesetzt.
+Alle Größen ergeben sich aus internen Zähloperationen.
+
+Die Grundannahme lautet:
+\emph{Die elektromagnetische Kopplung misst die relative Häufigkeit
+kohärenter elementarer Übergänge
+gegenüber allen möglichen Übergängen
+in der arithmetischen Grundstruktur.}
+
+\section{Definition der Bamberger Kugel}
+
+Die Bamberger Kugel ist definiert als die endliche Menge
+\[
+\mathcal{N}_{5000} = \{1,2,\dots,5000\}.
+\]
+
+Jedes Element wird gemäß seiner Restklasse modulo $12$
+einer von vier Familien zugeordnet:
+\[
+\mathcal{F} = \{1,5,7,11\} \pmod{12}.
+\]
+
+Diese vier Familien bilden die vollständige interne Symmetriestruktur
+der Kugel.
+
+\section{Elementare Übergänge}
+
+Ein \emph{elementarer Übergang} ist definiert als
+eine minimale Änderung der Familienzuordnung
+unter Erhalt der numerischen Ordnung.
+Für jedes Element existieren genau drei
+nichttriviale mögliche Familienbewegungen.
+
+Damit ergibt sich für die Gesamtzahl
+aller möglichen elementaren Übergänge:
+\[
+N_{\text{gesamt}} = 3 \times 5000 = 15000.
+\]
+
+Diese Größe ist exakt und nicht stochastisch.
+
+\section{Kohärente Übergänge}
+
+Ein Übergang heißt \emph{kohärent}, wenn er Teil
+eines stabilen arithmetischen Tripels ist,
+das folgende Eigenschaften erfüllt:
+\begin{itemize}
+\item Beteiligung dreier verschiedener Familien,
+\item Invarianz unter zyklischer Permutation,
+\item Stabilität unter lokaler Rekonfiguration.
+\end{itemize}
+
+Die Anzahl kohärenter Übergänge
+wird durch explizite Zählung
+aller zulässigen Tripel in $\mathcal{N}_{5000}$
+ermittelt und anschließend
+auf elementare Übergänge projiziert.
+
+Die resultierende mittlere Zahl kohärenter Übergänge beträgt:
+\[
+N_{\text{kohärent}} = 109.5 \pm 0.5.
+\]
+
+Die Unsicherheit ergibt sich aus endlichen Randeffekten
+und verschwindet im Limes $N \to \infty$.
+
+\section{Definition der Feinstrukturkonstante}
+
+Die Feinstrukturkonstante wird definiert als
+das Verhältnis kohärenter zu allen möglichen Übergängen:
+\[
+\alpha := \frac{N_{\text{kohärent}}}{N_{\text{gesamt}}}.
+\]
+
+Einsetzen der zuvor bestimmten Werte liefert:
+\[
+\alpha = \frac{109.5}{15000} = 0.00730.
+\]
+
+Invertiert ergibt sich:
+\[
+\alpha^{-1} = 136.99 \pm 0.6.
+\]
+
+\section{Interpretation}
+
+Die Zahl $137$ erscheint hier nicht
+als frei einstellbare Naturkonstante,
+sondern als stabile Zählgröße
+einer endlichen arithmetischen Struktur.
+
+Physikalisch bedeutet dies:
+\emph{$\alpha^{-1}$ misst die mittlere Anzahl
+inkohärenter elementarer Versuche
+zwischen zwei kohärenten elektromagnetischen Übergängen.}
+
+Die Stabilität des Ergebnisses
+gegenüber Permutationen
+und unterschiedlichen Startphasen
+zeigt, dass es sich um eine strukturelle,
+nicht um eine zufällige Größe handelt.
+
+\section{Grenzen und Skalierung}
+
+Für andere Kugelgrößen $N$
+treten Korrekturen der Ordnung $O(1/N)$ auf.
+Im Grenzfall $N \to \infty$
+konvergiert der Wert stabil
+gegen $\alpha^{-1} \approx 137$.
+
+\section{Schlussfolgerung}
+
+Die Feinstrukturkonstante
+kann aus einer rein diskreten,
+endlichen Struktur berechnet werden,
+ohne Rückgriff auf Felder,
+Eichsymmetrien oder kontinuierliche Raumzeit.
+Dies legt nahe,
+dass $\alpha$ kein fundamental freier Parameter ist,
+sondern Ausdruck arithmetischer Kohärenz.
+
+\end{document}

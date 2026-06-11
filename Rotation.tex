@@ -1,0 +1,249 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\title{Quaternionische Formulierung der Rotationsdynamik \\ 
+	und eine EABC-Interpretation (Bamberg-Modell)}
+\author{}
+\date{}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Wir formulieren die klassische Rotationsdynamik vollständig in der Sprache der Quaternionen und zeigen, dass sich daraus eine natürliche vierkanalige Struktur ergibt. Diese Struktur erlaubt eine Interpretation im Rahmen eines EABC-Schemas, in dem der skalare Anteil als Energie- bzw. Normkanal fungiert, während die drei imaginären Komponenten gerichtete Dynamik repräsentieren. Die Arbeit liefert eine kompakte algebraische Darstellung der Rotationsmechanik und schlägt eine Brücke zu arithmetischen Modellen auf Basis von Vier-Quadrate-Zerlegungen.
+	\end{abstract}
+	
+	\section{Quaternionen und Rotationen}
+	
+	Ein Quaternion ist definiert als
+	\begin{equation}
+		q = q_0 + q_1 i + q_2 j + q_3 k,
+	\end{equation}
+	mit Norm
+	\begin{equation}
+		\|q\|^2 = q_0^2 + q_1^2 + q_2^2 + q_3^2.
+	\end{equation}
+	
+	Für Rotationen verwendet man Einheitsquaternionen:
+	\begin{equation}
+		\|q\| = 1.
+	\end{equation}
+	
+	Eine Rotation um die Achse $\mathbf n = (n_x,n_y,n_z)$ mit Winkel $\theta$ wird beschrieben durch
+	\begin{equation}
+		q(\theta,\mathbf n)
+		=
+		\cos\frac{\theta}{2}
+		+
+		(n_x i+n_y j+n_z k)\sin\frac{\theta}{2}.
+	\end{equation}
+	
+	\section{Kinematik in Quaternionenform}
+	
+	Die klassische Winkelkinematik lautet:
+	\begin{equation}
+		\theta(t) = \theta_0 + \omega_0 t + \frac12 \alpha t^2.
+	\end{equation}
+	
+	Quaternionisch ergibt sich:
+	\begin{equation}
+		q(t)
+		=
+		\cos\frac{\theta(t)}{2}
+		+
+		\mathbf n \sin\frac{\theta(t)}{2}.
+	\end{equation}
+	
+	Die Winkelgeschwindigkeit wird als rein imaginäres Quaternion geschrieben:
+	\begin{equation}
+		\Omega = \omega_x i + \omega_y j + \omega_z k.
+	\end{equation}
+	
+	Die Bewegungsgleichung lautet:
+	\begin{equation}
+		\dot q = \frac12 q \Omega.
+	\end{equation}
+	
+	\section{Winkelbeschleunigung und Dynamik}
+	
+	Die Winkelbeschleunigung ist
+	\begin{equation}
+		A_\alpha = \alpha_x i + \alpha_y j + \alpha_z k.
+	\end{equation}
+	
+	Damit gilt:
+	\begin{equation}
+		\Omega(t) = \Omega_0 + A_\alpha t.
+	\end{equation}
+	
+	\section{Quaternionenprodukt und Vektoranalysis}
+	
+	Für zwei reine Vektorquaternionen
+	\begin{equation}
+		a = a_x i + a_y j + a_z k,\quad
+		b = b_x i + b_y j + b_z k
+	\end{equation}
+	gilt:
+	\begin{equation}
+		ab
+		=
+		-\mathbf a \cdot \mathbf b
+		+
+		\mathbf a \times \mathbf b.
+	\end{equation}
+	
+	\section{Drehmoment und Drehimpuls}
+	
+	Das Drehmoment:
+	\begin{equation}
+		T = \tau_x i + \tau_y j + \tau_z k,
+	\end{equation}
+	ist gegeben durch den Vektorteil:
+	\begin{equation}
+		\boldsymbol\tau = \operatorname{Vec}(rF).
+	\end{equation}
+	
+	Der Drehimpuls:
+	\begin{equation}
+		\Lambda = L_x i + L_y j + L_z k,
+	\end{equation}
+	erfüllt im isotropen Fall:
+	\begin{equation}
+		\Lambda = I \Omega.
+	\end{equation}
+	
+	Im allgemeinen Fall:
+	\begin{equation}
+		\Lambda = \mathcal I(\Omega),
+	\end{equation}
+	wobei $\mathcal I$ ein linearer Operator ist.
+	
+	\section{Energie und Leistung}
+	
+	Die Rotationsenergie lautet:
+	\begin{equation}
+		K = \frac12 \|\Omega\|^2 I,
+	\end{equation}
+	bzw. allgemein:
+	\begin{equation}
+		K = \frac12 \langle \Omega, \mathcal I(\Omega) \rangle.
+	\end{equation}
+	
+	Die Leistung ergibt sich aus:
+	\begin{equation}
+		P = \boldsymbol\tau \cdot \boldsymbol\omega.
+	\end{equation}
+	
+	Quaternionisch:
+	\begin{equation}
+		P = -\operatorname{Scal}(T\Omega).
+	\end{equation}
+	
+	\section{EABC-Interpretation}
+	
+	Wir identifizieren:
+	\begin{equation}
+		E \leftrightarrow 1,\quad
+		A \leftrightarrow i,\quad
+		B \leftrightarrow j,\quad
+		C \leftrightarrow k.
+	\end{equation}
+	
+	Ein Zustand ist dann:
+	\begin{equation}
+		Q = E + Ai + Bj + Ck.
+	\end{equation}
+	
+	Die Norm:
+	\begin{equation}
+		N(Q) = E^2 + A^2 + B^2 + C^2
+	\end{equation}
+	ist eine Erhaltungsgröße.
+	
+	Für reine Rotationen:
+	\begin{equation}
+		Q =
+		\cos\frac{\theta}{2}
+		+
+		(Ai + Bj + Ck)\sin\frac{\theta}{2},
+	\end{equation}
+	mit
+	\begin{equation}
+		A^2 + B^2 + C^2 = 1.
+	\end{equation}
+	
+	\section{Dynamisches Modell}
+	
+	Ein zeitabhängiger Zustand:
+	\begin{equation}
+		Q(t) = E(t) + A(t)i + B(t)j + C(t)k
+	\end{equation}
+	erfüllt:
+	\begin{equation}
+		\dot Q = \frac12 Q \Omega.
+	\end{equation}
+	
+	Mit:
+	\begin{align}
+		\Omega &= \omega_A i + \omega_B j + \omega_C k,\\
+		\Lambda &= \mathcal I(\Omega),\\
+		T &= \dot\Lambda,\\
+		K &= \frac12 \langle \Omega,\Lambda\rangle,\\
+		P &= \langle T,\Omega\rangle.
+	\end{align}
+	
+	\section{Arithmetische Interpretation}
+	
+	Sei
+	\begin{equation}
+		Q_N = E_N + A_N i + B_N j + C_N k
+	\end{equation}
+	mit
+	\begin{equation}
+		N = E_N^2 + A_N^2 + B_N^2 + C_N^2.
+	\end{equation}
+	
+	Eine Transformation:
+	\begin{equation}
+		Q_N \mapsto q Q_N q^{-1}
+	\end{equation}
+	erhält die Norm und beschreibt eine Rotation im EABC-Raum.
+	
+	\section{Beispiel: Symmetrische Rotation}
+	
+	Für die Achse
+	\begin{equation}
+		\mathbf n = \frac{1}{\sqrt3}(1,1,1)
+	\end{equation}
+	und $\theta = \frac{2\pi}{3}$ ergibt sich:
+	\begin{equation}
+		q = \frac{1+i+j+k}{2}.
+	\end{equation}
+	
+	Dies ist ein Hurwitz-Quaternion mit tetraedrischer Symmetrie.
+	
+	\section{Interpretation}
+	
+	Die Struktur lässt sich wie folgt lesen:
+	\begin{align}
+		\text{E} &\rightarrow \text{Skalar, Energie, Norm},\\
+		\text{A,B,C} &\rightarrow \text{gerichtete Dynamikachsen}.
+	\end{align}
+	
+	Damit ergibt sich eine klare Trennung:
+	\begin{itemize}
+		\item Energie als skalare Größe (E-Kanal)
+		\item Dynamik als gerichtete Bewegung (A,B,C-Kanäle)
+		\item Quaternionenmultiplikation als nichtkommutative Kopplung
+	\end{itemize}
+	
+	\section{Schlussbemerkung}
+	
+	Die quaternionische Darstellung der Rotationsdynamik liefert nicht nur eine elegante mathematische Formulierung, sondern auch eine natürliche vierdimensionale Struktur. Diese erlaubt eine Interpretation im Sinne eines EABC-Modells, in dem Norm, Energie und gerichtete Dynamik in einer einheitlichen algebraischen Sprache zusammengeführt werden.
+	
+\end{document}

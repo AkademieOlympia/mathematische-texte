@@ -1,0 +1,277 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.7cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{graphicx}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	citecolor=blue,
+	urlcolor=blue,
+	pdftitle={Holographische Relaxationspfade in einem diskreten Kugelerweiterungsmodell},
+	pdfauthor={Thomas Hoffbauer}
+}
+
+\newtheorem{satz}{Satz}
+\newtheorem{lemma}{Lemma}
+\newtheorem{korollar}{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{beispiel}{Beispiel}
+\theoremstyle{remark}
+\newtheorem{bemerkung}{Bemerkung}
+
+\title{Holographische Relaxationspfade in einem diskreten Kugelerweiterungsmodell\\
+	\large Ein arXiv-Standardartikel in deutscher Sprache}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		In diesem Beitrag wird ein diskretes Relaxationsmodell untersucht, das aus einem erweiterten Strukturansatz des Bamberg-Modells motiviert ist. Ausgangspunkt ist ein Gedankenexperiment, in dem eine vierdimensionale Kugel auf zwei verschiedene Arten erweitert wird: entweder durch drei identische Teilkugeln (Modus $E3$) oder durch vier identische Teilkugeln (Modus $E4$), die in eine größere Zielkugel eingebettet werden. Während des Relaxationsprozesses wird angenommen, dass volumetrische Information aus dem Inneren der vierdimensionalen Kugel schrittweise auf ihren $S^3$-Rand übertragen wird. Zur Beschreibung dieses Prozesses werden diskrete Knotenklassen, Bulk- und Randanteile, ein lokaler Randdominanzparameter sowie eine globale holographische Ordnungsgröße eingeführt. Numerische Testläufe zeigen in beiden Expansionsmodi einen robusten Übergang von einer bulk-dominierten Anfangsphase zu einer randdominierten Endphase. Dabei bleiben zwei \emph{beta}-Restkerne erhalten, während der übrige Strukturverband in \emph{boundary-like}-Zustände übergeht. Der Vierermodus $E4$ erzeugt eine leicht stärkere Randdominanz als der Dreiermodus $E3$. Der Beitrag formuliert die wesentlichen Begriffe, ordnet die beobachteten Phasenübergänge systematisch ein und schlägt eine Interpretation der Endzustände als holographische Attraktoren vor.
+	\end{abstract}
+	
+	\section{Einleitung}
+	Die Idee, volumetrische Information eines Systems auf eine Randstruktur abzubilden, gehört zu den produktivsten Motiven moderner theoretischer Physik und mathematischer Strukturtheorie. Im vorliegenden Beitrag wird ein diskretes Modell vorgestellt, das diese Intuition nicht im Rahmen eines kontinuierlichen Feldmodells, sondern mittels eines endlichen Relaxationssystems formuliert. Der leitende Gedanke ist dabei bewusst geometrisch: Eine vierdimensionale Ursprungskugel werde erweitert, indem entweder drei oder vier identische kleinere Teilkugeln in einer größeren Zielkugel untergebracht werden. Die Teilkugeln tragen zunächst lokale Volumeninformation; im Verlauf der Relaxation wird diese jedoch schrittweise an den $S^3$-Rand der Zielkugel übertragen.
+	
+	Das Motiv steht in engem Zusammenhang mit dem Bamberg-Modell, insbesondere mit dessen wiederkehrender Unterscheidung zwischen Kernstruktur, Vermittlungsstruktur, Bindungszonen und randwirksamen Projektionen. Ziel dieses Artikels ist jedoch nicht die vollständige axiomatische Ausarbeitung des Gesamtmodells, sondern die saubere Darstellung eines klar abgegrenzten numerisch-konzeptionellen Teilaspekts: der \emph{holographischen Relaxation} in zwei diskreten Expansionsmodi.
+	
+	Die numerischen Läufe zeigen ein bemerkenswert robustes Bild. Unabhängig davon, ob drei oder vier Teilkugeln verwendet werden, entwickelt sich das System von einer bulk-dominierten Anfangsphase über eine Transferphase in eine randdominierte Endphase. Zwei obere Restkerne bleiben als \emph{beta}-Struktur erhalten, während fast alle übrigen Knoten in eine Randklasse übergehen. Diese Beobachtung legt nahe, die holographische Endphase als Attraktor des Modells zu deuten.
+	
+	\section{Geometrische Motivation des Modells}
+	\subsection{Vierdimensionale Ursprungskugel und Rand $S^3$}
+	Betrachtet werde eine vierdimensionale Kugel $B^4(R)$ mit Rand
+	\[
+	\partial B^4(R)=S^3(R).
+	\]
+	Der volumetrische Anteil des Systems wird heuristisch als \emph{Bulk} verstanden, während der dreidimensionale Rand $S^3$ als Träger der randkodierten Information aufgefasst wird.
+	
+	Der hier verfolgte Ansatz ist diskret: An die Stelle einer kontinuierlichen Dichte treten endlich viele Knoten mit Zustandsgrößen, Klassenetiketten und lokaler Bulk/Rand-Verteilung. Die zentrale Fragestellung lautet, ob und wie sich eine anfänglich volumetrische Konfiguration durch interne Relaxation in eine überwiegend randdominierte Struktur überführt.
+	
+	\subsection{Zwei Expansionsmodi}
+	Es werden zwei idealisierte Erweiterungsmodi betrachtet:
+	\begin{itemize}[leftmargin=2em]
+		\item \textbf{Modus $E3$:} drei identische Teilkugeln werden in die neue Zielkugel eingebettet,
+		\item \textbf{Modus $E4$:} vier identische Teilkugeln werden in die neue Zielkugel eingebettet.
+	\end{itemize}
+	Die zugehörigen Radiusfaktoren stammen aus der Volumenerhaltung im vierdimensionalen Sinn. Ist $r$ der Radius der Kindkugeln und $R$ der Radius der Zielkugel, so gilt heuristisch
+	\[
+	N\,r^4 \sim R^4,
+	\]
+	mit $N\in\{3,4\}$. Daraus ergeben sich die normierten Faktoren
+	\[
+	\frac{r}{R}=3^{-1/4}\approx 0.759836 \qquad (E3),
+	\]
+	und
+	\[
+	\frac{r}{R}=4^{-1/4}=\frac{1}{\sqrt 2}\approx 0.707107 \qquad (E4).
+	\]
+	Der Vierermodus komprimiert also stärker als der Dreiermodus. Genau diese stärkere Kompression spiegelt sich in den numerischen Endzuständen als leicht stärkere Randdominanz wider.
+	
+	\section{Diskretes Relaxationssystem}
+	\subsection{Knoten und Zustandsvariablen}
+	Das System bestehe aus endlich vielen Knoten $i=0,\dots,N-1$. Jedem Knoten sind in jedem Zeitschritt $t$ Zustandsgrößen zugeordnet:
+	\[
+	q_1^{(i)}(t),\qquad q_2^{(i)}(t),\qquad g^{(i)}(t),\qquad \sigma^{(i)}(t),\qquad p^{(i)}(t).
+	\]
+	Die konkrete numerische Dynamik wird im vorliegenden Artikel als gegeben vorausgesetzt; entscheidend ist die qualitative Interpretation:
+	\begin{itemize}[leftmargin=2em]
+		\item $q_1,q_2$ beschreiben zwei interne Ladungs- bzw. Strukturkomponenten,
+		\item $g$ misst eine vermittlungs- oder kernartige Anregung,
+		\item $\sigma$ fungiert als lokales Spannungs- bzw. Relaxationsmaß,
+		\item $p$ ist ein zusätzlicher lokaler Strukturparameter.
+	\end{itemize}
+	
+	\subsection{Interne Klassen}
+	Jeder Knoten erhält in jedem Schritt eine interne Klasse aus der Menge
+	\[
+	\{\text{alpha},\text{beta},\text{gamma},\text{gamma\_core},\text{bridge},\text{mixed},\text{defect}\}.
+	\]
+	Diese Klassen haben folgende heuristische Bedeutung:
+	\begin{description}[leftmargin=2.8em,style=nextline]
+		\item[alpha-like] Bindungs- und Ordnungszonen tieferer Schichten,
+		\item[beta-like] obere Restkerne mit stabiler Reststruktur,
+		\item[gamma-like] verstärkte Vermittlungs- oder Umschlagzonen,
+		\item[gamma\_core] eigentlicher Vermittlungskern,
+		\item[bridge-like] Übergangs- bzw. Brückenzone,
+		\item[mixed] noch nicht ausdifferenzierte Mischzustände,
+		\item[defect-like] defekte oder diffuse Zustände.
+	\end{description}
+	
+	\subsection{Holographische Zusatzgrößen}
+	Für jeden Knoten werden zusätzlich eingeführt:
+	\[
+	\mathrm{bulk}^{(i)}(t),\qquad s_3^{(i)}(t),\qquad \mathrm{flux}^{(i)}(t),\qquad br^{(i)}(t).
+	\]
+	Dabei bedeutet:
+	\begin{itemize}[leftmargin=2em]
+		\item $\mathrm{bulk}^{(i)}(t)$: lokaler verbleibender Volumenanteil,
+		\item $s_3^{(i)}(t)$: auf den Rand $S^3$ übertragener Anteil,
+		\item $\mathrm{flux}^{(i)}(t)$: momentane Transfergröße vom Bulk an den Rand,
+		\item $br^{(i)}(t)$: lokale Randdominanz.
+	\end{itemize}
+	
+	Global werden die Summen
+	\[
+	\mathrm{Bulk}(t)=\sum_i \mathrm{bulk}^{(i)}(t),
+	\qquad
+	S_3(t)=\sum_i s_3^{(i)}(t)
+	\]
+	und eine globale holographische Ordnungsgröße $H(t)$ betrachtet. In der numerischen Auswertung verhält sich $H(t)$ monoton wachsend und kann damit als Ordnungsparameter des Bulk-Rand-Übergangs interpretiert werden.
+	
+	\begin{definition}[Boundary-like-Klasse]
+		Ein Knoten heiße \emph{boundary-like}, wenn seine Randdominanz $br^{(i)}(t)$ einen vorgegebenen Schwellenwert überschreitet und der Knoten daher geometrisch eher durch seine Randprojektion als durch seine innere Klassenbasis beschrieben wird.
+	\end{definition}
+	
+	Damit entsteht eine zweistufige Beschreibung: Ein Knoten kann intern etwa aus einer \emph{gamma\_core}-Basis stammen, aber geometrisch bereits \emph{boundary-like} sein.
+	
+	\section{Beobachtete Dynamik}
+	\subsection{Bulk-Transfer und Randakkumulation}
+	Die numerischen Läufe zeigen in beiden Modi dasselbe qualitative Muster:
+	\begin{enumerate}[leftmargin=2em]
+		\item Zu Beginn ist das System vollständig bulk-dominiert, also $S_3(0)=0$.
+		\item In einer mittleren Phase wächst der Transferterm \emph{flux} deutlich an.
+		\item Danach steigt $S_3(t)$ weiter an, während $\mathrm{Bulk}(t)$ systematisch sinkt.
+		\item Schließlich stabilisiert sich eine randdominierte Endphase.
+	\end{enumerate}
+	
+	Dieser Verlauf ist kein bloßes numerisches Rauschen, sondern ein klar strukturierter Phasenübergang. Besonders auffällig ist, dass Mischzustände nach einigen Schritten verschwinden und durch geordnete alpha-, beta- oder boundary-Strukturen ersetzt werden.
+	
+	\subsection{Interne Klassenübergänge}
+	Die Übergangsmatrizen zeigen insbesondere die folgenden nichttrivialen Übergänge:
+	\begin{itemize}[leftmargin=2em]
+		\item \texttt{mixed \textrightarrow alpha-like},
+		\item \texttt{alpha-like \textrightarrow boundary-like},
+		\item \texttt{gamma\_core \textrightarrow boundary-like},
+		\item \texttt{beta-like \textrightarrow beta-like} (nahezu stabil).
+	\end{itemize}
+	
+	Dies spricht für eine klare hierarchische Dynamik: Zunächst werden Mischzustände geordnet, dann werden tiefe Bindungszonen randwirksam, während die oberen beta-Kerne als Reststruktur erhalten bleiben.
+	
+	\section{Numerische Resultate}
+	\subsection{Endzustände der Modi $E3$ und $E4$}
+	Die holographischen Endwerte lauten:
+	\begin{center}
+		\begin{tabular}{lccccc}
+			\toprule
+			Modus & Kinder & Radiusfaktor & $H_{\mathrm{final}}$ & $\mathrm{Bulk}_{\mathrm{final}}$ & $S_{3,\mathrm{final}}$ \\
+			\midrule
+			$E3$ & 3 & 0.759836 & 0.693615 & 5.407702 & 12.242298 \\
+			$E4$ & 4 & 0.707107 & 0.707369 & 5.164936 & 12.485064 \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	
+	Daraus folgt unmittelbar:
+	\[
+	H_{E4}>H_{E3},\qquad S_{3,E4}>S_{3,E3},\qquad \mathrm{Bulk}_{E4}<\mathrm{Bulk}_{E3}.
+	\]
+	Der Vierermodus führt also zu einer leicht stärkeren holographischen Endphase als der Dreiermodus.
+	
+	\subsection{Endkonfigurationen}
+	In beiden Modi bleiben zwei obere \emph{beta}-Restkerne bestehen, während die übrigen Knoten in \emph{boundary-like}-Zustände übergehen. Für den Endschritt lassen sich die Rollen knapp wie folgt zusammenfassen:
+	\begin{itemize}[leftmargin=2em]
+		\item Knoten $0,1$: obere beta-Restkerne,
+		\item Knoten $2$: randdominanter Feinkern auf gamma\_core-Basis,
+		\item Knoten $3,4,5,6,7$: randdominante Feinkerne auf alpha- bzw. bridge-Basis.
+	\end{itemize}
+	
+	Dies ist eine sehr starke Aussage: Die frühere alpha-Bindungszone bleibt nicht als Volumenphase bestehen, sondern wird selbst an den Rand projiziert. Gleichzeitig verschwindet der Vermittlungskern nicht, sondern erscheint als randdominanter Feinkern fort.
+	
+	\section{Interpretation als holographischer Attraktor}
+	Die numerischen Beobachtungen legen die folgende Deutung nahe.
+	
+	\begin{definition}[Holographischer Attraktor]
+		Ein Endzustand heiße \emph{holographischer Attraktor}, wenn
+		\begin{enumerate}[leftmargin=2em]
+			\item die globale Ordnungsgröße $H(t)$ monoton anwächst,
+			\item der Bulk-Anteil langfristig sinkt,
+			\item der Randanteil $S_3(t)$ langfristig wächst,
+			\item die Zahl diffuser oder defekter Zustände gegen Null geht,
+			\item die Endphase stabil randdominiert bleibt.
+		\end{enumerate}
+	\end{definition}
+	
+	Die hier untersuchten Läufe erfüllen diese Kriterien in bemerkenswert klarer Weise. Insbesondere treten keine defekten Endzustände auf; die Dynamik endet vielmehr in einer geordneten Randphase mit zwei residualen beta-Kernen.
+	
+	\begin{satz}[Robustheit der holographischen Endphase]
+		In den untersuchten numerischen Läufen der Modi $E3$ und $E4$ relaxiert das System aus einer bulk-dominierten Anfangsphase in eine randdominierte Endphase. Diese Endphase ist stabil, defektfrei und enthält lediglich zwei obere beta-Restkerne als residuale Nicht-Randstruktur.
+	\end{satz}
+	
+	\begin{proof}[Begründungsskizze]
+		Die Behauptung folgt aus der numerischen Zeitreihe der globalen Größen und Klassenverteilungen. In beiden Modi wächst $H(t)$ monoton. Gleichzeitig nimmt $\mathrm{Bulk}(t)$ streng ab, während $S_3(t)$ zunimmt. Misch- und Brückenzustände verschwinden weitgehend, defekte Zustände treten nicht auf. Die Endkonfiguration weist genau zwei beta-Restkerne auf; alle übrigen aktiven Knoten sind randdominant. Damit erfüllt die Endphase die charakteristischen Bedingungen eines holographischen Attraktors.
+	\end{proof}
+	
+	\section{Vergleich von E3 und E4}
+	Der Unterschied zwischen den Modi ist quantitativ klein, aber systematisch.
+	
+	\subsection{Dreiermodus $E3$}
+	Der Modus $E3$ besitzt den größeren Radiusfaktor. Er ist daher weniger kompressiv und lässt einen etwas größeren Bulk-Rest zurück. Die Randdominanz wird dennoch klar erreicht; die Endphase ist stark holographisch, aber etwas weniger ausgeprägt als in $E4$.
+	
+	\subsection{Vierermodus $E4$}
+	Der Modus $E4$ besitzt den kleineren Radiusfaktor und ist damit stärker kompressiv. Entsprechend fällt die Bulk-Restmenge etwas geringer aus, und die Randakkumulation sowie $H_{\mathrm{final}}$ sind etwas höher. Dies spricht dafür, dass kleinere identische Teilkugeln die Information effizienter in eine Randbeschreibung überführen.
+	
+	\begin{bemerkung}
+		Die Differenz zwischen $E3$ und $E4$ ist nicht bloß ein numerisches Detail, sondern deutet auf ein allgemeineres Prinzip hin: Je stärker die geometrische Unterteilung, desto effizienter die holographische Randkodierung.
+	\end{bemerkung}
+	
+	\section{Bezug zum Bamberg-Modell}
+	Im Kontext des Bamberg-Modells lässt sich die Dynamik in folgender Weise lesen:
+	\begin{itemize}[leftmargin=2em]
+		\item \textbf{beta} markiert residuale obere Kerne,
+		\item \textbf{gamma/gamma\_core} fungiert als Vermittlungs- und Umschlagsstruktur,
+		\item \textbf{alpha} beschreibt die tiefere Bindungs- und Ordnungszone,
+		\item \textbf{boundary-like} ist die holographische Projektion dieser internen Klassen auf den Rand.
+	\end{itemize}
+	
+	Besonders wichtig ist, dass die alpha-Zone nicht als endgültiger Volumenträger verbleibt. Sie wird selbst randwirksam. Der Vermittlungskern verschwindet ebenfalls nicht, sondern transformiert sich in einen randdominanten Feinkern. Auf diese Weise verbindet das Modell zwei Ebenen: eine interne Strukturtypologie und eine holographische Geometrisierung der Endphase.
+	
+	\section{Weiterführende Größen und offene Perspektiven}
+	Für eine vertiefte Auswertung bieten sich insbesondere drei zusätzliche Kennzahlen an:
+	\begin{align*}
+		\Phi(t) &= \frac{S_3(t)}{\mathrm{Bulk}(t)+S_3(t)},\\
+		\overline{br}(t) &= \frac{1}{N}\sum_i br^{(i)}(t),\\
+		\Delta_{\mathrm{core-rand}}(t) &= \overline{br}_{\mathrm{tiefe\ Knoten}}(t)-\overline{br}_{\mathrm{beta\text{-}Kerne}}(t).
+	\end{align*}
+	
+	Dabei misst $\Phi(t)$ den globalen Holographiegrad, $\overline{br}(t)$ die mittlere lokale Randdominanz und $\Delta_{\mathrm{core-rand}}(t)$ die Spaltung zwischen oberem Kernbereich und tieferem Randbereich.
+	
+	Darüber hinaus stellen sich mehrere offene Fragen:
+	\begin{enumerate}[leftmargin=2em]
+		\item Wie robust ist die beobachtete Endphase unter Variation der Anfangswerte?
+		\item Gibt es kritische Schwellenwerte, ab denen \emph{boundary-like}-Übergänge sprunghaft einsetzen?
+		\item Lassen sich kontinuierliche Grenzmodelle formulieren, in denen $S^3$ nicht bloß metaphorisch, sondern analytisch präzise auftritt?
+		\item Welche Rolle spielen die beta-Restkerne im asymptotischen Langzeitverhalten?
+	\end{enumerate}
+	
+	\section{Schluss}
+	Der vorliegende Beitrag formuliert ein diskretes holographisches Relaxationsmodell, das von einer vierdimensionalen Kugelerweiterung mit drei bzw. vier identischen Teilkugeln motiviert ist. Die numerischen Resultate zeigen in beiden Modi eine robuste Tendenz zur Randdominanz. Das System durchläuft eine klar erkennbare Bulk-, Transfer- und Boundary-Phase. Besonders bemerkenswert ist, dass am Ende nur zwei obere beta-Restkerne bestehen bleiben, während die übrigen aktiven Knoten in randdominante Feinstrukturen übergehen.
+	
+	Der Vergleich der Modi $E3$ und $E4$ zeigt, dass der Vierermodus eine leicht stärkere holographische Endphase erzeugt. Dies stützt die Hypothese, dass stärkere geometrische Kompression die Übertragung volumetrischer Information auf den $S^3$-Rand begünstigt.
+	
+	Damit liefert das Modell einen ersten, strukturell klaren und numerisch stabilen Rahmen, um holographische Relaxationspfade im Kontext des Bamberg-Modells mathematisch und konzeptionell zu untersuchen.
+	
+	\section*{Anhang: Numerische Kernbefunde in knapper Form}
+	\begin{itemize}[leftmargin=2em]
+		\item Beide Modi erfüllen: $H(0)=0$ und $H(t)$ monoton wachsend.
+		\item Defekte Endzustände treten in den untersuchten Läufen nicht auf.
+		\item Die Endphase ist in beiden Modi randdominiert.
+		\item $E4$ ist geringfügig stärker holographisch als $E3$.
+		\item Die Klasse \texttt{boundary\_like} ist entscheidend, um interne Struktur und geometrische Randdominanz zu entkoppeln.
+	\end{itemize}
+	
+\end{document}

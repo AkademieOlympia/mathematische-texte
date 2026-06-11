@@ -1,0 +1,74 @@
+Finale BM-Toy-Übersicht
+
+Arbeitsparameter:
+    gamma = 8.7
+    bias_scale = 0.035
+    kappa = 8
+    zeta = 8
+    theta_a = 0.14
+    theta_b = 0.18
+
+Modellkern:
+    Low-Observable:
+        S_L = 2*CV + 2*B + F
+
+    Low-Skala:
+        T_L = T* * exp(-gamma * Sbar_L)
+        mit T* = 380000 / 137 ≈ 2773.72 K
+
+    High-Sektor:
+        x_tilde = log(1 + kappa*x)/kappa
+        y = x_tilde / (1 + zeta*x_tilde)
+        globale Normierung auf T_H mean = 3000 K
+
+    Hubble-Proxy:
+        R_H^BM = 1 + eta * lambda_L
+
+    sigma8-Proxy:
+        sigma8^BM = 1 - sigma(T_L)/mean(T_L)
+
+    Omega_m-Proxy:
+        Omega_m^BM = sigma(T_H)/mean(T_H) + sigma(T_L)/mean(T_L) + (R_H^BM - 1)
+
+    n_s-Proxy:
+        beta_L = Skalenexponent der Low-Rauigkeit
+        beta_H = Skalenexponent der High-Rauigkeit
+        n_s^BM = 1 - |beta_L - beta_H| / 3
+
+    theta*-Proxy:
+        100 theta*_BM
+        = 100 * (sigma(T_H)/mean(T_H))
+              * (T_H/T_L)^(-0.14)
+              * (sigma(T_L)/T_L)^(-0.18)
+
+Aktuelle BM-Observablen:
+    T_H mean   ≈ 3000.0 K
+    T_H std    ≈ 62.37 K
+
+    T_L mean   ≈ 2.731 K
+    T_L std    ≈ 0.543 K
+
+    R_H^BM     ≈ 1.0837
+    sigma8^BM  ≈ 0.801
+    Omega_m^BM ≈ 0.303
+    n_s^BM     ≈ 0.967
+    100 theta* ≈ 1.0433
+
+Vergleich zu Planck:
+    sigma8     = 0.811 ± 0.006
+    Omega_m    = 0.315 ± 0.007
+    n_s        = 0.965 ± 0.004
+    100 theta* = 1.0411 ± 0.0003
+
+Einordnung:
+1. T_H bleibt rekombinationsnah.
+2. T_L bleibt CMB-nah.
+3. Der Hubble-Proxy bleibt konsistent mit der frühen/späten Regimetrennung.
+4. sigma8^BM liegt plausibel nahe an Planck.
+5. Omega_m^BM liegt als erstes Toy-Analogon recht nah an Planck.
+6. n_s^BM ist mit der neuen Differenz-der-Tilts-Definition sehr nah an Planck.
+7. 100 theta*_BM ist mit der neuen Projektionsformel sehr nah an Planck.
+
+Status:
+    intern konsistentes, aber weiterhin explizit kalibriertes Spektral-Toy-Modell;
+    keine etablierte physikalische Theorie.

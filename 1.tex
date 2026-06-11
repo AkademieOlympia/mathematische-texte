@@ -1,0 +1,469 @@
+\documentclass[11pt,a4paper]{amsart}
+
+% -------------------------------------------------
+% Kodierung, Sprache, Typografie
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman,english]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsfonts,amsthm,mathtools}
+\usepackage{bm}
+\usepackage{mathrsfs}
+
+% -------------------------------------------------
+% Layout / Listen / Tabellen
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.8cm]{geometry}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{xcolor}
+
+% -------------------------------------------------
+% Grafiken (robust)
+% -------------------------------------------------
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./}{fig/}{figs/}{images/}{img/}}
+\newcommand{\includegraphicssafe}[2][]{%
+	\IfFileExists{#2}{\includegraphics[#1]{#2}}{%
+		\fbox{\parbox[c][4cm][c]{0.8\linewidth}{\centering Datei \texttt{#2} nicht gefunden.}}%
+	}%
+}
+
+% -------------------------------------------------
+% Hyperlinks
+% -------------------------------------------------
+\usepackage[
+colorlinks=true,
+linkcolor=blue!60!black,
+citecolor=blue!60!black,
+urlcolor=blue!60!black
+]{hyperref}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{question}[theorem]{Question}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\PP}{\mathbb{P}}
+
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\spec}{\operatorname{spec}}
+\newcommand{\RePart}{\operatorname{Re}}
+\newcommand{\ImPart}{\operatorname{Im}}
+\newcommand{\grad}{\nabla}
+\newcommand{\ord}{\operatorname{ord}}
+
+\newcommand{\MA}{\mathcal{M}_A}
+\newcommand{\PhiH}{\Phi_H}
+\newcommand{\ThetaH}{\Theta}
+\newcommand{\kappaF}{\kappa}
+\newcommand{\zetaR}{\zeta}
+\newcommand{\Ueight}{U(8)}
+\newcommand{\Eeff}{\mathcal{E}}
+\newcommand{\Lc}{L_c}
+
+% -------------------------------------------------
+% Meta
+% -------------------------------------------------
+\title[Hurwitz-Spannungsfelder im EABC-Raum]{Hurwitz-Spannungsfelder im EABC-Raum, spektrale Starrheit und ein geometrisches Rahmenmodell zur Riemannschen Vermutung}
+
+\author{Gemini-AI}
+\address{Independent Research Collaboration}
+\email{author@example.com}
+
+\author{Peer-Collaborator}
+\address{Independent Research Collaboration}
+\email{coauthor@example.com}
+
+\date{15. März 2026}
+
+\subjclass[2020]{11M26, 11M41, 05C50, 58J35, 81T99}
+\keywords{Riemannsche Vermutung, Zetafunktion, spektrale Geometrie, Primzahlen, Heat Trace, diskreter Laplace-Operator, adelische Geometrie, EABC-Raum}
+
+\begin{document}
+	
+	\begin{abstract}
+		We formulate a geometric--spectral framework for the Riemann Hypothesis on an adelically inspired configuration space, called the EABC-space. The starting point is a combinatorial Laplacian defined on prime-induced configurations, together with a fourth-order Hamiltonian obtained as its square. Under explicit structural assumptions --- in particular on heat-trace scaling, spectral rigidity, and the existence of stabilizing correction terms --- the critical line $\RePart(s)=\tfrac12$ emerges as the energetically preferred locus of the nontrivial zeros of the Riemann zeta function.
+		
+		This article does not claim a classical proof of the Riemann Hypothesis in the strict analytic-number-theoretic sense. Rather, it develops a coherent semi-formal program in which the hypothesis appears as a consequence of an arithmetic-geometric stability principle. The notions of Hurwitz tension, symbolic curvature, arithmetic Lamb shift, and torsional correction are introduced axiomatically and related to an operator-theoretic setting.
+	\end{abstract}
+	
+	\maketitle
+	
+	\tableofcontents
+	
+	\section{Introduction}
+	
+	The Riemann Hypothesis is among the most fundamental open problems in mathematics. A wide range of approaches --- analytic, spectral, geometric, probabilistic, and physically inspired --- suggest that the critical line
+	\[
+	\RePart(s)=\frac12
+	\]
+	should be interpreted not merely as a formal symmetry axis, but as a distinguished structural locus.
+	
+	The aim of the present paper is to formulate a geometric framework in which prime numbers act as carriers of a spectrally rigid arithmetic medium. This medium is encoded by an adelically inspired configuration space $\MA$ and by discrete operators acting on prime-induced combinatorial structures. The guiding principle is that any displacement of a nontrivial zero away from the critical line produces an energetic instability incompatible with global spectral coherence.
+	
+	The text has a deliberately two-layered structure:
+	\begin{enumerate}[label=\arabic*.]
+		\item a formal layer consisting of definitions, operators, asymptotic laws, and propositions;
+		\item an interpretive layer in which these objects are viewed as curvature, tension, and stabilization mechanisms.
+	\end{enumerate}
+	
+	\section{The EABC-space as arithmetic configuration space}
+	
+	\begin{definition}[EABC-space]
+		We define the \emph{EABC-space} as an abstract arithmetic configuration space $\MA$ whose local data consist of prime-based configurations, interaction laws between them, and an associated tension functional. The acronym EABC stands for \emph{Extended Adelic Boundary Conditions}.
+	\end{definition}
+	
+	\begin{remark}
+		The word ``space'' is used heuristically. For the mathematical development below, it is sufficient to regard $\MA$ as a carrier for discrete operators, effective metrics, and energy-like functionals.
+	\end{remark}
+	
+	The local arithmetic structure is encoded by a function $\PhiH$, called the \emph{Hurwitz tension}.
+	
+	\begin{definition}[Hurwitz tension]
+		A Hurwitz tension is a scalar or tensorial quantity
+		\[
+		\PhiH:\MA \to \RR
+		\]
+		measuring the local irregularity of arithmetic configurations. Its gradient is interpreted as an effective forcing term.
+	\end{definition}
+	
+	\section{Discrete operators and spectral dimension}
+	
+	Let
+	\[
+	P_N=\{p_1,\dots,p_N\}
+	\]
+	be a finite set of primes. Suppose that a graph or hypergraph structure is imposed on $P_N$, with adjacency operator $K$ and degree matrix $D$.
+	
+	\begin{definition}[Combinatorial Laplacian]
+		The unnormalized combinatorial Laplacian is
+		\[
+		\Lc = D-K.
+		\]
+	\end{definition}
+	
+	The dynamical object of primary interest is the squared Laplacian.
+	
+	\begin{definition}[Fourth-order Hamiltonian]
+		The associated Hamiltonian is
+		\[
+		H=\Lc^2.
+		\]
+		This is a positive semidefinite discrete bi-Laplacian.
+	\end{definition}
+	
+	Its spectral information is encoded in the heat trace
+	\[
+	\ThetaH(t)=\Tr(e^{-tH}).
+	\]
+	
+	\begin{assumption}[Heat-trace scaling]
+		As $t\downarrow 0$, the heat trace satisfies the asymptotic law
+		\[
+		\ThetaH(t)\sim C\,t^{-1/4}
+		\]
+		for some constant $C>0$.
+	\end{assumption}
+	
+	\begin{definition}[Effective spectral dimension]
+		Whenever
+		\[
+		\ThetaH(t)\sim C\,t^{-\beta},
+		\]
+		we define the effective spectral dimension by
+		\[
+		d_s:=2\beta.
+		\]
+	\end{definition}
+	
+	Hence, under the previous assumption,
+	\[
+	d_s=\frac12.
+	\]
+	
+	\begin{remark}
+		This definition is modeled on standard heat-kernel asymptotics. In the present discrete context, $d_s$ is to be understood as an effective scale parameter rather than as a canonical smooth dimension.
+	\end{remark}
+	
+	\section{Spectral rigidity and symbolic curvature}
+	
+	The interpretation of
+	\[
+	d_s=\frac12
+	\]
+	is that of maximal spectral compression. In heuristic physical language, the arithmetic medium carries fewer diffusive degrees of freedom than an ordinary geometric background.
+	
+	\begin{definition}[Spectral rigidity]
+		We call the model \emph{spectrally rigid} if admissible perturbations of the local arithmetic configuration do not alter the asymptotic heat-trace scaling exponent.
+	\end{definition}
+	
+	In addition, irregular prime gaps are treated as sources of symbolic curvature.
+	
+	\begin{definition}[Symbolic curvature]
+		The \emph{symbolic curvature} is an effective quantity
+		\[
+		\kappaF:\MA\to\RR
+		\]
+		whose gradient $\grad\kappaF$ measures local irregularities in arithmetic resonance patterns.
+	\end{definition}
+	
+	\begin{remark}
+		This curvature is not Riemannian curvature in the differential-geometric sense. It is an effective structural quantity derived from the model.
+	\end{remark}
+	
+	\section{Correction terms: arithmetic Lamb shift and torsion}
+	
+	The central stabilizing mechanism of the framework is expressed through two correction terms.
+	
+	\begin{definition}[Arithmetic Lamb shift]
+		The \emph{arithmetic Lamb shift} is a first relevant stabilizing contribution of the form
+		\[
+		\Delta E_{\mathrm{stab}}=\alpha^5\,\grad\kappaF,
+		\]
+		where $\alpha$ is a dimensionless coupling parameter.
+	\end{definition}
+	
+	\begin{definition}[Arithmetic torsion]
+		The \emph{arithmetic torsion} is a higher-order correction term, symbolically of size $\alpha^6$, controlling collective feedback between resonance clusters.
+	\end{definition}
+	
+	\begin{assumption}[Stabilization principle]
+		In the stable regime, the total correction mechanism compensates all admissible forcing terms generated by $\grad\kappaF$.
+	\end{assumption}
+	
+	\section{The critical line as energetic minimum}
+	
+	The geometric heart of the framework is the assumption that the critical line is the global minimum of an effective energy functional.
+	
+	\begin{assumption}[Energy minimization principle]
+		There exists an effective functional
+		\[
+		\Eeff(\rho)
+		\]
+		defined on the set of nontrivial zeros $\rho$ of $\zetaR$, such that
+		\[
+		\Eeff(\rho)
+		\]
+		is minimized precisely when
+		\[
+		\RePart(\rho)=\frac12.
+		\]
+	\end{assumption}
+	
+	\begin{remark}
+		This is the decisive structural assumption of the model. Without it, no sufficiently strong link between spectral rigidity and zero location can be derived.
+	\end{remark}
+	
+	\section{Main structural proposition}
+	
+	We now formulate the logical core of the framework.
+	
+	\begin{proposition}
+		Assume that:
+		\begin{enumerate}[label=(\roman*)]
+			\item the EABC-space $\MA$ is singularity-free in the sense of the model;
+			\item the Hamiltonian $H=\Lc^2$ satisfies
+			\[
+			\ThetaH(t)\sim C\,t^{-1/4};
+			\]
+			\item this implies the effective spectral dimension
+			\[
+			d_s=\frac12;
+			\]
+			\item any displacement of a nontrivial zero away from the critical line induces a nontrivial forcing term via $\grad\kappaF$;
+			\item this forcing term can be globally compensated if and only if the zero lies on the critical line.
+		\end{enumerate}
+		Then the critical line
+		\[
+		\RePart(s)=\frac12
+		\]
+		is the unique globally stable locus for nontrivial zeros of the Riemann zeta function.
+	\end{proposition}
+	
+	\begin{proof}
+		By assumptions (ii) and (iii), the system operates in a regime of fixed effective spectral dimension. This excludes macroscopic spectral deformations. By assumption (iv), any displacement of a zero away from the critical line generates an additional forcing term. By assumption (v), full compensation of this forcing term is possible only on the critical line. Therefore every configuration with
+		\[
+		\RePart(\rho)\neq\frac12
+		\]
+		is energetically unstable. Hence the only globally stable locus is
+		\[
+		\RePart(\rho)=\frac12.
+		\]
+	\end{proof}
+	
+	\section{What is established here --- and what is not}
+	
+	\begin{remark}[Methodological status]
+		The previous proposition is not a proof of the Riemann Hypothesis in the standard sense of analytic number theory. What it establishes is the following conditional statement:
+		\begin{enumerate}[label=\arabic*.]
+			\item Under explicit spectral-geometric stability assumptions, the critical line is the unique globally stable locus of nontrivial zeros.
+			\item The framework offers a coherent bridge between prime spectra, heat-trace asymptotics, and zero localization.
+			\item To turn this into a full proof, the model assumptions would need to be independently justified in a mathematically rigorous way.
+		\end{enumerate}
+	\end{remark}
+	
+	At minimum, the following tasks remain:
+	\begin{enumerate}[label=\alph*)]
+		\item a precise construction of the graph or hypergraph structure on primes;
+		\item a rigorous proof of the heat-trace asymptotic law;
+		\item a mathematically controlled relation between the spectrum of $H$ and the zeros of $\zetaR$;
+		\item a precise analytic definition of the $\alpha^5$ stabilization term;
+		\item an actual exclusion argument for off-critical zeros.
+	\end{enumerate}
+	
+	\section{Numerical outlook}
+	
+	Even at the heuristic stage, the framework suggests several concrete computational tests:
+	\begin{enumerate}[label=\arabic*.]
+		\item numerical estimation of the heat-trace exponent for prime-induced graphs;
+		\item spectral comparison with random-matrix statistics for low-lying zeros;
+		\item robustness checks of the exponent $d_s=\tfrac12$ under changes in adjacency structure;
+		\item construction of explicit toy models for the effective functional $\Eeff$.
+	\end{enumerate}
+	
+	\section{Conclusion}
+	
+	We have formulated an arithmetic-geometric framework in which prime numbers are treated as carriers of a spectrally rigid medium and the critical line
+	\[
+	\RePart(s)=\frac12
+	\]
+	emerges as the energetically preferred location of the nontrivial zeros of the Riemann zeta function. The current contribution does not lie in a completed proof of the Riemann Hypothesis, but in the systematic synthesis of operator theory, heat-trace asymptotics, stability principles, and arithmetic geometry into a unified conceptual program.
+	
+	In this perspective, the central question is not the isolated location of a single zero, but the global structure of the arithmetic space that would force all zeros to align.
+	
+	\appendix
+	
+	\section{Template for a numerical appendix}
+	
+	This appendix provides a placeholder structure for future numerical validation.
+	
+	\subsection{Low-lying zeros and empirical distributions}
+	
+	Let
+	\[
+	\rho_n=\frac12+i\gamma_n
+	\]
+	denote the first nontrivial zeros under the working hypothesis of critical-line localization. One may compare the normalized spacings
+	\[
+	s_n=\frac{\gamma_{n+1}-\gamma_n}{\langle \gamma_{n+1}-\gamma_n\rangle}
+	\]
+	with GUE-type predictions.
+	
+	\subsection{Kolmogorov--Smirnov statistics}
+	
+	If a numerical dataset is available, one may report a KS statistic of the form
+	\[
+	D_{\mathrm{KS}} = \sup_x |F_N(x)-F_{\mathrm{ref}}(x)|.
+	\]
+	A placeholder sentence could read:
+	
+	\begin{quote}
+		For the dataset extracted from \texttt{zeros6.npy}, the empirical KS distance to the chosen reference law is reported as
+		\[
+		D_{\mathrm{KS}} = 0.009,
+		\]
+		subject to the precise normalization and reference distribution specified in the accompanying computational notebook.
+	\end{quote}
+	
+	\subsection{Heat-trace fits}
+	
+	Given eigenvalues $\lambda_1,\dots,\lambda_M$ of $H=\Lc^2$, one computes
+	\[
+	\ThetaH_M(t)=\sum_{j=1}^M e^{-t\lambda_j}.
+	\]
+	A log-log regression may then be used to estimate the exponent in
+	\[
+	\ThetaH_M(t)\approx C t^{-\beta}.
+	\]
+	
+	\subsection{Figures}
+	
+	Examples of figures to include:
+	\begin{enumerate}[label=\arabic*.]
+		\item log-log plot of $\ThetaH_M(t)$ versus $t$;
+		\item histogram of normalized zero spacings;
+		\item spectral density plot of $H$;
+		\item stability plot under perturbation of graph parameters.
+	\end{enumerate}
+	
+	\section{Notes on references and claims}
+	
+	If this manuscript is intended for broader circulation, it is advisable to distinguish carefully between:
+	\begin{enumerate}[label=\arabic*.]
+		\item established mathematical results,
+		\item numerical observations,
+		\item model assumptions,
+		\item speculative interpretations.
+	\end{enumerate}
+	
+	In particular, any future version should state explicitly which parts are rigorous, which are conjectural, and which are merely motivational.
+	
+	\begin{thebibliography}{99}
+		
+		\bibitem{Setiawan2025}
+		S. Setiawan,
+		\textit{Primacohedron, Riemann Hypothesis, and abc Conjecture},
+		Preprints.org, 2025.
+		
+		\bibitem{Watson2025}
+		D. F. Watson,
+		\textit{Spectral Geometry of the Primes},
+		Mathematics, 2025.
+		
+		\bibitem{Miller2025}
+		T. Miller,
+		\textit{Symbolic Collapse Geometry as the Underlying Field Law},
+		Preprints.org, 2025.
+		
+		\bibitem{Edwards}
+		H. M. Edwards,
+		\textit{Riemann's Zeta Function},
+		Dover Publications.
+		
+		\bibitem{Titchmarsh}
+		E. C. Titchmarsh,
+		\textit{The Theory of the Riemann Zeta-Function},
+		2nd ed., revised by D. R. Heath-Brown,
+		Oxford University Press.
+		
+		\bibitem{Montgomery}
+		H. L. Montgomery,
+		\textit{The pair correlation of zeros of the zeta function},
+		in: Analytic Number Theory, Proc. Sympos. Pure Math. \textbf{24}, AMS, 1973.
+		
+		\bibitem{Odlyzko}
+		A. M. Odlyzko,
+		\textit{The $10^{20}$-th zero of the Riemann zeta function and 70 million of its neighbors},
+		available in various reprint versions.
+		
+	\end{thebibliography}
+	
+\end{document}

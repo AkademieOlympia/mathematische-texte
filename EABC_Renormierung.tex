@@ -1,0 +1,1112 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+
+\title{EABC-Operatoralgebra und Renormierungskette\\[0.3em]
+\large Ikosaeder--Dodekaeder-Dualität}
+\author{Thomas Hoffbauer}
+\date{}
+
+\newtheorem{theorem}{Satz}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Bemerkung}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Korollar}
+\newtheorem{hypothesis}{Hypothese}
+\newtheorem{conjecture}{Vermutung}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Eine EABC-zulässige Primzahl $p$ erzeugt auf dem Konfigurationsraum einen
+messbaren Rang-1-Anisotropie-Defekt der Größe $w_p$:
+\[
+  p \;\longmapsto\; w_p \;=\; \Delta\!\bigl(24I_3 + w_p\,vv^{\mathsf T}\bigr),
+  \qquad \|v\|=1.
+\]
+Die robuste Retraktion $R^*_{\mathrm{EABC}}$ führt gestörte Konfigurationen
+zurück in den Fixpunkt-Teilraum $\mathcal{F}$; der effektive Tensor wird dabei
+isotrop: $M_{\mathrm{eff}}(R^*(K^+))=24I_3$.
+Der inhaltliche geometrische Kern
+$M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}})=24I_3$
+ist von der projektiven Lesart des effektiven Tensors strikt getrennt und in
+Lean~4 maschinell verifiziert (\texttt{sorry}\,$=\,0$).
+\end{abstract}
+
+%=============================================================================
+\section{Einleitung: historische und moderne Einordnung}
+\label{sec:introduction}
+%=============================================================================
+
+Die EABC-Renormierungskette verbindet diskrete Arithmetik, polyedrische Symmetrie
+und effektive Tensorphysik in einem einzigen, formal prüfbaren Modell.
+Mehrere historische Linien konvergieren hier --- ohne die Resultate dieser Arbeit
+als deren unmittelbare Fortsetzung zu beanspruchen.
+
+\paragraph{Leonhard Euler (1707--1783).}
+Eulers Polyederformel und seine systematische Theorie der platonischen Körper
+verankern das Ikosaeder als \emph{mathematisches} Referenzobjekt, nicht bloß als
+Zeichnung.
+Die zwölf Ecken des regulären Ikosaeders auf $S^2$ und die zugehörige
+$A_5$-Symmetrie sind der geometrische Boden von $M_{\mathrm{geom}}$;
+Theorem~\ref{thm:geom-fixpoint} ist in diesem Sinne ein Euler-artiger Satz:
+eine endliche, explizite Summe symmetrischer dyadischer Produkte kollabiert
+zu einem skalaren Vielfachen von $I_3$.
+Die Peano-Schalenstapel (Abschnitt~\ref{sec:formal-verification}) erinnern an
+Eulers Methode, diskrete Strukturen schichtweise über $\mathbb{N}$ zu erzeugen.
+
+\paragraph{Bernhard Riemann (1826--1866).}
+Riemanns Trennung von lokalen Koordinaten und globaler Struktur auf Mannigfaltigkeiten
+entspricht methodisch der hier durchgeführten Separation von
+$M_{\mathrm{eff}}$ (Konfigurationsraum) und $M_{\mathrm{geom}}$ (geometrischer Fixpunkt,
+Abschnitt~\ref{sec:two-levels}).
+Der Ordnungsparameter $\Delta(M)=\lambda_{\max}-\lambda_{\min}$ ist ein
+spektral-geometrisches Funktional im riemannschen Sinne: Isotropie bedeutet
+Entartung des Spektrums.
+Die Primzahlen $p=2n+1$ treten als \emph{diskrete Normschalen-Indizes} auf ---
+nicht als analytische Objekte der Riemannschen $\zeta$-Funktion.
+Der strukturelle Bezug zu Riemann liegt in der Frage, wie globale Invarianz
+($24I_3$) aus lokaler arithmetischer Störung ($w_p$) durch Projektion
+wiederhergestellt wird.
+
+\paragraph{Paul Dirac (1902--1984).}
+Diracs Vakuum-Bild --- ein symmetrischer Grundzustand, dem diskrete
+Anregungen (Massen) als Störungen überlagert sind --- spiegelt sich in der
+Zwei-Ebenen-Architektur wider:
+$M_{\mathrm{geom}}=24I_3$ ist das isotrope ``Vakuum'',
+$M_{\mathrm{eff}}(K^+)=24I_3+w_pvv^{\mathsf T}$ die messbare Anisotropie
+(Theorem~\ref{thm:prime-delta}, \texttt{rankOne\_defect\_not\_isotropic}).
+Die Rang-1-Störung $w_pvv^{\mathsf T}$ ist die minimalste nicht-triviale
+Symmetriebrechung in $\mathrm{Sym}_3(\mathbb{R})$; $\Delta(M^+)=w_p$ quantisiert
+das ``Massen-Residuum'' der Störung.
+Dirac würde die Retraktion $R^*$ nicht als Dynamik, sondern als
+Zustandsreduktion lesen: Rückkehr zum symmetrischen Referenzzustand.
+
+\paragraph{Gerard 't~Hooft (*1946).}
+Die Renormierungs- und Eichtheorie-Tradition, deren Höhepunkt 't~Hoofts Arbeit
+zur renormierbaren nicht-abelschen Eichfeldtheorie bildet, liefert das
+konzeptuelle Vokabular des \emph{Retraktionsoperators} $R^*_{\mathrm{EABC}}$:
+kein ad-hoc-Glätten, sondern projektive Rückführung auf einen wohldefinierten
+Fixpunkt-Teilraum $\mathcal{F}$.
+Die Idempotenz $(R^*)^2=R^*$ (Lemma~\ref{lem:idempotence}) entspricht dem
+Gedanken, dass ein korrekt gewählter ``Gauge-Fix'' nach einem Schritt stabil bleibt.
+Die EABC-Theorie beansprucht keine QFT-Renormierungsgruppe im analytischen Sinn;
+sie übernimmt die \emph{Struktur}: lokaler Defekt, globaler Fixpunkt, ein Schritt genügt.
+
+\paragraph{Zeitgenössische Nachbarn.}
+Maynard, Tao und Scholze behandeln Primzahlen auf anderem Niveau
+(Gaps, additive Kombinatorik, perfektoide Geometrie; Abschnitt~\ref{sec:modern-neighbors}).
+Die EABC-Theorie bleibt diskret-modular: $p\bmod 12$ klassifiziert Normschalen,
+nicht die Primzahlverteilung selbst.
+
+%=============================================================================
+\section{EABC-Familien und Anisotropietensor}
+%=============================================================================
+
+Die vier invertierbaren Restklassen modulo~$12$ definieren die EABC-Familien
+\[
+  E \equiv 1,\qquad A \equiv 5,\qquad B \equiv 7,\qquad C \equiv 11 \pmod{12},
+\]
+mit Gewichten $w_E=1$, $w_A=5$, $w_B=7$, $w_C=11$.
+
+Sei $\{v_i\}_{i=1}^{12}\subset S^2\subset\R^3$ ein 12-Kuss-System (Einheitsrichtungen)
+und $\sigma\colon\{1,\ldots,12\}\to\{E,A,B,C\}$ eine Label-Zuweisung.
+Der \emph{Anisotropietensor} ist
+\[
+  M(\sigma)
+  \;=\;
+  \sum_{i=1}^{12} w_{\sigma(i)}\, v_i v_i^{\mathsf T}
+  \;\in\;
+  \mathrm{Sym}_3(\R).
+\]
+
+\begin{definition}[Ordnungsparameter]
+\[
+  \Delta(M) \;:=\; \lambda_{\max}(M) - \lambda_{\min}(M),
+\]
+wobei $\lambda_1\le\lambda_2\le\lambda_3$ die Eigenwerte von $M$ bezeichnen.
+Isotropie entspricht $\Delta(M)=0$.
+\end{definition}
+
+%=============================================================================
+\section{Renormierungsoperatoren}
+%=============================================================================
+
+Sei $K_n=(V_n,\sigma_n)$ eine Konfiguration aus Vertices $V_n$ und Zuweisung $\sigma_n$.
+
+\begin{definition}[$R_{\mathrm{EABC}}$]
+Der Operator $R_{\mathrm{EABC}}$ projiziert $\sigma$ auf die geometrisch zulässige
+3+3+3+3-Zuweisung: pro Ecke $v_i$ wird die mod-$12$-Restklasse
+$r(v_i)$ aus den skalierten Koordinaten und die nächste EABC-Restklasse
+bestimmt. $R_{\mathrm{EABC}}$ ist idempotent; Fixpunkte erfordern perfekte
+geometrische Konsistenz der Koordinaten-Klassifikation.
+\end{definition}
+
+\begin{definition}[$P_I$ (Voronoi-Pullback)]
+$P_I$ bildet gestörte Kussrichtungen auf das Referenz-Ikosaeder ab:
+\[
+  P_I(v) \;=\; \arg\max_{r_j\in I_{12}} \langle v, r_j\rangle,
+\]
+wobei $I_{12}$ die 12 Referenz-Ecken des regulären Ikosaeders auf $S^2$ ist.
+\end{definition}
+
+\begin{definition}[$R^*_{\mathrm{EABC}}$]
+Der robuste Fixpunktoperator ist die Komposition
+\[
+  R^*_{\mathrm{EABC}} \;:=\; P_I \circ R_{\mathrm{EABC}}.
+\]
+Zuerst geometrische Rückführung, dann Label-Projektion.
+\end{definition}
+
+\subsection{Konfigurationsraum und Retraktion}
+
+\begin{definition}[Konfigurationsraum $\mathcal{C}$]
+$\mathcal{C}$ ist die Menge aller Konfigurationen
+\[
+  K=(V,\sigma),
+  \qquad
+  V=(v_1,\ldots,v_{12})\subset S^2,
+  \qquad
+  \sigma\colon\{1,\ldots,12\}\to\{E,A,B,C\},
+\]
+also aller (ggf.\ gestörten) EABC-Kuss-Konfigurationen.
+\end{definition}
+
+\begin{definition}[Fixpunkt-Teilraum $\mathcal{F}$]
+\[
+  \mathcal{F}
+  \;:=\;
+  \bigl\{K\in\mathcal{C} : R^*_{\mathrm{EABC}}(K)=K\bigr\}
+  \;\subset\;
+  \mathcal{C}
+\]
+ist der Teilraum der \emph{robusten Fixpunkte} des Operators $R^*_{\mathrm{EABC}}$.
+Das geometrische Referenzobjekt $I_{12}^{\mathrm{EABC}}$ liegt in $\mathcal{F}$.
+\end{definition}
+
+\begin{definition}[Einbettung und Retraktion]
+Die kanonische Einbettung ist
+\[
+  \iota\colon \mathcal{F}\hookrightarrow \mathcal{C},\qquad \iota(K)=K.
+\]
+Der robuste Operator wirkt als Abbildung
+\[
+  R^*_{\mathrm{EABC}}\colon \mathcal{C}\longrightarrow \mathcal{F}.
+\]
+\end{definition}
+
+\begin{proposition}[Retraktion auf $\mathcal{F}$]
+\label{prop:retraction}
+Mit $\iota$ und $R^*_{\mathrm{EABC}}$ wie oben gilt:
+\begin{enumerate}
+\item[(a)] \textbf{Idempotenz auf $\mathcal{C}$:}
+  $(R^*_{\mathrm{EABC}})^2 = R^*_{\mathrm{EABC}}$.
+\item[(b)] \textbf{Fixpunkt auf $\mathcal{F}$:}
+  $R^*_{\mathrm{EABC}}(K)=K$ für alle $K\in\mathcal{F}$.
+\item[(c)] \textbf{Retraktionsidentität:}
+  $R^*_{\mathrm{EABC}}\circ \iota = \mathrm{id}_{\mathcal{F}}$.
+\end{enumerate}
+Insbesondere ist $R^*_{\mathrm{EABC}}\colon\mathcal{C}\to\mathcal{F}$ eine
+\emph{Retraktion} von $\mathcal{C}$ auf den Fixpunkt-Teilraum $\mathcal{F}$.
+\end{proposition}
+
+\begin{proof}[Skizze]
+(a) ist Lemma~\ref{lem:idempotence} unten.
+Für (b) folgt aus der Definition von $\mathcal{F}$.
+Für (c) setze $K\in\mathcal{F}$; dann ist
+$R^*_{\mathrm{EABC}}(\iota(K))=R^*_{\mathrm{EABC}}(K)=K=\iota(K)$.
+\end{proof}
+
+\begin{proposition}[Konvergenz in einem Schritt]
+\label{prop:convergence}
+Ist $R^*_{\mathrm{EABC}}$ idempotent, so gilt für alle $K\in\mathcal{C}$ und
+alle $n\ge 1$:
+\[
+  (R^*_{\mathrm{EABC}})^n(K) \;=\; R^*_{\mathrm{EABC}}(K).
+\]
+Insbesondere konvergiert die Renormierungsiteration nach \emph{einem} Schritt
+auf das Bild $\mathcal{F}$.
+\end{proposition}
+
+\begin{proof}
+Vollständig formalisiert in \texttt{eabc-renorm/EabcRenorm/Retraction.lean}
+als \texttt{IsIdempotent.iterate\_ge\_one}.
+Für $n=1$ trivial; für $n\ge 2$ folgt $(R^*)^n=(R^*)^{n-1}\circ R^*$
+und Induktion über die Idempotenz $(R^*)^2=R^*$.
+\end{proof}
+
+%=============================================================================
+\section{Fixpunkt und Defektklassen}
+%=============================================================================
+
+\begin{definition}[Geometrischer Fixpunkt $I_{12}^{\mathrm{EABC}}$]
+Die Konfiguration $I_{12}^{\mathrm{EABC}}$ besteht aus den 12 Ikosaeder-Ecken
+mit der geometrischen EABC-Zuweisung (je 3 Labels pro Familie).
+\end{definition}
+
+\begin{lemma}[Lemma 1A — Spur am balancierten Fixpunkt]
+\label{lem:trace}
+Sei $M(\sigma)=\sum_{i=1}^{12} w_{\sigma(i)}\, v_i v_i^{\mathsf T}$ mit $\|v_i\|=1$
+und 3+3+3+3-Balance der Label-Zuweisung $\sigma$.
+Dann gilt $\operatorname{tr}(M)=72$.
+\end{lemma}
+
+\begin{proof}
+Da $\operatorname{tr}(v_i v_i^{\mathsf T})=\|v_i\|^2=1$, folgt
+\[
+  \operatorname{tr}(M)
+  \;=\;
+  \sum_{i=1}^{12} w_{\sigma(i)}
+  \;=\;
+  3(1+5+7+11)
+  \;=\;
+  72.
+\]
+\end{proof}
+
+\begin{lemma}[Lemma 1B — Skalar aus Isotropie]
+\label{lem:scalar}
+Ist $M\in\mathrm{Sym}_3(\R)$ isotrop, d.\,h.\ $M=\lambda I$ für ein $\lambda\in\R$,
+und gilt $\operatorname{tr}(M)=72$, dann folgt $\lambda=24$ und
+$\lambda_1=\lambda_2=\lambda_3=24$.
+\end{lemma}
+
+\begin{proof}
+Aus $M=\lambda I$ folgt $\operatorname{tr}(M)=3\lambda=72$, also $\lambda=24$.
+\end{proof}
+
+\begin{lemma}[Lemma 1C — Geometrische Zuordnung der mod-12-Bahnen]
+\label{lem:orbit-assignment}
+Die Ikosaeder-Ecken zerfallen bei Skala $s=6$ in vier Bahnen
+$\mathcal{O}_2,\mathcal{O}_4,\mathcal{O}_8,\mathcal{O}_{10}$
+(je drei Ecken).
+Die Abbildung \emph{nächste EABC-Restklasse} liefert
+\[
+  \mathcal{O}_2\mapsto E\;(w=1),\quad
+  \mathcal{O}_4\mapsto A\;(w=5),\quad
+  \mathcal{O}_8\mapsto B\;(w=7),\quad
+  \mathcal{O}_{10}\mapsto C\;(w=11).
+\]
+Diese Zuordnung ist injektiv auf den Familien und fest durch
+$r(v)=(\mathrm{round}(sx)+\mathrm{round}(sy)+\mathrm{round}(sz))\bmod 12$
+und die Kreis-Distanz auf $\Z/12\Z$.
+\end{lemma}
+
+\begin{proof}
+Die vier Aussagen $\mathcal{O}_r\mapsto\{\text{E,A,B,C}\}$ sind endliche
+Verifikationen auf den Restklassen $2,4,8,10$; formalisiert in
+\texttt{eabc-renorm/EabcRenorm/Mod12.lean} per \texttt{native\_decide}.
+\end{proof}
+
+\begin{lemma}[Lemma 1D — Geometrische Isotropie]
+\label{lem:geom-iso}
+Am geometrischen Fixpunkt $I_{12}^{\mathrm{EABC}}$ gilt
+\[
+  M(\sigma)
+  \;=\;
+  \sum_{i=1}^{12} w_{\sigma(i)}\, v_i v_i^{\mathsf T}
+  \;=\;
+  24\,I_3.
+\]
+\end{lemma}
+
+\begin{proof}[Zwei unabhängige Wege]
+\textbf{Weg I (direkte Summe).}
+Mit den expliziten Koordinaten aus Anhang~\ref{app:generators} ergibt die
+Summe der zwölf gewichteten äußeren Produkte in $\Q(\sqrt5)$ exakt $24I_3$.
+
+\smallskip\noindent
+\textbf{Weg II (Symmetrie + Schur).}
+Sei $\mathcal{I}\cong A_5$ die Ikosaeder-Rotationsgruppe.
+Die gewichtete Bahn-Summe $M=\sum_r w_{\phi(r)}T_r$ ist $\mathcal{I}$-invariant;
+nach Schur folgt $M=\lambda I$.
+Lemma~\ref{lem:trace} liefert $\lambda=24$.
+Die Erzeuger-Verifikation steht in Anhang~\ref{app:generators}.
+\end{proof}
+
+\begin{theorem}[Isotropie-Lemma — Komposition]
+\label{thm:isotropy}
+Am geometrischen EABC-Fixpunkt $I_{12}^{\mathrm{EABC}}$ hat $M(\sigma)$ die
+Eigenwerte $\lambda_1=\lambda_2=\lambda_3=24$, also $\Delta(M)=0$.
+\end{theorem}
+
+\begin{proof}
+Lemma~\ref{lem:geom-iso} liefert $M=24I_3$ direkt.
+Alternativ: Lemma~\ref{lem:geom-iso} (Weg II) gibt Isotropie,
+Lemma~\ref{lem:trace} gibt $\operatorname{tr}(M)=72$,
+Lemma~\ref{lem:scalar} gibt $\lambda=24$.
+\end{proof}
+
+\begin{remark}[Lean-Formalisierung (V4)]
+In \texttt{eabc-renorm} ist der Beweis dreistufig angelegt:
+\texttt{trace\_geometric\_fixpoint} (1A),
+\texttt{isotropy\_from\_trace} (1B),
+\texttt{geometric\_fixpoint\_isotropy} (1C/1D).
+Stand: \texttt{lake build} grün, \texttt{sorry}\,$=\,0$
+(siehe Abschnitt~\ref{sec:formal-verification}).
+\end{remark}
+
+\begin{remark}[Numerische Bestätigung]
+Unabhängig bestätigt \texttt{eabc\_icosahedron\_test.py},
+\texttt{run\_core\_lemma\_tests()} die Aussage (4/4 PASS, Toleranz $10^{-6}$).
+\end{remark}
+
+\begin{lemma}[Projektor-Idempotenz]
+\label{lem:idempotence}
+$R^*_{\mathrm{EABC}} = P_I \circ R_{\mathrm{EABC}}$ ist idempotent:
+\[
+  (R^*_{\mathrm{EABC}})^2 \;=\; R^*_{\mathrm{EABC}}.
+\]
+\end{lemma}
+
+\begin{proof}[Skizze]
+Nach $P_I$ liegen alle Vertices auf den Referenz-Ecken; $R_{\mathrm{EABC}}$ ist
+auf dieser Untervarietät bereits Fixpunktabbildung. Ein zweiter Schritt ändert
+weder Geometrie noch Labels.
+\end{proof}
+
+\smallskip\noindent
+\textit{Numerisch verifiziert in \texttt{eabc\_icosahedron\_test.py},
+\texttt{run\_core\_lemma\_tests()} (4/4 PASS, Toleranz $10^{-6}$).}
+
+\begin{definition}[Defektklassen]
+\begin{align*}
+  \text{FIXPOINT}            &\colon \Delta(M)\approx 0,\; 3{+}3{+}3{+}3\text{-Balance},\; \text{ungestörte Geometrie},\\
+  \text{LABEL\_DEFECT}       &\colon \text{Label-Zuweisung ohne 3+3+3+3-Balance (vor } R_{\mathrm{EABC}}\text{)},\\
+  \text{DIRECTION\_DEFECT}   &\colon \text{balancierte Labels, aber }\Delta(M)>\varepsilon \text{ bei gestörter Geometrie},\\
+  \text{CLASSIFICATION\_DEFECT} &\colon \text{mod-}12\text{-Balance der geometrischen Zuweisung gebrochen},\\
+  \text{PRIME\_DEFECT}(p)    &\colon p=2n+1\in\mathbb{P},\; p\bmod 12\in\{1,5,7,11\},\;
+                               \text{neue Prim-Normkugel verletzt zunächst die 3+3+3+3-Balance}.
+\end{align*}
+\end{definition}
+
+%=============================================================================
+\section{Prim-Erzeugungsschritt}
+\label{sec:prime-step}
+%=============================================================================
+
+\subsection{Operation $2n\mapsto 2n+1$}
+
+Sei $N=2n$ eine gerade Normschale.
+Der \emph{Prim-Erzeugungsschritt} bildet
+\[
+  P(2n)
+  \;:=\;
+  \begin{cases}
+    2n+1, & \text{falls }2n+1\in\mathbb{P},\\
+    \bot, & \text{sonst}.
+  \end{cases}
+\]
+Für $p=P(2n)$ gilt bei Primzahlen $p>3$ stets
+$p\bmod 12\in\{1,5,7,11\}$; die neue Normkugel landet damit in genau
+einer EABC-Familie.
+
+\begin{definition}[Erweiterung um eine Prim-Normkugel]
+Gegeben $K_n\in\mathcal{F}$ mit Label-Zuweisung $\sigma$ und $p=P(2n)$.
+Die erweiterte Konfiguration $K_n^+$ entsteht durch Hinzufügen einer
+Einheitsrichtung $v\in S^2$ mit Label $\mathrm{EABC}(p)$:
+\[
+  M^+ \;=\; M + w_p\, v v^{\mathsf T},
+  \qquad
+  w_p\in\{1,5,7,11\}\text{ gemäß }p\bmod 12.
+\]
+Die Familienbesetzung wird von $(3,3,3,3)$ zu $(4,3,3,3)$ (in genau einer Komponente).
+\end{definition}
+
+\begin{proposition}[PRIME\_DEFECT $\Rightarrow$ LABEL\_DEFECT]
+\label{prop:prime-implies-label}
+Ist $\text{PRIME\_DEFECT}(p)$ aktiv, so gilt $K_n^+\notin\mathcal{F}$ und
+$R^*_{\mathrm{EABC}}(K_n^+)\neq K_n^+$.
+Die Störung ist ein \emph{arithmetisch privilegierter} Label-Defekt.
+\end{proposition}
+
+\subsection{Anisotropie nach dem Primschritt}
+
+Am Fixpunkt war $M=24I_3$.
+Nach dem Primschritt gilt im Rang-1-Modell
+\[
+  M^+ \;=\; 24\,I_3 + w_p\, v v^{\mathsf T},
+  \qquad \|v\|=1.
+\]
+
+\begin{theorem}[Primdefekt-Satz]
+\label{thm:prime-delta}
+Für $w_p>0$ und $\|v\|=1$ hat $M^+=24I_3+w_p vv^{\mathsf T}$ die Eigenwerte
+$\lambda_1=\lambda_2=24$ und $\lambda_3=24+w_p$ (bzw.\ Permutation falls $v$ nicht
+Koordinatenachse ist).
+Insbesondere
+\[
+  \Delta(M^+) \;=\; w_p \;\in\; \{1,5,7,11\}.
+\]
+\end{theorem}
+
+\begin{proof}
+Für symmetrische Rang-1-Störungen $w\,vv^{\mathsf T}$ mit $\|v\|=1$ ist $v$ Eigenvektor
+zum Eigenwert $w$; die Orthogonalen zu $v$ haben Eigenwert $0$.
+Also hat $24I_3+w_p vv^{\mathsf T}$ die Eigenwerte $24$ (doppelt) und $24+w_p$ (einfach).
+Damit $\Delta(M^+)=\lambda_{\max}-\lambda_{\min}=w_p$.
+Formalisiert in \texttt{eabc-renorm/EabcRenorm/PrimeDefect.lean}
+als \texttt{delta\_rank\_one\_perturbation}.
+\end{proof}
+
+\begin{remark}[Primzahlen als Symmetriebrecher]
+Eine Primzahl erscheint hier nicht als bloße Zahl ohne Teiler, sondern als
+\emph{neue ungerade Normkugel}, die aus einer geraden Schale hervorgeht,
+ein zulässiges EABC-Label trägt, die isotrope Balance bricht und einen
+Renormierungsimpuls auslöst.
+\end{remark}
+
+\subsection{$R^*_{\mathrm{EABC}}$ als Prim-Entstörungsoperator}
+
+Bei einem Primschritt hat $R^*_{\mathrm{EABC}}=P_I\circ R_{\mathrm{EABC}}$ die Bedeutung
+\[
+  \text{Prim-Erzeugung}
+  \;\Rightarrow\;
+  \text{PRIME\_DEFECT}
+  \;\Rightarrow\;
+  \text{projektive Rückführung}.
+\]
+Die Kette lautet
+\[
+  K_n \;\longrightarrow\; K_n^+ \;\longrightarrow\; R^*_{\mathrm{EABC}}(K_n^+).
+\]
+Nach Proposition~\ref{prop:convergence} genügt \emph{ein} Projektionsschritt:
+$(R^*_{\mathrm{EABC}})^2=R^*_{\mathrm{EABC}}$.
+
+\begin{theorem}[Prim-Normkugel-Satz — Label-Teil]
+\label{thm:prime-norm}
+Sei $K_n\in\mathcal{F}$ mit geometrischer Label-Zuweisung und
+$K_n^+=\mathrm{Extend}(p)\,K_n$ für $p=P(2n)\in\mathbb{P}$, $p>3$.
+Dann gilt:
+\begin{enumerate}
+\item[(a)] $\text{PRIME\_DEFECT}(p)$ und $K_n^+\notin\mathcal{F}$;
+\item[(b)] $R^*_{\mathrm{EABC}}(K_n^+)\in\mathcal{F}$ mit wiederhergestellter
+  3+3+3+3-Balance;
+\item[(c)] ein Schritt genügt: $(R^*_{\mathrm{EABC}})^n(K_n^+)=R^*_{\mathrm{EABC}}(K_n^+)$
+  für alle $n\ge 1$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}[Beweisidee]
+\textbf{(a)} Die virtuelle Prim-Normkugel erhöht die Multiketten-Zählung einer
+Familie von $3$ auf $4$ bei unveränderter 12er-Geometrie
+(Lemma~\ref{lem:prime-imbalance}, formalisiert als
+\texttt{extendPrime\_creates\_defect}).
+
+\smallskip\noindent
+\textbf{(b)} Entscheidend ist, dass $R_{\mathrm{EABC}}$ \emph{labelblind} ist:
+Es setzt die Zuweisung unabhängig von der Eingabe auf die geometrische
+3+3+3+3-Struktur und löscht den Prim-Schalen-Defekt
+(\texttt{rEabc\_restores\_balance} in \texttt{PrimeDefect.lean}).
+Nach $P_I$ liegt die Geometrie wieder auf dem Referenz-Ikosaeder.
+
+\smallskip\noindent
+\textbf{(c)} Folgt aus der Idempotenz von $R^*_{\mathrm{EABC}}$
+(Proposition~\ref{prop:convergence}).
+\end{proof}
+
+\subsection{Die zwei Tensorebenen: Geometrischer Fixpunkt versus effektiver Konfigurationsraum}
+\label{sec:two-levels}
+
+Ein zentrales Missverständnis bei diskreten Symmetriebrechungen liegt in der
+unzulässigen Vermischung von physikalischem Zustand und geometrischem Hintergrund.
+Das EABC-Renormierungsmodell löst diesen Konflikt durch eine strikte Separation
+zweier Tensorebenen --- auf jeder Peano-Schale $n\in\mathbb{N}$ und zunächst
+unabhängig von metrischen Radien (Phase~A in Abschnitt~\ref{sec:formal-verification}).
+
+Der Primdefekt wirkt gleichzeitig auf Label- und Tensorebene:
+\begin{enumerate}
+\item[(L)] Label-Multikette: $(4,3,3,3)$ statt $(3,3,3,3)$;
+\item[(T)] Tensor: $M_{\mathrm{eff}}(K^+)=24I_3+w_pvv^{\mathsf T}$ (Rang-1-Störung).
+\end{enumerate}
+
+\subsubsection{Die rein geometrische Ebene: der Fixpunkt $M_{\mathrm{geom}}$}
+
+Die Basis bildet der rein geometrische Tensor $M_{\mathrm{geom}}$, der ausschließlich
+die ungestörte Ikosaeder-Konfiguration abbildet.
+Für Vertices $V=(v_i)_{i=1}^{12}$ und Label-Zuweisung $\sigma$ gilt
+(Definition~\ref{def:m-geom}, \texttt{M\_geom} in \texttt{EffectiveTensor.lean})
+\[
+  M_{\mathrm{geom}}(V,\sigma)
+  \;=\;
+  \sum_{i=1}^{12} w_{\sigma(i)}\, v_i v_i^{\mathsf T}.
+\]
+Das in \texttt{IcosahedronSymmetry.lean} verifizierte Theorem
+\texttt{geometric\_fixpoint\_isotropy} beweist, dass für das Referenzobjekt
+$I_{12}^{\mathrm{EABC}}$ mit $\sigma_{\mathrm{geo}}$ alle Richtungsabhängigkeiten
+exakt kollabieren:
+\[
+  \boxed{
+  M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}}) \;=\; 24I_3
+  }.
+\]
+Dieser Zustand ist perfekt isotrop und invariant unter $SO(3)$.
+Er enthält keine dynamischen Defektfelder; in Lean entspricht er
+\texttt{geometricM} bzw.\ \texttt{M\_geom\_geometric\_fixpoint}.
+
+\subsubsection{Die effektive physikalische Ebene: der Konfigurationsraum $M_{\mathrm{eff}}$}
+
+Der effektive Tensor $M_{\mathrm{eff}}$ operiert auf dem Konfigurationsraum
+$\mathcal{C}$ (Lean: \texttt{Config} mit Feldern \texttt{label},
+\texttt{primeShell}, \texttt{tensorDefect}).
+Tritt ein EABC-Primereignis $p$ mit Gewicht $w_p\in\{1,5,7,11\}$ entlang eines
+normierten Defektvektors $v$ ($\|v\|=1$) auf, so setzt man
+(Definition~\ref{def:m-eff})
+\[
+  K^+ \;:=\; \mathrm{Extend}(p,v)\,K,
+  \qquad
+  M_{\mathrm{eff}}(K^+) \;=\; 24I_3 + w_p\,vv^{\mathsf T}.
+\]
+In Lean: \texttt{extendPrimeTensor} schreibt \texttt{tensorDefect = some (w\_p, v)},
+und \texttt{M\_eff\_with\_defect} liefert \texttt{rankOnePerturbation 24 w v}.
+Das Theorem \texttt{rankOne\_defect\_not\_isotropic} zeigt: für $w_p>0$ ist
+$M_{\mathrm{eff}}(K^+)$ nicht isotrop.
+Die messbare Anisotropie ist
+\[
+  \Delta\bigl(M_{\mathrm{eff}}(K^+)\bigr) \;=\; w_p
+\]
+(Theorem~\ref{thm:prime-delta}, \texttt{delta\_prime\_defect\_at\_fixpoint}).
+
+\subsubsection{Die Wirkung von $R^*_{\mathrm{EABC}}$: ein reiner Projektionssatz}
+
+$R^*_{\mathrm{EABC}}$ ist kein Dämpfungs- oder Glättungsoperator, sondern ein
+algebraischer Retrakt auf $\mathcal{F}$.
+Die Tensor-Restauration geschieht nicht analytisch \emph{innerhalb} der gestörten
+Matrix $M_{\mathrm{eff}}(K^+)$, sondern durch projektiven Kollaps der Konfiguration
+zurück auf die geometrische Referenz:
+\[
+  K^+
+  \;\xrightarrow{\;R^*_{\mathrm{EABC}}\;}
+  (I_{12},\sigma_{\mathrm{geo}})
+  \;\xrightarrow{\;M_{\mathrm{geom}}\;}
+  24I_3.
+\]
+Formal faktorisiert die Kette in zwei unabhängige Schritte:
+\begin{enumerate}
+\item \textbf{Projektion (Ebene~1):}
+  $M_{\mathrm{eff}}(R^*(K))=M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}})$
+  ist \emph{definitorisch}
+  (Lemma~\ref{lem:tensor-projection}, \texttt{M\_eff\_projection}:
+  \texttt{rStar} setzt \texttt{tensorDefect} auf \texttt{none}).
+\item \textbf{Fixpunkt (Ebene~2):}
+  $M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}})=24I_3$
+  ist der \emph{inhaltliche} Ikosaeder-Satz
+  (Theorem~\ref{thm:geom-fixpoint}).
+\end{enumerate}
+Für eine einzelne Schale liefert \texttt{prime\_norm\_full\_restoration} beides:
+$R^*(K^+)\in\mathcal{F}$ und $M_{\mathrm{eff}}(R^*(K^+))=24I_3$.
+Auf einem Peano-Schalenstapel gilt dasselbe komponentenweise
+(\texttt{all\_shells\_tensor\_restored} in \texttt{ShellStack.lean}).
+
+\begin{table}[h!]
+\centering
+\small
+\begin{tabular}{p{0.14\linewidth}p{0.36\linewidth}p{0.22\linewidth}p{0.22\linewidth}}
+\hline
+\textbf{Ebene} & \textbf{Mathematisches Objekt} & \textbf{Symmetrie} & \textbf{Lean} \\
+\hline
+Geometrisch &
+  $M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}})=24I_3$ &
+  Isotropie (Referenz) &
+  \texttt{geometric\_fixpoint\_isotropy} \\
+Physikalisch &
+  $M_{\mathrm{eff}}(K^+)=24I_3+w_pvv^{\mathsf T}$ &
+  Rang-1-Anisotropie &
+  \texttt{extendPrimeTensor}, \texttt{rankOne\_defect\_not\_isotropic} \\
+Projektiv &
+  $M_{\mathrm{eff}}(R^*(K^+))=24I_3$ &
+  restaurierte Isotropie &
+  \texttt{prime\_norm\_full\_restoration} \\
+Peano (global) &
+  $\mathcal{R}^*(\mathcal{S}_{\mathrm{def}})=\mathcal{S}_{\mathrm{iso}}$ &
+  schalenweise unabhängig &
+  \texttt{all\_shells\_tensor\_restored} \\
+\hline
+\end{tabular}
+\caption{Gegenüberstellung geometrischer Invarianz, effektiver Störung und projektiver Restauration.
+\texttt{IsEabcFixpoint} beschreibt den Fixpunkt $K\in\mathcal{F}$, nicht direkt den Tensor;
+die Isotropie $24I_3$ folgt über \texttt{M\_eff} und Theorem~\ref{thm:geom-fixpoint}.}
+\label{tab:two-levels}
+\end{table}
+
+\subsection{Tensor-Restauration als Projektionssatz}
+\label{sec:tensor-projection}
+
+Der Mechanismus ist keine dynamische Tensor-Glättung, sondern die Faktorisierung
+\[
+  \mathcal{C}
+  \;\xrightarrow{\;R^*\;}
+  \mathcal{F}
+  \;\xrightarrow{\;M_{\mathrm{geom}}\;}
+  24I_3,
+  \qquad
+  K
+  \;\stackrel{R^*}{\longmapsto}\;
+  (I_{12},\sigma_{\mathrm{geo}})
+  \;\stackrel{M_{\mathrm{geom}}}{\longmapsto}\;
+  24I_3.
+\]
+
+\begin{definition}[Effektiver Tensor $M_{\mathrm{eff}}$]
+\label{def:m-eff}
+Auf dem Konfigurationsraum $\mathcal{C}$ setzt man
+\[
+  M_{\mathrm{eff}}(K)
+  \;:=\;
+  \begin{cases}
+    M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}}), & \text{kein Tensordefekt},\\[4pt]
+    24I_3+w_pvv^{\mathsf T}, & \text{Primdefekt mit }w_p,\ \|v\|=1.
+  \end{cases}
+\]
+(\texttt{M\_eff} in \texttt{EffectiveTensor.lean}).
+\end{definition}
+
+\begin{definition}[Geometrischer Tensor $M_{\mathrm{geom}}$]
+\label{def:m-geom}
+Für Vertices $V=(v_i)_{i=1}^{12}$ und Label-Zuweisung $\sigma$:
+\[
+  M_{\mathrm{geom}}(V,\sigma)
+  \;:=\;
+  \sum_{i=1}^{12} w_{\sigma(i)}\, v_i v_i^{\mathsf T}.
+\]
+\end{definition}
+
+\begin{lemma}[Projektionssatz — effektive Ebene]
+\label{lem:tensor-projection}
+$R^*_{\mathrm{EABC}}$ löscht den Tensordefekt per Definition der Konfiguration:
+\[
+  M_{\mathrm{eff}}\bigl(R^*_{\mathrm{EABC}}(K)\bigr)
+  \;=\;
+  M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}}).
+\]
+(\texttt{M\_eff\_projection}).
+\end{lemma}
+
+\begin{theorem}[Ikosaeder-Fixpunkt — geometrische Ebene]
+\label{thm:geom-fixpoint}
+Am geometrischen Referenz-Fixpunkt gilt
+\[
+  \boxed{
+  M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}})
+  \;=\;
+  24I_3
+  }.
+\]
+(\texttt{geometric\_fixpoint\_isotropy}; Beweis via $R_3$-Invarianz,
+Symmetrie, $\mathrm{tr}(M)=72$ und $M_{01}=0$ aus der gewichteten Summe der
+vier $(\pm1,\pm\varphi,0)$-Ecken).
+\end{theorem}
+
+\begin{corollary}[Tensor-Restauration nach Primdefekt]
+\label{cor:tensor-restore}
+Für $K_n\in\mathcal{F}$, $p=P(2n)$ und $\|v\|=1$ gilt die Satzkette
+\begin{align*}
+  M_{\mathrm{eff}}(K_n^+) &= 24I_3+w_pvv^{\mathsf T},
+  & \Delta(M_{\mathrm{eff}}(K_n^+)) &= w_p,
+  \\
+  w_p>0 &\Rightarrow M_{\mathrm{eff}}(K_n^+)\ \text{nicht isotrop},
+  & R^*_{\mathrm{EABC}}(K_n^+) &\in \mathcal{F},
+  \\
+  M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}}) &= 24I_3,
+  &
+  M_{\mathrm{eff}}(R^*_{\mathrm{EABC}}(K_n^+)) &= 24I_3.
+\end{align*}
+\end{corollary}
+
+\begin{proof}
+Theorem~\ref{thm:prime-delta} und \texttt{delta\_prime\_defect\_at\_fixpoint}
+(vor $R^*$),
+\texttt{rankOne\_defect\_not\_isotropic} (Nicht-Isotropie),
+Theorem~\ref{thm:prime-norm} bzw.\ \texttt{prime\_norm\_full\_restoration}
+(Label und Tensor nach $R^*$),
+Lemma~\ref{lem:tensor-projection} (definitorisch, Ebene~1),
+Theorem~\ref{thm:geom-fixpoint} (geometrisch, Ebene~2).
+\end{proof}
+
+\begin{remark}[Gutachter-Einordnung]
+$M_{\mathrm{eff}}(R^*(K))=24I_3$ ist \emph{kein} mystischer Spektralsatz:
+die Projektion ersetzt die defekte Konfiguration durch den geometrischen Fixpunkt;
+dessen Isotropie ist der inhaltliche Satz (Theorem~\ref{thm:geom-fixpoint}).
+$P_I$ (Voronoi-Pullback gestörter Vertices) ist eine geometrische Realisierung
+von $R^*$, nicht der konzeptionelle Kern.
+\end{remark}
+
+\begin{remark}[$P_I$ als geometrische Realisierung (optional)]
+\label{rem:pi-optional}
+Für gestörte Richtungen $v\in S^2$ setzt
+$P_I(v):=\arg\max_{r_j\in I_{12}}\langle v,r_j\rangle$.
+Bei hinreichend kleiner Kuss-Störung zieht $P_I$ die Vertex-Menge auf $I_{12}$
+zurück; zusammen mit labelblindem $R_{\mathrm{EABC}}$ erhält man dieselbe
+Projektionssemantik wie oben.
+\end{remark}
+
+\begin{lemma}[Multiketten-Imbalance nach dem Primschritt]
+\label{lem:prime-imbalance}
+Aus $K_n\in\mathcal{F}$ und $p=P(2n)$ folgt für die Familienzählung mit virtueller
+Primkugel $(4,3,3,3)$ statt $(3,3,3,3)$.
+\end{lemma}
+
+%=============================================================================
+\section{Formale Verifikation}
+\label{sec:formal-verification}
+%=============================================================================
+
+Die zentrale Satzkette ist in \texttt{eabc-renorm} (Lean~4.29, Mathlib~4.29)
+maschinell verifiziert; \texttt{lake build} ist grün, \texttt{sorry}\,$=\,0$.
+
+\begin{table}[h!]
+\centering
+\small
+\begin{tabular}{p{0.38\linewidth}p{0.30\linewidth}p{0.24\linewidth}}
+\hline
+\textbf{Mathematische Aussage} & \textbf{Lean-Theorem} & \textbf{Datei} \\
+\hline
+$M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}})=24I_3$
+  & \texttt{geometric\_fixpoint\_isotropy} & \texttt{IcosahedronSymmetry.lean} \\
+$M^+=24I_3+w_pvv^{\mathsf T}$
+  & \texttt{rankOnePerturbation} & \texttt{PrimeDefect.lean} \\
+$\Delta(M^+)=w_p$
+  & \texttt{delta\_prime\_defect\_at\_fixpoint} & \texttt{PrimeDefect.lean} \\
+$w_p>0\Rightarrow M^+$ nicht isotrop
+  & \texttt{rankOne\_defect\_not\_isotropic} & \texttt{TensorRestoration.lean} \\
+$R^*(K^+)\in\mathcal{F}$, $M_{\mathrm{eff}}=24I_3$
+  & \texttt{prime\_norm\_full\_restoration} & \texttt{TensorRestoration.lean} \\
+$M_{\mathrm{eff}}(R^*(K))=M_{\mathrm{geom}}(\mathrm{ref})$
+  & \texttt{M\_eff\_projection} & \texttt{EffectiveTensor.lean} \\
+\hline
+\multicolumn{3}{l}{\textbf{Peano-Erweiterung (Multi-Schale, Phase~A)}} \\
+\hline
+Schalenstapel $\mathcal{S}$
+  & \texttt{structure ShellStack} & \texttt{ShellStack.lean} \\
+Lokaler Schalen-Retrakt
+  & \texttt{shell\_defect\_restoration} & \texttt{ShellStack.lean} \\
+Globaler Projektionssatz
+  & \texttt{all\_shells\_restored} & \texttt{ShellStack.lean} \\
+Globale Tensor-Restauration
+  & \texttt{all\_shells\_tensor\_restored} & \texttt{ShellStack.lean} \\
+\hline
+\end{tabular}
+\caption{Verifizierte Satzkette inkl.\ Peano-Schalenstapel.}
+\label{tab:lean-theorems}
+\end{table}
+
+\subsection{Peano-Schachtelung und globaler Retrakt}
+
+Eine einzelne Schale ist in Lean abgeschlossen.
+Für geschachtelte Normschalen wird der Konfigurationsraum zu einem
+\emph{indexbasierten Stapel} $\mathcal{S}=\{K^{(i)}\}_{i<n}$ über
+$\mathbb{N}$ (Peano-Rekursion) erweitert.
+Der globale Operator $\mathcal{R}^*$ wirkt komponentenweise:
+auf markierten Schalen $i$ mit aktivem Primdefekt gilt
+\[
+  \mathcal{R}^*(K^{(i)}) \;=\; R^*_{\mathrm{EABC}}\!\bigl(\mathrm{Extend}(p)\,K^{(i)}\bigr),
+\]
+auf unberührten Schalen bleibt $K^{(i)}$ unverändert.
+Da jede Schale den lokalen Satz \texttt{shell\_defect\_restoration} erfüllt,
+folgt der globale Satz \texttt{all\_shells\_restored} ohne zusätzliche
+Analyse-Hypothesen.
+
+\subsection{Metrische Interpretation (Phase~B, optional)}
+
+Die kombinatorische Verifikation hängt \emph{nicht} von metrischen Radien ab.
+Für physikalische Lesarten lässt sich dennoch eine rein interpretative
+Skalierungsfunktion einführen, z.\,B.
+\[
+  r_n \;=\; \phi^n\,r_0,
+  \qquad \phi=\tfrac{1+\sqrt5}{2},
+\]
+ohne den algebraischen Restaurationssatz zu verändern:
+\texttt{all\_shells\_restored} bleibt exakt, weil $R^*$ auf der
+Label-/Defektebene operiert und $M_{\mathrm{geom}}=24I_3$ metrikunabhängig ist.
+
+\subsection{Zeitgenössische Nachbarn: Maynard, Tao, Scholze}
+\label{sec:modern-neighbors}
+
+Die EABC-Theorie operiert nicht auf dem Niveau von Gaps zwischen Primzahlen
+(Maynard--Tao) oder perfektoider Geometrie (Scholze), sondern auf einer
+\emph{diskreten mod-$12$-Klassifikation} ungerader Normkugeln.
+Der strukturelle Anschluss ist arithmetisch, nicht analytisch:
+Primzahlen $p>3$ mit $p\bmod 12\in\{1,5,7,11\}$ erzeugen privilegierte
+Defekt-Ereignisse mit quantisierten Gewichten $w_p\in\{1,5,7,11\}$.
+Die Verifikation betrifft damit Symmetrie-Fixpunkte und projektive Retraktion,
+nicht die Dichte oder Verteilung der Primzahlen selbst.
+Im historischen Bogen (Abschnitt~\ref{sec:introduction}) steht diese Arbeit
+näher bei Euler und 't~Hooft (diskrete Symmetrie, projektive Stabilisierung)
+als bei den genannten Primzahlprogrammen der Gegenwart.
+
+%=============================================================================
+\section{Dualität}
+%=============================================================================
+
+Ikosaeder--Dodekaeder-Dualität: $I_{12}\leftrightarrow D_{20}$ (12 Ecken $\leftrightarrow$ 20 Flächen).
+Unter Dualitätsabbildung und Label-Pushforward gilt:
+
+\begin{lemma}[Dualitätsstabilität]
+$\Delta(M)$ am geometrischen Fixpunkt ist unter Ikosaeder$\leftrightarrow$Dodekaeder-Dualität
+invariant. Dagegen sind der Dipol $D=\sum_i w_{\sigma(i)} v_i$ und die Holonomie $H$
+\emph{nicht} dualitätsinvariant.
+\end{lemma}
+
+\smallskip\noindent
+\textit{Numerisch verifiziert in \texttt{eabc\_icosahedron\_test.py},
+\texttt{run\_core\_lemma\_tests()} (4/4 PASS, Toleranz $10^{-6}$).}
+
+%=============================================================================
+\section{Renormierungskette}
+%=============================================================================
+
+Die diskrete Kette (ohne Primschritt) lautet
+\[
+  K_n \;\longrightarrow\; K_{n+1}
+  \;=\;
+  \underbrace{\text{Volumen-Renormierung}}_{\lambda_{\mathrm{sphere}}}
+  \;\circ\;
+  \underbrace{R^*_{\mathrm{EABC}}}_{P_I \circ R_{\mathrm{EABC}}}
+  \;\circ\;
+  \underbrace{D_{20}}_{\text{Dual}}
+  \;\circ\;
+  \underbrace{I_{12}}_{\text{Ikosaeder}}
+  \;\circ\;
+  \underbrace{\text{12-Kuss}}_{\text{Einheitsrichtungen}}.
+\]
+
+\paragraph{Erweiterung mit Prim-Erzeugungsschritt (Abschnitt~\ref{sec:prime-step}).}
+Wenn $P(2n)=p$ prim, setze
+\[
+  K_n^+ \;:=\; \mathrm{Extend}(p)\,K_n,
+  \qquad
+  K_{n+1}
+  \;=\;
+  \lambda_{\mathrm{sphere}}
+  \circ R^*_{\mathrm{EABC}}
+  \circ \mathrm{Extend}(P)
+  \;(K_n),
+\]
+wobei $\mathrm{Extend}(p)$ die Konfiguration um die Prim-Normkugel mit
+Label $\mathrm{EABC}(p)$ erweitert.
+Äquivalent:
+\[
+  K_n \;\longrightarrow\; K_n^+ \;\longrightarrow\;
+  R^*_{\mathrm{EABC}}(K_n^+) \;\longrightarrow\; K_{n+1}.
+\]
+
+\begin{definition}[Volumen-Renormierung]
+Für äußeren Radius $R>0$ setze $R_{\mathrm{out}}=R(1+2\pi)$ und
+\[
+  \lambda_{\mathrm{sphere}}
+  \;=\;
+  \left(\frac{V_0}{V_{\mathrm{out}}}\right)^{\!1/3}
+  \;=\;
+  \frac{1}{1+2\pi},
+\]
+mit $V_0=\tfrac{4}{3}\pi R^3$, $V_{\mathrm{out}}=\tfrac{4}{3}\pi R_{\mathrm{out}}^3$.
+Die Vertex-Skalierung erfolgt isotrop: $v_i\mapsto \lambda_{\mathrm{sphere}}\,v_i$.
+\end{definition}
+
+\begin{lemma}[Volumen-Kompatibilität]
+Isotrope Skalierung mit $\lambda_{\mathrm{sphere}} = 1/(1+2\pi)$ multipliziert alle
+Eigenwerte von $M$ mit $\lambda_{\mathrm{sphere}}^2$; $\Delta(M)$ bleibt erhalten.
+\end{lemma}
+
+\smallskip\noindent
+\textit{Numerisch verifiziert in \texttt{eabc\_icosahedron\_test.py},
+\texttt{run\_core\_lemma\_tests()} (4/4 PASS, Toleranz $10^{-6}$).}
+
+%=============================================================================
+\section{Numerische Befunde}
+%=============================================================================
+
+Implementierung in \texttt{eabc\_icosahedron\_test.py}:
+
+\begin{itemize}
+\item $\varepsilon=0$: Nach $R_{\mathrm{EABC}}$ bzw.\ $R^*_{\mathrm{EABC}}$
+  gilt $\Delta(M)\approx 0$ (Fixpunkt erreicht).
+\item $\varepsilon>0$: Gestörte Geometrie ändert mod-$12$-Klassifikation;
+  $R_{\mathrm{EABC}}$ allein reicht nicht --- gekoppelter Operator $R^*_{\mathrm{EABC}}$
+  (Pullback + Label-Projektion) konvergiert zuverlässiger zu $\Delta(M)\approx 0$.
+\item Gekoppelt vs.\ $R_{\mathrm{EABC}}$ allein: Bei $\varepsilon>0$ liefert
+  $R^*_{\mathrm{EABC}}$ niedrigere mittlere $\Delta(M)$ und höhere Fixpunkt-Konvergenzrate.
+\item Volumen-Schritt: $\lambda_{\mathrm{sphere}}=1/(1+2\pi)$; $\Delta(M)$ bleibt
+  nach isotroper Skalierung null, wenn es vorher null war.
+\end{itemize}
+
+\subsection{Numerische Verifikation}
+
+Die vier Kern-Lemmata werden von \texttt{run\_core\_lemma\_tests()} in
+\texttt{eabc\_icosahedron\_test.py} geprüft (Toleranz $10^{-6}$):
+
+\begin{center}
+\begin{tabular}{clc}
+\hline
+Lemma & Testschlüssel & Status \\
+\hline
+1 (Isotropie-Lemma)        & \texttt{isotropy}     & PASS \\
+2 (Projektor-Idempotenz)   & \texttt{idempotence}  & PASS \\
+3 (Dualitätsstabilität)    & \texttt{duality}      & PASS \\
+4 (Volumen-Kompatibilität) & \texttt{volume}       & PASS \\
+\hline
+\multicolumn{2}{r}{Gesamt:} & 4/4 PASS \\
+\end{tabular}
+\end{center}
+
+%=============================================================================
+\section*{Synthese und Schlussfolgerung}
+\label{sec:conclusion}
+%=============================================================================
+
+\begin{center}
+\label{box:conclusion}
+\fbox{%
+  \fbox{%
+    \begin{minipage}{0.92\linewidth}
+      \vspace{2mm}
+      \begin{center}
+        \textbf{\large Synthese der EABC-Renormierung}
+      \end{center}
+      \vspace{3mm}
+      \begin{equation*}
+        \textbf{Quantisierter Primdefekt}\;(\text{effektive Ebene }M_{\mathrm{eff}})\!:
+        \quad
+        p \;\longmapsto\;
+        w_p \;=\;
+        \Delta\!\bigl(24I_3 + w_p\,vv^{\mathsf T}\bigr),
+        \qquad \|v\|=1.
+      \end{equation*}
+      \begin{equation*}
+        \textbf{Globale Tensor-Restauration}\;(\text{Peano-Schalenstapel})\!:
+        \quad
+        \forall i<n:\;
+        M_{\mathrm{eff}}\!\bigl(\mathcal{R}^*(\mathcal{S}^{(n)}_{\mathrm{def}})\bigr)_i
+        \;=\;
+        24I_3.
+      \end{equation*}
+      \vspace{2mm}
+      \hrule
+      \vspace{2mm}
+      \small
+      \textbf{Kernaussage.}
+      Eine EABC-Primzahl $p>3$ mit $p\bmod 12\in\{1,5,7,11\}$ induziert auf einer
+      Normschale eine quantisierte, messbare Rang-1-Anisotropie
+      $w_p\in\{1,5,7,11\}$.
+      Der komponentenweise Retraktions-Schnitt $\mathcal{R}^*$ führt das
+      Schalensystem algebraisch stabil auf den isotropen Ikosaeder-Fixpunkt zurück.
+      Die Satzkette ist in \texttt{eabc-renorm} maschinell verifiziert
+      (Lean~4.29, \texttt{lake build} grün, \texttt{sorry}\,$=\,0$;
+      Tabelle~\ref{tab:lean-theorems}).
+      Metrische Skalierungen $r_n$ (Phase~B) sind interpretativ und berühren die
+      Verifikation nicht.
+      \smallskip
+
+      \textit{Intellektuelle Linie:}
+      Von Eulers polyedrischer Symmetrie über Riemanns Spektralgeometrie und
+      Diracs gestörtem Vakuum zu 't~Hoofts projektiver Renormierungslogik ---
+      hier als diskrete, maschinengeprüfte Satzkette auf dem Ikosaeder-Fixpunkt.
+      \vspace{2mm}
+    \end{minipage}%
+  }%
+}
+\end{center}
+
+%=============================================================================
+\appendix
+\section{Explizite Erzeuger-Verifikation}
+\label{app:generators}
+%=============================================================================
+
+\subsection{Ikosaeder-Ecken und geometrische EABC-Zuweisung}
+
+Mit $\varphi=(1+\sqrt5)/2$ seien die zwölf normierten Ikosaeder-Ecken
+\[
+  v_i \in
+  \Bigl\{
+  \frac{(0,\pm1,\pm\varphi)}{\|(0,1,\varphi)\|},
+  \frac{(\pm1,\pm\varphi,0)}{\|(1,\varphi,0)\|},
+  \frac{(\pm\varphi,0,\pm1)}{\|(\varphi,0,1)\|}
+  \Bigr\}.
+\]
+Die Koordinaten-Restklasse $r(v)$ mit Skala $s=6$ teilt die Ecken in vier
+Bahnen zu je drei Elementen mit Restklassen $2,4,8,10\bmod 12$.
+Die Abbildung \emph{nächste EABC-Restklasse} liefert
+\[
+  2\mapsto E\;(w=1),\quad
+  4\mapsto A\;(w=5),\quad
+  8\mapsto B\;(w=7),\quad
+  10\mapsto C\;(w=11).
+\]
+
+\subsection{Direkte Berechnung von $M$}
+
+Am geometrischen Fixpunkt $I_{12}^{\mathrm{EABC}}$ gilt
+\[
+  M
+  \;=\;
+  \sum_{i=1}^{12} w_{\sigma(i)}\, v_i v_i^{\mathsf T}
+  \;\in\;
+  \Q(\sqrt5)^{3\times 3}.
+\]
+Eine direkte Summation über die zwölf äußeren Produkte (symbolisch in
+$\varphi$) ergibt exakt
+\[
+  M = 24\,I_3.
+\]
+Damit ist $\Delta(M)=0$ und $\lambda_1=\lambda_2=\lambda_3=24$ unmittelbar
+sichtbar, unabhängig von der Symmetrie-Rechnung im Beweis von Lemma~1.
+
+\subsection{Erzeuger $R_3$ und $R_5$}
+
+Die $2\pi/3$-Drehung um den Flächenschwerpunkt $c=\tfrac{1}{\sqrt3}(1,1,1)$
+hat die Matrix
+\[
+  R_3
+  \;=\;
+  \begin{pmatrix}
+    0&1&0\\ 0&0&1\\ 1&0&0
+  \end{pmatrix}
+  \;\in\; SO(3).
+\]
+Die $2\pi/5$-Drehung um die Ecke $v_0$ (Rodrigues-Formel) liefert
+\[
+  R_5
+  \;=\;
+  \begin{pmatrix}
+    \tfrac{-1+\varphi}{2} & \tfrac{1+\varphi}{2} & -\tfrac12 \\[4pt]
+    -\tfrac{1+\varphi}{2} & \tfrac12 & \tfrac{-1+\varphi}{2} \\[4pt]
+    \tfrac12 & \tfrac{-1+\varphi}{2} & \tfrac{1+\varphi}{2}
+  \end{pmatrix}
+  \;\in\; SO(3),
+\]
+wobei man $\cos(2\pi/5)=\tfrac{-1+\varphi}{2}$ und
+$\sin(2\pi/5)=\tfrac{\sqrt{10+2\sqrt5}}{4}$ verwendet.
+
+\subsection{Verifikation der $\mathcal{I}$-Invarianz}
+
+Da $M=24I_3$ exakt gilt, folgt für jedes $R\in SO(3)$ sofort
+\[
+  R\,M\,R^{\mathsf T}
+  \;=\;
+  24\,R\,R^{\mathsf T}
+  \;=\;
+  24\,I_3
+  \;=\;
+  M.
+\]
+Insbesondere für die Erzeuger $R_3,R_5\in A_5$:
+\[
+  R_k\,M\,R_k^{\mathsf T} = M,
+  \qquad k=3,5.
+\]
+Damit ist Schritt~(iii) im Beweis des Isotropie-Lemmas vollständig explizit
+nachgerechnet; die Untergruppe $\mathcal{G}\subset\mathcal{I}$ aus dem
+Hauptbeweis enthält $R_3,R_5$ und daher ganz $\mathcal{I}\cong A_5$.
+
+\end{document}

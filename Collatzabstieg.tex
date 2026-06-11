@@ -1,0 +1,2813 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{mathrsfs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{microtype}
+
+\title{Symmetrische Primzahl-Kuppeln um harmonische Mittelzahlen\\
+	\large Eine heuristische Notiz über Zwillingspaare, Vierlinge und lokale Schalenstruktur}
+\author{Arbeitsnotiz}
+\date{\today}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{hypothesis[definition]{Vermutung}
+\newtheorem{problem}[definition]{Offenes Problem}
+\newtheorem{example}[definition]{Beispiel}
+\newtheorem{remark}[definition]{Bemerkung}
+\theoremstyle{plain}
+\newtheorem{conjecture}[definition]{Vermutung}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+
+\theoremstyle{remark}
+\newtheorem*{idea}{Leitidee}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\pp}{\mathbb{P}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Wir skizzieren ein heuristisches Modell zur Untersuchung lokaler Primzahlcluster um ausgezeichnete Mittelzahlen $M$, insbesondere um Vielfache kleiner Primoriale wie $30,210,2310,\dots$. Im Zentrum stehen geordnete Viererkonfigurationen
+		\[
+		(a,b,c,e)=(p,p+2,q,q+2),
+		\]
+		also zwei Primzahlzwillinge, deren Zentren symmetrisch oder beinahe symmetrisch um eine Mittelzahl liegen. 
+		Wir definieren eine lokale Schalenstruktur um $M$, formulieren Vermutungen über eine verstärkte Häufigkeit solcher Konfigurationen in der Nähe harmonischer Mittelzahlen und schlagen ein numerisches Testprogramm vor. 
+		Der Text versteht sich ausdrücklich nicht als Beweis etablierter Vermutungen wie der Zwillingsprimzahlvermutung, sondern als Versuch, eine geometrisch-arithmetische Heuristik in präzise, testbare Form zu bringen.
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Die Verteilung der Primzahlen erscheint global irregulär, zeigt jedoch lokal bekannte Strukturen: Primzahlzwillinge, Primzahldrillinge, Vierlinge und allgemein zulässige Primzahl-$k$-Tupel. 
+	Diese Notiz geht von der Arbeitshypothese aus, dass bestimmte natürliche Zahlen $M$, die durch viele kleine Primzahlen teilbar sind, eine besonders strukturierte lokale Umgebung besitzen. 
+	
+	Die einfachste und wichtigste dieser Zahlen ist
+	\[
+	30=2\cdot 3\cdot 5.
+	\]
+	In der Nähe eines Vielfachen von $30$ bleiben nur bestimmte Restklassen als Primzahlkandidaten übrig. 
+	Diese Beobachtung motiviert die Frage, ob um solche Zahlen herum \emph{symmetrische Primzahl-Cluster} bevorzugt auftreten.
+	
+	Das zentrale Objekt dieser Notiz sind Viererkonfigurationen aus zwei Primzahlzwillingen
+	\[
+	(a,b,c,e)=(a,a+2,c,c+2),
+	\]
+	die wir als Konfigurationen vom Typ $abce$ bezeichnen. 
+	Die zugehörigen Zentren
+	\[
+	Z_1=a+1,\qquad Z_2=c+1
+	\]
+	liegen für echte Zwillingspaare stets in $6\Z$, und damit ist der Abstand
+	\[
+	\delta=Z_2-Z_1
+	\]
+	automatisch ein Vielfaches von $6$.
+	
+	Die Grundidee lautet:
+	\begin{quote}
+		Stark gesiebte Mittelzahlen könnten als lokale Resonanzzentren dienen, um die sich Zwillingspaare bevorzugt in kleinen, strukturierten Abständen anordnen.
+	\end{quote}
+	
+	\section{Grundbegriffe}
+	
+	\begin{definition}[Primzahlzwilling]
+		Ein \emph{Primzahlzwilling} ist ein Paar
+		\[
+		(p,p+2)
+		\]
+		mit $p,p+2\in\pp$.
+		Sein Zentrum ist
+		\[
+		Z(p):=p+1.
+		\]
+	\end{definition}
+	
+	\begin{remark}
+		Für $p>3$ gilt notwendigerweise
+		\[
+		p\equiv -1 \pmod 6,\qquad p+2\equiv 1\pmod 6,
+		\]
+		also
+		\[
+		Z(p)=p+1\equiv 0\pmod 6.
+		\]
+	\end{remark}
+	
+	\begin{definition}[Quadrupel vom Typ $abce$]
+		Ein \emph{Primzahl-Quadrupel vom Typ $abce$} ist eine geordnete Vierermenge
+		\[
+		(a,b,c,e)
+		\]
+		mit
+		\[
+		b=a+2,\qquad e=c+2,
+		\]
+		wobei $(a,b)$ und $(c,e)$ Primzahlzwillinge sind und
+		\[
+		a<b<c<e.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Zentren und Zentrumsabstand]
+		Für ein Quadrupel $(a,b,c,e)$ definieren wir
+		\[
+		Z_1:=\frac{a+b}{2}=a+1,\qquad Z_2:=\frac{c+e}{2}=c+1,
+		\]
+		sowie den \emph{Zentrumsabstand}
+		\[
+		\delta:=Z_2-Z_1.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Für jedes Quadrupel vom Typ $abce$ gilt
+		\[
+		\delta\in 6\Z_{>0}.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Da $Z_1,Z_2\in 6\Z$ gelten muss, ist auch ihre Differenz ein Vielfaches von $6$.
+	\end{proof}
+	
+	\begin{definition}[Elementarer Primzahlvierling]
+		Ein \emph{elementarer Primzahlvierling} ist eine Primzahlkonfiguration der Form
+		\[
+		(p,p+2,p+6,p+8).
+		\]
+		In diesem Fall ist
+		\[
+		\delta=6.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Mittelzahl]
+		Zu einem Quadrupel $(a,b,c,e)$ definieren wir die \emph{Mittelzahl}
+		\[
+		M:=\frac{Z_1+Z_2}{2}.
+		\]
+		Ist $\delta$ gerade, so ist $M\in\Z$.
+	\end{definition}
+	
+	\begin{definition}[Harmonische Mittelzahl]
+		Eine natürliche Zahl $M$ heiße \emph{harmonische Mittelzahl}, wenn sie durch $30$ teilbar ist:
+		\[
+		30\mid M.
+		\]
+		Stärker nennen wir $M$ \emph{primorial-harmonisch}, wenn
+		\[
+		p_k^\#=\prod_{j\le k}p_j \mid M
+		\]
+		für ein $k\ge 3$ gilt.
+	\end{definition}
+	
+	\begin{definition}[Zulässige Slots modulo $30$]
+		Für $30\mid M$ nennen wir die Restklassen
+		\[
+		\pm1,\pm7,\pm11,\pm13 \pmod{30}
+		\]
+		die \emph{zulässigen Slots} um $M$, da nur dort Zahlen liegen können, die nicht sofort durch $2,3,5$ ausgeschlossen werden.
+	\end{definition}
+	
+	\section{Lokale Schalenstruktur}
+	
+	\begin{definition}[Schale um $M$]
+		Sei $M\in\N$ und $R\in\N$. 
+		Die \emph{Schale} um $M$ mit Radius $R$ ist das Intervall
+		\[
+		\mathcal S(M,R):=[M-R,M+R]\cap \Z.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Symmetrisches Zwillingspaar in der Schale]
+		Ein Paar von Primzahlzwillingen
+		\[
+		(a,a+2),\qquad (c,c+2)
+		\]
+		heißt \emph{symmetrisch relativ zu $M$}, wenn
+		\[
+		a+1<M<c+1
+		\]
+		und
+		\[
+		\abs{(a+1)-M}\approx \abs{(c+1)-M}.
+		\]
+		Im exakten Fall gilt
+		\[
+		(a+1)-M = -(c+1-M).
+		\]
+	\end{definition}
+	
+	\begin{idea}
+		Die Schale um eine harmonische Mittelzahl $M$ wird als lokal gesiebter Raum aufgefasst. 
+		Je stärker $M$ durch kleine Primzahlen teilbar ist, desto stärker ist die arithmetische Vorstruktur der Umgebung.
+	\end{idea}
+	
+	\section{Erste strukturelle Beobachtungen}
+	
+	\begin{proposition}
+		Sei $(a,b,c,e)$ ein Quadrupel vom Typ $abce$. Dann gilt
+		\[
+		c-a=\delta,\qquad e-b=\delta,
+		\]
+		wobei $\delta\in 6\Z_{>0}$.
+	\end{proposition}
+	
+	\begin{proof}
+		Aus $b=a+2$ und $e=c+2$ folgt
+		\[
+		Z_1=a+1,\qquad Z_2=c+1,
+		\]
+		also
+		\[
+		\delta=Z_2-Z_1=(c+1)-(a+1)=c-a.
+		\]
+		Ebenso ist
+		\[
+		e-b=(c+2)-(a+2)=c-a=\delta.
+		\]
+		Die Teilbarkeit durch $6$ wurde oben gezeigt.
+	\end{proof}
+	
+	\begin{remark}
+		Jedes Quadrupel vom Typ $abce$ ist also vollständig durch ein Primzahlzwillingspaar $(a,a+2)$ und einen Abstand
+		\[
+		\delta\in 6\Z_{>0}
+		\]
+		bestimmt, sofern auch $(a+\delta,a+\delta+2)$ wieder ein Primzahlzwilling ist.
+	\end{remark}
+	
+	\section{Heuristische Kernvermutungen}
+	
+	\begin{conjecture}[Lokale Zwillingsverstärkung]
+		Sei $M$ eine harmonische Mittelzahl. 
+		Dann ist die lokale Häufigkeit von Primzahlzwillingen in einer Schale $\mathcal S(M,R)$ für geeignete $R$ statistisch größer als in einem typischen Intervall derselben Länge, dessen Zentrum nicht durch $30$ teilbar ist.
+	\end{conjecture}
+	
+	\begin{conjecture}[Symmetrische Paarung]
+		Sei $M$ eine harmonische Mittelzahl. 
+		Dann treten in $\mathcal S(M,R)$ für viele $M$ Zwillingspaare oberhalb und unterhalb von $M$ auf, deren Zentren kleine Differenzen zu $M$ besitzen und die sich zu Quadrupeln vom Typ $abce$ koppeln lassen.
+	\end{conjecture}
+	
+	\begin{conjecture}[Vierling als Grundzustand]
+		Der elementare Primzahlvierling
+		\[
+		(p,p+2,p+6,p+8)
+		\]
+		ist die kleinste stabile nichttriviale Konfiguration aus zwei Zwillingspaaren und fungiert als Grundzustand allgemeiner Quadrupel vom Typ $abce$.
+	\end{conjecture}
+	
+	\begin{conjecture}[Primorial-Schalen]
+		Mit wachsender Größenordnung werden stabile Schalen bevorzugt in der Nähe von Zahlen beobachtet, die durch größere Primoriale
+		\[
+		30,\;210,\;2310,\;30030,\dots
+		\]
+		teilbar sind.
+	\end{conjecture}
+	
+	\begin{conjecture}[Abstiegsprinzip]
+		Jedes nicht-minimale Quadrupel vom Typ $abce$ mit Zentrumsabstand
+		\[
+		\delta=6k,\qquad k\ge 2,
+		\]
+		lässt sich durch eine geeignete Reduktionsregel auf ein ``kleineres'' Quadrupel oder auf den Grundzustand $\delta=6$ zurückführen.
+	\end{conjecture}
+	
+	\section{Vorsichtige Einordnung}
+	
+	Die obigen Vermutungen sind \emph{heuristisch}. 
+	Sie behaupten insbesondere \emph{nicht}, dass die Zwillingsprimzahlvermutung oder eine stärkere Konstellationsvermutung bereits bewiesen wäre.
+	
+	Was im vorliegenden Rahmen elementar gesichert ist, sind:
+	
+	\begin{itemize}[leftmargin=1.5em]
+		\item Zwillingszentren liegen in $6\Z$.
+		\item Für Quadrupel vom Typ $abce$ ist der Zentrumsabstand stets ein Vielfaches von $6$.
+		\item Die Restklassen modulo $30$ bestimmen die zulässigen Primzahlkandidaten in der Nähe eines Vielfachen von $30$.
+		\item Primoriale liefern natürliche Siebzentren.
+	\end{itemize}
+	
+	Nicht gesichert, sondern lediglich Arbeitshypothesen, sind:
+	
+	\begin{itemize}[leftmargin=1.5em]
+		\item eine echte lokale Verstärkung von Zwillingen oder Vierlingen um harmonische Mittelzahlen,
+		\item ein universelles Abstiegsprinzip für Quadrupel,
+		\item eine geometrische Theorie solcher Cluster.
+	\end{itemize}
+	
+	\section{Numerisches Programm}
+	
+	Der sinnvollste Zugang ist zunächst empirisch. 
+	Wir schlagen folgende numerische Untersuchung vor.
+	
+	\subsection*{Schritt 1: Wahl der Zentren}
+	Wähle eine Menge harmonischer Mittelzahlen
+	\[
+	M_n = 30n,\qquad 1\le n\le N.
+	\]
+	
+	Optional kann man Teilmengen mit stärkerer Glätte untersuchen, etwa
+	\[
+	210\mid M_n,\qquad 2310\mid M_n.
+	\]
+	
+	\subsection*{Schritt 2: Lokale Zwillingserkennung}
+	Für jedes $M_n$ suche alle Primzahlzwillinge
+	\[
+	(p,p+2)
+	\]
+	mit
+	\[
+	\abs{(p+1)-M_n}\le R.
+	\]
+	
+	\subsection*{Schritt 3: Quadrupelbildung}
+	Bilde aus allen gefundenen Zwillingen Paare
+	\[
+	(a,a+2),\qquad (c,c+2)
+	\]
+	mit
+	\[
+	a+1 < M_n < c+1.
+	\]
+	Bestimme
+	\[
+	\delta=(c+1)-(a+1).
+	\]
+	
+	\subsection*{Schritt 4: Statistik}
+	Erhebe insbesondere:
+	
+	\begin{itemize}[leftmargin=1.5em]
+		\item Häufigkeit kleiner Werte $\delta=6,12,18,\dots$
+		\item Anteil exakt symmetrischer Konfigurationen
+		\item Vergleich mit Kontrollzentren $M'_n$, die nicht durch $30$ teilbar sind
+		\item Abhängigkeit vom Glättegrad von $M$
+	\end{itemize}
+	
+	\subsection*{Schritt 5: Primorial-Vergleich}
+	Vergleiche die Verteilungen für Zentren mit
+	\[
+	30\mid M,\qquad 210\mid M,\qquad 2310\mid M
+	\]
+	und prüfe, ob die Clusterstruktur mit der Glätte des Zentrums zunimmt.
+	
+	\section{Ein erstes Modellmaß}
+	
+	Um die Schalenstruktur quantitativ zu erfassen, definieren wir heuristisch eine lokale Kuppelfunktion.
+	
+	\begin{definition}[Lokale Kuppelfunktion]
+		Für $M,R\in\N$ sei
+		\[
+		K(M;R):=\#\Bigl\{(a,c)\in\pp^2:
+		\begin{array}{l}
+			a+2\in\pp,\; c+2\in\pp,\\[0.2em]
+			\abs{(a+1)-M}\le R,\;
+			\abs{(c+1)-M}\le R,\\[0.2em]
+			a+1 < M < c+1
+		\end{array}
+		\Bigr\}.
+		\]
+	\end{definition}
+	
+	Diese Funktion zählt, wie viele Quadrupel vom Typ $abce$ in der Schale um $M$ liegen.
+	
+	Zusätzlich kann man eine gewichtete Version betrachten:
+	\[
+	K_w(M;R):=\sum \frac{1}{\delta},
+	\]
+	wobei über alle Quadrupel in $\mathcal S(M,R)$ summiert wird. 
+	Dadurch werden kleine Zentrumsabstände stärker gewichtet.
+	
+	\section{Offene Probleme}
+	
+	\begin{problem}
+		Existiert eine nachweisbare lokale Verstärkung von Zwillingspaaren um Vielfache von $30$ gegenüber zufälligen Kontrollintervallen?
+	\end{problem}
+	
+	\begin{problem}
+		Sind kleine Zentrumsabstände
+		\[
+		\delta=6,12,18,\dots
+		\]
+		in Schalen um harmonische Mittelzahlen überrepräsentiert?
+	\end{problem}
+	
+	\begin{problem}
+		Lässt sich die lokale Kuppelfunktion $K(M;R)$ asymptotisch heuristisch durch Hardy--Littlewood-artige Modelle beschreiben?
+	\end{problem}
+	
+	\begin{problem}
+		Ist die Nähe zu Primorialen ein messbarer Verstärkungsfaktor für Vierlinge oder allgemeine Quadrupel vom Typ $abce$?
+	\end{problem}
+	
+	\begin{problem}
+		Gibt es eine sinnvolle, rein arithmetische Reduktionsregel, die nicht-minimale Quadrupel tatsächlich auf elementare Vierlinge zurückführt?
+	\end{problem}
+	\section{Numerische Experimente}
+	
+	Um die oben formulierten Vermutungen wenigstens explorativ zu testen, betrachten wir harmonische Mittelzahlen
+	\[
+	M_n = 30n,\qquad 1\le n\le N,
+	\]
+	und untersuchen ihre lokale Umgebung auf das Auftreten von Primzahlzwillingen und Quadrupeln vom Typ $abce$.
+	
+	\subsection{Experimentelles Setup}
+	
+	Für ein gegebenes Zentrum $M$ und einen Suchradius $R$ bestimmen wir alle Primzahlzwillinge
+	\[
+	(p,p+2)
+	\]
+	mit
+	\[
+	\abs{(p+1)-M}\le R.
+	\]
+	Aus diesen Zwillingen bilden wir alle geordneten Quadrupel
+	\[
+	(a,a+2,c,c+2)
+	\]
+	mit
+	\[
+	a+1 < M < c+1.
+	\]
+	Für jedes solche Quadrupel definieren wir den Zentrumsabstand
+	\[
+	\delta=(c+1)-(a+1)=c-a.
+	\]
+	
+	\subsection{Gemessene Größen}
+	
+	Zu jedem Zentrum $M$ messen wir:
+	
+	\begin{enumerate}[label=\arabic*.]
+		\item die Anzahl lokaler Primzahlzwillinge in der Schale $\mathcal S(M,R)$,
+		\item die Anzahl der Quadrupel vom Typ $abce$,
+		\item die Verteilung der auftretenden Werte
+		\[
+		\delta\in\{6,12,18,\dots\},
+		\]
+		\item die Anzahl exakt symmetrischer Konfigurationen, also solcher mit
+		\[
+		(a+1)-M = -(c+1-M),
+		\]
+		\item eine gewichtete Kuppelfunktion
+		\[
+		K_w(M;R):=\sum_{\text{Quadrupel}} \frac{1}{\delta},
+		\]
+		die kleine Zentrumsabstände stärker betont.
+	\end{enumerate}
+	
+	\subsection{Kontrollgruppe}
+	
+	Um zu prüfen, ob die Nähe zu harmonischen Mittelzahlen tatsächlich eine Rolle spielt, vergleichen wir dieselben Daten mit Kontrollzentren $M'$ derselben Größenordnung, die nicht durch $30$ teilbar sind.
+	
+	Dazu kann man etwa Zentren der Form
+	\[
+	M'_n = 30n + r,\qquad r\in\{1,7,11,13\},
+	\]
+	verwenden und die entsprechenden lokalen Statistiken erheben.
+	
+	\subsection{Fragestellungen}
+	
+	Die numerischen Experimente sollen insbesondere folgende Fragen adressieren:
+	
+	\begin{itemize}[leftmargin=1.5em]
+		\item Ist die Zahl lokaler Zwillingspaare in der Nähe von $30$-Vielfachen erhöht?
+		\item Sind kleine Zentrumsabstände $\delta=6,12,18,\dots$ überrepräsentiert?
+		\item Treten exakte oder nahezu symmetrische Konfigurationen häufiger auf als in Kontrollintervallen?
+		\item Verstärkt sich der Effekt bei Zentren, die zusätzlich durch $210$ oder $2310$ teilbar sind?
+	\end{itemize}
+	
+	\subsection{Interpretation}
+	
+	Falls sich in den numerischen Daten eine signifikante Verstärkung kleiner Abstände oder symmetrischer Paarungen zeigt, wäre dies ein erster Hinweis darauf, dass harmonische Mittelzahlen nicht nur als Koordinatenwahl dienen, sondern tatsächlich lokale Strukturinformation über Primzahlcluster tragen.
+	
+	Bleibt ein solcher Effekt dagegen aus, so wäre die Kuppel-Hypothese in ihrer starken Form zu relativieren und allenfalls als anschauliche Restklassenheuristik zu interpretieren.
+	
+	\section{Ergebnisse der numerischen Experimente}
+	
+	Wir berichten nun die Resultate der in Abschnitt \emph{Numerische Experimente} beschriebenen Auswertung. 
+	Untersucht wurden Zentren
+	\[
+	M\in [10^4,10^6]
+	\]
+	mit Suchradius
+	\[
+	R=300
+	\]
+	und einem Fokus auf kleine Zentrumsabstände
+	\[
+	\delta\le 120.
+	\]
+	
+	Verglichen wurden insbesondere die drei Familien
+	\[
+	30\mid M,\qquad 210\mid M,\qquad 2310\mid M
+	\]
+	mit vier Kontrollfamilien
+	\[
+	M\equiv 1,7,11,13 \pmod{30}.
+	\]
+	
+	\subsection{Globale Beobachtung}
+	
+	Die Daten zeigen zunächst, dass die Bedingung $30\mid M$ \emph{nicht} zu einer einfachen globalen Verstärkung aller kleinen Quadrupel führt. 
+	Insbesondere sind die Mittelwerte der Größen
+	\[
+	\texttt{quad\_small}
+	\qquad\text{und}\qquad
+	\texttt{kw\_small}
+	\]
+	für die Familie $30\mid M$ sogar kleiner als in den Kontrollfamilien.
+	
+	Dagegen zeigt sich ein klarer und robuster Effekt bei den Symmetriegrößen:
+	\[
+	\texttt{exact\_sym},\qquad
+	\texttt{near6},\qquad
+	\texttt{near12}.
+	\]
+	Diese sind für $30\mid M$ signifikant größer als in allen Kontrollfamilien.
+	
+	Mit anderen Worten: Die Bedingung $30\mid M$ erhöht nicht einfach die Zahl enger lokaler Zwillingskopplungen, sondern organisiert sie deutlich stärker in exakter oder nahezu exakter Spiegelstellung um das Zentrum $M$.
+	
+	\subsection{Die Rolle der Familie $210\mid M$}
+	
+	Der Vergleich der Familien $210\mid M$ und $30\mid M$ ist besonders aufschlussreich. 
+	Hier zeigt sich, dass $210\mid M$ nicht nur die Symmetriegrößen weiter erhöht, sondern auch einen signifikanten Zugewinn in der Zahl kleiner Zentrumsabstände liefert.
+	
+	Insbesondere ergaben sich die Differenzen
+	
+	\[
+	(210\mid M)-(30\mid M):
+	\]
+	\[
+	\texttt{quad\_small}=+0.080029,\qquad
+	\texttt{exact\_sym}=+0.061864,\qquad
+	\texttt{near6}=+0.030446,\qquad
+	\texttt{near12}=+0.066372,\qquad
+	\texttt{kw\_small}=+0.001846.
+	\]
+	
+	Die zugehörigen z-ähnlichen Vergleichswerte lagen bei
+	\[
+	5.501,\quad 8.088,\quad 3.206,\quad 4.776,\quad 7.577.
+	\]
+	
+	Dies ist der stärkste numerische Hinweis in unseren Daten darauf, dass die zusätzliche Teilbarkeit durch $7$ die lokale Schalenstruktur verfeinert und sowohl die Symmetrie als auch die kompakte Kopplung von Zwillingszentren verstärkt.
+	
+	\subsection{Die Familie $2310\mid M$}
+	
+	Für die Familie $2310\mid M$ ist die Stichprobe deutlich kleiner. 
+	Dennoch zeigt sich auch hier eine Verstärkung der Symmetriegrößen gegenüber $30\mid M$:
+	
+	\[
+	\texttt{exact\_sym}=+0.153737,\qquad
+	\texttt{near6}=+0.124359,\qquad
+	\texttt{near12}=+0.194419.
+	\]
+	
+	Demgegenüber sind die Unterschiede in
+	\[
+	\texttt{quad\_small}
+	\qquad\text{und}\qquad
+	\texttt{kw\_small}
+	\]
+	in der vorliegenden Stichprobe nicht robust. 
+	Daher ist die Familie $2310\mid M$ als numerisch interessant, aber noch nicht als statistisch ausreichend abgesichert zu betrachten.
+	
+	\subsection{Arithmetische Form der Nahsymmetrie}
+	
+	Besonders auffällig ist die Gestalt der $\eta$-Histogramme. 
+	Für Zentren mit $30\mid M$ bzw.\ $210\mid M$ dominieren Werte wie
+	\[
+	\eta=0,6,12,18,24,30,\dots
+	\]
+	während in den Kontrollfamilien kleine Werte der Form
+	\[
+	2,4,8,10,14,16,\dots
+	\]
+	häufiger auftreten.
+	
+	Dies zeigt, dass nicht nur die Häufigkeit kleiner $\eta$-Werte, sondern bereits ihre arithmetische Struktur selbst vom Zentrum abhängt. 
+	Die Verteilung der Nahsymmetrien trägt somit eine klare Restklassensignatur.
+	
+	\subsection{Zusammenfassende Tabelle}
+	
+	Die folgenden Differenzen fassen die wichtigsten Befunde zusammen. 
+	Dabei bezeichnet ``z-like'' den Wert
+	\[
+	\frac{\text{Differenz}}{\sqrt{SE_1^2+SE_2^2}},
+	\]
+	also einen einfachen normierten Vergleichsindikator.
+	
+	\begin{center}
+		\begin{tabular}{lrr}
+			\hline
+			Vergleich & Differenz & z-like \\
+			\hline
+			$(210\mid M)-(30\mid M)$, \texttt{quad\_small} & $+0.080029$ & $5.501$ \\
+			$(210\mid M)-(30\mid M)$, \texttt{exact\_sym}  & $+0.061864$ & $8.088$ \\
+			$(210\mid M)-(30\mid M)$, \texttt{near6}      & $+0.030446$ & $3.206$ \\
+			$(210\mid M)-(30\mid M)$, \texttt{near12}     & $+0.066372$ & $4.776$ \\
+			$(210\mid M)-(30\mid M)$, \texttt{kw\_small}  & $+0.001846$ & $7.577$ \\
+			\hline
+			$(30\mid M)- (M\equiv 1 \!\!\!\!\pmod{30})$, \texttt{exact\_sym} & $+0.194394$ & $80.440$ \\
+			$(30\mid M)- (M\equiv 1 \!\!\!\!\pmod{30})$, \texttt{near6}      & $+0.073576$ & $17.071$ \\
+			$(30\mid M)- (M\equiv 1 \!\!\!\!\pmod{30})$, \texttt{near12}     & $+0.125939$ & $20.640$ \\
+			$(30\mid M)- (M\equiv 1 \!\!\!\!\pmod{30})$, \texttt{quad\_small}& $-0.070515$ & $-10.090$ \\
+			$(30\mid M)- (M\equiv 1 \!\!\!\!\pmod{30})$, \texttt{kw\_small}  & $-0.001754$ & $-14.937$ \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\subsection{Interpretation}
+	
+	Die numerischen Resultate sprechen gegen eine einfache Dichtehypothese der Form
+	\[
+	30\mid M \Longrightarrow \text{mehr enge Quadrupel insgesamt}.
+	\]
+	Dagegen stützen sie klar eine verfeinerte Symmetriehypothese:
+	
+	\begin{quote}
+		Zentren $M$, die durch kleine Primorialfaktoren teilbar sind, insbesondere $30$ und verstärkt $210$, begünstigen lokale Konfigurationen von Primzahlzwillingszentren in exakter oder nahezu exakter Spiegelstellung.
+	\end{quote}
+	
+	Im Lichte dieser Daten erscheint $30$ vor allem als \emph{Symmetriezentrum}, während $210$ zusätzlich als eine Art \emph{verstärkte Resonanzschale} wirkt, in der sich auch kleine Zentrumsabstände signifikant häufen.
+	
+	\subsection{Vorläufiges Fazit}
+	
+	Die bisherige Evidenz spricht dafür, das ursprüngliche heuristische Modell nicht als bloßes Dichtemodell, sondern eher als \emph{arithmetisches Symmetriemodell} zu verstehen. 
+	Die wesentliche Beobachtung ist nicht die globale Vermehrung aller kleinen Primzahlcluster, sondern ihre selektive, restklassenabhängige Organisation um harmonische Mittelzahlen.
+	
+	Dies legt die folgende Arbeitsvermutung nahe.
+	
+	\begin{conjecture}[Arbeitsvermutung]
+		Für Zentren $M$, die durch $30$ teilbar sind, und verstärkt für Zentren $M$, die durch $210$ teilbar sind, treten lokale Paare von Primzahlzwillingszentren signifikant häufiger in exakter oder nahezu exakter Spiegelstellung auf als in Kontrollintervallen mit $M\not\equiv 0\pmod{3}$. 
+		Zusätzlich zeigt die Familie $210\mid M$ eine signifikant erhöhte Häufigkeit kleiner Zentrumsabstände $\delta\le 120$ gegenüber der Familie $30\mid M$.
+	\end{conjecture}
+	
+	\section{Relaxationsdynamik auf der Vierlingslandschaft}
+	
+	Im nächsten Schritt wurde untersucht, ob sich die zuvor identifizierten Standardvierlingszentren
+	\[
+	\mathcal C=\{c=p+4:\ (p,p+2,p+6,p+8)\text{ sind prim}\}
+	\]
+	als Träger einer diskreten Relaxationsdynamik eignen. 
+	Dabei wurden drei verschiedene Regeln getestet, jeweils im Bereich
+	\[
+	x\in\{2,\dots,10^5\}.
+	\]
+	
+	Aus der Menge \(\mathcal C\) wurden zwei geometrische Räume abgeleitet:
+	
+	\[
+	\mathcal L_{\mathrm{full}}
+	=
+	\bigcup_{c\in\mathcal C}\{c-3,c,c+3\},
+	\]
+	die vollständige Vierlingslandschaft einschließlich der Zentren selbst, sowie
+	
+	\[
+	\mathcal L_{\mathrm{flank}}
+	=
+	\bigcup_{c\in\mathcal C}\{c-3,c+3\},
+	\]
+	die reduzierte Flankenlandschaft, welche nur die beiden resonanten Zwillingsseiten eines Vierlings enthält.
+	
+	\subsection{Getestete Relaxationsregeln}
+	
+	Für einen Startwert \(x\) wurden die folgenden Dynamiken betrachtet.
+	
+	\paragraph{(1) Differenzregel auf der vollständigen Landschaft.}
+	Es wird jeweils der nächstgelegene Punkt \(a\in\mathcal L_{\mathrm{full}}\) gewählt und
+	\[
+	x_{n+1}=|x_n-a|
+	\]
+	gesetzt.
+	
+	\paragraph{(2) Differenzregel auf der Flankenlandschaft.}
+	Es wird jeweils der nächstgelegene Punkt \(a\in\mathcal L_{\mathrm{flank}}\) gewählt und
+	\[
+	x_{n+1}=|x_n-a|
+	\]
+	gesetzt.
+	
+	\paragraph{(3) Modulare Regel auf der vollständigen Landschaft.}
+	Es wird jeweils der nächstgelegene Punkt \(a\in\mathcal L_{\mathrm{full}}\) gewählt und
+	\[
+	x_{n+1}=x_n \bmod a
+	\]
+	gesetzt.
+	
+	In allen drei Fällen wurde iteriert, bis einer der folgenden Endzustände eintrat:
+	
+	\begin{itemize}
+		\item \texttt{prime}: der aktuelle Wert ist eine Primzahl,
+		\item \texttt{twin\_center}: der aktuelle Wert ist Zentrum eines Primzahlzwillings,
+		\item \texttt{zero}: der aktuelle Wert ist \(0\),
+		\item \texttt{cycle}: ein bereits besuchter Zustand tritt erneut auf,
+		\item \texttt{max\_steps}: die vorgegebene maximale Schrittzahl wurde erreicht.
+	\end{itemize}
+	
+	\subsection{Numerische Resultate bis \(10^5\)}
+	
+	Die folgende Zusammenfassung ergab sich für \(99999\) Startwerte:
+	
+	\begin{center}
+		\begin{tabular}{lrrrrr}
+			\hline
+			Regel & \texttt{prime} & \texttt{twin\_center} & \texttt{cycle} & \texttt{zero} & \texttt{max\_steps} \\
+			\hline
+			Differenz / Flanken      & 76745 & 23254 & 0     & 0     & 0 \\
+			Differenz / vollständig  & 66700 & 23254 & 0     & 10045 & 0 \\
+			Modulo / vollständig     & 20560 & 5945  & 71120 & 2374  & 0 \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\subsection{Bevorzugte Endzustände der Flankenregel}
+	
+	Für die Differenzregel auf der Flankenlandschaft ergaben sich als häufigste Endwerte insgesamt:
+	
+	\[
+	2,\ 3,\ 4,\ 18,\ 6,\ 12,\ 7,\ 17,\ 30,\ 37,\dots
+	\]
+	
+	Getrennt nach Endtyp dominieren:
+	
+	\paragraph{Häufigste Prim-Endzustände:}
+	\[
+	2,\ 3,\ 7,\ 17,\ 37,\ 31,\ 11,\ 5,\ 19,\ 107,\dots
+	\]
+	
+	\paragraph{Häufigste Zwillingszentren-Endzustände:}
+	\[
+	4,\ 18,\ 6,\ 12,\ 30,\ 60,\ 108,\ 102,\ 138,\dots
+	\]
+	
+	Die mittlere Schrittzahl betrug dabei:
+	
+	\[
+	\overline{s}_{\mathrm{gesamt}} \approx 2.9582,
+	\qquad
+	\overline{s}_{\mathrm{prime}} \approx 2.9788,
+	\qquad
+	\overline{s}_{\mathrm{twin}} \approx 2.8905.
+	\]
+	
+	\subsection{Interpretation}
+	
+	Die numerischen Resultate trennen die drei getesteten Dynamiken sehr deutlich.
+	
+	\paragraph{Die modulare Regel ist als Relaxationsmodell ungeeignet.}
+	Die große Zahl von Zyklen zeigt, dass
+	\[
+	x_{n+1}=x_n\bmod a
+	\]
+	in dieser Form keine sinnvolle dissipative Dynamik auf der Vierlingslandschaft erzeugt. 
+	Sie produziert zu viele Fixpunkte und triviale Wiederholungen.
+	
+	\paragraph{Die Differenzregel auf der vollständigen Landschaft ist geometrisch plausibel, aber dynamisch zu grob.}
+	Sie terminiert zwar stets, erzeugt jedoch für eine erhebliche Anzahl von Startwerten den künstlichen Kollaps
+	\[
+	x\to 0.
+	\]
+	Dieser Effekt tritt genau dann auf, wenn ein Zustand direkt auf ein Vierlingszentrum \(c\in\mathcal C\) projiziert wird, sodass
+	\[
+	x_{n+1}=|c-c|=0.
+	\]
+	Das spricht dafür, dass die Zentren selbst nicht als physikalisch sinnvolle Relaxationsziele interpretiert werden sollten.
+	
+	\paragraph{Die Differenzregel auf den Flanken ist der bevorzugte Relaxationsoperator.}
+	Die Flankenregel vermeidet sowohl Zyklen als auch Nullkollapse vollständig. 
+	Jeder Startwert im getesteten Bereich endet nach endlich vielen Schritten entweder in einer Primzahl oder in einem Primzahlzwillingszentrum. 
+	Dies macht sie zum natürlichsten Kandidaten für eine modellinterne Relaxationsdynamik.
+	
+	\subsection{Konzeptuelle Konsequenz}
+	
+	Die Resultate legen nahe, dass nicht die Vierlingszentren selbst, sondern ihre beiden flankierenden Resonanzmoden
+	\[
+	c-3,\qquad c+3
+	\]
+	die eigentlichen dynamischen Kopplungsorte darstellen.
+	
+	Während die Zentren \(c\) die statische Geometrie der Standardvierlinge kodieren, tragen die Flanken die tatsächliche Relaxationsdynamik. 
+	Im Modell führt die Projektion auf die Zentren zu einem unphysikalischen Vakuumkollaps, wohingegen die Projektion auf die Flanken in stabile Prim- oder Zwillingskerne übergeht.
+	
+	\subsection{Vorläufiges Fazit}
+	
+	Die Experimente stützen die folgende Arbeitsvermutung:
+	
+	\begin{quote}
+		Die natürliche diskrete Relaxation auf der vierlingsbasierten Resonanzlandschaft erfolgt nicht auf die Vierlingszentren selbst, sondern auf deren flankierende Zwillingsmoden. 
+		Die dadurch definierte Differenzdynamik terminiert im untersuchten Bereich stets in Primzahlen oder Primzahlzwillingszentren und liefert somit einen robusten Relaxationsoperator.
+	\end{quote}
+	\section{Interpretation als \texorpdfstring{$\gamma$}{gamma}- und \texorpdfstring{$\alpha$}{alpha}-Relaxation}
+	
+	Die im vorangehenden Abschnitt gefundene Flankenregel besitzt nicht nur günstige terminierende Eigenschaften, sondern erlaubt auch eine natürliche zweikanalige Interpretation der Endzustände. 
+	Da jeder Relaxationspfad im untersuchten Bereich entweder in einer Primzahl oder in einem Primzahlzwillingszentrum endet, liegt es nahe, diese beiden terminalen Klassen als verschiedene Relaxationstypen zu deuten.
+	
+	\subsection{Zwei terminale Kanäle}
+	
+	Die Flankendynamik
+	\[
+	x_{n+1}=|x_n-a_n|,
+	\qquad a_n\in\mathcal L_{\mathrm{flank}}
+	\]
+	führt numerisch zu genau zwei terminalen Klassen:
+	
+	\begin{enumerate}
+		\item \emph{Primkanal:}
+		\[
+		x_\infty = p,
+		\qquad p \text{ prim},
+		\]
+		\item \emph{Zwillingskanal:}
+		\[
+		x_\infty = m,
+		\qquad (m-1,m+1)\text{ prim}.
+		\]
+	\end{enumerate}
+	
+	Diese Zweiteilung kann modelltheoretisch als Analogon zweier verschiedener Zerfalls- bzw.\ Relaxationsmoden gelesen werden.
+	
+	\subsection{\texorpdfstring{$\gamma$}{gamma}-artige Relaxation}
+	
+	Endet ein Relaxationspfad in einer einzelnen Primzahl,
+	\[
+	x_\infty=p,
+	\]
+	so bleibt kein gebundener Doppelkern erhalten. 
+	Der Ausgangszustand verliert seine Resonanzstruktur vollständig und kollabiert in einen skalar stabilen Primkern.
+	
+	Im Modell interpretieren wir diesen Prozess als \emph{\(\gamma\)-artige Relaxation}:
+	Es wird Energie bzw.\ ptolemäische Spannung abgegeben, ohne dass ein kompakter Zwillingscluster als eigener Endzustand bestehen bleibt.
+	
+	Formal kann man dies schreiben als
+	\[
+	\Psi \longrightarrow p + \gamma,
+	\]
+	wobei \(p\) einen skalaren Primkern bezeichnet und \(\gamma\) die im Relaxationsprozess abgegebene Spannungs- oder Phasenkomponente symbolisiert.
+	
+	\begin{remark}
+		Diese Interpretation ist als Modellanalogie zu verstehen. 
+		Sie behauptet keine physikalische Identität mit realer elektromagnetischer \(\gamma\)-Strahlung, sondern beschreibt einen arithmetisch-geometrischen Kanal, in dem ein Zustand ohne Erhalt eines Zwillingsclusters relaxiert.
+	\end{remark}
+	
+	\subsection{\texorpdfstring{$\alpha$}{alpha}-artige Relaxation}
+	
+	Endet ein Pfad dagegen in einem Primzahlzwillingszentrum,
+	\[
+	x_\infty = m,
+	\qquad (m-1,m+1)\text{ prim},
+	\]
+	so bleibt ein kompakter gebundener Doppelkern erhalten.
+	
+	Dies motiviert die Interpretation als \emph{\(\alpha\)-artige Relaxation}: 
+	Der Ausgangszustand verliert zwar Energie und zerfällt, bewahrt aber in seinem Endzustand eine kompakte Zweierstruktur.
+	
+	Formal:
+	\[
+	\Psi \longrightarrow T(m) + \alpha,
+	\qquad T(m):=(m-1,m+1),
+	\]
+	wobei \(T(m)\) den terminalen Primzahlzwilling bezeichnet und \(\alpha\) den clusterartigen Restkanal symbolisiert.
+	
+	Im Unterschied zum Primkanal bleibt hier also nicht nur Stabilität erhalten, sondern \emph{gebundene Stabilität}.
+	
+	\subsection{Ptolemäische Flanken als Übergangszonen}
+	
+	Die numerischen Resultate zeigen, dass diese beiden Kanäle nicht durch Projektion auf die Vierlingszentren selbst, sondern auf die zugehörigen Flanken
+	\[
+	c-3,\qquad c+3
+	\]
+	aktiviert werden.
+	
+	Dies legt folgende Interpretation nahe:
+	
+	\begin{quote}
+		Die Vierlingszentren kodieren die statische Geometrie der Resonanzstruktur, während die Flanken die eigentlichen Übergangszonen der Relaxation bilden.
+	\end{quote}
+	
+	Mit anderen Worten:
+	Der Zustand relaxiert nicht in das Zentrum \(c\) selbst, sondern an den flankierenden Zwillingsmoden vorbei in einen stabilen Prim- oder Zwillingskern.
+	
+	\subsection{Terminale Kernhierarchie}
+	
+	Die Häufigkeit der Endzustände zeigt, dass insbesondere kleine Primzahlen und frühe Zwillingszentren bevorzugt auftreten. 
+	Dies rechtfertigt eine hierarchische Lesart der terminalen Zustände:
+	
+	\begin{itemize}
+		\item \textbf{skalare Kerne:}
+		\[
+		2,\ 3,\ 5,\ 7,\ 11,\ 17,\dots
+		\]
+		\item \textbf{gebundene Doppelkernen:}
+		\[
+		4,\ 6,\ 12,\ 18,\ 30,\dots
+		\]
+	\end{itemize}
+	
+	Die Relaxationsdynamik produziert somit kein diffuses Endzustandsspektrum, sondern eine kleine Familie bevorzugter terminaler Kerne.
+	
+	\subsection{Vergleich der beiden Kanäle}
+	
+	Die mittleren Schrittzahlen unterscheiden sich nur schwach:
+	\[
+	\overline{s}_{\mathrm{prime}} \approx 2.9788,
+	\qquad
+	\overline{s}_{\mathrm{twin}} \approx 2.8905.
+	\]
+	
+	Das zeigt, dass beide Kanäle dynamisch eng verwandt sind. 
+	Es handelt sich offenbar nicht um zwei völlig verschiedene Mechanismen, sondern um zwei eng gekoppelte Varianten derselben flankengesteuerten Relaxation.
+	
+	Eine mögliche modellinterne Deutung lautet:
+	
+	\begin{itemize}
+		\item Im \(\gamma\)-artigen Kanal wird die gesamte Resonanzspannung in einen skalar stabilen Primrest abgeführt.
+		\item Im \(\alpha\)-artigen Kanal reicht die Relaxation nur bis zu einem gebundenen Doppelkern, der als Primzahlzwilling bestehen bleibt.
+	\end{itemize}
+	
+	\subsection{Zusammenhang mit der Resonanzklasse}
+	
+	Die frühere Einführung der vierlingsfähigen Resonanzklasse
+	\[
+	\mathcal R
+	=
+	\{m\in\mathcal T:\ m\pm 6\in\mathcal T\}
+	\]
+	wird durch diese Beobachtung weiter motiviert. 
+	Die Flankenregel wirkt global auf alle Startwerte, aber ihre bevorzugten terminalen Zwillingsattraktoren liegen gerade in derjenigen arithmetischen Region, die bereits als vierlingsresonant ausgezeichnet wurde.
+	
+	Daraus ergibt sich die folgende Trennung:
+	
+	\begin{itemize}
+		\item \(\mathcal T\setminus \mathcal R\): glattere Zwillingslandschaft ohne direkte Vierlingskopplung,
+		\item \(\mathcal R\): reaktive Resonanzschicht mit gebundenen flankengesteuerten Übergängen.
+	\end{itemize}
+	
+	\subsection{Vorläufige Modellformel}
+	
+	Im gegenwärtigen Stadium kann die Relaxationsdynamik daher schematisch als Zweikanalsystem beschrieben werden:
+	\[
+	\Psi
+	\longrightarrow
+	\begin{cases}
+		p + \gamma, & \text{Primkanal},\\[0.5em]
+		T(m) + \alpha, & \text{Zwillingskanal}.
+	\end{cases}
+	\]
+	
+	Hierbei ist
+	\[
+	p \in \mathbb P
+	\]
+	eine Primzahl und
+	\[
+	T(m)=(m-1,m+1)
+	\]
+	ein terminaler Primzahlzwilling.
+	
+	\subsection{Schlussfolgerung}
+	
+	Die numerischen Daten legen nahe, die Flankenregel nicht bloß als algorithmische Konstruktion, sondern als ein echtes zweikanaliges Relaxationsmodell zu lesen. 
+	Terminale Primzahlen und terminale Primzahlzwillinge erscheinen als zwei unterschiedliche Formen stabiler Kerne, die aus derselben Vierlingsflankendynamik hervorgehen. 
+	Damit entsteht ein erstes konsistentes Bild einer arithmetisch-geometrischen Zerfallsdynamik mit einem \(\gamma\)-artigen Spannungs- und einem \(\alpha\)-artigen Clusterkanal.
+	
+	\section{Numerische Identifikation des \texorpdfstring{$\beta$}{beta}-Kanals}
+	
+	Nach der Einführung der Resonanzklasse
+	\[
+	\mathcal R
+	=
+	\{m\in\mathcal T:\ m\pm 6\in\mathcal T\}
+	\]
+	stellt sich die Frage, ob der diskrete Operator
+	\[
+	\hat B_\pm(m)=m\pm 6
+	\]
+	als eigenständiger interner Übergangskanal interpretiert werden kann. 
+	Im Modell entspricht dies einem \(\beta\)-artigen Seitenwechsel innerhalb der vierlingsfähigen Resonanzschicht.
+	
+	\subsection{Ausgangsmengen}
+	
+	Für die Schranke
+	\[
+	10^6
+	\]
+	ergaben sich numerisch die folgenden Grundmengen:
+	
+	\[
+	|\mathcal T| = 8169,
+	\qquad
+	|\mathcal R| = 331,
+	\qquad
+	|\mathcal R_L| = 166,
+	\qquad
+	|\mathcal R_R| = 166.
+	\]
+	
+	Damit bildet die Resonanzklasse weiterhin nur eine dünne Unterklasse der stabilen Zwillingszentren:
+	\[
+	\frac{|\mathcal R|}{|\mathcal T|}
+	\approx 0.040519.
+	\]
+	
+	\subsection{Definition des \texorpdfstring{$\beta$}{beta}-Operators}
+	
+	Der \(\beta\)-Kanal wird als diskreter Verschiebungsoperator
+	\[
+	\hat B_+(m)=m+6,
+	\qquad
+	\hat B_-(m)=m-6
+	\]
+	definiert.
+	
+	Dabei lautet die modellinterne Erwartung:
+	
+	\begin{itemize}
+		\item \(\hat B_+\) sollte linke Resonanzzentren in rechte Resonanzzentren überführen,
+		\item \(\hat B_-\) sollte rechte Resonanzzentren in linke Resonanzzentren überführen.
+	\end{itemize}
+	
+	\subsection{Numerische Resultate}
+	
+	Der Test ergab:
+	
+	\[
+	\#\{m\in\mathcal T:\ m+6\in\mathcal T\} = 166,
+	\]
+	\[
+	\#\{m\in\mathcal T:\ m-6\in\mathcal T\} = 166.
+	\]
+	
+	Zugleich ergab sich exakt:
+	
+	\[
+	\hat B_+:\mathcal R_L\to\mathcal R_R \quad \text{für alle } 166 \text{ Fälle},
+	\]
+	\[
+	\hat B_-:\mathcal R_R\to\mathcal R_L \quad \text{für alle } 166 \text{ Fälle}.
+	\]
+	
+	Ebenso gilt:
+	
+	\[
+	\hat B_+(m)\in\mathcal R \quad \text{genau in } 166 \text{ Fällen},
+	\]
+	\[
+	\hat B_-(m)\in\mathcal R \quad \text{genau in } 166 \text{ Fällen}.
+	\]
+	
+	Damit ist die Menge der \(\beta\)-aktiven Zustände numerisch exakt gleich der Resonanzklasse:
+	\[
+	\{\text{\(\beta\)-aktive Zentren}\} = \mathcal R.
+	\]
+	
+	\subsection{Modulare Struktur des \texorpdfstring{$\beta$}{beta}-Kanals}
+	
+	Modulo \(30\) verteilt sich die Menge der \(\beta\)-aktiven Zentren als
+	
+	\[
+	\{6:1,\ 12:165,\ 18:165\}.
+	\]
+	
+	Damit liegt der \(\beta\)-Kanal vollständig in den beiden regulären Vierlingsflanken
+	\[
+	12 \pmod{30},
+	\qquad
+	18 \pmod{30},
+	\]
+	bis auf den singulären Anfangsfall \(6\).
+	
+	Modulo \(210\) ergab sich die Verteilung
+	
+	\[
+	\{6:1,\ 12:59,\ 18:59,\ 102:50,\ 108:50,\ 192:56,\ 198:56\}.
+	\]
+	
+	Diese Klassen gruppieren sich paarweise als
+	\[
+	(12,18),\qquad (102,108),\qquad (192,198),
+	\]
+	also jeweils symmetrisch um die Zentren
+	\[
+	15,\qquad 105,\qquad 195 \pmod{210}.
+	\]
+	
+	Dies bestätigt, dass der \(\beta\)-Kanal nicht nur auf der 30-Schale, sondern auch auf der feineren 210-Schale exakt in den resonanten Vierlingsbändern lokalisiert ist.
+	
+	\subsection{Beispieltransitionen}
+	
+	Die ersten numerisch gefundenen \(\beta\)-Übergänge lauten:
+	
+	\[
+	(6,12),\ (12,18),\ (102,108),\ (192,198),\ (822,828),\ (1482,1488),\dots
+	\]
+	
+	Sie zeigen durchgehend den erwarteten Zentrenabstand
+	\[
+	\Delta m = 6
+	\]
+	und verbinden jeweils die beiden Flanken eines Standardvierlings.
+	
+	Beispielsweise gehören
+	
+	\[
+	12\longleftrightarrow 18
+	\]
+	zum Vierlingszentrum
+	\[
+	15,
+	\]
+	\[
+	102\longleftrightarrow 108
+	\]
+	zum Vierlingszentrum
+	\[
+	105,
+	\]
+	und
+	\[
+	192\longleftrightarrow 198
+	\]
+	zum Vierlingszentrum
+	\[
+	195.
+	\]
+	
+	\subsection{Interpretation}
+	
+	Diese Resultate erlauben eine klare Deutung des \(\beta\)-Kanals:
+	
+	\begin{quote}
+		Der Operator \(\hat B_\pm(m)=m\pm 6\) beschreibt keinen terminalen Zerfall, sondern einen internen diskreten Seitenwechsel innerhalb der vierlingsresonanten Schicht.
+	\end{quote}
+	
+	Im Unterschied zu den zuvor eingeführten Kanälen
+	
+	\begin{itemize}
+		\item \(\gamma\): Relaxation in einen skalaren Primkern,
+		\item \(\alpha\): Relaxation in einen gebundenen Primzahlzwilling,
+	\end{itemize}
+	
+	ist \(\beta\) damit ein \emph{nichtterminaler Transformationskanal}, der die linke und rechte Resonanzseite eines Vierlings miteinander koppelt.
+	
+	Formal:
+	\[
+	\Psi_L \xrightarrow{\beta} \Psi_R,
+	\qquad
+	\Psi_R \xrightarrow{\beta} \Psi_L.
+	\]
+	
+	\subsection{Der singuläre Knoten bei \texorpdfstring{$m=12$}{m=12}}
+	
+	Bemerkenswert ist, dass die früher identifizierte doppelt resonante Stelle
+	\[
+	\mathcal R_{bi}=\{12\}
+	\]
+	auch im \(\beta\)-Bild ausgezeichnet bleibt. 
+	Denn \(12\) ist der einzige Punkt, der sowohl von
+	\[
+	6
+	\]
+	aus erreicht wird als auch selbst weiter nach
+	\[
+	18
+	\]
+	koppelt. 
+	Damit erscheint \(m=12\) als singulärer Übergangsknoten zwischen dem anfänglichen Zwillingsbereich und der regulären Vierlingsresonanz.
+	
+	\subsection{Schlussfolgerung}
+	
+	Die numerischen Daten bis \(10^6\) identifizieren den \(\beta\)-Kanal mit hoher Präzision:
+	
+	\begin{itemize}
+		\item \(\hat B_\pm(m)=m\pm 6\) ist genau auf der Resonanzklasse \(\mathcal R\) definiert,
+		\item \(\hat B_+\) und \(\hat B_-\) induzieren eine exakte Bijektion zwischen \(\mathcal R_L\) und \(\mathcal R_R\),
+		\item die \(\beta\)-aktive Menge fällt exakt mit der Resonanzklasse zusammen,
+		\item die Lokalisierung erfolgt modulo \(30\) und modulo \(210\) genau in den erwarteten Vierlingsbändern.
+	\end{itemize}
+	
+	Damit ist der \(\beta\)-Kanal im Modell numerisch nicht nur plausibel, sondern explizit konstruiert.
+	Er stellt den internen diskreten Resonanzwechsel dar, der die beiden Flanken eines vierlingsfähigen Zustands miteinander verbindet.
+	
+	\subsection{Hierarchische Absorption und diskrete Energieniveaus}
+	
+	Ordne die vier Komponenten eines Zustands \(\Xi=(a,b,c,e)\) nach Größe:
+	\[
+	m_1 \le m_2 \le m_3 \le m_4,
+	\qquad
+	\{m_1,m_2,m_3,m_4\}=\{a,b,c,e\}.
+	\]
+	
+	Anstatt nur den kleinsten Freiheitsgrad als absorbierend auszuzeichnen, betrachten wir eine hierarchische Leiter von vier möglichen Absorptionsniveaus. 
+	Das \(k\)-te Niveau wird durch die Verdopplung von \(m_k\) definiert:
+	\[
+	\hat{\mathcal E}_{(k)}:\quad m_k \mapsto 2m_k.
+	\]
+	
+	Dadurch entsteht ein angeregter Zustand
+	\[
+	U_{(k)}=(2m_k \mid \text{restliche drei}),
+	\]
+	mit neuem Radius
+	\[
+	R_k=2m_k.
+	\]
+	
+	Zu jedem Niveau gehört ein Bertrand-Fenster
+	\[
+	I_k=(m_k,2m_k).
+	\]
+	Nach dem Satz von Bertrand gilt für jedes \(m_k>1\):
+	\[
+	I_k\cap\mathbb P \neq \varnothing.
+	\]
+	
+	Jedes Absorptionsniveau erzeugt somit ein nichtleeres Primfenster und damit einen eigenen möglichen Primanker der Relaxation. 
+	Die vier Werte \(m_1,m_2,m_3,m_4\) definieren daher eine diskrete Leiter von Energieniveaus, die durch ihre zugehörigen Radien und Primfenster charakterisiert sind.
+	
+	Ein Niveau \(k\) heißt \emph{relaxationskompatibel}, wenn ein gewählter Primanker
+	\[
+	p_k\in I_k\cap\mathbb P
+	\]
+	die gewünschte nachfolgende Relaxation in einen Prim- oder Zwillingskern zulässt. 
+	In diesem Sinn wird das tatsächlich realisierte Anregungsniveau als das kleinste \(k\) gewählt, für das ein solcher kompatibler Primanker existiert.
+	
+	\section{Bertrand-Relaxation exakter und deformierter Vierlingszustände}
+	
+	Im Rahmen des hierarchischen Absorptionsmodells wurde die Minimal-Absorptionsregel mit Bertrand-Anker auf zwei Klassen von Zuständen angewendet:
+	
+	\begin{enumerate}
+		\item exakte Standardvierlinge
+		\[
+		(p,p+2,p+6,p+8),
+		\]
+		\item leicht deformierte Vierlingszustände, die durch kleine Verschiebungen der Standardkonfigurationen entstehen.
+	\end{enumerate}
+	
+	Ziel war es, die Wirkung des Bertrand-Ankers auf die verbleibende Triade nach Absorption des kleinsten Freiheitsgrades zu untersuchen.
+	
+	\subsection{Minimal-Absorption und Bertrand-Anker}
+	
+	Sei
+	\[
+	\Xi=(a,b,c,e)
+	\]
+	ein geordneter Zustand mit
+	\[
+	m_1 \le m_2 \le m_3 \le m_4.
+	\]
+	Im Minimal-Absorptionskanal wird die kleinste Komponente \(m_1\) verdoppelt, sodass ein neuer Radius
+	\[
+	R=2m_1
+	\]
+	entsteht. 
+	Als Bertrand-Anker wird die kleinste Primzahl
+	\[
+	p_B \in (m_1,2m_1)
+	\]
+	gewählt.
+	
+	Anschließend wird die verbleibende Triade
+	\[
+	(m_2,m_3,m_4)
+	\]
+	relativ zu \(p_B\) durch die Residuen
+	\[
+	r_1=|m_2-p_B|,
+	\qquad
+	r_2=|m_3-p_B|,
+	\qquad
+	r_3=|m_4-p_B|
+	\]
+	untersucht.
+	
+	\subsection{Exakte Standardvierlinge}
+	
+	Für Zustände der Form
+	\[
+	\Xi=(p,p+2,p+6,p+8)
+	\]
+	ist
+	\[
+	m_1=p
+	\]
+	und der Bertrand-Anker wird durch
+	\[
+	p_B=p+2
+	\]
+	gegeben.
+	
+	Die verbleibende Triade lautet dann
+	\[
+	(p+2,p+6,p+8),
+	\]
+	und ihre Residuen relativ zu \(p_B\) sind identisch:
+	\[
+	(|(p+2)-(p+2)|,\ |(p+6)-(p+2)|,\ |(p+8)-(p+2)|)=(0,4,6).
+	\]
+	
+	Damit entsteht unabhängig vom konkreten Standardvierling stets dieselbe reduzierte Triadenstruktur:
+	\[
+	(0,4,6).
+	\]
+	
+	Unter den Residuen ist
+	\[
+	4
+	\]
+	das Zentrum des singulären Primzahlzwillings
+	\[
+	(3,5).
+	\]
+	Daher relaxieren exakte Standardvierlinge im Minimal-Absorptionskanal stets in denselben elementaren Zwillingskern.
+	
+	\begin{quote}
+		Exakte Standardvierlinge besitzen unter Bertrand-Relaxation einen universellen Rückfallkanal in den singulären Zwillingsattraktor \(4\).
+	\end{quote}
+	
+	\subsection{Numerischer Befund für exakte Vierlinge}
+	
+	Im Testbereich bis \(10^6\) wurden \(166\) exakte Vierlingszustände untersucht. 
+	Dabei ergab sich:
+	
+	\begin{itemize}
+		\item Erfolgsquote: \(100\%\),
+		\item stets Level \(1\),
+		\item stets terminaler Typ \texttt{twin\_center},
+		\item stets Witness-Wert \(4\).
+	\end{itemize}
+	
+	Damit ist die universelle Relaxation
+	\[
+	(p,p+2,p+6,p+8)\longrightarrow (0,4,6)\longrightarrow 4
+	\]
+	numerisch für alle getesteten Standardvierlinge bestätigt.
+	
+	\subsection{Leicht deformierte Vierlingszustände}
+	
+	Für leicht verschobene Zustände der Form
+	\[
+	(p+s,\ p+2+s,\ p+6+s,\ p+8+s),
+	\qquad
+	s\in\{-3,-1,1,3\},
+	\]
+	ändert sich das Bild.
+	
+	Auch hier wird zunächst der kleinste Freiheitsgrad absorbiert und ein Bertrand-Anker \(p_B\) im Intervall \((m_1,2m_1)\) gewählt. 
+	Die resultierenden Residuenmuster sind nun jedoch nicht mehr \((0,4,6)\), sondern typischerweise von der Form
+	\[
+	(1,5,7)
+	\qquad\text{oder}\qquad
+	(1,3,5).
+	\]
+	
+	In beiden Fällen tritt kein singulärer Zwillingskern vom Typ \(4\) mehr auf. 
+	Stattdessen enthalten die Residuen kleine Primzahlen wie
+	\[
+	3,\ 5,\ 7,
+	\]
+	sodass die Relaxation in einen Primattraktor führt.
+	
+	\begin{quote}
+		Leicht deformierte Vierlingszustände verlieren den universellen Zwillingsrückfallkanal und relaxieren stattdessen bevorzugt in kleine Primkerne.
+	\end{quote}
+	
+	\subsection{Numerischer Befund für deformierte Zustände}
+	
+	Im Test wurden \(400\) deformierte Zustände untersucht. 
+	Dabei ergab sich:
+	
+	\begin{itemize}
+		\item Erfolgsquote: \(100\%\),
+		\item stets Level \(1\),
+		\item stets terminaler Typ \texttt{prime},
+		\item Witness-Werte überwiegend \(3\) und \(5\).
+	\end{itemize}
+	
+	Die deformierten Zustände relaxieren also nicht in einen Zwillingskern, sondern in kleine Primkerne.
+	
+	\subsection{Interpretation}
+	
+	Diese Resultate zeigen eine klare qualitative Trennung:
+	
+	\begin{itemize}
+		\item \textbf{Exakte Vierlingssymmetrie} führt auf einen universellen gebundenen Doppelkern.
+		\item \textbf{Gestörte Vierlingssymmetrie} führt auf skalare Primkerne.
+	\end{itemize}
+	
+	Im Modell entspricht dies genau der Trennung zwischen einem clustererhaltenden und einem clusterauflösenden Relaxationskanal. 
+	Der singuläre Witness \(4\) spielt dabei die Rolle eines elementaren Zwillingsfundaments, während die Witness-Werte \(3\) und \(5\) den primaren Primrestkanal markieren.
+	
+	\subsection{Vorläufige Schlussfolgerung}
+	
+	Die Bertrand-Relaxation offenbart damit nicht nur die Existenz von Primankern in den Absorptionsfenstern, sondern eine bemerkenswert starre Rückfallstruktur:
+	
+	\begin{enumerate}
+		\item Standardvierlinge relaxieren universell auf den singulären Zwillingskern \(4\).
+		\item Bereits kleine Deformationen zerstören diesen Kanal und lenken die Relaxation in kleine Primkerne.
+	\end{enumerate}
+	
+	Dies spricht dafür, dass die exakte Vierlingssymmetrie im Modell einen besonderen, gebundenen Relaxationsmodus trägt, der bei Störung in einen skalareren Primmodus zerfällt.
+	
+	\section{Residuenmuster als diskrete Spektrallinien}
+	
+	Die Bertrand-Relaxation der angeregten Vierlingszustände erzeugt nach Projektion auf den Bertrand-Anker keine kontinuierliche Wolke von Restwerten, sondern eine kleine Familie bevorzugter Residuenmuster. 
+	Im untersuchten Bereich traten insbesondere die Konfigurationen
+	\[
+	(0,4,6),\qquad (1,3,5),\qquad (1,5,7)
+	\]
+	als stabile Grundmuster hervor.
+	
+	Diese Residuenmuster können als \emph{diskrete Spektrallinien} des Relaxationsprozesses interpretiert werden.
+	
+	\subsection{Definition des Residuenvektors}
+	
+	Nach Wahl eines Absorptionsniveaus und eines Bertrand-Ankers \(p_B\) wird die verbleibende Triade
+	\[
+	(m_i,m_j,m_\ell)
+	\]
+	durch den Residuenvektor
+	\[
+	\mathbf r
+	=
+	\bigl(
+	|m_i-p_B|,
+	\ |m_j-p_B|,
+	\ |m_\ell-p_B|
+	\bigr)
+	\]
+	beschrieben.
+	
+	Im Allgemeinen hängt \(\mathbf r\) von der ursprünglichen Konfiguration, vom gewählten Niveau und von der Wahl des Primankers im Bertrand-Fenster ab. 
+	Numerisch zeigt sich jedoch, dass sich die resultierenden Vektoren stark auf wenige Klassen konzentrieren.
+	
+	\subsection{Die Linie \texorpdfstring{$(0,4,6)$}{(0,4,6)}}
+	
+	Für exakte Standardvierlinge
+	\[
+	(p,p+2,p+6,p+8)
+	\]
+	ist der Bertrand-Anker im Minimal-Absorptionskanal stets
+	\[
+	p_B=p+2.
+	\]
+	
+	Damit wird die Resttriade
+	\[
+	(p+2,p+6,p+8)
+	\]
+	auf den universellen Residuenvektor
+	\[
+	(0,4,6)
+	\]
+	abgebildet.
+	
+	Diese Linie ist dadurch ausgezeichnet, dass sie den singulären Zwillingskern
+	\[
+	4 \leftrightarrow (3,5)
+	\]
+	enthält. 
+	Sie repräsentiert daher den \emph{gebundenen Relaxationsmodus} exakter Vierlingssymmetrie.
+	
+	Wir bezeichnen
+	\[
+	(0,4,6)
+	\]
+	als \emph{gebundene Grundlinie} des Modells.
+	
+	\subsection{Die Linien \texorpdfstring{$(1,3,5)$}{(1,3,5)} und \texorpdfstring{$(1,5,7)$}{(1,5,7)}}
+	
+	Für deformierte Vierlingszustände verschwindet die gebundene Grundlinie \((0,4,6)\). 
+	An ihre Stelle treten bevorzugt die Muster
+	\[
+	(1,3,5)
+	\qquad\text{und}\qquad
+	(1,5,7).
+	\]
+	
+	Diese beiden Linien haben zwei wesentliche Eigenschaften:
+	
+	\begin{enumerate}
+		\item Sie enthalten kleine Primzahlen,
+		\item sie enthalten keinen singulären Zwillingskern vom Typ \(4\).
+	\end{enumerate}
+	
+	Daher repräsentieren sie keinen clustererhaltenden, sondern einen \emph{skalaren Relaxationsmodus}. 
+	Die Relaxation endet nun bevorzugt in kleinen Primattraktoren wie
+	\[
+	3,\ 5,\ 7.
+	\]
+	
+	Wir bezeichnen
+	\[
+	(1,3,5),\qquad (1,5,7)
+	\]
+	als \emph{primare Spektrallinien der deformierten Relaxation}.
+	
+	\subsection{Qualitative Trennung der Linienfamilien}
+	
+	Die numerischen Resultate deuten auf eine grundlegende Zweiteilung der Spektrallinien hin:
+	
+	\paragraph{Gebundene Linien:}
+	\[
+	(0,4,6)
+	\]
+	entspricht exakter Vierlingssymmetrie und führt auf einen Zwillingskern.
+	
+	\paragraph{Primare Linien:}
+	\[
+	(1,3,5),\qquad (1,5,7)
+	\]
+	entsprechen deformierter Vierlingssymmetrie und führen auf kleine Primkerne.
+	
+	Diese Trennung ist modelltheoretisch bedeutsam, weil sie zeigt, dass die Spektrallinien nicht nur numerische Nebenprodukte sind, sondern unterschiedliche Relaxationsregime kodieren.
+	
+	\subsection{Linien als geordnete Klassen statt als Permutationen}
+	
+	Für die weitere Interpretation ist entscheidend, dass die Residuenvektoren nicht primär als ungeordnete Mengen, sondern als geordnete Klassen gelesen werden. 
+	Denn in der Dynamik ist relevant,
+	
+	\begin{itemize}
+		\item welcher Residuenwert zuerst auftritt,
+		\item welcher Wert den Witness liefert,
+		\item und welche Rolle die Nullkomponente spielt.
+	\end{itemize}
+	
+	Insbesondere ist
+	\[
+	(0,4,6)
+	\]
+	nicht bloß äquivalent zu einer beliebigen Permutation seiner Einträge, sondern ausgezeichnet durch die erste Komponente \(0\), welche die direkte Kopplung an den Bertrand-Anker markiert.
+	
+	Ebenso sind
+	\[
+	(1,3,5)
+	\qquad\text{und}\qquad
+	(1,5,7)
+	\]
+	nicht nur Mengen kleiner Zahlen, sondern geordnete Relaxationsprofile mit charakteristischer Verschiebung um den Anker.
+	
+	\subsection{Diskrete Linien statt kontinuierlichem Spektrum}
+	
+	Die Konzentration auf wenige Muster zeigt, dass die Bertrand-Relaxation kein kontinuierliches Spektrum erzeugt. 
+	Vielmehr treten bestimmte Residuenkonfigurationen als bevorzugte Linien auf, ähnlich wie bei einem diskreten Emissionsspektrum.
+	
+	Im Modell bedeutet dies:
+	
+	\begin{quote}
+		Die Relaxation angeregter Vierlingszustände erfolgt nicht beliebig, sondern entlang weniger bevorzugter diskreter Residuenbahnen.
+	\end{quote}
+	
+	Diese Bahnen sind arithmetische Fingerabdrücke der zugrunde liegenden Symmetrieklasse.
+	
+	\subsection{Vorstufe zu Serienfamilien}
+	
+	Die drei beobachteten Linien
+	\[
+	(0,4,6),\qquad (1,3,5),\qquad (1,5,7)
+	\]
+	sind zunächst nur die ersten empirisch sichtbaren Spektralmuster. 
+	Es ist jedoch naheliegend, sie als Anfangsglieder größerer Linienfamilien zu interpretieren.
+	
+	Eine mögliche Arbeitsvermutung lautet:
+	
+	\begin{itemize}
+		\item Die gebundene Linie \((0,4,6)\) gehört zu einer Familie clustererhaltender Linien.
+		\item Die primaren Linien \((1,3,5)\) und \((1,5,7)\) gehören zu einer Familie clusterauflösender Linien.
+	\end{itemize}
+	
+	Ob diese Familien tatsächlich durch einfache Verschiebungs-, Schalen- oder Restklassenregeln beschrieben werden können, bleibt Gegenstand der weiteren Analyse.
+	
+	\subsection{Vorläufige Schlussfolgerung}
+	
+	Die numerischen Tests legen nahe, die Residuenmuster nicht bloß als Hilfsgrößen, sondern als diskrete Spektrallinien der Bertrand-Relaxation zu lesen. 
+	Die Linie
+	\[
+	(0,4,6)
+	\]
+	repräsentiert einen gebundenen Zwillingsmodus, während
+	\[
+	(1,3,5)
+	\qquad\text{und}\qquad
+	(1,5,7)
+	\]
+	primare Relaxationsmoden deformierter Vierlingszustände beschreiben.
+	
+	Damit entsteht ein erster spektraler Zugang zum Modell: 
+	Nicht nur die terminalen Kerne, sondern bereits die Residuenvektoren selbst tragen eine diskrete Linienstruktur, aus der sich möglicherweise später echte Serienfamilien ableiten lassen.
+	
+	\section{Balmer-, Paschen- und Resonanzserien im Residuenraum}
+	
+	Die bisher beobachteten Residuenmuster
+	\[
+	(0,4,6),\qquad (1,3,5),\qquad (1,5,7)
+	\]
+	legen nahe, die Bertrand-Relaxation nicht nur punktuell, sondern als Erzeuger diskreter Linienfamilien zu betrachten. 
+	Zugleich ist der Mechanismus nicht auf Standardvierlinge beschränkt, sondern lässt sich auf allgemeine EABC-Zustände übertragen.
+	
+	\subsection{Vom speziellen Vierling zum allgemeinen EABC-Zustand}
+	
+	Der bisher untersuchte Standardvierling
+	\[
+	(p,p+2,p+6,p+8)
+	\]
+	ist nur ein Spezialfall eines allgemeinen Viererzustands
+	\[
+	\Xi=(E,A,B,C).
+	\]
+	
+	Für die Dynamik ist dabei nicht entscheidend, ob \(\Xi\) exakt aus einem klassischen Primzahlvierling stammt, sondern ob nach Auswahl eines Absorptionsniveaus und eines Bertrand-Ankers eine strukturierte Residuen-Triade entsteht.
+	
+	Wir ordnen daher allgemein
+	\[
+	m_1 \le m_2 \le m_3 \le m_4,
+	\qquad
+	\{m_1,m_2,m_3,m_4\}=\{E,A,B,C\},
+	\]
+	und betrachten wie zuvor die \(k\)-te Anregung
+	\[
+	m_k \mapsto 2m_k,
+	\]
+	den zugehörigen Radius
+	\[
+	R_k=2m_k
+	\]
+	sowie einen Bertrand-Anker
+	\[
+	p_k\in (m_k,2m_k)\cap \mathbb P.
+	\]
+	
+	Die nicht absorbierenden drei Freiheitsgrade bilden dann die Relaxationstriade
+	\[
+	T_{(k)}=(x,y,z),
+	\]
+	deren Residuenvektor durch
+	\[
+	\mathbf r_{(k)}
+	=
+	\bigl(
+	|x-p_k|,
+	|y-p_k|,
+	|z-p_k|
+	\bigr)
+	\]
+	gegeben ist.
+	
+	Damit wird der bisherige Vierlingsmechanismus zu einem allgemeinen EABC-Triadenmechanismus.
+	
+	\subsection{Residuenraum als Spektralraum}
+	
+	Wir betrachten die Menge aller durch diesen Prozess entstehenden Residuenvektoren
+	\[
+	\mathfrak R
+	=
+	\left\{
+	\mathbf r_{(k)}(\Xi):
+	\Xi=(E,A,B,C),\ k\in\{1,2,3,4\}
+	\right\}.
+	\]
+	
+	Dieser Raum ist der natürliche Spektralraum des Modells. 
+	Die empirisch beobachteten Muster
+	\[
+	(0,4,6),\qquad (1,3,5),\qquad (1,5,7)
+	\]
+	sind dann nicht isolierte Kuriositäten, sondern erste sichtbare Punkte in \(\mathfrak R\).
+	
+	\subsection{Arbeitshypothese: Linienfamilien}
+	
+	Die zentrale Arbeitshypothese lautet:
+	
+	\begin{quote}
+		Die Residuenvektoren allgemeiner EABC-Zustände gruppieren sich nicht zufällig, sondern in diskrete Linienfamilien, die durch Symmetrie, Schalenstruktur und Absorptionsniveau bestimmt werden.
+	\end{quote}
+	
+	Dabei unterscheiden wir vorläufig drei Typen von Familien:
+	
+	\begin{enumerate}
+		\item \textbf{gebundene Linienfamilien}, die auf Zwillingskerne oder kompakte Cluster führen,
+		\item \textbf{primare Linienfamilien}, die auf einzelne Primkerne führen,
+		\item \textbf{resonante Linienfamilien}, die in die Klasse \(\mathcal R\) oder in \(\beta\)-aktive Strukturen münden.
+	\end{enumerate}
+	
+	\subsection{Serienidee}
+	
+	Im Sinne einer spektralen Analogie kann man diese Familien provisorisch als Serien lesen. 
+	Dabei ist nicht behauptet, dass bereits eine exakte physikalische Formel analog zur atomaren Spektroskopie vorliegt. 
+	Vielmehr dient der Serienbegriff dazu, bevorzugte arithmetische Residuenmuster als geordnete Folgeklassen zu interpretieren.
+	
+	\paragraph{Gebundene Serie.}
+	Die Linie
+	\[
+	(0,4,6)
+	\]
+	bildet den Prototyp einer gebundenen Serie. 
+	Sie tritt bei exakter Vierlingssymmetrie auf und führt in einen stabilen Zwillingskern.
+	
+	\paragraph{Primare Serien.}
+	Die Linien
+	\[
+	(1,3,5),\qquad (1,5,7)
+	\]
+	bilden die ersten sichtbaren Vertreter primarer Serien. 
+	Sie treten bei deformierten Zuständen auf und relaxieren in kleine Primkerne.
+	
+	\paragraph{Resonanzserien.}
+	Sobald Residuen direkt in \(\mathcal R\) oder in \(\beta\)-aktive Zonen fallen, entsteht eine weitere Klasse möglicher Serien, deren natürliche Struktur durch die 30- und 210-Schalen beeinflusst wird.
+	
+	\subsection{Schalenfilter und Serienbildung}
+	
+	Die bisherigen numerischen Resultate haben gezeigt, dass die Mengen \(\mathcal T\), \(\mathcal R\), \(\mathcal R_L\) und \(\mathcal R_R\) stark durch Restklassen modulo \(30\) und \(210\) strukturiert sind. 
+	Daher liegt die Vermutung nahe, dass auch die Spektrallinien durch Schalenfilter organisiert werden.
+	
+	Eine erste abstrakte Formulierung wäre:
+	\[
+	\mathfrak R
+	=
+	\bigcup_{\nu} \mathfrak R_\nu,
+	\]
+	wobei \(\nu\) ein Schalenindex ist, etwa bezüglich
+	\[
+	30,\ 210,\ 2310,\dots
+	\]
+	und \(\mathfrak R_\nu\) die in der jeweiligen Schale auftretenden Residuenfamilien bezeichnet.
+	
+	Damit werden die Serien nicht nur durch ihre Residuenform, sondern zusätzlich durch ihre Schalenlage charakterisiert.
+	
+	\subsection{Anwendung auf beliebige EABC-Tripel}
+	
+	Für die weitere Verallgemeinerung ist entscheidend, dass nach der Absorption nicht der gesamte Viererzustand, sondern die verbleibende Dreierkonfiguration dynamisch relevant ist. 
+	Das Modell kann daher auch direkt auf beliebige Tripel
+	\[
+	(E,A,B),\qquad (E,A,C),\qquad (E,B,C),\qquad (A,B,C)
+	\]
+	angewendet werden.
+	
+	Allgemein sei
+	\[
+	T=(x,y,z)
+	\]
+	ein beliebiges EABC-Tripel, das als innere Konfiguration unterhalb eines durch Anregung erzeugten Radius auftritt. 
+	Dann kann man unabhängig von einem vollständigen Viererzustand einen Bertrand-Anker \(p\) relativ zu einem gewählten Referenzwert \(m\) definieren und den Residuenvektor
+	\[
+	\mathbf r(T;p)
+	=
+	(|x-p|,|y-p|,|z-p|)
+	\]
+	bilden.
+	
+	Damit wird die Spektralidee auf allgemeine Tripel verlagert: 
+	Nicht der Ausgangs-Vierling selbst ist die fundamentale Einheit, sondern das durch Anregung und Projektion entstehende EABC-Tripel im Residuenraum.
+	
+	\subsection{Tripelklassen}
+	
+	Für beliebige EABC-Tripel ergeben sich dann dieselben Grundfragen wie zuvor bei den Vierlingsrelaxationen:
+	
+	\begin{itemize}
+		\item Führt \(\mathbf r(T;p)\) auf einen Primkern?
+		\item Führt \(\mathbf r(T;p)\) auf einen Zwillingskern?
+		\item Führt \(\mathbf r(T;p)\) in die Resonanzklasse \(\mathcal R\)?
+		\item Gehört \(\mathbf r(T;p)\) zu einer bekannten Linienfamilie?
+	\end{itemize}
+	
+	Damit wird die Untersuchung beliebiger Tripel zur allgemeinen Spektraltheorie des Modells.
+	
+	\subsection{Vorläufige Seriennotation}
+	
+	Für die spätere Systematik ist es zweckmäßig, eine symbolische Notation für die verschiedenen Linienfamilien einzuführen. 
+	Wir schreiben vorläufig:
+	
+	\[
+	\mathcal B_0 := \{(0,4,6),\dots\}
+	\]
+	für die gebundene Grundserie,
+	
+	\[
+	\mathcal P_1 := \{(1,3,5),\dots\},
+	\qquad
+	\mathcal P_2 := \{(1,5,7),\dots\}
+	\]
+	für die ersten primaren Serienfamilien,
+	
+	und
+	\[
+	\mathcal R_\beta
+	\]
+	für diejenige Serienklasse, deren Residuen direkt in \(\beta\)-aktive Resonanzzonen münden.
+	
+	Diese Notation ist zunächst heuristisch, erlaubt aber eine geordnete Diskussion der beobachteten Residuenmuster.
+	
+	\subsection{Schlussfolgerung}
+	
+	Die bisherigen Linien
+	\[
+	(0,4,6),\qquad (1,3,5),\qquad (1,5,7)
+	\]
+	sind am besten als erste sichtbare Spektrallinien eines größeren Residuenraums zu verstehen. 
+	Der zugrunde liegende Mechanismus ist nicht auf Standardvierlinge beschränkt, sondern lässt sich auf beliebige EABC-Zustände und insbesondere auf die dabei entstehenden EABC-Tripel anwenden.
+	
+	Damit verschiebt sich die Perspektive:
+	Nicht einzelne Primzahlvierlinge sind die fundamentale Einheit des Modells, sondern die durch Anregung, Bertrand-Anker und Residuenprojektion erzeugten Triaden im Spektralraum. 
+	Die Aufgabe der weiteren Untersuchung besteht darin, diese Triaden nach Linienfamilien, Schalenlage und Relaxationskanal systematisch zu klassifizieren.
+	
+	\section{Tripelklassifikation im Bertrand-Residuenraum}
+	
+	Die Verallgemeinerung des Bertrand-Mechanismus auf beliebige EABC-Tripel zeigt eine bemerkenswert klare Zweiteilung des Residuenraums. 
+	Untersucht wurden einerseits \emph{natürliche Tripel}, die aus Standardvierlingen
+	\[
+	(p,p+2,p+6,p+8)
+	\]
+	durch Auswahl von drei Komponenten entstehen, und andererseits \emph{deformierte Tripel}, die durch kleine Verschiebungen dieser natürlichen Tripel erzeugt werden.
+	
+	\subsection{Klassifikationsschema}
+	
+	Für ein gegebenes Tripel
+	\[
+	T=(x,y,z)
+	\]
+	wird zunächst ein Referenzwert \(m\) gewählt, im einfachsten Fall
+	\[
+	m=\min\{x,y,z\}.
+	\]
+	Dann wird der Radius
+	\[
+	R=2m
+	\]
+	gebildet und ein Bertrand-Anker
+	\[
+	p_B \in (m,2m)\cap\mathbb P
+	\]
+	gewählt. 
+	Der zugehörige Residuenvektor lautet
+	\[
+	\mathbf r(T;p_B)
+	=
+	\bigl(
+	|x-p_B|,\ |y-p_B|,\ |z-p_B|
+	\bigr).
+	\]
+	
+	Die so entstehenden Residuen werden nach drei Kanälen klassifiziert:
+	
+	\begin{itemize}
+		\item \(\alpha\)-Kanal: mindestens ein Residuum ist Zentrum eines Primzahlzwillings,
+		\item \(\beta\)-Kanal: mindestens ein Residuum liegt in der Resonanzklasse \(\mathcal R\),
+		\item \(\gamma\)-Kanal: mindestens ein Residuum ist Primzahl.
+	\end{itemize}
+	
+	Im numerischen Test wurde die Priorität
+	\[
+	\alpha \;>\; \beta \;>\; \gamma
+	\]
+	verwendet.
+	
+	\subsection{Natürliche Tripel aus Vierlingen}
+	
+	Für die natürlichen Tripel aus Standardvierlingen ergab sich ein vollständig einheitliches Bild:
+	
+	\begin{itemize}
+		\item \(400\) von \(400\) Zuständen wurden dem \(\alpha\)-Kanal zugeordnet,
+		\item kein Zustand fiel in den \(\beta\)- oder \(\gamma\)-Kanal,
+		\item die dominanten normalisierten Residuenmuster waren
+		\[
+		(0,2,4),\qquad (0,2,6),\qquad (2,4,6).
+		\]
+	\end{itemize}
+	
+	Die beobachteten Häufigkeiten lauten:
+	\[
+	(0,2,4): 200,\qquad
+	(0,2,6): 100,\qquad
+	(2,4,6): 100.
+	\]
+	
+	Diese Muster sind direkt aus der Struktur des Standardvierlings erklärbar. 
+	Wählt man etwa den Bertrand-Anker auf der inneren Zwillingsseite, so entstehen aus den vier möglichen Dreierauswahlen genau diese drei normalisierten Klassen.
+	
+	\subsection{Interpretation der natürlichen Tripel}
+	
+	Die natürlichen Tripel behalten somit eine starke Erinnerung an die gebundene Struktur des Ausgangsvierlings. 
+	Sie relaxieren nicht in einzelne Primreste, sondern in clusterartige Residuenklassen, die stets einen Zwillingszentrum-Witness enthalten.
+	
+	Dies rechtfertigt die Deutung:
+	\begin{quote}
+		Natürliche EABC-Tripel aus Standardvierlingen sind \emph{clusterstabil} und gehören vollständig zum \(\alpha\)-artigen Relaxationsregime.
+	\end{quote}
+	
+	\subsection{Deformierte Tripel}
+	
+	Für die deformierten Tripel ergab sich das komplementäre Bild:
+	
+	\begin{itemize}
+		\item \(400\) von \(400\) Zuständen wurden dem \(\gamma\)-Kanal zugeordnet,
+		\item kein Zustand fiel in den \(\alpha\)- oder \(\beta\)-Kanal,
+		\item die dominanten normalisierten Residuenmuster waren
+		\[
+		(1,3,5),\qquad
+		(1,5,7),\qquad
+		(1,1,5),\qquad
+		(1,1,7),\qquad
+		(1,3,3),\qquad
+		(3,3,5).
+		\]
+	\end{itemize}
+	
+	Insbesondere traten auf:
+	\[
+	(1,3,5):124,\qquad
+	(1,5,7):51,
+	\]
+	sowie weitere primartige Muster wie
+	\[
+	(1,1,5),\ (1,1,7),\ (1,3,3),\ (3,3,5).
+	\]
+	
+	\subsection{Interpretation der deformierten Tripel}
+	
+	Diese Residuenfamilien enthalten kleine Primzahlen, aber keinen stabilen gebundenen Zwillingsrest analog zu den natürlichen Tripeln. 
+	Damit führt bereits eine kleine Deformation des Ausgangstripels zu einem Umschlag des Relaxationsmodus:
+	
+	\begin{quote}
+		Deformierte EABC-Tripel verlieren die Clusterbindung und relaxieren vollständig in den \(\gamma\)-artigen Primkanal.
+	\end{quote}
+	
+	\subsection{Zweiteilung des Tripelraums}
+	
+	Die numerischen Resultate legen damit eine sehr klare Zweiteilung des Tripelraums nahe:
+	
+	\begin{enumerate}
+		\item \textbf{Natürliche, aus Vierlingen stammende Tripel}  
+		führen in gebundene Linienfamilien und den \(\alpha\)-Kanal,
+		\item \textbf{deformierte Tripel}  
+		führen in primare Linienfamilien und den \(\gamma\)-Kanal.
+	\end{enumerate}
+	
+	Die bisher beobachteten Linienfamilien können daher provisorisch in zwei Großklassen organisiert werden:
+	
+	\[
+	\mathcal B
+	=
+	\{(0,2,4),(0,2,6),(2,4,6),\dots\}
+	\]
+	als gebundene Serie und
+	
+	\[
+	\mathcal P
+	=
+	\{(1,3,5),(1,5,7),(1,1,5),(1,1,7),(1,3,3),(3,3,5),\dots\}
+	\]
+	als primare Serie.
+	
+	\subsection{Bemerkung zum \texorpdfstring{$\beta$}{beta}-Kanal}
+	
+	Bemerkenswert ist, dass im vorliegenden Tripeltest kein \(\beta\)-aktiver Fall auftrat. 
+	Dies deutet darauf hin, dass der \(\beta\)-Kanal nicht generisch auftritt, sondern eine feinere und seltener erreichte Resonanzstruktur beschreibt.
+	
+	Eine plausible Hypothese lautet daher:
+	
+	\begin{quote}
+		Der \(\beta\)-Kanal ist ein Übergangsregime, das nur dann sichtbar wird, wenn Residuen gezielt in die vierlingsresonante Klasse \(\mathcal R\) projiziert werden, ohne zuvor bereits als Primzahl oder Zwillingszentrum klassifiziert zu werden.
+	\end{quote}
+	
+	\subsection{Schlussfolgerung}
+	
+	Die Bertrand-Relaxation ist damit nicht nur auf Vierlinge, sondern auch auf allgemeine EABC-Tripel übertragbar. 
+	Sie erzeugt einen klar strukturierten Residuenraum mit zwei robusten Großregimen:
+	
+	\begin{itemize}
+		\item einem gebundenen, clusterstabilen \(\alpha\)-Regime,
+		\item einem primaren, clusterauflösenden \(\gamma\)-Regime.
+	\end{itemize}
+	
+	Die numerische Aufgabe der nächsten Stufe besteht darin, den bisher noch verborgenen \(\beta\)-Kanal durch gezielte Suche nach resonanznahen Tripeln sichtbar zu machen.
+	\section{Die Hoch-\texorpdfstring{$\beta$}{beta}-Klasse als dritte Serienfamilie}
+	
+	Nach der Identifikation gebundener \(\alpha\)-Linien und primarer \(\gamma\)-Linien stellt sich die Frage, ob sich auch eine eigenständige resonanzvermittelte \(\beta\)-Klasse in höheren Schalen numerisch isolieren lässt. 
+	Die Antwort der konstruktiven Suche lautet: ja.
+	
+	\subsection{Motivation}
+	
+	Die ersten \(\beta\)-aktiven Tripel traten im kleinen Suchraum fast ausschließlich in Randkonfigurationen mit
+	\[
+	m=2,\qquad p_B=3
+	\]
+	auf. 
+	Diese Fälle zeigen zwar bereits die grundsätzliche Existenz eines Resonanzkanals, sind aber noch stark vom niedrigsten Bertrand-Anker dominiert und daher als Grenz- oder Vakuumform des \(\beta\)-Kanals zu deuten.
+	
+	Ziel der Hoch-\(\beta\)-Suche war es daher, nichttriviale Tripel mit
+	
+	\begin{itemize}
+		\item höherem Referenzwert \(m\),
+		\item höherem Bertrand-Anker \(p_B>3\),
+		\item resonanten Residuen aus \(\mathcal R\),
+		\item aber ohne primare Endzustände
+	\end{itemize}
+	
+	zu konstruieren.
+	
+	\subsection{Konstruktive Suchstrategie}
+	
+	Für Referenzwerte
+	\[
+	m\ge 10
+	\]
+	wurde zunächst ein Bertrand-Anker
+	\[
+	p_B\in(m,2m)\cap\mathbb P
+	\]
+	gewählt. 
+	Anschließend wurden Tripel relativ zum Anker konstruiert, insbesondere in Formen wie
+	\[
+	(m,\ p_B+a,\ p_B+r),
+	\qquad
+	(m,\ p_B-r,\ p_B+r),
+	\qquad
+	(m,\ p_B+r_1,\ p_B+r_2),
+	\]
+	wobei
+	\[
+	r,\ r_1,\ r_2 \in \mathcal R
+	\]
+	aus der Resonanzklasse stammen.
+	
+	Ein Tripel wurde genau dann als Hoch-\(\beta\)-Kandidat akzeptiert, wenn
+	
+	\begin{enumerate}
+		\item mindestens ein Residuum in \(\mathcal R\) lag,
+		\item keine Nullresiduen zugelassen wurden,
+		\item keine primaren Residuen auftraten,
+		\item keine nichtresonanten Zwillingszentren den Zustand bereits in den \(\alpha\)-Kanal verschoben.
+	\end{enumerate}
+	
+	\subsection{Numerischer Befund}
+	
+	Die konstruktive Suche lieferte \(200\) Hoch-\(\beta\)-aktive Tripel. 
+	Die dominanten Referenzwerte und Bertrand-Anker waren:
+	
+	\[
+	m\in\{10,12,16,18,22,23\},
+	\qquad
+	p_B\in\{11,13,17,19,23,29\}.
+	\]
+	
+	Damit ist sichergestellt, dass der beobachtete \(\beta\)-Kanal nicht nur auf dem Randfall
+	\[
+	(m,p_B)=(2,3)
+	\]
+	beruht, sondern in höheren Schalen stabil realisierbar ist.
+	
+	\subsection{Typische Residuenmuster}
+	
+	Die häufigsten normalisierten Residuenmuster lauten:
+	
+	\[
+	(1,6,12),\quad
+	(1,8,12),\quad
+	(1,10,12),\quad
+	(1,12,12),\quad
+	(1,12,18),
+	\]
+	\[
+	(1,12,102),\quad
+	(1,12,108),\quad
+	(1,12,192),\quad
+	(1,12,198),
+	\]
+	sowie analoge Muster mit führendem Resonanzwert \(18\), \(102\), \(108\), \(192\) oder \(198\).
+	
+	Die häufigsten Resonanztreffer waren:
+	\[
+	12,\ 18,\ 102,\ 108,\ 192,\ 198,
+	\]
+	einschließlich Mehrfachresonanzen wie
+	\[
+	(12,18),\quad
+	(12,102),\quad
+	(12,108),\quad
+	(18,102),\quad
+	(102,108),\quad
+	(192,198).
+	\]
+	
+	\subsection{Interpretation der Hoch-\texorpdfstring{$\beta$}{beta}-Linien}
+	
+	Diese Befunde deuten auf eine eigenständige Serienklasse hin, deren Prototyp die Form
+	\[
+	(1,a,r),
+	\qquad r\in\mathcal R
+	\]
+	besitzt. 
+	Dabei repräsentiert die führende Eins den minimalen Abstand zum Bertrand-Anker, während die nachfolgenden Einträge resonante Restlängen tragen.
+	
+	Die Hoch-\(\beta\)-Klasse ist damit weder gebunden im Sinn der \(\alpha\)-Serie noch rein primar im Sinn der \(\gamma\)-Serie. 
+	Sie besitzt vielmehr eine Zwischenstellung:
+	
+	\begin{quote}
+		Die \(\beta\)-Linien beschreiben ankergebundene Resonanzzustände, in denen die Relaxation nicht direkt in einen Clusterkern oder einen Primkern übergeht, sondern über resonante Restlängen vermittelt wird.
+	\end{quote}
+	
+	\subsection{Vorläufige Seriennotation}
+	
+	Die neuen Linienmuster motivieren die Einführung einer dritten Serienfamilie
+	\[
+	\mathcal B_\beta.
+	\]
+	
+	Eine erste provisorische Form ist:
+	\[
+	\mathcal B_\beta
+	=
+	\left\{
+	(1,a,r)\ :\ r\in\mathcal R,\ a\in A_r
+	\right\},
+	\]
+	wobei \(A_r\) die empirisch beobachteten Kopplungswerte zum Resonanzrest \(r\) bezeichnet.
+	
+	Zum beobachteten Anfangsbestand gehören insbesondere Muster wie
+	\[
+	(1,6,12),\quad
+	(1,8,12),\quad
+	(1,10,12),\quad
+	(1,12,12),
+	\]
+	\[
+	(1,12,18),\quad
+	(1,12,102),\quad
+	(1,12,108),
+	\]
+	sowie die entsprechenden Varianten mit \(18\), \(102\), \(108\), \(192\), \(198\).
+	
+	\subsection{Vergleich der drei Serienklassen}
+	
+	Damit lässt sich der Residuenraum nun in drei numerisch unterscheidbare Regime gliedern:
+	
+	\paragraph{\(\alpha\)-Klasse: gebundene Linien}
+	\[
+	(0,2,4),\qquad (0,2,6),\qquad (2,4,6).
+	\]
+	Diese Linien treten bei natürlichen, aus Vierlingen abgeleiteten Tripeln auf und führen in clusterstabile Zwillingskerne.
+	
+	\paragraph{\(\gamma\)-Klasse: primare Linien}
+	\[
+	(1,3,5),\qquad (1,5,7),\qquad (1,1,5),\qquad (1,3,3),\dots
+	\]
+	Diese Linien treten bei deformierten Tripeln auf und führen in Primkerne.
+	
+	\paragraph{\(\beta\)-Klasse: resonanzvermittelte Linien}
+	\[
+	(1,6,12),\qquad (1,12,18),\qquad (1,12,102),\qquad (1,18,108),\dots
+	\]
+	Diese Linien treten bei konstruktiv erzeugten Hoch-\(\beta\)-Tripeln auf und beschreiben resonanzvermittelte Zwischenzustände.
+	
+	\subsection{Bedeutung der Mehrfachresonanzen}
+	
+	Besonders charakteristisch für die \(\beta\)-Klasse ist das Auftreten von Mehrfachresonanzen, also Residuenvektoren, die mehr als einen Resonanzwert gleichzeitig tragen, etwa
+	\[
+	(12,18),\quad
+	(12,102),\quad
+	(102,108),\quad
+	(192,198).
+	\]
+	
+	Dies legt nahe, die \(\beta\)-Serie nicht als bloße Einzelwertfamilie, sondern als Kopplungssystem resonanter Restlängen zu verstehen. 
+	Damit erhält die \(\beta\)-Klasse einen genuin vermittelnden Charakter: 
+	Sie ist weder elementar gebunden noch vollständig frei, sondern trägt interne Resonanzstruktur.
+	
+	\subsection{Vorläufige Schlussfolgerung}
+	
+	Die konstruktive Suche zeigt, dass neben den bereits identifizierten gebundenen \(\alpha\)-Linien und primaren \(\gamma\)-Linien eine dritte, nichttriviale Hoch-\(\beta\)-Klasse existiert. 
+	Diese Klasse ist durch
+	
+	\begin{itemize}
+		\item höhere Referenzwerte \(m\),
+		\item höhere Bertrand-Anker \(p_B\),
+		\item resonante Residuen aus \(\mathcal R\),
+		\item und charakteristische Linienmuster vom Typ \((1,a,r)\)
+	\end{itemize}
+	
+	gekennzeichnet.
+	
+	Damit ist der Residuenraum des Modells erstmals numerisch in drei unterscheidbare Serienregime gegliedert:
+	\[
+	\mathcal B_\alpha,\qquad
+	\mathcal B_\beta,\qquad
+	\mathcal B_\gamma.
+	\]
+	
+	Die weitere Aufgabe besteht darin, diese Klassen nicht nur konstruktiv nachzuweisen, sondern ihre Dichte, Schalenabhängigkeit und Übergangsregeln systematisch zu untersuchen.
+	
+	\section{Schalenformen und vorläufige Quantenzahlen}
+	
+	Die bisherige numerische Analyse des Residuenraums legt nahe, die beobachteten Linienmuster nicht nur nach Serienklassen
+	\[
+	\mathcal B_\alpha,\qquad \mathcal B_\beta,\qquad \mathcal B_\gamma
+	\]
+	zu ordnen, sondern zusätzlich in Form einer schalenartigen Hierarchie zu beschreiben.
+	
+	Dabei ist ausdrücklich zu betonen, dass die folgenden Begriffe \emph{vorläufige Arbeitsbegriffe} sind. 
+	Sie bezeichnen keine abgeschlossene quantenmechanische Theorie, sondern eine numerisch motivierte Strukturierung des Residuenraums.
+	
+	\subsection{Drei Schalenregime}
+	
+	Die bisherigen Resultate sprechen für drei unterscheidbare Regime:
+	
+	\paragraph{Gebundene Schale \(\mathcal S_\alpha\).}
+	Typische Muster:
+	\[
+	(0,2,4),\qquad (0,2,6),\qquad (2,4,6).
+	\]
+	Diese Klasse ist durch starke gerade Symmetrie, Zwillingsnähe und clustererhaltende Relaxation charakterisiert.
+	
+	\paragraph{Resonanzschale \(\mathcal S_\beta\).}
+	Typische Muster:
+	\[
+	(1,6,12),\qquad (1,12,18),\qquad (1,12,102),\qquad (1,18,108),\qquad (1,102,192).
+	\]
+	Diese Klasse ist durch ankernahe Einsen und resonante Restlängen aus \(\mathcal R\) charakterisiert. 
+	Sie vermittelt zwischen gebundenen und freien Zuständen.
+	
+	\paragraph{Primare Schale \(\mathcal S_\gamma\).}
+	Typische Muster:
+	\[
+	(1,3,5),\qquad (1,5,7),\qquad (1,1,5),\qquad (1,3,3).
+	\]
+	Diese Klasse ist durch kleine ungerade Primreste und clusterauflösende Relaxation charakterisiert.
+	
+	\subsection{Vorläufige Hauptquantenzahl}
+	
+	Als erste grobe Quantenzahl bietet sich ein Schalenindex
+	\[
+	n\in\{1,2,3\}
+	\]
+	an, definiert durch
+	\[
+	n=
+	\begin{cases}
+		1,& \text{für Muster aus } \mathcal S_\alpha,\\[1ex]
+		2,& \text{für Muster aus } \mathcal S_\beta,\\[1ex]
+		3,& \text{für Muster aus } \mathcal S_\gamma.
+	\end{cases}
+	\]
+	
+	Diese Zahl beschreibt nicht die Energie im physikalischen Sinn, sondern die Position des Musters innerhalb der beobachteten Relaxationshierarchie.
+	
+	\subsection{Nebenquantenzahl und Resonanzzahl}
+	
+	Insbesondere in der \(\beta\)-Klasse treten systematische Muster der Form
+	\[
+	(1,a,r)
+	\qquad\text{mit}\qquad
+	r\in\mathcal R
+	\]
+	auf. 
+	Dies motiviert die Einführung zweier weiterer vorläufiger Quantenzahlen:
+	
+	\begin{itemize}
+		\item \(\ell\): innere Kopplungszahl oder Nebenquantenzahl,
+		\item \(\rho\): dominanter Resonanzrest.
+	\end{itemize}
+	
+	Für ein normalisiertes Muster
+	\[
+	(r_1,r_2,r_3),\qquad r_1\le r_2\le r_3,
+	\]
+	wird in erster Näherung gesetzt:
+	\[
+	\ell :=
+	\begin{cases}
+		r_2,& \text{in der } \beta\text{-Klasse},\\
+		r_2,& \text{in der } \alpha\text{- und } \gamma\text{-Klasse als formale Nebenstruktur}.
+	\end{cases}
+	\]
+	und
+	\[
+	\rho :=
+	\max\{r_i\in\mathcal R\},
+	\]
+	falls ein Resonanzwert vorhanden ist, sonst
+	\[
+	\rho=0.
+	\]
+	
+	\subsection{Multiplikitätszahl}
+	
+	Da in der \(\beta\)-Klasse häufig Mehrfachresonanzen auftreten, etwa
+	\[
+	(12,18),\qquad (12,102),\qquad (102,108),\qquad (192,198),
+	\]
+	ist eine vierte Zahl sinnvoll:
+	
+	\[
+	\mu := \#\{r_i\in\mathcal R\}.
+	\]
+	
+	Damit gilt:
+	\begin{itemize}
+		\item \(\mu=0\): keine Resonanzanteile,
+		\item \(\mu=1\): Einzelresonanz,
+		\item \(\mu=2\): Doppelresonanz,
+		\item \(\mu=3\): Vollresonanz.
+	\end{itemize}
+	
+	\subsection{Vorläufige Quantenzahlen-Notation}
+	
+	Für ein Residuenmuster \(R=(r_1,r_2,r_3)\) definieren wir damit vorläufig:
+	\[
+	Q(R)=(n,\ell,\rho,\mu).
+	\]
+	
+	\paragraph{Beispiele.}
+	\[
+	Q(0,2,4)=(1,2,0,0),
+	\]
+	\[
+	Q(0,2,6)=(1,2,0,1),
+	\]
+	\[
+	Q(1,3,5)=(3,3,0,0),
+	\]
+	\[
+	Q(1,6,12)=(2,6,12,2),
+	\]
+	\[
+	Q(1,12,18)=(2,12,18,2),
+	\]
+	\[
+	Q(1,102,192)=(2,102,192,2).
+	\]
+	
+	\subsection{Schalenformen}
+	
+	Auch geometrisch deuten die Daten auf unterschiedliche Schalenformen hin:
+	
+	\begin{itemize}
+		\item \(\alpha\)-Muster erscheinen kompakt und gebunden,
+		\item \(\beta\)-Muster erscheinen gestreckt und anisotrop,
+		\item \(\gamma\)-Muster erscheinen locker, aber arithmetisch fokussiert.
+	\end{itemize}
+	
+	Insbesondere die \(\beta\)-Muster vom Typ
+	\[
+	(1,a,r),\qquad r\gg a
+	\]
+	sprechen für eine gestreckte Resonanzschale, in der ein ankergebundener Nahrest mit einem weit entfernten Resonanzrest gekoppelt ist.
+	
+	\subsection{Vorläufige Schlussfolgerung}
+	
+	Die numerischen Resultate rechtfertigen damit eine erste schalenartige Sprache des Residuenraums. 
+	Die beobachteten Muster lassen sich durch vorläufige Quantenzahlen
+	\[
+	Q(R)=(n,\ell,\rho,\mu)
+	\]
+	charakterisieren, wobei
+	
+	\begin{itemize}
+		\item \(n\) den Schalenindex,
+		\item \(\ell\) die innere Kopplung,
+		\item \(\rho\) den dominanten Resonanzrest,
+		\item \(\mu\) die Resonanz-Multiplikität
+	\end{itemize}
+	
+	beschreibt.
+	
+	Die weitere Aufgabe besteht darin, diese Zahlen nicht nur heuristisch zu definieren, sondern ihre Stabilität über größere Suchräume und ihre Beziehungen zu Schalenregeln systematisch zu untersuchen.
+	
+	\section{Die \texorpdfstring{$\beta$}{beta}-Schalenleiter}
+	
+	Die Analyse der Resonanzklasse \(\mathcal B_\beta\) zeigt, dass sich die \(\beta\)-Muster nicht nur als unsortierte Sammlung resonanter Residuen auffassen lassen, sondern sich in feste Resonanzschalen
+	\[
+	\rho \in \{6,12,18,102,108,192,198\}
+	\]
+	gliedern.
+	
+	Für jede feste Resonanzzahl \(\rho\) tritt eine diskrete Menge zulässiger Kopplungszahlen \(\ell\) auf. 
+	Dies motiviert die Interpretation von \(\rho\) als Schalenetikett und \(\ell\) als Unterquantenzahl innerhalb der jeweiligen \(\beta\)-Schale.
+	
+	\subsection{Beobachtete \texorpdfstring{$\beta$}{beta}-Schalen}
+	
+	Die numerisch beobachteten Schalen lauten:
+	
+	\[
+	\rho=6:\qquad \ell\in\{6\},
+	\]
+	\[
+	\rho=12:\qquad \ell\in\{6,8,10,12\},
+	\]
+	\[
+	\rho=18:\qquad \ell\in\{6,8,10,12,18\},
+	\]
+	\[
+	\rho=102:\qquad \ell\in\{12,18,102\},
+	\]
+	\[
+	\rho=108:\qquad \ell\in\{18,102\},
+	\]
+	\[
+	\rho=192:\qquad \ell\in\{102,108\},
+	\]
+	\[
+	\rho=198:\qquad \ell\in\{12,18,102\}.
+	\]
+	
+	Diese Struktur bezeichnen wir als \emph{\(\beta\)-Schalenleiter}.
+	
+	\subsection{Interpretation}
+	
+	Die Leiter zeigt zwei deutlich verschiedene Regime:
+	
+	\paragraph{Innere Resonanzzone.}
+	Die Schalen
+	\[
+	\rho=12,\qquad \rho=18
+	\]
+	besitzen fein aufgelöste Kopplungsleitern kleiner Werte:
+	\[
+	6,8,10,12
+	\quad\text{bzw.}\quad
+	6,8,10,12,18.
+	\]
+	Dies deutet auf eine innere Resonanzzone mit feiner Unterstruktur hin.
+	
+	\paragraph{Äußere Resonanzzone.}
+	Die Schalen
+	\[
+	\rho=102,\quad \rho=108,\quad \rho=192,\quad \rho=198
+	\]
+	weisen dagegen gröbere, stärker resonanzgebundene Kopplungszahlen auf:
+	\[
+	12,\ 18,\ 102,\ 108.
+	\]
+	Dies spricht für eine äußere Resonanzzone, in der nur noch wenige diskrete Kopplungskanäle stabil bleiben.
+	
+	\subsection{Multiplikität}
+	
+	Zusätzlich zeigt die Resonanz-Multiplikität \(\mu\), dass hohe \(\beta\)-Schalen typischerweise durch Doppelresonanzen charakterisiert sind:
+	\[
+	\mu=2.
+	\]
+	Damit erscheint die \(\beta\)-Schale nicht als einfacher Einzelrestzustand, sondern als gekoppelter Resonanzzustand.
+	
+	\subsection{Beispiele}
+	
+	Typische Muster lauten:
+	\[
+	(1,6,12),\qquad (1,12,18),\qquad (1,12,102),\qquad (1,18,108),\qquad (1,102,192).
+	\]
+	Diese entsprechen den Quantenzahlen
+	\[
+	Q(R)=(n,\ell,\rho,\mu)
+	\]
+	mit
+	\[
+	(2,6,12,2),\qquad
+	(2,12,18,2),\qquad
+	(2,12,102,2),\qquad
+	(2,18,108,2),\qquad
+	(2,102,192,2).
+	\]
+	
+	\subsection{Vorläufige Schlussfolgerung}
+	
+	Die \(\beta\)-Klasse zerfällt damit in diskrete Resonanzschalen fester \(\rho\)-Werte, innerhalb derer zulässige Kopplungszahlen \(\ell\) auftreten. 
+	Dies rechtfertigt die Auffassung der \(\beta\)-Klasse als echtes Schalenensemble mit Unterstruktur und legt eine quantenzahlenartige Organisation des Residuenraums nahe.
+	
+	
+	\section{Ein 4D-Kugelmodell mit 3er-/4er-Expansion, Relaxation und Randprojektion}
+	
+	In diesem Abschnitt formulieren wir ein minimales geometrisch-dynamisches Modell, in dem ein Ursprungssystem als vierdimensionale Kugel verstanden wird. Die Expansion dieses Systems erfolgt über diskrete Tochtermoden, die durch einen Relaxationsprozess in eine neue makroskopische Kugelstruktur überführt werden. Der zentrale Gedanke besteht darin, dass die Volumeninformation des Bulk nicht lokal im Inneren verbleibt, sondern im Verlauf der Relaxation auf den Rand \(S^3\) der neuen vierdimensionalen Kugel übertragen wird.
+	
+	\subsection{Ausgangsobjekt}
+	
+	Wir betrachten die vierdimensionale Kugel
+	\[
+	B^4(R)=\{x\in \mathbb{R}^4 : \|x\|\le R\}
+	\]
+	mit Rand
+	\[
+	\partial B^4(R)=S^3(R).
+	\]
+	Ihr Volumen ist gegeben durch
+	\[
+	V_4(R)=\frac{\pi^2}{2}R^4.
+	\]
+	
+	\begin{definition}[BM-Kugel]
+		Eine \emph{BM-Kugel} ist ein Paar
+		\[
+		\mathbb{B}=(B^4(R),\mathcal{I}_{S^3}),
+		\]
+		bestehend aus einer vierdimensionalen Bulk-Kugel \(B^4(R)\) und einer auf ihrem Rand \(S^3(R)\) getragenen Strukturinformation \(\mathcal{I}_{S^3}\).
+	\end{definition}
+	
+	Die Größe \(\mathcal{I}_{S^3}\) soll die organisierte, durch Relaxation stabilisierte Randinformation repräsentieren.
+	
+	\subsection{Zwei elementare Expansionskanäle}
+	
+	Wir führen zwei fundamentale Expansionsarten ein.
+	
+	\begin{definition}[Viererkanal]
+		Der \emph{Viererkanal} \(\mathcal{E}_4\) ersetzt das Ursprungssystem durch vier identische Tochterkugeln \(K_1^{(4)},\dots,K_4^{(4)}\) mit
+		\[
+		V(K_i^{(4)})=\frac14\,V_4(R).
+		\]
+		Daraus folgt für den Radius jeder Tochterkugel
+		\[
+		r_4 = R\cdot 4^{-1/4} = \frac{R}{\sqrt{2}}.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Dreierkanal]
+		Der \emph{Dreierkanal} \(\mathcal{E}_3\) ersetzt das Ursprungssystem durch drei identische Tochterkugeln \(K_1^{(3)},\dots,K_3^{(3)}\) mit
+		\[
+		V(K_i^{(3)})=\frac13\,V_4(R).
+		\]
+		Daraus folgt für den Radius jeder Tochterkugel
+		\[
+		r_3 = R\cdot 3^{-1/4}.
+		\]
+	\end{definition}
+	
+	Obwohl sowohl der 3er- als auch der 4er-Kanal volumisch vollständig sind, unterscheiden sie sich strukturell: Der Viererkanal ist symmetrischer, während der Dreierkanal eine stärkere Vermittlung und Umorganisation verlangen kann.
+	
+	\subsection{Tochtermoden als dynamische Zustände}
+	
+	Die Tochterkugeln werden nicht als starre geometrische Unterobjekte verstanden, sondern als Träger dynamischer Zustände.
+	
+	\begin{definition}[Tochterzustand]
+		Jede Tochterkugel \(K_i\) trägt einen Zustand
+		\[
+		X_i=(\rho_i,\ell_i;q_{1,i},q_{2,i},g_i,\sigma_i,p_i,v_i,\nu_i),
+		\]
+		wobei
+		\begin{align*}
+			\rho_i &\text{ den äußeren Schalenindex},\\
+			\ell_i &\text{ den inneren Schalenindex},\\
+			q_{1,i} &\text{ die Einerbesetzung},\\
+			q_{2,i} &\text{ die Zweierbesetzung},\\
+			g_i &\text{ die photonische bzw. gamma-artige Energie},\\
+			\sigma_i &\text{ die Spannung},\\
+			p_i &\text{ den Druck},\\
+			v_i &\text{ die effektive Geschwindigkeit},\\
+			\nu_i &\text{ eine Richtungs- oder Flussinformation}
+		\end{align*}
+		bezeichnen.
+	\end{definition}
+	
+	Damit wird das geometrische Bild in ein dynamisches Zustandsmodell überführt.
+	
+	\subsection{Relaxationsoperator und Makrostruktur}
+	
+	Die Tochterzustände relaxieren kollektiv zu einer Makrostruktur.
+	
+	\begin{definition}[Relaxationsoperator]
+		Der \emph{Relaxationsoperator} ist eine Abbildung
+		\[
+		\mathcal{R}:\{X_i\}\longmapsto \Psi(t),
+		\]
+		wobei \(\Psi(t)\) die Makrostruktur des Systems zum Zeitpunkt \(t\) beschreibt.
+	\end{definition}
+	
+	Wir schreiben \(\Psi(t)\) in Besetzungsnotation als
+	\[
+	\Psi(t)=B^{N_B(t)}\,G^{N_G(t)}\,C^{N_C(t)}\,A_m^{N_{A_m}(t)}\,A_t^{N_{A_t}(t)}\,Br^{N_{Br}(t)}\,M^{N_M(t)}\,D^{N_D(t)}.
+	\]
+	
+	Hierbei bedeuten:
+	\begin{itemize}
+		\item \(B\): beta-Restkerne,
+		\item \(G\): freie gamma-artige Anregungen,
+		\item \(C\): gamma-core bzw. Vermittlungskern,
+		\item \(A_m\): mittlere alpha-Ordnungszone,
+		\item \(A_t\): tiefe alpha-Bindungszone,
+		\item \(Br\): Brückenzustände,
+		\item \(M\): gemischte Zustände,
+		\item \(D\): Defekte.
+	\end{itemize}
+	
+	\begin{remark}
+		Die in numerischen Tests beobachtete Struktur
+		\[
+		\Psi_{\mathrm{final}} = B^2\,C^1\,A_m^1\,A_t^4
+		\]
+		kann im vorliegenden Modell als radial geschichteter Relaxationszustand interpretiert werden: zwei obere Restkerne, ein Vermittlungskern, eine mittlere Ordnungszone und vier tiefe Bindungsmoden.
+	\end{remark}
+	
+	\subsection{Lokale Übergangsregeln}
+	
+	Die Relaxation soll durch elementare Übergangsregeln beschrieben werden:
+	\[
+	M \to A,
+	\qquad
+	Br \to A,
+	\qquad
+	B \to C,
+	\qquad
+	C \leftrightarrow G,
+	\qquad
+	C \to C.
+	\]
+	
+	Diese Regeln bedeuten:
+	\begin{itemize}
+		\item gemischte Zustände heilen in geordnete Bindung aus,
+		\item Brückenzustände kollabieren in alpha-Ordnungszonen,
+		\item beta-Reste speisen Vermittlungskerne,
+		\item gamma-core und freie gamma-Moden können ineinander übergehen,
+		\item gamma-core kann metastabil persistieren.
+	\end{itemize}
+	
+	\subsection{Ein Energie- und Kopplungsfunktional}
+	
+	Zur Beschreibung der Relaxation führen wir ein effektives Funktional ein:
+	\[
+	\mathcal{H}
+	=
+	\sum_i
+	\Bigl(
+	a_1 q_{1,i}
+	+
+	a_2 q_{2,i}
+	+
+	a_g g_i
+	+
+	a_\sigma \sigma_i
+	+
+	a_p p_i
+	+
+	a_v v_i^2
+	\Bigr)
+	+
+	\sum_{i<j}W_{ij}.
+	\]
+	
+	Die Kopplungsterme \(W_{ij}\) können etwa durch
+	\[
+	W_{ij}
+	=
+	b_\rho |\rho_i-\rho_j|
+	+
+	b_\ell |\ell_i-\ell_j|
+	+
+	b_1 |q_{1,i}-q_{1,j}|
+	+
+	b_2 |q_{2,i}-q_{2,j}|
+	+
+	b_g |g_i-g_j|
+	\]
+	modelliert werden.
+	
+	\begin{remark}
+		Dieses Funktional ist nicht als endgültige physikalische Energie zu verstehen, sondern als minimales Ordnungsmaß, das Spannungen, Besetzungen, Richtungsinkompatibilitäten und photonische Beiträge in einer gemeinsamen effektiven Dynamik bündelt.
+	\end{remark}
+	
+	\subsection{Randprojektion und Holographie des Volumens}
+	
+	Der entscheidende Schritt des Modells besteht darin, dass die Bulk-Strukturinformation durch Relaxation auf den Rand \(S^3\) übertragen wird.
+	
+	\begin{definition}[Randprojektion]
+		Die \emph{Randprojektion} ist eine Abbildung
+		\[
+		\Pi_{S^3}:\Psi(t)\longmapsto \mathcal{I}_{S^3}(t),
+		\]
+		wobei \(\mathcal{I}_{S^3}(t)\) die auf dem Rand \(S^3\) kodierte Information bezeichnet.
+	\end{definition}
+	
+	Formal kann man
+	\[
+	\mathcal{I}_{S^3}(t)
+	=
+	(\mu(\omega,t),\tau(\omega,t),\gamma(\omega,t),\kappa(\omega,t)),
+	\qquad \omega\in S^3,
+	\]
+	schreiben, wobei
+	\begin{itemize}
+		\item \(\mu\) eine Randdichte,
+		\item \(\tau\) eine tangentiale Spannung,
+		\item \(\gamma\) eine photonische bzw. gamma-artige Randenergie,
+		\item \(\kappa\) eine Krümmungs- oder Ordnungsinformation
+	\end{itemize}
+	bezeichnet.
+	
+	\begin{remark}
+		Der Bulk ist in diesem Modell nicht der endgültige Speicherort der Struktur. Vielmehr wirkt er als dynamischer Erzeugungsraum, während der Rand \(S^3\) den stabilisierten Informationszustand trägt. Das neue Volumen ist daher nicht bloß geometrische Summe innerer Teilvolumina, sondern Resultat einer randgetragenen Reorganisation.
+	\end{remark}
+	
+	\subsection{Der Gesamtprozess}
+	
+	Die vollständige Dynamikkette lautet damit
+	\[
+	B^4(R)
+	\;\xrightarrow{\mathcal{E}_{3,4}}\;
+	\{K_i\}
+	\;\xrightarrow{\mathcal{R}}\;
+	\Psi(t)
+	\;\xrightarrow{\Pi_{S^3}}\;
+	\mathcal{I}_{S^3}(t)
+	\;\rightsquigarrow\;
+	B^4(R_{\mathrm{neu}}).
+	\]
+	
+	\begin{definition}[Effektiver neuer Radius]
+		Der effektive Radius des expandierten Systems sei gegeben durch
+		\[
+		R_{\mathrm{neu}}
+		=
+		R\cdot
+		F(\Omega_A,\Omega_B,\Omega_C,\Omega_{Br},\Omega_D;\mathcal{I}_{S^3}),
+		\]
+		wobei
+		\[
+		\Omega_A=\frac{N_{A_m}+N_{A_t}}{N},
+		\qquad
+		\Omega_B=\frac{N_B}{N},
+		\qquad
+		\Omega_C=\frac{N_C}{N},
+		\qquad
+		\Omega_{Br}=\frac{N_{Br}}{N},
+		\qquad
+		\Omega_D=\frac{N_D}{N}
+		\]
+		die normierten Makroanteile beschreiben.
+	\end{definition}
+	
+	Hier ist \(N\) die Gesamtzahl der besetzten Makromoden im betrachteten Zustand.
+	
+	\subsection{Hypothesen zu 3er- und 4er-Expansion}
+	
+	Das Modell motiviert zwei unmittelbare Strukturhypothesen.
+	
+	\begin{hypothesis}[Viererkanal]
+		Der Viererkanal \(\mathcal{E}_4\) begünstigt alpha-dominante Endzustände:
+		\[
+		\mathcal{E}_4
+		\quad\Rightarrow\quad
+		\Omega_A \uparrow,
+		\qquad
+		\Omega_{Br}\downarrow,
+		\qquad
+		\Omega_D\downarrow.
+		\]
+	\end{hypothesis}
+	
+	\begin{hypothesis}[Dreierkanal]
+		Der Dreierkanal \(\mathcal{E}_3\) begünstigt Zustände mit stärkerem Vermittlungs- und Brückenanteil:
+		\[
+		\mathcal{E}_3
+		\quad\Rightarrow\quad
+		\Omega_C \uparrow,
+		\qquad
+		\Omega_{Br}\uparrow.
+		\]
+	\end{hypothesis}
+	
+	\begin{interpretation}
+		Der Viererkanal erscheint als volumisch symmetrischer Modus, der eher direkte Bindungsbildung zulässt. Der Dreierkanal ist dagegen strukturell asymmetrischer und verlangt stärkere Vermittlung über Kern- und Brückenzustände. In beiden Fällen ist die Ausbildung der neuen makroskopischen Kugel an den Erfolg der Randcodierung auf \(S^3\) gebunden.
+	\end{interpretation}
+	
+	\subsection{Konzeptioneller Ertrag}
+	
+	Das vorliegende Mini-Modell verbindet:
+	\begin{enumerate}
+		\item eine vierdimensionale Bulk-Geometrie,
+		\item diskrete 3er-/4er-Erzeugungskanäle,
+		\item einen internen Relaxationspfad aus beta-, gamma-, Brücken- und alpha-Zonen,
+		\item eine holographisch inspirierte Randprojektion auf \(S^3\).
+	\end{enumerate}
+	
+	Damit entsteht ein präziser Rahmen für die These, dass makroskopisches Volumen nicht nur als additive Bulk-Größe, sondern als emergente Folge stabilisierter Randordnung zu verstehen ist.
+	
+	\section{Schlussbemerkung}
+	
+	Die vorliegende Notiz schlägt kein etabliertes Theorem vor, sondern ein strukturiertes Suchprogramm. 
+	Die Leitintuition lautet, dass stark gesiebte Mittelzahlen lokale Ordnungszentren bilden könnten, um die sich Primzahlzwillinge zu größeren Konfigurationen koppeln. 
+	
+	Die mathematisch saubere Aufgabe besteht nun darin, diese Intuition in numerische Statistik, gegebenenfalls in asymptotische Modelle und im Idealfall in präzise Sätze zu überführen.
+	
+	\bigskip
+	
+	\noindent
+	\textbf{Kernfrage.} 
+	Sind harmonische Mittelzahlen lediglich gute Koordinaten für Primzahl-Cluster, oder tragen sie tatsächlich messbare lokale Strukturinformation über die Bildung von Zwillingen und Vierlingen?
+	
+\end{document}

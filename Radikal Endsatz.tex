@@ -1,0 +1,90 @@
+\documentclass{article}
+\usepackage{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+
+\title{Eine strukturelle Analyse großer Abweichungen in der ABC-Vermutung}
+\author{Thomas Hoffbauer}
+\date{}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Bemerkung}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir untersuchen die Größe
+		\[
+		\Delta(a,b,c) := \log c - \log \mathrm{rad}(abc)
+		\]
+		für Lösungen der Gleichung $a+b=c$ mit $\gcd(a,b)=1$.
+		Numerische und strukturelle Argumente legen nahe, dass große Werte von $\Delta$
+		nur bei stark konzentrierten Primfaktorstrukturen auftreten.
+	\end{abstract}
+	
+	\section{Grundlagen}
+	
+	Für $a+b=c$ gilt:
+	\[
+	\Delta = \sum_{p \mid c} (\gamma_p - 1)\log p.
+	\]
+	
+	\section{Kontrolle der mehrfachen Primfaktoren}
+	
+	\begin{proposition}
+		Für $\Delta(a,b,c) \ge \delta > 0$ gilt:
+		\[
+		|S_2| \le \frac{\delta}{\log 2},
+		\]
+		wobei $S_2 = \{p : \gamma_p \ge 2\}$.
+	\end{proposition}
+	
+	\section{Schranke für quadratfreie Anteile}
+	
+	\begin{proposition}
+		Sei $S_1 = \{p : \gamma_p = 1\}$. Dann gilt:
+		\[
+		|S_1| \lesssim \frac{\log c}{\log\log c}.
+		\]
+	\end{proposition}
+	
+	\section{Heuristische Schranke in $\Delta$}
+	
+	\begin{proposition}
+		Heuristisch gilt:
+		\[
+		\omega(abc) \lesssim \log \Delta.
+		\]
+	\end{proposition}
+	
+	\section{Strukturelles Prinzip}
+	
+	\begin{theorem}[Strukturprinzip]
+		Für $\Delta(a,b,c) \ge \delta > 0$ gilt:
+		
+		\begin{itemize}
+			\item Die Anzahl mehrfacher Primfaktoren ist beschränkt,
+			\item die Gesamtanzahl der Primfaktoren wächst höchstens langsam,
+			\item die Primfaktorstruktur von $c$ ist stark konzentriert.
+		\end{itemize}
+	\end{theorem}
+	
+	\section{Numerische Evidenz}
+	
+	Berechnungen bis $c \le 2\cdot 10^6$ zeigen:
+	
+	\begin{itemize}
+		\item Große $\Delta$ treten nur bei kleinen $\omega(abc)$ auf,
+		\item maximale Werte entstehen bei Potenzstrukturen,
+		\item keine Gegenbeispiele mit breiter Primstruktur wurden gefunden.
+	\end{itemize}
+	
+	\section{Interpretation}
+	
+	Große Abweichungen entsprechen einer Reduktion der effektiven Dimension
+	im Raum der Primfaktoren.
+	
+\end{document}

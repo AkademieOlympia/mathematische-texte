@@ -1,0 +1,291 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.6cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue,pdftitle={Sektorierte Zustandsdichten},pdfauthor={Thomas Hoffbauer \& ChatGPT}}
+
+\newtheorem{satz}{Satz}
+\newtheorem{lemma}{Lemma}
+\newtheorem{korollar}{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{beispiel}{Beispiel}
+\theoremstyle{remark}
+\newtheorem{bemerkung}{Bemerkung}
+
+\title{Sektorierte Zustandsdichten, erste gammaartige Krümmung und driftarme modulierte Reste\\[0.4em]\large Eine numerische Studie im Rahmen der Signaturgeometrie}
+\author{Thomas Hoffbauer \and Kollaborative Forschungsarbeit: Mensch \& KI}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Wir untersuchen numerisch die Hypothese, dass die logarithmische Zustandsdichte eines arithmetisch-geometrisch strukturierten Ensembles nicht global, sondern erst nach geeigneter Sektorierung in natürliche asymptotische Schichten zerfällt. Ausgangspunkt ist eine Signaturgeometrie, die jedem Zustand eine glatte Bühne, einen Restkern, ein Familienprofil, eine familienbasierte Entropie sowie ein Kleinträgerprofil zuordnet. Auf dieser Grundlage wird der Zustandsraum in Signatursektoren zerlegt und sektorweise analysiert.
+
+Die numerischen Experimente zeigen zunächst, dass die Grobsektorisierung tatsächlich homogene Fasern erzeugt, auf denen die logarithmische Zustandsdichte wesentlich regulärer ist als in der globalen, nicht sektorisierten Sicht. Innerhalb reiner Monofamilien-Sektoren wird sodann ein robuster linearer Hauptterm durch eine einfache gammaartige Krümmungsschicht in Form eines reduzierten Ein-Komponenten-\(\log\Gamma\)-Modells signifikant und stabil verbessert. Besonders wichtig ist dabei, dass diese zusätzliche Krümmung nicht nur die globale Fitgüte erhöht, sondern zugleich Residuenvarianz und Restdrift stark reduziert.
+
+Nach Abzug von linearem Hauptterm und erster gammaartiger Krümmung bleibt auf reinen Sektoren ein kleiner, driftarmer Rest zurück. Dieser Rest wird durch einfache inverse Potenzmodelle nicht stabil weiter erklärt, zeigt jedoch in einer vorsichtigen spektrischen Voranalyse schwache, aber gegen einfaches Detrending robuste diskrete Modulationsanteile. Gemischte Sektoren verhalten sich demgegenüber komplexer: Auch dort reduziert die erste Krümmungsschicht Varianz und Drift, ohne jedoch dieselbe robuste sektorielle Schließung wie auf reinen Fasern zu erreichen.
+
+Die Resultate sprechen insgesamt für eine sektorielle Arbeitsarchitektur der Form
+\[
+\log N_\sigma
+=
+\Phi_{\sigma,\mathrm{lin}}
++
+\Phi_{\sigma,\Gamma}
++
+R_{C1,\sigma},
+\]
+wobei \(\Phi_{\sigma,\mathrm{lin}}\) den glatten sektorweisen Hauptterm, \(\Phi_{\sigma,\Gamma}\) die erste robuste Krümmungsschicht und \(R_{C1,\sigma}\) den verbleibenden Rest bezeichnet. Der Beitrag versteht sich damit nicht als abgeschlossene spektrisch-arithmetische Theorie, sondern als numerisch kontrollierter Nachweis, dass Sektorierung, erste Krümmung und Reststruktur im betrachteten Ensemble erstmals trennscharf sichtbar werden.
+\end{abstract}
+
+\section{Einleitung}
+
+Die vorangehenden theoretischen Überlegungen legen nahe, dass die natürliche Geometrie des Zustandsraums nicht auf der Ebene einer rohen globalen Zustandssumme sichtbar wird, sondern erst nach einer geeigneten arithmetisch-geometrischen Sektorierung. Ziel des vorliegenden Beitrags ist es daher nicht, sofort eine geschlossene asymptotische Formel für das gesamte Ensemble zu erzwingen, sondern zunächst zu prüfen, ob die Signaturgeometrie tatsächlich jene Koordinatisierung liefert, auf der verschiedene Schichten der Zustandsdichte getrennt sichtbar werden.
+
+Im Zentrum steht die Hypothese, dass der Zustandsraum in natürliche Signatursektoren zerfällt, die durch glatte Bühne, Restkern, Familienstruktur und feinere Tiefenprofile bestimmt sind. Auf solchen Sektoren soll die logarithmische Zustandsdichte wesentlich regulärer sein als in der globalen, nicht sektorisierten Sicht. Die numerische Untersuchung verfolgt daher eine bewusst gestufte Strategie:
+\begin{enumerate}[label=\arabic*)]
+\item Zunächst wird getestet, ob die Grobsektorisierung tatsächlich homogene Fasern erzeugt.
+\item Danach wird geprüft, ob innerhalb reiner Sektoren über einen linearen Hauptterm hinaus eine robuste nichtlineare Krümmungsschicht sichtbar wird.
+\item Schließlich wird der nach Abzug dieser Hauptschichten verbleibende Rest daraufhin untersucht, ob er noch glatte Drift, einfache semiglatte Korrekturen oder bereits feinere diskrete Modulationen trägt.
+\end{enumerate}
+
+Die numerischen Experimente sind daher nicht als bloße Sammlung von Fits zu verstehen, sondern als Test einer hierarchischen Arbeitsarchitektur. Statt einer von Anfang an festgelegten globalen Zerlegung
+\[
+\Phi_{\mathrm{smooth}}+\Phi_{\mathrm{Bern}}+\Phi_{\mathrm{osc}}
+\]
+wird zunächst sektorweise untersucht, welche Schichten in der vorliegenden Datenlage überhaupt stabil identifizierbar sind. Dies führt im Verlauf der Analyse zu einer präziseren sektorweisen Form
+\[
+\log N_\sigma
+=
+\Phi_{\sigma,\mathrm{lin}}
++
+\Phi_{\sigma,\Gamma}
++
+R_{C1,\sigma},
+\]
+wobei \(\Phi_{\sigma,\mathrm{lin}}\) die glatte sektorielle Hauptstruktur, \(\Phi_{\sigma,\Gamma}\) eine erste robuste gammaartige Krümmungsschicht und \(R_{C1,\sigma}\) den verbleibenden Rest bezeichnet.
+
+\section{Sektorierte Zustandsdichte und Arbeitsmodell}
+
+Die Signaturgeometrie des Zustandsraums dient nicht nur der Klassifikation einzelner Konfigurationen, sondern liefert eine arithmetisch-geometrische Eichung des gesamten Ensembles. An die Stelle einer rohen Zustandssumme
+\[
+Z(\beta)=\sum_{q\in\mathcal E} e^{-\beta H(q)}
+\]
+tritt eine sektorisierte Zustandssumme
+\[
+Z(\beta)
+=
+\sum_{\mathfrak s\in\mathfrak S}
+\sum_{q\in \mathcal E_{\mathfrak s}}
+e^{-\beta H(q)},
+\qquad
+\mathcal E_{\mathfrak s}
+:=
+\{q\in\mathcal E:\mathfrak s(q)=\mathfrak s\},
+\]
+wobei \(\mathfrak s\) eine strukturierte Signaturklasse bezeichnet.
+
+Wir betrachten insbesondere Signaturen der Form
+\[
+\mathfrak s(q)
+=
+\bigl(
+S(q),\,m_B(q),\,\vec\rho_B(q),\,\vec\kappa(q),\,C_{\mathrm S}(q),\,D(q),\,\Sigma(q),\,I_N(q)
+\bigr),
+\]
+also glatte Bühne, Restkern, Familienprofil, Tiefenprofil, Aufbaukomplexität, genealogische Tiefe, lokale Spannung und einen Symmetrie-Extraktionswert. Die zentrale Größe ist die sektorweise Zustandsdichte
+\[
+N(\mathfrak s)=\#\mathcal E_{\mathfrak s}.
+\]
+
+Für die numerische Analyse wurden insbesondere Grobsektoren der Form
+\[
+\sigma=(S,\operatorname{supp},\operatorname{type})
+\]
+untersucht, mit glatter Bühne, Zahl aktiver Familien im Restkern und konkretem Familientyp. Innerhalb eines festen Sektors wird sodann die Feinsignatur
+\[
+u(q)=\bigl(\log m_B(q),\,C_{\mathrm{fam}}(q),\,\kappa_{13}(q)\bigr)
+\]
+verwendet.
+
+\section{Numerische Untersuchung der sektorisierten Zustandsdichte}
+
+Die Grobsektorisierung erweist sich numerisch als strukturell sinnvoll. Bereits auf dieser Ebene zerfällt das Ensemble nicht chaotisch, sondern in klar unterscheidbare Signaturfasern. Innerhalb dieser Fasern zeigt die logarithmische Zustandsdichte eine wesentlich höhere Regularität als in der globalen, nicht sektorisierten Betrachtung. Damit wird numerisch gestützt, dass die richtige Koordinatisierung des Ensembles nicht auf dem rohen Zustandsraum, sondern auf den durch die Signaturgeometrie induzierten Fasern erfolgt.
+
+\subsection{Reduzierte Korrekturmodelle auf dominanten Signatursektoren}
+
+Zur Prüfung, ob die sektorielle Zustandsdichte über den linearen Hauptterm hinaus eine robuste semiglatte Krümmungsstruktur trägt, wurden auf dominanten Signatursektoren reduzierte Korrekturmodelle getestet. Betrachtet wurden dabei die Sektoren
+\[
+((0,1,0,0),1,A),\qquad
+((0,1,1,0),2,A\!\cdot\! B),\qquad
+((0,0,1,0),1,B),
+\]
+wobei die Feinsignatur jeweils durch
+\[
+u(q)=\bigl(\log m_B(q),\,C_{\mathrm{fam}}(q),\,\kappa_{13}(q)\bigr)
+\]
+gegeben ist und die Zielgröße die logarithmische sektorielle Zustandsdichte
+\[
+y(q)=\log M_H(q)
+\]
+bezeichnet.
+
+Als Referenz wurde zunächst das lineare Hauptmodell
+\[
+f_A(x,c,k)=a_0+a_1x+a_2c+a_3k
+\]
+verwendet. Ergänzend wurden reduzierte Korrekturmodelle getestet, darunter insbesondere ein einfaches inverses Modell mit verschobenem Nenner sowie ein stark eingeschränktes \(\log\Gamma\)-Modell der Form
+\[
+f_{C1}(x,c,k)
+=
+a_0+a_1x+a_2c+a_3k+\beta \log\Gamma(x+\delta),
+\qquad \delta>0 \text{ fest}.
+\]
+
+Die Resultate zeigen ein klares Muster. Zwar erreichen inverse Potenzmodelle in-sample häufig sehr hohe Bestimmtheitsmaße, verlieren jedoch unter Leave-one-out-Kreuzvalidierung ihre Stabilität und sind daher als robuste Beschreibung der Korrekturschicht nicht geeignet. Dagegen liefert das reduzierte \(\log\Gamma\)-Modell in reinen Monofamilien-Sektoren eine deutlich stabilere Verbesserung gegenüber dem linearen Hauptterm. Besonders ausgeprägt ist dieser Effekt im Sektor
+\[
+((0,1,0,0),1,A),
+\]
+in dem die Leave-one-out-Güte des \(\log\Gamma\)-Modells gegenüber dem linearen Modell stark ansteigt. Im Sektor
+\[
+((0,0,1,0),1,B)
+\]
+zeigt sich ein schwächerer, aber weiterhin plausibler Gewinn derselben Modellklasse. Im gemischten Sektor
+\[
+((0,1,1,0),2,A\!\cdot\! B)
+\]
+tritt ein solcher Vorteil dagegen nicht auf.
+
+Diese Befunde sprechen dafür, dass die sektorielle Zustandsdichte auf reinen Signaturfasern nicht vollständig durch einen linearen Hauptterm beschrieben wird, sondern eine zusätzliche einfache Krümmung trägt, die durch einen stark eingeschränkten \(\log\Gamma\)-Term numerisch besser erfasst wird.
+
+\subsection{Robuste Ein-Komponenten-Krümmung auf reinen Fasern und negativer Mischsektor-Befund}
+
+Die sektorweise Analyse reduzierter Korrekturmodelle zeigt eine klare Asymmetrie zwischen reinen Monofamilien-Sektoren und gemischten Sektoren. Auf reinen Signaturfasern erweist sich ein stark eingeschränktes \(\log\Gamma\)-Modell als robust, während eine frei überlagerte Doppel-\(\log\Gamma\)-Struktur auf Mischsektoren in der vorliegenden Datenlage nicht stabil identifizierbar ist.
+
+Für die Feinsignatur
+\[
+u(q)=\bigl(\log m_B(q),\,C_{\mathrm{fam}}(q),\,\kappa_{13}(q)\bigr)
+\]
+wurde das reduzierte Ein-Komponenten-Modell
+\[
+f_{C1}(x,c,k)
+=
+a_0+a_1x+a_2c+a_3k+\beta\log\Gamma(x+\delta)
+\]
+mit einem zweikomponentigen Modell der Form
+\[
+f_{D1}(x,c,k)
+=
+a_0+a_1x+a_2c+a_3k
++\beta_A\log\Gamma(x+\delta_A)
++\beta_B\log\Gamma(k+\delta_B)
+\]
+verglichen. Obwohl dieses duale Modell in-sample teils deutlich höhere Bestimmtheitsmaße erreichte, kollabierte seine Leave-one-out-Güte stark. Dies weist klar auf Überparametrisierung und mangelnde Identifizierbarkeit der doppelten Krümmungsstruktur hin. Der negative D1-Befund ist inhaltlich dennoch aufschlussreich: Er zeigt, dass die zusätzliche Reststruktur gemischter Sektoren zwar real ist, in der vorliegenden Datenlage aber nicht durch eine frei überlagerte Doppel-\(\log\Gamma\)-Krümmung robust beschrieben werden kann.
+
+Die methodische Konsequenz ist daher klar: Das reduzierte Modell \(C1\) wird als bevorzugtes sektorweises Arbeitsmodell auf reinen Fasern fixiert.
+
+\subsection{C1-Restanalyse und Ausbleiben stabiler inverser Potenzschichten}
+
+Nach Fixierung des reduzierten sektorweisen Modells
+\[
+f_{C1}(x,c,k)
+=
+a_0+a_1x+a_2c+a_3k+\beta\log\Gamma(x+\delta)
+\]
+wurde der verbleibende Rest
+\[
+R_{C1}(q)=y(q)-f_{C1}\bigl(u(q)\bigr)
+\]
+auf zusätzliche glatte, semiglatte und diskrete Struktur untersucht.
+
+Auf den reinen Monofamilien-Sektoren zeigte sich, dass die erklärte Varianz einfacher Driftfits gegen
+\[
+x=\log m_B,\qquad c=C_{\mathrm{fam}},\qquad k=\kappa_{13}
+\]
+praktisch verschwindet. Dies spricht dafür, dass die erste sektorielle Krümmungsschicht die dominierende glatte Reststruktur bereits absorbiert.
+
+Im zweiten Schritt wurde geprüft, ob die Residuen \(R_{C1}\) noch eine stabile semiglatte inverse Potenzstruktur tragen. Dazu wurden einfache Modelle der Form
+\[
+R_{C1}(q)\approx \frac{b_1}{x(q)+\delta_1}
+\]
+sowie
+\[
+R_{C1}(q)\approx \frac{b_1}{x(q)+\delta_1}+\frac{b_3}{(x(q)+\delta_1)^3}
+\]
+und analoge kombinierte inverse Skalen getestet. Obwohl diese Ansätze in einzelnen Fällen in-sample minimale numerische Verbesserungen liefern konnten, brachen sie unter Leave-one-out-Kreuzvalidierung regelmäßig ein und erwiesen sich damit nicht als robuste Beschreibung einer verbleibenden Restschicht.
+
+Dieser negative Befund ist inhaltlich bedeutsam. Er zeigt nicht, dass grundsätzlich keine Euler-Maclaurin- oder Bernoulli-artige Korrekturschicht existiert, sondern lediglich, dass nach Abzug der ersten robust identifizierten gammaartigen Krümmung keine einfache inverse Potenzfortsetzung mehr stabil sichtbar ist. In der vorliegenden Datenlage spricht dies dafür, dass ein erheblicher Teil dessen, was zuvor als semiglatte Korrektur vermutet werden konnte, bereits in der \(C1\)-Schicht absorbiert wird.
+
+\subsection{Spektrische Voranalyse der C1-Reste}
+
+Nachdem auf reinen Monofamilien-Sektoren nach Abzug des linearen Hauptterms und der ersten robusten gammaartigen Krümmung nur ein kleiner, driftarmer Rest
+\[
+R_{C1,\sigma}
+=
+\log N_\sigma-\Phi_{\sigma,\mathrm{lin}}-\Phi_{\sigma,\Gamma}
+\]
+verbleibt, wurde eine vorsichtige spektrische Voranalyse durchgeführt. Hierzu wurden die Residuen innerhalb jedes Sektors nach der Hauptskala
+\[
+x=\log m_B
+\]
+geordnet und als diskrete Folgen betrachtet. Auf diese Folgen wurden diskrete Fourier-Transformationen und normierte Periodogramme angewendet, sowohl auf roh zentrierten als auch auf leicht detrendeten Varianten.
+
+Die Resultate zeigen ein konsistentes Bild. Erstens bleiben die dominanten Spektralpeaks unter linearem Detrending praktisch unverändert, sowohl in ihrer Lage als auch in ihrer relativen Leistung. Dies spricht dafür, dass die beobachteten Peaks nicht bloß durch verbleibende lineare Drift erzeugt werden. Zweitens trägt der stärkste Peak jeweils einen merklichen Anteil der gesamten spektralen Leistung, was gegen ein rein flaches oder unstrukturiertes Restsignal spricht. Drittens zeigen die reinen Monofamilien-Sektoren ähnliche Spektralstützen, wobei sich die dominante Gewichtung zwischen reinen und gemischten Sektoren verschiebt.
+
+Diese Befunde rechtfertigen jedoch noch keine starke spektrisch-arithmetische Interpretation. Die Zahl der verfügbaren Datenpunkte pro Sektor ist klein, sodass die diskreten Frequenzen grob quantisiert bleiben. Die vorliegende Analyse ist daher ausdrücklich als Vorstufe zu verstehen. Sie dient lediglich der Unterscheidung zwischen ungeordnetem Kleinsignal und stabiler diskreter Modulation.
+
+\subsection{Interpretative Zusammenfassung der numerischen Resultate}
+
+Die numerischen Untersuchungen sprechen insgesamt für eine gestufte sektorielle Architektur der logarithmischen Zustandsdichte. Der zentrale Befund lautet, dass die natürliche Struktur des Ensembles nicht in der globalen rohen Zustandssumme sichtbar wird, sondern erst nach Sektorierung über glatte Bühne, Familienstruktur und Restkernsignatur.
+
+Die Resultate lassen sich in drei Aussagen zusammenfassen:
+\begin{enumerate}[label=\arabic*)]
+\item \textbf{Sektorierung als richtige Koordinatisierung.} Die Grobsektorisierung erzeugt tatsächlich homogene Signaturfasern. Innerhalb dieser Fasern ist die logarithmische Zustandsdichte wesentlich regulärer als in der globalen, nicht sektorisierten Sicht.
+\item \textbf{Erste robuste Krümmung auf reinen Fasern.} Auf reinen Monofamilien-Sektoren verbessert ein reduziertes Ein-Komponenten-\(\log\Gamma\)-Modell die sektorielle Beschreibung robust gegenüber dem linearen Hauptterm.
+\item \textbf{Kleiner driftarmer, aber nicht trivialer Rest.} Nach Abzug von linearem Hauptterm und erster gammaartiger Krümmung bleibt auf reinen Sektoren ein kleiner Rest zurück. Dieser Rest trägt in der vorliegenden Datenlage keine stabile einfache inverse Potenzschicht mehr, zeigt jedoch in einer vorsichtigen spektrischen Voranalyse schwache, aber gegen einfaches Detrending robuste diskrete Modulationsanteile.
+\end{enumerate}
+
+Die Resultate sprechen daher gegen eine zu frühe globale Aufspaltung der Form
+\[
+\Phi_{\mathrm{smooth}}+\Phi_{\mathrm{Bern}}+\Phi_{\mathrm{osc}}
+\]
+und eher für eine schrittweise sektorielle Renormalisierung:
+\[
+\text{Sektorierung}
+\;\longrightarrow\;
+\text{linearer Hauptterm}
+\;\longrightarrow\;
+\text{erste robuste Krümmung}
+\;\longrightarrow\;
+\text{kleiner driftarmer Rest}.
+\]
+
+\section{Schluss}
+
+Die numerischen Resultate liefern keinen Beweis einer abgeschlossenen spektrisch-arithmetischen Theorie. Sie liefern jedoch einen belastbaren Nachweis dafür, dass die Signaturgeometrie als operative Koordinatisierung und Renormalisierung des Ensembles fungiert. Hauptterm, erste Krümmung und verbleibender Rest werden dadurch erstmals kontrolliert voneinander getrennt.
+
+Der derzeit sauberste Kerngedanke lautet somit:
+\[
+\boxed{
+\log N_\sigma
+=
+\Phi_{\sigma,\mathrm{lin}}
++
+\Phi_{\sigma,\Gamma}
++
+R_{C1,\sigma}
+}
+\]
+mit robuster sektorweiser Hauptstruktur, erster robuster gammaartiger Krümmung auf reinen Fasern und kleinem driftarmen Rest mit schwacher diskreter Modulation. Die nächste natürliche Aufgabe besteht darin, diese Architektur auf weitere reine Sektoren auszurollen und die Restmodulation auf größerer Datenbasis vorsichtig weiter zu untersuchen.
+
+\end{document}

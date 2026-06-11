@@ -1,0 +1,327 @@
+% Hardy–Littlewood-Hypothesen zur mod-420-Kanalverteilung von Primzahlvierlingen
+% Kompilieren: pdflatex eabc_hl_hypotheses.tex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{microtype}
+\usepackage{hyperref}
+
+\title{Hardy--Littlewood-Hypothesen zur\\mod-$420$-Kanalverteilung\\von Primzahlvierlingen}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\newtheorem{theorem}{Satz}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{hypothesis}{Hypothese}
+\newtheorem{remark}{Bemerkung}
+
+\newcommand{\R}{\mathcal{R}}
+\newcommand{\HL}{\mathrm{HL}}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Wir untersuchen, warum die Besetzung der sechs mod-$420$-Halbkanäle
+$\R=\{11,101,191,221,311,401\}$ bei Primzahlvierlingen $(p,p+2,p+6,p+8)$
+mit $p\le 10^8$ leicht von der Gleichverteilung abweicht
+(Counts $[765,831,786,809,809,767]$, $N=4767$).
+Die Hardy--Littlewood-(HL)-Singulärreihe liefert \emph{identische}
+lokale Koeffizienten auf allen sechs Kanälen; die beobachtete Asymmetrie
+ist daher mit reiner HL-Äquidistribution vereinbar und statistisch
+als Endlichstichproben-Fluktuation plausibel ($\chi^2=4{,}34$, $p\approx 0{,}50$).
+Die dominante $\chi_3$-Komponente des Bias $\delta$ ist algebraisch erzwungen
+($\chi_3|_{\R}=\psi_2$), nicht durch unterschiedliche HL-Gewichte.
+\end{abstract}
+
+%=============================================================================
+\section{Einleitung}
+%=============================================================================
+
+Primzahlvierlinge mit Lückensignatur $(2,4,2)$ konzentrieren ihre Starts
+auf genau sechs Restklassen modulo $420$.
+Die empirische Kanalbesetzung weicht vom uniformen Referenzwert $1/6$ ab;
+gleichzeitig zeigt die spektrale Zerlegung von $\delta_N(r)=n_r/N-1/6$,
+dass $\approx 60\,\%$ der Varianz in der $\chi_3$-Richtung liegt
+(kubischer Charakter mod $7$, identisch mit dem $k{=}2$-DFT-Modus auf $\R$).
+
+Die zentrale offene Frage (Level~3 in \texttt{eabc\_paper\_final.tex}) lautet:
+\emph{Tragen die sechs Kanäle unterschiedliche HL-Singularreihen-Koeffizienten?}
+Falls nein, folgt asymptotische Gleichverteilung und rechtfertigt die
+Multinomial-Nullhypothese $H$.
+Falls ja, könnten HL-Gewichte die beobachtete $\chi_3$-Struktur erklären.
+
+%=============================================================================
+\section{Hardy--Littlewood-Formel für Vierlinge}
+%=============================================================================
+
+Sei $Q=(0,2,6,8)$ die Gap-Konstellation und
+\[
+  \pi_Q(x) := \#\{p\le x : p,p+2,p+6,p+8\text{ prim}\}.
+\]
+Die HL-Vermutung (Bateman--Horn) besagt
+\begin{equation}
+  \pi_Q(x) \;\sim\; C_Q \int_2^x \frac{dt}{\log^4 t},
+  \qquad
+  C_Q = 2\cdot \mathfrak{S}(Q),
+\end{equation}
+wobei $\mathfrak{S}(Q)=\prod_p w_p(Q)$ die \emph{Singulärreihe} ist.
+Für eine Primzahl $p$ sei $\nu_p$ die Anzahl verbotener Startrestklassen
+mod $p$ (Klassen $n$ mit $n+h\equiv 0$ für ein $h\in Q$).
+Dann gilt
+\begin{equation}
+  w_p(Q) = 1 - \frac{\nu_p}{(p-1)^4}.
+  \label{eq:wp}
+\end{equation}
+Globale Konstante (partielles Produkt bis $p\le 2\cdot 10^5$):
+$\mathfrak{S}(Q)\approx 0{,}858$.
+
+\paragraph{Bedingte Verteilung mod $q$.}
+Für ein Modul $q$ sei $\omega_q$ die Anzahl zulässiger Startklassen
+($n\bmod q$ mit allen vier Positionen $\not\equiv 0$).
+Unter HL-Äquidistribution auf den zulässigen Klassen trägt
+$p\equiv r\bmod q$ das relatives Gewicht $1/\omega_q$ (falls zulässig),
+sonst $0$.
+Das Gesamtgewicht eines Kanals $r\in\R$ ist
+\begin{equation}
+  W_{\HL}(r) \;=\; \prod_{q\in\{2,3,4,5,7\}} \frac{1}{\omega_q}
+  \cdot \prod_{p\in\{3,5,7\}} w_p(Q),
+  \label{eq:channel-weight}
+\end{equation}
+sofern $r$ bei jedem Faktor zulässig ist.
+
+\begin{lemma}[Vollständigkeit von $\R$ mod $420$]
+\label{lem:R-complete}
+Es gilt $\omega_{420}=6$, und die einzigen zulässigen Restklassen sind
+genau $\R$.
+\end{lemma}
+
+\begin{proof}
+Nach dem Chinesischen Restsatz:
+$\omega_{420}=\omega_4\cdot\omega_3\cdot\omega_5\cdot\omega_7
+= 2\cdot 1\cdot 1\cdot 3 = 6$.
+Direkte Enumeration bestätigt $\R$ als die sechs Klassen
+(vgl.\ \texttt{eabc\_hl\_coefficient\_hypotheses.py}).
+\end{proof}
+
+\begin{theorem}[Identische HL-Koeffizienten auf $\R$]
+\label{thm:equal-hl}
+Für alle $r\in\R$ gilt $W_{\HL}(r)=W_0$ mit demselben Konstanten $W_0$.
+Insbesondere sagt HL die Gleichverteilung
+$P(p\bmod 420=r\mid Q(p)\text{ prim})\to 1/6$ voraus.
+\end{theorem}
+
+\begin{proof}
+Alle $r\in\R$ erfüllen:
+\begin{itemize}
+  \item $r\equiv 1\bmod 2$ (ungerade), $\omega_2=1$;
+  \item $r\equiv 2\bmod 3$, $\omega_3=1$;
+  \item $r\equiv 1$ oder $3\bmod 4$ (je drei Kanäle), $\omega_4=2$;
+  \item $r\equiv 1\bmod 5$, $\omega_5=1$;
+  \item $r\equiv 2,3$ oder $4\bmod 7$ (je zwei Kanäle), $\omega_7=3$.
+\end{itemize}
+Jeder Faktor in \eqref{eq:channel-weight} ist für alle $r\in\R$ identisch.
+\end{proof}
+
+%=============================================================================
+\section{Tabelle: Lokale Koeffizienten pro Kanal}
+%=============================================================================
+
+\begin{table}[h]
+\centering
+\caption{Lokale HL-Struktur und Gewichte pro Kanal ($N=4767$, $p\le 10^8$).}
+\label{tab:coefficients}
+\begin{tabular}{@{}rrrrrrrrr@{}}
+\toprule
+$r$ & $n_r$ & $\hat p_i$ & $\delta_i$ &
+$r\bmod 4$ & $r\bmod 5$ & $r\bmod 7$ &
+$W_{\HL}(r)$ & $W_{\HL}/\sum$ \\
+\midrule
+ 11 & 765 & 0.1605 & $-0.00619$ & 3 & 1 & 4 & $3.47\times 10^{-4}$ & $1/6$ \\
+101 & 831 & 0.1743 & $+0.00766$ & 1 & 1 & 3 & $3.47\times 10^{-4}$ & $1/6$ \\
+191 & 786 & 0.1649 & $-0.00178$ & 3 & 1 & 2 & $3.47\times 10^{-4}$ & $1/6$ \\
+221 & 809 & 0.1697 & $+0.00304$ & 1 & 1 & 4 & $3.47\times 10^{-4}$ & $1/6$ \\
+311 & 809 & 0.1697 & $+0.00304$ & 3 & 1 & 3 & $3.47\times 10^{-4}$ & $1/6$ \\
+401 & 767 & 0.1609 & $-0.00577$ & 1 & 1 & 2 & $3.47\times 10^{-4}$ & $1/6$ \\
+\midrule
+\multicolumn{8}{l}{Kleine Primfaktoren $w_p(Q)$:} \\
+\multicolumn{8}{l}{$p=3$: $\nu_3=2$, $w_3=7/8$;
+$p=5$: $\nu_5=4$, $w_5=63/64$;
+$p=7$: $\nu_7=4$, $w_7\approx 0{,}9969$.} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Erzwungene Kongruenzen.}
+Modulo kleiner Primzahlen erzwingt die Vierlingszulässigkeit:
+$p\not\equiv 0\bmod 2$;
+$p\equiv 2\bmod 3$;
+$p\in\{1,3\}\bmod 4$;
+$p\equiv 1\bmod 5$;
+$p\in\{2,3,4\}\bmod 7$.
+Kein Kanal in $\R$ verletzt eine dieser Bedingungen; Unterschiede zwischen
+Kanälen betreffen nur die \emph{Verteilung} innerhalb der zulässigen
+Unterklassen (z.\,B.\ $r\bmod 4\in\{1,3\}$), nicht die HL-Gewichte
+(Theorem~\ref{thm:equal-hl}).
+
+%=============================================================================
+\section{Hypothesen}
+%=============================================================================
+
+\begin{hypothesis}[H1: Identische HL-Koeffizienten]
+\label{hyp:H1}
+Alle sechs Kanäle tragen dieselbe Singulärreihe $W_{\HL}(r)\equiv W_0$.
+\end{hypothesis}
+
+\emph{Vorhersage:} Gleichverteilung $n_r/N\to 1/6$.
+\emph{Daten:} Abweichungen $\le 0{,}77\,\%$; $\chi^2=4{,}34$ (5 Freiheitsgrade).
+\emph{Bewertung:} \textbf{Stark gestützt} (Theorem~\ref{thm:equal-hl});
+HL erklärt die Abweichung \emph{nicht} strukturell, sondern als Fluktuation.
+
+\begin{hypothesis}[H2: Mod-$7$-Struktur erzeugt unterschiedliche HL-Dichten]
+\label{hyp:H2}
+Die Dreiteilung $p\bmod 7\in\{2,3,4\}$ induziert verschiedene lokale
+HL-Faktoren und erklärt die $\chi_3$-Komponente von $\delta$.
+\end{hypothesis}
+
+\emph{Vorhersage:} Drei verschiedene HL-Gewichte
+(Verhältnis $1:1:1$ auf den mod-$7$-Klassen, aber Kanäle innerhalb
+einer Klasse ungleich).
+\emph{Daten:} Mod-$7$-Aggregat $[0{,}330,0{,}344,0{,}326]$ vs.\ $[1/3,1/3,1/3]$;
+innerhalb jeder Klasse zwei Kanäle mit leicht verschiedenen Anteilen.
+\emph{Bewertung:} \textbf{Widerlegt als HL-Mechanismus} --- $\omega_7=3$
+liefert gleiche Faktoren $1/3$ pro Klasse; $\chi_3|_{\R}=\psi_2$ ist
+\emph{algebraisch} (Lemma in \texttt{eabc\_paper\_final.tex}), nicht
+dichtetheoretisch. Die $\chi_3$-Projektion existiert bei \emph{jeder}
+Verteilung; ihre Größe $|\langle\delta,\chi_3\rangle|\approx 0{,}00275$
+ist unter $H$ typisch ($z\approx 1$).
+
+\begin{hypothesis}[H3: Mod-$4$/Mod-$5$-Einschränkungen $\Rightarrow$ $\chi_4$-Komponente]
+\label{hyp:H3}
+Unterschiedliche $r\bmod 4$ (abwechselnd $1$ und $3$) erzeugen via HL
+unterschiedliche Dichten und speisen die $\chi_4$-Projektion
+($\approx 14\,\%$ Varianzanteil).
+\end{hypothesis}
+
+\emph{Vorhersage:} Zwei HL-Gewichtklassen (je $3$ Kanäle).
+\emph{Daten:} $\chi_4$-Anteil in der spektralen Zerlegung vorhanden,
+aber HL-Gewichte für $r\equiv 1$ und $r\equiv 3\bmod 4$ sind identisch
+($\omega_4=2$, Faktor $1/2$ für beide).
+\emph{Bewertung:} \textbf{Widerlegt als HL-Ursache}; $\chi_4$-Beitrag ist
+Fourier-Projektion der \emph{beobachteten} Fluktuation, nicht HL-Vorhersage.
+Mod $5$: alle $r\equiv 1$, $\omega_5=1$ --- kein HL-Unterschied.
+
+\begin{hypothesis}[H4: Korrelationen zwischen Vierlingen in verschiedenen Kanälen]
+\label{hyp:H4}
+Aufeinanderfolgende Vierlinge sind nicht i.i.d.; die Übergangsmatrix
+(\texttt{Stiefel.py}) erzeugt Persistenz und modifiziert die Kanalverteilung.
+\end{hypothesis}
+
+\emph{Vorhersage:} Abweichung von Multinomial auch bei gleichen HL-Gewichten;
+Spektrallücke der Übergangsmatrix $\neq 0$.
+\emph{Daten:} Skalierungstest bis $10^9$ zeigt keinen stabilen Drift
+$B/\sqrt{N}$; $|\langle\delta,\chi_3\rangle|\sqrt{N}\approx 0{,}18$
+stabil über drei Dekaden.
+\emph{Bewertung:} \textbf{Offen, aber unwahrscheinlich} als Hauptursache;
+Korrelationen müssten konsistent mit $O(1/\sqrt{N})$-Fluktuation sein.
+Weiterer Test: Vergleich der Übergangsmatrix mit i.i.d.-Null.
+
+\begin{hypothesis}[H5: Finite-size-Effekte bis $10^8$]
+\label{hyp:H5}
+Bei $N=4767$ ist die beobachtete Asymmetrie reine Endlichstichproben-Fluktuation
+um die HL-Gleichverteilung.
+\end{hypothesis}
+
+\emph{Vorhersage:} $\chi^2\approx 5$ (Median), $|\delta_i|=O(1/\sqrt{N})$;
+$|\langle\delta,\chi_3\rangle|\approx 1/(6\sqrt{N})\approx 0{,}0024$.
+\emph{Daten:} $\chi^2=4{,}34$, $p\approx 0{,}50$;
+$|\langle\delta,\chi_3\rangle|=0{,}00275$, $z\approx 1{,}1$;
+$\mathrm{KL}(\text{obs}\|1/6)=4{,}55\times 10^{-4}$.
+\emph{Bewertung:} \textbf{Stark gestützt}; konsistent mit Hypothese $H$
+in \texttt{eabc\_paper\_final.tex}.
+
+\begin{hypothesis}[H6: HL-Äquidistribution auf $\R$ ist unbewiesen (Level~3)]
+\label{hyp:H6}
+Selbst bei identischen Koeffizienten bleibt offen, ob arithmetische
+Korrelationen (Goldston--Pintz--Yıldırım-artig) die bedingte Verteilung
+$p\bmod 420\,|\,Q(p)$ verzerren.
+\end{hypothesis}
+
+\emph{Vorhersage:} Keine quantitative Abweichung ohne zusätzliche Struktur.
+\emph{Daten:} Kein nachweisbarer systematischer Drift bis $10^9$.
+\emph{Bewertung:} \textbf{Mathematisch offen}, numerisch unauffällig.
+
+%=============================================================================
+\section{Numerischer Vergleich}
+%=============================================================================
+
+\begin{table}[h]
+\centering
+\caption{HL-Vorhersage vs.\ Beobachtung ($N=4767$).}
+\label{tab:goodness}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Größe & Wert \\
+\midrule
+$\chi^2$ (HL uniform $1/6$) & $4.344$ \\
+$p$-Wert (5 df) & $0.501$ \\
+$\mathrm{KL}(\hat{\mathbf p}\,\|\,\mathbf p_{\HL})$ & $4.55\times 10^{-4}$ \\
+$\max_i |\delta_i|$ & $0.77\,\%$ \\
+$|\langle\delta,\chi_3\rangle|$ & $0.00275$ \\
+$|\langle\delta,\chi_3\rangle|/(1/(6\sqrt{N}))$ & $\approx 1.1$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Da alle HL-Gewichte gleich sind, unterscheiden sich
+$\mathbf p_{\HL}$ und die uniforme Vorhersage nicht;
+eine kanalspezifische HL-Korrektur verbessert den $\chi^2$-Fit nicht.
+
+%=============================================================================
+\section{Fazit}
+%=============================================================================
+
+Die Analyse zeigt:
+
+\begin{enumerate}
+  \item \textbf{HL liefert identische Koeffizienten} auf allen sechs Kanälen
+        (Theorem~\ref{thm:equal-hl}); die Singulärreihe unterscheidet
+        nicht zwischen $r\bmod 4$ oder $r\bmod 7$ innerhalb $\R$.
+  \item Die beobachtete Kanalasymmetrie ist \textbf{statistisch konsistent}
+        mit Gleichverteilung (H1 + H5).
+  \item Die dominante $\chi_3$-Struktur ist \textbf{algebraisch erzwungen}
+        ($\chi_3|_{\R}=\psi_2$) und wird von H2/H3 als HL-Effekt
+        \textbf{widerlegt}.
+  \item \textbf{Plausibelste Erklärung:} Multinomial-Fluktuation unter $H$,
+        die asymptotisch aus HL-Äquidistribution folgt, sofern Level~3
+        (beweisbare bedingte Gleichverteilung) gilt.
+  \item \textbf{Offen:} H4 (Korrelationen) und H6 (analytischer HL-Beweis
+        für mod-$420$-Verteilung).
+\end{enumerate}
+
+\paragraph{Empfehlung.}
+Die spektrale Zerlegung von $\delta$ ist ein \emph{Koordinatensystem}
+(Level~1), nicht ein Hinweis auf unterschiedliche HL-Dichten.
+Weitere Fortschritte erfordern einen Beweis der bedingten Äquidistribution
+$p\bmod 420\,|\,Q(p)$ oder den Nachweis systematischer Korrelationen
+(H4), die über $O(1/\sqrt{N})$ hinausgehen.
+
+%=============================================================================
+\section*{Begleitdateien}
+%=============================================================================
+
+\begin{itemize}
+  \item \texttt{eabc\_hl\_coefficient\_hypotheses.py} --- numerische Berechnung
+  \item \texttt{eabc\_hl\_coefficient\_hypotheses\_report.txt} --- Kurzbericht
+  \item \texttt{eabc\_hl\_coefficient\_hypotheses.json} --- Maschinenlesbare Daten
+  \item \texttt{Stiefel.py} --- Vierlingszählung und Übergangsmatrix
+  \item \texttt{eabc\_paper\_final.tex} --- Level-1/2/3-Rahmen
+\end{itemize}
+
+\end{document}

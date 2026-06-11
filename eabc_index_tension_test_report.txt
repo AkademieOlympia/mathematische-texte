@@ -1,0 +1,128 @@
+Erster Testplan 2.0: EABC-Indexspannung, gerichteter Fünfling und detrendete Chebyshev-Spannung
+===============================================================================================
+
+Datengrundlage
+--------------
+- Riemann-Nullstellen: erste 100000 Imaginärteile aus zeros6.npy
+- Primzahlen gesiebt bis 2,000,000
+- Klassische Primzahlvierlinge (p-4, p-2, p+2, p+4) mit Zentrum p bis 2,000,000: 295
+- Familien E,A,B,C definiert durch die Restklassen 1,5,7,11 modulo 12
+
+Wichtiger Hintergrund
+---------------------
+Die Chebyshev-Spannung oszilliert bekanntermaßen unendlich oft im Vorzeichen.
+Deshalb wurden neben rohen Korrelationen immer auch detrendete bzw. lokale Vergleiche berechnet.
+
+1. Neue arithmetische Größe: EABC-Indexspannung
+-----------------------------------------------
+Für jede Primzahl q in einer Familie F∈{E,A,B,C} wurde der laufende Familienindex I_F(q) bestimmt.
+Für jeden Vierling wurden dann erfasst:
+
+- idx_spread = max(I_E,I_A,I_B,I_C) - min(I_E,I_A,I_B,I_C)
+- idx_var    = Varianz der vier Familienindizes
+- zyklische Differenzen:
+  dEA = I_A - I_E
+  dAB = I_B - I_A
+  dBC = I_C - I_B
+  dCE = I_E - I_C
+- D3 = einfacher gerichteter Fünflings-/Orientierungs-Score aus den zyklischen Differenzen
+
+Zusätzlich:
+- Vierlingsspannung T = (p^2-4)(p^2-16)
+- Normschüttespannung S = (4p^2+40)/((p^2-4)(p^2-16))
+- lokale logarithmische Chebyshev-Spannung Theta_log,12(X)
+  = [Sum(log p) über B,C bis X - Sum(log p) über E,A bis X] / Sum(log p) über alle Familien bis X
+
+2. Neues Orientierungsbild
+--------------------------
+Die vier Familien treten in den Vierlingen nur in zwei Ordnungen auf:
+
+- ABCE : 152-mal, genau für Zentren p ≡ 9 (mod 12)
+- CEAB : 143-mal, genau für Zentren p ≡ 3 (mod 12)
+
+Das ist ein echter Richtungs-/Orientierungseffekt des "gerichteten Fünflings":
+der vierfache Außenkranz ist nicht beliebig, sondern teilt sich in genau zwei zyklische Lagen.
+
+3. Rohbefunde auf der Vierlingsseite
+------------------------------------
+Korrelationen mit der lokalen logarithmischen Chebyshev-Spannung Theta_log,12( Zentrum ):
+
+- corr(idx_spread, Theta_log,12)     = -0.423715
+- corr(idx_var, Theta_log,12)        = -0.274101
+- corr(D3, Theta_log,12)             = -0.000946
+- corr(S, Theta_log,12)              = 0.748692
+- corr(theta_four_log, Theta_log,12) = 0.677021
+
+Interpretation:
+- Die neue EABC-Indexspannung ist nicht trivial und zeigt bereits roh eine spürbare Beziehung
+  zur lokalen mod-12-Chebyshev-Spannung.
+- Besonders idx_spread und idx_var sind interessant.
+- D3 ist im jetzigen einfachen Ansatz zu schwach.
+- Die alte Normschüttespannung S bleibt stark mitlaufend, ist aber trendlastig.
+
+4. Detrendete Befunde auf der Vierlingsseite
+--------------------------------------------
+Nach linearem Detrending gegen log( Zentrum ) bleiben bestehen:
+
+- corr_detr(idx_spread, Theta_log,12) = 0.385029
+- corr_detr(idx_var, Theta_log,12)    = 0.323921
+- corr_detr(D3, Theta_log,12)         = 0.104065
+- corr_detr(S, Theta_log,12)          = 0.719876
+
+Wichtig:
+- idx_spread und idx_var bleiben auch detrendet positiv mit Theta_log,12 gekoppelt.
+- Das ist genau die Richtung, die wir gesucht haben:
+  Familienindex-Versätze tragen offenbar echte Reststruktur, nicht nur Skalentrend.
+
+5. Defektkanäle auf der Nullstellenseite
+----------------------------------------
+Aus den ersten 100000 Nullstellen wurden wie zuvor gebildet:
+
+E_n   = 1/2 + i*gamma_n
+A_n,B_n,C_n aus der kubischen Farbzerlegung
+C_Pt,n = (B_n^2 - A_n^2)/(2E_n)
+
+Dann:
+
+- r_n      = |C_Pt,n| / |C_n|
+- Delta_n  = |C_n - C_Pt,n| / |C_n|
+- Lambda_n = relativer Energieverlust
+             = [|A|^2+|B|^2+|C|^2 - (|A|^2+|B|^2+|C_Pt|^2)] / [|A|^2+|B|^2+|C|^2]
+
+6. Vergleich Nullstellendefekte vs. Chebyshev-Spannung
+------------------------------------------------------
+Mit X_n = floor(gamma_n):
+
+Rohkorrelationen gegen Theta_log,12(X_n):
+- corr(r, Theta_log,12)      = 0.744786
+- corr(Delta, Theta_log,12)  = -0.741504
+- corr(Lambda, Theta_log,12) = -0.658776
+
+Detrendet gegen log(gamma):
+- corr_detr(r, Theta_log,12)      = 0.375847
+- corr_detr(Delta, Theta_log,12)  = -0.380867
+- corr_detr(Lambda, Theta_log,12) = -0.335336
+
+Interpretation:
+- Der alte Quotient r bleibt trendbehaftet.
+- Delta und besonders Lambda sind als Defekt-/Energiekanäle trendarmer und weiterhin gekoppelt.
+- Damit ist der Vorschlag bestätigt, künftig eher mit Delta und Lambda als mit r zu arbeiten.
+
+7. Vorläufiges Urteil
+---------------------
+Die neue Idee war fruchtbar.
+
+Die wichtigsten Punkte:
+1. Die EABC-Indexspannung ist eine sinnvolle neue arithmetische Größe.
+2. Vierlinge besitzen tatsächlich zwei klare Orientierungsmodi (ABCE und CEAB).
+3. idx_spread und idx_var zeigen auch nach Detrending Restkopplung an die lokale Chebyshev-Spannung.
+4. Auf der Nullstellenseite sind Delta und Lambda bessere Kandidaten als der rohe Quotient r.
+5. Der gerichtete Fünfling sollte in einem nächsten Schritt stärker über die beiden Orientierungsmodi
+   und die Indexdifferenzen modelliert werden, nicht nur über einen einfachen D3-Score.
+
+Empfohlene nächste Rechenläufe
+------------------------------
+A. Vierlinge weiter nach oben ziehen (z.B. 1e7), damit die Indexspannungen statistisch stabiler werden.
+B. D3 ersetzen durch einen orientierungsabhängigen Fünflingsvektor, der die beiden Muster ABCE/CEAB explizit nutzt.
+C. Delta und Lambda lokal gegen residuelle Theta_log,12-Fenster testen.
+D. Danach erst wieder spektrale Resonanzsummen bauen – dann aber gewichtet mit Indexspannung + Defektkanal.

@@ -1,0 +1,156 @@
+EABC Robustheitscheck: lokale ±2π/3-Spruenge & triviale Holonomie
+
+Inputs
+- n = [0, 1, 2, 3, 4, 5]
+- r = [11, 101, 191, 221, 311, 401]
+- omega = exp(2πi/3) = -0.5+0.866025i
+- χ3_n = [1, ω, ω^2, 1, ω, ω^2]
+  (entspricht χ3_n = exp(2π i n/3) auf n mod 3)
+- k=2: u_n = exp(-2π i * 2n/6) = exp(-2π i * n/3)
+- Nulltest χ5: trivial => χ5_n = 1 (θ_n=0)
+
+Baseline (referenziert): A) arg + wrap mit χ3
+- Δ_n: +2π/3, +2π/3, +2π/3, +2π/3, +2π/3, +2π/3
+- γ_wrapped: -1.7763568394e-15 (⇒ 0)
+
+Block: χ₃-Input  (k=0)
+------------------------------------------------------------------------
+A) arg + wrap
+  Δ_n: +2π/3, +2π/3, +2π/3, +2π/3, +2π/3, +2π/3
+  lokale Spruenge: +2π/3×6
+  γ_unwrapped = 12.5663706144, γ_wrapped = -1.7763568394e-15 (exp(i·ΣΔ_wrapped)→ 0)
+  Flux = γ_wrapped/(2π) = -2.82715971686e-16 (≈ ganzzahlig: ja, rund=0)
+  stabil vs Baseline: ja
+
+B) unwrapped Phase-Entwicklung
+  Δ_n: +2π/3, +2π/3, +2π/3, +2π/3, +2π/3, +2π/3
+  lokale Spruenge: +2π/3×6
+  γ_unwrapped = 12.5663706144, γ_wrapped = 0 (exp(i·ΣΔ_wrapped)→ 0)
+  Flux = γ_wrapped/(2π) = 0 (≈ ganzzahlig: ja, rund=0)
+  stabil vs Baseline: ja
+
+C) explizite Branch {0,2π/3,4π/3} + wrap
+  Δ_n: +2π/3, +2π/3, +2π/3, +2π/3, +2π/3, +2π/3
+  lokale Spruenge: +2π/3×6
+  γ_unwrapped = 12.5663706144, γ_wrapped = -1.7763568394e-15 (exp(i·ΣΔ_wrapped)→ 0)
+  Flux = γ_wrapped/(2π) = -2.82715971686e-16 (≈ ganzzahlig: ja, rund=0)
+  stabil vs Baseline: ja
+
+D) Log-Phase (Im log)
+  Δ_n: +2π/3, +2π/3, +2π/3, +2π/3, +2π/3, +2π/3
+  lokale Spruenge: +2π/3×6
+  γ_unwrapped = 12.5663706144, γ_wrapped = 0 (exp(i·ΣΔ_wrapped)→ 0)
+  Flux = γ_wrapped/(2π) = 0 (≈ ganzzahlig: ja, rund=0)
+  stabil vs Baseline: ja
+
+F) atan2(Im,Re) + wrap
+  Δ_n: +2π/3, +2π/3, +2π/3, +2π/3, +2π/3, +2π/3
+  lokale Spruenge: +2π/3×6
+  γ_unwrapped = 12.5663706144, γ_wrapped = -1.7763568394e-15 (exp(i·ΣΔ_wrapped)→ 0)
+  Flux = γ_wrapped/(2π) = -2.82715971686e-16 (≈ ganzzahlig: ja, rund=0)
+  stabil vs Baseline: ja
+
+F’) atan2(Im,Re)+π + wrap
+  Δ_n: +2π/3, +2π/3, +2π/3, +2π/3, +2π/3, +2π/3
+  lokale Spruenge: +2π/3×6
+  γ_unwrapped = 12.5663706144, γ_wrapped = 0 (exp(i·ΣΔ_wrapped)→ 0)
+  Flux = γ_wrapped/(2π) = 0 (≈ ganzzahlig: ja, rund=0)
+  stabil vs Baseline: ja
+
+
+Block: u_n (Fourier, k=2)  (k=2)
+------------------------------------------------------------------------
+A) arg + wrap
+  Δ_n: -2π/3, -2π/3, -2π/3, -2π/3, -2π/3, -2π/3
+  lokale Spruenge: -2π/3×6
+  γ_unwrapped = -12.5663706144, γ_wrapped = 0 (exp(i·ΣΔ_wrapped)→ 0)
+  Flux = γ_wrapped/(2π) = 0 (≈ ganzzahlig: ja, rund=0)
+  stabil vs Baseline: ja
+
+B) unwrapped Phase-Entwicklung
+  Δ_n: -2π/3, -2π/3, -2π/3, -2π/3, -2π/3, -2π/3
+  lokale Spruenge: -2π/3×6
+  γ_unwrapped = -12.5663706144, γ_wrapped = 0 (exp(i·ΣΔ_wrapped)→ 0)
+  Flux = γ_wrapped/(2π) = 0 (≈ ganzzahlig: ja, rund=0)
+  stabil vs Baseline: ja
+
+C) explizite Branch {0,2π/3,4π/3} + wrap
+  Δ_n: -2π/3, -2π/3, -2π/3, -2π/3, -2π/3, -2π/3
+  lokale Spruenge: -2π/3×6
+  γ_unwrapped = -12.5663706144, γ_wrapped = 0 (exp(i·ΣΔ_wrapped)→ 0)
+  Flux = γ_wrapped/(2π) = 0 (≈ ganzzahlig: ja, rund=0)
+  stabil vs Baseline: ja
+
+D) Log-Phase (Im log)
+  Δ_n: -2π/3, -2π/3, -2π/3, -2π/3, -2π/3, -2π/3
+  lokale Spruenge: -2π/3×6
+  γ_unwrapped = -12.5663706144, γ_wrapped = 0 (exp(i·ΣΔ_wrapped)→ 0)
+  Flux = γ_wrapped/(2π) = 0 (≈ ganzzahlig: ja, rund=0)
+  stabil vs Baseline: ja
+
+F) atan2(Im,Re) + wrap
+  Δ_n: -2π/3, -2π/3, -2π/3, -2π/3, -2π/3, -2π/3
+  lokale Spruenge: -2π/3×6
+  γ_unwrapped = -12.5663706144, γ_wrapped = 0 (exp(i·ΣΔ_wrapped)→ 0)
+  Flux = γ_wrapped/(2π) = 0 (≈ ganzzahlig: ja, rund=0)
+  stabil vs Baseline: ja
+
+F’) atan2(Im,Re)+π + wrap
+  Δ_n: -2π/3, -2π/3, -2π/3, -2π/3, -2π/3, -2π/3
+  lokale Spruenge: -2π/3×6
+  γ_unwrapped = -12.5663706144, γ_wrapped = 0 (exp(i·ΣΔ_wrapped)→ 0)
+  Flux = γ_wrapped/(2π) = 0 (≈ ganzzahlig: ja, rund=0)
+  stabil vs Baseline: ja
+
+
+Nulltest: χ5 (χ5_n=1) – jede Methode
+------------------------------------------------------------------------
+A) arg + wrap
+  Δ_n: 0, 0, 0, 0, 0, 0
+  lokale Spruenge: 0×6
+  γ_wrapped: 0, Flux=0
+
+B) unwrapped Phase-Entwicklung
+  Δ_n: 0, 0, 0, 0, 0, 0
+  lokale Spruenge: 0×6
+  γ_wrapped: 0, Flux=0
+
+C) explizite Branch {0,2π/3,4π/3} + wrap
+  Δ_n: 0, 0, 0, 0, 0, 0
+  lokale Spruenge: 0×6
+  γ_wrapped: 0, Flux=0
+
+D) Log-Phase (Im log)
+  Δ_n: 0, 0, 0, 0, 0, 0
+  lokale Spruenge: 0×6
+  γ_wrapped: 0, Flux=0
+
+F) atan2(Im,Re) + wrap
+  Δ_n: 0, 0, 0, 0, 0, 0
+  lokale Spruenge: 0×6
+  γ_wrapped: 0, Flux=0
+
+F’) atan2(Im,Re)+π + wrap
+  Δ_n: 0, 0, 0, 0, 0, 0
+  lokale Spruenge: 0×6
+  γ_wrapped: 0, Flux=0
+
+
+Tabelle (Zusammenfassung)
+| Methode | lokale Spruenge | γ_wrapped | Flux | stabil? |
+|---|---|---:|---:|---|
+| A) arg + wrap (k=0) | +2π/3 | -1.7763568394e-15 | -2.82715971686e-16 | ja |
+| B) unwrapped Phase-Entwicklung (k=0) | +2π/3 | 0 | 0 | ja |
+| C) explizite Branch {0,2π/3,4π/3} + wrap (k=0) | +2π/3 | -1.7763568394e-15 | -2.82715971686e-16 | ja |
+| D) Log-Phase (Im log) (k=0) | +2π/3 | 0 | 0 | ja |
+| F) atan2(Im,Re) + wrap (k=0) | +2π/3 | -1.7763568394e-15 | -2.82715971686e-16 | ja |
+| F’) atan2(Im,Re)+π + wrap (k=0) | +2π/3 | 0 | 0 | ja |
+| A) arg + wrap (k=2) | -2π/3 | 0 | 0 | ja |
+| B) unwrapped Phase-Entwicklung (k=2) | -2π/3 | 0 | 0 | ja |
+| C) explizite Branch {0,2π/3,4π/3} + wrap (k=2) | -2π/3 | 0 | 0 | ja |
+| D) Log-Phase (Im log) (k=2) | -2π/3 | 0 | 0 | ja |
+| F) atan2(Im,Re) + wrap (k=2) | -2π/3 | 0 | 0 | ja |
+| F’) atan2(Im,Re)+π + wrap (k=2) | -2π/3 | 0 | 0 | ja |
+
+Fazit (Kurz)
+Für alle getesteten Phase-Definitionen bleiben die lokalen Spruenge vom Typ ±2π/3 und die Gesamt-Holonomie ist (mod 2π) trivial, d.h. Flux ist ganzzahlig.

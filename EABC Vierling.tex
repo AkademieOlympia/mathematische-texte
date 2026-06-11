@@ -1,0 +1,238 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+\title{Ein komplexes EABC-Primvierlingsfeld und seine Vierer-Phasenrotation}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\newtheorem{definition}{Definition}
+\newtheorem{hypothesis}{Hypothese}
+\newtheorem{observation}{Beobachtung}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Wir untersuchen Primvierlinge der Form
+		\[
+		(p,p+2,p+6,p+8)
+		\]
+		im Rahmen einer EABC-Klassifikation modulo \(12\). Dabei werden die beiden beobachteten Umlaufphasen \(ABCE\) und \(CEAB\) zu einem komplexen Primvierlingsfeld kombiniert. Numerische Tests bis \(10^7\) zeigen, dass die Amplitude dieses Feldes skalenabhängig mit einem aus Riemann-Nullstellen konstruierten Zeta-Detektor korreliert, während die Phase selbst zeta-schwach bleibt. Die Phasendifferenz besitzt jedoch ein starkes internes Spektrum mit dominanter Periode \(4\). Dies legt nahe, dass die Zeta-Funktion primär die Dichte-Amplitude sieht, während die EABC-Struktur eine eigenständige Phasenrotation trägt.
+	\end{abstract}
+	
+	\section{EABC-Klassifikation}
+	
+	Wir betrachten die vier primen Restklassen modulo \(12\):
+	\[
+	E\equiv 1,\qquad
+	A\equiv 5,\qquad
+	B\equiv 7,\qquad
+	C\equiv 11
+	\pmod{12}.
+	\]
+	
+	Diese Klassen bilden mit der Multiplikation modulo \(12\) eine Kleinsche Viererstruktur:
+	\[
+	A^2=B^2=C^2=E,
+	\qquad
+	AB=C,\quad AC=B,\quad BC=A.
+	\]
+	
+	\section{Primvierlinge und Umlaufphasen}
+	
+	Ein Primvierling besitzt die Form
+	\[
+	(p,p+2,p+6,p+8).
+	\]
+	
+	Für geeignete Mittelpunkte
+	\[
+	m=p+4
+	\]
+	erscheinen zwei Phasenlagen:
+	\[
+	ABCE
+	\quad\text{und}\quad
+	CEAB.
+	\]
+	
+	Diese beiden Folgen sind keine entgegengesetzten Chiralitäten, sondern zyklische Phasenlagen desselben orientierten Umlaufs.
+	
+	\begin{definition}[Band- und Phasenkanal]
+		Seien \(Y_{ABCE}(m)\) und \(Y_{CEAB}(m)\) die Indikatorfelder der beiden Vierlingsphasen. Wir definieren
+		\[
+		Y_{\mathrm{band}}(m)
+		=
+		Y_{ABCE}(m)+Y_{CEAB}(m)
+		\]
+		und
+		\[
+		Y_{\mathrm{phase}}(m)
+		=
+		Y_{ABCE}(m)-Y_{CEAB}(m).
+		\]
+	\end{definition}
+	
+	\section{Komplexes Primvierlingsfeld}
+	
+	\begin{definition}[Komplexes EABC-Feld]
+		Das komplexe Primvierlingsfeld sei
+		\[
+		\Psi(m)
+		=
+		Y_{\mathrm{band}}(m)
+		+
+		iY_{\mathrm{phase}}(m).
+		\]
+		Dann ist
+		\[
+		|\Psi(m)|
+		\]
+		der Dichte- beziehungsweise Amplitudenkanal, während
+		\[
+		\arg \Psi(m)
+		\]
+		den EABC-Phasenkanal beschreibt.
+	\end{definition}
+	
+	\section{Holonomieoperator}
+	
+	Wir definieren den Vorwärtsumlauf
+	\[
+	P_+:\quad A\to B\to C\to E\to A
+	\]
+	und den Rückwärtsumlauf
+	\[
+	P_-:\quad A\to E\to C\to B\to A.
+	\]
+	
+	Daraus entstehen der Bandoperator
+	\[
+	H_{\mathrm{band}}=P_+ + P_-
+	\]
+	und der chirale beziehungsweise gerichtete Operator
+	\[
+	H_{\mathrm{chiral}}=P_+ - P_-.
+	\]
+	
+	Numerisch ergibt sich
+	\[
+	\operatorname{spec}(H_{\mathrm{chiral}})
+	=
+	\{0,0,2i,-2i\}.
+	\]
+	
+	Damit ist \(H_{\mathrm{chiral}}\) ein echter Rotationsoperator des EABC-Phasenraums.
+	
+	\section{Numerische Beobachtungen}
+	
+	Die Auswertung bis \(10^7\) ergab:
+	
+	\begin{center}
+		\begin{tabular}{l r}
+			\toprule
+			Struktur & Anzahl bis \(10^7\) \\
+			\midrule
+			Zwilling links & 19797 \\
+			Zwilling Mitte & 19542 \\
+			Zwilling rechts & 19674 \\
+			Drilling links & 4319 \\
+			Drilling rechts & 4305 \\
+			Primvierling & 898 \\
+			Fünfling I & 160 \\
+			Fünfling II & 161 \\
+			Sechsling & 18 \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	
+	Der Bandkanal zeigt gegen den Zeta-Detektor eine robuste skalenabhängige Korrelation. Für kleine Bin-Größen wurden signifikante Werte gefunden, etwa:
+	\[
+	\rho_{B=100}\approx -0.241,
+	\qquad
+	\rho_{B=1000}\approx -0.193.
+	\]
+	
+	Shuffle-Tests bestätigen diesen Befund für kleine bis mittlere Bins.
+	
+	Der Phasenkanal dagegen bleibt gegen Zeta weitgehend schwach:
+	\[
+	\operatorname{corr}(Y_{\mathrm{phase}},Z)\approx 0.00047.
+	\]
+	
+	\section{Viererperiode der Phase}
+	
+	Die Phasenänderung
+	\[
+	d\phi(m)=\phi(m+1)-\phi(m)
+	\]
+	mit
+	\[
+	\phi(m)=\arg\Psi(m)
+	\]
+	zeigt ein starkes internes Spektrum.
+	
+	Die Autokorrelation ergab unter anderem:
+	\[
+	\mathrm{ACF}(2)\approx -0.691,
+	\qquad
+	\mathrm{ACF}(4)\approx +0.691,
+	\qquad
+	\mathrm{ACF}(6)\approx -0.694,
+	\qquad
+	\mathrm{ACF}(8)\approx +0.691.
+	\]
+	
+	Das Leistungsspektrum besitzt eine dominante Frequenz
+	\[
+	f=0.25,
+	\]
+	also eine Periode
+	\[
+	T=4.
+	\]
+	
+	\begin{observation}[EABC-Phasenrotation]
+		Der Phasenkanal des komplexen Primvierlingsfeldes besitzt eine dominante Viererperiode. Diese Periode entspricht exakt der EABC-Struktur.
+	\end{observation}
+	
+	\section{Interpretation}
+	
+	Die numerischen Ergebnisse legen folgende Trennung nahe:
+	
+	\[
+	\boxed{
+		\zeta \text{ koppelt an } |\Psi|
+	}
+	\]
+	
+	und
+	
+	\[
+	\boxed{
+		H_{\mathrm{chiral}} \text{ erzeugt } \arg \Psi.
+	}
+	\]
+	
+	Die Riemann-Zeta-Funktion wirkt damit als Detektor der skalaren Primdichte, während die EABC-Struktur einen eigenständigen Phasenraum beschreibt.
+	
+	\begin{hypothesis}[Komplexe Primvierlingsfeld-Hypothese]
+		Die Primvierlingsstruktur besitzt ein komplexes Feld
+		\[
+		\Psi=Y_{\mathrm{band}}+iY_{\mathrm{phase}},
+		\]
+		dessen Amplitudenanteil zeta-sensitiv ist, während sein Phasenanteil eine interne EABC-Holonomie mit dominanter Viererrotation trägt.
+	\end{hypothesis}
+	
+	\section{Ausblick}
+	
+	Der nächste Schritt besteht darin, den Phasenkanal nicht gegen die Zeta-Nullstellen, sondern gegen das Eigenwertspektrum eines eigenständigen EABC-Holonomieoperators zu testen. Insbesondere sollten Autokorrelationen, Fourier-Spektren und Übergangsmatrizen des Phasenfeldes bis \(10^8\) und \(10^9\) untersucht werden.
+	
+\end{document}

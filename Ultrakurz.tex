@@ -1,0 +1,217 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\title{Eine ultrakurze lokale Strukturtheorie des EABC-Gitters modulo \(12\)}
+\author{Kollaborative Ausarbeitung}
+\date{\today}
+
+\newtheorem{satz}{Satz}
+\newtheorem{lemma}[satz]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\ind}{\mathbf{1}}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir formulieren eine ultrakurze lokale Strukturtheorie des modulo-\(12\)-Gitters
+		\[
+		Q_n=(12n-11,\,12n-7,\,12n-5,\,12n-1).
+		\]
+		Dabei werden Primzahlen \(>3\), Primzahlzwillinge, Primzahldrillinge,
+		blockübergreifende Primzahlvierlinge und dichte Primzahlfünflinge in einem einheitlichen
+		Schema beschrieben.
+	\end{abstract}
+	
+	\begin{definition}[EABC-Gitter]
+		Für \(n\in\N\) setzen wir
+		\[
+		E_n:=12n-11,\qquad
+		A_n:=12n-7,\qquad
+		B_n:=12n-5,\qquad
+		C_n:=12n-1,
+		\]
+		und nennen
+		\[
+		Q_n:=(E_n,A_n,B_n,C_n)
+		\]
+		den \(n\)-ten EABC-Block. Ferner definieren wir die beiden Zwillingskanäle
+		\[
+		T_n^{\mathrm{int}}:=(A_n,B_n)=(12n-7,\,12n-5),
+		\]
+		\[
+		T_n^{\mathrm{ext}}:=(C_n,E_{n+1})=(12n-1,\,12n+1),
+		\]
+		sowie die Zwillingssignatur
+		\[
+		\tau(Q_n):=
+		\bigl(
+		\ind_{T_n^{\mathrm{int}}\text{ ist Primzahlzwilling}},
+		\ind_{T_n^{\mathrm{ext}}\text{ ist Primzahlzwilling}}
+		\bigr)\in\{0,1\}^2.
+		\]
+	\end{definition}
+	
+	\begin{lemma}[Modulo-\(12\)-Zerlegung und Zwillingskanäle]
+		\leavevmode
+		\begin{enumerate}[label=\textup{(\roman*)}]
+			\item Jede Primzahl \(p>3\) liegt eindeutig in genau einer der vier Familien
+			\[
+			E,\ A,\ B,\ C,
+			\]
+			das heißt in genau einer der vier Restklassen
+			\[
+			1,5,7,11 \pmod{12}.
+			\]
+			\item Jeder Primzahlzwilling \((p,p+2)\) mit \(p>3\) liegt eindeutig in genau einem der beiden Muster
+			\[
+			(12n-7,12n-5)
+			\qquad\text{oder}\qquad
+			(12n-1,12n+1).
+			\]
+		\end{enumerate}
+	\end{lemma}
+	
+	\begin{proof}
+		Zu \textup{(i)}: Für \(p>3\) ist \(p\) weder durch \(2\) noch durch \(3\) teilbar. Daher gilt
+		\[
+		p\equiv 1,5,7,\text{ oder }11 \pmod{12}.
+		\]
+		Diese vier Restklassen werden durch \(E_n,A_n,B_n,C_n\) disjunkt und vollständig parametrisiert.
+		
+		Zu \textup{(ii)}: Für einen Primzahlzwilling \((p,p+2)\) mit \(p>3\) sind modulo \(12\) nur die Muster
+		\[
+		(5,7)\quad\text{oder}\quad(11,1)
+		\]
+		möglich. Diese entsprechen genau den Paaren
+		\[
+		(A_n,B_n)\quad\text{bzw.}\quad(C_n,E_{n+1}).
+		\]
+	\end{proof}
+	
+	\begin{lemma}[Drillinge, Vierlinge und Fünflinge]
+		\leavevmode
+		\begin{enumerate}[label=\textup{(\roman*)}]
+			\item Jeder dichte Primzahldrilling enthält die Primzahl \(3\); daher sind die einzigen dichten
+			Primzahldrillinge
+			\[
+			(3,5,7)
+			\qquad\text{und}\qquad
+			(3,7,11).
+			\]
+			\item Es gilt
+			\[
+			\tau(Q_n)=(1,1)
+			\]
+			genau dann, wenn
+			\[
+			(12n-7,\,12n-5,\,12n-1,\,12n+1)
+			\]
+			ein blockübergreifender Primzahlvierling ist.
+			\item Jeder dichte Primzahlfünfling mit \(p>3\) besitzt genau eine der beiden Formen
+			\[
+			(A_n,B_n,C_n,E_{n+1},A_{n+1})
+			\]
+			oder
+			\[
+			(C_n,E_{n+1},A_{n+1},B_{n+1},C_{n+1}),
+			\]
+			und ist damit eine orientierte Erweiterung einer Doppelstelle.
+		\end{enumerate}
+	\end{lemma}
+	
+	\begin{proof}
+		Zu \textup{(i)}: In einem dichten Drillingsmuster
+		\[
+		(p,p+2,p+6)\quad\text{oder}\quad(p,p+4,p+6)
+		\]
+		ist stets eine Zahl durch \(3\) teilbar. Ist sie prim, so muss sie gleich \(3\) sein. Das liefert
+		genau die beiden Fälle \((3,5,7)\) und \((3,7,11)\).
+		
+		Zu \textup{(ii)}: Die Bedingung \(\tau(Q_n)=(1,1)\) bedeutet, dass sowohl
+		\[
+		(12n-7,12n-5)
+		\]
+		als auch
+		\[
+		(12n-1,12n+1)
+		\]
+		Primzahlzwillinge sind. Das ist äquivalent zur Primheit aller vier Zahlen
+		\[
+		12n-7,\ 12n-5,\ 12n-1,\ 12n+1,
+		\]
+		also zu einem Vierling der Form \(p,p+2,p+6,p+8\).
+		
+		Zu \textup{(iii)}: Für einen dichten Fünfling
+		\[
+		(p,p+2,p+6,p+8,p+12)
+		\]
+		sind als Startreste modulo \(12\) nur \(5\) oder \(11\) möglich. Daraus ergeben sich unmittelbar die
+		beiden Formen
+		\[
+		(A_n,B_n,C_n,E_{n+1},A_{n+1})
+		\quad\text{und}\quad
+		(C_n,E_{n+1},A_{n+1},B_{n+1},C_{n+1}).
+		\]
+		In beiden Fällen enthalten die ersten vier Einträge eine Doppelstelle.
+	\end{proof}
+	
+	\begin{satz}[Lokale Vollständigkeit des EABC-Gitters]
+		Das EABC-Gitter
+		\[
+		Q_n=(12n-11,12n-7,12n-5,12n-1)
+		\]
+		liefert eine vollständige lokale Beschreibung der kleinen Primzahlkonstellationen:
+		
+		\begin{enumerate}[label=\textup{(\roman*)}]
+			\item Primzahlen \(>3\) zerfallen eindeutig in die vier Familien \(E,A,B,C\).
+			\item Primzahlzwillinge \(>3\) laufen genau über die beiden Kanäle
+			\[
+			(A_n,B_n)\quad\text{und}\quad(C_n,E_{n+1}).
+			\]
+			\item Dichte Primzahldrillinge sind genau die beiden singulären \(3\)-verankerten Fälle
+			\[
+			(3,5,7),\qquad (3,7,11).
+			\]
+			\item Doppelstellen \(\tau(Q_n)=(1,1)\) sind genau blockübergreifende Primzahlvierlinge
+			\[
+			(12n-7,12n-5,12n-1,12n+1).
+			\]
+			\item Dichte Primzahlfünflinge sind genau die orientierten Erweiterungen solcher Doppelstellen,
+			also genau die beiden Muster
+			\[
+			(A_n,B_n,C_n,E_{n+1},A_{n+1})
+			\quad\text{und}\quad
+			(C_n,E_{n+1},A_{n+1},B_{n+1},C_{n+1}).
+			\]
+		\end{enumerate}
+		
+		Damit ist die gesamte lokale Zwillings-, Drillings-, Vierlings- und Fünflingsstruktur
+		des Primzahlgitters modulo \(12\) vollständig beschrieben.
+	\end{satz}
+	
+	\begin{proof}
+		Die fünf Aussagen folgen unmittelbar aus den beiden Lemmata.
+	\end{proof}
+	
+	\begin{bemerkung}
+		In dieser Sicht ist der Vierling die gleichzeitige Aktivierung beider Zwillingskanäle,
+		während der Fünfling die erste gerichtete Erweiterung einer solchen Doppelstelle darstellt.
+	\end{bemerkung}
+	
+\end{document}

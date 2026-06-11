@@ -1,0 +1,438 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	citecolor=blue,
+	urlcolor=blue,
+	pdftitle={Ein diskreter Vierlingsoperator auf dem neutralen Sektor der Klein-Vierergruppe},
+	pdfauthor={Thomas Hoffbauer}
+}
+
+\title{Ein diskreter Vierlingsoperator auf dem neutralen Sektor der Klein-Vierergruppe}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\newtheorem{definition}{Definition}[section]
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{corollary}[definition]{Korollar}
+\theoremstyle{remark}
+\newtheorem{remark}[definition]{Bemerkung}
+
+\newcommand{\V}{V_4}
+\newcommand{\X}{\mathcal X}
+\newcommand{\XE}{\mathcal X_E}
+\newcommand{\HE}{\mathcal H_E}
+\newcommand{\wt}{\mathrm{wt}}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Es wird ein endlicher Operatoransatz auf dem neutralen Vierlingssektor der Klein-Vierergruppe formuliert. Der Zustandsraum besteht aus allen Vierlingen
+		\[
+		(\sigma_1,\sigma_2,\sigma_3,\sigma_4)\in \V^4
+		\]
+		mit neutralem Gesamtprodukt
+		\[
+		\sigma_1\sigma_2\sigma_3\sigma_4=E.
+		\]
+		Auf dem zugehörigen komplexen Vektorraum wird ein selbstadjungierter Operator aus zyklischem Shift, klassenerhaltenden Paarflips und einem diagonalen Potential definiert. Der Zustandsraum besitzt eine kanonische Zerlegung in Shift-Orbits. Numerisch zeigt der Grundzustand für eine feste Parameterwahl einen Wechsel zwischen zwei Typklassen neutraler Vierlinge, nämlich ABCE- und AABB-Konfigurationen. Der Umschlag wird durch einen Potentialparameter \(\alpha\) gesteuert und liegt numerisch bei ungefähr \(\alpha_c\approx -0.72\).
+	\end{abstract}
+	
+	\section{Grundkonstruktion}
+	
+	\begin{definition}
+		Sei
+		\[
+		\V=\{E,A,B,C\}
+		\]
+		die Klein-Vierergruppe mit Multiplikation
+		\[
+		A^2=B^2=C^2=E,\qquad AB=C,\qquad AC=B,\qquad BC=A.
+		\]
+	\end{definition}
+	
+	\begin{definition}
+		Der volle Vierlingsraum ist
+		\[
+		\X=\V^4.
+		\]
+		Für
+		\[
+		X=(\sigma_1,\sigma_2,\sigma_3,\sigma_4)\in \X
+		\]
+		definieren wir die Gesamtsignatur
+		\[
+		Q(X):=\sigma_1\sigma_2\sigma_3\sigma_4\in \V.
+		\]
+	\end{definition}
+	
+	\begin{definition}
+		Der neutrale Vierlingssektor ist
+		\[
+		\XE:=\{X\in \X : Q(X)=E\}.
+		\]
+		Der zugehörige komplexe Zustandsraum ist
+		\[
+		\HE:=\mathbb C[\XE].
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Es gilt
+		\[
+		|\XE|=64.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Wählt man \(\sigma_1,\sigma_2,\sigma_3\in \V\) beliebig, so ist
+		\[
+		\sigma_4=\sigma_1\sigma_2\sigma_3
+		\]
+		eindeutig bestimmt und erfüllt
+		\[
+		\sigma_1\sigma_2\sigma_3\sigma_4=E,
+		\]
+		da jedes Element von \(\V\) sein eigenes Inverses ist. Also ist \(|\XE|=4^3=64\).
+	\end{proof}
+	
+	\begin{lemma}
+		Jede Permutation der vier Koordinaten erhält \(Q\).
+	\end{lemma}
+	
+	\begin{proof}
+		Die Gruppe \(\V\) ist abelsch.
+	\end{proof}
+	
+	\section{Operatoren auf dem neutralen Sektor}
+	
+	\begin{definition}
+		Der Shiftoperator \(T\) auf \(\HE\) ist auf Basiszuständen durch
+		\[
+		T|\sigma_1,\sigma_2,\sigma_3,\sigma_4\rangle
+		=
+		|\sigma_2,\sigma_3,\sigma_4,\sigma_1\rangle
+		\]
+		definiert.
+	\end{definition}
+	
+	\begin{lemma}
+		Der Operator \(T\) erhält \(\XE\) und erfüllt \(T^4=I\).
+	\end{lemma}
+	
+	\begin{proof}
+		Die Erhaltung von \(\XE\) folgt aus der Permutationsinvarianz von \(Q\). Die Gleichung \(T^4=I\) ist unmittelbar.
+	\end{proof}
+	
+	\begin{definition}
+		Für \(g\in\{A,B,C\}\) und \(1\le i<j\le 4\) sei
+		\[
+		F_{ij}^{(g)}
+		|\sigma_1,\dots,\sigma_i,\dots,\sigma_j,\dots,\sigma_4\rangle
+		=
+		|\sigma_1,\dots,g\sigma_i,\dots,g\sigma_j,\dots,\sigma_4\rangle.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Jeder Operator \(F_{ij}^{(g)}\) erhält \(\XE\).
+	\end{lemma}
+	
+	\begin{proof}
+		Da \(g^2=E\), gilt
+		\[
+		(g\sigma_i)(g\sigma_j)=g^2\sigma_i\sigma_j=\sigma_i\sigma_j.
+		\]
+		Somit bleibt das Produkt aller vier Koordinaten unverändert.
+	\end{proof}
+	
+	\begin{definition}
+		Sei \(v:\XE\to\mathbb R\) eine Funktion. Der zugehörige diagonale Operator \(V\) auf \(\HE\) sei gegeben durch
+		\[
+		V|X\rangle=v(X)|X\rangle.
+		\]
+	\end{definition}
+	
+	\begin{definition}
+		Für Parameter \(t,\lambda\ge 0\) definieren wir
+		\[
+		H
+		=
+		-t(T+T^{-1})
+		-\lambda\sum_{1\le i<j\le 4}\sum_{g\in\{A,B,C\}}F_{ij}^{(g)}
+		+V.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Der Operator \(H\) ist wohldefiniert auf \(\HE\).
+	\end{lemma}
+	
+	\begin{proof}
+		Die Invarianz von \(\XE\) unter \(T\) und \(F_{ij}^{(g)}\) wurde bereits gezeigt; \(V\) ist diagonal.
+	\end{proof}
+	
+	\section{Orbitstruktur}
+	
+	\begin{definition}
+		Für \(X\in \XE\) sei
+		\[
+		\mathcal O(X):=\{T^kX: k=0,1,2,3\}
+		\]
+		der Shift-Orbit von \(X\).
+	\end{definition}
+	
+	\begin{lemma}
+		Jeder Shift-Orbit hat Länge \(1\), \(2\) oder \(4\).
+	\end{lemma}
+	
+	\begin{proof}
+		Aus \(T^4=I\) folgt, dass die Orbitlänge ein Teiler von \(4\) ist.
+	\end{proof}
+	
+	\begin{lemma}
+		Für
+		\[
+		X_0=(A,B,C,E)
+		\]
+		hat der Shift-Orbit Länge \(4\):
+		\[
+		(A,B,C,E),\ (B,C,E,A),\ (C,E,A,B),\ (E,A,B,C).
+		\]
+	\end{lemma}
+	
+	\begin{lemma}
+		Die Eigenwerte der Restriktion von \(T\) auf einen Orbit der Länge \(4\) sind
+		\[
+		1,\ i,\ -1,\ -i.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Auf einem Viererorbit wirkt \(T\) als zyklische Permutationsmatrix der Länge \(4\). Deren Eigenwerte sind die vierten Einheitswurzeln.
+	\end{proof}
+	
+	\begin{corollary}
+		Für den Transportterm
+		\[
+		H_{\mathrm{trans}}:=-t(T+T^{-1})
+		\]
+		sind auf jedem Orbit der Länge \(4\) die Eigenwerte
+		\[
+		-2t,\ 0,\ 0,\ 2t.
+		\]
+	\end{corollary}
+	
+	\begin{proof}
+		Ist \(\omega\in\{1,i,-1,-i\}\) ein Eigenwert von \(T\), so ist
+		\[
+		-t(\omega+\omega^{-1})
+		\]
+		der zugehörige Eigenwert von \(H_{\mathrm{trans}}\). Einsetzen liefert die Behauptung.
+	\end{proof}
+	
+	\section{Typklassen neutraler Vierlinge}
+	
+	\begin{definition}
+		Ein Zustand \(X\in \XE\) heißt vom Typ \emph{EEEE}, falls
+		\[
+		X=(E,E,E,E).
+		\]
+	\end{definition}
+	
+	\begin{definition}
+		Ein Zustand \(X\in \XE\) heißt vom Typ \emph{AABB}, falls seine Multimenge aus vier Einträgen zwei verschiedene Elemente mit Vielfachheit \(2\) enthält.
+	\end{definition}
+	
+	\begin{definition}
+		Ein Zustand \(X\in \XE\) heißt vom Typ \emph{ABCE}, falls jedes der vier Elemente \(E,A,B,C\) genau einmal vorkommt.
+	\end{definition}
+	
+	\begin{remark}
+		Die Typen AABB und ABCE sind disjunkt. Beide liegen vollständig im neutralen Sektor \(\XE\).
+	\end{remark}
+	
+	\section{Numerische Parametrisierung}
+	
+	Für die numerischen Rechnungen wird das Potential in der Form
+	\[
+	v(X)=\mu\,N_{\mathrm{nt}}(X)+\alpha\,I_{ABCE}(X)
+	\]
+	gewählt, wobei
+	\begin{itemize}
+		\item \(N_{\mathrm{nt}}(X)\) die Anzahl der nichttrivialen Einträge in \(X\) bezeichnet,
+		\item \(I_{ABCE}(X)\in\{0,1\}\) die Indikatorfunktion des Typs ABCE ist.
+	\end{itemize}
+	
+	Im Folgenden werden
+	\[
+	t=1,\qquad \lambda=0.15,\qquad \mu=0.4
+	\]
+	fixiert, während \(\alpha\) variiert wird.
+	
+	\section{Numerische Resultate}
+	
+	\begin{definition}
+		Für einen normierten Eigenzustand \(\psi=\sum_{X\in \XE} c_X |X\rangle\) und eine Typklasse \(\mathcal T\subseteq \XE\) definieren wir ihr Gewicht durch
+		\[
+		\wt_{\mathcal T}(\psi):=\sum_{X\in\mathcal T}|c_X|^2.
+		\]
+	\end{definition}
+	
+	\subsection{Grundzustand bei \texorpdfstring{$\alpha=-0.3$}{alpha=-0.3}}
+	
+	Für \(\alpha=-0.3\) erhält man numerisch
+	\[
+	E_0\approx -3.68503172,\qquad E_1\approx -2.22057451.
+	\]
+	Die Gewichte des Grundzustands \(\psi_0\) in den drei Typklassen sind
+	\[
+	\wt_{AABB}(\psi_0)\approx 0.37584705,\qquad
+	\wt_{ABCE}(\psi_0)\approx 0.17788503,\qquad
+	\wt_{EEEE}(\psi_0)\approx 0.05361052.
+	\]
+	Für den ersten angeregten Zustand \(\psi_1\) gilt
+	\[
+	\wt_{EEEE}(\psi_1)\approx 0.67243007.
+	\]
+	
+	\begin{proposition}
+		Für \(\alpha=-0.3\) ist der Grundzustand \(\psi_0\) nicht vom Typ EEEE dominiert. Vielmehr gilt
+		\[
+		\wt_{AABB}(\psi_0)>\wt_{ABCE}(\psi_0)>\wt_{EEEE}(\psi_0).
+		\]
+	\end{proposition}
+	
+	\begin{proof}
+		Dies ist unmittelbare Konsequenz der numerisch bestimmten Gewichte.
+	\end{proof}
+	
+	\subsection{Scan in \texorpdfstring{$\alpha$}{alpha}}
+	
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{rcccc}
+			\toprule
+			$\alpha$ & $E_0$ & AABB & ABCE & EEEE \\
+			\midrule
+			$-1.00$ & $-4.00471086$ & $0.427823$ & $0.526006$ & $0.029035$ \\
+			$-0.75$ & $-3.87939297$ & $0.467105$ & $0.476415$ & $0.036655$ \\
+			$-0.50$ & $-3.76650374$ & $0.505010$ & $0.426820$ & $0.045587$ \\
+			$-0.25$ & $-3.66586282$ & $0.540303$ & $0.378661$ & $0.055726$ \\
+			$0.00$  & $-3.57694646$ & $0.572016$ & $0.333212$ & $0.066867$ \\
+			$0.25$  & $-3.49895031$ & $0.599557$ & $0.291426$ & $0.078731$ \\
+			$0.50$  & $-3.43088069$ & $0.622728$ & $0.253861$ & $0.091008$ \\
+			\bottomrule
+		\end{tabular}
+		\caption{Gewichte des Grundzustands in den Typklassen AABB, ABCE und EEEE.}
+	\end{table}
+	
+	Ein Feinscan im relevanten Bereich ergibt:
+	
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{rccccc}
+			\toprule
+			$\alpha$ & $E_0$ & AABB & ABCE & EEEE & ABCE$-$AABB \\
+			\midrule
+			$-0.80$ & $-3.90346289$ & $0.459317$ & $0.486381$ & $0.035024$ & $+0.027064$ \\
+			$-0.70$ & $-3.85582136$ & $0.474838$ & $0.466450$ & $0.038338$ & $-0.008389$ \\
+			$-0.60$ & $-3.81017142$ & $0.490097$ & $0.446565$ & $0.041861$ & $-0.043532$ \\
+			$-0.50$ & $-3.76650374$ & $0.505010$ & $0.426820$ & $0.045587$ & $-0.078190$ \\
+			$-0.40$ & $-3.72479970$ & $0.519502$ & $0.407307$ & $0.049507$ & $-0.112195$ \\
+			$-0.30$ & $-3.68503172$ & $0.533505$ & $0.388113$ & $0.053611$ & $-0.145392$ \\
+			$-0.20$ & $-3.64716380$ & $0.546957$ & $0.369319$ & $0.057883$ & $-0.177638$ \\
+			$-0.10$ & $-3.61115223$ & $0.559808$ & $0.350997$ & $0.062307$ & $-0.208811$ \\
+			$0.00$  & $-3.57694646$ & $0.572016$ & $0.333212$ & $0.066867$ & $-0.238804$ \\
+			$0.10$  & $-3.54449005$ & $0.583553$ & $0.316018$ & $0.071543$ & $-0.267535$ \\
+			\bottomrule
+		\end{tabular}
+		\caption{Feinscan des Umschaltbereichs.}
+	\end{table}
+	
+	\begin{proposition}
+		Es existiert ein numerischer Umschaltbereich, in dem die Dominanz des Grundzustands von der Typklasse ABCE auf die Typklasse AABB übergeht. Für die gegebene Parameterwahl liegt der Umschlag bei ungefähr
+		\[
+		\alpha_c\approx -0.72.
+		\]
+	\end{proposition}
+	
+	\begin{proof}
+		Aus der Tabelle folgt
+		\[
+		\wt_{ABCE}(\psi_0)-\wt_{AABB}(\psi_0)>0
+		\quad\text{für }\alpha=-0.80,
+		\]
+		aber
+		\[
+		\wt_{ABCE}(\psi_0)-\wt_{AABB}(\psi_0)<0
+		\quad\text{für }\alpha=-0.70.
+		\]
+		Damit liegt der Vorzeichenwechsel zwischen diesen beiden Werten. Lineare Interpolation liefert \(\alpha_c\approx -0.724\).
+	\end{proof}
+	
+	\begin{corollary}
+		Im untersuchten Parameterbereich bleibt die Typklasse EEEE im Grundzustand untergeordnet.
+	\end{corollary}
+	
+	\begin{proof}
+		Dies folgt unmittelbar aus den in den Tabellen angegebenen Gewichten.
+	\end{proof}
+	
+	\section{Schlussbemerkung}
+	
+	Der diskrete Vierlingsoperator auf \(\HE\) besitzt bereits in endlicher Dimension eine nichttriviale Grundzustandsstruktur. Die numerische Analyse zeigt insbesondere:
+	\begin{enumerate}[label=(\roman*)]
+		\item der Grundzustand ist nicht trivial,
+		\item die Typklassen AABB und ABCE konkurrieren im Grundzustand,
+		\item der Steuerparameter \(\alpha\) erzeugt einen numerisch lokalisierbaren Umschlag,
+		\item die Typklasse EEEE bleibt im untersuchten Bereich sekundär.
+	\end{enumerate}
+	
+	Damit liegt ein explizites endliches Modell vor, in dem verschiedene Formen neutraler Vierlingsordnung spektral unterschieden werden.
+	
+	\section*{Ausblick}
+	
+	Naheliegende Folgeschritte sind:
+	\begin{enumerate}[label=(\arabic*)]
+		\item ein zweidimensionaler Scan in \((\alpha,\lambda)\),
+		\item die vollständige Zerlegung von \(\HE\) in Shift-Orbits,
+		\item eine systematische Untersuchung der Entartungen,
+		\item die Einführung weiterer diagonaler oder orbitabhängiger Potentiale.
+	\end{enumerate}
+	
+	\begin{thebibliography}{9}
+		
+		\bibitem{ConwaySmith}
+		J. H. Conway, D. A. Smith,
+		\textit{On Quaternions and Octonions},
+		A K Peters, 2003.
+		
+		\bibitem{Hall}
+		K. v. Klitzing, G. Dorda, M. Pepper,
+		\textit{New Method for High-Accuracy Determination of the Fine-Structure Constant Based on Quantized Hall Resistance},
+		Phys. Rev. Lett. \textbf{45} (1980), 494--497.
+		
+		\bibitem{AB}
+		Y. Aharonov, D. Bohm,
+		\textit{Significance of Electromagnetic Potentials in the Quantum Theory},
+		Phys. Rev. \textbf{115} (1959), 485--491.
+		
+	\end{thebibliography}
+	
+\end{document}

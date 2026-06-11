@@ -1,0 +1,156 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+
+\title{Eine strukturelle Perspektive auf große Abweichungen in der ABC-Vermutung}
+\author{Thomas Hoffbauer}
+\date{}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Bemerkung}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir untersuchen die ABC-Vermutung über eine Analyse der Größe
+		\[
+		\Delta(a,b,c) := \log c - \log \mathrm{rad}(abc).
+		\]
+		Numerische Experimente legen nahe, dass große Werte von $\Delta$
+		nur bei stark eingeschränkter Primfaktorstruktur auftreten.
+		Wir formulieren diese Beobachtung als strukturelles Lemma und diskutieren,
+		wie Resultate über S-Unit-Gleichungen und lineare Formen in Logarithmen
+		(Baker-Theorie) diese Hypothese stützen können.
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Die ABC-Vermutung besagt, dass für teilerfremde $a,b \in \mathbb{N}$ mit $a+b=c$
+	und jedes $\varepsilon>0$ gilt:
+	\[
+	c \le K_\varepsilon \cdot \mathrm{rad}(abc)^{1+\varepsilon}.
+	\]
+	
+	Eine äquivalente Formulierung betrachtet die Größe
+	\[
+	\Delta(a,b,c) := \log c - \log \mathrm{rad}(abc).
+	\]
+	
+	Die Vermutung impliziert, dass $\Delta$ nicht wesentlich positiv wachsen kann.
+	
+	\section{Empirische Beobachtung}
+	
+	Numerische Experimente (bis in den Bereich mehrerer Millionen) zeigen:
+	\begin{itemize}
+		\item $\Delta$ ist typischerweise negativ.
+		\item Große Werte von $\Delta$ sind selten.
+		\item Große $\Delta$ treten nur bei kleiner Anzahl verschiedener Primfaktoren auf.
+	\end{itemize}
+	
+	Diese Beobachtung motiviert das folgende Lemma.
+	
+	\section{Strukturelles Lemma (Hypothese)}
+	
+	\begin{lemma}[Strukturelle Enge]
+		Für jedes $\delta>0$ existiert eine Konstante $K(\delta)$ mit
+		\[
+		\Delta(a,b,c) \ge \delta \;\Rightarrow\; \omega(abc) \le K(\delta).
+		\]
+	\end{lemma}
+	
+	Wir betonen, dass dieses Lemma derzeit nicht bewiesen ist und als
+	leitende Hypothese zu verstehen ist.
+	
+	\section{Verbindung zu S-Unit-Gleichungen}
+	
+	Sei
+	\[
+	S := \{p \text{ prim} : p \mid abc\}, \qquad s := |S|.
+	\]
+	
+	Setze
+	\[
+	x = \frac{a}{c}, \qquad y = \frac{b}{c}.
+	\]
+	Dann gilt
+	\[
+	x + y = 1,
+	\]
+	wobei $x,y$ S-Einheiten sind.
+	
+	Nach klassischen Resultaten über S-Unit-Gleichungen (vgl. \cite{EvertseGyory})
+	ist die Anzahl solcher Lösungen für festes $S$ endlich.
+	
+	\section{Baker-Theorie und Größenabschätzungen}
+	
+	Resultate über lineare Formen in Logarithmen (Baker, Wüstholz) liefern
+	explizite Schranken für Lösungen solcher Gleichungen (vgl. \cite{BakerWustholz}).
+	
+	Insbesondere existieren Konstanten $c_1,c_2>0$, so dass
+	\[
+	\log c \le c_2 \exp(c_1 s)\, P\, (\log P)^s,
+	\]
+	wobei $P$ der größte Primteiler von $abc$ ist.
+	
+	\section{Heuristische Konsequenz}
+	
+	Unter Verwendung des Primzahlsatzes ergibt sich heuristisch
+	\[
+	\log \mathrm{rad}(abc) \gtrsim s \log s.
+	\]
+	
+	Damit folgt, dass große Werte von $\Delta$ nur auftreten können,
+	wenn $s$ beschränkt ist.
+	
+	\section{Quantitative Abschätzung (heuristisch)}
+	
+	Für hinreichend kleine $\delta>0$ führt eine grobe Inversion der Abschätzungen heuristisch auf
+	\[
+	K(\delta) \lesssim \frac{\log(1/\delta)}{\log\log(1/\delta)}.
+	\]
+	
+	\begin{remark}
+		Die vorstehende Abschätzung ist nur als heuristische Größenordnung
+		für kleine $\delta$ zu verstehen. Für allgemeines $\delta>0$ ist
+		diese Formel in der gegebenen Form nicht sinnvoll, da die Ausdrücke
+		$\log(1/\delta)$ und $\log\log(1/\delta)$ nur in einem geeigneten
+		Bereich definiert bzw. positiv sind.
+	\end{remark}
+	
+	\section{Diskussion}
+	
+	Der vorgeschlagene Ansatz interpretiert die ABC-Vermutung als
+	Strukturaussage über Primfaktorverteilungen:
+	
+	Große Abweichungen $\Delta$ scheinen nur bei stark eingeschränkter
+	Primstruktur möglich zu sein.
+	
+	Die Verbindung zu S-Unit-Gleichungen und Baker-Theorie legt nahe,
+	dass diese Einschränkung tief in bekannten diophantischen Strukturen
+	verankert ist.
+	
+	\section{Ausblick}
+	
+	Ein möglicher Zugang zur ABC-Vermutung besteht darin,
+	das strukturelle Lemma rigoros zu beweisen oder durch bekannte
+	diophantische Methoden zu ersetzen.
+	
+	\begin{thebibliography}{9}
+		
+		\bibitem{BakerWustholz}
+		A.~Baker und G.~Wüstholz,
+		\textit{Logarithmic Forms and Diophantine Geometry},
+		Cambridge University Press, 2007.
+		
+		\bibitem{EvertseGyory}
+		J.-H.~Evertse und K.~Győry,
+		\textit{Unit Equations in Diophantine Number Theory},
+		Cambridge University Press, 2015.
+		
+	\end{thebibliography}
+	
+\end{document}

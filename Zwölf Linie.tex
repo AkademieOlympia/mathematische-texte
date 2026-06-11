@@ -1,0 +1,270 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{hyperref}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	citecolor=blue,
+	urlcolor=blue,
+	pdftitle={Die Zwölf-Linie bei ungeraden negativen Zetawerten},
+	pdfauthor={Thomas Hoffbauer und ChatGPT},
+	pdfsubject={Bernoulli-Zahlen, Zetafunktion, Nennerstruktur},
+	pdfkeywords={Riemannsche Zetafunktion, Bernoulli-Zahlen, von Staudt-Clausen, negative Spezialwerte}
+}
+
+\title{\textbf{Die Zwölf-Linie bei ungeraden negativen Zetawerten}\\
+	\large Eine arithmetische Beobachtung zur Nennerstruktur von $\zeta(-(2m-1))$}
+\author{Thomas Hoffbauer \and ChatGPT}
+\date{\today}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{beispiel}[definition]{Beispiel}
+
+\theoremstyle{plain}
+\newtheorem{satz}[definition]{Satz}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+\newtheorem{vermutung}[definition]{Vermutung}
+\newtheorem{empirischebehauptung}[definition]{Empirische Behauptung}
+
+\theoremstyle{remark}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir untersuchen die vollständig gekürzten Nenner der ungeraden negativen Spezialwerte der Riemannschen Zetafunktion
+		\[
+		\zeta(-(2m-1))=-\frac{B_{2m}}{2m}.
+		\]
+		Dabei zeigt sich numerisch eine auffällige Teilmenge von Indizes $m$, für die der Endnenner genau gleich $12$ ist. Diese Teilmenge wird hier als \emph{Zwölf-Linie} bezeichnet. Ausgehend von der von-Staudt--Clausenschen Nennerstruktur der Bernoulli-Zahlen formulieren wir eine exakte Teilbarkeitscharakterisierung der Zwölf-Indizes und leiten daraus eine Reihe empirischer Vermutungen über Kongruenzklassen und sogenannte Fast-Zwölf-Fälle ab.
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Die negativen ganzzahligen Spezialwerte der Riemannschen Zetafunktion sind durch die Bernoulli-Zahlen gegeben:
+	\[
+	\zeta(-n)=-\frac{B_{n+1}}{n+1}.
+	\]
+	Für ungerade negative Stellen erhält man insbesondere
+	\[
+	\zeta(-(2m-1))=-\frac{B_{2m}}{2m}
+	\qquad (m\ge 1).
+	\]
+	Da die Bernoulli-Zahlen rational sind, sind auch diese Zetawerte rationale Zahlen. Die vorliegende Notiz befasst sich nicht mit ihren Größenordnungen, sondern mit ihrer \emph{Nennerstruktur nach vollständiger Kürzung}.
+	
+	Numerisch fällt auf, dass der Nenner $12$ ungewöhnlich häufig als Endnenner auftritt. Der prototypische Fall ist
+	\[
+	\zeta(-1)=-\frac{1}{12},
+	\]
+	doch auch bei wesentlich größeren Indizes tritt derselbe Endnenner erneut auf. Dies legt nahe, die entsprechende Teilmenge systematisch zu untersuchen.
+	
+	\section{Grundstruktur}
+	
+	Schreiben wir die Bernoulli-Zahl $B_{2m}$ in vollständig gekürzter Form als
+	\[
+	B_{2m}=\frac{A_{2m}}{D_{2m}},
+	\]
+	wobei
+	\[
+	A_{2m}\in\mathbb{Z},\qquad D_{2m}\in\mathbb{N},\qquad \gcd(A_{2m},D_{2m})=1,
+	\]
+	so folgt
+	\[
+	\zeta(-(2m-1))=-\frac{A_{2m}}{(2m)D_{2m}}.
+	\]
+	
+	Der Satz von von Staudt--Clausen liefert den Nenner von $B_{2m}$ explizit:
+	\[
+	D_{2m}=\prod_{p-1\mid 2m} p,
+	\]
+	wobei das Produkt über alle Primzahlen $p$ läuft, deren Vorgänger $p-1$ ein Teiler von $2m$ ist.
+	
+	Damit ist der \emph{Rohnenner} des Zetawertes
+	\[
+	R_m:=(2m)D_{2m}.
+	\]
+	
+	\begin{definition}
+		Sei
+		\[
+		\zeta(-(2m-1))=\frac{P_m}{Q_m}
+		\]
+		in vollständig gekürzter Form mit
+		\[
+		P_m\in\mathbb{Z},\qquad Q_m\in\mathbb{N},\qquad \gcd(P_m,Q_m)=1.
+		\]
+		Dann nennen wir:
+		\begin{itemize}
+			\item $m$ einen \emph{Zwölf-Index}, falls $Q_m=12$,
+			\item $m$ einen \emph{Fast-Zwölf-Index}, falls $Q_m=12r$ mit einem ganzzahligen $r>1$.
+		\end{itemize}
+	\end{definition}
+	
+	\section{Exakte Charakterisierung}
+	
+	\begin{proposition}
+		Mit den obigen Bezeichnungen gilt:
+		\[
+		Q_m=12
+		\quad\Longleftrightarrow\quad
+		\frac{(2m)D_{2m}}{12}\mid A_{2m}.
+		\]
+	\end{proposition}
+	
+	\begin{proof}
+		Da
+		\[
+		\zeta(-(2m-1))=-\frac{A_{2m}}{(2m)D_{2m}},
+		\]
+		ist der vollständig gekürzte Nenner
+		\[
+		Q_m=\frac{(2m)D_{2m}}{\gcd(A_{2m},(2m)D_{2m})}.
+		\]
+		Also gilt $Q_m=12$ genau dann, wenn
+		\[
+		\gcd(A_{2m},(2m)D_{2m})=\frac{(2m)D_{2m}}{12}.
+		\]
+		Dies ist äquivalent dazu, dass
+		\[
+		\frac{(2m)D_{2m}}{12}\mid A_{2m}.
+		\]
+	\end{proof}
+	
+	\begin{bemerkung}
+		Die Aussage ist exakt und nicht heuristisch. Sie zeigt, dass die Zwölf-Linie vollständig durch eine Teilbarkeitsbedingung an den Bernoulli-Zähler $A_{2m}$ beschrieben wird.
+	\end{bemerkung}
+	
+	\section{Die Zwölf-Linie als arithmetische Struktur}
+	
+	Im numerisch untersuchten Bereich zeigt sich, dass Zwölf-Indizes nur in bestimmten Kongruenzklassen auftreten.
+	
+	\begin{empirischebehauptung}
+		Für alle numerisch untersuchten Zwölf-Indizes $m\le 100$ gilt
+		\[
+		m\equiv 1 \text{ oder } 5 \pmod 6.
+		\]
+		Äquivalent dazu erfüllen die zugehörigen Bernoulli-Indizes
+		\[
+		2m\equiv 2 \text{ oder } 10 \pmod{12}.
+		\]
+	\end{empirischebehauptung}
+	
+	\begin{bemerkung}
+		Diese Beobachtung ist zunächst rein empirisch. Sie bedeutet, dass in dem untersuchten Bereich der Endnenner $12$ nur dann auftritt, wenn $m$ ungerade ist und nicht durch $3$ teilbar wird.
+	\end{bemerkung}
+	
+	Noch stärker scheint die Klasse
+	\[
+	m\equiv 1 \pmod 6
+	\]
+	bevorzugt zu sein.
+	
+	\begin{vermutung}[Zwölf-Linien-Vermutung]
+		Die Menge
+		\[
+		\mathcal{Z}_{12}:=\{m\in\mathbb{N}: Q_m=12\}
+		\]
+		bildet eine arithmetisch dünne, aber strukturierte Teilmenge der natürlichen Zahlen. Numerisch deutet alles darauf hin, dass Zwölf-Indizes stark durch die Kongruenzbedingung
+		\[
+		m\equiv 1 \text{ oder } 5 \pmod 6
+		\]
+		vorgefiltert werden und innerhalb dieser beiden Klassen die Restklasse
+		\[
+		m\equiv 1 \pmod 6
+		\]
+		deutlich bevorzugen.
+	\end{vermutung}
+	
+	\section{Fast-Zwölf-Fälle}
+	
+	Für Fast-Zwölf-Indizes ist der Endnenner von der Form
+	\[
+	Q_m=12r
+	\]
+	mit einem kleinen Restfaktor $r>1$. Diese Fälle sind besonders aufschlussreich, da sie oft nur um einen einzigen nicht absorbierten Primfaktor vom echten Zwölf-Fall entfernt sind.
+	
+	\begin{definition}
+		Sei
+		\[
+		R_m=(2m)D_{2m}=12K_m.
+		\]
+		Dann nennen wir
+		\[
+		r_m:=\frac{Q_m}{12}
+		\]
+		den \emph{Restfaktor} des Index $m$.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Ist $m$ ein Zwölf-Index, so gilt $r_m=1$. Ist $m$ ein Fast-Zwölf-Index, so misst $r_m$ genau den Anteil von $K_m$, der durch den Bernoulli-Zähler $A_{2m}$ \emph{nicht} absorbiert wird.
+	\end{bemerkung}
+	
+	\begin{vermutung}[Fast-Zwölf-Phänomen]
+		Fast-Zwölf-Indizes entstehen typischerweise dadurch, dass im Rohnenner
+		\[
+		(2m)D_{2m}=12K_m
+		\]
+		nicht alle Primfaktoren von $K_m$ im Bernoulli-Zähler $A_{2m}$ erscheinen. In vielen numerischen Beispielen bleibt nur ein einzelner kleiner Primfaktor oder ein kleines Primprodukt übrig.
+	\end{vermutung}
+	
+	\section{Von-Staudt-induzierte Restfaktoren}
+	
+	Die Restfaktoren der Fast-Zwölf-Fälle scheinen oft direkt mit der von-Staudt--Clausenschen Struktur zusammenzuhängen. Wenn nämlich eine Primzahl $p$ die Bedingung
+	\[
+	p-1\mid 2m
+	\]
+	erfüllt, tritt sie automatisch im Nenner $D_{2m}$ auf. Entscheidend ist dann, ob derselbe Faktor auch den Bernoulli-Zähler $A_{2m}$ teilt.
+	
+	\begin{bemerkung}
+		Numerisch treten insbesondere Faktoren wie $11$ und $23$ gehäuft als Restfaktoren auf. Dies ist heuristisch dadurch erklärbar, dass sie über die Bedingungen
+		\[
+		10\mid 2m \qquad\text{bzw.}\qquad 22\mid 2m
+		\]
+		natürlich in den Nenner $D_{2m}$ eingespeist werden. Die zugehörigen Fast-Zwölf-Fälle können daher als solche Indizes interpretiert werden, bei denen genau ein strukturell erzeugter Nennerfaktor der vollständigen Kürzung widersteht.
+	\end{bemerkung}
+	
+	\section{Der prototypische Fall \texorpdfstring{$\zeta(-1)=-1/12$}{zeta(-1)=-1/12}}
+	
+	Der Wert
+	\[
+	\zeta(-1)=-\frac{1}{12}
+	\]
+	nimmt innerhalb der Zwölf-Linie eine Sonderstellung ein. Einerseits ist er der historisch bekannteste regulierte Spezialwert der Zetafunktion. Andererseits ist er zugleich der elementarste Zwölf-Fall überhaupt.
+	
+	Denn aus
+	\[
+	B_2=\frac16
+	\]
+	folgt sofort
+	\[
+	\zeta(-1)=-\frac{B_2}{2}=-\frac{1}{12}.
+	\]
+	Hier entsteht der Nenner $12$ unmittelbar aus der Bernoulli-Struktur, ohne dass eine komplizierte zusätzliche Kürzung erforderlich wäre. In diesem Sinn kann $\zeta(-1)=-1/12$ als \emph{Urform} der gesamten Zwölf-Linie angesehen werden.
+	
+	\section{Ausblick}
+	
+	Die hier formulierten Beobachtungen legen mehrere weiterführende Fragestellungen nahe:
+	
+	\begin{itemize}
+		\item Besitzt die Zwölf-Linie eine asymptotisch beschreibbare Dichte innerhalb geeigneter Kongruenzklassen?
+		\item Lässt sich die Dominanz der Klasse $m\equiv 1\pmod 6$ theoretisch erklären?
+		\item Welche Rolle spielen reguläre und irreguläre Primzahlen für das Auftreten von Fast-Zwölf-Fällen?
+		\item Kann die Restfaktor-Landschaft systematisch über die Teilbarkeit der Bernoulli-Zähler beschrieben werden?
+	\end{itemize}
+	
+	Die Zwölf-Linie erscheint damit als ein kleines, aber bemerkenswert strukturiertes Fenster in die Arithmetik der Bernoulli-Zahlen und der negativen Spezialwerte der Zetafunktion.
+	
+\end{document}

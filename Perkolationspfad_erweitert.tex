@@ -1,0 +1,565 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{geometry}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{array}
+\geometry{margin=2.6cm}
+\hypersetup{colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{hypothesis}{Hypothese}
+\newtheorem{conjecture}{Vermutung}
+\newtheorem{corollary}{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Bemerkung}
+\newtheorem{example}{Beispiel}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\Q}{\mathcal{Q}}
+\newcommand{\E}{\mathsf{E}}
+\newcommand{\A}{\mathsf{A}}
+\newcommand{\B}{\mathsf{B}}
+\newcommand{\C}{\mathsf{C}}
+\newcommand{\CE}{\mathsf{CE}}
+\newcommand{\AB}{\mathsf{AB}}
+\newcommand{\sgn}{\operatorname{sgn}}
+
+\title{Das Bamberger Treppen-Theorem\\
+\large Konditionaler Beweis zur Unendlichkeit der Primzahlzwillinge im eabc-Gitter\\
+\large Erweiterte Fassung mit Vierlingsschwung und orientierter Treppendynamik}
+\author{Thomas Hoffbauer\\Bamberg, Deutschland}
+\date{25. April 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Diese erweiterte Fassung ergänzt das bisherige Bamberger Treppen-Theorem um eine orientierte Vierlingsdynamik im $eabc$-Gitter. Ausgangspunkt bleibt die Reduktion der Primzahlzwillingsvermutung auf ein Perkolationsproblem: Wenn weiße Treppenpfade im 48-Kanal-Gitter subquadratisch skalieren, dann folgen unendlich viele Primzahlzwillinge. Neu hinzu kommt der Begriff des \emph{Vierlingsschwungs}: Primzahlvierlinge werden als Doppelimpulse im Zwillingskanal interpretiert, die modulo $12$ eine Orientierung $\AB\to\CE$ oder $\CE\to\AB$ tragen. Vier geeignete, paarweise komplementär orientierte Vierlinge unterhalb einer hypothetischen letzten Zwillingszone erzeugen eine Treppenstruktur oberhalb dieser Zone. Der daraus resultierende Beweisversuch ist konditional: Er reduziert den fehlenden Schritt auf ein neues Vierlingsschwung-Lemma, welches besagt, dass eine vollständige Blockade aller durch den Schwung erzeugten Kandidaten nicht möglich ist. Damit wird die Primzahlzwillingsvermutung nicht endgültig bewiesen, aber auf eine präzise geometrisch-siebtheoretische Kernbehauptung verengt.
+\end{abstract}
+
+\tableofcontents
+
+\section{Strukturelle Grundlagen}
+
+Wir definieren die Menge der Zwillingskanäle im $12$er-Gitter durch
+\[
+\T=\{n\in\N: n\equiv 5 \;\vee\; n\equiv 11 \pmod {12}\}.
+\]
+In der BM-Notation entspricht dies der Vereinigung der Kanäle
+\[
+\AB\cup\CE.
+\]
+
+\begin{definition}[z-offene Kandidaten]
+Ein $n\in\T$ heißt $z$-offen, geschrieben $n\in\T_z$, wenn für jede Primzahl $5\leq p\leq z$ gilt:
+\[
+p\nmid n(n+2).
+\]
+\end{definition}
+
+\begin{lemma}[Primheits-Lemma]
+Ist $n\in\T_z$ und gilt
+\[
+n+2<z^2,
+\]
+dann ist $(n,n+2)$ ein Primzahlzwilling.
+\end{lemma}
+
+\begin{proof}
+Angenommen, $n$ oder $n+2$ wäre zusammengesetzt. Da beide Zahlen in den Zwillingskanälen liegen, sind sie für $n>3$ weder durch $2$ noch durch $3$ teilbar. Jede zusammengesetzte Zahl $m<z^2$ besitzt einen Primteiler $p\leq \sqrt m<z$. Dann müsste ein Primteiler $5\leq p\leq z$ entweder $n$ oder $n+2$ teilen. Dies widerspricht der $z$-Offenheit. Also sind beide Zahlen prim.
+\end{proof}
+
+\section{Der 48-Turm und die Treppenperkolation}
+
+Wir wählen die Turmbreite
+\[
+W=48,
+\]
+um vier vollständige $eabc$-Zyklen pro Zeile abzubilden. Ein Block $B$ der Größe $b\times b$ heißt \emph{weiß}, wenn er mindestens einen $z$-offenen Kandidaten enthält.
+
+\begin{lemma}[Topologisches Hex-Lemma]
+In jedem endlichen rechteckigen Blockgitter existiert entweder ein weißer vertikaler Pfad, also eine Treppe, oder eine schwarze horizontale Sperrwand.
+\end{lemma}
+
+\begin{hypothesis}[BM-Treppenhypothese]
+Es existieren Konstanten $C>0$ und $\alpha<2$, sodass für jede Siebtiefe $z$ eine Blockgröße
+\[
+b(z)\leq C z^\alpha
+\]
+existiert, die einen vertikalen Treppenpfad im 48-Turm garantiert.
+\end{hypothesis}
+
+\section{Das konditionale Treppen-Theorem}
+
+\begin{theorem}[Bamberger Treppen-Theorem]
+Unter Gültigkeit der BM-Treppenhypothese gibt es unendlich viele Primzahlzwillinge.
+\end{theorem}
+
+\begin{proof}
+Angenommen, es gäbe einen letzten Primzahlzwilling $(q,q+2)$. Wähle $z$ so groß, dass
+\[
+z^2>q+2
+\]
+und zugleich
+\[
+Cz^\alpha<z^2-q-2.
+\]
+Dies ist möglich, weil $\alpha<2$ gilt. Aufgrund der subquadratischen Skalierung existiert oberhalb von $q$ ein weißer Block, der einen $z$-offenen Kandidaten $n$ mit
+\[
+n+2<z^2
+\]
+enthält. Nach dem Primheits-Lemma ist $(n,n+2)$ ein neuer Primzahlzwilling. Dies widerspricht der Annahme, dass $(q,q+2)$ der letzte Primzahlzwilling sei.
+\end{proof}
+
+\section{Erweiterung: Zwillingskanal, Vierlingskanal und Orientierung}
+
+Die neue Idee besteht darin, nicht nur einzelne $z$-offene Zwillingskandidaten zu betrachten, sondern dichte Doppelereignisse im Zwillingskanal. Diese Doppelereignisse sind die klassischen Primzahlvierlinge.
+
+\begin{definition}[Zwillingsindikator]
+Für $n\in\N$ definieren wir
+\[
+T(n)=1
+\]
+genau dann, wenn
+\[
+6n-1 \quad\text{und}\quad 6n+1
+\]
+beide prim sind. Andernfalls setzen wir $T(n)=0$.
+\end{definition}
+
+Damit entspricht jeder Primzahlzwilling größer als $(3,5)$ einem aktiven Index $n$ im $6n$-Kanal:
+\[
+(6n-1,6n+1).
+\]
+
+\begin{definition}[Vierlingsindikator]
+Wir setzen
+\[
+Q(n)=1
+\]
+genau dann, wenn
+\[
+T(n)=T(n+1)=1.
+\]
+Dann entspricht $Q(n)=1$ einem Primzahlvierling
+\[
+(6n-1,\;6n+1,\;6n+5,\;6n+7).
+\]
+\end{definition}
+
+\begin{example}
+Für $n=1$ erhält man
+\[
+(5,7,11,13),
+\]
+also einen Primzahlvierling. Hier gilt $T(1)=1$ und $T(2)=1$, also $Q(1)=1$.
+\end{example}
+
+\subsection{Modulo-12-Orientierung}
+
+Die vier BM-Familien seien wie gewohnt definiert durch
+\[
+\E\equiv 1,\qquad \A\equiv 5,\qquad \B\equiv 7,\qquad \C\equiv 11 \pmod {12}.
+\]
+Ein Primzahlzwilling größer als $(3,5)$ besitzt modulo $12$ entweder den Typ
+\[
+\AB
+\]
+oder den Typ
+\[
+\CE.
+\]
+Denn
+\[
+(12k+5,12k+7)\equiv (\A,\B)
+\]
+und
+\[
+(12k-1,12k+1)\equiv (\C,\E).
+\]
+
+Ein Vierling besteht aus zwei benachbarten Zwillingen. Daher besitzt er genau eine der beiden Orientierungen
+\[
+\AB\to\CE
+\]
+oder
+\[
+\CE\to\AB.
+\]
+
+\begin{definition}[Orientierung eines Vierlings]
+Sei $Q(n)=1$. Wir setzen
+\[
+\omega(n)=+1,
+\]
+wenn der Vierling die Modulo-12-Signatur
+\[
+\A,\B,\C,\E
+\]
+besitzt, also vom Typ $\AB\to\CE$ ist. Wir setzen
+\[
+\omega(n)=-1,
+\]
+wenn der Vierling die Modulo-12-Signatur
+\[
+\C,\E,\A,\B
+\]
+besitzt, also vom Typ $\CE\to\AB$ ist.
+\end{definition}
+
+\begin{example}
+Der Vierling
+\[
+(5,7,11,13)
+\]
+hat die Signatur
+\[
+\A,\B,\C,\E,
+\]
+also $\omega=+1$. Der Vierling
+\[
+(11,13,17,19)
+\]
+hat die Signatur
+\[
+\C,\E,\A,\B,
+\]
+also $\omega=-1$.
+\end{example}
+
+\section{Der Vierlingsschwung}
+
+Ein Primzahlvierling ist im vorliegenden Modell nicht bloß ein lokaler Zufallstreffer aus vier Primzahlen. Er ist ein Doppelimpuls im Zwillingskanal:
+\[
+Q(n)=1 \iff T(n)=T(n+1)=1.
+\]
+Im $12$er-Gitter trägt dieser Doppelimpuls zusätzlich eine Richtung. Daraus ergibt sich der Begriff des Vierlingsschwungs.
+
+\begin{definition}[Vierlingsschwung unterhalb eines Index $N$]
+Seien $a_1<\dots<a_r<N$ alle Vierlingsindizes unterhalb von $N$. Für eine Gewichtsfunktion $K:\N\to\mathbb{R}_{>0}$ definieren wir den gewichteten Vierlingsschwung durch
+\[
+S_K(N)=\sum_{i=1}^r \omega(a_i)K(N-a_i).
+\]
+Eine einfache Wahl ist
+\[
+K(d)=\frac1d
+\]
+oder logarithmisch gedämpft
+\[
+K(d)=\frac{1}{\log(d+2)}.
+\]
+\end{definition}
+
+Der entscheidende Spezialfall für den Beweisversuch ist nicht ein beliebiger Gesamtwert von $S_K(N)$, sondern eine lokale Balance von vier Vierlingen.
+
+\begin{definition}[Balanciertes Vierlingsquartett]
+Ein Vierlingsquartett unterhalb von $N$ ist eine Menge von vier Indizes
+\[
+a_1<a_2<a_3<a_4<N
+\]
+mit
+\[
+Q(a_i)=1 \quad (i=1,2,3,4).
+\]
+Das Quartett heißt orientiert balanciert, wenn
+\[
+\omega(a_1)+\omega(a_2)+\omega(a_3)+\omega(a_4)=0.
+\]
+Äquivalent: Zwei Vierlinge besitzen die Orientierung $\AB\to\CE$, zwei die Orientierung $\CE\to\AB$.
+\end{definition}
+
+\begin{remark}
+Die Zahl vier ist hier nicht willkürlich. Ein Vierling durchläuft alle vier Familien $\A,\B,\C,\E$. Vier Vierlinge liefern zwei vollständige komplementäre Orientierungspaare und passen damit zur vierkomponentigen eabc-Struktur. In der quaternionischen Lesart $\E\leftrightarrow 1$, $\A\leftrightarrow i$, $\B\leftrightarrow j$, $\C\leftrightarrow k$ kann ein Vierling als gerichteter Pfad im Familienraum gelesen werden.
+\end{remark}
+
+\section{Treppe aus Vierlingen zur hypothetischen letzten Zwillingszone}
+
+Angenommen, es gebe einen letzten Primzahlzwilling. Dann existiert ein größter Index $N$ mit
+\[
+T(N)=1,
+\]
+und für alle $m>N$ gilt
+\[
+T(m)=0.
+\]
+Das heißt:
+\[
+\forall m>N:\quad 6m-1 \text{ oder } 6m+1 \text{ ist zusammengesetzt.}
+\]
+Oberhalb von $N$ müsste also jeder Zwillingskandidat blockiert sein.
+
+Die Vierlingsschwung-Idee betrachtet nun ein balanciertes Quartett unterhalb von $N$ und spiegelt seine Indizes an $N$ nach oben.
+
+\begin{definition}[Spiegel- oder Treppenkandidaten]
+Sei $a<N$ ein Vierlingsindex. Der an $N$ gespiegelte Treppenindex ist
+\[
+M(a;N)=2N-a.
+\]
+Die zugehörigen Zwillingskandidaten sind
+\[
+6M(a;N)-1,\qquad 6M(a;N)+1.
+\]
+Die zugehörigen Vierlingskandidaten sind
+\[
+6M(a;N)-1,\quad 6M(a;N)+1,\quad 6M(a;N)+5,\quad 6M(a;N)+7.
+\]
+\end{definition}
+
+Da $a<N$ gilt, liegt
+\[
+M(a;N)>N.
+\]
+Unter der Annahme, dass $N$ der letzte Zwillingsindex ist, muss daher jeder gespiegelte Treppenindex blockiert sein:
+\[
+T(M(a;N))=0.
+\]
+Für einen Vierling oberhalb von $N$ müsste sogar gelten:
+\[
+Q(M(a;N))=0.
+\]
+
+\section{Blockadekosten und Sperrwände}
+
+Die letzte-Zwilling-Annahme lässt sich als vollständige Sperrwand formulieren.
+
+\begin{definition}[Blockade eines Zwillingskandidaten]
+Für $m\in\N$ definieren wir die Blockademenge
+\[
+\mathcal{S}(m)=\{p\text{ prim}: p\mid 6m-1 \text{ oder } p\mid 6m+1\}.
+\]
+Ein Index $m$ ist blockiert, wenn mindestens eine der beiden Zahlen $6m-1$ oder $6m+1$ zusammengesetzt ist. Ist $m$ blockiert, so ist $\mathcal{S}(m)$ nicht leer, sofern man triviale Teiler ausschließt und die Zahlen größer als $1$ sind.
+\end{definition}
+
+Ist $N$ ein letzter Zwillingsindex, dann muss gelten:
+\[
+\forall m>N:\quad \mathcal{S}(m)\neq\varnothing.
+\]
+Die zentrale Beobachtung lautet: Ein Vierlingsquartett unterhalb von $N$ erzeugt durch Spiegelung vier Kandidaten oberhalb von $N$. Die Annahme eines letzten Zwillings verlangt, dass alle diese Kandidaten gleichzeitig blockiert werden. In der Perkolationssprache entsteht also eine horizontale schwarze Sperrwand gegen einen orientierten weißen Schwung.
+
+\begin{hypothesis}[Vierlingsschwung-Lemma]
+Sei $N$ ein Zwillingsindex mit $T(N)=1$. Existiert unterhalb von $N$ ein orientiert balanciertes Vierlingsquartett $a_1<a_2<a_3<a_4<N$, dessen Differenzen
+\[
+d_i=N-a_i
+\]
+keine gemeinsame lokale Kongruenzobstruktion erzeugen, dann können nicht alle gespiegelten Treppenkandidaten
+\[
+M_i=2N-a_i
+\]
+vollständig blockiert sein. In starker Form existiert ein $i$ mit
+\[
+T(M_i)=1.
+\]
+In sehr starker Form existiert ein $i$ mit
+\[
+Q(M_i)=1.
+\]
+\end{hypothesis}
+
+\begin{remark}[Status des Lemmas]
+Dieses Lemma ist der neue harte Kern des Beweisversuchs. Es folgt nicht allein aus der Modulo-12-Zulässigkeit. Es müsste durch ein zusätzliches Siebargument, ein Kongruenzwiderspruchsargument oder eine quantitative Perkolationsabschätzung bewiesen werden. Ohne dieses Lemma bleibt der Vierlingsschwung eine starke Heuristik, aber kein abgeschlossener Beweis der Primzahlzwillingsvermutung.
+\end{remark}
+
+\section{Konditionaler Beweisversuch mit Vierlingsschwung}
+
+\begin{theorem}[Konditionales Vierlingsschwung-Theorem]
+Angenommen, das Vierlingsschwung-Lemma gilt in der starken Form. Weiter angenommen, unterhalb jedes hinreichend großen Zwillingsindex $N$ existiert ein orientiert balanciertes Vierlingsquartett ohne gemeinsame lokale Kongruenzobstruktion. Dann gibt es keinen letzten Primzahlzwilling.
+\end{theorem}
+
+\begin{proof}
+Angenommen, es gebe einen letzten Primzahlzwilling. Dann existiert ein größter Index $N$ mit
+\[
+T(N)=1.
+\]
+Nach Voraussetzung existiert unterhalb dieses $N$ ein orientiert balanciertes Vierlingsquartett
+\[
+a_1<a_2<a_3<a_4<N
+\]
+mit
+\[
+Q(a_i)=1
+\]
+für alle $i$ und
+\[
+\omega(a_1)+\omega(a_2)+\omega(a_3)+\omega(a_4)=0.
+\]
+Ferner seien die Differenzen $d_i=N-a_i$ frei von einer gemeinsamen lokalen Kongruenzobstruktion.
+
+Durch Spiegelung an $N$ entstehen Treppenindizes
+\[
+M_i=2N-a_i>N.
+\]
+Da $N$ nach Annahme der letzte Zwillingsindex ist, gilt für alle $i$:
+\[
+T(M_i)=0.
+\]
+Also müssten alle gespiegelten Kandidaten blockiert sein.
+
+Das Vierlingsschwung-Lemma in starker Form besagt jedoch, dass unter den genannten Voraussetzungen mindestens ein $i$ existiert mit
+\[
+T(M_i)=1.
+\]
+Dies liefert einen Zwillingsindex $M_i>N$, also einen Primzahlzwilling oberhalb des angeblich letzten Primzahlzwillings. Widerspruch.
+
+Folglich kann es keinen letzten Primzahlzwilling geben.
+\end{proof}
+
+\begin{corollary}[Sehr starke Variante]
+Gilt das Vierlingsschwung-Lemma in sehr starker Form, dann folgt sogar: Oberhalb jeder hypothetischen letzten Zwillingszone existiert ein weiterer Primzahlvierling. Damit wäre nicht nur die Unendlichkeit der Primzahlzwillinge, sondern eine entsprechende Fortsetzung des Vierlingskanals gezeigt.
+\end{corollary}
+
+\section{Warum der Beweisversuch noch nicht abgeschlossen ist}
+
+Der kritische Übergang lautet:
+\[
+\text{orientierte zulässige Kandidatenstruktur}
+\quad\Longrightarrow\quad
+\text{tatsächliche Primalität.}
+\]
+Die Modulo-12-Klassifikation liefert notwendige Bedingungen für Primzahlen größer als $3$, aber keine hinreichenden Bedingungen. Beispielsweise gilt
+\[
+35\equiv 11\pmod {12},
+\]
+also liegt $35$ formal im $\C$-Kanal, ist aber zusammengesetzt:
+\[
+35=5\cdot 7.
+\]
+Ebenso gilt
+\[
+49\equiv 1\pmod {12},
+\]
+also liegt $49$ formal im $\E$-Kanal, ist aber
+\[
+49=7^2.
+\]
+
+Daher beweist der Vierlingsschwung zunächst nur, dass oberhalb von $N$ besonders strukturierte \emph{zulässige} Kandidaten entstehen. Für einen vollständigen Beweis muss gezeigt werden, dass die gleichzeitige Blockade aller dieser Kandidaten unmöglich ist.
+
+\section{Mögliche Beweiswege für das Vierlingsschwung-Lemma}
+
+\subsection{Kongruenzwiderspruch}
+
+Man könnte versuchen zu zeigen, dass die vollständige Blockade der gespiegelten Treppenkandidaten ein unlösbares System von Kongruenzen erzwingt. Für jeden Kandidaten $M_i$ müsste mindestens eine Kongruenz
+\[
+6M_i-1\equiv 0\pmod p
+\]
+oder
+\[
+6M_i+1\equiv 0\pmod p
+\]
+gelten. Die Hoffnung wäre, dass vier balancierte Orientierungen die möglichen Sperrklassen so stark einschränken, dass keine vollständige Abdeckung möglich ist.
+
+\subsection{Siebtheoretische Restdichte}
+
+Eine zweite Möglichkeit wäre ein quantitatives Siebargument. Man betrachtet die Treppenmenge
+\[
+\mathcal{M}_N=\{2N-a_i: Q(a_i)=1, a_i<N\}
+\]
+oder eine verdichtete Variante mit vielen Vierlingsindizes unterhalb von $N$. Dann zeigt man, dass nach Siebung durch alle Primzahlen bis zu einer geeigneten Tiefe eine positive Restdichte bleibt. In Verbindung mit dem Primheits-Lemma könnte daraus ein tatsächlicher Zwilling folgen.
+
+\subsection{Perkolationsargument}
+
+Die dritte Möglichkeit ist die Fortführung des ursprünglichen Treppenmodells. Weiße Blöcke enthalten $z$-offene Kandidaten; schwarze Blöcke bilden Sperrwände. Vierlingsschwung bedeutet dann, dass nicht nur einzelne weiße Blöcke existieren, sondern gerichtete weiße Doppelblöcke. Ein balanciertes Vierlingsquartett könnte die Existenz einer stabilen vertikalen weißen Treppe gegen horizontale Sperrwände verstärken. Damit würde das Vierlingsschwung-Lemma zu einer verfeinerten Form der BM-Treppenhypothese.
+
+\section{Numerische Validierung und Testprogramm}
+
+Die bisherige Simulation von $1000$ Clustern im Vollmodell mit Torsion, Bias und Heilung ergab:
+\begin{itemize}[leftmargin=*]
+\item Mittelwert Beta: $0{,}0199$,
+\item Standardabweichung: $0{,}4903$,
+\item robuste Treppenpfade im 48-Turm für alle getesteten Siebtiefen $z$.
+\end{itemize}
+
+Für die neue Vierlingsschwung-Erweiterung ergibt sich folgendes Testprogramm:
+
+\begin{enumerate}[leftmargin=*]
+\item Liste alle Primzahlvierlinge bis zu einer Grenze $X$.
+\item Weise jedem Vierling seine Orientierung $\omega\in\{+1,-1\}$ zu.
+\item Suche orientiert balancierte Quartette $a_1<a_2<a_3<a_4<N$.
+\item Spiegle diese Quartette an späteren Zwillingsindizes $N$:
+\[
+M_i=2N-a_i.
+\]
+\item Prüfe, ob bei den $M_i$ neue Zwillinge oder Vierlinge auftreten.
+\item Messe die Blockaderate:
+\[
+\rho_N=\frac{\#\{i:T(M_i)=0\}}{4}.
+\]
+\item Vergleiche balancierte Quartette mit unbalancierten Kontrollquartetten.
+\end{enumerate}
+
+Eine positive numerische Signatur des Vierlingsschwungs wäre gegeben, wenn balancierte Quartette signifikant häufiger zu gespiegelten Zwillingen oder Vierlingen führen als unbalancierte Vergleichsstrukturen.
+
+\section{Validation of the torsion--phase extraction procedure}
+
+The completed eabc-framework predicts that the residual torsion sector should be detectable through a small collection of width-resolved observables. In the present form of the model, the most relevant quantities are
+\[
+\Delta_{\mathrm{torsion}},\quad \varphi,\quad \frac{B_{\max}}{W},
+\]
+where $W$ denotes the tower width, $B_{\max}$ the maximal blocking scale, and $\varphi$ the phase associated with the healed configuration. Since $\varphi$ is defined only modulo $2\pi$, it must be treated by circular rather than linear statistics.
+
+\subsection{Purpose of the analysis}
+
+The purpose of the analysis is to determine whether the torsion sector exhibits a width-stable signature, or whether the apparent behavior is instead an artifact of scaling, discretization, or blocking geometry. Concretely, for each fixed value of $W$, the procedure computes empirical location and dispersion measures for $\Delta_{\mathrm{torsion}}$, determines the circular center of $\varphi$, and records the normalized obstruction ratio $B_{\max}/W$.
+
+\subsection{Synthetic validation}
+
+At the present stage, this procedure has been validated only on synthetic control data. The validation data were generated with prescribed centers
+\[
+\Delta_{\mathrm{torsion}}=-34.5186,\qquad \varphi=-6.091159.
+\]
+Within this benchmark, the analysis correctly reconstructs the imposed torsion level, identifies the equivalent circular representative
+\[
+-6.091159\equiv 0.192026\pmod {2\pi},
+\]
+and recovers the expected behavior of the normalized blocking ratio $B_{\max}/W$.
+
+\subsection{Interpretation}
+
+Since the current benchmark is synthetic, it does not yet provide evidence that the full Carnot model itself satisfies a torsion--phase law. What has been validated is the analysis procedure, not yet the model prediction. The valid conclusion is therefore methodological: if a genuine torsion--phase signature is present in the true output of the model, the present extraction procedure is capable of detecting it.
+
+\section{Fazit}
+
+Die Primzahlzwillingsvermutung wird im ursprünglichen Dokument auf ein geometrisches Perkolationsproblem reduziert:
+\[
+b_{\min}(z)=O(z^\alpha),\qquad \alpha<2
+\quad\Longrightarrow\quad
+\text{unendlich viele Primzahlzwillinge}.
+\]
+Die neue Erweiterung fügt eine zweite, dynamischere Reduktion hinzu:
+\[
+\text{orientierter Vierlingsschwung}
+\quad\Longrightarrow\quad
+\text{keine vollständige Zwillingsblockade oberhalb von }N.
+\]
+
+In der stärksten Form lautet die neue Arbeitsvermutung:
+\[
+\begin{gathered}
+T(N)=1,\quad Q(a_i)=1\ (i=1,\dots,4),\quad a_i<N,\\
+\omega(a_1)+\omega(a_2)+\omega(a_3)+\omega(a_4)=0
+\end{gathered}
+\]
+impliziert
+\[
+\exists M>N:\quad T(M)=1,
+\]
+oder sogar
+\[
+\exists M>N:\quad Q(M)=1.
+\]
+
+Damit entsteht ein klarer Beweisplan: Entweder man beweist die subquadratische Treppenhypothese, oder man beweist das Vierlingsschwung-Lemma als lokale Verstärkung der weißen Perkolation. Beide Wege würden die Existenz eines letzten Primzahlzwillings ausschließen. Der jetzige Stand ist daher kein abgeschlossener Beweis, aber eine präzise Konditionalisierung des Problems auf eine geometrisch-siebtheoretische Kernfrage.
+
+\end{document}

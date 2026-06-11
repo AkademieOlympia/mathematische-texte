@@ -1,0 +1,517 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- Kodierung und Sprache ---
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+
+% --- Mathematik ---
+\usepackage{amsmath,amssymb,amsfonts,amsthm,mathtools}
+\usepackage{bm}
+
+% --- Layout ---
+\usepackage[a4paper,margin=2.7cm]{geometry}
+\usepackage{microtype}
+\usepackage{setspace}
+\onehalfspacing
+
+% --- Tabellen / Links ---
+\usepackage{booktabs}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	citecolor=blue,
+	urlcolor=blue,
+	pdftitle={Normschalen der Hurwitz-Ordnung und Einheitenorbits},
+	pdfauthor={Thomas Hoffbauer},
+	pdfsubject={Formaler Beweis der Orbitformel fuer Hurwitz-Normschalen}
+}
+
+% --- Grafikeinbindung robust ---
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./}{fig/}{figs/}{images/}{img/}}
+\newcommand{\includegraphicssafe}[2][]{%
+	\IfFileExists{#2}{\includegraphics[#1]{#2}}{%
+		\fbox{\parbox[c][3cm][c]{0.8\linewidth}{\centering Grafik \texttt{#2} nicht gefunden.}}%
+	}%
+}
+
+% --- Theorem-Umgebungen ---
+\theoremstyle{plain}
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{proposition}[satz]{Proposition}
+\newtheorem{korollar}[satz]{Korollar}
+\newtheorem{konjektur}[satz]{Konjektur}
+
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{beispiel}[satz]{Beispiel}
+\newtheorem{problem}[satz]{Problem}
+
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+
+% --- Makros ---
+\newcommand{\OH}{\mathcal O_H}
+\newcommand{\QH}{\mathbb H}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Fp}{\mathbb F_p}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\nrd}{\operatorname{Nrd}}
+\newcommand{\Stab}{\operatorname{Stab}}
+
+\title{\textbf{Normschalen der Hurwitz-Ordnung und Einheitenorbits}\\
+	\large Ein formaler Beweis der Orbitformel für ungerade Primzahlen}
+\author{Thomas Hoffbauer}
+\date{März 2026}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Wir betrachten für eine ungerade Primzahl \(p\) die Normschale der Hurwitz-Ordnung
+		\[
+		X_p:=\{x\in \OH:\nrd(x)=p\}.
+		\]
+		Der Hauptsatz dieses Artikels zeigt:
+		\[
+		|X_p|=24(p+1),
+		\qquad
+		|\OH^\times\backslash X_p|=|X_p/\OH^\times|=p+1.
+		\]
+		Der Beweis zerlegt \(X_p\) in einen ganzzahligen und einen halbzahlig-hurwitzschen Teil. Die Anzahl des ganzzahligen Teils folgt aus Jacobis Vier-Quadrate-Formel. Der halbzahlig-hurwitzsche Teil wird auf Darstellungen von \(4p\) als Summe von vier ungeraden Quadraten zurückgeführt. Anschließend wird gezeigt, dass sowohl die Links- als auch die Rechtswirkung der \(24\) Hurwitz-Einheiten auf \(X_p\) frei sind. Daraus folgt die Orbitformel unmittelbar. Abschließend diskutieren wir die offenen strukturtheoretischen Fragen, insbesondere eine mögliche projektive Parametrisierung der Orbitmengen und die Rolle der Doppelorbits.
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Die Hurwitz-Ordnung \(\OH\) in der Hamiltonschen Quaternionenalgebra ist eines der klassischsten arithmetischen Objekte der Quaternionentheorie. Ihre endlichen Normschalen
+	\[
+	X_p=\{x\in\OH:\nrd(x)=p\},
+	\]
+	wobei \(p\) eine Primzahl ist, tragen sowohl additive als auch multiplikative Struktur. Besonders natürlich ist die Wirkung der Einheitengruppe \(\OH^\times\) durch Links- und Rechtsmultiplikation.
+	
+	Das Ziel dieses Artikels ist ein formaler Beweis der Tatsache, dass für jede ungerade Primzahl \(p\) die Normschale \(X_p\) genau \(24(p+1)\) Elemente besitzt und dass sowohl die Links- als auch die Rechtsorbitmengen unter der Einheitenwirkung genau \(p+1\) Elemente haben. Der strukturelle Kern des Beweises ist elementar: Er benutzt die klassische Vier-Quadrate-Formel von Jacobi, eine einfache Paritätsanalyse modulo \(4\) und die Invertierbarkeit jedes Elements positiver Norm in der Quaternionenalgebra.
+	
+	Was hier \emph{nicht} bewiesen wird, sind die feineren Fragen:
+	\begin{itemize}
+		\item eine kanonische Identifikation der Orbitmengen mit \(\PP^1(\Fp)\),
+		\item die globale Beschreibung der Links-Rechts-Asymmetrie,
+		\item und die Struktur der Doppelorbits
+		\[
+		\OH^\times\backslash X_p/\OH^\times.
+		\]
+	\end{itemize}
+	Gerade diese Fragen markieren jedoch den natürlichen nächsten Schritt.
+	
+	\section{Die Hurwitz-Ordnung und ihre Norm}
+	
+	\begin{definition}[Hurwitz-Ordnung]
+		Die Hurwitz-Ordnung \(\OH\subset \QH\) besteht aus allen Quaternionen
+		\[
+		x=a+bi+cj+dk
+		\]
+		mit entweder \(a,b,c,d\in\Z\) oder \(a,b,c,d\in\Z+\tfrac12\).
+	\end{definition}
+	
+	\begin{definition}[Reduzierte Norm]
+		Für
+		\[
+		x=a+bi+cj+dk\in\QH
+		\]
+		definieren wir die reduzierte Norm durch
+		\[
+		\nrd(x):=a^2+b^2+c^2+d^2.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Normschale]
+		Für eine Primzahl \(p\) definieren wir die Hurwitz-Normschale
+		\[
+		X_p:=\{x\in\OH:\nrd(x)=p\}.
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		Ein Element \(x\in \OH\) ist entweder ganzzahlig oder halbzahlig-hurwitzsch. Entsprechend zerfällt \(X_p\) disjunkt in einen ganzzahligen Teil und einen halbzahlig-hurwitzschen Teil.
+	\end{bemerkung}
+	
+	\section{Die Einheitengruppe}
+	
+	\begin{definition}[Hurwitz-Einheiten]
+		Die Einheitengruppe der Hurwitz-Ordnung sei
+		\[
+		\OH^\times:=\{u\in\OH:\nrd(u)=1\}.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Es gilt
+		\[
+		|\OH^\times|=24.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Die \(24\) Einheiten sind gegeben durch die \(8\) offensichtlichen Elemente
+		\[
+		\{\pm1,\pm i,\pm j,\pm k\}
+		\]
+		sowie die \(16\) Quaternionen
+		\[
+		\frac{\pm1\pm i\pm j\pm k}{2}.
+		\]
+		Alle diese Elemente liegen in \(\OH\) und haben Norm \(1\). Weitere Norm-\(1\)-Elemente existieren in \(\OH\) nicht.
+	\end{proof}
+	
+	\section{Zerlegung der Normschale}
+	
+	\begin{definition}
+		Für eine ungerade Primzahl \(p\) definieren wir
+		\[
+		X_p^{\mathrm{int}}
+		:=
+		\{x=a+bi+cj+dk\in X_p : a,b,c,d\in\Z\},
+		\]
+		sowie
+		\[
+		X_p^{\mathrm{half}}
+		:=
+		\{x=a+bi+cj+dk\in X_p : a,b,c,d\in \Z+\tfrac12\}.
+		\]
+		Dann gilt disjunkt
+		\[
+		X_p=X_p^{\mathrm{int}}\sqcup X_p^{\mathrm{half}}.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Für eine ungerade Primzahl \(p\) gilt
+		\[
+		|X_p^{\mathrm{int}}|=8(p+1).
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Die Menge \(X_p^{\mathrm{int}}\) ist genau die Menge aller ganzzahligen Lösungen von
+		\[
+		a^2+b^2+c^2+d^2=p.
+		\]
+		Bezeichne \(r_4(n)\) die Anzahl der Darstellungen von \(n\) als Summe von vier Quadraten, mit Vorzeichen und Reihenfolge gezählt. Nach Jacobis klassischer Formel gilt
+		\[
+		r_4(n)=8\sum_{\substack{d\mid n\\4\nmid d}} d.
+		\]
+		Für die ungerade Primzahl \(p\) sind die Teiler von \(p\) gerade \(1\) und \(p\), also
+		\[
+		r_4(p)=8(1+p).
+		\]
+		Daher folgt
+		\[
+		|X_p^{\mathrm{int}}|=8(p+1).
+		\]
+	\end{proof}
+	
+	\begin{lemma}
+		Für eine ungerade Primzahl \(p\) gilt
+		\[
+		|X_p^{\mathrm{half}}|=16(p+1).
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Ein halbzahlig-hurwitzsches Element von \(X_p\) hat die Form
+		\[
+		x=\frac{m_1}{2}+\frac{m_2}{2}i+\frac{m_3}{2}j+\frac{m_4}{2}k,
+		\qquad m_r\in 2\Z+1,
+		\]
+		und die Bedingung \(\nrd(x)=p\) ist äquivalent zu
+		\[
+		m_1^2+m_2^2+m_3^2+m_4^2=4p
+		\]
+		mit allen \(m_r\) ungerade.
+		
+		Also ist \(|X_p^{\mathrm{half}}|\) gleich der Anzahl der Darstellungen von \(4p\) als Summe von vier \emph{ungeraden} Quadraten.
+		
+		Nach Jacobis Formel gilt
+		\[
+		r_4(4p)=8\sum_{\substack{d\mid 4p\\4\nmid d}} d.
+		\]
+		Da \(p\) ungerade ist, sind die Teiler \(d\) mit \(4\nmid d\) genau
+		\[
+		1,\ 2,\ p,\ 2p.
+		\]
+		Also
+		\[
+		r_4(4p)=8(1+2+p+2p)=24(p+1).
+		\]
+		
+		Nun betrachten wir die Parität der vier Summanden in einer Darstellung
+		\[
+		u_1^2+u_2^2+u_3^2+u_4^2=4p.
+		\]
+		Quadrate sind modulo \(4\) nur \(0\) oder \(1\). Da \(4p\equiv0\pmod4\), kann die Anzahl ungerader \(u_r\) nur \(0\) oder \(4\) sein. Zwei ungerade Summanden würden modulo \(4\) den Wert \(2\) liefern und sind daher ausgeschlossen.
+		
+		Die Darstellungen von \(4p\) zerfallen also genau in:
+		\begin{enumerate}
+			\item vier gerade Summanden,
+			\item vier ungerade Summanden.
+		\end{enumerate}
+		
+		Die Darstellungen mit vier geraden Summanden entsprechen genau den Darstellungen von \(p\), denn
+		\[
+		u_r=2v_r
+		\quad\Longleftrightarrow\quad
+		v_1^2+v_2^2+v_3^2+v_4^2=p.
+		\]
+		Ihre Anzahl ist also
+		\[
+		r_4(p)=8(p+1).
+		\]
+		
+		Folglich ist die Zahl der Darstellungen mit vier ungeraden Summanden
+		\[
+		r_4(4p)-r_4(p)=24(p+1)-8(p+1)=16(p+1).
+		\]
+		Daher
+		\[
+		|X_p^{\mathrm{half}}|=16(p+1).
+		\]
+	\end{proof}
+	
+	\begin{korollar}
+		Für jede ungerade Primzahl \(p\) gilt
+		\[
+		|X_p|=24(p+1).
+		\]
+	\end{korollar}
+	
+	\begin{proof}
+		Aus der disjunkten Zerlegung
+		\[
+		X_p=X_p^{\mathrm{int}}\sqcup X_p^{\mathrm{half}}
+		\]
+		und den beiden vorigen Lemmata folgt
+		\[
+		|X_p|
+		=
+		|X_p^{\mathrm{int}}|+|X_p^{\mathrm{half}}|
+		=
+		8(p+1)+16(p+1)
+		=
+		24(p+1).
+		\]
+	\end{proof}
+	
+	\section{Freie Linkswirkung}
+	
+	\begin{definition}[Linkswirkung]
+		Die Gruppe \(\OH^\times\) wirkt durch Linksmultiplikation auf \(X_p\):
+		\[
+		\OH^\times\times X_p\to X_p,\qquad (u,x)\mapsto ux.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Für jede ungerade Primzahl \(p\) ist \(X_p\) unter der Linkswirkung von \(\OH^\times\) invariant.
+	\end{lemma}
+	
+	\begin{proof}
+		Für \(u\in\OH^\times\) und \(x\in X_p\) gilt
+		\[
+		\nrd(ux)=\nrd(u)\nrd(x)=1\cdot p=p.
+		\]
+		Also ist \(ux\in X_p\).
+	\end{proof}
+	
+	\begin{proposition}
+		Für jede ungerade Primzahl \(p\) ist die Linkswirkung von \(\OH^\times\) auf \(X_p\) frei.
+	\end{proposition}
+	
+	\begin{proof}
+		Sei \(x\in X_p\) und \(u\in\OH^\times\) mit
+		\[
+		ux=x.
+		\]
+		Da \(\nrd(x)=p\neq0\), ist \(x\) in der Quaternionenalgebra \(\QH\) invertierbar, und zwar mit
+		\[
+		x^{-1}=\frac{\bar x}{\nrd(x)}=\frac{\bar x}{p}.
+		\]
+		Multipliziert man die Gleichung \(ux=x\) rechts mit \(x^{-1}\), so erhält man
+		\[
+		u=1.
+		\]
+		Also ist der Stabilisator jedes Elements trivial, und die Wirkung ist frei.
+	\end{proof}
+	
+	\begin{korollar}
+		Für jede ungerade Primzahl \(p\) hat jeder Linksorbit in \(X_p\) die Größe \(24\).
+	\end{korollar}
+	
+	\begin{proof}
+		Da \(|\OH^\times|=24\) und die Wirkung frei ist, folgt dies unmittelbar aus dem Orbit-Stabilisator-Prinzip.
+	\end{proof}
+	
+	\section{Freie Rechtswirkung}
+	
+	\begin{definition}[Rechtswirkung]
+		Die Gruppe \(\OH^\times\) wirkt auch durch Rechtsmultiplikation auf \(X_p\):
+		\[
+		X_p\times\OH^\times\to X_p,\qquad (x,u)\mapsto xu.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Für jede ungerade Primzahl \(p\) ist \(X_p\) unter der Rechtswirkung von \(\OH^\times\) invariant.
+	\end{lemma}
+	
+	\begin{proof}
+		Für \(x\in X_p\) und \(u\in\OH^\times\) gilt
+		\[
+		\nrd(xu)=\nrd(x)\nrd(u)=p\cdot1=p.
+		\]
+		Also ist \(xu\in X_p\).
+	\end{proof}
+	
+	\begin{proposition}
+		Für jede ungerade Primzahl \(p\) ist die Rechtswirkung von \(\OH^\times\) auf \(X_p\) frei.
+	\end{proposition}
+	
+	\begin{proof}
+		Sei \(x\in X_p\) und \(u\in\OH^\times\) mit
+		\[
+		xu=x.
+		\]
+		Da \(x\) in \(\QH\) invertierbar ist, multiplizieren wir links mit \(x^{-1}\) und erhalten
+		\[
+		u=1.
+		\]
+		Also ist auch die Rechtswirkung frei.
+	\end{proof}
+	
+	\begin{korollar}
+		Für jede ungerade Primzahl \(p\) hat jeder Rechtsorbit in \(X_p\) die Größe \(24\).
+	\end{korollar}
+	
+	\begin{proof}
+		Wieder folgt dies unmittelbar aus dem Orbit-Stabilisator-Prinzip.
+	\end{proof}
+	
+	\section{Die Orbitformel}
+	
+	\begin{satz}[Formale Orbitformel]
+		Sei \(p\) eine ungerade Primzahl. Dann gilt
+		\[
+		|\OH^\times\backslash X_p|
+		=
+		|X_p/\OH^\times|
+		=
+		p+1.
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Nach dem vorigen Korollar hat jeder Linksorbit die Größe \(24\), und nach dem Zählresultat gilt
+		\[
+		|X_p|=24(p+1).
+		\]
+		Also
+		\[
+		|\OH^\times\backslash X_p|
+		=
+		\frac{|X_p|}{24}
+		=
+		\frac{24(p+1)}{24}
+		=
+		p+1.
+		\]
+		Dasselbe Argument gilt für die Rechtsorbitmenge \(X_p/\OH^\times\).
+	\end{proof}
+	
+	\begin{korollar}
+		Für jede ungerade Primzahl \(p\) gilt
+		\[
+		|X_p|=24\,|\OH^\times\backslash X_p|
+		=
+		24\,|X_p/\OH^\times|.
+		\]
+	\end{korollar}
+	
+	\section{Offene Strukturfragen}
+	
+	Die formale Orbitformel beantwortet die Zählfrage vollständig, lässt aber mehrere tieferliegende Strukturfragen offen.
+	
+	\begin{konjektur}[Projektive Parametrisierung]
+		Für jede ungerade Primzahl \(p\) ist die Orbitmenge
+		\[
+		\OH^\times\backslash X_p
+		\]
+		kanonisch mit
+		\[
+		\PP^1(\Fp)
+		\]
+		identifizierbar.
+	\end{konjektur}
+	
+	\begin{konjektur}[Rechte projektive Parametrisierung]
+		Für jede ungerade Primzahl \(p\) trägt auch
+		\[
+		X_p/\OH^\times
+		\]
+		eine natürliche projektive Parametrisierung vom Typ
+		\[
+		\PP^1(\Fp).
+		\]
+	\end{konjektur}
+	
+	\begin{konjektur}[Doppelorbits als kanonische lokale Schale]
+		Die eigentliche feine lokale Struktur der Normschale \(X_p\) wird nicht durch die einseitigen Orbitmengen, sondern durch die Doppelorbitmenge
+		\[
+		\OH^\times\backslash X_p/\OH^\times
+		\]
+		kodiert.
+	\end{konjektur}
+	
+	\begin{bemerkung}
+		Der formale Beweis dieses Artikels zeigt nur die einseitige Orbitformel. Er erklärt \emph{nicht}, warum die Zahl \(p+1\) projektiv erscheinen sollte, und er erklärt auch nicht die feinere Links-Rechts-Asymmetrie oder die Struktur der Doppelorbits. Diese Phänomene verlangen vermutlich einen lokal-arithmetischen Zugang, etwa über Ideale, lokale Matrizenalgebren oder Bruhat--Tits-Geometrie.
+	\end{bemerkung}
+	
+	\section{Konzeptionelle Einordnung}
+	
+	Der Hauptsatz dieses Artikels lässt sich in drei formale Aussagen zusammenfassen:
+	
+	\begin{enumerate}
+		\item Die Normschale \(X_p\) besitzt für jede ungerade Primzahl \(p\) genau
+		\[
+		24(p+1)
+		\]
+		Elemente.
+		
+		\item Sowohl die Linkswirkung als auch die Rechtswirkung der \(24\) Hurwitz-Einheiten auf \(X_p\) sind frei.
+		
+		\item Daher haben sowohl die Linksorbitmenge als auch die Rechtsorbitmenge genau \(p+1\) Elemente.
+	\end{enumerate}
+	
+	Diese drei Aussagen sind bereits bemerkenswert, weil sie aus einer Mischung klassischer additiver Zahlentheorie und elementarer Quaternionenalgebra folgen. Die eigentliche geometrische Interpretation der Zahl \(p+1\) bleibt jedoch offen und motiviert die weitergehenden Konjekturen.
+	
+	\section{Schluss}
+	
+	Wir haben formal bewiesen, dass für jede ungerade Primzahl \(p\) die Hurwitz-Normschale
+	\[
+	X_p=\{x\in\OH:\nrd(x)=p\}
+	\]
+	genau \(24(p+1)\) Elemente besitzt. Ferner wurde gezeigt, dass die Einheitengruppe \(\OH^\times\) sowohl von links als auch von rechts frei auf \(X_p\) wirkt. Daraus folgt die Orbitformel
+	\[
+	|\OH^\times\backslash X_p|
+	=
+	|X_p/\OH^\times|
+	=
+	p+1.
+	\]
+	
+	Damit ist der zählende Kern des Problems vollständig gelöst. Offen bleibt die feinere Struktur: die projektive Interpretation der Orbitmengen, die Links-Rechts-Asymmetrie und die Rolle der Doppelorbits. Gerade diese offenen Fragen deuten darauf hin, dass die Hurwitz-Normschalen über ihre reine Zählung hinaus eine tiefere lokale Geometrie tragen.
+	
+\end{document}

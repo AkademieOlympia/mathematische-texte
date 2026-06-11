@@ -1,0 +1,394 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- Kodierung / Sprache / Schrift ---
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+
+% --- Mathematik ---
+\usepackage{amsmath,amssymb,amsfonts,amsthm,mathtools}
+
+% --- Layout / Tabellen / Links ---
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{graphicx}
+
+\geometry{margin=2.7cm}
+
+% --- Standardmakros ---
+\newcommand{\HH}{\mathbb{H}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\OO}{\mathcal{O}}
+\newcommand{\UU}{\mathcal{U}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\nrd}{\operatorname{nrd}}
+\newcommand{\Trd}{\operatorname{Trd}}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\diam}{\operatorname{diam}}
+
+% --- Theorem-Umgebungen ---
+\newtheorem{theorem}{Satz}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Bemerkung}
+\newtheorem{example}[theorem]{Beispiel}
+\newtheorem{hypothesis}[theorem]{Hypothese}
+
+% --- Titel ---
+\title{\textbf{Spektrale Starrheit und algorithmische Effizienz im quaternionischen Energie-Gitter}\\
+	\large Ein formales Minimalmodell auf endlichen Quotienten der Hurwitz-Ordnung}
+\author{[Ihr Name] \\ \small Universität Bamberg (Alumnus) / Interdisziplinäre Forschungsgruppe \#Energiedoku}
+\date{März 2026}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir formulieren ein mathematisch präzises Minimalmodell, in dem quaternionische Gitterstrukturen, endliche reguläre Graphen und spektrale Größen zusammengeführt werden. Ausgangspunkt ist die Hurwitz-Ordnung in der Hamiltonschen Quaternionenalgebra. Aus endlichen Quotienten dieser Ordnung und symmetrischen Erzeugermengen, die durch Elemente vorgegebener reduzierter Norm induziert werden, entstehen endliche reguläre Graphen. Deren Adjazenzoperatoren liefern wohldefinierte Spektrallücken und damit eine präzise Grundlage für Aussagen über Konnektivität, Durchmischung und algorithmische Robustheit.
+		
+		Der Text erhebt keinen Anspruch auf eine direkte Aussage zur Riemannschen Vermutung oder auf eine technische Einbettung in Scholzes Arbeiten. Vielmehr wird ein sauber formulierter diskreter Kern bereitgestellt, an den heuristische und philosophische Deutungen anschließen können.
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Die frühere Fassung dieses Textes arbeitete mit den Begriffen eines ``quaternionischen Zustandsraums'' und ``Hecke-artiger Operatoren'', ohne diese Objekte vollständig zu definieren. Ziel der vorliegenden Überarbeitung ist es, den mathematischen Kern zu präzisieren.
+	
+	Die Grundidee bleibt dieselbe: Quaternionische Gitter sollen als diskrete Träger hochsymmetrischer Informations- und Resonanzstrukturen aufgefasst werden. Neu ist jedoch, dass wir nicht mehr mit einer offenen Metapher beginnen, sondern mit einem expliziten endlichen Modell:
+	
+	\begin{center}
+		\emph{Hurwitz-Ordnung \(\longrightarrow\) endlicher Quotient \(\longrightarrow\) symmetrischer Erzeugersatz \(\longrightarrow\) regulärer Graph \(\longrightarrow\) Adjazenzoperator und Spektrum.}
+	\end{center}
+	
+	Damit lässt sich ``algorithmische Effizienz'' wenigstens auf einer elementaren Ebene präzise als schnelle Durchmischung eines Random Walks auf einem endlichen regulären Graphen verstehen.
+	
+	\section{Die Hurwitz-Ordnung}
+	
+	\begin{definition}
+		Die Hamiltonsche Quaternionenalgebra über \(\RR\) ist
+		\[
+		\HH=\{a+bi+cj+dk \mid a,b,c,d\in\RR\},
+		\]
+		mit den Relationen
+		\[
+		i^2=j^2=k^2=ijk=-1.
+		\]
+		Für \(q=a+bi+cj+dk\in\HH\) definieren wir die Konjugation durch
+		\[
+		\overline q=a-bi-cj-dk,
+		\]
+		die reduzierte Spur durch
+		\[
+		\Trd(q)=q+\overline q=2a,
+		\]
+		und die reduzierte Norm durch
+		\[
+		\nrd(q)=q\overline q=a^2+b^2+c^2+d^2.
+		\]
+	\end{definition}
+	
+	\begin{definition}
+		Die \emph{Hurwitz-Ordnung} ist die \(\ZZ\)-Ordnung
+		\[
+		\OO_H=\ZZ[i,j,k,\omega],\qquad \omega=\frac{1+i+j+k}{2}.
+		\]
+		Äquivalent gilt
+		\[
+		\OO_H=
+		\left\{
+		a+bi+cj+dk \in \HH \;\middle|\;
+		a,b,c,d\in\ZZ \text{ oder } a,b,c,d\in \ZZ+\frac12
+		\right\}.
+		\]
+	\end{definition}
+	
+	\begin{remark}
+		Die additive Gruppe von \(\OO_H\) ist isomorph zum \(D_4\)-Gitter. Diese Beobachtung motiviert die Verbindung zwischen Hurwitz-Quaternionen und hochsymmetrischen diskreten Strukturen.
+	\end{remark}
+	
+	\begin{definition}
+		Die Einheitengruppe der Hurwitz-Ordnung sei
+		\[
+		\UU_H=\{u\in\OO_H \mid \nrd(u)=1\}.
+		\]
+	\end{definition}
+	
+	\begin{proposition}
+		\(\UU_H\) ist endlich. Insbesondere operiert \(\UU_H\) durch Links- und Rechtsmultiplikation normerhaltend auf \(\OO_H\).
+	\end{proposition}
+	
+	\begin{proof}
+		Aus \(\nrd(u)=1\) folgt \(u\overline u=1\), also ist \(u\) invertierbar mit \(u^{-1}=\overline u\). Da \(\OO_H\) diskret in \(\HH\) liegt und die Bedingung \(\nrd(u)=1\) eine kompakte Sphäre in \(\RR^4\) schneidet, gibt es nur endlich viele solche Elemente. Normerhaltung folgt aus der Multiplikativität der reduzierten Norm:
+		\[
+		\nrd(xu)=\nrd(x)\nrd(u)=\nrd(x).
+		\]
+	\end{proof}
+	
+	\section{Endliche Quotienten und norminduzierte Erzeugermengen}
+	
+	Um endliche Graphen zu erhalten, gehen wir zu Quotienten modulo \(N\) über.
+	
+	\begin{definition}
+		Für \(N\ge 1\) sei
+		\[
+		R_N := \OO_H / N\OO_H.
+		\]
+		Dann ist \(R_N\) ein endlicher Ring mit \(|R_N|=N^4\).
+	\end{definition}
+	
+	\begin{proof}
+		Als additive Gruppe ist \(\OO_H\) frei vom Rang \(4\) über \(\ZZ\). Daher ist
+		\[
+		\OO_H/N\OO_H \cong (\ZZ/N\ZZ)^4
+		\]
+		als additive Gruppe, also \(|R_N|=N^4\).
+	\end{proof}
+	
+	Nun benötigen wir einen symmetrischen Erzeugersatz.
+	
+	\begin{definition}
+		Sei \(N\ge 1\) und \(p\nmid N\) eine Primzahl. Wir wählen eine nichtleere endliche Menge
+		\[
+		\Sigma_{N,p}\subset R_N^\times
+		\]
+		mit den Eigenschaften:
+		\begin{enumerate}[label=(\roman*)]
+			\item \(\Sigma_{N,p}\) ist symmetrisch, d.\,h. \(s\in\Sigma_{N,p}\Rightarrow s^{-1}\in\Sigma_{N,p}\),
+			\item \(\Sigma_{N,p}\) wird von Restklassen solcher Elemente von \(\OO_H\) erzeugt, deren reduzierte Norm gleich \(p\) ist,
+			\item \(1\notin\Sigma_{N,p}\).
+		\end{enumerate}
+	\end{definition}
+	
+	\begin{remark}
+		Für den formalen Kern des Textes genügt die Existenz eines solchen symmetrischen endlichen Erzeugersatzes. Eine explizite kanonische Wahl ist für die folgenden Sätze nicht nötig. In einer späteren Ausarbeitung könnte \(\Sigma_{N,p}\) über geeignete Orbitrepräsentanten norm-\(p\)-Elemente modulo Einheiten präzisiert werden.
+	\end{remark}
+	
+	\section{Der quaternionische Graph und sein Adjazenzoperator}
+	
+	\begin{definition}
+		Der \emph{quaternionische Graph} \(G(N,p)\) ist der Cayley-Graph der additiven Menge \(R_N\) oder der multiplikativen Gruppe \(R_N^\times\) bezüglich \(\Sigma_{N,p}\). Im vorliegenden Text verwenden wir die multiplikative Version:
+		\[
+		V(G(N,p)) := R_N^\times,
+		\]
+		und zwei Knoten \(x,y\in R_N^\times\) sind genau dann benachbart, wenn
+		\[
+		y = sx
+		\quad\text{für ein } s\in \Sigma_{N,p}.
+		\]
+	\end{definition}
+	
+	\begin{remark}
+		Die Multiplikation links oder rechts spielt für die grundlegenden spektralen Aussagen keine wesentliche Rolle, solange die Wahl im ganzen Text konsistent getroffen wird.
+	\end{remark}
+	
+	\begin{definition}
+		Der zugehörige Adjazenzoperator
+		\[
+		T_{N,p}\colon \ell^2(R_N^\times)\to \ell^2(R_N^\times)
+		\]
+		ist definiert durch
+		\[
+		(T_{N,p}f)(x)=\sum_{s\in\Sigma_{N,p}} f(sx).
+		\]
+	\end{definition}
+	
+	\begin{proposition}
+		Der Graph \(G(N,p)\) ist endlich und \(|\Sigma_{N,p}|\)-regulär.
+	\end{proposition}
+	
+	\begin{proof}
+		Die Knotenmenge \(R_N^\times\) ist endlich, da \(R_N\) endlich ist. Für jedes \(x\in R_N^\times\) und jedes \(s\in\Sigma_{N,p}\) ist \(sx\in R_N^\times\). Da die Linksübersetzung \(x\mapsto sx\) bijektiv ist, besitzt jeder Knoten genau \(|\Sigma_{N,p}|\) Nachbarn, gezählt mit der durch \(\Sigma_{N,p}\) vorgegebenen Multiplizität. Wegen \(1\notin\Sigma_{N,p}\) treten keine Schleifen auf.
+	\end{proof}
+	
+	\begin{proposition}
+		Ist \(\Sigma_{N,p}\) symmetrisch, so ist \(T_{N,p}\) selbstadjungiert bezüglich des Standardskalarprodukts auf \(\ell^2(R_N^\times)\). Insbesondere sind alle Eigenwerte reell.
+	\end{proposition}
+	
+	\begin{proof}
+		Für \(f,g\in \ell^2(R_N^\times)\) gilt
+		\[
+		\langle T_{N,p}f,g\rangle
+		=
+		\sum_{x}\sum_{s\in\Sigma_{N,p}} f(sx)\overline{g(x)}.
+		\]
+		Mit der Substitution \(y=sx\) und wegen der Bijektivität von \(x\mapsto sx\) folgt
+		\[
+		\langle T_{N,p}f,g\rangle
+		=
+		\sum_{y}\sum_{s\in\Sigma_{N,p}} f(y)\overline{g(s^{-1}y)}.
+		\]
+		Da \(\Sigma_{N,p}\) symmetrisch ist, läuft \(s^{-1}\) wieder über \(\Sigma_{N,p}\). Somit
+		\[
+		\langle T_{N,p}f,g\rangle
+		=
+		\sum_{y} f(y)\overline{\sum_{s\in\Sigma_{N,p}} g(sy)}
+		=
+		\langle f,T_{N,p}g\rangle.
+		\]
+	\end{proof}
+	
+	\begin{proposition}
+		Sei \(d=|\Sigma_{N,p}|\). Dann ist die konstante Funktion \(\mathbf{1}\) Eigenfunktion von \(T_{N,p}\) zum Eigenwert \(d\).
+	\end{proposition}
+	
+	\begin{proof}
+		Für jedes \(x\in R_N^\times\) gilt
+		\[
+		(T_{N,p}\mathbf{1})(x)
+		=
+		\sum_{s\in\Sigma_{N,p}} 1
+		=
+		d.
+		\]
+		Also \(T_{N,p}\mathbf{1}=d\,\mathbf{1}\).
+	\end{proof}
+	
+	\section{Spektrallücke und Durchmischung}
+	
+	\begin{definition}
+		Sei \(d=|\Sigma_{N,p}|\), und seien
+		\[
+		d=\lambda_1\ge \lambda_2\ge \cdots \ge \lambda_m
+		\]
+		die Eigenwerte von \(T_{N,p}\), nach Größe geordnet. Wir definieren die \emph{Spektrallücke} durch
+		\[
+		\Delta(N,p):=d-\max_{j\ge 2}|\lambda_j|.
+		\]
+	\end{definition}
+	
+	\begin{remark}
+		Diese Definition ist die für reguläre, nicht notwendig bipartite Graphen übliche absolute Spektrallücke. Sie vermeidet die Inkonsistenz der älteren Version, in der Vorzeichen und Betrag nicht sauber auseinandergehalten wurden.
+	\end{remark}
+	
+	\begin{theorem}
+		Angenommen, \(G(N,p)\) sei zusammenhängend und \(d\)-regulär. Dann gilt:
+		\begin{enumerate}[label=(\alph*)]
+			\item \(\lambda_1=d\) ist ein einfacher Eigenwert;
+			\item für alle \(j\ge 2\) gilt \(|\lambda_j|\le d\);
+			\item ist \(\Delta(N,p)>0\), so konvergiert der normierte Random Walk auf \(G(N,p)\) exponentiell schnell gegen die Gleichverteilung.
+		\end{enumerate}
+	\end{theorem}
+	
+	\begin{proof}
+		(a) und (b) sind Standardresultate der Spektraltheorie endlicher regulärer Graphen.  
+		Für (c) betrachte den Markov-Operator
+		\[
+		P_{N,p}:=\frac1d\,T_{N,p}.
+		\]
+		Seine Eigenwerte sind \(1,\lambda_2/d,\dots,\lambda_m/d\). Aus \(\Delta(N,p)>0\) folgt
+		\[
+		\rho:=\max_{j\ge 2}\left|\frac{\lambda_j}{d}\right|<1.
+		\]
+		Daher zerfällt jede Anfangsfunktion in einen konstanten Anteil und einen dazu orthogonalen Anteil, und letzterer wird unter Iteration von \(P_{N,p}\) mit Rate \(\rho^t\) kontrahiert. Dies ist genau die exponentielle Durchmischung gegen die stationäre Gleichverteilung.
+	\end{proof}
+	
+	\begin{corollary}
+		Eine positive Spektrallücke liefert in diesem Minimalmodell eine präzise mathematische Bedeutung von ``algorithmischer Effizienz'': lokale Information wird durch den zugehörigen Random Walk schnell global verteilt.
+	\end{corollary}
+	
+	\section{Was formal bewiesen ist — und was nicht}
+	
+	Die mathematisch belastbaren Aussagen dieses Textes sind bewusst bescheiden. Bewiesen oder unmittelbar aus Standardtheorie ableitbar sind:
+	
+	\begin{enumerate}[label=\arabic*.]
+		\item Die Hurwitz-Ordnung \(\OO_H\) ist eine wohldefinierte \(\ZZ\)-Ordnung in \(\HH\).
+		\item Die Quotienten \(R_N=\OO_H/N\OO_H\) sind endlich.
+		\item Aus jeder endlichen symmetrischen Erzeugermenge \(\Sigma_{N,p}\subset R_N^\times\) entsteht ein endlicher regulärer Graph.
+		\item Der zugehörige Adjazenzoperator ist selbstadjungiert.
+		\item Eine positive Spektrallücke impliziert schnelle Durchmischung des normierten Random Walks.
+	\end{enumerate}
+	
+	Nicht bewiesen werden in diesem Text hingegen:
+	
+	\begin{enumerate}[label=\arabic*.]
+		\item eine explizite Ramanujan-Eigenschaft der Graphen \(G(N,p)\),
+		\item eine kanonische hecke-theoretische Interpretation aller Operatoren \(T_{N,p}\),
+		\item irgendeine Folgerung zur Riemannschen Vermutung,
+		\item eine technische Verbindung zu Perfectoid Spaces oder zu Scholzes Arbeiten.
+	\end{enumerate}
+	
+	\section{Heuristische Deutung}
+	
+	Gerade weil der formale Kern nun klar ist, können heuristische Begriffe sauberer eingeordnet werden.
+	
+	\begin{definition}
+		Im Kontext dieses Minimalmodells nennen wir die Größe \(\Delta(N,p)\) ein \emph{Maß struktureller Robustheit}, weil sie kontrolliert, wie schnell Nichtgleichgewichtszustände abgebaut werden.
+	\end{definition}
+	
+	\begin{remark}
+		Diese Definition ist bewusst mathematisch bescheiden. Sie ersetzt unscharfe Formulierungen wie ``energetische Arbitrage'' oder ``Unterdrückung von Abweichungen von der kritischen Linie'' durch eine präzise Graph- und Operatoraussage.
+	\end{remark}
+	
+	\begin{hypothesis}
+		Es könnte Familien von Paaren \((N,p)\) geben, für die die Graphen \(G(N,p)\) nicht nur regulär und gut durchmischt sind, sondern tatsächlich eine tieferliegende arithmetische Struktur reflektieren. Ob dies in Richtung automorpher Spektren, Hecke-Algebren oder zetaartiger Verteilungen führt, bleibt offen.
+	\end{hypothesis}
+	
+	\section{Scholze-Bezug}
+	
+	Der Bezug zu Peter Scholze ist in dieser überarbeiteten Fassung ausschließlich motivischer Natur. Die Parallele liegt nicht in einer technischen Ableitung, sondern in einer methodischen Haltung: arithmetische Information wird nicht isoliert, sondern über geeignete Räume und Operatoren organisiert.
+	
+	\begin{remark}
+		Damit ist der Scholze-Bezug legitim, solange er nicht stärker behauptet wird, als er ist. Der vorliegende Text ist \emph{nicht} Teil der perfectoiden oder prismatischen Theorie, sondern ein eigenständiges diskretes Modell mit arithmetischer Inspiration.
+	\end{remark}
+	
+	\section{Ausblick}
+	
+	Der mathematisch nächste sinnvolle Schritt wäre nicht eine große philosophische Zuspitzung, sondern eine explizite Konstruktion:
+	\begin{enumerate}[label=\arabic*.]
+		\item konkrete Wahl von \(\Sigma_{N,p}\) aus norm-\(p\)-Elementen modulo Einheiten,
+		\item Berechnung kleiner Beispiele,
+		\item Vergleich der Spektren für verschiedene \(N\) und \(p\),
+		\item Untersuchung, ob bestimmte Familien tatsächlich Ramanujan-artige Schranken erfüllen.
+	\end{enumerate}
+	
+	Erst auf dieser Basis wäre eine stärkere arithmetische Interpretation gerechtfertigt.
+	
+	\begin{thebibliography}{99}
+		
+		\bibitem{conway_sloane}
+		J. H. Conway and N. J. A. Sloane.
+		\newblock \textit{Sphere Packings, Lattices and Groups}.
+		\newblock Springer, 3. Auflage, 1999.
+		
+		\bibitem{lubotzky}
+		Alexander Lubotzky.
+		\newblock \textit{Discrete Groups, Expanding Graphs and Invariant Measures}.
+		\newblock Birkhäuser, 1994.
+		
+		\bibitem{serre}
+		Jean-Pierre Serre.
+		\newblock \textit{Trees}.
+		\newblock Springer, 1980.
+		
+		\bibitem{terrass}
+		Audrey Terras.
+		\newblock \textit{Fourier Analysis on Finite Groups and Applications}.
+		\newblock Cambridge University Press, 1999.
+		
+		\bibitem{vigneras}
+		Marie-France Vignéras.
+		\newblock \textit{Arithmétique des algèbres de quaternions}.
+		\newblock Springer, 1980.
+		
+		\bibitem{titchmarsh}
+		E. C. Titchmarsh.
+		\newblock \textit{The Theory of the Riemann Zeta-Function}.
+		\newblock Oxford University Press.
+		
+		\bibitem{scholze}
+		Peter Scholze.
+		\newblock Arbeiten zur modernen arithmetischen Geometrie, insbesondere zu Perfectoid Spaces und verwandten Strukturen.
+		\newblock Verschiedene Artikel und Preprints.
+		
+	\end{thebibliography}
+	
+\end{document}

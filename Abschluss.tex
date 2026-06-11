@@ -1,0 +1,168 @@
+% Kombinierbarer Einschub fuer ein groesseres Hauptdokument.
+% Vorgesehen fuer \input{Abschluss.tex} oder \include{Abschluss}.
+
+\section{Numerische Unterlegung von Section 7}
+\label{sec:section7_numerische_unterlegung}
+
+Die bisherige inhaltliche Struktur von Section~7 laesst sich nun auch
+numerisch unterlegen. Ziel ist es, die wesentlichen Marker nicht nur
+qualitativ zu benennen, sondern ihre Stabilitaet in zwei verschiedenen
+Regimen sowie ihre Kopplung an die Nullstellenseite sichtbar zu machen.
+
+\subsection{Erzeugte Dateien}
+
+Die numerische Auswertung fuehrt auf vier zentrale Ausgabedateien:
+\begin{itemize}
+\item \texttt{Section 7 -- Bericht},
+\item \texttt{Alle Extrapolationswerte},
+\item \texttt{Markeruebersicht fuer $s=1$ und $s=-1$},
+\item \texttt{Fenstervergleich zur Nullstellenseite}.
+\end{itemize}
+
+Diese Dateien bilden zusammen die numerische Basis fuer die folgende
+Interpretation.
+
+\subsection{Untersuchte Observablen}
+
+Betrachtet wurden fuenf zentrale Observablen:
+\begin{itemize}
+\item $K_{\mathrm{add}}$,
+\item $G_{P,235}$,
+\item $\mathrm{Bridge}_{P,M}$,
+\item $\mathrm{Bridge}_{P,W}$,
+\item $d_e$ als Abstand zur naechsten E-Primstelle.
+\end{itemize}
+
+Fuer jede dieser Groessen wurden zwei komplementaere Regime parallel
+untersucht.
+
+\subsection{Das $s=1$-Regime}
+
+Im ersten Regime wurden die Partialsummen
+\[
+\sum_{p\le X}\frac{F(p)}{p}
+\]
+gegen
+\[
+\log\log X+\gamma
+\]
+gefittet. Die Euler-Mascheroni-Konstante
+\[
+\gamma \approx 0.5772156649
+\]
+fungiert dabei nicht nur als kosmetische Verschiebung, sondern als
+explizites Zentrum des harmonischen beziehungsweise polnahen
+$s=1$-Verhaltens.
+
+\subsection{Das $s=-1$-Regime}
+
+Im zweiten Regime wurden die rohen Summen
+\[
+\sum_{p\le X} F(p)\,p
+\]
+mit einem Trendmodell der Form
+\[
+a\,X\log X+b\,X+c\,\log X+d
+\]
+approximiert. Anschliessend wurden die Residuen untersucht. Diese
+Regularisierung ist zwar noch keine analytische Fortsetzung im strengen
+Sinn, sie ist numerisch aber ausreichend stabil, um zwischen ruhigen und
+unruhigen Kanaelen zu unterscheiden.
+
+\subsection{Lesart der Markeruebersicht}
+
+Die zentrale Tabelle ist die Markeruebersicht fuer $s=1$ und $s=-1$.
+Sie enthaelt fuer jede Observable insbesondere:
+\begin{itemize}
+\item die Steigung im $\gamma$-zentrierten $s=1$-Fit,
+\item den letzten Residualwert,
+\item die Gesamtbreite der Residuen,
+\item die Koeffizienten des Trendmodells im $s=-1$-Regime.
+\end{itemize}
+
+Praktisch ist die Interpretation einfach:
+\begin{itemize}
+\item Eine kleine \texttt{s1\_residual\_range} bedeutet, dass sich der
+Kanal gut an das Bild $\log\log X+\gamma$ anschliesst.
+\item Eine kleine \texttt{sminus1\_residual\_range} bedeutet, dass der
+Kanal nach Trendabzug im $s=-1$-Regime ruhiger bleibt und damit als
+Regularisierungsmarker plausibler wird.
+\end{itemize}
+
+\subsection{Vergleich mit der Nullstellenseite}
+
+Dieselben fuenf Observablen wurden zusaetzlich in
+$10\,000$er-Fenstern gegen residuale Nullstellenkanaele verglichen:
+\begin{itemize}
+\item $\Delta_{\mathrm{res}}$,
+\item $\Lambda_{\mathrm{res}}$,
+\item $\Theta_{Z,\mathrm{res}}$.
+\end{itemize}
+
+Die zugehoerige Zusammenfassung liegt im Fenstervergleich zur
+Nullstellenseite. Der zentrale Sammelindikator ist
+\texttt{score\_abs\_sum}; je groesser dieser Wert ist, desto staerker ist
+die kombinierte Kopplung einer Observable an die Nullstellenseite.
+
+Damit liegen erstmals zwei Perspektiven zugleich in derselben
+Auswertung vor:
+\begin{itemize}
+\item Regularisierungsruhe,
+\item Nullstellenkopplung.
+\end{itemize}
+
+\subsection{Inhaltliches Zwischenurteil}
+
+Der gegenwaertige numerische Stand laesst sich in vier Punkten
+zusammenfassen:
+\begin{enumerate}
+\item Die Euler-Mascheroni-Konstante $\gamma$ gehoert tatsaechlich ins
+Zentrum des $s=1$-Regimes. Die Darstellung
+\[
+\log\log X+\gamma
+\]
+erweist sich numerisch als sinnvolle Referenzachse.
+
+\item Die additive und die multiplikative Seite trennen sich weiter
+klar. $K_{\mathrm{add}}$ bleibt die natuerlichste additive Groesse,
+waehrend $G_{P,235}$ weiterhin den staerksten multiplikativen
+Haupttraeger bildet.
+
+\item Die Brueckengroessen $\mathrm{Bridge}_{P,M}$ und
+$\mathrm{Bridge}_{P,W}$ sind nicht nur dekorative Differenzen, sondern
+plausible Kandidaten fuer eine vermittelnde Regularisierung zwischen dem
+$\gamma$-zentrierten $s=1$-Bild und dem $s=-1$-regulierten additiven
+Bild.
+
+\item Der Abstand $d_e$ zur naechsten E-Primstelle ist inzwischen als
+mitlaufende numerische Groesse fest eingebaut und kann als endlicher
+Achsenabstieg des e-Anteils gegen den ABC-Kern gelesen werden.
+\end{enumerate}
+
+\subsection{Verdichtete Gesamtformulierung}
+
+Die gegenwaertige Gesamtlage laesst sich wie folgt verdichten:
+
+Die Euler-Mascheroni-Konstante $\gamma$ organisiert das harmonische
+beziehungsweise polnahe $s=1$-Regime der Vierlingskanaele. Die additive
+kleinsche Seite traegt das $s=-1$-Regime, waehrend die glatte
+Produktschale die multiplikative Hauptstruktur traegt. Die
+Brueckengroessen zwischen glattem und kleinschem Anteil sind die
+natuerlichen Kandidaten fuer eine vermittelnde Regularisierung. Der
+Abstand zur naechsten E-Primstelle fungiert dabei als endlicher
+Achsenabstieg des e-Anteils gegen den ABC-Kern.
+
+\subsection{Naechste Synthese}
+
+Als naechster Schritt bietet sich eine kurze Ergebnis-Section oder ein
+kompaktes Fazit an, das insbesondere folgende Fragen fokussiert:
+\begin{itemize}
+\item Welche Groesse ist derzeit der beste additive Marker?
+\item Welche Groesse ist derzeit der beste multiplikative Marker?
+\item Welche Bruecke vermittelt derzeit am besten?
+\item Wo sitzen $\gamma$, $-1/12$ und der abc-Anschluss innerhalb des
+gemeinsamen Bildes?
+\end{itemize}
+
+In dieser Form ist das Material als eigenstaendige, aber gut
+kombinierbare LaTeX-Sektion vorbereitet.

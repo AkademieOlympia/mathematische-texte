@@ -1,0 +1,486 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage[a4paper,margin=2.6cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm}
+\usepackage{physics}
+\usepackage{microtype}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{csquotes}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue!50!black,
+	citecolor=blue!50!black,
+	urlcolor=blue!50!black,
+	pdftitle={Ein reduzierter BM-Viererrahmen aus Zeit, Raum, Energie und Impuls},
+	pdfauthor={Thomas Hoffbauer},
+	pdfsubject={Standalone-Übersichtsartikel},
+	pdfkeywords={Bamberg-Modell, Minkowski-Metrik, Energie-Impuls, Aharonov-Bohm, Maxwell, Oktonionen}
+}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{bemerkung}[definition]{Bemerkung}
+\newtheorem{beispiel}[definition]{Beispiel}
+\theoremstyle{plain}
+\newtheorem{satz}[definition]{Satz}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+
+\title{Ein reduzierter BM-Viererrahmen aus Zeit, Raum, Energie und Impuls\\
+	\large Ein deutschsprachiger Übersichts- und Gedankenartikel in arXiv-Manier}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Dieser Artikel entwickelt ein eigenständiges Gedankenmodell, in dem vier ausgezeichnete Richtungen eines spektral-geometrischen Bamberg-Modells (BM) in einen reduzierten relativistischen Rahmen überführt werden. Ausgangspunkt ist eine bereits zuvor motivierte Zuordnung zweier Achsen $A$ und $C$ zu zeit- und raumartigen Freiheitsgraden. Der vorliegende Artikel führt diesen Gedanken systematisch weiter, indem zusätzlich die Richtungen $e$ und $b$ als Energie- bzw. Impulsachse interpretiert werden. Dadurch entsteht ein vierfacher BM-Rahmen, in dem Raum-Zeit-Intervalle und Energie-Impuls-Invarianten formal denselben Signaturtyp besitzen.
+		
+		Die leitende These lautet: Wenn aus Dauern und Abständen Geschwindigkeiten definiert werden, dann erzeugt deren erste Ableitung eine Beschleunigung; in einem topologisch-geometrischen Zustandsraum kann dieselbe Größe zugleich als Krümmung gelesen werden. Auf dieser Grundlage werden Maxwell-Geschwindigkeit, Phasengeschwindigkeit, Aharonov--Bohm-artige Potentialphase, Plateauübergänge und eine reduzierte Minkowski-Metrik in einem gemeinsamen Beziehungsrahmen formuliert. Der Artikel versteht sich ausdrücklich als heuristische und begrifflich geordnete Ausarbeitung, nicht als abgeschlossene physikalische Theorie. Ziel ist eine saubere Herleitung jener Minimalstruktur, in der die Gleichung
+		\[
+		E^2 = p^2 c^2 + m^2 c^4
+		\]
+		bzw. in BM-Schreibweise
+		\[
+		e^2 - c_M^2 b^2 = m_{\mathrm{BM}}^2 c_M^4
+		\]
+		als Abschlussform eines gedachten Vierersystems erscheint.
+	\end{abstract}
+	
+	\tableofcontents
+	
+	\section{Einleitung}
+	
+	Das Bamberg-Modell (BM) ist in seinem gegenwärtigen Zustand am ehesten als heuristischer Forschungsrahmen zu verstehen, in dem arithmetische, geometrische, spektrale und phasenartige Strukturen miteinander in Beziehung gesetzt werden. Zahlreiche frühere Überlegungen des Modells führen dabei immer wieder auf eine Viererarchitektur: vier ausgezeichnete Klassen oder Richtungen, vierkanalige Zustände, konkurrierende Viererprofile und eine singulär-dreifache Aufspaltung eines Vollkerns. Bereits auf dieser Ebene liegt die Vermutung nahe, dass die Viererstruktur mehr ist als bloße Notation.
+	
+	Ein besonders fruchtbarer Gedanke besteht darin, innerhalb dieses Vierersystems zwei Richtungen als zeit- und raumartige Freiheitsgrade zu lesen. In einer reduzierten Form wurde vorgeschlagen, die Richtungen $A$ und $C$ in genau diesem Sinn zu deuten. Dann entsteht ein erster Minkowski-artiger Rahmen, in dem eine effektive Maxwell-Geschwindigkeit und eine phasengetragene Frontgeschwindigkeit gemeinsam beschrieben werden können.
+	
+	Der vorliegende Artikel geht einen Schritt weiter. Er schlägt vor, zusätzlich die Richtungen $e$ und $b$ als Energie- und Impulsachse zu interpretieren. Dadurch ergibt sich ein vollständiger Viererrahmen
+	\[
+	(A,C,e,b),
+	\]
+	in dem
+	\begin{itemize}[leftmargin=2em]
+		\item $A$ eine Zeitrichtung,
+		\item $C$ eine Raumrichtung,
+		\item $e$ eine Energieachse,
+		\item und $b$ eine Impulsachse
+	\end{itemize}
+	darstellen. Ziel des Artikels ist es, diese Zuordnung nicht bloß als knappe Analogie, sondern als eigenständiges, ausführlich begründetes Gedankenexperiment auszuarbeiten.
+	
+	Dabei werden mehrere bereits vorhandene Motivlinien zusammengeführt:
+	\begin{enumerate}[leftmargin=2em]
+		\item die singulär-dreifache Struktur des BM,
+		\item die Aharonov--Bohm-inspirierte Phasenlogik,
+		\item ein Maxwell-Regime mit effektiver Ausbreitungsgeschwindigkeit,
+		\item die Einstein’sche Idee, Beschleunigung und Gravitation geometrisch zu verknüpfen,
+		\item sowie die relativistische Energie-Impuls-Invariante.
+	\end{enumerate}
+	
+	Der Leitgedanke ist dabei einfach und zugleich weitreichend:
+	\begin{quote}
+		Wenn aus Dauern und Abständen Geschwindigkeiten entstehen, dann erzeugt deren erste Ableitung eine Beschleunigung. In einem topologisch-geometrischen Zustandsraum kann diese Beschleunigung zugleich als Krümmung gelesen werden. Werden nun Raum-Zeit- und Energie-Impuls-Struktur demselben Signaturrahmen unterworfen, so erscheint die relativistische Invariante als natürliche Abschlussform des Gedankenexperiments.
+	\end{quote}
+	
+	\section{Vorbemerkungen zum Status des Modells}
+	
+	\subsection{Heuristischer Charakter}
+	
+	Dieser Artikel ist ausdrücklich kein Beweis einer physikalischen Theorie und auch kein Anspruch darauf, Spezialrelativität, Elektrodynamik oder Quantenmechanik aus dem BM streng herzuleiten. Vielmehr handelt es sich um eine strukturierte Heuristik. Das bedeutet:
+	\begin{itemize}[leftmargin=2em]
+		\item Es werden saubere Begriffe und Gleichungen vorgeschlagen.
+		\item Die Beziehungen zwischen ihnen werden argumentativ motiviert.
+		\item Wo möglich, werden die Übergänge formal konsistent gehalten.
+		\item Es wird aber nicht behauptet, dass alle physikalischen Interpretationen bereits endgültig feststehen.
+	\end{itemize}
+	
+	\subsection{Warum ein Standalone-Artikel sinnvoll ist}
+	
+	Die hier behandelte Frage --- wie Zeit, Raum, Energie und Impuls innerhalb eines reduzierten BM-Rahmens gemeinsam gefasst werden können --- ist konzeptionell so zentral, dass sie sich gut als eigenständiger Artikel eignet. Einerseits ist sie schmal genug, um eine klare Linie zu behalten; andererseits berührt sie so viele Grundbegriffe, dass eine ausführliche Herleitung sinnvoll erscheint.
+	
+	\section{Vom BM zur reduzierten Raum-Zeit-Struktur}
+	
+	\subsection{Die Wahl der Achsen $A$ und $C$}
+	
+	Nehmen wir als Gedankenexperiment an, dass zwei ausgezeichnete BM-Richtungen, hier mit $A$ und $C$ bezeichnet, als zeit- bzw. raumartige Strahlen gelesen werden können. Dann ist die erste Minimalzuordnung
+	\[
+	A \leftrightarrow \text{Zeit},
+	\qquad
+	C \leftrightarrow \text{Raum}.
+	\]
+	Diese Zuordnung ist zunächst nicht mehr als eine Modellwahl. Sie ist jedoch deswegen plausibel, weil bereits frühere Überlegungen des BM eine asymmetrische Rollenverteilung zwischen verschiedenen Richtungen nahegelegt haben: einige wirken eher takthaft oder vermittelnd, andere eher ausdehnungs- oder distanzartig.
+	
+	\subsection{Dauer und Abstand als Ursprung der Geschwindigkeit}
+	
+	Sobald eine Achse zeitartig und eine andere raumartig gelesen wird, ist die Definition einer Geschwindigkeit nahezu unvermeidlich. Im kontinuierlichen Formalismus ergibt sich
+	\[
+	v_{AC} = \frac{dC}{dA}.
+	\]
+	Diese Größe ist die einfachste Relation zwischen Abstand und Dauer. Sie ist noch nicht notwendig eine physikalische Teilchengeschwindigkeit, sondern zunächst nur die Änderungsrate des raumartigen Strahls relativ zum zeitartigen Strahl.
+	
+	\begin{bemerkung}
+		Bereits auf dieser Ebene zeigt sich, dass die Geschwindigkeitsidee nicht von außen an das Modell herangetragen wird. Sie entsteht aus der bloßen Existenz einer Zeit-Raum-Zuordnung.
+	\end{bemerkung}
+	
+	\subsection{Ein reduzierter Minkowski-Rahmen}
+	
+	Ist $A$ zeitartig und $C$ raumartig, so liegt eine signaturbehaftete Metrik nahe. Als Minimalform setzen wir
+	\[
+	ds^2 = c_M^2\, dA^2 - dC^2,
+	\]
+	wobei $c_M$ eine effektive Maxwell-Geschwindigkeit des Regimes bezeichnet.
+	
+	Die Bedeutung dieser Größe ist doppelt:
+	\begin{itemize}[leftmargin=2em]
+		\item Sie fungiert als Umrechnungsfaktor zwischen Zeit- und Raumanteil.
+		\item Sie bestimmt die Signaturgrenze zwischen zeitartigen, lichtartigen und raumartigen Bewegungen im reduzierten BM-Raum.
+	\end{itemize}
+	
+	Damit erhält das Modell bereits eine erste relativistische Kinematik:
+	\[
+	\abs{v_{AC}} < c_M \quad \Rightarrow \quad \text{zeitartig},
+	\]
+	\[
+	\abs{v_{AC}} = c_M \quad \Rightarrow \quad \text{lichtartig},
+	\]
+	\[
+	\abs{v_{AC}} > c_M \quad \Rightarrow \quad \text{raumartig}.
+	\]
+	
+	\section{Maxwell-Regime und Phasengeschwindigkeit}
+	
+	\subsection{Die Maxwell-Geschwindigkeit}
+	
+	Im reduzierten BM-Rahmen bezeichnet die Maxwell-Geschwindigkeit die kausale Ausbreitung eines lokalen Feld- oder Potentialwechsels. In der AC-Sprache ist sie als Grenzgeschwindigkeit des Regimes kodiert. Formal schreibt man den lokalen Bewegungsbegriff als
+	\[
+	v_{\mathrm{Max}} = \frac{dC}{dA}.
+	\]
+	
+	In diesem Artikel wird bewusst offen gelassen, ob $c_M$ exakt mit der physikalischen Lichtgeschwindigkeit identifiziert werden soll oder nur als effektive Regimekonstante zu verstehen ist. Für den heuristischen Aufbau genügt, dass $c_M$ die Signatur fixiert.
+	
+	\subsection{Phasenfronten}
+	
+	Sobald das Modell nicht nur Feldgrößen, sondern auch Phasen trägt, entsteht ein zweiter Geschwindigkeitsbegriff. Sei
+	\[
+	\Phi = \Phi(A,C)
+	\]
+	eine effektive Phase. Eine Fläche konstanter Phase ist durch
+	\[
+	\Phi(A,C)=\text{const}
+	\]
+	definiert. Durch Differentiation folgt
+	\[
+	\partial_A \Phi\, dA + \partial_C \Phi\, dC = 0,
+	\]
+	also
+	\[
+	v_\phi = \frac{dC}{dA} = -\frac{\partial_A \Phi}{\partial_C \Phi}.
+	\]
+	
+	Dies ist die reduzierte Phasengeschwindigkeit. Sie steht von Anfang an im selben AC-Rahmen wie die Maxwell-Geschwindigkeit.
+	
+	\subsection{Warum zwei Geschwindigkeiten nötig sind}
+	
+	Die Maxwell-Geschwindigkeit beschreibt die kausale Ausbreitung einer lokalen Änderung; die Phasengeschwindigkeit beschreibt die Bewegung einer Fläche konstanter Phase. Beide sind verschieden, aber strukturell analog:
+	\begin{itemize}[leftmargin=2em]
+		\item Die eine ist feld- bzw. wellendynamisch,
+		\item die andere interferenz- oder potentialgetragen.
+	\end{itemize}
+	
+	Gerade diese Doppelheit macht den reduzierten BM-Rahmen attraktiv, weil er beide Begriffe im selben Signatursystem erscheinen lässt.
+	
+	\section{Aharonov--Bohm-Regime und topologische Phase}
+	
+	\subsection{Potentiale statt bloßer Feldstärken}
+	
+	Ein entscheidender Schritt ist die Einsicht, dass nicht nur Feldstärken, sondern bereits Potentiale physikalisch wirksam sein können. Im Aharonov--Bohm-Effekt wird die Phase eines Systems durch die Holonomie des Potentials beeinflusst, auch wenn lokal entlang des Weges keine klassische Feldkraft wirkt.
+	
+	Im BM-Rahmen motiviert dies die Einführung eines topologischen Phasenanteils
+	\[
+	\Phi_{\mathrm{AB}}.
+	\]
+	Dieser wird nicht als Zusatz außerhalb der Raum-Zeit-Geometrie behandelt, sondern als integraler Bestandteil der effektiven Gesamtphase.
+	
+	\subsection{Tri- und Okto-Potentiale}
+	
+	Im erweiterten BM-Vokabular sei die Phase durch zwei effektive Potentialfamilien geprägt:
+	\[
+	\mathcal A_{\mathrm{tri}},
+	\qquad
+	\mathcal A_{\mathrm{okto}}.
+	\]
+	Sie werden hier nur in ihrer strukturellen Rolle gebraucht:
+	\begin{itemize}[leftmargin=2em]
+		\item $\mathcal A_{\mathrm{tri}}$ kodiert die dreifache Gegenstruktur,
+		\item $\mathcal A_{\mathrm{okto}}$ kodiert die globale Vierer- oder Vollschalenstruktur.
+	\end{itemize}
+	
+	Daraus ergibt sich eine effektive BM-Phase
+	\[
+	\Phi_{\mathrm{BM}}(A,C)
+	=
+	\Phi_{\mathrm{Max}}(A,C)+\Phi_{\mathrm{AB}}(A,C),
+	\]
+	mit dem topologischen Anteil im weiteren Sinn als Holonomiebeitrag.
+	
+	\subsection{Die Regimefront}
+	
+	Um den Übergang zwischen einem Maxwell-dominierten und einem AB-dominierten Regime zu beschreiben, definieren wir einen Ordnungsparameter
+	\[
+	\eta(A,C)=\frac{|\Phi_{\mathrm{AB}}|}{|\Phi_{\mathrm{Max}}|+|\Phi_{\mathrm{AB}}|}.
+	\]
+	Dann gilt heuristisch:
+	\begin{itemize}[leftmargin=2em]
+		\item $\eta\approx 0$: Maxwell-dominiert,
+		\item $\eta\approx 1$: topologisch-phasen-dominiert.
+	\end{itemize}
+	
+	Die Kurve
+	\[
+	\eta(A,C)=\eta_c
+	\]
+	mit einem kritischen Schwellenwert $\eta_c$ beschreibt die Regimefront. Ihre Geschwindigkeit ist
+	\[
+	v_{\mathrm{reg}} = \frac{dC_*}{dA},
+	\]
+	wenn $C_*(A)$ die Lage der Front bezeichnet.
+	
+	\section{Beschleunigung, Krümmung und Einstein’sche Lesart}
+	
+	\subsection{Erste Ableitung, zweite Ordnung}
+	
+	Ist eine Geschwindigkeit gegeben, so ist ihre erste Ableitung eine Beschleunigung. Für die AC-Bewegung ergibt sich
+	\[
+	a_{AC} = \frac{d}{dA}\left(\frac{dC}{dA}\right) = \frac{d^2 C}{dA^2}.
+	\]
+	Analog kann für die Phasenfrontgeschwindigkeit eine Phasenbeschleunigung definiert werden:
+	\[
+	a_\phi = \frac{dv_\phi}{dA}.
+	\]
+	
+	\subsection{Krümmung statt bloßer Dynamik}
+	
+	In einem bloß flachen linearen Raum würde man $a$ rein kinematisch lesen. Im BM-Gedankenexperiment ist der relevante Raum aber nicht bloß ein flacher Zahlenraum, sondern ein topologisch-geometrischer Zustandsraum. Dann kann dieselbe zweite Ableitung als Krümmung der Bahn im effektiven Raum gedeutet werden.
+	
+	Symbolisch:
+	\[
+	a_{AC}\leadsto \kappa_{\mathrm{BM}},
+	\qquad
+	a_\phi\leadsto \kappa_\phi.
+	\]
+	
+	\subsection{Einstein’sche Äquivalenz als Deutungsrahmen}
+	
+	Hier setzt der Bezug zu Einstein ein. Dessen ursprüngliche Einsicht war, dass Beschleunigung und Gravitation lokal ununterscheidbar werden können. In moderner geometrischer Sprache bedeutet das, dass eine scheinbar dynamische Größe als Ausdruck der Geometrie gelesen werden kann.
+	
+	Übertragen auf das BM-Gedankenexperiment heißt das:
+	\begin{quote}
+		Was im AC- oder Phasenbild als Beschleunigung einer Regimefront erscheint, kann im BM-topologischen Raum als Krümmung und damit als geometrische Größe gelesen werden.
+	\end{quote}
+	
+	Damit wird die Verbindung zwischen Maxwell, AB, Phase und Krümmung systematisch fassbar.
+	
+	\section{Der Schritt zu Energie und Impuls}
+	
+	\subsection{Warum zwei weitere Achsen notwendig sind}
+	
+	Bis hierhin besitzen wir bereits einen reduzierten Raum-Zeit-Rahmen. Dieser bleibt aber kinematisch unvollständig, solange keine duale Beschreibung der Energie-Impuls-Seite vorliegt. Die eigentliche Ergänzung des vorliegenden Artikels besteht deshalb darin, zusätzlich
+	\[
+	e \leftrightarrow \text{Energie},
+	\qquad
+	b \leftrightarrow \text{Impuls}
+	\]
+	zu setzen.
+	
+	Damit entsteht aus den vier ausgezeichneten Richtungen ein vollständiger Viererrahmen
+	\[
+	(A,C,e,b),
+	\]
+	mit zwei natürlichen Paaren:
+	\begin{itemize}[leftmargin=2em]
+		\item $(A,C)$ als Raum-Zeit-Paar,
+		\item $(e,b)$ als Energie-Impuls-Paar.
+	\end{itemize}
+	
+	\subsection{Die konzeptionelle Symmetrie}
+	
+	Diese Zuordnung ist deshalb besonders attraktiv, weil sie zwei klassische relativistische Ebenen auf dieselbe formale Struktur bringt:
+	\begin{align*}
+		\text{Ereignisraum:} & \qquad ds^2 = c_M^2\, dA^2 - dC^2,\\
+		\text{Impulsraum:} & \qquad e^2 - c_M^2 b^2.
+	\end{align*}
+	
+	Damit erscheint das BM-System als doppelter Minkowski-Rahmen:
+	\begin{itemize}[leftmargin=2em]
+		\item einmal auf der Seite von Dauer und Abstand,
+		\item einmal auf der Seite von Energie und Impuls.
+	\end{itemize}
+	
+	\section{Herleitung der relativistischen Abschlussform}
+	
+	\subsection{Die Invariante im Energie-Impuls-Raum}
+	
+	In der Spezialrelativitätstheorie gilt die bekannte Beziehung
+	\[
+	E^2 = p^2 c^2 + m^2 c^4,
+	\]
+	beziehungsweise in invarianten Vorzeichenkonventionen
+	\[
+	E^2 - p^2 c^2 = m^2 c^4.
+	\]
+	
+	Im BM-Rahmen übertragen wir diese Struktur auf die Achsen $e$ und $b$ und ersetzen die Lichtgeschwindigkeit durch die effektive Maxwell-Geschwindigkeit $c_M$. Damit erhalten wir
+	\[
+	e^2 - c_M^2 b^2 = m_{\mathrm{BM}}^2 c_M^4.
+	\]
+	Dies ist die zentrale Abschlussform des Artikels.
+	
+	\subsection{Aufgelöste Form}
+	
+	Löst man nach $e^2$ auf, so folgt
+	\[
+	e^2 = c_M^2 b^2 + m_{\mathrm{BM}}^2 c_M^4.
+	\]
+	Diese Gleichung ist die BM-analoge Energie-Impuls-Beziehung. Sie sagt:
+	\begin{itemize}[leftmargin=2em]
+		\item Der Energieanteil $e$ zerfällt in einen impulshaften Beitrag und einen invarianten Massenbeitrag.
+		\item Die Masse erscheint nicht als Zusatzparameter ohne Struktur, sondern als Invariante des BM-Systems.
+	\end{itemize}
+	
+	\subsection{Definition der effektiven BM-Ruhemasse}
+	
+	Aus der Invariantenform folgt unmittelbar
+	\[
+	m_{\mathrm{BM}}^2 = \frac{e^2 - c_M^2 b^2}{c_M^4}.
+	\]
+	
+	\begin{definition}
+		Die Größe
+		\[
+		m_{\mathrm{BM}} := \frac{1}{c_M^2}\sqrt{e^2 - c_M^2 b^2}
+		\]
+		heißt effektive BM-Ruhemasse, sofern der Ausdruck unter der Wurzel nichtnegativ ist.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Diese Definition ist zunächst formal. Ihre physikalische Bedeutung hängt davon ab, ob $e$ und $b$ in späteren Ausarbeitungen tatsächlich als Spektral- oder Erwartungswerte geeigneter Observablen erscheinen.
+	\end{bemerkung}
+	
+	\section{Interpretation des Viererrahmens}
+	
+	\subsection{Raum-Zeit und Energie-Impuls im selben Signaturtyp}
+	
+	Die entscheidende formale Pointe des Artikels lautet:
+	\begin{quote}
+		Das BM-Gedankenexperiment besitzt nach der Zuordnung
+		\[
+		A\mapsto \text{Zeit},\quad C\mapsto \text{Raum},\quad e\mapsto \text{Energie},\quad b\mapsto \text{Impuls}
+		\]
+		einen gemeinsamen Signaturrahmen, in dem Raum-Zeit- und Energie-Impuls-Struktur denselben Minkowski-Typ tragen.
+	\end{quote}
+	
+	Dies ist mehr als bloße Symbolik. Es zeigt, dass sich die zuvor getrennten Begriffe
+	\begin{itemize}[leftmargin=2em]
+		\item Maxwell-Geschwindigkeit,
+		\item Phasengeschwindigkeit,
+		\item Regimefront,
+		\item Beschleunigung,
+		\item Krümmung,
+		\item Energie,
+		\item Impuls,
+		\item Masse
+	\end{itemize}
+	formal in einem gemeinsamen Vokabular zusammenfassen lassen.
+	
+	\subsection{Ein minimaler Doppelkegelgedanke}
+	
+	Im reduzierten AC-Raum existiert ein Kegel durch
+	\[
+	\abs{dC/dA} = c_M.
+	\]
+	Im reduzierten Energie-Impuls-Raum existiert dazu dual die Invariante
+	\[
+	e^2 - c_M^2 b^2 = m_{\mathrm{BM}}^2 c_M^4.
+	\]
+	
+	Man kann daher heuristisch sagen: Der BM-Rahmen trägt
+	\begin{itemize}[leftmargin=2em]
+		\item einen kinematischen Kegel im Ereignisraum,
+		\item und eine invariant definierte Hyperbel- oder Kegelfamilie im Energie-Impuls-Raum.
+	\end{itemize}
+	
+	Dies ist die klassische relativistische Doppelstruktur, hier jedoch aus der BM-Achseninterpretation gewonnen.
+	
+	\section{Verbindung zu Plateau- und Resonanzbildern}
+	
+	\subsection{Phasen- und Regimewechsel im Viererrahmen}
+	
+	Die frühere Plateau- und AB-Diskussion lässt sich nun präziser lesen. Eine Änderung von $\Phi_{\mathrm{BM}}$ erzeugt eine Änderung von $v_\phi$; deren Ableitung erzeugt eine Regimebeschleunigung; diese ist im topologischen BM-Raum als Krümmung zu lesen. Innerhalb des Viererrahmens können solche Übergänge zugleich auf der AC-Seite und auf der $e/b$-Seite gespiegelt werden.
+	
+	\subsection{Schütte-Fenster als Krümmungs- oder Plateauzone}
+	
+	Zwar ist der vorliegende Artikel nicht auf numerische Auswertungen angewiesen, doch die frühere BM-Diskussion legt nahe, dass bestimmte Resonanzfenster --- insbesondere der Bereich um $57,59,61$ --- als bevorzugte Übergangs- oder Plateauzonen gelesen werden können. In der Sprache des vorliegenden Viererrahmens bedeutet das:
+	\begin{itemize}[leftmargin=2em]
+		\item Dort könnten Phasenfronten besonders stark umschalten.
+		\item Dort könnten Beschleunigung bzw. Krümmung der Regimefront groß oder strukturell ausgezeichnet sein.
+		\item Dort könnte die Kopplung zwischen AC- und $e/b$-Struktur besonders sichtbar werden.
+	\end{itemize}
+	
+	\section{Einbettung in die weitere BM-Perspektive}
+	
+	Der hier entwickelte Viererrahmen ist nicht isoliert zu sehen. Er fügt sich in mehrere bereits etablierte BM-Motive ein:
+	\begin{itemize}[leftmargin=2em]
+		\item die singulär-dreifache Logik eines ausgezeichneten Pols gegen einen Mehrfachblock,
+		\item die Idee einer emergenten Minkowski-Signatur,
+		\item die Rolle von Tri-/Okto-Potentialen,
+		\item sowie die Vorstellung von Plateau- und Resonanzzonen.
+	\end{itemize}
+	
+	Insbesondere lässt sich die vorliegende Struktur so lesen, dass
+	\begin{enumerate}[leftmargin=2em]
+		\item $A$ und $C$ die kinematische Raum-Zeit-Seite liefern,
+		\item $e$ und $b$ die spektrale oder dynamische Energie-Impuls-Seite,
+		\item und beide Ebenen denselben Signaturrahmen teilen.
+	\end{enumerate}
+	
+	Dies macht die hier gefundene Abschlussform anschlussfähig an größere BM-Konstruktionen, ohne sie bereits vollständig von ihnen abhängig zu machen.
+	
+	\section{Diskussion}
+	
+	Der vorliegende Standalone-Artikel hat ein einfaches, aber weitreichendes Gedankenexperiment entwickelt. Beginnend mit einer Zuordnung zweier Achsen zu Zeit und Raum wurde gezeigt, dass sich daraus eine reduzierte Minkowski-Metrik ergibt. Anschließend wurden Maxwell-Geschwindigkeit, Phasengeschwindigkeit und topologischer Regimewechsel in diesem Rahmen formuliert. Über die erste Ableitung der Geschwindigkeit wurde der Einstein’sche Schritt zur Beschleunigung und Krümmung vollzogen. Schließlich wurde durch die Zuordnung zweier weiterer Achsen zu Energie und Impuls eine relativistische Abschlussform gewonnen.
+	
+	Die Stärke des Artikels liegt nicht darin, bereits alle physikalischen oder mathematischen Details festzulegen. Seine Stärke liegt vielmehr in der Formulierung einer Minimalstruktur, in der mehrere vorher lose Gedanken plötzlich zusammenpassen:
+	\begin{itemize}[leftmargin=2em]
+		\item die Minkowski-Signatur des reduzierten Raum-Zeit-Rahmens,
+		\item die Phasenlogik des Aharonov--Bohm-Regimes,
+		\item der geometrische Einstein-Schritt von Beschleunigung zu Krümmung,
+		\item sowie die relativistische Energie-Impuls-Invariante.
+	\end{itemize}
+	
+	Gerade diese Geschlossenheit macht das Gedankenexperiment interessant. Es bietet eine klare Hypothese darüber, wie ein spektral-geometrisches Modell in eine reduzierte relativistische Form übersetzt werden kann.
+	
+	\section{Fazit}
+	
+	Die wesentliche Aussage dieses Standalone-Artikels lautet:
+	\begin{quote}
+		Ordnet man in einem reduzierten BM-Viererrahmen die Achsen $A$ und $C$ den Rollen von Zeit und Raum sowie die Achsen $e$ und $b$ den Rollen von Energie und Impuls zu, dann entstehen Raum-Zeit-Intervall und Energie-Impuls-Invariante als zwei Ausdrücke desselben Signaturtyps. Maxwell-Geschwindigkeit und Phasengeschwindigkeit lassen sich im selben AC-Rahmen formulieren; ihre Änderung erzeugt Beschleunigung, die im topologisch-geometrischen BM-Raum als Krümmung gelesen werden kann. Die relativistische Gleichung
+		\[
+		e^2 - c_M^2 b^2 = m_{\mathrm{BM}}^2 c_M^4
+		\]
+		erscheint damit als natürliche Abschlussform des Gedankenexperiments.
+	\end{quote}
+	
+	Der Artikel schlägt also kein fertiges physikalisches Dogma vor, sondern einen sauberen heuristischen Rahmen. Gerade darin liegt sein Wert: Er bündelt ein größeres Spektrum an Beobachtungen und Begriffen in einer präzisen Minimalform, die für weitere mathematische oder physikalische Ausarbeitungen offen bleibt.
+	
+\end{document}

@@ -1,0 +1,273 @@
+% Arabisch nummerierte Abschnitte (Standard article)
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{microtype}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{hyperref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!60!black,
+  urlcolor=blue!60!black,
+  citecolor=blue!60!black,
+}
+
+\title{Entanglement-getemperte Zeitstempel-Spektroskopie:\\
+  Quaternionisches EABC-Modell und der Bamberger Zeitwürfel}
+\author{(Aus dem Python-Modul \texttt{Jitter Zeit.py})}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+  Wir beschreiben ein diskretes stochastisches Zeitmodell („Zeitwürfel“), in dem
+  Verschränkung die Streuung der Zeitintervalle und eine effektive
+  „Vierlingsbreite“ steuert. Zeitstempel werden modulo zwölf in vier aktive
+  Zustände $E,A,B,C$ und einen Ruhezustand $X$ klassifiziert und als reelle
+  Quaternionen in die Basis $\{1,i,j,k\}$ eingebettet. Zwischen aufeinanderfolgenden
+  EABC-Ereignissen werden relative Drehungen („Schwung“), Übergangsmatriken und
+  quaternionische Spektren mit komplexem Phasengewicht $\mathrm{e}^{-\mathrm{i}\Omega\Delta t}$
+  ausgewertet. Der Text folgt der Implementierung und dient als begleitende
+  Dokumentation; er erhebt keinen Anspruch auf physikalische Ableitung aus
+  Erstprinzipien.
+\end{abstract}
+
+\section{Motivation und Überblick}
+
+Das Modell kombiniert drei Bausteine:
+\begin{enumerate}
+  \item \textbf{Zufällige Zeitintervalle} $\Delta t_k$ um einen durch Temperatur $T$ und
+    Verschränkungsparameter $S$ bestimmten Mittelwert, mit gaußschem Jitter.
+  \item \textbf{EABC-Klassifikation} ganzer Zahlen $n_k \approx \alpha\, t_k$ modulo $12$
+    mit Zuordnung zu Quaternion-Basisvektoren.
+  \item \textbf{Spektralanalyse} der vier Kanäle $(q_k)_e,(q_k)_a,(q_k)_b,(q_k)_c$ als
+    gewichtete Fourier-Summen über $\Delta t_k$ (bzw.\ aktive Zeiträume).
+\end{enumerate}
+
+\section{Quaternionische Darstellung der EABC-Zustände}
+
+Sei $\mathbb{H}$ die Quaternionenalgebra mit Hamilton-Produkt,
+$\mathrm{i}^2=\mathrm{j}^2=\mathrm{k}^2=\mathrm{ijk}=-1$.
+Wir identifizieren die vier aktiven diskreten Zustände mit der Orthonormalbasis
+in $\mathbb{R}^4 \cong \mathbb{H}$:
+\begin{equation}
+  E \leftrightarrow 1,\qquad
+  A \leftrightarrow \mathrm{i},\qquad
+  B \leftrightarrow \mathrm{j},\qquad
+  C \leftrightarrow \mathrm{k}.
+\end{equation}
+Der Zustand $X$ (nicht in $\{1,5,7,11\}$ modulo $12$, siehe unten) wird als
+Nullquaternion abgebildet.
+
+\section{Klassifikation modulo $12$}
+
+Für $n \in \mathbb{Z}$ sei $r = n \bmod 12$.
+\begin{equation}
+  \mathrm{label}(n) =
+  \begin{cases}
+    E, & r = 1,\\
+    A, & r = 5,\\
+    B, & r = 7,\\
+    C, & r = 11,\\
+    X, & \text{sonst.}
+  \end{cases}
+\end{equation}
+In der Simulation wird $n_k = \mathrm{round}(\alpha\, t_k)$ gesetzt; $\alpha$ ist ein
+freier Skalenparameter (\texttt{alpha\_scale}).
+
+\section{Verschränkungsabhängiger Jitter und effektive Breite}
+
+\subsection{Jitter-Standardabweichung}
+
+Mit Verschränkungsparameter $S>0$, Boden $\sigma_{\min}$, Amplitude $\sigma_0$ und
+Dämpfung $\gamma>0$:
+\begin{equation}
+  \sigma_t(S) = \sigma_{\min} + \sigma_0\,\mathrm{e}^{-\gamma S}.
+\end{equation}
+
+\subsection{Effektive Vierlingsbreite $\Delta_{\mathrm{eff}}$}
+
+Glatte Variante:
+\begin{equation}
+  \Delta_{\mathrm{eff}}(T,S)
+  = 8 + 2\bigl(1-\mathrm{e}^{-T/(2\pi)}\bigr)\bigl(1-\mathrm{e}^{-\lambda S}\bigr),
+\end{equation}
+$\lambda>0$. Grenzfälle: für $T\to 0$ gilt $\Delta_{\mathrm{eff}}\to 8$; für große $T,S$
+nähert sich $\Delta_{\mathrm{eff}}$ dem Wert $10$.
+
+Alternative („schärfer“) Temperaturabhängigkeit mit $\beta>1$:
+\begin{equation}
+  \Delta_{\mathrm{eff}}^{(\beta)}(T,S)
+  = 8 + 2\bigl(1-\mathrm{e}^{-\beta T/(2\pi)}\bigr)\bigl(1-\mathrm{e}^{-\lambda S}\bigr).
+\end{equation}
+
+\section{Zeitwürfel-Simulation}
+
+Gegeben $\omega_0>0$ und $\Delta_{\mathrm{eff}}$ wie oben setzt die Implementierung
+\begin{equation}
+  \Delta t^{(0)} = \frac{\Delta_{\mathrm{eff}}}{\omega_0}.
+\end{equation}
+Für $k=0,\ldots,N-1$:
+\begin{equation}
+  \varepsilon_k \sim \mathcal{N}(0,\sigma_t^2),\qquad
+  \Delta t_k = \max\bigl\{\Delta t^{(0)}+\varepsilon_k,\;\Delta t^{(0)}\bigr\},
+\end{equation}
+\begin{equation}
+  t_{k+1} = t_k + \Delta t_k,\quad t_0=0.
+\end{equation}
+Zu jedem Schritt werden $n_k$, $\mathrm{label}(n_k)$ und die Quaternion-Komponenten
+von $q_k$ gespeichert.
+
+\begin{algorithm}[htbp]
+  \caption{Ablauf der Zeitwürfel-Simulation und nachgeschaltete Auswertung
+    ($\Delta_{\mathrm{eff}}$ hier mit Temperaturfaktor $\beta$ wie in \texttt{delta\_eff\_sharp};
+    in der Implementierung wird $\Delta t_k$ zusätzlich nach unten durch $\Delta_{\mathrm{eff}}/\omega_0$
+    begrenzt, falls $\varepsilon_k$ zu negativ ausfällt).
+    Die kompakte Schreibweise $\mathcal{P}_{\mathbb{H}}$ entspricht im Code der Summe der kanalweisen
+    Leistungen $|Q_X|^2$, $X\in\{e,a,b,c\}$, vgl.\ Abschnitt~\ref{sec:spektrum}.}
+  \label{alg:zeitwuerfel}
+  \begin{algorithmic}[1]
+    \State Wähle $N,T,S,\omega_0,\sigma_{\min},\sigma_0,\gamma,\lambda,\beta$.
+    \State Berechne den entanglement-abhängigen Jitter
+    \[
+      \sigma_t(S)=\sigma_{\min}+\sigma_0\,\mathrm{e}^{-\gamma S}.
+    \]
+    \State Berechne die effektive Breite
+    \[
+      \Delta_{\mathrm{eff}}(T,S)
+      =
+      8+
+      2\bigl(1-\mathrm{e}^{-\beta T/(2\pi)}\bigr)\bigl(1-\mathrm{e}^{-\lambda S}\bigr).
+    \]
+    \For{$k=1,\ldots,N$}
+      \State Ziehe $\varepsilon_k\sim\mathcal{N}(0,\sigma_t^2)$.
+      \State Setze
+      \[
+        \Delta t_k=\Delta_{\mathrm{eff}}/\omega_0+\varepsilon_k.
+      \]
+      \State Setze
+      \[
+        t_k=\sum_{j\leq k}\Delta t_j.
+      \]
+      \State Runde $n_k=\lfloor \alpha\, t_k\rceil$ und klassifiziere $n_k\bmod 12$.
+      \State Weise
+      \[
+        E\mapsto 1,\quad A\mapsto \mathrm{i},\quad B\mapsto \mathrm{j},\quad C\mapsto \mathrm{k}
+      \]
+      zu (Einbettung von $q_k\in\mathbb{H}$).
+    \EndFor
+    \State Filtere die aktive EABC-Folge.
+    \State Berechne den Schwung $u_k=\overline{q_k}\,q_{k+1}$.
+    \State Berechne das Spektrum
+    \[
+      \mathcal{P}_{\mathbb H}(\Omega)
+      =
+      \left|
+      \sum_k q_k\,\mathrm{e}^{-\mathrm{i}\Omega\Delta t_k}
+      \right|^2.
+    \]
+  \end{algorithmic}
+\end{algorithm}
+
+Für zwei Quaternion-Zustände $q_k,q_{k+1}$ der \emph{vollen} Simulation definiert der Code
+den relativen Schwung
+\begin{equation}
+  u_k := \overline{q}_k\, q_{k+1} \in \mathbb{H},
+\end{equation}
+mit Konjugation $\overline{q}$ und Hamilton-Produkt. Die Komponenten $(u_k)_e,(u_k)_a,(u_k)_b,(u_k)_c$
+und $\|u_k\|$ werden protokolliert.
+
+\section{Aktive EABC-Folge und Übergänge}
+
+Alle Zeilen mit $\mathrm{label}\in\{E,A,B,C\}$ bilden die \textbf{aktive Folge}.
+Zwischen aufeinanderfolgenden aktiven Ereignissen werden Zeiten $t_k$ und
+\begin{equation}
+  \Delta t_{\mathrm{active},k} := t_k - t_{k-1}
+\end{equation}
+(wie in der Implementierung: erste Zeile \texttt{NaN}) verwendet.
+
+Nur zwischen aufeinanderfolgenden \emph{aktiven} Quaternionen wird erneut der Schwung
+\begin{equation}
+  u = \overline{q}^{(\mathrm{akt})}_{k}\, q^{(\mathrm{akt})}_{k+1}
+\end{equation}
+gebildet.
+
+\subsection{Schwung-Label}
+
+Sei $u = u_e + u_a\mathrm{i}+ u_b\mathrm{j}+ u_c\mathrm{k}$.
+Das Label wählt den Index $\mathrm{E},\mathrm{A},\mathrm{B},\mathrm{C}$ mit maximalem
+$|\cdot|$ unter den reellen Koeffizienten und ein Vorzeichen:
+\begin{equation}
+  \texttt{schwung\_label} \in \{0,\;+\mathrm{E},\;-\mathrm{A},\;\ldots\}.
+\end{equation}
+
+\subsection{Übergangsmatrix und Idealrotation}
+
+Die Matrix der Paare $(\mathrm{label}_{\mathrm{from}},\mathrm{label}_{\mathrm{to}})$
+wird auf feste Zeilen und Spalten $E,A,B,C$ expandiert (fehlende Einträge gleich null).
+
+Als \textbf{Idealrotation} zählt die Implementierung die Übergänge
+\begin{equation}
+  A\!\to\! E,\quad E\!\to\! C,\quad C\!\to\! B,\quad B\!\to\! A;
+\end{equation}
+ihr relativer Anteil an allen aktiven Übergängen wird ausgegeben (\texttt{Idealrotations-Anteil}).
+
+\section{Quaternionisches Spektrum}
+\label{sec:spektrum}
+
+Sei $\Omega\in\mathbb{R}$ eine Kreisfrequenz und $\Delta t_k$ die gewählte Intervallfolge
+(z.\,B.\ Simulationsintervall oder $\Delta t_{\mathrm{active}}$).
+Mit Phasen $\phi_k(\Omega)=\mathrm{e}^{-\mathrm{i}\Omega \Delta t_k}$ definieren wir
+komponentenweise
+\begin{equation}
+  Q_X(\Omega) := \sum_k (q_k)_X\,\phi_k(\Omega),\quad X\in\{e,a,b,c\},
+\end{equation}
+und die Leistungen $P_X(\Omega)=|Q_X(\Omega)|^2$ sowie
+\begin{equation}
+  P_{\mathrm{ges}}(\Omega) = P_E+P_A+P_B+P_C.
+\end{equation}
+Das entspricht einer komponentenweisen komplexen Fourier-Summe mit Gewichtung durch die
+Zeitintervalle (nicht durch gleichmäßige Abtastung in $t$).
+
+\section{Zentriertes Spektrum}
+
+Um den Gleichanteil der Kanäle zu unterdrücken, ersetzt die Implementierung
+\begin{equation}
+  \tilde{q}_k := q_k - \overline{q},\qquad
+  \overline{q}_X := \frac{1}{N'}\sum_k (q_k)_X,
+\end{equation}
+($N'$ Anzahl der verwendeten Zeilen nach Filter) und wendet dieselbe Spektralformel auf
+$\tilde{q}$ an. Optional wird nur die aktive Teilfolge verwendet; für $\Delta t$ kann
+man $\Delta t_k$ der Simulation oder $\Delta t_{\mathrm{active}}$ wählen (\texttt{dt\_column}).
+
+\section{Rigidity-Proxy und Vergleichsfolgen}
+
+Die Datei enthält weiterhin einen einfachen Autokorrelations-Proxy für normierte
+Intervallfluktuationen sowie Hilfsfunktionen zum Vergleich zweier Intervallstatistiken
+(vgl.\ Nullstellenabstände, Primlücken usw.). Details sind der Implementierung zu entnehmen.
+
+\section{Implementierung}
+
+Die beschriebenen Objekte entsprechen den Funktionen und Klassen in
+\texttt{Jitter Zeit.py}, insbesondere:
+\texttt{simulate\_zeitwuerfel},
+\texttt{quaternionic\_spectrum},
+\texttt{active\_eabc\_sequence},
+\texttt{active\_transition\_schwung},
+\texttt{transition\_matrix},
+\texttt{centered\_quaternionic\_spectrum},
+\texttt{print\_transition\_report}.
+
+\section*{Hinweis}
+
+Das Modell ist als exploratives und reproduzierbares Rechenexperiment gedacht.
+Physikalische Interpretation von $T,S,\Omega$ und der EABC-Zuordnung bleibt dem Nutzer
+überlassen.
+
+\end{document}

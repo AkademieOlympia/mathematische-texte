@@ -1,0 +1,2576 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{url}
+
+\title{EABC-Operatoralgebra und Renormierungskette\\[0.3em]
+	\large Ikosaeder--Dodekaeder-Dualität}
+\author{Thomas Hoffbauer}
+\date{}
+
+\newtheorem{theorem}{Satz}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Bemerkung}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Korollar}
+\newtheorem{hypothesis}{Hypothese}
+\newtheorem{conjecture}{Vermutung}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\begin{document}
+	\maketitle
+	
+	\noindent\small
+	\textbf{Reviewer Guide (1 page):}
+	\texttt{REVIEWER\_GUIDE.pdf} --- what is proven, what is not, minimal hypotheses.
+	\hrule
+	\vspace{0.5em}
+	
+	\begin{abstract}
+		\noindent
+		(1)~Am Referenz-Ikosaeder gilt der isotrope geometrische Fixpunkt
+		$M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}})=24I_3$.
+		(2)~Eine EABC-Primzahl $p$ erzeugt den effektiven Rang-1-Defekt
+		$M_{\mathrm{eff}}(K^+)=24I_3+w_pvv^{\mathsf T}$ mit $\|v\|=1$ und messbarer
+		Anisotropie $\Delta(M_{\mathrm{eff}}(K^+))=w_p$.
+		(3)~Der Retraktionsoperator $R^*_{\mathrm{EABC}}$ entfernt diesen Defekt projektiv.
+		(4)~Es folgt die \emph{24-Isotropy-Restoration}:
+		$M_{\mathrm{eff}}(R^*_{\mathrm{EABC}}(K^+))=24I_3$.
+		(5)~Die Satzkette ist auf dem Peano-Schalenstapel global formalisiert
+		(Lean~4.29, \texttt{sorry}\,$=\,0$).
+	\end{abstract}
+	
+	%=============================================================================
+	\section{Einleitung: historische und moderne Einordnung}
+	\label{sec:introduction}
+	%=============================================================================
+	
+	Die EABC-Renormierungskette verbindet diskrete Arithmetik, polyedrische Symmetrie
+	und effektive Tensorphysik in einem einzigen, formal prüfbaren Modell.
+	Mehrere historische Linien konvergieren hier --- ohne die Resultate dieser Arbeit
+	als deren unmittelbare Fortsetzung zu beanspruchen.
+	
+	\paragraph{Leonhard Euler (1707--1783).}
+	Eulers Polyederformel und seine systematische Theorie der platonischen Körper
+	verankern das Ikosaeder als \emph{mathematisches} Referenzobjekt, nicht bloß als
+	Zeichnung.
+	Die zwölf Ecken des regulären Ikosaeders auf $S^2$ und die zugehörige
+	$A_5$-Symmetrie sind der geometrische Boden von $M_{\mathrm{geom}}$;
+	Theorem~\ref{thm:geom-fixpoint} ist in diesem Sinne ein Euler-artiger Satz:
+	eine endliche, explizite Summe symmetrischer dyadischer Produkte kollabiert
+	zu einem skalaren Vielfachen von $I_3$.
+	Die Peano-Schalenstapel (Abschnitt~\ref{sec:formal-verification}) erinnern an
+	Eulers Methode, diskrete Strukturen schichtweise über $\mathbb{N}$ zu erzeugen.
+	
+	\paragraph{Bernhard Riemann (1826--1866).}
+	Riemanns Trennung von lokalen Koordinaten und globaler Struktur auf Mannigfaltigkeiten
+	entspricht methodisch der hier durchgeführten Separation von
+	$M_{\mathrm{eff}}$ (Konfigurationsraum) und $M_{\mathrm{geom}}$ (geometrischer Fixpunkt,
+	Abschnitt~\ref{sec:two-levels}).
+	Der Ordnungsparameter $\Delta(M)=\lambda_{\max}-\lambda_{\min}$ ist ein
+	spektral-geometrisches Funktional im riemannschen Sinne: Isotropie bedeutet
+	Entartung des Spektrums.
+	Die Primzahlen $p=2n+1$ treten als \emph{diskrete Normschalen-Indizes} auf ---
+	nicht als analytische Objekte der Riemannschen $\zeta$-Funktion.
+	Der strukturelle Bezug zu Riemann liegt in der Frage, wie globale Invarianz
+	($24I_3$) aus lokaler arithmetischer Störung ($w_p$) durch Projektion
+	wiederhergestellt wird.
+	
+	\paragraph{Paul Dirac (1902--1984).}
+	Diracs Vakuum-Bild --- ein symmetrischer Grundzustand, dem diskrete
+	Anregungen (Massen) als Störungen überlagert sind --- spiegelt sich in der
+	Zwei-Ebenen-Architektur wider:
+	$M_{\mathrm{geom}}=24I_3$ ist das isotrope ``Vakuum'',
+	$M_{\mathrm{eff}}(K^+)=24I_3+w_pvv^{\mathsf T}$ die messbare Anisotropie
+	(Theorem~\ref{thm:prime-delta}, \texttt{rankOne\_defect\_not\_isotropic}).
+	Die Rang-1-Störung $w_pvv^{\mathsf T}$ ist die minimalste nicht-triviale
+	Symmetriebrechung in $\mathrm{Sym}_3(\mathbb{R})$; $\Delta(M^+)=w_p$ quantisiert
+	das ``Massen-Residuum'' der Störung.
+	Dirac würde die Retraktion $R^*$ nicht als Dynamik, sondern als
+	Zustandsreduktion lesen: Rückkehr zum symmetrischen Referenzzustand.
+	
+	\paragraph{Gerard 't~Hooft (*1946).}
+	Die Renormierungs- und Eichtheorie-Tradition, deren Höhepunkt 't~Hoofts Arbeit
+	zur renormierbaren nicht-abelschen Eichfeldtheorie bildet, liefert das
+	konzeptuelle Vokabular des \emph{Retraktionsoperators} $R^*_{\mathrm{EABC}}$:
+	kein ad-hoc-Glätten, sondern projektive Rückführung auf einen wohldefinierten
+	Fixpunkt-Teilraum $\mathcal{F}$.
+	Die Idempotenz $(R^*)^2=R^*$ (Lemma~\ref{lem:idempotence}) entspricht dem
+	Gedanken, dass ein korrekt gewählter ``Gauge-Fix'' nach einem Schritt stabil bleibt.
+	Die EABC-Theorie beansprucht keine QFT-Renormierungsgruppe im analytischen Sinn;
+	sie übernimmt die \emph{Struktur}: lokaler Defekt, globaler Fixpunkt, ein Schritt genügt.
+	
+	\paragraph{Zeitgenössische Nachbarn.}
+	Maynard, Tao und Scholze behandeln Primzahlen auf anderem Niveau
+	(Gaps, additive Kombinatorik, perfektoide Geometrie; Abschnitt~\ref{sec:modern-neighbors}).
+	Die EABC-Theorie bleibt diskret-modular: $p\bmod 12$ klassifiziert Normschalen,
+	nicht die Primzahlverteilung selbst.
+	
+	%=============================================================================
+	\section{EABC-Familien und Anisotropietensor}
+	%=============================================================================
+	
+	Die vier invertierbaren Restklassen modulo~$12$ definieren die EABC-Familien
+	\[
+	E \equiv 1,\qquad A \equiv 5,\qquad B \equiv 7,\qquad C \equiv 11 \pmod{12},
+	\]
+	mit Gewichten $w_E=1$, $w_A=5$, $w_B=7$, $w_C=11$.
+	
+	Sei $\{v_i\}_{i=1}^{12}\subset S^2\subset\R^3$ ein 12-Kuss-System (Einheitsrichtungen)
+	und $\sigma\colon\{1,\ldots,12\}\to\{E,A,B,C\}$ eine Label-Zuweisung.
+	Der \emph{Anisotropietensor} ist
+	\[
+	M(\sigma)
+	\;=\;
+	\sum_{i=1}^{12} w_{\sigma(i)}\, v_i v_i^{\mathsf T}
+	\;\in\;
+	\mathrm{Sym}_3(\R).
+	\]
+	
+	\begin{definition}[Ordnungsparameter]
+		\[
+		\Delta(M) \;:=\; \lambda_{\max}(M) - \lambda_{\min}(M),
+		\]
+		wobei $\lambda_1\le\lambda_2\le\lambda_3$ die Eigenwerte von $M$ bezeichnen.
+		Isotropie entspricht $\Delta(M)=0$.
+	\end{definition}
+	
+	%=============================================================================
+	\section{Renormierungsoperatoren}
+	%=============================================================================
+	
+	Sei $K_n=(V_n,\sigma_n)$ eine Konfiguration aus Vertices $V_n$ und Zuweisung $\sigma_n$.
+	
+	\begin{definition}[$R_{\mathrm{EABC}}$]
+		Der Operator $R_{\mathrm{EABC}}$ projiziert $\sigma$ auf die geometrisch zulässige
+		3+3+3+3-Zuweisung: pro Ecke $v_i$ wird die mod-$12$-Restklasse
+		$r(v_i)$ aus den skalierten Koordinaten und die nächste EABC-Restklasse
+		bestimmt. $R_{\mathrm{EABC}}$ ist idempotent; Fixpunkte erfordern perfekte
+		geometrische Konsistenz der Koordinaten-Klassifikation.
+	\end{definition}
+	
+	\begin{definition}[$P_I$ (Voronoi-Pullback)]
+		$P_I$ bildet gestörte Kussrichtungen auf das Referenz-Ikosaeder ab:
+		\[
+		P_I(v) \;=\; \arg\max_{r_j\in I_{12}} \langle v, r_j\rangle,
+		\]
+		wobei $I_{12}$ die 12 Referenz-Ecken des regulären Ikosaeders auf $S^2$ ist.
+	\end{definition}
+	
+	\begin{definition}[$R^*_{\mathrm{EABC}}$]
+		Der robuste Fixpunktoperator ist die Komposition
+		\[
+		R^*_{\mathrm{EABC}} \;:=\; P_I \circ R_{\mathrm{EABC}}.
+		\]
+		Zuerst geometrische Rückführung, dann Label-Projektion.
+	\end{definition}
+	
+	\subsection{Konfigurationsraum und Retraktion}
+	
+	\begin{definition}[Konfigurationsraum $\mathcal{C}$]
+		$\mathcal{C}$ ist die Menge aller Konfigurationen
+		\[
+		K=(V,\sigma),
+		\qquad
+		V=(v_1,\ldots,v_{12})\subset S^2,
+		\qquad
+		\sigma\colon\{1,\ldots,12\}\to\{E,A,B,C\},
+		\]
+		also aller (ggf.\ gestörten) EABC-Kuss-Konfigurationen.
+	\end{definition}
+	
+	\begin{definition}[Fixpunkt-Teilraum $\mathcal{F}$]
+		\[
+		\mathcal{F}
+		\;:=\;
+		\bigl\{K\in\mathcal{C} : R^*_{\mathrm{EABC}}(K)=K\bigr\}
+		\;\subset\;
+		\mathcal{C}
+		\]
+		ist der Teilraum der \emph{robusten Fixpunkte} des Operators $R^*_{\mathrm{EABC}}$.
+		Das geometrische Referenzobjekt $I_{12}^{\mathrm{EABC}}$ liegt in $\mathcal{F}$.
+	\end{definition}
+	
+	\begin{definition}[Einbettung und Retraktion]
+		Die kanonische Einbettung ist
+		\[
+		\iota\colon \mathcal{F}\hookrightarrow \mathcal{C},\qquad \iota(K)=K.
+		\]
+		Der robuste Operator wirkt als Abbildung
+		\[
+		R^*_{\mathrm{EABC}}\colon \mathcal{C}\longrightarrow \mathcal{F}.
+		\]
+	\end{definition}
+	
+	\begin{proposition}[Retraktion auf $\mathcal{F}$]
+		\label{prop:retraction}
+		Mit $\iota$ und $R^*_{\mathrm{EABC}}$ wie oben gilt:
+		\begin{enumerate}
+			\item[(a)] \textbf{Idempotenz auf $\mathcal{C}$:}
+			$(R^*_{\mathrm{EABC}})^2 = R^*_{\mathrm{EABC}}$.
+			\item[(b)] \textbf{Fixpunkt auf $\mathcal{F}$:}
+			$R^*_{\mathrm{EABC}}(K)=K$ für alle $K\in\mathcal{F}$.
+			\item[(c)] \textbf{Retraktionsidentität:}
+			$R^*_{\mathrm{EABC}}\circ \iota = \mathrm{id}_{\mathcal{F}}$.
+		\end{enumerate}
+		Insbesondere ist $R^*_{\mathrm{EABC}}\colon\mathcal{C}\to\mathcal{F}$ eine
+		\emph{Retraktion} von $\mathcal{C}$ auf den Fixpunkt-Teilraum $\mathcal{F}$.
+	\end{proposition}
+	
+	\begin{proof}[Skizze]
+		(a) ist Lemma~\ref{lem:idempotence} unten.
+		Für (b) folgt aus der Definition von $\mathcal{F}$.
+		Für (c) setze $K\in\mathcal{F}$; dann ist
+		$R^*_{\mathrm{EABC}}(\iota(K))=R^*_{\mathrm{EABC}}(K)=K=\iota(K)$.
+	\end{proof}
+	
+	\begin{proposition}[Konvergenz in einem Schritt]
+		\label{prop:convergence}
+		Ist $R^*_{\mathrm{EABC}}$ idempotent, so gilt für alle $K\in\mathcal{C}$ und
+		alle $n\ge 1$:
+		\[
+		(R^*_{\mathrm{EABC}})^n(K) \;=\; R^*_{\mathrm{EABC}}(K).
+		\]
+		Insbesondere konvergiert die Renormierungsiteration nach \emph{einem} Schritt
+		auf das Bild $\mathcal{F}$.
+	\end{proposition}
+	
+	\begin{proof}
+		Vollständig formalisiert in \texttt{eabc-renorm/EabcRenorm/Retraction.lean}
+		als \texttt{IsIdempotent.iterate\_ge\_one}.
+		Für $n=1$ trivial; für $n\ge 2$ folgt $(R^*)^n=(R^*)^{n-1}\circ R^*$
+		und Induktion über die Idempotenz $(R^*)^2=R^*$.
+	\end{proof}
+	
+	%=============================================================================
+	\section{Fixpunkt und Defektklassen}
+	%=============================================================================
+	
+	\begin{definition}[Geometrischer Fixpunkt $I_{12}^{\mathrm{EABC}}$]
+		Die Konfiguration $I_{12}^{\mathrm{EABC}}$ besteht aus den 12 Ikosaeder-Ecken
+		mit der geometrischen EABC-Zuweisung (je 3 Labels pro Familie).
+	\end{definition}
+	
+	\begin{lemma}[Lemma 1A — Spur am balancierten Fixpunkt]
+		\label{lem:trace}
+		Sei $M(\sigma)=\sum_{i=1}^{12} w_{\sigma(i)}\, v_i v_i^{\mathsf T}$ mit $\|v_i\|=1$
+		und 3+3+3+3-Balance der Label-Zuweisung $\sigma$.
+		Dann gilt $\operatorname{tr}(M)=72$.
+	\end{lemma}
+	
+	\begin{proof}
+		Da $\operatorname{tr}(v_i v_i^{\mathsf T})=\|v_i\|^2=1$, folgt
+		\[
+		\operatorname{tr}(M)
+		\;=\;
+		\sum_{i=1}^{12} w_{\sigma(i)}
+		\;=\;
+		3(1+5+7+11)
+		\;=\;
+		72.
+		\]
+	\end{proof}
+	
+	\begin{lemma}[Lemma 1B — Skalar aus Isotropie]
+		\label{lem:scalar}
+		Ist $M\in\mathrm{Sym}_3(\R)$ isotrop, d.\,h.\ $M=\lambda I$ für ein $\lambda\in\R$,
+		und gilt $\operatorname{tr}(M)=72$, dann folgt $\lambda=24$ und
+		$\lambda_1=\lambda_2=\lambda_3=24$.
+	\end{lemma}
+	
+	\begin{proof}
+		Aus $M=\lambda I$ folgt $\operatorname{tr}(M)=3\lambda=72$, also $\lambda=24$.
+	\end{proof}
+	
+	\begin{lemma}[Lemma 1C — Geometrische Zuordnung der mod-12-Bahnen]
+		\label{lem:orbit-assignment}
+		Die Ikosaeder-Ecken zerfallen bei Skala $s=6$ in vier Bahnen
+		$\mathcal{O}_2,\mathcal{O}_4,\mathcal{O}_8,\mathcal{O}_{10}$
+		(je drei Ecken).
+		Die Abbildung \emph{nächste EABC-Restklasse} liefert
+		\[
+		\mathcal{O}_2\mapsto E\;(w=1),\quad
+		\mathcal{O}_4\mapsto A\;(w=5),\quad
+		\mathcal{O}_8\mapsto B\;(w=7),\quad
+		\mathcal{O}_{10}\mapsto C\;(w=11).
+		\]
+		Diese Zuordnung ist injektiv auf den Familien und fest durch
+		$r(v)=(\mathrm{round}(sx)+\mathrm{round}(sy)+\mathrm{round}(sz))\bmod 12$
+		und die Kreis-Distanz auf $\Z/12\Z$.
+	\end{lemma}
+	
+	\begin{proof}
+		Die vier Aussagen $\mathcal{O}_r\mapsto\{\text{E,A,B,C}\}$ sind endliche
+		Verifikationen auf den Restklassen $2,4,8,10$; formalisiert in
+		\texttt{eabc-renorm/EabcRenorm/Mod12.lean} per \texttt{native\_decide}.
+	\end{proof}
+	
+	\begin{lemma}[Lemma 1D — Geometrische Isotropie]
+		\label{lem:geom-iso}
+		Am geometrischen Fixpunkt $I_{12}^{\mathrm{EABC}}$ gilt
+		\[
+		M(\sigma)
+		\;=\;
+		\sum_{i=1}^{12} w_{\sigma(i)}\, v_i v_i^{\mathsf T}
+		\;=\;
+		24\,I_3.
+		\]
+	\end{lemma}
+	
+	\begin{proof}[Zwei unabhängige Wege]
+		\textbf{Weg I (direkte Summe).}
+		Mit den expliziten Koordinaten aus Anhang~\ref{app:generators} ergibt die
+		Summe der zwölf gewichteten äußeren Produkte in $\Q(\sqrt5)$ exakt $24I_3$.
+		
+		\smallskip\noindent
+		\textbf{Weg II (Symmetrie + Schur).}
+		Sei $\mathcal{I}\cong A_5$ die Ikosaeder-Rotationsgruppe.
+		Die gewichtete Bahn-Summe $M=\sum_r w_{\phi(r)}T_r$ ist $\mathcal{I}$-invariant;
+		nach Schur folgt $M=\lambda I$.
+		Lemma~\ref{lem:trace} liefert $\lambda=24$.
+		Die Erzeuger-Verifikation steht in Anhang~\ref{app:generators}.
+	\end{proof}
+	
+	\begin{theorem}[Isotropie-Lemma — Komposition]
+		\label{thm:isotropy}
+		Am geometrischen EABC-Fixpunkt $I_{12}^{\mathrm{EABC}}$ hat $M(\sigma)$ die
+		Eigenwerte $\lambda_1=\lambda_2=\lambda_3=24$, also $\Delta(M)=0$.
+	\end{theorem}
+	
+	\begin{proof}
+		Lemma~\ref{lem:geom-iso} liefert $M=24I_3$ direkt.
+		Alternativ: Lemma~\ref{lem:geom-iso} (Weg II) gibt Isotropie,
+		Lemma~\ref{lem:trace} gibt $\operatorname{tr}(M)=72$,
+		Lemma~\ref{lem:scalar} gibt $\lambda=24$.
+	\end{proof}
+	
+	\begin{remark}[Lean-Formalisierung (V4)]
+		In \texttt{eabc-renorm} ist der Beweis dreistufig angelegt:
+		\texttt{trace\_geometric\_fixpoint} (1A),
+		\texttt{isotropy\_from\_trace} (1B),
+		\texttt{geometric\_fixpoint\_isotropy} (1C/1D).
+		Stand: \texttt{lake build} grün, \texttt{sorry}\,$=\,0$
+		(siehe Abschnitt~\ref{sec:formal-verification}).
+	\end{remark}
+	
+	\begin{remark}[Numerische Bestätigung]
+		Unabhängig bestätigt \texttt{eabc\_icosahedron\_test.py},
+		\texttt{run\_core\_lemma\_tests()} die Aussage (4/4 PASS, Toleranz $10^{-6}$).
+	\end{remark}
+	
+	\begin{lemma}[Projektor-Idempotenz]
+		\label{lem:idempotence}
+		$R^*_{\mathrm{EABC}} = P_I \circ R_{\mathrm{EABC}}$ ist idempotent:
+		\[
+		(R^*_{\mathrm{EABC}})^2 \;=\; R^*_{\mathrm{EABC}}.
+		\]
+	\end{lemma}
+	
+	\begin{proof}[Skizze]
+		Nach $P_I$ liegen alle Vertices auf den Referenz-Ecken; $R_{\mathrm{EABC}}$ ist
+		auf dieser Untervarietät bereits Fixpunktabbildung. Ein zweiter Schritt ändert
+		weder Geometrie noch Labels.
+	\end{proof}
+	
+	\smallskip\noindent
+	\textit{Numerisch verifiziert in \texttt{eabc\_icosahedron\_test.py},
+		\texttt{run\_core\_lemma\_tests()} (4/4 PASS, Toleranz $10^{-6}$).}
+	
+	\begin{definition}[Defektklassen]
+		\begin{align*}
+			\text{FIXPOINT}            &\colon \Delta(M)\approx 0,\; 3{+}3{+}3{+}3\text{-Balance},\; \text{ungestörte Geometrie},\\
+			\text{LABEL\_DEFECT}       &\colon \text{Label-Zuweisung ohne 3+3+3+3-Balance (vor } R_{\mathrm{EABC}}\text{)},\\
+			\text{DIRECTION\_DEFECT}   &\colon \text{balancierte Labels, aber }\Delta(M)>\varepsilon \text{ bei gestörter Geometrie},\\
+			\text{CLASSIFICATION\_DEFECT} &\colon \text{mod-}12\text{-Balance der geometrischen Zuweisung gebrochen},\\
+			\text{PRIME\_DEFECT}(p)    &\colon p=2n+1\in\mathbb{P},\; p\bmod 12\in\{1,5,7,11\},\;
+			\text{neue Prim-Normkugel verletzt zunächst die 3+3+3+3-Balance}.
+		\end{align*}
+	\end{definition}
+	
+	%=============================================================================
+	\section{Prim-Erzeugungsschritt}
+	\label{sec:prime-step}
+	%=============================================================================
+	
+	\subsection{Operation $2n\mapsto 2n+1$}
+	
+	Sei $N=2n$ eine gerade Normschale.
+	Der \emph{Prim-Erzeugungsschritt} bildet
+	\[
+	P(2n)
+	\;:=\;
+	\begin{cases}
+		2n+1, & \text{falls }2n+1\in\mathbb{P},\\
+		\bot, & \text{sonst}.
+	\end{cases}
+	\]
+	Für $p=P(2n)$ gilt bei Primzahlen $p>3$ stets
+	$p\bmod 12\in\{1,5,7,11\}$; die neue Normkugel landet damit in genau
+	einer EABC-Familie.
+	
+	\begin{definition}[Erweiterung um eine Prim-Normkugel]
+		Gegeben $K_n\in\mathcal{F}$ mit Label-Zuweisung $\sigma$ und $p=P(2n)$.
+		Die erweiterte Konfiguration $K_n^+$ entsteht durch Hinzufügen einer
+		Einheitsrichtung $v\in S^2$ mit Label $\mathrm{EABC}(p)$:
+		\[
+		M^+ \;=\; M + w_p\, v v^{\mathsf T},
+		\qquad
+		w_p\in\{1,5,7,11\}\text{ gemäß }p\bmod 12.
+		\]
+		Die Familienbesetzung wird von $(3,3,3,3)$ zu $(4,3,3,3)$ (in genau einer Komponente).
+	\end{definition}
+	
+	\begin{proposition}[PRIME\_DEFECT $\Rightarrow$ LABEL\_DEFECT]
+		\label{prop:prime-implies-label}
+		Ist $\text{PRIME\_DEFECT}(p)$ aktiv, so gilt $K_n^+\notin\mathcal{F}$ und
+		$R^*_{\mathrm{EABC}}(K_n^+)\neq K_n^+$.
+		Die Störung ist ein \emph{arithmetisch privilegierter} Label-Defekt.
+	\end{proposition}
+	
+	\subsection{Anisotropie nach dem Primschritt}
+	
+	Am Fixpunkt war $M=24I_3$.
+	Nach dem Primschritt gilt im Rang-1-Modell
+	\[
+	M^+ \;=\; 24\,I_3 + w_p\, v v^{\mathsf T},
+	\qquad \|v\|=1.
+	\]
+	
+	\begin{theorem}[Primdefekt-Satz]
+		\label{thm:prime-delta}
+		Für $w_p>0$ und $\|v\|=1$ hat $M^+=24I_3+w_p vv^{\mathsf T}$ die Eigenwerte
+		$\lambda_1=\lambda_2=24$ und $\lambda_3=24+w_p$ (bzw.\ Permutation falls $v$ nicht
+		Koordinatenachse ist).
+		Insbesondere
+		\[
+		\Delta(M^+) \;=\; w_p \;\in\; \{1,5,7,11\}.
+		\]
+	\end{theorem}
+	
+	\begin{proof}
+		Für symmetrische Rang-1-Störungen $w\,vv^{\mathsf T}$ mit $\|v\|=1$ ist $v$ Eigenvektor
+		zum Eigenwert $w$; die Orthogonalen zu $v$ haben Eigenwert $0$.
+		Also hat $24I_3+w_p vv^{\mathsf T}$ die Eigenwerte $24$ (doppelt) und $24+w_p$ (einfach).
+		Damit $\Delta(M^+)=\lambda_{\max}-\lambda_{\min}=w_p$.
+		Formalisiert in \texttt{eabc-renorm/EabcRenorm/PrimeDefect.lean}
+		als \texttt{delta\_rank\_one\_perturbation}.
+	\end{proof}
+	
+	\begin{remark}[Primzahlen als Symmetriebrecher]
+		Eine Primzahl erscheint hier nicht als bloße Zahl ohne Teiler, sondern als
+		\emph{neue ungerade Normkugel}, die aus einer geraden Schale hervorgeht,
+		ein zulässiges EABC-Label trägt, die isotrope Balance bricht und einen
+		Renormierungsimpuls auslöst.
+	\end{remark}
+	
+	\subsection{$R^*_{\mathrm{EABC}}$ als Prim-Entstörungsoperator}
+	
+	Bei einem Primschritt hat $R^*_{\mathrm{EABC}}=P_I\circ R_{\mathrm{EABC}}$ die Bedeutung
+	\[
+	\text{Prim-Erzeugung}
+	\;\Rightarrow\;
+	\text{PRIME\_DEFECT}
+	\;\Rightarrow\;
+	\text{projektive Rückführung}.
+	\]
+	Die Kette lautet
+	\[
+	K_n \;\longrightarrow\; K_n^+ \;\longrightarrow\; R^*_{\mathrm{EABC}}(K_n^+).
+	\]
+	Nach Proposition~\ref{prop:convergence} genügt \emph{ein} Projektionsschritt:
+	$(R^*_{\mathrm{EABC}})^2=R^*_{\mathrm{EABC}}$.
+	
+	\begin{theorem}[Prim-Normkugel-Satz — Label-Teil]
+		\label{thm:prime-norm}
+		Sei $K_n\in\mathcal{F}$ mit geometrischer Label-Zuweisung und
+		$K_n^+=\mathrm{Extend}(p)\,K_n$ für $p=P(2n)\in\mathbb{P}$, $p>3$.
+		Dann gilt:
+		\begin{enumerate}
+			\item[(a)] $\text{PRIME\_DEFECT}(p)$ und $K_n^+\notin\mathcal{F}$;
+			\item[(b)] $R^*_{\mathrm{EABC}}(K_n^+)\in\mathcal{F}$ mit wiederhergestellter
+			3+3+3+3-Balance;
+			\item[(c)] ein Schritt genügt: $(R^*_{\mathrm{EABC}})^n(K_n^+)=R^*_{\mathrm{EABC}}(K_n^+)$
+			für alle $n\ge 1$.
+		\end{enumerate}
+	\end{theorem}
+	
+	\begin{proof}[Beweisidee]
+		\textbf{(a)} Die virtuelle Prim-Normkugel erhöht die Multiketten-Zählung einer
+		Familie von $3$ auf $4$ bei unveränderter 12er-Geometrie
+		(Lemma~\ref{lem:prime-imbalance}, formalisiert als
+		\texttt{extendPrime\_creates\_defect}).
+		
+		\smallskip\noindent
+		\textbf{(b)} Entscheidend ist, dass $R_{\mathrm{EABC}}$ \emph{labelblind} ist:
+		Es setzt die Zuweisung unabhängig von der Eingabe auf die geometrische
+		3+3+3+3-Struktur und löscht den Prim-Schalen-Defekt
+		(\texttt{rEabc\_restores\_balance} in \texttt{PrimeDefect.lean}).
+		Nach $P_I$ liegt die Geometrie wieder auf dem Referenz-Ikosaeder.
+		
+		\smallskip\noindent
+		\textbf{(c)} Folgt aus der Idempotenz von $R^*_{\mathrm{EABC}}$
+		(Proposition~\ref{prop:convergence}).
+	\end{proof}
+	
+	\subsection{Die zwei Tensorebenen: Geometrischer Fixpunkt versus effektiver Konfigurationsraum}
+	\label{sec:two-levels}
+	
+	Ein zentrales Missverständnis bei diskreten Symmetriebrechungen liegt in der
+	unzulässigen Vermischung von physikalischem Zustand und geometrischem Hintergrund.
+	Das EABC-Renormierungsmodell löst diesen Konflikt durch eine strikte Separation
+	zweier Tensorebenen --- auf jeder Peano-Schale $n\in\mathbb{N}$ und zunächst
+	unabhängig von metrischen Radien (Phase~A in Abschnitt~\ref{sec:formal-verification}).
+	
+	Der Primdefekt wirkt gleichzeitig auf Label- und Tensorebene:
+	\begin{enumerate}
+		\item[(L)] Label-Multikette: $(4,3,3,3)$ statt $(3,3,3,3)$;
+		\item[(T)] Tensor: $M_{\mathrm{eff}}(K^+)=24I_3+w_pvv^{\mathsf T}$ (Rang-1-Störung).
+	\end{enumerate}
+	
+	\subsubsection{Die rein geometrische Ebene: der Fixpunkt $M_{\mathrm{geom}}$}
+	
+	Die Basis bildet der rein geometrische Tensor $M_{\mathrm{geom}}$, der ausschließlich
+	die ungestörte Ikosaeder-Konfiguration abbildet.
+	Für Vertices $V=(v_i)_{i=1}^{12}$ und Label-Zuweisung $\sigma$ gilt
+	(Definition~\ref{def:m-geom}, \texttt{M\_geom} in \texttt{EffectiveTensor.lean})
+	\[
+	M_{\mathrm{geom}}(V,\sigma)
+	\;=\;
+	\sum_{i=1}^{12} w_{\sigma(i)}\, v_i v_i^{\mathsf T}.
+	\]
+	Das in \texttt{IcosahedronSymmetry.lean} verifizierte Theorem
+	\texttt{geometric\_fixpoint\_isotropy} beweist, dass für das Referenzobjekt
+	$I_{12}^{\mathrm{EABC}}$ mit $\sigma_{\mathrm{geo}}$ alle Richtungsabhängigkeiten
+	exakt kollabieren:
+	\[
+	\boxed{
+		M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}}) \;=\; 24I_3
+	}.
+	\]
+	Dieser Zustand ist perfekt isotrop und invariant unter $SO(3)$.
+	Er enthält keine dynamischen Defektfelder; in Lean entspricht er
+	\texttt{geometricM} bzw.\ \texttt{M\_geom\_geometric\_fixpoint}.
+	
+	\subsubsection{Die effektive physikalische Ebene: der Konfigurationsraum $M_{\mathrm{eff}}$}
+	
+	Der effektive Tensor $M_{\mathrm{eff}}$ operiert auf dem Konfigurationsraum
+	$\mathcal{C}$ (Lean: \texttt{Config} mit Feldern \texttt{label},
+	\texttt{primeShell}, \texttt{tensorDefect}).
+	Tritt ein EABC-Primereignis $p$ mit Gewicht $w_p\in\{1,5,7,11\}$ entlang eines
+	normierten Defektvektors $v$ ($\|v\|=1$) auf, so setzt man
+	(Definition~\ref{def:m-eff})
+	\[
+	K^+ \;:=\; \mathrm{Extend}(p,v)\,K,
+	\qquad
+	M_{\mathrm{eff}}(K^+) \;=\; 24I_3 + w_p\,vv^{\mathsf T}.
+	\]
+	In Lean: \texttt{extendPrimeTensor} schreibt \texttt{tensorDefect = some (w\_p, v)},
+	und \texttt{M\_eff\_with\_defect} liefert \texttt{rankOnePerturbation 24 w v}.
+	Das Theorem \texttt{rankOne\_defect\_not\_isotropic} zeigt: für $w_p>0$ ist
+	$M_{\mathrm{eff}}(K^+)$ nicht isotrop.
+	Die messbare Anisotropie ist
+	\[
+	\Delta\bigl(M_{\mathrm{eff}}(K^+)\bigr) \;=\; w_p
+	\]
+	(Theorem~\ref{thm:prime-delta}, \texttt{delta\_prime\_defect\_at\_fixpoint}).
+	
+	\subsubsection{Die Wirkung von $R^*_{\mathrm{EABC}}$: ein reiner Projektionssatz}
+	
+	$R^*_{\mathrm{EABC}}$ ist kein Dämpfungs- oder Glättungsoperator, sondern ein
+	algebraischer Retrakt auf $\mathcal{F}$.
+	Die Tensor-Restauration geschieht nicht analytisch \emph{innerhalb} der gestörten
+	Matrix $M_{\mathrm{eff}}(K^+)$, sondern durch projektiven Kollaps der Konfiguration
+	zurück auf die geometrische Referenz:
+	\[
+	K^+
+	\;\xrightarrow{\;R^*_{\mathrm{EABC}}\;}
+	(I_{12},\sigma_{\mathrm{geo}})
+	\;\xrightarrow{\;M_{\mathrm{geom}}\;}
+	24I_3.
+	\]
+	Formal faktorisiert die Kette in zwei unabhängige Schritte:
+	\begin{enumerate}
+		\item \textbf{Projektion (Ebene~1):}
+		$M_{\mathrm{eff}}(R^*(K))=M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}})$
+		ist \emph{definitorisch}
+		(Lemma~\ref{lem:tensor-projection}, \texttt{M\_eff\_projection}:
+		\texttt{rStar} setzt \texttt{tensorDefect} auf \texttt{none}).
+		\item \textbf{Fixpunkt (Ebene~2):}
+		$M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}})=24I_3$
+		ist der \emph{inhaltliche} Ikosaeder-Satz
+		(Theorem~\ref{thm:geom-fixpoint}).
+	\end{enumerate}
+	Für eine einzelne Schale liefert \texttt{prime\_norm\_full\_restoration} beides:
+	$R^*(K^+)\in\mathcal{F}$ und $M_{\mathrm{eff}}(R^*(K^+))=24I_3$.
+	Auf einem Peano-Schalenstapel gilt dasselbe komponentenweise
+	(\texttt{all\_shells\_tensor\_restored} in \texttt{ShellStack.lean}).
+	
+	\begin{table}[h!]
+		\centering
+		\small
+		\begin{tabular}{p{0.14\linewidth}p{0.36\linewidth}p{0.22\linewidth}p{0.22\linewidth}}
+			\hline
+			\textbf{Ebene} & \textbf{Mathematisches Objekt} & \textbf{Symmetrie} & \textbf{Lean} \\
+			\hline
+			Geometrisch &
+			$M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}})=24I_3$ &
+			Isotropie (Referenz) &
+			\texttt{geometric\_fixpoint\_isotropy} \\
+			Physikalisch &
+			$M_{\mathrm{eff}}(K^+)=24I_3+w_pvv^{\mathsf T}$ &
+			Rang-1-Anisotropie &
+			\texttt{extendPrimeTensor}, \texttt{rankOne\_defect\_not\_isotropic} \\
+			Projektiv &
+			$M_{\mathrm{eff}}(R^*(K^+))=24I_3$ &
+			restaurierte Isotropie &
+			\texttt{prime\_norm\_full\_restoration} \\
+			Peano (global) &
+			$\mathcal{R}^*(\mathcal{S}_{\mathrm{def}})=\mathcal{S}_{\mathrm{iso}}$ &
+			schalenweise unabhängig &
+			\texttt{all\_shells\_tensor\_restored} \\
+			\hline
+		\end{tabular}
+		\caption{Gegenüberstellung geometrischer Invarianz, effektiver Störung und projektiver Restauration.
+			\texttt{IsEabcFixpoint} beschreibt den Fixpunkt $K\in\mathcal{F}$, nicht direkt den Tensor;
+			die Isotropie $24I_3$ folgt über \texttt{M\_eff} und Theorem~\ref{thm:geom-fixpoint}.}
+		\label{tab:two-levels}
+	\end{table}
+	
+	\subsection{Tensor-Restauration als Projektionssatz}
+	\label{sec:tensor-projection}
+	
+	Der gesamte inhaltliche Kern von Phase~A lässt sich in einem Flussdiagramm
+	zusammenfassen (Hauptsatz: Theorem~\ref{thm:tensor-restore}):
+	
+	\begin{center}
+		\fbox{%
+			\begin{minipage}{0.55\linewidth}
+				\centering
+				\vspace{2mm}
+				$M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}}) = 24I_3$ \\[6pt]
+				$\downarrow$ \\[6pt]
+				$M_{\mathrm{eff}}(K^+) = 24I_3 + w_p\,vv^{\mathsf T}$ \\[6pt]
+				$\downarrow$ \\[6pt]
+				$\Delta\bigl(M_{\mathrm{eff}}(K^+)\bigr) = w_p$ \\[6pt]
+				$\downarrow$ \\[6pt]
+				$R^*_{\mathrm{EABC}}$ \\[6pt]
+				$\downarrow$ \\[6pt]
+				$\boxed{M_{\mathrm{eff}}\bigl(R^*_{\mathrm{EABC}}(K^+)\bigr) = 24I_3}$
+				\vspace{2mm}
+			\end{minipage}%
+		}
+	\end{center}
+	
+	Der Mechanismus ist keine dynamische Tensor-Glättung, sondern die Faktorisierung
+	$\mathcal{C}\xrightarrow{R^*}\mathcal{F}\xrightarrow{M_{\mathrm{geom}}}24I_3$.
+	Alle folgenden Resultate sind \emph{Vorbereitung} für
+	Theorem~\ref{thm:tensor-restore}.
+	
+	\subsubsection{Vorbereitung: Definitionen und Hilfssätze}
+	
+	\begin{definition}[Effektiver Tensor $M_{\mathrm{eff}}$]
+		\label{def:m-eff}
+		Auf dem Konfigurationsraum $\mathcal{C}$ setzt man
+		\[
+		M_{\mathrm{eff}}(K)
+		\;:=\;
+		\begin{cases}
+			M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}}), & \text{kein Tensordefekt},\\[4pt]
+			24I_3+w_pvv^{\mathsf T}, & \text{Primdefekt mit }w_p,\ \|v\|=1.
+		\end{cases}
+		\]
+		(\texttt{M\_eff} in \texttt{EffectiveTensor.lean}).
+	\end{definition}
+	
+	\begin{definition}[Geometrischer Tensor $M_{\mathrm{geom}}$]
+		\label{def:m-geom}
+		Für Vertices $V=(v_i)_{i=1}^{12}$ und Label-Zuweisung $\sigma$:
+		\[
+		M_{\mathrm{geom}}(V,\sigma)
+		\;:=\;
+		\sum_{i=1}^{12} w_{\sigma(i)}\, v_i v_i^{\mathsf T}.
+		\]
+	\end{definition}
+	
+	\begin{lemma}[Projektionssatz — effektive Ebene]
+		\label{lem:tensor-projection}
+		$R^*_{\mathrm{EABC}}$ löscht den Tensordefekt per Definition der Konfiguration:
+		\[
+		M_{\mathrm{eff}}\bigl(R^*_{\mathrm{EABC}}(K)\bigr)
+		\;=\;
+		M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}}).
+		\]
+		(\texttt{M\_eff\_projection}).
+	\end{lemma}
+	
+	\begin{theorem}[Ikosaeder-Fixpunkt — geometrische Ebene]
+		\label{thm:geom-fixpoint}
+		Am geometrischen Referenz-Fixpunkt gilt
+		\[
+		\boxed{
+			M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}})
+			\;=\;
+			24I_3
+		}.
+		\]
+		(\texttt{geometric\_fixpoint\_isotropy}; Beweis via $R_3$-Invarianz,
+		Symmetrie, $\mathrm{tr}(M)=72$ und $M_{01}=0$ aus der gewichteten Summe der
+		vier $(\pm1,\pm\varphi,0)$-Ecken).
+	\end{theorem}
+	
+	\subsubsection{Hypothesen des Hauptsatzes}
+	\label{sec:main-hypotheses}
+	
+	Theorem~\ref{thm:tensor-restore} benötigt eine \emph{minimale} explizite
+	Hypothesenliste (Lean: \texttt{prime\_norm\_full\_restoration}).
+	Die folgende Tabelle trennt Definition, Eindeutigkeit und bewiesenen Inhalt.
+	
+	\begin{table}[h!]
+		\centering
+		\small
+		\begin{tabular}{p{0.22\linewidth}p{0.68\linewidth}}
+			\hline
+			\textbf{Objekt} & \textbf{Status in Lean / Paper} \\
+			\hline
+			$K\in\mathcal{F}$
+			& \texttt{IsEabcFixpoint}: balancierte Label-Zuweisung $\sigma_{\mathrm{geo}}$,
+			keine aktive Prim-Schale, kein Tensordefekt. \\
+			$p$ EABC-Prim
+			& \texttt{isEabcPrime}: $p>3$ prim, $p\bmod 12\in\{1,5,7,11\}$. \\
+			$w_p$
+			& \textbf{Eindeutig} durch $p$: \texttt{primeWeight}\,$p=
+			\texttt{familyWeight}(\texttt{classOf}\,p)\in\{1,5,7,11\}$. \\
+			$v\in S^2$
+			& \textbf{Nicht eindeutig}: freier Parameter in
+			\texttt{extendPrimeTensor}; $\|v\|=1$ nur für $\Delta$-Aussagen
+			(\texttt{delta\_prime\_defect\_at\_fixpoint}), \emph{nicht} für
+			$M_{\mathrm{eff}}(R^*(K^+))=24I_3$. \\
+			$R^*_{\mathrm{EABC}}$
+			& \textbf{Konstruktiv}: \texttt{rStar}\,$K=\texttt{rEabc}\,K$ setzt
+			$\sigma\mapsto\sigma_{\mathrm{geo}}$, löscht Prim- und Tensordefekt. \\
+			$M_{\mathrm{eff}}(R^*(K^+))$
+			& \textbf{Zweistufig:}
+			$M_{\mathrm{eff}}(R^*(K^+))=M_{\mathrm{geom}}$ ist
+			\emph{definitorisch} (\texttt{M\_eff\_projection});
+			$M_{\mathrm{geom}}=24I_3$ ist \emph{bewiesener Satz}
+			(\texttt{geometric\_fixpoint\_isotropy}). \\
+			\hline
+		\end{tabular}
+		\caption{Minimale Hypothesen und epistemischer Status der zentralen Objekte.}
+		\label{tab:main-hypotheses}
+	\end{table}
+	
+	\begin{remark}[Gutachter-Checkliste]
+		Die Gleichung $M_{\mathrm{eff}}(R^*(K^+))=24I_3$ ist damit \emph{kein}
+		Spektralsatz über die gestörte Matrix $24I_3+w_pvv^{\mathsf T}$, sondern
+		die Komposition
+		\[
+		\underbrace{M_{\mathrm{eff}}(R^*(K^+))=M_{\mathrm{geom}}}_{\text{Definition/Projektion}}
+		\;\wedge\;
+		\underbrace{M_{\mathrm{geom}}=24I_3}_{\text{Theorem (Ikosaeder)}}.
+		\]
+		Die Messaussagen $\Delta=w_p$ und Nicht-Isotropie sind \emph{zusätzliche},
+		unabhängig bewiesene Folgerungen vor $R^*$.
+	\end{remark}
+	
+	\subsubsection{Hauptsatz: 24-Isotropy-Restoration}
+	
+	\begin{theorem}[24-Isotropy-Restoration --- Hauptsatz]
+		\label{thm:tensor-restore}
+		Für $K\in\mathcal{F}$, EABC-Primzahl $p$ und beliebiges $v\in\mathbb{R}^3$ mit
+		$K^+=\mathrm{Extend}(p,v)\,K$ gilt die zentrale Restauration
+		(unabhängig von $\|v\|$; siehe Abschnitt~\ref{sec:what-we-prove})
+		\[
+		\boxed{
+			M_{\mathrm{eff}}\bigl(R^*_{\mathrm{EABC}}(K^+)\bigr) = 24I_3
+		}.
+		\]
+		Vollständige Satzkette (Lean: Tabelle~\ref{tab:phase-a-chain}):
+		\begin{align*}
+			M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}}) &= 24I_3,
+			&
+			M_{\mathrm{eff}}(K^+) &= 24I_3+w_pvv^{\mathsf T},
+			\\
+			\Delta\bigl(M_{\mathrm{eff}}(K^+)\bigr) &= w_p,
+			&
+			w_p>0 &\Rightarrow M_{\mathrm{eff}}(K^+)\ \text{nicht isotrop},
+			\\
+			R^*_{\mathrm{EABC}}(K^+) &\in \mathcal{F},
+			&
+			M_{\mathrm{eff}}\bigl(R^*_{\mathrm{EABC}}(K^+)\bigr) &= 24I_3.
+		\end{align*}
+		(\texttt{prime\_norm\_full\_restoration} in \texttt{TensorRestoration.lean}).
+	\end{theorem}
+	
+	\begin{proof}
+		Theorem~\ref{thm:prime-delta} und \texttt{delta\_prime\_defect\_at\_fixpoint}
+		(vor $R^*$),
+		\texttt{rankOne\_defect\_not\_isotropic} (Nicht-Isotropie),
+		Theorem~\ref{thm:prime-norm} bzw.\ \texttt{prime\_norm\_full\_restoration}
+		(Label und Tensor nach $R^*$),
+		Lemma~\ref{lem:tensor-projection} (definitorisch, Ebene~1),
+		Theorem~\ref{thm:geom-fixpoint} (geometrisch, Ebene~2).
+	\end{proof}
+	
+	\begin{corollary}[Globale Peano-Fortsetzung]
+		\label{cor:shellstack-global}
+		Auf einem Schalenstapel $\mathcal{S}$ mit lokalen Fixpunkten gilt nach komponentenweisem
+		$R^*$ schalenweise $M_{\mathrm{eff}}=24I_3$
+		(\texttt{all\_shells\_tensor\_restored}).
+	\end{corollary}
+	
+	\begin{remark}[Gutachter-Einordnung]
+		$M_{\mathrm{eff}}(R^*(K))=24I_3$ ist \emph{kein} mystischer Spektralsatz:
+		die Projektion ersetzt die defekte Konfiguration durch den geometrischen Fixpunkt;
+		dessen Isotropie ist der inhaltliche Satz (Theorem~\ref{thm:geom-fixpoint}).
+		$P_I$ (Voronoi-Pullback gestörter Vertices) ist eine geometrische Realisierung
+		von $R^*$, nicht der konzeptionelle Kern.
+	\end{remark}
+	
+	\begin{remark}[$P_I$ als geometrische Realisierung (optional)]
+		\label{rem:pi-optional}
+		Für gestörte Richtungen $v\in S^2$ setzt
+		$P_I(v):=\arg\max_{r_j\in I_{12}}\langle v,r_j\rangle$.
+		Bei hinreichend kleiner Kuss-Störung zieht $P_I$ die Vertex-Menge auf $I_{12}$
+		zurück; zusammen mit labelblindem $R_{\mathrm{EABC}}$ erhält man dieselbe
+		Projektionssemantik wie oben.
+	\end{remark}
+	
+	\begin{lemma}[Multiketten-Imbalance nach dem Primschritt]
+		\label{lem:prime-imbalance}
+		Aus $K_n\in\mathcal{F}$ und $p=P(2n)$ folgt für die Familienzählung mit virtueller
+		Primkugel $(4,3,3,3)$ statt $(3,3,3,3)$.
+	\end{lemma}
+	
+	%=============================================================================
+	\section{Was dieses Manuskript beweist --- und was nicht}
+	\label{sec:what-we-prove}
+	%=============================================================================
+	
+	Diese Seite fasst den epistemischen Stand für externe Leser zusammen.
+	Details: Hypothesen (Tabelle~\ref{tab:main-hypotheses}),
+	Abhängigkeiten (Abschnitt~\ref{sec:formal-deps}),
+	Hauptsatz (Theorem~\ref{thm:tensor-restore}).
+	
+	\subsection{Objektrollen}
+	
+	\begin{table}[h!]
+		\centering
+		\small
+		\begin{tabular}{p{0.18\linewidth}p{0.74\linewidth}}
+			\hline
+			\textbf{Objekt} & \textbf{Rolle} \\
+			\hline
+			$24I_3$ & geometrischer Fixpunkt (Referenz-Isotropie) \\
+			$w_p$ & Primlabel, eindeutig aus $p\bmod 12$ \\
+			$v$ & freier Richtungsparameter (nicht durch $p$ festgelegt) \\
+			$vv^{\mathsf T}$ & Rang-1-Defektkomponente in $M_{\mathrm{eff}}(K^+)$ \\
+			$R^*_{\mathrm{EABC}}$ & Retraktionsoperator (projektive Konfigurationsabbildung) \\
+			$\Delta$ & Messgröße der Anisotropie (Ordnungsparameter, $\Delta=w_p$ vor $R^*$) \\
+			\hline
+		\end{tabular}
+		\caption{Begriffslexikon: Rolle der zentralen Objekte.}
+		\label{tab:object-roles}
+	\end{table}
+	
+	\subsection{Tatsächliche logische Struktur}
+	
+	\textbf{Hauptpfad (Restauration):} unabhängig von $v$ und unabhängig von $\Delta$.
+	\[
+	\texttt{IsEabcFixpoint}\,K
+	\;\wedge\;
+	\texttt{isEabcPrime}\,p
+	\;\Longrightarrow\;
+	\texttt{prime\_norm\_full\_restoration}
+	\;\Longrightarrow\;
+	M_{\mathrm{eff}}(R^*(K^+))=24I_3.
+	\]
+	Der Tensor-Teil faktorisiert als
+	\[
+	M_{\mathrm{eff}}(R^*(K^+))=M_{\mathrm{geom}}
+	\quad\text{(Definition)}
+	\qquad\text{und}\qquad
+	M_{\mathrm{geom}}=24I_3
+	\quad\text{(Theorem)}.
+	\]
+	\textbf{Keine neue Information} steckt in $M_{\mathrm{eff}}(R^*(K^+))=M_{\mathrm{geom}}$;
+	der \emph{mathematische Gehalt} des Hauptsatzes liegt vollständig in
+	$M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}})=24I_3$
+	(\texttt{geometric\_fixpoint\_isotropy}).
+	
+	\medskip\noindent
+	\textbf{Parallelpfad (Messung):} unabhängig vom Restaurationsbeweis.
+	\[
+	K^+ \;\longrightarrow\; M_{\mathrm{eff}}(K^+)=24I_3+w_pvv^{\mathsf T}
+	\;\longrightarrow\; \Delta(M_{\mathrm{eff}}(K^+))=w_p
+	\;\longrightarrow\; \text{Messgröße}.
+	\]
+	Die Lemmas \texttt{delta\_prime\_defect\_at\_fixpoint} und
+	\texttt{rankOne\_defect\_not\_isotropic} gehören hierher; sie sind
+	\emph{Vorbereitung/Messung}, keine logische Voraussetzung des Gleichheitsbeweises.
+	
+	\paragraph{Konsequenz: $v$-Unabhängigkeit.}
+	Da $\|v\|$ für \texttt{prime\_norm\_full\_restoration} nicht benötigt wird,
+	entfernt $R^*$ die gesamte Klasse der zulässigen Rang-1-Erweiterungen
+	$24I_3+w_pvv^{\mathsf T}$ unabhängig von der konkreten Richtung $v$.
+	Der Hauptsatz ist damit \emph{stärker} als eine rein vektor-spezifische Aussage.
+	
+	\subsection{Drei epistemische Ebenen}
+	
+	\begin{table}[h!]
+		\centering
+		\small
+		\begin{tabular}{p{0.16\linewidth}p{0.78\linewidth}}
+			\hline
+			\textbf{Ebene} & \textbf{Inhalt} \\
+			\hline
+			1 --- Definitionen &
+			$R^*$, $M_{\mathrm{eff}}$, $w_p$, $v$, \texttt{extendPrimeTensor},
+			\texttt{M\_eff\_projection}. \\
+			2 --- Bewiesene Struktur &
+			$M_{\mathrm{geom}}=24I_3$;
+			$\Delta=w_p$ (Messung);
+			$M_n^{\mathrm{sep}}=4^n$ und Skalierungsinvarianz (Phase~B). \\
+			3 --- Offene Programme &
+			$\dim_{\mathrm{box}}$; Ball-Überdeckung; Grenzwert $n\to\infty$;
+			Monopol-Physik ($Q_m$, Dirac--Schwinger);
+			Phase-C-Hypothesen (QCD-Lesart, superkritische Normschale, AdS/CFT-Bulk). \\
+			\multicolumn{2}{@{}l@{}}{\emph{Teilweise geschlossen (Phase~C):}
+				$\iota_n$ für $n\le 3$ (\texttt{cardinalShellEmbedding\_one/two/three}),
+				Ikosaeder-Separation $\varepsilon=1$ (\texttt{IcosahedronEmbedding.lean}),
+				vier Mathlib-U(1)-Anker (\texttt{DiracMonopole.lean}).} \\
+			\hline
+		\end{tabular}
+		\caption{Drei Ebenen: Definition, Beweis, offenes Programm.}
+		\label{tab:three-epistemic-layers}
+	\end{table}
+	
+	\subsection{Was bewiesen ist}
+	
+	\begin{itemize}
+		\item \textbf{Geometrischer Kern:}
+		$M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}})=24I_3$
+		(\texttt{geometric\_fixpoint\_isotropy}).
+		\item \textbf{Projektive Semantik:}
+		$M_{\mathrm{eff}}(R^*(K))=M_{\mathrm{geom}}$ per Definition der Konfiguration
+		(\texttt{M\_eff\_projection}).
+		\item \textbf{24-Isotropy-Restoration:}
+		unter \texttt{IsEabcFixpoint} und \texttt{isEabcPrime} gilt
+		$M_{\mathrm{eff}}(R^*(K^+))=24I_3$ für \emph{jedes} $v$
+		(\texttt{prime\_norm\_full\_restoration}).
+		\item \textbf{Messung:} $\Delta(M_{\mathrm{eff}}(K^+))=w_p$ bei $\|v\|=1$.
+		\item \textbf{Peano:} schalenweise Restauration (\texttt{all\_shells\_tensor\_restored}).
+		\item \textbf{Phase~B (Nebenzweig):}
+		$M_n^{\mathrm{sep}}=C_n=4^n$;
+		$\ln M_n^{\mathrm{sep}}/\ln r_n=\ln4/\ln\phi$ (Skalierungsinvarianzsatz, keine Box-Dimension).
+		\item \textbf{Phase~C (Teilstand):}
+		metrische Einbettungen $\iota_n$ für $n\in\{1,2,3\}$ mit
+		$\varepsilon_n\in\{1,\varphi^{-2},\varphi^{-3}\}$
+		(\texttt{cardinalShellEmbedding\_one/two/three});
+		Ikosaeder-Repräsentanten-Separation $\varepsilon=1$
+		(\texttt{icosahedronShellEmbedding\_one\_sep});
+		vier Mathlib-U(1)-Anker im Dirac-Monopol-Scaffold
+		(\texttt{DiracMonopole.lean}, Abschnitt~\ref{sec:dirac-monopole}).
+	\end{itemize}
+	
+	\subsection{Was nicht bewiesen ist}
+	
+	\begin{itemize}
+		\item Dass $M_{\mathrm{eff}}(R^*(K^+))=24I_3$ ein Spektralsatz über die
+		gestörte Matrix $24I_3+w_pvv^{\mathsf T}$ ist (es ist Projektion + Fixpunkt).
+		\item Metrische Minimalüberdeckung $M_n(\varepsilon_n)$ und Minkowski--Bouligand-Dimension.
+		\item Vollständige Einbettung $\iota_n$ für alle $n$ und Grenzwert $n\to\infty$
+		(für $n\le 3$ siehe Phase~C-Teilstand oben).
+		\item Dirac-Ladungsquantisierung $Q_m$, Spin-Eis-Monopole, AdS/CFT-Bulk-Formalismus
+		(nur Hypothesen/Remark, Abschnitt~\ref{sec:dirac-monopole}).
+		\item Physikalische Deutung von $w_p$, $R^*$ oder der Peano-Schachtelung
+		(einschließlich Hypothesen~\ref{hyp:qcd-gauge-fix} und~\ref{hyp:shell-collapse}).
+		\item Dass $p_{\mathrm{krit}}=173$ oder $Z_{\mathrm{krit}}\approx 173$ aus der
+		EABC-Arithmetik folgt.
+		\item Konvergenz unendlicher Residuensummen aus $D_{EABC}<3$ allein.
+	\end{itemize}
+	
+	%=============================================================================
+	\section{Formale Verifikation}
+	\label{sec:formal-verification}
+	%=============================================================================
+	
+	Die zentrale Satzkette ist in \texttt{eabc-renorm} (Lean~4.29, Mathlib~4.29)
+	maschinell verifiziert; \texttt{lake build} ist grün, \texttt{sorry}\,$=\,0$.
+	Hauptsatz: Theorem~\ref{thm:tensor-restore} (24-Isotropy-Restoration).
+	Überblick: Abschnitt~\ref{sec:what-we-prove}.
+	
+	\begin{center}
+		\small
+		\begin{minipage}[t]{0.30\linewidth}
+			\fbox{\parbox{\linewidth}{
+					\textbf{PHASE A}\\[4pt]
+					$\checkmark$ vollständig formalisiert\\
+					$\checkmark$ Lean-belegt\\
+					$\checkmark$ \textbf{zentrale Aussage}\\
+					\textit{Hauptsatz~\ref{thm:tensor-restore}}
+			}}
+		\end{minipage}
+		\hfill
+		\begin{minipage}[t]{0.30\linewidth}
+			\fbox{\parbox{\linewidth}{
+					\textbf{PHASE B}\\[4pt]
+					$\checkmark$ kombinatorische Struktur\\
+					$\checkmark$ Skalierungsinvarianz\\
+					$\times$ keine Box-Dimension\\
+					\textit{Nebenzweig / Einordnung}
+			}}
+		\end{minipage}
+		\hfill
+		\begin{minipage}[t]{0.30\linewidth}
+			\fbox{\parbox{\linewidth}{
+					\textbf{PHASE C}\\[4pt]
+					$\checkmark$ $\iota_n$, $n\le 3$\\
+					$\checkmark$ Ikosaeder-Separation\\
+					$\checkmark$ Dirac-Anker (Mathlib)\\
+					$\circ$ Box-Dim / $n\to\infty$\\
+					\textit{Teilstand + Forschungsprogramm}
+			}}
+		\end{minipage}
+	\end{center}
+	
+	\subsection{Drei-Phasen-Architektur}
+	\label{sec:three-phases}
+	
+	Die Verifikation ist bewusst in drei Schichten gegliedert.
+	Phase~A und Phase~B sind als geschlossener Stand dokumentiert;
+	Phase~C hat einen dokumentierten Teilstand ($n\le 3$, Ikosaeder, Dirac-Scaffold),
+	Ball-Überdeckung und Grenzwert $n\to\infty$ bleiben offen.
+	
+	\paragraph{Phase~A (geschlossen): geometrischer Fixpunkt und Tensor-Renormierung.}
+	Kernsubstanz der physikalisch-geometrischen Lesart:
+	\[
+	M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}})=24I_3,
+	\qquad
+	\Delta(M^+)=w_p,
+	\qquad
+	w_p>0 \Rightarrow M^+\ \text{nicht isotrop},
+	\qquad
+	R^*(K^+)\in\mathcal{F},\ M_{\mathrm{eff}}=24I_3.
+	\]
+	Peano-Multi-Schale: \texttt{ShellStack}, \texttt{all\_shells\_tensor\_restored}.
+	Hauptsatz: Theorem~\ref{thm:tensor-restore}; Details in
+	Abschnitt~\ref{sec:phase-a-chain} und Tabelle~\ref{tab:two-levels}.
+	
+	\paragraph{Phase~B (Nebenzweig, eingefroren): diskrete fraktale Zustandsstruktur.}
+	\emph{Einordnung, nicht Hauptsatz.}
+	Kombinatorischer Wortbaum, kanonische und minimale \emph{separierte} Überdeckung:
+	\[
+	C_n=4^n,
+	\qquad
+	M_n^{\mathrm{sep}}=C_n=4^n,
+	\qquad
+	\frac{\ln M_n^{\mathrm{sep}}}{\ln r_n}
+	\;=\;
+	\frac{\ln 4}{\ln\phi}.
+	\]
+	Das ist ein formaler Minimalcover-Satz auf endlichen Schalen, kein
+	$\mathbb{R}^3$-Infimum und keine Box-Dimension.
+	
+	\paragraph{Phase~C (Teilstand + Anschlussarbeit).}
+	Metrische Realisierung erfordert eine Einbettung
+	$\iota_n:\texttt{ShellVertex}(n)\to\mathbb{R}^3$ und eine Separationsbedingung
+	\[
+	u\neq v
+	\;\Longrightarrow\;
+	\|\iota_n(u)-\iota_n(v)\|\ge\varepsilon_n.
+	\]
+	Für $n\in\{1,2,3\}$ sind \texttt{cardinalShellEmbedding\_one/two/three}
+	und die Ikosaeder-Repräsentanten-Einbettung
+	\texttt{icosahedronShellEmbedding\_one} mit $\varepsilon=1$ bewiesen
+	(\texttt{IcosahedronEmbedding.lean}).
+	Erst für alle $n$ und mit Ball-Überdeckungen folgt die metrische Version
+	$M_n(\varepsilon_n)=C_n=4^n$ und ein Grenzwert
+	$\lim_{n\to\infty}\log M_n/\log r_n$ im Sinne der Minkowski--Bouligand-Dimension.
+	\texttt{DiracMonopole.lean} liefert vier Mathlib-U(1)-Anker als Scaffold;
+	\texttt{GeometryScaffold.lean} liefert einen Mathlib-Ptolemy-Anker und vier
+	klassische Geometrie-Hypothesen (Abschnitt~\ref{sec:geometry-scaffold}).
+	Monopol-Physik bleibt Hypothese (Abschnitt~\ref{sec:dirac-monopole}).
+	Flyspeck-Analogie: \texttt{VerificationCertificate.lean} trennt Lean-Beweise
+	von externen Python-Zertifikaten (\texttt{eabc\_icosahedron\_test.py}) ---
+	die Zertifikate ersetzen keine Lean-Theoreme
+	(Abschnitt~\ref{sec:flyspeck-certificates}).
+	
+	\subsection{Phase~A: Kernsatz und Lean-Satzkette}
+	\label{sec:phase-a-chain}
+	
+	Die Phase-A-Verifikation faktorisiert strikt in \emph{Störung},
+	\emph{Messung}, \emph{Projektion} und \emph{geometrischen Fixpunkt}:
+	
+	\begin{center}
+		\fbox{%
+			\begin{minipage}{0.92\linewidth}
+				\vspace{2mm}
+				\textbf{Theorem~\ref{thm:tensor-restore} (24-Isotropy-Restoration).}
+				\vspace{2mm}
+				\[
+				\underbrace{M_{\mathrm{eff}}(K^+)=24I_3+w_pvv^{\mathsf T}}_{\text{Störung}}
+				\;\Longrightarrow\;
+				\underbrace{\Delta(M_{\mathrm{eff}}(K^+))=w_p}_{\text{messbar}}
+				\;\xrightarrow{\;R^*\;}
+				\underbrace{M_{\mathrm{eff}}(R^*(K^+))=24I_3}_{\text{restauriert}},
+				\]
+				\[
+				\text{weil}\quad
+				\underbrace{M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}})=24I_3}_{\text{geometrischer Fixpunkt}}.
+				\]
+				\vspace{2mm}
+			\end{minipage}%
+		}
+	\end{center}
+	
+	\begin{table}[h!]
+		\centering
+		\small
+		\begin{tabular}{cll}
+			\hline
+			\textbf{Schritt} & \textbf{Aussage} & \textbf{Lean} \\
+			\hline
+			1 & $M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}})=24I_3$ &
+			\texttt{geometric\_fixpoint\_isotropy} \\
+			2 & $M_{\mathrm{eff}}(K^+)=24I_3+w_pvv^{\mathsf T}$ &
+			\texttt{M\_eff\_with\_defect}, \texttt{extendPrimeTensor} \\
+			3 & $\Delta(M_{\mathrm{eff}}(K^+))=w_p$; $w_p>0\Rightarrow$ nicht isotrop &
+			\texttt{delta\_prime\_defect\_at\_fixpoint}, \texttt{rankOne\_defect\_not\_isotropic} \\
+			4 & $M_{\mathrm{eff}}(R^*(K))=M_{\mathrm{geom}}$ (Projektion) &
+			\texttt{M\_eff\_projection} \\
+			5 & $R^*(K^+)\in\mathcal{F}$; $M_{\mathrm{eff}}(R^*(K^+))=24I_3$ &
+			\texttt{prime\_norm\_full\_restoration} \\
+			6 & Peano-global: schalenweise $24I_3$ &
+			\texttt{all\_shells\_tensor\_restored} \\
+			\hline
+		\end{tabular}
+		\caption{Phase-A-Satzkette: geometrischer Fixpunkt, effektive Störung, Projektion, Restauration.}
+		\label{tab:phase-a-chain}
+	\end{table}
+	
+	\paragraph{Gutachter-Hinweis.}
+	$M_{\mathrm{eff}}(R^*(K))=24I_3$ ist \emph{kein} Spektralsatz über die gestörte Matrix,
+	sondern die Komposition aus definitorischer Projektion (Schritt~4) und dem
+	inhaltlichen Ikosaeder-Fixpunkt (Schritt~1).
+	$P_I$ (Voronoi-Pullback) ist optional und nicht Teil der Lean-Verifikation.
+	
+	\subsection{Formale Abhängigkeiten}
+	\label{sec:formal-deps}
+	
+	Gerichteter Abhängigkeitsgraph der Phase-A-Verifikation.
+	\textbf{Def} = definitorisch/axiombasiert in Lean;
+	\textbf{Thm} = bewiesenes Lemma/Theorem.
+	Hypothesen des Hauptsatzes: Tabelle~\ref{tab:main-hypotheses}.
+	
+	\begin{center}
+		\small
+		\begin{tabular}{c}
+			\textit{Def:} \texttt{rStar}, \texttt{extendPrimeTensor}, \texttt{M\_eff}, \texttt{primeWeight} \\[6pt]
+			$\downarrow$ \\[6pt]
+			\textbf{Thm:} \texttt{geometric\_fixpoint\_isotropy} \quad ($M_{\mathrm{geom}}=24I_3$) \\[6pt]
+			$\downarrow$ \\[6pt]
+			\textbf{Def:} \texttt{M\_eff\_projection} \quad ($M_{\mathrm{eff}}(R^*K)=M_{\mathrm{geom}}$) \\[6pt]
+			$\swarrow$ \hspace{2cm} $\searrow$ \\[4pt]
+			\begin{minipage}{0.42\linewidth}
+				\raggedright
+				\textit{parallel (Messung, vor $R^*$):}\\
+				\textbf{Thm:} \texttt{delta\_prime\_defect\_at\_fixpoint}\\
+				$\leftarrow$ \texttt{primeWeight\_pos}\\
+				$\leftarrow$ \texttt{rankOne\_defect\_not\_isotropic}
+			\end{minipage}
+			\hspace{0.04\linewidth}
+			\begin{minipage}{0.42\linewidth}
+				\raggedright
+				\textbf{Thm:} \texttt{M\_eff\_after\_rStar}\\
+				($M_{\mathrm{eff}}(R^*K^+)=24I_3$)
+			\end{minipage}
+			\\[8pt]
+			$\downarrow$ \\[6pt]
+			\textbf{Thm:} \texttt{prime\_norm\_restoration} \quad (Label: $R^*(K^+)\in\mathcal{F}$) \\[6pt]
+			$\downarrow$ \\[6pt]
+			\fbox{\textbf{Thm:} \texttt{prime\_norm\_full\_restoration} \; (Hauptsatz)} \\[6pt]
+			$\downarrow$ \\[6pt]
+			\textbf{Thm:} \texttt{all\_shells\_tensor\_restored} \quad (Peano-global)
+		\end{tabular}
+	\end{center}
+	
+	\begin{table}[h!]
+		\centering
+		\small
+		\begin{tabular}{lll}
+			\hline
+			\textbf{Status} & \textbf{Inhalt} & \textbf{Lean / Anmerkung} \\
+			\hline
+			$\checkmark$ bewiesen & 24-Isotropy-Restoration & \texttt{prime\_norm\_full\_restoration} \\
+			$\checkmark$ bewiesen & Peano-ShellStack-Induktion & \texttt{all\_shells\_tensor\_restored} \\
+			$\checkmark$ bewiesen & kombinatorische Skalierung (Phase~B) &
+			\texttt{fractal\_ratio\_via\_minimal\_separated\_cover} \\
+			$\checkmark$ bewiesen & $\mathbb{R}^3$-Einbettung $n\le 3$ &
+			\texttt{cardinalShellEmbedding\_one/two/three} \\
+			$\checkmark$ bewiesen & Ikosaeder-Separation $\varepsilon=1$ &
+			\texttt{icosahedronShellEmbedding\_one\_sep} \\
+			$\checkmark$ bewiesen & Dirac-Monopol Mathlib-Anker (4) &
+			\texttt{DiracMonopole.milestone\_green\_*} \\
+			$\circ$ offen & metrische Box-Dimension & Phase~C \\
+			$\circ$ offen & Ball-Überdeckung, Grenzwert $n\to\infty$ & Phase~C \\
+			$\circ$ offen & Instabilitäts-API / \texttt{ShellInstability} &
+			\texttt{MetricSeparationLossExists} offen \\
+			$\circ$ offen & Monopol-Physik ($Q_m$, Dirac--Schwinger) &
+			\texttt{DiracMonopole} (3 Hypothesen) \\
+			$\circ$ offen & QCD-/Stella-Octangula-Lesart & Hypothese~\ref{hyp:qcd-gauge-fix} \\
+			$\circ$ offen & superkritische Normschale & Hypothese~\ref{hyp:shell-collapse} \\
+			\hline
+		\end{tabular}
+		\caption{Epistemischer Status: was bewiesen ist und was bewusst offen bleibt.}
+		\label{tab:epistemic-status}
+	\end{table}
+	
+	\begin{table}[h!]
+		\centering
+		\small
+		\begin{tabular}{p{0.38\linewidth}p{0.30\linewidth}p{0.24\linewidth}}
+			\hline
+			\textbf{Mathematische Aussage} & \textbf{Lean-Theorem} & \textbf{Datei} \\
+			\hline
+			$M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}})=24I_3$
+			& \texttt{geometric\_fixpoint\_isotropy} & \texttt{IcosahedronSymmetry.lean} \\
+			$M^+=24I_3+w_pvv^{\mathsf T}$
+			& \texttt{rankOnePerturbation} & \texttt{PrimeDefect.lean} \\
+			$\Delta(M^+)=w_p$
+			& \texttt{delta\_prime\_defect\_at\_fixpoint} & \texttt{PrimeDefect.lean} \\
+			$w_p>0\Rightarrow M^+$ nicht isotrop
+			& \texttt{rankOne\_defect\_not\_isotropic} & \texttt{TensorRestoration.lean} \\
+			$R^*(K^+)\in\mathcal{F}$, $M_{\mathrm{eff}}=24I_3$
+			& \texttt{prime\_norm\_full\_restoration} & \texttt{TensorRestoration.lean} \\
+			$M_{\mathrm{eff}}(R^*(K))=M_{\mathrm{geom}}(\mathrm{ref})$
+			& \texttt{M\_eff\_projection} & \texttt{EffectiveTensor.lean} \\
+			\hline
+			\multicolumn{3}{l}{\textbf{Peano-Erweiterung (Multi-Schale, Phase~A)}} \\
+			\hline
+			Schalenstapel $\mathcal{S}$
+			& \texttt{structure ShellStack} & \texttt{ShellStack.lean} \\
+			Lokaler Schalen-Retrakt
+			& \texttt{shell\_defect\_restoration} & \texttt{ShellStack.lean} \\
+			Globaler Projektionssatz
+			& \texttt{all\_shells\_restored} & \texttt{ShellStack.lean} \\
+			Globale Tensor-Restauration
+			& \texttt{all\_shells\_tensor\_restored} & \texttt{ShellStack.lean} \\
+			\hline
+			\multicolumn{3}{l}{\textbf{Phase B: Wortbaum und Skalierungsexponent}} \\
+			\hline
+			$C_n=\texttt{card}(\texttt{ShellVertex}\,n)=4^n$
+			& \texttt{canonicalCoveringNumber\_eq\_four\_pow} & \texttt{ShellGraph.lean} \\
+			Kanonische Überdeckung existiert ($C_n$)
+			& \texttt{canonical\_cover\_exists} & \texttt{ShellSeparation.lean} \\
+			$\log C_n/\log r_n=\log4/\log\phi$
+			& \texttt{fractal\_ratio\_via\_canonical\_cover} & \texttt{FractalDimension.lean} \\
+			$M_n^{\mathrm{sep}}=C_n=4^n$ (separierte Zellen)
+			& \texttt{minimal\_separated\_cover\_eq\_four\_pow} & \texttt{ShellMinimalCover.lean} \\
+			$\#V_n\le\#\text{cells}$ bei Separation
+			& \texttt{separated\_cover\_lower\_bound} & \texttt{ShellMinimalCover.lean} \\
+			$M_n^{\mathrm{sep}}=C_n$ (Abstraktion)
+			& \texttt{separation\_implies\_minimal\_cover} & \texttt{ShellSeparation.lean} \\
+			$\log M_n^{\mathrm{sep}}/\log r_n=\log4/\log\phi$
+			& \texttt{fractal\_ratio\_via\_minimal\_separated\_cover} & \texttt{FractalDimension.lean} \\
+			$Z(n)=4^n$, $r_n=\phi^n$ (Modell)
+			& \texttt{eabcZustand}, \texttt{metrischeSkalierung} & \texttt{FractalDimension.lean} \\
+			$\log(4^n)/\log(\phi^n)=\log4/\log\phi$
+			& \texttt{fractal\_dimension\_invariant} & \texttt{FractalDimension.lean} \\
+			$\ln4/\ln\phi<3$ für $\phi=(1+\sqrt5)/2$
+			& \texttt{fractal\_dimension\_lt\_three} & \texttt{FractalDimension.lean} \\
+			\hline
+			\multicolumn{3}{l}{\textbf{Phase C: metrische Realisierung (Teilstand)}} \\
+			\hline
+			$\iota_1$ mit Separation $\varepsilon=1$
+			& \texttt{cardinalShellEmbedding\_one} & \texttt{ShellEmbedding.lean} \\
+			$\iota_2$, $\varepsilon=\varphi^{-2}$
+			& \texttt{cardinalShellEmbedding\_two} & \texttt{ShellEmbedding.lean} \\
+			$\iota_3$, $\varepsilon=\varphi^{-3}$
+			& \texttt{cardinalShellEmbedding\_three} & \texttt{ShellEmbedding.lean} \\
+			Ikosaeder-Repräsentanten, $\varepsilon=1$
+			& \texttt{icosahedronShellEmbedding\_one\_sep} & \texttt{IcosahedronEmbedding.lean} \\
+			$\varphi$-Skala erreichbar ($n\le 3$)
+			& \texttt{phiScaleAchievable\_one/two/three} & \texttt{ShellSeparationScale.lean} \\
+			$\neg\,\mathrm{ShellSeparationLoss}(n)$ für $n\le 3$
+			& \texttt{milestone\_green\_no\_loss\_one/two/three} & \texttt{PhaseCBlueprint.lean} \\
+			Ikosaeder-Meilenstein (Blueprint)
+			& \texttt{milestone\_green\_icosahedron} & \texttt{PhaseCBlueprint.lean} \\
+			U(1)-Periodizität (Mathlib-Anker)
+			& \texttt{milestone\_green\_u1\_period} & \texttt{DiracMonopole.lean} \\
+			$S^1\simeq\mathrm{AddCircle}(2\pi)$ (Mathlib-Anker)
+			& \texttt{milestone\_green\_circle\_homeomorph} & \texttt{DiracMonopole.lean} \\
+			Schleifen-Homotopie (Mathlib-Anker)
+			& \texttt{milestone\_green\_loop\_homotopy} & \texttt{DiracMonopole.lean} \\
+			$\pi_1$-Vorbereitung (Mathlib-Anker)
+			& \texttt{milestone\_green\_fundamental\_group} & \texttt{DiracMonopole.lean} \\
+			Ptolemy (Mathlib-Anker)
+			& \texttt{milestone\_green\_mathlib\_ptolemy} & \texttt{GeometryScaffold.lean} \\
+			Geometrie-Hypothesen (4$\times$, rot)
+			& \texttt{MorleyEquilateralHypothesis}, \ldots &
+			\texttt{GeometryScaffold.lean} \\
+			Flyspeck-Metadaten (Phase~C)
+			& \texttt{phaseCMilestones} & \texttt{VerificationCertificate.lean} \\
+			\hline
+		\end{tabular}
+		\caption{Verifizierte Satzkette: Phase~A (Tensor/Peano), Phase~B (kombinatorische Fraktalstruktur) und Phase~C (Teilstand).}
+		\label{tab:lean-theorems}
+	\end{table}
+	
+	\subsection{Peano-Schachtelung und globaler Retrakt}
+	
+	Eine einzelne Schale ist in Lean abgeschlossen.
+	Für geschachtelte Normschalen wird der Konfigurationsraum zu einem
+	\emph{indexbasierten Stapel} $\mathcal{S}=\{K^{(i)}\}_{i<n}$ über
+	$\mathbb{N}$ (Peano-Rekursion) erweitert.
+	Der globale Operator $\mathcal{R}^*$ wirkt komponentenweise:
+	auf markierten Schalen $i$ mit aktivem Primdefekt gilt
+	\[
+	\mathcal{R}^*(K^{(i)}) \;=\; R^*_{\mathrm{EABC}}\!\bigl(\mathrm{Extend}(p)\,K^{(i)}\bigr),
+	\]
+	auf unberührten Schalen bleibt $K^{(i)}$ unverändert.
+	Da jede Schale den lokalen Satz \texttt{shell\_defect\_restoration} erfüllt,
+	folgt der globale Satz \texttt{all\_shells\_restored} ohne zusätzliche
+	Analyse-Hypothesen.
+	
+	\subsection{Metrische Interpretation (Phase~B, Nebenzweig)}
+	
+	Die kombinatorische Verifikation hängt \emph{nicht} von metrischen Radien ab.
+	Für physikalische Lesarten lässt sich dennoch eine rein interpretative
+	Skalierungsfunktion einführen, z.\,B.
+	\[
+	r_n \;=\; \phi^n\,r_0,
+	\qquad \phi=\tfrac{1+\sqrt5}{2},
+	\]
+	ohne den algebraischen Restaurationssatz zu verändern:
+	\texttt{all\_shells\_restored} bleibt exakt, weil $R^*$ auf der
+	Label-/Defektebene operiert und $M_{\mathrm{geom}}=24I_3$ metrikunabhängig ist.
+	
+	\subsection{Skalierungsexponent $D_{EABC}$ (Phase~B, Nebenzweig; keine Box-Dimension)}
+	\label{sec:fractal-dimension}
+	
+	\paragraph{Was mathematisch sauber ist.}
+	Unter der \emph{Modellannahme}
+	\[
+	Z(n)=4^n,\qquad r_n=\phi^n\qquad(\phi>1)
+	\]
+	folgt das exakte Skalierungsgesetz
+	\[
+	\frac{\ln Z(n)}{\ln r_n}
+	\;=\;
+	\frac{n\ln 4}{n\ln\phi}
+	\;=\;
+	\frac{\ln 4}{\ln\phi}.
+	\]
+	Lean beweist genau dies in \texttt{FractalDimension.lean}:
+	\texttt{fractal\_dimension\_invariant} liefert für jedes $n>0$
+	\[
+	\frac{\log(4^n)}{\log(\phi^n)}
+	\;=\;
+	\frac{\log 4}{\log\phi}.
+	\]
+	Das ist ein \textbf{Skalierungsinvarianzsatz}, kein Grenzwertsatz
+	$\epsilon\to 0$ der klassischen Minkowski--Bouligand-Dimension
+	\[
+	D_B=\lim_{\epsilon\to0}\frac{\log M(\epsilon)}{\log(1/\epsilon)}.
+	\]
+	
+	\paragraph{Abgrenzung zu Phase~C.}
+	Phase~B beweist $M_n^{\mathrm{sep}}=C_n=4^n$ und damit
+	$\ln M_n^{\mathrm{sep}}/\ln r_n=\ln4/\ln\phi$ als kombinatorisches
+	Skalierungsgesetz.
+	Daraus folgt \emph{nicht automatisch}, dass
+	$D_{EABC}=\ln4/\ln\phi$ die Box-Dimension eines in $\mathbb{R}^3$
+	eingebetteten Objekts ist (Phase~C).
+	Dafür bräuchte man $\iota_n:\texttt{ShellVertex}(n)\to\mathbb{R}^3$,
+	metrische Separations- und Überdeckungsbedingungen sowie einen Grenzwert
+	$\epsilon\to 0$.
+	
+	\paragraph{Numerische Kennzahl und Sierpiński-Vergleich.}
+	Für $\phi=(1+\sqrt5)/2$ gilt
+	\[
+	D_{EABC}:=\frac{\ln 4}{\ln\phi}\approx 2{,}88137,
+	\qquad
+	3-D_{EABC}\approx 0{,}12.
+	\]
+	Lean beweist algebraisch $D_{EABC}<3$ (\texttt{fractal\_dimension\_lt\_three},
+	über $\phi^3=2+\sqrt5>4$).
+	Zum Vergleich: beim Sierpiński-Tetraeder ist
+	$D_S=\ln4/\ln2=2$ (vier Kopien, Maßstab $1/2$).
+	Da $\phi<2$, liegt $D_{EABC}$ \emph{über} $D_S$: das EABC-Modell ist
+	kombinatorisch dichter als das klassische Sierpiński-Beispiel --- anschaulich
+	näher an raumfüllend, aber formal noch nicht als geometrisches Volumenargument
+	bewiesen.
+	
+	\paragraph{Konvergenz der Residuen (Vorsicht).}
+	Die Bedingung $D_{EABC}<3$ impliziert \emph{nicht} automatisch, dass unendliche
+	Summen lokaler Krümmungs- oder Defektresiduen konvergieren.
+	Dafür bräuchte man zusätzlich ein Abfallgesetz $R_n\sim r_n^{-\alpha}$ und die
+	Analyse von $\sum_n R_n$.
+	Für das Paper gilt daher die robustere Formulierung:
+	\begin{quote}
+		$D_{EABC}<3$ liefert eine \emph{notwendige geometrische Voraussetzung} für die
+		Endlichkeit globaler Retraktionsprozesse; die tatsächliche Konvergenz hängt
+		zusätzlich vom Abfallgesetz der lokalen Defektgewichte ab.
+	\end{quote}
+	Die algebraische Retraktionskette (\texttt{all\_shells\_tensor\_restored},
+	\texttt{prime\_norm\_full\_restoration}) bleibt davon unabhängig und ist
+	bereits auf jeder endlichen Schale geschlossen.
+	
+	\paragraph{Schritt 1 (geschlossen): kanonische Zellenüberdeckung.}
+	In \texttt{ShellGraph.lean}:
+	\[
+	\texttt{ShellVertex}(n) := \mathrm{Fin}\,n\to\{E,A,B,C\},
+	\qquad
+	C_n := \texttt{canonicalCoveringNumber}(n)=4^n.
+	\]
+	
+	\subsection{Von der kanonischen zur minimalen Überdeckung}
+	\label{sec:canonical-to-minimal}
+	
+	\paragraph{Schritt 2 (geschlossen): Separation + Testmetrik.}
+	In \texttt{ShellSeparation.lean}:
+	\begin{itemize}
+		\item diskrete Testmetrik \texttt{shellDist} ($0/1$),
+		\item \texttt{ShellSeparation}: $\forall u\neq v:\; d(u,v)\ge\varepsilon$,
+		\item \texttt{canonicalCellCover}: existierende kanonische Überdeckung der Größe $C_n$.
+	\end{itemize}
+	Bewiesen ist damit die Kette
+	\[
+	\text{kanonische Zellen}
+	\;\Longrightarrow\;
+	C_n = 4^n.
+	\]
+	
+	\paragraph{Schritt 3 (geschlossen): minimale \emph{separierte} Überdeckung.}
+	In \texttt{ShellMinimalCover.lean} wird kein $\mathbb{R}$-Infimum genommen,
+	sondern ein endliches Minimum über $\mathbb{N}$, weil
+	$\texttt{ShellVertex}(n)$ endlich ist:
+	\[
+	\texttt{ShellCover}(n):\;
+	\texttt{cells}:\;\mathrm{Finset}(\mathrm{Set}\,V_n),\qquad
+	\forall v\,\exists U\in\texttt{cells}:\;v\in U.
+	\]
+	Die kombinatorische Separationsbedingung lautet:
+	jede Zelle enthält höchstens einen Vertex
+	(\texttt{SeparatedShellCover.small}).
+	Dann gilt die untere Schranke
+	\[
+	\#V_n \;\le\; \#\texttt{cells}
+	\qquad
+	(\texttt{separated\_cover\_lower\_bound}),
+	\]
+	und mit der Singleton-Überdeckung folgt
+	\[
+	M_n^{\mathrm{sep}} \;=\; C_n \;=\; 4^n
+	\qquad
+	(\texttt{minimal\_separated\_cover\_eq\_four\_pow}).
+	\]
+	Präzise: $M_n^{\mathrm{sep}}=C_n$, nicht pauschal $M_n=C_n$ unter
+	metrischer Ball-Überdeckung.
+	
+	\paragraph{Skalierungsverhältnis (über $C_n$ und $M_n^{\mathrm{sep}}$, bewiesen).}
+	\[
+	\frac{\log C_n}{\log r_n}
+	\;=\;
+	\frac{\log M_n^{\mathrm{sep}}}{\log r_n}
+	\;=\;
+	\frac{\log 4}{\log\phi}
+	\qquad
+	(\texttt{fractal\_ratio\_via\_canonical\_cover},
+	\texttt{fractal\_ratio\_via\_minimal\_separated\_cover}).
+	\]
+	\paragraph{Abschluss Phase~B.}
+	Mit $r_n=\phi^n$ und $M_n^{\mathrm{sep}}=4^n$ ist das ehrliche Ergebnis
+	\[
+	\boxed{
+		\frac{\ln M_n^{\mathrm{sep}}}{\ln r_n}
+		\;=\;
+		\frac{\ln 4}{\ln\phi}
+	}.
+	\]
+	Phase~B ist damit eingefroren: formale kombinatorische Fraktalstruktur,
+	ohne Anspruch auf metrische Realisierung in $\mathbb{R}^3$.
+	
+	\paragraph{Phase~C (Teilstand).}
+	Einbettungen für $n\le 3$ und Ikosaeder-Separation sind Lean-belegt;
+	metrische Minimalüberdeckung, Box-Dimension und Grenzwert $n\to\infty$
+	bleiben offen; siehe Abschnitt~\ref{sec:three-phases}.
+	
+	\subsection{Zeitgenössische Nachbarn: Maynard, Tao, Scholze}
+	\label{sec:modern-neighbors}
+	
+	Die EABC-Theorie operiert nicht auf dem Niveau von Gaps zwischen Primzahlen
+	(Maynard--Tao) oder perfektoider Geometrie (Scholze), sondern auf einer
+	\emph{diskreten mod-$12$-Klassifikation} ungerader Normkugeln.
+	Der strukturelle Anschluss ist arithmetisch, nicht analytisch:
+	Primzahlen $p>3$ mit $p\bmod 12\in\{1,5,7,11\}$ erzeugen privilegierte
+	Defekt-Ereignisse mit quantisierten Gewichten $w_p\in\{1,5,7,11\}$.
+	Die Verifikation betrifft damit Symmetrie-Fixpunkte und projektive Retraktion,
+	nicht die Dichte oder Verteilung der Primzahlen selbst.
+	Im historischen Bogen (Abschnitt~\ref{sec:introduction}) steht diese Arbeit
+	näher bei Euler und 't~Hooft (diskrete Symmetrie, projektive Stabilisierung)
+	als bei den genannten Primzahlprogrammen der Gegenwart.
+	
+	\paragraph{Abgrenzung: Polymath8, Maynard, Riemannsche Hypothese.}
+	Das Polymath8-Projekt~\cite{zhang-polymath8} und Maynards kleine Primzahllücken~\cite{maynard-gaps}
+	studieren \emph{globale} Gap-Statistiken und asymptotische Dichten der Primzahlen.
+	EABC operiert auf einer \emph{lokalen} Ebene: ein einzelnes EABC-Prim $p>3$ mit
+	$p\bmod 12\in\{1,5,7,11\}$ erzeugt ein quantisiertes Defekt-Label $w_p$.
+	Es gibt keine Lean-Formalisation von Primzahlzwilling-Häufigkeiten,
+	keine Analogie zu Zhangs beschränkten Lücken und \textbf{keinen} Bezug zur
+	Riemannschen Hypothese im Formal Core.
+	Die Riemann-Erwähnung in der Einleitung (Abschnitt~\ref{sec:introduction}) betrifft
+	spektral-geometrische Lesarten von Isotropie, nicht analytische $\zeta$-Funktionen.
+	RH bleibt explizit außerhalb des Verifikationsstands (\texttt{v1.0-formal-core}).
+	
+	%=============================================================================
+	\section{Dualität}
+	%=============================================================================
+	
+	Ikosaeder--Dodekaeder-Dualität: $I_{12}\leftrightarrow D_{20}$ (12 Ecken $\leftrightarrow$ 20 Flächen).
+	Unter Dualitätsabbildung und Label-Pushforward gilt:
+	
+	\begin{lemma}[Dualitätsstabilität]
+		$\Delta(M)$ am geometrischen Fixpunkt ist unter Ikosaeder$\leftrightarrow$Dodekaeder-Dualität
+		invariant. Dagegen sind der Dipol $D=\sum_i w_{\sigma(i)} v_i$ und die Holonomie $H$
+		\emph{nicht} dualitätsinvariant.
+	\end{lemma}
+	
+	\smallskip\noindent
+	\textit{Numerisch verifiziert in \texttt{eabc\_icosahedron\_test.py},
+		\texttt{run\_core\_lemma\_tests()} (4/4 PASS, Toleranz $10^{-6}$).}
+	
+	%=============================================================================
+	\section{Physikalische Lesart: Stella Octangula und QCD (Phase~C)}
+	\label{sec:phase-c-qcd}
+	%=============================================================================
+	
+	\textbf{Epistemischer Status.}
+	Dieser Abschnitt ist \emph{kein} Teil der Lean-Verifikation (v1.0 Formal Core).
+	Er skizziert eine physikalische Lesart als Brücke von der bewiesenen Tensor-Restauration
+	(Theorem~\ref{thm:tensor-restore}) zur starken Wechselwirkung.
+	Eine vollständige $\mathbb{R}^3$-Einbettung für alle $n$ und jede QCD-Aussage
+	bleiben offen; für $n\le 3$ und Ikosaeder-Separation siehe Phase~C-Teilstand
+	(Abschnitt~\ref{sec:what-we-prove}).
+	
+	\subsection{Das duale Tetraeder-Szenario}
+	\label{sec:stella-octangula}
+	
+	Zwei reguläre Tetraeder, um $60^\circ$ zueinander verschoben und ineinander gestellt,
+	bilden die \emph{Stella Octangula} (Kepler-Stern) --- ein klassisches Sternpolyeder
+	im $\mathbb{R}^3$.
+	In der hier vertretenen \emph{Lesart} (noch nicht formalisiert) wird diese Konfiguration
+	als geometrisches Vorspiel für zwei komplementäre Kollektoren gelesen:
+	
+	\begin{enumerate}
+		\item \textbf{Fraktaler Punktraum $\mathcal{T}_\infty$:}
+		Ein Tetraeder-Kollektor sammelt die diskreten EABC-Primdefekte ($w_p$) über die
+		Peano-Schachtelung (Abschnitt~\ref{sec:formal-verification}).
+		Anschaulich: unendliche informationelle Oberfläche, asymptotisches Feldrauschen.
+		\item \textbf{Messbarer Volumenraum $\mathcal{T}_V$:}
+		Das um $60^\circ$ gedrehte Partner-Tetraeder fängt die Punktstruktur in einem
+		endlichen Volumen ein --- analog zu einer Resonanz- oder Konfinement-Geometrie
+		(Proton/Neutron als \emph{Bild}, nicht als Lean-Theorem).
+	\end{enumerate}
+	
+	\begin{remark}[Geometrische Einbettung --- Teilstand]
+		Die Ikosaeder-Repräsentanten-Einbettung auf Schale~$1$ mit Separation
+		$\varepsilon=1$ ist in \texttt{IcosahedronEmbedding.lean} bewiesen
+		(\texttt{icosahedronShellEmbedding\_one\_sep}).
+		Die Aussage, dass die Stella Octangula in einer sphärischen Hülle eingebettet
+		die zwölf Ikosaeder-Ecken \emph{global} induziert, bleibt eine motivierende
+		$\mathbb{R}^3$-Lesart und ist nicht Teil von \texttt{geometric\_fixpoint\_isotropy}.
+	\end{remark}
+	
+	\subsection{Bezug zur verifizierten Satzkette}
+	
+	Was \textbf{Lean beweist} (Phase~A):
+	\[
+	M_{\mathrm{geom}}(I_{12},\sigma_{\mathrm{geo}})=24I_3,
+	\qquad
+	M_{\mathrm{eff}}(R^*(K^+))=24I_3.
+	\]
+	Was \textbf{kombinatorisch bewiesen} ist (Phase~B, Nebenzweig):
+	$\ln M_n^{\mathrm{sep}}/\ln r_n=\ln4/\ln\phi$ und $D_{EABC}=\ln4/\ln\phi<3$
+	(\texttt{fractal\_dimension\_lt\_three}) --- ein Skalierungsinvarianzsatz,
+	\emph{keine} bewiesene Box-Dimension und \emph{kein} QCD-Confinement-Theorem.
+	
+	\begin{hypothesis}[QCD-Fixpunkt-Lesart]
+		\label{hyp:qcd-gauge-fix}
+		In der physikalischen Lesart wirkt $R^*_{\mathrm{EABC}}$ als algebraischer
+		\emph{Eich-Fixierer}: das fraktale Defektfeld $\mathcal{T}_\infty$ (Primdefekte $w_p$)
+		wird durch die duale $60^\circ$-Konfiguration $\mathcal{T}_V$ in den isotropen
+		Fixpunkt-Tensor projiziert:
+		\[
+		\mathcal{T}_\infty \;\otimes_{60^\circ}\; \mathcal{T}_V
+		\;\Longrightarrow\;
+		M_{\mathrm{geom}} = 24I_3.
+		\]
+		Die $60^\circ$-Verschiebung wird \emph{interpretiert} als Anknüpfung an die diskrete
+		Phasenstruktur der Farbsymmetrie ($SU(3)$-Lesart); diese Anknüpfung ist
+		\textbf{nicht} in Lean formalisiert.
+	\end{hypothesis}
+	
+	\begin{remark}[Was diese Hypothese \emph{nicht} behauptet]
+		Hypothese~\ref{hyp:qcd-gauge-fix} ist keine Lösung des QCD-Confinement-Problems
+		im Sinne der Lattice-QCD oder der Yang--Mills-Millennium-Aussage.
+		Sie behauptet nicht, dass $D_{EABC}<3$ die Konvergenz hadronischer Observablen
+		beweist, und ersetzt keine Feynman-Diagramme oder numerische Gitterrechnung.
+		Sie ordnet die \emph{bereits verifizierte} Projektionssemantik von $R^*$
+		geometrisch ein --- als Forschungsprogramm Phase~C.
+	\end{remark}
+	
+	\paragraph{Lesart der beiden Tetraeder (asymptotisch vs.\ infrarot).}
+	In der QCD-Terminologie (rein interpretativ):
+	\begin{itemize}
+		\item $\mathcal{T}_\infty$: kurze Abstände, asymptotische Freiheit, unendliche
+		virtuelle Komplexität (Peano-Stapel, Primdefekte).
+		\item $\mathcal{T}_V$: große Abstände, Konfinement-\emph{Bild}, endliches Hadronenvolumen;
+		$R^*$ entfernt den Rang-1-Defekt unabhängig von $v$
+		(Theorem~\ref{thm:tensor-restore}, $v$-Unabhängigkeit).
+	\end{itemize}
+	
+	\paragraph{Nächster formaler Schritt (Phase~C).}
+	Um diese Lesart über Hypothese~\ref{hyp:qcd-gauge-fix} hinaus zu prüfen, braucht man:
+	\begin{enumerate}
+		\item explizite $\iota_n:\texttt{ShellVertex}(n)\to\mathbb{R}^3$ mit Stella-Octangula-/Ikosaeder-Geometrie,
+		\item metrische Separation $\| \iota_n(u)-\iota_n(v)\|\ge\varepsilon_n$,
+		\item Beweis oder Widerlegung der Verbindung zu Ball-Überdeckungen $M_n(\varepsilon_n)$.
+	\end{enumerate}
+	
+	%=============================================================================
+	\section{Superkritische Normschale und Kernladungsgrenze (Phase~C)}
+	\label{sec:phase-c-supercritical}
+	%=============================================================================
+	
+	\textbf{Epistemischer Status.}
+	Dieser Abschnitt ist \emph{kein} Teil der Lean-Verifikation (v1.0 Formal Core)
+	und \emph{keine} Konsequenz von Theorem~\ref{thm:tensor-restore}.
+	Er formuliert eine physikalische Forschungsfrage, die später getestet oder
+	verworfen werden kann --- mit derselben strengen Kennzeichnung wie
+	Abschnitt~\ref{sec:phase-c-qcd}: Motivation, Beobachtung, Hypothese, offene Tests.
+	
+	\subsection{Etablierte Physik}
+	\label{sec:supercritical-physics}
+	
+	Zwei Grenzen der relativistischen Quantenmechanik und QED sind hier zu trennen:
+	
+	\paragraph{Dirac-Grenze (idealisiert, punktförmige Kernladung).}
+	Für eine punktförmige Kernladung $Z$ wird die 1s-Elektronenenergie bei
+	\[
+	Z\alpha \approx 1,
+	\qquad
+	\alpha \approx \tfrac{1}{137},
+	\]
+	problematisch; grob $Z\approx 137$.
+	Dies ist die bekannte Dirac-Grenze: ab dort wird die relativistische
+	Elektronenbeschreibung für punktförmige Kerne singular.
+	
+	\paragraph{Superkritische Grenze (reale Kerne, endlicher Radius).}
+	Für Kerne mit endlichem Radius verschiebt sich die Schwelle auf
+	\[
+	Z_{\mathrm{krit}} \approx 170\text{--}173.
+	\]
+	Ab dort spricht man von einem superkritischen Coulomb-Feld: die innerste
+	Elektronenschale (insbesondere 1s) sinkt so tief in das negative Dirac-Meer,
+	dass spontane Elektron--Positron-Paarbildung möglich wird.
+	In der hier verwendeten Bildsprache: die Elektronenhülle
+	\emph{kollabiert} bzw.\ ist nicht mehr als normale Hülle stabil beschreibbar.
+	
+	\begin{remark}[Keine Primzahlarithmetik]
+		Diese Aussagen stammen aus der etablierten relativistischen QED;
+		sie folgen \emph{nicht} aus der EABC-Primzahlkette oder aus
+		Theorem~\ref{thm:tensor-restore}.
+	\end{remark}
+	
+	\subsection{EABC-Beobachtung}
+	\label{sec:supercritical-observation}
+	
+	Reine arithmetische Beobachtung im EABC-Modell (kein physikalischer Beweis):
+	\[
+	137 \equiv 5 \pmod{12},
+	\qquad
+	173 \equiv 5 \pmod{12},
+	\]
+	also beide Primzahlen in der EABC-Klasse~$A$.
+	Nach Definition von \texttt{classOf} und \texttt{primeWeight} folgt im Modell
+	\[
+	w_{137} = w_{173} = 5.
+	\]
+	\textbf{Mehr folgt zunächst nicht:}
+	weder dass $137$ die Feinstrukturkonstante erklärt,
+	noch dass $173$ eine Hülleninstabilität \emph{bewirbt},
+	noch dass $R^*$ Vakuumpolarisation modelliert.
+	
+	\begin{remark}[137 vs.\ 173 im EABC-Kontext]
+		$137$ liegt nahe an $\alpha^{-1}$ und markiert die idealisierte Dirac-Grenze;
+		$173$ liegt nahe an $Z_{\mathrm{krit}}$ für endliche Kerne.
+		Beide sind EABC-zulässige Primzahlen mit gleichem Label-Gewicht $w_p=5$ ---
+		eine \emph{arithmetische} Koinzidenz, keine abgeleitete physikalische Identität.
+	\end{remark}
+	
+	\subsection{Hypothese und offene Tests}
+	\label{sec:supercritical-hypothesis}
+	
+	\begin{hypothesis}[Superkritische Normschalen-Schwelle]
+		\label{hyp:shell-collapse}
+		\boxed{\text{Hypothese: Superkritische Normschalen-Schwelle}}
+		\smallskip
+		
+		In einer \emph{möglichen} physikalischen Lesart der EABC-Normschalen-Hierarchie
+		könnte die erste superkritische Kernladungszahl $Z_{\mathrm{krit}}\approx 173$
+		einer ausgezeichneten EABC-Primnormschale $p_{\mathrm{krit}}=173$ entsprechen.
+		Diese Interpretation ist \textbf{nicht} aus der formalen Theorie abgeleitet
+		und derzeit spekulativ.
+	\end{hypothesis}
+	
+	\begin{remark}[Was diese Hypothese \emph{nicht} behauptet]
+		\label{rem:shell-collapse-not}
+		\begin{itemize}
+			\item \textbf{Nicht:} $p_{\mathrm{krit}}=173$ als \emph{Resultat} des Formal Core.
+			\item \textbf{Nicht:} $w_p=5$ erklärt die QED-Grenze oder $\alpha^{-1}$.
+			\item \textbf{Nicht:} $R^*_{\mathrm{EABC}}$ modelliert Vakuumpolarisation
+			oder Paarerzeugung aus dem Dirac-Meer.
+			\item \textbf{Nicht:} $173$ folgt aus der EABC-Arithmetik oder aus
+			\texttt{prime\_norm\_full\_restoration}.
+		\end{itemize}
+	\end{remark}
+	
+	\paragraph{Offene Forschungsfrage (mathematisch prüfbar).}
+	Die zentrale prüfbare Frage lautet:
+	\emph{Kann eine metrische Instabilität im \texttt{ShellEmbedding}-Modell auftreten,
+		deren erste kritische Normschale bei einer Primzahl nahe $173$ liegt?}
+	Konkret wären Kandidaten für eine solche Instabilität:
+	\begin{enumerate}
+		\item $\varepsilon_n\to 0$ entlang einer Peano-Schalenfolge trotz strikter Separation
+		in der kombinatorischen Phase~B,
+		\item Divergenz oder Kollaps der metrischen Überdeckungszahl $M_n(\varepsilon_n)$,
+		\item Verletzung von \texttt{ShellEmbedding.separated} unter Skalierung
+		$\lambda_{\mathrm{sphere}}$ (Abschnitt~\ref{sec:formal-verification}).
+	\end{enumerate}
+	Eine positive Antwort würde die Hypothese \emph{stützen}; eine negative würde sie
+	\emph{widerlegen} --- ohne den Formal Core zu berühren.
+	
+	\paragraph{Bezug zum Lean-Code (Phase~C).}
+	\texttt{ShellEmbedding.lean}: metrische Einbettung
+	(\texttt{cardinalShellEmbedding\_one/two/three}, \texttt{rotateZ60};
+	Ikosaeder-Separation in \texttt{IcosahedronEmbedding.lean} bewiesen).
+	\texttt{DiracMonopole.lean}: vier Mathlib-U(1)-Anker, drei offene Monopol-Hypothesen.
+	\texttt{ShellSeparationScale.lean}: \texttt{phiScaleAchievable\_one/two/three}
+	($\varepsilon_n=\varphi^{-n}$ auf Gitter-Einbettungen).
+	\texttt{ShellInstability.lean}: abstrakte Instabilitäts-API ---
+	\[
+	\texttt{MetricSeparationLossExists}
+	\;\Rightarrow\;
+	\texttt{IsFirstSeparationLoss}\,n
+	\;\Rightarrow\;
+	\texttt{shellPrimeCandidate}\,n = p
+	\;\Rightarrow\;
+	\text{Vergleich mit externem }p.
+	\]
+	Sanity: \texttt{not\_shellSeparationLoss\_one}
+	($\neg\,\mathrm{ShellSeparationLoss}(1)$; die Definition ist nicht trivial).
+	
+	\begin{remark}[Keine Zahl $173$ im Formalismus]
+		Die formale Phase-C-API enthält die Zahl $173$ \emph{nicht}.
+		Der QED-Vergleichswert $Z_{\mathrm{krit}}\approx 173$ tritt erst als
+		\emph{externer} Vergleich auf, nachdem intern eine erste Separationsverlust-Stufe
+		\texttt{IsFirstSeparationLoss}\,$n$ etabliert wurde.
+		\smallskip
+		
+		\noindent\textit{The formal Phase-C API does not contain the number $173$.
+			The QED value enters only as an external comparison after an internally defined
+			first separation-loss stage has been established.}
+	\end{remark}
+	
+	\paragraph{Epistemische Einordnung (Phase~A / B / C).}
+	\begin{center}
+		\small
+		\begin{tabular}{ll}
+			\hline
+			\textbf{Phase} & \textbf{Status} \\
+			\hline
+			A --- Formal Core & $\checkmark$ 24-Isotropy-Restoration bewiesen \\
+			B --- Kombinatorik & $\checkmark$ $M_n^{\mathrm{sep}}=4^n$, Skalierungsinvarianz \\
+			C --- Metrik / Physik &
+			$\checkmark$ $\iota_n$ für $n\le 3$, Ikosaeder-Separation, Dirac-Anker; \\
+			& $\circ$ ShellCollapse-Hypothese (Hypothese~\ref{hyp:shell-collapse}); \\
+			& $\circ$ Supercritical-Threshold-Lesart; \\
+			& $\circ$ QCD-/Stella-Octangula-Lesart (Hypothese~\ref{hyp:qcd-gauge-fix}); \\
+			& $\circ$ Externe Analogien FSP/Kosmologie (Abschnitt~\ref{sec:phase-c-bridges}); \\
+			& $\circ$ Offene Eichkorrespondenzen (Abschnitt~\ref{sec:open-problems}). \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	%=============================================================================
+	\section{Physikalische Analogien: Festkörper und Kosmologie (Phase~C)}
+	\label{sec:phase-c-bridges}
+	%=============================================================================
+	
+	\textbf{Epistemischer Status.}
+	Dieser Abschnitt ist \emph{kein} Teil der Lean-Verifikation (v1.0 Formal Core)
+	und \emph{keine} Konsequenz von Theorem~\ref{thm:tensor-restore}.
+	Er dokumentiert \textbf{externe} Anknüpfungspunkte aus der aktuellen
+	Festkörperphysik und Kosmologie, die als \emph{methodische Brücken} für das
+	erweiterte Bamberg-/Duo-Tetraeder-Programm dienen.
+	Die numerischen Invarianten des Bamberg-Modells
+	($E_0\approx -4{,}085$, $\Delta E=4$, $T_c\approx 1{,}7$)
+	stehen hier \emph{parallel} zu den Lean-Invarianten
+	($M_{\mathrm{geom}}=24I_3$, $M_n^{\mathrm{sep}}=4^n$, $\varepsilon_n=\varphi^{-n}$)
+	und werden nicht als deren Ableitung behauptet.
+	
+	\subsection{Festkörperphysikalischer Anknüpfungspunkt: topologische Monopolladung}
+	\label{sec:bridge-condensed-matter}
+	
+	Zhao und Chen~\cite{zhao-chen-2026} zeigen für Dipol-Oktupol-Doublets auf
+	Pyrochlor-Gittern, dass die Wahl der Symmetrie-Untergruppe
+	($U(1)$-Spin-Flüssigkeit) darüber entscheid, ob elementare Defekte (Monopole)
+	eine physikalisch messbare Ladung tragen.
+	In der oktupolar-dominanten Phase ist die Ladung starr null ($Q_m=0$),
+	in der dipolar-dominanten Phase friert ein endlicher Ganzzahl-Quantenwert ein
+	($Q_m\neq 0$).
+	
+	\begin{remark}[Algebraische Lesart (Bamberg-Programm, nicht formalisiert)]
+		Im Bamberg-Modell wird dieser Übergang \emph{interpretiert} als geometrische
+		Frustration beim Wechsel von der quaternionischen Unterstruktur ($\mathbb{H}$)
+		zum oktionischen Gitter ($\mathbb{O}$).
+		Der nackte Austauschterm $J/4$ aus dem Hantel-Modell
+		\[
+		v_0 = \frac{J}{4} + \frac{1}{12}\left(4\sqrt{\tfrac{2}{3}}-1\right)
+		\frac{\mu_0 \tilde{g}^2 \mu_B^2}{4\pi r_{nn}^3}
+		\]
+		wird formal mit dem ungestörten Clifford-Kerndruck $P_0/4=16/4=4{,}0$
+		in Parallelität gesetzt; das kontinuierliche Korrekturglied höherer Ordnung
+		wird als physikalisches Äquivalent zum KZM-Fehlerfaktor
+		$\delta\approx +0{,}145954$ gelesen.
+		\textbf{Diese Isomorphie ist eine Arbeitshypothese, kein Lean-Theorem.}
+	\end{remark}
+	
+	\begin{hypothesis}[Hurwitz-Orbit und emergente Eichladung]
+		\label{hyp:hurwitz-charge}
+		Wir postulieren, dass die Wahl des Hurwitz-Orbits in der algebraischen Struktur
+		die quantisierte Natur der emergenten Eichladung bestimmt.
+		Analog zu den Befunden von Zhao et al.~\cite{zhao-chen-2026}, bei denen die
+		topologische Ladung $Q_m$ starr an die dipolare Symmetrieachse gekoppelt ist,
+		generiert die Nichtassoziativität des $E_8$-Vakuums (in der Bamberg-Lesart)
+		eine weitreichende Coulomb-Wechselwirkung, welche ein rein lokales Screening
+		blockiert.
+	\end{hypothesis}
+	
+	\begin{remark}[Was Hypothese~\ref{hyp:hurwitz-charge} \emph{nicht} behauptet]
+		Sie behauptet nicht, dass $Q_m\sim 10^{-5}q_D$ aus Dipol-Spineisen
+		\emph{bewiesen} aus $M_{\mathrm{geom}}=24I_3$ folgt,
+		noch dass $R^*_{\mathrm{EABC}}$ ein Gitter-Eichfeld auf Pyrochloren modelliert.
+		Sie formuliert eine prüfbare algebraisch-physikalische Korrespondenz als
+		Forschungsprogramm.
+	\end{remark}
+	
+	\subsection{Kosmologischer Anknüpfungspunkt: relativistische Gitterinstabilität}
+	\label{sec:bridge-cosmology}
+	
+	Alexander, Temple und Vogler~\cite{alexander-temple-vogler-2026} zeigen über
+	eine Reihenentwicklung der Einstein-Euler-Gleichungen in selbstähnlichen
+	Schwarzschild-Variablen (STV), dass das flache, kritische Friedmann-Universum
+	($k=0$) ein instabiler Sattelpunkt ($SM$) am Urknall ist:
+	jede generische, unterdichte Fluktuation muss von diesem Zustand wegevolvieren.
+	In den autonomen STV-ODEs tritt bei Ordnung $n=2$ (einem $4\times4$-System)
+	ein singulärer negativer Eigenwert $\lambda_{B2}=-1/3$ auf;
+	alle höheren Eigenwerte ab $n\ge 3$ sind streng positiv.
+	
+	\begin{remark}[Numerische Resonanz im Bamberg-Programm]
+		In dieser Lesart wird die im Bamberg-Modell beobachtete Anregungsenergie
+		$\Delta E=4{,}0000$ als \emph{strukturelle} Entsprechung zur kritischen
+		Ordnung $n=2$ nach Alexander et al.~\cite{alexander-temple-vogler-2026}
+		geführt: die Emergenz von $\lambda_{B2}<0$ bricht die makroskopische
+		Selbstähnlichkeit über intermediäre Zeitskalen auf und erzeugt transiente,
+		anomale Beschleunigung (phenomenologisch nahe $Q\approx 0{,}425$ in der
+		Dunkle-Energie-Lesart), bevor die Traktatorien asymptotisch gegen den
+		Minkowski-Ruhpunkt $M$ ($t\to\infty$) zerfallen.
+		\textbf{Keine dieser Kosmologie-Aussagen ist in Lean formalisiert.}
+	\end{remark}
+	
+	\begin{hypothesis}[Primzahlzwillinge und STV-Attraktor]
+		\label{hyp:prime-twin-stv}
+		Die numerische Robustheit der Invariante $\Delta E=4$ im Bamberg-Programm
+		korrespondiert strukturell mit der Eigenwert-Hierarchie der Einstein-Euler-Gleichungen
+		bei kritischer Ordnung $n=2$.
+		Die daraus resultierende Feldstauchung wird als topologische Stringspannung
+		gelesen, welche das Confinement einer unendlichen Primzahlzwillingskette im
+		minimalen Phasenabstand $\Delta=2$ \emph{erzwingen könnte}.
+	\end{hypothesis}
+	
+	\subsection{Synthese: Invarianten vs.\ Lesarten}
+	
+	Unabhängig davon, ob man die Gitterverzerrung festkörperphysikalisch
+	(Spin-Eis) oder kosmologisch (ART) interpretiert, bleibt im Bamberg-Programm
+	$\Delta E=4$ als geometrische Kennzahl des Modells bestehen.
+	Im Formal Core bleibt parallel $M_n^{\mathrm{sep}}=4^n$ und
+	$\varepsilon_n=\varphi^{-n}$ kombinatorisch/metrisch getrennt von jeder
+	physikalischen Identifikation.
+	Abschnitt~\ref{sec:what-we-prove} liefert die bewiesenen Fakten;
+	Abschnitt~\ref{sec:phase-c-bridges} die externen Analogien;
+	Abschnitt~\ref{sec:open-problems} die präzisen mathematischen Meilensteine.
+	
+	%=============================================================================
+	\section{Offene mathematische Probleme und Eichkorrespondenzen}
+	\label{sec:open-problems}
+	%=============================================================================
+	
+	\textbf{Epistemischer Status.}
+	Die Robustheit der invarianten Kennzahlen
+	($E_0\approx -4{,}085$, $\Delta E=4$, $T_c\approx 1{,}7$ im Bamberg-Programm;
+	$M_{\mathrm{geom}}=24I_3$, $M_n^{\mathrm{sep}}=4^n$ im Formal Core)
+	erfordert die Formulierung fundamentaler mathematischer Anschlussfragen
+	an die Community.
+	Keine der folgenden Fragen ist im gegenwärtigen Lean-Release beantwortet.
+	
+	\begin{enumerate}
+		\item \textbf{Topologische Ladungskorrespondenz.}
+		Lässt sich die aus dem Hantel-Modell emergente Monopolladung
+		$Q_m\sim 10^{-5}q_D$ von Dipol-Spineisen~\cite{zhao-chen-2026}
+		rigoros als algebraischer Index (Windungszahl) auf die diskreten
+		Hurwitz-Orbits abbilden?
+		\item \textbf{Stabilität des Attraktors.}
+		Konvergiert die unendliche Kette der Primzahlzwillinge im Gitterabstand
+		$\Delta=2$ mathematisch zwingend gegen die unterdichte Familie $\mathcal{F}$
+		der Einstein-Euler-Gleichungen, um den von Alexander et al.~\cite{alexander-temple-vogler-2026}
+		nachgewiesenen asymptotischen Zerfall gegen den universellen Minkowski-Zustand
+		$M$ ($t\to\infty$) energetisch zu garantieren?
+		\item \textbf{Nichtassoziativität als Eichfeld.}
+		Kann der Übergang von der lokalen algebraischen Frustration des
+		Duo-Tetraeders zu einer kontinuierlichen Berry-Phase differentialgeometrisch
+		als holonome Verbindung (Connection) konstruiert werden, die das
+		phänomenologische Confinement-Potential
+		$H_{ab}\sim \mathrm{Tr}(\sigma^a R\,\sigma^b R^\dagger)$
+		abbildet?
+	\end{enumerate}
+	
+	\begin{remark}[Gutachter-Einordnung]
+		Eine positive Antwort auf eine dieser Fragen würde das erweiterte
+		Forschungsprogramm stützen; eine negative würde die jeweilige Lesart
+		einschränken oder verwerfen --- \emph{ohne} den Formal Core
+		(24-Isotropy-Restoration) zu berühren.
+	\end{remark}
+	
+	\subsection{Geometrie-Blueprint: Morley, Marion--Walter, Ptolemy}
+	\label{sec:geometry-scaffold}
+	
+	\textbf{Epistemischer Status.}
+	Das Modul \texttt{GeometryScaffold.lean} überträgt die Tao/PFR-Methodik
+	(Abschnitt~\ref{sec:what-we-prove}, \texttt{PhaseCBlueprint.lean}) auf
+	klassische euklidische Konstruktionen im EABC-Kontext.
+	Es beweist weder Morleys Dreieck noch die Marion--Walter-Flächenformel;
+	alle Ziele sind als offene \texttt{Prop}s markiert, analog zu
+	\texttt{DiracMonopole.lean} (Abschnitt~\ref{sec:dirac-monopole}).
+	
+	\paragraph{Drei Beweisstruktur-Vorlagen (Phase~C).}
+	\begin{enumerate}
+		\item \textbf{Morley (Winkeltrisierung):}
+		\texttt{AngleTrisectionScaffold} + \texttt{MorleyEquilateralHypothesis} ---
+		gleichseitiges Dreieck aus Trisektions-Scaffold (offen).
+		\item \textbf{Marion--Walter (Hexagonfläche):}
+		\texttt{MarionWalterHexagon} + \texttt{MarionWalterAreaHypothesis} ---
+		Hexagonfläche $=\tfrac{1}{10}$ der Dreiecksfläche (offen).
+		\item \textbf{Ptolemy (Viereck):}
+		\texttt{CrossedPtolemyHypothesis} (Bowtie-Variante, offen) und
+		\texttt{PtolemyShellQuadrupleHypothesis} (Ikosaeder-Repräsentanten
+		$A$--$E$--$C$--$B$ unter \texttt{icosahedronShellEmbedding\_one}, offen).
+	\end{enumerate}
+	
+	\begin{table}[h!]
+		\centering
+		\small
+		\begin{tabular}{@{}lll@{}}
+			\hline
+			\textbf{Meilenstein} & \textbf{Lean} & \textbf{Status} \\
+			\hline
+			Morley gleichseitig & \texttt{morley\_equilateral} & rot \\
+			Marion--Walter $1/10$ & \texttt{marion\_walter\_hexagon} & rot \\
+			Gekreuztes Ptolemy (Bowtie) & \texttt{crossed\_ptolemy\_bowtie} & rot \\
+			Ptolemy Ikosaeder-Viereck & \texttt{ptolemy\_shell\_quadruple} & rot \\
+			Mathlib Ptolemy (kosphärisch) & \texttt{mathlib\_ptolemy} & grün \\
+			\hline
+		\end{tabular}
+		\caption{Geometrie-Meilensteine in \texttt{PhaseCBlueprint}/\texttt{VerificationCertificate}.}
+		\label{tab:geometry-milestones}
+	\end{table}
+	
+	\begin{remark}[Empfohlener nächster Schritt]
+		Der \textbf{Ptolemy-Pfad} ist der strukturell nächste grüne Schritt:
+		\texttt{milestone\_green\_mathlib\_ptolemy} importiert
+		\texttt{mul\_dist\_add\_mul\_dist\_eq\_mul\_dist\_of\_cospherical};
+		\texttt{PtolemyShellQuadrupleHypothesis} fixiert bereits das Ikosaeder-Viereck
+		(\texttt{icosaRepQuadruple}, paarweise verschiedene Repräsentanten-Klassen
+		\texttt{icosaRepQuadruple\_pairwise\_ne}) und \texttt{shellDist3}-Produkte als prüfbares Ziel.
+		Eine Verifikation würde die metrische Schicht (Abschnitt~\ref{sec:phase-c-bridges})
+		mit dem kombinatorischen Ikosaeder-Fixpunkt $M_{\mathrm{geom}}=24I_3$ verbinden ---
+		ohne Morley- oder Marion--Walter-Beweise vorwegzunehmen.
+	\end{remark}
+	
+	\subsection{12-Kuss-Geometrie und Schalen-Durchlass}
+	\label{sec:kissing-gap}
+	
+	\textbf{Epistemischer Status.}
+	Das Modul \texttt{KissingGap.lean} formalisiert die klassische Ikosaeder-Kuss-Konfiguration
+	(1 zentrale + 12 äußere Kugeln gleichen Radius~$R$) als \emph{geometrische Analogie}
+	zur EABC-Schalenmetrik (Phase~C). Bewiesen sind die Konstantenidentitäten und der
+	Verknüpfungsanker \texttt{icosaShortEdge\_dist}; offen bleiben
+	\texttt{KissingGapHypothesis} und \texttt{ShellPassageHypothesis}.
+	
+	\paragraph{EABC-Zuordnung (Potential vs.\ Kraft).}
+	\begin{center}
+		\small
+		\begin{tabular}{@{}ll@{}}
+			\hline
+			\textbf{12-Kuss-Objekt} & \textbf{EABC-Lesart} \\
+			\hline
+			Zentrale Kugel & geometrischer Fixpunkt / zugewiesene Prim-Schale \\
+			12 äußere Kugeln & 12-Kuss-Richtungen, \texttt{icosaVert}, \texttt{ShellEmbedding} \\
+			Kuss-Konfiguration (global) & globales Potential (\texttt{M\_geom}, 12-Kuss-System) \\
+			Lücke / Durchlass (lokal) & metrische Zwangsbedingung (\texttt{ShellSeparationLoss}-Analog) \\
+			13.\ Vertex durch den Ring & offene Schalen-Durchlass-Hypothese \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\paragraph{Numerische Verhältnisse} (gleiche Radien $R_c=R_o=R$, Lean \texttt{KissingGap}):
+	\begin{table}[h!]
+		\centering
+		\small
+		\begin{tabular}{@{}lll@{}}
+			\hline
+			\textbf{Größe} & \textbf{Lean} & \textbf{Wert} \\
+			\hline
+			Kanten/Umkreis $a/\rho$ & \texttt{icosaEdgeToCircumRatio} & $4/\sqrt{10+2\sqrt5}\approx 1{,}052$ \\
+			Lückenfraktion $g/R$ & \texttt{kissingGapFraction} & $2(a/\rho-1)\approx 10{,}3\,\%$ \\
+			Max.\ Durchlass $r/R$ & \texttt{maxPassableBallFraction} & $a/\rho-1\approx 5{,}15\,\%$ \\
+			Schwelle $R_o/R_c$ & \texttt{outerShrinkForPassage} & $\approx 0{,}357$ ($\approx 64\,\%$ Schrumpfung) \\
+			\hline
+		\end{tabular}
+		\caption{12-Kuss-Konstanten; \texttt{equal\_radii\_no\_passage} beweist: bei $R_c=R_o$ kein Durchlass.}
+		\label{tab:kissing-gap}
+	\end{table}
+	
+	\begin{remark}[Uniforme Skalierung]
+		Bei gleichen Radien ist $g/R\approx 10{,}3\,\%$ und $2R_o>g$ --- ein gleich großer
+		13.\ Körper passiert den Ring nicht (\texttt{equal\_radii\_no\_passage}).
+		Uniforme Skalierung ändert die Verhältnisse nicht; Durchlass erfordert
+		$R_o/R_c\le\texttt{outerShrinkForPassage}$ (Hypothese \texttt{ShellPassageHypothesis}).
+	\end{remark}
+	
+	\begin{table}[h!]
+		\centering
+		\small
+		\begin{tabular}{@{}lll@{}}
+			\hline
+			\textbf{Meilenstein} & \textbf{Lean} & \textbf{Status} \\
+			\hline
+			12-Kuss-Lücke vs.\ Schale & \texttt{kissing\_gap} & rot \\
+			13.\ Schalen-Durchlass & \texttt{shell\_passage} & rot \\
+			\texttt{icosaShortEdge\_dist} (Anker) & \texttt{icosaShortEdge\_dist} & grün \\
+			\hline
+		\end{tabular}
+		\caption{Kuss-Meilensteine in \texttt{PhaseCBlueprint}/\texttt{VerificationCertificate};
+			vgl.\ Abschnitt~\ref{sec:geometry-scaffold}.}
+		\label{tab:kissing-milestones}
+	\end{table}
+	
+	\subsection{Dirac-Monopol, Spin-Eis und Lean-Anker (2024--2026)}
+	\label{sec:dirac-monopole}
+	
+	\textbf{Epistemischer Status.}
+	Die folgenden Aussagen sind \emph{Hypothesen} bzw.\ \emph{Bemerkungen} zur
+	physikalischen Anschlussliteratur. Lean beweist weder $Q_m = n \cdot (h/2e)$
+	noch effektive Monopolladungen in Spin-Eis-Materialien.
+	
+	\paragraph{Neue Literatur (2024--2026).}
+	\begin{itemize}
+		\item \textbf{Dirac-Schwinger-Quantisierung emergenter Monopole:}
+		Farhana, Saccone \& Ward~\cite{ward-farhana-saccone-2025}
+		(arXiv:2501.04704, \emph{Phys.\ Lett.\ B}) argumentieren, dass die in
+		künstlichem Spin-Eis gemessenen effektiven Ladungen innerhalb der Fehler
+		die Bedingung $eg/(4\pi\hbar)=n/2$ erfüllen.
+		\item \textbf{Dirac-Strings in Raum-Zeit:}
+		Huster-Zapke \& Holdsworth~\cite{huster-holdsworth-2025}
+		(arXiv:2505.14811) definieren Dirac-Strings entlang Monopol-Trajektorien
+		und zeigen deren Beitrag zum magnetischen Rauschsignal.
+		\item \textbf{Dipolar vs.\ oktupolar (SET):}
+		Zhao \& Chen~\cite{zhao-chen-2026} (arXiv:2505.07805) schlagen vor,
+		dipolare und oktupolare Spin-Eis-Regime klassisch über endliche bzw.\
+		verschwindende effektive Monopolladung $q_{\mathrm m}$ zu unterscheiden;
+		Smith \emph{et al.}~\cite{smith-gaulin-2025} (PRX~15, 021033) finden
+		für Ce$_2$Zr$_2$O$_7$ oberhalb $T=0{,}05$\,K keine oktupolaren Streusignale.
+		\item \textbf{Experimentelle Dynamik:}
+		Tang \emph{et al.}~\cite{tang-gegenwart-2025} (arXiv:2509.18422) berichten
+		magnetischen Transport via Spin-Seebeck-Effekt in Dy$_2$Ti$_2$O$_7$;
+		van den Berg \emph{et al.}~\cite{van-den-berg-ladak-2025}
+		(arXiv:2511.04877) visualisieren divergente Monopolfelder in 3D-künstlichem
+		Spin-Eis; Gao \emph{et al.}~\cite{gao-dai-2026} (arXiv:2601.03202) trennen
+		spektroskopisch Photonen und Spinons in Ce$_2$Zr$_2$O$_7$.
+	\end{itemize}
+	
+	\begin{hypothesis}[Topologische Ladungskorrespondenz (Präzisierung)]
+		\label{hyp:monopole-winding}
+		Die in Frage~(1) formulierte Abbildung „effektive Monopolladung $\to$ algebraischer
+		Index auf Hurwitz-Orbits'' bleibt \emph{offen}. Die jüngste Spin-Eis-Literatur
+		liefert experimentelle und modellhafte Anhaltspunkte für diskrete bzw.\
+		regime-abhängige effektive Ladungen~\cite{zhao-chen-2026,ward-farhana-saccone-2025},
+		belegt aber keine Isomorphie zu den EABC-Hurwitz-Orbits.
+	\end{hypothesis}
+	
+	\begin{remark}[Vier Lean-4-Adaptationen (Mathlib)]
+		Im Modul \texttt{DiracMonopole.lean} sind vier Mathlib-Bausteine als Meilensteine
+		verdrahtet (grün = importiert, nicht EABC-spezifisch):
+		\begin{enumerate}
+			\item \texttt{Circle.periodic\_exp} --- $2\pi$-Periodizität der U(1)-Phase;
+			\item \texttt{AddCircle.homeomorphCircle'} --- $S^1 \simeq \mathrm{AddCircle}(2\pi)$;
+			\item \texttt{Path.Homotopic.equivalence} --- Homotopie-Äquivalenz auf Pfaden;
+			\item \texttt{Path.refl} / \texttt{FundamentalGroup} (Scaffold \texttt{loopClass}) ---
+			Schleifen- bzw.\ $\pi_1$-Vorbereitung.
+		\end{enumerate}
+		Drei offene Props (\texttt{MonopoleHurwitzWindingHypothesis},
+		\texttt{DiracSchwingerEmergentHypothesis},
+		\texttt{BerryHolonomyConnectionHypothesis}) markieren die Forschungslücke
+		explizit als \emph{unbewiesen}.
+	\end{remark}
+	
+	\begin{remark}[AdS/CFT-Bulk (kein Lean-Gegenstück)]
+		Eine holographische AdS/CFT-Bulk-Formalisation für die EABC-Peano-Schalen
+		ist nicht Teil des gegenwärtigen Lean~4-Formalismus.
+		Entsprechende Literaturanker bleiben explizit außerhalb des Verifikationsstands;
+		es existiert kein Lean-Modul für Bulk-Grenz-Korrespondenz.
+	\end{remark}
+	
+	\subsection{Potentiale vs.\ Kräfte als epistemische Faktorisierung}
+	\label{sec:potential-vs-force}
+	
+	Der methodische Rat „Potentiale statt Kräfte'' ist im EABC-Programm bereits als
+	\textbf{zwei logisch unabhängige Stränge} angelegt (Abschnitt~\ref{sec:what-we-prove}):
+	globale Zertifikate gegenüber lokaler Diagnostik.
+	Die Zwei-Ebenen-Architektur $M_{\mathrm{geom}}$ vs.\ $M_{\mathrm{eff}}$
+	(Abschnitt~\ref{sec:two-levels}) und die Idempotenz von $R^*_{\mathrm{EABC}}$
+	(Lemma~\ref{lem:idempotence}) spiegeln dieselbe Struktur im Eichtheorie-Vokabular:
+	ein korrekt gewählter Retraktionsschritt stabilisiert den Fixpunkt,
+	ohne die gestörte Matrix dynamisch zu glätten.
+	Lean beweist weder Maxwell-Dynamik noch Spin-Eis-Monopole; die EM-/Topo-Sprache
+	ist eine dokumentierte Brücke zu Phase~C (Abschnitt~\ref{sec:formal-verification}).
+	
+	\begin{table}[h!]
+		\centering
+		\small
+		\begin{tabular}{@{}p{0.18\linewidth}p{0.36\linewidth}p{0.34\linewidth}@{}}
+			\hline
+			\textbf{Lesart} & \textbf{Potential-artig (global)} & \textbf{Kraft-artig (lokal)} \\
+			\hline
+			Phase~A &
+			$w_p$, $R^*_{\mathrm{EABC}}$, $M_{\mathrm{geom}}=24I_3$ &
+			$\Delta(M^+)=w_p$, Rang-1-Nicht-Isotropie \\
+			Phase~C (metrisch) &
+			$\mathrm{HasShellEmbedding}(n)$, $\varepsilon_n>0$,
+			Mathlib-Ptolemy-Anker &
+			$\mathrm{ShellSeparationLoss}(n)$,
+			\texttt{PtolemyShellQuadrupleHypothesis} \\
+			Phase~C (topologisch) &
+			U(1)-Anker, \texttt{GaugePotential}, \texttt{HolonomyDatum} &
+			\texttt{EmergentMonopoleCharge} ($q_{\mathrm m}$), offene Hypothesen \\
+			\hline
+		\end{tabular}
+		\caption{Epistemische Faktorisierung: Zertifikate vs.\ Messgrößen
+			(keine Physikidentität; vgl.\ Tabelle~\ref{tab:three-epistemic-layers}).}
+		\label{tab:potential-force}
+	\end{table}
+	
+	\paragraph{Operationalisierungsleiter (Level~0/1/2).}
+	Die Lean-Datei \texttt{DiracMonopole.lean} dokumentiert dieselbe Taxonomie
+	explizit im Modulkopf; im Manuskript lesen wir sie als drei epistemische Stufen:
+	
+	\begin{enumerate}
+		\item[\textbf{Level~0 --- Bewiesen / Scaffold.}]
+		$w_p$ eindeutig (\texttt{primeWeight}, \texttt{classOf});
+		$R^*_{\mathrm{EABC}}$ konstruktiv (\texttt{rStar}\,$=$\,\texttt{rEabc});
+		$M_{\mathrm{geom}}=24I_3$ (\texttt{geometric\_fixpoint\_isotropy});
+		$\Delta(M_{\mathrm{eff}}(K^+))=w_p$ bei $\|v\|=1$
+		(\texttt{delta\_prime\_defect\_at\_fixpoint},
+		\texttt{rankOne\_defect\_not\_isotropic}) --- \emph{Parallelpfad}, keine
+		Voraussetzung von \texttt{prime\_norm\_full\_restoration};
+		$\neg\,\mathrm{ShellSeparationLoss}(n)$ für $n\le 3$
+		(\texttt{milestone\_green\_no\_loss\_one/two/three},
+		via \texttt{cardinalShellEmbedding\_one/two/three});
+		vier grüne U(1)-Meilensteine
+		(\texttt{milestone\_green\_u1\_period},
+		\texttt{milestone\_green\_circle\_homeomorph},
+		\texttt{milestone\_green\_loop\_homotopy},
+		\texttt{milestone\_green\_fundamental\_group};
+		Abschnitt~\ref{sec:dirac-monopole});
+		grüner Mathlib-Ptolemy-Anker
+		(\texttt{milestone\_green\_mathlib\_ptolemy};
+		Abschnitt~\ref{sec:geometry-scaffold}).
+		
+		\item[\textbf{Level~1 --- API ohne \texttt{sorry}.}]
+		Reine Typisierung in \texttt{DiracMonopole.lean}, ohne Gleichheitsbehauptungen
+		an die Physik:
+		\texttt{GaugePotential} (U(1)-Phase und optionale Windungszahl),
+		\texttt{HolonomyDatum} (Pfad plus Endphase auf der $\pi_1$-Vorbereitung),
+		\texttt{EmergentChargeCertificate} (Paarung von $w_p$ mit
+		\texttt{DiracSchwingerClass}),
+		\texttt{BerryPhasePlaceholder} (projiziert \texttt{HolonomyDatum} auf die
+		gespeicherte Endphase).
+		Diese Strukturen sind \emph{Platzhalter-API}: sie fixieren Datentypen für eine
+		spätere Korrespondenz „algebraischer Index $\approx$ Windungszahl
+		$\approx$ effektive Monopolladung'', beweisen aber keine Identität.
+		
+		\item[\textbf{Level~2 --- Externe Hypothesen.}]
+		Offene \texttt{Prop}s:
+		\texttt{MonopoleHurwitzWindingHypothesis},
+		\texttt{DiracSchwingerEmergentHypothesis},
+		\texttt{BerryHolonomyConnectionHypothesis}
+		(sowie \texttt{DipoleOctupoleMonopoleChargeHypothesis} für das
+		Zhao--Chen-Regime $q_{\mathrm m}\neq 0$ vs.\ $q_{\mathrm m}=0$;
+		Abschnitt~\ref{sec:dirac-monopole}, Hypothese~\ref{hyp:monopole-winding}).
+	\end{enumerate}
+	
+	\paragraph{Lesart der Level-1-Typen.}
+	\texttt{GaugePotential} und \texttt{HolonomyDatum} modellieren
+	\emph{integrative} Daten: eine globale U(1)-Phase bzw.\ eine Schleifenholonomie
+	als Vorbereitung für Windungszahl-Argumente.
+	\texttt{EmergentChargeCertificate} koppelt das arithmetische Primlabel $w_p$
+	an eine halbganzzahlige Dirac--Schwinger-Klasse --- strukturell, nicht als
+	bewiesene Quantisierung $Q_m=n(h/2e)$.
+	\texttt{BerryPhasePlaceholder} ist bewusst minimal: es extrahiert nur die
+	Endphase aus \texttt{HolonomyDatum}; eine differentialgeometrische
+	Verbindungsgleichung bleibt Hypothese
+	(\texttt{BerryHolonomyConnectionHypothesis}, offenes Problem~(3) oben).
+	
+	\begin{remark}[Hauptpfad vs.\ Parallelpfad]
+		Die Restauration $M_{\mathrm{eff}}(R^*(K^+))=24I_3$ hängt \emph{nicht} von
+		$\Delta$ oder $v$ ab; $\Delta=w_p$ ist Mess-Diagnostik auf dem Parallelpfad
+		(Abschnitt~\ref{sec:what-we-prove}).
+		Das ist die präzise EABC-Lesart von „Potentiale tragen die Wahrheit,
+		Kräfte sind Beobachtung'':
+		$M_{\mathrm{geom}}$ und $R^*$ sind die beweisbare globale Semantik;
+		$\Delta$, $\mathrm{ShellSeparationLoss}$ und $q_{\mathrm m}$ sind lokale
+		oder regime-abhängige Diagnostik --- ohne logische Rückwirkung auf den
+		Formal Core.
+	\end{remark}
+	
+	\begin{remark}[Epistemische Trennung]
+		\textbf{Bewiesen} sind alle Level-0-Aussagen der Operationalisierungsleiter.
+		\textbf{Scaffold} sind die Level-1-Typen: maschinenlesbar, \texttt{sorry}$=0$,
+		aber ohne physikalische Gleichungen.
+		\textbf{Hypothese} sind alle Level-2-\texttt{Prop}s und die Spin-Eis-Literatur
+		(Abschnitt~\ref{sec:dirac-monopole}).
+		Eine Verwechslung dieser Stufen würde den Verifikationsstand des Releases
+		\texttt{v1.0-formal-core} verfälschen.
+	\end{remark}
+	
+	\subsection{Flyspeck-Zertifikate und LP-Trennung (Hales)}
+	\label{sec:flyspeck-certificates}
+	
+	Thomas Hales' Flyspeck-Projekt~\cite{flyspeck} formalisiert den
+	Kepler-Beweis in drei \emph{getrennten} Schichten:
+	\begin{enumerate}
+		\item \textbf{Lean/Isabelle/HOL Light} --- deduktive Beweistexte;
+		\item \textbf{Python/C++} --- numerische Intervallarithmetik und Ungleichheitsprüfungen;
+		\item \textbf{externes LP} --- lineare Programme für Packungs-Ungleichungen,
+		unabhängig vom Beweistext verifizierbar.
+	\end{enumerate}
+	
+	\paragraph{Was EABC übernimmt.}
+	\begin{itemize}
+		\item \textbf{Dreischicht-Trennung:} Lean beweist Struktur (Phase~A/B/C);
+		\texttt{eabc\_icosahedron\_test.py} liefert numerische Zertifikate
+		(Toleranz $10^{-6}$); \texttt{VerificationCertificate.lean} dokumentiert
+		Metadaten (\texttt{coreLemmaCertificates}, \texttt{phaseCMilestones}).
+		\item \textbf{Grün/rot-Disziplin:} \texttt{PhaseCBlueprint.milestoneProp} markiert
+		bewiesene vs.\ offene Ziele analog zum PFR-Blueprint~\cite{tao-pfr}.
+		\item \textbf{Kein Ersetzen:} \texttt{all\_core\_certificates\_verified} belegt nur
+		den \emph{Status} der Python-Tests; es behauptet keine logische Äquivalenz
+		zu Lean-Theoremen.
+	\end{itemize}
+	
+	\paragraph{Was EABC nicht portiert.}
+	\begin{itemize}
+		\item \textbf{Kein externes LP:} metrische Untergrenzen (Ball-Überdeckungen,
+		Separationsradien für $n>3$) sind nicht als Flyspeck-artige LP-Zertifikate
+		formalisiert; die LP/Farkas-Schicht bleibt prospektiv
+		(vgl.\ Abschnitt~\ref{sec:open-problems}).
+		\item \textbf{Keine tausende Ungleichungen:} der Formal Core hat wenige
+		algebraische Hauptsätze; numerische Zertifikate betreffen nur vier Kern-Lemmata.
+		\item \textbf{Keine Packungsgeometrie:} Flyspeck's Kugelpackungs-LPs haben kein
+		direktes EABC-Gegenstück; die Analogie ist \emph{methodisch}, nicht inhaltlich.
+	\end{itemize}
+	
+	\begin{remark}[Brücke zu Phase-C-Brücken]
+		Die Flyspeck-Methodik trennt Beweis von Rechnung; die physikalischen Brücken
+		(Abschnitt~\ref{sec:phase-c-bridges}) und Monopol-Hypothesen
+		(Abschnitt~\ref{sec:dirac-monopole}) bleiben bewusst außerhalb aller
+		Zertifikats-Schichten --- sie sind Lesarten, keine Lean-Theoreme.
+	\end{remark}
+	
+	%=============================================================================
+	\section{Renormierungskette}
+	%=============================================================================
+	
+	Die diskrete Kette (ohne Primschritt) lautet
+	\[
+	K_n \;\longrightarrow\; K_{n+1}
+	\;=\;
+	\underbrace{\text{Volumen-Renormierung}}_{\lambda_{\mathrm{sphere}}}
+	\;\circ\;
+	\underbrace{R^*_{\mathrm{EABC}}}_{P_I \circ R_{\mathrm{EABC}}}
+	\;\circ\;
+	\underbrace{D_{20}}_{\text{Dual}}
+	\;\circ\;
+	\underbrace{I_{12}}_{\text{Ikosaeder}}
+	\;\circ\;
+	\underbrace{\text{12-Kuss}}_{\text{Einheitsrichtungen}}.
+	\]
+	
+	\paragraph{Erweiterung mit Prim-Erzeugungsschritt (Abschnitt~\ref{sec:prime-step}).}
+	Wenn $P(2n)=p$ prim, setze
+	\[
+	K_n^+ \;:=\; \mathrm{Extend}(p)\,K_n,
+	\qquad
+	K_{n+1}
+	\;=\;
+	\lambda_{\mathrm{sphere}}
+	\circ R^*_{\mathrm{EABC}}
+	\circ \mathrm{Extend}(P)
+	\;(K_n),
+	\]
+	wobei $\mathrm{Extend}(p)$ die Konfiguration um die Prim-Normkugel mit
+	Label $\mathrm{EABC}(p)$ erweitert.
+	Äquivalent:
+	\[
+	K_n \;\longrightarrow\; K_n^+ \;\longrightarrow\;
+	R^*_{\mathrm{EABC}}(K_n^+) \;\longrightarrow\; K_{n+1}.
+	\]
+	
+	\begin{definition}[Volumen-Renormierung]
+		Für äußeren Radius $R>0$ setze $R_{\mathrm{out}}=R(1+2\pi)$ und
+		\[
+		\lambda_{\mathrm{sphere}}
+		\;=\;
+		\left(\frac{V_0}{V_{\mathrm{out}}}\right)^{\!1/3}
+		\;=\;
+		\frac{1}{1+2\pi},
+		\]
+		mit $V_0=\tfrac{4}{3}\pi R^3$, $V_{\mathrm{out}}=\tfrac{4}{3}\pi R_{\mathrm{out}}^3$.
+		Die Vertex-Skalierung erfolgt isotrop: $v_i\mapsto \lambda_{\mathrm{sphere}}\,v_i$.
+	\end{definition}
+	
+	\begin{lemma}[Volumen-Kompatibilität]
+		Isotrope Skalierung mit $\lambda_{\mathrm{sphere}} = 1/(1+2\pi)$ multipliziert alle
+		Eigenwerte von $M$ mit $\lambda_{\mathrm{sphere}}^2$; $\Delta(M)$ bleibt erhalten.
+	\end{lemma}
+	
+	\smallskip\noindent
+	\textit{Numerisch verifiziert in \texttt{eabc\_icosahedron\_test.py},
+		\texttt{run\_core\_lemma\_tests()} (4/4 PASS, Toleranz $10^{-6}$).}
+	
+	%=============================================================================
+	\section{Numerische Befunde}
+	%=============================================================================
+	
+	Implementierung in \texttt{eabc\_icosahedron\_test.py}:
+	
+	\begin{itemize}
+		\item $\varepsilon=0$: Nach $R_{\mathrm{EABC}}$ bzw.\ $R^*_{\mathrm{EABC}}$
+		gilt $\Delta(M)\approx 0$ (Fixpunkt erreicht).
+		\item $\varepsilon>0$: Gestörte Geometrie ändert mod-$12$-Klassifikation;
+		$R_{\mathrm{EABC}}$ allein reicht nicht --- gekoppelter Operator $R^*_{\mathrm{EABC}}$
+		(Pullback + Label-Projektion) konvergiert zuverlässiger zu $\Delta(M)\approx 0$.
+		\item Gekoppelt vs.\ $R_{\mathrm{EABC}}$ allein: Bei $\varepsilon>0$ liefert
+		$R^*_{\mathrm{EABC}}$ niedrigere mittlere $\Delta(M)$ und höhere Fixpunkt-Konvergenzrate.
+		\item Volumen-Schritt: $\lambda_{\mathrm{sphere}}=1/(1+2\pi)$; $\Delta(M)$ bleibt
+		nach isotroper Skalierung null, wenn es vorher null war.
+	\end{itemize}
+	
+	\subsection{Numerische Verifikation}
+	
+	Die vier Kern-Lemmata werden von \texttt{run\_core\_lemma\_tests()} in
+	\texttt{eabc\_icosahedron\_test.py} geprüft (Toleranz $10^{-6}$):
+	
+	\begin{center}
+		\begin{tabular}{clc}
+			\hline
+			Lemma & Testschlüssel & Status \\
+			\hline
+			1 (Isotropie-Lemma)        & \texttt{isotropy}     & PASS \\
+			2 (Projektor-Idempotenz)   & \texttt{idempotence}  & PASS \\
+			3 (Dualitätsstabilität)    & \texttt{duality}      & PASS \\
+			4 (Volumen-Kompatibilität) & \texttt{volume}       & PASS \\
+			\hline
+			\multicolumn{2}{r}{Gesamt:} & 4/4 PASS \\
+		\end{tabular}
+	\end{center}
+	
+	%=============================================================================
+	\section*{Synthese und Schlussfolgerung}
+	\label{sec:conclusion}
+	%=============================================================================
+	
+	\begin{center}
+		\label{box:conclusion}
+		\fbox{%
+			\fbox{%
+				\begin{minipage}{0.92\linewidth}
+					\vspace{2mm}
+					\begin{center}
+						\textbf{\large Synthese der EABC-Renormierung}
+					\end{center}
+					\vspace{3mm}
+					\begin{equation*}
+						\textbf{Hauptsatz (24-Isotropy-Restoration, Theorem~\ref{thm:tensor-restore})}\!:
+						\quad
+						M_{\mathrm{eff}}\bigl(R^*_{\mathrm{EABC}}(K^+)\bigr) = 24I_3.
+					\end{equation*}
+					\begin{equation*}
+						\textbf{Vorbereitung}\!:
+						\quad
+						M_{\mathrm{geom}}=24I_3,\;
+						M_{\mathrm{eff}}(K^+)=24I_3+w_pvv^{\mathsf T},\;
+						\Delta(M_{\mathrm{eff}})=w_p.
+					\end{equation*}
+					\begin{equation*}
+						\textbf{Peano-Fortsetzung (Korollar~\ref{cor:shellstack-global})}\!:
+						\quad
+						\forall i:\;
+						M_{\mathrm{eff}}\!\bigl(\mathcal{R}^*(\mathcal{S}_{\mathrm{def}})\bigr)_i = 24I_3.
+					\end{equation*}
+					\vspace{2mm}
+					\hrule
+					\vspace{2mm}
+					\small
+					\textbf{Kernaussage.}
+					Eine EABC-Primzahl $p>3$ mit $p\bmod 12\in\{1,5,7,11\}$ induziert auf einer
+					Normschale eine quantisierte, messbare Rang-1-Anisotropie
+					$w_p\in\{1,5,7,11\}$.
+					Der komponentenweise Retraktions-Schnitt $\mathcal{R}^*$ führt das
+					Schalensystem algebraisch stabil auf den isotropen Ikosaeder-Fixpunkt zurück.
+					Die Satzkette ist in \texttt{eabc-renorm} maschinell verifiziert
+					(Lean~4.29, \texttt{lake build} grün, \texttt{sorry}\,$=\,0$;
+					Tabelle~\ref{tab:lean-theorems}).
+					\textbf{Phase~A} ist der Hauptsatz (Theorem~\ref{thm:tensor-restore}).
+					\textbf{Phase~B} liefert kombinatorische Einordnung (eingefroren).
+					\textbf{Phase~C} hat einen Teilstand ($n\le 3$, Ikosaeder, Dirac-Anker);
+					Box-Dimension und Grenzwert $n\to\infty$ bleiben offen.
+					\smallskip
+					
+					\textit{Intellektuelle Linie:}
+					Von Eulers polyedrischer Symmetrie über Riemanns Spektralgeometrie und
+					Diracs gestörtem Vakuum zu 't~Hoofts projektiver Renormierungslogik ---
+					hier als diskrete, maschinengeprüfte Satzkette auf dem Ikosaeder-Fixpunkt.
+					\vspace{2mm}
+				\end{minipage}%
+			}%
+		}
+	\end{center}
+	
+	%=============================================================================
+	\appendix
+	\section{Explizite Erzeuger-Verifikation}
+	\label{app:generators}
+	%=============================================================================
+	
+	\subsection{Ikosaeder-Ecken und geometrische EABC-Zuweisung}
+	
+	Mit $\varphi=(1+\sqrt5)/2$ seien die zwölf normierten Ikosaeder-Ecken
+	\[
+	v_i \in
+	\Bigl\{
+	\frac{(0,\pm1,\pm\varphi)}{\|(0,1,\varphi)\|},
+	\frac{(\pm1,\pm\varphi,0)}{\|(1,\varphi,0)\|},
+	\frac{(\pm\varphi,0,\pm1)}{\|(\varphi,0,1)\|}
+	\Bigr\}.
+	\]
+	Die Koordinaten-Restklasse $r(v)$ mit Skala $s=6$ teilt die Ecken in vier
+	Bahnen zu je drei Elementen mit Restklassen $2,4,8,10\bmod 12$.
+	Die Abbildung \emph{nächste EABC-Restklasse} liefert
+	\[
+	2\mapsto E\;(w=1),\quad
+	4\mapsto A\;(w=5),\quad
+	8\mapsto B\;(w=7),\quad
+	10\mapsto C\;(w=11).
+	\]
+	
+	\subsection{Direkte Berechnung von $M$}
+	
+	Am geometrischen Fixpunkt $I_{12}^{\mathrm{EABC}}$ gilt
+	\[
+	M
+	\;=\;
+	\sum_{i=1}^{12} w_{\sigma(i)}\, v_i v_i^{\mathsf T}
+	\;\in\;
+	\Q(\sqrt5)^{3\times 3}.
+	\]
+	Eine direkte Summation über die zwölf äußeren Produkte (symbolisch in
+	$\varphi$) ergibt exakt
+	\[
+	M = 24\,I_3.
+	\]
+	Damit ist $\Delta(M)=0$ und $\lambda_1=\lambda_2=\lambda_3=24$ unmittelbar
+	sichtbar, unabhängig von der Symmetrie-Rechnung im Beweis von Lemma~1.
+	
+	\subsection{Erzeuger $R_3$ und $R_5$}
+	
+	Die $2\pi/3$-Drehung um den Flächenschwerpunkt $c=\tfrac{1}{\sqrt3}(1,1,1)$
+	hat die Matrix
+	\[
+	R_3
+	\;=\;
+	\begin{pmatrix}
+		0&1&0\\ 0&0&1\\ 1&0&0
+	\end{pmatrix}
+	\;\in\; SO(3).
+	\]
+	Die $2\pi/5$-Drehung um die Ecke $v_0$ (Rodrigues-Formel) liefert
+	\[
+	R_5
+	\;=\;
+	\begin{pmatrix}
+		\tfrac{-1+\varphi}{2} & \tfrac{1+\varphi}{2} & -\tfrac12 \\[4pt]
+		-\tfrac{1+\varphi}{2} & \tfrac12 & \tfrac{-1+\varphi}{2} \\[4pt]
+		\tfrac12 & \tfrac{-1+\varphi}{2} & \tfrac{1+\varphi}{2}
+	\end{pmatrix}
+	\;\in\; SO(3),
+	\]
+	wobei man $\cos(2\pi/5)=\tfrac{-1+\varphi}{2}$ und
+	$\sin(2\pi/5)=\tfrac{\sqrt{10+2\sqrt5}}{4}$ verwendet.
+	
+	\subsection{Verifikation der $\mathcal{I}$-Invarianz}
+	
+	Da $M=24I_3$ exakt gilt, folgt für jedes $R\in SO(3)$ sofort
+	\[
+	R\,M\,R^{\mathsf T}
+	\;=\;
+	24\,R\,R^{\mathsf T}
+	\;=\;
+	24\,I_3
+	\;=\;
+	M.
+	\]
+	Insbesondere für die Erzeuger $R_3,R_5\in A_5$:
+	\[
+	R_k\,M\,R_k^{\mathsf T} = M,
+	\qquad k=3,5.
+	\]
+	Damit ist Schritt~(iii) im Beweis des Isotropie-Lemmas vollständig explizit
+	nachgerechnet; die Untergruppe $\mathcal{G}\subset\mathcal{I}$ aus dem
+	Hauptbeweis enthält $R_3,R_5$ und daher ganz $\mathcal{I}\cong A_5$.
+	
+	\bibliographystyle{plain}
+	\bibliography{references}
+	
+\end{document}

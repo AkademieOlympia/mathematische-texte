@@ -1,0 +1,187 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+
+\title{On Large Deviations in the ABC Conjecture and Prime Factor Constraints}
+\author{Thomas Hoffbauer}
+\date{}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		We study large deviations in the ABC conjecture via the quantity
+		[
+		\Delta(a,b,c) := \log c - \log \mathrm{rad}(abc).
+		]
+		Numerical experiments indicate a strong negative correlation between $\Delta$
+		and the number $\omega(abc)$ of distinct prime factors.
+		
+		We formulate a structural hypothesis stating that large values of $\Delta$
+		can only occur when the prime support is small, and provide a partial
+		theoretical explanation based on S-unit equations and bounds from
+		Baker theory.
+	\end{abstract}
+	
+	\section{Introduction}
+	
+	The ABC conjecture states that for coprime integers $a,b$ with $a+b=c$,
+	and for every $\varepsilon>0$, there exists $K_\varepsilon$ such that
+	[
+	c \le K_\varepsilon \cdot \mathrm{rad}(abc)^{1+\varepsilon}.
+	]
+	
+	We define
+	[
+	\Delta(a,b,c) := \log c - \log \mathrm{rad}(abc).
+	]
+	
+	The conjecture implies that $\Delta$ cannot grow significantly.
+	
+	\section{Numerical Evidence}
+	
+	Computations for coprime pairs $(a,b)$ with $a,b \le N$ (up to several million)
+	show:
+	
+	\begin{itemize}
+		\item $\Delta$ is typically negative,
+		\item large values of $\Delta$ are rare,
+		\item large $\Delta$ occurs only when $\omega(abc)$ is small.
+	\end{itemize}
+	
+	\subsection{Structural observation}
+	
+	In all observed cases with large $\Delta$:
+	
+	\begin{itemize}
+		\item the number of distinct prime factors is small,
+		\item high prime powers occur,
+		\item $c$ is often close to a prime power.
+	\end{itemize}
+	
+	These observations motivate the following hypothesis.
+	
+	\section{Structural Constraint}
+	
+	\begin{lemma}[Structural Constraint]
+		For every $\delta>0$, there exists a constant $K(\delta)$ such that
+		[
+		\Delta(a,b,c) \ge \delta ;\Rightarrow; \omega(abc) \le K(\delta).
+		]
+	\end{lemma}
+	
+	\begin{remark}
+		This lemma is not proven here. It is supported by numerical evidence
+		and consistency with known diophantine constraints.
+	\end{remark}
+	
+	\section{Connection to S-Unit Equations}
+	
+	Let
+	[
+	S := {p : p \mid abc}, \quad s = |S|.
+	]
+	
+	Define
+	[
+	x = \frac{a}{c}, \quad y = \frac{b}{c}.
+	]
+	Then
+	[
+	x + y = 1,
+	]
+	where $x,y$ are S-units.
+	
+	By classical results (see \cite{EvertseGyory}),
+	the number of such solutions is finite for fixed $S$.
+	
+	\section{Exponent Constraints from Baker Theory}
+	
+	We write
+	[
+	c = \prod_{p \in S} p^{\gamma_p}.
+	]
+	
+	Bounds from Baker theory imply that the exponents $\gamma_p$ cannot grow
+	arbitrarily when the size $s = |S|$ increases.
+	
+	More precisely, there exists a function $E(s)$ with at most exponential growth
+	such that
+	[
+	\max_{p \in S} \gamma_p \le E(s).
+	]
+	
+	\begin{proposition}[Heuristic exponent bound]
+		For solutions of $a+b=c$ with prime support $S$, one has
+		[
+		\Delta(a,b,c) \le (E(s)-1)\sum_{p \in S} \log p.
+		]
+	\end{proposition}
+	
+	\begin{proof}[Heuristic argument]
+		We write
+		[
+		\Delta = \sum_{p \in S} (\gamma_p - 1)\log p.
+		]
+		If $s$ is large, Baker-type bounds imply that most exponents $\gamma_p$
+		must remain small, preventing large contributions to $\Delta$.
+	\end{proof}
+	
+	\section{Heuristic Consequences}
+	
+	Using the prime number theorem,
+	[
+	\sum_{p \in S} \log p \gtrsim s \log s.
+	]
+	
+	Thus,
+	[
+	\Delta \lesssim E(s), s \log s.
+	]
+	
+	Since $E(s)$ grows at most exponentially, this suggests that large $\Delta$
+	can only occur when $s$ is small.
+	
+	\section{Quantitative Behaviour}
+	
+	The above argument suggests the existence of a monotone function $K(\delta)$ such that
+	[
+	\Delta \ge \delta ;\Rightarrow; \omega(abc) \le K(\delta),
+	]
+	with $K(\delta)$ growing slowly as $\delta \to 0$.
+	
+	\section{Discussion}
+	
+	This perspective suggests that large deviations in the ABC conjecture
+	correspond to highly constrained configurations of prime factors.
+	
+	In particular, large $\Delta$ appears to require strong concentration
+	of multiplicative structure in a small number of primes.
+	
+	\section{Outlook}
+	
+	A possible route toward the ABC conjecture is to rigorously establish
+	the structural constraint or to derive it from refined diophantine bounds.
+	
+	\begin{thebibliography}{9}
+		
+		\bibitem{BakerWustholz}
+		A.~Baker and G.~Wüstholz,
+		\textit{Logarithmic Forms and Diophantine Geometry},
+		Cambridge University Press, 2007.
+		
+		\bibitem{EvertseGyory}
+		J.-H.~Evertse and K.~Győry,
+		\textit{Unit Equations in Diophantine Number Theory},
+		Cambridge University Press, 2015.
+		
+	\end{thebibliography}
+	
+\end{document}

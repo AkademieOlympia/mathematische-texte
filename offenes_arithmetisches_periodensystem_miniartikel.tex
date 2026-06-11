@@ -1,0 +1,318 @@
+
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./}{fig/}{figs/}{images/}{img/}}
+
+\newcommand{\includegraphicssafe}[2][]{%
+  \IfFileExists{#2}{\includegraphics[#1]{#2}}{%
+    \fbox{\parbox{0.9\linewidth}{\centering Abbildung nicht gefunden:\\\texttt{#2}}}%
+  }%
+}
+
+\geometry{margin=2.7cm}
+
+\theoremstyle{plain}
+\newtheorem{satz}{Satz}
+\newtheorem{lemma}{Lemma}
+\newtheorem{korollar}{Korollar}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{beispiel}{Beispiel}
+
+\theoremstyle{remark}
+\newtheorem{bemerkung}{Bemerkung}
+
+\title{Das offene arithmetische Periodensystem\\\large Eine erste strukturierte Rohfassung}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Wir schlagen eine erste formale Fassung eines \emph{offenen arithmetischen Periodensystems} der natürlichen Zahlen vor. 
+Die Konstruktion basiert auf den Basisschalen der Primzahlen \(2,3,5\), dem offenen Restgenerator \(R_{235}(N)\), einer internen Vierergruppenstruktur \(\{e,a,b,c\}\), sowie vier modulierenden Strukturgrößen, die wir heuristisch mit den Motiven von von Klitzing, Aharonov--Bohm, Morley--Walter und Kepler verbinden. 
+Im Unterschied zum chemischen Periodensystem ist das hier beschriebene Schema nicht abgeschlossen, sondern wächst mit dem Auftreten neuer Restgeneratoren offen nach oben weiter. 
+Eine verfeinerte Tafel für \(N\le 300\) illustriert die Trennung in Generatorfamilien, Nachläufer, Plateauzustände und Mischstrukturen.
+\end{abstract}
+
+\section{Einleitung}
+
+Die natürlichen Zahlen werden in der klassischen Zahlentheorie meist als linear geordnete Folge betrachtet. 
+Im vorliegenden Zugang schlagen wir vor, sie als Zustände eines \emph{offenen arithmetischen Periodensystems} zu lesen. 
+Die Rede von einem Periodensystem ist dabei nicht im Sinn einer endlichen Tabelle zu verstehen, sondern als Hinweis auf eine schalenartige, gruppierte und nach oben offene Ordnungsstruktur.
+
+Die leitende Intuition lautet:
+\begin{quote}
+Jede natürliche Zahl \(N\) besitzt eine mehrschichtige arithmetische Signatur, die sich aus Basisschalen, Restgeneratoren, internen Klassen und modulierenden Strukturgrößen zusammensetzt.
+\end{quote}
+
+Der hier entwickelte Ansatz ist eine erste Rohfassung. 
+Er erhebt keinen Anspruch auf eine abgeschlossene axiomatische Theorie, sondern will eine belastbare Klassifikationssprache bereitstellen, in der Zahlen nicht nur faktoriell, sondern zugleich schalenartig, gruppiert und generatoroffen gelesen werden können.
+
+\section{Basisschalen und Restgeneratoren}
+
+\begin{definition}[Basisschalenkoordinaten]
+Für \(N\in\mathbb{N}\) definieren wir die Basisschalenkoordinaten durch die p-adischen Bewertungen
+\[
+\nu_2(N),\qquad \nu_3(N),\qquad \nu_5(N).
+\]
+Sie beschreiben die Einbettung von \(N\) in die dyadischen, triadischen und pentadischen Basisschalen.
+\end{definition}
+
+Damit erhält jede Zahl zunächst eine dreifache Schalenadresse in der durch \(2,3,5\) erzeugten Basisschalenwelt.
+
+\begin{definition}[2-3-5-Rest]
+Für \(N\in\mathbb{N}\) definieren wir den 2-3-5-Rest durch
+\[
+R_{235}(N):=\frac{N}{2^{\nu_2(N)}3^{\nu_3(N)}5^{\nu_5(N)}}.
+\]
+\end{definition}
+
+\begin{bemerkung}
+Die Bedingung \(R_{235}(N)=1\) charakterisiert genau jene Zahlen, die vollständig in der Basisschalenwelt der Primzahlen \(2,3,5\) liegen. 
+Für \(R_{235}(N)>1\) tritt offene Generatorstruktur auf.
+\end{bemerkung}
+
+\begin{lemma}
+Für jede natürliche Zahl \(N\) gilt die eindeutige Zerlegung
+\[
+N=2^{\nu_2(N)}3^{\nu_3(N)}5^{\nu_5(N)}R_{235}(N).
+\]
+\end{lemma}
+
+\begin{proof}
+Dies folgt unmittelbar aus der Definition der p-adischen Bewertungen.
+\end{proof}
+
+\section{Interne Vierergruppenstruktur}
+
+\begin{definition}[EABC-Klasse]
+Sei \(\operatorname{strip}_{2,3}(N)\) die Zahl, die aus \(N\) durch Herausziehen aller Faktoren \(2\) und \(3\) entsteht. 
+Die EABC-Klasse \(u(N)\) wird durch die modulo-\(12\)-Reduktion dieses Restes bestimmt:
+\[
+1\mapsto e,\qquad 5\mapsto a,\qquad 7\mapsto b,\qquad 11\mapsto c.
+\]
+Damit ist
+\[
+u(N)\in\{e,a,b,c\}\cong V_4,
+\]
+wobei \(V_4\) die Kleinsche Vierergruppe bezeichnet.
+\end{definition}
+
+\begin{bemerkung}
+Die EABC-Klasse ersetzt keine Primfaktorinformation. 
+Sie ist als interne Familienvariable zu lesen und ergänzt die Basisschalenkoordinaten um eine diskrete Symmetrieschicht.
+\end{bemerkung}
+
+\section{Vier Modifikationsmodule}
+
+Zur Basisschalen- und Reststruktur treten vier modulierende Operatoren hinzu.
+
+\subsection*{(i) von Klitzing}
+Das von-Klitzing-Modul steht für robuste Plateau-Bildung. 
+Es modelliert die Tendenz, dass arithmetische Zustände sich nicht beliebig fein ändern, sondern diskrete Stufen oder Niveaus ausbilden.
+
+\subsection*{(ii) Aharonov--Bohm}
+Das Aharonov--Bohm-Modul liefert eine arithmetische Phase. 
+Es beschreibt, dass Zahlen nicht nur lokal durch Faktorisierung, sondern auch durch zyklische Umlaufstruktur charakterisiert werden können.
+
+\subsection*{(iii) Morley--Walter}
+Das Morley--Walter-Modul erfasst geometrische Kopplung zwischen den Schalenexponenten, insbesondere dann, wenn mehrere Basisschalen zugleich aktiv sind.
+
+\subsection*{(iv) Kepler}
+Das Kepler-Modul misst Harmonie bzw.\ Einbettung einer Zahl in die globale Schalenordnung, also ihre Stärke der Integration in die Basisschalenwelt.
+
+\section{Erste diskrete Realisierung}
+
+\begin{definition}[Arithmetischer Phasenindex]
+Wir definieren einen ersten diskreten Phasenindex durch
+\[
+\phi_{\mathrm{AB}}^{(0)}(N)
+=
+\nu_2(N)+2\nu_3(N)+3\nu_5(N)+\chi_4(u(N)),
+\]
+wobei
+\[
+\chi_4(e)=0,\qquad
+\chi_4(a)=1,\qquad
+\chi_4(b)=2,\qquad
+\chi_4(c)=3.
+\]
+\end{definition}
+
+\begin{definition}[Morley--Walter-Kopplung]
+Die Morley--Walter-Kopplung sei
+\[
+M_{\mathrm{MW}}(N)
+=
+\nu_2(N)\nu_3(N)+\nu_3(N)\nu_5(N)+\nu_2(N)\nu_5(N).
+\]
+\end{definition}
+
+\begin{definition}[Kepler-Harmonie]
+Die Kepler-Harmoniezahl sei
+\[
+K_{\mathrm{Kep}}(N):=\nu_2(N)+\nu_3(N)+\nu_5(N).
+\]
+\end{definition}
+
+\begin{definition}[von-Klitzing-Plateau]
+Als erste diskrete Plateaugröße setzen wir
+\[
+Q_{\mathrm{vK}}(N):=M_{\mathrm{MW}}(N)+K_{\mathrm{Kep}}(N).
+\]
+\end{definition}
+
+\begin{lemma}
+Ist \(N\) von der Form \(2^n\), \(3^m\) oder \(5^o\), so gilt
+\[
+M_{\mathrm{MW}}(N)=0.
+\]
+\end{lemma}
+
+\begin{proof}
+In diesem Fall ist höchstens eine der Größen \(\nu_2(N),\nu_3(N),\nu_5(N)\) positiv. 
+Damit verschwinden alle Produkte
+\[
+\nu_2(N)\nu_3(N),\qquad \nu_3(N)\nu_5(N),\qquad \nu_2(N)\nu_5(N).
+\]
+\end{proof}
+
+\section{Zustandsvektor und Statusklassen}
+
+\begin{definition}[Arithmetischer Zustandsvektor]
+Zu jeder Zahl \(N\in\mathbb{N}\) definieren wir den Zustandsvektor
+\[
+\mathcal P(N)
+=
+\bigl(
+\nu_2(N),\nu_3(N),\nu_5(N),
+R_{235}(N),
+u(N),
+\phi_{\mathrm{AB}}^{(0)}(N),
+M_{\mathrm{MW}}(N),
+K_{\mathrm{Kep}}(N),
+Q_{\mathrm{vK}}(N)
+\bigr).
+\]
+\end{definition}
+
+\begin{definition}[Statusoperator]
+Zusätzlich ordnen wir jeder Zahl einen Status
+\[
+\Sigma(N)\in
+\{
+\text{Basis},
+\text{a-Schale},
+\text{Misch-Basis},
+\text{Plateau},
+\text{Plateauwechsel},
+\text{neuer Generator},
+\text{harmonischer Nachläufer},
+\text{Mischzahl}
+\}
+\]
+zu.
+\end{definition}
+
+\begin{bemerkung}
+Die Statusklassen sind phänomenologisch zu lesen:
+\begin{itemize}
+    \item \textbf{Basis}: reine 2-3-5-Welt,
+    \item \textbf{a-Schale}: pentadische Spezialschicht,
+    \item \textbf{Misch-Basis}: mehrere Basisschalen zugleich aktiv,
+    \item \textbf{Plateau / Plateauwechsel}: robuste Stufenstruktur,
+    \item \textbf{neuer Generator}: erstmals auftretender Restprimträger \(>5\),
+    \item \textbf{harmonischer Nachläufer}: Verstärkung eines bereits vorhandenen Restgenerators,
+    \item \textbf{Mischzahl}: hybride Rest- und Schalenstruktur.
+\end{itemize}
+\end{bemerkung}
+
+\section{Definition des offenen arithmetischen Periodensystems}
+
+\begin{definition}[Offenes arithmetisches Periodensystem]
+Das \emph{offene arithmetische Periodensystem} ist die Klassifikation der natürlichen Zahlen \(N\in\mathbb{N}\) durch den Zustandsvektor \(\mathcal P(N)\), ergänzt um den Statusoperator \(\Sigma(N)\).
+\end{definition}
+
+\begin{satz}[Offene Periodizität]
+Das offene arithmetische Periodensystem ist periodisch im strukturellen, aber nicht im endlichen Sinn:
+\begin{enumerate}
+    \item Die Basisschalen erzeugen wiederkehrende Schalenmuster.
+    \item Die EABC-Klassen erzeugen interne Familien.
+    \item Neue Restgeneratoren erweitern das System nach oben offen.
+\end{enumerate}
+\end{satz}
+
+\begin{proof}[Begründung]
+Punkt (1) folgt aus der wiederholten Aktivierung der Basisschalen durch \(\nu_2,\nu_3,\nu_5\). 
+Punkt (2) folgt aus der diskreten Vierergruppenstruktur \(u(N)\in\{e,a,b,c\}\). 
+Punkt (3) folgt daraus, dass mit neuen Primträgern \(>5\) stets weitere Restgeneratorfamilien auftreten, sodass keine endliche Schließung des Systems vorliegt.
+\end{proof}
+
+\begin{bemerkung}[Mendelejew-Analogie]
+Die Analogie zum Periodensystem beruht auf vier Eigenschaften:
+\begin{enumerate}
+    \item Ordnung bekannter Zustände,
+    \item Zerfall in Gruppen und Perioden,
+    \item Sichtbarkeit von Übergängen und Lücken,
+    \item offene Erweiterbarkeit durch neue Generatoren.
+\end{enumerate}
+In diesem Sinn kann das hier vorgeschlagene Schema als Mendelejew-System der natürlichen Zahlen gelesen werden.
+\end{bemerkung}
+
+\section{Erste empirische Tafel}
+
+Für \(N\le 300\) ergibt sich bereits eine verfeinerte Tafel, in der die offenen Generatoren in Familien nach EABC-Klasse zerfallen. 
+Insbesondere treten Zeilen der Form
+\[
+e:\mathrm{Gen},\qquad a:\mathrm{Gen},\qquad b:\mathrm{Gen},\qquad c:\mathrm{Gen}
+\]
+auf, während Plateaus, Nachläufer und Mischzahlen als Sekundärzustände sichtbar werden.
+
+\begin{figure}[t]
+    \centering
+    \includegraphicssafe[width=\textwidth]{offenes_arithmetisches_mendelejew_tafel_bis_300_verfeinert.png}
+    \caption{Verfeinerte Mendelejew-Tafel des offenen arithmetischen Periodensystems für \(N\le 300\). Die Spalten kodieren verdichtete Schalenbereiche, die Zeilen EABC-Klasse und Statusfamilie.}
+    \label{fig:open_arithmetic_periodic_table_refined}
+\end{figure}
+
+\section{Interpretation}
+
+Die verfeinerte Tafel legt nahe, dass die natürlichen Zahlen nicht nur nach Faktorisierung, sondern zugleich nach
+\[
+\text{Schale},\quad \text{Gruppe},\quad \text{Restgenerator},\quad \text{Plateau},\quad \text{Mischungsstatus}
+\]
+geordnet gelesen werden können.
+
+Die Generatoren erscheinen dabei als offene Erweiterung des Systems, während die Basisschalen und Vierergruppenklassen die lokale Regelmäßigkeit liefern. 
+In dieser Hinsicht verhält sich das vorgeschlagene Schema eher wie eine \emph{arithmetische Chemie} als wie eine bloße alternative Notation der Primfaktorzerlegung.
+
+\section{Ausblick}
+
+Die vorliegende Fassung ist als erste diskrete Rohform zu verstehen. 
+Naheliegende nächste Schritte sind:
+\begin{itemize}
+    \item Einbau einer Triggerfunktion \(\Theta(N)\) oder \(\Pi_{\mathrm{open}}(N)\),
+    \item Erweiterung auf größere Bereiche \(N\le 1000\) oder \(N\le 5000\),
+    \item Kopplung an BM-Datenquellen, AHPN-Listen oder Generatorhistorien,
+    \item Verfeinerung der Plateau-, Phasen- und Geometrieoperatoren.
+\end{itemize}
+
+Damit könnte aus dem hier vorgeschlagenen Schema ein systematisches arithmetisches Ordnungsmodell entstehen.
+
+\end{document}

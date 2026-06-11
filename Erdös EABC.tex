@@ -1,0 +1,584 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[ngerman]{babel}
+
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{mathtools}
+\usepackage{geometry}
+\geometry{margin=2.8cm}
+
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Satz}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Korollar}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Bemerkung}
+
+\title{Zu einer Beweisstrategie für gemeinsame Primteiler von Binomialkoeffizienten}
+\author{}
+\date{März 2026}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Wir untersuchen eine Beweisstrategie für die Aussage, dass für ganze Zahlen
+		\[
+		1\le i<j\le \frac n2
+		\]
+		eine Primzahl \(p\ge i\) existiert mit
+		\[
+		p\mid \gcd\!\left(\binom ni,\binom nj\right).
+		\]
+		Der vorliegende Text ist kein abgeschlossener Beweis, sondern eine klassische, von Modellvokabular bereinigte Parallelfassung einer strukturierten Beweisarchitektur. Der algebraische Teil beruht auf einer Master-Identität für Binomialkoeffizienten, auf der Lokalisierung derjenigen Primzahlen, die den Korrekturterm \(\binom ji\) teilen können, sowie auf einem Brückenlemma für hohe Primzahlpotenzen. Der globale Teil reduziert den blockierten Fall für \(i\ge 10\) auf die Existenz zweier benachbarter \(S_i\)-glatter Zahlen. Wir markieren ausdrücklich die Stellen, an denen die Strategie noch zusätzliche Strenge benötigt.
+	\end{abstract}
+	
+	\tableofcontents
+	
+	\section{Einleitung}
+	
+	Wir betrachten die folgende Zielaussage.
+	
+	\begin{quote}
+		Für ganze Zahlen \(1\le i<j\le n/2\) existiert eine Primzahl \(p\ge i\), die sowohl \(\binom ni\) als auch \(\binom nj\) teilt.
+	\end{quote}
+	
+	Die Grundidee der Strategie ist einfach:
+	
+	\begin{enumerate}[label=\arabic*)]
+		\item Man betrachtet den kurzen Block
+		\[
+		P_i(n):=n(n-1)\cdots(n-i+1).
+		\]
+		\item Große Primteiler \(>j\) liefern sofort gemeinsame Primteiler.
+		\item Im verbleibenden Fall müssen alle großen Primteiler in einem schmalen Fenster \((j-i,j]\) liegen.
+		\item Im residualen blockierten Fall wird gezeigt, dass für \(i\ge 10\) zwei benachbarte \(S_i\)-glatte Zahlen im \(i\)-Block entstehen.
+		\item Dies liefert eine effektive obere Schranke für \(n\).
+	\end{enumerate}
+	
+	\section{Die Zielaussage}
+	
+	\begin{theorem}[Zielaussage]
+		\label{thm:target}
+		Für ganze Zahlen \(n,i,j\) mit
+		\[
+		1\le i<j\le \frac n2
+		\]
+		existiert eine Primzahl \(p\ge i\) mit
+		\[
+		p\mid \gcd\!\left(\binom ni,\binom nj\right).
+		\]
+	\end{theorem}
+	
+	\begin{remark}
+		Der vorliegende Text gibt keine vollständige Beweisführung von Satz~\ref{thm:target}, sondern eine klassische Rekonstruktion einer Beweisstrategie.
+	\end{remark}
+	
+	\section{Klassische Werkzeuge}
+	
+	\begin{lemma}[Kummer]
+		Für eine Primzahl \(p\) und \(n\ge k\ge0\) ist
+		\[
+		v_p\!\left(\binom nk\right)
+		\]
+		gleich der Anzahl der Überträge beim Addieren von \(k\) und \(n-k\) in Basis \(p\).
+	\end{lemma}
+	
+	\begin{lemma}[Legendre]
+		Für \(m\ge1\) und eine Primzahl \(p\) gilt
+		\[
+		v_p(m!)=\sum_{r\ge1}\left\lfloor \frac{m}{p^r}\right\rfloor.
+		\]
+	\end{lemma}
+	
+	\begin{lemma}[Sylvester--Schur]
+		\label{lem:sylvester-schur}
+		Für \(n\ge 2k\) besitzt das Produkt
+		\[
+		n(n-1)\cdots(n-k+1)
+		\]
+		einen Primfaktor \(>k\).
+	\end{lemma}
+	
+	\begin{lemma}[Master-Identität]
+		\label{lem:master}
+		Für \(n\ge j>i\ge1\) gilt
+		\[
+		\binom nj \binom ji
+		=
+		\binom ni \binom{n-i}{j-i}.
+		\]
+		Insbesondere folgt für jede Primzahl \(p\),
+		\[
+		v_p\!\left(\binom nj\right)
+		=
+		v_p\!\left(\binom ni\right)
+		+
+		v_p\!\left(\binom{n-i}{j-i}\right)
+		-
+		v_p\!\left(\binom ji\right).
+		\]
+	\end{lemma}
+	
+	\section{Das tame-Fenster}
+	
+	Der Korrekturterm \(\binom ji\) kann nur ganz bestimmte Primzahlen absorbieren.
+	
+	\begin{lemma}[Tame-Fenster]
+		\label{lem:tame-window}
+		Sei \(p>i\) prim. Dann gilt
+		\[
+		p\mid \binom ji
+		\quad\Longleftrightarrow\quad
+		p\in(j-i,j].
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Da \(p>i\), tritt \(p\) im Nenner \(i!\) nicht auf. Also teilt \(p\) genau dann \(\binom ji\), wenn das Produkt
+		\[
+		j(j-1)\cdots(j-i+1)
+		\]
+		ein Vielfaches von \(p\) enthält. Wegen \(p>i\) kann in einem Block der Länge \(i\) höchstens ein Vielfaches von \(p\) vorkommen. Dies ist genau dann der Fall, wenn \(p\in(j-i,j]\).
+	\end{proof}
+	
+	\begin{lemma}[Einfache tame-Bewertung]
+		\label{lem:tame-valuation}
+		Ist \(q\in(j-i,j]\) prim und \(q>i\), dann gilt
+		\[
+		v_q\!\left(\binom ji\right)=1.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Wie im Beweis von Lemma~\ref{lem:tame-window} kann in
+		\[
+		j(j-1)\cdots(j-i+1)
+		\]
+		höchstens ein Vielfaches von \(q\) liegen, und bei \(q\in(j-i,j]\) liegt genau eines vor. Da \(q\nmid i!\), ist die Bewertung gleich \(1\).
+	\end{proof}
+	
+	\section{Freie Hochmoden}
+	
+	\begin{definition}
+		Wir nennen eine Primzahl \(p\) einen \emph{Zeugen} für \((n,i,j)\), wenn
+		\[
+		p\mid \gcd\!\left(\binom ni,\binom nj\right).
+		\]
+	\end{definition}
+	
+	\begin{lemma}[Freier Hochmodus]
+		\label{lem:free-large-prime}
+		Besitzt der Block
+		\[
+		P_i(n)=n(n-1)\cdots(n-i+1)
+		\]
+		einen Primteiler \(p>j\), so ist \(p\) ein Zeuge.
+	\end{lemma}
+	
+	\begin{proof}
+		Da \(p>j\), tritt \(p\) weder in \(i!\) noch in \(j!\) auf. Weil \(p\mid P_i(n)\), folgt
+		\[
+		p\mid \binom ni.
+		\]
+		Der \(j\)-Block
+		\[
+		n(n-1)\cdots(n-j+1)
+		\]
+		enthält den \(i\)-Block als Teilprodukt, also auch den durch \(p\) teilbaren Faktor. Wieder gilt \(p\nmid j!\). Also
+		\[
+		p\mid \binom nj.
+		\]
+	\end{proof}
+	
+	\begin{corollary}
+		\label{cor:j-smooth}
+		Ist \((n,i,j)\) blockiert, also ohne Zeugen, so sind alle Primteiler von \(P_i(n)\) höchstens \(j\).
+	\end{corollary}
+	
+	\section{Erste Fallzerlegung}
+	
+	\begin{definition}[Blockiert]
+		Ein Tripel \((n,i,j)\) heißt \emph{blockiert}, wenn kein Zeuge existiert.
+	\end{definition}
+	
+	\begin{theorem}[Erste Fallzerlegung]
+		\label{thm:first-reduction}
+		Sei \(1\le i<j\le n/2\). Dann gilt:
+		\begin{enumerate}[label=\textup{(\Alph*)}]
+			\item Entweder \(P_i(n)\) besitzt einen Primteiler \(p>j\), dann existiert ein Zeuge.
+			\item Oder \(P_i(n)\) ist \(j\)-glatt. Dann besitzt \(P_i(n)\) nach Lemma~\ref{lem:sylvester-schur} dennoch einen Primteiler \(q>i\), also einen Primteiler
+			\[
+			q\in(i,j].
+			\]
+		\end{enumerate}
+	\end{theorem}
+	
+	\begin{proof}
+		Fall (A) ist Lemma~\ref{lem:free-large-prime}. Falls (A) nicht vorliegt, sind alle Primteiler von \(P_i(n)\) höchstens \(j\). Zugleich liefert Lemma~\ref{lem:sylvester-schur} einen Primteiler \(>i\). Also liegt wenigstens ein Primteiler in \((i,j]\).
+	\end{proof}
+	
+	\section{Das Brückenlemma für hohe Potenzen}
+	
+	Der residuale schwierige Fall tritt dann auf, wenn ein Primteiler \(q\in(i,j]\) im kurzen Block vorkommt und zugleich vom Korrekturterm \(\binom ji\) absorbiert werden kann. Hohe Potenzen dieses Primteilers erzwingen jedoch wieder einen Zeugen.
+	
+	\begin{lemma}[Brückenlemma]
+		\label{lem:bridge}
+		Sei \(p\) prim mit \(i\le p\le j\). Es gebe ein \(k\in\{0,\dots,i-1\}\) mit
+		\[
+		p^v\mid (n-k),\qquad v\ge2,\qquad p^v>j.
+		\]
+		Dann ist \(p\) ein Zeuge für \((n,i,j)\).
+	\end{lemma}
+	
+	\begin{proof}
+		Zunächst für \(\binom ni\): Da \(p\ge i\), kann im Block
+		\[
+		n(n-1)\cdots(n-i+1)
+		\]
+		höchstens ein Vielfaches von \(p\) auftreten, nämlich \(n-k\). Wegen \(p^v\mid(n-k)\) mit \(v\ge2\) gilt
+		\[
+		v_p\!\left(n(n-1)\cdots(n-i+1)\right)\ge2.
+		\]
+		Ferner gilt \(v_p(i!)\le1\), da \(p\ge i\). Also
+		\[
+		v_p\!\left(\binom ni\right)\ge1.
+		\]
+		
+		Nun für \(\binom nj\): Setze
+		\[
+		N_j:=n(n-1)\cdots(n-j+1).
+		\]
+		Da \(k\le i-1<j\), liegt der Faktor \(n-k\) auch in \(N_j\). Schreibe \(A_r\) für die Anzahl der Vielfachen von \(p^r\) im \(j\)-Block. Dann gilt
+		\[
+		v_p(N_j)=\sum_{r\ge1} A_r.
+		\]
+		Nach Legendre ist
+		\[
+		v_p(j!)=\sum_{r\ge1}\left\lfloor \frac{j}{p^r}\right\rfloor.
+		\]
+		
+		Aus \(p^v\mid(n-k)\) und \(p^v>j\) folgt, dass der \(j\)-Block genau ein Vielfaches von \(p^v\) enthält. Also
+		\[
+		A_v=1
+		\qquad\text{und}\qquad
+		\left\lfloor \frac{j}{p^v}\right\rfloor=0.
+		\]
+		Ferner gilt für jedes \(r\ge1\),
+		\[
+		A_r\ge \left\lfloor \frac{j}{p^r}\right\rfloor.
+		\]
+		Somit
+		\[
+		v_p(N_j)-v_p(j!)
+		=
+		\sum_{r\ge1}\left(A_r-\left\lfloor \frac{j}{p^r}\right\rfloor\right)\ge1.
+		\]
+		Also
+		\[
+		v_p\!\left(\binom nj\right)\ge1.
+		\]
+		Damit teilt \(p\) beide Binomialkoeffizienten.
+	\end{proof}
+	
+	\section{Residualfall und schwaches Escape-Lemma}
+	
+	Der einzige wirklich kritische Fall ist nun derjenige, in dem ein Primteiler \(q\in(j-i,j]\) den kurzen Block trifft, \(q\) also den Korrekturterm \(\binom ji\) teilt, und zugleich nur mit Exponent \(1\) auftritt.
+	
+	\begin{definition}[Lonely-Cofaktor]
+		Sei \(q\in(j-i,j]\) prim und
+		\[
+		v_q(n-k_q)=1
+		\]
+		für ein \(k_q\in\{0,\dots,i-1\}\). Dann schreiben wir
+		\[
+		n-k_q=q\,m_q,\qquad \gcd(q,m_q)=1.
+		\]
+		Die Zahl \(m_q\) heißt der \emph{lonely-Cofaktor}.
+	\end{definition}
+	
+	\begin{lemma}[Schwaches Escape-Lemma]
+		\label{lem:weak-escape}
+		Sei \((n,i,j)\) blockiert, und sei
+		\[
+		n-k_q=q\,m_q,\qquad q\in(j-i,j],\qquad \gcd(q,m_q)=1,\qquad v_q(n-k_q)=1.
+		\]
+		Dann gilt: Jeder Primteiler \(r>i\) von \(m_q\) liegt selbst im Intervall
+		\[
+		r\in(j-i,j].
+		\]
+		Insbesondere besitzt \(m_q\) keinen Primteiler \(>j\).
+	\end{lemma}
+	
+	\begin{proof}
+		Sei \(r\mid m_q\) mit \(r>i\). Dann gilt \(r\mid(n-k_q)\), also tritt \(r\) im \(i\)-Block auf. Wegen \(r>i\) gibt es dort höchstens ein Vielfaches von \(r\), also
+		\[
+		r\mid \binom ni.
+		\]
+		
+		Wäre \(r>j\), so wäre \(r\) nach Lemma~\ref{lem:free-large-prime} ein Zeuge. Das ist unmöglich, da \((n,i,j)\) blockiert ist. Also gilt \(r\le j\).
+		
+		Wäre nun \(r\notin(j-i,j]\), so wäre \(r\) nicht tame, also würde \(r\nmid\binom ji\) gelten. In diesem Fall könnte der Korrekturterm in Lemma~\ref{lem:master} den \(r\)-Beitrag nicht absorbieren. Damit müsste \(r\) auch in \(\binom nj\) auftreten, also ein Zeuge sein. Widerspruch.
+		
+		Folglich gilt
+		\[
+		r\in(j-i,j].
+		\]
+	\end{proof}
+	
+	\begin{remark}
+		Dies ist bewusst schwächer als die Aussage, dass \(m_q\) vollständig \(i\)-glatt sei. Für den globalen Schluss genügt es, dass alle großen Primteiler von \(m_q\) in demselben schmalen Fenster liegen.
+	\end{remark}
+	
+	\section{Der große Fall \(i\ge10\)}
+	
+	Jetzt folgt das globale Argument.
+	
+	\subsection{Knappheit des tame-Fensters}
+	
+	\begin{lemma}[Brun--Titchmarsh]
+		Für \(x\ge1\) und \(y\ge2\) gilt
+		\[
+		\pi(x+y)-\pi(x)\le \frac{2y}{\ln y}.
+		\]
+	\end{lemma}
+	
+	\begin{lemma}[Tame-Knappheit]
+		\label{lem:tame-scarcity}
+		Für \(i\ge10\) gilt
+		\[
+		\pi(j)-\pi(j-i)\le \left\lfloor \frac{2i}{\ln i}\right\rfloor \le i-2.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Die erste Ungleichung ist Brun--Titchmarsh mit \(x=j-i\), \(y=i\). Die zweite ist eine elementare numerische Abschätzung für \(i\ge10\).
+	\end{proof}
+	
+	\subsection{Kontrollierte Positionen}
+	
+	\begin{definition}[Kontrollierte Position]
+		Eine Position \(t\in\{0,\dots,i-1\}\) des \(i\)-Blocks heißt \emph{kontrolliert}, wenn der Blockterm \(n-t\) einen Primteiler \(r>i\) besitzt.
+	\end{definition}
+	
+	\begin{definition}[Unkontrollierte Position]
+		Eine Position \(t\in\{0,\dots,i-1\}\) heißt \emph{unkontrolliert}, wenn der Blockterm \(n-t\) keinen Primteiler \(>i\) besitzt.
+	\end{definition}
+	
+	\begin{remark}
+		Da \(r>i\), kann ein Primteiler \(r\) in einem Block der Länge \(i\) höchstens einmal auftreten. Also kontrolliert jede große Primzahl \(r>i\) höchstens eine Position.
+	\end{remark}
+	
+	\begin{lemma}[Adjazenzlemma]
+		\label{lem:adjacency}
+		Wenn höchstens \(i-2\) Positionen des \(i\)-Blocks kontrolliert sind, dann existieren zwei benachbarte unkontrollierte Positionen.
+	\end{lemma}
+	
+	\begin{proof}
+		Unter \(i\) Positionen bleiben bei höchstens \(i-2\) kontrollierten Positionen mindestens zwei unkontrollierte übrig. In einem linearen Block können zwei unkontrollierte Positionen nur dann stets voneinander getrennt werden, wenn mindestens \(i-1\) Positionen kontrolliert sind. Dies ist hier nicht der Fall.
+	\end{proof}
+	
+	\subsection{Lokale Glättung}
+	
+	\begin{definition}
+		Sei
+		\[
+		S_i:=\{\text{Primzahlen } \le i\}.
+		\]
+		Eine natürliche Zahl heißt \(S_i\)-glatt, wenn alle ihre Primteiler in \(S_i\) liegen.
+	\end{definition}
+	
+	\begin{lemma}[Lokale Glättung]
+		\label{lem:local-smoothing}
+		Jede unkontrollierte Position ist \(S_i\)-glatt.
+	\end{lemma}
+	
+	\begin{proof}
+		Dies ist unmittelbar die Definition einer unkontrollierten Position.
+	\end{proof}
+	
+	\subsection{Glatte Nachbarn}
+	
+	\begin{theorem}[Existenz eines glatten Nachbarpaares]
+		\label{thm:smooth-pair}
+		Sei \(i\ge10\) und sei \((n,i,j)\) blockiert. Dann existieren zwei benachbarte \(S_i\)-glatte Zahlen im \(i\)-Block.
+	\end{theorem}
+	
+	\begin{proof}
+		Nach Lemma~\ref{lem:tame-scarcity} gibt es höchstens \(i-2\) Primzahlen im tame-Fenster \((j-i,j]\). Nach Lemma~\ref{lem:weak-escape} können große Primteiler blockierter Konfigurationen nur aus diesem Fenster stammen. Da jede solche Primzahl höchstens eine Position kontrolliert, gibt es höchstens \(i-2\) kontrollierte Positionen.
+		
+		Nach Lemma~\ref{lem:adjacency} existieren daher zwei benachbarte unkontrollierte Positionen. Nach Lemma~\ref{lem:local-smoothing} sind die zugehörigen Blockterme \(S_i\)-glatt.
+	\end{proof}
+	
+	\begin{corollary}
+		\label{cor:xy}
+		Unter den Voraussetzungen von Satz~\ref{thm:smooth-pair} existieren aufeinanderfolgende natürliche Zahlen
+		\[
+		x,\qquad x-1,
+		\]
+		die beide \(S_i\)-glatt sind.
+	\end{corollary}
+	
+	\begin{proof}
+		Die benachbarten glatten Blockterme haben die Form
+		\[
+		x=n-t,\qquad x-1=n-(t+1)
+		\]
+		für ein \(t\in\{0,\dots,i-2\}\).
+	\end{proof}
+	
+	\subsection{Globale Schranke}
+	
+	\begin{definition}
+		Sei
+		\[
+		B(i):=\max\{x\in\mathbb N : x \text{ und } x-1 \text{ sind } S_i\text{-glatt}\}.
+		\]
+	\end{definition}
+	
+	\begin{theorem}[Globale Schranke]
+		\label{thm:global-bound}
+		Sei \(i\ge10\) und sei \((n,i,j)\) blockiert. Dann gilt
+		\[
+		n\le B(i)+i-1.
+		\]
+	\end{theorem}
+	
+	\begin{proof}
+		Nach Korollar~\ref{cor:xy} existiert ein Paar aufeinanderfolgender \(S_i\)-glatter Zahlen
+		\[
+		x,\qquad x-1
+		\]
+		mit \(x=n-t\) für ein \(t\in\{0,\dots,i-1\}\). Also
+		\[
+		x\le B(i).
+		\]
+		Daher
+		\[
+		n=x+t\le B(i)+(i-1).
+		\]
+	\end{proof}
+	
+	\section{Kleine Fälle}
+	
+	\begin{lemma}[Fall \(i=3\), programmatische Fassung]
+		\label{lem:i3}
+		Es existiert keine blockierte Konfiguration \((n,3,j)\) mit \(n>10\).
+	\end{lemma}
+	
+	\begin{proof}[Beweisidee]
+		Im Dreierblock
+		\[
+		n(n-1)(n-2)
+		\]
+		sind Parität und Dreiteilbarkeit derart starr, dass ein vollständiger blockierter Fall nicht möglich sein sollte. Eine vollständige Version dieses Arguments müsste nach Restklassen modulo \(2\), \(3\) oder \(6\) unterscheiden.
+	\end{proof}
+	
+	\begin{theorem}[Kleine Werte \(4\le i\le9\), programmatische Fassung]
+		Für \(4\le i\le9\) ist jede blockierte Konfiguration entweder durch Satz~\ref{thm:global-bound} nach oben beschränkt oder durch direkte endliche Rechnung ausschließbar.
+	\end{theorem}
+	
+	\begin{remark}
+		Für einen vollständigen Beweis ist hier eine reproduzierbare Computersektion nötig.
+	\end{remark}
+	
+	\section{Programmatische Hauptsatz-Synthese}
+	
+	\begin{theorem}[Programmatische Hauptsatzfassung]
+		\label{thm:programmatic-main}
+		Für jedes Tripel ganzer Zahlen
+		\[
+		1\le i<j\le \frac n2
+		\]
+		existiert eine Primzahl \(p\ge i\) mit
+		\[
+		p\mid \gcd\!\left(\binom ni,\binom nj\right).
+		\]
+	\end{theorem}
+	
+	\begin{proof}[Beweisstrategie]
+		Die Strategie zerfällt in sieben Schritte:
+		\begin{enumerate}[label=\arabic*)]
+			\item Große Primteiler \(>j\) des \(i\)-Blocks liefern sofort Zeugen.
+			\item Im verbleibenden Fall ist der \(i\)-Block \(j\)-glatt.
+			\item Primteiler \(>i\) können nur im tame-Fenster \((j-i,j]\) vom Korrekturterm \(\binom ji\) absorbiert werden.
+			\item Hohe Potenzen solcher Primteiler erzwingen durch Lemma~\ref{lem:bridge} wieder Zeugen.
+			\item Im residualen Exponent-\(1\)-Fall zeigt Lemma~\ref{lem:weak-escape}, dass alle großen Restprimteiler weiterhin im tame-Fenster liegen müssen.
+			\item Für \(i\ge10\) ist dieses Fenster zu klein, um alle Positionen des \(i\)-Blocks zu kontrollieren; also entstehen zwei benachbarte \(S_i\)-glatte Zahlen und damit eine obere Schranke für \(n\).
+			\item Die verbleibenden kleinen Fälle werden separat behandelt.
+		\end{enumerate}
+	\end{proof}
+	
+	\section{Offene Punkte}
+	
+	Die Strategie ist jetzt klassisch formuliert, aber noch nicht vollständig abgeschlossen. Die offenen Punkte sind:
+	
+	\begin{enumerate}[label=\arabic*)]
+		\item \textbf{Residualbegriffe:}  
+		Der Übergang von der allgemeinen blockierten Situation zum präzisen lonely-Residualfall muss vollständig formalisiert werden.
+		
+		\item \textbf{Nicht-tame \(\Rightarrow\) Zeuge:}  
+		Mehrere Schritte benutzen, dass ein Primteiler außerhalb des tame-Fensters nicht absorbiert werden kann. Das sollte in einem eigenen isolierten Lemma streng geführt werden.
+		
+		\item \textbf{Kleine Fälle:}  
+		Die Bereiche \(i=1,2,3\) und \(4\le i\le9\) müssen vollständig geschlossen werden.
+		
+		\item \textbf{Computationale Restprüfung:}  
+		Falls endliche Suche verwendet wird, braucht es Algorithmus, Suchraum und Zertifizierung.
+	\end{enumerate}
+	
+	\section{Schlussbemerkung}
+	
+	Die hier vorgelegte klassische Parallelfassung zeigt, dass die Beweisarchitektur auch ohne Modellvokabular in eine klare Form gebracht werden kann. Besonders tragfähig erscheinen:
+	
+	\begin{itemize}
+		\item die Lokalisierung des tame-Fensters,
+		\item das Brückenlemma für hohe Potenzen,
+		\item das globale Argument über Tame-Knappheit und glatte Nachbarpaare.
+	\end{itemize}
+	
+	Der eigentliche Engpass liegt weniger im globalen Zählteil als in der vollständigen Kontrolle des residualen Falls. Genau dort entscheidet sich, ob aus der Strategie ein vollständiger Beweis werden kann.
+	
+	\begin{thebibliography}{99}
+		
+		\bibitem{baker-wustholz}
+		A.~Baker, G.~Wüstholz,
+		\emph{Logarithmic Forms and Diophantine Geometry},
+		Cambridge University Press, 2007.
+		
+		\bibitem{evertse}
+		J.-H.~Evertse,
+		On equations in \(S\)-units and the Thue--Mahler equation,
+		\emph{Inventiones Mathematicae} \textbf{75} (1984), 561--584.
+		
+		\bibitem{hardy-wright}
+		G.~H.~Hardy, E.~M.~Wright,
+		\emph{An Introduction to the Theory of Numbers},
+		6th ed., Oxford University Press, 2008.
+		
+		\bibitem{kummer}
+		E.~E.~Kummer,
+		Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen,
+		\emph{J. Reine Angew. Math.} \textbf{44} (1852), 93--146.
+		
+		\bibitem{nathanson}
+		M.~B.~Nathanson,
+		\emph{Elementary Methods in Number Theory},
+		Springer, 2000.
+		
+	\end{thebibliography}
+	
+\end{document}

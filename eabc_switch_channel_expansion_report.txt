@@ -1,0 +1,45 @@
+Systematischer Ausbau des additiv-multiplikativen Schaltkanals
+
+Idee
+Es wurden mehrere Umschaltvarianten getestet:
+- glatte Anteile 2,3
+- glatte Anteile 2,3,5
+- glatte Anteile 2,3,5,7
+
+jeweils auf drei Stufen:
+- T1 = p^2 - 4
+- T2 = p^2 - 16
+- TP = (p^2 - 4)(p^2 - 16)
+
+Schaltkanal:
+switch = orient_sign * (log(1 + glatte Bewertung) - log(1 + additive zyklische Indexspannung))
+danach detrendet gegen log(center).
+
+Ranking gegen theta4_res auf der Vierlingsseite:
+        observable piece smooth_primes  corr_with_theta4_res  abs_corr_with_theta4_res      std
+switch_2357_TP_res    TP       2,3,5,7              0.015628                  0.015628 5.709550
+ switch_235_TP_res    TP         2,3,5              0.014325                  0.014325 5.709387
+switch_2357_T1_res    T1       2,3,5,7              0.014325                  0.014325 5.709387
+switch_2357_T2_res    T2       2,3,5,7              0.014325                  0.014325 5.709387
+ switch_235_T2_res    T2         2,3,5              0.014325                  0.014325 5.709387
+  switch_23_T1_res    T1           2,3              0.012098                  0.012098 5.709177
+ switch_235_T1_res    T1         2,3,5              0.012098                  0.012098 5.709177
+  switch_23_T2_res    T2           2,3              0.012098                  0.012098 5.709177
+  switch_23_TP_res    TP           2,3              0.012098                  0.012098 5.709177
+
+Ranking im Fenstervergleich gegen Delta_res, Lambda_res, thetaZ_res:
+        observable  corr_with_Delta_res  corr_with_Lambda_res  corr_with_thetaZ_res  score_abs_sum
+switch_2357_TP_res            -0.170444             -0.072014             -0.620915       0.863373
+ switch_235_TP_res            -0.169422             -0.071736             -0.621392       0.862550
+switch_2357_T1_res            -0.169422             -0.071736             -0.621392       0.862550
+switch_2357_T2_res            -0.169422             -0.071736             -0.621392       0.862550
+ switch_235_T2_res            -0.169422             -0.071736             -0.621392       0.862550
+  switch_23_T1_res            -0.167662             -0.071258             -0.622191       0.861111
+ switch_235_T1_res            -0.167662             -0.071258             -0.622191       0.861111
+  switch_23_T2_res            -0.167662             -0.071258             -0.622191       0.861111
+  switch_23_TP_res            -0.167662             -0.071258             -0.622191       0.861111
+
+Vorläufige Deutung
+1) Jetzt sieht man, welche glatte Struktur die beste Umschaltbasis liefert.
+2) Falls TP besser abschneidet als T1 oder T2, spricht das für die Produktschale als eigentlichen multiplikativen Träger.
+3) Falls 2,3,5 besser als 2,3 oder 2,3,5,7 abschneidet, wäre das ein Hinweis, dass die 5 tatsächlich die geeignetere zentrale Erweiterung ist als eine bloße weitere Primzahlstufe.

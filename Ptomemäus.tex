@@ -1,0 +1,71 @@
+\documentclass[11pt,a4paper]{article}
+
+% --- Pakete für mathematische Formatierung ---
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+% --- Seitenränder ---
+\geometry{left=2.5cm, right=2.5cm, top=3cm, bottom=3cm}
+
+% --- Mathematische Definitionen ---
+\newcommand{\Hring}{\mathcal{H}} % Hurwitz-Quaternionen
+\newcommand{\Nset}{\mathbb{N}}
+\newcommand{\Zset}{\mathbb{Z}}
+\newcommand{\Bary}{\mathcal{B}}
+
+\title{\textbf{Geometrische Familienstruktur der Hurwitz-Quaternionen und ptolemäische Invariante in der Primzahlverteilung}}
+\author{Autorenname / #Energiedoku}
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		In dieser Arbeit wird ein neuartiges geometrisches Modell zur Klassifizierung natürlicher Zahlen $n \in \mathbb{N}$ vorgestellt, das auf der Einbettung in den Ring der Hurwitz-Quaternionen $\mathcal{H}$ basiert. Wir erweitern die klassische Aufteilung in Primzahlfamilien um eine intermediäre Familie $D$ (faktorisierbare Zahlen) und untersuchen die strukturelle Stabilität dieses Systems unter Anwendung des Satzes von Ptolemäus auf ein im 4D-Raum definiertes Sehnen-Sechseck. Numerische Simulationen der ersten $10^5$ Primzahlen zeigen eine fundamentale Resonanz zwischen dem baryzentrischen Jitter des Modells und den Imaginärteilen der Riemannschen Nullstellen.
+	\end{abstract}
+	
+	\section{Die Sechs-Familien-Struktur}
+	Wir postulieren die Existenz von sechs fundamentalen Familien, die den energetischen Zustand einer Zahl innerhalb der Hurwitz-Struktur definieren:
+	
+	\begin{itemize}
+		\item \textbf{Familie $e$:} Die multiplikative Einheit $1$ als Referenzpunkt und Kern des Systems.
+		\item \textbf{Familie $A$:} Primzahlen $p \equiv 1 \pmod 4$. Diese sind im Ring der Gaußschen Zahlen $\mathbb{Z}[i]$ zerlegbar.
+		\item \textbf{Familie $B$:} Primzahlen $p \equiv 3 \pmod 4$. Diese bleiben träge und stabilisieren die Gitterstruktur.
+		\item \textbf{Familie $C$:} Die gerade Primzahl $2$, welche als singulärer Kopplungspunkt zwischen den Symmetrien fungiert.
+		\item \textbf{Familie $D_A$:} Faktorisierbare Zahlen (Komposita), die als Summe zweier Quadrate darstellbar sind.
+		\item \textbf{Familie $D_B$:} Komposita, die keine Darstellung als Summe zweier Quadrate erlauben (hohe Entropie).
+	\end{itemize}
+	
+	\section{Das ptolemäische Axiom}
+	Wir betrachten die Projektion dieser Familien auf eine 2D-Schnittebene der 4-dimensionalen Einheitskugel $S^3$. Nach unserem Axiom bilden die Zentren der Familien ein Sehnenviereck (oder Sechseck). Der Satz von Ptolemäus postuliert für ein solches Viereck mit den Seiten $a, b, c, d$ und den Diagonalen $e, f$:
+	\begin{equation}
+		ac + bd = ef
+	\end{equation}
+	In unserem Modell entsprechen die Seitenlängen den metrischen Abständen zwischen den Dichtemaxima der Familien im Hurwitz-Raum. Wir interpretieren die ptolemäische Differenz $\Delta_{Ptol} = |ef - (ac + bd)|$ als Maß für die lokale strukturelle Spannung im Primzahluniversum.
+	
+	\section{Baryzentrische Dynamik und Riemann-Nullstellen}
+	Die numerische Analyse zeigt, dass der Schwerpunkt (Baryzentrum) $\mathcal{B}$ des Systems über den Bereich $N$ eine Trajektorie beschreibt:
+	\begin{equation}
+		\mathcal{B}(N) = \frac{1}{N} \sum_{n=1}^N \vec{v}_{fam(n)}
+	\end{equation}
+	Die Fourier-Analyse der Verschiebungsgeschwindigkeit $\|\Delta \mathcal{B}\|$ im logarithmischen Raum zeigt signifikante Amplituden bei Frequenzen, die mit den Imaginärteilen $\gamma_n$ der Riemannschen Nullstellen korrelieren. Dies deutet darauf hin, dass die Nullstellen als Eigenfrequenzen des hexagonalen ptolemäischen Resonators fungieren.
+	
+	\section{Schlussfolgerung}
+	Die Untersuchung der ersten $100.000$ Primzahlen bestätigt die Robustheit des hexagonalen Modells. Besonders die Primzahl-Fünflinge (Quintuplets) stellen Momente dar, in denen die ptolemäische Invariante lokal ein Maximum an Symmetrie erzwingt, was eine geometrische Grundlage für die Clusterbildung von Primzahlen liefert.
+	
+	\begin{thebibliography}{9}
+		\bibitem{riemann} B. Riemann, \textit{Über die Anzahl der Primzahlen unter einer gegebenen Größe}, Monatsberichte der Königlichen Preußischen Akademie der Wissenschaften zu Berlin, 1859.
+		\bibitem{hurwitz} A. Hurwitz, \textit{Über die Zahlentheorie der Quaternionen}, Nachr. Ges. Wiss. Göttingen, 1896.
+		\bibitem{energiedoku} #Energiedoku, \textit{Interne Forschungsberichte zur geometrischen Zahlentheorie}, 2024--2026.
+	\end{thebibliography}
+	
+\end{document}

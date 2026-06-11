@@ -1,0 +1,1680 @@
+\documentclass[12pt,a4paper]{article}
+
+% -------------------------------------------------
+% Pakete
+% -------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{geometry}
+\geometry{margin=2.7cm}
+
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{mathtools}
+\usepackage{mathrsfs}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{cite}
+\usepackage{microtype}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{proposition}[satz]{Proposition}
+\newtheorem{korollar}[satz]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+\newtheorem{beispiel}[satz]{Beispiel}
+\newtheorem{problem}[satz]{Problem}
+\newtheorem{konjektur}[satz]{Konjektur}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\OH}{O_H}
+\newcommand{\HH}{\mathbb{H}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Fp}{\mathbb{F}_p}
+\newcommand{\Pp}{\mathbf{P}^1(\mathbb{F}_p)}
+\newcommand{\Nrd}{\operatorname{Nrd}}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\PGL}{\operatorname{PGL}}
+\newcommand{\Mat}{\operatorname{Mat}}
+\newcommand{\Ker}{\operatorname{Ker}}
+\newcommand{\Image}{\operatorname{Im}}
+
+
+
+% -------------------------------------------------
+% Titel
+% -------------------------------------------------
+\title{\textbf{Normschalen der Hurwitz-Ordnung, einseitige Ideale\\ und die projektive Struktur bei Primnormen}\\[0.6em]
+	\large Eine intrinsic formulierte Verfeinerung der Orbitformel}
+\author{Thomas Hoffbauer}
+\date{März 2026}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Für eine ungerade Primzahl \(p\) betrachten wir die Normschale
+		\[
+		X_p:=\{x\in \OH:\Nrd(x)=p\}
+		\]
+		in der Hurwitz-Ordnung \(\OH\) der Hamiltonschen Quaternionenalgebra. Der elementare Zähl- und Orbitkern lautet
+		\[
+		|X_p|=24(p+1),\qquad |\OH^\times\backslash X_p|=|X_p/\OH^\times|=p+1.
+		\]
+		Diese Aussage lässt sich durch eine Zerlegung in einen ganzzahligen und einen halbzahlig-hurwitzschen Anteil sowie durch die freie Links- und Rechtswirkung der \(24\) Hurwitz-Einheiten beweisen.
+		
+		Der eigentliche geometrische Gehalt liegt jedoch nicht in der bloßen Kardinalität \(p+1\), sondern in der Frage, warum diese Zahl projektiv erscheint. In diesem Artikel wird eine strengere und intrinsischere Route vorgeschlagen: Einseitige Orbits werden nicht primär über Rang-\(1\)-Matrizen modulo \(p\), sondern über einseitige Ideale reduzierter Norm \(p\) beschrieben. Dadurch wird die projektive Verfeinerung als Ideal- und Modulklassifikation formuliert:
+		\[
+		\OH^\times\backslash X_p
+		\;\cong\;
+		\{\text{Rechtsideale von reduzierter Norm }p\}
+		\;\cong\;
+		\mathbf P^1(\mathbb F_p),
+		\]
+		\[
+		X_p/\OH^\times
+		\;\cong\;
+		\{\text{Linksideale von reduzierter Norm }p\}
+		\;\cong\;
+		\mathbf P^1(\mathbb F_p),
+		\]
+		wobei die letzte Identifikation lokal nach Wahl einer Split-Struktur erfolgt. Diese Darstellung entschärft die Wahlabhängigkeit früherer Matrixformulierungen und macht zugleich sichtbar, dass die Doppelorbitfrage
+		\[
+		\OH^\times\backslash X_p/\OH^\times
+		\]
+		natürlich als Problem der Klassifikation kompatibler Paare einseitiger Ideale zu verstehen ist.
+		
+		Der Artikel ist bewusst zweigeteilt: Der formale Zählkern ist vollständig; der projektive Teil wird als strukturell präzisierte, deutlich stärkere Weiterentwicklung formuliert.
+	\end{abstract}
+	
+	\tableofcontents
+	
+	\section{Einleitung}
+	
+	Die Hurwitz-Ordnung \(\OH\) in der Hamiltonschen Quaternionenalgebra gehört zu den klassischen Objekten der Quaternionenarithmetik. Für eine Primzahl \(p\) ist die Menge
+	\[
+	X_p=\{x\in \OH:\Nrd(x)=p\}
+	\]
+	die Normschale von Primnorm \(p\). Auf dieser Menge wirkt die Einheitengruppe \(\OH^\times\) sowohl von links als auch von rechts.
+	
+	Der elementare Kern der Theorie ist überraschend schlicht:
+	\[
+	|X_p|=24(p+1),\qquad |\OH^\times\backslash X_p|=|X_p/\OH^\times|=p+1.
+	\]
+	Der erste Impuls ist, die Zahl \(p+1\) sofort als projektive Signatur zu lesen, da
+	\[
+	|\mathbf P^1(\mathbb F_p)|=p+1.
+	\]
+	Tatsächlich liegt hier eine projektive Struktur nahe. Aber genau an dieser Stelle beginnt ein methodisches Problem. Wenn man die projektive Geradenstruktur direkt aus einer gewählten lokalen Split-Isomorphie
+	\[
+	\OH\otimes \Z_p \cong M_2(\Z_p)
+	\]
+	und aus Rang-\(1\)-Matrizen modulo \(p\) ableitet, dann bleibt zunächst unklar:
+	
+	\begin{enumerate}[label=(\roman*)]
+		\item in welchem Sinn die Konstruktion intrinsisch ist,
+		\item wie die Abhängigkeit von der Wahl der Split-Struktur zu kontrollieren ist,
+		\item worin die eigentliche arithmetische Natur der einseitigen Orbits besteht,
+		\item und wie die Doppelorbits zu verstehen sind.
+	\end{enumerate}
+	
+	Die Leitidee dieses Artikels lautet daher:
+	
+	\begin{quote}
+		\emph{Die projektive Struktur sollte nicht primär über Matrizen, sondern über einseitige Ideale formuliert werden.}
+	\end{quote}
+	
+	Der Vorteil dieser Umstellung ist dreifach. Erstens werden Links- und Rechtsorbits intrinsisch beschrieben. Zweitens erscheint die projektive Geometrie nicht mehr nur als numerische Vermutung, sondern als lokale Klassifikation maximaler einseitiger Ideale über \(p\). Drittens wird die Doppelorbitfrage automatisch in ein Problem über kompatible Paare von Links- und Rechtsidealen übersetzt.
+	
+	Der Artikel ist dementsprechend gegliedert. In den ersten Abschnitten wird der bewiesene Zählkern rekapituliert. Danach wird die projektive Verfeinerung in einer strengeren Form entwickelt: nicht als informelle Matrixheuristik, sondern als strukturtheoretischer Vorschlag über einseitige Ideale. Der letzte Teil formuliert präzise offene Probleme zur Doppelorbitstruktur.
+	
+	\section{Die Hurwitz-Ordnung und ihre Norm}
+	
+	\begin{definition}[Hamiltonsche Quaternionenalgebra]
+		Die Hamiltonsche Quaternionenalgebra über \(\Q\) ist
+		\[
+		\HH=\Q\oplus \Q i\oplus \Q j\oplus \Q k
+		\]
+		mit Relationen
+		\[
+		i^2=j^2=k^2=ijk=-1.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Hurwitz-Ordnung]
+		Die Hurwitz-Ordnung \(\OH\subset \HH\) besteht aus allen Quaternionen
+		\[
+		x=a+bi+cj+dk
+		\]
+		mit entweder \(a,b,c,d\in \Z\) oder \(a,b,c,d\in \Z+\frac12\).
+	\end{definition}
+	
+	\begin{definition}[Reduzierte Norm]
+		Für
+		\[
+		x=a+bi+cj+dk\in \HH
+		\]
+		definieren wir die reduzierte Norm durch
+		\[
+		\Nrd(x)=a^2+b^2+c^2+d^2.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Normschale]
+		Für eine Primzahl \(p\) sei
+		\[
+		X_p:=\{x\in \OH:\Nrd(x)=p\}.
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		Ein Element von \(\OH\) ist entweder ganzzahlig oder halbzahlig-hurwitzsch. Daher zerfällt \(X_p\) disjunkt in einen ganzzahligen und einen halbzahlig-hurwitzschen Anteil.
+	\end{bemerkung}
+	
+	\section{Die Einheitengruppe}
+	
+	\begin{definition}[Hurwitz-Einheiten]
+		Die Einheitengruppe der Hurwitz-Ordnung ist
+		\[
+		\OH^\times=\{u\in \OH:\Nrd(u)=1\}.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Es gilt
+		\[
+		|\OH^\times|=24.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Die \(24\) Einheiten bestehen aus den \(8\) ganzzahligen Elementen
+		\[
+		\{\pm1,\pm i,\pm j,\pm k\}
+		\]
+		sowie den \(16\) halbzahlig-hurwitzschen Einheiten
+		\[
+		\frac{\pm1\pm i\pm j\pm k}{2}.
+		\]
+		Alle diese Elemente haben Norm \(1\); weitere Norm-\(1\)-Elemente gibt es in \(\OH\) nicht.
+	\end{proof}
+	
+	\section{Zerlegung der Normschale}
+	
+	Im Folgenden sei \(p\) stets eine ungerade Primzahl.
+	
+	\begin{definition}
+		Wir setzen
+		\[
+		X_p^{\mathrm{int}}
+		:=
+		\{x=a+bi+cj+dk\in X_p: a,b,c,d\in \Z\},
+		\]
+		\[
+		X_p^{\mathrm{half}}
+		:=
+		\{x=a+bi+cj+dk\in X_p: a,b,c,d\in \Z+\tfrac12\}.
+		\]
+		Dann gilt disjunkt
+		\[
+		X_p=X_p^{\mathrm{int}}\sqcup X_p^{\mathrm{half}}.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Für jede ungerade Primzahl \(p\) gilt
+		\[
+		|X_p^{\mathrm{int}}|=8(p+1).
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Die Menge \(X_p^{\mathrm{int}}\) besteht genau aus den ganzzahligen Lösungen der Gleichung
+		\[
+		a^2+b^2+c^2+d^2=p.
+		\]
+		Nach Jacobis Vier-Quadrate-Formel ist die Anzahl dieser Darstellungen
+		\[
+		r_4(p)=8\sum_{d\mid p,\;4\nmid d} d.
+		\]
+		Da \(p\) ungerade prim ist, folgt
+		\[
+		r_4(p)=8(1+p)=8(p+1).
+		\]
+	\end{proof}
+	
+	\begin{lemma}
+		Für jede ungerade Primzahl \(p\) gilt
+		\[
+		|X_p^{\mathrm{half}}|=16(p+1).
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Ein Element
+		\[
+		x=a+bi+cj+dk\in X_p^{\mathrm{half}}
+		\]
+		hat die Form
+		\[
+		a=\frac{\alpha}{2},\quad b=\frac{\beta}{2},\quad c=\frac{\gamma}{2},\quad d=\frac{\delta}{2}
+		\]
+		mit ungeraden ganzen Zahlen \(\alpha,\beta,\gamma,\delta\). Die Normbedingung lautet dann
+		\[
+		\frac{\alpha^2+\beta^2+\gamma^2+\delta^2}{4}=p,
+		\]
+		also
+		\[
+		\alpha^2+\beta^2+\gamma^2+\delta^2=4p.
+		\]
+		Somit entspricht \(X_p^{\mathrm{half}}\) genau den Darstellungen von \(4p\) als Summe von vier Quadraten, in denen alle vier Summanden ungerade sind.
+		
+		Nach Jacobis Formel gilt
+		\[
+		r_4(4p)=8\sum_{d\mid 4p,\;4\nmid d} d = 24(p+1).
+		\]
+		Diejenigen Darstellungen, in denen alle vier Zahlen gerade sind, entsprechen genau den Darstellungen von \(p\) als Summe von vier Quadraten, also \(r_4(p)=8(p+1)\). Da bei \(4p\equiv 4 \pmod 8\) nur die Paritätsmuster
+		\[
+		(\text{gerade, gerade, gerade, gerade})\quad\text{oder}\quad(\text{ungerade, ungerade, ungerade, ungerade})
+		\]
+		auftreten können, folgt
+		\[
+		|X_p^{\mathrm{half}}|
+		=
+		r_4(4p)-r_4(p)
+		=
+		24(p+1)-8(p+1)
+		=
+		16(p+1).
+		\]
+	\end{proof}
+	
+	\begin{korollar}
+		Für jede ungerade Primzahl \(p\) gilt
+		\[
+		|X_p|=24(p+1).
+		\]
+	\end{korollar}
+	
+	\begin{proof}
+		Unmittelbar aus
+		\[
+		X_p=X_p^{\mathrm{int}}\sqcup X_p^{\mathrm{half}}
+		\]
+		und den beiden vorigen Lemmas.
+	\end{proof}
+	
+	\section{Freie Links- und Rechtswirkung}
+	
+	\begin{proposition}
+		Die Linkswirkung von \(\OH^\times\) auf \(X_p\),
+		\[
+		u\cdot x:=ux,
+		\]
+		ist frei.
+	\end{proposition}
+	
+	\begin{proof}
+		Sei \(u\in \OH^\times\) und \(x\in X_p\) mit \(ux=x\). Da \(\Nrd(x)=p\neq 0\), ist \(x\) in \(\HH\) invertierbar. Multiplikation mit \(x^{-1}\) von rechts liefert
+		\[
+		u=1.
+		\]
+	\end{proof}
+	
+	\begin{proposition}
+		Die Rechtswirkung von \(\OH^\times\) auf \(X_p\),
+		\[
+		x\cdot u:=xu,
+		\]
+		ist frei.
+	\end{proposition}
+	
+	\begin{proof}
+		Analog. Aus \(xu=x\) folgt wegen der Invertierbarkeit von \(x\) unmittelbar \(u=1\).
+	\end{proof}
+	
+	\begin{satz}[Orbitformel]
+		Für jede ungerade Primzahl \(p\) gilt
+		\[
+		|\OH^\times\backslash X_p|
+		=
+		|X_p/\OH^\times|
+		=
+		p+1.
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Die Wirkungen sind frei und \(|\OH^\times|=24\). Daher hat jeder Links- und jeder Rechtsorbit genau \(24\) Elemente. Zusammen mit \(|X_p|=24(p+1)\) folgt
+		\[
+		|\OH^\times\backslash X_p|=\frac{|X_p|}{24}=p+1,
+		\qquad
+		|X_p/\OH^\times|=\frac{|X_p|}{24}=p+1.
+		\]
+	\end{proof}
+	
+	\section{Warum die Matrixheuristik allein nicht genügt}
+	
+	Die Gleichung
+	\[
+	|\OH^\times\backslash X_p|=|X_p/\OH^\times|=p+1
+	\]
+	legt eine projektive Struktur nahe. Eine unmittelbare lokale Route verläuft über die Split-Isomorphie
+	\[
+	\OH\otimes \Z_p \cong M_2(\Z_p)
+	\]
+	und die Beobachtung, dass ein Element von Norm \(p\) modulo \(p\) auf eine Rang-\(1\)-Matrix führt. Dann könnte man versuchen, einem Linksorbit die Kernlinie und einem Rechtsorbit die Bildlinie zuzuordnen.
+	
+	Diese Idee ist mathematisch vernünftig, aber in ihrer rohen Form noch nicht befriedigend. Es bleiben drei konzeptionelle Schwierigkeiten:
+	
+	\begin{enumerate}[label=(\arabic*)]
+		\item Die Konstruktion hängt von der Wahl einer Split-Identifikation ab.
+		\item Die eigentliche arithmetische Natur der einseitigen Orbitmengen bleibt verdeckt.
+		\item Die Doppelorbitfrage wird nicht intrinsisch beschrieben.
+	\end{enumerate}
+	
+	Die richtige Schlussfolgerung ist daher nicht, die Matrixsprache aufzugeben, sondern sie an die richtige Stelle zu rücken:
+	\begin{quote}
+		\emph{Matrizen sind lokale Modelle; die eigentlichen globalen Objekte sind einseitige Ideale.}
+	\end{quote}
+	
+	\section{Linksorbits als Rechtsideale}
+	
+	\subsection{Die grundlegende Idee}
+	
+	Jedem Element \(x\in X_p\) ordnen wir das von \(x\) erzeugte Rechtsideal
+	\[
+	I_x:=\OH x
+	\]
+	zu. Das ist die natürliche einseitige Struktur, die mit dem Linksorbit von \(x\) kompatibel ist.
+	
+	\begin{proposition}
+		Die Zuordnung
+		\[
+		[x]_L \longmapsto \OH x
+		\]
+		definiert eine wohldefinierte Abbildung
+		\[
+		\Phi_L:\OH^\times\backslash X_p \longrightarrow
+		\{\text{Rechtsideale in }\OH\text{ von reduzierter Norm }p\}.
+		\]
+	\end{proposition}
+	
+	\begin{proof}
+		Seien \(x,y\in X_p\) im selben Linksorbit, also \(y=ux\) mit \(u\in \OH^\times\). Dann gilt
+		\[
+		\OH y=\OH (ux)=\OH x,
+		\]
+		da Multiplikation mit einer Einheit links kein neues erzeugtes Rechtsideal liefert.
+	\end{proof}
+	
+	Die entscheidende Frage ist nun die Injektivität und Surjektivität dieser Abbildung. Genau hier zeigt sich, warum die Idealperspektive stärker ist als die bloße Matrixheuristik.
+	
+	\begin{proposition}[Injektivitätsprinzip]
+		Seien \(x,y\in X_p\) mit
+		\[
+		\OH x=\OH y.
+		\]
+		Dann liegen \(x\) und \(y\) im selben Linksorbit.
+	\end{proposition}
+	
+	\begin{proof}
+		Aus \(\OH x=\OH y\) folgt \(y=ax\) für ein \(a\in \OH\). Da \(\Nrd\) multiplikativ ist, gilt
+		\[
+		p=\Nrd(y)=\Nrd(a)\Nrd(x)=\Nrd(a)\,p.
+		\]
+		Also folgt \(\Nrd(a)=1\). Damit ist \(a\in \OH^\times\), also \(y=ax\) mit \(a\) einer Hurwitz-Einheit. Das heißt: \(x\) und \(y\) liegen im selben Linksorbit.
+	\end{proof}
+	
+	Die Surjektivität führt tiefer in die Idealtheorie maximaler Ordnungen. In vollständiger Strenge benötigt sie die Principalität der betreffenden einseitigen Ideale, also faktisch die Klassenzahl-\(1\)-Eigenschaft der Hurwitz-Ordnung.
+	
+	\begin{proposition}[Strukturprinzip]
+		Jedes Rechtsideal \(I\subset \OH\) reduzierter Norm \(p\) ist principal, also von der Form
+		\[
+		I=\OH x
+		\]
+		mit \(\Nrd(x)=p\).
+	\end{proposition}
+	
+	\begin{bemerkung}
+		Diese Aussage ist der globale Schritt, der aus der lokalen Idealgeometrie tatsächlich Orbitgeometrie macht. Sie ist für die Hurwitz-Ordnung sehr plausibel und entspricht ihrer außergewöhnlich rigiden arithmetischen Struktur. In einem vollständig ausformulierten Beweistext würde man sie durch einen Verweis auf die Klassenstruktur maximaler Ordnungen in \(\HH\) absichern.
+	\end{bemerkung}
+	
+	Unter dieser Standardvoraussetzung erhält man:
+	
+	\begin{satz}[Linksorbits als Rechtsideale]
+		Für jede ungerade Primzahl \(p\) gibt es eine natürliche Bijektion
+		\[
+		\OH^\times\backslash X_p
+		\;\cong\;
+		\{\text{Rechtsideale in }\OH\text{ von reduzierter Norm }p\}.
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Wohldefiniertheit und Injektivität folgen aus den vorigen Propositionen. Die Surjektivität folgt aus der Principalität der Rechtsideale reduzierter Norm \(p\).
+	\end{proof}
+	
+	\section{Rechtsorbits als Linksideale}
+	
+	Symmetrisch ordnen wir einem Element \(x\in X_p\) das von \(x\) erzeugte Linksideal
+	\[
+	J_x:=x\OH
+	\]
+	zu.
+	
+	\begin{satz}[Rechtsorbits als Linksideale]
+		Für jede ungerade Primzahl \(p\) gibt es eine natürliche Bijektion
+		\[
+		X_p/\OH^\times
+		\;\cong\;
+		\{\text{Linksideale in }\OH\text{ von reduzierter Norm }p\}.
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Vollständig analog zum Linksfall. Rechte Multiplikation mit Einheiten verändert das erzeugte Linksideal nicht; Gleichheit der Linksideale impliziert wegen der Normmultiplikativität Rechtsorbitäquivalenz; die Surjektivität folgt wieder aus der Principalität.
+	\end{proof}
+	
+	Damit ist der eigentliche arithmetische Inhalt der Orbitformel präzisiert:
+	\[
+	p+1
+	\]
+	zählt nicht bloß abstrakte Orbits, sondern einseitige Ideale einer ganz bestimmten reduzierten Norm.
+	
+	\section{Lokale Split-Struktur und projektive Geometrie}
+	
+	Nun kommt die Matrixsprache zurück, aber an der richtigen Stelle: nicht als Definition der Orbitmengen, sondern als lokales Modell ihrer bereits intrinsisch beschriebenen Idealstruktur.
+	
+	\begin{satz}[Lokale Split-Struktur]
+		Für jede ungerade Primzahl \(p\) gilt
+		\[
+		\OH\otimes \Z_p \cong M_2(\Z_p).
+		\]
+		Insbesondere folgt modulo \(p\):
+		\[
+		\OH/p\OH \cong M_2(\Fp).
+		\]
+	\end{satz}
+	
+	\begin{bemerkung}
+		Dies ist der Standardfall einer bei \(p\) gesplitteten Quaternionenalgebra. Der entscheidende Punkt ist: Für \(p\neq 2\) verhält sich die Hurwitz-Ordnung lokal wie eine volle \(2\times2\)-Matrizenordnung.
+	\end{bemerkung}
+	
+	\subsection{Maximale einseitige Ideale und Linien}
+	
+	Im Ring \(M_2(\Fp)\) lassen sich einseitige Maximalideale durch Linien in \(\Fp^2\) beschreiben.
+	
+	\begin{lemma}
+		Die maximalen Rechtsideale in \(M_2(\Fp)\) stehen in natürlicher Korrespondenz zu den \(1\)-dimensionalen Unterräumen von \(\Fp^2\), also zu \(\mathbf P^1(\Fp)\).
+	\end{lemma}
+	
+	\begin{proof}[Idee]
+		Ein Rechtsideal in \(M_2(\Fp)\) kann über das Bild seiner Matrizen auf \(\Fp^2\) beschrieben werden. Maximalität entspricht dabei der Wahl eines \(1\)-dimensionalen Quotienten beziehungsweise dual dazu einer Linie. Äquivalent kann man Rang-\(1\)-Matrizen modulo Skalierung betrachten. In beiden Formulierungen entsteht genau \(\mathbf P^1(\Fp)\).
+	\end{proof}
+	
+	\begin{lemma}
+		Die maximalen Linksideale in \(M_2(\Fp)\) stehen ebenfalls in natürlicher Korrespondenz zu \(\mathbf P^1(\Fp)\).
+	\end{lemma}
+	
+	\begin{proof}
+		Dual zum Rechtsfall.
+	\end{proof}
+	
+	Daraus folgt:
+	
+	\begin{satz}[Projektive Verfeinerung der einseitigen Orbits]
+		Nach Wahl einer lokalen Split-Identifikation
+		\[
+		\OH\otimes \Z_p \cong M_2(\Z_p)
+		\]
+		erhält man natürliche Bijektionen
+		\[
+		\OH^\times\backslash X_p \cong \mathbf P^1(\Fp),
+		\qquad
+		X_p/\OH^\times \cong \mathbf P^1(\Fp).
+		\]
+	\end{satz}
+	
+	\begin{proof}[Struktureller Beweis]
+		Die Linksorbitmenge ist intrinsisch mit der Menge der Rechtsideale reduzierter Norm \(p\) identifiziert. Lokal entsprechen diese den maximalen Rechtsidealen über \(p\), und diese werden durch Linien in \(\Fp^2\) klassifiziert. Dasselbe gilt rechts/links symmetrisch.
+	\end{proof}
+	
+	\begin{bemerkung}[Zur Frage der Kanonizität]
+		Die Menge der Linksorbits ist intrinsisch. Die Darstellung dieser Menge als \(\mathbf P^1(\Fp)\) benötigt jedoch eine Wahl der lokalen Split-Struktur. Deshalb sollte man präzise sagen:
+		\begin{quote}
+			\emph{Die Orbitmengen sind intrinsisch definierte einseitige Idealräume; nach Wahl eines lokalen Splittings erscheinen sie als projektive Gerade über \(\Fp\).}
+		\end{quote}
+		Dies ist begrifflich stärker und sauberer als die Aussage, die Identifikation mit \(\mathbf P^1(\Fp)\) sei absolut kanonisch.
+	\end{bemerkung}
+	
+	\section{Die Rolle von Rang-\(1\)-Matrizen}
+	
+	Die frühere Matrixheuristik war nicht falsch; sie war nur zu früh angesetzt. Hat man die Idealinterpretation einmal gewonnen, so erscheint die Rang-\(1\)-Struktur als lokaler Schatten derselben.
+	
+	Ist
+	\[
+	x\in X_p,
+	\]
+	und wählt man eine lokale Split-Isomorphie
+	\[
+	\phi_p:\OH\otimes \Z_p \xrightarrow{\sim} M_2(\Z_p),
+	\]
+	so hat die Reduktion von \(\phi_p(x)\) modulo \(p\) Determinante \(0\), aber ist nicht die Nullmatrix. Also ist sie von Rang \(1\). Eine nichtverschwindende Rang-\(1\)-Matrix wird bis auf Skalar vollständig bestimmt durch
+	\[
+	\Ker(A)\in \mathbf P^1(\Fp),\qquad \Image(A)\in \mathbf P^1(\Fp).
+	\]
+	Diese beiden projektiven Daten sind exakt die lineare Algebra hinter den zugehörigen Links- und Rechtsidealen.
+	
+	Die Matrixsprache ist somit nicht die Definition, sondern die lineare Normalform der intrinsischen Idealstruktur.
+	
+	\section{Doppelorbits als Paare einseitiger Ideale}
+	
+	Die wirkliche Feinstruktur der Normschale liegt nicht auf der Ebene einseitiger Orbits, sondern bei den Doppelorbits
+	\[
+	\OH^\times\backslash X_p/\OH^\times.
+	\]
+	
+	Die Idealperspektive liefert hierfür sofort die richtige Strukturintuition. Jedes \(x\in X_p\) bestimmt gleichzeitig
+	
+	\[
+	I_x=\OH x \qquad\text{(Rechtsideal)},
+	\]
+	\[
+	J_x=x\OH \qquad\text{(Linksideal)}.
+	\]
+	
+	Ein Doppelorbit sollte also nicht durch eine einzige projektive Linie, sondern durch ein \emph{kompatibles Paar} einseitiger Ideale beschrieben werden.
+	
+	\begin{problem}
+		Bestimme die Doppelorbitmenge
+		\[
+		\OH^\times\backslash X_p/\OH^\times
+		\]
+		in intrinsischer Form.
+	\end{problem}
+	
+	\begin{konjektur}[Doppelorbits als kompatible Idealpaare]
+		Die Doppelorbitstruktur von \(X_p\) wird durch die kompatiblen Paare
+		\[
+		(I_x,J_x)
+		\]
+		aus einem Rechtsideal \(I_x\) und einem Linksideal \(J_x\) reduzierter Norm \(p\) beschrieben. Nach Wahl einer lokalen Split-Struktur entspricht dies einer Quotientenstruktur auf
+		\[
+		\mathbf P^1(\Fp)\times \mathbf P^1(\Fp),
+		\]
+		die von der relativen Lage der zugehörigen Kern- und Bildlinien bestimmt wird.
+	\end{konjektur}
+	
+	\begin{bemerkung}
+		Auf der Ebene der linearen Algebra entspricht ein Element \(x\) lokal einer Rang-\(1\)-Matrix modulo \(p\). Eine solche Matrix ist bis auf Skalar durch
+		\[
+		(\Ker A,\Image A)\in \mathbf P^1(\Fp)\times \mathbf P^1(\Fp)
+		\]
+		bestimmt. Die Doppelorbitfrage lautet daher in lokaler Gestalt:
+		\begin{quote}
+			\emph{Welche zusätzliche Quotientenstruktur erzwingt das Bild der Hurwitz-Einheiten modulo \(p\) auf der Menge solcher Paare?}
+		\end{quote}
+	\end{bemerkung}
+	
+	\subsection{Eine minimale Arbeitsvermutung}
+	
+	Es ist denkbar, dass die Doppelorbitstruktur in erster Näherung nur von der relativen Lage zweier Projektivpunkte abhängt, also davon, ob
+	\[
+	\Ker(A)=\Image(A)
+	\qquad\text{oder}\qquad
+	\Ker(A)\neq \Image(A)
+	\]
+	gilt. Das wäre die gröbste mögliche Zweiteilung. Ob dies bereits die vollständige Klassifikation ist oder nur die erste Invariante, bleibt offen.
+	
+	\begin{problem}
+		Prüfe für kleine Primzahlen \(p\), ob die Doppelorbitmenge bereits durch die Diagonal-/Nichtdiagonal-Zerlegung von
+		\[
+		\mathbf P^1(\Fp)\times \mathbf P^1(\Fp)
+		\]
+		bestimmt wird, oder ob feinere Invarianten auftreten.
+	\end{problem}
+	
+	\section{Ein alternatives Bild: Nachbarn von \(p\OH\)}
+	
+	Es gibt eine zweite konzeptionell elegante Formulierung derselben projektiven Struktur. Man kann die Norm-\(p\)-Objekte auch als \emph{Nachbarn} von \(p\OH\) auffassen.
+	
+	Lokal in \(M_2(\Z_p)\) entsprechen maximale einseitige Ideale über \(p\) gerade den Index-\(p\)-Unterobjekten. Deren Klassifikation ist projektiv und führt wieder auf \(\mathbf P^1(\Fp)\). Global wird daraus genau dann eine Klassifikation durch Elemente von \(X_p\), wenn die betreffende Idealklasse principal ist. So trennt sich das Problem in zwei Ebenen:
+	
+	\begin{enumerate}[label=(\alph*)]
+		\item \textbf{Lokal:} projektive Geometrie der Nachbarn über \(p\);
+		\item \textbf{Global:} Principalität in der Hurwitz-Ordnung.
+	\end{enumerate}
+	
+	Diese Zweiteilung ist konzeptionell sehr nützlich, weil sie lokale Struktur und globale Arithmetik sauber auseinanderhält.
+	
+	\section{Zusammenfassung der mathematischen Architektur}
+	
+	Die hier vorgeschlagene Struktur lässt sich in einer Kette zusammenfassen:
+	\[
+	x\in X_p
+	\;\Longrightarrow\;
+	\text{einseitige Orbits}
+	\;\Longleftrightarrow\;
+	\text{einseitige Ideale von Norm }p
+	\;\Longrightarrow\;
+	\text{lokale Maximalideale über }p
+	\;\Longleftrightarrow\;
+	\mathbf P^1(\Fp).
+	\]
+	
+	Die wichtige Pointe ist:
+	\begin{quote}
+		\emph{Projektivität entsteht nicht primär aus einer Zählformel, sondern aus der lokalen Klassifikation einseitiger Ideale.}
+	\end{quote}
+	
+	Damit verschiebt sich die mathematische Statik der Theorie:
+	
+	\begin{itemize}
+		\item weg von einer bloßen Rang-\(1\)-Heuristik,
+		\item hin zu einer intrinsischen Idealtheorie,
+		\item und weiter zu einer präziseren Doppelorbitfrage.
+	\end{itemize}
+	
+	\section{Ausblick}
+	
+	Es bieten sich mehrere nächste Schritte an.
+	
+	\begin{enumerate}[label=\arabic*.]
+		\item \textbf{Vollständige Ausarbeitung der Principalität.}  
+		Die in diesem Artikel nur strukturtheoretisch verwendete Principalität der einseitigen Ideale reduzierter Norm \(p\) sollte vollständig mit Literaturbasis oder direktem Beweis ausgeführt werden.
+		
+		\item \textbf{Explizite lokale Modellierung.}  
+		Für kleine Primzahlen \(p=3,5,7\) sollte die Identifikation der Orbitmengen mit \(\mathbf P^1(\Fp)\) konkret ausgerechnet werden.
+		
+		\item \textbf{Doppelorbitklassifikation.}  
+		Die Menge
+		\[
+		\OH^\times\backslash X_p/\OH^\times
+		\]
+		sollte explizit bestimmt werden, zunächst rechnerisch, dann konzeptionell.
+		
+		\item \textbf{Beziehung zur Metakommutation.}  
+		Es ist naheliegend, die hier auftretenden projektiven Strukturen mit den bekannten Permutationswirkungen auf Hurwitz-Primen fester Norm zu vergleichen.
+		
+		\item \textbf{Verallgemeinerung.}  
+		Schließlich stellt sich die Frage, in welchem Umfang dieselbe Architektur für andere maximale Quaternionenordnungen gilt.
+	\end{enumerate}
+	
+	\section{Schluss}
+	
+	Der elementare Satz
+	\[
+	|X_p|=24(p+1),
+	\qquad
+	|\OH^\times\backslash X_p|=|X_p/\OH^\times|=p+1
+	\]
+	ist nur der erste Schritt. Sein eigentlicher geometrischer Gehalt besteht darin, dass die einseitigen Orbitmengen nicht zufällig \(p+1\) Elemente haben, sondern auf natürliche Weise in die projektive Geometrie über \(\Fp\) hineinführen.
+	
+	Die begrifflich stärkere Form dieses Sachverhalts lautet jedoch nicht:
+	\begin{quote}
+		\emph{Norm-\(p\)-Elemente liefern irgendwie Linien modulo \(p\).}
+	\end{quote}
+	Sondern:
+	\begin{quote}
+		\emph{Einseitige Orbits sind intrinsisch einseitige Ideale von Norm \(p\); lokal erscheinen diese als projektive Linien.}
+	\end{quote}
+	
+	Gerade diese Umstellung eröffnet die Doppelorbitfrage in ihrer richtigen Form. Die Feinstruktur der Hurwitz-Normschalen sollte nicht auf der Ebene bloßer Kardinalitäten enden, sondern in einer Theorie kompatibler einseitiger Ideale und ihrer lokalen projektiven Kopplung münden.
+	\section{Hurwitzdruck statt Hubble-Spannung}
+	
+	\subsection{Begriffliche Vorbemerkung}
+	
+	Die in diesem Modell auftretende Diskrepanz zwischen einem topologisch bestimmten und einem elektrodynamisch bestimmten Mittelwertoperator wird im Folgenden \emph{nicht} als Hubble-Spannung bezeichnet, sondern als \emph{Hurwitzdruck}.
+	
+	Diese Umbenennung ist bewusst gewählt. Der Hurwitzdruck ist zunächst eine \emph{rein modellinterne Größe}, die aus der Geometrie der Hurwitz-Normschalen und den Kopplungen der Primtupel hervorgeht. Die begriffliche Ähnlichkeit zur in der Kosmologie diskutierten Hubble-Spannung ist heuristisch und analogisch; sie behauptet weder numerische Identität noch unmittelbare physikalische Gleichsetzung.
+	
+	\begin{quote}
+		\emph{Der Hurwitzdruck misst die interne Diskrepanz zweier natürlicher Mittelwertregime im Hurwitzraum: eines topologischen und eines elektrodynamischen.}
+	\end{quote}
+	
+	\subsection{Hurwitz-Schalen und Primfenster}
+	
+	Seien
+	\[
+	p_1<p_2<\dots<p_N
+	\]
+	die ersten \(N\) Primzahlen. Zu jeder Primzahl \(p_k\) gehört die Hurwitz-Normschale
+	\[
+	X_{p_k}:=\{x\in O_H:\operatorname{Nrd}(x)=p_k\},
+	\]
+	deren Kardinalität für ungerade Primzahlen durch
+	\[
+	|X_{p_k}|=24(p_k+1)
+	\]
+	gegeben ist.
+	
+	Wir interpretieren diese Kardinalität als \emph{topologisches Schalengewicht}
+	\[
+	w_k:=24(p_k+1).
+	\]
+	
+	Als logarithmischen Schalradius definieren wir
+	\[
+	r_k:=\log p_k,
+	\]
+	und als diskreten Radialsprung
+	\[
+	\Delta r_k:=r_{k+1}-r_k=\log\!\frac{p_{k+1}}{p_k}.
+	\]
+	
+	Das endliche Primfenster
+	\[
+	\mathcal{P}_N:=\{p_1,\dots,p_N\}
+	\]
+	heißt das \emph{Hurwitzfenster der Ordnung \(N\)}.
+	
+	\subsection{Topologischer Mittelwertoperator}
+	
+	Der rein topologische Mittelwertoperator des Hurwitzfensters ist definiert durch
+	\[
+	\mathcal{E}_{\mathrm{top}}^{(N)}
+	:=
+	\frac{\sum_{k=1}^{N-1} w_k\,\Delta r_k}
+	{\sum_{k=1}^{N-1} w_k}.
+	\]
+	
+	Er misst die mittlere logarithmische Schalenexpansion, gewichtet mit den Hurwitz-Kardinalitäten.
+	
+	\subsection{Elektrodynamischer Mittelwertoperator}
+	
+	Die elektrodynamische Seite des Modells entsteht aus den Primtupel-Kopplungen. Sei
+	\[
+	g_k:=p_{k+1}-p_k
+	\]
+	die \(k\)-te Primlücke. Daraus definieren wir ein elementares Kopplungsgewicht
+	\[
+	\eta_k:=1+\frac{1}{g_k}.
+	\]
+	
+	Dann ist der elektrodynamische Mittelwertoperator gegeben durch
+	\[
+	\mathcal{E}_{\mathrm{edyn}}^{(N)}
+	:=
+	\frac{\sum_{k=1}^{N-1} \eta_k\,\Delta r_k}
+	{\sum_{k=1}^{N-1} \eta_k}.
+	\]
+	
+	\begin{bemerkung}
+		Die genaue Form der Kopplungsgewichte \(\eta_k\) kann in späteren Ausbaustufen verfeinert werden, etwa durch Holonomie-, Landau- oder Flusskorrekturen. Für die Basistheorie genügt jedoch die obige Definition.
+	\end{bemerkung}
+	
+	\subsection{Definition des Hurwitzdrucks}
+	
+	\begin{definition}[Hurwitzdruck]
+		Der \emph{Hurwitzdruck} des Primfensters \(\mathcal{P}_N\) ist die Differenz
+		\[
+		D_H^{(N)}
+		:=
+		\mathcal{E}_{\mathrm{edyn}}^{(N)}
+		-
+		\mathcal{E}_{\mathrm{top}}^{(N)}.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Relativer Hurwitzdruck]
+		Der \emph{relative Hurwitzdruck} ist definiert durch
+		\[
+		\delta_H^{(N)}
+		:=
+		\frac{2\bigl(\mathcal{E}_{\mathrm{edyn}}^{(N)}-\mathcal{E}_{\mathrm{top}}^{(N)}\bigr)}
+		{\mathcal{E}_{\mathrm{edyn}}^{(N)}+\mathcal{E}_{\mathrm{top}}^{(N)}}.
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		\(D_H^{(N)}\) ist eine absolute interne Druckgröße des Modells, während \(\delta_H^{(N)}\) ihre dimensionslose normierte Version ist. Beide Größen sind zunächst vollständig arithmetisch-geometrisch definiert.
+	\end{bemerkung}
+	
+	\subsection{Stabilisierung und minimale Fenstergröße}
+	
+	Da kleine Werte von \(N\) lediglich ein lokales Anfangsregime des Hurwitzraums erfassen, wird der Hurwitzdruck nicht für ein festes \(N\) dogmatisch interpretiert, sondern über wachsende Primfenster verfolgt.
+	
+	\begin{definition}[Stabilitätsindex]
+		Sei \(\varepsilon>0\) vorgegeben. Ein Index \(N_\ast\) heißt \emph{\(\varepsilon\)-Stabilitätsindex} des Hurwitzdrucks, wenn für alle \(m\) in einem nachfolgenden Kontrollbereich
+		\[
+		|D_H^{(m+1)}-D_H^{(m)}|<\varepsilon
+		\]
+		gilt.
+	\end{definition}
+	
+	\begin{definition}[Plateauregime]
+		Wir sagen, der Hurwitzdruck tritt bei \(N_\ast\) in ein \emph{Plateauregime} ein, wenn es Konstanten \(a<b\) gibt, sodass für alle \(m\ge N_\ast\) in einem hinreichend langen Fenster
+		\[
+		\delta_H^{(m)}\in[a,b]
+		\]
+		gilt und die Bandbreite \(b-a\) klein ist.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Das Ziel ist nicht, einen gewünschten Wert durch Wahl von \(N\) zu erzwingen, sondern die natürliche Entwicklung
+		\[
+		D_H^{(20)},D_H^{(50)},D_H^{(100)},D_H^{(200)},\dots
+		\]
+		zu untersuchen, bis ein stabiles, oszillatorisches oder resonantes Regime sichtbar wird.
+	\end{bemerkung}
+	
+	\subsection{Optionale zweite Schicht: zeta-spektroskopische Korrekturen}
+	
+	Für die Basistheorie ist der Hurwitzdruck vollständig durch Primzahlen, Hurwitzschalen und Primlücken definiert. Riemann-Nullstellen sind hierfür \emph{nicht notwendig}.
+	
+	Sie treten erst in einer zweiten Ausbaustufe als spektrale Feinstrukturkorrekturen auf.
+	
+	\begin{definition}[Zeta-korrigierter Hurwitzdruck]
+		Sei
+		\[
+		\frac12+i\gamma_1,\frac12+i\gamma_2,\dots
+		\]
+		die Folge der nichttrivialen Riemann-Nullstellen auf der kritischen Geraden. Dann definieren wir formal
+		\[
+		D_H^{(N)}
+		=
+		D_{H,0}^{(N)}+D_{H,\zeta}^{(N)},
+		\]
+		wobei
+		\[
+		D_{H,0}^{(N)}
+		:=
+		\mathcal{E}_{\mathrm{edyn}}^{(N)}-\mathcal{E}_{\mathrm{top}}^{(N)}
+		\]
+		der Basishurwitzdruck und
+		\[
+		D_{H,\zeta}^{(N)}
+		:=
+		\sum_{m\le M} a_m \cos\!\bigl(\gamma_m \log p_N+\varphi_m\bigr)
+		\]
+		eine spektrale Modulationskorrektur ist.
+	\end{definition}
+	
+	Hierbei sind \(a_m\) Amplituden und \(\varphi_m\) Phasenparameter. Die Zahl \(M\) bestimmt, wie viele Nullstellen in die Feinstruktur eingehen.
+	
+	\begin{bemerkung}
+		Die Riemann-Nullstellen erzeugen in dieser Lesart nicht den Hurwitzdruck selbst, sondern modulieren seine Feinstruktur. Damit bleibt die Architektur des Modells klar geschichtet:
+		\[
+		\text{Primzahlen/Hurwitzschalen}
+		\;\Longrightarrow\;
+		\text{Basishurwitzdruck},
+		\]
+		\[
+		\text{Riemann-Nullstellen}
+		\;\Longrightarrow\;
+		\text{spektrale Korrektur}.
+		\]
+	\end{bemerkung}
+	
+	\subsection{Ausgezeichnete Testindizes}
+	
+	Zahlen wie \(33\) oder \(137\) werden im vorliegenden Modell nicht a priori axiomatisch ausgezeichnet, sondern zunächst als \emph{Testindizes} betrachtet.
+	
+	\begin{definition}[Testindex]
+		Ein Index \(N_{\mathrm{test}}\) heißt Testindex, wenn das Verhalten von
+		\[
+		D_H^{(N)},\qquad \delta_H^{(N)}
+		\]
+		in einer Umgebung von \(N_{\mathrm{test}}\) gesondert untersucht wird, etwa auf Übergänge, Resonanzen, Plateaubildung oder Oszillationswechsel.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Insbesondere können \(N=33\) und \(N=137\) als natürliche Kandidaten für solche Testindizes betrachtet werden, ohne dass ihre besondere Rolle bereits vorausgesetzt wird.
+	\end{bemerkung}
+	
+	\subsection{Zusammenfassung}
+	
+	Der Hurwitzdruck ist die modellinterne Druckgröße, die aus der Differenz eines topologischen und eines elektrodynamischen Mittelwertoperators auf endlichen Hurwitzfenstern entsteht. Seine Basistheorie benötigt nur Primzahlen, Hurwitz-Schalengewichte und Primlücken. Erst in einer zweiten Stufe werden Riemann-Nullstellen als spektrale Feinstrukturkorrekturen hinzugenommen.
+	
+	Die begriffliche Architektur lautet damit:
+	\[
+	\text{Hurwitzschalen}
+	\;\Longrightarrow\;
+	\mathcal{E}_{\mathrm{top}}^{(N)},
+	\qquad
+	\text{Primtupel}
+	\;\Longrightarrow\;
+	\mathcal{E}_{\mathrm{edyn}}^{(N)},
+	\]
+	\[
+	\mathcal{E}_{\mathrm{edyn}}^{(N)}-\mathcal{E}_{\mathrm{top}}^{(N)}
+	\;\Longrightarrow\;
+	D_H^{(N)},
+	\]
+	\[
+	D_H^{(N)} + \text{zeta-Modulation}
+	\;\Longrightarrow\;
+	\text{verfeinerter Hurwitzdruck}.
+	\]
+	
+	\subsection{Numerische Pilotwerte des Hurwitzdrucks}
+	
+	Zur ersten Orientierung berechnen wir den Hurwitzdruck
+	\[
+	D_H^{(N)}
+	=
+	\mathcal{E}_{\mathrm{edyn}}^{(N)}-\mathcal{E}_{\mathrm{top}}^{(N)}
+	\]
+	für einige kleine und mittlere Primfenster.
+	
+	\[
+	\begin{array}{r|r|r|r|r|r}
+		N & p_N & \mathcal E_{\mathrm{top}}^{(N)} & \mathcal E_{\mathrm{edyn}}^{(N)} & D_H^{(N)} & \delta_H^{(N)} \\
+		\hline
+		20  & 71  & 0.113861803 & 0.194457857 & 0.080596054 & 0.522808402 \\
+		33  & 137 & 0.069742976 & 0.137509070 & 0.067766094 & 0.653948612 \\
+		50  & 229 & 0.044951508 & 0.100267769 & 0.055316261 & 0.761830832 \\
+		100 & 541 & 0.022427646 & 0.059226389 & 0.036798744 & 0.901333138 \\
+		137 & 773 & 0.015930039 & 0.046111988 & 0.030181949 & 0.972951752
+	\end{array}
+	\]
+	
+	Man erkennt zwei gegenläufige Tendenzen:
+	
+	\begin{enumerate}
+		\item Der absolute Hurwitzdruck \(D_H^{(N)}\) nimmt in diesem Basismodell mit wachsendem \(N\) ab.
+		\item Der relative Hurwitzdruck \(\delta_H^{(N)}\) nimmt dagegen deutlich zu.
+	\end{enumerate}
+	
+	Dies spricht dafür, dass die Basistheorie bereits eine stabile Asymmetrie zwischen topologischem und elektrodynamischem Mittelwertoperator erfasst, aber noch keine ausgeprägte Feinstruktur oder Plateauphysik zeigt. Gerade deshalb erscheint es plausibel, Riemann-Nullstellen erst in einer zweiten Ausbaustufe als spektrale Modulationen des Hurwitzdrucks einzuführen.
+	
+	\subsection{Erweiterte numerische Pilotwerte}
+	
+	Zur Untersuchung größerer Hurwitzfenster berechnen wir \(D_H^{(N)}\) und \(\delta_H^{(N)}\) für mehrere Werte von \(N\).
+	
+	\[
+	\begin{array}{r|r|r|r|r|r}
+		N & p_N & \mathcal E_{\mathrm{top}}^{(N)} & \mathcal E_{\mathrm{edyn}}^{(N)} & D_H^{(N)} & \delta_H^{(N)} \\
+		\hline
+		20   & 71    & 0.113861803 & 0.194457857 & 0.080596054 & 0.522808402 \\
+		33   & 137   & 0.069742976 & 0.137509070 & 0.067766094 & 0.653948612 \\
+		50   & 229   & 0.044951508 & 0.100267769 & 0.055316261 & 0.761830832 \\
+		100  & 541   & 0.022427646 & 0.059226389 & 0.036798744 & 0.901333138 \\
+		137  & 773   & 0.015930039 & 0.046111988 & 0.030181949 & 0.972951752 \\
+		200  & 1223  & 0.010949016 & 0.033944168 & 0.022995152 & 1.024445686 \\
+		500  & 3571  & 0.004324770 & 0.015711979 & 0.011387208 & 1.136627713 \\
+		1000 & 7919  & 0.002148399 & 0.008678532 & 0.006530133 & 1.206325232 \\
+		2000 & 17389 & 0.001067875 & 0.004752962 & 0.003685087 & 1.266190634 \\
+		5000 & 48611 & 0.000424574 & 0.002114201 & 0.001689627 & 1.331033664
+	\end{array}
+	\]
+	
+	Man erkennt, dass der absolute Hurwitzdruck \(D_H^{(N)}\) im Basismodell mit wachsendem \(N\) abnimmt, während der relative Hurwitzdruck \(\delta_H^{(N)}\) zunimmt. Dies spricht dafür, dass der Basishurwitzdruck keinen offensichtlichen Plateauwert besitzt, wohl aber eine stabile Asymmetrie zwischen topologischem und elektrodynamischem Mittelwertoperator.
+	
+	Zur Untersuchung möglicher renormierter Grenzwerte betrachten wir zusätzlich die skalierten Größen
+	\[
+	(\log p_N)D_H^{(N)},\qquad \sqrt{p_N}\,D_H^{(N)},\qquad \frac{p_N}{\log p_N}D_H^{(N)}.
+	\]
+	
+	\[
+	\begin{array}{r|r|r|r|r}
+		N & p_N & (\log p_N)D_H^{(N)} & \sqrt{p_N}\,D_H^{(N)} & \dfrac{p_N}{\log p_N}D_H^{(N)} \\
+		\hline
+		20   & 71    & 0.343555 & 0.679114 & 1.342423 \\
+		33   & 137   & 0.333408 & 0.793182 & 1.886990 \\
+		50   & 229   & 0.300573 & 0.837087 & 2.331261 \\
+		100  & 541   & 0.231590 & 0.855917 & 3.163323 \\
+		137  & 773   & 0.200718 & 0.839145 & 3.508221 \\
+		200  & 1223  & 0.163473 & 0.804170 & 3.955930 \\
+		500  & 3571  & 0.093153 & 0.680464 & 4.970673 \\
+		1000 & 7919  & 0.058623 & 0.581123 & 5.760648 \\
+		2000 & 17389 & 0.035979 & 0.485939 & 6.563112 \\
+		5000 & 48611 & 0.018233 & 0.372512 & 7.610637
+	\end{array}
+	\]
+	
+	Insbesondere zeigt sich, dass bereits das Basismodell einen glatten asymptotischen Untergrund liefert. Gerade deshalb erscheint es plausibel, Riemann-Nullstellen erst in einer zweiten Ausbaustufe als oszillatorische Feinstrukturmodulationen des Hurwitzdrucks einzuführen.
+	
+	\subsection{Zeta-spektroskopische Modulation des Hurwitzdrucks}
+	
+	Mit den vorliegenden Riemann-Nullstellen
+	\[
+	\frac12+i\gamma_1,\frac12+i\gamma_2,\dots
+	\]
+	führen wir eine normierte spektrale Modulationsgröße ein:
+	\[
+	S_M(p_N)
+	:=
+	\frac{\displaystyle\sum_{m=1}^{M}\frac{1}{m}\cos\!\bigl(\gamma_m\log p_N\bigr)}
+	{\displaystyle\sum_{m=1}^{M}\frac{1}{m}}.
+	\]
+	
+	Hierbei bezeichnet \(M\) die Zahl der einbezogenen Nullstellen. Der zeta-korrigierte Hurwitzdruck wird dann definiert durch
+	\[
+	D_H^{(N;M,\lambda)}
+	:=
+	D_{H,0}^{(N)}\bigl(1+\lambda S_M(p_N)\bigr),
+	\]
+	wobei \(D_{H,0}^{(N)}\) der Basishurwitzdruck und \(\lambda\) eine dimensionslose Kopplungsstärke ist.
+	
+	Diese Formulierung hat drei Vorteile:
+	
+	\begin{enumerate}
+		\item Die Basistheorie bleibt erhalten.
+		\item Die Riemann-Nullstellen treten als reine Feinstrukturmodulation auf.
+		\item Die Modulation ist normiert und bleibt kontrolliert.
+	\end{enumerate}
+	
+	Für die ersten \(33\) bzw. \(137\) Nullstellen ergeben sich exemplarisch die Werte
+	
+	\[
+	\begin{array}{r|r|r|r}
+		N & p_N & S_{33}(p_N) & S_{137}(p_N)\\
+		\hline
+		20   & 71    & -0.287568 & -0.251102 \\
+		33   & 137   & \phantom{-}0.003840 & -0.011441 \\
+		50   & 229   & -0.159019 & -0.130818 \\
+		100  & 541   & \phantom{-}0.358528 & \phantom{-}0.250751 \\
+		137  & 773   & \phantom{-}0.245041 & \phantom{-}0.176460 \\
+		200  & 1223  & \phantom{-}0.171988 & \phantom{-}0.091725 \\
+		500  & 3571  & -0.416133 & -0.298906 \\
+		1000 & 7919  & \phantom{-}0.219190 & \phantom{-}0.122414 \\
+		2000 & 17389 & \phantom{-}0.150827 & \phantom{-}0.080635 \\
+		5000 & 48611 & \phantom{-}0.001066 & -0.001860
+	\end{array}
+	\]
+	
+	Man erkennt, dass die Nullstellen im Modell keine neue Grundstruktur erzeugen, wohl aber eine echte oszillatorische Feinstruktur des Hurwitzdrucks. Dies legt nahe, den Basishurwitzdruck als glatten Untergrund und die Zeta-Seite als resonante Spektralmodulation zu interpretieren.
+	
+	\subsection{Renormierter Hurwitzdruck und Plateau-Suche}
+	
+	Da der unrenormierte Hurwitzdruck
+	\[
+	D_H^{(N)}
+	\]
+	im Basismodell mit wachsendem \(N\) gegen \(0\) abfällt, führen wir eine renormierte Druckgröße ein:
+	\[
+	\widehat D_H^{(N;\alpha)}:=p_N^\alpha D_H^{(N)}.
+	\]
+	
+	Ziel ist es, einen Exponenten \(\alpha\) so zu wählen, dass \(\widehat D_H^{(N;\alpha)}\) für große \(N\) möglichst plateauartig wird. Numerisch ergibt eine Log-Log-Anpassung des Basismodells einen kritischen Bereich
+	\[
+	\alpha_\ast \approx 0.70\text{ bis }0.73.
+	\]
+	Ein besonders stabiler Arbeitswert ist
+	\[
+	\alpha_\ast \approx 0.72.
+	\]
+	
+	Für diesen Wert erhält man:
+	
+	\[
+	\begin{array}{r|r|r|r}
+		N & p_N & D_H^{(N)} & \widehat D_H^{(N)}=p_N^{0.72}D_H^{(N)}\\
+		\hline
+		20   & 71    & 0.0805961 & 1.73468\\
+		33   & 137   & 0.0677661 & 2.34127\\
+		50   & 229   & 0.0553163 & 2.76652\\
+		100  & 541   & 0.0367987 & 3.41771\\
+		137  & 773   & 0.0301819 & 3.62440\\
+		200  & 1223  & 0.0229951 & 3.84221\\
+		500  & 3571  & 0.0113870 & 4.11547\\
+		1000 & 7919  & 0.0065303 & 4.18770\\
+		2000 & 17389 & 0.0036851 & 4.16335\\
+		5000 & 48611 & 0.0016896 & 4.00149
+	\end{array}
+	\]
+	
+	Man erkennt ein Übergangsregime für kleine und mittlere \(N\) und ein Quasi-Plateau ab etwa \(N\approx 1000\). Dies legt die asymptotische Heuristik
+	\[
+	D_H^{(N)}\sim C\,p_N^{-\alpha_\ast}
+	\]
+	mit
+	\[
+	\alpha_\ast\approx 0.72,
+	\qquad
+	C\approx 4.1
+	\]
+	nahe.
+	
+	Im Basismodell erscheint damit nicht der unrenormierte Hurwitzdruck selbst, sondern seine renormierte Form als die natürlichere asymptotische Observable.
+	
+	\subsection{Reduzierte Geschwindigkeiten \( \tilde c_t \) und \( \tilde c_e \)}
+	
+	Der renormierte Hurwitzdruck
+	\[
+	\widehat D_H^{(N)}=p_N^{\alpha_\ast}D_H^{(N)}
+	\]
+	legt nahe, nicht nur die Differenz, sondern die beiden zugrunde liegenden Sektoren selbst zu renormieren. Wir definieren daher die reduzierten Geschwindigkeiten
+	\[
+	\tilde c_t^{(N)} := p_N^{\alpha_\ast}\mathcal E_{\mathrm{top}}^{(N)},
+	\qquad
+	\tilde c_e^{(N)} := p_N^{\alpha_\ast}\mathcal E_{\mathrm{edyn}}^{(N)}.
+	\]
+	
+	Dann gilt identisch
+	\[
+	\widehat D_H^{(N)}=\tilde c_e^{(N)}-\tilde c_t^{(N)}.
+	\]
+	
+	Für den numerisch bevorzugten Exponenten
+	\[
+	\alpha_\ast \approx 0.72
+	\]
+	ergeben sich die Pilotwerte
+	
+	\[
+	\begin{array}{r|r|r|r}
+		N & p_N & \tilde c_t^{(N)} & \tilde c_e^{(N)}\\
+		\hline
+		20   & 71    & 2.45067 & 4.18535\\
+		33   & 137   & 2.40957 & 4.75084\\
+		50   & 229   & 2.24815 & 5.01468\\
+		100  & 541   & 2.08298 & 5.50069\\
+		137  & 773   & 1.91296 & 5.53736\\
+		200  & 1223  & 1.82946 & 5.67169\\
+		500  & 3571  & 1.56305 & 5.67858\\
+		1000 & 7919  & 1.37771 & 5.56530\\
+		2000 & 17389 & 1.20647 & 5.36985\\
+		5000 & 48611 & 1.00555 & 5.00720
+	\end{array}
+	\]
+	
+	Diese Zahlen legen die asymptotische Arbeitsvermutung nahe,
+	\[
+	\tilde c_t \approx 1,
+	\qquad
+	\tilde c_e \approx 5.
+	\]
+	Damit würde der renormierte Hurwitzdruck gegen
+	\[
+	\widehat D_H \approx 4
+	\]
+	tendieren.
+	
+	Die Größen \( \tilde c_t \) und \( \tilde c_e \) sind zunächst dimensionslose reduzierte Geschwindigkeiten des Modells. Eine spätere physikalische Kalibrierung könnte durch
+	\[
+	c_t = c_0\,\tilde c_t,
+	\qquad
+	c_e = c_0\,\tilde c_e
+	\]
+	erfolgen, wobei \(c_0\) eine noch zu bestimmende Basiseinheit ist.
+	
+	\subsection{Getrennte zeta-spektroskopische Modulation von \( \tilde c_t \) und \( \tilde c_e \)}
+	
+	Statt den renormierten Hurwitzdruck unmittelbar zu modulieren, ist es konzeptionell stärker, die beiden reduzierten Geschwindigkeitssektoren getrennt mit der zeta-spektroskopischen Schicht zu koppeln.
+	
+	Wir definieren daher
+	\[
+	\tilde c_t^{(N;M)}
+	:=
+	\tilde c_t^{(N)}\bigl(1+\lambda_t S_M^{(t)}(p_N)\bigr),
+	\]
+	\[
+	\tilde c_e^{(N;M)}
+	:=
+	\tilde c_e^{(N)}\bigl(1+\lambda_e S_M^{(e)}(p_N)\bigr),
+	\]
+	wobei \(M\) die Zahl der einbezogenen Riemann-Nullstellen und \(\lambda_t,\lambda_e\) dimensionslose Kopplungsstärken sind.
+	
+	Die sektorielle Spektralfunktion sei allgemein durch
+	\[
+	S_M^{(t)}(p_N)
+	:=
+	\frac{\displaystyle\sum_{m=1}^{M} a_m^{(t)}
+		\cos\!\bigl(\gamma_m\log p_N+\phi_m^{(t)}\bigr)}
+	{\displaystyle\sum_{m=1}^{M}|a_m^{(t)}|},
+	\]
+	\[
+	S_M^{(e)}(p_N)
+	:=
+	\frac{\displaystyle\sum_{m=1}^{M} a_m^{(e)}
+		\cos\!\bigl(\gamma_m\log p_N+\phi_m^{(e)}\bigr)}
+	{\displaystyle\sum_{m=1}^{M}|a_m^{(e)}|},
+	\]
+	gegeben, wobei \(\gamma_m\) die imaginären Teile der nichttrivialen Riemann-Nullstellen bezeichnet.
+	
+	Dann erhält man für den effektiv modulierten renormierten Hurwitzdruck
+	\[
+	\widehat D_H^{(N;M)}
+	=
+	\tilde c_e^{(N;M)}-\tilde c_t^{(N;M)}.
+	\]
+	
+	Durch Einsetzen folgt
+	\[
+	\widehat D_H^{(N;M)}
+	=
+	\widehat D_H^{(N)}
+	+
+	\lambda_e \tilde c_e^{(N)} S_M^{(e)}(p_N)
+	-
+	\lambda_t \tilde c_t^{(N)} S_M^{(t)}(p_N).
+	\]
+	
+	Damit zerfällt die Spektralmodulation des Hurwitzdrucks in einen elektrodynamischen und einen topologischen Beitrag:
+	\[
+	\Delta_{\zeta,e}^{(N;M)}
+	:=
+	\lambda_e \tilde c_e^{(N)} S_M^{(e)}(p_N),
+	\]
+	\[
+	\Delta_{\zeta,t}^{(N;M)}
+	:=
+	\lambda_t \tilde c_t^{(N)} S_M^{(t)}(p_N).
+	\]
+	
+	Die zeta-korrigierte Druckstruktur lautet somit
+	\[
+	\widehat D_H^{(N;M)}
+	=
+	\widehat D_H^{(N)}+\Delta_{\zeta,e}^{(N;M)}-\Delta_{\zeta,t}^{(N;M)}.
+	\]
+	
+	Eine einfache Pilotwahl ist
+	\[
+	a_m^{(t)}=\frac1m,\qquad \phi_m^{(t)}=0,
+	\]
+	\[
+	a_m^{(e)}=\frac1{\sqrt m},\qquad \phi_m^{(e)}=0.
+	\]
+	In dieser Fassung reagiert der topologische Sektor glatter, der elektrodynamische Sektor empfindlicher auf die zeta-spektroskopische Modulation.
+	
+	\subsection{Numerischer Test der getrennten zeta-Modulation}
+	
+	Wir betrachten die Pilotwahl
+	\[
+	\alpha_\ast=0.72,\qquad \lambda_t=\lambda_e=0.2,
+	\]
+	sowie
+	\[
+	S_M^{(t)}(p_N)
+	=
+	\frac{\sum_{m=1}^{M}\frac1m\cos(\gamma_m\log p_N)}
+	{\sum_{m=1}^{M}\frac1m},
+	\qquad
+	S_M^{(e)}(p_N)
+	=
+	\frac{\sum_{m=1}^{M}\frac1{\sqrt m}\cos(\gamma_m\log p_N)}
+	{\sum_{m=1}^{M}\frac1{\sqrt m}}.
+	\]
+	
+	Dann sind die effektiven reduzierten Geschwindigkeiten
+	\[
+	\tilde c_t^{(N;M)}=\tilde c_t^{(N)}\bigl(1+0.2\,S_M^{(t)}(p_N)\bigr),
+	\qquad
+	\tilde c_e^{(N;M)}=\tilde c_e^{(N)}\bigl(1+0.2\,S_M^{(e)}(p_N)\bigr),
+	\]
+	und
+	\[
+	\widehat D_H^{(N;M)}=\tilde c_e^{(N;M)}-\tilde c_t^{(N;M)}.
+	\]
+	
+	Für \(M=33\) erhält man beispielsweise:
+	
+	\[
+	\begin{array}{r|r|r|r}
+		N & p_N & \tilde c_t^{(N;33)} & \tilde c_e^{(N;33)}\\
+		\hline
+		20   & 71    & 2.309719 & 4.025048 \\
+		33   & 137   & 2.411419 & 4.641000 \\
+		50   & 229   & 2.176656 & 4.807566 \\
+		100  & 541   & 2.232341 & 5.762211 \\
+		137  & 773   & 2.006722 & 5.673116 \\
+		200  & 1223  & 1.892349 & 5.702055 \\
+		500  & 3571  & 1.432937 & 5.374096 \\
+		1000 & 7919  & 1.437998 & 5.777246 \\
+		2000 & 17389 & 1.242814 & 5.404363 \\
+		5000 & 48611 & 1.005770 & 4.970652
+	\end{array}
+	\]
+	
+	und für \(M=137\):
+	
+	\[
+	\begin{array}{r|r|r|r}
+		N & p_N & \tilde c_t^{(N;137)} & \tilde c_e^{(N;137)}\\
+		\hline
+		20   & 71    & 2.327592 & 4.044098 \\
+		33   & 137   & 2.404055 & 4.672809 \\
+		50   & 229   & 2.189332 & 4.891004 \\
+		100  & 541   & 2.187470 & 5.590390 \\
+		137  & 773   & 1.980480 & 5.582091 \\
+		200  & 1223  & 1.862981 & 5.611208 \\
+		500  & 3571  & 1.469579 & 5.571141 \\
+		1000 & 7919  & 1.411328 & 5.571147 \\
+		2000 & 17389 & 1.225873 & 5.319948 \\
+		5000 & 48611 & 1.005182 & 4.979917
+	\end{array}
+	\]
+	
+	Dies zeigt: Die zeta-spektroskopische Schicht erzeugt eine echte sektorielle Feinstruktur, ohne das renormierte Grundbild \(\tilde c_t\approx 1\), \(\tilde c_e\approx 5\) und \(\widehat D_H\approx 4\) zu zerstören.
+	
+	
+	\section{Renormierte Geschwindigkeiten, numerische Evidenz und Resonanzfenster}
+	
+	\subsection{Grundaufbau}
+	
+	Wir betrachten weiterhin den renormierten Exponenten
+	\[
+	\alpha_\ast \approx 0.72
+	\]
+	und definieren die reduzierten Grundgeschwindigkeiten
+	\[
+	\tilde c_t^{(N)}:=p_N^{\alpha_\ast}\mathcal E_{\mathrm{top}}^{(N)},
+	\qquad
+	\tilde c_e^{(N)}:=p_N^{\alpha_\ast}\mathcal E_{\mathrm{edyn}}^{(N)}.
+	\]
+	Dann gilt für den renormierten Hurwitzdruck
+	\[
+	\widehat D_H^{(N)}=\tilde c_e^{(N)}-\tilde c_t^{(N)}.
+	\]
+	
+	Die zeta-spektroskopisch modulierten Geschwindigkeiten seien gegeben durch
+	\[
+	\tilde c_t^{(N;M)}
+	=
+	\tilde c_t^{(N)}\bigl(1+\lambda_t S_M^{(t)}(p_N)\bigr),
+	\qquad
+	\tilde c_e^{(N;M)}
+	=
+	\tilde c_e^{(N)}\bigl(1+\lambda_e S_M^{(e)}(p_N)\bigr),
+	\]
+	wobei \(M\) die Zahl der einbezogenen Riemann-Nullstellen und \(\lambda_t,\lambda_e\) dimensionslose Kopplungsstärken sind. Der effektiv modulierte renormierte Hurwitzdruck ist dann
+	\[
+	\widehat D_H^{(N;M)}:=\tilde c_e^{(N;M)}-\tilde c_t^{(N;M)}.
+	\]
+	
+	\subsection{Numerische Evidenz}
+	
+	Die numerischen Pilotdaten des Basismodells legen nahe, dass die reduzierten Geschwindigkeiten gegen konstante Niveaus tendieren.
+	
+	\begin{proposition}[Numerische Evidenz für renormierte Grundniveaus]
+		Die berechneten Pilotwerte für \(N=20,\dots,5000\) sind konsistent mit der asymptotischen Heuristik
+		\[
+		\tilde c_t^{(N)}\to 1,
+		\qquad
+		\tilde c_e^{(N)}\to 5.
+		\]
+		Insbesondere ist der renormierte Hurwitzdruck numerisch verträglich mit
+		\[
+		\widehat D_H^{(N)}=\tilde c_e^{(N)}-\tilde c_t^{(N)}\to 4.
+		\]
+	\end{proposition}
+	
+	\begin{proof}[Numerische Begründung]
+		Die berechneten Werte
+		\[
+		\tilde c_t^{(N)}=
+		2.45067,\;2.40957,\;2.24815,\;2.08298,\;1.91296,\;1.82946,\;1.56305,\;1.37771,\;1.20647,\;1.00555
+		\]
+		für
+		\[
+		N=20,33,50,100,137,200,500,1000,2000,5000
+		\]
+		fallen systematisch in Richtung \(1\). Zugleich liegen die Werte
+		\[
+		\tilde c_e^{(N)}=
+		4.18535,\;4.75084,\;5.01468,\;5.50069,\;5.53736,\;5.67169,\;5.67858,\;5.56530,\;5.36985,\;5.00720
+		\]
+		im Bereich eines langsamen Übergangs in Richtung \(5\). Die zugehörigen Differenzen
+		\[
+		\widehat D_H^{(N)}=\tilde c_e^{(N)}-\tilde c_t^{(N)}
+		\]
+		zeigen ein Quasi-Plateau im Bereich \(4.0\) bis \(4.2\) für große \(N\).
+	\end{proof}
+	
+	\begin{bemerkung}
+		Die obige Aussage ist ausdrücklich heuristisch-numerisch zu verstehen. Sie ist kein asymptotischer Beweis, sondern eine durch die Pilotdaten gestützte Arbeitsstruktur.
+	\end{bemerkung}
+	
+	\subsection{Asymptotische Arbeitsvermutung}
+	
+	Die numerische Evidenz motiviert die folgende zentrale Hypothese.
+	
+	\begin{satz}[Asymptotische Geschwindigkeitsvermutung]
+		Es existieren renormierte Grenzwerte
+		\[
+		\tilde c_t:=\lim_{N\to\infty}\tilde c_t^{(N)},
+		\qquad
+		\tilde c_e:=\lim_{N\to\infty}\tilde c_e^{(N)},
+		\]
+		mit
+		\[
+		\tilde c_t=1,
+		\qquad
+		\tilde c_e=5.
+		\]
+		Folglich gilt für den renormierten Hurwitzdruck
+		\[
+		\widehat D_H:=\lim_{N\to\infty}\widehat D_H^{(N)}=4.
+		\]
+	\end{satz}
+	
+	\begin{bemerkung}
+		Diese Vermutung gibt dem Modell eine besonders einfache innere Form:
+		\[
+		\text{Topologie} \;\leadsto\; 1,
+		\qquad
+		\text{Elektrodynamik} \;\leadsto\; 5,
+		\qquad
+		\text{Druckdifferenz} \;\leadsto\; 4.
+		\]
+		Sie sollte zunächst als renormierte interne Skalenstruktur gelesen werden, nicht als unmittelbare physikalische Kalibrierung.
+	\end{bemerkung}
+	
+	\subsection{Fehlerterme und zeta-spektroskopische Korrekturen}
+	
+	Zur genaueren Struktur schreiben wir
+	\[
+	\tilde c_t^{(N)}=1+\varepsilon_t^{(0)}(N),
+	\qquad
+	\tilde c_e^{(N)}=5+\varepsilon_e^{(0)}(N),
+	\]
+	wobei
+	\[
+	\varepsilon_t^{(0)}(N)\to 0,
+	\qquad
+	\varepsilon_e^{(0)}(N)\to 0
+	\]
+	die nichtoszillatorischen Basisterme bezeichnen.
+	
+	Nach Einbau der zeta-Modulation definieren wir
+	\[
+	\varepsilon_t^{(\zeta)}(N;M)
+	:=
+	\tilde c_t^{(N)}\lambda_t S_M^{(t)}(p_N),
+	\qquad
+	\varepsilon_e^{(\zeta)}(N;M)
+	:=
+	\tilde c_e^{(N)}\lambda_e S_M^{(e)}(p_N).
+	\]
+	Dann gilt
+	\[
+	\tilde c_t^{(N;M)}
+	=
+	1+\varepsilon_t^{(0)}(N)+\varepsilon_t^{(\zeta)}(N;M),
+	\]
+	\[
+	\tilde c_e^{(N;M)}
+	=
+	5+\varepsilon_e^{(0)}(N)+\varepsilon_e^{(\zeta)}(N;M).
+	\]
+	
+	\begin{proposition}[Zerlegung des zeta-modulierten Hurwitzdrucks]
+		Für den effektiv renormierten Hurwitzdruck gilt die Zerlegung
+		\[
+		\widehat D_H^{(N;M)}
+		=
+		4
+		+
+		\bigl(\varepsilon_e^{(0)}(N)-\varepsilon_t^{(0)}(N)\bigr)
+		+
+		\bigl(\varepsilon_e^{(\zeta)}(N;M)-\varepsilon_t^{(\zeta)}(N;M)\bigr).
+		\]
+	\end{proposition}
+	
+	\begin{proof}
+		Die Aussage folgt unmittelbar durch Einsetzen der Darstellungen
+		\[
+		\tilde c_t^{(N;M)}
+		=
+		1+\varepsilon_t^{(0)}(N)+\varepsilon_t^{(\zeta)}(N;M),
+		\]
+		\[
+		\tilde c_e^{(N;M)}
+		=
+		5+\varepsilon_e^{(0)}(N)+\varepsilon_e^{(\zeta)}(N;M)
+		\]
+		in
+		\[
+		\widehat D_H^{(N;M)}=\tilde c_e^{(N;M)}-\tilde c_t^{(N;M)}.
+		\]
+	\end{proof}
+	
+	\begin{bemerkung}
+		Diese Zerlegung ist konzeptionell wichtig: Der renormierte Basisdruck \(4\) erscheint als glatter Untergrund, auf den sowohl nichtoszillatorische Driftterme als auch zeta-spektroskopische Interferenzterme aufgesetzt werden.
+	\end{bemerkung}
+	
+	\subsection{Resonanzklassifikation}
+	
+	Die sektorielle zeta-Modulation erlaubt eine natürliche Klassifikation spektraler Fenster.
+	
+	\begin{definition}[Konstruktive und destruktive Resonanzfenster]
+		Für festes \(M\) definieren wir
+		\[
+		\mathcal R_+(M)
+		:=
+		\{N:\; S_M^{(t)}(p_N)>0,\;S_M^{(e)}(p_N)>0\},
+		\]
+		\[
+		\mathcal R_-(M)
+		:=
+		\{N:\; S_M^{(t)}(p_N)<0,\;S_M^{(e)}(p_N)<0\}.
+		\]
+		Die Elemente von \(\mathcal R_+(M)\) heißen \emph{konstruktive Resonanzfenster}, die Elemente von \(\mathcal R_-(M)\) \emph{destruktive Resonanzfenster}.
+	\end{definition}
+	
+	\begin{definition}[Scherfenster]
+		Wir definieren ferner
+		\[
+		\mathcal R_{\mathrm{shear}}(M)
+		:=
+		\Bigl\{N:\;
+		\operatorname{sgn}(S_M^{(t)}(p_N))\neq \operatorname{sgn}(S_M^{(e)}(p_N))
+		\;\text{ oder }\;
+		|S_M^{(t)}(p_N)-S_M^{(e)}(p_N)| \text{ groß}
+		\Bigr\}.
+		\]
+		Die Elemente dieser Menge heißen \emph{Scherfenster}.
+	\end{definition}
+	
+	\begin{proposition}[Numerisch sichtbare Resonanztypen]
+		Für die Pilotwahl
+		\[
+		\lambda_t=\lambda_e=0.2,
+		\qquad
+		a_m^{(t)}=\frac1m,
+		\qquad
+		a_m^{(e)}=\frac1{\sqrt m},
+		\qquad
+		\phi_m^{(t)}=\phi_m^{(e)}=0
+		\]
+		sind bereits für \(M=33\) und \(M=137\) alle drei Resonanztypen numerisch sichtbar.
+	\end{proposition}
+	
+	\begin{proof}[Numerische Begründung]
+		Für \(M=33\) treten konstruktive Fenster etwa bei
+		\[
+		N=100,\;137,\;1000
+		\]
+		auf, da dort sowohl \(S_{33}^{(t)}(p_N)\) als auch \(S_{33}^{(e)}(p_N)\) positiv sind.  
+		Destruktive Fenster treten etwa bei
+		\[
+		N=20,\;50,\;500
+		\]
+		auf, da dort beide Größen negativ sind.  
+		Scherfenster erscheinen insbesondere bei
+		\[
+		N=33,\;200,\;2000,
+		\]
+		wo entweder unterschiedliche Vorzeichen oder deutlich verschiedene Amplituden vorliegen.
+		
+		Für \(M=137\) bleibt dieselbe Typologie erhalten, wenn auch in geglätteter Form; insbesondere ist \(N=200\) ein markantes Scherfenster mit
+		\[
+		S_{137}^{(t)}(p_N)>0,
+		\qquad
+		S_{137}^{(e)}(p_N)<0.
+		\]
+	\end{proof}
+	
+	\begin{bemerkung}
+		Die Resonanzklassifikation zeigt, dass die zeta-spektroskopische Schicht nicht nur eine globale Welligkeit erzeugt, sondern eine echte sektorielle Dynamik: Topologie und Elektrodynamik können gemeinsam gehoben, gemeinsam gedämpft oder gegeneinander verschoben werden.
+	\end{bemerkung}
+	
+	\subsection{Zusammenfassende Arbeitsform}
+	
+	Die bisherige numerische Evidenz führt auf die folgende kompakte Modellform:
+	\[
+	\tilde c_t^{\mathrm{eff}}(N;M)
+	=
+	1+\varepsilon_t^{(0)}(N)+\varepsilon_t^{(\zeta)}(N;M),
+	\]
+	\[
+	\tilde c_e^{\mathrm{eff}}(N;M)
+	=
+	5+\varepsilon_e^{(0)}(N)+\varepsilon_e^{(\zeta)}(N;M),
+	\]
+	\[
+	\widehat D_H^{\mathrm{eff}}(N;M)
+	=
+	4+\Delta^{(0)}(N)+\Delta^{(\zeta)}(N;M),
+	\]
+	wobei
+	\[
+	\Delta^{(0)}(N):=\varepsilon_e^{(0)}(N)-\varepsilon_t^{(0)}(N),
+	\qquad
+	\Delta^{(\zeta)}(N;M):=\varepsilon_e^{(\zeta)}(N;M)-\varepsilon_t^{(\zeta)}(N;M).
+	\]
+	
+	Diese Form trennt die Theorie in einen glatten renormierten Untergrund und eine sektorielle spektrale Feinstruktur.
+	\begin{thebibliography}{99}
+		
+		\bibitem{ConwaySmith}
+		J.~H. Conway and D.~A. Smith,
+		\emph{On Quaternions and Octonions},
+		A. K. Peters, Natick, 2003.
+		
+		\bibitem{Vigneras}
+		M.-F. Vign\'eras,
+		\emph{Arithm\'etique des Alg\`ebres de Quaternions},
+		Lecture Notes in Mathematics 800,
+		Springer, 1980.
+		
+		\bibitem{Voight}
+		J.~Voight,
+		\emph{Quaternion Algebras},
+		Graduate Texts in Mathematics,
+		Springer, 2021.
+		
+		\bibitem{Jacobiformula}
+		C.~G.~J. Jacobi,
+		\"Uber die Darstellung einer Zahl als Summe von vier Quadraten,
+		\emph{Journal f\"ur die reine und angewandte Mathematik}.
+		
+		\bibitem{Hurwitz}
+		A.~Hurwitz,
+		\emph{\"Uber die Komposition der quadratischen Formen von beliebig vielen Variablen},
+		Nachrichten von der Gesellschaft der Wissenschaften zu G\"ottingen.
+		
+		\bibitem{CohnKumar}
+		H.~Cohn and A.~Kumar,
+		Quaternionic lattices and arithmetic structures,
+		diverse Darstellungen in der Literatur zur Geometrie und Arithmetik der Hurwitz-Ordnung.
+		
+	\end{thebibliography}
+	
+\end{document}

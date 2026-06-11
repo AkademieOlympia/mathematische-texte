@@ -1,0 +1,279 @@
+\documentclass[11pt,a4paper]{article}
+
+% --- Encoding / Sprache ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+
+% --- Mathe / Physik ---
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{mathtools}
+\usepackage{physics}
+
+% --- Layout / Links ---
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{hyperref}
+\usepackage{microtype}
+
+% --- Figures / Tables (optional) ---
+\usepackage{graphicx}
+\usepackage{booktabs}
+
+% --- Theorem environments ---
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Bemerkung}
+
+% --- Notation ---
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\modtwelve}{\ (\mathrm{mod}\ 12)}
+\newcommand{\wT}{\omega_{12}}
+\newcommand{\EE}{\mathrm{E}}
+\newcommand{\AA}{\mathrm{A}}
+\newcommand{\BB}{\mathrm{B}}
+\newcommand{\CC}{\mathrm{C}}
+
+\title{\textbf{Diskrete Messklassen aus Record-Holonomie:}\\
+	\textbf{Rekonstruktion des Kohärenzfaktors $\gamma$ mit $N{=}12$-Phasenraster und Defekt-Schalter $R\in\Z_{12}$}}
+\author{(Entwurf)}
+\date{\today}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir formulieren ein experimentell testbares Mess-Framework, in dem der nichtselektive Kohärenzfaktor
+		$\gamma$ eines Qubit-Systems $S$ nicht phänomenologisch als „Dekohärenzrate“ eingeführt wird, sondern
+		als \emph{instrumentell rekonstruierbare} Größe $\gamma=\langle r_1|r_0\rangle$ aus der Überlappung zweier
+		Record-Zustände. Der Recordraum wird als Ququart mit vier Kanälen $\{\EE,\AA,\BB,\CC\}$ realisiert, deren
+		Phasen digital auf ein $N{=}12$-Raster quantisiert werden. Eine globale Holonomie-/Defektklasse
+		$R\in\Z_{12}$ wird als Nebenbedingung $K_\EE+K_\AA+K_\BB+K_\CC\equiv R$ implementiert und wirkt als
+		„Schalter“, der \emph{diskrete Messklassen} in der komplexen Ebene erzeugt. Wir geben zwei konkrete
+		Blueprints (Photonik und supraleitende Schaltungen), ein Minimalprotokoll zur Rekonstruktion von $\gamma$
+		aus $\langle\sigma_x\rangle,\langle\sigma_y\rangle$ ohne volle Tomografie, sowie eine Datenpipeline
+		(Clustering, Jitter-Modell, Nulltest). Messbar sind u.\,a. Plateau-/Cluster-Strukturen von $\gamma$,
+		sprunghafte Wechsel unter $R$-Sweep sowie topologisch selektive Minimierung $|\gamma|\approx 0$ im
+		Gegenpaar-Muster $\{u,v,u{+}6,v{+}6\}$.
+	\end{abstract}
+	
+	\tableofcontents
+	
+	\section{Einführung und Motivation}
+	
+	Messrückwirkung und Dekohärenz werden in vielen Plattformen durch effektive Parameter beschrieben
+	(z.\,B. „Messstärke“, „Dephasingrate“). In dieser Arbeit schlagen wir eine komplementäre
+	Operationalisierung vor: Der nichtselektive Kohärenzverlust eines Systems $S$ wird über die
+	\emph{Record-Geometrie} bestimmt. Konkret wird der Kohärenzfaktor
+	\[
+	\rho_{01}\ \mapsto\ \gamma\,\rho_{01}
+	\]
+	als Überlappung zweier Recordzustände $\gamma=\langle r_1|r_0\rangle$ modelliert und experimentell aus
+	nur zwei Observablen \(\langle\sigma_x\rangle,\langle\sigma_y\rangle\) rekonstruiert.
+	
+	Der zentrale Zusatz gegenüber Standardinstrumenten besteht in (i) einer \emph{digitalen}
+	Phasenquantisierung auf \(N{=}12\) und (ii) einem globalen \emph{Holonomie-/Defektparameter} \(R\in\Z_{12}\),
+	der die zulässigen Viererkombinationen (Kanalindizes) über eine Nebenbedingung koppelt und so
+	\emph{klassenweise} Messrückwirkung erzeugt.
+	
+	\section{Instrumentmodell und Definition des Kohärenzfaktors}
+	
+	\subsection{Stinespring-Dilation und nichtselektive Dynamik}
+	
+	Wir betrachten ein Qubit-System \(S\) mit computational basis \(\{\ket0,\ket1\}\) und einen Recordraum \(R\).
+	Das Messinstrument wird als Dilation formuliert:
+	\begin{equation}
+		\ket0_S \mapsto \ket0_S\otimes \ket{r_0},\qquad
+		\ket1_S \mapsto \ket1_S\otimes \ket{r_1},
+		\label{eq:dilation}
+	\end{equation}
+	wobei \(\ket{r_0},\ket{r_1}\in\mathcal{H}_R\) nicht notwendig orthogonal sind.
+	Wird der Record nicht ausgelesen (nichtselektiv), ergibt sich für die reduzierte Dichtematrix
+	\(\rho_S=\mathrm{Tr}_R(\rho_{SR})\):
+	\begin{equation}
+		\rho_{01}\ \mapsto\ \langle r_1|r_0\rangle\,\rho_{01}.
+	\end{equation}
+	
+	\begin{definition}[Instrumenteller Kohärenzfaktor]
+		Der (nichtselektive) Kohärenzfaktor des Instruments ist
+		\begin{equation}
+			\boxed{\ \gamma \coloneqq \langle r_1|r_0\rangle\ \in\C\ }.
+			\label{eq:gamma_def}
+		\end{equation}
+	\end{definition}
+	
+	\subsection{Direkte Rekonstruktion von \(\gamma\) ohne volle Tomografie}
+	
+	Bereite \(S\) in \(\ket{+}=\tfrac1{\sqrt2}(\ket0+\ket1)\) vor, wende das Instrument an, ignoriere \(R\),
+	und messe am System:
+	\[
+	s_x=\langle\sigma_x\rangle,\qquad s_y=\langle\sigma_y\rangle.
+	\]
+	Dann gilt (bis auf eine konstante Referenzrotation \(e^{-i\phi_0}\), kalibrierbar):
+	\begin{equation}
+		\boxed{\ \gamma_{\mathrm{meas}} = (s_x+i s_y)\,e^{-i\phi_0}\ }.
+		\label{eq:gamma_meas}
+	\end{equation}
+	
+	\section{Vierkanal-Record, $N{=}12$-Raster und Holonomie-Schalter $R$}
+	
+	\subsection{Record als Ququart mit vier Kanälen}
+	
+	Wir wählen \(\mathcal{H}_R=\mathrm{span}\{\ket{\EE},\ket{\AA},\ket{\BB},\ket{\CC}\}\) und definieren
+	Recordzustände als kanalgewichtete Superpositionen mit Phasen:
+	\begin{equation}
+		\ket{r_x}=\sum_{i\in\{\EE,\AA,\BB,\CC\}} \sqrt{w_i}\,e^{i\,\theta^{(x)}_i}\ket{i},
+		\qquad w_i\ge 0,\ \sum_i w_i=1.
+	\end{equation}
+	Dann ist
+	\begin{equation}
+		\gamma=\sum_{i} w_i\,e^{i(\theta^{(0)}_i-\theta^{(1)}_i)}.
+		\label{eq:gamma_general}
+	\end{equation}
+	
+	\subsection{Digitales Phasenraster $N{=}12$}
+	
+	Wir quantisieren die (relativen) Phasen auf ein 12er Raster:
+	\begin{equation}
+		\wT \coloneqq e^{2\pi i/12},\qquad
+		e^{i(\theta^{(0)}_i-\theta^{(1)}_i)}=\wT^{K_i},\quad K_i\in\Z_{12}.
+	\end{equation}
+	Im symmetrischen Referenzfall \(w_i=\tfrac14\) folgt:
+	\begin{equation}
+		\boxed{\ \gamma_{\mathrm{pred}}=\frac14\left(\wT^{K_\EE}+\wT^{K_\AA}+\wT^{K_\BB}+\wT^{K_\CC}\right)\ }.
+		\label{eq:gamma_pred_sym}
+	\end{equation}
+	Damit nimmt \(\gamma\) nur diskret viele Werte an (Phasorsumme aus 12-ten Einheitswurzeln).
+	
+	\subsection{Holonomie-/Defektklasse $R\in\Z_{12}$ als Nebenbedingung}
+	
+	Die globale Klasse \(R\) wird als Constraint implementiert:
+	\begin{equation}
+		\boxed{\ K_\EE+K_\AA+K_\BB+K_\CC \equiv R \modtwelve\ }.
+		\label{eq:constraint_R}
+	\end{equation}
+	Operational lässt man drei Indizes frei und bestimmt den vierten:
+	\begin{equation}
+		\boxed{\ K_\CC \equiv R - K_\EE - K_\AA - K_\BB \modtwelve\ }.
+		\label{eq:KC}
+	\end{equation}
+	
+	\begin{remark}[Interpretation als „Holonomie-Schalter“]
+		Obwohl \eqref{eq:constraint_R} programmatisch umgesetzt werden kann, wirkt \(R\) wie eine globale,
+		nichtlokale Phasenklasse: Für feste \((K_\EE,K_\AA,K_\BB)\) erzeugt ein \(R\)-Sweep eine diskrete Trajektorie
+		\(\gamma(R)\) in der komplexen Ebene (sprunghafte Klassenwechsel).
+	\end{remark}
+	
+	\section{Experimentelle Realisierung: Photonik-Blueprint}
+	
+	\subsection{Hardware-Minimalaufbau}
+	
+	\begin{itemize}
+		\item \textbf{System \(S\):} Photonen-Qubit (Polarisation oder Pfad).
+		\item \textbf{Record \(R\):} vier räumliche Modi (Waveguides) als \(\ket{\EE},\ket{\AA},\ket{\BB},\ket{\CC}\).
+		\item \textbf{Gewichte \(w_i\):} Koppler-/MZI-Verhältnisse; Referenz: \(w_i=1/4\).
+		\item \textbf{Phasen \(\Phi_i\):} pro Arm programmierbarer Phasenschieber; digitale 12-Stufen-Kalibration.
+		\item \textbf{Holonomie \(R\):} Implementierung über \eqref{eq:KC} als „Constraint-Wiring“ (C-Phase aus
+		Tripel+R).
+	\end{itemize}
+	
+	\subsection{Messprotokoll (minimal, tomografiefrei)}
+	
+	\begin{enumerate}
+		\item Präpariere \(S\) in \(\ket{+}\).
+		\item Wende das Instrument \eqref{eq:dilation} an (Kopplung \(S\leftrightarrow R\)).
+		\item Traciere/ignoriere \(R\) (keine Record-Detektion oder Summe über alle Ausgänge).
+		\item Messe am System \(s_x=\langle\sigma_x\rangle\) und \(s_y=\langle\sigma_y\rangle\).
+		\item Rekonstruiere \(\gamma_{\mathrm{meas}}\) via \eqref{eq:gamma_meas}.
+	\end{enumerate}
+	
+	\subsection{Kalibration}
+	
+	\begin{itemize}
+		\item \textbf{Phase-Calibration:} pro Arm DAC\(\rightarrow\)Winkel \(\Phi=\frac{2\pi}{12}K\).
+		\item \textbf{Gewichte:} Intensitätsmessung \(\Rightarrow w_i\).
+		\item \textbf{Globalphase:} Referenzsetting \(K_i=0\) liefert \(\phi_0\) zur Korrektur in \eqref{eq:gamma_meas}.
+	\end{itemize}
+	
+	\section{Experimentelle Realisierung: Supraleitende-Blueprint}
+	
+	\subsection{Grundidee}
+	
+	\begin{itemize}
+		\item \textbf{System \(S\):} Transmon-Qubit.
+		\item \textbf{Record \(R\):} zwei zusätzliche Qubits (4-dimensional) oder höhere Transmon-Level als Qudit.
+		\item \textbf{Instrument:} gezielt implementierte generalisierte Messung (POVM/Kraus-Operatoren), wahlweise
+		im Ensemblemodus (wie Photonik) oder im Trajektorienmodus (Record wird ausgelesen).
+	\end{itemize}
+	
+	\subsection{Holonomie-Schalter}
+	
+	Als technischer Knopf bietet sich Flusssteuerung \(\Phi\) in Ring-/Interferenz-Geometrien an, die effektiv
+	phasenartige Offsets in kontrollierten Couplings erzeugt. Operational genügt die digitale Rasterung der
+	entsprechenden Phase auf 12 Werte und die constraint-basierte Festlegung von \(K_\CC\) gemäß \eqref{eq:KC}.
+	
+	\section{Messkampagnen und Datenpipeline}
+	
+	\subsection{Kampagnenliste und Vorhersage}
+	
+	Für jede Kampagne \((K_\EE,K_\AA,K_\BB,R)\) wird \(K_\CC\) durch \eqref{eq:KC} bestimmt. Gemessen wird
+	\(\gamma_{\mathrm{meas}}\) über \eqref{eq:gamma_meas}, vorhergesagt \(\gamma_{\mathrm{pred}}\) über
+	\eqref{eq:gamma_general} bzw. \eqref{eq:gamma_pred_sym}.
+	
+	\subsection{Postprocessing: Clustering und Fehler}
+	
+	\begin{itemize}
+		\item Plot: \(\gamma_{\mathrm{meas}}\) in der komplexen Ebene, gruppiert nach \(R\) bzw. nach Tripeln.
+		\item Fehlermaß:
+		\[
+		\Delta \coloneqq \abs{\gamma_{\mathrm{meas}}-\gamma_{\mathrm{pred}}}.
+		\]
+		\item Clustering: Distanzschwelle \(\varepsilon\) aus Phasenjitter; Report: Clusteranzahl pro \(R\),
+		Zentren, Varianzen, Trajektorien \(\gamma(R)\).
+	\end{itemize}
+	
+	\subsection{Jitter-Modell (linearisiert)}
+	
+	Phasenrauschen \(\Phi_i\to \Phi_i+\delta\Phi_i\) führt zu
+	\[
+	\delta\gamma \approx i\sum_i w_i\,\wT^{K_i}\,\delta\Phi_i,
+	\]
+	woraus sich Clusterbreiten und erwartete Punktwolkenform (annähernd elliptisch) abschätzen lassen.
+	
+	\section{Fünf messbare Signaturen}
+	
+	\begin{enumerate}
+		\item \textbf{\(\gamma\)-Klassierung (Plateaus/Cluster):} bei 12er Raster clustern \((\langle\sigma_x\rangle,\langle\sigma_y\rangle)\)
+		auf diskreten Punkten.
+		\item \textbf{\(R\)-Sprünge:} für fixes \((K_\EE,K_\AA,K_\BB)\) springt \(\gamma(R)\) beim Umschalten \(R\mapsto R+\Delta R\).
+		\item \textbf{Topologisch selektiver Nulltest:} gewisse Muster erlauben \(|\gamma|\approx 0\), andere nicht.
+		\item \textbf{Rückgewinnbarkeit (Quantenradierer, optional):} partielle Recordmessung in alternativer Basis
+		stellt Kohärenz abhängig von \(|\gamma|\) wieder her.
+		\item \textbf{Messklassen statt Messrate (MIPT-Anschluss, optional):} in Plattformen mit variabler Messung
+		kann die Klasse (diskretes \(\gamma\)-Spektrum + \(R\)-Schalter) als Kontrollparameter dienen.
+	\end{enumerate}
+	
+	\section{Nulltest: Gegenpaar-Muster $\{u,v,u{+}6,v{+}6\}$}
+	
+	Im symmetrischen Fall \(w_i=\tfrac14\) gilt \(\gamma=0\) genau dann, wenn die vier Phasoren paarweise
+	gegenläufig sind:
+	\begin{equation}
+		\boxed{\ \gamma=0\ \Longleftrightarrow\ \{K_\EE,K_\AA,K_\BB,K_\CC\}=\{u,v,u+6,v+6\}\modtwelve\ }.
+	\end{equation}
+	Experimentell prüfbar durch gezielte Settings mit kleinem Fringe-Kontrast und dessen „Aufhebung“ durch \(R\)-Schaltung.
+	
+	\section{Diskussion und Einordnung}
+	
+	Das vorgeschlagene Framework verschiebt den Fokus von kontinuierlichen Dekohärenzparametern hin zu
+	\emph{instrumentell kodierten Klassen} der Messrückwirkung. Die Kombination aus (i) digitaler
+	Phasenquantisierung, (ii) Vierkanal-Record und (iii) globalem Holonomie-Schalter \(R\) liefert ein
+	konkretes, laborfähiges Testbett für „Dekohärenzspektren“ (diskret) statt reiner „Dekohärenzraten“ (kontinuierlich).
+	Die primäre Aussage ist operational: \(\gamma\) ist messbar und schaltbar, und seine Punktstruktur in der
+	komplexen Ebene ist eine direkte Signatur der implementierten Recordgeometrie.
+	
+	\section*{Danksagung / Hinweis}
+	Dies ist ein konzeptioneller Entwurf mit klaren Messsignaturen; eine vollständige physikalische Identifikation
+	des zugrunde liegenden Instruments (Kraus-Operatoren, Hardwaredetails, Fehlerbudget) kann direkt auf
+	dieser Vorlage aufbauen.
+	
+\end{document}

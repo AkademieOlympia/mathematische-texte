@@ -1,0 +1,750 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- Kodierung und Sprache ---
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+
+% --- Mathematik ---
+\usepackage{amsmath,amssymb,amsfonts,amsthm,mathtools}
+\usepackage{bm}
+
+% --- Layout ---
+\usepackage[a4paper,margin=2.7cm]{geometry}
+\usepackage{microtype}
+\usepackage{setspace}
+\onehalfspacing
+
+% --- Tabellen / Links ---
+\usepackage{booktabs}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	citecolor=blue,
+	urlcolor=blue,
+	pdftitle={Normschalen der Hurwitz-Ordnung und projektive Verfeinerung},
+	pdfauthor={Thomas Hoffbauer},
+	pdfsubject={Formaler Beweis der Orbitformel und projektive Verfeinerung fuer Hurwitz-Normschalen}
+}
+
+% --- Grafikeinbindung robust ---
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./}{fig/}{figs/}{images/}{img/}}
+\newcommand{\includegraphicssafe}[2][]{%
+	\IfFileExists{#2}{\includegraphics[#1]{#2}}{%
+		\fbox{\parbox[c][3cm][c]{0.8\linewidth}{\centering Grafik \texttt{#2} nicht gefunden.}}%
+	}%
+}
+
+% --- Theorem-Umgebungen ---
+\theoremstyle{plain}
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{proposition}[satz]{Proposition}
+\newtheorem{korollar}[satz]{Korollar}
+\newtheorem{konjektur}[satz]{Konjektur}
+
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{beispiel}[satz]{Beispiel}
+\newtheorem{problem}[satz]{Problem}
+
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+
+% --- Makros ---
+\newcommand{\OH}{\mathcal O_H}
+\newcommand{\QH}{\mathbb H}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Zp}{\mathbb Z_p}
+\newcommand{\Qp}{\mathbb Q_p}
+\newcommand{\Fp}{\mathbb F_p}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\nrd}{\operatorname{Nrd}}
+\newcommand{\Stab}{\operatorname{Stab}}
+\newcommand{\GL}{\mathrm{GL}}
+\newcommand{\Mat}{\mathrm{Mat}}
+
+\title{\textbf{Normschalen der Hurwitz-Ordnung und projektive Verfeinerung}\\
+	\large Formale Orbitformel für ungerade Primzahlen und ein Beweisplan zur projektiven Struktur}
+\author{Thomas Hoffbauer}
+\date{März 2026}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Für eine ungerade Primzahl \(p\) betrachten wir die Normschale der Hurwitz-Ordnung
+		\[
+		X_p:=\{x\in \OH:\nrd(x)=p\}.
+		\]
+		Der Hauptsatz dieses Artikels lautet:
+		\[
+		|X_p|=24(p+1),
+		\qquad
+		|\OH^\times\backslash X_p|=|X_p/\OH^\times|=p+1.
+		\]
+		Der Beweis zerlegt \(X_p\) in einen ganzzahligen und einen halbzahlig-hurwitzschen Teil. Der ganzzahlige Anteil wird mit Jacobis Vier-Quadrate-Formel gezählt, der halbzahlig-hurwitzsche Anteil durch eine Paritätsanalyse der Darstellungen von \(4p\) als Summe von vier Quadraten. Anschließend wird gezeigt, dass sowohl die Links- als auch die Rechtswirkung der \(24\) Hurwitz-Einheiten auf \(X_p\) frei sind. Daraus folgt die Orbitformel unmittelbar.
+		
+		Im zweiten Teil formulieren wir eine projektive Verfeinerung: Die bloße Kardinalität \(p+1\) legt nahe, dass die einseitigen Orbitmengen natürlich durch \(\PP^1(\Fp)\) parametrisiert werden. Wir geben dafür einen präzisen lokalen Beweisplan über die Split-Struktur
+		\[
+		\OH\otimes \Z_p \cong M_2(\Z_p),
+		\]
+		ohne diese Verfeinerung bereits vollständig zu beweisen. Abschließend diskutieren wir die offenere und feinere Frage nach der Struktur der Doppelorbits
+		\[
+		\OH^\times\backslash X_p/\OH^\times.
+		\]
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Die Hurwitz-Ordnung \(\OH\) in der Hamiltonschen Quaternionenalgebra gehört zu den klassischen arithmetischen Objekten der Quaternionentheorie. Ihre endlichen Normschalen
+	\[
+	X_p=\{x\in\OH:\nrd(x)=p\},
+	\]
+	wobei \(p\) eine Primzahl ist, besitzen eine offensichtliche additive Beschreibung als Quaternionen positiver Norm. Weniger offensichtlich, aber strukturell sehr viel aufschlussreicher ist die Wirkung der Einheitengruppe \(\OH^\times\) durch Links- und Rechtsmultiplikation.
+	
+	Das erste Ziel dieses Artikels ist, die Zähl- und Orbitstruktur der Normschalen für ungerade Primzahlen formal zu bestimmen. Das Ergebnis ist überraschend einfach:
+	\[
+	|X_p|=24(p+1),
+	\qquad
+	|\OH^\times\backslash X_p|=|X_p/\OH^\times|=p+1.
+	\]
+	Die Erklärung ist eine Mischung aus klassischer additiver Zahlentheorie und elementarer Quaternionenalgebra.
+	
+	Das zweite Ziel ist konzeptioneller Natur. Die Zahl \(p+1\) ist arithmetisch hochgradig suggestiv:
+	\[
+	|\PP^1(\Fp)|=p+1.
+	\]
+	Daher liegt die Vermutung nahe, dass die Orbitmengen nicht nur \(p+1\) Elemente besitzen, sondern eine natürliche projektive Parametrisierung tragen. Diese Verfeinerung ist der eigentliche geometrische Inhalt hinter der bloßen Kardinalitätsformel.
+	
+	Der formale Hauptsatz ist vollständig bewiesen. Die projektive Verfeinerung und die Struktur der Doppelorbits werden dagegen als nächste präzise formulierte Probleme behandelt.
+	
+	\section{Die Hurwitz-Ordnung und ihre Norm}
+	
+	\begin{definition}[Hurwitz-Ordnung]
+		Die Hurwitz-Ordnung \(\OH\subset \QH\) besteht aus allen Quaternionen
+		\[
+		x=a+bi+cj+dk
+		\]
+		mit entweder \(a,b,c,d\in\Z\) oder \(a,b,c,d\in\Z+\tfrac12\).
+	\end{definition}
+	
+	\begin{definition}[Reduzierte Norm]
+		Für
+		\[
+		x=a+bi+cj+dk\in\QH
+		\]
+		definieren wir die reduzierte Norm durch
+		\[
+		\nrd(x):=a^2+b^2+c^2+d^2.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Normschale]
+		Für eine Primzahl \(p\) definieren wir
+		\[
+		X_p:=\{x\in\OH:\nrd(x)=p\}.
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		Ein Element von \(\OH\) ist entweder ganzzahlig oder halbzahlig-hurwitzsch. Entsprechend zerfällt \(X_p\) disjunkt in einen ganzzahligen und einen halbzahlig-hurwitzschen Anteil.
+	\end{bemerkung}
+	
+	\section{Die Einheitengruppe}
+	
+	\begin{definition}[Hurwitz-Einheiten]
+		Die Einheitengruppe der Hurwitz-Ordnung ist
+		\[
+		\OH^\times:=\{u\in\OH:\nrd(u)=1\}.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Es gilt
+		\[
+		|\OH^\times|=24.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Die \(24\) Einheiten sind die \(8\) offensichtlichen Elemente
+		\[
+		\{\pm1,\pm i,\pm j,\pm k\}
+		\]
+		zusammen mit den \(16\) halbzahlig-hurwitzschen Elementen
+		\[
+		\frac{\pm1\pm i\pm j\pm k}{2}.
+		\]
+		Alle diese Elemente besitzen Norm \(1\), und weitere Norm-\(1\)-Elemente existieren in \(\OH\) nicht.
+	\end{proof}
+	
+	\section{Zerlegung der Normschale}
+	
+	Im Folgenden sei \(p\) stets eine ungerade Primzahl.
+	
+	\begin{definition}
+		Wir setzen
+		\[
+		X_p^{\mathrm{int}}
+		:=
+		\{x=a+bi+cj+dk\in X_p : a,b,c,d\in\Z\}
+		\]
+		und
+		\[
+		X_p^{\mathrm{half}}
+		:=
+		\{x=a+bi+cj+dk\in X_p : a,b,c,d\in\Z+\tfrac12\}.
+		\]
+		Dann gilt disjunkt
+		\[
+		X_p=X_p^{\mathrm{int}}\sqcup X_p^{\mathrm{half}}.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Für jede ungerade Primzahl \(p\) gilt
+		\[
+		|X_p^{\mathrm{int}}|=8(p+1).
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Die Menge \(X_p^{\mathrm{int}}\) besteht genau aus den ganzzahligen Lösungen von
+		\[
+		a^2+b^2+c^2+d^2=p.
+		\]
+		Sei \(r_4(n)\) die Anzahl der Darstellungen von \(n\) als Summe von vier Quadraten, mit Ordnung und Vorzeichen gezählt. Nach Jacobis klassischer Formel gilt
+		\[
+		r_4(n)=8\sum_{\substack{d\mid n\\4\nmid d}} d.
+		\]
+		Für die ungerade Primzahl \(p\) sind die relevanten Teiler gerade \(1\) und \(p\). Also
+		\[
+		r_4(p)=8(1+p).
+		\]
+		Daher
+		\[
+		|X_p^{\mathrm{int}}|=8(p+1).
+		\]
+	\end{proof}
+	
+	\begin{lemma}
+		Für jede ungerade Primzahl \(p\) gilt
+		\[
+		|X_p^{\mathrm{half}}|=16(p+1).
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Ein halbzahlig-hurwitzsches Element von \(X_p\) hat die Form
+		\[
+		x=\frac{m_1}{2}+\frac{m_2}{2}i+\frac{m_3}{2}j+\frac{m_4}{2}k,
+		\qquad m_r\in 2\Z+1,
+		\]
+		und die Bedingung \(\nrd(x)=p\) ist äquivalent zu
+		\[
+		m_1^2+m_2^2+m_3^2+m_4^2=4p
+		\]
+		mit allen \(m_r\) ungerade.
+		
+		Also ist \(|X_p^{\mathrm{half}}|\) gleich der Anzahl der Darstellungen von \(4p\) als Summe von vier ungeraden Quadraten.
+		
+		Nun gilt nach Jacobi
+		\[
+		r_4(4p)=8\sum_{\substack{d\mid 4p\\4\nmid d}} d.
+		\]
+		Da \(p\) ungerade ist, sind die Teiler \(d\) mit \(4\nmid d\) genau
+		\[
+		1,\ 2,\ p,\ 2p.
+		\]
+		Also
+		\[
+		r_4(4p)=8(1+2+p+2p)=24(p+1).
+		\]
+		
+		Wir betrachten nun die Parität einer Darstellung
+		\[
+		u_1^2+u_2^2+u_3^2+u_4^2=4p.
+		\]
+		Quadrate sind modulo \(4\) nur \(0\) oder \(1\). Da \(4p\equiv 0\pmod4\), kann die Anzahl ungerader Summanden nur \(0\) oder \(4\) sein; zwei ungerade Summanden würden modulo \(4\) den Wert \(2\) ergeben und sind daher ausgeschlossen.
+		
+		Die Darstellungen von \(4p\) zerfallen also genau in:
+		\begin{enumerate}
+			\item vier gerade Summanden,
+			\item vier ungerade Summanden.
+		\end{enumerate}
+		
+		Die Darstellungen mit vier geraden Summanden entsprechen genau den Darstellungen von \(p\), denn
+		\[
+		u_r=2v_r
+		\quad\Longleftrightarrow\quad
+		v_1^2+v_2^2+v_3^2+v_4^2=p.
+		\]
+		Ihre Anzahl ist also
+		\[
+		r_4(p)=8(p+1).
+		\]
+		
+		Folglich ist die Zahl der Darstellungen mit vier ungeraden Summanden
+		\[
+		r_4(4p)-r_4(p)=24(p+1)-8(p+1)=16(p+1).
+		\]
+		Daher
+		\[
+		|X_p^{\mathrm{half}}|=16(p+1).
+		\]
+	\end{proof}
+	
+	\begin{korollar}
+		Für jede ungerade Primzahl \(p\) gilt
+		\[
+		|X_p|=24(p+1).
+		\]
+	\end{korollar}
+	
+	\begin{proof}
+		Aus der disjunkten Zerlegung
+		\[
+		X_p=X_p^{\mathrm{int}}\sqcup X_p^{\mathrm{half}}
+		\]
+		und den beiden vorigen Lemmata folgt
+		\[
+		|X_p|
+		=
+		|X_p^{\mathrm{int}}|+|X_p^{\mathrm{half}}|
+		=
+		8(p+1)+16(p+1)
+		=
+		24(p+1).
+		\]
+	\end{proof}
+	
+	\section{Freie Linkswirkung}
+	
+	\begin{definition}[Linkswirkung]
+		Die Gruppe \(\OH^\times\) wirkt durch Linksmultiplikation auf \(X_p\):
+		\[
+		\OH^\times\times X_p\to X_p,\qquad (u,x)\mapsto ux.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Für jede ungerade Primzahl \(p\) ist \(X_p\) unter der Linkswirkung von \(\OH^\times\) invariant.
+	\end{lemma}
+	
+	\begin{proof}
+		Für \(u\in\OH^\times\) und \(x\in X_p\) gilt
+		\[
+		\nrd(ux)=\nrd(u)\nrd(x)=1\cdot p=p.
+		\]
+		Also ist \(ux\in X_p\).
+	\end{proof}
+	
+	\begin{proposition}
+		Für jede ungerade Primzahl \(p\) ist die Linkswirkung von \(\OH^\times\) auf \(X_p\) frei.
+	\end{proposition}
+	
+	\begin{proof}
+		Sei \(x\in X_p\) und \(u\in\OH^\times\) mit
+		\[
+		ux=x.
+		\]
+		Da \(\nrd(x)=p\neq 0\), ist \(x\) in \(\QH\) invertierbar, und zwar mit
+		\[
+		x^{-1}=\frac{\bar x}{\nrd(x)}=\frac{\bar x}{p}.
+		\]
+		Multipliziert man die Gleichung \(ux=x\) rechts mit \(x^{-1}\), so erhält man
+		\[
+		u=1.
+		\]
+		Also ist der Stabilisator jedes Elements trivial, und die Wirkung ist frei.
+	\end{proof}
+	
+	\begin{korollar}
+		Für jede ungerade Primzahl \(p\) hat jeder Linksorbit in \(X_p\) die Größe \(24\).
+	\end{korollar}
+	
+	\begin{proof}
+		Dies folgt unmittelbar aus dem Orbit-Stabilisator-Prinzip.
+	\end{proof}
+	
+	\section{Freie Rechtswirkung}
+	
+	\begin{definition}[Rechtswirkung]
+		Die Gruppe \(\OH^\times\) wirkt auch durch Rechtsmultiplikation auf \(X_p\):
+		\[
+		X_p\times\OH^\times\to X_p,\qquad (x,u)\mapsto xu.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Für jede ungerade Primzahl \(p\) ist \(X_p\) unter der Rechtswirkung von \(\OH^\times\) invariant.
+	\end{lemma}
+	
+	\begin{proof}
+		Für \(x\in X_p\) und \(u\in\OH^\times\) gilt
+		\[
+		\nrd(xu)=\nrd(x)\nrd(u)=p\cdot1=p.
+		\]
+		Also ist \(xu\in X_p\).
+	\end{proof}
+	
+	\begin{proposition}
+		Für jede ungerade Primzahl \(p\) ist die Rechtswirkung von \(\OH^\times\) auf \(X_p\) frei.
+	\end{proposition}
+	
+	\begin{proof}
+		Sei \(x\in X_p\) und \(u\in\OH^\times\) mit
+		\[
+		xu=x.
+		\]
+		Da \(x\) invertierbar ist, folgt nach Linksmultiplikation mit \(x^{-1}\)
+		\[
+		u=1.
+		\]
+		Also ist auch die Rechtswirkung frei.
+	\end{proof}
+	
+	\begin{korollar}
+		Für jede ungerade Primzahl \(p\) hat jeder Rechtsorbit in \(X_p\) die Größe \(24\).
+	\end{korollar}
+	
+	\begin{proof}
+		Dies folgt erneut aus dem Orbit-Stabilisator-Prinzip.
+	\end{proof}
+	
+	\section{Die formale Orbitformel}
+	
+	\begin{satz}[Orbitformel]
+		Sei \(p\) eine ungerade Primzahl. Dann gilt
+		\[
+		|\OH^\times\backslash X_p|
+		=
+		|X_p/\OH^\times|
+		=
+		p+1.
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Nach den vorigen Korollaren hat jeder Linksorbit und jeder Rechtsorbit die Größe \(24\). Mit
+		\[
+		|X_p|=24(p+1)
+		\]
+		folgt daher
+		\[
+		|\OH^\times\backslash X_p|
+		=
+		\frac{|X_p|}{24}
+		=
+		p+1
+		\]
+		und ebenso
+		\[
+		|X_p/\OH^\times|
+		=
+		\frac{|X_p|}{24}
+		=
+		p+1.
+		\]
+	\end{proof}
+	
+	\begin{korollar}
+		Für jede ungerade Primzahl \(p\) gilt
+		\[
+		|X_p|=24\,|\OH^\times\backslash X_p|
+		=
+		24\,|X_p/\OH^\times|.
+		\]
+	\end{korollar}
+	
+	\section{Lokale Split-Struktur und projektive Verfeinerung}
+	
+	Die Orbitformel liefert die Kardinalität \(p+1\), erklärt aber noch nicht, warum gerade diese Zahl auftritt. Die natürliche Vermutung ist eine projektive Parametrisierung.
+	
+	\begin{konjektur}[Projektive Verfeinerung]
+		Für jede ungerade Primzahl \(p\) ist die Linksorbitmenge
+		\[
+		\OH^\times\backslash X_p
+		\]
+		kanonisch mit der projektiven Geraden
+		\[
+		\PP^1(\Fp)
+		\]
+		identifizierbar. Analog gilt
+		\[
+		X_p/\OH^\times \cong \PP^1(\Fp).
+		\]
+	\end{konjektur}
+	
+	\begin{bemerkung}
+		Diese Konjektur verfeinert die bereits bewiesene Kardinalitätsaussage
+		\[
+		|\OH^\times\backslash X_p|=|X_p/\OH^\times|=p+1
+		\]
+		zu einer strukturellen Identifikation.
+	\end{bemerkung}
+	
+	\begin{satz}[Lokale Split-Struktur]
+		Für jede ungerade Primzahl \(p\) ist die lokalisierte Quaternionenalgebra
+		\[
+		\QH\otimes_{\Q}\Q_p
+		\]
+		gesplittet. Insbesondere existiert ein Isomorphismus von \(\Q_p\)-Algebren
+		\[
+		\QH\otimes_{\Q}\Q_p \cong M_2(\Q_p).
+		\]
+		Ferner kann dieses Isomorphismus so gewählt werden, dass die lokalisierte Hurwitz-Ordnung
+		\[
+		\OH\otimes_{\Z}\Z_p
+		\]
+		auf eine maximale Ordnung in \(M_2(\Q_p)\), also auf \(M_2(\Z_p)\), abgebildet wird. Damit existiert ein Isomorphismus von \(\Z_p\)-Algebren
+		\[
+		\phi_p:\OH\otimes_{\Z}\Z_p \xrightarrow{\sim} M_2(\Z_p)
+		\]
+		mit
+		\[
+		\nrd(x)=\det(\phi_p(x)).
+		\]
+	\end{satz}
+	
+	\begin{proof}[Begründung]
+		Dies ist ein klassisches Resultat der lokalen Quaternionentheorie: Für ungerades \(p\) ist die Hamilton-Quaternionenalgebra über \(\Q_p\) nicht verzweigt und daher isomorph zu \(M_2(\Q_p)\). Da \(\OH\otimes\Z_p\) eine maximale Ordnung ist und alle maximalen Ordnungen in \(M_2(\Q_p)\) konjugiert sind, kann \(\phi_p\) so gewählt werden, dass
+		\[
+		\phi_p(\OH\otimes\Z_p)=M_2(\Z_p)
+		\]
+		gilt. Die reduzierte Norm entspricht dann der Determinante.
+	\end{proof}
+	
+	\begin{lemma}
+		Für jedes \(x\in X_p\) ist die reduzierte Matrix
+		\[
+		\overline{A}_x:=\phi_p(x)\bmod p \in M_2(\Fp)
+		\]
+		von Rang \(1\).
+	\end{lemma}
+	
+	\begin{proof}
+		Setze \(A_x:=\phi_p(x)\). Dann gilt
+		\[
+		\det(A_x)=\nrd(x)=p.
+		\]
+		Reduktion modulo \(p\) liefert
+		\[
+		\det(\overline{A}_x)=0,
+		\]
+		also ist \(\overline{A}_x\) singulär. Zugleich ist \(\overline{A}_x\neq 0\), denn wäre \(\overline{A}_x=0\), so läge \(A_x\in pM_2(\Z_p)\), also wäre \(\det(A_x)\in p^2\Z_p\), im Widerspruch zu \(\det(A_x)=p\). Also hat \(\overline{A}_x\) Rang \(1\).
+	\end{proof}
+	
+	\begin{proposition}[Projektive Abbildung der Linksorbits]
+		Die Zuordnung
+		\[
+		[x]_L \longmapsto \ker(\overline{A}_x)
+		\]
+		definiert eine wohldefinierte Abbildung
+		\[
+		\Psi_L:\OH^\times\backslash X_p \longrightarrow \PP^1(\Fp).
+		\]
+	\end{proposition}
+	
+	\begin{proof}
+		Nach dem vorigen Lemma ist \(\ker(\overline{A}_x)\) eine eindimensionale Untermenge von \(\Fp^2\), also ein Punkt von \(\PP^1(\Fp)\).
+		
+		Ist nun \(u\in\OH^\times\), so gilt
+		\[
+		A_{ux}=\phi_p(u)\phi_p(x).
+		\]
+		Da \(\nrd(u)=1\), ist \(\phi_p(u)\in GL_2(\Z_p)\), also auch \(\overline{\phi_p(u)}\in GL_2(\Fp)\). Damit folgt
+		\[
+		\ker(\overline{A}_{ux})
+		=
+		\ker(\overline{\phi_p(u)}\,\overline{A}_x)
+		=
+		\ker(\overline{A}_x).
+		\]
+		Die Zuordnung hängt also nur vom Linksorbit von \(x\) ab.
+	\end{proof}
+	
+	\begin{proposition}[Projektive Abbildung der Rechtsorbits]
+		Die Zuordnung
+		\[
+		[x]_R \longmapsto \operatorname{im}(\overline{A}_x)
+		\]
+		definiert eine wohldefinierte Abbildung
+		\[
+		\Psi_R:X_p/\OH^\times \longrightarrow \PP^1(\Fp).
+		\]
+	\end{proposition}
+	
+	\begin{proof}
+		Nach dem Rang-1-Lemma ist \(\operatorname{im}(\overline{A}_x)\) eine eindimensionale Untermenge von \(\Fp^2\), also ein Punkt von \(\PP^1(\Fp)\).
+		
+		Ist \(u\in\OH^\times\), so gilt
+		\[
+		A_{xu}=A_x\phi_p(u).
+		\]
+		Reduktion modulo \(p\) ergibt
+		\[
+		\overline{A}_{xu}=\overline{A}_x\,\overline{\phi_p(u)}.
+		\]
+		Da \(\overline{\phi_p(u)}\in GL_2(\Fp)\), bleibt die Bildlinie erhalten:
+		\[
+		\operatorname{im}(\overline{A}_{xu})
+		=
+		\operatorname{im}(\overline{A}_x).
+		\]
+		Also hängt die Zuordnung nur vom Rechtsorbit ab.
+	\end{proof}
+	
+	\begin{konjektur}[Bijektive projektive Verfeinerung]
+		Die Abbildungen
+		\[
+		\Psi_L:\OH^\times\backslash X_p\to\PP^1(\Fp),
+		\qquad
+		\Psi_R:X_p/\OH^\times\to\PP^1(\Fp)
+		\]
+		sind bijektiv.
+	\end{konjektur}
+	
+	\begin{bemerkung}
+		Da bereits bewiesen ist, dass
+		\[
+		|\OH^\times\backslash X_p|=|X_p/\OH^\times|=|\PP^1(\Fp)|=p+1,
+		\]
+		genügt es, für \(\Psi_L\) bzw.\ \(\Psi_R\) jeweils nur noch Surjektivität oder Injektivität zu zeigen. Die projektive Verfeinerung reduziert sich also auf die explizite Konstruktion bzw.\ die Orbitklassifikation der entsprechenden Rang-\(1\)-Matrizen modulo \(p\).
+	\end{bemerkung}
+	
+	\section{Doppelorbits als nächste Verfeinerung}
+	
+	\begin{problem}
+		Bestimme die Doppelorbitmenge
+		\[
+		\OH^\times\backslash X_p/\OH^\times
+		\]
+		in intrinsischer Form.
+	\end{problem}
+	
+	\begin{bemerkung}
+		Wenn Linksorbits und Rechtsorbits jeweils projektiv parametrisiert sind, dann liegt die Vermutung nahe, dass Doppelorbits durch eine gröbere Invariante auf
+		\[
+		\PP^1(\Fp)\times \PP^1(\Fp)
+		\]
+		beschrieben werden. Welche zusätzliche Struktur dabei auftritt, ist derzeit offen.
+	\end{bemerkung}
+	
+	\begin{konjektur}[Doppelorbits als kanonische lokale Schale]
+		Die eigentliche feine lokale Struktur der Normschale \(X_p\) wird nicht durch die einseitigen Orbitmengen, sondern durch die Doppelorbitmenge
+		\[
+		\OH^\times\backslash X_p/\OH^\times
+		\]
+		kodiert.
+	\end{konjektur}
+	
+	\section{Literatur und mathematische Einordnung}
+	
+	Der formale Kern dieses Artikels steht in einer klassischen Tradition der Arithmetik von Quaternionenalgebren und ihrer Ordnungen. Für die lokale Struktur ist insbesondere entscheidend, dass Quaternionenalgebren über lokalen Körpern sowie ihre maximalen Ordnungen gut verstanden sind. Im gesplitteten Fall führt dies auf Matrizenalgebren und damit auf die projektive Geometrie über endlichen Körpern.
+	
+	Für die Hurwitz-Ordnung selbst sind die 24 Einheiten, die Faktorisierungseigenschaften und die Rolle der Hurwitz-Primen seit langem bekannt. In moderner Form sind diese Aspekte besonders klar bei Conway und Smith dargestellt. Für die lokale und ordnungstheoretische Perspektive stützen wir uns konzeptionell auf die Darstellung von Voight sowie auf die klassische Monographie von Vignéras.
+	
+	Der Schritt von der bloßen Kardinalität \(p+1\) zu einer projektiven Interpretation ist durch die Literatur zusätzlich motiviert: Arbeiten zur Metakommutation von Hurwitz-Primen zeigen, dass auf Mengen von Hurwitz-Primen fester Norm natürliche Permutationswirkungen auftreten, die mit der projektiven Geraden \(\PP^1(\Fp)\) und der Wirkung von \(PGL_2(\Fp)\) zusammenhängen. Dies passt strukturell genau zu der in diesem Artikel vorgeschlagenen projektiven Verfeinerung der Links- und Rechtsorbitmengen.
+	
+	\begin{bemerkung}
+		Die bewiesene Orbitformel steht im Schnittpunkt dreier klassischer Theoriestränge: der additiven Vier-Quadrate-Theorie, der Arithmetik maximaler Quaternionenordnungen und der lokalen projektiven Geometrie über \(\Fp\). Die Literatur legt nahe, dass die Zahl \(p+1\) nicht zufällig auftritt, sondern auf eine genuine \(\PP^1(\Fp)\)-Struktur der einseitigen Orbitmengen verweist.
+	\end{bemerkung}
+	
+	\section{Konzeptionelle Einordnung}
+	
+	Der formale Kern dieses Artikels besteht aus drei Aussagen:
+	
+	\begin{enumerate}
+		\item Für jede ungerade Primzahl \(p\) gilt
+		\[
+		|X_p|=24(p+1).
+		\]
+		
+		\item Die \(24\) Hurwitz-Einheiten wirken sowohl von links als auch von rechts frei auf \(X_p\).
+		
+		\item Daraus folgt
+		\[
+		|\OH^\times\backslash X_p|
+		=
+		|X_p/\OH^\times|
+		=
+		p+1.
+		\]
+	\end{enumerate}
+	
+	Diese Aussagen sind bereits bemerkenswert, weil sie eine sehr rigide Orbitstruktur aus einem elementaren Zusammenspiel von Jacobis Vier-Quadrate-Formel und Quaternioneninvertibilität gewinnen.
+	
+	Die tiefere geometrische Bedeutung liegt jedoch erst in der projektiven Verfeinerung: Die Zahl \(p+1\) sollte nicht bloß gezählt, sondern geometrisch als \(|\PP^1(\Fp)|\) verstanden werden. Die Doppelorbits markieren dann die nächste, feinere Ebene dieser Struktur.
+	
+	\section{Schluss}
+	
+	Wir haben formal bewiesen, dass für jede ungerade Primzahl \(p\) die Hurwitz-Normschale
+	\[
+	X_p=\{x\in\OH:\nrd(x)=p\}
+	\]
+	genau \(24(p+1)\) Elemente besitzt. Ferner wurde gezeigt, dass die Einheitengruppe \(\OH^\times\) sowohl von links als auch von rechts frei auf \(X_p\) wirkt. Daraus folgt die Orbitformel
+	\[
+	|\OH^\times\backslash X_p|
+	=
+	|X_p/\OH^\times|
+	=
+	p+1.
+	\]
+	
+	Damit ist der zählende Kern des Problems abgeschlossen. Offen bleibt die strukturelle Verfeinerung: die projektive Interpretation der Orbitmengen und die Klassifikation der Doppelorbits. Gerade hier dürfte sich zeigen, dass die Hurwitz-Normschalen nicht nur eine additive Vier-Quadrate-Geometrie, sondern eine genuine lokale projektive Struktur tragen.
+	
+	\begin{thebibliography}{99}
+		
+		\bibitem{ConwaySmith}
+		J.~H.~Conway and D.~A.~Smith,
+		\emph{On Quaternions and Octonions},
+		A K Peters / CRC Press, 2003.
+		
+		\bibitem{Vigneras}
+		M.-F.~Vign\'eras,
+		\emph{Arithm\'etique des alg\`ebres de quaternions},
+		Lecture Notes in Mathematics, vol.~800,
+		Springer, 1980.
+		
+		\bibitem{VoightLocal}
+		J.~Voight,
+		\emph{Quaternion algebras over local fields},
+		in: \emph{Quaternion Algebras},
+		Graduate Texts in Mathematics, vol.~288,
+		Springer, 2021.
+		
+		\bibitem{VoightOrders}
+		J.~Voight,
+		\emph{Orders},
+		in: \emph{Quaternion Algebras},
+		Graduate Texts in Mathematics, vol.~288,
+		Springer, 2021.
+		
+		\bibitem{VoightQuaternionOrders}
+		J.~Voight,
+		\emph{Quaternion orders},
+		in: \emph{Quaternion Algebras},
+		Graduate Texts in Mathematics, vol.~288,
+		Springer, 2021.
+		
+		\bibitem{CohnKumar}
+		H.~Cohn and A.~Kumar,
+		\emph{Metacommutation of Hurwitz primes},
+		Proc. Amer. Math. Soc. \textbf{143} (2015), 1459--1469.
+		
+		\bibitem{ForsythGurevShrima}
+		A.~Forsyth, J.~Gurev and S.~Shrima,
+		\emph{Metacommutation as a Group Action on the Projective Line Over $begin:math:text$\\mathbb\{F\}\_p$end:math:text$},
+		Proc. Amer. Math. Soc. \textbf{144} (2016), 4583--4590.
+		
+	\end{thebibliography}
+	
+\end{document}

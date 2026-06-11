@@ -1,0 +1,410 @@
+% EABC Paper-Abschnitt: Spektrale Zerlegung des Kanal-Bias
+% Ergänzung zu Chebyshev-/Dirichlet-Charakter-Analyse mod 420
+% Kompilierbar mit: pdflatex / xelatex + amsmath, amssymb, booktabs
+
+\section{Spektrale Zerlegung des Kanal-Bias auf Dirichlet-Charaktere}
+\label{sec:spectral-decomposition}
+
+\subsection{Daten und Notation}
+
+Sei $N = 4767$ die Gesamtzahl der beobachteten Vierlingskanäle und
+$n_r$ die Besetzungszahlen auf den sechs Restklassen.
+Der zentrierte Bias (Wahrscheinlichkeitsform) ist
+\[
+  \delta_r \;=\; \frac{n_r}{N} - \frac{1}{6},
+  \qquad r \in \mathcal{R} = \{11,101,191,221,311,401\}.
+\]
+Numerisch:
+\[
+  \delta = (-0{,}00619,\; +0{,}00766,\; -0{,}00178,\; +0{,}00304,\; +0{,}00304,\; -0{,}00577).
+\]
+Das Skalarprodukt auf der $6$-Punkt-Menge ist
+$\langle f,g\rangle = \frac{1}{6}\sum_{r\in\mathcal{R}} f_r\,\overline{g_r}$.
+
+Wir betrachten die Dirichlet-Charaktere mod $420 = 4\cdot 3\cdot 5\cdot 7$
+als Produktcharaktere:
+\[
+  \chi = \chi_4 \cdot \chi_5 \cdot \chi_7^{(q)} \cdot \chi_7^{(3)},
+\]
+wobei $\chi_4$ der primitive quadratische Charakter mod $4$,
+$\chi_5 = (\cdot/5)$ das Legendre-Symbol,
+$\chi_7^{(q)} = (\cdot/7)$ der quadratische Charakter mod $7$ und
+$\chi_7^{(3)} = \chi_3$ der primitive \emph{kubische} Charakter mod $7$ ist
+(Konvention: $\chi_3(\zeta) = \zeta$ für $\zeta \in \mathbb{F}_7^\times$).
+
+\subsection{Drei Hauptergebnisse}
+
+Die nachfolgende Analyse stützt sich auf drei unabhängige, für
+Zahlentheoretiker adressierbare Resultate:
+
+\begin{enumerate}
+  \item[\textbf{Satz A.}]
+        \emph{Exakter Identitätssatz.}
+        $\chi_3|_{\mathcal{R}} = \psi_2$ als Vektoren in $\mathbb{C}^6$;
+        folglich $F_2 = \langle\delta,\chi_3\rangle$ (Theorem~\ref{thm:dft-chi3}).
+  \item[\textbf{Satz B.}]
+        \emph{Vollständige Charakterzerlegung.}
+        $\delta$ zerfällt in die Projektionen auf $\chi_3$, $\chi_4$ und
+        $\chi_4\chi_3$ mit Residuum $<10^{-36}$
+        (Theorem~\ref{thm:spectral-decomp}).
+  \item[\textbf{Satz C.}]
+        \emph{Negativer Skalierungstest.}
+        $B(x)/\sqrt{x}$ zeigt bis $x=10^9$ keinen stabilen Drift
+        (Theorem~\ref{thm:scaling}).
+\end{enumerate}
+
+Diese Kombination---exakter algebraischer Identitätssatz, vollständige
+spektrale Zerlegung und negatives Skalierungsverhalten---ist
+überzeugender als dynamische EABC-Interpretationen; sie liefert eine
+rein arithmetische Beschreibungsebene der Kanalasymmetrie.
+
+\subsection{Satz A: Identität $\chi_3|_{\mathcal{R}}=\psi_2$}
+
+Sei $\psi_k(n) := e^{2\pi i kn/6}$ der $k$-te Fourier-Modus auf dem
+$6$-Ring und $\chi_3|_{\mathcal{R}}$ der Wertevektor
+$(\chi_3(r_n))_{n=0}^{5}$ in der festen Reihenfolge
+$(11,101,191,221,311,401)$.
+
+\begin{lemma}[Mod-$7$-Zyklus auf $\mathcal{R}$]
+\label{lem:mod7-cycle}
+In der festen Kanalreihenfolge gilt
+\[
+  r_n \bmod 7 \;=\; (4,\,3,\,2,\,4,\,3,\,2).
+\]
+\end{lemma}
+
+\begin{proof}
+Direkte Rechnung:
+$11\equiv 4$, $101\equiv 3$, $191\equiv 2$,
+$221\equiv 4$, $311\equiv 3$, $401\equiv 2 \pmod{7}$.
+\end{proof}
+
+\begin{lemma}[Punktweise Übereinstimmung $\chi_3 = \psi_2$]
+\label{lem:chi3-equals-psi2}
+Mit $\omega = e^{2\pi i/3}$ und der Konvention
+$\chi_3(4)=1$, $\chi_3(3)=\omega$, $\chi_3(2)=\omega^2$ gilt
+\[
+  \chi_3(r_n) \;=\; \psi_2(n)
+  \qquad\text{für alle } n=0,\ldots,5.
+\]
+Insbesondere sind $\chi_3|_{\mathcal{R}}$ und $\psi_2$ als Vektoren in
+$\mathbb{C}^6$ \emph{identisch} (nicht nur kollinear).
+\end{lemma}
+
+\begin{proof}
+Nach Lemma~\ref{lem:mod7-cycle} ist
+$(\chi_3(r_n))_{n=0}^{5} = (1,\omega,\omega^2,1,\omega,\omega^2)$.
+Ebenso liefert $\psi_2(n)=e^{2\pi i\cdot 2n/6}=e^{2\pi i n/3}$ dieselbe
+Folge, da $\omega = e^{2\pi i/3}$.
+\end{proof}
+
+\begin{theorem}[Satz A: $F_2=\langle\delta,\chi_3\rangle$]
+\label{thm:dft-chi3}
+Sei $(\delta_n)_{n=0}^{5}$ die Anordnung von $\delta_r$ in der festen
+Reihenfolge $(11,101,191,221,311,401)$ und
+\[
+  F_k \;=\; \frac{1}{6}\sum_{n=0}^{5} \delta_n\, e^{-2\pi i kn/6}
+  \;=\; \langle\delta,\,\psi_k\rangle
+\]
+der $k$-te DFT-Koeffizient.
+Dann gilt auf $\mathcal{R}$ für $k=2$ die \emph{exakte Identität}
+\[
+  \boxed{F_2 \;=\; \langle\delta,\,\chi_3\rangle.}
+\]
+Da $\delta\in\mathbb{R}^6$ reell ist, folgt zudem $F_4=\overline{F_2}$.
+Der Energieanteil der Projektion auf
+$\mathrm{span}\{\chi_3,\overline{\chi_3}\}$ ist
+\[
+  |F_2|^2 + |F_4|^2
+  \;=\;
+  |\langle\delta,\chi_3\rangle|^2 + |\langle\delta,\overline{\chi_3}\rangle|^2
+  \;=\; 0{,}5971 \cdot \mathrm{Var}(\delta).
+\]
+\end{theorem}
+
+\begin{proof}
+Nach Lemma~\ref{lem:chi3-equals-psi2} ist $\psi_2 = \chi_3|_{\mathcal{R}}$,
+also $F_2 = \langle\delta,\psi_2\rangle = \langle\delta,\chi_3\rangle$.
+
+Da $\delta$ reell ist und $\psi_4(n)=\overline{\psi_2(n)}$, gilt
+$F_4=\overline{F_2}$.
+Parseval liefert $\mathrm{Var}(\delta)=\sum_{k=0}^{5}|F_k|^2$.
+Die Modi $k=2$ und $k=4$ spannen denselben zweidimensionalen kubischen
+Unterraum wie $\{\chi_3,\overline{\chi_3}\}$, daher
+$|F_2|^2+|F_4|^2 = |\langle\delta,\chi_3\rangle|^2+|\langle\delta,\overline{\chi_3}\rangle|^2$.
+Numerisch beträgt dieser Anteil $59{,}7132\,\%$ von $\mathrm{Var}(\delta)$.
+\end{proof}
+
+\subsection{Satz B: Vollständige Charakterzerlegung}
+
+Sei $P_\chi$ die orthogonale Projektion auf den von einem Charakter
+$\chi$ (bzw.\ dessen orthonormalisierter Richtung) aufgespannten
+Unterraum von $\mathbb{C}^{\mathcal{R}}$.
+
+\begin{theorem}[Satz B: Exakte Zerlegung von $\delta$]
+\label{thm:spectral-decomp}
+Mit der orthonormalisierten Charakterbasis $\{\hat{e}_\chi\}$ auf
+$\mathcal{R}$ (Gram--Schmidt über die Charakterwerte) gilt
+\[
+  \delta \;=\; \sum_{\chi} c_\chi\,\hat{e}_\chi,
+  \qquad
+  c_\chi = \langle\delta,\hat{e}_\chi\rangle,
+  \qquad
+  \mathrm{Var}(\delta) = \sum_\chi |c_\chi|^2.
+\]
+Numerisch gilt die Zerlegung
+\[
+  \boxed{
+  \delta \;=\; P_{\chi_3}\delta + P_{\overline{\chi_3}}\delta
+              + P_{\chi_4}\delta + P_{\chi_4\chi_3}\delta + \varepsilon,
+  \qquad
+  \|\varepsilon\|^2 < 10^{-36}.
+  }
+\]
+Die Varianz zerlegt sich wie folgt:
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Charakter & $|c_\chi|$ & Varianzanteil (\%) & Ordnung \\
+\midrule
+$\chi_3 + \overline{\chi_3}$ & $|\langle\delta,\chi_3\rangle|$ & $59{,}71$ & $3$ \\
+$\chi_4$ & $0{,}001643$ & $10{,}67$ & $2$ \\
+$\chi_4\chi_3$ & $0{,}002698$ & $28{,}75$ & $6$ \\
+$\chi_4\chi_7^{(q)}$ & $0{,}000470$ & $0{,}87$ & $6$ \\
+$\chi_5$ & $0$ (konstant auf $\mathcal{R}$) & $0$ & $2$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Der Rest-Bias nach Entfernung der $\chi_3$-Komponente zerlegt sich in
+$\chi_4$ ($10{,}67\,\%$ Gesamtvarianz), $\chi_4\chi_3$ ($28{,}75\,\%$)
+und $\chi_4\chi_7^{(q)}$ ($0{,}87\,\%$); siehe Tabelle~\ref{tab:projections}.
+Der Anteil $\chi_5$ verschwindet, da $r\equiv 1\pmod{5}$ auf allen Kanälen.
+Auf der $\chi_3=1$-Unterklasse $\{11,221\}$ (beide $r\bmod 7 = 4$)
+wird $\delta_{11}-\delta_{221}$ primär durch $\chi_4$ getragen
+($\chi_4(11)=-1$, $\chi_4(221)=+1$; $\chi_5$, $\chi_7^{(q)}$, $\chi_3$ konstant),
+mit $89{,}6\,\%$ erklärter $2$-Punkt-Varianz.
+\end{theorem}
+
+\begin{proof}
+Alle $r\in\mathcal{R}$ sind ungerade und $\not\equiv 0\pmod{5,7}$, daher
+sind alle Charaktere wohldefiniert.
+Auf $\mathcal{R}$ gilt $r \equiv 1 \pmod{5}$ und $r \equiv 2 \pmod{3}$,
+sodass $\chi_5$ und der quadratische Charakter mod $3$ konstant sind
+und keinen Varianzanteil tragen.
+
+Die $\chi_3$-Komponente erfasst die $3$-Wellenlänge (Satz~A).
+Gram--Schmidt über die Charakterwerte auf $\mathcal{R}$ liefert eine
+orthonormale Basis; die numerische Rekonstruktion erfüllt
+$\mathrm{Var}(\varepsilon)=1{,}31\cdot 10^{-36}$.
+Der orthogonale Rest nach Entfernung von $\chi_3+\overline{\chi_3}$
+hat Gesamtvarianzanteil $40{,}29\,\%$ und liegt in
+$\mathrm{span}\{\hat{e}_{\chi_4},\hat{e}_{\chi_4\chi_3},\hat{e}_{\chi_4\chi_7^{(q)}}\}$.
+
+Auf der $\chi_3=1$-Unterklasse $\{11,221\}$ trennt allein $\chi_4$
+($\chi_4(11)=-1$, $\chi_4(221)=+1$); alle anderen relevanten Charaktere
+sind dort konstant.
+\end{proof}
+
+\begin{table}[ht]
+\centering
+\caption{Orthonormale Charakterprojektionen von $\delta$ auf $\mathcal{R}$;
+Varianzanteile in Prozent ($\mathrm{Var}(\delta)=2{,}53\cdot 10^{-5}$).}
+\label{tab:projections}
+\begin{tabular}{lrrr}
+\toprule
+Charakter $\chi$ & $|c_\chi|$ & $\arg(c_\chi)$ & Varianz (\%) \\
+\midrule
+$1$ (trivial) & $0{,}00000000$ & --- & $0{,}0000$ \\
+$\chi_3$ & $0{,}00274918$ & $-106{,}63^\circ$ & $29{,}8566$ \\
+$\overline{\chi_3}$ & $0{,}00274918$ & $+106{,}63^\circ$ & $29{,}8566$ \\
+$\chi_4$ & $0{,}00164324$ & $0{,}00^\circ$ & $10{,}6669$ \\
+$\chi_4\chi_7^{(q)}$ & $0{,}00046972$ & $180{,}00^\circ$ & $0{,}8716$ \\
+$\chi_4\chi_3$ & $0{,}00269768$ & $-30{,}00^\circ$ & $28{,}7484$ \\
+\midrule
+\textbf{Summe} & --- & --- & \textbf{100{,}0000} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\caption{Rest-Bias ($40{,}29\,\%$) nach Entfernung von $\chi_3+\overline{\chi_3}$:
+Projektion auf quadratische Charaktere ($\mathrm{Var}(\delta_{\mathrm{rest}})=1{,}02\cdot 10^{-5}$).}
+\label{tab:rest-breakdown}
+\begin{tabular}{lrrl}
+\toprule
+Charakter & $|\langle\delta_{\mathrm{rest}},\chi\rangle_\perp|$ & Anteil (\%) & Bemerkung \\
+\midrule
+$\chi_4$ & $0{,}00164324$ & $26{,}48$ & primitiv mod $4$ \\
+$\chi_5$ & $0$ & $0$ & konstant auf $\mathcal{R}$ \\
+$\chi_7^{(q)}$ & $0$ & $0$ & $\in\mathrm{span}(\chi_3)$ \\
+$\chi_4\chi_5$ & $0{,}00164324$ & $26{,}48$ & $=\chi_4$ (da $\chi_5\equiv 1$) \\
+$\chi_4\chi_7^{(q)}$ & $0{,}00010489$ & $0{,}11$ & gemischt \\
+$\chi_5\chi_7^{(q)}$ & $0$ & $0$ & --- \\
+$\chi_4\chi_5\chi_7^{(q)}$ & $0{,}00010489$ & $0{,}11$ & $=\chi_4\chi_7^{(q)}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Primzahlzwillingskonfigurationen der EABC-Familien}
+
+Die vier EABC-Familien sind die Restklassen
+$E\equiv 1$, $A\equiv 5$, $B\equiv 7$, $C\equiv 11 \pmod{12}$.
+Ein Primzahlzwilling mit Abstand $2$ trägt stets eine der beiden
+feinen Konfigurationen
+\[
+  \mathrm{AB}=(A,B)
+  \qquad\text{oder}\qquad
+  \mathrm{CE}=(C,E).
+\]
+Die chiralen Vierlingsordnungen sind
+$\mathrm{ABCE}=(A,B,C,E)$ und $\mathrm{CEAB}=(C,E,A,B)$.
+
+\begin{theorem}[Zulässige Zwillingskonfigurationen bei Primvierlingen]
+\label{thm:twin-config}
+Für einen klassischen Primzahlvierling $Q(p)=(p,p+2,p+6,p+8)$ mit
+Gap-Signatur $(2,4,2)$ gilt:
+\begin{enumerate}
+  \item $p\equiv 5\pmod{12}$ $\Rightarrow$
+        Signatur $\mathrm{ABCE}$, Zwillingskonfiguration $\mathrm{AB\text{-}CE}$,
+        Minimum $Q(5)=(5,7,11,13)$.
+  \item $p\equiv 11\pmod{12}$ $\Rightarrow$
+        Signatur $\mathrm{CEAB}$, Zwillingskonfiguration $\mathrm{CE\text{-}AB}$,
+        Minimum $Q(11)=(11,13,17,19)$.
+\end{enumerate}
+Es existieren keine weiteren Chiralitäten oder Zwillingskonfigurationen
+bei $\delta=6$; dies folgt unmittelbar aus den Restklassen modulo $12$.
+\end{theorem}
+
+\begin{proof}
+Für $p\equiv 5\pmod{12}$ sind die mod-$12$-Reste
+$(p,p+2,p+6,p+8)\equiv (5,7,11,1)$, also $(A,B,C,E)$.
+Die Zwillinge an den Positionen $(0,1)$ und $(2,3)$ sind
+$\mathrm{AB}$ bzw.\ $\mathrm{CE}$.
+Der Fall $p\equiv 11\pmod{12}$ liefert $(11,1,5,7)\equiv (C,E,A,B)$
+und die Konfiguration $\mathrm{CE\text{-}AB}$.
+\end{proof}
+
+\begin{table}[ht]
+\centering
+\caption{Zwillingskonfigurationen klassischer Primvierlinge ($\delta=6$).
+Empirische Häufigkeiten bis $p\le 2\cdot 10^6$: $152$ bzw.\ $143$ Treffer.}
+\label{tab:twin-config}
+\begin{tabular}{lllll}
+\toprule
+Chiralität & Zwillingskonfig. & Signatur & Minimum & Anteil \\
+\midrule
+$\mathrm{ABCE}$ & $\mathrm{AB\text{-}CE}$ & $\mathrm{ABCE}$ & $Q(5)$ & $51{,}5\,\%$ \\
+$\mathrm{CEAB}$ & $\mathrm{CE\text{-}AB}$ & $\mathrm{CEAB}$ & $Q(11)$ & $48{,}5\,\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Bemerkung (erweiterte Quadrupel).}
+Bei erweiterten Prime-abce-Quadrupeln $(a,a+2,a+\delta,a+\delta+2)$ mit
+$\delta=12,18,\ldots$ treten zusätzlich die Signaturen
+$\mathrm{ABAB}$ und $\mathrm{CECE}$ auf.
+Diese Konfigurationen gehören jedoch \emph{nicht} zur Klasse der
+klassischen Primzahlvierlinge ($\delta=6$) und werden hier nur zur
+arithmetischen Vollständigkeit erwähnt; ihr kleinstes Beispiel ist
+$Q(5)$ mit $\delta=12$, also $(5,7,17,19)$.
+
+\begin{corollary}[Spektrallücke]
+\label{cor:spectral-gap}
+Nach Satz~B liegt $\delta$ numerisch vollständig im Dirichlet-Charakter-Unterraum
+mod $420$; es verbleibt kein nachweisbarer orthogonaler dynamischer Anteil.
+Der Bias $B_{101,11}$ ist damit eine endliche Stichprobenfluktuation in
+festen Charakter-Richtungen, kein persistentes Drift-Signal.
+\end{corollary}
+
+\subsection{Satz C: Negativer Skalierungstest}
+
+\begin{theorem}[Satz C: Kein $\sqrt{x}$-Drift bis $10^9$]
+\label{thm:scaling}
+Sei $B(x)$ der beobachtete Kanal-Bias $B_{101,11}$ bei Schranke $x$.
+Ein persistenter Chebyshev-Bias würde $B(x)/\sqrt{x}\to c>0$ erwarten.
+Der Skalierungstest (Grenzen $10^8$, $3\cdot 10^8$, $10^9$) zeigt:
+\begin{itemize}
+  \item $B(x)/\sqrt{x}$: $0{,}956 \to 0{,}487 \to 0{,}457$ (monoton fallend),
+  \item Null-Modell-$p$-Wert beim Endwert: $\approx 43\,\%$ (nicht signifikant),
+  \item kein Anzeichen für stabilen Drift; Verhalten konsistent mit
+        $\mathcal{O}(\sqrt{x})$-Fluktuation um Null.
+\end{itemize}
+\end{theorem}
+
+Satz~C ist eine \emph{negative} Aussage gegen einen neuen, kanalspezifischen
+Chebyshev-Bias.
+Zusammen mit Satz~A und Satz~B erklärt sie, warum die $59{,}71\,\%$-Dominanz
+von $\chi_3$ eine endliche Projektion auf
+$\mathrm{span}\{\chi_3,\overline{\chi_3}\}$ ist und nicht als
+systematischer Drift skaliert
+(vgl.~\cite{chebyshev1853,rubinstein2001}).
+Der $\chi_4$-Anteil ist ein sekundärer quadratischer Effekt mod $4$,
+der auf der $\chi_3=1$-Unterklasse die Kanäle $11$ und $221$ trennt.
+
+\subsection{Offene Fragen}
+
+Die spektrale Zerlegung erklärt die \emph{Form} der beobachteten Asymmetrie
+auf $\mathcal{R}$, nicht ihre \emph{arithmetische Herkunft}.
+Offen bleiben insbesondere:
+\begin{enumerate}
+  \item Warum konzentrieren sich Primzahlvierlinge bevorzugt auf
+        genau die sechs Restklassen $\{11,101,191,221,311,401\}$ mod $420$?
+  \item Lassen sich die Koeffizienten $a$, $b$, $c$ in
+        \[
+          \delta = a\chi_3 + \bar{a}\,\overline{\chi_3}
+                   + b\chi_4 + c\chi_4\chi_3
+        \]
+        aus expliziten Formeln, Hardy--Littlewood-Heuristiken oder
+        Primzahlrennen für die beteiligten Charaktere ableiten?
+\end{enumerate}
+Die Zerlegung liefert damit eine präzise \emph{Beschreibungsebene};
+die \emph{Erklärungsebene} für die absoluten Besetzungszahlen und
+die Wahl der sechs Kanäle ist Gegenstand weiterer Arbeit.
+
+\subsection{Charakterwerte auf den Kanälen}
+
+\begin{table}[ht]
+\centering
+\caption{Primitive Charaktere auf $\mathcal{R}$.}
+\label{tab:char-values}
+\begin{tabular}{rrrrrrr}
+\toprule
+$r$ & $r\bmod 4$ & $r\bmod 5$ & $r\bmod 7$ & $\chi_4$ & $\chi_5$ & $\chi_3$ \\
+\midrule
+$11$  & $3$ & $1$ & $4$ & $-1$ & $+1$ & $+1$ \\
+$101$ & $1$ & $1$ & $3$ & $+1$ & $+1$ & $\omega$ \\
+$191$ & $3$ & $1$ & $2$ & $-1$ & $+1$ & $\omega^2$ \\
+$221$ & $1$ & $1$ & $4$ & $+1$ & $+1$ & $+1$ \\
+$311$ & $3$ & $1$ & $3$ & $-1$ & $+1$ & $\omega$ \\
+$401$ & $1$ & $1$ & $2$ & $+1$ & $+1$ & $\omega^2$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% Literatur (BibTeX-Stil, Platzhalter)
+\begin{thebibliography}{9}
+\bibitem{chebyshev1853}
+P.~L.~Chebyshev,
+\emph{Sur la concurrence des séries trigonometriques},
+Mém. Acad. Imp. St.-Pétersbourg \textbf{3} (1853).
+
+\bibitem{rubinstein2001}
+M.~Rubinstein and P.~Sarnak,
+\emph{Chebyshev's bias},
+Experiment. Math. \textbf{3} (1994), 173--197.
+
+\bibitem{dirichlet1837}
+P.~G.~L.~Dirichlet,
+\emph{Beweis des Satzes, dass jede unbegrenzte arithmetische Progression,
+deren erstes Glied und Differenz ganze Zahlen ohne gemeinschaftlichen
+Factor sind, unendlich viele Primzahlen enthält},
+Abh. Königl. Preuß. Akad. Wiss. (1837).
+
+\bibitem{davenport2000}
+H.~Davenport,
+\emph{Multiplicative Number Theory},
+3rd ed., Springer, 2000.
+\end{thebibliography}

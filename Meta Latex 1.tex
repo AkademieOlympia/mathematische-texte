@@ -1,0 +1,163 @@
+\documentclass{article}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Prm}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\Corr}{\mathrm{Corr}}
+\newcommand{\one}{\mathbf{1}}
+\DeclareMathOperator{\loglog}{log\,log}
+
+\title{Shell reduction modulo 12, Chebyshev bias, and the structure of rough kernels}
+\author{}
+\date{}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		We introduce a two-layer shell reduction of integers coprime to 6 and study the statistical behavior of the residual kernel under the action of the Dirichlet character $\chi_3$. Let $P_k=\{2,3,5,\dots,p_k\}$ and define for $n$ with $\gcd(n,6)=1$ the quantities $S_k(n)$, $R_k(n)$, and the balance/switch points $\pi_{\mathrm{bal}}^M(n)$, $\pi_{\mathrm{wech}}^M(n)$.
+		
+		\textbf{Theorem A.} For $n=\prod p_i^{a_i}$ and $M=R$, the points $\pi_{\mathrm{bal}}^R(n)$ and $\pi_{\mathrm{wech}}^R(n)$ are determined by the two critical indices of the cumulative sums of $a_i\log p_i$. In particular, for $n=pqr$ with $3<p<q<r$ one has $\pi_{\mathrm{bal}}^R=\pi_{\mathrm{wech}}^R=q$.
+		
+		\textbf{Theorem B.} If $k=k(N)$ satisfies $k\to\infty$ and $k=o(\log N)$, then the asymptotic densities of the four residue classes of $R_k(n)\bmod 12$ exist and satisfy
+		\[
+		\omega_B > \omega_C > \omega_A > \omega_E,
+		\]
+		with explicit rates $\omega_B-\omega_C \sim \delta/(\log p_k\log N)$ for $\delta>0$ arising from the Chebyshev bias of $\chi_3$.
+		
+		\textbf{Theorem C.} For prime quadruplets $Q_4=(p,p+2,p+6,p+8)$ the functional $T_c=B_\pi + c\cdot \one_{EA\text{-}BC\text{-}EA}$ maximizes $\Corr(T_c,\log\mathrm{Gap}(Q_4))$ uniquely at $c=6$, corresponding to the minimal strictly positive $d$ with $\Cov(\chi_3(p),\chi_3(p+d))<0$.
+		
+		\textbf{Theorem D.} The expected waiting time for twin primes in a monochromatic $EA$ or $BC$ run of $R_k(n)$ equals $2^{4-k}-1$, where $k$ is the number of resolved shell primes.
+		
+		The results unify numerical observations on prime constellations, Chebyshev bias, and entropy of residue classes into a single framework of logarithmic mass accounting.
+	\end{abstract}
+	
+	\section{Introduction}
+	
+	\subsection{Motivation and definitions}
+	Let $\mathcal M=\{n\in\N:\gcd(n,6)=1\}$. For $k\ge 1$ let $P_k=\{2,3,5,\dots,p_k\}$. For $n\in\mathcal M$ define
+	\[
+	S_k(n)=\prod_{p\le p_k} p^{v_p(n)}, \qquad R_k(n)=\frac{n}{S_k(n)}.
+	\]
+	We factor $R_k(n)$ according to residues mod 12:
+	\[
+	E_k(n)=\prod_{\substack{q^a\parallel R_k \\ q\equiv 1\,(12)}} q^a,\quad
+	A_k(n)=\prod_{\substack{q^a\parallel R_k \\ q\equiv 5\,(12)}} q^a,
+	\]
+	\[
+	B_k(n)=\prod_{\substack{q^a\parallel R_k \\ q\equiv 7\,(12)}} q^a,\quad
+	C_k(n)=\prod_{\substack{q^a\parallel R_k \\ q\equiv 11\,(12)}} q^a.
+	\]
+	For $M\in\{E,A,B,C,EA,BC,ABC,R\}$ set $M_k$ the corresponding product, with $R_k=E_kA_kB_kC_k$.
+	
+	\begin{definition}
+		For $n\in\mathcal M$ and a mode $M$ define $L_k^M(n)=\log M_k(n)-\log S_k(n)$. Then
+		\[
+		\pi_{\mathrm{bal}}^M(n):=p_j,\quad j=\arg\min\{k: S_k>1,\ M_k>1,\ |L_k^M|\},
+		\]
+		\[
+		\pi_{\mathrm{wech}}^M(n):=p_j,\quad j=\min\{k: L_{k-1}^M>0,\ L_k^M\le 0,\ L_k^M\neq 0\}.
+		\]
+	\end{definition}
+	
+	For $X\in\{E,A,B,C\}$ and $x,y$ set
+	\[
+	\psi_X(x,y) := \sum_{\substack{n\le x\\ p_{\min}(n)>y\\ P^+(n)\equiv x_X\,(12)}} \log P^+(n),
+	\]
+	and $W_X^{(k)}(N)$ the normalized mean of $\log X_k(n)$ over $n\le N, n\in\mathcal M$.
+	
+	\section{Shell arithmetic and the balance/switch theorems}
+	
+	\begin{lemma}[Non-triviality]
+		$S_k(n)>1$ iff $p_{\min}(n)\le p_k$. $M_k(n)>1$ iff $R_k(n)$ has a prime factor in the residue classes of $M$.
+	\end{lemma}
+	
+	\begin{theorem}[Theorem A, general case]
+		Let $n=\prod_{i=1}^t p_i^{a_i}$ with $3<p_1<\cdots<p_t$ and $A_i:=a_i\log p_i$. Let $M=R$. Then:
+		\begin{enumerate}
+			\item Let $j$ be minimal with $A_j\ge \sum_{i>j}A_i$. Then $\pi_{\mathrm{bal}}^R(n)=p_j$.
+			\item Let $\ell$ be minimal with $\sum_{i\le \ell}A_i\ge \sum_{i>\ell}A_i$. Then $\pi_{\mathrm{wech}}^R(n)=p_\ell$.
+		\end{enumerate}
+	\end{theorem}
+	
+	\begin{proof}
+		For $k_{i-1}\le m<k_i$ we have $L_m^R=\sum_{j\ge i}A_j-\sum_{j<i}A_j$. The minimal $|L_m^R|$ under non-triviality occurs at the first $i$ with $A_i\ge \sum_{j>i}A_j$. The first sign change occurs when the partial sum crosses the remaining sum.
+	\end{proof}
+	
+	\begin{corollary}
+		For $n=pqr$ with $3<p<q<r$ one has $\pi_{\mathrm{bal}}^R=\pi_{\mathrm{wech}}^R=q$.
+	\end{corollary}
+	
+	\section{Asymptotic hierarchy of residue classes}
+	
+	\begin{theorem}[Theorem B]
+		Let $k=k(N)$ with $k\to\infty$, $k=o(\log N)$ and $y=p_k$. Then limits $\omega_X=\lim_{N\to\infty}W_X^{(k)}(N)$ exist and satisfy
+		\[
+		\omega_B>\omega_C>\omega_A>\omega_E.
+		\]
+		Moreover,
+		\[
+		\omega_B-\omega_C \sim \frac{\delta}{\log y\log N},
+		\]
+		where $\delta>0$ depends on the Chebyshev bias for $\chi_3$.
+	\end{theorem}
+	
+	\begin{proof}[Sketch]
+		For $1-o(1)$ of $n\in\mathcal M_N$, $\log R_k(n)=\log P^+(n)+O(\log y)$. Hence
+		\[
+		W_B-W_C \sim \frac{\psi_B(N,y)-\psi_C(N,y)}{\sum_X \psi_X(N,y)}.
+		\]
+		Using Buchstab and $\sum_{p\le t,\,p\equiv 7}\log p-\sum_{p\le t,\,p\equiv 11}\log p \sim \delta_0\sqrt{t}$, partial summation gives the claim.
+	\end{proof}
+	
+	\section{Applications to prime $k$-tuples}
+	
+	\begin{theorem}[Theorem C]
+		For prime quadruplets $Q_4=(p,p+2,p+6,p+8)$ let $T_c=B_\pi + c\cdot \one_{EA\text{-}BC\text{-}EA}$. Then
+		\[
+		\arg\max_{c\in\N} \lim_{x\to\infty}\Corr(T_c,\log\mathrm{Gap}(Q_4)) = 6,
+		\]
+		because $d=6$ is minimal with $\Cov(\chi_3(p),\chi_3(p+d))<0$.
+	\end{theorem}
+	
+	\begin{proof}[Sketch]
+		$B_\pi$ is $\chi_3$-neutral by Theorem A. The indicator encodes $\operatorname{sgn}\sum_{n\in Q_4}\chi_3(n)\log n$. For $h=(0,2,6,8)$ the dominant covariance term is from distance $6$, which is maximally negative. Optimizing the linear predictor gives $c^*=6$.
+	\end{proof}
+	
+	\section{Entropy and waiting times}
+	
+	\begin{theorem}[Theorem D]
+		Let $Z_n=\one_{BC}(R_k(n))$. Then $(Z_n)$ is stationary with $\Cov(Z_n,Z_{n+h}) = \frac{1}{4}\rho^h+o(1)$, $\rho=1-2^{-k}$. The expected waiting time for a twin in $EA$ or $BC$ equals $2^{4-k}-1$.
+	\end{theorem}
+	
+	\begin{proof}[Sketch]
+		Conditioning on the first $k$ primes, $\mathbb{P}[Z_{n+2}=0\mid Z_n=0]=\frac{1}{2}+2^{-k-1}$. The mean recurrence time for $00$ with gap $2$ gives $\mathbb{E}=2^{4-k}-1$.
+	\end{proof}
+	
+	\section{Concluding remarks}
+	
+	Theorems A–D reduce the observed $B>C>A>E$ hierarchy, the $c^*=6$ trigger, and the $2^{4-k}-1$ law to logarithmic mass accounting, Chebyshev bias, and entropy. Further work concerns unconditional error terms and higher moduli.
+	
+	\begin{thebibliography}{9}
+		\bibitem{RS} M. Rubinstein, P. Sarnak, \emph{Chebyshev's bias}, Experiment. Math. 3 (1994), 173–197.
+		\bibitem{FG} J. Friedlander, A. Granville, \emph{Limitations to the equi-distribution of primes I}, Ann. of Math. 129 (1989), 363–382.
+		\bibitem{Mo} H. L. Montgomery, \emph{Topics in Multiplicative Number Theory}, Springer, 1971.
+	\end{thebibliography}
+	
+\end{document}

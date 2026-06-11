@@ -1,0 +1,921 @@
+\documentclass[a4paper,12pt]{article}
+
+% -------------------------------------------------
+% Pakete
+% -------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{geometry}
+\geometry{margin=2.6cm}
+
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{cite}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{proposition}[satz]{Proposition}
+\newtheorem{korollar}[satz]{Korollar}
+
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{konjektur}[satz]{Konjektur}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+\newtheorem{beispiel}[satz]{Beispiel}
+
+\numberwithin{equation}{section}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\OH}{O_H}
+\newcommand{\HH}{\mathbb{H}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Fp}{\mathbb{F}_p}
+\newcommand{\Nrd}{\operatorname{Nrd}}
+\newcommand{\Ord}{\mathcal{O}}
+
+% -------------------------------------------------
+% Titel
+% -------------------------------------------------
+\title{\textbf{Arithmetische Topologie der Hurwitz-Ordnung}\\[0.4em]
+	\large Projektive Idealstrukturen, Primnorm-Schalen, Hurwitzdruck\\
+	und zeta-spektroskopische Modulation}
+\author{Thomas Hoffbauer}
+\date{März 2026}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Diese Arbeit entwickelt eine geschlossene, intrinsisch formulierte Darstellung der Normschalen in der Hurwitz-Ordnung der Hamiltonschen Quaternionenalgebra. Ausgangspunkt ist die klassische Zählformel
+		\[
+		|X_p|=24(p+1)
+		\]
+		für ungerade Primzahlen \(p\), doch der Schwerpunkt liegt nicht auf der bloßen Kardinalität, sondern auf ihrer strukturellen Interpretation. Die einseitigen Orbitmengen werden über Rechts- und Linksideale von reduzierter Norm \(p\) beschrieben; lokal erscheinen diese Räume nach Splitting als projektive Gerade \(\mathbf P^1(\Fp)\). Aufbauend darauf wird eine modellinterne Druckgröße eingeführt, der \emph{Hurwitzdruck}, die als Differenz eines topologischen und eines elektrodynamischen Mittelwertoperators definiert ist. Eine Renormierung führt auf reduzierte Geschwindigkeiten \(\tilde c_t\) und \(\tilde c_e\), deren Pilotwerte eine asymptotische Struktur
+		\[
+		\tilde c_t\to 1,\qquad \tilde c_e\to 5,\qquad \widehat D_H\to 4
+		\]
+		nahelegen. Schließlich wird eine zeta-spektroskopische Feinstruktur eingeführt, in der Riemann-Nullstellen getrennt an den topologischen und den elektrodynamischen Sektor koppeln. Dies führt zu einer natürlichen Resonanzklassifikation in konstruktive, destruktive und Scherfenster.
+	\end{abstract}
+	
+	\tableofcontents
+	\newpage
+	
+	% =================================================
+	\section{Einleitung}
+	% =================================================
+	
+	Die Hurwitz-Ordnung \(\OH\) in der Hamiltonschen Quaternionenalgebra gehört zu den klassischen Objekten der Quaternionenarithmetik. Für jede ungerade Primzahl \(p\) definiert die Normbedingung
+	\[
+	X_p:=\{x\in \OH:\Nrd(x)=p\}
+	\]
+	eine endliche Schale von Quaternionen mit reduzierter Norm \(p\). Die elementare Zählformel
+	\[
+	|X_p|=24(p+1)
+	\]
+	ist klassisch und führt sofort auf
+	\[
+	|\OH^\times\backslash X_p|=|X_p/\OH^\times|=p+1.
+	\]
+	Allein diese Gleichung legt eine projektive Interpretation nahe, weil \(p+1=|\mathbf P^1(\Fp)|\) ist.
+	
+	Der vorliegende Text verfolgt drei Ziele. Erstens wird die projektive Struktur nicht heuristisch über Matrizen, sondern intrinsisch über einseitige Ideale formuliert. Zweitens wird aus der Schalenstruktur eine neue interne Modellgröße gewonnen: der \emph{Hurwitzdruck}. Drittens wird diese Größe renormiert und anschließend mit einer spektralen Feinstruktur aus Riemann-Nullstellen moduliert.
+	
+	Die Arbeit gliedert sich daher in drei Ebenen:
+	
+	\begin{enumerate}
+		\item arithmetische Struktur der Normschalen,
+		\item projektive und ideale Interpretation der Orbits,
+		\item renormierte Dynamik und zeta-spektroskopische Modulation.
+	\end{enumerate}
+	
+	% =================================================
+	\section{Die Hurwitz-Ordnung und ihre Norm}
+	% =================================================
+	
+	\begin{definition}[Hamiltonsche Quaternionenalgebra]
+		Die Hamiltonsche Quaternionenalgebra über \(\Q\) ist
+		\[
+		\HH=\Q\oplus \Q i\oplus \Q j\oplus \Q k
+		\]
+		mit Relationen
+		\[
+		i^2=j^2=k^2=ijk=-1.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Hurwitz-Ordnung]
+		Die Hurwitz-Ordnung \(\OH\subset \HH\) besteht aus allen Quaternionen
+		\[
+		x=a+bi+cj+dk,
+		\]
+		bei denen entweder \(a,b,c,d\in \Z\) oder \(a,b,c,d\in \Z+\frac12\) gilt.
+	\end{definition}
+	
+	\begin{definition}[Reduzierte Norm]
+		Für
+		\[
+		x=a+bi+cj+dk\in \HH
+		\]
+		definieren wir die reduzierte Norm durch
+		\[
+		\Nrd(x)=a^2+b^2+c^2+d^2.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Normschale]
+		Für eine Primzahl \(p\) sei
+		\[
+		X_p:=\{x\in \OH:\Nrd(x)=p\}.
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		Die Menge \(X_p\) zerfällt disjunkt in ganzzahlige und halbzahlig-hurwitzsche Elemente. Diese Zerlegung ist der Ausgangspunkt für die Zählformel.
+	\end{bemerkung}
+	
+	% =================================================
+	\section{Zählung der Primnorm-Schalen}
+	% =================================================
+	
+	\begin{definition}
+		Wir setzen
+		\[
+		X_p^{\mathrm{int}}
+		:=
+		\{x\in X_p:\text{alle Koeffizienten sind ganzzahlig}\},
+		\]
+		\[
+		X_p^{\mathrm{half}}
+		:=
+		\{x\in X_p:\text{alle Koeffizienten sind halbzahlig}\}.
+		\]
+		Dann gilt
+		\[
+		X_p=X_p^{\mathrm{int}}\sqcup X_p^{\mathrm{half}}.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Für jede ungerade Primzahl \(p\) gilt
+		\[
+		|X_p^{\mathrm{int}}|=8(p+1).
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Die Menge \(X_p^{\mathrm{int}}\) entspricht genau den ganzzahligen Lösungen der Gleichung
+		\[
+		a^2+b^2+c^2+d^2=p.
+		\]
+		Nach Jacobis Vier-Quadrate-Formel ist die Anzahl dieser Darstellungen
+		\[
+		r_4(p)=8\sum_{d\mid p,\;4\nmid d} d.
+		\]
+		Da \(p\) prim und ungerade ist, folgt
+		\[
+		r_4(p)=8(1+p)=8(p+1).
+		\]
+	\end{proof}
+	
+	\begin{lemma}
+		Für jede ungerade Primzahl \(p\) gilt
+		\[
+		|X_p^{\mathrm{half}}|=16(p+1).
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Ein halbzahliges Element \(x\in X_p^{\mathrm{half}}\) hat Koeffizienten
+		\[
+		a=\frac{\alpha}{2},\quad b=\frac{\beta}{2},\quad c=\frac{\gamma}{2},\quad d=\frac{\delta}{2}
+		\]
+		mit ungeraden ganzen Zahlen \(\alpha,\beta,\gamma,\delta\). Die Normbedingung wird zu
+		\[
+		\alpha^2+\beta^2+\gamma^2+\delta^2=4p.
+		\]
+		Somit zählt \(X_p^{\mathrm{half}}\) genau die Darstellungen von \(4p\) als Summe von vier ungeraden Quadraten. Nach Jacobi gilt
+		\[
+		r_4(4p)=24(p+1),
+		\]
+		während die geraden Darstellungen gerade \(r_4(p)=8(p+1)\) entsprechen. Daher
+		\[
+		|X_p^{\mathrm{half}}|=r_4(4p)-r_4(p)=16(p+1).
+		\]
+	\end{proof}
+	
+	\begin{korollar}
+		Für jede ungerade Primzahl \(p\) gilt
+		\[
+		|X_p|=24(p+1).
+		\]
+	\end{korollar}
+	
+	\begin{proof}
+		Unmittelbar aus der disjunkten Zerlegung
+		\[
+		X_p=X_p^{\mathrm{int}}\sqcup X_p^{\mathrm{half}}
+		\]
+		und den beiden vorangegangenen Lemmata.
+	\end{proof}
+	
+	% =================================================
+	\section{Einheitengruppe und Orbitformel}
+	% =================================================
+	
+	\begin{definition}[Hurwitz-Einheiten]
+		Die Einheitengruppe der Hurwitz-Ordnung ist
+		\[
+		\OH^\times:=\{u\in \OH:\Nrd(u)=1\}.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Es gilt
+		\[
+		|\OH^\times|=24.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Die \(24\) Einheiten bestehen aus den acht ganzzahligen Einheiten
+		\[
+		\pm1,\pm i,\pm j,\pm k
+		\]
+		und den sechzehn halbzahlig-hurwitzschen Einheiten
+		\[
+		\frac{\pm1\pm i\pm j\pm k}{2}.
+		\]
+	\end{proof}
+	
+	\begin{proposition}
+		Die Links- und Rechtswirkung von \(\OH^\times\) auf \(X_p\) sind frei.
+	\end{proposition}
+	
+	\begin{proof}
+		Ist \(ux=x\) mit \(u\in \OH^\times\) und \(x\in X_p\), so ist \(x\) in \(\HH\) invertierbar, da \(\Nrd(x)=p\neq 0\). Multiplikation mit \(x^{-1}\) liefert \(u=1\). Der Rechtsfall ist analog.
+	\end{proof}
+	
+	\begin{satz}[Orbitformel]
+		Für jede ungerade Primzahl \(p\) gilt
+		\[
+		|\OH^\times\backslash X_p|
+		=
+		|X_p/\OH^\times|
+		=
+		p+1.
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Jeder Orbit hat wegen der freien Wirkung genau \(24\) Elemente. Also
+		\[
+		|\OH^\times\backslash X_p|=\frac{|X_p|}{24}=p+1,
+		\qquad
+		|X_p/\OH^\times|=\frac{|X_p|}{24}=p+1.
+		\]
+	\end{proof}
+	
+	% =================================================
+	\section{Einseitige Ideale und projektive Struktur}
+	% =================================================
+	
+	\subsection{Linksorbits als Rechtsideale}
+	
+	\begin{definition}
+		Für \(x\in X_p\) definieren wir das von \(x\) erzeugte Rechtsideal
+		\[
+		I_x:=\OH x.
+		\]
+	\end{definition}
+	
+	\begin{proposition}[Wohldefiniertheit]
+		Die Zuordnung
+		\[
+		[x]_L\longmapsto \OH x
+		\]
+		definiert eine wohldefinierte Abbildung von \(\OH^\times\backslash X_p\) in die Menge der Rechtsideale von reduzierter Norm \(p\).
+	\end{proposition}
+	
+	\begin{proof}
+		Liegt \(y\) im selben Linksorbit wie \(x\), also \(y=ux\) mit \(u\in \OH^\times\), so gilt
+		\[
+		\OH y=\OH(ux)=\OH x.
+		\]
+	\end{proof}
+	
+	\begin{proposition}[Injektivität]
+		Seien \(x,y\in X_p\). Gilt
+		\[
+		\OH x=\OH y,
+		\]
+		so liegen \(x\) und \(y\) im selben Linksorbit.
+	\end{proposition}
+	
+	\begin{proof}
+		Aus \(\OH x=\OH y\) folgt \(y=ax\) für ein \(a\in \OH\). Dann liefert die Normmultiplikativität
+		\[
+		p=\Nrd(y)=\Nrd(a)\Nrd(x)=\Nrd(a)\,p.
+		\]
+		Also \(\Nrd(a)=1\), also \(a\in \OH^\times\). Damit liegt \(y\) im Linksorbit von \(x\).
+	\end{proof}
+	
+	\subsection{Principalität und lokale Split-Struktur}
+	
+	\begin{proposition}[Strukturprinzip]
+		Jedes Rechtsideal reduzierter Norm \(p\) in der Hurwitz-Ordnung ist principal.
+	\end{proposition}
+	
+	\begin{bemerkung}
+		Diese Aussage wird hier als Standardfaktum der Klassenzahl-\(1\)-Situation der Hurwitz-Ordnung verwendet. In einer noch ausführlicheren Fassung könnte dieser Schritt separat aus der Theorie maximaler Quaternionenordnungen hergeleitet werden.
+	\end{bemerkung}
+	
+	\begin{satz}[Linksorbits als Rechtsideale]
+		Für jede ungerade Primzahl \(p\) gibt es eine natürliche Bijektion
+		\[
+		\OH^\times\backslash X_p
+		\cong
+		\{\text{Rechtsideale in }\OH\text{ von reduzierter Norm }p\}.
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Wohldefiniertheit und Injektivität folgen aus den vorigen Propositionen. Die Surjektivität folgt aus der Principalität.
+	\end{proof}
+	
+	\begin{satz}[Rechtsorbits als Linksideale]
+		Für jede ungerade Primzahl \(p\) gibt es eine natürliche Bijektion
+		\[
+		X_p/\OH^\times
+		\cong
+		\{\text{Linksideale in }\OH\text{ von reduzierter Norm }p\}.
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Analog zum Linksfall.
+	\end{proof}
+	
+	\begin{satz}[Lokale Split-Struktur]
+		Für jede ungerade Primzahl \(p\) gilt
+		\[
+		\OH\otimes\Z_p\cong M_2(\Z_p),
+		\qquad
+		\OH/p\OH\cong M_2(\Fp).
+		\]
+	\end{satz}
+	
+	\begin{bemerkung}
+		Die maximalen Rechts- und Linksideale in \(M_2(\Fp)\) werden durch die eindimensionalen Unterräume von \(\Fp^2\) klassifiziert. Damit erscheint lokal natürlich die projektive Gerade \(\mathbf P^1(\Fp)\).
+	\end{bemerkung}
+	
+	\begin{korollar}[Projektive Verfeinerung]
+		Nach Wahl einer lokalen Split-Identifikation erhält man natürliche Bijektionen
+		\[
+		\OH^\times\backslash X_p \cong \mathbf P^1(\Fp),
+		\qquad
+		X_p/\OH^\times \cong \mathbf P^1(\Fp).
+		\]
+	\end{korollar}
+	
+	% =================================================
+	\section{Der Hurwitzdruck}
+	% =================================================
+	
+	\subsection{Hurwitzfenster und Schalengewichte}
+	
+	Seien
+	\[
+	p_1<p_2<\dots<p_N
+	\]
+	die ersten \(N\) Primzahlen. Wir definieren die topologischen Schalengewichte durch
+	\[
+	w_k:=24(p_k+1).
+	\]
+	Ferner setzen wir
+	\[
+	r_k:=\log p_k,
+	\qquad
+	\Delta r_k:=r_{k+1}-r_k=\log\!\frac{p_{k+1}}{p_k}.
+	\]
+	
+	\subsection{Topologischer und elektrodynamischer Mittelwert}
+	
+	\begin{definition}
+		Der topologische Mittelwertoperator sei
+		\begin{equation}
+			\mathcal E_{\mathrm{top}}^{(N)}
+			:=
+			\frac{\sum_{k=1}^{N-1} w_k\,\Delta r_k}
+			{\sum_{k=1}^{N-1} w_k}.
+		\end{equation}
+	\end{definition}
+	
+	\begin{definition}
+		Mit
+		\[
+		g_k:=p_{k+1}-p_k,
+		\qquad
+		\eta_k:=1+\frac1{g_k},
+		\]
+		definieren wir den elektrodynamischen Mittelwertoperator durch
+		\begin{equation}
+			\mathcal E_{\mathrm{edyn}}^{(N)}
+			:=
+			\frac{\sum_{k=1}^{N-1} \eta_k\,\Delta r_k}
+			{\sum_{k=1}^{N-1} \eta_k}.
+		\end{equation}
+	\end{definition}
+	
+	\begin{definition}[Hurwitzdruck]
+		Der Hurwitzdruck ist die Differenz
+		\begin{equation}
+			D_H^{(N)}
+			:=
+			\mathcal E_{\mathrm{edyn}}^{(N)}-\mathcal E_{\mathrm{top}}^{(N)}.
+		\end{equation}
+	\end{definition}
+	
+	\begin{definition}[Relativer Hurwitzdruck]
+		\begin{equation}
+			\delta_H^{(N)}
+			:=
+			\frac{2\bigl(\mathcal E_{\mathrm{edyn}}^{(N)}-\mathcal E_{\mathrm{top}}^{(N)}\bigr)}
+			{\mathcal E_{\mathrm{edyn}}^{(N)}+\mathcal E_{\mathrm{top}}^{(N)}}.
+		\end{equation}
+	\end{definition}
+	
+	\begin{bemerkung}
+		Der Hurwitzdruck ist eine rein modellinterne Größe. Er ist zunächst weder physikalisch kalibriert noch mit kosmologischen Messgrößen identisch.
+	\end{bemerkung}
+	
+	\subsection{Numerische Pilotwerte}
+	
+	\begin{table}[htbp]
+		\centering
+		\caption{Pilotwerte des unrenormierten Hurwitzdrucks}
+		\begin{tabular}{@{}rrrrrr@{}}
+			\toprule
+			\(N\) & \(p_N\) & \(\mathcal E_{\mathrm{top}}^{(N)}\) & \(\mathcal E_{\mathrm{edyn}}^{(N)}\) & \(D_H^{(N)}\) & \(\delta_H^{(N)}\) \\
+			\midrule
+			20   & 71    & 0.113861803 & 0.194457857 & 0.080596054 & 0.522808402 \\
+			33   & 137   & 0.069742976 & 0.137509070 & 0.067766094 & 0.653948612 \\
+			50   & 229   & 0.044951508 & 0.100267769 & 0.055316261 & 0.761830832 \\
+			100  & 541   & 0.022427646 & 0.059226389 & 0.036798744 & 0.901333138 \\
+			137  & 773   & 0.015930039 & 0.046111988 & 0.030181949 & 0.972951752 \\
+			200  & 1223  & 0.010949016 & 0.033944168 & 0.022995152 & 1.024445686 \\
+			500  & 3571  & 0.004324770 & 0.015711979 & 0.011387208 & 1.136627713 \\
+			1000 & 7919  & 0.002148399 & 0.008678532 & 0.006530133 & 1.206325232 \\
+			2000 & 17389 & 0.001067875 & 0.004752962 & 0.003685087 & 1.266190634 \\
+			5000 & 48611 & 0.000424574 & 0.002114201 & 0.001689627 & 1.331033664 \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	Man erkennt: Der absolute Hurwitzdruck fällt mit wachsendem \(N\), während der relative Hurwitzdruck wächst. Dies motiviert die Renormierung.
+	
+	% =================================================
+	\section{Renormierung und reduzierte Geschwindigkeiten}
+	% =================================================
+	
+	\subsection{Renormierter Hurwitzdruck}
+	
+	Wir führen eine renormierte Größe ein:
+	\begin{equation}
+		\widehat D_H^{(N;\alpha)}:=p_N^\alpha D_H^{(N)}.
+	\end{equation}
+	Numerisch ist ein kritischer Exponent
+	\[
+	\alpha_\ast\approx 0.72
+	\]
+	besonders stabil.
+	
+	\begin{table}[htbp]
+		\centering
+		\caption{Renormierter Hurwitzdruck für \(\alpha_\ast=0.72\)}
+		\begin{tabular}{@{}rrrr@{}}
+			\toprule
+			\(N\) & \(p_N\) & \(D_H^{(N)}\) & \(\widehat D_H^{(N)}=p_N^{0.72}D_H^{(N)}\) \\
+			\midrule
+			20   & 71    & 0.0805961 & 1.73468 \\
+			33   & 137   & 0.0677661 & 2.34127 \\
+			50   & 229   & 0.0553163 & 2.76652 \\
+			100  & 541   & 0.0367987 & 3.41771 \\
+			137  & 773   & 0.0301819 & 3.62440 \\
+			200  & 1223  & 0.0229951 & 3.84221 \\
+			500  & 3571  & 0.0113870 & 4.11547 \\
+			1000 & 7919  & 0.0065303 & 4.18770 \\
+			2000 & 17389 & 0.0036851 & 4.16335 \\
+			5000 & 48611 & 0.0016896 & 4.00149 \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	\subsection{Reduzierte Geschwindigkeiten}
+	
+	\begin{definition}
+		Die reduzierten Geschwindigkeiten seien
+		\begin{equation}
+			\tilde c_t^{(N)}:=p_N^{\alpha_\ast}\mathcal E_{\mathrm{top}}^{(N)},
+			\qquad
+			\tilde c_e^{(N)}:=p_N^{\alpha_\ast}\mathcal E_{\mathrm{edyn}}^{(N)}.
+		\end{equation}
+	\end{definition}
+	
+	Dann gilt identisch
+	\[
+	\widehat D_H^{(N)}=\tilde c_e^{(N)}-\tilde c_t^{(N)}.
+	\]
+	
+	\begin{table}[htbp]
+		\centering
+		\caption{Pilotwerte der reduzierten Geschwindigkeiten}
+		\begin{tabular}{@{}rrrr@{}}
+			\toprule
+			\(N\) & \(p_N\) & \(\tilde c_t^{(N)}\) & \(\tilde c_e^{(N)}\) \\
+			\midrule
+			20   & 71    & 2.45067 & 4.18535 \\
+			33   & 137   & 2.40957 & 4.75084 \\
+			50   & 229   & 2.24815 & 5.01468 \\
+			100  & 541   & 2.08298 & 5.50069 \\
+			137  & 773   & 1.91296 & 5.53736 \\
+			200  & 1223  & 1.82946 & 5.67169 \\
+			500  & 3571  & 1.56305 & 5.67858 \\
+			1000 & 7919  & 1.37771 & 5.56530 \\
+			2000 & 17389 & 1.20647 & 5.36985 \\
+			5000 & 48611 & 1.00555 & 5.00720 \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	\begin{proposition}[Numerische Evidenz]
+		Die Pilotdaten sind konsistent mit der asymptotischen Heuristik
+		\[
+		\tilde c_t^{(N)}\to 1,
+		\qquad
+		\tilde c_e^{(N)}\to 5,
+		\qquad
+		\widehat D_H^{(N)}\to 4.
+		\]
+	\end{proposition}
+	
+	\begin{bemerkung}
+		Diese Aussage ist numerisch motiviert und nicht als strenger asymptotischer Beweis zu verstehen.
+	\end{bemerkung}
+	
+	\subsection{Grafische Evidenz}
+	
+	\begin{figure}[htbp]
+		\centering
+		\begin{tikzpicture}
+			\begin{axis}[
+				width=0.9\textwidth,
+				height=7cm,
+				xlabel={$N$},
+				ylabel={renormierte Geschwindigkeit},
+				xmin=0, xmax=5200,
+				ymin=0.5, ymax=6.2,
+				grid=both,
+				legend style={at={(0.98,0.98)},anchor=north east}
+				]
+				\addplot+[mark=*] coordinates {
+					(20,2.45067)
+					(33,2.40957)
+					(50,2.24815)
+					(100,2.08298)
+					(137,1.91296)
+					(200,1.82946)
+					(500,1.56305)
+					(1000,1.37771)
+					(2000,1.20647)
+					(5000,1.00555)
+				};
+				\addlegendentry{$\tilde c_t^{(N)}$}
+				
+				\addplot+[mark=square*] coordinates {
+					(20,4.18535)
+					(33,4.75084)
+					(50,5.01468)
+					(100,5.50069)
+					(137,5.53736)
+					(200,5.67169)
+					(500,5.67858)
+					(1000,5.56530)
+					(2000,5.36985)
+					(5000,5.00720)
+				};
+				\addlegendentry{$\tilde c_e^{(N)}$}
+			\end{axis}
+		\end{tikzpicture}
+		\caption{Renormierte Grundgeschwindigkeiten im Basismodell.}
+	\end{figure}
+	
+	\begin{figure}[htbp]
+		\centering
+		\begin{tikzpicture}
+			\begin{axis}[
+				width=0.9\textwidth,
+				height=7cm,
+				xlabel={$N$},
+				ylabel={$\widehat D_H^{(N)}$},
+				xmin=0, xmax=5200,
+				ymin=1.5, ymax=4.5,
+				grid=both
+				]
+				\addplot+[mark=triangle*] coordinates {
+					(20,1.73468)
+					(33,2.34127)
+					(50,2.76652)
+					(100,3.41771)
+					(137,3.62440)
+					(200,3.84221)
+					(500,4.11547)
+					(1000,4.18770)
+					(2000,4.16335)
+					(5000,4.00149)
+				};
+			\end{axis}
+		\end{tikzpicture}
+		\caption{Renormierter Hurwitzdruck \(\widehat D_H^{(N)}\).}
+	\end{figure}
+	
+	\begin{konjektur}[Asymptotische Geschwindigkeitsvermutung]
+		Es existieren renormierte Grenzwerte
+		\[
+		\tilde c_t=\lim_{N\to\infty}\tilde c_t^{(N)}=1,
+		\qquad
+		\tilde c_e=\lim_{N\to\infty}\tilde c_e^{(N)}=5,
+		\]
+		und folglich
+		\[
+		\widehat D_H=\lim_{N\to\infty}\widehat D_H^{(N)}=4.
+		\]
+	\end{konjektur}
+	
+	% =================================================
+	\section{Zeta-spektroskopische Modulation}
+	% =================================================
+	
+	\subsection{Getrennte Modulation}
+	
+	Wir koppeln die zeta-spektroskopische Schicht getrennt an die beiden reduzierten Geschwindigkeitssektoren:
+	\begin{equation}
+		\tilde c_t^{(N;M)}
+		:=
+		\tilde c_t^{(N)}\bigl(1+\lambda_t S_M^{(t)}(p_N)\bigr),
+	\end{equation}
+	\begin{equation}
+		\tilde c_e^{(N;M)}
+		:=
+		\tilde c_e^{(N)}\bigl(1+\lambda_e S_M^{(e)}(p_N)\bigr).
+	\end{equation}
+	
+	Die sektorielle Spektralfunktion sei gegeben durch
+	\begin{equation}
+		S_M^{(t)}(p_N)
+		:=
+		\frac{\sum_{m=1}^{M} a_m^{(t)}\cos(\gamma_m\log p_N+\phi_m^{(t)})}
+		{\sum_{m=1}^{M}|a_m^{(t)}|},
+	\end{equation}
+	\begin{equation}
+		S_M^{(e)}(p_N)
+		:=
+		\frac{\sum_{m=1}^{M} a_m^{(e)}\cos(\gamma_m\log p_N+\phi_m^{(e)})}
+		{\sum_{m=1}^{M}|a_m^{(e)}|},
+	\end{equation}
+	wobei \(\gamma_m\) die imaginären Teile der nichttrivialen Riemann-Nullstellen sind.
+	
+	Für die Pilotrechnung verwenden wir
+	\[
+	\lambda_t=\lambda_e=0.2,
+	\qquad
+	a_m^{(t)}=\frac1m,
+	\qquad
+	a_m^{(e)}=\frac1{\sqrt m},
+	\qquad
+	\phi_m^{(t)}=\phi_m^{(e)}=0.
+	\]
+	
+	Dann ist der effektiv modulierte renormierte Hurwitzdruck
+	\[
+	\widehat D_H^{(N;M)}:=\tilde c_e^{(N;M)}-\tilde c_t^{(N;M)}.
+	\]
+	
+	\subsection{Fehlerterme und Zerlegung}
+	
+	Schreiben wir
+	\[
+	\tilde c_t^{(N)}=1+\varepsilon_t^{(0)}(N),
+	\qquad
+	\tilde c_e^{(N)}=5+\varepsilon_e^{(0)}(N),
+	\]
+	so definieren wir die spektralen Fehlerterme durch
+	\[
+	\varepsilon_t^{(\zeta)}(N;M)
+	:=
+	\tilde c_t^{(N)}\lambda_t S_M^{(t)}(p_N),
+	\]
+	\[
+	\varepsilon_e^{(\zeta)}(N;M)
+	:=
+	\tilde c_e^{(N)}\lambda_e S_M^{(e)}(p_N).
+	\]
+	
+	Dann gilt
+	\[
+	\tilde c_t^{(N;M)}
+	=
+	1+\varepsilon_t^{(0)}(N)+\varepsilon_t^{(\zeta)}(N;M),
+	\]
+	\[
+	\tilde c_e^{(N;M)}
+	=
+	5+\varepsilon_e^{(0)}(N)+\varepsilon_e^{(\zeta)}(N;M),
+	\]
+	und somit
+	\begin{equation}
+		\widehat D_H^{(N;M)}
+		=
+		4+\bigl(\varepsilon_e^{(0)}(N)-\varepsilon_t^{(0)}(N)\bigr)
+		+\bigl(\varepsilon_e^{(\zeta)}(N;M)-\varepsilon_t^{(\zeta)}(N;M)\bigr).
+	\end{equation}
+	
+	\begin{bemerkung}
+		Der renormierte Basisdruck \(4\) erscheint als glatter Untergrund, die zeta-spektroskopischen Korrekturen erzeugen darauf eine sektorielle Interferenzstruktur.
+	\end{bemerkung}
+	
+	\subsection{Numerische Tests für \(M=33\)}
+	
+	\begin{table}[htbp]
+		\centering
+		\caption{Spektralfunktionen für \(M=33\)}
+		\begin{tabular}{@{}rrrr@{}}
+			\toprule
+			\(N\) & \(p_N\) & \(S_{33}^{(t)}(p_N)\) & \(S_{33}^{(e)}(p_N)\) \\
+			\midrule
+			20   & 71    & -0.287568 & -0.191501 \\
+			33   & 137   & \phantom{-}0.003840 & -0.115598 \\
+			50   & 229   & -0.159019 & -0.206450 \\
+			100  & 541   & \phantom{-}0.358528 & \phantom{-}0.237710 \\
+			137  & 773   & \phantom{-}0.245041 & \phantom{-}0.122600 \\
+			200  & 1223  & \phantom{-}0.171988 & \phantom{-}0.026817 \\
+			500  & 3571  & -0.416133 & -0.268055 \\
+			1000 & 7919  & \phantom{-}0.219190 & \phantom{-}0.190436 \\
+			2000 & 17389 & \phantom{-}0.150827 & \phantom{-}0.032219 \\
+			5000 & 48611 & \phantom{-}0.001066 & -0.036327 \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	\subsection{Numerische Tests für \(M=137\)}
+	
+	\begin{table}[htbp]
+		\centering
+		\caption{Effektive Geschwindigkeiten und Druck für \(M=137\)}
+		\begin{tabular}{@{}rrrrr@{}}
+			\toprule
+			\(N\) & \(p_N\) & \(\tilde c_t^{(N;137)}\) & \(\tilde c_e^{(N;137)}\) & \(\widehat D_H^{(N;137)}\) \\
+			\midrule
+			20   & 71    & 2.327592 & 4.044098 & 1.716506 \\
+			33   & 137   & 2.404055 & 4.672809 & 2.268754 \\
+			50   & 229   & 2.189332 & 4.891004 & 2.701672 \\
+			100  & 541   & 2.187470 & 5.590390 & 3.402919 \\
+			137  & 773   & 1.980480 & 5.582091 & 3.601611 \\
+			200  & 1223  & 1.862981 & 5.611208 & 3.748226 \\
+			500  & 3571  & 1.469579 & 5.571141 & 4.101562 \\
+			1000 & 7919  & 1.411328 & 5.571147 & 4.159819 \\
+			2000 & 17389 & 1.225873 & 5.319948 & 4.094075 \\
+			5000 & 48611 & 1.005182 & 4.979917 & 3.974735 \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	% =================================================
+	\section{Resonanzfenster}
+	% =================================================
+	
+	\begin{definition}[Konstruktive und destruktive Resonanzfenster]
+		Für festes \(M\) definieren wir
+		\[
+		\mathcal R_+(M)
+		:=
+		\{N:\; S_M^{(t)}(p_N)>0,\;S_M^{(e)}(p_N)>0\},
+		\]
+		\[
+		\mathcal R_-(M)
+		:=
+		\{N:\; S_M^{(t)}(p_N)<0,\;S_M^{(e)}(p_N)<0\}.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Scherfenster]
+		Wir definieren
+		\[
+		\mathcal R_{\mathrm{shear}}(M)
+		:=
+		\left\{N:\;
+		\operatorname{sgn}(S_M^{(t)}(p_N))\neq \operatorname{sgn}(S_M^{(e)}(p_N))
+		\ \text{oder}\
+		|S_M^{(t)}(p_N)-S_M^{(e)}(p_N)|\ \text{groß}
+		\right\}.
+		\]
+	\end{definition}
+	
+	\begin{proposition}[Numerisch sichtbare Resonanztypen]
+		Für die Pilotwahl
+		\[
+		\lambda_t=\lambda_e=0.2,\qquad
+		a_m^{(t)}=\frac1m,\qquad
+		a_m^{(e)}=\frac1{\sqrt m}
+		\]
+		sind bereits für \(M=33\) und \(M=137\) alle drei Resonanztypen numerisch sichtbar.
+	\end{proposition}
+	
+	\begin{proof}[Numerische Begründung]
+		Für \(M=33\) treten konstruktive Fenster etwa bei
+		\[
+		N=100,\;137,\;1000
+		\]
+		auf, destruktive Fenster etwa bei
+		\[
+		N=20,\;50,\;500,
+		\]
+		und Scherfenster insbesondere bei
+		\[
+		N=33,\;200,\;2000.
+		\]
+		Für \(M=137\) bleibt dieselbe Typologie erhalten, wenn auch geglättet. Insbesondere ist \(N=200\) ein markantes Scherfenster.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Die zeta-spektroskopische Schicht erzeugt nicht nur eine globale Welligkeit, sondern eine echte sektorielle Dynamik: Topologie und Elektrodynamik können gemeinsam gehoben, gemeinsam gedämpft oder gegeneinander verschoben werden.
+	\end{bemerkung}
+	
+	% =================================================
+	\section{Schluss}
+	% =================================================
+	
+	Die klassische Zählung der Normschalen in der Hurwitz-Ordnung liefert mehr als nur die Formel \(24(p+1)\): Sie öffnet den Zugang zu einer projektiven und idealtheoretischen Struktur der Orbitmengen. Darauf aufbauend wurde der Hurwitzdruck als Differenz eines topologischen und eines elektrodynamischen Mittelwertoperators eingeführt. Seine Renormierung führt auf reduzierte Geschwindigkeiten \(\tilde c_t\) und \(\tilde c_e\), deren numerische Pilotwerte eine stabile asymptotische Architektur
+	\[
+	\tilde c_t\to 1,\qquad
+	\tilde c_e\to 5,\qquad
+	\widehat D_H\to 4
+	\]
+	nahelegen.
+	
+	Die Einbeziehung von Riemann-Nullstellen führt nicht zu einer völlig neuen Grundstruktur, wohl aber zu einer spektralen Feinschichtung, die konstruktive, destruktive und Scherfenster erzeugt. Damit entsteht ein zweistufiges Bild:
+	
+	\begin{enumerate}
+		\item ein glatter renormierter Untergrund,
+		\item eine sektorielle zeta-spektroskopische Resonanzstruktur.
+	\end{enumerate}
+	
+	Die weiteren Aufgaben liegen auf der Hand: eine strengere asymptotische Analyse des Exponenten \(\alpha_\ast\), eine systematischere Theorie der Principalität einseitiger Ideale, sowie eine präzisere Einordnung der Nullstellenmodulation in eine arithmetische Spektraltheorie der Hurwitzräume.
+	
+	% =================================================
+	\begin{thebibliography}{99}
+		
+		\bibitem{ConwaySmith}
+		J.~H. Conway und D.~A. Smith,
+		\emph{On Quaternions and Octonions},
+		A K Peters, 2003.
+		
+		\bibitem{Vigneras}
+		M.-F. Vign\'eras,
+		\emph{Arithm\'etique des Alg\`ebres de Quaternions},
+		Springer, Lecture Notes in Mathematics 800, 1980.
+		
+		\bibitem{Voight}
+		J.~Voight,
+		\emph{Quaternion Algebras},
+		Springer, 2021.
+		
+		\bibitem{Jacobi}
+		C.~G.~J. Jacobi,
+		Über die Darstellung einer Zahl als Summe von vier Quadraten,
+		\emph{Journal für die reine und angewandte Mathematik}.
+		
+		\bibitem{Hurwitz}
+		A.~Hurwitz,
+		Über die Komposition der quadratischen Formen von beliebig vielen Variablen,
+		\emph{Nachrichten von der Gesellschaft der Wissenschaften zu Göttingen}.
+		
+	\end{thebibliography}
+	
+\end{document}

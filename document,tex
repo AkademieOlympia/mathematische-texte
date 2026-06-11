@@ -1,0 +1,76 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc} \usepackage[T1]{fontenc} \usepackage[ngerman]{babel} \usepackage{amsmath,amssymb,amsthm,mathtools} \usepackage{geometry} \usepackage{microtype} \usepackage{lmodern} \usepackage{hyperref} \usepackage{bm} \usepackage{physics} \usepackage{enumitem} \usepackage{booktabs}
+\geometry{margin=2.7cm}
+\title{ Rand--Bulk-Dynamik durch pronischen Transport\ \large Ein erster numerischer Zugang zu holographischen\ Faktorisationsgeometrien }
+\author{ EABC-Arbeitsgruppe }
+\date{\today}
+\newtheorem{definition}{Definition} \newtheorem{satz}{Satz} \newtheorem{bemerkung}{Bemerkung}
+\begin{document}
+	\maketitle
+	\begin{abstract} Wir untersuchen eine neuartige arithmetische Geometrie, die durch den pronischen Schattenoperator [ \Pi(n)=n(n-1) ] induziert wird.
+		Durch eine tensor-arithmetische Zerlegung natürlicher Zahlen in glatte, halbkleine und restliche Komponenten entsteht ein dreidimensionaler Faktorisationsraum. Numerische Untersuchungen an Primzahlvierlingen zeigen überraschend stabile geometrische Strukturen: Die entstehenden Transportobjekte kollabieren nahezu vollständig auf zweidimensionale Blätter.
+		Weiterhin zeigen Rekonstruktionsexperimente, dass Randspuren dieser Transportblätter die zugrundeliegenden Bulk-Trajektorien nahezu vollständig kodieren. Dies motiviert eine erste holographische Interpretation der pronischen Dynamik.
+		Die Ergebnisse stellen keine physikalische Theorie dar, liefern jedoch numerische Hinweise auf eine mögliche diskrete Hamilton-Geometrie innerhalb arithmetischer Faktorisationsräume. \end{abstract}
+	\section{Einleitung}
+	Die natürlichen Zahlen erscheinen zunächst als linear geordnete Folge [ 1<2<3<4<\cdots. ]
+	Die Primfaktorzerlegung legt jedoch eine wesentlich reichere interne Struktur nahe. Ziel der vorliegenden Arbeit ist es, diese Struktur geometrisch zu interpretieren.
+	Ausgangspunkt ist der pronische Schattenoperator [ \Pi(n)=n(n-1), ] welcher jede Zahl mit ihrem unmittelbaren Vorgänger koppelt. Dadurch entsteht ein diskreter Transportmechanismus im Raum arithmetischer Faktorisationsstrukturen.
+	Die zentrale Fragestellung lautet:
+	\begin{quote} Kann aus Faktorisationsflüssen eine nichttriviale geometrische bzw.\ holographische Dynamik entstehen? \end{quote}
+	\section{Tensor-arithmetische Zerlegung}
+	\begin{definition}[Tensor-arithmetische Zerlegung] Für [ n\in\mathbb N ] definieren wir die eindeutige Zerlegung [ n
+		\mathcal G(n)\mathcal H(n)\mathcal K(n), ] wobei [ \mathcal G(n)=2^\alpha3^\beta, ] den glatten Anteil beschreibt, [ \mathcal H(n)=5^\gamma7^\delta, ] den halbkleinen Anteil, und [ \mathcal K(n)=r, \qquad \gcd(r,2\cdot3\cdot5\cdot7)=1, ] den Restkern. \end{definition}
+	Die logarithmische Einbettung [ X:\mathbb N\to\mathbb R^3 ] ist definiert durch [ X(n)
+	\bigl( \log\mathcal G(n), \log\mathcal H(n), \log\mathcal K(n) \bigr). ]
+	Damit wird jede natürliche Zahl zu einem Punkt im Faktorisationsraum.
+	\section{Pronischer Transport}
+	\begin{definition}[Pronischer Transport] Der pronische Schattenoperator [ \Pi(n)=n(n-1) ] induziert den diskreten Transport [ T(n)=X(\Pi(n))-X(n). ] \end{definition}
+	Der Operator misst die Veränderung der Faktorisationsstruktur unter der lokalen Kopplung [ n-1\longrightarrow n. ]
+	\section{Primzahlvierlinge als Transportobjekte}
+	Wir betrachten Primzahlvierlinge der Form [ Q(p)=(p,p+2,p+6,p+8). ]
+	Zu jedem Vierling gehören vier Transportvektoren: [ T(p),\quad T(p+2),\quad T(p+6),\quad T(p+8). ]
+	Diese definieren ein lokales Transport-Tetraeder im Faktorisationsraum.
+	\subsection{Numerische Resultate}
+	Die Untersuchungen wurden bis [ 10^7 ] durchgeführt.
+	Es wurden insgesamt [ 899 ] echte Primzahlvierlinge analysiert.
+	Die wichtigsten Resultate:
+	\begin{itemize}[leftmargin=1.2cm] \item extrem geringe Tetraeder-Flachheit, \item nahezu identische Blattnormalen, \item stabile Transportkohärenz, \item stark reduzierte Volumenbildung. \end{itemize}
+	Die gemittelte Blattnormale liegt numerisch nahe bei [ (1,1,1). ]
+	Damit erscheinen Primzahlvierlinge als nahezu zweidimensionale Transportblätter.
+	\section{Rand--Bulk-Projektion}
+	Wir definieren die normierte Randspur [ u(n)=\frac{T(n)}{|T(n)|}. ]
+	Diese Projektion entfernt die radiale Tiefeninformation des Bulk und erhält ausschließlich die Richtungsinformation.
+	Es entsteht die Abbildung [ \gamma_{\mathrm{bulk}} \longmapsto \gamma_{\partial}. ]
+	\subsection{Interpretation}
+	Der Bulk enthält die vollständige Faktorisationsdynamik, während die Oberfläche lediglich deren projektive Spur trägt.
+	Die Bulk-Lücken verschwinden auf der Oberfläche als direkte geometrische Objekte, bleiben jedoch als Richtungs- und Wirkungssignaturen erhalten.
+	\section{Rekonstruktion der Bulk-Trajektorie}
+	Zur Rekonstruktion einer Bulk-Bahn aus der Randspur definieren wir die pronische Wirkung [ \mathcal A(\gamma)
+	\sum_i |T(n_{i+1})-T(n_i)|^2. ]
+	Die kanonische Ergänzung einer Randspur erfolgt dann durch Minimierung von [ \mathcal A(\gamma). ]
+	\subsection{Numerischer Rekonstruktionstest}
+	Für Testbahnen aus Primzahlvierlingen ergaben sich:
+	[ 17/18 ] exakte Rekonstruktionen der Bulk-Punkte.
+	Die Monotonie der Bahn blieb erhalten.
+	Eine Negativkontrolle mit zufällig vertauschten Randspuren zerstörte die Rekonstruktion nahezu vollständig.
+	Dies liefert den ersten numerischen Hinweis auf eine stabile Rand--Bulk-Dynamikübertragung.
+	\section{Beziehung zu holographischen Strukturen}
+	Formal ergeben sich Analogien zur Struktur holographischer Korrespondenzen:
+	\begin{center} \begin{tabular}{ll} \toprule AdS/CFT & Pronischer Transport \ \midrule Bulk-Geometrie & Faktorisationsraum \ Randtheorie & normierte Transportspur \ Radialrichtung & Faktorisations-Tiefe \ Geodäte & pronische Bulk-Bahn \ Randdaten & Richtungs-/Phasenspur \ \bottomrule \end{tabular} \end{center}
+	Es wird ausdrücklich keine physikalische Identität behauptet. Die Analogie betrifft ausschließlich die Struktur der Informationsübertragung.
+	\section{Hamilton-artige Dynamik}
+	Die Rekonstruktion der Bulk-Bahn durch Minimierung einer Wirkung legt eine Hamilton-artige Interpretation nahe.
+	Die Dynamik wird dabei nicht durch kontinuierliche Differentialgleichungen, sondern durch diskrete Faktorisationsflüsse erzeugt.
+	Dies motiviert die Interpretation:
+	[ \boxed{ \text{Bulk-Trajektorien entstehen als minimale pronische Wirkungsbahnen.} } ]
+	\section{Ausblick}
+	Die nächsten Schritte umfassen:
+	\begin{itemize}[leftmargin=1.2cm] \item Untersuchung höherer (k)-Tupel, \item spektrale Operatoren auf Transportblättern, \item diskrete Geodätenstrukturen, \item intrinsische Faktorisationsmetriken, \item Hamilton-Flüsse im arithmetischen Bulk. \end{itemize}
+	Besonders interessant erscheint die Frage, ob aus den beobachteten Transportblättern eine konsistente diskrete Differentialgeometrie entsteht.
+	\section{Schlussbemerkung}
+	Die vorliegenden Resultate sind numerischer Natur und stellen keine physikalische Theorie dar.
+	Dennoch liefern die Experimente robuste Hinweise darauf, dass Faktorisationsflüsse überraschend stabile geometrische und holographische Eigenschaften besitzen könnten.
+	Der pronische Transport erscheint damit als möglicher Kandidat für eine neue Klasse diskreter arithmetischer Dynamiken.
+	\vspace{1cm}
+	\begin{center} \emph{``Die Ordnung der Zahlen erscheint nicht mehr als Linie, sondern als Spur eines verborgenen geometrischen Transports.''} \end{center}
+\end{document}

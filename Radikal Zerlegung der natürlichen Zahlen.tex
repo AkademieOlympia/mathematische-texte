@@ -1,0 +1,394 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\title{Geschichtete Radikalzerlegung, Sieben-Typen-Klassifikation\\
+	und Radikalzerlegungsrest}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+% Theorem-Umgebungen
+\newtheorem{satz}{Satz}
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{korollar}[satz]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{beispiel}[satz]{Beispiel}
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+
+% Makros
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\Typ}{\operatorname{Typ}}
+\newcommand{\Rest}{\mathcal{R}}
+\newcommand{\vp}{v_p}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir formulieren eine geschichtete Radikalzerlegung natürlicher Zahlen nach Abspaltung der
+		\(2\)- und \(3\)-adischen Anteile und führen darauf aufbauend eine reduzierte
+		Sieben-Typen-Klassifikation ein. Diese Klassifikation basiert auf den vier Restklassen
+		\(1,5,7,11 \pmod{12}\), interpretiert als Familien \(E,A,B,C\).
+		Jede Radikalschicht besitzt genau einen reduzierten Typ in
+		\[
+		\{E,A,B,C,AB,AC,BC\},
+		\]
+		und zu jeder natürlichen Zahl existiert eine eindeutig bestimmte Folge solcher Typen,
+		der sogenannte \emph{Radikalzerlegungsrest}.
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Der Fundamentalsatz der Arithmetik liefert für jede natürliche Zahl \(n\ge 1\) eine eindeutige
+	Primfaktorzerlegung
+	\[
+	n=\prod_p p^{\vp(n)}.
+	\]
+	Diese Darstellung organisiert die Information primzahlweise, also vertikal entlang der einzelnen
+	Primzahlen. Eine zweite, dazu äquivalente, aber strukturell anders geordnete Beschreibung ergibt
+	sich, wenn man dieselbe Exponenteninformation horizontal nach \emph{Schichten} organisiert.
+	
+	Nach Abspaltung der Faktoren \(2\) und \(3\) betrachtet man nur noch den zu \(6\) teilerfremden Teil.
+	Dessen Primteiler liegen modulo \(12\) in den vier Restklassen
+	\[
+	1,\;5,\;7,\;11.
+	\]
+	Diese werden im Folgenden als Familien \(E,A,B,C\) aufgefasst. Auf jeder Radikalschicht kann man
+	dann die Primteiler paritätisch nach diesen Familien reduzieren. Daraus ergibt sich eine endliche
+	Typenklassifikation mit genau sieben reduzierten Typen sowie eine eindeutig definierte Restfolge.
+	
+	\section{Geschichtete Radikalzerlegung}
+	
+	\begin{definition}[Radikal]
+		Für \(m\in\N\) definiert man das Radikal durch
+		\[
+		\rad(m):=\prod_{p\mid m} p,
+		\]
+		wobei das Produkt über alle verschiedenen Primteiler von \(m\) läuft.
+		Insbesondere ist \(\rad(m)\) quadratfrei.
+	\end{definition}
+	
+	\begin{definition}[Abspaltung der Faktoren \(2\) und \(3\)]
+		Für \(n\in\N\) setzen wir
+		\[
+		\alpha:=v_2(n),\qquad \beta:=v_3(n),\qquad m:=\frac{n}{2^\alpha 3^\beta}.
+		\]
+		Dann gilt \(\gcd(m,6)=1\).
+	\end{definition}
+	
+	\begin{definition}[Radikalschichten]
+		Sei
+		\[
+		m=\prod_p p^{v_p(m)}
+		\]
+		mit \(\gcd(m,6)=1\). Für
+		\[
+		k=1,\dots,h,\qquad h:=\max_{p\mid m} v_p(m),
+		\]
+		definieren wir die \(k\)-te Radikalschicht durch
+		\[
+		R_k(m):=\prod_{\substack{p\mid m\\ v_p(m)\ge k}} p.
+		\]
+		Jede Zahl \(R_k(m)\) ist quadratfrei und zu \(6\) teilerfremd.
+	\end{definition}
+	
+	\begin{lemma}
+		Für jedes \(m\in\N\) mit \(\gcd(m,6)=1\) gilt
+		\[
+		m=\prod_{k=1}^{h} R_k(m),
+		\qquad
+		h=\max_{p\mid m} v_p(m).
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Fixiere eine Primzahl \(p\mid m\). Dann tritt \(p\) genau in denjenigen Schichten \(R_k(m)\) auf,
+		für die \(v_p(m)\ge k\) gilt. Das sind genau \(v_p(m)\) viele Schichten. Folglich ist der Exponent
+		von \(p\) im Produkt \(\prod_{k=1}^{h} R_k(m)\) gleich \(v_p(m)\). Da dies für alle Primteiler gilt,
+		haben beide Seiten dieselbe Primfaktorzerlegung.
+	\end{proof}
+	
+	\begin{lemma}
+		Die Folge der Radikalschichten ist divisibilitätsmonoton:
+		\[
+		R_{k+1}(m)\mid R_k(m)
+		\qquad \text{für alle } k=1,\dots,h-1.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Wenn \(p\mid R_{k+1}(m)\), dann ist \(v_p(m)\ge k+1\), also insbesondere \(v_p(m)\ge k\). Damit
+		folgt \(p\mid R_k(m)\). Also teilt \(R_{k+1}(m)\) die Schicht \(R_k(m)\).
+	\end{proof}
+	
+	\begin{satz}[Eindeutige geschichtete Radikalzerlegung]
+		Zu jeder natürlichen Zahl \(n\in\N\) existieren eindeutig bestimmte Zahlen
+		\[
+		\alpha=v_2(n),\qquad \beta=v_3(n),
+		\]
+		sowie eindeutig bestimmte quadratfreie Zahlen
+		\[
+		R_1,\dots,R_h
+		\]
+		mit
+		\[
+		n=2^\alpha 3^\beta \prod_{k=1}^{h} R_k,
+		\qquad
+		R_{k+1}\mid R_k,
+		\qquad
+		\gcd(R_k,6)=1.
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Die Eindeutigkeit von \(\alpha,\beta\) folgt aus der Primfaktorzerlegung. Der zu \(6\) teilerfremde
+		Teil \(m=n/(2^\alpha 3^\beta)\) ist dadurch eindeutig festgelegt. Die Zahlen \(R_k=R_k(m)\) sind
+		durch die Exponenten \(v_p(m)\) eindeutig bestimmt. Die beiden vorigen Lemmata liefern die Existenz
+		und die gewünschte Struktur.
+	\end{proof}
+	
+	\section{Die Familien \(E,A,B,C\)}
+	
+	\begin{definition}[Familien modulo \(12\)]
+		Für Primzahlen \(p\ge 5\) definieren wir vier Familien:
+		\[
+		E:=\{p\text{ prim}: p\equiv 1 \pmod{12}\},
+		\]
+		\[
+		A:=\{p\text{ prim}: p\equiv 5 \pmod{12}\},
+		\]
+		\[
+		B:=\{p\text{ prim}: p\equiv 7 \pmod{12}\},
+		\]
+		\[
+		C:=\{p\text{ prim}: p\equiv 11 \pmod{12}\}.
+		\]
+	\end{definition}
+	
+	Da jede Primzahl \(p\ge 5\) zu \(1,5,7\) oder \(11 \pmod{12}\) kongruent ist, liegt jeder Primteiler
+	einer Zahl \(m\) mit \(\gcd(m,6)=1\) in genau einer dieser vier Familien.
+	
+	\begin{lemma}
+		In der Einheitengruppe \((\mathbb{Z}/12\mathbb{Z})^\times\) gilt
+		\[
+		A^2=B^2=C^2=E,
+		\]
+		sowie
+		\[
+		AB=C,\qquad AC=B,\qquad BC=A,\qquad ABC=E.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Dies ist eine direkte Rechnung mit den Restklassen
+		\[
+		5^2\equiv 1,\qquad 7^2\equiv 1,\qquad 11^2\equiv 1 \pmod{12},
+		\]
+		sowie
+		\[
+		5\cdot 7\equiv 11,\qquad 5\cdot 11\equiv 7,\qquad 7\cdot 11\equiv 5 \pmod{12}.
+		\]
+		Außerdem ist
+		\[
+		5\cdot 7\cdot 11\equiv 1 \pmod{12}.
+		\]
+	\end{proof}
+	
+	\section{Sieben reduzierte Typen}
+	
+	\begin{definition}[Paritätssignatur]
+		Sei \(R\) eine quadratfreie Zahl mit \(\gcd(R,6)=1\). Wir definieren
+		\[
+		\varepsilon_A(R):=\#\{p\mid R:\ p\in A\}\bmod 2,
+		\]
+		\[
+		\varepsilon_B(R):=\#\{p\mid R:\ p\in B\}\bmod 2,
+		\]
+		\[
+		\varepsilon_C(R):=\#\{p\mid R:\ p\in C\}\bmod 2.
+		\]
+		Das Tripel
+		\[
+		(\varepsilon_A(R),\varepsilon_B(R),\varepsilon_C(R))\in\{0,1\}^3
+		\]
+		heißt Paritätssignatur von \(R\).
+	\end{definition}
+	
+	Formal ergeben sich daraus acht Muster:
+	\[
+	\varnothing,\ A,\ B,\ C,\ AB,\ AC,\ BC,\ ABC.
+	\]
+	Wegen der Relation \(ABC=E\) werden jedoch \(\varnothing\) und \(ABC\) zum selben neutralen Typ
+	zusammengefasst.
+	
+	\begin{definition}[Reduzierter Typ]
+		Der \emph{reduzierte Typ} einer quadratfreien Zahl \(R\) mit \(\gcd(R,6)=1\) ist das eindeutig
+		bestimmte Element
+		\[
+		\Typ(R)\in\{E,A,B,C,AB,AC,BC\},
+		\]
+		das durch die Paritätssignatur von \(R\) nach den Regeln
+		\[
+		(0,0,0)\mapsto E,\quad (1,0,0)\mapsto A,\quad (0,1,0)\mapsto B,\quad (0,0,1)\mapsto C,
+		\]
+		\[
+		(1,1,0)\mapsto AB,\quad (1,0,1)\mapsto AC,\quad (0,1,1)\mapsto BC,\quad (1,1,1)\mapsto E
+		\]
+		festgelegt ist.
+	\end{definition}
+	
+	\begin{satz}[Siebentypen-Klassifikation]
+		Jede Radikalschicht \(R_k\) einer natürlichen Zahl \(n\) besitzt genau einen reduzierten Typ
+		\[
+		\Typ(R_k)\in\{E,A,B,C,AB,AC,BC\}.
+		\]
+		Insbesondere gibt es genau sieben reduzierte Typen von Radikalschichten.
+	\end{satz}
+	
+	\begin{proof}
+		Jede Radikalschicht \(R_k\) ist quadratfrei und zu \(6\) teilerfremd. Daher sind die Zahlen
+		\(\varepsilon_A(R_k)\), \(\varepsilon_B(R_k)\), \(\varepsilon_C(R_k)\) eindeutig bestimmt. Dies
+		liefert genau eines der acht formalen Muster. Da die beiden neutralen Muster \(\varnothing\) und
+		\(ABC\) durch die Relation \(ABC=E\) denselben Typ \(E\) repräsentieren, bleiben genau sieben
+		verschiedene reduzierte Typen übrig.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Der Typ \(E\) ist kein bloßer Sonderfall, sondern ein vollwertiger Typ. Er umfasst insbesondere
+		\begin{itemize}[itemsep=0.2em]
+			\item einzelne Primzahlen \(p\equiv 1\pmod{12}\),
+			\item Produkte solcher Primzahlen,
+			\item sowie allgemein jede quadratfreie Zahl, deren Paritätssignatur neutral ist.
+		\end{itemize}
+	\end{bemerkung}
+	
+	\section{Der Radikalzerlegungsrest}
+	
+	\begin{definition}[Radikalzerlegungsrest]
+		Sei
+		\[
+		n=2^\alpha 3^\beta \prod_{k=1}^{h} R_k
+		\]
+		die eindeutige geschichtete Radikalzerlegung von \(n\). Dann heißt die Folge
+		\[
+		\Rest(n):=\bigl(\Typ(R_1),\Typ(R_2),\dots,\Typ(R_h)\bigr)
+		\]
+		der \emph{Radikalzerlegungsrest} von \(n\).
+	\end{definition}
+	
+	\begin{satz}[Existenz und Eindeutigkeit des Radikalzerlegungsrestes]
+		Zu jeder natürlichen Zahl \(n\in\N\) existiert ein eindeutig bestimmter Radikalzerlegungsrest
+		\[
+		\Rest(n)\in \{E,A,B,C,AB,AC,BC\}^{<\infty}.
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Die geschichtete Radikalzerlegung
+		\[
+		n=2^\alpha 3^\beta \prod_{k=1}^{h} R_k
+		\]
+		ist eindeutig. Für jede Schicht \(R_k\) ist der reduzierte Typ \(\Typ(R_k)\) eindeutig bestimmt.
+		Damit ist auch die gesamte Folge \(\Rest(n)\) eindeutig.
+	\end{proof}
+	
+	\begin{korollar}
+		Jede natürliche Zahl \(n\) besitzt
+		\begin{enumerate}[label=(\roman*),itemsep=0.2em]
+			\item einen eindeutig bestimmten \(2\)-adischen Anteil \(2^{v_2(n)}\),
+			\item einen eindeutig bestimmten \(3\)-adischen Anteil \(3^{v_3(n)}\),
+			\item eine eindeutig bestimmte geschichtete Radikalzerlegung des zu \(6\) teilerfremden Restes,
+			\item und einen eindeutig bestimmten Radikalzerlegungsrest \(\Rest(n)\).
+		\end{enumerate}
+	\end{korollar}
+	
+	\section{Beispiele}
+	
+	\begin{beispiel}
+		Betrachte
+		\[
+		n=2^2\cdot 3\cdot 5^3\cdot 7^2\cdot 13.
+		\]
+		Dann ist
+		\[
+		m=\frac{n}{2^2\cdot 3}=5^3\cdot 7^2\cdot 13.
+		\]
+		Die Radikalschichten sind
+		\[
+		R_1=5\cdot 7\cdot 13,\qquad R_2=5\cdot 7,\qquad R_3=5.
+		\]
+		Da \(13\in E\), \(5\in A\) und \(7\in B\), folgt
+		\[
+		\Typ(R_1)=AB,\qquad \Typ(R_2)=AB,\qquad \Typ(R_3)=A.
+		\]
+		Also ist
+		\[
+		\Rest(n)=(AB,AB,A).
+		\]
+	\end{beispiel}
+	
+	\begin{beispiel}
+		Für
+		\[
+		n=5\cdot 7\cdot 11
+		\]
+		gibt es nur eine Schicht
+		\[
+		R_1=5\cdot 7\cdot 11.
+		\]
+		Die Paritätssignatur ist formal \(ABC\), dies reduziert sich jedoch zu \(E\). Also
+		\[
+		\Rest(n)=(E).
+		\]
+	\end{beispiel}
+	
+	\begin{beispiel}
+		Für die Primzahl
+		\[
+		n=13
+		\]
+		gilt \(13\equiv 1\pmod{12}\), also \(13\in E\). Damit ist
+		\[
+		\Rest(13)=(E).
+		\]
+		Für die Primzahl
+		\[
+		n=19
+		\]
+		gilt \(19\equiv 7\pmod{12}\), also \(19\in B\). Daher ist
+		\[
+		\Rest(19)=(B).
+		\]
+	\end{beispiel}
+	
+	\section{Schlussbemerkung}
+	
+	Die hier eingeführte Struktur trennt drei Ebenen voneinander:
+	\begin{enumerate}[label=\arabic*.,itemsep=0.25em]
+		\item die gewöhnliche Primfaktorzerlegung,
+		\item die geschichtete Radikalzerlegung nach Exponentenstufen,
+		\item die reduzierte Sieben-Typen-Signatur jeder Schicht.
+	\end{enumerate}
+	
+	Damit erhält jede natürliche Zahl nicht nur eine eindeutige Primzerlegung, sondern zusätzlich eine
+	eindeutige \emph{Signaturfolge} über dem Alphabet
+	\[
+	\{E,A,B,C,AB,AC,BC\}.
+	\]
+	Diese Folge ist der Radikalzerlegungsrest der Zahl und kann als reduzierte, schichtweise
+	arithmetische Signatur interpretiert werden.
+	
+\end{document}

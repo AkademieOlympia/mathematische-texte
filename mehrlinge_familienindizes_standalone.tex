@@ -1,0 +1,296 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./}{fig/}{figs/}{images/}{img/}}
+\newcommand{\includegraphicssafe}[2][]{%
+  \IfFileExists{#2}{\includegraphics[#1]{#2}}{%
+    \fbox{\parbox[c][4cm][c]{0.8\linewidth}{\centering Grafikdatei \texttt{#2} nicht gefunden}}%
+  }%
+}
+
+\theoremstyle{plain}
+\newtheorem{satz}{Satz}
+\newtheorem{lemma}{Lemma}
+\newtheorem{korollar}{Korollar}
+\newtheorem{vermutung}{Vermutung}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{beispiel}{Beispiel}
+
+\theoremstyle{remark}
+\newtheorem{bemerkung}{Bemerkung}
+
+\title{\textbf{Zwillinge, Drillinge und Vierlinge\\
+mit Heimatfamilien, Familienindizes und Strukturvermutungen}}
+\author{Kollaborative Ausarbeitung}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Vorbemerkung}
+
+Wir verwenden die mod-$12$-Klassifikation
+\[
+E \equiv 1 \pmod{12},\qquad
+A \equiv 5 \pmod{12},\qquad
+B \equiv 7 \pmod{12},\qquad
+C \equiv 11 \pmod{12}.
+\]
+
+Für eine Primzahl $q>3$ bezeichne $F_i$ den Index von $q$ innerhalb ihrer Heimatfamilie $F\in\{E,A,B,C\}$. Beispielsweise gilt:
+\[
+5=A_1,\qquad 7=B_1,\qquad 11=C_1,\qquad 13=E_1,
+\]
+\[
+17=A_2,\qquad 19=B_2,\qquad 23=C_2,\qquad 37=E_2.
+\]
+Die Primzahl $3$ wird gesondert notiert, da sie nicht zu den vier Familien $E,A,B,C$ gehört.
+
+Es ist nützlich, jede Primzahl nicht nur durch ihren Wert, sondern durch die Doppelkoordinate
+\[
+q \longmapsto (F,i)
+\]
+zu lesen: Heimatfamilie $F$ und Familienindex $i$.
+
+\section{Tabellen}
+
+\subsection{Erste Zwillinge}
+
+\begin{longtable}{>{\raggedleft\arraybackslash}p{1.2cm} >{\centering\arraybackslash}p{4.0cm} p{8.2cm}}
+\toprule
+Nr. & Zwilling & Familienindizes \\
+\midrule
+\endfirsthead
+\toprule
+Nr. & Zwilling & Familienindizes \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+1  & $(3,5)$       & $3=\text{Sonderfall},\ 5=A_{1}$ \\
+2  & $(5,7)$       & $5=A_{1},\ 7=B_{1}$ \\
+3  & $(11,13)$     & $11=C_{1},\ 13=E_{1}$ \\
+4  & $(17,19)$     & $17=A_{2},\ 19=B_{2}$ \\
+5  & $(29,31)$     & $29=A_{3},\ 31=B_{3}$ \\
+6  & $(41,43)$     & $41=A_{4},\ 43=B_{4}$ \\
+7  & $(59,61)$     & $59=C_{4},\ 61=E_{3}$ \\
+8  & $(71,73)$     & $71=C_{5},\ 73=E_{4}$ \\
+9  & $(101,103)$   & $101=A_{7},\ 103=B_{7}$ \\
+10 & $(107,109)$   & $107=C_{7},\ 109=E_{6}$ \\
+11 & $(137,139)$   & $137=A_{9},\ 139=B_{9}$ \\
+12 & $(149,151)$   & $149=A_{10},\ 151=B_{10}$ \\
+\end{longtable}
+
+\subsection{Erste Drillinge}
+
+Hier sind die engen Primzahldrillinge der Formen
+\[
+(p,p+2,p+6)\qquad\text{oder}\qquad (p,p+4,p+6),
+\]
+einschließlich des Sonderfalls $(3,5,7)$.
+
+\begin{longtable}{>{\raggedleft\arraybackslash}p{1.2cm} >{\centering\arraybackslash}p{4.7cm} p{7.6cm}}
+\toprule
+Nr. & Drilling & Familienindizes \\
+\midrule
+\endfirsthead
+\toprule
+Nr. & Drilling & Familienindizes \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+1  & $(3,5,7)$       & $3=\text{Sonderfall},\ 5=A_{1},\ 7=B_{1}$ \\
+2  & $(5,7,11)$      & $5=A_{1},\ 7=B_{1},\ 11=C_{1}$ \\
+3  & $(7,11,13)$     & $7=B_{1},\ 11=C_{1},\ 13=E_{1}$ \\
+4  & $(11,13,17)$    & $11=C_{1},\ 13=E_{1},\ 17=A_{2}$ \\
+5  & $(13,17,19)$    & $13=E_{1},\ 17=A_{2},\ 19=B_{2}$ \\
+6  & $(17,19,23)$    & $17=A_{2},\ 19=B_{2},\ 23=C_{2}$ \\
+7  & $(37,41,43)$    & $37=E_{2},\ 41=A_{4},\ 43=B_{4}$ \\
+8  & $(41,43,47)$    & $41=A_{4},\ 43=B_{4},\ 47=C_{3}$ \\
+9  & $(67,71,73)$    & $67=B_{5},\ 71=C_{5},\ 73=E_{4}$ \\
+10 & $(97,101,103)$  & $97=E_{5},\ 101=A_{7},\ 103=B_{7}$ \\
+11 & $(101,103,107)$ & $101=A_{7},\ 103=B_{7},\ 107=C_{7}$ \\
+12 & $(103,107,109)$ & $103=B_{7},\ 107=C_{7},\ 109=E_{6}$ \\
+\end{longtable}
+
+\subsection{Erste Vierlinge}
+
+Wir betrachten Primzahlvierlinge der Form
+\[
+(p,p+2,p+6,p+8).
+\]
+
+\begin{longtable}{>{\raggedleft\arraybackslash}p{1.2cm} >{\centering\arraybackslash}p{5.2cm} p{7.0cm}}
+\toprule
+Nr. & Vierling & Familienindizes \\
+\midrule
+\endfirsthead
+\toprule
+Nr. & Vierling & Familienindizes \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+1  & $(5,7,11,13)$            & $5=A_{1},\ 7=B_{1},\ 11=C_{1},\ 13=E_{1}$ \\
+2  & $(11,13,17,19)$          & $11=C_{1},\ 13=E_{1},\ 17=A_{2},\ 19=B_{2}$ \\
+3  & $(101,103,107,109)$      & $101=A_{7},\ 103=B_{7},\ 107=C_{7},\ 109=E_{6}$ \\
+4  & $(191,193,197,199)$      & $191=C_{11},\ 193=E_{9},\ 197=A_{12},\ 199=B_{12}$ \\
+5  & $(821,823,827,829)$      & $821=A_{38},\ 823=B_{38},\ 827=C_{35},\ 829=E_{32}$ \\
+6  & $(1481,1483,1487,1489)$  & $1481=A_{61},\ 1483=B_{61},\ 1487=C_{59},\ 1489=E_{54}$ \\
+7  & $(1871,1873,1877,1879)$  & $1871=C_{73},\ 1873=E_{68},\ 1877=A_{71},\ 1879=B_{75}$ \\
+8  & $(2081,2083,2087,2089)$  & $2081=A_{79},\ 2083=B_{80},\ 2087=C_{81},\ 2089=E_{74}$ \\
+9  & $(3251,3253,3257,3259)$  & $3251=C_{117},\ 3253=E_{110},\ 3257=A_{118},\ 3259=B_{114}$ \\
+10 & $(3461,3463,3467,3469)$  & $3461=A_{123},\ 3463=B_{121},\ 3467=C_{124},\ 3469=E_{117}$ \\
+\end{longtable}
+
+\section{Sichere Beobachtungen}
+
+Die Tabellen machen drei robuste Phänomene sichtbar:
+
+\begin{enumerate}[label=\arabic*.]
+\item \textbf{Familienbesetzung:} Zwillinge besetzen zwei Familien, Drillinge drei, Vierlinge alle vier.
+\item \textbf{Zyklische Muster:} Die Familien treten nicht beliebig auf, sondern in kurzen zyklischen Mustern wie $AB$, $CE$, $ABC$, $CEA$, $EAB$, $BCE$ oder beim Vierling in einer vollen zyklischen Durchquerung des EABC-Raums.
+\item \textbf{Nahe Diagonallage der Indizes:} Die Familienindizes innerhalb einer Konstellation liegen oft erstaunlich nah beieinander. Bei kleinen Beispielen stimmen sie häufig sogar exakt oder fast exakt überein.
+\end{enumerate}
+
+Diese dritte Beobachtung motiviert nun einige Strukturvermutungen.
+
+\section{Strukturvermutungen über die Familienindizes}
+
+Wir schreiben für einen Mehrling die zugehörigen Familienindizes als Indexvektor. Zum Beispiel hat der Vierling
+\[
+(191,193,197,199)=(C_{11},E_{9},A_{12},B_{12})
+\]
+den Indexvektor
+\[
+(11,9,12,12).
+\]
+
+\begin{vermutung}[Asymptotische Diagonalisierung]
+Für jeden unendlichen Typ admissibler Primzahlkonstellationen mit festem Muster und fester Breite $h$ gilt: Wenn
+\[
+(p+d_1,\dots,p+d_r)
+\]
+eine solche Konstellation ist und
+\[
+(F_1,i_1),\dots,(F_r,i_r)
+\]
+die zugehörigen Familienkoordinaten sind, dann nähern sich die Indexquotienten asymptotisch $1$ an, also
+\[
+\frac{i_a}{i_b}\longrightarrow 1
+\qquad (p\to\infty)
+\]
+für alle $a,b$.
+\end{vermutung}
+
+\begin{bemerkung}
+Diese Vermutung ist heuristisch sehr natürlich, weil die vier Primfamilien modulo $12$ langfristig gleich dicht besetzt werden. Die Familienindizes sollten daher auf großer Skala dieselbe Größenordnung haben.
+\end{bemerkung}
+
+\begin{vermutung}[Sublineare Drift]
+Für Zwillinge, Drillinge und Vierlinge ist die Spreizung des Indexvektors
+\[
+\Delta:=\max(i_1,\dots,i_r)-\min(i_1,\dots,i_r)
+\]
+im Vergleich zur Indexgröße klein. Präziser: Für Konstellationen mit wachsender Grundzahl $p$ gilt heuristisch
+\[
+\Delta=o(i_\ast)
+\]
+mit einem typischen Indexniveau $i_\ast$ derselben Konstellation.
+\end{vermutung}
+
+\begin{bemerkung}
+Die Tabellen stützen diese Vermutung qualitativ: Die absoluten Unterschiede wachsen zwar, aber deutlich langsamer als das Gesamtniveau der Indizes.
+\end{bemerkung}
+
+\begin{vermutung}[Lokale Fast-Synchronisation bei dichten Mehrlingen]
+Je dichter die Primkonstellation ist, desto stärker tendieren die beteiligten Familienindizes zur lokalen Synchronisation. Insbesondere wird erwartet:
+\begin{center}
+Zwillinge $\to$ schwächere Synchronisation,\qquad
+Drillinge $\to$ stärkere Synchronisation,\qquad
+Vierlinge $\to$ stärkste Synchronisation.
+\end{center}
+Mit anderen Worten: Dichte Mehrlinge liegen bevorzugt nahe an der Diagonalen
+\[
+i_1\approx i_2\approx\dots\approx i_r.
+\]
+\end{vermutung}
+
+\begin{bemerkung}
+Diese Vermutung ist nicht trivial. Sie behauptet mehr als bloße Gleichverteilung der Restklassen. Der Gedanke ist: Wenn in einem sehr kurzen Intervall gleich mehrere Primzahlen gemeinsam auftreten, dann scheint dies bevorzugt in Regionen zu passieren, in denen die Familienzählungen lokal besonders gut ausbalanciert sind.
+\end{bemerkung}
+
+\begin{vermutung}[Rotierendes Indexmuster]
+Für Drillinge und Vierlinge rotiert nicht nur das Familienmuster, sondern auch der Indexvektor durch wenige typische Formen. Beispiele sind bei Drillingen etwa
+\[
+(i,i,i),\quad (i,i,i\pm 1),\quad (i,i+1,i+1),
+\]
+und bei Vierlingen analog kurze fastdiagonale Muster wie
+\[
+(i,i,i,i),\quad (i,i,i,i-1),\quad (i-1,i,i,i),\quad (i-1,i,i+1,i).
+\]
+Stärkere Abweichungen sollten seltener werden als nahe-diagonale Konfigurationen.
+\end{vermutung}
+
+\begin{vermutung}[Familienrennbias als langsame Scherung]
+Abweichungen von der exakten Diagonale werden durch einen langsamen ``Renneffekt'' der Familien verursacht. Das heißt: Wenn eine Restklasse modulo $12$ auf langen Skalen vorübergehend einen kleinen Vorsprung in ihrer Zählfunktion besitzt, dann erscheinen Mehrlinge derselben Größenordnung mit entsprechend gescherten Indexvektoren.
+\end{vermutung}
+
+\begin{bemerkung}
+Diese Vermutung verbindet die Mehrlingsgeometrie mit dem bekannten Phänomen der \emph{prime number races}: Die Familien sind asymptotisch gleich häufig, können lokal aber merklich unterschiedliche Zählstände aufweisen.
+\end{bemerkung}
+
+\section{Arbeitsdefinitionen für spätere numerische Tests}
+
+Für eine Konstellation mit Indexvektor $(i_1,\dots,i_r)$ sind insbesondere folgende Kenngrößen naheliegend:
+\begin{align*}
+\text{Spreizung:}\qquad &\Delta = \max(i_j)-\min(i_j),\\
+\text{Mittelindex:}\qquad &\bar{i}=\frac{1}{r}\sum_{j=1}^r i_j,\\
+\text{relative Spreizung:}\qquad &\delta = \frac{\Delta}{\bar{i}},\\
+\text{Varianz:}\qquad &V = \frac{1}{r}\sum_{j=1}^r (i_j-\bar{i})^2.
+\end{align*}
+
+Damit lassen sich die Vermutungen präzise als empirische Aussagen prüfen, etwa:
+\begin{itemize}
+\item Wie verteilt sich $\Delta$ bei Zwillingen, Drillingen und Vierlingen?
+\item Ist $\delta$ bei Vierlingen typischerweise kleiner als bei Drillingen und Zwillingen?
+\item Welche Indexmuster treten signifikant häufiger auf als andere?
+\item Korrelieren starke Indexscherungen mit bestimmten Familienfolgen?
+\end{itemize}
+
+\section{Interpretation im EABC-Bild}
+
+Aus Sicht des EABC-Raums kann man die Familienindizes als eine zweite Geometrieebene verstehen. Die Familie sagt, \emph{wo} eine Primzahl im Restklassenraum sitzt; der Index sagt, \emph{wie tief} sie in ihre Familie eingebettet ist. Ein Mehrling ist dann nicht nur ein Muster kurzer Abstände, sondern zugleich eine kurze Bahn im diskreten Raum
+\[
+\{E,A,B,C\}\times \mathbb{N}.
+\]
+
+Die Tabellen legen nahe, dass dichte Primkonstellationen bevorzugt als kurze, fast diagonale Bahnen in diesem Raum erscheinen. Genau diese Beobachtung steckt hinter den obigen Strukturvermutungen.
+
+\section{Schluss}
+
+Die hier notierten Vermutungen sind bewusst als Arbeitsprogramm formuliert. Sie sind stark genug, um numerisch getestet zu werden, und zugleich nah genug an den Tabellen, um heuristisch plausibel zu wirken. Für eine nächste Ausbaustufe bieten sich insbesondere drei Wege an:
+\begin{enumerate}[label=\arabic*.]
+\item große Datentabellen mit 100 oder 1000 Zwillingen, Drillingen und Vierlingen,
+\item statistische Auswertung der Indexvektoren,
+\item Vergleich mit Primzahlrennen in den Klassen modulo $12$.
+\end{enumerate}
+
+\end{document}

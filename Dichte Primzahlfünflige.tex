@@ -1,0 +1,364 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\title{Schalenverknüpfung, \(5\)-adische Ordnung und die Rolle dichter Primzahlfünflinge}
+\author{Kollaborative Ausarbeitung}
+\date{\today}
+
+\newtheorem{satz}{Satz}
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{korollar}[satz]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{beispiel}[satz]{Beispiel}
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir untersuchen die Beziehung zwischen zwei natürlichen Schalenabbildungen, die durch
+		\((2,3)\)- bzw. \((2,3,5)\)-glatte Faktoren induziert werden. Für eine natürliche Zahl \(n\)
+		zeigen wir, dass die beiden schalenreduzierten Kerne eindeutig über die \(5\)-adische Ordnung
+		\(v_5(n)\) miteinander verknüpft sind. Auf der Ebene der \(ABC\)-/\(E\)-Zerlegung führt dies zu
+		einer exakten Intertwining-Formel der schalenreduzierten Quotienten. Weiter zeigen wir, dass auf
+		reduzierter Signatur-Ebene der Übergang von der \((2,3,5)\)- zur \((2,3)\)-Schale genau als
+		\(A\)-Twist erscheint. Die bereits hergeleitete Struktur dichter Primzahlfünflinge liefert dafür
+		eine geometrisch-orientierte Interpretation.
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Die Zerlegung natürlicher Zahlen in glatte und nichtglatte Anteile ist in vielen arithmetischen
+	Zusammenhängen ein natürlicher erster Schritt. Im hier betrachteten Rahmen tritt zusätzlich eine
+	familienweise Zerlegung modulo \(12\) auf. Für Zahlen, die weder durch \(2\) noch durch \(3\)
+	teilbar sind, wird eine kanonische Zerlegung in einen \(ABC\)-Anteil und einen energetischen
+	\(E\)-Anteil verwendet. Dies führt zu Quotientenbildern der Form
+	\[
+	Q(n)=\frac{n_{ABC}}{\mathcal E(n)},
+	\]
+	die zunächst eher Relationen als echte Funktionen erzeugen.
+	
+	Eine natürliche Verfeinerung besteht darin, zunächst glatte Faktoren durch Schalenbildung
+	abzutrennen. Besonders relevant sind hier die beiden Schalen
+	\[
+	(2,3)\qquad\text{und}\qquad (2,3,5),
+	\]
+	wobei der Übergang von der ersten zur zweiten Schale genau durch die \(5\)-adische Ordnung
+	kontrolliert wird. Da \(5\equiv 5\pmod{12}\) zur Familie \(A\) gehört, greift diese Verfeinerung
+	nicht nur äußerlich in die Faktorisierung ein, sondern direkt in die \(ABC\)-Struktur.
+	
+	\section{Glatte Schalen}
+	
+	\begin{definition}[\((2,3)\)- und \((2,3,5)\)-glatte Zahlen]
+		Eine natürliche Zahl \(s\) heißt
+		\begin{itemize}
+			\item \((2,3)\)-glatt, wenn
+			\[
+			s=2^\alpha 3^\beta
+			\qquad (\alpha,\beta\in\mathbb{N}_0),
+			\]
+			\item \((2,3,5)\)-glatt, wenn
+			\[
+			s=2^\alpha 3^\beta 5^\gamma
+			\qquad (\alpha,\beta,\gamma\in\mathbb{N}_0).
+			\]
+		\end{itemize}
+	\end{definition}
+	
+	\begin{definition}[Schalenanteile]
+		Für \(n\in\mathbb{N}\) definieren wir
+		\[
+		s_{23}(n):=2^{v_2(n)}3^{v_3(n)},
+		\qquad
+		s_{235}(n):=2^{v_2(n)}3^{v_3(n)}5^{v_5(n)}.
+		\]
+		Die zugehörigen schalenreduzierten Kerne seien
+		\[
+		m_{23}(n):=\frac{n}{s_{23}(n)},
+		\qquad
+		m_{235}(n):=\frac{n}{s_{235}(n)}.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Für jede natürliche Zahl \(n\) sind die Zerlegungen
+		\[
+		n=s_{23}(n)\,m_{23}(n)
+		\qquad\text{und}\qquad
+		n=s_{235}(n)\,m_{235}(n)
+		\]
+		eindeutig.
+	\end{lemma}
+	
+	\begin{proof}
+		Die Exponenten \(v_2(n)\), \(v_3(n)\) und \(v_5(n)\) sind durch die Primfaktorzerlegung von
+		\(n\) eindeutig bestimmt. Damit sind auch \(s_{23}(n)\), \(s_{235}(n)\) und die zugehörigen Kerne
+		eindeutig festgelegt.
+	\end{proof}
+	
+	\section{Familien modulo \(12\)}
+	
+	\begin{definition}[Die vier Familien]
+		Für Primzahlen \(p>3\) definieren wir
+		\[
+		E:=\{p:\ p\equiv 1 \pmod{12}\},\qquad
+		A:=\{p:\ p\equiv 5 \pmod{12}\},
+		\]
+		\[
+		B:=\{p:\ p\equiv 7 \pmod{12}\},\qquad
+		C:=\{p:\ p\equiv 11 \pmod{12}\}.
+		\]
+	\end{definition}
+	
+	\begin{definition}[EABC-Gitter]
+		Für \(n\in\mathbb{N}\) setzen wir
+		\[
+		E_n:=12n-11,\qquad
+		A_n:=12n-7,\qquad
+		B_n:=12n-5,\qquad
+		C_n:=12n-1.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Schalenreduzierte \(ABC\)-/\(E\)-Zerlegung]
+		Für die Kerne \(m_{23}(n)\) und \(m_{235}(n)\) schreiben wir
+		\[
+		m_{23}(n)=m_{23,ABC}(n)\,\mathcal E_{23}(n),
+		\]
+		\[
+		m_{235}(n)=m_{235,ABC}(n)\,\mathcal E_{235}(n),
+		\]
+		wobei der erste Faktor jeweils alle Primfaktorpotenzen aus den Familien \(A,B,C\) und der zweite
+		Faktor alle Primfaktorpotenzen aus der Familie \(E\) enthält.
+	\end{definition}
+	
+	\begin{definition}[Schalenreduzierte Quotienten]
+		Wir definieren
+		\[
+		Q_{23}(n):=\frac{m_{23,ABC}(n)}{\mathcal E_{23}(n)},
+		\qquad
+		Q_{235}(n):=\frac{m_{235,ABC}(n)}{\mathcal E_{235}(n)}.
+		\]
+	\end{definition}
+	
+	\section{Algebraische Verknüpfung der beiden Schalenbilder}
+	
+	\begin{lemma}
+		Für jede natürliche Zahl \(n\) gilt mit
+		\[
+		\gamma:=v_5(n)
+		\]
+		die Identität
+		\[
+		m_{23}(n)=5^\gamma\,m_{235}(n).
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Nach Definition ist
+		\[
+		m_{23}(n)=\frac{n}{2^{v_2(n)}3^{v_3(n)}}
+		\]
+		und
+		\[
+		m_{235}(n)=\frac{n}{2^{v_2(n)}3^{v_3(n)}5^{v_5(n)}}.
+		\]
+		Also folgt unmittelbar
+		\[
+		m_{23}(n)=5^{v_5(n)}\,m_{235}(n)=5^\gamma\,m_{235}(n).
+		\]
+	\end{proof}
+	
+	\begin{satz}[Intertwining-Formel]
+		Für jede natürliche Zahl \(n\) mit \(\gamma=v_5(n)\) gilt
+		\[
+		m_{23,ABC}(n)=5^\gamma\,m_{235,ABC}(n),
+		\]
+		\[
+		\mathcal E_{23}(n)=\mathcal E_{235}(n).
+		\]
+		Insbesondere gilt
+		\[
+		Q_{23}(n)=5^\gamma\,Q_{235}(n).
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Da \(5\equiv 5\pmod{12}\), gehört \(5\) zur Familie \(A\), also zum \(ABC\)-Anteil und nicht zum
+		\(E\)-Anteil. Beim Übergang von \(m_{23}(n)\) zu \(m_{235}(n)\) wird daher genau der Faktor
+		\(5^\gamma\) aus dem \(ABC\)-Teil entfernt, während der \(E\)-Teil unverändert bleibt. Somit
+		\[
+		m_{23,ABC}(n)=5^\gamma\,m_{235,ABC}(n),
+		\qquad
+		\mathcal E_{23}(n)=\mathcal E_{235}(n).
+		\]
+		Die Quotientenformel folgt sofort.
+	\end{proof}
+	
+	\section{Signaturtheoretische Interpretation}
+	
+	\begin{definition}[Reduzierte Signaturen]
+		Sei \(\sigma_{23}(n)\in\mathbb{F}_2^3\) die reduzierte Paritätssignatur von \(m_{23,ABC}(n)\) und
+		\(\sigma_{235}(n)\in\mathbb{F}_2^3\) die reduzierte Paritätssignatur von \(m_{235,ABC}(n)\).
+		Wir identifizieren die \(A\)-Richtung mit
+		\[
+		a:=(1,0,0)\in\mathbb{F}_2^3.
+		\]
+	\end{definition}
+	
+	\begin{korollar}[Der \(A\)-Twist]
+		Mit \(\gamma=v_5(n)\) gilt
+		\[
+		\sigma_{23}(n)=\sigma_{235}(n)+(\gamma\bmod 2)\,a.
+		\]
+		Insbesondere:
+		\begin{enumerate}[label=\textup{(\roman*)}]
+			\item Ist \(\gamma\) gerade, so gilt
+			\[
+			\sigma_{23}(n)=\sigma_{235}(n).
+			\]
+			\item Ist \(\gamma\) ungerade, so unterscheiden sich beide Schalenbilder genau um einen
+			\(A\)-Schritt.
+		\end{enumerate}
+	\end{korollar}
+	
+	\begin{proof}
+		Der Übergang von \(m_{235,ABC}(n)\) zu \(m_{23,ABC}(n)\) besteht in der Multiplikation mit
+		\(5^\gamma\). Da \(5\) zur Familie \(A\) gehört, addiert dies auf Signaturniveau genau \(\gamma\)
+		mal den Vektor \(a=(1,0,0)\). In \(\mathbb{F}_2^3\) zählt nur die Parität.
+	\end{proof}
+	
+	\section{Dichte Primzahlfünflinge}
+	
+	\begin{definition}[Dichter Primzahlfünfling]
+		Ein dichter Primzahlfünfling ist eine Primzahlkonstellation der Form
+		\[
+		(p,p+2,p+6,p+8,p+12).
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Jeder dichte Primzahlfünfling mit \(p>3\) besitzt genau eine der beiden Formen
+		\[
+		(A_n,B_n,C_n,E_{n+1},A_{n+1})
+		\]
+		oder
+		\[
+		(C_n,E_{n+1},A_{n+1},B_{n+1},C_{n+1})
+		\]
+		für ein eindeutig bestimmtes \(n\in\mathbb{N}\).
+	\end{lemma}
+	
+	\begin{proof}
+		Für \(p>3\) sind als Startreste modulo \(12\) nur \(5\) und \(11\) möglich.
+		
+		Falls \(p\equiv 5\pmod{12}\), so ist \(p=A_n\), also
+		\[
+		p+2=B_n,\quad p+6=C_n,\quad p+8=E_{n+1},\quad p+12=A_{n+1}.
+		\]
+		
+		Falls \(p\equiv 11\pmod{12}\), so ist \(p=C_n\), also
+		\[
+		p+2=E_{n+1},\quad p+6=A_{n+1},\quad p+8=B_{n+1},\quad p+12=C_{n+1}.
+		\]
+		
+		Die Fälle \(p\equiv 1\) oder \(p\equiv 7\pmod{12}\) sind unmöglich, da dann ein Folgeterm durch
+		\(3\) teilbar wäre.
+	\end{proof}
+	
+	\begin{satz}
+		Die dichten Primzahlfünflinge geben der algebraischen Verknüpfung der beiden Schalenabbildungen
+		eine geometrisch-orientierte Interpretation:
+		
+		\begin{enumerate}[label=\textup{(\roman*)}]
+			\item Jeder dichte Primzahlfünfling ist eine orientierte Erweiterung einer blockübergreifenden
+			Viererkonfiguration.
+			\item Diese Orientierung ist genau entweder \(A\)-gerichtet oder \(C\)-gerichtet.
+			\item Der Übergang von der \((2,3,5)\)-Schale zur \((2,3)\)-Schale wirkt auf reduzierter
+			Signatur-Ebene als \(A\)-Twist.
+			\item Damit wird die algebraische \(5\)-adische Schalenverknüpfung geometrisch durch die
+			ausgezeichnete \(A\)-/\(C\)-Orientierung der Primzahlfünflinge sichtbar.
+		\end{enumerate}
+	\end{satz}
+	
+	\begin{proof}
+		Die ersten beiden Aussagen folgen direkt aus dem vorangehenden Lemma. Die dritte ist genau das
+		vorige Korollar. Die vierte folgt daraus, dass die zusätzliche \(5\)-adische Komponente genau in
+		der \(A\)-Familie liegt und daher algebraisch dieselbe ausgezeichnete Richtung markiert, die in
+		der lokalen Fünflingsgeometrie als Orientierung erscheint.
+	\end{proof}
+	
+	\begin{korollar}
+		Ohne Primzahlfünflinge ist die Formel
+		\[
+		Q_{23}(n)=5^{v_5(n)}\,Q_{235}(n)
+		\]
+		eine rein algebraische Intertwining-Relation. Durch den Einbezug der Fünflinge erhält dieselbe
+		Formel eine intrinsische Orientierungsbedeutung.
+	\end{korollar}
+	
+	\section{Beispiele}
+	
+	\begin{beispiel}
+		Für
+		\[
+		n=2^3\cdot 3^2\cdot 5\cdot 7\cdot 13
+		\]
+		gilt
+		\[
+		v_5(n)=1,
+		\qquad
+		Q_{23}(n)=\frac{35}{13},
+		\qquad
+		Q_{235}(n)=\frac{7}{13}.
+		\]
+		Also
+		\[
+		Q_{23}(n)=5\,Q_{235}(n).
+		\]
+		Auf Signaturniveau unterscheiden sich die beiden Schalenbilder genau um einen \(A\)-Twist.
+	\end{beispiel}
+	
+	\begin{beispiel}
+		Der dichte Primzahlfünfling
+		\[
+		(5,7,11,13,17)
+		\]
+		hat die Form
+		\[
+		(A_1,B_1,C_1,E_2,A_2).
+		\]
+		Er ist also eine \(A\)-gerichtete Erweiterung. In dieser Sicht wird genau die Richtung
+		hervorgehoben, die auch in der \(5\)-adischen Schalenverknüpfung ausgezeichnet ist.
+	\end{beispiel}
+	
+	\section{Schlussbemerkung}
+	
+	Die \((2,3)\)- und \((2,3,5)\)-Schalenabbildungen sind algebraisch eindeutig durch die
+	\(5\)-adische Ordnung miteinander verknüpft. Diese Beziehung ist nicht bloß formal:
+	Da \(5\) zur Familie \(A\) gehört, erscheint der Übergang zwischen beiden Schalenbildern auf
+	Signaturniveau als \(A\)-Twist. Die dichten Primzahlfünflinge liefern dafür die natürliche lokale
+	Geometrie, denn sie sind genau die ersten Konstellationen, in denen eine ausgezeichnete
+	\(A\)- oder \(C\)-Orientierung sichtbar wird.
+	
+	Damit entsteht eine kohärente Brücke zwischen
+	\begin{enumerate}[label=\arabic*.]
+		\item glatten Schalen,
+		\item \(ABC\)-/\(E\)-Moden,
+		\item reduzierten Signaturen,
+		\item und der lokalen Geometrie dichter Primzahlkonstellationen.
+	\end{enumerate}
+	
+\end{document}

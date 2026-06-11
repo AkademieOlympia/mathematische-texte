@@ -1,0 +1,213 @@
+\documentclass[11pt,a4paper,twocolumn]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[german]{babel}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{abstract}
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./}{fig/}{figs/}{images/}{img/}}
+
+\geometry{margin=2.0cm}
+
+% Deutsche Theorem-Umgebungen
+\newtheorem{satz}{Satz}
+\newtheorem{lemma}{Lemma}
+\newtheorem{korollar}{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{beispiel}{Beispiel}
+\theoremstyle{remark}
+\newtheorem{bemerkung}{Bemerkung}
+
+\title{\textbf{Binäre Resonanz-Metrik und Zeta-Harmonik:\\
+		eine heuristische Studie zur Struktur von Primzahlvierlingen}}
+\author{\textit{Thomas Hoffbauer}}
+\date{7. April 2026}
+
+\begin{document}
+	
+	\twocolumn[
+	\maketitle
+	\begin{onecolabstract}
+		In dieser Arbeit untersuchen wir eine mögliche Verbindung zwischen der analytischen Zahlentheorie, binären Kombinatorikstrukturen und der Verteilung von Primzahlvierlingen der Form $(p,p+2,p+6,p+8)$. Ausgangspunkt ist die Beobachtung, dass bestimmte Produkte kleiner Primzahlen und ausgewählte Binomialkoeffizienten in binären Strukturen des Pascal-Dreiecks besondere Arithmetik-Eigenschaften aufweisen. Aufbauend darauf formulieren wir eine heuristische Resonanz-Metrik, mit der sich Primzahlvierlinge in einem binären Suchraum charakterisieren lassen.
+		
+		Ferner diskutieren wir numerische Korrelationen zwischen diskreten binären Schichtparametern und den imaginären Teilen nichttrivialer Nullstellen der Riemannschen Zetafunktion. Die präsentierten Ergebnisse sind explorativ: Sie liefern keine deterministische Lösung der Primzahlvierlingsvermutung, sondern ein strukturiertes Modell, das mögliche Zusammenhänge sichtbar macht und für weitergehende numerische Untersuchungen geeignet ist.
+	\end{onecolabstract}
+	\vspace{0.6cm}
+	]
+	
+	\section{Einleitung}
+	Die Frage nach der Verteilung von Primzahlkonstellationen gehört zu den zentralen Problemen der analytischen Zahlentheorie. Insbesondere sind Primzahlvierlinge
+	\[
+	(p,p+2,p+6,p+8)
+	\]
+	von besonderem Interesse, da sie die dichteste mögliche Konstellation von vier Primzahlen darstellen.
+	
+	Klassische Zugänge beruhen auf Siebmethoden, asymptotischen Heuristiken und tiefen analytischen Resultaten. Im vorliegenden Beitrag wird ein anderer Blickwinkel vorgeschlagen: Das Pascal-Dreieck wird als binär-kominatorischer Resonanzraum interpretiert, in dem arithmetische Muster durch Parität, Hamming-Gewichte und $2$-adische Bewertungen sichtbar werden.
+	
+	Ziel der Arbeit ist nicht der Beweis neuer Sätze über die Unendlichkeit von Primzahlvierlingen, sondern die Formulierung eines kohärenten heuristischen Rahmens, der numerisch untersucht werden kann.
+	
+	\section{Die 5005-Resonanzzelle}
+	Ein natürlicher Ausgangspunkt ist das Produkt des ersten Primzahlvierlings:
+	\[
+	P_1 = 5\cdot 7\cdot 11\cdot 13 = 5005.
+	\]
+	Dieses Produkt besitzt mehrere auffällige arithmetische Eigenschaften und lässt sich mit dem Binomialkoeffizienten
+	\[
+	\binom{15}{6}=5005
+	\]
+	identifizieren. Dadurch ergibt sich eine Verbindung zur $15$-ten Schicht des Pascal-Dreiecks.
+	
+	Die Zahl $15$ hat in binärer Darstellung die Form
+	\[
+	15=1111_2,
+	\]
+	also maximales Hamming-Gewicht innerhalb ihrer Bitlänge. Dies motiviert die Interpretation dieser Schicht als eines Zustands hoher binärer Sättigung.
+	
+	\begin{definition}
+		Für $n\in \mathbb{N}$ bezeichne $w(n)$ das Hamming-Gewicht von $n$, also die Anzahl der Einsen in der Binärdarstellung von $n$.
+	\end{definition}
+	
+	Die $2$-adische Bewertung von Binomialkoeffizienten wird durch die bekannte Formel
+	\begin{equation}
+		v_2\!\left(\binom{n}{k}\right)=w(k)+w(n-k)-w(n)
+	\end{equation}
+	beschrieben. Sie folgt aus Standardresultaten über die $2$-adische Struktur von Fakultäten und ist eng mit Überträgen in der Binäraddition verknüpft.
+	
+	Im Fall
+	\[
+	\binom{15}{6}=5005
+	\]
+	erhält man
+	\[
+	v_2\!\left(\binom{15}{6}\right)=0,
+	\]
+	da $6=0110_2$, $9=1001_2$ und somit
+	\[
+	w(6)+w(9)=2+2=4=w(15).
+	\]
+	Das bedeutet, dass der zugehörige Binomialkoeffizient ungerade ist und damit auf einer ungeraden Zelle des Sierpiński-Musters des Pascal-Dreiecks liegt.
+	
+	\begin{bemerkung}
+		Diese Beobachtung ist zunächst rein arithmetisch. Ihre Deutung als ``Resonanzzelle'' ist eine modellhafte Interpretation, keine bereits bewiesene mathematische Notwendigkeit.
+	\end{bemerkung}
+	
+	\section{Binäre Struktur und Primzahlvierlinge}
+	Die Verbindung zwischen $5005$ und dem ersten Primzahlvierling legt nahe, binäre Strukturen nicht nur als Kodierung, sondern als Filter für arithmetische Konstellationen zu betrachten.
+	
+	Die Grundidee lautet:
+	\begin{quote}
+		Primzahlvierlinge treten bevorzugt in solchen arithmetischen Umgebungen auf, in denen lokale Teilbarkeitsobstruktionen minimiert und binäre Strukturmaße gleichzeitig extremal oder auffällig sind.
+	\end{quote}
+	
+	Dies ist zunächst eine Heuristik. Insbesondere wird nicht behauptet, dass jede binär ausgezeichnete Schicht einen Primzahlvierling erzwingt oder dass Primzahlvierlinge vollständig durch Binärdaten klassifiziert werden können. Vielmehr dient die binäre Struktur als zusätzlicher Ordnungsparameter.
+	
+	\section{Zeta-Harmonik und spektrale Heuristik}
+	Ein zweiter Zugang ergibt sich aus den imaginären Teilen
+	\[
+	\gamma_1,\gamma_2,\gamma_3,\dots
+	\]
+	der nichttrivialen Nullstellen der Riemannschen Zetafunktion. In der analytischen Zahlentheorie steuern diese Größen bekanntermaßen die Oszillationen in expliziten Formeln zur Primzahlverteilung.
+	
+	In dieser Arbeit wird heuristisch untersucht, ob sich eine diskrete Zuordnung
+	\[
+	\gamma \longmapsto n(\gamma)
+	\]
+	zu binären Schichten $n$ so wählen lässt, dass Schichten mit hohem Hamming-Gewicht oder auffälliger $2$-adischer Struktur statistisch bevorzugt werden.
+	
+	Für die erste Nullstelle
+	\[
+	\gamma_1 \approx 14.1347
+	\]
+	liegt es nahe, ihre Nähe zur Schicht $n=15$ hervorzuheben. Diese Nachbarschaft ist jedoch zunächst nur eine numerische Beobachtung und darf nicht als struktureller Beweis interpretiert werden.
+	
+	\begin{definition}
+		Für $\gamma\in\mathbb{R}$ definieren wir die gerundete Abweichung
+		\begin{equation}
+			\epsilon(\gamma)=\gamma-\lfloor \gamma \rceil,
+		\end{equation}
+		wobei $\lfloor \gamma \rceil$ die nächstgelegene ganze Zahl bezeichnet.
+	\end{definition}
+	
+	Kleine Werte von $|\epsilon(\gamma)|$ markieren Nullstellen, die nahe an ganzzahligen Schichten liegen. Das Motiv der Arbeit besteht darin, diese Nähe mit binären Strukturmaßen wie $w(n)$, $v_2\!\left(\binom{n}{k}\right)$ oder verwandten diskreten Größen zu korrelieren.
+	
+	\section{Eine heuristische Resonanz-Metrik}
+	Um die Idee zu formalisieren, führen wir eine abstrakte Resonanz-Metrik ein. Sei $Q=(p,p+2,p+6,p+8)$ ein Primzahlvierling. Dann kann man modellhaft eine Funktion
+	\[
+	\mathcal{R}(Q)
+	\]
+	definieren, die mehrere Komponenten kombiniert:
+	\begin{enumerate}
+		\item lokale Teilbarkeitsfreiheit modulo kleiner Primzahlen,
+		\item binäre Strukturparameter zu assoziierten Schichten,
+		\item Nähe zu ausgezeichneten Zeta-Nullstellen oder zu diskreten Spektralniveaus.
+	\end{enumerate}
+	
+	Eine mögliche schematische Form ist
+	\begin{equation}
+		\mathcal{R}(Q)=
+		\alpha\,B(Q)+\beta\,Z(Q)+\gamma\,A(Q),
+	\end{equation}
+	wobei
+	\begin{itemize}
+		\item $B(Q)$ einen binären Strukturterm,
+		\item $Z(Q)$ einen zeta-spektalen Term,
+		\item $A(Q)$ einen arithmetischen Ausschlussterm
+	\end{itemize}
+	bezeichnet und $\alpha,\beta,\gamma$ reelle Gewichtungsparameter sind.
+	
+	\begin{bemerkung}
+		Die konkrete Wahl von $\mathcal{R}$ ist Teil des Forschungsprogramms und nicht kanonisch. Der Mehrwert liegt hier in der systematischen Formulierung eines testbaren numerischen Modells.
+	\end{bemerkung}
+	
+	\section{Zur Abzählung von Primzahlvierlingen}
+	Die starke Behauptung einer \emph{deterministischen Abzählung} von Primzahlvierlingen wäre nur dann gerechtfertigt, wenn aus der Resonanz-Metrik ein nachweislich vollständiges und korrektes Charakterisierungskriterium folgen würde. Ein solches Resultat wird hier nicht bewiesen.
+	
+	Stattdessen formulieren wir vorsichtiger:
+	
+	\begin{quote}
+		Die Resonanz-Metrik kann als heuristische Filteroperation verstanden werden, die den Suchraum möglicher Kandidaten für Primzahlvierlinge strukturiert und unter Umständen deutlich reduziert.
+	\end{quote}
+	
+	Damit verschiebt sich die Perspektive von einer naiven vollständigen Suche zu einer arithmetisch und binär vorstrukturierten Kandidatenselektion.
+	
+	\section{Mögliche kryptographische Relevanz}
+	Die kryptographische Bedeutung der Primzahlverteilung ist unbestritten. Dennoch wäre es verfrüht, aus dem hier vorgestellten Modell unmittelbare Konsequenzen für RSA oder Post-Quantum-Kryptographie abzuleiten.
+	
+	Seriös lässt sich lediglich festhalten:
+	\begin{itemize}
+		\item Falls sich reproduzierbare Nichtzufälligkeiten in bestimmten Klassen von Primzahlkonstellationen zeigen, könnten diese für die Analyse spezieller Primzahlgeneratoren relevant sein.
+		\item Binär-arithmetische Filterverfahren könnten für die Konstruktion oder Bewertung algorithmischer Suchmethoden von Interesse sein.
+		\item Ob daraus tatsächlich kryptographische Angriffe oder neue sichere Verfahren folgen, ist offen und bedarf eigenständiger Untersuchung.
+	\end{itemize}
+	
+	\section{Fazit}
+	Die vorliegende Arbeit entwickelt ein heuristisches Modell, das Primzahlvierlinge, binäre Strukturen des Pascal-Dreiecks und spektrale Aspekte der Zetafunktion in einen gemeinsamen Deutungsrahmen stellt.
+	
+	Im Zentrum stehen drei Beobachtungen:
+	\begin{enumerate}
+		\item die ausgezeichnete Rolle des Produkts $5005$ als erster Primzahlvierlingswert,
+		\item die ungerade Einbettung von $5005$ als Binomialkoeffizient $\binom{15}{6}$,
+		\item die Möglichkeit, Zeta-Nullstellen mit diskreten binären Schichten in Beziehung zu setzen.
+	\end{enumerate}
+	
+	Diese Beobachtungen begründen kein neues Theorem über die Unendlichkeit von Primzahlvierlingen. Sie motivieren jedoch ein numerisch testbares Forschungsprogramm, das kombinatorische, spektrale und arithmetische Methoden miteinander verbindet.
+	
+	\section*{Referenzen}
+	\small
+	[1] B. Riemann, \textit{Über die Anzahl der Primzahlen unter einer gegebenen Größe}, 1859.
+	
+	[2] G. H. Hardy und E. M. Wright, \textit{An Introduction to the Theory of Numbers}, Oxford University Press.
+	
+	[3] H. Iwaniec und E. Kowalski, \textit{Analytic Number Theory}, American Mathematical Society.
+	
+	[4] J.-P. Serre, \textit{A Course in Arithmetic}, Springer.
+	
+	[5] Kollaboration Mensch--KI (2026), \textit{Heuristische binäre Modelle zur Struktur von Primzahlvierlingen}, Arbeitsnotiz.
+	
+\end{document}

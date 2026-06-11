@@ -1,0 +1,352 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm,amsfonts}
+\usepackage{mathtools}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\title{Priml\"ucken als Rotationen auf einem zyklischen Vier-Zustands-Raum}
+\author{Thomas Hoffbauer}
+\date{}
+
+\newtheorem{theorem}{Satz}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Korollar}
+\newtheorem{proposition}{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Bemerkung}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Wir betrachten Priml\"ucken $g_n=p_{n+1}-p_n$ zwischen aufeinanderfolgenden Primzahlen $>3$ modulo $12$. Die zul\"assigen Restklassen sind $\{1,5,7,11\}=(\mathbb{Z}/12\mathbb{Z})^\times$ mit $(\mathbb{Z}/12\mathbb{Z})^\times\cong C_2\times C_2$; verwendet wird jedoch nur eine zus\"atzlich gew\"ahlte zyklische Ordnung dieser vier Klassen. Der Hauptsatz zeigt, dass das zugeh\"orige Rotationsinkrement auf einem gerichteten Kreisgraphen $C_4$ ausschlie{\ss}lich von $g_n\bmod 12$ abh\"angt. Daraus folgt eine wohldefinierte Abbildung der sechs geraden L\"uckenklassen modulo $12$ auf vier Rotationszust\"ande. Die Konstruktion liefert damit eine exakte kombinatorische Kodierung von Priml\"ucken als diskrete Rotationsdynamik.
+\end{abstract}
+
+\section{Einleitung}
+
+Priml\"ucken werden traditionell als arithmetische Gr\"o{\ss}en untersucht,
+\[
+g_n = p_{n+1}-p_n,
+\]
+wobei $p_n$ und $p_{n+1}$ aufeinanderfolgende Primzahlen sind.
+
+Das Ziel dieser Notiz ist zu zeigen, dass dieselbe Information eine nat\"urliche geometrische Interpretation besitzt.
+Anstatt Priml\"ucken als Abst\"ande auf der Zahlengeraden zu betrachten, interpretieren wir sie als Erzeuger von Rotationen auf einem zyklischen Vier-Zustands-System, das aus den zul\"assigen Restklassen modulo zw\"olf gewonnen wird.
+
+Der mathematische Anspruch dieser Darstellung liegt in einer sauberen, exakten Umcodierung, nicht in einer neuen tiefen Struktur der Primzahlen. Insbesondere wird keine neue Gruppenstruktur eingef\"uhrt; vielmehr wird auf einer endlichen Vierermenge eine zus\"atzliche zyklische Ordnung gew\"ahlt, die die L\"uckenstatistik in eine dynamische Sprache \"ubersetzt.
+
+\section{Der Restklassen-Zustandsraum}
+
+Sei
+\[
+U_{12}
+=
+(\mathbb{Z}/12\mathbb{Z})^\times
+=
+\{1,5,7,11\}.
+\]
+Jede Primzahl $p>3$ geh\"ort genau zu einer dieser Restklassen.
+Als Gruppe gilt $U_{12}\cong C_2\times C_2$, also ist $U_{12}$ nicht zyklisch.
+Die Verwendung eines Zyklus bezieht sich hier nur auf eine zus\"atzliche Ordnung dieser vier Elemente.
+
+\begin{definition}
+Definiere die Zustandsabbildung
+\[
+\rho:U_{12}\rightarrow \mathbb{Z}_4
+\]
+durch
+\[
+\rho(1)=0,\qquad
+\rho(5)=1,\qquad
+\rho(7)=2,\qquad
+\rho(11)=3.
+\]
+\end{definition}
+
+Damit bestimmt jede Primzahl $p>3$ einen Zustand
+\[
+s(p)=\rho(p\bmod 12)\in\mathbb{Z}_4.
+\]
+Geometrisch identifiziert dies die zul\"assigen Restklassen mit dem gerichteten Kreisgraphen
+\[
+C_4:\qquad 0\rightarrow1\rightarrow2\rightarrow3\rightarrow0.
+\]
+\"Aquivalent dazu w\"ahlen wir auf den urspr\"unglichen Restklassen die zyklische Ordnung
+\[
+1\to5\to7\to11\to1.
+\]
+
+Aus historischen Gr\"unden verwenden wir gelegentlich auch die Bezeichnungen
+\[
+0=E,\qquad 1=A,\qquad 2=B,\qquad 3=C.
+\]
+
+\section{Priml\"ucken und Rotationsinkremente}
+
+Seien $p_n<p_{n+1}$ aufeinanderfolgende Primzahlen und
+\[
+g_n=p_{n+1}-p_n.
+\]
+Dann gilt f\"ur $p_n>3$:
+\[
+g_n\equiv 0,2,4,6,8,10 \pmod{12}.
+\]
+
+\begin{definition}
+Das zu $g_n$ geh\"orige Rotationsinkrement ist
+\[
+R_n=s(p_{n+1})-s(p_n)\pmod 4.
+\]
+\end{definition}
+
+\begin{proposition}
+Sei $\rho:U_{12}\to\mathbb{Z}_4$ die gew\"ahlte zyklische Nummerierung und
+f\"ur $d\in\{0,2,4,6,8,10\}$ die Abbildung
+\[
+T_d:U_{12}\to U_{12},\qquad T_d(x)\equiv x+d\pmod{12}.
+\]
+Dann ist jedes $T_d$ eine Permutation von $U_{12}$, und es gibt genau ein $r(d)\in\mathbb{Z}_4$ mit
+\[
+\rho(T_d(x))\equiv \rho(x)+r(d)\pmod 4
+\quad\text{f\"ur alle }x\in U_{12}.
+\]
+Explizit gilt
+\[
+r(0)=0,\quad r(2)=r(4)=1,\quad r(6)=2,\quad r(8)=r(10)=3.
+\]
+\end{proposition}
+
+\begin{proof}
+Da $d$ gerade ist, bildet $x\mapsto x+d\pmod{12}$ die vier ungeraden Klassen
+$U_{12}=\{1,5,7,11\}$ wieder auf sich ab; auf einer endlichen Menge ist dies eine Permutation.
+Die Werte von $r(d)$ ergeben sich durch direkte Auswertung von $T_d$ auf den vier Klassen:
+\[
+\begin{array}{c|c}
+d \bmod 12 & \text{\"Ubergangsmuster } s\mapsto s+r(d)\ (\bmod 4)\\
+\hline
+0   & 0\to0,\ 1\to1,\ 2\to2,\ 3\to3\\
+2   & 0\to1,\ 1\to2,\ 2\to3,\ 3\to0\\
+4   & 0\to1,\ 1\to2,\ 2\to3,\ 3\to0\\
+6   & 0\to2,\ 1\to3,\ 2\to0,\ 3\to1\\
+8   & 0\to3,\ 1\to0,\ 2\to1,\ 3\to2\\
+10  & 0\to3,\ 1\to0,\ 2\to1,\ 3\to2
+\end{array}
+\]
+Damit ist die Formel f\"ur $r(d)$ gezeigt.
+\end{proof}
+
+\section{Darstellungssatz f\"ur Rotationen}
+
+\begin{theorem}
+Seien $p_n<p_{n+1}$ aufeinanderfolgende Primzahlen gr\"o{\ss}er als drei.
+Dann h\"angt das Rotationsinkrement
+\[
+R_n=s(p_{n+1})-s(p_n)\pmod 4
+\]
+nur von der Restklasse der Priml\"ucke modulo zw\"olf ab.
+Genauer gilt
+\[
+R_n=\Phi(g_n\bmod 12),
+\]
+wobei
+\[
+\Phi:\{0,2,4,6,8,10\}\rightarrow\mathbb{Z}_4
+\]
+durch
+\[
+\Phi(0)=0,\qquad
+\Phi(2)=1,\qquad
+\Phi(4)=1,\qquad
+\Phi(6)=2,\qquad
+\Phi(8)=3,\qquad
+\Phi(10)=3.
+\]
+\end{theorem}
+
+\begin{proof}
+Setze $d=g_n\bmod 12\in\{0,2,4,6,8,10\}$.
+Nach der vorigen Proposition ist die Wirkung von $x\mapsto x+d$ auf $U_{12}$
+eine Permutation mit eindeutigem Inkrement $r(d)\in\mathbb{Z}_4$, so dass
+\[
+s(p_{n+1})-s(p_n)\equiv r(d)\pmod 4.
+\]
+Damit ist $R_n$ bereits eine Funktion nur von $d=g_n\bmod 12$, n\"amlich $R_n=r(d)$.
+Mit der expliziten Tabelle aus der Proposition folgt:
+\[
+g_n\equiv0 \Rightarrow R_n=0,\qquad
+g_n\equiv2,4 \Rightarrow R_n=1,\qquad
+g_n\equiv6 \Rightarrow R_n=2,\qquad
+g_n\equiv8,10 \Rightarrow R_n=3.
+\]
+Also h\"angt $R_n$ nur von $g_n \bmod 12$ ab.
+\end{proof}
+
+\section{Interpretation}
+
+\begin{remark}
+Der Begriff \emph{Rotation} wird hier graphentheoretisch verwendet:
+Gemeint ist die orientierte Verschiebung auf dem gerichteten Kreisgraphen $C_4$,
+nicht eine geometrische Rotation im euklidischen Raum.
+\end{remark}
+
+Der Satz liefert eine exakte Faktorisierung
+\[
+\text{Priml\"ucken}
+\longrightarrow
+\mathbb{Z}/12\mathbb{Z}
+\longrightarrow
+C_4.
+\]
+Damit erzeugt jede Priml\"ucke eine eindeutige Rotation auf dem Kreisgraphen.
+
+Die Zuordnung lautet:
+\[
+\begin{array}{c|c|c}
+g_n\bmod 12 & R_n & \text{Interpretation}\\
+\hline
+0 & 0 & \text{Keine Bewegung}\\
+2,4 & 1 & \text{Vorw\"artsrotation}\\
+6 & 2 & \text{Halbdrehung}\\
+8,10 & 3 & \text{R\"uckw\"artsrotation}
+\end{array}
+\]
+
+Folglich induziert die Primzahlfolge einen diskreten Rotationsfluss
+\[
+(s(p_n))_{n\ge 1}
+\]
+auf dem Kreisgraphen $C_4$.
+
+\section{Primzahlvierlinge}
+
+Betrachte einen Primzahlvierling
+\[
+(p,p+2,p+6,p+8).
+\]
+Sein Restklassenmuster modulo zw\"olf ist notwendig
+\[
+(5,7,11,1)
+\]
+oder
+\[
+(11,1,5,7).
+\]
+
+\begin{corollary}
+Jeder Primzahlvierling induziert die Rotationsfolge
+\[
+(1,1,1),
+\]
+also drei aufeinanderfolgende Vorw\"artsrotationen auf $C_4$.
+\end{corollary}
+
+\begin{proof}
+Die aufeinanderfolgenden L\"ucken sind
+\[
+2,\;4,\;2.
+\]
+Jede davon geh\"ort zur Klasse
+\[
+\{2,4\},
+\]
+die $R_n=1$ entspricht.
+\end{proof}
+
+\section{Dynamische Sicht}
+
+Die Primzahlfolge
+\[
+(p_n)
+\]
+bestimmt daher eine Trajektorie
+\[
+(s(p_n))
+\]
+auf dem endlichen Zustandsraum $C_4$.
+Priml\"ucken wirken als Bewegungserzeuger, w\"ahrend Primzahlkonstellationen als koh\"arente Rotationsmuster erscheinen.
+
+Dies ergibt eine geometrische Neuformulierung der Priml\"uckenstatistik:
+\[
+\boxed{
+\text{Priml\"ucken modulo }12
+\Longleftrightarrow
+\text{Rotationen auf }C_4.
+}
+\]
+
+\section{Ausblick}
+
+Ein naheliegender n\"achster Schritt ist eine nichttriviale dynamische Aussage \"uber die induzierte Folge $(R_n)$. Als erste Leitgr\"o{\ss}e bietet sich das Verh\"altnis
+\[
+M_N
+:=
+\frac{\#\{1\le n\le N:\,R_n=1\}}
+{\#\{1\le n\le N:\,R_n=3\}}.
+\]
+\emph{Offene Alternative.} Entweder gilt
+\[
+\lim_{N\to\infty} M_N = 1,
+\]
+oder es existiert ein Grenzwert $L\neq1$ mit
+\[
+\lim_{N\to\infty} M_N = L.
+\]
+Als empirisch vorsichtigere Zwischenhypothese kann man
+\[
+M_N>1
+\]
+auf gro{\ss}en endlichen Bereichen testen.
+
+Dar\"uber hinaus ergeben sich die folgenden konkreten Forschungsvorschl\"age:
+\begin{enumerate}[label=\textbf{F\arabic*:},leftmargin=*,itemsep=0.35em]
+\item \textbf{\"Ubergangsmatrix und Markov-N\"aherung.}
+Definiere f\"ur $i,j\in\mathbb{Z}_4$ die empirischen \"Ubergangszahlen
+\[
+N_{ij}(X):=\#\{n:\ p_n\le X,\ s(p_n)=i,\ s(p_{n+1})=j\},
+\]
+und die normierte Matrix $P_X=(p_{ij}(X))$ mit
+\[
+p_{ij}(X):=\frac{N_{ij}(X)}{\sum_{k}N_{ik}(X)}.
+\]
+Zu untersuchen ist die Konvergenz von $P_X$ und eine m\"ogliche Asymmetrie zwischen Vorw\"arts- und R\"uckw\"arts\"uberg\"angen.
+
+\item \textbf{H\"aufigkeiten der Rotationsklassen.}
+Setze
+\[
+\nu_r(X):=\#\{n:\ p_n\le X,\ R_n=r\}\qquad (r\in\mathbb{Z}_4).
+\]
+Die zentralen Fragen sind Grenzverh\"altnisse wie $\nu_1(X)/\nu_3(X)$, sowie Fehlerterme gegen ein Referenzmodell ohne Bias.
+
+\item \textbf{Vergleich mit Zufallsmodellen.}
+Vergleiche die beobachteten Werte von $M_N$, $\nu_r(X)$ und $P_X$ mit
+geeigneten Cram\'er-artigen oder entkoppelten Restklassenmodellen.
+Damit l\"asst sich trennen, welche Effekte rein lokal-modular sind und welche auf tieferer Korrelation beruhen.
+
+\item \textbf{H\"ohere Konstellationen.}
+Verallgemeinere das Vierlings-Korollar auf l\"angere Muster (z.\,B. Quintuplets,
+Sextuplets, admissible constellations) und klassifiziere die zugeh\"origen
+Rotationsw\"orter in $\mathbb{Z}_4$.
+Dies f\"uhrt zu kombinatorischen Invarianten f\"ur Primzahlkonstellationen.
+
+\item \textbf{Verallgemeinerung des Moduls.}
+Ersetze $12$ durch ein allgemeineres Modul $m$ mit fixierten zul\"assigen Restklassen.
+Die Frage ist, wann eine analoge Kodierung auf einem endlichen gerichteten Graphen
+entsteht und welche dynamischen Gr\"o{\ss}en dann stabil bleiben.
+\end{enumerate}
+
+Diese Agenda macht aus der vorliegenden Kodierung ein systematisches Forschungsprogramm,
+in dem numerische Evidenz, kombinatorische Struktur und analytische Heuristik unmittelbar zusammenwirken.
+
+\section{Schluss}
+
+Wir haben gezeigt, dass die zul\"assigen Restklassen der Primzahlen modulo zw\"olf eine nat\"urliche Darstellung als Vier-Zustands-Raum mit gew\"ahlter zyklischer Ordnung besitzen.
+Unter dieser Darstellung induziert jede Priml\"ucke eine diskrete Rotation, deren Wert nur von der Restklasse der L\"ucke modulo zw\"olf abh\"angt.
+Die resultierende Entsprechung ist eine exakte kombinatorische Umcodierung von Priml\"uckenklassen in ein diskretes Rotationssystem auf einem endlichen Kreisgraphen.
+
+\end{document}

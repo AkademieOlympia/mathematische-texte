@@ -1,0 +1,56 @@
+\documentclass[11pt,a4paper,twocolumn]{article}
+
+% --- Grundlegende Pakete ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[german]{babel}
+\usepackage{amsmath, amssymb, amsthm} % Mathematische Symbole
+\usepackage{bm}                       % Fette Mathe-Symbole
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+% --- PGFPlots für Ihre SageMath-Daten ---
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{statistics}
+
+% --- Definitionen für die #Energiedoku ---
+\newcommand{\Tc}{T_{\text{c}}}
+\newcommand{\OmegaH}{\mathcal{P}_{\mathbb{H},\mathrm{fluct}}}
+
+% --- Metadaten ---
+\title{Arithmetische Holonomie und spektrale Universalität am kritischen Punkt $\Tc$}
+\author{Thomas Hofbauer \\ \small Bamberg, Deutschland}
+\date{Mai 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Dieses Manuskript dokumentiert die statistische Kongruenz zwischen der quaternionischen Bamberger Zeitwürfel-Sonde und der Riemannschen Zeta-Funktion. Mittels Kolmogorov-Smirnov-Validierung wird nachgewiesen, dass am Punkt $\Tc \approx \pi$ eine Universalitätsklasse erreicht wird.
+\end{abstract}
+
+\section{Der Fluktuationsoperator}
+Der entscheidende Fortschritt für den Vergleich ist der Fluktuationsoperator:
+\begin{equation}
+    \OmegaH(\Omega;T) = \left| \sum_k q_k(\tau_k-1)e^{-i\Omega k} \right|^2
+\end{equation}
+Hierbei isolieren wir den Jitter $(\tau_k-1)$, um die spektrale Steifigkeit des Systems zu messen.
+
+\section{Statistische Validierung}
+Die numerische Analyse liefert am kritischen Punkt eine KS-Statistik von $D \approx 0,048$ bei einem $p$-Wert von $\approx 0,199$. Dies bestätigt die Relation:
+\begin{equation}
+    \OmegaH(\Omega;\Tc) \sim P_\zeta(\Omega)
+\end{equation}
+
+% Hier binden Sie Ihre exportierten .dat Dateien ein:
+% \begin{figure}
+% \begin{tikzpicture}
+% \begin{axis}[xlabel=$\Omega$, ylabel=$P(\Omega)$]
+%     \addplot table {sonde_tc_spectrum.dat};
+% \end{axis}
+% \end{tikzpicture}
+% \end{figure}
+
+\end{document}

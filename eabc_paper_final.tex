@@ -1,0 +1,840 @@
+% EABC Final Paper: Character-Theoretic Diagonalization of mod-420 Channel Asymmetry
+% Compile: pdflatex eabc_paper_final.tex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{microtype}
+\usepackage{hyperref}
+
+\title{Character-Theoretic Diagonalization of the\\
+Modulo-$420$ Channel Asymmetry in Prime Quadruplets}
+\author{Author Name(s) \and Affiliation(s)}
+\date{\today}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{hypothesis}{Hypothesis}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathcal{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\mathrm{Var}}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We study the occupancy asymmetry on the six observed prime-quadruplet
+half-channels $\R=\{11,101,191,221,311,401\}$ modulo $420$.
+Three methodological levels structure the analysis.
+\textbf{Level~1 (exact algebra):}
+the primitive cubic Dirichlet character $\chi_3\bmod 7$ coincides
+pointwise with the $k{=}2$ discrete Fourier mode on $\R$
+($\chi_3|_{\R}=\psi_2$), hence $F_2=\langle\delta,\chi_3\rangle$ for the
+observed bias vector $\delta$; the bias admits an exact orthogonal
+decomposition into Dirichlet character components modulo $420$.
+\textbf{Level~2 (numerical, conditional on $H$):}
+under a multinomial equidistribution hypothesis $H$, the $\chi_3$-projection
+scales as $|\langle\delta_N,\chi_3\rangle|\sim 1/(6\sqrt{N})$ with
+$z$-scores $\approx 1$ at $N_{\max}\in\{10^8,3\cdot 10^8,10^9\}$---pure
+fluctuation, no persistent Chebyshev-type drift.
+\textbf{Level~3 (HL corroboration):}
+a Hardy--Littlewood singular-series analysis yields \emph{identical}
+coefficients on all six channels in $\R$, predicting asymptotic
+equidistribution $1/6$; the observed asymmetry is statistically
+consistent with finite-sample fluctuations ($\chi^2\approx 4.34$,
+$p\approx 0.50$).
+Analytic proof of conditional equidistribution remains open.
+\end{abstract}
+
+%=============================================================================
+\section{Three-Level Framework}
+\label{sec:three-levels}
+%=============================================================================
+
+The present work separates three epistemically distinct layers.
+Only Level~1 consists of unconditional exact statements; Level~2 is
+probabilistic and conditional on Hypothesis~$H$; Level~3 remains open.
+
+\subsection{Level~1: Exact Algebraic Statements}
+
+These results hold for the \emph{fixed finite channel set} $\R$ and the
+\emph{observed sample} bias $\delta$ (or $\delta_N$ at any finite count $N$).
+They do not assert asymptotic bias in $N$.
+
+\begin{enumerate}
+  \item \textbf{Pointwise identity.}
+        $\chi_3|_{\R}=\psi_2$ as vectors in $\mathbb{C}^6$, where
+        $\psi_k(n):=e^{2\pi i kn/6}$ in the fixed order
+        $(11,101,191,221,311,401)$.
+  \item \textbf{DFT--character coincidence.}
+        For the observed (centered) bias vector $\delta$,
+        $F_2=\langle\delta,\chi_3\rangle$, with $F_k$ the $k$-th DFT
+        coefficient on the six-point set.
+  \item \textbf{Orthogonal decomposition.}
+        $\delta$ lies in the Dirichlet character subspace mod $420$:
+        numerically,
+        $\delta = P_{\chi_3}\delta + P_{\overline{\chi_3}}\delta
+        + P_{\chi_4}\delta + P_{\chi_4\chi_3}\delta + \varepsilon$
+        with $\|\varepsilon\|^2 < 10^{-36}$ for the sample at $N=4767$.
+\end{enumerate}
+
+\subsection{Level~2: Numerically Supported Under Hypothesis $H$}
+
+Under the multinomial null model $H$ (Section~\ref{sec:hypothesis-H}),
+the $\chi_3$-coefficient is a fluctuation of typical size
+$f(N)=1/(6\sqrt{N})$:
+\[
+  |\langle\delta_N,\chi_3\rangle| \sim \frac{1}{6\sqrt{N}},
+  \qquad z \approx 1,
+\]
+at $N_{\max}\in\{10^8,3\cdot 10^8,10^9\}$.
+The pair bias $B_{101,11}/\sqrt{N}$ shows no stable positive drift.
+The data are compatible with multinomial fluctuations around the uniform
+distribution, not with a growing structural bias.
+
+\subsection{Level~3: HL Corroboration and Open Equidistribution}
+
+Section~\ref{sec:hl-analysis} computes the Hardy--Littlewood singular
+series for the gap constellation $(0,2,6,8)$ and shows that all six
+channels in $\R$ carry identical local factors mod $2,3,4,5,7$.
+The HL heuristic therefore predicts asymptotic equidistribution
+$P(p\bmod 420=r\mid Q(p)\text{ prime})\to 1/6$.
+The observed occupancy vector at $N=4767$ is statistically consistent
+with this prediction ($\chi^2\approx 4.34$, $p\approx 0.50$).
+What remains \emph{unproved} is an analytic equidistribution theorem
+for $p\bmod 420$ conditional on $Q(p)$ being prime, including control
+of arithmetic correlations between successive events.
+
+%=============================================================================
+\section{Setup and Notation}
+%=============================================================================
+
+Let $Q(p)=(p,p+2,p+6,p+8)$ denote a prime quadruplet with gap signature
+$(2,4,2)$.
+The six observed half-channels modulo $420$ are
+\[
+  \R = \{11,101,191,221,311,401\}.
+\]
+For $N$ counted quadruplet events with channel label $r_k\in\R$, write
+$n_r(N)$ for occupancy counts and $K=\sum_r n_r(N)=N$.
+
+The \emph{centered channel bias} (probability form) is
+\[
+  \delta_N(r) := \frac{n_r(N)}{N} - \frac{1}{6},
+  \qquad r\in\R.
+\]
+For the reference sample $N=4767$ we write $\delta:=\delta_N$.
+The inner product on $\mathbb{C}^{\R}$ is
+\[
+  \langle f,g\rangle := \frac{1}{6}\sum_{r\in\R} f_r\,\overline{g_r}.
+\]
+Dirichlet characters mod $420=4\cdot 3\cdot 5\cdot 7$ are written as
+product characters $\chi=\chi_4\cdot\chi_5\cdot\chi_7^{(q)}\cdot\chi_7^{(3)}$,
+with $\chi_4$ the primitive quadratic character mod $4$,
+$\chi_5=(\cdot/5)$, $\chi_7^{(q)}=(\cdot/7)$, and $\chi_7^{(3)}=\chi_3$
+the primitive \emph{cubic} character mod $7$
+($\chi_3(\zeta)=\zeta$ for $\zeta\in\mathbb{F}_7^\times$,
+$\omega=e^{2\pi i/3}$, $\chi_3(4)=1$, $\chi_3(3)=\omega$, $\chi_3(2)=\omega^2$).
+
+%=============================================================================
+\section{Character-Theoretic Diagonalization}
+\label{sec:diagonalization}
+%=============================================================================
+
+We state only what is proved or numerically verified for the \emph{observed
+finite sample}; coefficients do not grow with $N$ in the algebraic layer.
+
+\begin{lemma}[Mod-$7$ cycle on $\R$]
+\label{lem:mod7-cycle}
+In the fixed channel order $(11,101,191,221,311,401)$,
+\[
+  r_n \bmod 7 = (4,\,3,\,2,\,4,\,3,\,2).
+\]
+\end{lemma}
+
+\begin{proof}
+Direct computation:
+$11\equiv 4$, $101\equiv 3$, $191\equiv 2$,
+$221\equiv 4$, $311\equiv 3$, $401\equiv 2 \pmod{7}$.
+\end{proof}
+
+\begin{lemma}[Pointwise identity $\chi_3=\psi_2$ on $\R$]
+\label{lem:chi3-equals-psi2}
+With $\omega=e^{2\pi i/3}$,
+\[
+  \chi_3(r_n) = \psi_2(n)
+  \qquad\text{for all } n=0,\ldots,5.
+\]
+Hence $\chi_3|_{\R}$ and $\psi_2$ are \emph{identical} vectors in
+$\mathbb{C}^6$ (not merely collinear).
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:mod7-cycle},
+$(\chi_3(r_n))_{n=0}^{5}=(1,\omega,\omega^2,1,\omega,\omega^2)$.
+Since $\psi_2(n)=e^{2\pi i\cdot 2n/6}=e^{2\pi i n/3}$, the sequences agree.
+\end{proof}
+
+\begin{theorem}[Character-Theoretic Diagonalization]
+\label{thm:character-diagonalization}
+\emph{(For the observed finite sample on $\R$.)}
+Let $(\delta_n)_{n=0}^{5}$ be $\delta$ in the fixed channel order and
+\[
+  F_k := \frac{1}{6}\sum_{n=0}^{5} \delta_n\, e^{-2\pi i kn/6}
+  = \langle\delta,\psi_k\rangle
+\]
+the $k$-th DFT coefficient. Then:
+\begin{enumerate}
+  \item \textbf{Exact coincidence.}
+        $F_2 = \langle\delta,\chi_3\rangle$.
+        Since $\delta\in\mathbb{R}^6$, also $F_4=\overline{F_2}$.
+  \item \textbf{Energy share.}
+        The projection onto $\mathrm{span}\{\chi_3,\overline{\chi_3}\}$
+        accounts for
+        $|F_2|^2+|F_4|^2
+        = |\langle\delta,\chi_3\rangle|^2
+        + |\langle\delta,\overline{\chi_3}\rangle|^2
+        = 0.5971\cdot\Var(\delta)$
+        in the sample at $N=4767$.
+  \item \textbf{Complete character decomposition.}
+        With orthonormal character directions $\{\hat{e}_\chi\}$ on $\R$
+        (Gram--Schmidt on character values),
+        \[
+          \delta = \sum_\chi c_\chi\,\hat{e}_\chi,
+          \qquad c_\chi=\langle\delta,\hat{e}_\chi\rangle,
+          \qquad \Var(\delta)=\sum_\chi|c_\chi|^2.
+        \]
+        Numerically,
+        \[
+          \delta = P_{\chi_3}\delta + P_{\overline{\chi_3}}\delta
+                   + P_{\chi_4}\delta + P_{\chi_4\chi_3}\delta + \varepsilon,
+          \qquad \|\varepsilon\|^2 < 10^{-36}.
+        \]
+        The residual after removing $\chi_3+\overline{\chi_3}$ is carried
+        primarily by $\chi_4$ ($10.67\%$ of total variance) and
+        $\chi_4\chi_3$ ($28.75\%$); $\chi_5$ vanishes since $r\equiv 1\pmod 5$
+        on all channels.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\emph{Part (1).}
+Lemma~\ref{lem:chi3-equals-psi2} gives $\psi_2=\chi_3|_{\R}$, hence
+$F_2=\langle\delta,\psi_2\rangle=\langle\delta,\chi_3\rangle$.
+Reality of $\delta$ and $\psi_4=\overline{\psi_2}$ yield $F_4=\overline{F_2}$.
+
+\emph{Part (2).}
+Parseval on the six-point set; modes $k=2,4$ span the same two-dimensional
+cubic subspace as $\{\chi_3,\overline{\chi_3}\}$.
+
+\emph{Part (3).}
+All $r\in\R$ are odd and $\not\equiv 0\pmod{5,7}$, so all characters are
+well-defined.
+On $\R$, $r\equiv 1\pmod 5$ and $r\equiv 2\pmod 3$, hence $\chi_5$ and
+the quadratic character mod $3$ are constant and contribute no variance.
+Gram--Schmidt reconstruction gives
+$\Var(\varepsilon)=1.31\times 10^{-36}$.
+On the $\chi_3=1$ subclass $\{11,221\}$, only $\chi_4$ separates the two
+channels ($\chi_4(11)=-1$, $\chi_4(221)=+1$).
+\end{proof}
+
+\begin{remark}[Scope of the theorem]
+Theorem~\ref{thm:character-diagonalization} is a \emph{diagonalization of
+fluctuations in character coordinates} for the observed finite sample.
+It identifies $\chi_3$ as the dominant Fourier direction on $\R$ by
+\emph{algebraic} coincidence, not by asymptotic equidistribution.
+It does \emph{not} claim that $|\langle\delta_N,\chi_3\rangle|$ grows with $N$,
+nor that a Chebyshev-type bias persists.
+\end{remark}
+
+%=============================================================================
+\section{Numerical Results}
+\label{sec:numerical}
+%=============================================================================
+
+\subsection{Character decomposition at $N_{\max}=10^8$ ($K=4767$)}
+
+\begin{table}[ht]
+\centering
+\caption{Orthonormal character projections of $\delta$ on $\R$;
+variance shares in percent ($\Var(\delta)=2.53\times 10^{-5}$).}
+\label{tab:projections}
+\begin{tabular}{lrrr}
+\toprule
+Character $\chi$ & $|c_\chi|$ & $\arg(c_\chi)$ & Variance (\%) \\
+\midrule
+$1$ (trivial) & $0.00000000$ & --- & $0.0000$ \\
+$\chi_3$ & $0.00274918$ & $-106.63^\circ$ & $29.8566$ \\
+$\overline{\chi_3}$ & $0.00274918$ & $+106.63^\circ$ & $29.8566$ \\
+$\chi_4$ & $0.00164324$ & $0.00^\circ$ & $10.6669$ \\
+$\chi_4\chi_7^{(q)}$ & $0.00046972$ & $180.00^\circ$ & $0.8716$ \\
+$\chi_4\chi_3$ & $0.00269768$ & $-30.00^\circ$ & $28.7484$ \\
+\midrule
+\textbf{Sum} & --- & --- & \textbf{100.0000} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\caption{Primitive character values on $\R$.}
+\label{tab:char-values}
+\begin{tabular}{rrrrrrr}
+\toprule
+$r$ & $r\bmod 4$ & $r\bmod 5$ & $r\bmod 7$ & $\chi_4$ & $\chi_5$ & $\chi_3$ \\
+\midrule
+$11$  & $3$ & $1$ & $4$ & $-1$ & $+1$ & $+1$ \\
+$101$ & $1$ & $1$ & $3$ & $+1$ & $+1$ & $\omega$ \\
+$191$ & $3$ & $1$ & $2$ & $-1$ & $+1$ & $\omega^2$ \\
+$221$ & $1$ & $1$ & $4$ & $+1$ & $+1$ & $+1$ \\
+$311$ & $3$ & $1$ & $3$ & $-1$ & $+1$ & $\omega$ \\
+$401$ & $1$ & $1$ & $2$ & $+1$ & $+1$ & $\omega^2$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Scaling across $10^8$, $3\cdot 10^8$, $10^9$}
+
+\begin{table}[ht]
+\centering
+\caption{$\chi_3$-projection vs.\ theory $f(K)=1/(6\sqrt{K})$ under $H$
+(data from \texttt{eabc\_analytic\_proof\_check.py};
+multinomial null: $10\,000$ trials).}
+\label{tab:chi3-scaling}
+\begin{tabular}{rrrrrrr}
+\toprule
+$N_{\max}$ & $K$ & $|\langle\delta,\chi_3\rangle|$ & $f(K)$ & $z$ &
+$|\langle\delta,\chi_3\rangle|\sqrt{K}$ & $p(\ge)$ \\
+\midrule
+$10^8$       & $4767$  & $0.002749$ & $0.002414$ & $1.14$ & $0.190$ & $26.8\%$ \\
+$3\cdot10^8$ & $10972$ & $0.001568$ & $0.001591$ & $0.99$ & $0.164$ & $37.7\%$ \\
+$10^9$       & $28387$ & $0.001043$ & $0.000989$ & $1.05$ & $0.176$ & $33.1\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\caption{Pair bias $B_{101,11}=N_{101}-N_{11}$
+(data from \texttt{eabc\_scaling\_test.py}).}
+\label{tab:B-scaling}
+\begin{tabular}{rrrr}
+\toprule
+$N_{\max}$ & $K$ & $B_{101,11}$ & $B/\sqrt{K}$ \\
+\midrule
+$10^8$       & $4767$  & $+66$ & $+0.956$ \\
+$3\cdot10^8$ & $10972$ & $+51$ & $+0.487$ \\
+$10^9$       & $28387$ & $+77$ & $+0.457$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The product $|\langle\delta,\chi_3\rangle|\sqrt{K}\approx 0.18\pm 0.01$ is
+stable across three decades; all $z$-scores lie near $1$ (Rayleigh median
+$\approx 1.18$ under $H$).
+The ratio $B/\sqrt{K}$ decreases monotonically ($0.956\to 0.487\to 0.457$)
+without stabilizing at a positive constant; the terminal null $p$-value is
+$\approx 43\%$.
+
+%=============================================================================
+\section{Proof Attempt: Hypothesis $H$ and $f(N)=1/(6\sqrt{N})$}
+\label{sec:hypothesis-H}
+%=============================================================================
+
+\begin{hypothesis}[$H$---Multinomial equidistribution on $\R$]
+\label{hyp:H}
+For $N$ quadruplet events, channel occupancy follows
+\[
+  (n_{11},n_{101},\ldots,n_{401}) \sim
+  \mathrm{Mult}\!\left(N;\,\tfrac{1}{6},\ldots,\tfrac{1}{6}\right).
+\]
+Equivalently, channel indices $(I_k)_{k=1}^{N}$ are i.i.d.\ uniform on
+$\{1,\ldots,6\}$.
+\end{hypothesis}
+
+\begin{remark}
+$H$ is the asymptotic consequence of Hardy--Littlewood equidistribution
+\emph{if} all six channels in $\R$ carry equal singular-series factors.
+$H$ does not postulate Chebyshev drift, rank-one dynamics, or causal EABC
+interpretation.
+\end{remark}
+
+\begin{proposition}[CLT scaling under $H$]
+\label{prop:clt}
+Under Hypothesis~\ref{hyp:H}, as $N\to\infty$:
+\begin{enumerate}
+  \item $\E[\langle\delta_N,\chi_3\rangle]=0$;
+  \item $\Var(\langle\delta_N,\chi_3\rangle)=1/(36N)$;
+  \item $\sqrt{N}\,\langle\delta_N,\chi_3\rangle
+        \xRightarrow{d}\mathcal{N}_{\mathbb{C}}(0,1/36)$;
+  \item $|\langle\delta_N,\chi_3\rangle|=O_p(1/\sqrt{N})$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}[Proof attempt (conditional on $H$)]
+Since $\sum_{r\in\R}\chi_3(r)=0$, the mean cancels:
+\[
+  \langle\delta_N,\chi_3\rangle
+  = \frac{1}{6N}\sum_{r\in\R} n_r\,\overline{\chi_3(r)}
+  = \frac{S_N}{6N},
+  \qquad
+  S_N := \sum_{k=1}^{N}\overline{\chi_3(r_{I_k})}.
+\]
+Under $H$, $Y_k:=\overline{\chi_3(r_{I_k})}$ are i.i.d.\ with $\E[Y_k]=0$ and
+$\E[|Y_k|^2]=1$, hence $\Var(S_N)=N$ and
+$\Var(S_N/(6N))=1/(36N)$.
+The multidimensional CLT gives
+$\sqrt{N}\,\langle\delta_N,\chi_3\rangle\xRightarrow{d}\mathcal{N}_{\mathbb{C}}(0,1/36)$.
+\end{proof}
+
+\begin{corollary}[Explicit scaling function]
+\label{cor:fN}
+Under $H$, the natural scale is
+\[
+  \boxed{f(N)=\frac{1}{6\sqrt{N}},}
+  \qquad
+  \langle\delta_N,\chi_3\rangle
+  \sim \mathcal{N}_{\mathbb{C}}\!\left(0,\frac{1}{36N}\right).
+\]
+The $z$-score $|\langle\delta_N,\chi_3\rangle|/f(N)$ is asymptotically
+Rayleigh$(1)$-distributed (median $\approx 1.177$).
+Expected magnitude:
+$\E[|\langle\delta_N,\chi_3\rangle|]\approx\sqrt{\pi/(72N)}\approx 0.886\,f(N)$.
+\end{corollary}
+
+\paragraph{Proof gap.}
+The CLT argument is complete \emph{conditional on $H$}.
+Section~\ref{sec:hl-analysis} supplies arithmetic evidence that $H$
+is the natural HL consequence on $\R$; an analytic proof of conditional
+equidistribution (Hypothesis~H6) remains open.
+
+%=============================================================================
+\section{Hardy--Littlewood Equidistribution Analysis}
+\label{sec:hl-analysis}
+%=============================================================================
+
+Let $Q=(0,2,6,8)$ denote the gap constellation for quadruplets
+$(p,p+2,p+6,p+8)$ and
+\[
+  \pi_Q(x) := \#\{p\le x : p,p+2,p+6,p+8\text{ prime}\}.
+\]
+The Hardy--Littlewood conjecture \cite{hardylittlewood1923} (Bateman--Horn
+form) predicts
+\[
+  \pi_Q(x) \;\sim\; C_Q \int_2^x \frac{dt}{\log^4 t},
+  \qquad
+  C_Q = 2\cdot \mathfrak{S}(Q),
+\]
+where $\mathfrak{S}(Q)=\prod_p w_p(Q)$ is the \emph{singular series}.
+For prime $p$, let $\nu_p$ be the number of forbidden start classes
+mod $p$ (classes $n$ with $n+h\equiv 0$ for some $h\in Q$). Then
+\begin{equation}
+  w_p(Q) = 1 - \frac{\nu_p}{(p-1)^4}.
+  \label{eq:wp}
+\end{equation}
+A partial product to $p\le 2\cdot 10^5$ gives
+$\mathfrak{S}(Q)\approx 0.858$.
+
+\paragraph{Conditional distribution mod $q$.}
+For modulus $q$, let $\omega_q$ be the number of admissible start classes
+($n\bmod q$ with all four positions $\not\equiv 0$).
+Under HL equidistribution on admissible classes, $p\equiv r\bmod q$
+carries relative weight $1/\omega_q$ if admissible, else $0$.
+The total Hardy--Littlewood weight of channel $r\in\R$ is
+\begin{equation}
+  W_{\mathrm{HL}}(r) \;=\;
+  \prod_{q\in\{2,3,4,5,7\}} \frac{1}{\omega_q}
+  \cdot \prod_{p\in\{3,5,7\}} w_p(Q),
+  \label{eq:channel-weight}
+\end{equation}
+provided $r$ is admissible at every factor.
+
+\begin{lemma}[$\R$ is complete mod $420$]
+\label{lem:R-complete}
+$\omega_{420}=6$, and the only admissible residue classes are exactly
+$\R=\{11,101,191,221,311,401\}$.
+\end{lemma}
+
+\begin{proof}
+By the Chinese remainder theorem,
+$\omega_{420}=\omega_4\cdot\omega_3\cdot\omega_5\cdot\omega_7
+= 2\cdot 1\cdot 1\cdot 3 = 6$.
+Direct enumeration confirms $\R$ as the six classes
+(\texttt{eabc\_hl\_coefficient\_hypotheses.py}).
+\end{proof}
+
+\begin{theorem}[Identical HL coefficients on $\R$]
+\label{thm:equal-hl}
+For all $r\in\R$, $W_{\mathrm{HL}}(r)=W_0$ for the same constant $W_0$.
+In particular, the HL heuristic predicts
+$P(p\bmod 420=r\mid Q(p)\text{ prime})\to 1/6$.
+\end{theorem}
+
+\begin{proof}
+Every $r\in\R$ satisfies:
+$r\equiv 1\bmod 2$ ($\omega_2=1$);
+$r\equiv 2\bmod 3$ ($\omega_3=1$);
+$r\equiv 1$ or $3\bmod 4$, three channels each ($\omega_4=2$);
+$r\equiv 1\bmod 5$ ($\omega_5=1$);
+$r\equiv 2,3$ or $4\bmod 7$, two channels each ($\omega_7=3$).
+Each factor in \eqref{eq:channel-weight} is therefore identical
+across $\R$.
+\end{proof}
+
+\subsection{Local factors and goodness of fit}
+
+Table~\ref{tab:hl-coefficients} lists local congruence structure,
+observed occupancies at $N=4767$ ($p\le 10^8$), and identical
+HL weights.
+Small-prime singular factors are
+$w_3=7/8$, $w_5=63/64$, $w_7\approx 0.997$.
+
+\begin{table}[ht]
+\centering
+\caption{Local HL structure and channel weights ($N=4767$, $p\le 10^8$;
+data from \texttt{eabc\_hl\_coefficient\_hypotheses.py}).}
+\label{tab:hl-coefficients}
+\begin{tabular}{@{}rrrrrrrrr@{}}
+\toprule
+$r$ & $n_r$ & $\hat p_r$ & $\delta_r$ &
+$r\bmod 4$ & $r\bmod 5$ & $r\bmod 7$ &
+$W_{\mathrm{HL}}(r)$ & $W_{\mathrm{HL}}/\sum$ \\
+\midrule
+ 11 & 765 & 0.1605 & $-0.00619$ & 3 & 1 & 4 & $3.47\times 10^{-4}$ & $1/6$ \\
+101 & 831 & 0.1743 & $+0.00766$ & 1 & 1 & 3 & $3.47\times 10^{-4}$ & $1/6$ \\
+191 & 786 & 0.1649 & $-0.00178$ & 3 & 1 & 2 & $3.47\times 10^{-4}$ & $1/6$ \\
+221 & 809 & 0.1697 & $+0.00304$ & 1 & 1 & 4 & $3.47\times 10^{-4}$ & $1/6$ \\
+311 & 809 & 0.1697 & $+0.00304$ & 3 & 1 & 3 & $3.47\times 10^{-4}$ & $1/6$ \\
+401 & 767 & 0.1609 & $-0.00577$ & 1 & 1 & 2 & $3.47\times 10^{-4}$ & $1/6$ \\
+\midrule
+\multicolumn{8}{l}{Local moduli: $\omega_2{=}1$, $\omega_3{=}1$, $\omega_4{=}2$,
+$\omega_5{=}1$, $\omega_7{=}3$.} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\caption{HL prediction vs.\ observation ($N=4767$).}
+\label{tab:hl-goodness}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Quantity & Value \\
+\midrule
+$\chi^2$ (HL uniform $1/6$) & $4.344$ \\
+$p$-value (5 df) & $0.501$ \\
+$\mathrm{KL}(\hat{\mathbf p}\,\|\,\mathbf p_{\mathrm{HL}})$ &
+$4.55\times 10^{-4}$ \\
+$\max_i |\delta_i|$ & $0.77\%$ \\
+$|\langle\delta,\chi_3\rangle|$ & $0.00275$ \\
+$|\langle\delta,\chi_3\rangle|/(1/(6\sqrt{N}))$ & $\approx 1.1$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Since all HL weights coincide, $\mathbf p_{\mathrm{HL}}$ and the uniform
+prediction $1/6$ are identical; a channel-specific HL correction does
+not improve the fit.
+
+\subsection{Hypotheses H1--H6}
+
+We summarize six testable hypotheses
+(full analysis in \texttt{eabc\_hl\_hypotheses.tex}):
+
+\begin{description}
+  \item[H1 (identical HL coefficients).]
+        All six channels carry the same singular-series weight
+        (Theorem~\ref{thm:equal-hl}); deviations $\le 0.77\%$.
+        \emph{Supported.}
+  \item[H2 (mod-$7$ HL densities).]
+        Different $p\bmod 7$ classes induce distinct HL factors and
+        explain the $\chi_3$ component.
+        \emph{Refuted:} $\omega_7=3$ yields equal factors $1/3$ per class;
+        $\chi_3|_{\R}=\psi_2$ is algebraic, not density-theoretic.
+  \item[H3 (mod-$4$/mod-$5$ HL densities).]
+        Alternating $r\bmod 4$ or constant $r\bmod 5$ induce distinct HL
+        weights feeding the $\chi_4$ projection.
+        \emph{Refuted:} $\omega_4=2$, $\omega_5=1$ give identical factors
+        on $\R$.
+  \item[H4 (inter-quadruplet correlations).]
+        Successive quadruplets are not i.i.d.; transition dynamics modify
+        the channel distribution.
+        \emph{Open, but unlikely} as the main cause: scaling to $10^9$
+        shows no stable drift beyond $O(1/\sqrt{N})$.
+  \item[H5 (finite-sample fluctuations).]
+        The observed asymmetry at $N=4767$ is pure finite-sample noise
+        around HL equidistribution.
+        \emph{Supported:} $\chi^2\approx 4.34$, $p\approx 0.50$,
+        consistent with Hypothesis~\ref{hyp:H}.
+  \item[H6 (unproved analytic equidistribution).]
+        Even with identical coefficients, arithmetic correlations may
+        distort the conditional distribution $p\bmod 420\mid Q(p)$.
+        \emph{Mathematically open}, numerically unremarkable to $10^9$.
+\end{description}
+
+%=============================================================================
+\section{Discrete Holonomy Interpretation}
+\label{sec:holonomy}
+%=============================================================================
+
+This section belongs to \textbf{Level~2} of the framework
+(Section~\ref{sec:three-levels}): a numerically verified \emph{structural
+parallel} between the local $C_3$-phase pattern induced by $\chi_3$ on $\R$
+and a discrete edge-phase model on the six-channel ring.
+It does not extend the unconditional algebra of Level~1, nor does it assert
+any Level~3 physical mechanism.
+
+\subsection{Discrete connection on the six-channel ring}
+
+Fix the channel order $(r_n)_{n=0}^{5}$ from Section~2.
+Define vertex phases
+\[
+  \theta_n := \arg\bigl(\chi_3(r_n)\bigr)
+  \in \bigl\{0,\,\tfrac{2\pi}{3},\,-\tfrac{2\pi}{3}\bigr\},
+\]
+with $\arg$ mapped to the principal value in $(-\pi,\pi]$ after rounding to the
+$C_3$ phase set (as implemented in \texttt{eabc\_chi3\_holonomy\_test.py}).
+The \emph{discrete connection} along directed edges $n\to n{+}1$ (indices mod~$6$)
+is
+\[
+  \Delta\theta_n := \mathrm{wrap}\bigl(\theta_{n+1}-\theta_n\bigr),
+  \qquad
+  \mathrm{wrap}(\alpha)\in(-\pi,\pi].
+\]
+Global holonomy around the closed ring is
+\[
+  H_\chi := \exp\!\Bigl(i\sum_{n=0}^{5}\Delta\theta_n\Bigr),
+  \qquad
+  \gamma_\chi := \arg(H_\chi),
+  \qquad
+  \mathrm{Flux}_\chi := \frac{\gamma_\chi}{2\pi}.
+\]
+The same construction applies to the $k{=}2$ Fourier mode
+$\psi_2(n)=e^{-2\pi i n/3}$ with phases $\phi_n:=\arg(\psi_2(n))$ and edge
+increments $\Delta\phi_n:=\mathrm{wrap}(\phi_{n+1}-\phi_n)$.
+
+\subsection{Numerical results}
+
+Direct computation (\texttt{eabc\_chi3\_holonomy\_test.py};
+output in \texttt{eabc\_chi3\_holonomy\_report.txt}) yields:
+
+\begin{itemize}
+  \item \textbf{Local edge phases ($\chi_3$).}
+        $\Delta\theta_n = +2\pi/3$ on all six edges---a constant $C_3$-typical
+        step.
+        The first half-cycle $(n=0,1,2)$ matches the second $(n=3,4,5)$.
+  \item \textbf{Local edge phases ($k{=}2$).}
+        $\Delta\phi_n = -2\pi/3$ on all six edges, the connection-level
+        structural parallel of Lemma~\ref{lem:chi3-equals-psi2}.
+  \item \textbf{Global holonomy.}
+        $\gamma_\chi \approx 0$, $\mathrm{Flux}_\chi \approx 0$
+        (numerically $\lesssim 10^{-15}$);
+        likewise $\gamma_{\psi_2}\approx 0$, $\mathrm{Flux}_{\psi_2}\approx 0$.
+        The wrapped edge increments sum to an integer multiple of $2\pi$, so
+        the closed six-ring carries trivial total phase holonomy---as expected
+        for a defect-free cycle with no enclosed flux in this discrete model.
+  \item \textbf{Null test ($\chi_5$).}
+        Since $\chi_5(r)=+1$ for all $r\in\R$, $\theta_n\equiv 0$ and all
+        $\Delta\theta_n=0$; holonomy is identically trivial.
+\end{itemize}
+
+These findings confirm a \emph{coordinate-theoretic analogy}: the mod-$7$ cubic
+character induces a uniform local phase-transport pattern on the channel ring,
+while global holonomy cancels on the closed cycle.
+They mirror the exact identity $\chi_3|_{\R}=\psi_2$ (Level~1) in a
+graph-theoretic language of edge phases.
+
+\paragraph{Epistemological disclaimer.}
+This establishes a coordinate-theoretic analogy, not a claim about quantized
+transport or persistent topological bias in prime quadruplets.
+We do \emph{not} assert quantum Hall plateaus, topological protection in the
+sense of the von~Klitzing effect, an Aharonov--Bohm solenoid experiment, or
+non-abelian gauge fields realized in nature.
+The discrete edge-phase model is a structural parallel useful for organizing
+$\chi_3$-data on $\R$; no physical mechanism coupling holonomy to quadruplet
+occupancy has been identified or tested.
+
+%=============================================================================
+\section{Conclusion}
+%=============================================================================
+
+The modulo-$420$ channel asymmetry of prime quadruplets admits an exact
+character-theoretic diagonalization.
+The dominant Fourier component coincides with the restriction of the cubic
+Dirichlet character modulo $7$, while the remaining structure is accounted
+for by quadratic character components.
+However, scaling experiments up to $10^9$ show no evidence for a persistent
+Chebyshev-type drift.
+The observed amplitudes remain compatible with multinomial fluctuations
+around the uniform distribution.
+Consequently, the present data support a character-space decomposition of
+the fluctuations rather than a genuine asymptotic bias.
+
+A detailed Hardy--Littlewood analysis of the singular series shows
+identical coefficients for all six modulo-$420$ channels.
+Asymptotically, the Hardy--Littlewood heuristic therefore predicts strict
+equidistribution of prime quadruplets across the channels.
+The empirically observed asymmetry vector is statistically consistent with
+pure finite-sample fluctuations ($\chi^2 \approx 4.34$, $p \approx 0.50$).
+The previously established mathematical dominance of the cubic character
+$\chi_3$ is consequently not density-theoretic but purely algebraically
+enforced by the reduction of the underlying residue-class space.
+
+The remaining open problem is an analytic equidistribution theorem for
+prime quadruplets on the six admissible modulo-$420$ channels.
+
+Section~\ref{sec:holonomy} adds a Level~2 discrete holonomy interpretation:
+the local $C_3$ edge-phase pattern induced by $\chi_3$ is numerically
+consistent with a trivial global holonomy on the closed six-ring, furnishing
+a coordinate-theoretic analogy only---not evidence for quantized transport
+or persistent topological bias.
+
+\paragraph{Precision.}
+The diagonalization refers to the \emph{observed finite sample} on $\R$:
+$\chi_3$ supplies a fixed character coordinate system, not a mechanism whose
+coefficients grow with $N$.
+At $N_{\max}=10^9$ ($K=28387$), $|\langle\delta,\chi_3\rangle|$ scales as
+$1/\sqrt{K}$ with $z\approx 1$, consistent with $f(N)=1/(6\sqrt{N})$ under $H$
+and inconsistent with a persistent structural bias.
+
+%=============================================================================
+\section{Epistemological Scope}
+%=============================================================================
+
+The analysis follows a three-stage epistemic chain:
+\emph{phenomenon} (observed channel asymmetry)
+$\to$ \emph{diagonalization} (exact character decomposition, Level~1)
+$\to$ \emph{discrete holonomy analogy} (numerical edge-phase model,
+Section~\ref{sec:holonomy}, Level~2)
+$\to$ \emph{HL corroboration} (singular-series weights, Level~3).
+Algebra and asymptotics are deliberately decoupled:
+Level~1 statements hold unconditionally on the fixed finite set $\R$,
+while Level~2 and Level~3 address the \emph{magnitudes} of coefficients
+under probabilistic or arithmetic hypotheses.
+
+\begin{itemize}
+  \item \textbf{Confirmed (algebraic diagonalization).}
+        The EABC channel labels organize a finite residue set on which
+        $\chi_3|_{\R}=\psi_2$ holds exactly.
+        Decomposing $\delta$ in Dirichlet characters is a proved descriptive
+        tool for the observed fluctuations.
+        The $\chi_3$ dominance is enforced by the residue-class geometry,
+        not by unequal HL densities (H2, H3 refuted).
+
+  \item \textbf{Confirmed (discrete holonomy analogy, Level~2).}
+        On the six-channel ring, $\chi_3$ induces constant local edge phases
+        $\Delta\theta_n=+2\pi/3$ with trivial global holonomy
+        ($\gamma_\chi\approx 0$, $\mathrm{Flux}_\chi\approx 0$);
+        the $\chi_5$ null test is trivial.
+        This is a structural parallel between character phases and a discrete
+        edge-phase model---not a claim about topological protection,
+        quantum Hall plateaus, or physical gauge flux
+        (Section~\ref{sec:holonomy}).
+
+  \item \textbf{Not confirmed (new asymptotic bias).}
+        Neither $B_{101,11}/\sqrt{N}$ nor $|\langle\delta_N,\chi_3\rangle|$
+        exhibits growth beyond $O_p(1/\sqrt{N})$.
+        A channel-specific Chebyshev bias is not supported by data to $10^9$.
+
+  \item \textbf{Corroborated (HL singular-series structure).}
+        Theorem~\ref{thm:equal-hl} shows identical HL coefficients on all
+        six channels; the observed occupancy vector is consistent with
+        uniform $1/6$ ($\chi^2\approx 4.34$, $p\approx 0.50$,
+        $\mathrm{KL}\approx 4.55\times 10^{-4}$).
+        This arithmetic input justifies Hypothesis~$H$ as the natural
+        asymptotic model, without claiming a completed proof.
+
+  \item \textbf{Open (analytic equidistribution, H6).}
+        Proving conditional equidistribution of $p\bmod 420$ given
+        $Q(p)$ prime, and ruling out correlations beyond $O(1/\sqrt{N})$,
+        remains a separate analytic problem.
+\end{itemize}
+
+Diagonalization answers \emph{in which directions} the observed bias
+decomposes; HL analysis answers \emph{whether unequal arithmetic densities}
+could account for those magnitudes (they cannot on $\R$); an analytic
+equidistribution theorem would close the remaining proof gap.
+
+%=============================================================================
+\begin{thebibliography}{9}
+
+\bibitem{chebyshev1853}
+P.~L.~Chebyshev,
+\emph{Sur la concurrence des s\'eries trigonom\'etriques},
+M\'em.\ Acad.\ Imp.\ St.-P\'etersbourg \textbf{3} (1853).
+
+\bibitem{dirichlet1837}
+P.~G.~L.~Dirichlet,
+\emph{Beweis des Satzes, dass jede unbegrenzte arithmetische Progression,
+deren erstes Glied und Differenz ganze Zahlen ohne gemeinschaftlichen
+Factor sind, unendlich viele Primzahlen enth\"alt},
+Abh.\ K\"onigl.\ Preu\ss.\ Akad.\ Wiss.\ (1837).
+
+\bibitem{rubinstein2001}
+M.~Rubinstein and P.~Sarnak,
+\emph{Chebyshev's bias},
+Experiment.\ Math.\ \textbf{3} (1994), 173--197.
+
+\bibitem{hardylittlewood1923}
+G.~H.~Hardy and J.~E.~Littlewood,
+\emph{Some problems of `Partitio numerorum' III:
+On the expression of a number as a sum of primes},
+Acta Math.\ \textbf{44} (1923), 1--70.
+
+\bibitem{batemanhorn1962}
+P.~T.~Bateman and R.~A.~Horn,
+\emph{Primes in arithmetic progressions and linear forms of primes},
+in \emph{Proc.\ Fourth Canadian Math.\ Congress},
+Univ.\ Toronto Press, 1962, 193--201.
+
+\bibitem{davenport2000}
+H.~Davenport,
+\emph{Multiplicative Number Theory},
+3rd ed., Springer, 2000.
+
+\end{thebibliography}
+
+%=============================================================================
+\appendix
+\section{Computational Reproducibility}
+%=============================================================================
+
+The numerical claims are reproducible from the following scripts in the
+same directory:
+
+\begin{itemize}
+  \item \texttt{eabc\_spectral\_decomposition.py} --- character decomposition
+        of $\delta$ at $K=4767$; verifies $\chi_3|_{\R}=\psi_2$ and
+        Tables~\ref{tab:projections}--\ref{tab:char-values}.
+  \item \texttt{eabc\_scaling\_test.py} --- pair bias $B_{101,11}$ and
+        $B/\sqrt{K}$ across $10^8$, $3\cdot 10^8$, $10^9$
+        (Table~\ref{tab:B-scaling}).
+  \item \texttt{eabc\_analytic\_proof\_check.py} --- $\chi_3$-projection
+        scaling and multinomial null $p$-values (Table~\ref{tab:chi3-scaling}).
+  \item \texttt{eabc\_chi3\_mod7\_projection.py} --- mod-$7$ cubic projection
+        diagnostics.
+  \item \texttt{eabc\_dirichlet\_mod420\_projection.py} --- full mod-$420$
+        Dirichlet projection machinery.
+  \item \texttt{eabc\_cumulative\_bias.py} --- cumulative bias trajectories.
+  \item \texttt{eabc\_hl\_coefficient\_hypotheses.py} --- Hardy--Littlewood
+        singular-series computation, local factors mod $2,3,4,5,7$,
+        goodness-of-fit statistics (Tables~\ref{tab:hl-coefficients}--\ref{tab:hl-goodness};
+        output in \texttt{eabc\_hl\_coefficient\_hypotheses.json} and
+        \texttt{eabc\_hl\_coefficient\_hypotheses\_report.txt}).
+  \item \texttt{eabc\_hl\_hypotheses.tex} --- standalone HL hypothesis
+        analysis (H1--H6) in German.
+  \item \texttt{eabc\_chi3\_holonomy\_test.py} --- discrete edge-phase
+        holonomy on the six-channel ring for $\chi_3$, $k{=}2$ Fourier mode,
+        and $\chi_5$ null test (Section~\ref{sec:holonomy};
+        output in \texttt{eabc\_chi3\_holonomy\_report.txt}).
+\end{itemize}
+
+\end{document}

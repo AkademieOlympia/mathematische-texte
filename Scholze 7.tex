@@ -1,0 +1,502 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- Kodierung und Sprache ---
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+
+% --- Mathematik ---
+\usepackage{amsmath,amssymb,amsfonts,amsthm,mathtools}
+\usepackage{bm}
+
+% --- Layout ---
+\usepackage[a4paper,margin=2.7cm]{geometry}
+\usepackage{microtype}
+\usepackage{setspace}
+\onehalfspacing
+
+% --- Tabellen / Links ---
+\usepackage{booktabs}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	citecolor=blue,
+	urlcolor=blue,
+	pdftitle={Normschalen der Hurwitz-Ordnung und Einheitenorbits},
+	pdfauthor={Thomas Hoffbauer},
+	pdfsubject={Explizite Rechnungen zu Hurwitz-Normschalen, Einheitenwirkung und projektiver Struktur}
+}
+
+% --- Grafikeinbindung robust ---
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./}{fig/}{figs/}{images/}{img/}}
+\newcommand{\includegraphicssafe}[2][]{%
+	\IfFileExists{#2}{\includegraphics[#1]{#2}}{%
+		\fbox{\parbox[c][3cm][c]{0.8\linewidth}{\centering Grafik \texttt{#2} nicht gefunden.}}%
+	}%
+}
+
+% --- Theorem-Umgebungen ---
+\theoremstyle{plain}
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{proposition}[satz]{Proposition}
+\newtheorem{korollar}[satz]{Korollar}
+\newtheorem{konjektur}[satz]{Konjektur}
+
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{beispiel}[satz]{Beispiel}
+\newtheorem{problem}[satz]{Problem}
+
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+
+% --- Makros ---
+\newcommand{\OH}{\mathcal O_H}
+\newcommand{\QH}{\mathbb H}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Fp}{\mathbb F_p}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\nrd}{\operatorname{Nrd}}
+\newcommand{\Stab}{\operatorname{Stab}}
+\newcommand{\Orb}{\operatorname{Orb}}
+
+\title{\textbf{Normschalen der Hurwitz-Ordnung und Einheitenorbits}\\
+	\large Explizite Rechnungen, freie Wirkung und erste Hinweise auf projektive lokale Struktur}
+\author{Thomas Hoffbauer}
+\date{März 2026}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Wir untersuchen die Normschalen der Hurwitz-Ordnung
+		\[
+		X_p := \{x\in \OH : \nrd(x)=p\}
+		\]
+		für kleine Primzahlen \(p\), sowie die Wirkung der Einheitengruppe \(\OH^\times\) auf diesen Mengen.
+		Explizite Berechnungen für \(p=2,3,5,7\) zeigen eine bemerkenswert starre Struktur:
+		Die Linkswirkung der \(24\) Hurwitz-Einheiten auf \(X_p\) ist in allen getesteten Fällen frei,
+		alle Linksorbits besitzen daher Größe \(24\), und für die ungeraden Primzahlen \(p=3,5,7\)
+		ergibt sich numerisch
+		\[
+		|\OH^\times\backslash X_p|=p+1,
+		\qquad
+		|X_p|=24(p+1).
+		\]
+		Darüber hinaus zeigen Reduktionen modulo kleiner ungerader Moduli \(N\), dass globale ganzzahlige
+		und halbzahlig-hurwitzsche Repräsentanten lokal zusammenfallen können, während für \(N>p\) in den
+		getesteten Beispielen keine Kollisionen auftreten. Die Zahl \(p+1\) legt eine natürliche Beziehung
+		zu \(\PP^1(\Fp)\), Hecke-Nachbarschaften und Bruhat--Tits-artigen lokalen Geometrien nahe.
+		Wir formulieren die entsprechenden Konjekturen und ordnen die Resultate als ersten strukturellen
+		Baustein eines größeren hurwitzschen Spektral- und Operatorprogramms ein.
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Die Hurwitz-Ordnung \(\OH\) in den Hamilton-Quaternionen besitzt eine reiche arithmetische,
+	geometrische und gruppentheoretische Struktur. Bereits die endlichen Normschalen
+	\[
+	X_p=\{x\in \OH:\nrd(x)=p\}
+	\]
+	für Primzahlen \(p\) tragen nicht nur die offensichtliche Vier-Quadrate-Geometrie, sondern sind
+	zugleich mit der Aktion der Einheitengruppe \(\OH^\times\) versehen. Ziel dieses Artikels ist es,
+	diese Normschalen für kleine Primzahlen explizit zu berechnen und die durch die Einheiten induzierte
+	Orbitstruktur sichtbar zu machen.
+	
+	Das überraschende Resultat ist, dass sich in den ersten nichttrivialen Fällen eine sehr starre Form zeigt:
+	für \(p=3,5,7\) zerfällt \(X_p\) in genau \(p+1\) freie Orbits der Größe \(24\). Damit erscheint die Zahl
+	\(p+1\) nicht nur als Zählgröße, sondern als Kandidat einer tieferen lokalen oder projektiven Parametrisierung.
+	Dies legt nahe, dass nach Quotientierung durch Einheiten eine kanonische Nachbarschaftsstruktur sichtbar wird,
+	die eher an \(\PP^1(\Fp)\), Hecke-Operatoren und Bruhat--Tits-Geometrie erinnert als an eine rein kombinatorische
+	Restklasse.
+	
+	Die Resultate dieses Artikels sind in zweierlei Hinsicht zu lesen: zum einen als explizite numerische
+	Bestandsaufnahme der kleinen Primfälle, zum anderen als konzeptioneller Hinweis auf eine allgemeinere
+	Theorie der Hurwitz-Schalen und ihrer lokalen Reduktionen.
+	
+	\section{Hurwitz-Ordnung und Normschalen}
+	
+	\begin{definition}[Hurwitz-Ordnung]
+		Die Hurwitz-Ordnung \(\OH\subset \QH\) besteht aus allen Quaternionen
+		\[
+		x=a+bi+cj+dk
+		\]
+		mit entweder \(a,b,c,d\in \Z\) oder \(a,b,c,d\in \Z+\tfrac12\).
+	\end{definition}
+	
+	\begin{definition}[Reduzierte Norm]
+		Für \(x=a+bi+cj+dk\in \QH\) definieren wir die reduzierte Norm durch
+		\[
+		\nrd(x):=a^2+b^2+c^2+d^2.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Normschale]
+		Für eine Primzahl \(p\) definieren wir die zugehörige Hurwitz-Normschale als
+		\[
+		X_p := \{x\in \OH : \nrd(x)=p\}.
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		Die Menge \(X_p\) enthält sowohl ganzzahlige als auch halbzahlig-hurwitzsche Repräsentanten.
+		Explizit ergibt sich für halbzahlig-hurwitzsche Elemente die Bedingung, dass
+		\[
+		x=\frac{m_1}{2}+\frac{m_2}{2}i+\frac{m_3}{2}j+\frac{m_4}{2}k
+		\]
+		mit ungeraden ganzen Zahlen \(m_r\) und
+		\[
+		m_1^2+m_2^2+m_3^2+m_4^2=4p.
+		\]
+	\end{bemerkung}
+	
+	\section{Die Einheitengruppe und ihre Wirkung}
+	
+	\begin{definition}[Hurwitz-Einheiten]
+		Die Einheitengruppe der Hurwitz-Ordnung ist
+		\[
+		\OH^\times := \{u\in \OH : \nrd(u)=1\}.
+		\]
+	\end{definition}
+	
+	\begin{lemma}
+		Es gilt
+		\[
+		|\OH^\times|=24.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Die \(24\) Einheiten bestehen aus
+		\[
+		\{\pm1,\pm i,\pm j,\pm k\}
+		\]
+		sowie den \(16\) Quaternionen der Form
+		\[
+		\frac{\pm1\pm i\pm j\pm k}{2}.
+		\]
+		Alle diese Elemente haben Norm \(1\), und weitere Norm-\(1\)-Elemente existieren in \(\OH\) nicht.
+	\end{proof}
+	
+	\begin{definition}[Linkswirkung]
+		Die Gruppe \(\OH^\times\) wirkt durch Linksmultiplikation auf \(X_p\):
+		\[
+		\OH^\times\times X_p\to X_p,\qquad (u,x)\mapsto ux.
+		\]
+	\end{definition}
+	
+	\begin{lemma}[Invarianz der Normschale]
+		Für jede Primzahl \(p\) ist \(X_p\) unter der Linkswirkung von \(\OH^\times\) invariant.
+	\end{lemma}
+	
+	\begin{proof}
+		Für \(u\in \OH^\times\) und \(x\in X_p\) gilt
+		\[
+		\nrd(ux)=\nrd(u)\nrd(x)=1\cdot p=p.
+		\]
+		Also liegt \(ux\) wieder in \(X_p\).
+	\end{proof}
+	
+	\begin{definition}[Orbit und Stabilisator]
+		Für \(x\in X_p\) definieren wir den Linksorbit
+		\[
+		\OH^\times\cdot x:=\{ux:u\in \OH^\times\}
+		\]
+		und den Stabilisator
+		\[
+		\Stab_{\OH^\times}(x):=\{u\in \OH^\times:ux=x\}.
+		\]
+	\end{definition}
+	
+	\section{Explizite Berechnung der kleinen Primfälle}
+	
+	Die vollständige explizite Enumeration der Normschalen \(X_p\) liefert für die ersten Primzahlen:
+	
+	\[
+	|X_2|=24,\qquad |X_3|=96,\qquad |X_5|=144,\qquad |X_7|=192.
+	\]
+	
+	\begin{beispiel}[Die Normschale \(X_2\)]
+		Die Norm-\(2\)-Elemente sind genau die Quaternionen vom Typ
+		\[
+		(\pm1,\pm1,0,0)
+		\]
+		mit allen Permutationen der Koordinaten. Entsprechend besteht \(X_2\) aus den \(24\) Elementen
+		\[
+		\pm1\pm i,\quad \pm1\pm j,\quad \pm1\pm k,\quad
+		\pm i\pm j,\quad \pm i\pm k,\quad \pm j\pm k.
+		\]
+	\end{beispiel}
+	
+	\begin{beispiel}[Ganzzahlige und halbzahlig-hurwitzsche Elemente in \(X_3\)]
+		Für \(p=3\) treten sowohl ganzzahlige Repräsentanten vom Typ
+		\[
+		(\pm1,\pm1,\pm1,0)
+		\]
+		als auch halbzahlig-hurwitzsche Repräsentanten vom Typ
+		\[
+		\left(\pm\frac32,\pm\frac12,\pm\frac12,\pm\frac12\right)
+		\]
+		auf. Insgesamt ergibt dies
+		\[
+		|X_3|=96.
+		\]
+	\end{beispiel}
+	
+	\begin{bemerkung}
+		Die Fälle \(p=5\) und \(p=7\) zeigen bereits deutlich, dass die Normschalen nicht auf eine einzige
+		einfache Form reduziert werden können. Vielmehr mischen sich ganzzahlige und halbzahlig-hurwitzsche
+		Typen, die erst unter der Einheitenwirkung als Teile größerer Orbits verständlich werden.
+	\end{bemerkung}
+	
+	\section{Freie Wirkung und Orbitzerlegung}
+	
+	Die folgenden Resultate beruhen auf vollständigen expliziten Rechnungen für \(p=2,3,5,7\).
+	
+	\begin{proposition}[Freie Wirkung in den kleinen Primfällen]
+		Für \(p=2,3,5,7\) ist die Linkswirkung von \(\OH^\times\) auf \(X_p\) frei.
+	\end{proposition}
+	
+	\begin{proof}
+		Für jedes \(x\in X_p\) wurde der Stabilisator
+		\[
+		\Stab_{\OH^\times}(x)=\{u\in \OH^\times:ux=x\}
+		\]
+		vollständig berechnet. In allen Fällen ergab sich
+		\[
+		\Stab_{\OH^\times}(x)=\{1\}.
+		\]
+	\end{proof}
+	
+	\begin{korollar}
+		Für \(p=2,3,5,7\) besitzt jeder Linksorbit in \(X_p\) die Größe \(24\).
+	\end{korollar}
+	
+	\begin{proof}
+		Dies folgt unmittelbar aus dem Orbit-Stabilisator-Prinzip:
+		\[
+		|\OH^\times\cdot x|
+		=
+		\frac{|\OH^\times|}{|\Stab_{\OH^\times}(x)|}
+		=
+		24.
+		\]
+	\end{proof}
+	
+	\begin{proposition}[Orbitzahlen in den kleinen Primfällen]
+		Für \(p=2,3,5,7\) besitzt \(X_p\) genau
+		\[
+		1,\ 4,\ 6,\ 8
+		\]
+		Linksorbits unter \(\OH^\times\).
+	\end{proposition}
+	
+	\begin{proof}
+		Da jeder Orbit nach dem vorigen Korollar Größe \(24\) besitzt, folgt
+		\[
+		|X_2|/24=1,\qquad |X_3|/24=4,\qquad |X_5|/24=6,\qquad |X_7|/24=8.
+		\]
+	\end{proof}
+	
+	\begin{satz}[Numerisch verifizierte Orbitformel]
+		Für die getesteten ungeraden Primzahlen \(p=3,5,7\) gilt numerisch
+		\[
+		|\OH^\times\backslash X_p|=p+1,
+		\]
+		und damit
+		\[
+		|X_p|=24(p+1).
+		\]
+		Für \(p=2\) besteht \(X_2\) aus genau einem Orbit der Größe \(24\).
+	\end{satz}
+	
+	\begin{proof}
+		Die Aussage ist die unmittelbare Kombination der vorangehenden Propositionen.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Die Orbitrepräsentanten zeigen bereits eine systematische Form. Für \(p=5\) lassen sich die
+		sechs Orbits etwa durch Repräsentanten
+		\[
+		-2\pm i,\qquad -2\pm j,\qquad -2\pm k
+		\]
+		beschreiben. Für \(p=7\) erscheinen acht Repräsentanten, die sich als Vorzeichenmuster
+		eines halbzahlig-hurwitzschen Typs mit Hauptkoordinate \(-\frac52\) lesen lassen.
+		Dies deutet darauf hin, dass die \(p+1\) Orbits nicht zufällig auftreten, sondern eine
+		verborgene projektive oder lokale Parametrisierung besitzen.
+	\end{bemerkung}
+	
+	\section{Reduktion modulo \texorpdfstring{$N$}{N} und lokale Schalenphänomene}
+	
+	Um lokale Phänomene sichtbar zu machen, betrachten wir die koordinatenweise Reduktion modulo
+	ungerader Zahlen \(N\). Für halbzahlig-hurwitzsche Einträge ist dies sinnvoll, da \(2\) modulo
+	ungeradem \(N\) invertierbar ist.
+	
+	Die expliziten Rechnungen zeigen:
+	
+	\begin{itemize}
+		\item Für \((p,N)=(2,3)\) gilt
+		\[
+		|X_2 \bmod 3|=24=|X_2|.
+		\]
+		\item Für \((p,N)=(3,5)\) gilt
+		\[
+		|X_3 \bmod 5|=96=|X_3|.
+		\]
+		\item Für \((p,N)=(5,7)\) gilt
+		\[
+		|X_5 \bmod 7|=144=|X_5|.
+		\]
+	\end{itemize}
+	
+	In diesen Beispielen mit \(N>p\) treten also keine Kollisionen auf.
+	
+	Demgegenüber zeigen kleine Moduli einen starken Kollaps:
+	
+	\begin{itemize}
+		\item Für \((p,N)=(5,3)\) gilt
+		\[
+		|X_5 \bmod 3|=24.
+		\]
+		\item Für \((p,N)=(7,5)\) gilt
+		\[
+		|X_7 \bmod 5|=96.
+		\]
+	\end{itemize}
+	
+	\begin{bemerkung}
+		Die Beispiele zeigen insbesondere, dass ganzzahlige Repräsentanten wie
+		\[
+		-2j+k,\qquad j-2k
+		\]
+		und halbzahlig-hurwitzsche Repräsentanten wie
+		\[
+		-\frac32-\frac32i-\frac12j-\frac12k
+		\]
+		modulo kleinem \(N\) auf dieselbe Restklasse fallen können. Dies ist ein klarer Hinweis darauf,
+		dass die rohe Bildmenge \(X_p \bmod N\) noch zu fein ist und erst nach Quotientierung durch Einheiten
+		oder Doppelklassen ihre eigentliche lokale Struktur preisgibt.
+	\end{bemerkung}
+	
+	\begin{proposition}[Numerische Negationssymmetrie]
+		In allen getesteten Fällen ist die reduzierte Bildmenge \(X_p \bmod N\) unter der Abbildung
+		\[
+		q \longmapsto -q
+		\]
+		stabil.
+	\end{proposition}
+	
+	\begin{proof}
+		Dies wurde in allen explizit berechneten Beispielen numerisch verifiziert.
+	\end{proof}
+	
+	\section{Projektive Interpretation}
+	
+	Die Zahl \(p+1\) ist in der vorangehenden Orbitformel nicht nur numerisch auffällig, sondern
+	arithmetisch hochgradig suggestiv. Es gilt
+	\[
+	|\PP^1(\Fp)|=p+1.
+	\]
+	Genau dieselbe Zahl erscheint als natürliche Nachbarschaftszahl in Hecke- und Bruhat--Tits-artigen
+	Situationen.
+	
+	Dies motiviert die folgenden Konjekturen.
+	
+	\begin{konjektur}[Projektive Parametrisierung]
+		Für jede ungerade Primzahl \(p\) ist die Orbitmenge
+		\[
+		\OH^\times\backslash X_p
+		\]
+		kanonisch mit der projektiven Geraden
+		\[
+		\PP^1(\Fp)
+		\]
+		identifizierbar.
+	\end{konjektur}
+	
+	\begin{konjektur}[Allgemeine Orbitformel]
+		Für jede ungerade Primzahl \(p\) wirkt \(\OH^\times\) frei auf \(X_p\), und es gilt
+		\[
+		|\OH^\times\backslash X_p|=p+1.
+		\]
+		Insbesondere folgt
+		\[
+		|X_p|=24(p+1).
+		\]
+	\end{konjektur}
+	
+	\begin{konjektur}[Lokale Nachbarschaftsdeutung]
+		Die durch Quotientierung von \(X_p\) entstehende Struktur ist nicht bloß kombinatorisch,
+		sondern trägt eine kanonische lokale Nachbarschaftsgeometrie, die im geeigneten Sinn mit
+		einer Hecke- oder Bruhat--Tits-Struktur korrespondiert.
+	\end{konjektur}
+	
+	\section{Konzeptionelle Einordnung}
+	
+	Die hier gewonnenen Resultate sind klein, aber strukturell bemerkenswert. Drei Punkte stechen hervor:
+	
+	\begin{enumerate}
+		\item Die Normschalen \(X_p\) sind keineswegs formlos, sondern zerfallen in den getesteten
+		Fällen in freie Einheitenorbits fester Größe \(24\).
+		
+		\item Für ungerade Primzahlen \(p=3,5,7\) ergibt sich numerisch genau die Orbitzahl \(p+1\),
+		was unmittelbar auf projektive und lokale arithmetische Strukturen hinweist.
+		
+		\item Die Reduktionen modulo kleinem \(N\) zeigen, dass global verschiedene ganzzahlige und
+		halbzahlig-hurwitzsche Repräsentanten lokal zusammenfallen können. Dies deutet darauf hin,
+		dass die kanonische lokale Schale nicht \(X_p\) selbst, sondern ein geeigneter Quotient
+		nach Einheiten oder Doppelklassen ist.
+	\end{enumerate}
+	
+	Damit wird ein möglicher Weg sichtbar:
+	\[
+	X_p
+	\;\longrightarrow\;
+	\OH^\times\backslash X_p
+	\;\longrightarrow\;
+	\text{lokale Reduktion}
+	\;\longrightarrow\;
+	\text{projektive bzw. Hecke-artige Nachbarschaft}.
+	\]
+	
+	\section{Ausblick}
+	
+	Die naheliegenden nächsten Schritte sind:
+	
+	\begin{enumerate}
+		\item die Berechnung der Rechtsorbits und der Doppelorbits
+		\[
+		\OH^\times\backslash X_p/\OH^\times,
+		\]
+		\item die Suche nach einer expliziten Parametrisierung der \(p+1\) Orbits durch
+		\(\PP^1(\Fp)\),
+		\item die Untersuchung, ob und wie die modulare Reduktion der Orbitrepräsentanten
+		lokale Nachbarschaftsrelationen reproduziert,
+		\item die Einbettung dieser Struktur in ein Hecke- oder Bruhat--Tits-inspiriertes
+		Operatorbild.
+	\end{enumerate}
+	
+	Gerade der Zusammenhang zwischen der globalen Hurwitz-Geometrie und der lokalen Zahl \(p+1\)
+	scheint der eigentliche Schlüssel zu sein. Die hier dargestellten kleinen Primfälle bilden dafür
+	den ersten belastbaren numerischen Ausgangspunkt.
+	
+	\section{Schluss}
+	
+	Die expliziten Rechnungen zu den Normschalen \(X_p\) der Hurwitz-Ordnung zeigen bereits in den
+	ersten Primfällen eine überraschend starre Struktur. Die freie Wirkung der \(24\) Hurwitz-Einheiten
+	auf \(X_p\), die Orbitgröße \(24\) und die numerische Orbitzahl \(p+1\) für \(p=3,5,7\) sprechen dafür,
+	dass hinter den Normschalen nicht nur eine Vier-Quadrate-Geometrie, sondern eine projektiv-lokale
+	arithmetische Struktur steht.
+	
+	Der Status dieser Erkenntnisse ist bewusst klar gehalten: Die kleinen Fälle sind vollständig gerechnet,
+	die allgemeine Formel bleibt Konjektur. Gerade diese methodische Trennung macht die beobachtete Struktur
+	wissenschaftlich interessant. Denn sie zeigt, dass aus expliziten Hurwitz-Rechnungen heraus bereits
+	eine Geometrie sichtbar wird, die mit klassischen lokalen und automorphen Mustern in Resonanz steht.
+	
+\end{document}

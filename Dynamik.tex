@@ -1,0 +1,290 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\title{Quaternionische Rotationsdynamik und ein EABC-Modell \\ 
+	\large Eine strukturierte algebraische Formulierung mit arithmetischer Interpretation}
+\author{}
+\date{}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Bemerkung}
+\theoremstyle{plain}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Wir formulieren die klassische Rotationsdynamik vollständig in der Sprache der Quaternionen und isolieren die zugrunde liegende vierdimensionale Struktur. Diese wird anschließend als EABC-System interpretiert, wobei der skalare Anteil als Norm- bzw. Energiekanal und die imaginären Komponenten als gerichtete Dynamikachsen fungieren. Abschließend wird eine arithmetische Interpretation vorgeschlagen, die Quaternionennormen mit Vier-Quadrate-Darstellungen verknüpft. Die Arbeit trennt strikt zwischen bewiesenen Aussagen und heuristischen Erweiterungen.
+	\end{abstract}
+	
+	\section{Quaternionen und Grundstruktur}
+	
+	\begin{definition}[Quaternion]
+		Ein Quaternion ist ein Ausdruck
+		\[
+		q = q_0 + q_1 i + q_2 j + q_3 k,
+		\]
+		mit den Relationen
+		\[
+		i^2 = j^2 = k^2 = -1, \quad ij = k,\ jk = i,\ ki = j,
+		\]
+		sowie Antikommutativität
+		\[
+		ij = -ji.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Norm]
+		Die Norm eines Quaternionen ist
+		\[
+		\|q\|^2 = q_0^2 + q_1^2 + q_2^2 + q_3^2.
+		\]
+	\end{definition}
+	
+	\begin{lemma}[Multiplikationsstruktur]
+		Für zwei reine Vektorquaternionen $a,b$ gilt
+		\[
+		ab = -\mathbf a \cdot \mathbf b + \mathbf a \times \mathbf b.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Direkte Rechnung aus den Multiplikationsregeln.
+	\end{proof}
+	
+	\section{Rotationen als Einheitsquaternionen}
+	
+	\begin{definition}[Rotationsquaternion]
+		Sei $\mathbf n \in \mathbb{R}^3$ ein Einheitsvektor und $\theta \in \mathbb{R}$. Dann definiert
+		\[
+		q = \cos\frac{\theta}{2} + (n_x i + n_y j + n_z k)\sin\frac{\theta}{2}
+		\]
+		eine Rotation.
+	\end{definition}
+	
+	\begin{proposition}[Konjugationswirkung]
+		Für ein reines Vektorquaternion $v$ beschreibt
+		\[
+		v' = q v q^{-1}
+		\]
+		eine Drehung von $v$ um die Achse $\mathbf n$ mit Winkel $\theta$.
+	\end{proposition}
+	
+	\section{Quaternionische Kinematik}
+	
+	\begin{definition}[Winkelgeschwindigkeit]
+		Die Winkelgeschwindigkeit wird dargestellt durch
+		\[
+		\Omega = \omega_x i + \omega_y j + \omega_z k.
+		\]
+	\end{definition}
+	
+	\begin{proposition}[Bewegungsgleichung]
+		Für eine zeitabhängige Rotation $q(t)$ gilt
+		\[
+		\dot q = \frac12 q \Omega.
+		\]
+	\end{proposition}
+	
+	\begin{remark}
+		Die Nichtkommutativität der Quaternionen entspricht der Nichtvertauschbarkeit von Rotationen.
+	\end{remark}
+	
+	\section{Dynamik}
+	
+	\begin{definition}[Drehimpuls]
+		\[
+		\Lambda = \mathcal I(\Omega),
+		\]
+		wobei $\mathcal I$ ein linearer Operator (Trägheitstensor) ist.
+	\end{definition}
+	
+	\begin{definition}[Drehmoment]
+		\[
+		T = \frac{d\Lambda}{dt}.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Energie]
+		\[
+		K = \frac12 \langle \Omega, \Lambda \rangle.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Leistung]
+		\[
+		P = \langle T, \Omega \rangle.
+		\]
+	\end{definition}
+	
+	\section{EABC-Struktur}
+	
+	\begin{definition}[EABC-Zuordnung]
+		Wir definieren eine Identifikation
+		\[
+		E \leftrightarrow 1,\quad A \leftrightarrow i,\quad B \leftrightarrow j,\quad C \leftrightarrow k.
+		\]
+	\end{definition}
+	
+	\begin{definition}[EABC-Zustand]
+		Ein Zustand ist gegeben durch
+		\[
+		Q = E + Ai + Bj + Ck.
+		\]
+	\end{definition}
+	
+	\begin{proposition}[Normerhaltung]
+		Unter der Transformation
+		\[
+		Q \mapsto q Q q^{-1}
+		\]
+		bleibt die Norm
+		\[
+		N(Q) = E^2 + A^2 + B^2 + C^2
+		\]
+		erhalten.
+	\end{proposition}
+	
+	\begin{remark}
+		Dies entspricht einer Rotation im dreidimensionalen Unterraum $(A,B,C)$ bei fixem Normwert.
+	\end{remark}
+	
+	\section{Arithmetische Interpretation}
+	
+	\begin{definition}[Arithmetischer Zustand]
+		Sei
+		\[
+		Q_N = E_N + A_N i + B_N j + C_N k,
+		\]
+		mit
+		\[
+		N = E_N^2 + A_N^2 + B_N^2 + C_N^2.
+		\]
+	\end{definition}
+	
+	\begin{proposition}
+		Jede solche Darstellung entspricht einer Vier-Quadrate-Zerlegung von $N$.
+	\end{proposition}
+	
+	\begin{remark}
+		Dies ist eine direkte Verbindung zum Satz von Lagrange.
+	\end{remark}
+	
+	\section{Heuristische Erweiterung: Dynamik im EABC-Raum}
+	
+	\begin{definition}[Quaternionische Dynamik]
+		\[
+		\dot Q = \frac12 Q \Omega.
+		\]
+	\end{definition}
+	
+	\begin{remark}[Interpretation]
+		\begin{itemize}
+			\item $E$: skalarer Norm- bzw. Energieanteil
+			\item $A,B,C$: gerichtete Dynamikachsen
+		\end{itemize}
+	\end{remark}
+	
+	\begin{remark}[Heuristik]
+		Die Größen
+		\[
+		\Omega,\ \Lambda,\ T
+		\]
+		können als ``Ströme'' zwischen den Kanälen $A,B,C$ interpretiert werden.
+	\end{remark}
+	
+	\section{Symmetrisches Beispiel}
+	
+	\begin{proposition}
+		Für $\mathbf n = (1,1,1)/\sqrt3$ und $\theta = 2\pi/3$ gilt
+		\[
+		q = \frac{1+i+j+k}{2}.
+		\]
+	\end{proposition}
+	
+	\begin{remark}
+		Dieses Quaternion erzeugt eine zyklische Permutation der Achsen und besitzt tetraedrische Symmetrie.
+	\end{remark}
+	
+	\section{Diskussion}
+	
+	Die quaternionische Darstellung zeigt:
+	
+	\begin{itemize}
+		\item Energie ist eine skalare Projektion
+		\item Dynamik lebt im imaginären Teil
+		\item Nichtkommutativität erzeugt echte Kopplungseffekte
+	\end{itemize}
+	
+	Die EABC-Interpretation ist konsistent mit:
+	
+	\begin{itemize}
+		\item Vier-Kanal-Struktur
+		\item Normerhaltung
+		\item Rotationssymmetrie
+	\end{itemize}
+	
+	\section{Ausblick}
+	
+	Die hier dargestellte Struktur legt nahe:
+	
+	\begin{itemize}
+		\item Dynamische Systeme auf Hurwitz-Quaternionen
+		\item Diskrete Versionen mit ganzzahligen Zuständen
+		\item Anwendungen auf arithmetische Strukturen (Primzahlklassen)
+	\end{itemize}
+	
+	Eine vollständige mathematische Theorie dieser Erweiterung bleibt Gegenstand zukünftiger Arbeit.
+	
+	\section*{Quaternionic Symmetries of Prime Quadruplets and Residue Dynamics}
+	
+	\subsection*{Abstract}
+	We investigate a quaternionic embedding of prime quadruplets and study their transformation under rotations in $\mathbb{H}$. While exact quadruplet structure is not preserved under such transformations combined with projection onto primes, we show that residue class patterns modulo $12$ exhibit statistical stability. This suggests an underlying geometric symmetry in the distribution of prime quadruplets.
+	
+	\subsection*{1. Quaternionic Embedding}
+	Define the embedding
+	[
+	Q(p) = p + (p+2)i + (p+6)j + (p+8)k
+	]
+	for prime quadruplets.
+	
+	\subsection*{2. Transformation}
+	Let
+	[
+	u = \frac{1+i+j+k}{2}
+	]
+	and define
+	[
+	T_u(Q) = u(Q - Q_{\text{mid}})u^{-1} + Q_{\text{mid}}.
+	]
+	
+	\subsection*{3. Projection}
+	Define a projection
+	[
+	\Pi(Q)_k = \text{nearest prime to } Q_k.
+	]
+	
+	\subsection*{4. Main Operator}
+	[
+	\mathcal{T} = \Pi \circ T_u.
+	]
+	
+	\subsection*{5. Structural Result}
+	The operator $\mathcal{T}$ does not preserve prime quadruplets, but preserves residue class structure modulo $12$ in a statistical sense.
+	
+	\subsection*{6. Interpretation}
+	This induces a dynamical system on residue classes corresponding to a permutation of $(5,7,11)$, compatible with quaternionic rotations.
+	
+	\subsection*{7. Outlook}
+	Possible connections to spectral operators and SU(2) symmetry remain open.
+	
+	
+\end{document}

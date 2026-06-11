@@ -1,0 +1,563 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{geometry}
+\geometry{margin=2.7cm}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./}{fig/}{figs/}{images/}{img/}}
+\newcommand{\includegraphicssafe}[2][]{\IfFileExists{#2}{\includegraphics[#1]{#2}}{\fbox{\texttt{Missing graphic: #2}}}}
+
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+  pdftitle={Ptolemäische, Walter- und Morley-Strukturen auf Primzahlvierlingen und ihrer Dehnungsfamilie},
+  pdfauthor={Thomas Hoffbauer},
+  pdfsubject={Viererordnungen, Primzahlvierlinge, Ptolemäus, Morley, Marion Walter},
+  pdfkeywords={Primzahlvierlinge, Ptolemäus, Morley, Marion Walter, Dehnungsfamilie, Bamberg-Modell}
+}
+
+\newtheorem{satz}{Satz}
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{korollar}[satz]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{beispiel}[satz]{Beispiel}
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\Area}{\mathrm{Area}}
+\newcommand{\Mor}{\mathrm{Mor}}
+\newcommand{\Wal}{\mathrm{Wal}}
+
+\title{\textbf{Ptolemäische, Walter- und Morley-Strukturen auf Primzahlvierlingen\\ und ihrer Dehnungsfamilie}\\[0.4em]
+\large Ein Standalone-Artikel zur geometrischen Klassifikation kompatibler Viererordnungen}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Wir betrachten Primzahlvierlinge der Form
+\[
+Q_0(p)=(p,p+2,p+6,p+8)
+\]
+als \emph{primale Grundform} einer Viererordnung mit zwei Zwillingsflügeln und einer festen mod-$12$-Klassenarchitektur. Ausgehend von einer logarithmischen Einbettung sowie einer EABC-Einbettung in die Ebene werden drei komplementäre Klassifikationsinstrumente eingeführt: der ptolemäische Defekt als Maß globaler Rahmenverträglichkeit, Walter-Splits als Maß dehnungsinduzierter Besetzungsasymmetrie und Morley-Splits als Maß lokaler Gestaltreife kanonischer Triangulierungen. Die Analyse wird auf die Dehnungsfamilie
+\[
+Q_k(p)=(p,p+2,p+6+12k,p+8+12k), \qquad k\in\N_0,
+\]
+erweitert. Für die lineare Kreuzform wird ein explizites asymptotisches Skalengesetz bewiesen:
+\[
+\Delta E_{\mathrm{metrisch}}(p,k)\sim \frac{64+288k+288k^2}{p^2}.
+\]
+Ferner werden explizite asymptotische Walter-Gesetze hergeleitet, während die Morley-Profile als asymptotisch heilende Gestaltkorrekturen interpretiert werden. Der Artikel ordnet die Entdeckung als eine hierarchische Familie strukturtreuer Deformationen derselben Viererarchitektur ein.
+\end{abstract}
+
+\section{Motivation}
+
+Primzahlvierlinge
+\[
+(p,p+2,p+6,p+8)
+\]
+sind die dichtesten möglichen Viererkonfigurationen ungerader Primzahlen. Arithmetisch werden sie meist unter dem Gesichtspunkt der Primzahllücken oder der Hardy--Littlewood-Heuristik betrachtet. Die leitende Idee dieses Artikels ist eine andere: Ein Primzahlvierling wird hier nicht nur als Menge von vier Zahlen verstanden, sondern als \emph{geometrisch strukturierte Viererordnung}.
+
+Der Ausgangspunkt ist die Beobachtung, dass ein Primzahlvierling zugleich drei Eigenschaften besitzt:
+\begin{enumerate}[label=(\arabic*)]
+\item zwei \emph{Zwillingsflügel} $(p,p+2)$ und $(p+6,p+8)$,
+\item eine natürliche lineare Größenordnung,
+\item eine stabile Klassenarchitektur modulo $12$, die in der Sprache dieses Artikels als
+\[
+A,B,C,E
+\]
+bezeichnet wird.
+\end{enumerate}
+
+Diese drei Ebenen erlauben es, geometrische Invarianten und Defekte einzuführen. Insbesondere entstehen drei Fragen:
+\begin{itemize}
+\item Ist eine Viererordnung \emph{ptolemäisch kompatibel}, also rahmenverträglich?
+\item Wie verteilt sich ihre \emph{Besetzung} auf natürliche Triangulierungen?
+\item Wie reif ist ihre lokale \emph{Gestalt} im Sinn von Morley?
+\end{itemize}
+
+Aus diesen Fragen entsteht eine neue Sichtweise: Der klassische Primzahlvierling erscheint als \emph{Urform} einer größeren Dehnungsfamilie mit erhaltener Klassenarchitektur,
+\[
+Q_k(p)=(p,p+2,p+6+12k,p+8+12k).
+\]
+Der Dehnungsrang $k$ verändert die Korrekturterme, nicht aber die zugrunde liegende Viererarchitektur.
+
+\section{Die primale Grundform und ihre Dehnungsfamilie}
+
+\begin{definition}[Primale Grundform]
+Ein Primzahlvierling der Form
+\[
+Q_0(p):=(p,p+2,p+6,p+8)
+\]
+heißt \emph{primale Grundform}, sofern alle vier Einträge prim sind.
+\end{definition}
+
+\begin{definition}[Dehnungsfamilie]
+Für $k\in\N_0$ definieren wir
+\[
+m_k:=6+12k
+\]
+und
+\[
+Q_k(p):=(p,p+2,p+m_k,p+m_k+2).
+\]
+Sofern alle vier Einträge prim sind, heißt $Q_k(p)$ eine \emph{Viererordnung vom Dehnungsrang $k$}.
+\end{definition}
+
+Die Bedingung $m_k\equiv 6\pmod{12}$ stellt sicher, dass die mod-$12$-Struktur der Grundform erhalten bleibt. Die ersten Stufen sind:
+\[
+Q_0(p)=(p,p+2,p+6,p+8),
+\]
+\[
+Q_1(p)=(p,p+2,p+18,p+20),
+\]
+\[
+Q_2(p)=(p,p+2,p+30,p+32),
+\]
+\[
+Q_3(p)=(p,p+2,p+42,p+44).
+\]
+
+\begin{bemerkung}
+Im Bamberg-Vokabular ist $Q_0$ die \emph{Urstufe} der Viererordnung, während $Q_k$ für $k\ge 1$ strukturtreue \emph{Dehnungsnachfahren} derselben Rahmenarchitektur sind.
+\end{bemerkung}
+
+\section{Zwei Geometrien auf derselben Viererordnung}
+
+\subsection{Lineare logarithmische Geometrie}
+
+Wir definieren
+\[
+x_1=\log p,\qquad x_2=\log(p+2),\qquad x_3=\log(p+m_k),\qquad x_4=\log(p+m_k+2).
+\]
+Diese vier Punkte liegen in natürlicher Reihenfolge auf der reellen Achse.
+
+\subsection{EABC-Einbettung}
+
+Wir kodieren die Klassen $E,A,B,C$ als vier orthogonale Richtungen:
+\[
+E\mapsto (1,0),\qquad A\mapsto (0,1),\qquad B\mapsto (-1,0),\qquad C\mapsto (0,-1).
+\]
+Mit logarithmischen Radien erhalten wir die Punkte
+\[
+A_p=(0,\log p),\qquad B_p=(-\log(p+2),0),
+\]
+\[
+C_p=(0,-\log(p+m_k)),\qquad E_p=(\log(p+m_k+2),0).
+\]
+
+\begin{definition}[Kompatible Form und Kreuzform]
+Zur linearen oder EABC-Geometrie gehören zwei Anordnungen:
+\[
+\text{kompatible Form}: (1,2,3,4)\ \text{bzw.}\ (A,B,C,E),
+\]
+\[
+\text{Kreuzform}: (1,3,2,4)\ \text{bzw.}\ (A,C,B,E).
+\]
+\end{definition}
+
+\section{Ptolemäische Strukturgesetze}
+
+\begin{definition}[Ptolemäischer Defekt]
+Für vier Punkte $X_1,X_2,X_3,X_4\in \R^n$ definieren wir
+\[
+\Pi(X_1,X_2,X_3,X_4)
+=
+d_{13}d_{24}-d_{12}d_{34}-d_{23}d_{41},
+\]
+wobei $d_{ij}=\|X_i-X_j\|$.
+Der Betrag $|\Pi|$ misst die Abweichung von ptolemäischer Balance.
+\end{definition}
+
+\subsection{Exakter linearer Satz}
+
+\begin{satz}[Exakte lineare Schließung der kompatiblen Form]
+Seien $x_1<x_2<x_3<x_4$ Punkte auf der reellen Achse. Dann gilt
+\[
+\Pi(x_1,x_2,x_3,x_4)=0.
+\]
+Insbesondere gilt für jede Viererordnung $Q_k(p)$:
+\[
+\Pi_{\mathrm I}^{\mathrm{lin}}(p,k)=0.
+\]
+\end{satz}
+
+\begin{proof}
+Auf der Geraden sind
+\[
+d_{13}=x_3-x_1,\quad d_{24}=x_4-x_2,\quad d_{12}=x_2-x_1,\quad d_{34}=x_4-x_3,
+\]
+\[
+d_{23}=x_3-x_2,\quad d_{41}=x_4-x_1.
+\]
+Daher
+\begin{align*}
+\Pi
+&=(x_3-x_1)(x_4-x_2)-(x_2-x_1)(x_4-x_3)-(x_3-x_2)(x_4-x_1)\\
+&=0
+\end{align*}
+nach direkter Ausmultiplizierung und Kürzung aller Terme.
+\end{proof}
+
+\begin{satz}[Expliziter linearer Kreuzdefekt]
+Für die Kreuzform $(x_1,x_3,x_2,x_4)$ gilt
+\[
+\Pi_{\mathrm{II}}^{\mathrm{lin}}(p,k)
+=
+-2\log\!\Bigl(\frac{p+m_k}{p+2}\Bigr)\log\!\Bigl(\frac{p+m_k+2}{p}\Bigr).
+\]
+Insbesondere gilt für festes $k$ und $p\to\infty$:
+\[
+\Delta E_{\mathrm{metrisch}}(p,k):=
+\bigl|\Pi_{\mathrm{II}}^{\mathrm{lin}}(p,k)\bigr|
+\sim
+\frac{64+288k+288k^2}{p^2}.
+\]
+\end{satz}
+
+\begin{proof}
+Aus der Definition der Kreuzform mit $x_1=\log p$, $x_2=\log(p+2)$, $x_3=\log(p+m_k)$, $x_4=\log(p+m_k+2)$ folgt direkt
+\[
+\Pi_{\mathrm{II}}^{\mathrm{lin}}(p,k)
+=
+-2(x_3-x_2)(x_4-x_1),
+\]
+also die angegebene Formel. Für die Asymptotik benutzen wir
+\[
+\log\!\Bigl(\frac{p+m_k}{p+2}\Bigr)\sim \frac{m_k-2}{p},
+\qquad
+\log\!\Bigl(\frac{p+m_k+2}{p}\Bigr)\sim \frac{m_k+2}{p},
+\]
+also
+\[
+\Delta E_{\mathrm{metrisch}}(p,k)\sim \frac{2(m_k^2-4)}{p^2}.
+\]
+Mit $m_k=6+12k$ ist
+\[
+2(m_k^2-4)=2\bigl((6+12k)^2-4\bigr)=64+288k+288k^2.
+\]
+\end{proof}
+
+\begin{bemerkung}
+Der lineare Satz trennt zwei Ebenen sauber: Die kompatible Form ist metrisch exakt geschlossen; die Kreuzform erzeugt einen expliziten Defekt, der quadratisch in $k$ wächst und zugleich mit $p^{-2}$ verschwindet.
+\end{bemerkung}
+
+\subsection{EABC-Strukturspannung}
+
+\begin{definition}[EABC-Strukturspannung]
+Für die EABC-Kreuzform definieren wir
+\[
+\Delta E_{EABC}(p,k):=
+\bigl|\Pi(A_p,C_p,B_p,E_p)\bigr|.
+\]
+\end{definition}
+
+\begin{satz}[Universeller Hauptterm der EABC-Kreuzspannung]
+Für festes $k$ und $p\to\infty$ gilt formal-asymptotisch
+\[
+\Delta E_{EABC}(p,k)\sim 4(\log p)^2.
+\]
+\end{satz}
+
+\begin{proof}[Beweisidee]
+Für festes $k$ werden die vier Radien
+\[
+\log p,\ \log(p+2),\ \log(p+m_k),\ \log(p+m_k+2)
+\]
+asymptotisch gleich. Die EABC-Figur nähert sich daher einem symmetrischen Kreuzviereck mit Radius $\log p$. In dieser Grenzfigur trägt die Kreuzverschaltung $(A,C,B,E)$ einen führenden Defektterm der Größenordnung $4(\log p)^2$. Die $k$-Abhängigkeit erscheint nur in niedrigeren Korrekturtermen, weil sie lediglich Radialdifferenzen der Größenordnung $O(1/p)$ erzeugt.
+\end{proof}
+
+\begin{bemerkung}
+Hier liegt der konzeptionell wichtigste Unterschied zur linearen Geometrie: Der metrische Kreuzdefekt ist ein endlicher Dehnungsrest, die EABC-Strukturspannung dagegen ein struktureller Rahmeneffekt.
+\end{bemerkung}
+
+\section{Walter-Kanäle als Besetzungsasymmetrie}
+
+Die kompatible EABC-Figur besitzt zwei natürliche Triangulierungen:
+\[
+\triangle ABC,\qquad \triangle ACE,
+\]
+\[
+\triangle ABE,\qquad \triangle BCE.
+\]
+
+\begin{definition}[Walter-Wert]
+Sei $T$ ein Dreieck. Der Walter-Wert $\Wal(T)$ sei proportional zur Fläche des zentralen Walter-Hexagons. Da Marion Walters Satz einen festen Flächenanteil liefert, genügt es in diesem Artikel, $\Wal(T)$ als proportional zu $\Area(T)$ zu behandeln.
+\end{definition}
+
+\begin{definition}[Walter-Splits]
+Wir setzen
+\[
+\Delta W_{AC}(p,k):=\Wal(\triangle ACE)-\Wal(\triangle ABC),
+\]
+\[
+\Delta W_{BE}(p,k):=\Wal(\triangle BCE)-\Wal(\triangle ABE).
+\]
+\end{definition}
+
+\begin{satz}[Explizite Walter-Formeln]
+Für die Dehnungsfamilie gilt
+\[
+\Delta W_{AC}(p,k)
+=
+\frac{1}{20}\bigl(\log p+\log(p+m_k)\bigr)\bigl(\log(p+m_k+2)-\log(p+2)\bigr),
+\]
+\[
+\Delta W_{BE}(p,k)
+=
+\frac{1}{20}\bigl(\log(p+2)+\log(p+m_k+2)\bigr)\bigl(\log(p+m_k)-\log p\bigr).
+\]
+Insbesondere gilt für festes $k$ und $p\to\infty$:
+\[
+\Delta W_{AC}(p,k)\sim \Delta W_{BE}(p,k)\sim \frac{(6+12k)\log p}{10p}.
+\]
+\end{satz}
+
+\begin{proof}
+Die Flächen der beteiligten Dreiecke ergeben sich direkt aus den Koordinaten in der EABC-Einbettung. Wegen der linearen Proportionalität des Walter-Werts zur Dreiecksfläche genügt eine elementare Flächenberechnung. Für die Asymptotik verwenden wir
+\[
+\log(p+m_k+2)-\log(p+2)\sim \frac{m_k}{p},
+\qquad
+\log(p+m_k)-\log p\sim \frac{m_k}{p},
+\]
+sowie
+\[
+\log p+\log(p+m_k)\sim 2\log p,\qquad
+\log(p+2)+\log(p+m_k+2)\sim 2\log p.
+\]
+Daraus folgt
+\[
+\Delta W_{AC}(p,k)\sim \Delta W_{BE}(p,k)\sim \frac{m_k\log p}{10p}.
+\]
+Mit $m_k=6+12k$ ergibt sich die Behauptung.
+\end{proof}
+
+\begin{bemerkung}
+Walter misst im vorliegenden Modell nicht grobe Fehlverschaltung, sondern die \emph{Besetzungsasymmetrie} der Dehnung. Der Split wächst linear mit $k$.
+\end{bemerkung}
+
+\section{Morley-Profile als Gestaltreife}
+
+\begin{definition}[Morley-Quotient]
+Für ein Dreieck $T$ definieren wir
+\[
+M(T):=\frac{\Area(\Mor(T))}{\Area(T)},
+\]
+wobei $\Mor(T)$ das Morley-Dreieck von $T$ bezeichnet.
+\end{definition}
+
+\begin{definition}[Morley-Splits]
+Für die kanonischen Triangulierungen setzen wir
+\[
+\Delta M_{AC}(p,k):=M(\triangle ACE)-M(\triangle ABC),
+\]
+\[
+\Delta M_{BE}(p,k):=M(\triangle BCE)-M(\triangle ABE).
+\]
+\end{definition}
+
+\begin{satz}[Asymptotische Morley-Heilung]
+Für festes $k$ und $p\to\infty$ gilt
+\[
+\Delta M_{AC}(p,k)\to 0,\qquad \Delta M_{BE}(p,k)\to 0.
+\]
+\end{satz}
+
+\begin{proof}
+Für festes $k$ werden die vier logarithmischen Radien asymptotisch gleich. Daher konvergieren alle kanonischen Dreiecke gegen dieselbe asymptotische Referenzgestalt eines gleichschenklig-rechtwinkligen Dreiecks innerhalb der EABC-Einbettung. Da der Morley-Quotient stetig von den Winkeln des Dreiecks abhängt, konvergieren alle vier Morley-Quotienten gegen denselben Grenzwert. Folglich verschwinden ihre Differenzen.
+\end{proof}
+
+\begin{bemerkung}
+Morley misst lokale Formspannung, nicht globale Rahmenverspannung. Während Walter einen Massenkanal beschreibt, codiert Morley die \emph{Gestaltreife} der Triangulierungen.
+\end{bemerkung}
+
+\section{Hierarchie der ersten Dehnungsstufen}
+
+Die ersten Stufen der Dehnungsfamilie lauten:
+\[
+Q_0(p)=(p,p+2,p+6,p+8),
+\]
+\[
+Q_1(p)=(p,p+2,p+18,p+20),
+\]
+\[
+Q_2(p)=(p,p+2,p+30,p+32),
+\]
+\[
+Q_3(p)=(p,p+2,p+42,p+44),
+\]
+\[
+Q_4(p)=(p,p+2,p+54,p+56).
+\]
+
+Dazu gehören die asymptotischen linearen Kreuzreste
+\[
+\Delta E_{\mathrm{metrisch}}(p,0)\sim \frac{64}{p^2},
+\qquad
+\Delta E_{\mathrm{metrisch}}(p,1)\sim \frac{640}{p^2},
+\]
+\[
+\Delta E_{\mathrm{metrisch}}(p,2)\sim \frac{1792}{p^2},
+\qquad
+\Delta E_{\mathrm{metrisch}}(p,3)\sim \frac{3520}{p^2},
+\qquad
+\Delta E_{\mathrm{metrisch}}(p,4)\sim \frac{5824}{p^2}.
+\]
+
+Und für die Walter-Kanäle gilt
+\[
+\Delta W(p,0)\sim \frac{3\log p}{5p},
+\qquad
+\Delta W(p,1)\sim \frac{9\log p}{5p},
+\]
+\[
+\Delta W(p,2)\sim \frac{3\log p}{p},
+\qquad
+\Delta W(p,3)\sim \frac{21\log p}{5p},
+\qquad
+\Delta W(p,4)\sim \frac{27\log p}{5p}.
+\]
+
+\begin{center}
+\begin{tabular}{@{}>{$}c<{$} >{$}c<{$} >{$}c<{$} >{$}c<{$}@{}}
+\toprule
+k & m_k & Q_k(p) & \Delta E_{\mathrm{metrisch}}(p,k) \\
+\midrule
+0 & 6  & (p,p+2,p+6,p+8)   & 64/p^2 \\
+1 & 18 & (p,p+2,p+18,p+20) & 640/p^2 \\
+2 & 30 & (p,p+2,p+30,p+32) & 1792/p^2 \\
+3 & 42 & (p,p+2,p+42,p+44) & 3520/p^2 \\
+4 & 54 & (p,p+2,p+54,p+56) & 5824/p^2 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Klassifikationsvektor}
+
+Die drei Ebenen --- Ptolemäus, Walter, Morley --- lassen sich zu einem Profil bündeln.
+
+\begin{definition}[Klassifikationsvektor]
+Der Klassifikationsvektor der Viererordnung $Q_k(p)$ sei
+\[
+\mathcal K(Q_k(p))
+=
+\bigl(
+k,\,
+\Delta E_{\mathrm{metrisch}}(p,k),\,
+\Delta E_{EABC}(p,k),\,
+\Delta W_{AC}(p,k),\,
+\Delta W_{BE}(p,k),\,
+\Delta M_{AC}(p,k),\,
+\Delta M_{BE}(p,k)
+\bigr).
+\]
+\end{definition}
+
+\begin{bemerkung}
+Dieser Vektor trennt:
+\begin{itemize}
+\item den \emph{Dehnungsrang} $k$,
+\item den \emph{metrischen Rest} der linearen Kreuzform,
+\item die \emph{klassengeometrische Rahmenverspannung},
+\item die \emph{Besetzungsasymmetrie} der Walter-Kanäle,
+\item die \emph{lokale Gestaltreife} der Morley-Profile.
+\end{itemize}
+\end{bemerkung}
+
+\section{Einordnung der Entdeckung}
+
+Die hier vorgestellte Struktur besitzt aus Sicht des Autors drei neuartige Züge.
+
+\subsection*{(i) Vom Objekt zur Familie}
+Der klassische Primzahlvierling wird nicht isoliert betrachtet, sondern als erste Stufe einer unendlichen Dehnungsfamilie
+\[
+Q_k(p)=(p,p+2,p+6+12k,p+8+12k).
+\]
+Damit erscheint $m=6$ nicht mehr als singulärer Sonderfall, sondern als \emph{Urform}.
+
+\subsection*{(ii) Dreifache Geometrisierung}
+Drei klassische geometrische Themen werden auf dieselbe arithmetische Struktur gelegt:
+\begin{itemize}
+\item \textbf{Ptolemäus} als Test globaler Rahmenverträglichkeit,
+\item \textbf{Walter} als Sensor der Besetzungsasymmetrie,
+\item \textbf{Morley} als Maß lokaler Gestaltreife.
+\end{itemize}
+Diese Trias erzeugt eine Klassifikation, die über die bloße Angabe von Primzahllücken hinausgeht.
+
+\subsection*{(iii) Trennung von Rahmen und Korrektur}
+Die Untersuchung legt nahe:
+\begin{itemize}
+\item Die \emph{Rahmenstruktur} bleibt über alle Dehnungsstufen hinweg invariant.
+\item Die \emph{Korrekturen} --- metrisch, besetzungsbezogen, lokalgestaltlich --- wachsen oder verschwinden nach klaren asymptotischen Gesetzen.
+\end{itemize}
+Gerade diese Trennung von invariantem Rahmen und variabler Korrektur ist der eigentliche konzeptionelle Kern der Entdeckung.
+
+\begin{bemerkung}
+Die Aussagen zu Walter und insbesondere zu Morley sind als strukturtheoretische und asymptotische Aussagen formuliert. Für allgemeine $k$ wäre eine breite numerische Auswertung eigenständiges Folgematerial. Der lineare Ptolemäus-Satz und die Walter-Asymptotik sind hingegen bereits in expliziter Form vorhanden.
+\end{bemerkung}
+
+\section{Diskussion}
+
+Die Dehnungsfamilie legt eine Sicht nahe, in der Primzahlvierlinge nicht nur arithmetische Seltenheiten sind, sondern Träger einer internen Viererarchitektur. In dieser Sprache bedeutet:
+\begin{itemize}
+\item $Q_0$ ist die \emph{kanonische Urform},
+\item $Q_k$ für $k\ge 1$ sind \emph{strukturtreue Dehnungsnachfahren},
+\item die kompatible Form ist der bevorzugte Rahmen,
+\item die Kreuzform misst Verspannung gegen diesen Rahmen.
+\end{itemize}
+
+Die drei Klassifikationsinstrumente greifen dabei auf unterschiedliche Ebenen:
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Instrument & Funktion \\
+\midrule
+Ptolemäus & globale Rahmenverträglichkeit \\
+Walter & Besetzungs- und Lastverteilung \\
+Morley & lokale Gestalt- und Winkelreife \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Ausblick}
+
+Es bieten sich mindestens vier nächste Schritte an:
+\begin{enumerate}[label=(\arabic*)]
+\item eine numerische Vollauswertung der Familien $Q_k$ für kleine $k$,
+\item eine explizite Bestimmung der Unterterme in $\Delta E_{EABC}(p,k)$,
+\item eine präzise numerische Skalierung der Morley-Profile,
+\item die Einbettung dieser Familie in ein allgemeineres Vierer- oder Mehrflügelmodell.
+\end{enumerate}
+
+\section*{Schlussformel}
+
+Die Primzahlvierlinge
+\[
+Q_0(p)=(p,p+2,p+6,p+8)
+\]
+bilden die primale Grundform einer unendlichen Familie strukturtreuer Dehnungen
+\[
+Q_k(p)=(p,p+2,p+6+12k,p+8+12k).
+\]
+Über alle Stufen bleibt die Viererarchitektur erhalten. Variabel sind nur die endlichen Korrekturterme: Der metrische Kreuzrest wächst quadratisch mit dem Dehnungsrang, die Walter-Besetzung linear, während die Morley-Verzerrung asymptotisch heilt. Die Entdeckung besteht damit nicht nur in einer einzelnen Formel, sondern in der Sichtbarkeit einer ganzen hierarchischen Geometrie von Viererordnungen.
+
+\end{document}

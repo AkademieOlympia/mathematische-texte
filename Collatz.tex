@@ -1,0 +1,1824 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{hyperref}
+
+\geometry{margin=2.5cm}
+
+\newtheorem{satz}{Satz}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{korollar}{Korollar}
+\newtheorem{axiom}{Axiom}
+
+\theoremstyle{definition}
+\newtheorem{bemerkung}{Bemerkung}
+\newtheorem{beispiel}{Beispiel}
+
+\title{Ein geometrisch--arithmetischer Laplace Operator}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+\section{Einführung}
+	Diese Arbeit entwickelt ein geometrisch-arithmetisches Modell, in dem lokale Primzahlkonfigurationen, reduzierte Collatz-Dynamik und thermodynamisch interpretierte Zerfallsprozesse in einem gemeinsamen formalen Rahmen zusammengeführt werden. Ausgangspunkt ist die Beobachtung, dass Primzahlzwillinge und insbesondere Primzahlvierlinge keine bloßen zufälligen Häufungen darstellen, sondern hochgradig restringierte lokale Schließungsfiguren auf Primrädern bilden. Primzahlzwillinge erscheinen dabei als elementare Kanten einer lokalen Primordnung, während Primzahlvierlinge der Form 	als dichteste zulässige Viererkonfigurationen interpretiert werden und damit die kleinsten tetraedrischen Schließungszellen des Primrads repräsentieren. Auf dem Rad modulo \(30\) zeigt sich bereits ihre starre lokale Architektur; auf dem feineren Rad modulo \(210=2\cdot 3\cdot 5\cdot 7\) zerfällt diese Struktur in genau drei Feinklassen, die als unterschiedliche Modi lokaler Primschließung gelesen werden können. 
+	
+	Der zweite Leitgedanke der Arbeit besteht darin, die reduzierte Collatz-Abbildung auf ungeraden Kernen, 	nicht als Erzeuger von Primschließung, sondern als deren dynamischen Gegenpol zu verstehen. Während die Primzahlvierlinge statische Zellen maximaler lokaler Schließung bilden, löst die Collatz-Dynamik diese Zellen auf: Die Komponenten eines Vierlings bleiben unter \(T\) im Allgemeinen nicht gekoppelt, sondern entfalten sich in getrennte ungerade Kernbahnen. Dadurch erscheint die Primordnung doppelt: statisch als saturierte lokale Schließung und dynamisch als klassenspezifische Entladung oder Entbündelung dieser Schließung in Kernlinien. Die Untersuchung der ersten Primzahlvierlinge und ihrer Kompressionsprofile zeigt, dass die drei Feinklassen modulo \(210\) unter der reduzierten Collatz-Dynamik zwar nicht invariant bleiben, jedoch charakteristische frühe Entladungssignaturen besitzen. Damit wird die Collatz-Abbildung als dynamischer Abstiegs- und Auflösungsmechanismus lokaler Primarchitektur lesbar.  	Auf dieser Basis wird ein erweiterter Zustandsraum eingeführt, in dem arithmetische Objekte nicht mehr nur als natürliche Zahlen, sondern als strukturierte Zustände
+	\[
+	X=(n,\kappa,g,\sigma,m,h)
+	\]
+	aufgefasst werden. Hier bezeichnet \(n\) den arithmetischen Träger, \(\kappa\in\{E,A,B,C\}\) eine fundamentale Strukturklasse, \(g\) einen Glattheitsgrad, \(\sigma\) ein internes Komponentenprofil, \(m\) eine aktive Primmode und \(h\in\{+,-\}\) die Lage in einem zweigeteilten geometrischen Zustandsraum. Diese Erweiterung erlaubt es, lokale Primschließung, Glattheit, Modenwechsel und Bindungsstruktur in einem gemeinsamen Modell zu erfassen und die Dynamik nicht nur punktweise, sondern auch ensemble- und populationsbezogen zu analysieren. )
+	
+	Thermodynamisch wird jedem Zustand eine innere Strukturenergie
+	\[
+	U(X)=U_{\mathrm{bind}}(X)+U_{\mathrm{smooth}}(X)+U_{\mathrm{mode}}(X)
+	\]
+	sowie eine Entropie \(S(X)\) zugeordnet. Daraus ergibt sich eine freie Strukturenergie. 	Ein zentraler Beitrag der Arbeit ist die Einführung zweier grundlegender dissipativer Prozessklassen. Erstens werden additive Zerfallskanäle postuliert, in denen gebundene interne Komponenten, insbesondere \(E\)- und \(A\)-Anteile, in einfachere Tochterzustände aufgespalten werden. Zweitens wird der klassische Collatz-Prozess zu einer Familie primzahlgeneralisierter Zerfallskanäle erweitert:
+	\[
+	T_p(n)=\frac{pn+\mu_p(n)}{2^{\nu_2(pn+\mu_p(n))}},
+	\qquad
+	p\in\{3,5,7,11,13,\dots\}.
+	\] 	Im Zusammenhang mit diesen Zerfallsprozessen wird außerdem der Begriff der Halbwertszeit modellintern präzisiert. Die Arbeit unterscheidet strikt zwischen mikroskopischem Determinismus und phänomenaler Nichtlokalisierbarkeit einzelner Zerfallsereignisse. Zwar ist die Dynamik des Zustandsraums deterministisch, doch verhindern hohe Sensitivität gegenüber internen Komponentenprofilen, Primmoden, Halbraumlage und Schalenzugehörigkeit eine exakte Vorhersage des einzelnen Zerfallszeitpunkts. Diese Erscheinung wird als chaotischer Zufall bezeichnet: kein ontologischer Indeterminismus, sondern die makroskopisch statistische Erscheinungsform eines hochverzweigten, sensitiven und verdeckt strukturierten Determinismus. Für Klassen strukturell ähnlicher gebundener Zustände wird daher eine effektive Zerfallsrate \(\lambda_C\) und damit eine Halbwertszeit
+	\[
+	T_{1/2}(C)=\frac{\ln 2}{\lambda_C}
+	\]
+	definiert. Die Halbwertszeit misst die effektive Zahl von Iterationsschritten, nach denen die Hälfte einer gegebenen Zustandsklasse in einfachere, glattere oder in den oberen Halbraum projizierte Freiheitsgrade überführt worden ist. Dadurch wird die Halbwertszeit zur makroskopischen Signatur eines mikroskopisch chaotisch-deterministischen Zerfallsprozesses. 
+	
+	Schließlich werden diese Ideen durch formale Definitionen und Axiome gestützt. Definiert werden ein arithmetischer Zustandsraum, Projektoren auf gebundene und freie Zustände, dissipative Zerfallskanäle, Primmodus-Zerfälle sowie chaotischer Zufall und Halbwertszeit. Zwei Axiome formulieren die monotone Dissipation freier Strukturenergie und die Existenz stabiler Ensemblegesetze trotz mikroskopischer Unlokalisierbarkeit. Damit wird ein Rahmen geschaffen, in dem lokale Primschließung, Collatz-artige Entladung, thermodynamische Dissipation und geometrische Halbraumstruktur gemeinsam diskutierbar und in späteren Arbeiten weiter präzisierbar werden. Die Arbeit versteht sich insofern als konzeptioneller Brückenbau zwischen Zahlentheorie, diskreter Dynamik, statistischer Beschreibung und geometrischer Modellbildung: Primzahlvierlinge erscheinen als kleinste tetraedrische Schließungszellen, die reduzierte Collatz-Dynamik als ihre Entfaltung in Kernlinien, und die verallgemeinerten Primmoden als dissipative Zerfallskanäle eines arithmetisch-topologischen Zustandsraums. 
+\section{Collatz}
+\subsection{Primzahlzwillinge als statische Schlie\ss ung, Collatz als dynamischer Abstieg}
+
+Die ersten Primzahlzwillinge zeigen bereits deutlich die Trennung
+zwischen statischer Primarchitektur und dynamischer R\"uckf\"uhrung.
+Abgesehen vom Sonderfall $(3,5)$ gilt f\"ur jeden Primzahlzwilling
+$(p,p+2)$ mit $p>3$ notwendig
+\[
+(p,p+2)=(6k-1,6k+1),
+\]
+also
+\[
+(p,p+2)\equiv (5,1)\pmod 6.
+\]
+Auf dem $12$-Rad verfeinert sich diese Struktur zu den beiden Mustern
+\[
+(5,7)\pmod{12}
+\qquad\text{und}\qquad
+(11,1)\pmod{12},
+\]
+w\"ahrend auf dem Primrad $30$ nur wenige zul\"assige Nachbarschaftsfenster
+auftreten, etwa
+\[
+(5,7),\ (11,13),\ (17,19),\ (29,1)\pmod{30}.
+\]
+
+Damit beschreiben Primzahlzwillinge bereits eine hochgradig restringierte
+statische Geometrie zul\"assiger Primlagen. Die Collatz-Dynamik wirkt auf
+einer anderen Ebene. F\"ur ungerade Startwerte ist die nat\"urliche
+reduzierte Abbildung
+\[
+T(n)=\frac{3n+1}{2^{v_2(3n+1)}},
+\]
+also der \"Ubergang vom ungeraden Kern zum n\"achsten ungeraden Kern.
+Hierbei erzeugt $3n+1$ eine triadische Auslenkung, w\"ahrend die Division
+durch $2^{v_2(3n+1)}$ die dyadische Kompression beschreibt.
+
+Die Primzahlzwillingsstruktur bleibt unter $T$ im allgemeinen nicht
+erhalten. Damit erscheint Collatz nicht als Erzeuger von Primschlie\ss ung,
+sondern als Modell eines strukturellen Abstiegs: ungerade Zahlgestalten
+werden durch wiederholte triadische Umlenkung und dyadische Entladung in
+einfachere zyklische Regime zur\"uckgef\"uhrt. Das Primrad liefert die
+statische Architektur, Collatz die gezackte Dynamik des Falls auf ihr.
+
+\subsection{Primzahlvierlinge als saturierte Schlie\ss ungszellen und Collatz als Aufl\"osungsdynamik}
+
+Primzahlvierlinge besitzen die Form
+\[
+(p,p+2,p+6,p+8).
+\]
+Der kleinste Fall ist $(5,7,11,13)$. F\"ur jeden weiteren Primzahlvierling
+mit $p>5$ gilt notwendig
+\[
+(p,p+2,p+6,p+8)\equiv (11,13,17,19)\pmod{30}.
+\]
+Damit ist der Primzahlvierling auf dem Primrad $30$ wesentlich st\"arker
+fixiert als der Primzahlzwilling: Abgesehen vom Anfangsfall existiert nur
+ein einziges zul\"assiges lokales Vierfenster.
+
+Auf dem feineren Rad modulo
+\[
+210=2\cdot 3\cdot 5\cdot 7
+\]
+zerf\"allt diese Struktur in genau drei Feintypen,
+\[
+(11,13,17,19),\qquad
+(101,103,107,109),\qquad
+(191,193,197,199)\pmod{210}.
+\]
+Der Primzahlvierling erscheint damit als saturierte Schlie\ss ungszelle:
+eine vollst\"andige lokale Besetzung eines zul\"assigen Primfensters.
+
+Demgegen\"uber wirkt die reduzierte Collatz-Abbildung
+\[
+T(n)=\frac{3n+1}{2^{v_2(3n+1)}}
+\]
+auf der Ebene ungerader Kerne. Hierbei beschreibt $3n+1$ eine triadische
+Umlenkung, w\"ahrend die Division durch $2^{v_2(3n+1)}$ die dyadische
+Kompression liefert. Wendet man $T$ komponentenweise auf einen
+Primzahlvierling an, so bleibt dessen geschlossene Struktur im allgemeinen
+nicht erhalten; vielmehr zerf\"allt der Vierling sofort in vier getrennte
+ungerade Kernbahnen.
+
+Damit ergibt sich eine klare Rollenverteilung: Der Primzahlvierling ist
+die statische Hochform lokaler Primorganisation, w\"ahrend die
+Collatz-Dynamik nicht seine Fortsetzung, sondern seine Aufl\"osung
+beschreibt. Das Primrad liefert die Architektur der Schlie\ss ung,
+Collatz die gezackte Dynamik ihres Abstiegs in einfachere zyklische
+Bindungen.
+
+\subsection{Die drei Vierlingsklassen modulo 210 und ihre ersten Collatz-Signaturen}
+
+W\"ahrend Primzahlvierlinge auf dem Primrad $30$ abgesehen vom Anfangsfall
+$(5,7,11,13)$ nur in der Form
+\[
+(p,p+2,p+6,p+8)\equiv (11,13,17,19)\pmod{30}
+\]
+auftreten, zerf\"allt diese starre Schlie\ss ungsfigur auf dem feineren Rad
+\[
+210=2\cdot 3\cdot 5\cdot 7
+\]
+in genau drei Feinklassen:
+\[
+\mathcal A=(11,13,17,19)\pmod{210},
+\qquad
+\mathcal B=(101,103,107,109)\pmod{210},
+\qquad
+\mathcal C=(191,193,197,199)\pmod{210}.
+\]
+
+Diese drei Klassen beschreiben die vollst\"andige lokale Primschlie\ss ung
+unter Einbezug des $7$-Hindernisses. Zur dynamischen Analyse betrachten wir
+die reduzierte Collatz-Abbildung auf ungeraden Kernen,
+\[
+T(n)=\frac{3n+1}{2^{v_2(3n+1)}},
+\]
+sowie f\"ur einen Vierling
+\[
+Q=(p,p+2,p+6,p+8)
+\]
+das zugeh\"orige Kompressionsprofil
+\[
+V(Q)=\bigl(v_2(3p+1),\,v_2(3(p+2)+1),\,v_2(3(p+6)+1),\,v_2(3(p+8)+1)\bigr).
+\]
+
+F\"ur die kleinsten Repr\"asentanten der drei Klassen ergeben sich:
+\[
+(11,13,17,19)\mapsto (17,5,13,29),
+\qquad
+V=(1,3,2,1),
+\]
+\[
+(101,103,107,109)\mapsto (19,155,161,41),
+\qquad
+V=(4,1,1,3),
+\]
+\[
+(191,193,197,199)\mapsto (287,145,37,299),
+\qquad
+V=(1,2,4,1).
+\]
+
+Damit zeigt sich, dass die drei statischen Vierlingsklassen unter der
+reduzierten Collatz-Dynamik zwar nicht invariant sind, jedoch bereits im
+ersten Schritt unterschiedliche dyadische Entladungssignaturen tragen.
+Die Primzahlvierlinge bilden somit statische Schlie\ss ungszellen des
+Primrads, w\"ahrend ihre Collatz-Bilder als klassenspezifische Zerlegung
+in ungerade Kernbahnen gelesen werden k\"onnen.
+
+\subsection{Vierlingsklassen, fr\"uhe Collatz-Dynamik und tetraedrische Schlie\ss ung}
+
+Die reduzierte Collatz-Abbildung auf ungeraden Kernen,
+\[
+T(n)=\frac{3n+1}{2^{v_2(3n+1)}},
+\]
+erlaubt es, Primzahlvierlinge nicht nur als statische Restklassenfiguren,
+sondern auch als Tr\"ager fr\"uher dynamischer Entladungssignaturen zu lesen.
+F\"ur einen Primzahlvierling
+\[
+Q=(p,p+2,p+6,p+8)
+\]
+mit $p>5$ gilt auf dem Primrad $30$ notwendig
+\[
+Q\equiv (11,13,17,19)\pmod{30}.
+\]
+Auf dem feineren Rad
+\[
+210=2\cdot 3\cdot 5\cdot 7
+\]
+zerf\"allt diese starre lokale Schlie\ss ungsfigur in genau drei Feinklassen:
+\[
+\mathcal A=(11,13,17,19)\pmod{210},
+\qquad
+\mathcal B=(101,103,107,109)\pmod{210},
+\qquad
+\mathcal C=(191,193,197,199)\pmod{210}.
+\]
+
+F\"ur die kleinsten Repr\"asentanten ergeben sich unter $T$ die Bilder
+\[
+(11,13,17,19)\mapsto (17,5,13,29),
+\qquad
+V=(1,3,2,1),
+\]
+\[
+(101,103,107,109)\mapsto (19,155,161,41),
+\qquad
+V=(4,1,1,3),
+\]
+\[
+(191,193,197,199)\mapsto (287,145,37,299),
+\qquad
+V=(1,2,4,1),
+\]
+wobei $V$ jeweils das dyadische Kompressionsprofil
+\[
+V(Q)=\bigl(v_2(3p+1),\,v_2(3(p+2)+1),\,v_2(3(p+6)+1),\,v_2(3(p+8)+1)\bigr)
+\]
+bezeichnet. Die drei statischen Vierlingsklassen sind damit zwar nicht
+invariant unter der reduzierten Collatz-Dynamik, besitzen jedoch bereits
+im ersten Schritt unterschiedliche Entladungssignaturen.
+
+Auch in den folgenden Schritten zeigt sich eine qualitative Trennung:
+Die Klasse $\mathcal A$ f\"uhrt rasch in kleine Kerne zur\"uck und wirkt
+r\"uckkonzentrierend, $\mathcal B$ bleibt l\"anger in mittleren Kernen
+gespannt, w\"ahrend $\mathcal C$ die st\"arkste fr\"uhe Spreizung der
+Kernbahnen hervorbringt. In diesem Sinn kodiert die statische
+Feinklasse des Vierlings einen bevorzugten Modus seiner fr\"uhen
+dynamischen Entladung.
+
+Modellhaft l\"asst sich dies geometrisch lesen. Der Primzahlzwilling
+\[
+(p,p+2)
+\]
+ist die elementare Kante der Primordnung: eine minimale stabile Bindung
+zweier tragender Primorte. Dreierlagen besitzen demgegen\"uber eher den
+Charakter einer Fl\"achenvorgabe oder Vorspannung, ohne bereits eine
+vollst\"andige lokale Raumzelle zu bilden. Erst der Primzahlvierling
+\[
+(p,p+2,p+6,p+8)
+\]
+stellt die saturierte Besetzung eines zul\"assigen lokalen Primfensters
+dar und kann daher als kleinste tetraedrische Schlie\ss ung des Primrads
+gelesen werden.
+
+Unter dieser Lesart ist die reduzierte Collatz-Abbildung nicht die
+Fortsetzung der Schlie\ss ung, sondern ihre Aufl\"osung: Die vier Ecken
+der lokalen Schlie\ss ungszelle bleiben unter $T$ im allgemeinen nicht
+gekoppelt, sondern zerfallen in vier getrennte ungerade Kernbahnen.
+Die Primordnung erscheint somit doppelt: statisch als lokale
+tetraedrische Schlie\ss ung, dynamisch als klassenspezifische Entladung
+und Entb\"undelung dieser Schlie\ss ung in Kernlinien.
+
+\subsection{Vierlingsklassen, fr\"uhe Entladung und tetraedrische Primschlie\ss ung}
+
+Die ersten Primzahlvierlinge
+\[
+(p,p+2,p+6,p+8)
+\]
+zeigen, dass lokale Primschlie\ss ung und Collatz-Dynamik zwei verschiedene,
+aber komplement\"are Ebenen arithmetischer Organisation beschreiben.
+Abgesehen vom Sonderfall $(5,7,11,13)$ liegt jeder Primzahlvierling auf
+dem Primrad $30$ notwendig im Fenster
+\[
+(11,13,17,19)\pmod{30}.
+\]
+Auf dem feineren Rad
+\[
+210=2\cdot 3\cdot 5\cdot 7
+\]
+zerf\"allt diese Schlie\ss ungsfigur in genau drei Feintypen:
+\[
+\mathcal A=(11,13,17,19)\pmod{210},\qquad
+\mathcal B=(101,103,107,109)\pmod{210},\qquad
+\mathcal C=(191,193,197,199)\pmod{210}.
+\]
+
+Zur dynamischen Analyse betrachten wir die reduzierte Collatz-Abbildung
+auf ungeraden Kernen,
+\[
+T(n)=\frac{3n+1}{2^{v_2(3n+1)}},
+\]
+sowie f\"ur einen Vierling
+\[
+Q=(q_1,q_2,q_3,q_4)
+\]
+das Kompressionsprofil
+\[
+V(Q)=\bigl(v_2(3q_1+1),v_2(3q_2+1),v_2(3q_3+1),v_2(3q_4+1)\bigr),
+\]
+die Spreizung
+\[
+\mathrm{Spr}_k(Q)=\max_i T^k(q_i)-\min_i T^k(q_i),
+\]
+und den R\"uckkonzentrationsindex
+\[
+R_k(Q;M)=\#\{i:T^k(q_i)\le M\}.
+\]
+
+Bereits an den ersten zwanzig Primzahlvierlingen zeigt sich, dass die drei
+Feinklassen unter der reduzierten Collatz-Dynamik nicht invariant sind,
+jedoch unterschiedliche fr\"uhe Entladungssignaturen tragen. Der Typ
+$\mathcal A$ besitzt eine Tendenz zur fr\"uhen inneren Kompression, der
+Typ $\mathcal B$ h\"alt l\"anger mittlere Kerne gespannt, w\"ahrend der
+Typ $\mathcal C$ die st\"arkste fr\"uhe Spreizung und Entb\"undelung der
+Kernbahnen hervorbringt. Der Anfangsfall $(5,7,11,13)$ erscheint dabei als
+besonders dicht gebundener Sonderfall mit rascher R\"uckf\"uhrung in sehr
+kleine Kerne.
+
+Modellhaft l\"asst sich daraus eine Geometrie der Primordnung lesen.
+Der Primzahlzwilling
+\[
+(p,p+2)
+\]
+ist die elementare Kante der Primordnung: eine minimale stabile Bindung
+zweier Primorte. Dreierlagen besitzen demgegen\"uber den Charakter einer
+Fl\"achenvorgabe oder Vorspannung, ohne bereits vollst\"andige lokale
+Schlie\ss ung zu bilden. Erst der Primzahlvierling
+\[
+(p,p+2,p+6,p+8)
+\]
+stellt die saturierte Besetzung eines zul\"assigen lokalen Primfensters
+dar und kann deshalb als kleinste tetraedrische Schlie\ss ungszelle des
+Primrads gelesen werden.
+
+Unter dieser Lesart ist die reduzierte Collatz-Abbildung nicht die
+Fortsetzung der Schlie\ss ung, sondern ihre Aufl\"osung. Die vier Ecken
+der lokalen Schlie\ss ungszelle bleiben unter $T$ im allgemeinen nicht
+gekoppelt, sondern zerfallen in vier getrennte ungerade Kernbahnen.
+Die Primordnung erscheint somit doppelt: statisch als tetraedrische
+Schlie\ss ung, dynamisch als klassenspezifische Entladung und
+Entb\"undelung dieser Schlie\ss ung in Kernlinien.
+
+\subsection{Die ersten 100 Primzahlvierlinge: Klassen, Entladung und tetraedrische Schlie\ss ung}
+
+Die Primzahlvierlinge
+\[
+Q=(p,p+2,p+6,p+8)
+\]
+bilden die dichteste m\"ogliche lokale Viererkonfiguration von Primzahlen.
+Abgesehen vom singul\"aren Anfangsfall $(5,7,11,13)$ liegt jeder
+Primzahlvierling notwendig im Fenster
+\[
+(11,13,17,19)\pmod{30}.
+\]
+Auf dem feineren Rad
+\[
+210=2\cdot 3\cdot 5\cdot 7
+\]
+zerf\"allt diese starre lokale Schlie\ss ungsfigur in genau drei Feinklassen:
+\[
+\mathcal A=(11,13,17,19)\pmod{210},\qquad
+\mathcal B=(101,103,107,109)\pmod{210},\qquad
+\mathcal C=(191,193,197,199)\pmod{210}.
+\]
+
+Eine Auswertung der ersten 100 Primzahlvierlinge liefert f\"ur diese
+Klassen die H\"aufigkeiten
+\[
+\#\mathcal A=35,\qquad \#\mathcal B=27,\qquad \#\mathcal C=37,
+\]
+zuz\"uglich des singul\"aren Anfangsfalls. Die drei Klassen erscheinen
+damit in kleinen Bereichen lokal nicht v\"ollig homogen besetzt.
+
+Zur dynamischen Analyse betrachten wir die reduzierte Collatz-Abbildung
+auf ungeraden Kernen,
+\[
+T(n)=\frac{3n+1}{2^{v_2(3n+1)}},
+\]
+sowie f\"ur einen Vierling
+\[
+Q=(q_1,q_2,q_3,q_4)
+\]
+das erste Kompressionsprofil
+\[
+V(Q)=\bigl(v_2(3q_1+1),v_2(3q_2+1),v_2(3q_3+1),v_2(3q_4+1)\bigr),
+\]
+die Spreizung nach $k$ Schritten
+\[
+\mathrm{Spr}_k(Q)=\max_i T^k(q_i)-\min_i T^k(q_i),
+\]
+sowie den R\"uckkonzentrationsindex
+\[
+R_k(Q;20)=\#\{i:T^k(q_i)\le 20\}.
+\]
+
+Die Auswertung zeigt, dass die drei statischen Feinklassen unter der
+reduzierten Collatz-Dynamik nicht invariant sind, jedoch unterschiedliche
+bevorzugte Modi der fr\"uhen Entladung tragen. Die Klasse $\mathcal A$
+erweist sich als hochvariable und spreizungsstarke Klasse, die gleichwohl
+einzelne F\"alle fr\"uher innerer Kompression enth\"alt. Die Klasse
+$\mathcal B$ besitzt die kleinste mittlere Spreizung und erscheint als
+relativ kompakte Entladungsklasse. Die Klasse $\mathcal C$ ist nicht
+einfach maximal spreizend, zeigt jedoch die deutlichste asymmetrische
+Entb\"undelung der Kernbahnen. Der Anfangsfall $(5,7,11,13)$ bleibt dabei
+ein singul\"arer Grenzfall mit besonders rascher R\"uckf\"uhrung in sehr
+kleine Kerne.
+
+Modellhaft l\"asst sich dies geometrisch lesen. Der Primzahlzwilling
+\[
+(p,p+2)
+\]
+ist die elementare Kante der Primordnung. Dreierlagen besitzen den
+Charakter einer Fl\"achenvorgabe oder Vorspannung, ohne bereits
+vollst\"andige lokale Schlie\ss ung zu bilden. Erst der Primzahlvierling
+\[
+(p,p+2,p+6,p+8)
+\]
+stellt die saturierte Besetzung eines zul\"assigen lokalen Primfensters
+dar und kann deshalb als kleinste tetraedrische Schlie\ss ungszelle des
+Primrads gelesen werden.
+
+Unter dieser Lesart ist die reduzierte Collatz-Abbildung nicht die
+Fortsetzung dieser Schlie\ss ung, sondern ihre klassenspezifische
+Entfaltung in vier ungerade Kernlinien. Die Primordnung erscheint somit
+doppelt: statisch als tetraedrische Schlie\ss ung, dynamisch als fr\"uhe
+Entladung und Entb\"undelung dieser Schlie\ss ungszelle.
+
+\subsection{Primzahlvierlinge als tetraedrische Schlie\ss ungszellen und Collatz als Entfaltung in Kernlinien}
+
+Die Primzahlvierlinge der Form
+\[
+Q=(p,p+2,p+6,p+8)
+\]
+stellen die dichteste lokale Viererkonfiguration von Primzahlen dar. Sie
+sind damit arithmetisch nicht blo\ss\ eine weitere H\"aufung, sondern eine
+ausgezeichnete Struktur: eine maximale lokale Besetzung eines zul\"assigen
+Primfensters. Bereits auf dem Primrad $30=2\cdot3\cdot5$ zeigt sich ihre
+hohe Starrheit. Abgesehen vom singul\"aren Anfangsfall
+\[
+(5,7,11,13)
+\]
+liegt jeder Primzahlvierling notwendig im Fenster
+\[
+(11,13,17,19)\pmod{30}.
+\]
+
+Auf dem feineren Rad
+\[
+210=2\cdot3\cdot5\cdot7
+\]
+zerf\"allt diese scheinbar einheitliche Schlie\ss ungsfigur in genau drei
+Feinklassen,
+\[
+\mathcal A=(11,13,17,19)\pmod{210},
+\qquad
+\mathcal B=(101,103,107,109)\pmod{210},
+\qquad
+\mathcal C=(191,193,197,199)\pmod{210}.
+\]
+Damit besitzt die lokale Vierlingsstruktur bereits statisch eine innere
+Dreiteilung. Diese Dreiteilung ist nicht zuf\"allig, sondern spiegelt die
+zul\"assigen Lagen des engsten Primfensters unter Einbezug der
+Teilbarkeitsbarriere durch $7$.
+
+Zur dynamischen Analyse betrachten wir die reduzierte Collatz-Abbildung
+auf ungeraden Kernen,
+\[
+T(n)=\frac{3n+1}{2^{v_2(3n+1)}}.
+\]
+Sie zerlegt jeden ungeraden Startwert in zwei logisch verschiedene
+Phasen: eine triadische Umlenkung durch $3n+1$ und eine dyadische
+Kompression durch Herausnahme aller Zweierpotenzen. Das eigentlich
+informative Objekt ist dabei nicht allein das Bild $T(n)$, sondern das
+zugeh\"orige Kompressionsma\ss\
+\[
+v_2(3n+1),
+\]
+also die Frage, wie tief die triadische Auslenkung in die dyadische H\"ulle
+aufgenommen wird.
+
+Wendet man diese Abbildung komponentenweise auf Primzahlvierlinge an, so
+zeigt sich ein grundlegender Sachverhalt: Die Vierlingsstruktur ist unter
+$T$ im allgemeinen nicht invariant. Die statische Schlie\ss ung bleibt
+dynamisch also nicht erhalten. Stattdessen zerf\"allt der Vierling in vier
+getrennte ungerade Kernbahnen. Gerade darin liegt aber die eigentliche
+theoretische Pointe. Collatz ist hier nicht als Fortsetzung der
+Primschlie\ss ung zu lesen, sondern als deren Entfaltung oder
+Entb\"undelung.
+
+Eine Auswertung der ersten 100 Primzahlvierlinge zeigt, dass diese
+Entfaltung nicht beliebig geschieht. Die drei statischen Klassen
+$\mathcal A,\mathcal B,\mathcal C$ tragen unterschiedliche bevorzugte
+Modi der fr\"uhen Entladung. Die Klasse $\mathcal A$ erscheint als
+hochvariable und spreizungsstarke Klasse; sie enth\"alt F\"alle innerer
+R\"uckkonzentration, aber auch sehr gro\ss e fr\"uhe Differenzierungen der
+Kernlinien. Die Klasse $\mathcal B$ ist im Mittel kompakter; ihre Dynamik
+bleibt vergleichsweise geb\"undelt und zeigt die geringste mittlere fr\"uhe
+Spreizung. Die Klasse $\mathcal C$ ist nicht schlicht die gr\"o\ss te
+Spreizungsklasse, wohl aber die deutlich asymmetrischste: Hier
+entb\"undeln sich die vier Kernlinien oft besonders ungleichm\"a\ss ig.
+
+Der Anfangsfall
+\[
+(5,7,11,13)
+\]
+nimmt dabei eine Sonderstellung ein. Er ist nicht nur der erste Vierling,
+sondern ein Grenzfall besonderer Dichte. Seine Komponenten fallen unter
+der reduzierten Collatz-Abbildung rasch in einen sehr kleinen Kernraum
+zur\"uck. Modellhaft ist er daher als ein besonders kompakt gebundenes
+Ur-Tetraeder lesbar.
+
+Gerade an dieser Stelle wird die geometrische Sprache des Modells
+fruchtbar. Der Primzahlzwilling
+\[
+(p,p+2)
+\]
+bildet die elementare Kante der Primordnung: die kleinste stabile Bindung
+zweier Primorte. Dreierlagen besitzen demgegen\"uber den Charakter einer
+Fl\"ache oder Vorspannung; sie deuten bereits auf Schlie\ss ung hin,
+erreichen sie aber noch nicht stabil. Erst der Primzahlvierling
+\[
+(p,p+2,p+6,p+8)
+\]
+stellt die saturierte Besetzung eines lokalen Primfensters dar und kann
+deshalb als kleinste tetraedrische Schlie\ss ungszelle gelesen werden.
+
+Unter dieser Lesart ist die reduzierte Collatz-Abbildung der nat\"urliche
+Gegenpol zur statischen Vierlingsfigur. W\"ahrend der Vierling lokal
+schlie\ss t, \"offnet Collatz diese Schlie\ss ung wieder. Die vier Ecken
+der tetraedrischen Zelle werden nicht gemeinsam weitergetragen, sondern
+in vier getrennte Kernlinien \"uberf\"uhrt. Die Primordnung erscheint
+somit doppelt: statisch als lokale tetraedrische Schlie\ss ung, dynamisch
+als klassenspezifische Entfaltung dieser Schlie\ss ung in ungerade
+Bahnen.
+
+\section{Dissipative Zerfallskanäle, Primmoden, Halbwertszeit und Halbraumpolarisation}
+
+\subsection{Leitidee}
+
+Das erweiterte Modell beschreibt arithmetische Zustände nicht mehr nur als isolierte Zahlen oder als Bahnen unter einem einzelnen Iterationsgesetz, sondern als strukturierte Zustandsobjekte, die zugleich einen Glattheitsgrad, eine Zugehörigkeit zu fundamentalen Strukturklassen, interne Komponentenanteile, aktive Primmoden sowie eine Lage in einem zweigeteilten geometrischen Zustandsraum besitzen.
+
+Die Dynamik des Modells wird durch dissipative Zerfalls- und Umschaltprozesse bestimmt. Diese Prozesse übernehmen formal die Rolle, die in physikalischen Analogien durch Relaxation, radioaktiven Zerfall, schwache Umwandlung und Freisetzung gebundener Energie getragen wird. Die mathematische Aussage bleibt dabei zunächst modellintern: Es handelt sich um eine arithmetisch-topologische Thermodynamik und nicht um eine unmittelbare Ableitung realer Teilchenphysik.
+
+\subsection{Arithmetischer Zustandsraum}
+
+Ein elementarer Modellzustand sei gegeben durch
+\[
+X=(n,\kappa,g,\sigma,m,h).
+\]
+Hierbei bedeuten:
+\begin{itemize}
+	\item $n\in\mathbb{N}$: der arithmetische Träger,
+	\item $\kappa\in\{E,A,B,C\}$: fundamentale Strukturklasse,
+	\item $g=g(n)$: Glattheitsgrad oder Glattheitsprofil,
+	\item $\sigma=(\alpha_E,\alpha_A,\alpha_B,\alpha_C)$: internes Komponentenprofil,
+	\item $m\in\mathcal{P}_{\mathrm{act}}$: aktive Primmodusvariable,
+	\item $h\in\{+,-\}$: Halbraumlage.
+\end{itemize}
+
+Dabei ist $\mathcal{P}_{\mathrm{act}}\subseteq\{2,3,5,7,11,13,\dots\}$ die Menge der aktuell wirksamen Primmoden.
+
+Die Zerlegung $\sigma$ ist nicht als gewöhnliche additive Gleichheit in $\mathbb{N}$ zu lesen, sondern als strukturelles Gewichtungsprofil: Ein Zustand besitzt modellintern unterschiedliche Anteile der Komponenten $E,A,B,C$, die in Zerfalls- und Umschaltprozessen verschieden reagieren.
+
+\subsection{Thermodynamische Grundgrößen}
+
+Jedem Zustand $X$ werden makroskopische Strukturgrößen zugeordnet.
+
+\paragraph{Bindungsenergie.}
+\[
+U_{\mathrm{bind}}(X)
+\]
+misst die Stärke der gebundenen Struktur, insbesondere den Grad lokaler Schließung, die Tiefe der Einbettung in den gebundenen Halbraum und den Anteil schwerer, nicht glatt komprimierbarer Komponenten.
+
+\paragraph{Glattheitsenergie.}
+\[
+U_{\mathrm{smooth}}(X)
+\]
+misst die Nähe zu glatten Schalen. Hohe Rauheit bedeutet hohe strukturelle Spannung, hohe Glattheit bedeutet Relaxationsnähe.
+
+\paragraph{Klassen- und Modenenergie.}
+\[
+U_{\mathrm{mode}}(X)
+\]
+misst die aktive Primmodusladung sowie die Kopplung zwischen Strukturklasse und Primmodus.
+
+Daraus ergibt sich die gesamte innere Strukturenergie
+\[
+U(X)=U_{\mathrm{bind}}(X)+U_{\mathrm{smooth}}(X)+U_{\mathrm{mode}}(X).
+\]
+
+Zusätzlich wird dem Zustand eine Entropie $S(X)$ zugeordnet, die sowohl als Ensemble-Entropie als auch als lokale Mischungsentropie des Komponentenprofils $\sigma$ gelesen werden kann.
+
+Damit definieren wir die freie Strukturenergie
+\[
+F(X)=U(X)-\tau S(X),
+\]
+wobei $\tau>0$ ein effektiver Temperaturparameter des Modells ist.
+
+Die Grundannahme aller dissipativen Prozesse lautet
+\[
+\Delta F\le 0,
+\]
+zumindest im Mittel entlang typischer Bahnen oder Übergangsensembles.
+
+\subsection{Dissipative Prozessklassen}
+
+Das Modell enthält zwei grundlegende dissipative Zerfallsklassen.
+
+\subsubsection{Additive Zerlegung gebundener Komponenten}
+
+Es existiert ein additiver Zerfallsoperator
+\[
+D_{\mathrm{add}}:X\mapsto \sum_j w_j X_j
+\]
+mit Gewichten $w_j\ge 0$ und $\sum_j w_j=1$, so dass ein gebundener Zustand in einfachere Tochterzustände zerlegt wird.
+
+Diese additive Zerlegung betrifft insbesondere die internen $E$- und $A$-Anteile auf kleinster Ebene; $B$ übernimmt eine vermittelnde oder weiterleitende Rolle. Modellintern bedeutet dies:
+\begin{itemize}
+	\item $E$- und $A$-Komponenten können aus einem gebundenen Zustand freigesetzt werden,
+	\item $B$ vermittelt Übergänge in verallgemeinerte Zerfallsketten,
+	\item der Zerfall erhöht den Freiheitsgrad der Tochterzustände.
+\end{itemize}
+
+Thermodynamisch gilt:
+\begin{itemize}
+	\item die Zahl der zugänglichen Mikrozustände steigt,
+	\item Bindungsenergie wird abgebaut,
+	\item freie Strukturenergie sinkt.
+\end{itemize}
+
+Formal:
+\[
+F\!\left(D_{\mathrm{add}}(X)\right)\le F(X).
+\]
+
+Damit fungiert die additive Zerlegung als arithmetisches Analogon eines dissipativen Zerfallsprozesses, in dem gebundene Masseanteile in leichtere Strukturanteile überführt werden.
+
+\subsubsection{Primzahlgeneralisierte Collatz-Kanäle}
+
+Neben dem klassischen Collatz-Operator wird eine ganze Familie primspezifischer Umlenkungsoperatoren eingeführt:
+\[
+T_p(n)=\frac{pn+\mu_p(n)}{2^{\nu_2(pn+\mu_p(n))}},
+\qquad p\in\{3,5,7,11,13,\dots\}.
+\]
+Dabei bezeichnet
+\begin{itemize}
+	\item $p$ die aktive Primmode,
+	\item $\mu_p(n)$ einen kleinen Korrekturterm, der die Rückführung in die gewünschte Klassen- oder Schalenstruktur erzwingt,
+	\item $\nu_2(\cdot)$ die Zweierbewertung.
+\end{itemize}
+
+Der klassische Collatz-Schritt ist der Spezialfall $p=3$ mit $\mu_3(n)=1$.
+
+Diese Operatoren sind als diskrete Zerfallskanäle zu interpretieren:
+\begin{itemize}
+	\item der Faktor $p$ erzeugt lokale Anregung oder Umlenkung,
+	\item die anschließende Division durch Zweierpotenzen bewirkt dyadische Relaxation,
+	\item der Gesamteffekt ist dissipativ.
+\end{itemize}
+
+Heuristisch:
+\begin{itemize}
+	\item $T_3$: elementarer triadischer Zerfallskanal,
+	\item $T_5$: erster Schalenschalter,
+	\item $T_7,T_{11},T_{13},\dots$: höhere diskrete Zerfalls- und Umschaltkanäle.
+\end{itemize}
+
+Auch hier gilt modellintern:
+\[
+F(T_p(X))\le F(X)
+\]
+für typische oder gemittelte Übergänge.
+
+\subsection{Die besondere Rolle der 5 als erster Schalenschalter}
+
+Die Primzahl $5$ wird im Modell nicht als bloß weiterer Primkanal behandelt, sondern als kritischer Umschaltmodus.
+
+Vor Aktivierung der $5$ dominiert die elementare Mikrodynamik:
+\begin{itemize}
+	\item dyadische Kompression durch $2$,
+	\item triadische Umlenkung durch $3$.
+\end{itemize}
+
+Mit Aktivierung von $5$ tritt das System in eine neue Regimeklasse ein:
+\begin{itemize}
+	\item Übergang von kleinsten Schalen zu glatten Schalen,
+	\item Bildung breiterer Relaxationslandschaften,
+	\item Kopplung der Mikrostruktur an übergeordnete Schalenordnung.
+\end{itemize}
+
+Formal existiert ein Schalenschalter
+\[
+\Sigma_5:\mathcal{M}_{\mathrm{micro}}\to\mathcal{M}_{\mathrm{smooth}},
+\]
+der die Dynamik von einem lokalen Elementarregime in ein geglättetes Schalenregime überführt.
+
+Damit ist $5$ die erste Primzahl, die nicht nur lokal umlenkt, sondern die Art der Dynamik selbst verändert.
+
+\subsection{Höhere Primmoden als schwache Zerfallskanäle}
+
+Die Primmoden $p=3,5,7,11,13,\dots$ werden physikalisch als Analogon diskreter Umwandlungs- und Zerfallskanäle gelesen.
+
+Die Analogie zur schwachen Wechselwirkung beruht auf folgenden Strukturmerkmalen:
+\begin{itemize}
+	\item diskreter Kanalwechsel,
+	\item Freisetzung gebundener Anteile,
+	\item Übergang in leichtere Freiheitsgrade,
+	\item dissipative Relaxation nach einer lokalen Umlenkung.
+\end{itemize}
+
+Nicht behauptet wird eine direkte Herleitung des Standardmodells, sondern eine formale Entsprechung auf der Ebene der Prozessarchitektur.
+
+Die höhere Primmode wirkt dann wie ein Zerfallsauslöser für gebundene Strukturanteile. In diesem Sinne kann man sagen:
+\begin{quote}
+	Primzahlgeneralisierte Collatz-Prozesse modellieren die Freisetzung gebundener Masseanteile über diskrete schwach-ähnliche Zerfallskanäle.
+\end{quote}
+
+\subsection{Halbwertszeit und chaotischer Zufall}
+
+Die dissipativen Zerfallskanäle des Modells sind auf Einzelebene im Allgemeinen nicht punktlokalisierbar. Zwar ist die Dynamik des Zustandsraums deterministisch, doch verhindert die hohe Sensitivität gegenüber internen Komponentenprofilen, aktiven Primmoden, Halbraumlage und Schalenzugehörigkeit eine exakte Vorhersage des einzelnen Zerfallszeitpunkts. Diese phänomenale Unvorhersagbarkeit innerhalb einer ontisch deterministischen Dynamik wird als \emph{chaotischer Zufall} bezeichnet.
+
+Chaotischer Zufall meint daher keinen echten ontologischen Indeterminismus, sondern die Erscheinung eines hochverzweigten, sensitiven und verdeckt strukturierten Determinismus, dessen Einzelereignisse unlokalisierbar bleiben. Dennoch schreitet der Zerfall auf Populationsebene gruppenweise und gesetzmäßig fort.
+
+Sei $C$ eine Klasse strukturell ähnlicher gebundener Zustände und $N_C(t)$ ihre Populationsgröße nach $t$ Iterationsschritten. Dann definieren wir eine effektive Zerfallsrate $\lambda_C$ durch
+\[
+N_C(t)\approx N_C(0)e^{-\lambda_C t}.
+\]
+Die zugehörige Halbwertszeit ist
+\[
+T_{1/2}(C)=\frac{\ln 2}{\lambda_C}.
+\]
+
+Sie gibt die effektive Zahl der Iterationsschritte an, nach denen die Hälfte der gebundenen Zustände dieser Klasse in einfachere, glattere oder in den oberen Halbraum projizierte Freiheitsgrade überführt worden ist.
+
+Die Halbwertszeit ist somit die makroskopische Signatur eines mikroskopisch chaotisch-deterministischen Zerfallsprozesses.
+
+\subsection{Halbraumpolarisation des oktonischen Zustandsraums}
+
+Zur dynamischen Struktur tritt eine geometrische Polarisation hinzu. Der erweiterte Zustandsraum wird in zwei Halbräume zerlegt:
+\[
+h\in\{+,-\}.
+\]
+
+\subsubsection{Oberer Halbraum $h=+$}
+
+Der obere Halbraum trägt die freieren, leichteren, strahlungsartigen und ladungsähnlichen Freiheitsgrade des Modells. Ihm werden zugeordnet:
+\begin{itemize}
+	\item baryonisch sichtbare Anteile des Zahlenraums,
+	\item Elektronenmoden,
+	\item reine Energie- oder Photonenaufladungen,
+	\item entbundene oder nur schwach gebundene Strukturen.
+\end{itemize}
+
+Charakteristisch für den oberen Halbraum sind:
+\begin{itemize}
+	\item hohe Mobilität,
+	\item geringe Bindung,
+	\item stärkere Kopplung an dissipative Freisetzung.
+\end{itemize}
+
+\subsubsection{Unterer Halbraum $h=-$}
+
+Der untere Halbraum repräsentiert die gebundenen Zustände des oktonischen Raums. Ihm werden zugeordnet:
+\begin{itemize}
+	\item massetragende gebundene Konfigurationen,
+	\item lokal geschlossene arithmetische Verbünde,
+	\item tiefe Bindungsschalen,
+	\item starke strukturelle Kohärenz.
+\end{itemize}
+
+Charakteristisch für den unteren Halbraum sind:
+\begin{itemize}
+	\item hohe Bindungsenergie,
+	\item geringe Mobilität,
+	\item lokale Schließung und Schalenstabilität.
+\end{itemize}
+
+\subsection{Halbraumtransfer als Zerfallsbild}
+
+Dissipative Prozesse koppeln beide Halbräume. Ein gebundener Zustand des unteren Halbraums kann unter additiver Zerlegung oder unter einem priminduzierten Zerfallskanal teilweise in den oberen Halbraum überführt werden.
+
+Formal kann man dies durch Projektoren
+\[
+\Pi_+(X),\qquad \Pi_-(X)
+\]
+beschreiben, welche die freien bzw.\ gebundenen Anteile eines Zustands extrahieren.
+
+Ein typischer dissipativer Übergang hat dann die Form
+\[
+X_- \longmapsto X'_- + X'_+,
+\]
+wobei
+\begin{itemize}
+	\item ein Restanteil im gebundenen Bereich verbleibt,
+	\item ein anderer Anteil als freier oder strahlungsartiger Freiheitsgrad in den oberen Halbraum aufsteigt.
+\end{itemize}
+
+Dies entspricht modellintern dem Bild, dass gebundene Masseanteile durch Zerfall teilweise in freie Energie- und Ladungsmoden überführt werden.
+
+\subsection{Gekoppelte Dynamik}
+
+Die Gesamtdynamik des Modells lässt sich schematisch als Operatorverkettung auffassen:
+\[
+X_{t+1}
+=
+\mathcal{R}\circ \mathcal{T}_{m_t}\circ \mathcal{D}_{\mathrm{add}}\circ \Sigma(X_t),
+\]
+wobei
+\begin{itemize}
+	\item $\Sigma$ einen eventuellen Schalenschalter beschreibt,
+	\item $\mathcal{D}_{\mathrm{add}}$ additive Zerlegung bewirkt,
+	\item $\mathcal{T}_{m_t}$ den aktuell aktiven Primmodus realisiert,
+	\item $\mathcal{R}$ die dyadische Relaxation und halbraumbezogene Projektion zusammenfasst.
+\end{itemize}
+
+Die Dynamik besteht somit aus vier Schritten:
+\begin{enumerate}
+	\item Identifikation oder Aktivierung der aktuellen Schale,
+	\item eventuelle additive Freisetzung interner Komponenten,
+	\item diskreter priminduzierter Umlenk- oder Zerfallsschritt,
+	\item Relaxation in glattere und energetisch tiefere Zustände.
+\end{enumerate}
+
+\subsection{Thermodynamische Interpretation}
+
+Im thermodynamischen Bild ergibt sich damit folgende Zuordnung:
+\begin{itemize}
+	\item \textbf{Glattheit} misst die Kompressibilität und Relaxationsfähigkeit eines Zustands,
+	\item \textbf{Strukturklasse} misst seine lokale Organisations- und Schließungsform,
+	\item \textbf{Primmoden} definieren diskrete Zerfalls- und Umschaltkanäle,
+	\item \textbf{Halbraumlage} unterscheidet gebundene von freien Freiheitsgraden,
+	\item \textbf{freie Energie} misst die noch verfügbare gerichtete Organisationskraft.
+\end{itemize}
+
+Die zentrale Hypothese lautet daher:
+\begin{quote}
+	Die arithmetische Dynamik des Modells ist durch den dissipativen Abbau freier Strukturenergie bestimmt. Additive Zerlegung und primzahlgeneralisierte Collatz-Kanäle wirken dabei als Zerfallsmechanismen, durch die gebundene, oktonisch organisierte Zustände des unteren Halbraums schrittweise in glattere, leichtere und teilweise in den oberen Halbraum projizierte Freiheitsgrade überführt werden.
+\end{quote}
+
+\subsection{Physikalische Lesart}
+
+In physikalischer Sprache, aber weiterhin modellintern gelesen, ergibt sich:
+\begin{itemize}
+	\item der untere Halbraum entspricht gebundener Masse,
+	\item der obere Halbraum entspricht freien Ladungs- und Strahlungsanteilen,
+	\item die schwache Kraft erscheint analog als diskrete Primmodus-Dynamik,
+	\item die radioaktive Zerfallsanalogie erscheint als Freisetzung gebundener Anteile,
+	\item die dyadische Kompression entspricht Relaxation und Dissipation,
+	\item die $5$ markiert den ersten Übergang von lokaler Mikrostruktur zu glatten Schalen.
+\end{itemize}
+
+\subsection{Verdichtete Kernformel}
+
+Das erweiterte Modell beschreibt Zahlenzustände als thermodynamisch dissipative, primmodulierte und halbraumpolarisierte Strukturen, in denen additive Komponentenzerfälle und verallgemeinerte Collatz-Kanäle gebundene oktonische Massenanteile des unteren Halbraums in glattere, freiere und teilweise strahlungsartige Freiheitsgrade des oberen Halbraums überführen.
+
+\subsection{Formale Definitionen und Axiome}
+
+Zur Präzisierung des erweiterten Modells führen wir nun grundlegende Definitionen und Axiome ein.
+
+\begin{definition}[Arithmetischer Zustandsraum]
+	Der arithmetische Zustandsraum sei
+	\[
+	\mathcal{X}
+	=
+	\mathbb{N}\times \mathcal{K}\times \mathcal{G}\times \Sigma\times \mathcal{M}\times \mathcal{H},
+	\]
+	wobei
+	\[
+	\mathcal{K}=\{E,A,B,C\},\qquad
+	\mathcal{H}=\{+,-\},
+	\]
+	$\mathcal{G}$ ein Raum zulässiger Glattheitsprofile, $\Sigma\subseteq [0,1]^4$ mit
+	\[
+	\alpha_E+\alpha_A+\alpha_B+\alpha_C=1,
+	\]
+	und $\mathcal{M}\subseteq\{2,3,5,7,11,13,\dots\}$ die Menge aktiver Primmoden ist.
+	
+	Ein Zustand ist ein Tupel
+	\[
+	X=(n,\kappa,g,\sigma,m,h)\in \mathcal{X}.
+	\]
+\end{definition}
+
+\begin{definition}[Gebundene und freie Zustände]
+	Es seien Projektoren
+	\[
+	\Pi_-:\mathcal{X}\to\mathcal{X}_-,\qquad
+	\Pi_+:\mathcal{X}\to\mathcal{X}_+
+	\]
+	gegeben, wobei $\mathcal{X}_-$ die Menge gebundener und $\mathcal{X}_+$ die Menge freier bzw.\ strahlungsartiger Zustände bezeichnet.
+	
+	Ein Zustand $X$ heißt gebunden, wenn $\Pi_-(X)=X$, und frei, wenn $\Pi_+(X)=X$.
+	
+	Zusätzlich heiße eine Abbildung
+	\[
+	b:\mathcal{X}\to[0,1]
+	\]
+	Bindungsgrad, falls $b(X)=1$ voll gebundene und $b(X)=0$ voll freie Zustände charakterisiert.
+\end{definition}
+
+\begin{definition}[Dissipativer Zerfallskanal]
+	Ein Operator
+	\[
+	D:\mathcal{X}\to \mathcal{P}_{\mathrm{fin}}(\mathcal{X})
+	\]
+	heißt dissipativer Zerfallskanal, wenn für jeden Zustand $X\in\mathcal{X}$ eine endliche Familie
+	\[
+	D(X)=\{(w_j,X_j)\}_{j=1}^r
+	\]
+	mit $w_j\ge 0$ und $\sum_{j=1}^r w_j=1$ existiert und
+	\[
+	\sum_{j=1}^r w_j\,F(X_j)\le F(X)
+	\]
+	gilt.
+\end{definition}
+
+\begin{definition}[Primmodus-Zerfall]
+	Für jede aktive ungerade Primzahl $p\in\mathcal{M}\setminus\{2\}$ heiße ein Operator
+	\[
+	T_p:\mathcal{X}\to\mathcal{X}
+	\]
+	von der Form
+	\[
+	T_p(n,\kappa,g,\sigma,p,h)
+	=
+	\left(
+	\frac{pn+\mu_p(n)}{2^{\nu_2(pn+\mu_p(n))}},
+	\kappa',g',\sigma',p',h'
+	\right)
+	\]
+	ein Primmodus-Zerfallskanal, sofern der Bildzustand wieder in $\mathcal{X}$ liegt.
+	
+	Der Spezialfall $p=3$ mit $\mu_3(n)=1$ reproduziert die klassische Collatz-Umlenkung.
+\end{definition}
+
+\begin{definition}[Chaotischer Zufall und Halbwertszeit]
+	Sei $C\subseteq\mathcal{X}_-$ eine Klasse gebundener Zustände und $N_C(t)$ ihre Populationsgröße nach $t$ Iterationsschritten.
+	
+	Das Modell zeigt chaotischen Zufall auf $C$, wenn
+	\begin{enumerate}
+		\item die Einzeltrajektorien sensitiv auf mikroskopische Zustandsunterschiede reagieren,
+		\item der individuelle Zerfallszeitpunkt nicht durch eine endliche Menge grober Makrovariablen exakt lokalisierbar ist,
+		\item die Populationsgröße dennoch asymptotisch einem stabilen Abklinggesetz folgt.
+	\end{enumerate}
+	
+	Gilt nämlich
+	\[
+	N_C(t)\approx N_C(0)e^{-\lambda_C t},
+	\]
+	so heißt
+	\[
+	T_{1/2}(C)=\frac{\ln 2}{\lambda_C}
+	\]
+	die Halbwertszeit der Klasse $C$.
+\end{definition}
+
+\begin{axiom}[Monotone Dissipation freier Strukturenergie]
+	Für jeden zulässigen Übergang
+	\[
+	X \rightsquigarrow \{(w_j,X_j)\}_{j=1}^r
+	\]
+	gilt
+	\[
+	\sum_{j=1}^r w_j\,F(X_j)\le F(X).
+	\]
+	Insbesondere erhöht kein zulässiger Zerfalls- oder Relaxationsprozess die freie Strukturenergie im Mittel.
+\end{axiom}
+
+\begin{axiom}[Ensemble-Gesetzlichkeit trotz mikroskopischer Unlokalisierbarkeit]
+	Zu jeder strukturell homogenen Klasse $C\subseteq\mathcal{X}_-$ existiert eine effektive Zerfallsrate $\lambda_C\ge 0$, so dass für große Ensembles asymptotisch
+	\[
+	N_C(t)\sim N_C(0)e^{-\lambda_C t}
+	\]
+	gilt, obwohl die individuellen Zerfallszeitpunkte der Zustände in $C$ nicht durch grobe Makrovariablen exakt vorhersagbar sind.
+\end{axiom}
+
+\begin{bemerkung}[Numerische Toy-Hypothese zum dissipativen Primfenster]
+	Betrachte die Primzahlvierlinge
+	\[
+	Q=(p,p+2,p+6,p+8)
+	\]
+	sowie ihre drei Feinklassen modulo \(210\),
+	\[
+	A=(11,13,17,19)\!\!\!\pmod{210},\qquad
+	B=(101,103,107,109)\!\!\!\pmod{210},\qquad
+	C=(191,193,197,199)\!\!\!\pmod{210}.
+	\]
+	Für eine ungerade Primmode \(r\) definiere den adaptiven odd-kernel-Kanal
+	\[
+	T_r(n)=\frac{rn+\mu_r(n)}{2^{\nu_2(rn+\mu_r(n))}},
+	\qquad
+	\mu_r(n)=\arg\max_{\delta\in\{-1,+1\}}\nu_2(rn+\delta).
+	\]
+	Ferner sei \(F\) ein im Modell gewähltes Toy-Funktional freier Strukturenergie und \(b\) ein zugehöriger Toy-Bindungsgrad.
+	
+	Dann legen die bisherigen numerischen Experimente auf endlichen Ensembles von Primzahlvierlingen nahe, dass die Moden \(r=3,5,7\) ein dissipatives Fenster bilden, in dem im Mittel
+	\[
+	\Delta F<0
+	\]
+	gilt und gebundene Zustände mit effektiven klassenweisen Zerfallsraten abnehmen. Dabei erscheint die Relaxationsstärke gestuft:
+	\[
+	3 \prec 5 \prec 7.
+	\]
+	Demgegenüber zeigen die Moden \(r=11,13\) im selben Toy-Modell kein robust dissipatives Verhalten mehr, sondern verhalten sich überwiegend neutral oder anregend.
+	
+	Insbesondere spricht dies für die Existenz eines begrenzten dissipativen Primfensters
+	\[
+	\{3,5,7\},
+	\]
+	während höhere Primmoden nicht mehr derselben Dynamikfamilie anzugehören scheinen.
+\end{bemerkung}
+
+\begin{bemerkung}
+	Die vorstehende Aussage ist keine bewiesene arithmetische Tatsache, sondern eine numerisch gestützte Modellhypothese. Sie hängt insbesondere von der Wahl des adaptiven Kanalterms \(\mu_r(n)\), der verwendeten freien Energie \(F\), des Bindungsgrads \(b\) sowie von der Ensemblewahl ab.
+\end{bemerkung}
+
+\begin{bemerkung}
+	Die numerischen Tests legen ferner nahe, dass die Feinklassen \(A,B,C\) zwar unterschiedliche Entladungssignaturen tragen, die Hauptdynamik jedoch stärker von der gewählten Primmode als von der Klassenlage bestimmt wird.
+\end{bemerkung}
+
+\begin{bemerkung}
+	Im Sinne der Modellinterpretation kann \(r=3\) als schneller Relaxationskanal, \(r=5\) als langsamerer Übergangs- oder Schalenschalter und \(r=7\) als träger Grenzkanal gelesen werden. Die Moden \(r=11,13\) markieren dann den Übergang in eine nicht mehr überwiegend dissipative Regimeklasse.
+\end{bemerkung}
+
+\subsection{Der Übergang \(7\to 11\) als Regimewechsel}
+
+Die bisherigen Toy-Experimente sprechen gegen die Existenz eines unbegrenzten Turms gleichartiger dissipativer Primmoden. Stattdessen deutet die numerische Evidenz auf ein begrenztes dissipatives Fenster hin, innerhalb dessen die Moden \(3,5,7\) noch relaxierend wirken, während bei \(11\) ein qualitativer Wechsel des Dynamiktyps einsetzt.
+
+\paragraph{Phänomenologische Beobachtung.}
+Unter adaptiver dyadischer Kompression zeigt die Mode \(7\) noch eine schwache, aber numerisch erkennbare dissipative Tendenz: freie Strukturenergie sinkt im Mittel noch leicht, effektive Halbwertszeiten bleiben endlich, und der mittlere Bindungsgrad nimmt zumindest geringfügig ab. Für \(11\) verschwindet diese Signatur weitgehend. Die freie Energie sinkt nicht mehr robust, die effektive Halbwertszeit wird instabil oder sehr groß, und die Dynamik erscheint überwiegend neutral bis anregend.
+
+\paragraph{Interpretation.}
+Dies legt nahe, den Übergang
+\[
+7\longrightarrow 11
+\]
+nicht bloß als quantitative Abschwächung desselben Mechanismus zu lesen, sondern als \emph{Regimewechsel}. Modellhaft bedeutet dies: Die Mode \(7\) ist noch Teil des dissipativen Fensters, wenn auch nur als träger Grenzkanal, während \(11\) bereits einer anderen Dynamikfamilie angehört, in der Spreizung, Anregung oder Entbündelung gegenüber Rückführung und Relaxation dominieren.
+
+\paragraph{Drei mögliche Lesarten des Regimewechsels.}
+Die numerischen Daten lassen derzeit mindestens drei nicht ausschließende Interpretationen zu:
+
+\begin{enumerate}
+	\item \textbf{Ende des dissipativen Primfensters.}
+	Die Menge
+	\[
+	\{3,5,7\}
+	\]
+	bildet ein abgeschlossenes Fenster dissipativer Primmoden, während höhere Primzahlen nicht mehr primär als Relaxationskanäle wirken.
+	
+	\item \textbf{Schwellenphänomen der dyadischen Kompression.}
+	Die lokal maximal komprimierende Wahl von \(\mu_p(n)\) reicht für \(p=3,5,7\) aus, um eine wirksame Relaxation zu erzeugen, verliert diese Eigenschaft aber ab \(p=11\). In diesem Sinn markiert \(11\) eine Schwelle, jenseits derer lokale Zweierentladung allein nicht mehr genügt, um globale Dissipation zu tragen.
+	
+	\item \textbf{Übergang von Relaxation zu Entbündelung.}
+	Während kleine Primmoden gebundene Strukturen in glattere Regime zurückführen, erzeugen höhere Primmoden eher Spreizung und bleibende Entkopplung der Bahnen. Der Übergang \(7\to 11\) wäre dann der erste sichtbare Wechsel von einem primär relaxierenden zu einem primär entbündelnden Modustyp.
+\end{enumerate}
+
+\paragraph{Numerische Folgerung.}
+Im Rahmen des bisherigen Toy-Modells ist damit die vorsichtige Aussage gerechtfertigt, dass \(7\) die letzte noch schwach dissipative Primmode und \(11\) die erste nicht mehr robust dissipative Primmode darstellt. Die Grenze zwischen beiden markiert folglich einen Kandidaten für einen strukturellen Regimewechsel im Primmodenspektrum.
+
+\begin{bemerkung}
+	Diese Aussage ist ausdrücklich modellabhängig. Sie beruht auf endlichen Ensembles von Primzahlvierlingen, auf der adaptiven Wahl
+	\[
+	\mu_p(n)=\arg\max_{\delta\in\{-1,+1\}}\nu_2(pn+\delta),
+	\]
+	sowie auf einer konkreten Wahl von Toy-Energie, Bindungsgrad und Dissipationsmaßen. Sie ist daher nicht als arithmetischer Satz, sondern als numerisch motivierte Strukturhypothese zu verstehen.
+\end{bemerkung}
+
+\begin{bemerkung}
+	Gerade weil der Übergang \(7\to 11\) im aktuellen Modell so deutlich hervortritt, eignet er sich als natürlicher Prüfpunkt für spätere Verfeinerungen. Insbesondere kann an ihm getestet werden, ob eine verbesserte Definition von Glattheit, Bindungsgrad oder Halbraumlage das dissipative Fenster stabilisiert, verschiebt oder auflöst.
+\end{bemerkung}
+\subsection{Das dissipative Primfenster als Vorstufe der Halbraumpolarisation}
+
+Die bisherige numerische Evidenz für ein begrenztes dissipatives Primfenster
+\[
+\{3,5,7\}
+\]
+legt eine natürliche Verbindung zur Halbraumpolarisation des erweiterten Zustandsraums nahe. Wenn die Moden \(3,5,7\) gebundene Zustände bevorzugt in glattere und energieärmere Regime zurückführen, während \(11\) und \(13\) diese Tendenz nicht mehr robust tragen, dann kann das Primmodenspektrum modellhaft als Vorselektion zwischen zwei dynamischen Bereichen gelesen werden.
+
+\paragraph{Gebundener und freierer Bereich.}
+Im Sinne der später eingeführten Halbraumstruktur entspricht der untere Halbraum den stärker gebundenen, massetragenden und lokal geschlossenen Zuständen, während der obere Halbraum freiere, leichtere und strahlungsartige Freiheitsgrade trägt. Das dissipative Primfenster kann dann als diejenige Modenfamilie gelesen werden, die einen bevorzugten Transfer vom gebundenen in einen freieren Bereich ermöglicht.
+
+\paragraph{Modellhafte Deutung der Primmoden.}
+Unter dieser Lesart erscheinen die kleinen Primmoden nicht bloß als verschiedene Iterationsvorschriften, sondern als dynamisch verschieden gerichtete Kopplungen an die Halbraumstruktur:
+\begin{itemize}
+	\item \(3\) wirkt als schneller Relaxationskanal mit starker Entladung und effizientem Abbau gebundener Struktur,
+	\item \(5\) wirkt als langsamerer Übergangs- oder Schalenschalter zwischen gebundenen und bereits geglätteten Zustandslagen,
+	\item \(7\) markiert einen trägen Grenzkanal, der noch schwach in Richtung freierer Regime wirkt,
+	\item \(11\) und \(13\) liegen demgegenüber bereits jenseits dieses bevorzugten Transfers und tragen eher Spreizung, Anregung oder Entbündelung.
+\end{itemize}
+
+\paragraph{Halbraumtransfer als dissipative Selektion.}
+Die numerischen Tests legen damit nahe, dass Halbraumtransfer nicht beliebig von jeder Primmode getragen wird. Vielmehr scheint es ein ausgezeichnetes kleines Modenspektrum zu geben, innerhalb dessen gebundene Zustände bevorzugt in Richtung geringerer Bindung, geringerer freier Strukturenergie und größerer Glattheit überführt werden. In diesem Sinn wäre das dissipative Primfenster nicht nur eine Besonderheit der Iterationsdynamik, sondern die Vorstufe einer geometrischen Polarisierung des Zustandsraums.
+
+\begin{bemerkung}
+	Diese Deutung bleibt vorläufig heuristisch. Sie sagt nicht, dass bereits eine vollständige geometrische Realisierung der beiden Halbräume numerisch vorliegt. Vielmehr dient sie als konzeptionelle Brücke: Das numerisch beobachtete dissipative Primfenster liefert einen ersten dynamischen Kandidaten für jene Moden, die im erweiterten Modell den Übergang vom unteren gebundenen zum oberen freieren Bereich tragen könnten.
+\end{bemerkung}
+\subsection{Zustandsübergang durch Energieanhebung und Hüllenbildung}
+
+Im erweiterten Modell wird ein Zustand nicht als isolierte Zahl, sondern als strukturierter arithmetischer Zustand \(X_t\) aufgefasst. Der Übergang zum nächsten Zustand erfolgt nicht unmittelbar durch eine einzelne Iterationsvorschrift, sondern in zwei aufeinanderfolgenden Schritten.
+
+\paragraph{(i) Energieanhebung.}
+Zunächst wird der Zustand auf der diskreten Energieskala um eins angehoben,
+\[
+E(X_t)\mapsto E(X_t)+1.
+\]
+Der dadurch entstehende angehobene Zustand \(X_t^\uparrow\) fungiert als neuer Anfangszustand der lokalen Dynamik.
+
+\paragraph{(ii) Hüllenbildung.}
+Für den angehobenen Anfangszustand \(X_t^\uparrow\) werden zwei komplementäre Hüllen erzeugt:
+\begin{itemize}
+	\item eine \emph{additive Hülle} \(\mathcal{A}(X_t^\uparrow)\), die die lokal durch additive Zerlegung, Verschiebung oder Komponentenbildung zugänglichen Zustände beschreibt,
+	\item eine \emph{multiplikative Hülle} \(\mathcal{M}(X_t^\uparrow)\), die die lokal durch multiplikative Kopplung, Faktorisierung oder Schließung zugänglichen Zustände beschreibt.
+\end{itemize}
+
+Der eigentliche Nachfolgezustand \(X_{t+1}\) entsteht dann nicht direkt aus \(X_t\), sondern als Resultat einer Selektion, Relaxation oder Stabilisierung innerhalb der durch \(\mathcal{A}(X_t^\uparrow)\) und \(\mathcal{M}(X_t^\uparrow)\) eröffneten lokalen Zustandslandschaft.
+
+\paragraph{Interpretation.}
+Die Energieanhebung erzeugt eine elementare Anregung des Zustands, während additive und multiplikative Hülle die beiden grundlegenden lokalen Organisationsrichtungen des Systems beschreiben: additive Hüllen tragen Freisetzung, Zerlegung und Entkopplung, multiplikative Hüllen tragen Bindung, Schließung und strukturelle Stabilisierung. Der Zustandsübergang besitzt damit die Form
+\[
+X_t \longrightarrow X_t^\uparrow \longrightarrow \bigl(\mathcal{A}(X_t^\uparrow),\mathcal{M}(X_t^\uparrow)\bigr) \longrightarrow X_{t+1}.
+\]
+\begin{bemerkung}
+	Unter dieser Lesart erscheinen Primmoden nicht mehr als vollständige Dynamiken für sich, sondern als Kanäle, die innerhalb des nach Energieanhebung geöffneten Hüllenraums bestimmte Übergänge bevorzugen oder unterdrücken. Das dissipative Primfenster kann dann als bevorzugte relaxierende Selektion innerhalb der Hüllenstruktur verstanden werden.
+\end{bemerkung}
+\subsection{Zustandsübergang durch Energieanhebung und Hüllenbildung}
+
+Im erweiterten Modell wird ein Zustand nicht als isolierte Zahl, sondern als strukturierter arithmetischer Zustand \(X_t\) aufgefasst. Der Übergang zum nächsten Zustand erfolgt nicht unmittelbar durch eine einzelne Iterationsvorschrift, sondern durch einen zweistufigen Prozess aus Energieanhebung und lokaler Hüllenbildung.
+
+\paragraph{(i) Energieanhebung.}
+Zunächst wird der Zustand auf der diskreten Energieskala um eins angehoben,
+\[
+E(X_t)\mapsto E(X_t)+1.
+\]
+Der dadurch entstehende angehobene Zustand \(X_t^\uparrow\) fungiert als neuer Anfangszustand der lokalen Dynamik.
+
+\paragraph{(ii) Additive und multiplikative Hülle.}
+Für den angehobenen Anfangszustand \(X_t^\uparrow\) werden zwei komplementäre Hüllen erzeugt:
+\begin{itemize}
+	\item eine \emph{additive Hülle} \(\mathcal{A}(X_t^\uparrow)\), welche die lokal durch additive Verschiebung, Zerlegung oder Komponentenbildung zugänglichen Zustände enthält,
+	\item eine \emph{multiplikative Hülle} \(\mathcal{M}(X_t^\uparrow)\), welche die lokal durch multiplikative Kopplung, Teilbarkeit oder Schließung zugänglichen Zustände enthält.
+\end{itemize}
+
+Der eigentliche Nachfolgezustand \(X_{t+1}\) entsteht dann aus einer Selektion innerhalb der durch beide Hüllen eröffneten lokalen Zustandslandschaft:
+\[
+X_t \longrightarrow X_t^\uparrow \longrightarrow \bigl(\mathcal{A}(X_t^\uparrow),\mathcal{M}(X_t^\uparrow)\bigr) \longrightarrow X_{t+1}.
+\]
+
+\paragraph{Ein mögliches Selektionsprinzip.}
+Modellhaft kann der Nachfolgezustand als energetisch bevorzugter Kandidat innerhalb der vereinigten Hüllen beschrieben werden:
+\[
+X_{t+1}
+=
+\operatorname*{argmin}_{Y\in \mathcal{A}(X_t^\uparrow)\cup \mathcal{M}(X_t^\uparrow)}
+F(Y),
+\]
+wobei \(F\) eine freie Strukturenergie des Modells bezeichnet.
+
+\begin{bemerkung}
+	Unter dieser Lesart tragen additive und multiplikative Hülle verschiedene Rollen. Die additive Hülle erzeugt bevorzugt lokale Freisetzungs-, Verschiebungs- und Auswahlzustände; die multiplikative Hülle trägt dagegen die tiefere Teilbarkeits-, Schließungs- und Bindungsstruktur. Der Zustandsübergang ist somit nicht punktförmig, sondern das Resultat einer Konkurrenz beider Hüllen.
+\end{bemerkung}
+
+\paragraph{Numerische Toy-Tests.}
+In einer ersten numerischen Minimalimplementierung wurde der angehobene Anfangszustand durch
+\[
+m=pn+\mu_p(n),
+\qquad
+\mu_p(n)=\arg\max_{\delta\in\{-1,+1\}}\nu_2(pn+\delta)
+\]
+modelliert. Für \(m\) wurde eine kleine additive Hülle \(\mathcal{A}_p(m)\) durch lokale Verschiebungen \(\pm a\) mit \(1\le a\le p\) und eine kleine multiplikative Hülle \(\mathcal{M}_p(m)\) durch Multiplikation bzw.\ Division mit Primzahlen \(q\le p\) konstruiert. Als einfacher Selektionsproxy diente die Minimierung des odd-kernel-Energieausdrucks
+\[
+E_{\mathrm{proxy}}(y)=\log(\operatorname{odd}(y)).
+\]
+
+Die ersten Tests auf den Komponenten der ersten \(1000\) Primzahlvierlinge legen nahe, dass additive und multiplikative Hülle nicht redundant sind, sondern verschiedene dynamische Funktionen tragen. Tabelle~\ref{tab:huellen-tests} fasst die wichtigsten Tendenzen zusammen.
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{cccc}
+		\hline
+		Primmode \(p\) & add.\ Hülle energetisch besser & mult.\ Hülle energetisch besser & qualitative Tendenz \\
+		\hline
+		\(3\)  & fast nur Tie & fast nur Tie & additive und multiplikative Hülle nahezu deckungsgleich \\
+		\(5\)  & ca.\ \(43.4\%\) & ca.\ \(31.4\%\) & additive Hülle bevorzugt lokale Folgezustände \\
+		\(7\)  & ca.\ \(37.5\%\) & ca.\ \(37.7\%\) & nahezu ausgeglichene Konkurrenz \\
+		\(11\) & ca.\ \(51.6\%\) & ca.\ \(36.1\%\) & additive Hülle klar bevorzugt \\
+		\(13\) & ca.\ \(55.7\%\) & ca.\ \(38.9\%\) & additive Hülle deutlich bevorzugt \\
+		\hline
+	\end{tabular}
+	\caption{Erste Toy-Tests zur Konkurrenz von additiver und multiplikativer Hülle. Angegeben ist, in welchem Anteil der Fälle der jeweils energetisch beste Kandidat in der additiven bzw.\ in der multiplikativen Hülle lag.}
+	\label{tab:huellen-tests}
+\end{table}
+
+\begin{bemerkung}
+	Die bisherigen Toy-Tests deuten darauf hin, dass die additive Hülle häufiger den energetisch bevorzugten nächsten Zustand liefert, während die multiplikative Hülle die stärkere rohe Teilbarkeits- und Entladungskapazität trägt. Mit anderen Worten: Die additive Hülle scheint stärker selektiv, die multiplikative Hülle stärker strukturell zu wirken.
+\end{bemerkung}
+
+\begin{bemerkung}
+	Diese Resultate sind ausdrücklich heuristisch. Sie hängen von der Wahl des angehobenen Anfangszustands, der konkreten Konstruktion von \(\mathcal{A}\) und \(\mathcal{M}\), des verwendeten Energieproxies sowie der adaptiven Regel für \(\mu_p(n)\) ab. Dennoch sprechen die ersten Tests dafür, dass das Hüllenkonzept eine echte Erweiterung der bisherigen odd-kernel-Dynamik darstellt.
+\end{bemerkung}
+\subsubsection{Vergleich der dyadischen Rohentladung in additiver und multiplikativer Hülle}
+
+Neben der Frage, welche Hülle den energetisch bevorzugten Folgezustand liefert, ist auch relevant, welche Hülle \emph{überhaupt} die größere lokale Entladungskapazität enthält. Dazu betrachten wir für den angehobenen Anfangszustand \(m\) die maximal erreichbare dyadische Sofortentladung innerhalb der additiven bzw.\ multiplikativen Hülle:
+\[
+D_{\max}^{\mathcal A}(m;p):=\max_{y\in\mathcal A_p(m)} \nu_2(y),
+\qquad
+D_{\max}^{\mathcal M}(m;p):=\max_{y\in\mathcal M_p(m)} \nu_2(y).
+\]
+
+Diese Größen messen nicht die tatsächlich selektierte Dynamik, sondern die in der jeweiligen Hülle \emph{verfügbare} rohe Zweierentladung. Damit unterscheiden sie zwischen lokaler Auswahlstruktur und bloßer Entladungskapazität.
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{cccc}
+		\hline
+		Primmode \(p\) & \(\langle D_{\max}^{\mathcal A}\rangle\) & \(\langle D_{\max}^{\mathcal M}\rangle\) & qualitative Tendenz \\
+		\hline
+		\(5\)  & \(\approx 4.49\) & \(\approx 4.99\) & multiplikative Hülle entladungsstärker \\
+		\(7\)  & \(\approx 4.52\) & \(\approx 4.99\) & multiplikative Hülle entladungsstärker \\
+		\(11\) & \(\approx 5.25\) & \(\approx 5.01\) & additive Hülle leicht stärker \\
+		\(13\) & \(\approx 5.73\) & \(\approx 5.02\) & additive Hülle deutlich stärker \\
+		\hline
+	\end{tabular}
+	\caption{Mittlere maximale dyadische Rohentladung innerhalb additiver und multiplikativer Hülle in den ersten Toy-Tests. Verglichen wird nicht der selektierte Folgezustand, sondern die jeweils in der Hülle vorhandene stärkste lokale Zweierentladung.}
+	\label{tab:huellen-rohentladung}
+\end{table}
+
+\begin{bemerkung}
+	Die Tabelle zeigt, dass energetische Selektion und rohe Entladungskapazität nicht identisch sind. Insbesondere kann die multiplikative Hülle eine größere lokale Zweierentladung enthalten, ohne deshalb notwendig den energetisch bevorzugten Folgezustand zu liefern.
+\end{bemerkung}
+
+\begin{bemerkung}
+	Für kleinere Primmoden, insbesondere bei \(p=5\) und \(p=7\), erscheint die multiplikative Hülle als Träger stärkerer dyadischer Rohentladung. Bei größeren getesteten Primmoden verschiebt sich dieses Bild teilweise zugunsten der additiven Hülle. Dies spricht dafür, dass additive und multiplikative Hülle nicht nur verschiedene Zustandsmengen erzeugen, sondern dass sich ihre dynamischen Rollen selbst nochmals mit der Primmode verändern.
+\end{bemerkung}
+\subsection{Synthese und Ausblick}
+
+Die in diesem Kapitel entwickelten Begriffe und Toy-Experimente deuten zusammengenommen auf eine mehrschichtige arithmetische Zustandsdynamik hin. Im Zentrum steht nicht mehr eine einzelne Iterationsvorschrift, sondern das Zusammenspiel von Primmoden, dyadischer Entladung, Energieanhebung, lokaler Hüllenbildung und Halbraumtransfer.
+
+Die numerische Evidenz spricht dabei zunächst für ein begrenztes \emph{dissipatives Primfenster}
+\[
+\{3,5,7\}.
+\]
+Innerhalb dieses Fensters erscheint \(3\) als schneller Relaxationskanal, \(5\) als deutlich langsamerer Übergangs- oder Schalenschalter und \(7\) als träger Grenzkanal. Die Moden \(11\) und \(13\) zeigen demgegenüber im bisherigen Toy-Modell keine robuste dissipative Signatur mehr, sondern verhalten sich überwiegend neutral oder anregend. Der Übergang
+\[
+7\longrightarrow 11
+\]
+kann daher als erster Kandidat für einen dynamischen Regimewechsel im Primmodenspektrum gelesen werden.
+
+Zugleich legen die erweiterten Dissipationsmaße nahe, dass die reine odd-kernel-Dynamik die gesamte Relaxationsstruktur nur unvollständig erfasst. Ein erheblicher Teil der Dissipation liegt in der nachfolgenden dyadischen Divisionskaskade. Daher sind sofortige Dissipation, volle subunitäre Dissipation und relativer Sofortanteil als getrennte Größen zu betrachten:
+\[
+D_{\mathrm{imm}},\qquad D_{\mathrm{full}},\qquad \eta.
+\]
+Unter dieser Lesart erscheint die adaptive Wahl des Kanalterms \(\mu_p(n)\) als lokaler Selektionsmechanismus, der die erste Entladung deutlich verstärkt, ohne auf einen trivial einseitigen \(\pm1\)-Kanal zu kollabieren.
+
+Der Zustandsübergang selbst wird in diesem Kapitel nicht mehr punktförmig, sondern generativ verstanden. Ein Zustand wird zunächst auf der Energieskala angehoben und erzeugt danach einen lokalen Zustandsraum aus additiver und multiplikativer Hülle:
+\[
+X_t \longrightarrow X_t^\uparrow \longrightarrow \bigl(\mathcal{A}(X_t^\uparrow),\mathcal{M}(X_t^\uparrow)\bigr) \longrightarrow X_{t+1}.
+\]
+Die ersten numerischen Tests sprechen dafür, dass beide Hüllen unterschiedliche Funktionen tragen. Die additive Hülle liefert häufiger den energetisch bevorzugten Folgezustand, während die multiplikative Hülle die stärkere rohe Teilbarkeits- und Entladungskapazität enthält. Der tatsächliche Nachfolgezustand ist damit als Resultat einer Konkurrenz von Freisetzung und Schließung, Auswahl und Bindung zu lesen.
+
+Unter Einbezug der Halbraumpolarisation ergibt sich schließlich eine erste geometrische Deutung dieses Befunds. Das dissipative Primfenster kann heuristisch als diejenige Modenfamilie verstanden werden, welche gebundene Zustände bevorzugt aus dem unteren, stärker geschlossenen Bereich in glattere und freiere Regime überführt. In diesem Sinn bildet die bisherige numerische Dynamik eine Vorstufe des späteren Halbraumtransfers: nicht jede Primmode trägt denselben Übergang, sondern nur ein kleines ausgezeichnetes Modenspektrum.
+
+Insgesamt ergibt sich damit das Bild eines diskreten arithmetischen Systems, in dem
+\begin{itemize}
+	\item Primmoden unterschiedliche Relaxations- und Entbündelungsrollen spielen,
+	\item dyadische Kompression die wesentliche dissipative Triebkraft darstellt,
+	\item Energieanhebung und Hüllenbildung den lokalen Zustandsraum öffnen,
+	\item und Halbraumpolarisation die geometrische Interpretation dieser Zustandsdynamik vorbereitet.
+\end{itemize}
+
+Die Resultate dieses Kapitels sind ausdrücklich als numerisch motivierte Toy-Hypothesen zu verstehen. Sie liefern keine bewiesenen arithmetischen Sätze, sondern einen strukturierten Modellrahmen, in dem lokale Primschließung, Collatz-artige Entladung, Halbwertszeit, Hüllenbildung und Halbraumtransfer erstmals in einer gemeinsamen Dynamiksprache formulierbar werden.
+\section{Vom Toy-Modell zur axiomatischen Zustandsdynamik}
+\section{Vom Toy-Modell zur axiomatischen Zustandsdynamik}
+
+Die in Kapitel 3 entwickelten numerischen Toy-Experimente haben erste Hinweise auf ein dissipatives Primfenster, auf unterschiedliche Rollen additiver und multiplikativer Hüllen sowie auf einen möglichen Regimewechsel im Primmodenspektrum geliefert. Diese Resultate sind jedoch noch modellabhängig und beruhen auf vereinfachten Energie- und Bindungsgrößen. Im folgenden Abschnitt wird daher der Übergang von der numerischen Heuristik zu einer präziseren axiomatischen Zustandsdynamik vorbereitet.
+
+Ziel ist es, den bislang verwendeten Zustandsbegriff systematisch zu schärfen, die Rolle von Energieanhebung, Hüllenbildung und Halbraumpolarisation formaler zu fassen und daraus einen Rahmen zu gewinnen, in dem spätere mathematische und numerische Aussagen klarer voneinander getrennt werden können.
+
+\subsection{Verfeinerter Zustandsraum, Energieterme, Hüllenoperatoren und Selektionsprinzip}
+
+Die bisherige Toy-Dynamik arbeitete mit einzelnen arithmetischen Trägern, reduzierten odd-kernel-Abbildungen, vereinfachten Energieproxies und kleinen lokalen Hüllen. Für eine axiomatische Fortsetzung ist es zweckmäßig, diese Objekte in einem verfeinerten Zustandsraum zusammenzuführen.
+
+\paragraph{Der verfeinerte Zustand.}
+Ein Zustand des Modells sei fortan durch ein Tupel
+\[
+X=(n,\kappa,g,\sigma,m,h,b)
+\]
+gegeben. Dabei bedeuten:
+\begin{itemize}
+	\item \(n\in\mathbb{N}\): der arithmetische Träger,
+	\item \(\kappa\in\{E,A,B,C\}\): die Strukturklasse oder Klassenlage,
+	\item \(g\): ein Glattheitsprofil,
+	\item \(\sigma\): ein internes Komponentenprofil,
+	\item \(m\): die aktive Primmode,
+	\item \(h\in\{+,-\}\): die Halbraumlage,
+	\item \(b\in[0,1]\): ein Bindungsgrad.
+\end{itemize}
+
+Die Größe \(g\) soll nicht nur die Teilbarkeit durch kleine Primzahlen registrieren, sondern ganz allgemein die Nähe eines Zustands zu glatten Regimen messen. Der Bindungsgrad \(b\) beschreibt dagegen, wie stark ein Zustand noch einem gebundenen, massetragenden oder lokal geschlossenen Bereich zugeordnet ist.
+
+\paragraph{Energiekomponenten.}
+Die Dynamik wird nicht durch eine einzige Energiegröße, sondern durch mehrere Beiträge bestimmt. Modellhaft schreiben wir
+\[
+U(X)=U_{\mathrm{size}}(X)+U_{\mathrm{rough}}(X)+U_{\mathrm{bind}}(X)+U_{\mathrm{mode}}(X).
+\]
+Dabei bezeichnet
+\begin{itemize}
+	\item \(U_{\mathrm{size}}\) die Größen- oder Ausdehnungsenergie,
+	\item \(U_{\mathrm{rough}}\) die Rauheits- oder Antiglattheitsenergie,
+	\item \(U_{\mathrm{bind}}\) die Bindungsenergie,
+	\item \(U_{\mathrm{mode}}\) die modenspezifische Energie oder Kanalspannung.
+\end{itemize}
+
+Zusätzlich wird eine Entropie \(S(X)\) eingeführt, die entweder als Ensemble-Entropie oder als interne Mischungsentropie der Strukturkomponenten gelesen werden kann. Damit ergibt sich wie bisher eine freie Strukturenergie
+\[
+F(X)=U(X)-\tau S(X),
+\]
+wobei \(\tau>0\) einen effektiven Temperaturparameter des Modells bezeichnet.
+
+\paragraph{Energieanhebung.}
+Der Übergang zwischen zwei Zuständen beginnt nicht unmittelbar mit einer Abbildung auf einen Folgezustand, sondern mit einer diskreten Energieanhebung:
+\[
+X \longmapsto X^\uparrow.
+\]
+Diese Anhebung ist als elementare Zustandsanregung zu verstehen. Formal kann sie als Operator
+\[
+\mathcal E:\mathcal X\to\mathcal X,\qquad X\mapsto X^\uparrow
+\]
+aufgefasst werden, der den Zustand auf die nächsthöhere lokale Energieschale hebt. In einer minimalen Fassung bedeutet dies
+\[
+E(X^\uparrow)=E(X)+1,
+\]
+wobei \(E\) eine diskrete Schalenzählung oder Anregungsstufe bezeichnet.
+
+\paragraph{Hüllenoperatoren.}
+Für den angehobenen Anfangszustand \(X^\uparrow\) werden zwei komplementäre Hüllen erzeugt.
+
+Die \emph{additive Hülle}
+\[
+\mathcal A(X^\uparrow)
+\]
+enthält alle lokal durch additive Verschiebung, Zerlegung oder Komponentenbildung zugänglichen Zustände. Sie repräsentiert damit vor allem Freisetzung, Aufspaltung und lokale Zustandswahl.
+
+Die \emph{multiplikative Hülle}
+\[
+\mathcal M(X^\uparrow)
+\]
+enthält alle lokal durch multiplikative Kopplung, Teilbarkeit, Faktorisierung oder Schließung zugänglichen Zustände. Sie repräsentiert damit vor allem Bindung, Teilbarkeitsarchitektur und strukturelle Schließung.
+
+Damit wird aus einem angehobenen Zustand nicht unmittelbar ein einzelner Folgezustand erzeugt, sondern zunächst eine lokale Zustandslandschaft
+\[
+\mathcal H(X^\uparrow):=\mathcal A(X^\uparrow)\cup\mathcal M(X^\uparrow).
+\]
+
+\paragraph{Selektionsprinzip.}
+Erst innerhalb dieser Hüllenlandschaft wird ein Nachfolgezustand ausgewählt. In einer ersten axiomatischen Fassung kann dies durch ein minimierendes Selektionsprinzip beschrieben werden:
+\[
+X_{t+1}
+=
+\operatorname*{argmin}_{Y\in \mathcal H(X_t^\uparrow)}F(Y).
+\]
+Der Nachfolgezustand ist also derjenige lokal zugängliche Zustand, der die freie Strukturenergie minimiert. Allgemeiner kann man statt eines strikten Minimums auch ein probabilistisches oder modengewichtetes Auswahlprinzip zulassen, insbesondere dann, wenn mehrere Kandidaten energetisch nahezu gleichwertig sind.
+
+\paragraph{Dissipative Tiefenstruktur.}
+Die frühere odd-kernel-Dynamik wird in diesem erweiterten Rahmen durch explizite Dissipationsmaße ergänzt. Für eine aktive Primmode \(p\) und den zugehörigen Kanalterm \(\mu_p(n)\) unterscheiden wir:
+\[
+D_{\mathrm{imm}}(n;p),\qquad
+D_{\mathrm{full}}(n;p),\qquad
+\eta(n;p)=\frac{D_{\mathrm{imm}}(n;p)}{D_{\mathrm{full}}(n;p)}.
+\]
+Diese Größen trennen den ersten Entladungsschock von der gesamten dyadischen Divisionskaskade. Der Zustandsübergang wird dadurch nicht nur als Kanalwechsel, sondern als vollständige Abstiegsstruktur lesbar.
+
+\paragraph{Halbraumlage und Bindungsgrad.}
+Die Halbraumlage \(h\) und der Bindungsgrad \(b\) ergänzen diesen Rahmen um eine geometrisch-thermodynamische Deutung. Zustände mit hoher Bindungsenergie und hohem \(b\) werden dem unteren, stärker geschlossenen Bereich zugeordnet. Zustände mit geringerer Bindung, höherer Mobilität und stärkerer Freisetzung werden dem oberen Bereich zugeordnet. Der Übergang
+\[
+X_t\longrightarrow X_{t+1}
+\]
+kann damit zugleich als lokaler Energieabstieg und als partieller Halbraumtransfer gelesen werden.
+
+\paragraph{Zusammenfassende Dynamikform.}
+Die axiomatische Zustandsdynamik nimmt damit schematisch die Form
+\[
+X_t
+\;\xrightarrow{\;\mathcal E\;}\;
+X_t^\uparrow
+\;\xrightarrow{\;\mathcal A,\mathcal M\;}\;
+\mathcal H(X_t^\uparrow)
+\;\xrightarrow{\;\mathrm{Selektion}\;}\;
+X_{t+1}
+\]
+an.
+
+\begin{bemerkung}
+	Der wesentliche Unterschied zur bisherigen Toy-Beschreibung besteht darin, dass der Zustandsübergang nicht mehr punktförmig, sondern als lokale Zustandsgenese aufgefasst wird. Primmoden, additive und multiplikative Hüllen sowie dyadische Dissipation erscheinen damit nicht mehr als konkurrierende Einzelbilder, sondern als komplementäre Bestandteile einer gemeinsamen Zustandsdynamik.
+\end{bemerkung}
+
+\begin{bemerkung}
+	Die hier eingeführten Begriffe sind zunächst strukturell und nicht endgültig spezifiziert. Insbesondere die konkrete Wahl von \(g\), \(b\), \(U\), \(S\), \(\mathcal A\) und \(\mathcal M\) bleibt offen und bildet den Gegenstand der folgenden Präzisierungen.
+\end{bemerkung}
+\subsection{Vertauschbarkeit der Hüllenprozesse und interne Massenanhebung}
+
+Die Einführung additiver und multiplikativer Hüllen wirft unmittelbar die Frage auf, ob die zugehörigen Abschlussprozesse vertauschbar sind. Formal ist zu prüfen, ob für einen angehobenen Anfangszustand \(X^\uparrow\) gilt
+\[
+\mathcal M(\mathcal A(X^\uparrow))=\mathcal A(\mathcal M(X^\uparrow)).
+\]
+Im Allgemeinen ist nicht zu erwarten, dass diese strenge Vertauschbarkeit gilt. Additive Hüllen tragen vor allem Verschiebung, Zerlegung und Freisetzung, multiplikative Hüllen dagegen Schließung, Teilbarkeit und Bindungsstruktur. Beide Prozesse verändern daher unterschiedliche strukturelle Aspekte des Zustandsraums.
+
+Es ist daher zweckmäßig, mehrere Stufen der Vertauschbarkeit zu unterscheiden:
+\begin{itemize}
+	\item \emph{strenge Vertauschbarkeit}, wenn die vollständigen Hüllen übereinstimmen,
+	\item \emph{schwache Vertauschbarkeit}, wenn zwar die Hüllen verschieden sind, aber derselbe energetisch selektierte Nachfolgezustand entsteht,
+	\item \emph{asymptotische Vertauschbarkeit}, wenn unterschiedliche Reihenfolgen nach weiterer Relaxation in denselben Attraktor oder dieselbe Zustandsklasse führen.
+\end{itemize}
+
+Als praktische Kriterien können insbesondere herangezogen werden:
+\begin{enumerate}
+	\item Gleichheit des selektierten Nachfolgezustands,
+	\item Gleichheit oder Näherung der freien Strukturenergie,
+	\item Gleichheit der Strukturklasse,
+	\item Gleichheit von Halbraumlage und Bindungsgrad,
+	\item Gleichheit der dissipativen Tiefenmaße \(D_{\mathrm{imm}},D_{\mathrm{full}},\eta\).
+\end{enumerate}
+
+\paragraph{Interne Massenanhebung.}
+Zugleich ist zu klären, ob der Energiehub nur die äußere Energieskala betrifft oder auch die internen Massenanteile der Strukturkomponenten verändert. Dazu führen wir komponentenspezifische Massenanteile
+\[
+\mu_A(X),\qquad \mu_B(X),\qquad \mu_C(X)
+\]
+ein, deren Summe die interne gebundene Masse
+\[
+M_{\mathrm{int}}(X)=\mu_A(X)+\mu_B(X)+\mu_C(X)
+\]
+liefert.
+
+Der Energiehub kann dann in drei Formen auftreten:
+\begin{itemize}
+	\item als reine Skalenanhebung \(E\mapsto E+1\),
+	\item als induzierte Massenanhebung, bei der sich auch \(\mu_A,\mu_B,\mu_C\) ändern,
+	\item als modenspezifische Massenanhebung, bei der die Änderung der Komponentenverteilung von der aktiven Primmode abhängt.
+\end{itemize}
+
+Damit wird der Anhebungsoperator zu
+\[
+\mathcal E(X)=X^\uparrow,
+\]
+wobei nicht nur die äußere Energiestufe, sondern im Allgemeinen auch die interne Massenverteilung transformiert wird. Additive und multiplikative Hülle wirken dann auf einen bereits intern umgewichteten Anfangszustand. Gerade dies liefert einen natürlichen Mechanismus möglicher Nichtvertauschbarkeit der beiden Hüllenprozesse.
+
+\begin{bemerkung}
+	Es ist plausibel, dass stark glatte und bereits weitgehend relaxierte Zustände eher schwache oder asymptotische Vertauschbarkeit zeigen, während raue, hochgebundene und modensensitiv angeregte Zustände eine deutliche Reihenfolgeabhängigkeit zwischen additiver und multiplikativer Hülle aufweisen.
+\end{bemerkung}
+\subsection{Numerisches Testprotokoll für Vertauschbarkeit und interne Massenanhebung}
+
+Zur weiteren Präzisierung des Modells sollen zwei Fragen numerisch untersucht werden:
+\begin{enumerate}
+	\item Sind additive und multiplikative Hüllenprozesse vertauschbar?
+	\item Betrifft der Energiehub nur die äußere Energieskala oder auch die internen Massenanteile \(\mu_A,\mu_B,\mu_C\)?
+\end{enumerate}
+
+\paragraph{Ausgangszustände.}
+Als Testensemble dienen Zustände
+\[
+X=(n,\kappa,m,\mu_A,\mu_B,\mu_C,h,b),
+\]
+die aus den Komponenten der ersten Primzahlvierlinge und ihren Feinklassen \(\kappa\in\{A,B,C\}\) gewonnen werden.
+
+\paragraph{Energiehub.}
+Es werden drei Varianten des Anhebungsoperators \(\mathcal E\) betrachtet:
+\begin{itemize}
+	\item reine Skalenanhebung,
+	\item symmetrische Massenanhebung,
+	\item modenspezifische Massenanhebung.
+\end{itemize}
+
+\paragraph{Prozessreihenfolgen.}
+Für jeden angehobenen Zustand \(X^\uparrow\) werden die beiden zusammengesetzten Hüllenprozesse
+\[
+\mathcal A(\mathcal M(X^\uparrow))
+\qquad\text{und}\qquad
+\mathcal M(\mathcal A(X^\uparrow))
+\]
+gebildet.
+
+\paragraph{Selektierte Nachfolgezustände.}
+Innerhalb beider Hüllenlandschaften wird jeweils ein energetisch bevorzugter Zustand gewählt:
+\[
+X_{AM}:=\operatorname*{argmin}_{Y\in \mathcal A(\mathcal M(X^\uparrow))}F(Y),
+\qquad
+X_{MA}:=\operatorname*{argmin}_{Y\in \mathcal M(\mathcal A(X^\uparrow))}F(Y).
+\]
+
+\paragraph{Messgrößen.}
+Zur Prüfung der Vertauschbarkeit werden folgende Größen ausgewertet:
+\begin{align*}
+	\Delta_{\mathrm{state}}(X)&:=\mathbf 1_{X_{AM}\neq X_{MA}},\\
+	\Delta_F(X)&:=|F(X_{AM})-F(X_{MA})|,\\
+	\Delta_\kappa(X)&:=\mathbf 1_{\kappa(X_{AM})\neq \kappa(X_{MA})},\\
+	\Delta_h(X)&:=\mathbf 1_{h(X_{AM})\neq h(X_{MA})},\\
+	\Delta_b(X)&:=|b(X_{AM})-b(X_{MA})|,\\
+	\Delta_D(X)&:=|D_{\mathrm{imm}}(X_{AM})-D_{\mathrm{imm}}(X_{MA})|+|\eta(X_{AM})-\eta(X_{MA})|.
+\end{align*}
+
+\paragraph{Vertauschbarkeitsindex.}
+Aus diesen Größen wird über ein Testensemble \(\mathcal E\) ein mittlerer Vertauschbarkeitsindex
+\[
+\mathcal C(\mathcal E)
+=
+1-\frac1{|\mathcal E|}\sum_{X\in\mathcal E}
+\Bigl(
+w_1\Delta_{\mathrm{state}}(X)
++w_2\Delta_F(X)
++w_3\Delta_\kappa(X)
++w_4\Delta_h(X)
++w_5\Delta_D(X)
+\Bigr)
+\]
+gebildet. Kleine Werte von \(\mathcal C\) sprechen für starke Nichtvertauschbarkeit, große Werte für effektive Vertauschbarkeit.
+
+\paragraph{Ziel der Tests.}
+Insbesondere soll geprüft werden,
+\begin{itemize}
+	\item ob die Nichtvertauschbarkeit mit der aktiven Primmode zunimmt,
+	\item ob sie durch modenspezifische Massenanhebung verstärkt wird,
+	\item und ob der Übergang \(7\to 11\) als Übergang von schwacher zu deutlicher Nichtvertauschbarkeit sichtbar wird.
+\end{itemize}
+\subsection{Erste modenspezifische Massenanhebung}
+
+Um zu testen, ob der Energiehub nicht nur die äußere Energieskala, sondern auch die interne Massenverteilung eines Zustands verändert, führen wir eine erste modenspezifische Massenanhebung ein. Dazu seien
+\[
+\mu_A(X),\qquad \mu_B(X),\qquad \mu_C(X)\ge 0,
+\qquad
+\mu_A(X)+\mu_B(X)+\mu_C(X)=1
+\]
+die normierten internen Massenanteile eines Zustands \(X\).
+
+Für eine aktive Primmode \(m\) definieren wir zunächst einen modenspezifischen Shift-Vektor
+\[
+v_m=(v_A^{(m)},v_B^{(m)},v_C^{(m)}).
+\]
+Mit einem kleinen Parameter \(\epsilon>0\) setzen wir
+\[
+\widetilde\mu_i=\mu_i+\epsilon\, v_i^{(m)},
+\qquad i\in\{A,B,C\},
+\]
+und definieren die modenspezifische Massenanhebung durch Normierung:
+\[
+\Phi_m(\mu_A,\mu_B,\mu_C)
+=
+\frac{(\max(\widetilde\mu_A,0),\max(\widetilde\mu_B,0),\max(\widetilde\mu_C,0))}
+{\max(\widetilde\mu_A,0)+\max(\widetilde\mu_B,0)+\max(\widetilde\mu_C,0)}.
+\]
+
+Als erste Toy-Wahl werden folgende Shift-Vektoren verwendet:
+\[
+v_3=(-1,2,-1),\qquad
+v_5=(-1,1,0),\qquad
+v_7=(0,-1,1),
+\]
+\[
+v_{11}=(1,-1,1),\qquad
+v_{13}=(1,-2,1).
+\]
+
+Dabei wird \(3\) als relaxierende Mode, \(5\) als Übergangs- oder Schalenschalter, \(7\) als träger Grenzkanal und \(11,13\) als anregende bzw.\ entbündelnde Moden gelesen.
+\begin{bemerkung}
+	Diese Wahl ist ausdrücklich heuristisch. Sie dient nicht als endgültige Dynamik, sondern als erste operationalisierbare Minimalregel, an der getestet werden kann, ob modenspezifische interne Massenanhebung die Nichtvertauschbarkeit additiver und multiplikativer Hüllen verstärkt oder abschwächt.
+\end{bemerkung}
+\subsection{Konkrete numerische Testmatrix}
+
+Zur Untersuchung der Vertauschbarkeit additiver und multiplikativer Hüllen sowie des Einflusses modenspezifischer Massenanhebung verwenden wir die folgende numerische Testmatrix.
+
+\paragraph{Primmoden.}
+Getestet werden die aktiven Primmoden
+\[
+m\in\{3,5,7,11,13\}.
+\]
+
+\paragraph{Ensembles.}
+Als Testensembles dienen die ersten \(100\) bzw.\ \(1000\) Primzahlvierlinge sowie ihre Zerlegung in die Feinklassen \(A,B,C\).
+
+\paragraph{Energiehub.}
+Für jeden Zustand werden zwei Varianten verglichen:
+\begin{itemize}
+	\item \(H_0\): Energiehub ohne interne Massenanhebung,
+	\item \(H_1\): Energiehub mit modenspezifischer Massenanhebung \(\Phi_m\).
+\end{itemize}
+
+\paragraph{Prozessreihenfolge.}
+Für den angehobenen Anfangszustand \(X^\uparrow\) werden die beiden Prozessordnungen
+\[
+X_{AM}:=\operatorname*{argmin}_{Y\in \mathcal A(\mathcal M(X^\uparrow))}F(Y),
+\qquad
+X_{MA}:=\operatorname*{argmin}_{Y\in \mathcal M(\mathcal A(X^\uparrow))}F(Y)
+\]
+gebildet.
+
+\paragraph{Messgrößen.}
+Verglichen werden insbesondere:
+\begin{align*}
+	\Delta_{\mathrm{state}}(X)&:=\mathbf 1_{X_{AM}\neq X_{MA}},\\
+	\Delta_F(X)&:=|F(X_{AM})-F(X_{MA})|,\\
+	\Delta_b(X)&:=|b(X_{AM})-b(X_{MA})|,\\
+	\Delta_h(X)&:=\mathbf 1_{h(X_{AM})\neq h(X_{MA})},\\
+	\Delta_\kappa(X)&:=\mathbf 1_{\kappa(X_{AM})\neq \kappa(X_{MA})},\\
+	\Delta_D(X)&:=|D_{\mathrm{imm}}(X_{AM})-D_{\mathrm{imm}}(X_{MA})|+|\eta(X_{AM})-\eta(X_{MA})|.
+\end{align*}
+
+\paragraph{Testziele.}
+Im Mittelpunkt stehen drei Fragen:
+\begin{enumerate}
+	\item Nimmt die Nichtvertauschbarkeit mit der aktiven Primmode zu?
+	\item Verstärkt modenspezifische Massenanhebung \(\Phi_m\) die Reihenfolgeabhängigkeit?
+	\item Wird der bereits beobachtete Übergang \(7\to 11\) als Übergang von schwacher zu deutlicher Nichtvertauschbarkeit sichtbar?
+\end{enumerate}
+
+\begin{bemerkung}
+	Eine minimale erste Auswertung kann sich auf die Gesamtmenge der ersten \(100\) Primzahlvierlinge, die Primmoden \(3,5,7,11\) und die Observablen \(\Delta_{\mathrm{state}},\Delta_F,\Delta_b\) beschränken. Erst nach Sichtung dieser Resultate ist eine feinere Aufspaltung nach Klassen \(A,B,C\) sinnvoll.
+\end{bemerkung}
+\subsection{Offene mathematische Aufgaben}
+
+Die bisher entwickelten Definitionen, Heuristiken und Toy-Experimente legen einen strukturierten Rahmen für eine arithmetische Zustandsdynamik nahe, lassen jedoch mehrere zentrale mathematische Fragen offen. Diese Fragen markieren die Punkte, an denen das Modell von einer numerisch motivierten Heuristik zu einer präziseren Theorie weiterentwickelt werden müsste.
+
+\paragraph{1. Kanonische Wahl von Glattheit, Bindungsgrad und Polarisationsmaß.}
+Die Größen
+\[
+g(X),\qquad b(X),\qquad \pi(X)
+\]
+wurden bislang nur in vorläufigen Toy-Fassungen verwendet. Eine erste offene Aufgabe besteht darin, für diese Größen kanonische oder zumindest natürlich ausgezeichnete Definitionen zu finden. Insbesondere ist zu klären,
+\begin{itemize}
+	\item welche arithmetischen Invarianten die Glattheit \(g\) am besten repräsentieren,
+	\item wie Bindung \(b\) von bloßer Größe, Rauheit und Teilbarkeit getrennt werden kann,
+	\item und wie das Polarisationsmaß \(\pi\) so zu definieren ist, dass es sowohl numerisch stabil als auch geometrisch interpretierbar bleibt.
+\end{itemize}
+
+\paragraph{2. Struktur und Klassifikation der Hüllenoperatoren.}
+Die additiven und multiplikativen Hüllen
+\[
+\mathcal A(X),\qquad \mathcal M(X)
+\]
+wurden bisher nur in kleinen lokalen Toy-Varianten realisiert. Eine offene Aufgabe ist daher die systematische Klassifikation zulässiger Hüllenoperatoren. Dabei ist insbesondere zu klären,
+\begin{itemize}
+	\item welche additive Hülle als natürlich oder minimal gelten soll,
+	\item welche multiplikative Hülle die relevante Schließungsstruktur trägt,
+	\item und wie tief oder lokal diese Hüllen jeweils aufgebaut werden müssen, um dynamisch aussagekräftig zu sein.
+\end{itemize}
+
+\paragraph{3. Vertauschbarkeit und Nichtvertauschbarkeit.}
+Eine zentrale mathematische Frage betrifft die Reihenfolge der Hüllenprozesse:
+\[
+\mathcal A(\mathcal M(X^\uparrow))
+\qquad\text{und}\qquad
+\mathcal M(\mathcal A(X^\uparrow)).
+\]
+Zu untersuchen ist, ob und in welchem Sinn beide Prozesse vertauschbar sind. Dabei ist zu unterscheiden zwischen
+\begin{itemize}
+	\item strenger Vertauschbarkeit auf der Ebene der gesamten Hüllen,
+	\item schwacher Vertauschbarkeit auf der Ebene des selektierten Nachfolgezustands,
+	\item und asymptotischer Vertauschbarkeit auf der Ebene späterer Attraktoren oder Zustandsklassen.
+\end{itemize}
+Die Frage der Vertauschbarkeit ist zugleich eine Frage nach dem Grad der Nichtkommutativität der Zustandsdynamik.
+
+\paragraph{4. Modenspezifische Massenanhebung.}
+Der Energiehub wurde zunächst als diskrete Anhebung der äußeren Energieskala eingeführt. Numerisch und konzeptionell spricht jedoch vieles dafür, dass auch die internen Massenanteile
+\[
+\mu_A(X),\qquad \mu_B(X),\qquad \mu_C(X)
+\]
+mittransformiert werden müssen. Eine offene Aufgabe ist daher die Konstruktion einer natürlichen modenspezifischen Massenanhebung
+\[
+\Phi_m(\mu_A,\mu_B,\mu_C),
+\]
+sowie die Untersuchung, inwieweit diese die Nichtvertauschbarkeit additiver und multiplikativer Hüllen verstärkt, abschwächt oder qualitativ verändert.
+
+\paragraph{5. Das dissipative Primfenster.}
+Die bisherigen Toy-Experimente deuten auf ein begrenztes dissipatives Primfenster
+\[
+\{3,5,7\}
+\]
+hin, während höhere Primmoden wie \(11\) und \(13\) keine robuste dissipative Signatur mehr zeigen. Eine offene mathematische Aufgabe besteht darin,
+\begin{itemize}
+	\item die Stabilität dieses Fensters gegenüber Änderungen der Modellparameter zu prüfen,
+	\item die Rolle der adaptiven Wahl \(\mu_p(n)\) systematisch zu analysieren,
+	\item und zu klären, ob der Übergang
+	\[
+	7\longrightarrow 11
+	\]
+	tatsächlich einen strukturellen Regimewechsel markiert.
+\end{itemize}
+
+\paragraph{6. Dissipative Tiefenstruktur und Halbwertszeiten.}
+Mit den Größen
+\[
+D_{\mathrm{imm}},\qquad D_{\mathrm{full}},\qquad \eta
+\]
+wurde eine erste Trennung zwischen sofortiger Entladung und vollständiger dyadischer Divisionskaskade eingeführt. Offen bleibt,
+\begin{itemize}
+	\item ob diese Größen kanonisch genug sind,
+	\item wie sie mit der freien Strukturenergie \(F\) zusammenhängen,
+	\item und unter welchen Bedingungen daraus stabile effektive Halbwertszeiten
+	\[
+	T_{1/2}
+	\]
+	für Klassen von Zuständen folgen.
+\end{itemize}
+
+\paragraph{7. Zusammenhang zwischen numerischer Heuristik und axiomatischer Theorie.}
+Die bisherigen Resultate sind bewusst als Toy-Hypothesen formuliert. Eine übergeordnete Aufgabe besteht darin, zwischen drei Ebenen sauber zu unterscheiden:
+\begin{enumerate}
+	\item rein numerische Beobachtungen auf endlichen Ensembles,
+	\item modellinterne heuristische Prinzipien,
+	\item und mögliche spätere mathematische Sätze.
+\end{enumerate}
+Erst durch diese Trennung kann entschieden werden, welche Teile des Modells als numerisch gestützte Strukturhypothese und welche als tatsächlich beweisbare Aussagen zu behandeln sind.
+
+\begin{bemerkung}
+	Die offene Aufgabenliste ist nicht als Schwäche des Modells zu verstehen, sondern als Ausdruck seiner gegenwärtigen Übergangsphase. Sie markiert die Punkte, an denen die bislang entwickelte Dynamiksprache — Primmoden, Hüllenbildung, Dissipation, Massenanhebung und Halbraumpolarisation — in eine konsistentere mathematische Form überführt werden kann.
+\end{bemerkung}
+\subsection{Roadmap des weiteren Programms}
+
+Aus den bisherigen numerischen und begrifflichen Resultaten ergibt sich ein mehrstufiges Arbeitsprogramm, das den Übergang von der heuristischen Toy-Dynamik zu einer präziseren arithmetischen Zustandsdynamik strukturieren soll.
+
+\paragraph{Arbeitspaket 1: Kanonische Grundgrößen.}
+Zunächst sind die zentralen Modellgrößen in einer stabileren Form festzulegen. Dazu gehören insbesondere:
+\[
+g(X),\qquad b(X),\qquad \pi(X),\qquad U(X),\qquad S(X),\qquad F(X).
+\]
+Ziel dieses Schrittes ist es, von ad-hoc-artigen Toy-Definitionen zu natürlich ausgezeichneten oder zumindest robusten Klassen von Definitionen überzugehen, die numerisch stabil und konzeptionell interpretierbar bleiben.
+
+\paragraph{Arbeitspaket 2: Systematische Hüllenoperatoren.}
+Im zweiten Schritt sind additive und multiplikative Hülle nicht nur lokal-experimentell, sondern systematisch zu klassifizieren. Zu prüfen ist insbesondere,
+\begin{itemize}
+	\item welche additive Hülle den relevanten Raum lokaler Freisetzung und Verschiebung beschreibt,
+	\item welche multiplikative Hülle die relevante Schließungs- und Teilbarkeitsstruktur trägt,
+	\item und in welchem Sinn beide Hüllen minimal, lokal oder skalenabhängig gewählt werden sollen.
+\end{itemize}
+Damit soll der bislang heuristische Hüllengedanke in eine stabilere Operatorensprache überführt werden.
+
+\paragraph{Arbeitspaket 3: Vertauschbarkeit und Prozessordnung.}
+Ein dritter Schwerpunkt ist die Reihenfolgeabhängigkeit der Hüllenprozesse:
+\[
+\mathcal A(\mathcal M(X^\uparrow))
+\qquad\text{gegen}\qquad
+\mathcal M(\mathcal A(X^\uparrow)).
+\]
+Hier sollen numerisch und begrifflich die Bedingungen untersucht werden, unter denen
+\begin{itemize}
+	\item strenge,
+	\item schwache,
+	\item oder asymptotische Vertauschbarkeit
+\end{itemize}
+vorliegt. Ziel ist es, die Zustandsdynamik entweder als effektiv kommutativ oder als genuin prozessual-nichtkommutativ zu charakterisieren.
+
+\paragraph{Arbeitspaket 4: Modenspezifische Massenanhebung.}
+Im vierten Schritt ist die Rolle der internen Massenanteile
+\[
+\mu_A(X),\qquad \mu_B(X),\qquad \mu_C(X)
+\]
+präziser auszuarbeiten. Dazu gehört die Konstruktion und numerische Untersuchung einer modenspezifischen Massenanhebung
+\[
+\Phi_m(\mu_A,\mu_B,\mu_C),
+\]
+sowie die Frage, ob verschiedene Primmoden nicht nur die Energieskala, sondern auch die interne Zustandszusammensetzung auf charakteristische Weise umgewichten.
+
+\paragraph{Arbeitspaket 5: Das dissipative Primfenster.}
+Die bisherigen Toy-Experimente deuten auf ein begrenztes dissipatives Primfenster
+\[
+\{3,5,7\}
+\]
+hin. Dieses Phänomen soll in einem eigenen Block systematisch untersucht werden. Zu klären ist,
+\begin{itemize}
+	\item wie robust dieses Fenster gegenüber Änderungen von Energie, Bindung, Polarisation und Hüllenoperatoren bleibt,
+	\item ob der Übergang
+	\[
+	7\longrightarrow 11
+	\]
+	tatsächlich einen Regimewechsel markiert,
+	\item und ob sich daraus eine natürliche Trennung zwischen relaxierenden und entbündelnden Primmoden ergibt.
+\end{itemize}
+
+\paragraph{Arbeitspaket 6: Halbraumpolarisation und Transferdynamik.}
+Im sechsten Schritt soll die Halbraumpolarisation von einer heuristischen Deutung in eine echte dynamische Struktur überführt werden. Hierzu sind insbesondere
+\[
+\pi(X),\qquad h(X),\qquad b(X)
+\]
+so zu koppeln, dass Halbraumlage und Halbraumtransfer nicht bloß nachträgliche Etiketten, sondern emergente Größen der Zustandsdynamik werden. Ziel ist es, den Übergang zwischen gebundenem und freierem Bereich numerisch und begrifflich präziser zu fassen.
+
+\paragraph{Arbeitspaket 7: Von Toy-Hypothesen zu Sätzen.}
+Schließlich ist zwischen numerischer Evidenz, heuristischen Modellprinzipien und tatsächlich beweisbaren Aussagen zu unterscheiden. Das langfristige Ziel besteht darin,
+\begin{itemize}
+	\item numerische Invarianten zu identifizieren,
+	\item daraus stabile heuristische Strukturprinzipien zu gewinnen,
+	\item und im günstigsten Fall einzelne Teile des Modells in Form präziser Lemmata, Propositionen oder Sätze zu isolieren.
+\end{itemize}
+Damit würde das Programm schrittweise von einer explorativen Zustandsdynamik zu einer axiomatisch kontrollierten Theorie übergehen.
+
+\begin{bemerkung}
+	Die Roadmap ist bewusst gestuft formuliert. Sie soll nicht den Eindruck einer bereits abgeschlossenen Theorie erzeugen, sondern die natürliche Reihenfolge künftiger Präzisierungen markieren. Gerade darin liegt ihre Funktion: Sie übersetzt die bisherigen Toy-Experimente in ein geordnetes mathematisches Arbeitsprogramm.
+\end{bemerkung}
+\end{document}

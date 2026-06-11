@@ -1,0 +1,133 @@
+% 3+1 Primzahlfamilien mod 210 — aus Rohtext in LaTeX gesetzt
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage[unicode=true]{hyperref}
+
+\newtheorem*{observation}{Theorem / Observation}
+
+\title{Primzahlvierlinge: die $3{+}1$-Struktur modulo $210$}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\linewidth}{\centering
+\textbf{Kernaussage.} Primzahlvierlinge erscheinen modulo $210$ in drei Hauptfamilien plus einer Ankerklasse.}}
+\end{center}
+
+\section{Hauptergebnis: die $3{+}1$-Struktur modulo $210$}
+
+Für Primzahlvierlinge
+\[
+  (p,\, p+2,\, p+6,\, p+8)
+\]
+zeigt die Analyse modulo
+\[
+  210 = 2 \cdot 3 \cdot 5 \cdot 7
+\]
+eine sehr starke Einschränkung der möglichen Startwerte $p$. Von den $48$ invertierbaren Restklassen modulo $210$ bleiben für die in der Praxis beobachteten Starts effektiv nur vier zulässige Klassen:
+\[
+  \boxed{p \equiv 5,\, 11,\, 101,\, 191 \pmod{210}.}
+\]
+
+Davon ist
+\[
+  \boxed{p \equiv 5 \pmod{210}}
+\]
+die \textbf{Ankerfamilie}: sie enthält den kleinsten und in diesem Sinne ausgezeichneten Vierling
+\[
+  (5,\, 7,\, 11,\, 13).
+\]
+Die übrigen, statistisch tragenden Vierlinge verteilen sich auf die drei Hauptfamilien
+\[
+  \boxed{11,\, 101,\, 191 \pmod{210}.}
+\]
+
+\subsection*{Empirische Zahlen (Beispieldatensatz)}
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{@{}rr@{}}
+    \toprule
+    Familie $p \bmod 210$ & Anzahl \\
+    \midrule
+    $5$   & $1$ \\
+    $11$  & $352$ \\
+    $101$ & $327$ \\
+    $191$ & $320$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Damit lässt sich die Struktur als
+\[
+  \boxed{\{5\} \;\cup\; \{11, 101, 191\}}
+\]
+lesen, also
+\[
+  \boxed{\text{eine Ankerklasse plus drei statistische Familien.}}
+\]
+
+\section{Warum genau diese vier Klassen?}
+
+Der Vierling $(p,\, p{+}2,\, p{+}6,\, p{+}8)$ darf modulo $2$, $3$, $5$ und $7$ keine der vier Zahlen in eine durch diese Primzahl teilbare Restklasse schicken. Modulo $210$ werden daher alle Startklassen ausgeschlossen, für die mindestens eine der Zahlen
+\[
+  p,\quad p+2,\quad p+6,\quad p+8
+\]
+durch $2$, $3$, $5$ oder $7$ teilbar wäre.
+
+Übrig bleiben genau die vier oben genannten Klassen. Die Klasse $5$ ist dabei singulär (Anfangsvierling); die drei großen Familien tragen die wiederkehrende empirische Masse.
+
+\section{Formulierung für eine englischsprachige Kurzfassung}
+
+\begin{observation}
+Let $Q(p) = (p, p+2, p+6, p+8)$ be a prime quadruplet. Then the starting prime $p$ belongs modulo $210$ to one of the four residue classes
+\[
+  p \equiv 5,\, 11,\, 101,\, 191 \pmod{210}.
+\]
+The residue class $5 \pmod{210}$ contains the exceptional initial quadruplet $Q(5) = (5,7,11,13)$. Apart from this anchoring class, the nontrivial population of prime quadruplets is distributed among the three families
+\[
+  \boxed{11,\, 101,\, 191 \pmod{210}.}
+\]
+Empirically, in the tested range, these three families are approximately equidistributed.
+\end{observation}
+
+\section{Interpretation im BM/EABC-Stil}
+
+Die mod-$12$-Diskussion liefert das grobe EABC-Muster ($\mathrm{ABCE}$ oder $\mathrm{CEAB}$); mod $36$ eine dreifache Phasenfeinstruktur. Modulo $210$ ist die Einschränkung stärker:
+\[
+  \boxed{\text{Mod } 210 \text{ ist die erste Ebene, auf der die Vierlinge in drei echte statistische Familien zerfallen.}}
+\]
+Die Ankerklasse $5$ ist der Ursprungspunkt:
+\[
+  5 \longrightarrow (5,\, 7,\, 11,\, 13),
+\]
+während $11$, $101$, $191$ die tragende Wiederholstruktur bilden.
+
+\section{Vorschlag für einen Abstract}
+
+\begin{quote}
+\textbf{Abstract.}
+We study prime quadruplets $Q(p) = (p, p+2, p+6, p+8)$ through their residue structure modulo $210 = 2\cdot 3\cdot 5\cdot 7$. The main observation is that admissibility reduces the starting primes $p$ to exactly four residue classes,
+\[
+  p \equiv 5,\, 11,\, 101,\, 191 \pmod{210}.
+\]
+The class $p \equiv 5 \pmod{210}$ acts as an anchoring class containing the initial quadruplet $(5,7,11,13)$, while all subsequent nontrivial quadruplets fall into three statistical families $11,\, 101,\, 191 \pmod{210}$. In the tested range, these three families are approximately equidistributed. Additional tests on transition matrices, gap sequences, and center smoothness show no evidence for dynamical correlations beyond the local congruence constraints.
+\end{quote}
+
+\section{Leitsatz}
+
+\begin{center}
+\fbox{\parbox{0.92\linewidth}{
+Primzahlvierlinge besitzen modulo $210$ eine $3{+}1$-Familienstruktur:\quad
+\textit{eine Ankerfamilie $5$ und drei Hauptfamilien $11$, $101$, $191$.}}}
+\end{center}
+
+\end{document}

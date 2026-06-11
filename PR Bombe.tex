@@ -1,0 +1,621 @@
+\documentclass[11pt,a4paper]{article}
+
+% -------------------------------------------------
+% Encoding / Language
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+% -------------------------------------------------
+% Math
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{bm}
+
+% -------------------------------------------------
+% Layout
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+% -------------------------------------------------
+% Theorems
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+
+% -------------------------------------------------
+% Shortcuts
+% -------------------------------------------------
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\kk}{\bm{k}}
+\newcommand{\x}{\bm{x}}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Q}{\mathcal{Q}}
+\newcommand{\Sphere}{\mathbb{B}^3}
+\newcommand{\dd}{\mathrm{d}}
+
+% -------------------------------------------------
+% Title
+% -------------------------------------------------
+\title{
+	Global Stability versus Directional Positivity in the Two Higgs Doublet Model\\
+	\large A Structural Correction via Quadratic Completion and Coupled Scale--Direction Analysis
+}
+
+\author{
+	Thomas Hoffbauer\\
+	\small Bamberg, Germany
+}
+
+\date{}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Recent formal verification of the two Higgs doublet model (2HDM) potential has revealed an error in a widely cited stability criterion: a condition formulated only in terms of directional data is not sufficient for global boundedness from below. In this paper, we isolate the structural origin of that failure. We show that the stability problem is intrinsically a coupled scale--direction problem and that the correct criterion follows directly from quadratic completion. We then formalize this viewpoint in terms of a drift--curvature decomposition and a corresponding operator-theoretic framework. In this formulation, stability is not a purely geometric property of directions, but a coercivity property of a coupled system across scales.
+	\end{abstract}
+	
+	\section{Introduction}
+	
+	The stability problem for scalar potentials is fundamental in quantum field theory. In the two Higgs doublet model (2HDM), one asks whether the potential is bounded from below on the full configuration space.
+	
+	A recent formalization in Lean has shown that a widely cited 2006 criterion is incorrect: a condition stated in terms of the directional functions \(J_2\) and \(J_4\) is necessary but not sufficient for global stability. In particular, a purely directional positivity condition was incorrectly taken to imply boundedness from below of the full potential. :contentReference[oaicite:1]{index=1}
+	
+	The purpose of the present note is twofold:
+	\begin{enumerate}
+		\item to isolate the structural reason for this failure in elementary analytic terms;
+		\item to recast the corrected condition in a more mathematical framework as a coupled scale--direction coercivity problem.
+	\end{enumerate}
+	
+	The key point is simple: once the potential is written in the reduced form
+	\[
+	V(K_0,\kk)=K_0J_2(\kk)+K_0^2J_4(\kk),
+	\]
+	stability is no longer a question about directions \(\kk\) alone. It is a question about how the directional drift term \(J_2\) is controlled by the directional curvature term \(J_4\) uniformly across the scale variable \(K_0\).
+	
+	\section{Reduced form of the 2HDM potential}
+	
+	Following the standard Gram-vector reduction, the full 2HDM potential can be written in terms of a real variable \(K_0>0\) and a normalized direction \(\kk\in\R^3\) satisfying
+	\[
+	\norm{\kk}^2\le 1.
+	\]
+	Then the potential takes the form
+	\begin{equation}\label{eq:reduced-potential}
+		V(K_0,\kk)=K_0J_2(\kk)+K_0^2J_4(\kk),
+	\end{equation}
+	where \(J_2\) is affine and \(J_4\) is quadratic in \(\kk\). This reduction is standard in the literature and is also the form used in the recent formal analysis. :contentReference[oaicite:2]{index=2}
+	
+	We denote by
+	\[
+	\Sphere:=\{\kk\in\R^3:\norm{\kk}^2\le 1\}
+	\]
+	the closed unit ball of admissible directions.
+	
+	\begin{definition}
+		The potential \(V\) is said to be \emph{globally stable} if there exists \(c\in\R\) such that
+		\[
+		V(K_0,\kk)\ge c
+		\qquad
+		\text{for all }K_0>0,\ \kk\in\Sphere.
+		\]
+	\end{definition}
+	
+	This is a genuinely global condition with quantifier pattern
+	\[
+	\exists c\in\R\ \forall K_0>0\ \forall \kk\in\Sphere.
+	\]
+	
+	\section{Quadratic completion and the corrected stability criterion}
+	
+	For fixed \(\kk\), define
+	\[
+	f_{\kk}(K_0):=K_0J_2(\kk)+K_0^2J_4(\kk),\qquad K_0>0.
+	\]
+	
+	\begin{lemma}[Quadratic completion]\label{lem:quadratic-completion}
+		Assume \(J_4(\kk)>0\). Then
+		\[
+		f_{\kk}(K_0)
+		=
+		J_4(\kk)\left(K_0+\frac{J_2(\kk)}{2J_4(\kk)}\right)^2
+		-\frac{J_2(\kk)^2}{4J_4(\kk)}.
+		\]
+		In particular, the infimum of \(f_{\kk}\) is finite if and only if the negative contribution
+		\[
+		-\frac{J_2(\kk)^2}{4J_4(\kk)}
+		\]
+		is uniformly controlled.
+	\end{lemma}
+	
+	\begin{proof}
+		This is immediate by completing the square.
+	\end{proof}
+	
+	The recent formal result shows that the stability condition is equivalent to the existence of \(c\ge 0\) such that
+	\[
+	J_4(\kk)\ge 0
+	\quad\text{and}\quad
+	\bigl(J_2(\kk)<0 \Longrightarrow J_2(\kk)^2\le 4c\,J_4(\kk)\bigr)
+	\]
+	for all admissible \(\kk\). :contentReference[oaicite:3]{index=3}
+	
+	We record this in the present notation.
+	
+	\begin{theorem}[Corrected global stability criterion]\label{thm:corrected-criterion}
+		The reduced potential \eqref{eq:reduced-potential} is globally stable if and only if there exists \(c\ge 0\) such that for every \(\kk\in\Sphere\),
+		\begin{equation}\label{eq:corrected-criterion}
+			J_4(\kk)\ge 0
+			\qquad\text{and}\qquad
+			\bigl(J_2(\kk)<0 \Longrightarrow J_2(\kk)^2\le 4c\,J_4(\kk)\bigr).
+		\end{equation}
+	\end{theorem}
+	
+	\begin{remark}
+		The significance of \cref{thm:corrected-criterion} is that it is not a purely directional positivity statement. It is a \emph{coupling inequality}: the square of the linear contribution must be controlled by the quadratic contribution uniformly in direction.
+	\end{remark}
+	
+	\section{Why directional positivity alone fails}
+	
+	The incorrect criterion attempted to derive global stability from conditions imposed only on the directional data. Structurally, this fails because the infimum over \(K_0\) is sensitive not merely to the signs of \(J_2\) and \(J_4\), but to their relative size.
+	
+	\begin{proposition}[Structural obstruction]\label{prop:obstruction}
+		Suppose there exists a direction \(\kk_*\in\Sphere\) such that
+		\[
+		J_4(\kk_*)>0,\qquad J_2(\kk_*)<0,
+		\]
+		but
+		\[
+		\frac{J_2(\kk_*)^2}{J_4(\kk_*)}
+		\]
+		is arbitrarily large along an admissible family of directions. Then \(V\) cannot be globally stable.
+	\end{proposition}
+	
+	\begin{proof}
+		By \cref{lem:quadratic-completion}, the minimum of \(f_{\kk}\) contains the negative contribution
+		\[
+		-\frac{J_2(\kk)^2}{4J_4(\kk)}.
+		\]
+		If this term is not uniformly bounded below on \(\Sphere\), then no global lower bound \(c\) can exist.
+	\end{proof}
+	
+	\begin{remark}
+		This is exactly the point missed by a criterion based only on directional positivity. Positivity of \(J_4\) is not enough; one needs a quantitative domination of the drift term by the curvature term.
+	\end{remark}
+	
+	\section{A coupled scale--direction formulation}
+	
+	The reduced potential \eqref{eq:reduced-potential} suggests a natural decomposition into two directional functionals:
+	\[
+	\D(\kk):=J_2(\kk),\qquad \Q(\kk):=J_4(\kk).
+	\]
+	We interpret \(\D\) as a first-order drift functional and \(\Q\) as a second-order curvature functional.
+	
+	\begin{definition}[Coupled coercivity]
+		We say that the pair \((\D,\Q)\) is \emph{uniformly coercive on \(\Sphere\)} if there exists \(c\ge 0\) such that
+		\begin{equation}\label{eq:uniform-coercivity}
+			\Q(\kk)\ge 0
+			\quad\text{and}\quad
+			\D(\kk)^2\le 4c\,\Q(\kk)
+			\quad\text{whenever }\D(\kk)<0,
+			\qquad \forall \kk\in\Sphere.
+		\end{equation}
+	\end{definition}
+	
+	Then \cref{thm:corrected-criterion} becomes a statement of coercivity of a coupled scale--direction system.
+	
+	\begin{corollary}\label{cor:coercive-formulation}
+		Global stability of the reduced 2HDM potential is equivalent to uniform coercivity of the pair \((\D,\Q)\) on the admissible direction space \(\Sphere\).
+	\end{corollary}
+	
+	This formulation makes the geometric content transparent:
+	\begin{itemize}
+		\item \(\D\) determines the preferred downward drift along a direction;
+		\item \(\Q\) determines the restoring curvature along that direction;
+		\item stability occurs precisely when negative drift cannot overwhelm curvature uniformly across all directions.
+	\end{itemize}
+	
+	\section{An effective radial functional}
+	
+	For each admissible direction \(\kk\), define the effective radial infimum
+	\begin{equation}\label{eq:effective-radial}
+		\mathscr{E}(\kk):=\inf_{K_0>0}\bigl(K_0\D(\kk)+K_0^2\Q(\kk)\bigr).
+	\end{equation}
+	
+	\begin{proposition}\label{prop:effective-energy}
+		The effective radial functional is given by
+		\[
+		\mathscr{E}(\kk)=
+		\begin{cases}
+			0, & \text{if }\D(\kk)\ge 0 \text{ and }\Q(\kk)\ge 0,\\[0.5em]
+			-\dfrac{\D(\kk)^2}{4\Q(\kk)}, & \text{if }\D(\kk)<0 \text{ and }\Q(\kk)>0,\\[1em]
+			-\infty, & \text{if }\Q(\kk)<0 \text{ or if } \Q(\kk)=0 \text{ and }\D(\kk)<0.
+		\end{cases}
+		\]
+	\end{proposition}
+	
+	\begin{proof}
+		This follows by minimizing explicitly in \(K_0\) using \cref{lem:quadratic-completion}, together with the degenerate cases \(\Q(\kk)=0\) and \(\Q(\kk)<0\).
+	\end{proof}
+	
+	\begin{corollary}\label{cor:effective-energy-boundedness}
+		The potential is globally stable if and only if
+		\[
+		\inf_{\kk\in\Sphere}\mathscr{E}(\kk)>-\infty.
+		\]
+	\end{corollary}
+	
+	Thus the stability problem can be rephrased as boundedness from below of an induced effective energy on direction space. This is often the most economical way to see why purely directional sign conditions are insufficient: one must control the \emph{ratio} \(\D^2/\Q\), not merely the signs of \(\D\) and \(\Q\).
+	
+	\section{A bilinear and operator-theoretic reformulation}
+	
+	The previous discussion suggests introducing a two-component scale vector
+	\[
+	u(K_0):=
+	\begin{pmatrix}
+		1\\
+		K_0
+	\end{pmatrix},
+	\]
+	and the direction-dependent symmetric matrix
+	\begin{equation}\label{eq:direction-matrix}
+		M(\kk):=
+		\begin{pmatrix}
+			0 & \frac12 \D(\kk)\\[0.3em]
+			\frac12 \D(\kk) & \Q(\kk)
+		\end{pmatrix}.
+	\end{equation}
+	Then
+	\begin{equation}\label{eq:bilinear-form}
+		u(K_0)^{\!T} M(\kk)\,u(K_0)=K_0\D(\kk)+K_0^2\Q(\kk)=V(K_0,\kk).
+	\end{equation}
+	
+	This turns the potential into a family of quadratic forms parameterized by direction.
+	
+	\begin{proposition}
+		For fixed \(\kk\), boundedness from below of \(V(\cdot,\kk)\) on \(K_0>0\) is equivalent to semiboundedness of the quadratic form \eqref{eq:bilinear-form} along the ray \(u(K_0)\).
+	\end{proposition}
+	
+	More conceptually, one may view \(M(\kk)\) as the finite-dimensional shadow of a direction-dependent operator family. The drift term enters off-diagonally, while the curvature term governs the dominant diagonal contribution. The obstruction to stability is therefore a failure of coercivity in this family.
+	
+	\begin{remark}
+		In this form, the stability problem becomes analogous to the semiboundedness problem for a family of effective Hamiltonians: the lower-order part must be form-bounded with respect to the higher-order part.
+	\end{remark}
+	
+	\section{A spectral heuristic}
+	
+	Although the present paper is elementary, the corrected stability criterion suggests a broader principle.
+	
+	Suppose one replaces the scalar pair \((\D,\Q)\) by operators \((D_1,D_2)\) on a Hilbert space \(\mathcal{H}\), and considers a scale-dependent family
+	\[
+	H(t)=tD_1+t^2D_2,\qquad t>0.
+	\]
+	Then semiboundedness of \(H(t)\) uniformly in \(t\) requires that the contribution of \(D_1\) be controlled in quadratic-form sense by that of \(D_2\). In other words, one expects a relative form bound of the schematic type
+	\[
+	|\langle \psi,D_1\psi\rangle|^2
+	\lesssim
+	\langle \psi,D_2\psi\rangle
+	\]
+	on an appropriate domain.
+	
+	This is the infinite-dimensional analogue of \eqref{eq:uniform-coercivity}. The scalar 2HDM problem may therefore be regarded as a toy model of a more general principle: \emph{global stability arises from domination of drift by curvature, or of lower-order terms by higher-order coercive terms}.
+	
+	\section{Conclusion}
+	
+	The error uncovered by formal verification was not merely technical. Its structural origin is the replacement of a coupled global condition by a purely directional one.
+	
+	The reduced potential
+	\[
+	V(K_0,\kk)=K_0J_2(\kk)+K_0^2J_4(\kk)
+	\]
+	already makes the correct logic transparent:
+	\begin{enumerate}
+		\item stability is a mixed scale--direction problem;
+		\item quadratic completion yields the sharp criterion;
+		\item the relevant object is not directional positivity, but coupled coercivity.
+	\end{enumerate}
+	
+	The mathematically natural reformulation is therefore:
+	\[
+	\text{global stability}
+	\quad \Longleftrightarrow \quad
+	\text{uniform control of drift by curvature}.
+	\]
+	
+	This is the real content hidden behind the formal correction. The recent Lean formalization did not merely identify a false theorem; it exposed the need for a more precise analytic language for the stability problem itself. :contentReference[oaicite:4]{index=4}
+	
+	\section{Grundgerüst des Modells}
+	
+	In diesem Abschnitt formulieren wir die Bausteine, die als tragfähiger Kern des Modells dienen sollen. Ziel ist nicht, bereits alle numerischen und heuristischen Beobachtungen endgültig zu beweisen, sondern einen klaren formalen Rahmen festzulegen, innerhalb dessen Balance, Schalenwechsel und lokale Primzahlkonstellationen untersucht werden können.
+	
+	\subsection{Leitidee}
+	
+	Das Modell beruht auf drei Grundgedanken:
+	
+	\begin{enumerate}
+		\item Jede Zahl \(n\) mit \(\gcd(n,6)=1\) wird relativ zu einer wachsenden Primzahlschale \(P_k\) in einen bereits aufgelösten Anteil und einen verbleibenden Restkern zerlegt.
+		\item Der Restkern wird nicht nur als Produkt, sondern zugleich nach Restklassen modulo \(12\) in die vier Familien \(E,A,B,C\) zerlegt.
+		\item Die Dynamik dieser Zerlegung wird logarithmisch gemessen. Dadurch entstehen natürliche Balance- und Wechselpunkte.
+	\end{enumerate}
+	
+	\subsection{Axiomatische Grundobjekte}
+	
+	\begin{definition}[Reduzierte Zahlenmenge]
+		\label{def:modell_M}
+		Wir definieren
+		\[
+		\mathcal M:=\{n\in\mathbb N:\gcd(n,6)=1\}.
+		\]
+		Alle betrachteten Zahlen liegen in \(\mathcal M\).
+	\end{definition}
+	
+	\begin{definition}[Primzahlschale]
+		\label{def:modell_pk}
+		Für \(k\ge 1\) sei
+		\[
+		P_k=\{2,3,5,\dots,p_k\}
+		\]
+		die \(k\)-te Primzahlschale.
+	\end{definition}
+	
+	\begin{definition}[Schalenanteil und Restkern]
+		\label{def:modell_sk_rk}
+		Für \(n\in\mathcal M\) definieren wir
+		\[
+		S_k(n):=\prod_{p\le p_k} p^{v_p(n)}
+		\]
+		als den bereits durch die Schale \(P_k\) aufgelösten Anteil und
+		\[
+		R_k(n):=\frac{n}{S_k(n)}
+		\]
+		als den verbleibenden Restkern.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Die Größe \(S_k(n)\) beschreibt die bereits absorbierte Struktur, \(R_k(n)\) die noch offene Struktur. Diese Zweiteilung ist die grundlegende Architektur des Modells.
+	\end{bemerkung}
+	
+	\subsection{Die vier Restklassenfamilien}
+	
+	\begin{definition}[Familien \(E,A,B,C\)]
+		\label{def:modell_eabc}
+		Die Primzahlen größer als \(3\) fallen modulo \(12\) in die vier Familien
+		\[
+		E\equiv 1,\qquad
+		A\equiv 5,\qquad
+		B\equiv 7,\qquad
+		C\equiv 11 \pmod{12}.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Restklassenzerlegung des Kerns]
+		\label{def:modell_zerlegung}
+		Für \(n\in\mathcal M\) und \(k\ge 1\) setzen wir
+		\[
+		E_k(n):=\prod_{\substack{q^a\parallel R_k(n)\\ q\equiv 1\ (12)}} q^a,\qquad
+		A_k(n):=\prod_{\substack{q^a\parallel R_k(n)\\ q\equiv 5\ (12)}} q^a,
+		\]
+		\[
+		B_k(n):=\prod_{\substack{q^a\parallel R_k(n)\\ q\equiv 7\ (12)}} q^a,\qquad
+		C_k(n):=\prod_{\substack{q^a\parallel R_k(n)\\ q\equiv 11\ (12)}} q^a.
+		\]
+		Dann gilt
+		\[
+		R_k(n)=E_k(n)A_k(n)B_k(n)C_k(n).
+		\]
+	\end{definition}
+	
+	\begin{definition}[Modi]
+		\label{def:modell_modi}
+		Wir betrachten Modi
+		\[
+		M\in\{E,A,B,C,EA,BC,ABC,R\},
+		\]
+		wobei \(M_k(n)\) jeweils das entsprechende Produkt der zugehörigen Komponenten bezeichnet, insbesondere
+		\[
+		R_k(n)=E_k(n)A_k(n)B_k(n)C_k(n).
+		\]
+	\end{definition}
+	
+	\subsection{Logarithmische Massenbilanz}
+	
+	\begin{definition}[Logarithmische Modusdifferenz]
+		\label{def:modell_lmk}
+		Für \(n\in\mathcal M\), \(k\ge 1\) und einen Modus \(M\) definieren wir
+		\[
+		L_k^M(n):=\log M_k(n)-\log S_k(n).
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		Diese Größe ist der zentrale dynamische Träger des Modells. Sie misst die Differenz zwischen der noch im Modus \(M\) enthaltenen Restmasse und der bereits absorbierten Schalenmasse. Durch die Logarithmierung wird die multiplikative Struktur additiv.
+	\end{bemerkung}
+	
+	\begin{axiom}[Additive Massendynamik]
+		\label{ax:additivitaet}
+		Alle wesentlichen Balance- und Wechselphänomene des Modells werden auf der Ebene der Größen \(L_k^M(n)\) beschrieben. Produkte von Primfaktoren werden daher grundsätzlich über ihre logarithmischen Beiträge analysiert.
+	\end{axiom}
+	
+	\subsection{Balance und Wechsel als kanonische Strukturgrößen}
+	
+	\begin{definition}[Balancepunkt]
+		\label{def:modell_bal}
+		Für \(n\in\mathcal M\) und einen Modus \(M\) sei
+		\[
+		\pi_{\bal}^M(n):=p_j,
+		\]
+		wobei \(j\) der kleinste Index ist, für den \(S_j(n)>1\), \(M_j(n)>1\) und \(|L_j^M(n)|\) minimal wird.
+	\end{definition}
+	
+	\begin{definition}[Wechselpunkt]
+		\label{def:modell_wech}
+		Für \(n\in\mathcal M\) und einen Modus \(M\) sei
+		\[
+		\pi_{\wech}^M(n):=p_j,
+		\]
+		wobei \(j\) der kleinste Index ist, für den
+		\[
+		L_{j-1}^M(n)>0,\qquad L_j^M(n)\le 0,\qquad L_j^M(n)\neq 0
+		\]
+		gilt.
+	\end{definition}
+	
+	\begin{axiom}[Kanonische Schwellen]
+		\label{ax:kanonische_schwellen}
+		Die Größen \(\pi_{\bal}^M(n)\) und \(\pi_{\wech}^M(n)\) werden als die kanonischen Schwellen des Modells betrachtet. Sie kodieren den ersten Balancepunkt bzw. die erste Dominanzumkehr zwischen Schalenmasse und Restmasse.
+	\end{axiom}
+	
+	\subsection{Deterministischer Kern des Restmodus}
+	
+	\begin{definition}[Geordnete logarithmische Primfaktormassen]
+		\label{def:modell_ai}
+		Sei
+		\[
+		n=\prod_{i=1}^t p_i^{a_i},
+		\qquad
+		3<p_1<\dots<p_t.
+		\]
+		Dann definieren wir
+		\[
+		A_i:=a_i\log p_i.
+		\]
+	\end{definition}
+	
+	\begin{axiom}[Restmodus als Grundmodus]
+		\label{ax:restmodus}
+		Der Restmodus \(M=R\) bildet den deterministischen Kern des Modells. In diesem Modus werden Balance- und Wechselpunkt ausschließlich durch die geordnete Folge der logarithmischen Primfaktormassen \(A_i\) bestimmt.
+	\end{axiom}
+	
+	\begin{satz}[Deterministisches Strukturprinzip im Restmodus]
+		\label{satz:modell_restmodus}
+		Sei
+		\[
+		n=\prod_{i=1}^t p_i^{a_i},
+		\qquad
+		3<p_1<\dots<p_t,
+		\qquad
+		A_i:=a_i\log p_i.
+		\]
+		Dann wird im Restmodus \(M=R\)
+		
+		\begin{enumerate}
+			\item der Balancepunkt durch die erste kritische Stelle bestimmt, an der die aktuelle logarithmische Masse die verbleibende rechte Restmasse nicht mehr unterschreitet,
+			\item der Wechselpunkt durch die erste kritische Stelle bestimmt, an der die kumulierte linke Log-Masse die verbleibende rechte Log-Masse nicht mehr unterschreitet.
+		\end{enumerate}
+	\end{satz}
+	
+	\begin{bemerkung}
+		Für
+		\[
+		n=pqr,\qquad 3<p<q<r,
+		\]
+		folgt daraus in natürlicher Weise
+		\[
+		\pi_{\bal}^R(n)=\pi_{\wech}^R(n)=q.
+		\]
+		Dieser Fall ist das prototypische Minimalbeispiel des deterministischen Kerns.
+	\end{bemerkung}
+	
+	\subsection{Kanalstruktur}
+	
+	\begin{definition}[Grobe Kanalstruktur]
+		\label{def:modell_kanal}
+		Neben der feinen Viererstruktur \(E,A,B,C\) betrachten wir die grobe Zweikanalstruktur
+		\[
+		EA:=E\cdot A,\qquad BC:=B\cdot C.
+		\]
+		Sie induziert für lokale Primzahlmuster, insbesondere für Vierlinge, grobe Kanaltypen wie
+		\[
+		EA-BC-BC-EA
+		\qquad\text{und}\qquad
+		BC-EA-EA-BC.
+		\]
+	\end{definition}
+	
+	\begin{axiom}[Kanalkorrektur]
+		\label{ax:kanalkorrektur}
+		Lokale Primzahlkonstellationen werden im Modell nicht allein durch ihre Balancegröße beschrieben. Zusätzlich wird ein grober Kanalterm zugelassen, der systematische Asymmetrien zwischen unterschiedlichen Konstellationstypen erfasst.
+	\end{axiom}
+	
+	\subsection{Lokale Triggergrößen}
+	
+	\begin{definition}[Kanal-korrigierter Trigger]
+		\label{def:modell_trigger}
+		Für eine lokale Primzahlkonstellation \(Q\), insbesondere einen dichten Primzahlvierling \(Q_4\), definieren wir einen kanal-korrigierten Trigger der Form
+		\[
+		T_c(Q):=B_\pi(Q)+c\cdot \mathbf{1}_{\{\text{aktiver Kanal}\}}(Q).
+		\]
+		Dabei ist \(B_\pi(Q)\) eine geeignete Balancegröße relativ zu einem Pivot \(\pi\), \(c\ge 0\) ein Kanalbonus und \(\mathbf{1}_{\{\text{aktiver Kanal}\}}\) der Indikator eines numerisch bevorzugten Kanals.
+	\end{definition}
+	
+	\begin{axiom}[Additive Triggerform]
+		\label{ax:triggerform}
+		Die einfachste brauchbare Ein-Zahlen-Kodierung lokaler Primzahldynamik ist nicht rein balanciert, sondern additiv kanal-korrigiert. Der Trigger \(T_c\) wird daher als bevorzugte empirische Modellgröße verwendet.
+	\end{axiom}
+	
+	\begin{bemerkung}
+		In den bisherigen numerischen Daten erwies sich insbesondere ein Bonus nahe
+		\[
+		c\approx 6
+		\]
+		als natürlich und wirksam.
+	\end{bemerkung}
+	
+	\subsection{Methodische Trennung der Ebenen}
+	
+	\begin{axiom}[Dreiebenen-Prinzip]
+		\label{ax:drei_ebenen}
+		Das Modell unterscheidet konsequent zwischen:
+		\begin{enumerate}
+			\item \textbf{deterministischen Aussagen} über Schalen, Restkerne, logarithmische Massen und kritische Indizes,
+			\item \textbf{numerischen Beobachtungen} über Primzahlkonstellationen, Trigger und Distanzen,
+			\item \textbf{heuristischen Modellannahmen} über Bias, Entropie, Kovarianzen und Wartezeiten.
+		\end{enumerate}
+	\end{axiom}
+	
+	\begin{bemerkung}
+		Dieses Dreiebenen-Prinzip ist wesentlich, damit der belastbare mathematische Kern nicht mit spekulativen oder numerisch motivierten Erweiterungen vermischt wird.
+	\end{bemerkung}
+	
+	\subsection{Arbeitsprogramm des Modells}
+	
+	\begin{definition}[Arbeitsprogramm]
+		\label{def:arbeitsprogramm}
+		Das Modell verfolgt das folgende Arbeitsprogramm:
+		\begin{enumerate}
+			\item Bestimme für gegebene Zahlen \(n\in\mathcal M\) die Größen \(S_k(n)\), \(R_k(n)\), \(L_k^M(n)\), \(\pi_{\bal}^M(n)\), \(\pi_{\wech}^M(n)\).
+			\item Untersuche die Verteilung der Restkernmasse in den Familien \(E,A,B,C\) bzw. den groben Kanälen \(EA,BC\).
+			\item Verbinde diese Größen mit lokalen Primzahlmustern wie Zwillingen, Drillingen, Vierlingen und Fünflingen.
+			\item Teste, welche numerischen Trigger aus Balance und Kanalstruktur die lokale Clusterdichte am besten beschreiben.
+		\end{enumerate}
+	\end{definition}
+	
+	\subsection{Vorläufiges Fazit}
+	
+	\begin{bemerkung}
+		Das hier formulierte Grundgerüst enthält genau die Teile, die für das Modell derzeit am tragfähigsten erscheinen:
+		
+		\begin{itemize}
+			\item die Zweiteilung in Schale und Restkern,
+			\item die Restklassenzerlegung modulo \(12\),
+			\item die logarithmische Massenbilanz,
+			\item Balance- und Wechselpunkte,
+			\item den deterministischen Restmodus über \(A_i=a_i\log p_i\),
+			\item sowie den additiven kanal-korrigierten Trigger.
+		\end{itemize}
+		
+		Diese Bausteine genügen bereits, um einen konsistenten Rahmen für die bisherige numerische und heuristische Arbeit zu liefern.
+	\end{bemerkung}
+	
+\end{document}

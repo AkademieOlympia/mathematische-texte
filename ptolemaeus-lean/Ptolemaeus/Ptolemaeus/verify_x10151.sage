@@ -1,0 +1,133 @@
+# -*- coding: utf-8 -*-
+# sage verify_x10151.sage
+#
+# Quelle: Clark Kimberling, Encyclopedia of Triangle Centers, Part 6
+#   https://faculty.evansville.edu/ck6/encyclopedia/ETCPart6.html
+#
+# X(10151) = Mittelpunkt von X(4) und X(403)  (ETC; dort Tippfehler „MIDOINT“)
+# X(10151) liegt auf der Euler-Geraden (ETC).
+# Baryzentrische Linearform (ETC, dieselbe Seite):
+#   X(10151) = (4*R^2 - SW) * X(3) + (14*R^2 - 3*SW) * X(4)
+# mit SW = a^2 + b^2 + c^2, R Umkreisradius, X(3)=O, X(4)=H.
+#
+# Wir rechnen im Bruchkörper Frac(QQ[a,b,c]) mit Delta^2 = s(s-a)(s-b)(s-c),
+# R^2 = a^2 b^2 c^2 / (16 Delta^2), und der üblichen Euler-Geraden-Gleichung
+# in Conway-Notation (Seitenquadrate a^2, b^2, c^2).
+#
+# ETC-Trilinears X(10151): (SA-24*R^2+5*SW)*SB*SC*b*c : :
+# → baryzentrisch (Kimberling) a*tri : b*tri : c*tri; nach Kürzen von a*b*c:
+#   T = ((SA-24R^2+5SW)*SB*SC, zyklisch).
+# Abgleich mit L = (4R^2-SW)*O + (14R^2-3SW)*H: beide mit Euler-Linie
+# Skalarprodukt 0; T × L ist i. A. ≠ 0 (homogene Richtungen verschieden).
+
+from sage.all import PolynomialRing, QQ, vector, Frac
+
+
+def conway_and_euler_line(K, a2, b2, c2):
+    SA = K((b2 + c2 - a2) / 2)
+    SB = K((a2 + c2 - b2) / 2)
+    SC = K((a2 + b2 - c2) / 2)
+    line = vector(K, [SA * (b2 - c2), SB * (c2 - a2), SC * (a2 - b2)])
+    return SA, SB, SC, line
+
+
+def bary_OH(K, a, b, c):
+    a2, b2, c2 = a**2, b**2, c**2
+    SA, SB, SC, line = conway_and_euler_line(K, a2, b2, c2)
+    H = vector(K, [SB * SC, SC * SA, SA * SB])
+    O = vector(K, [2 * a2 * SA, 2 * b2 * SB, 2 * c2 * SC])
+    return O, H, line
+
+
+def x10151_from_etc_linear_form(K, a, b, c):
+    """Kimberling: (4*R^2 - SW)*X(3) + (14*R^2 - 3*SW)*X(4)."""
+    a2, b2, c2 = a**2, b**2, c**2
+    SW = a2 + b2 + c2
+    s = K((a + b + c) / 2)
+    Delta2 = s * (s - a) * (s - b) * (s - c)
+    R2 = a2 * b2 * c2 / (16 * Delta2)
+    p = 4 * R2 - SW
+    q = 14 * R2 - 3 * SW
+    O, H, _ = bary_OH(K, a, b, c)
+    return p * O + q * H
+
+
+def x10151_bary_from_trilinears_simplified(K, a, b, c):
+    """Nach Kürzen von a*b*c aus a*tri : b*tri : c*tri (ETC Trilinears)."""
+    a2, b2, c2 = a**2, b**2, c**2
+    SA, SB, SC, _ = conway_and_euler_line(K, a2, b2, c2)
+    SW = a2 + b2 + c2
+    s = K((a + b + c) / 2)
+    Delta2 = s * (s - a) * (s - b) * (s - c)
+    R2 = a2 * b2 * c2 / (16 * Delta2)
+    return vector(
+        K,
+        [
+            (SA - 24 * R2 + 5 * SW) * SB * SC,
+            (SB - 24 * R2 + 5 * SW) * SC * SA,
+            (SC - 24 * R2 + 5 * SW) * SA * SB,
+        ],
+    )
+
+
+def verify_trilinear_vs_linear_cross():
+    R = PolynomialRing(QQ, names=("a", "b", "c"))
+    a, b, c = R.gens()
+    K = Frac(R)
+    _, _, line = bary_OH(K, a, b, c)
+    T = x10151_bary_from_trilinears_simplified(K, a, b, c)
+    L = x10151_from_etc_linear_form(K, a, b, c)
+    dotT = line.dot_product(T)
+    dotL = line.dot_product(L)
+    cross01 = T[0] * L[1] - T[1] * L[0]
+    return {
+        "Euler_skalar_T": dotT,
+        "Euler_skalar_L": dotL,
+        "T_parallel_L": cross01 == 0,
+        "Kreuz01_Zählergrad": cross01.numerator().degree() if cross01 != 0 else None,
+    }
+
+
+def verify_etc_x10151_on_euler_line():
+    R = PolynomialRing(QQ, names=("a", "b", "c"))
+    a, b, c = R.gens()
+    K = Frac(R)
+    _, _, line = bary_OH(K, a, b, c)
+    X = x10151_from_etc_linear_form(K, a, b, c)
+    check = line.dot_product(X)
+    return {"Skalarprodukt_Euler_mal_X10151": check, "ist_null": check == 0}
+
+
+def verify_altes_snippet_falsch():
+    """Früherer Test mit a2/(SB*SC-SA^2) : … — das ist NICHT X(10151) laut ETC."""
+    R = PolynomialRing(QQ, names=("a2", "b2", "c2"))
+    a2, b2, c2 = R.gens()
+    K = Frac(R)
+    SA, SB, SC, line = conway_and_euler_line(K, a2, b2, c2)
+    alt = vector(
+        K,
+        [
+            a2 / (SB * SC - SA**2),
+            b2 / (SC * SA - SB**2),
+            c2 / (SA * SB - SC**2),
+        ],
+    )
+    check = line.dot_product(alt)
+    return {"Skalarprodukt_mit_altem_Snippet": check, "ist_null": check == 0}
+
+
+def main():
+    print("=== ETC-Linearform X(10151) = (4R^2-SW)*O + (14R^2-3SW)*H ===")
+    for k, v in verify_etc_x10151_on_euler_line().items():
+        print(f"{k}: {v}")
+    print()
+    print("=== Trilinears (gekürzt) vs Linearform: Euler ok, Kreuz i. A. ≠ 0 ===")
+    for k, v in verify_trilinear_vs_linear_cross().items():
+        print(f"{k}: {v}")
+    print()
+    print("=== Vergleich: altes Snippet a2/(SB*SC-SA^2) : … ===")
+    for k, v in verify_altes_snippet_falsch().items():
+        print(f"{k}: {v}")
+
+
+main()

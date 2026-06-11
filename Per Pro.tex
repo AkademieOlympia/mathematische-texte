@@ -1,0 +1,462 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- Kodierung und Sprache ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+
+% --- Mathematik ---
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{mathtools}
+
+% --- Layout ---
+\usepackage[a4paper,margin=2.7cm]{geometry}
+\usepackage{setspace}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+% --- Standardmäßig robuste Grafikeinbindung ---
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\graphicspath{{./}{fig/}{figs/}{images/}{img/}}
+\newcommand{\includegraphicssafe}[2][]{%
+	\IfFileExists{#2}{\includegraphics[#1]{#2}}{%
+		\fbox{\parbox[c][4cm][c]{0.8\linewidth}{\centering Datei #2 nicht gefunden}}%
+	}%
+}
+
+% --- Theorem-Umgebungen ---
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{korollar}[satz]{Korollar}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+\newtheorem{beispiel}[satz]{Beispiel}
+
+% --- Makros ---
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\EFam}{\mathcal{E}}
+\newcommand{\AFam}{\mathcal{A}}
+\newcommand{\BFam}{\mathcal{B}}
+\newcommand{\CFam}{\mathcal{C}}\newcommand{\CC}{\mathcal{C}}
+\newcommand{\Fam}{\operatorname{Fam}}
+\newcommand{\sign}{\sigma}
+\newcommand{\Mass}{\operatorname{M}}
+\newcommand{\QE}{Q_E}
+\newcommand{\QA}{Q_A}
+\newcommand{\QB}{Q_B}
+\newcommand{\QC}{Q_C}
+\newcommand{\QK}{Q_K}
+\newcommand{\Qtot}{Q_{\mathrm{tot}}}
+\newcommand{\rank}{\operatorname{f}}
+\newcommand{\core}{\operatorname{K}}
+\newcommand{\shell}{\operatorname{S}}
+\newcommand{\PS}{\operatorname{PS}}
+
+\title{\textbf{Ein arithmetisches Zahlenperiodensystem\\
+		auf Basis der EABC-Familien}}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir entwickeln ein rein mathematisches Periodensystem der natürlichen Zahlen auf Basis der vier Primzahlfamilien
+		\[
+		E=\{p\text{ prim}: p\equiv 1\!\!\pmod{12}\},\quad
+		A=\{p\text{ prim}: p\equiv 5\!\!\pmod{12}\},
+		\]
+		\[
+		B=\{p\text{ prim}: p\equiv 7\!\!\pmod{12}\},\quad
+		C=\{p\text{ prim}: p\equiv 11\!\!\pmod{12}\}.
+		\]
+		Jede natürliche Zahl $n>1$ wird durch ihre Familienzerlegung, ihren Familienrang, ihre Endsignatur sowie durch arithmetische Ladungszahlen beschrieben. Daraus entsteht eine hierarchische Tafel mit chemieähnlicher Struktur: Spalten entsprechen Endsignaturen, Zeilen dem Familienrang, und zusätzliche Größen wie Masse, Schalenladung und Kernladung liefern eine Feinstruktur. Echte Primzahlvierlinge erscheinen dabei als vollständig besetzte neutrale Objekte in der Klasse $(4,E)$.
+	\end{abstract}
+	
+	\tableofcontents
+	\bigskip
+	
+	\section{Grundidee}
+	
+	Das klassische Periodensystem der Chemie ordnet Atome nach Ordnungszahl, Schalenstruktur und Valenzeigenschaften. Wir suchen ein arithmetisches Analogon, in dem natürliche Zahlen nach der Struktur ihrer Primfaktorzerlegung klassifiziert werden.
+	
+	Die zentrale Beobachtung lautet: Für Primzahlen $p>3$ kommen modulo $12$ nur die vier Restklassen
+	\[
+	1,\;5,\;7,\;11
+	\]
+	vor. Diese definieren vier Primfamilien, die in einer natürlichen Weise eine algebraische Viererstruktur tragen.
+	
+	\section{Die vier Primfamilien}
+	
+	\begin{definition}[EABC-Familien]
+		Für Primzahlen $p>3$ definieren wir:
+		\[
+		E:=\{p\text{ prim}: p\equiv 1\pmod{12}\},
+		\qquad
+		A:=\{p\text{ prim}: p\equiv 5\pmod{12}\},
+		\]
+		\[
+		B:=\{p\text{ prim}: p\equiv 7\pmod{12}\},
+		\qquad
+		C:=\{p\text{ prim}: p\equiv 11\pmod{12}\}.
+		\]
+	\end{definition}
+	
+	\begin{bemerkung}
+		Die kleinen Primzahlen $2$ und $3$ stehen außerhalb dieses Vierfamilien-Schemas und werden im Folgenden als \emph{Sonderprimzahlen} behandelt. Für das Periodensystem konzentrieren wir uns auf Zahlen, deren Primfaktorzerlegung nur Primzahlen $>3$ enthält.
+	\end{bemerkung}
+	
+	\section{Algebraische Endsignatur}
+	
+	\begin{definition}[Familiengruppe]
+		Wir identifizieren die Familienmenge $\{E,A,B,C\}$ mit der Kleinschen Vierergruppe
+		\[
+		V_4\cong \Z/2\Z\times \Z/2\Z.
+		\]
+		Dabei gilt
+		\[
+		A^2=B^2=C^2=E,
+		\qquad
+		AB=C,\quad AC=B,\quad BC=A,
+		\qquad
+		ABC=E.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Familienzerlegung]
+		Sei $n>1$ mit Primfaktorzerlegung
+		\[
+		n=\prod_{p^\nu\parallel n} p^\nu.
+		\]
+		Dann definieren wir
+		\[
+		n_E:=\prod_{\substack{p^\nu\parallel n\\ p\in E}} p^\nu,\quad
+		n_A:=\prod_{\substack{p^\nu\parallel n\\ p\in A}} p^\nu,\quad
+		n_B:=\prod_{\substack{p^\nu\parallel n\\ p\in B}} p^\nu,\quad
+		n_C:=\prod_{\substack{p^\nu\parallel n\\ p\in C}} p^\nu.
+		\]
+		Es gilt eindeutig
+		\[
+		n=n_E\,n_A\,n_B\,n_C.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Endsignatur]
+		Die \emph{Endsignatur} einer Zahl $n>1$ sei
+		\[
+		\sign(n)\in\{E,A,B,C\},
+		\]
+		definiert durch die Parität der Exponenten in den Familien $A,B,C$. Quadratische Beiträge sind signaturmäßig neutral.
+	\end{definition}
+	
+	\begin{satz}[Signatur hängt nur vom quadratfreien Kern ab]
+		Ist
+		\[
+		n=s^2r
+		\]
+		mit quadratfreiem Kern $r$, so gilt
+		\[
+		\sign(n)=\sign(r).
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Quadratische Faktoren tragen nur gerade Exponenten und verschwinden in der Familiengruppe, da jedes nichttriviale Element Ordnung $2$ hat.
+	\end{proof}
+	
+	\section{Masse und Ladungen}
+	
+	\begin{definition}[Arithmetische Masse]
+		Für $n\in\N_{>0}$ definieren wir die \emph{arithmetische Masse} durch
+		\[
+		\Mass(n):=n.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Familienladungen]
+		Für $X\in\{E,A,B,C\}$ sei
+		\[
+		Q_X(n):=\#\{p\in X: p\mid n\}.
+		\]
+		Insbesondere heißt
+		\[
+		\QE(n)
+		\]
+		die \emph{E-Schalenladung}.
+	\end{definition}
+	
+	\begin{definition}[Kernladung und Gesamtladungszahl]
+		Wir definieren
+		\[
+		\QK(n):=\QA(n)+\QB(n)+\QC(n)
+		\]
+		als \emph{Kernladung} und
+		\[
+		\Qtot(n):=\QE(n)+\QA(n)+\QB(n)+\QC(n)
+		\]
+		als \emph{Gesamtladungszahl}.
+	\end{definition}
+	
+	\begin{bemerkung}
+		Die Ladungen zählen \emph{verschiedene} Primzahlen, nicht Exponenten. Sie unterscheiden sich also von der Endsignatur $\sign(n)$.
+	\end{bemerkung}
+	
+	\section{Schalen-Kern-Zerlegung}
+	
+	\begin{definition}[Schalen- und Kernanteil]
+		Wir setzen
+		\[
+		\shell(n):=n_E,
+		\qquad
+		\core(n):=n_A n_B n_C.
+		\]
+		Dann gilt
+		\[
+		n=\shell(n)\,\core(n).
+		\]
+	\end{definition}
+	
+	\begin{satz}[Der E-Anteil ist signaturneutral]
+		Für jede Zahl $n>1$ gilt
+		\[
+		\sign(n)=\sign(\core(n)).
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Da $\sign(n_E)=E$ gilt, folgt
+		\[
+		\sign(n)=\sign(n_E)\sign(\core(n))=E\cdot \sign(\core(n))=\sign(\core(n)).
+		\]
+	\end{proof}
+	
+	\begin{korollar}[Signaturerhaltender Aufbau]
+		Ist $q\in E$ eine Primzahl, so gilt für alle $n>1$
+		\[
+		\sign(qn)=\sign(n).
+		\]
+	\end{korollar}
+	
+	\begin{proof}
+		Sofort aus $\sign(q)=E$.
+	\end{proof}
+	
+	\section{Familienrang und hierarchische Klassen}
+	
+	\begin{definition}[Aktive Familien und Familienrang]
+		Die Menge der aktiven Familien von $n>1$ sei
+		\[
+		\Fam(n):=\{X\in\{E,A,B,C\}: n_X>1\}.
+		\]
+		Der \emph{Familienrang} sei
+		\[
+		\rank(n):=|\Fam(n)|.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Hierarchische Klasse]
+		Für $r\in\{1,2,3,4\}$ und $\tau\in\{E,A,B,C\}$ sei
+		\[
+		\mathcal C_{r,\tau}:=\{n>1:\rank(n)=r,\ \sign(n)=\tau\}.
+		\]
+	\end{definition}
+	
+	\begin{satz}[Grobe Periodentafel]
+		Das arithmetische Periodensystem erster Ordnung besteht aus den Klassen
+		\[
+		\mathcal C_{r,\tau},
+		\qquad
+		r\in\{1,2,3,4\},\ \tau\in\{E,A,B,C\}.
+		\]
+		Es ist vollständig besetzbar.
+	\end{satz}
+	
+	\begin{proof}
+		Durch geeignete Produkte von Primzahlen aus den vier Familien lassen sich alle Kombinationen konstruieren. Die Signaturseite folgt aus der Kleinschen Vierergruppe.
+	\end{proof}
+	
+	\section{Das arithmetische Periodensystem}
+	
+	\begin{definition}[Zahlenperiodensystem]
+		Das \emph{arithmetische EABC-Periodensystem} einer Zahl $n>1$ sei das Tupel
+		\[
+		\PS(n):=\bigl(\rank(n),\sign(n),\QE(n),\QK(n),\Mass(n)\bigr).
+		\]
+	\end{definition}
+	
+	\subsection*{Interpretation}
+	\begin{itemize}
+		\item $\rank(n)$ beschreibt die Zahl aktiver Familien.
+		\item $\sign(n)$ ist die Endklasse.
+		\item $\QE(n)$ misst die äußere Schalenladung.
+		\item $\QK(n)$ misst die Kernladung.
+		\item $\Mass(n)$ ist die Ordnungsmasse.
+	\end{itemize}
+	
+	\subsection*{Tabellenachsen}
+	\begin{itemize}
+		\item \textbf{Spalten:} Endsignatur $E,A,B,C$
+		\item \textbf{Zeilen:} Familienrang $1,2,3,4$
+		\item \textbf{Feinstruktur:} Ladungen $\QE,\QK$ und Masse $M$
+	\end{itemize}
+	
+	\section{Beispiele der ersten Tafelstufen}
+	
+	\begin{longtable}{>{\raggedright\arraybackslash}p{2.5cm} >{\raggedright\arraybackslash}p{5.1cm} >{\raggedright\arraybackslash}p{4.2cm} >{\raggedright\arraybackslash}p{2.4cm}}
+		\toprule
+		\textbf{Zahl} & \textbf{Faktorisierung / Familien} & \textbf{Signatur und Ladungen} & \textbf{Klasse}\\
+		\midrule
+		\endhead
+		
+		$13$ & $13\in E$ & $\sign=E,\ \QE=1,\ \QK=0$ & $\mathcal C_{1,E}$\\
+		$5$ & $5\in A$ & $\sign=A,\ \QE=0,\ \QK=1$ & $\mathcal C_{1,A}$\\
+		$7$ & $7\in B$ & $\sign=B,\ \QE=0,\ \QK=1$ & $\mathcal C_{1,B}$\\
+		$11$ & $11\in C$ & $\sign=C,\ \QE=0,\ \QK=1$ & $\mathcal C_{1,C}$\\
+		$65$ & $5\cdot 13\in A\cdot E$ & $\sign=A,\ \QE=1,\ \QK=1$ & $\mathcal C_{2,A}$\\
+		$35$ & $5\cdot 7\in A\cdot B$ & $\sign=C,\ \QE=0,\ \QK=2$ & $\mathcal C_{2,C}$\\
+		$385$ & $5\cdot 7\cdot 11\in A\cdot B\cdot C$ & $\sign=E,\ \QE=0,\ \QK=3$ & $\mathcal C_{3,E}$\\
+		$5005$ & $13\cdot 5\cdot 7\cdot 11\in E\cdot A\cdot B\cdot C$ & $\sign=E,\ \QE=1,\ \QK=3$ & $\mathcal C_{4,E}$\\
+		\bottomrule
+	\end{longtable}
+	
+	\section{Echte Primzahlvierlinge als vollständig besetzte neutrale Objekte}
+	
+	\begin{definition}[Echter Primzahlvierling]
+		Ein echter Primzahlvierling ist ein Tupel
+		\[
+		Q(p)=(p,p+2,p+6,p+8),
+		\]
+		wobei alle vier Zahlen prim sind.
+	\end{definition}
+	
+	\begin{satz}
+		Jeder echte Primzahlvierling gehört zur Klasse
+		\[
+		\mathcal C_{4,E}.
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Ein echter Primzahlvierling enthält genau eine Primzahl aus jeder Familie in einer der beiden zyklischen Ordnungen
+		\[
+		(A,B,C,E)\quad\text{oder}\quad(C,E,A,B).
+		\]
+		Daher ist der Familienrang $4$ und
+		\[
+		\sign(Q)=E\cdot A\cdot B\cdot C=ABC=E.
+		\]
+	\end{proof}
+	
+	\begin{bemerkung}
+		In der Chemieanalogie erscheinen echte Primzahlvierlinge damit als \emph{voll besetzte neutrale Vierfamilienobjekte}.
+	\end{bemerkung}
+	
+	\section{Aufbauprinzip und Periodizität}
+	
+	\begin{satz}[Neutrale Anregung]
+		Sei $q\in E$ prim. Dann gilt:
+		\[
+		\rank(qn)=
+		\begin{cases}
+			\rank(n)+1, & \text{falls }E\notin \Fam(n),\\
+			\rank(n), & \text{falls }E\in \Fam(n),
+		\end{cases}
+		\]
+		und zugleich
+		\[
+		\sign(qn)=\sign(n).
+		\]
+	\end{satz}
+	
+	\begin{proof}
+		Der Rang steigt genau dann, wenn die Familie $E$ neu hinzukommt. Die Signatur bleibt erhalten, weil $q$ neutral ist.
+	\end{proof}
+	
+	\begin{korollar}[Schalenaufbau]
+		Jede Zahl aus einer Klasse $\mathcal C_{3,\tau}$ ohne $E$-Anteil kann durch Multiplikation mit einer $E$-Primzahl in eine Zahl aus $\mathcal C_{4,\tau}$ überführt werden.
+	\end{korollar}
+	
+	\section{Eine endliche Tafel bis uranähnliche Zahlen}
+	
+	Wir wählen nun als endlichen Abschlussbereich die Zahlen
+	\[
+	1<n\le 92.
+	\]
+	Dies ist rein arithmetisch eine erste schwere Zone mit einem natürlichen Endpunkt bei der Ordnungsmasse $92$, analog zur chemischen Zahl $92$.
+	
+	\subsection*{Repräsentanten bis 92}
+	Im Folgenden geben wir nicht alle Zahlen bis 92 an, sondern charakteristische Repräsentanten:
+	
+	\begin{longtable}{>{\raggedright\arraybackslash}p{1.5cm} >{\raggedright\arraybackslash}p{3.2cm} >{\raggedright\arraybackslash}p{4.4cm} >{\raggedright\arraybackslash}p{4.7cm}}
+		\toprule
+		\textbf{$n$} & \textbf{Familienbild} & \textbf{Zustand} & \textbf{Bemerkung}\\
+		\midrule
+		\endhead
+		
+		$5$ & $A$ & $(1,A,0,1,5)$ & einfaches A-Objekt\\
+		$7$ & $B$ & $(1,B,0,1,7)$ & einfaches B-Objekt\\
+		$11$ & $C$ & $(1,C,0,1,11)$ & einfaches C-Objekt\\
+		$13$ & $E$ & $(1,E,1,0,13)$ & einfaches E-Schalenobjekt\\
+		$35$ & $AB$ & $(2,C,0,2,35)$ & Zweifamilienbindung\\
+		$55$ & $AC$ & $(2,B,0,2,55)$ & Zweifamilienbindung\\
+		$65$ & $EA$ & $(2,A,1,1,65)$ & Schale + Kern\\
+		$77$ & $BC$ & $(2,A,0,2,77)$ & kernlastige Kopplung\\
+		$91$ & $EC$ & $(2,C,1,1,91)$ & schweres Zweifamilienobjekt\\
+		\bottomrule
+	\end{longtable}
+	
+	Dabei steht der Zustandsvektor hier in Kurzform für
+	\[
+	(\rank(n),\sign(n),\QE(n),\QK(n),\Mass(n)).
+	\]
+	
+	\subsection*{Uranähnliche Zone}
+	Wir nennen Zahlen mit großer Ordnungsmasse und hoher Familienkomplexität \emph{uranähnlich}, wenn sie
+	\[
+	\rank(n)=4
+	\]
+	oder eine große Kernladung besitzen und im schweren Bereich der natürlichen Ordnung liegen.
+	
+	Dies ist ein rein mathematischer Begriff, der die starke Komplexität einer Zahl im Periodensystem ausdrückt.
+	
+	\section{Hierarchische Gesamtdeutung}
+	
+	Das arithmetische Periodensystem besitzt die folgende Hierarchie:
+	
+	\begin{enumerate}
+		\item \textbf{Rang 1:} elementare Einfamilienobjekte
+		\item \textbf{Rang 2:} binäre Bindungsobjekte
+		\item \textbf{Rang 3:} ternäre Kernobjekte
+		\item \textbf{Rang 4:} voll besetzte Vierfamilienobjekte
+	\end{enumerate}
+	
+	Jede dieser Stufen zerfällt weiter in die vier Endsignaturspalten
+	\[
+	E,\ A,\ B,\ C.
+	\]
+	
+	Die Masse ordnet die Objekte in der natürlichen Abzählung, die Schalenladung beschreibt den äußeren $E$-Anteil, und die Kernladung beschreibt die nichtneutralen Familienanteile.
+	
+	\section{Ausblick}
+	
+	Die hier entwickelte Struktur kann in mehrere Richtungen weitergeführt werden:
+	
+	\begin{itemize}
+		\item detaillierte vollständige Tafel aller Zahlen bis zu einer vorgegebenen Ordnungsmasse,
+		\item Untersuchung der Dichteverteilung der Klassen $\mathcal C_{r,\tau}$,
+		\item Einbau von Exponentenstufen als zusätzlicher ``Isotopenstruktur'',
+		\item Einordnung echter Primzahlvierlinge als besondere neutrale Spitzenobjekte,
+		\item Erweiterung zu einem darstellbaren visuellen Zahlenperiodensystem.
+	\end{itemize}
+	
+	\begin{bemerkung}
+		Die Analogie zur Chemie ist rein strukturell gemeint. Das hier vorgestellte System ist kein physikalisches Atommodell, sondern eine arithmetische Klassifikation natürlicher Zahlen mit schalen- und kernähnlicher Hierarchie.
+	\end{bemerkung}
+	
+\end{document}

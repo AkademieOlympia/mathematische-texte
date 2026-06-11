@@ -1,0 +1,271 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[german]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{hyperref}
+\geometry{margin=2.5cm}
+
+\title{Strukturadaptive Faktorisierung: Empirische Analyse eines hybriden Ansatzes}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Wir untersuchen empirisch die Leistungsfähigkeit eines strukturadaptiven Faktorisierungsverfahrens (AQG) im Vergleich zu klassischen Methoden. Basierend auf Benchmarks über mehrere Größenordnungen zeigen wir, dass AQG signifikante Vorteile bei mittleren Eingabegrößen bietet, während sich beide Verfahren für große Zahlen asymptotisch angleichen. Insbesondere zeigen neue Messungen für 100-stellige Zahlen eine nahezu vollständige Konvergenz der Laufzeiten, was auf die Dominanz der asymptotischen Komplexität hinweist.
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Die Faktorisierung großer Zahlen ist ein zentrales Problem der algorithmischen Zahlentheorie. Während klassische Verfahren wie Pollard-Rho oder Quadratic Sieve auf generischen Eigenschaften beruhen, untersuchen wir hier einen Ansatz, der strukturelle Eigenschaften der Eingabe ausnutzt.
+	
+	\section{Methodik}
+	
+	Verglichen werden:
+	\begin{itemize}
+		\item Klassische Faktorisierung
+		\item Strukturadaptives Verfahren (AQG)
+	\end{itemize}
+	
+	Gemessen werden Laufzeiten sowie statistische Kennzahlen (Mittelwert, Median, Quantile).
+	
+	\section{Ergebnisse}
+	
+	\subsection{Mittlere Größen (50 Stellen)}
+	
+	\begin{itemize}
+		\item Median AQG: 489 ms
+		\item Median klassisch: 608 ms
+	\end{itemize}
+	
+	AQG zeigt hier einen klaren Vorteil im typischen Fall.
+	
+	\subsection{Übergangsbereich (60–70 Stellen)}
+	
+	\begin{itemize}
+		\item Mittelwerte nahezu identisch
+		\item leichte Vorteile AQG im oberen Quantilbereich
+	\end{itemize}
+	
+	\subsection{Große Zahlen (100 Stellen)}
+	
+	Neue Messungen ergeben:
+	
+	\begin{itemize}
+		\item Durchschnitt AQG: 2569 ms
+		\item Durchschnitt klassisch: 2533 ms
+		\item Median AQG: 2835 ms
+		\item Median klassisch: 2847 ms
+		\item p90 AQG: 3472 ms
+		\item p90 klassisch: 3513 ms
+		\item p95 AQG: 3769 ms
+		\item p95 klassisch: 3902 ms
+	\end{itemize}
+	
+	Diese Werte zeigen:
+	
+	\begin{equation}
+		t_{\text{AQG}} \approx t_{\text{klassisch}}
+	\end{equation}
+	
+	mit Abweichungen im Bereich weniger Prozent.
+	
+	\section{Analyse}
+	
+	Die Daten zeigen ein konsistentes Drei-Phasen-Modell:
+	
+	\subsection{Phase I: Kleine Zahlen}
+	Hohe Varianz, strukturabhängiges Verhalten.
+	
+	\subsection{Phase II: Mittlere Zahlen}
+	Signifikante Vorteile von AQG im Median.
+	
+	\subsection{Phase III: Große Zahlen}
+	Nahezu vollständige Konvergenz der Laufzeiten.
+	
+	\section{Interpretation}
+	
+	Die Ergebnisse legen nahe:
+	
+	\begin{equation}
+		t(n) = T_{\text{asymptotisch}}(n) + \Delta_{\text{Struktur}}(n)
+	\end{equation}
+	
+	wobei:
+	
+	\begin{itemize}
+		\item $\Delta_{\text{Struktur}}$ für mittlere Größen relevant ist
+		\item $T_{\text{asymptotisch}}$ für große $n$ dominiert
+	\end{itemize}
+	
+	Für $n \to \infty$ gilt empirisch:
+	
+	\begin{equation}
+		\Delta_{\text{Struktur}}(n) \to 0
+	\end{equation}
+	
+	\section{Diskussion}
+	
+	Die Ergebnisse zeigen:
+	
+	\begin{itemize}
+		\item AQG verbessert die typische Laufzeit für mittlere Instanzen
+		\item keine asymptotische Verbesserung
+		\item starke Konvergenz für große Zahlen
+	\end{itemize}
+	
+	Dies entspricht der Interpretation, dass strukturelle Informationen nur lokale Beschleunigungen ermöglichen.
+	
+	\section{Hybridstrategie}
+	
+	Die Daten motivieren eine adaptive Strategie:
+	
+	\begin{itemize}
+		\item mittlere Größen: AQG bevorzugen
+		\item große Größen: klassische Verfahren ausreichend
+	\end{itemize}
+	
+	\section{Fazit}
+	
+	Wir zeigen empirisch:
+	
+	\begin{itemize}
+		\item strukturadaptive Beschleunigung im mittleren Bereich
+		\item asymptotische Gleichheit beider Verfahren
+		\item klare Trennung von struktureller und asymptotischer Komplexität
+	\end{itemize}
+	
+	Dies positioniert AQG als effektiven Hybrid-Baustein, jedoch nicht als asymptotischen Durchbruch.
+	
+	\section{Skalierungsverhalten und Resonanzfenster}
+	
+	Die erweiterten Experimente bis 100 und 110 Stellen zeigen ein konsistentes Skalierungsverhalten.
+	
+	Während AQG im Bereich von etwa 45 bis 60 Stellen signifikante Vorteile im Median aufweist, verschwindet dieser Vorteil für größere Eingaben nahezu vollständig.
+	
+	Dies legt die Existenz eines sogenannten \emph{Resonanzfensters} nahe, in dem strukturelle Eigenschaften der Eingabe maximal wirksam sind.
+	
+	Für große Eingaben gilt empirisch:
+	
+	\begin{equation}
+		\frac{\Delta_{\text{Struktur}}(n)}{T_{\text{global}}(n)} \to 0
+	\end{equation}
+	
+	wobei $T_{\text{global}}(n)$ die dominante asymptotische Laufzeitkomponente darstellt.
+	
+	\section{Seltene strukturelle Abweichungen}
+	
+	Auch für große Zahlen treten vereinzelt signifikante Abweichungen auf, bei denen eines der Verfahren deutlich schneller ist.
+	
+	Diese Fälle sind jedoch selten und beeinflussen die Gesamtstatistik nur marginal.
+	
+	Dies deutet darauf hin, dass strukturelle Effekte nicht vollständig verschwinden, sondern als seltene lokale Phänomene bestehen bleiben.
+	
+	\section{Asymptotische Stabilisierung}
+	
+	Die erweiterten Experimente für Eingaben mit mehr als 100 Stellen zeigen nicht nur eine Konvergenz der Laufzeiten, sondern auch eine deutliche Stabilisierung.
+	
+	Die gemessenen Laufzeiten beider Verfahren liegen im Bereich von etwa 3.5 Millionen Mikrosekunden mit nur geringen relativen Abweichungen.
+	
+	Dies deutet darauf hin, dass die Laufzeit durch eine dominante globale Komponente bestimmt wird:
+	
+	\begin{equation}
+		t(n) \approx T_{\text{global}}(n)
+	\end{equation}
+	
+	Gleichzeitig nimmt die Varianz der Laufzeiten stark ab, was auf eine zunehmende Unabhängigkeit von lokalen strukturellen Eigenschaften hinweist.
+	
+	\section{Universelle Laufzeitklasse}
+	
+	Die beobachtete Konvergenz und Stabilisierung legt nahe, dass verschiedene Faktorisierungsverfahren für große Eingaben in eine gemeinsame effektive Laufzeitklasse fallen.
+	
+	Strukturelle Unterschiede wirken sich in diesem Regime nur noch marginal aus.
+	
+	\section{Seltene Abweichungen}
+	
+	Trotz der allgemeinen Konvergenz treten vereinzelt Abweichungen auf, bei denen eines der Verfahren signifikant schneller ist.
+	
+	Diese Ereignisse sind jedoch selten und haben keinen wesentlichen Einfluss auf die Gesamtstatistik.
+	
+	\section{Erweiterte Interpretation}
+	
+	Die Gesamtheit der Daten zeigt:
+	
+	\begin{itemize}
+		\item ein endliches Effizienzfenster für strukturadaptive Methoden
+		\item eine asymptotische Vereinheitlichung der Laufzeiten
+		\item eine starke Reduktion der Varianz für große Eingaben
+	\end{itemize}
+	
+	Dies legt nahe, dass strukturadaptive Verfahren primär als finite-size Optimierungen zu verstehen sind.
+	
+	
+\section{Schwere Ausreißer und Verteilung der Laufzeiten}
+
+Während die mittleren Laufzeiten für große Eingaben konvergieren, zeigen die Daten weiterhin vereinzelte signifikante Abweichungen.
+
+Diese äußern sich in Form von Ausreißern, bei denen eines der Verfahren deutlich langsamer ist als das andere.
+
+Dies deutet darauf hin, dass die Laufzeitverteilung keine kompakte Streuung besitzt, sondern schwere Tails aufweist.
+
+Formal lässt sich dies wie folgt beschreiben:
+
+\begin{equation}
+	t(n) = T_{\text{global}}(n) + \Delta(n)
+\end{equation}
+
+wobei gilt:
+
+\begin{itemize}
+	\item $E[\Delta(n)] \to 0$
+	\item $\mathrm{Var}(\Delta(n))$ bleibt nicht vernachlässigbar
+\end{itemize}
+
+Dies bedeutet, dass strukturelle Effekte im Mittel verschwinden, jedoch als seltene, aber signifikante Abweichungen bestehen bleiben.
+
+\section{Implikationen für hybride Verfahren}
+
+Die Existenz solcher Ausreißer hat direkte Konsequenzen für hybride Strategien:
+
+\begin{itemize}
+	\item deterministische Auswahlstrategien sind unzureichend
+	\item adaptive oder probabilistische Ansätze sind erforderlich
+\end{itemize}
+
+Insbesondere kann ein Race-Ansatz weiterhin Vorteile bieten, da er solche Ausreißer abfangen kann.
+
+\section{Asymptotische Konvergenz und statistische Stabilisierung}
+
+Die erweiterten Experimente bis zu 200-stelligen Eingaben zeigen eine nahezu vollständige Konvergenz der Laufzeiten beider Verfahren.
+
+Insbesondere stimmen Mittelwerte, Mediane sowie hohe Quantile (p90, p95) innerhalb weniger Prozent überein.
+
+Dies deutet auf die Existenz einer dominanten globalen Laufzeitkomponente hin:
+
+\begin{equation}
+	t(n) \approx T_{\text{global}}(n)
+\end{equation}
+
+\section{Transienter Charakter struktureller Effekte}
+
+Für mittlere Eingaben zeigen sich deutliche strukturelle Effekte, die jedoch für große Eingaben systematisch an Bedeutung verlieren.
+
+Vereinzelte Ausreißer treten weiterhin auf, sind jedoch statistisch instabil und verschwinden im Mittel.
+
+Formal ergibt sich:
+
+\begin{equation}
+	t(n) = T_{\text{global}}(n),(1 + \varepsilon(n)), \quad E[\varepsilon(n)] \to 0
+\end{equation}
+
+\section{Schlussfolgerung}
+
+Die Ergebnisse zeigen, dass strukturadaptive Verfahren als finite-size Optimierungen zu verstehen sind, während die asymptotische Laufzeit durch eine universelle Komplexitätsstruktur bestimmt wird.
+
+\end{document}

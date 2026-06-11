@@ -1,0 +1,144 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+
+\title{Geometrische Strukturen in Einbettungen von Primzahlen in oktonionische Gitter}
+\author{Thomas Hoffbauer}
+\date{}
+
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Bemerkung}
+\newtheorem{conjecture}{Vermutung}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Wir untersuchen eine Einbettung der Primzahlen in ein diskretes Gitter der Oktonionen. Ziel ist es, additive Primzahlkonstellationen durch algebraische Inzidenzrelationen zu modellieren. Wir formulieren eine Assoziator-basierte Kopplungsbedingung und diskutieren deren strukturelle Eigenschaften sowie erste heuristische Konsequenzen.
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Die Verteilung der Primzahlen zeigt sowohl multiplikative als auch additive Struktur. Während klassische Methoden additive Eigenschaften analysieren, untersuchen wir hier eine Einbettung in eine nichtassoziative Algebra.
+	
+	\section{Oktonionischer Rahmen}
+	
+	Sei $\mathbb{O}$ die Algebra der Oktonionen mit Basis $\{e_0,\dots,e_7\}$.
+	
+	\begin{definition}
+		Die Norm eines Elements $x=\sum a_i e_i$ ist definiert als
+		\[
+		N(x) = \sum_{i=0}^7 a_i^2.
+		\]
+	\end{definition}
+	
+	\begin{definition}
+		Sei $\Lambda \subset \mathbb{O}$ ein diskretes Gitter (z.\,B. ganzzahlige Oktonionen). Für $n\in\mathbb{N}$ definieren wir
+		\[
+		S_n := \{x\in\Lambda : N(x)=n\}.
+		\]
+	\end{definition}
+	
+	\section{Einbettung der Primzahlen}
+	
+	\begin{definition}
+		Für eine Primzahl $p$ definieren wir die Einbettung als
+		\[
+		\Phi(p) := S_p.
+		\]
+	\end{definition}
+	
+	\begin{remark}
+		Diese Abbildung ist mengenwertig und vermeidet eine willkürliche Auswahl einzelner Repräsentanten.
+	\end{remark}
+	
+	\section{Inzidenzstruktur}
+	
+	\begin{definition}
+		Für $x,y,z \in \mathbb{O}$ definieren wir den Assoziator
+		\[
+		[x,y,z] := (xy)z - x(yz).
+		\]
+	\end{definition}
+	
+	\begin{definition}
+		Für $x\in S_p$, $y\in S_q$ definieren wir die Assoziatorenergie
+		\[
+		\mathcal{A}(x,y) := \sum_{k=1}^7 \|[x,y,e_k]\|^2.
+		\]
+	\end{definition}
+	
+	\begin{definition}
+		Ein Paar $(p,q)$ heißt geometrisch gekoppelt, wenn
+		\[
+		\exists x\in S_p, y\in S_q: \mathcal{A}(x,y)=0.
+		\]
+	\end{definition}
+	
+	\section{Grundlegende Struktur}
+	
+	\begin{lemma}
+		Für $x\in S_p$, $y\in S_q$ gilt
+		\[
+		\|x-y\|^2 = p + q - 2\langle x,y \rangle.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Folgt unmittelbar aus der Definition der Norm.
+	\end{proof}
+	
+	\begin{proposition}[Heuristisch]
+		Für kleine Primzahlen korrelieren kleine Differenzen $|p-q|$ mit kleinen Werten von $\mathcal{A}(x,y)$.
+	\end{proposition}
+	
+	\section{Modellproblem}
+	
+	\begin{definition}
+		Für $d\in\mathbb{N}$ sei
+		\[
+		\mathcal{C}_d := \{(p,q)\in\mathcal{P}^2 : q-p=d \text{ und geometrisch gekoppelt}\}.
+		\]
+	\end{definition}
+	
+	\section{Dynamische Heuristik}
+	
+	Wir betrachten den Raum
+	\[
+	X = (\mathbb{O}\otimes\mathbb{R})/\Lambda.
+	\]
+	
+	Primzahlen definieren diskrete Abtastpunkte entlang eines Flusses.
+	
+	\begin{remark}
+		Unter Annahme von Ergodizität würde eine positive Maßmenge stabiler Konfigurationen unendlich oft erreicht werden.
+	\end{remark}
+	
+	\section{Vermutung}
+	
+	\begin{conjecture}
+		Die Menge $\mathcal{C}_2$ ist unendlich.
+	\end{conjecture}
+	
+	\section{Offene Probleme}
+	
+	\begin{itemize}
+		\item Existenz einer kanonischen Auswahl $x_p\in S_p$
+		\item Gleichverteilung der Punkte in $S_p$
+		\item Nichttrivialität der Inzidenzbedingung
+	\end{itemize}
+	
+	\section{Literatur}
+	
+	\begin{itemize}
+		\item J. Baez: The Octonions
+		\item Green--Tao: Arithmetic progressions in primes
+		\item Hardy--Littlewood: Circle method
+	\end{itemize}
+	
+\end{document}

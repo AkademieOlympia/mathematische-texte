@@ -1,0 +1,67 @@
+Defekt-phasengewichteter Resonanztest mit AB-Paritätsphase
+Daten: erste 100000 Riemann-Nullstellen aus zeros6.npy
+Vierlingszentren bis X=200000: 52
+
+Verwendete Modellierung:
+T(V_p)=(p^2-4)(p^2-16)
+N(V_p)=4p^2+40
+w_p ~ N/T, normalisiert auf Summe 1
+AB-Phase: phi_AB(p)=0 für p mod 4 = 1, pi für p mod 4 = 3
+Kepler-Defekt-Surrogat: Delta_K(p)=12/(4p^2+40)
+Observable:
+A_n(alpha)=|sum_p w_p exp(-i gamma_n log T(V_p)) exp(i phi_AB(p)) exp(i alpha Delta_K(p))|
+
+Alpha-Gitter: [0, 10, 30, 100, 300, 1000, 3000]
+
+Globale Mittelwerte:
+alpha=   0  actual  mean=0.792639904522 median=0.807142623542 q95=0.991974960135 max=0.999909223285 std=0.152696106284
+alpha=   0  shifted mean=0.792641472180 median=0.807048692318 q95=0.992029400817 max=0.999906277623 std=0.152686531473
+alpha=   0  random  mean=0.792579489299 median=0.806803849141 q95=0.991966328566 max=0.999900742005 std=0.152649461421
+alpha=  10  actual  mean=0.792638953258 median=0.807163963073 q95=0.992094379382 max=0.999911752085 std=0.152699873473
+alpha=  10  shifted mean=0.792643010713 median=0.807449960982 q95=0.991942268016 max=0.999877991304 std=0.152679346624
+alpha=  10  random  mean=0.792523245585 median=0.806870498062 q95=0.991992639279 max=0.999874317966 std=0.152768757285
+alpha=  30  actual  mean=0.792641331915 median=0.807381907022 q95=0.992052276526 max=0.999924888133 std=0.152687774798
+alpha=  30  shifted mean=0.792642407080 median=0.807156886974 q95=0.992046563367 max=0.999847755589 std=0.152687343009
+alpha=  30  random  mean=0.792442952222 median=0.807443000271 q95=0.992000481813 max=0.999919411758 std=0.152931732387
+alpha= 100  actual  mean=0.792642616019 median=0.807270656048 q95=0.992159672547 max=0.999967920678 std=0.152705015968
+alpha= 100  shifted mean=0.792653539788 median=0.807496493641 q95=0.992004178795 max=0.999831516681 std=0.152673963379
+alpha= 100  random  mean=0.792564248864 median=0.806665529193 q95=0.992076540098 max=0.999907992393 std=0.152539790000
+alpha= 300  actual  mean=0.792641333688 median=0.806693212563 q95=0.992076490624 max=0.999891834804 std=0.152686687594
+alpha= 300  shifted mean=0.792640920424 median=0.807264642052 q95=0.992007649237 max=0.999909448072 std=0.152687287833
+alpha= 300  random  mean=0.792678460671 median=0.807151020234 q95=0.992181162751 max=0.999867476693 std=0.152527408338
+alpha=1000  actual  mean=0.792643861724 median=0.807045825023 q95=0.991973129890 max=0.999860986308 std=0.152686628119
+alpha=1000  shifted mean=0.792644575464 median=0.807357557877 q95=0.992036178689 max=0.999922763817 std=0.152693027846
+alpha=1000  random  mean=0.792439691867 median=0.806022325356 q95=0.992049547559 max=0.999886109211 std=0.152769576156
+alpha=3000  actual  mean=0.792651120052 median=0.806987710469 q95=0.991930601369 max=0.999916011041 std=0.152688491579
+alpha=3000  shifted mean=0.792647065245 median=0.806918588327 q95=0.992013095026 max=0.999912047481 std=0.152696966671
+alpha=3000  random  mean=0.792801124160 median=0.806900237704 q95=0.992055404442 max=0.999907546923 std=0.152842071108
+
+Differenzen der globalen Mittelwerte:
+alpha=   0 actual-shifted=-1.567657719748e-06 actual-random=6.041522260025e-05
+alpha=  10 actual-shifted=-4.057455578188e-06 actual-random=1.157076728515e-04
+alpha=  30 actual-shifted=-1.075164970277e-06 actual-random=1.983796929614e-04
+alpha= 100 actual-shifted=-1.092376884038e-05 actual-random=7.836715501153e-05
+alpha= 300 actual-shifted=4.132634711107e-07 actual-random=-3.712698354608e-05
+alpha=1000 actual-shifted=-7.137399420376e-07 actual-random=2.041698572524e-04
+alpha=3000 actual-shifted=4.054806534537e-06 actual-random=-1.500041084460e-04
+
+Fensteranalyse (Fensterbreite 1000 Nullstellen):
+alpha=   0 mean(diff_as)=-1.567657719719e-06 std(diff_as)=4.477653385387e-04 max(diff_as)=1.279985659004e-03
+          mean(diff_ar)=6.041522260034e-05 std(diff_ar)=4.781992720481e-03 max(diff_ar)=1.138393491101e-02
+alpha=  10 mean(diff_as)=-4.057455578045e-06 std(diff_as)=4.434481688185e-04 max(diff_as)=1.137152026522e-03
+          mean(diff_ar)=1.157076728517e-04 std(diff_ar)=4.682287228070e-03 max(diff_ar)=1.155655485238e-02
+alpha=  30 mean(diff_as)=-1.075164970235e-06 std(diff_as)=4.455279707667e-04 max(diff_as)=1.005960769345e-03
+          mean(diff_ar)=1.983796929614e-04 std(diff_ar)=4.455713482094e-03 max(diff_ar)=1.459446151998e-02
+alpha= 100 mean(diff_as)=-1.092376884051e-05 std(diff_as)=4.086654378892e-04 max(diff_as)=9.266451568739e-04
+          mean(diff_ar)=7.836715501144e-05 std(diff_ar)=4.706893552641e-03 max(diff_ar)=1.401037405964e-02
+alpha= 300 mean(diff_as)=4.132634710996e-07 std(diff_as)=4.678472697959e-04 max(diff_as)=1.202102229490e-03
+          mean(diff_ar)=-3.712698354610e-05 std(diff_ar)=4.858427327724e-03 max(diff_ar)=1.066451670029e-02
+alpha=1000 mean(diff_as)=-7.137399419799e-07 std(diff_as)=4.467582231059e-04 max(diff_as)=1.033642591766e-03
+          mean(diff_ar)=2.041698572525e-04 std(diff_ar)=4.345447210363e-03 max(diff_ar)=1.935923185760e-02
+alpha=3000 mean(diff_as)=4.054806534449e-06 std(diff_as)=4.610817001582e-04 max(diff_as)=1.073224870043e-03
+          mean(diff_ar)=-1.500041084459e-04 std(diff_ar)=4.408712209985e-03 max(diff_ar)=1.048631878624e-02
+
+Vorläufiges Urteil:
+Im getesteten Setup liefert die zusätzliche AB-Paritätsphase plus Kepler-Defekt-Surrogat kein robustes globales Trennsignal zwischen echten Nullstellen und Kontrollfrequenzen.
+Die Unterschiede actual-shifted liegen global nur in der Größenordnung 1e-6 bis 1e-5; in den 1000er Fenstern typischerweise bei ~1e-3.
+Das Gerüst ist numerisch stabil, aber die konkrete Observable scheint noch nicht die gesuchte spektrale Schärfe zu besitzen.

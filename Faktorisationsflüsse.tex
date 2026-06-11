@@ -1,0 +1,271 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{geometry}
+\usepackage{microtype}
+\usepackage{lmodern}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\geometry{margin=2.7cm}
+
+\title{
+	Niedrigdimensionale Kohärenz in pronischen Faktorisationsflüssen
+}
+
+\author{
+	Thomas Hoffbauer
+}
+
+\date{Mai 2026}
+
+\newtheorem{definition}{Definition}
+\newtheorem{satz}{Satz}
+\newtheorem{bemerkung}{Bemerkung}
+\newtheorem{problem}{Offenes Problem}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Wir führen eine diskrete Transportstruktur auf den natürlichen Zahlen ein, die durch den pronischen Operator
+		\[
+		\Pi(n)=n(n-1)
+		\]
+		induziert wird. Mittels einer logarithmischen Faktorisations-Einbettung werden natürliche Zahlen als Punkte eines arithmetischen Raumes dargestellt.
+		
+		Numerische Untersuchungen an Primzahlvierlingen
+		\[
+		Q(p)=(p,p+2,p+6,p+8)
+		\]
+		zeigen überraschend kohärente geometrische Strukturen. Insbesondere weisen die zugehörigen Transport-Tetraeder eine stark reduzierte effektive Dimension sowie stabile Richtungsstrukturen auf.
+		
+		Weiterhin deutet eine Rekonstruktionsanalyse darauf hin, dass normierte Richtungsinformationen erhebliche Teile der ursprünglichen Transportdynamik kodieren.
+		
+		Die Arbeit erhebt keinen physikalischen Anspruch. Ziel ist ausschließlich die Untersuchung möglicher geometrischer Regularitäten diskreter Faktorisationsflüsse.
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Die natürlichen Zahlen besitzen neben ihrer linearen Ordnung eine hochgradig nichttriviale multiplikative Struktur. Ziel der vorliegenden Arbeit ist die Untersuchung der Frage, ob lokale Änderungen von Faktorisationsmustern kohärente geometrische Transportphänomene erzeugen können.
+	
+	Ausgangspunkt ist der pronische Operator
+	\[
+	\Pi(n)=n(n-1),
+	\]
+	welcher benachbarte arithmetische Zustände koppelt.
+	
+	Anstatt die Größe von \(\Pi(n)\) direkt zu betrachten, untersuchen wir die induzierte Bewegung in einem logarithmischen Faktorisationsraum.
+	
+	Die zentrale numerische Beobachtung lautet:
+	
+	\begin{quote}
+		Primzahlvierlinge erzeugen Transportkonfigurationen mit ungewöhnlich geringer effektiver Dimension und stabilen Richtungsstrukturen.
+	\end{quote}
+	
+	Der vorliegende Artikel ist experimentell-numerischer Natur.
+	
+	\section{Arithmetische Einbettung}
+	
+	Sei
+	\[
+	n=\prod_p p^{v_p(n)}
+	\]
+	die Primfaktorzerlegung von \(n\).
+	
+	Wir zerlegen das Primzahlspektrum in drei Bereiche:
+	\[
+	\mathcal P_1=\{2,3\},
+	\qquad
+	\mathcal P_2=\{5,7\},
+	\qquad
+	\mathcal P_3=\{p\ge 11\}.
+	\]
+	
+	\begin{definition}[Tensor-arithmetische Zerlegung]
+		Wir definieren
+		\[
+		G(n)=\prod_{p\in\mathcal P_1} p^{v_p(n)},
+		\]
+		\[
+		H(n)=\prod_{p\in\mathcal P_2} p^{v_p(n)},
+		\]
+		\[
+		K(n)=\prod_{p\in\mathcal P_3} p^{v_p(n)}.
+		\]
+		
+		Die logarithmische Einbettung ist gegeben durch
+		\[
+		X(n)=
+		(
+		\log G(n),
+		\log H(n),
+		\log K(n)
+		)
+		\in\mathbb R^3.
+		\]
+	\end{definition}
+	
+	Damit wird multiplikative Arithmetik in additive Geometrie überführt.
+	
+	\section{Pronischer Transport}
+	
+	\begin{definition}[Pronischer Transport]
+		Der durch den pronischen Operator induzierte Transportvektor ist definiert als
+		\[
+		T(n)=X(\Pi(n))-X(n).
+		\]
+	\end{definition}
+	
+	Explizit gilt:
+	\[
+	T(n)=X(n(n-1))-X(n).
+	\]
+	
+	Der Operator misst die Veränderung der Faktorisationsstruktur beim Übergang
+	\[
+	n-1 \to n.
+	\]
+	
+	\section{Primzahlvierlinge als Transportobjekte}
+	
+	Wir betrachten Primzahlvierlinge der Form
+	\[
+	Q(p)=(p,p+2,p+6,p+8).
+	\]
+	
+	Zu jedem Vierling gehört die Transportmenge
+	\[
+	\mathcal T(Q)
+	=
+	\{
+	T(p),
+	T(p+2),
+	T(p+6),
+	T(p+8)
+	\}.
+	\]
+	
+	Diese vier Vektoren definieren ein Transport-Tetraeder im Raum \(\mathbb R^3\).
+	
+	\section{Numerische Beobachtungen}
+	
+	Die numerischen Untersuchungen wurden bis
+	\[
+	10^7
+	\]
+	durchgeführt. Dabei ergaben sich 899 echte Primzahlvierlinge.
+	
+	Die folgenden Phänomene traten konsistent auf:
+	
+	\begin{enumerate}[label=(\roman*)]
+		\item stark reduzierte Tetraedervolumina,
+		\item stabile lokale Richtungsstrukturen,
+		\item persistente Flachheit über mehrere Größenskalen,
+		\item deutliche Zerstörung der Struktur unter Zufallspermutationen.
+	\end{enumerate}
+	
+	\begin{satz}[Numerische Blatt-Kohärenz]
+		Die Transport-Tetraeder echter Primzahlvierlinge besitzen numerisch signifikant kleinere normierte Volumina als zufällige Vergleichsmodelle.
+	\end{satz}
+	
+	Die Resultate legen nahe, dass die effektive Dimension der Transportkonfigurationen wesentlich kleiner als drei ist.
+	
+	\section{Randomisierte Kontrollmodelle}
+	
+	Zur Kontrolle möglicher Artefakte wurden mehrere Vergleichsmodelle untersucht:
+	
+	\begin{itemize}
+		\item zufällig permutierte Transportvektoren,
+		\item zufällige Primzahl-Tupel,
+		\item gaußsche Ersatzvektoren mit identischer Kovarianzstruktur.
+	\end{itemize}
+	
+	In sämtlichen Kontrollmodellen verschwand die beobachtete Kohärenz weitgehend.
+	
+	Dies spricht gegen eine rein triviale Erklärung durch die Wahl der Einbettung.
+	
+	\section{Richtungsrekonstruktion}
+	
+	Wir definieren die normierte Transportspur
+	\[
+	u(n)=\frac{T(n)}{\|T(n)\|}.
+	\]
+	
+	Untersucht wurde die Frage, ob diese Richtungsinformation Teile der ursprünglichen Transportbahn rekonstruieren kann.
+	
+	Hierzu betrachten wir das Funktional
+	\[
+	\mathcal A(\gamma)
+	=
+	\sum_i
+	\|T(n_{i+1})-T(n_i)\|^2.
+	\]
+	
+	Numerisch zeigte sich, dass geeignete Minimierungsverfahren wesentliche Teile der ursprünglichen Reihenfolge rekonstruieren können.
+	
+	\begin{bemerkung}
+		Die vorliegenden Resultate sind rein numerisch und besitzen derzeit keinen rigorosen Beweischarakter.
+	\end{bemerkung}
+	
+	\section{Interpretation}
+	
+	Die beobachteten Strukturen deuten darauf hin, dass Faktorisationsflüsse unerwartete niedrigdimensionale Kohärenzphänomene besitzen könnten.
+	
+	Es wird ausdrücklich keine physikalische Interpretation behauptet.
+	
+	Insbesondere werden Begriffe wie
+	\emph{Holographie},
+	\emph{Bulk},
+	\emph{Randtheorie}
+	oder
+	\emph{Hamilton-Dynamik}
+	hier vermieden, da gegenwärtig weder ein operatorischer noch ein variationaler Formalismus existiert, der solche Begriffe mathematisch rechtfertigen würde.
+	
+	Die Arbeit versteht sich vielmehr als explorative Untersuchung diskreter Faktorisationsgeometrien.
+	
+	\section{Offene Probleme}
+	
+	\begin{problem}
+		Persistiert die beobachtete Flachheit asymptotisch?
+	\end{problem}
+	
+	\begin{problem}
+		Existiert eine intrinsische Metrik auf dem Transport-Raum?
+	\end{problem}
+	
+	\begin{problem}
+		Lassen sich spektrale Operatoren auf den Transportblättern definieren?
+	\end{problem}
+	
+	\begin{problem}
+		Besitzen höhere Primzahl-\(k\)-Tupel analoge Kohärenzstrukturen?
+	\end{problem}
+	
+	\begin{problem}
+		Existiert ein probabilistisches Modell für die beobachtete Richtungsstabilität?
+	\end{problem}
+	
+	\section{Schlussbemerkung}
+	
+	Die vorliegenden numerischen Experimente legen nahe, dass pronische Faktorisationsflüsse nichttriviale geometrische Regularitäten erzeugen könnten.
+	
+	Ob diese Strukturen Ausdruck tiefer arithmetischer Invarianten oder lediglich Konsequenzen der gewählten Einbettung sind, bleibt offen.
+	
+	Die numerische Stabilität der beobachteten Phänomene motiviert jedoch eine systematische Untersuchung diskreter geometrischer Strukturen innerhalb arithmetischer Faktorisationsräume.
+	
+	\vspace{1em}
+	
+	\begin{center}
+		\emph{
+			„Die Ordnung der Zahlen erscheint nicht mehr nur als Folge, sondern als Spur lokaler Faktorisationsflüsse.“
+		}
+	\end{center}
+	
+\end{document}
+```

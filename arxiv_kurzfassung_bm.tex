@@ -1,0 +1,155 @@
+
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  urlcolor=blue,
+  pdftitle={Kanonische Mehrlingspolynome und gerichtete Uebergangsoperatoren},
+  pdfauthor={Thomas Hoffbauer}
+}
+
+\theoremstyle{definition}
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{korollar}[satz]{Korollar}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+\newtheorem{vermutung}[satz]{Vermutung}
+\newtheorem{arbeitsvermutung}[satz]{Arbeitsvermutung}
+
+\title{Kanonische Mehrlingspolynome und gerichtete Uebergangsoperatoren\\
+\large Eine arXiv-nahe Kurzfassung im Rahmen des Bamberger Modells}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Wir untersuchen zentrierte kanonische Polynome lokaler Mehrlingsmuster und definieren daraus gerichtete Uebergangsoperatoren zwischen Mehrlingsklassen. Der Schwerpunkt liegt auf Symmetrieerhalt, Diskriminantenwachstum, ungeraden Momenten und Faktorisierungsdefekten. Numerisch zeigt sich keine robuste exklusive Naehe zu Zeta-Referenzdaten, wohl aber eine klare interne Ordnungsstruktur: symmetrieerhaltende Uebergaenge sind signifikant guenstiger als symmetriebrechende. Die Arbeit isoliert damit einen operatorischen Kern des polynomialen Strangs des Bamberger Modells.
+\end{abstract}
+
+\section{Einleitung}
+
+Lokale Primzahlmuster lassen sich nach Zentrierung in kanonische Polynomformen uebersetzen. Diese Polynome eliminieren die triviale Lageinformation und bewahren nur die innere Abstandsstruktur des Musters. Ziel dieser Kurzfassung ist es, aus solchen Polynomtypen eine relationale Geometrie zu gewinnen, in der Uebergaenge zwischen Mehrlingsklassen durch gerichtete Operatoren modelliert werden.
+
+\section{Kanonische Mehrlingspolynome}
+
+\begin{definition}
+Sei \(\omega=(a_1,\dots,a_k)\) ein geordnetes Muster. Mit
+\[
+m(\omega):=\frac{1}{k}\sum_{\nu=1}^k a_\nu,\qquad b_\nu:=a_\nu-m(\omega)
+\]
+definieren wir das zentrierte kanonische Polynom
+\[
+Q_\omega(y):=\prod_{\nu=1}^k (y-b_\nu).
+\]
+\end{definition}
+
+\begin{lemma}
+Im zentrierten Polynom \(Q_\omega(y)\) verschwindet der Koeffizient von \(y^{k-1}\).
+\end{lemma}
+
+\begin{proof}
+Es gilt \(\sum_{\nu=1}^k b_\nu=0\). Der Koeffizient von \(y^{k-1}\) ist bis auf Vorzeichen genau diese Summe.
+\end{proof}
+
+\begin{lemma}
+Ist die Nullstellenmenge \(\{b_1,\dots,b_k\}\) invariant unter \(b\mapsto -b\), so ist \(Q_\omega\) bei geradem Grad gerade. Bei ungeradem Grad und zusaetzlicher Nullstelle \(0\) ist \(Q_\omega\) ungerade.
+\end{lemma}
+
+\section{Uebergangskosten}
+
+\begin{definition}
+Der Symmetrieindex eines Musters \(\omega\) sei
+\[
+\mathfrak S(\omega):=
+\begin{cases}
+1,& \text{falls } Q_\omega(-y)=Q_\omega(y)\text{ oder }Q_\omega(-y)=-Q_\omega(y),\\
+0,& \text{sonst.}
+\end{cases}
+\]
+\end{definition}
+
+\begin{definition}
+Fuer einen Uebergang \(\omega_k\rightsquigarrow\omega_{k+1}\) definieren wir formal
+\[
+\mathcal T(\omega_k,\omega_{k+1})
+=
+\alpha(\mathfrak S(\omega_k)-\mathfrak S(\omega_{k+1}))^2
++\beta\,\mathfrak M_{\mathrm{odd}}(\omega_{k+1})
++\gamma\,\mathfrak D(\omega_k,\omega_{k+1})
++\delta\,(\mathfrak F(\omega_{k+1})-\mathfrak F(\omega_k)),
+\]
+wobei \(\mathfrak M_{\mathrm{odd}}\) den ungeraden Momentendefekt, \(\mathfrak D\) die Diskriminantenkosten und \(\mathfrak F\) einen Faktorisierungsdefekt bezeichnet.
+\end{definition}
+
+\section{Beispiele}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{llll}
+\toprule
+Uebergang & Symmetrie & Zielpolynomtyp & qualitative Kosten \\
+\midrule
+\((0,2)\to(0,2,6)\) & \(1\to 0\) & asymmetrischer Drilling & hoch \\
+\((0,2,6,8)\to(0,2,6,8,12)\) & \(1\to 0\) & asymmetrischer Fuenfling & sehr hoch \\
+\((0,2,6,8)\to(0,4,6,8,12)\) & \(1\to 1\) & symmetrischer Fuenfling & niedrig \\
+\bottomrule
+\end{tabular}
+\caption{Charakteristische Uebergaenge zwischen Mehrlingsmustern.}
+\end{table}
+
+\section{Gerichteter Uebergangsoperator}
+
+Wir betrachten einen gerichteten Graphen, dessen Knoten kanonische Mehrlingspolynome und dessen Kanten elementare Erweiterungen sind. Die Kantengewichte werden als exponentielle Daempfung der Uebergangskosten modelliert.
+
+\begin{arbeitsvermutung}
+Im gerichteten Uebergangsgraphen kanonischer Mehrlingspolynome minimieren symmetrieerhaltende Uebergaenge im Mittel die algebraischen Uebergangskosten.
+\end{arbeitsvermutung}
+
+\section{Numerischer Befund}
+
+Ein Vergleich der Spektren des gerichteten Operators mit \texttt{zeros6.npy} liefert keine robuste exklusive Zeta-Signatur. Dagegen zeigt die innere Statistik des Operators ein klares Muster:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ccccc}
+\toprule
+\(\mathfrak S_{\mathrm{from}}\) & \(\mathfrak S_{\mathrm{to}}\) & Anzahl & mittlere Kosten & mittleres Gewicht \\
+\midrule
+0 & 0 & 1102 & 107.565586 & 0.134436 \\
+0 & 1 & 130  & 5.673910   & 0.159093 \\
+1 & 0 & 206  & 221.098242 & 0.003657 \\
+1 & 1 & 20   & 2.554875   & 0.450206 \\
+\bottomrule
+\end{tabular}
+\caption{Interne Statistik des Uebergangsoperators.}
+\end{table}
+
+\section{Diskussion}
+
+Der staerkste derzeitige Befund ist intern, nicht extern: Symmetrieerhalt ordnet den Uebergangsraum deutlich. Der Schritt \(4\to 5\) ist nur dann kritisch, wenn eine bestehende symmetrische Blockstruktur zerfaellt.
+
+\section{Ausblick}
+
+Naheliegende naechste Schritte sind:
+\begin{enumerate}[leftmargin=2em]
+\item strengere Definition der Defektgroessen \(\mathfrak M_{\mathrm{odd}},\mathfrak D,\mathfrak F\),
+\item Ausbau gerichteter Operatoren mit Reduktions- und Familieninformation,
+\item systematischer Vergleich symmetrischer und asymmetrischer Muster hoher Grade.
+\end{enumerate}
+
+\end{document}

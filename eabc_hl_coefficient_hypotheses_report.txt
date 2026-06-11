@@ -1,0 +1,73 @@
+========================================================================
+Hardy–Littlewood-Koeffizienten: Primzahlvierlinge mod 420
+========================================================================
+R = [11, 101, 191, 221, 311, 401]
+Counts = [765.0, 831.0, 786.0, 809.0, 809.0, 767.0], N = 4767
+Offsets = (0, 2, 6, 8)
+
+1. Globale Singulärreihe S(Q) für (0,2,6,8)
+   S(Q) ≈ 0.858043850580  (partielle Produkt bis p≤200000)
+   Kleine Primfaktoren w_p = 1 - ν_p/(p-1)^4:
+     p=3: ν_p=2, ω_p=1, w_p=0.8750000000
+     p=5: ν_p=4, ω_p=1, w_p=0.9843750000
+     p=7: ν_p=4, ω_p=3, w_p=0.9969135802
+
+2. Zulässige Restklassen mod 420
+   ω_420 = 6 Klassen: [11, 101, 191, 221, 311, 401]
+   R ⊆ admissible: True
+   R = admissible Klassen: True
+
+3. Lokale Kongruenzbedingungen pro Kanal
+    r  p%4  p%5  p%7   ω₂   ω₃   ω₄   ω₅   ω₇      w_loc    S_small
+   11    3    1    4    1    1    2    1    3   0.000401   0.143112
+  101    1    1    3    1    1    2    1    3   0.000401   0.143112
+  191    3    1    2    1    1    2    1    3   0.000401   0.143112
+  221    1    1    4    1    1    2    1    3   0.000401   0.143112
+  311    3    1    3    1    1    2    1    3   0.000401   0.143112
+  401    1    1    2    1    1    2    1    3   0.000401   0.143112
+
+4. HL-Gewichte (normalisiert auf R)
+   Roh-Produkt 1/ω(q): alle gleich = True
+   Mit Singulärfaktoren p∈{3,5,7}: alle gleich = True
+   Theoretische Anteile (uniform): [0.16666666666666666, 0.16666666666666666, 0.16666666666666666, 0.16666666666666666, 0.16666666666666666, 0.16666666666666666]
+   Theoretische Anteile (raw HL):  [0.166667, 0.166667, 0.166667, 0.166667, 0.166667, 0.166667]
+   Beobachtete Anteile:            [0.160478, 0.174323, 0.164884, 0.169708, 0.169708, 0.160898]
+
+5. Statistischer Vergleich (N = 4767)
+   χ² (HL uniform 1/6):     4.3442  (df=5, p≈0.5010)
+   χ² (kanalspez. HL):      4.3442  (identisch wenn gleiche Gewichte)
+   KL(Obs || Uniform):      0.00045535
+   KL(Obs || HL-Vorhersage):0.00045535
+   max |δ_i|:               0.007657
+   Kanal 101 Überschuss:    0.766%
+   Kanal 11 Unterschuss:    -0.619%
+
+6. Mod-7-Struktur und χ₃-Verbindung
+   p≡2 mod 7: Kanäle [191, 401], Anteil 0.3258 (Erwartung 0.3333)
+   p≡3 mod 7: Kanäle [101, 311], Anteil 0.3440 (Erwartung 0.3333)
+   p≡4 mod 7: Kanäle [11, 221], Anteil 0.3302 (Erwartung 0.3333)
+   χ₃-Zyklus auf R: r mod 7 = (4,3,2,4,3,2)
+
+7. Ausgeschlossene/erzwungene Primteiler (mod kleine q)
+   mod 2: verbotene p-Klassen = [0]
+          erzwungen für R: p ≡ [1, 1, 1, 1, 1, 1]
+   mod 3: verbotene p-Klassen = [0, 1]
+          erzwungen für R: p ≡ [2, 2, 2, 2, 2, 2]
+   mod 4: verbotene p-Klassen = [0, 2]
+          erzwungen für R: p ≡ [3, 1, 3, 1, 3, 1]
+   mod 5: verbotene p-Klassen = [0, 2, 3, 4]
+          erzwungen für R: p ≡ [1, 1, 1, 1, 1, 1]
+   mod 7: verbotene p-Klassen = [0, 1, 5, 6]
+          erzwungen für R: p ≡ [4, 3, 2, 4, 3, 2]
+
+8. Hypothesen-Bewertung (numerisch)
+   H1: Identische HL-Koeffizienten → Gleichverteilung
+        → STÜTZT: HL sagt 1/6 für jeden Kanal
+   H2: Mod-7-Struktur → unterschiedliche HL-Dichten
+        → WIDERLEGT: ω_7=3, je 2 Kanäle/Klasse; HL-Gewichte gleich
+   H3: Mod-4/mod-5 → χ₄-Komponente via HL
+        → WIDERLEGT: ω_4=2, ω_5=1; alle r∈R gleiche lokale Faktoren
+   H4: Korrelationen zwischen Vierlingen
+        → OFFEN: HL-Modell i.i.d.; Übergangsmatrix aus Stiefel.py testbar
+   H5: Finite-size bis 10^8
+        → STÜTZT: χ²=4.34 konsistent mit Fluktuation (p≈0.501)

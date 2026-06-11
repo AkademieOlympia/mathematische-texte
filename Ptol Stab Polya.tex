@@ -1,0 +1,170 @@
+\documentclass[11pt,a4paper]{article}
+
+% -------------------------------------------------
+% Sprache / Encoding
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm}
+
+% -------------------------------------------------
+% Layout
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{hyperref}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{satz}[definition]{Satz}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+
+% -------------------------------------------------
+% Titel
+% -------------------------------------------------
+\title{Ein resonanter Operator auf Primzahlvierlingen\\
+	\large Ein proto-spektales Modell im Sinne von Hilbert--Pólya}
+
+\author{Thomas Hoffbauer\\
+	Bamberg, Deutschland}
+
+\date{\today}
+
+% -------------------------------------------------
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Wir konstruieren einen nichtlokalen Operator auf der Menge von Primzahlvierlingen, der geometrische, arithmetische und phasenbasierte Strukturen kombiniert.
+		Die resultierenden Eigenwertabstände zeigen eine nichttriviale Korrelation mit den Abständen der nichttrivialen Nullstellen der Riemannschen Zetafunktion.
+		Das Modell verbindet diskrete Primzahlgeometrie mit kontinuierlicher spektraler Dynamik und liefert einen prototypischen Kandidaten im Kontext der Hilbert--Pólya-Idee.
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Die nichttrivialen Nullstellen der Riemannschen Zetafunktion werden seit langem mit Spektren selbstadjungierter Operatoren in Verbindung gebracht (Hilbert--Pólya-Vermutung).
+	Parallel dazu zeigen Primzahlen in geeigneten Koordinaten (z.\,B.\ logarithmisch) eine überraschende Nähe zu spektralen Strukturen.
+	
+	In dieser Arbeit schlagen wir ein Modell vor, das Primzahlvierlinge als elementare Bausteine einer diskreten Geometrie interpretiert, auf der ein resonanter Operator definiert wird.
+	
+	\section{Primzahlvierlinge und Dehnungsfamilien}
+	
+	\begin{definition}[Primzahlvierling]
+		Ein Primzahlvierling ist ein Tupel der Form
+		\[
+		Q(p) = (p,\, p+2,\, p+6,\, p+8),
+		\]
+		bestehend aus vier Primzahlen.
+	\end{definition}
+	
+	\begin{definition}[Dehnungsfamilie]
+		Wir definieren die Familie
+		\[
+		Q_k(p) = (p,\, p+2,\, p+6+12k,\, p+8+12k),
+		\]
+		die die mod-12-Struktur invariant erhält.
+	\end{definition}
+	
+	Diese Struktur erlaubt eine stabile Klassifikation in die Restklassen
+	\[
+	E \equiv 1,\quad A \equiv 5,\quad B \equiv 7,\quad C \equiv 11 \pmod{12}.
+	\]
+	
+	\section{Phasenstruktur}
+	
+	Wir interpretieren Primzahlen als Träger einer Phase:
+	\begin{equation}
+		\theta(p) = \alpha \log\log p + \theta_{\mathrm{EABC}}(p),
+	\end{equation}
+	wobei $\theta_{\mathrm{EABC}}$ eine diskrete Phase annimmt:
+	\[
+	\theta_{\mathrm{EABC}} \in \left\{0, \tfrac{\pi}{2}, \pi, \tfrac{3\pi}{2}\right\}.
+	\]
+	
+	\begin{bemerkung}
+		Die Überlagerung einer kontinuierlichen logarithmischen Phase mit einer diskreten mod-12-Struktur erzeugt eine intrinsisch interferierende Dynamik.
+	\end{bemerkung}
+	
+	\section{Der Operator}
+	
+	Wir definieren einen Operator $H$ auf der Menge der Vierlinge durch
+	
+	\begin{equation}
+		H_{ij} =
+		\begin{cases}
+			\log p_i, & i=j, \\[6pt]
+			\dfrac{1}{|i-j|^\beta}
+			\exp\bigl(i(\theta_i - \theta_j)\bigr), & i \neq j.
+		\end{cases}
+	\end{equation}
+	
+	\begin{bemerkung}
+		Der Operator ist nichtlokal und enthält sowohl ein diagonales Potential als auch eine phasenmodulierte Kopplung.
+		Für geeignete Wahl der Parameter kann $H$ als (nahezu) hermitesch interpretiert werden.
+	\end{bemerkung}
+	
+	\section{Spektrale Eigenschaften}
+	
+	Seien $\lambda_n$ die Eigenwerte von $H$. Wir betrachten die normierten Abstände
+	\[
+	s_n = \frac{\lambda_{n+1} - \lambda_n}{\langle \lambda_{n+1} - \lambda_n \rangle}.
+	\]
+	
+	\begin{satz}[Empirische Beobachtung]
+		Die Verteilung der Abstände $s_n$ zeigt eine signifikante Ähnlichkeit mit der Wigner--Dyson-Verteilung (GUE-Typ).
+	\end{satz}
+	
+	\section{Numerische Ergebnisse}
+	
+	Für moderate Systemgrößen zeigt sich:
+	
+	\begin{itemize}
+		\item eine Korrelation der Abstände mit Zetazero-Abständen von etwa $0.2$--$0.25$,
+		\item eine deutliche Abweichung von der Poisson-Statistik,
+		\item eine Annäherung an GUE-ähnliches Verhalten.
+	\end{itemize}
+	
+	\section{Interpretation}
+	
+	Das Modell legt nahe:
+	
+	\begin{itemize}
+		\item Primzahlvierlinge bilden eine diskrete Geometrie,
+		\item die Phase $\log\log p$ erzeugt spektrale Fluktuationen,
+		\item nichtlokale Kopplung ist entscheidend für Quantenchaos.
+	\end{itemize}
+	
+	\section{Diskussion und Ausblick}
+	
+	Das Modell ist kein Beweis der Riemannschen Vermutung, aber ein struktureller Kandidat im Sinne von Hilbert--Pólya.
+	
+	Offene Fragen:
+	
+	\begin{itemize}
+		\item Exakte Wahl der Parameter $\alpha, \beta$,
+		\item analytische Kontrolle des Spektrums,
+		\item Zusammenhang mit bekannten Operatoren (Berry--Keating, Connes).
+	\end{itemize}
+	
+	\section{Schlussbemerkung}
+	
+	Die hier vorgeschlagene Konstruktion verbindet arithmetische und spektrale Strukturen auf nichttriviale Weise und deutet darauf hin, dass Primzahlkonfigurationen als Träger eines tieferen dynamischen Systems interpretiert werden können.
+	
+	\bigskip
+	
+	\noindent
+	\textbf{Schlüsselidee:}
+	\emph{Primzahlen sind nicht nur Punkte, sondern Zustände eines resonanten Operators.}
+	
+\end{document}

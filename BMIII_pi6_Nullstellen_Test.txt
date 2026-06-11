@@ -1,0 +1,73 @@
+BM-III Nullstellen-Test: pi^6, 12/24-Holonomie, entfaltete Abstände
+
+Datei: /mnt/data/zeros6(6).npy
+Anzahl Nullstellen: 2001052
+Erste Nullstelle: 14.134725142000; letzte: 1132490.658714411082
+
+Konstanten:
+  pi^6: 961.389193575304
+  pi^6/7: 137.341313367901
+  diff alpha: 0.305314190900589
+  rel err alpha: 0.00222798529389519
+  zeta6: 1.01734306198445
+
+Entfaltete Abstände Δ* = Δγ log(γ/2π)/(2π):
+  mean: 0.99999997
+  std: 0.407523127
+  min: 0.00544678296
+  max: 3.30347343
+  q05: 0.388407299
+  q50: 0.967390841
+  q95: 1.72419729
+
+Rayleigh-Test der Nullstellenphasen gamma mod Periode:
+  Periode                 R=|mean exp(iθ)|       Z=N R^2        p≈exp(-Z)     mean angle
+                    12      2.16209901e-06     9.35426e-06        0.999991    0.0673818
+                    24     3.823230877e-06     2.92496e-05        0.999971    -0.832929
+         961.389193575     0.0001213221233       0.0294536        0.970976     -1.93396
+         137.341313368     2.277088414e-05      0.00103757        0.998963     -2.82425
+                   945     0.0001631186484       0.0532434        0.948149      1.16494
+                   137     2.007627844e-05     0.000806538        0.999194     0.792791
+         137.035999177     1.843079299e-05     0.000679746         0.99932    -0.392222
+                     4     1.619785459e-06     5.25017e-06        0.999995     0.671515
+                     8     9.549368405e-07     1.82477e-06        0.999998   -0.0533408
+
+Chi-Quadrat-Bintest (24 Bins) der Nullstellenphasen:
+  Periode                 chi2          max relative bin deviation   first 8 counts
+                    12       1.95564                   0.00178506   [83317, 83259, 83473, 83357, 83429, 83353, 83331, 83309]
+                    24       1.53137                   0.00262862   [83418, 83354, 83389, 83329, 83304, 83487, 83405, 83400]
+         961.389193575      0.139695                   0.00058969   [83328, 83374, 83337, 83353, 83373, 83369, 83349, 83380]
+         137.341313368      0.364528                   0.00102146   [83375, 83429, 83333, 83388, 83423, 83357, 83342, 83437]
+         137.035999177       0.31094                  0.000901526   [83383, 83394, 83400, 83337, 83435, 83302, 83431, 83358]
+
+Rayleigh-Test der Abstände Δγ mod Periode:
+                    12  R=0.9922219219  Z=1.97004e+06  p≈0
+                    24  R=0.9980472568  Z=1.99324e+06  p≈0
+         961.389193575  R=0.9999987813  Z=2.00105e+06  p≈0
+         137.341313368  R=0.9999402862  Z=2.00081e+06  p≈0
+
+EABC-Klassen von floor(gamma_n) mod 12: Mittel entfalteter Folgelücke nach Klasse:
+  E ( 1): count= 166830, mean Δ*=1.000437658, std=0.407358450
+  A ( 5): count= 166901, mean Δ*=1.000319957, std=0.407198588
+  B ( 7): count= 166788, mean Δ*=1.000095385, std=0.407301021
+  C (11): count= 166894, mean Δ*=1.000257796, std=0.407539382
+
+Top Fourier-Amplituden R_k für Phasen gamma/Periode (k=1..12):
+  period=961.389193575, k= 1, R=0.0001213221233, Z=0.0294536
+  period=12, k=11, R=7.551409835e-05, Z=0.0114108
+  period=961.389193575, k= 2, R=6.673509391e-05, Z=0.00891183
+  period=961.389193575, k= 3, R=4.724056203e-05, Z=0.00446569
+  period=961.389193575, k= 4, R=3.700298268e-05, Z=0.00273988
+  period=961.389193575, k= 5, R=3.058210727e-05, Z=0.00187151
+  period=961.389193575, k= 6, R=2.611012864e-05, Z=0.00136419
+  period=961.389193575, k= 7, R=2.277088414e-05, Z=0.00103757
+  period=961.389193575, k= 8, R=2.015110729e-05, Z=0.000812561
+  period=961.389193575, k= 9, R=1.801956465e-05, Z=0.000649751
+  period=961.389193575, k=10, R=1.623723505e-05, Z=0.000527573
+  period=961.389193575, k=11, R=1.47159228e-05, Z=0.000433345
+
+Kurzinterpretation:
+- Die entfalteten Abstände haben Mittelwert nahe 1, wie erwartet.
+- Modulo 12/24/pi^6 zeigen die Nullstellenphasen kleine, aber bei N≈2e6 statistisch messbare Fourier-/Bin-Abweichungen; das ist wegen deterministischer Nullstellen und langsamer Dichteänderung nicht automatisch ein BM-Signal.
+- Der pi^6/7-Näherungswert für alpha^{-1} liegt bei 137.3413 und verfehlt CODATA um ca. 0.223 %.
+- Der stärkere mathematische Anker bleibt zeta(6)=pi^6/945; ein echter BM-Test müsste eine vorher definierte Observable gegen diese Periode testen, nicht nachträglich fitten.

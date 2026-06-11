@@ -1,0 +1,275 @@
+\documentclass[11pt,a4paper,reqno]{amsart}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsfonts,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage{hyperref}
+
+\geometry{margin=2.6cm}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue
+}
+
+\newtheorem{theorem}{Satz}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{conjecture}[theorem]{Vermutung}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Bemerkung}
+
+\numberwithin{equation}{section}
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\HH}{\mathbb{H}}
+\newcommand{\OH}{O_H}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\Reals}{\operatorname{Re}}
+\newcommand{\Imag}{\operatorname{Im}}
+\newcommand{\Nrd}{\operatorname{Nrd}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\Spa}{\operatorname{Spa}}
+\newcommand{\Frob}{\operatorname{Frob}}
+
+\title[RH, Scholze und Hurwitz-Geometrie]{Die Riemannsche Vermutung im Licht perfektoider Geometrie: ein Scholze--Hurwitz-Programm}
+
+\author{Thomas Hoffbauer}
+\address{Bamberg, Deutschland}
+\date{20. Mai 2026}
+
+\begin{document}
+
+\begin{abstract}
+Die Riemannsche Vermutung fordert, dass jede nichttriviale Nullstelle der Zetafunktion auf der kritischen Geraden
+\(\Reals(s)=1/2\) liegt. Dieser Artikel formuliert ein geometrisches Programm, das die klassische Hilbert--Pólya-Idee mit drei Strukturebenen verbindet: der Funktionalgleichung der vervollständigten Zetafunktion, der perfektoiden und diamantartigen Geometrie im Sinne Scholzes sowie der arithmetischen Gitterstruktur der Hurwitz-Ordnung. Der zentrale Punkt ist nicht die Behauptung eines abgeschlossenen Beweises, sondern die Isolierung einer präzisen Brückenbedingung: Sobald die nichttrivialen Nullstellen als Spektrum eines selbstadjungierten Operators auftreten, der funktoriell aus einer dualitätsverträglichen perfektoiden Hurwitz-Struktur konstruiert wird, erzwingt die Dualität \(s\leftrightarrow 1-s\) die kritische Achse. Daraus entsteht ein prüfbares Beweisprogramm mit klaren analytischen, geometrischen und numerischen Teilproblemen.
+\end{abstract}
+
+\maketitle
+
+\tableofcontents
+
+\section{Einleitung}
+
+Die Riemannsche Zetafunktion ist zunächst durch
+\begin{equation}
+  \zeta(s)=\sum_{n=1}^{\infty}n^{-s},\qquad \Reals(s)>1,
+\end{equation}
+definiert und besitzt eine meromorphe Fortsetzung nach \(\C\). Ihre nichttrivialen Nullstellen liegen im kritischen Streifen \(0<\Reals(s)<1\). Die Riemannsche Vermutung lautet:
+\begin{conjecture}[Riemannsche Vermutung]
+Jede nichttriviale Nullstelle \(\rho\) von \(\zeta(s)\) erfüllt
+\[
+  \Reals(\rho)=\frac12.
+\]
+\end{conjecture}
+
+Die klassische Hilbert--Pólya-Strategie sucht einen selbstadjungierten Operator \(D\), dessen Spektrum die Imaginärteile \(\gamma\) der Nullstellen
+\[
+  \rho=\frac12+i\gamma
+\]
+liefert. Selbstadjungiertheit wäre dann die analytische Quelle der Realität der \(\gamma\). Offen bleibt jedoch die geometrische Herkunft eines solchen Operators.
+
+Die Leitidee dieses Artikels ist, Scholzes perfektoide Geometrie nicht als bloßes Schlagwort, sondern als präzise Sprache für Grenzräume, Dualitäten und arithmetische Symmetrien zu verwenden. Die Hurwitz-Ordnung liefert dazu eine diskrete, normierte und nichtkommutative Basisschicht. Zwischen beiden Ebenen soll ein Operator entstehen, der zugleich spektral, geometrisch und dualitätsverträglich ist.
+
+\section{Analytischer Ausgangspunkt}
+
+Wir verwenden die vervollständigte Zetafunktion
+\begin{equation}
+  \xi(s)=\frac12 s(s-1)\pi^{-s/2}\Gamma\!\left(\frac{s}{2}\right)\zeta(s).
+\end{equation}
+Sie ist ganz und erfüllt die Funktionalgleichung
+\begin{equation}
+  \xi(s)=\xi(1-s).
+\end{equation}
+Die Symmetrieachse dieser Involution ist die Gerade \(\Reals(s)=1/2\). Jede Nullstelle außerhalb dieser Geraden hätte daher einen Spiegelpartner \(1-\rho\). Die Riemannsche Vermutung behauptet, dass die nichttrivialen Nullstellen keine seitliche Freiheit besitzen, sondern auf der Fixachse dieser Dualität liegen.
+
+\begin{definition}[Spektrale Realisierung]
+Eine spektrale Realisierung der nichttrivialen Nullstellen ist ein Tripel \((\mathcal{K},D,\Theta)\), bestehend aus einem Hilbertraum \(\mathcal{K}\), einem wesentlich selbstadjungierten Operator \(D\) und einer Transformation \(\Theta\), so dass die Nullstellen formal durch
+\begin{equation}
+  \rho_n=\frac12+i\lambda_n,\qquad \lambda_n\in\operatorname{Spec}(D),
+\end{equation}
+parametrisiert werden und \(\Theta\) die Funktionalgleichung \(s\mapsto 1-s\) implementiert.
+\end{definition}
+
+\section{Scholzes geometrische Sprache}
+
+Perfektoide Räume und Diamanten sind dafür gemacht, arithmetische Grenzübergänge kontrolliert zu behandeln. Für das vorliegende Programm sind drei Merkmale entscheidend:
+\begin{enumerate}
+  \item sie erlauben inverse Limes-Konstruktionen über \(p\)-Potenz-Niveaus;
+  \item sie bewahren Galois- und Frobenius-Symmetrien in einer geometrischen Sprache;
+  \item sie machen Dualitäten als Morphismen von geometrischen Objekten sichtbar.
+\end{enumerate}
+
+Statt die Zeta-Nullstellen direkt als Punkte einer komplexen Ebene zu betrachten, sucht man einen geometrischen Träger \(\mathfrak{X}\), dessen Kohomologie eine Spurformel besitzt. In einer idealen Form hätte man eine Identität
+\begin{equation}
+  \operatorname{Tr}\!\left(e^{-tD^2}\right)
+  \quad\longleftrightarrow\quad
+  \text{explizite Formel der Primzahlen und Nullstellen}.
+\end{equation}
+Dies ist der Punkt, an dem die Scholze-Geometrie natürlich ins Spiel kommt: Sie bietet einen Rahmen, in dem lokale \(p\)-adische Daten, globale Adelestrukturen und Kohomologie gemeinsam formuliert werden können.
+
+\section{Die Hurwitz-Schicht}
+
+Sei \(\HH\) die Hamiltonsche Quaternionenalgebra über \(\Q\), und sei \(\OH\) die Hurwitz-Ordnung. Für
+\[
+  x=a+bi+cj+dk
+\]
+ist die reduzierte Norm
+\begin{equation}
+  \Nrd(x)=a^2+b^2+c^2+d^2.
+\end{equation}
+
+Für eine ungerade Primzahl \(p\) betrachten wir die Primnorm-Schale
+\begin{equation}
+  X_p=\{x\in\OH:\Nrd(x)=p\}.
+\end{equation}
+Die klassische Zählung liefert
+\begin{equation}
+  |X_p|=24(p+1).
+\end{equation}
+Nach Division durch die \(24\) Einheiten der Hurwitz-Ordnung erscheint die projektive Größe \(p+1=|\mathbf{P}^1(\mathbb{F}_p)|\). Damit verbindet die Hurwitz-Schicht eine konkrete Gitterarithmetik mit lokaler projektiver Geometrie.
+
+\begin{remark}
+Diese Projektivitätszahl ist der einfachste Ort, an dem die diskrete Quaternionengeometrie und die lokale Geometrie über endlichen Körpern ineinandergreifen. Genau solche Übergänge sind für ein perfektoides Beweisprogramm relevant, weil sie endliche Niveaus in einen kontrollierten Grenzraum überführen.
+\end{remark}
+
+\section{Der Scholze--Hurwitz-Raum}
+
+Wir fassen die gewünschte geometrische Struktur als Beweisziel zusammen.
+
+\begin{definition}[Scholze--Hurwitz-Raum]
+Ein Scholze--Hurwitz-Raum ist ein hypothetisches geometrisches Objekt \(\mathfrak{X}_{SH}\), das folgende Daten trägt:
+\begin{enumerate}
+  \item eine adelische Hurwitz-Schicht aus den lokalen Ordnungen \(\OH\otimes\Z_p\);
+  \item eine perfektoide Grenzstruktur über \(p\)-Potenz-Niveaus;
+  \item eine Dualität \(\Theta\), welche die Funktionalgleichung \(\xi(s)=\xi(1-s)\) geometrisch realisiert;
+  \item einen Dirac-artigen Operator \(D_{SH}\) auf einer geeigneten Kohomologie oder \(L^2\)-Realisierung von \(\mathfrak{X}_{SH}\).
+\end{enumerate}
+\end{definition}
+
+Das Modell ist erst dann mathematisch tragfähig, wenn \(\mathfrak{X}_{SH}\) nicht nur formal postuliert, sondern als konkreter diamantartiger oder perfektoider Quotient konstruiert wird. Diese Konstruktion ist der harte Kern des Programms.
+
+\section{Das Brückenlemma}
+
+Die folgende Aussage ist bewusst als bedingtes Lemma formuliert. Sie trennt den elementaren Fixachsen-Mechanismus von der tiefen geometrischen Existenzfrage.
+
+\begin{lemma}[Dualität erzwingt die Fixachse]
+Angenommen, die nichttrivialen Nullstellen der Zetafunktion werden durch ein Spektrum
+\[
+  \rho=\sigma+i\lambda
+\]
+eines selbstadjungierten Operators \(D\) parametrisiert, und die geometrische Dualität \(\Theta\) identifiziert die spektralen Zustände zu \(\rho\) und \(1-\rho\) normerhaltend. Wenn ein spektraler Zustand unter dieser Dualität einfach und stabil ist, dann gilt \(\sigma=1/2\).
+\end{lemma}
+
+\begin{proof}
+Die Dualität sendet \(\rho=\sigma+i\lambda\) auf \(1-\rho=1-\sigma-i\lambda\). Normerhaltung und Stabilität des Zustands bedeuten, dass der Realteil mit seinem dualen Realteil zusammenfallen muss:
+\[
+  \sigma=1-\sigma.
+\]
+Daraus folgt unmittelbar
+\[
+  \sigma=\frac12.
+\]
+Die Selbstadjungiertheit des Operators liefert zusätzlich \(\lambda\in\R\), so dass die Parametrisierung auf der vertikalen Geraden wohldefiniert ist.
+\end{proof}
+
+\begin{remark}
+Das Lemma beweist nicht die Riemannsche Vermutung aus sich heraus. Es zeigt exakt, welche geometrische Brücke fehlen darf und welche nicht: Man muss einen Operator konstruieren, dessen Spektrum wirklich die Nullstellen erfasst, und man muss die Funktionalgleichung als normerhaltende geometrische Dualität realisieren.
+\end{remark}
+
+\section{Operatoransatz}
+
+Der erwartete Operator hat die formale Gestalt
+\begin{equation}
+  D_{SH}=D_{\mathrm{geom}}+V_{\mathrm{arith}},
+\end{equation}
+wobei \(D_{\mathrm{geom}}\) aus der perfektoiden Geometrie von \(\mathfrak{X}_{SH}\) stammt und \(V_{\mathrm{arith}}\) die Hurwitz-Primnorm-Schalen koppelt. Eine minimale Konsistenzforderung lautet:
+\begin{equation}
+  D_{SH}=D_{SH}^{*}.
+\end{equation}
+Die arithmetische Spur sollte dann eine explizite Formel der Form
+\begin{equation}
+  \sum_{\lambda\in\operatorname{Spec}(D_{SH})}h(\lambda)
+  =
+  \widehat{h}(0)+\widehat{h}(i/2)+
+  \sum_{p^m}\frac{\log p}{p^{m/2}}\,A_{p,m}(h)
+\end{equation}
+erzeugen. Die Terme \(A_{p,m}\) müssen aus den lokalen Hurwitz-Orbits und ihrer projektiven Reduktion entstehen.
+
+\section{Numerisches Prüfprotokoll}
+
+Der geometrische Ansatz sollte numerisch nicht nur die bekannten Nullstellen reproduzieren, sondern strukturelle Nebenbedingungen erfüllen. Ein geeignetes Protokoll besteht aus vier Tests:
+
+\begin{enumerate}
+  \item \textbf{Spektraler Abgleich:} Die Eigenwertfolge des diskretisierten Operators wird gegen die bekannten \(\gamma_n\) geprüft.
+  \item \textbf{Dualitätstest:} Die Implementierung der Involution \(s\mapsto 1-s\) muss normerhaltend sein.
+  \item \textbf{Hurwitz-Orbittest:} Lokale Beiträge bei Primzahl \(p\) müssen die Größe \(p+1\) nach Einheitenquotient reproduzieren.
+  \item \textbf{Kontrollmodelle:} GUE-, Zufalls- und permutierte Nullstellen-Templates dürfen die gleiche Struktur nicht gleich gut erklären.
+\end{enumerate}
+
+Dieses Protokoll ersetzt keinen Beweis, aber es verhindert, dass die Theorie nur aus frei verschiebbaren Metaphern besteht.
+
+\section{Offene mathematische Aufgaben}
+
+Das Programm reduziert sich auf vier präzise Aufgaben:
+\begin{enumerate}
+  \item Konstruktion von \(\mathfrak{X}_{SH}\) als konkretem perfektoiden oder diamantartigen Objekt.
+  \item Definition einer geeigneten Kohomologie, auf der ein Dirac-Operator \(D_{SH}\) natürlich wirkt.
+  \item Beweis der wesentlichen Selbstadjungiertheit von \(D_{SH}\).
+  \item Herleitung einer Spurformel, deren spektrale Seite die nichttrivialen Nullstellen und deren geometrische Seite die Primdaten enthält.
+\end{enumerate}
+
+Erst wenn diese vier Punkte geschlossen sind, wird aus dem Scholze--Hurwitz-Programm ein Beweis der Riemannschen Vermutung.
+
+\section{Schluss}
+
+Die Stärke des Scholze--Hurwitz-Ansatzes liegt in der Verbindung von drei sonst getrennten Sprachen: analytische Funktionalgleichung, perfektoide Geometrie und quaternionische Normarithmetik. Die kritische Linie erscheint darin nicht als zufällige Gerade, sondern als Fixachse einer dualitätsverträglichen Geometrie. Der entscheidende mathematische Schritt bleibt die Konstruktion des richtigen Raums und des richtigen selbstadjungierten Operators. Genau dort muss die weitere Arbeit ansetzen.
+
+\begin{thebibliography}{9}
+\bibitem{riemann}
+B. Riemann,
+\emph{Ueber die Anzahl der Primzahlen unter einer gegebenen Grösse},
+Monatsberichte der Berliner Akademie, 1859.
+
+\bibitem{tate}
+J. Tate,
+\emph{Fourier Analysis in Number Fields and Hecke's Zeta-Functions},
+Ph.D. thesis, Princeton University, 1950.
+
+\bibitem{connes}
+A. Connes,
+\emph{Trace formula in noncommutative geometry and the zeros of the Riemann zeta function},
+Selecta Mathematica, 1999.
+
+\bibitem{scholze-perfectoid}
+P. Scholze,
+\emph{Perfectoid Spaces},
+Publications mathématiques de l'IHÉS, 2012.
+
+\bibitem{scholze-condensed}
+D. Clausen and P. Scholze,
+\emph{Lectures on Condensed Mathematics},
+Bonn, 2020.
+
+\bibitem{hurwitz}
+A. Hurwitz,
+\emph{Über die Composition der quadratischen Formen},
+Mathematische Annalen, 1898.
+
+\bibitem{berry-keating}
+M. V. Berry and J. P. Keating,
+\emph{The Riemann zeros and eigenvalue asymptotics},
+SIAM Review, 1999.
+\end{thebibliography}
+
+\end{document}

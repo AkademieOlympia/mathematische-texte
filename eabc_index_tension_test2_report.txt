@@ -1,0 +1,36 @@
+EABC-Indexspannungs- und Richtungs-Test (bis 10^7)
+
+Rechenumfang
+- Primzahlvierlinge bis Zentrum <= 10,000,000
+- Riemann-Nullstellen: erste 100000 aus zeros6.npy
+- Chebyshev-artige mod-12-Spannung:
+  Theta_log12(X) = ((B+C) - (E+A)) / (alle), jeweils logarithmisch gewichtet
+
+Vierlinge
+- Anzahl klassischer Vierlinge: 899
+- Orientierungsmuster:
+  ABCE = 450
+  CEAB = 449
+
+Wichtigste Korrelationen
+- corr(idx_spread, Theta_raw) = -0.340295
+- corr(idx_var, Theta_raw)    = -0.249359
+- corr(idx_spread_res, Theta_res) = 0.555032
+- corr(idx_var_res, Theta_res)    = 0.515350
+
+Nullstellenseite
+- corr(Delta, Theta_raw)   = -0.741930
+- corr(Lambda, Theta_raw)  = -0.654077
+- corr(Delta_res, Theta_res)  = -0.375100
+- corr(Lambda_res, Theta_res) = -0.324602
+
+Fenstervergleich (10k-Bins, nur ueberlappender Bereich)
+- corr(spread_mean, Delta_mean) = 0.932595
+- corr(spread_mean, Lambda_mean)= 0.896967
+- corr(spread_mean, theta_mean) = -0.809544
+
+Kurze Deutung
+1) Die EABC-Indexspannung ist auch bis 10^7 nicht trivial und bleibt nach einfachem Detrending deutlich mit der lokalen mod-12-Spannung korreliert.
+2) Die Orientierung der Vierlinge bleibt auf zwei Modi beschraenkt (ABCE / CEAB).
+3) Auf der Nullstellenseite sind Delta und Lambda weiterhin die besseren Groessen als der rohe Quotient r.
+4) Der gemeinsame 10k-Bin-Vergleich ist mit nur 8 Bins noch klein, zeigt aber einen starken Gleichlauf zwischen Vierlings-Indexspannung und Delta/Lambda-Mitteln.

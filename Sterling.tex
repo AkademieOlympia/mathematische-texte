@@ -1,0 +1,1430 @@
+\documentclass[11pt,a4paper]{article}
+
+% ------------------------------------------------------------
+% Sprach- und Zeichensatz
+% ------------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% ------------------------------------------------------------
+% Mathematik
+% ------------------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\geometry{margin=2.7cm}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue!50!black,
+	citecolor=blue!50!black,
+	urlcolor=blue!50!black
+}
+
+% ------------------------------------------------------------
+% Theorem-Umgebungen
+% ------------------------------------------------------------
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{beispiel}[definition]{Beispiel}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+
+\theoremstyle{plain}
+\newtheorem{satz}[definition]{Satz}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+\newtheorem{hypothese}[definition]{Hypothese}
+
+% ------------------------------------------------------------
+% Eigene Makros
+% ------------------------------------------------------------
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\HH}{\mathbb{H}}
+\newcommand{\OO}{\mathbb{O}}
+\newcommand{\PP}{\mathcal{P}}
+\newcommand{\EABC}{\mathrm{EABC}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\conj}[1]{\overline{#1}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Char}{\operatorname{Char}}
+
+\title{EABC-Oktionen und Vierlingsschwung\\
+	\large Eine algebraische Erweiterung der Restklassenstruktur modulo 12}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Dieser Text formuliert eine mögliche algebraische Erweiterung des EABC-Schemas. Ausgangspunkt ist die Zerlegung der Primzahlen $p>3$ in die vier Einheitenklassen modulo $12$, also $1,5,7,11$. Diese werden als $E,A,B,C$ bezeichnet und bilden multiplikativ die Kleinsche Vierergruppe. Anschließend wird diese flache Restklassenstruktur quaternionisch gehoben, indem $E,A,B,C$ mit $1,i,j,k$ identifiziert werden. Dadurch entstehen Orientierung, Norm und Drehrichtung. In einem dritten Schritt wird die Struktur oktonionisch verdoppelt: Eine EABC-Oktion $\mathcal O=q+r\ell\in\OO$ besteht aus einem quaternionischen Zustand $q\in\HH_{\EABC}$ und einem quaternionischen Fluss oder Schwung $r\in\HH_{\EABC}$. Für Primzahlvierlinge $(p,p+2,p+6,p+8)$ ergibt sich daraus eine konkrete Formel für den gap-gewichteten Vierlingsschwung. Die Konstruktion verbindet Restklassenarithmetik, Quaternionen, Oktonionen, Dirichlet-Charaktere und Stirling-artige Bulk-Normalisierung zu einem möglichen Abschnitt des Bamberg-Modells.
+	\end{abstract}
+	
+	\tableofcontents
+	
+	\section{Ausgangspunkt: EABC als Restklassenstruktur modulo 12}
+	
+	Für jede Primzahl $p>3$ gilt
+	\[
+	p \equiv 1,5,7,11 \pmod{12}.
+	\]
+	Das EABC-Schema ordnet diese vier möglichen Restklassen folgendermaßen zu:
+	\[
+	E \equiv 1 \pmod{12}, \qquad
+	A \equiv 5 \pmod{12}, \qquad
+	B \equiv 7 \pmod{12}, \qquad
+	C \equiv 11 \pmod{12}.
+	\]
+	Damit wird die Primzahlwelt oberhalb von $3$ in vier Kanäle zerlegt:
+	\[
+	\PP_{>3}
+	=
+	\PP_E \cup \PP_A \cup \PP_B \cup \PP_C.
+	\]
+	Diese vier Kanäle sind nicht willkürlich. Sie sind genau die Einheiten modulo $12$:
+	\[
+	(\Z/12\Z)^\times = \{1,5,7,11\}.
+	\]
+	Multiplikativ bilden sie die Kleinsche Vierergruppe
+	\[
+	V_4 \cong C_2\times C_2.
+	\]
+	Es gilt
+	\[
+	5^2\equiv 1,\qquad 7^2\equiv 1,\qquad 11^2\equiv 1 \pmod{12},
+	\]
+	und
+	\[
+	5\cdot 7\equiv 11,\qquad
+	5\cdot 11\equiv 7,\qquad
+	7\cdot 11\equiv 5 \pmod{12}.
+	\]
+	In EABC-Sprache lautet dies:
+	\[
+	A^2=B^2=C^2=E,
+	\]
+	und
+	\[
+	AB=C,\qquad AC=B,\qquad BC=A.
+	\]
+	
+	\section{Die flache EABC-Algebra}
+	
+	Man kann EABC zunächst als reine Gruppentafel schreiben:
+	\[
+	\begin{array}{c|cccc}
+		\cdot & E & A & B & C\\
+		\hline
+		E & E & A & B & C\\
+		A & A & E & C & B\\
+		B & B & C & E & A\\
+		C & C & B & A & E
+	\end{array}
+	\]
+	Diese Tabelle ist kommutativ. Außerdem ist jedes Nicht-$E$-Element sein eigenes Inverses:
+	\[
+	A^{-1}=A,\qquad B^{-1}=B,\qquad C^{-1}=C.
+	\]
+	Dies ist die flache EABC-Algebra. Sie beschreibt die multiplikative Restklassenlogik der Primzahlen modulo $12$.
+	
+	\begin{beispiel}
+		Aus $A\cdot B=C$ folgt konkret
+		\[
+		5\cdot 7=35\equiv 11\pmod{12}.
+		\]
+		Aus $A\cdot C=B$ folgt
+		\[
+		5\cdot 11=55\equiv 7\pmod{12}.
+		\]
+	\end{beispiel}
+	
+	\section{Quaternionische Hebung der EABC-Struktur}
+	
+	Die Quaternionen besitzen die Basis
+	\[
+	1,\ i,\ j,\ k
+	\]
+	mit
+	\[
+	i^2=j^2=k^2=-1,
+	\]
+	und
+	\[
+	ij=k,\qquad jk=i,\qquad ki=j.
+	\]
+	Bei Vertauschung kehrt sich das Vorzeichen um:
+	\[
+	ji=-k,\qquad kj=-i,\qquad ik=-j.
+	\]
+	Das EABC-Schema lässt sich natürlich auf diese Basis legen:
+	\[
+	E\longleftrightarrow 1,
+	\qquad
+	A\longleftrightarrow i,
+	\qquad
+	B\longleftrightarrow j,
+	\qquad
+	C\longleftrightarrow k.
+	\]
+	Ein EABC-Zustand wird dadurch zu einem Quaternion
+	\[
+	q=e+ai+bj+ck.
+	\]
+	Die Norm lautet
+	\[
+	N(q)=q\conj q=e^2+a^2+b^2+c^2,
+	\]
+	beziehungsweise
+	\[
+	\norm q=\sqrt{e^2+a^2+b^2+c^2}.
+	\]
+	
+	\begin{bemerkung}
+		Die vier Kanäle $E,A,B,C$ werden hier nicht nur als vier Kategorien betrachtet, sondern als ein einziger geometrischer Zustand in einem vierdimensionalen reellen Raum.
+	\end{bemerkung}
+	
+	\section{EABC-Gruppe versus Quaternionen}
+	
+	Es ist wesentlich, die flache EABC-Multiplikation modulo $12$ von der quaternionischen Multiplikation zu unterscheiden.
+	
+	Die EABC-Multiplikation ist kommutativ:
+	\[
+	AB=BA=C.
+	\]
+	Die Quaternionenmultiplikation ist nicht kommutativ:
+	\[
+	ij=k,
+	\qquad
+	ji=-k.
+	\]
+	In quaternionischer Lesart erhält man daher
+	\[
+	AB=C,
+	\qquad
+	BA=-C.
+	\]
+	Dieser Unterschied ist produktiv. Die flache EABC-Struktur sagt nur, dass $A\cdot B=C$ gilt. Die quaternionische Struktur sagt zusätzlich, dass der Weg
+	\[
+	A\to B\to C
+	\]
+	eine Orientierung besitzt. Die Umkehrung erzeugt ein negatives Vorzeichen.
+	
+	Darin liegt der mathematische Ort für Begriffe wie Drehrichtung, Orientierung, Schwung, chirale Struktur, lokaler Impuls, Kanalfluss oder Vorzeichenladung.
+	
+	\section{Primzahlvierlinge und EABC-Orientierung}
+	
+	Ein Primzahlvierling hat die Form
+	\[
+	(p,p+2,p+6,p+8).
+	\]
+	Nimmt man die Reste modulo $12$, entstehen typische EABC-Muster.
+	
+	\begin{beispiel}[Vierling vom Typ ABCE]
+		Sei
+		\[
+		p\equiv 5\pmod{12}.
+		\]
+		Dann gilt
+		\[
+		p\equiv 5\equiv A,
+		\]
+		\[
+		p+2\equiv 7\equiv B,
+		\]
+		\[
+		p+6\equiv 11\equiv C,
+		\]
+		\[
+		p+8\equiv 1\equiv E.
+		\]
+		Der Vierling besitzt also das Muster
+		\[
+		(A,B,C,E).
+		\]
+	\end{beispiel}
+	
+	\begin{beispiel}[Vierling vom Typ CEAB]
+		Sei
+		\[
+		p\equiv 11\pmod{12}.
+		\]
+		Dann gilt
+		\[
+		p\equiv 11\equiv C,
+		\]
+		\[
+		p+2\equiv 1\equiv E,
+		\]
+		\[
+		p+6\equiv 5\equiv A,
+		\]
+		\[
+		p+8\equiv 7\equiv B.
+		\]
+		Der Vierling besitzt also das Muster
+		\[
+		(C,E,A,B).
+		\]
+	\end{beispiel}
+	
+	Primzahlvierlinge liegen somit nicht beliebig im EABC-Raum. Sie treten in bestimmten zyklischen EABC-Folgen auf. Diese Folgen können als lokale Umläufe oder Kanalschleifen gelesen werden.
+	
+	\section{Quaternionische Lesart eines Vierlings}
+	
+	Setzt man
+	\[
+	E=1,
+	\qquad
+	A=i,
+	\qquad
+	B=j,
+	\qquad
+	C=k,
+	\]
+	dann wird der Vierling vom Typ $(A,B,C,E)$ zur Folge
+	\[
+	(i,j,k,1).
+	\]
+	Dies ist eine vollständige quaternionische Basisrotation. Der Vierling vom Typ $(C,E,A,B)$ wird zu
+	\[
+	(k,1,i,j),
+	\]
+	also ebenfalls zu einer Basisrotation, aber mit anderer Startlage.
+	
+	Für einen Vierling kann man zunächst den lokalen Zustandsvektor
+	\[
+	Q_4(p)=q(p)+q(p+2)+q(p+6)+q(p+8)
+	\]
+	definieren, wobei
+	\[
+	q(n)\in\{1,i,j,k\}
+	\]
+	die EABC-Klasse von $n$ bezeichnet.
+	
+	Für einen ideal vollständigen Vierling vom Typ $(A,B,C,E)$ erhält man
+	\[
+	Q_4=i+j+k+1.
+	\]
+	Die Norm ist
+	\[
+	\norm{1+i+j+k}^2=1^2+1^2+1^2+1^2=4,
+	\]
+	also
+	\[
+	\norm{1+i+j+k}=2.
+	\]
+	Dies ist ein symmetrischer Zustand: Alle vier Kanäle sind einmal besetzt.
+	
+	\section{Vierlingsschwung als gerichteter Quaternionenfluss}
+	
+	Der bloße Summenvektor
+	\[
+	1+i+j+k
+	\]
+	erkennt noch nicht die Reihenfolge der Kanäle. Um den Schwung zu erfassen, braucht man eine Größe, die Übergänge berücksichtigt.
+	
+	Für eine Folge
+	\[
+	(q_1,q_2,q_3,q_4)
+	\]
+	definieren wir den zyklischen Übergangsschwung durch
+	\[
+	\Omega_{\mathrm{zykl}}
+	=
+	\conj{q_1}q_2+
+	\conj{q_2}q_3+
+	\conj{q_3}q_4+
+	\conj{q_4}q_1.
+	\]
+	Dadurch wird der Vierling als geschlossene Schleife behandelt.
+	
+	Für den Typ
+	\[
+	(A,B,C,E)=(i,j,k,1)
+	\]
+	ergibt sich
+	\[
+	\conj{i}j=(-i)j=-k,
+	\]
+	\[
+	\conj{j}k=(-j)k=-i,
+	\]
+	\[
+	\conj{k}1=-k,
+	\]
+	und
+	\[
+	\conj{1}i=i.
+	\]
+	Also
+	\[
+	\Omega_{ABCE}=-k-i-k+i=-2k.
+	\]
+	Dies ist ein möglicher formaler Ausdruck des Vierlingsschwungs.
+	
+	\section{Warum Oktonionen ins Spiel kommen}
+	
+	Quaternionen haben vier Dimensionen:
+	\[
+	1,i,j,k.
+	\]
+	Oktonionen haben acht Dimensionen:
+	\[
+	1,e_1,e_2,e_3,e_4,e_5,e_6,e_7.
+	\]
+	Sie erweitern die reellen Zahlen, die komplexen Zahlen und die Quaternionen:
+	\[
+	\R\subset\C\subset\HH\subset\OO.
+	\]
+	Die Dimensionen bilden die Cayley-Dickson-Kette
+	\[
+	1,2,4,8.
+	\]
+	Für das EABC-Modell ist dies deshalb interessant, weil EABC zunächst vierkanalig ist. Quaternionen reichen aus, um die vier Kanäle als Zustand zu kodieren. Sobald man aber zusätzlich zwischen Zustand, Übergang, Orientierung, Spiegelung, Schwung, Dualkanal, Innen/Außen oder lokaler und globaler Dynamik unterscheiden möchte, entsteht eine natürliche achtdimensionale Struktur.
+	
+	\section{Eine natürliche EABC-zu-Oktion-Zuordnung}
+	
+	Man kann die vier EABC-Kanäle in eine quaternionische Unteralgebra der Oktonionen einbetten:
+	\[
+	E\leftrightarrow 1,
+	\qquad
+	A\leftrightarrow e_1,
+	\qquad
+	B\leftrightarrow e_2,
+	\qquad
+	C\leftrightarrow e_3,
+	\]
+	wobei
+	\[
+	\{1,e_1,e_2,e_3\}
+	\]
+	eine quaternionische Unteralgebra bildet.
+	
+	Die übrigen vier oktonionischen Richtungen
+	\[
+	e_4,e_5,e_6,e_7
+	\]
+	können als duale, dynamische oder Übergangsachsen interpretiert werden. Eine mögliche Zuordnung lautet
+	\[
+	E^\ast\leftrightarrow e_4,
+	\qquad
+	A^\ast\leftrightarrow e_5,
+	\qquad
+	B^\ast\leftrightarrow e_6,
+	\qquad
+	C^\ast\leftrightarrow e_7.
+	\]
+	Dadurch entsteht die achtteilige Struktur
+	\[
+	(E,A,B,C;E^\ast,A^\ast,B^\ast,C^\ast).
+	\]
+	
+	\section{EABC-Oktionen als Phasenraum}
+	
+	Die Oktonionen können durch Cayley-Dickson-Verdopplung als
+	\[
+	\OO=\HH\oplus\HH\ell
+	\]
+	geschrieben werden. Jedes Oktonion besitzt also die Form
+	\[
+	\mathcal O=q+r\ell,
+	\qquad
+	q,r\in\HH.
+	\]
+	Im EABC-Modell interpretieren wir
+	\[
+	q=\text{EABC-Zustand},
+	\]
+	und
+	\[
+	r=\text{EABC-Schwung, Übergang oder Impuls}.
+	\]
+	Damit erhält man die zentrale Formel
+	\[
+	\boxed{
+		\mathcal O_{\EABC}
+		=
+		Q_{\mathrm{Lage}}+Q_{\mathrm{Schwung}}\ell
+	}.
+	\]
+	
+	Setzen wir
+	\[
+	Q_{\mathrm{Lage}}=e+ai+bj+ck
+	\]
+	und
+	\[
+	Q_{\mathrm{Schwung}}=u+vi+wj+zk,
+	\]
+	dann folgt
+	\[
+	\mathcal O
+	=
+	(e+ai+bj+ck)+(u+vi+wj+zk)\ell.
+	\]
+	Ausmultipliziert lautet dies
+	\[
+	\mathcal O
+	=
+	e+ai+bj+ck+u\ell+v i\ell+w j\ell+z k\ell.
+	\]
+	Die Basis kann daher geschrieben werden als
+	\[
+	1,
+	\ i,
+	\ j,
+	\ k,
+	\ \ell,
+	\ i\ell,
+	\ j\ell,
+	\ k\ell.
+	\]
+	EABC-bezogen entspricht dies
+	\[
+	E,A,B,C,E^\ast,A^\ast,B^\ast,C^\ast.
+	\]
+	
+	\begin{definition}[EABC-Oktion]
+		Eine EABC-Oktion ist ein Element
+		\[
+		\mathcal O_{\EABC}=q+r\ell\in\OO,
+		\]
+		wobei
+		\[
+		q=e+ai+bj+ck
+		\]
+		den EABC-Zustand und
+		\[
+		r=u+vi+wj+zk
+		\]
+		den EABC-Übergangs- oder Schwungzustand beschreibt. Die Komponenten $(e,a,b,c)$ messen die Besetzung oder Abweichung der vier Primkanäle $E,A,B,C$, während $(u,v,w,z)$ die gerichtete Veränderung, Kopplung oder lokale Clusterbewegung dieser Kanäle messen.
+	\end{definition}
+	
+	\section{Norm der EABC-Oktion}
+	
+	Oktonionen besitzen eine multiplikative Norm
+	\[
+	N(\mathcal O)=\mathcal O\conj{\mathcal O}.
+	\]
+	Für
+	\[
+	\mathcal O=x_0+x_1e_1+\cdots+x_7e_7
+	\]
+	gilt
+	\[
+	N(\mathcal O)=x_0^2+x_1^2+\cdots+x_7^2.
+	\]
+	Im EABC-Modell lautet dies
+	\[
+	N(\mathcal O)=e^2+a^2+b^2+c^2+u^2+v^2+w^2+z^2.
+	\]
+	Also
+	\[
+	N(\mathcal O)
+	=
+	N(Q_{\mathrm{Lage}})+N(Q_{\mathrm{Schwung}}).
+	\]
+	Dies kann als Energieform gelesen werden:
+	\[
+	\text{Gesamtenergie}
+	=
+	\text{Lageenergie}
+	+
+	\text{Schwungenergie}.
+	\]
+	Oder arithmetisch:
+	\[
+	\text{Gesamtspannung}
+	=
+	\text{Kanalspannung}
+	+
+	\text{Übergangsspannung}.
+	\]
+	
+	\section{Vierlingsschwung in oktonionischer Form}
+	
+	Für einen Primzahlvierling
+	\[
+	(p,p+2,p+6,p+8)
+	\]
+	definieren wir die EABC-Einheiten
+	\[
+	q_1,q_2,q_3,q_4\in\{1,i,j,k\}.
+	\]
+	Der Zustand ist
+	\[
+	Q_{\mathrm{state}}
+	=
+	q_1+q_2+q_3+q_4.
+	\]
+	Der zyklische Schwung ist
+	\[
+	Q_{\mathrm{flow}}
+	=
+	\conj{q_1}q_2+
+	\conj{q_2}q_3+
+	\conj{q_3}q_4+
+	\conj{q_4}q_1.
+	\]
+	Dann lautet die Vierlings-Oktion
+	\[
+	\mathcal O_4(p)
+	=
+	Q_{\mathrm{state}}+Q_{\mathrm{flow}}\ell.
+	\]
+	Der erste Teil sagt, welche EABC-Kanäle besetzt sind. Der zweite Teil sagt, wie die Orientierung durch die Kanäle läuft.
+	
+	\section{Beispiel: Vierlingstyp ABCE}
+	
+	Für den Typ
+	\[
+	(q_1,q_2,q_3,q_4)=(i,j,k,1)
+	\]
+	ist
+	\[
+	Q_{\mathrm{state}}=1+i+j+k.
+	\]
+	Der zyklische Schwung ist
+	\[
+	Q_{\mathrm{flow}}
+	=
+	\conj{i}j+
+	\conj{j}k+
+	\conj{k}1+
+	\conj{1}i.
+	\]
+	Mit
+	\[
+	\conj{i}j=-k,
+	\qquad
+	\conj{j}k=-i,
+	\qquad
+	\conj{k}1=-k,
+	\qquad
+	\conj{1}i=i,
+	\]
+	folgt
+	\[
+	Q_{\mathrm{flow}}=-k-i-k+i=-2k.
+	\]
+	Also
+	\[
+	\mathcal O_{ABCE}
+	=
+	(1+i+j+k)+(-2k)\ell.
+	\]
+	Die Zustandsnorm beträgt
+	\[
+	\norm{1+i+j+k}^2=4,
+	\]
+	und die Schwungnorm beträgt
+	\[
+	\norm{-2k}^2=4.
+	\]
+	Damit erhält man
+	\[
+	\norm{\mathcal O_{ABCE}}^2=8.
+	\]
+	Ein vollständiger Vierling besitzt in dieser Norm somit eine symmetrische Gesamtspannung
+	\[
+	8=4+4.
+	\]
+	
+	\section{Gap-gewichteter Vierlingsschwung}
+	
+	Die zyklische Schwungdefinition unterscheidet manche zyklischen Verschiebungen nicht. Will man die Startlage oder die interne Abstandstruktur berücksichtigen, ist eine gap-gewichtete Definition natürlicher.
+	
+	Für den Vierling
+	\[
+	(p,p+2,p+6,p+8)
+	\]
+	sind die inneren Abstände
+	\[
+	2,4,2.
+	\]
+	Daher definieren wir
+	\[
+	Q_{\mathrm{flow}}^{\mathrm{gap}}
+	=
+	2\conj{q_1}q_2
+	+4\conj{q_2}q_3
+	+2\conj{q_3}q_4.
+	\]
+	
+	\subsection{Typ ABCE}
+	
+	Für
+	\[
+	(q_1,q_2,q_3,q_4)=(i,j,k,1)
+	\]
+	ergibt sich
+	\[
+	Q_{\mathrm{flow}}^{\mathrm{gap}}
+	=
+	2(-k)+4(-i)+2(-k),
+	\]
+	also
+	\[
+	Q_{\mathrm{flow}}^{\mathrm{gap}}=-4i-4k.
+	\]
+	
+	\subsection{Typ CEAB}
+	
+	Für
+	\[
+	(q_1,q_2,q_3,q_4)=(k,1,i,j)
+	\]
+	ergibt sich
+	\[
+	Q_{\mathrm{flow}}^{\mathrm{gap}}
+	=
+	2(-k)+4(i)+2(-k),
+	\]
+	also
+	\[
+	Q_{\mathrm{flow}}^{\mathrm{gap}}=4i-4k.
+	\]
+	Die beiden Vierlingstypen unterscheiden sich also in der Schwungrichtung:
+	\[
+	ABCE:\quad -4i-4k,
+	\]
+	\[
+	CEAB:\quad 4i-4k.
+	\]
+	Die Norm ist in beiden Fällen
+	\[
+	4^2+4^2=32,
+	\]
+	aber die Richtung ist verschieden. Man kann daher sagen:
+	\[
+	\text{gleiche Schwungenergie, unterschiedliche Schwungrichtung.}
+	\]
+	
+	\begin{definition}[Gap-gewichtete Vierlings-Oktion]
+		Für einen Primzahlvierling $(p,p+2,p+6,p+8)$ sei
+		\[
+		q_r\in\{1,i,j,k\}
+		\]
+		die EABC-Einheit der $r$-ten Primzahl des Vierlings. Dann heißt
+		\[
+		\boxed{
+			\mathcal O_4(p)
+			=
+			(q_1+q_2+q_3+q_4)
+			+
+			\left(
+			2\conj{q_1}q_2
+			+4\conj{q_2}q_3
+			+2\conj{q_3}q_4
+			\right)\ell
+		}
+		\]
+		die gap-gewichtete EABC-Oktion des Vierlings.
+	\end{definition}
+	
+	\section{Nichtassoziativität und Cluster-Torsion}
+	
+	Quaternionen sind nicht kommutativ, aber assoziativ:
+	\[
+	(ab)c=a(bc).
+	\]
+	Oktonionen sind im Allgemeinen nicht assoziativ:
+	\[
+	(ab)c\neq a(bc).
+	\]
+	Dies ist für das EABC-Modell kein bloßes Problem, sondern kann als strukturelle Sensibilität gegenüber Klammerungen gelesen werden.
+	
+	Bei Primzahlclustern ist die Reihenfolge und Gruppierung wichtig. Einen Vierling kann man beispielsweise auf verschiedene Weise klammern:
+	\[
+	((p,p+2),p+6),p+8,
+	\]
+	\[
+	(p,(p+2,p+6)),p+8,
+	\]
+	\[
+	p,(p+2,(p+6,p+8)).
+	\]
+	In einer assoziativen Algebra wären solche Klammerungen algebraisch gleichwertig. In den Oktonionen sind sie es im Allgemeinen nicht.
+	
+	\begin{definition}[Assoziator]
+		Für Oktonionen $a,b,c\in\OO$ heißt
+		\[
+		[a,b,c]=(ab)c-a(bc)
+		\]
+		der Assoziator von $a,b,c$.
+	\end{definition}
+	
+	Für drei aufeinanderfolgende EABC-Zustände eines Primclusters kann man daher definieren:
+	\[
+	\mathcal A(q_1,q_2,q_3)
+	=
+	(q_1q_2)q_3-q_1(q_2q_3).
+	\]
+	Wenn
+	\[
+	\mathcal A=0,
+	\]
+	liegt die Kopplung in einer quaternionischen Unteralgebra. Wenn
+	\[
+	\mathcal A\neq 0,
+	\]
+	liegt echte oktonionische Torsion vor.
+	
+	Für Primzahlvierlinge kann man zwei Assoziatoren bilden:
+	\[
+	\mathcal A_1=[q(p),q(p+2),q(p+6)],
+	\]
+	\[
+	\mathcal A_2=[q(p+2),q(p+6),q(p+8)].
+	\]
+	Eine mögliche Gesamtgröße ist
+	\[
+	\mathcal T_4(p)
+	=
+	\norm{\mathcal A_1}^2+
+	\norm{\mathcal A_2}^2.
+	\]
+	Dies kann als oktonionische Cluster-Torsion des Vierlings gelesen werden.
+	
+	\begin{bemerkung}
+		Wenn man ausschließlich $E,A,B,C$ als $1,e_1,e_2,e_3$ verwendet und diese vier Elemente eine quaternionische Unteralgebra bilden, dann verschwindet der Assoziator. Echte Oktonionik entsteht erst, wenn zusätzliche Richtungen wie $e_4,e_5,e_6,e_7$ beteiligt sind.
+	\end{bemerkung}
+	
+	\section{Hierarchie: EABC, Quaternionen, Oktonionen}
+	
+	Die Architektur lässt sich folgendermaßen ordnen:
+	\[
+	\boxed{\text{EABC modulo }12}
+	\]
+	liefert die vier Primkanäle.
+	\[
+	\boxed{\HH_{\EABC}}
+	\]
+	liefert Orientierung, Norm und Drehung dieser vier Kanäle.
+	\[
+	\boxed{\OO_{\EABC}}
+	\]
+	liefert duale Kanäle, Übergänge, Torsion und nichtassoziative Kopplung.
+	
+	\begin{center}
+		\begin{tabular}{lll}
+			\toprule
+			Ebene & Algebra & Bedeutung im Modell\\
+			\midrule
+			Restklassen & $(\Z/12\Z)^\times$ & EABC-Familien\\
+			Vierergruppe & $V_4$ & flache Multiplikation\\
+			Quaternionen & $\HH$ & Orientierung, Norm, Drehung\\
+			Oktonionen & $\OO$ & Übergang, Torsion, Schwung, Dualität\\
+			Zeta/Gamma & analytische Hülle & globale asymptotische Struktur\\
+			Stirling & Bulk-Normalform & glatter Hintergrund\\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	
+	\section{Beziehung zu Stirling, Gamma und Zeta}
+	
+	Die Stirling-Formel liefert die glatte logarithmische Masse
+	\[
+	\log(n!)
+	\sim
+	n\log n-n+\frac12\log(2\pi n)+\cdots.
+	\]
+	Sie steht für eine allgemeine Methode:
+	\[
+	\text{zuerst glatten Hauptterm bestimmen, dann Reststruktur analysieren.}
+	\]
+	Für alle Zahlen bis $n$ gilt
+	\[
+	\log(n!)=\sum_{k\le n}\log k.
+	\]
+	Für Primzahlen bis $x$ betrachtet man die Chebyshev-Funktion
+	\[
+	\vartheta(x)=\sum_{p\le x}\log p.
+	\]
+	Für die EABC-Kanäle definiert man entsprechend
+	\[
+	\vartheta_\alpha(x)
+	=
+	\sum_{\substack{p\le x\\ p\in\alpha}}\log p,
+	\qquad
+	\alpha\in\{E,A,B,C\}.
+	\]
+	Der glatte Erwartungswert ist heuristisch
+	\[
+	\vartheta_\alpha(x)\sim \frac{x}{4}.
+	\]
+	Daher definiert man die normalisierten Abweichungen
+	\[
+	\Delta_\alpha(x)=\vartheta_\alpha(x)-\frac{x}{4}.
+	\]
+	Diese Abweichungen bilden den quaternionischen EABC-Rest
+	\[
+	Q_{\mathrm{res}}(x)
+	=
+	\Delta_E(x)+\Delta_A(x)i+
+	\Delta_B(x)j+
+	\Delta_C(x)k.
+	\]
+	Die oktonionische Erweiterung lautet dann
+	\[
+	\mathcal O_{\EABC}(x)
+	=
+	Q_{\mathrm{res}}(x)+Q_{\mathrm{flow}}(x)\ell.
+	\]
+	In dieser Lesart ist Stirling der Bulk-Hintergrund, EABC der Restklassenkanal, und die Oktion der Phasenraum aus Lage und Fluss.
+	
+	\section{EABC-Entropie und Oktionen}
+	
+	Wenn in einem Fenster $[x,x+L]$ die Primzahlen auf die vier EABC-Klassen verteilt sind, erhält man Anteile
+	\[
+	p_E,p_A,p_B,p_C.
+	\]
+	Die EABC-Entropie sei
+	\[
+	H_{\EABC}
+	=
+	-\sum_{\alpha\in\{E,A,B,C\}}p_\alpha\log p_\alpha.
+	\]
+	Der maximale Wert ist
+	\[
+	\log 4,
+	\]
+	und wird bei Gleichverteilung erreicht.
+	
+	Man kann eine oktonionische Entropiespannung definieren durch
+	\[
+	\mathcal S_{\EABC}
+	=
+	(\log 4-H_{\EABC})+Q_{\mathrm{flow}}\ell.
+	\]
+	Wichtiger ist jedoch die strukturelle Einsicht: Zwei Fenster können dieselbe EABC-Verteilung besitzen, aber unterschiedliche Reihenfolgen. Zum Beispiel haben
+	\[
+	E,A,B,C,E,A,B,C
+	\]
+	und
+	\[
+	E,E,A,A,B,B,C,C
+	\]
+	dieselben Häufigkeiten, aber verschiedene Dynamiken. Quaternionische Verteilung allein erkennt das nicht. Oktonionischer Schwung kann solche Unterschiede erfassen.
+	
+	\section{EABC-Oktion eines Primfensters}
+	
+	Für ein Intervall
+	\[
+	I=[x,x+L]
+	\]
+	seien die Primzahlen darin
+	\[
+	p_1<p_2<\cdots<p_m.
+	\]
+	Ordne jeder Primzahl ihre EABC-Einheit zu:
+	\[
+	q_r\in\{1,i,j,k\}.
+	\]
+	Dann definieren wir
+	\[
+	Q_{\mathrm{state}}(I)
+	=
+	\sum_{r=1}^m q_r
+	\]
+	und den Übergangsfluss
+	\[
+	Q_{\mathrm{flow}}(I)
+	=
+	\sum_{r=1}^{m-1}
+	(p_{r+1}-p_r)\conj{q_r}q_{r+1}.
+	\]
+	Die EABC-Oktion des Fensters ist
+	\[
+	\boxed{
+		\mathcal O_{\EABC}(I)
+		=
+		Q_{\mathrm{state}}(I)+Q_{\mathrm{flow}}(I)\ell
+	}.
+	\]
+	Diese Definition codiert nicht nur die Restklassenfolge, sondern auch die Primzahllücken.
+	
+	\section{Glatte Schalen und der 5-adische Twist}
+	
+	Im Bamberg-Modell spielen glatte Schalen wie
+	\[
+	s_{23}(n)=2^{v_2(n)}3^{v_3(n)}
+	\]
+	und
+	\[
+	s_{235}(n)=2^{v_2(n)}3^{v_3(n)}5^{v_5(n)}
+	\]
+	eine wichtige Rolle. Dabei werden glatte Faktoren entfernt, und übrig bleibt ein reduzierter Kern.
+	
+	Der Faktor $5$ ist besonders interessant, weil
+	\[
+	5\equiv A\pmod{12}.
+	\]
+	Multiplikation mit $5$ wirkt im EABC-Raum also als Multiplikation mit $A$. Da
+	\[
+	A\cdot E=A,
+	\qquad
+	A\cdot A=E,
+	\qquad
+	A\cdot B=C,
+	\qquad
+	A\cdot C=B,
+	\]
+	ist Multiplikation mit $5$ ein involutiver Twist:
+	\[
+	E\leftrightarrow A,
+	\qquad
+	B\leftrightarrow C.
+	\]
+	
+	Die Formel
+	\[
+	Q_{23}(n)=5^{v_5(n)}Q_{235}(n)
+	\]
+	erhält dadurch eine EABC-Deutung. Wegen $A^2=E$ zählt im flachen EABC-Schatten nur die Parität von $v_5(n)$:
+	\[
+	v_5(n)\equiv 0\pmod 2
+	\quad\Rightarrow\quad
+	\text{kein Klassenwechsel},
+	\]
+	\[
+	v_5(n)\equiv 1\pmod 2
+	\quad\Rightarrow\quad
+	A\text{-Twist}.
+	\]
+	In quaternionischer Lesart wäre dagegen $i^2=-1$. Der Unterschied zwischen $E$ und $-E$ kann als Orientierungsinformation verstanden werden. Die oktonionische Erweiterung erlaubt es, solche Vorzeichen- und Orientierungseffekte als zusätzliche Komponenten zu speichern, ohne die flache EABC-Logik zu zerstören.
+	
+	\section{Restklassenraum und Charakterraum}
+	
+	Noch zahlentheoretischer wird die Struktur, wenn man die EABC-Klassen nicht nur als Restklassen, sondern als Charakterraum modulo $12$ betrachtet.
+	
+	Die Einheitengruppe modulo $12$ hat vier Elemente:
+	\[
+	\{1,5,7,11\}.
+	\]
+	Ihre Charaktergruppe hat ebenfalls vier Charaktere. Man kann daher sagen:
+	\[
+	\text{EABC selbst sind die Restklassen,}
+	\]
+	\[
+	\text{die Charaktere modulo }12\text{ sind die dualen Messrichtungen.}
+	\]
+	Dies passt zur Struktur
+	\[
+	(E,A,B,C)
+	\qquad\text{und}\qquad
+	(E^\ast,A^\ast,B^\ast,C^\ast).
+	\]
+	Also:
+	\[
+	\boxed{
+		\text{Oktion}
+		=
+		\text{Restklassenraum}
+		+
+		\text{Charakterraum}
+	}.
+	\]
+	
+	Die vier Restklassen können mit Paaren aus $\{\pm1\}$ identifiziert werden:
+	\[
+	1\leftrightarrow(+,+),
+	\]
+	\[
+	5\leftrightarrow(-,+),
+	\]
+	\[
+	7\leftrightarrow(+,-),
+	\]
+	\[
+	11\leftrightarrow(-,-).
+	\]
+	Das entspricht
+	\[
+	V_4\cong C_2\times C_2.
+	\]
+	Die vier Charaktere lauten dann formal
+	\[
+	\chi_0(a,b)=1,
+	\]
+	\[
+	\chi_1(a,b)=a,
+	\]
+	\[
+	\chi_2(a,b)=b,
+	\]
+	\[
+	\chi_3(a,b)=ab.
+	\]
+	Damit besitzt
+	\[
+	V_4\oplus\widehat{V_4}
+	\]
+	acht Grundrichtungen. Dies ist eine natürliche zahlentheoretische Quelle für die EABC-Oktion.
+	
+	\section{Oktion als Restklasse plus Charakter}
+	
+	Man kann schreiben
+	\[
+	\mathcal O(x)
+	=
+	\underbrace{
+		M_E(x)E+M_A(x)A+M_B(x)B+M_C(x)C
+	}_{\text{Restklassenmasse}}
+	+
+	\underbrace{
+		L_0(x)E^\ast+L_1(x)A^\ast+L_2(x)B^\ast+L_3(x)C^\ast
+	}_{\text{Charakter-/Spektralmasse}}.
+	\]
+	Dabei können
+	\[
+	M_\alpha(x)=
+	\sum_{\substack{p\le x\\p\in\alpha}}\log p
+	\]
+	die logarithmischen Primkanalmassen sein. Die dualen Größen
+	\[
+	L_\chi(x)=\sum_{p\le x}\chi(p)\log p
+	\]
+	sind Charakterprojektionen. Diese Größen sind mit Dirichlet-$L$-Funktionen verbunden.
+	
+	Für den Hauptcharakter erhält man näherungsweise
+	\[
+	L_{\chi_0}(x)=\sum_{p\le x}\log p\sim x.
+	\]
+	Für nichttriviale Charaktere erwartet man Auslöschung und Oszillation um null:
+	\[
+	L_\chi(x)=\sum_{p\le x}\chi(p)\log p.
+	\]
+	Diese Oszillationen werden analytisch durch die Nullstellen der zugehörigen Dirichlet-$L$-Funktionen kontrolliert.
+	
+	Damit erhält die EABC-Oktion eine klare Deutung:
+	\begin{itemize}[leftmargin=2em]
+		\item Der quaternionische Teil misst die sichtbare Verteilung in den vier Restklassen.
+		\item Der duale oktonionische Teil misst die spektrale Charakterspannung.
+		\item Die Riemannsche Zeta-Funktion ist der globale Hauptkanal.
+		\item Die nichttrivialen Dirichlet-$L$-Funktionen sind die Differenzkanäle.
+	\end{itemize}
+	
+	Kurz:
+	\[
+	\boxed{
+		\mathcal O_{\EABC}(x)
+		=
+		Q_{\mathrm{res}}(x)+Q_{\mathrm{char}}(x)\ell
+	}.
+	\]
+	
+	\section{EABC als Schatten, Oktion als Lift}
+	
+	Die Beziehung kann folgendermaßen zusammengefasst werden:
+	\[
+	\text{EABC modulo }12
+	=
+	\text{modularer Schatten},
+	\]
+	\[
+	\HH_{\EABC}
+	=
+	\text{orientierter Lift},
+	\]
+	\[
+	\OO_{\EABC}
+	=
+	\text{dynamischer Lift}.
+	\]
+	Die flache Restklassenstruktur wird zunächst quaternionisch orientiert und anschließend oktonionisch zu einem Phasenraum aus Zustand und Übergang erweitert.
+	
+	\section{Die Zahlen 8, 12 und 24}
+	
+	Im Hintergrund erscheinen drei Zahlen:
+	\[
+	8,
+	\qquad
+	12,
+	\qquad
+	24.
+	\]
+	Ihre Rollen lauten:
+	\begin{center}
+		\begin{tabular}{cl}
+			\toprule
+			Zahl & Rolle im Modell\\
+			\midrule
+			$4$ & EABC-Kanäle\\
+			$8$ & Oktion, Vierlingsspanne, Zustand plus Fluss\\
+			$12$ & Primrestklassenmodul\\
+			$24$ & Hurwitz-/24-Zell-Symmetrie, doppelte EABC-Struktur\\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	Die Beziehung
+	\[
+	24=2\cdot 12=3\cdot 8
+	\]
+	erlaubt eine symbolische Triangulation:
+	\[
+	12\quad\text{liefert die arithmetische Klassifikation},
+	\]
+	\[
+	8\quad\text{liefert die dynamische Erweiterung},
+	\]
+	\[
+	24\quad\text{liefert die symmetrische Verdichtung}.
+	\]
+	
+	\section{Eine mögliche EABC-Oktion-Hypothese}
+	
+	\begin{hypothese}[EABC-Oktion-Hypothese]
+		Die vier primen Restklassen modulo $12$,
+		\[
+		E,A,B,C,
+		\]
+		bilden die quaternionische Zustandsbasis der Primverteilung. Lokale Primcluster wie Zwillinge, Drillinge und Vierlinge erzeugen zusätzlich gerichtete Übergangsgrößen zwischen diesen Kanälen. Der natürliche algebraische Raum für die gemeinsame Kodierung von Zustand und Übergang ist die oktonionische Verdopplung
+		\[
+		\OO_{\EABC}
+		=
+		\HH_{\EABC}\oplus \HH_{\EABC}\ell.
+		\]
+		Dabei beschreibt $\HH_{\EABC}$ die Restklassenlage, während $\HH_{\EABC}\ell$ den EABC-Fluss, insbesondere den Vierlingsschwung, trägt.
+	\end{hypothese}
+	
+	\section{Formale Fensterdefinition}
+	
+	Sei
+	\[
+	\phi:\PP_{>3}\to\{1,i,j,k\}
+	\]
+	die EABC-Abbildung
+	\[
+	\phi(p)=
+	\begin{cases}
+		1, & p\equiv 1\pmod{12},\\
+		i, & p\equiv 5\pmod{12},\\
+		j, & p\equiv 7\pmod{12},\\
+		k, & p\equiv 11\pmod{12}.
+	\end{cases}
+	\]
+	Für ein Primfenster
+	\[
+	I=[x,x+L]
+	\]
+	mit Primzahlen
+	\[
+	p_1<\cdots<p_m
+	\]
+	definieren wir
+	\[
+	Q_I=\sum_{r=1}^m\phi(p_r),
+	\]
+	und
+	\[
+	F_I=\sum_{r=1}^{m-1}(p_{r+1}-p_r)\conj{\phi(p_r)}\phi(p_{r+1}).
+	\]
+	Dann ist die EABC-Oktion des Fensters
+	\[
+	\boxed{
+		\mathcal O_I=Q_I+F_I\ell
+	}.
+	\]
+	Die Norm
+	\[
+	\norm{\mathcal O_I}^2=\norm{Q_I}^2+\norm{F_I}^2
+	\]
+	misst die kombinierte Kanal- und Flussspannung des Primfensters.
+	
+	Für Primzahlvierlinge setzt man
+	\[
+	I=\{p,p+2,p+6,p+8\}.
+	\]
+	
+	\section{Arbeitslemma und Satzbehauptung}
+	
+	\begin{lemma}[Quaternionische EABC-Kodierung]
+		Die Einheitengruppe modulo $12$,
+		\[
+		(\Z/12\Z)^\times=\{1,5,7,11\},
+		\]
+		ist isomorph zur Kleinschen Vierergruppe. Unter der Bezeichnung
+		\[
+		E=1,
+		\qquad
+		A=5,
+		\qquad
+		B=7,
+		\qquad
+		C=11
+		\]
+		gilt
+		\[
+		A^2=B^2=C^2=E,
+		\]
+		und
+		\[
+		AB=C,
+		\qquad
+		AC=B,
+		\qquad
+		BC=A.
+		\]
+		Die Abbildung
+		\[
+		E\mapsto 1,
+		\qquad
+		A\mapsto i,
+		\qquad
+		B\mapsto j,
+		\qquad
+		C\mapsto k
+		\]
+		hebt diese kommutative Restklassenstruktur in eine orientierte quaternionische Struktur, in der die Produkte $AB,BC,CA$ mit einer Drehrichtung versehen werden.
+	\end{lemma}
+	
+	\begin{satz}[Oktonionische EABC-Erweiterung]
+		Sei
+		\[
+		\HH_{\EABC}=\Span_{\R}\{1,i,j,k\}.
+		\]
+		Die oktonionische EABC-Erweiterung sei
+		\[
+		\OO_{\EABC}=\HH_{\EABC}\oplus\HH_{\EABC}\ell.
+		\]
+		Jedes Element
+		\[
+		\mathcal O=q+r\ell
+		\]
+		besteht aus einem EABC-Zustand
+		\[
+		q\in\HH_{\EABC}
+		\]
+		und einem EABC-Fluss
+		\[
+		r\in\HH_{\EABC}.
+		\]
+		Die Norm zerfällt als
+		\[
+		\norm{\mathcal O}^2=\norm q^2+\norm r^2.
+		\]
+		Damit liefert $\OO_{\EABC}$ einen natürlichen achtdimensionalen Phasenraum für Restklassenbesetzung und gerichtete Übergänge der Primzahlen modulo $12$.
+	\end{satz}
+	
+	\section{Numerische Tests}
+	
+	Aus der Definition ergeben sich unmittelbar numerische Experimente.
+	
+	\subsection{Test 1: Vierlingsnormen}
+	Berechne für die ersten $N$ Primzahlvierlinge
+	\[
+	\norm{\mathcal O_4(p)}^2.
+	\]
+	Die Leitfrage lautet, ob diese Größe konstant bleibt oder typabhängige Unterschiede zeigt.
+	
+	\subsection{Test 2: Schwungrichtungen}
+	Berechne
+	\[
+	F_4(p)
+	=
+	2\conj{q_1}q_2
+	+4\conj{q_2}q_3
+	+2\conj{q_3}q_4
+	\]
+	und klassifiziere die möglichen Richtungen, beispielsweise
+	\[
+	-4i-4k
+	\qquad\text{oder}\qquad
+	4i-4k.
+	\]
+	Anschließend untersucht man Häufigkeiten, Übergänge zwischen Typen, Korrelationen mit nachfolgenden Primzahlzwillingen und lokale Dichteeffekte.
+	
+	\subsection{Test 3: Fenster-Oktionen}
+	Für gleitende Fenster $[x,x+L]$ berechnet man
+	\[
+	\mathcal O_{\EABC}(x,L).
+	\]
+	Interessant sind die Größen
+	\[
+	\norm{Q_I},
+	\qquad
+	\norm{F_I},
+	\qquad
+	\norm{\mathcal O_I}.
+	\]
+	Die Frage lautet, ob Vierlinge bevorzugt bei erhöhtem oder erniedrigtem Fluss auftreten.
+	
+	\subsection{Test 4: Vergleich mit Zufallsprimen}
+	Man erzeugt ein Cram\'er-artiges Zufallsmodell mit ähnlicher Dichte und ähnlichen modulo-$12$-Restriktionen und vergleicht
+	\[
+	\norm{\mathcal O_I}_{\text{echte Primzahlen}}
+	\]
+	mit
+	\[
+	\norm{\mathcal O_I}_{\text{Zufallsmodell}}.
+	\]
+	Nur wenn robuste Unterschiede erscheinen, liegt ein nichttriviales Signal vor.
+	
+	\subsection{Test 5: Spektralanalyse}
+	Man betrachtet Zeitreihen wie
+	\[
+	x\mapsto \norm{F_I(x)}
+	\]
+	oder einzelne Komponenten von $F_I(x)$ und führt Fourier- oder Wavelet-Analysen durch. Eine zentrale Frage wäre, ob Frequenzen auftreten, die mit Riemann-Nullstellen oder Dirichlet-$L$-Nullstellen modulo $12$ korrelieren.
+	
+	\section{Kompakte Essenz}
+	
+	Die Beziehung lässt sich in drei Boxen zusammenfassen:
+	\[
+	\boxed{
+		EABC
+		=
+		\text{vier Primkanäle modulo }12
+	}
+	\]
+	\[
+	\boxed{
+		\HH_{\EABC}
+		=
+		\text{orientierte Zustandsalgebra dieser vier Kanäle}
+	}
+	\]
+	\[
+	\boxed{
+		\OO_{\EABC}
+		=
+		\text{Zustand plus Schwung, Fluss oder Dualkanal}
+	}
+	\]
+	Für einen Primzahlvierling gilt die zentrale Formel
+	\[
+	\boxed{
+		\mathcal O_4(p)
+		=
+		(q_1+q_2+q_3+q_4)
+		+
+		\left(
+		2\conj{q_1}q_2
+		+4\conj{q_2}q_3
+		+2\conj{q_3}q_4
+		\right)\ell
+	}
+	\]
+	mit
+	\[
+	q_r\in\{1,i,j,k\}
+	\]
+	gemäß der EABC-Klasse.
+	
+	Ein Primzahlvierling ist damit nicht nur eine vierfache Besetzung der EABC-Kanäle, sondern ein oktonionischer Zustand aus Lage und Schwung. Die Quaternionen tragen die Restklassen; die Oktionen tragen zusätzlich die gerichtete Dynamik.
+	
+\end{document}

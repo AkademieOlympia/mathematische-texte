@@ -1,0 +1,187 @@
+\section{Existenz und Eindeutigkeit einer Quaternionen-Normzerlegung}
+
+Im Folgenden präzisieren wir, in welchem Sinn natürliche Zahlen, die keine Faktoren $2$ oder $3$ besitzen, durch Quaternionen mit vorgegebenen Primnormen dargestellt werden können.
+
+\begin{definition}[Quaternionennorm]
+	Für ein Quaternion
+	\[
+	q=a+bi+cj+dk \in \mathbb H
+	\]
+	mit $a,b,c,d\in\mathbb R$ definieren wir die Norm durch
+	\[
+	N(q):=q\overline q=a^2+b^2+c^2+d^2.
+	\]
+	Für Quaternionen mit ganzzahligen oder Hurwitzschen Koeffizienten ist $N(q)\in\mathbb N_0$.
+\end{definition}
+
+\begin{lemma}[Multiplikativität der Norm]
+	Für alle Quaternionen $x,y\in\mathbb H$ gilt
+	\[
+	N(xy)=N(x)\,N(y).
+	\]
+\end{lemma}
+
+\begin{beweis}
+	Es gilt
+	\[
+	N(xy)=(xy)\overline{(xy)}=(xy)\overline y\,\overline x=x(y\overline y)\overline x.
+	\]
+	Da $y\overline y=N(y)\in\mathbb R$ skalar ist, kommutiert dieser Ausdruck mit allen Quaternionen, also
+	\[
+	x(y\overline y)\overline x = N(y)\,x\overline x=N(y)\,N(x)=N(x)\,N(y).
+	\]
+\end{beweis}
+
+\begin{lemma}[Primzahlen als Quaternionennormen]
+	Zu jeder rationalen Primzahl $p$ existiert ein Quaternion $\pi\in\mathbb H$ mit ganzzahligen Koeffizienten derart, dass
+	\[
+	N(\pi)=p.
+	\]
+\end{lemma}
+
+\begin{beweis}
+	Nach dem Vier-Quadrate-Satz von Lagrange ist jede natürliche Zahl, insbesondere jede Primzahl $p$, als Summe von vier Quadraten darstellbar:
+	\[
+	p=a^2+b^2+c^2+d^2
+	\]
+	mit $a,b,c,d\in\mathbb Z$.
+	Dann hat das Quaternion
+	\[
+	\pi=a+bi+cj+dk
+	\]
+	die Norm
+	\[
+	N(\pi)=a^2+b^2+c^2+d^2=p.
+	\]
+\end{beweis}
+
+\begin{definition}[Quaternionische Normzerlegung]
+	Sei $n\in\mathbb N$. Eine \emph{quaternionische Normzerlegung} von $n$ ist eine Darstellung
+	\[
+	n=N(q)
+	\]
+	mit einem Quaternion $q$, das sich als Produkt von Quaternionen mit Primnorm schreiben lässt:
+	\[
+	q=\pi_1\pi_2\cdots \pi_r,
+	\qquad N(\pi_\nu)=p_\nu \text{ prim}.
+	\]
+\end{definition}
+
+\begin{satz}[Existenz der Normzerlegung]
+	Sei $n\in\mathbb N$ mit $\gcd(n,6)=1$. Dann besitzt $n$ eine quaternionische Normzerlegung.
+	Genauer: Ist
+	\[
+	n=\prod_{m=1}^s p_m^{e_m}
+	\]
+	die Primfaktorzerlegung von $n$, so existieren Quaternionen $\pi_m$ mit
+	\[
+	N(\pi_m)=p_m
+	\]
+	und damit ein Quaternion
+	\[
+	q=\prod_{m=1}^s \pi_m^{e_m}
+	\]
+	mit
+	\[
+	N(q)=n.
+	\]
+\end{satz}
+
+\begin{beweis}
+	Nach dem Fundamentalsatz der Arithmetik existiert eine eindeutige Zerlegung
+	\[
+	n=\prod_{m=1}^s p_m^{e_m}
+	\]
+	in paarweise verschiedene rationale Primzahlen $p_m$ und Exponenten $e_m\ge 1$.
+	Aus $\gcd(n,6)=1$ folgt, dass keiner der Primfaktoren gleich $2$ oder $3$ ist; insbesondere gilt $p_m\ge 5$.
+	
+	Nach dem vorherigen Lemma gibt es zu jedem $p_m$ ein Quaternion $\pi_m$ mit $N(\pi_m)=p_m$.
+	Setze
+	\[
+	q=\prod_{m=1}^s \pi_m^{e_m}.
+	\]
+	Dann liefert die Multiplikativität der Norm
+	\[
+	N(q)=\prod_{m=1}^s N(\pi_m)^{e_m}
+	=\prod_{m=1}^s p_m^{e_m}
+	=n.
+	\]
+	Damit ist die Existenz einer quaternionischen Normzerlegung bewiesen.
+\end{beweis}
+
+\begin{satz}[Eindeutigkeit auf Normebene]
+	Sei $n\in\mathbb N$ mit $\gcd(n,6)=1$. Dann ist die quaternionische Normzerlegung auf der Ebene der rationalen Primzahlen eindeutig: Die Multimenge der Primnormen
+	\[
+	\{p_1,\dots,p_1,p_2,\dots,p_2,\dots,p_s,\dots,p_s\}
+	\]
+	mit den jeweiligen Multiplizitäten $e_1,\dots,e_s$ ist eindeutig bestimmt.
+\end{satz}
+
+\begin{beweis}
+	Dies ist eine unmittelbare Folge des Fundamentalsatzes der Arithmetik. Da
+	\[
+	n=\prod_{m=1}^s p_m^{e_m}
+	\]
+	bis auf Reihenfolge eindeutig ist, ist auch die Multimenge der Primnormen eindeutig.
+\end{beweis}
+
+\begin{satz}[Nicht-Eindeutigkeit der Quaternionenfaktoren]
+	Die konkrete Wahl der Quaternionenfaktoren $\pi_m$ mit $N(\pi_m)=p_m$ ist im Allgemeinen nicht eindeutig.
+\end{satz}
+
+\begin{beweis}
+	Eine gegebene Primzahl $p$ besitzt im Allgemeinen mehrere Darstellungen als Summe von vier Quadraten. Jede solche Darstellung liefert ein anderes Quaternion mit Norm $p$. Zusätzlich entstehen durch Permutationen der Koordinaten und Vorzeichenwechsel weitere Quaternionen derselben Norm. Daher ist die Auswahl der Faktoren $\pi_m$ im Allgemeinen nicht eindeutig.
+\end{beweis}
+
+\begin{definition}[Kanonische Auswahlregel]
+	Eine \emph{kanonische Auswahlregel} sei eine Vorschrift, die jeder rationalen Primzahl $p\ge 5$ genau ein Quaternion $\Pi(p)$ mit
+	\[
+	N(\Pi(p))=p
+	\]
+	zuordnet.
+\end{definition}
+
+\begin{korollar}[Kanonische Eindeutigkeit]
+	Sei eine kanonische Auswahlregel $\Pi$ fest gewählt. Dann besitzt jede Zahl
+	\[
+	n=\prod_{m=1}^s p_m^{e_m},
+	\qquad \gcd(n,6)=1,
+	\]
+	eine eindeutig bestimmte kanonische Quaternionenrepräsentation
+	\[
+	q_{\mathrm{can}}(n):=\prod_{m=1}^s \Pi(p_m)^{e_m},
+	\]
+	sofern zusätzlich eine feste Reihenfolge der Primzahlen, etwa
+	\[
+	p_1< p_2<\cdots < p_s,
+	\]
+	vorgegeben ist.
+\end{korollar}
+
+\begin{beweis}
+	Die Primfaktorzerlegung von $n$ ist eindeutig. Die kanonische Auswahlregel bestimmt zu jedem Primfaktor genau ein Quaternion. Die feste Ordnung der Primzahlen beseitigt zusätzlich die Reihenfolgefreiheit der Faktoren. Damit ist $q_{\mathrm{can}}(n)$ eindeutig bestimmt.
+\end{beweis}
+
+\begin{bemerkung}
+	Die Bedingung $\gcd(n,6)=1$ ist für den reinen Existenzsatz nicht notwendig. Sie schränkt lediglich die betrachtete Klasse auf Zahlen ohne Faktoren $2$ und $3$ ein. Tatsächlich funktioniert der Existenzbeweis für jede natürliche Zahl $n$, da auch $2$ und $3$ Quaternionennormen sind.
+\end{bemerkung}
+
+\begin{beispiel}
+	Für
+	\[
+	n=35=5\cdot 7
+	\]
+	wähle etwa Quaternionen $\pi_5,\pi_7$ mit
+	\[
+	N(\pi_5)=5,\qquad N(\pi_7)=7.
+	\]
+	Dann hat
+	\[
+	q=\pi_5\pi_7
+	\]
+	die Norm
+	\[
+	N(q)=N(\pi_5)N(\pi_7)=5\cdot 7=35.
+	\]
+	Die Primnormen $5$ und $7$ sind eindeutig bestimmt, die konkreten Quaternionen $\pi_5,\pi_7$ jedoch nicht.
+\end{beispiel}

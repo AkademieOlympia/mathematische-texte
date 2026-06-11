@@ -1,0 +1,500 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{xcolor}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue!50!black,
+	citecolor=blue!50!black,
+	urlcolor=blue!50!black,
+	pdftitle={Schalenreduktion modulo 12 und logarithmische Massenbilanz},
+	pdfauthor={Kollaborative Forschungsnotiz}
+}
+
+\theoremstyle{plain}
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{korollar}[satz]{Korollar}
+\newtheorem{proposition}[satz]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{beispiel}[satz]{Beispiel}
+
+\theoremstyle{remark}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\bal}{\mathrm{bal}}
+\newcommand{\wech}{\mathrm{wech}}
+\newcommand{\Gap}{\mathrm{Gap}}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\corr}{\mathrm{corr}}
+
+\title{\textbf{Schalenreduktion modulo 12, logarithmische Massenbilanz\\
+		und numerische Struktur lokaler Primzahlkonstellationen}}
+\author{\textit{Kollaborative Forschungsnotiz}}
+\date{\today}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Wir führen eine zweischichtige Schalenreduktion für ganze Zahlen \(n\) mit \(\gcd(n,6)=1\) ein und untersuchen die daraus entstehenden logarithmischen Massenbilanzen in Restklassen modulo \(12\). Zu einer gegebenen Primzahlschale
+		\[
+		P_k=\{2,3,5,\dots,p_k\}
+		\]
+		definieren wir den bereits aufgelösten Anteil \(S_k(n)\), den Restkern \(R_k(n)\) sowie die zugehörigen Modusgrößen \(E_k(n),A_k(n),B_k(n),C_k(n)\) und daraus abgeleitete Balance- und Wechselpunkte.
+		
+		Der deterministische Kern der Arbeit besteht in einer expliziten Beschreibung der Balance- und Wechselindizes im Restmodus \(M=R\) durch kumulierte logarithmische Primfaktormassen. Für Produkte der Form
+		\[
+		n=\prod_{i=1}^t p_i^{a_i}
+		\]
+		werden die kritischen Schalenindizes durch die Größen
+		\[
+		A_i=a_i\log p_i
+		\]
+		bestimmt. Insbesondere ergibt sich für
+		\[
+		n=pqr,\qquad 3<p<q<r,
+		\]
+		dass Balance- und Wechselpunkt im Restmodus mit dem mittleren Primfaktor zusammenfallen.
+		
+		Auf dieser Grundlage werden mehrere numerische und heuristische Anwendungen untersucht. Erstens betrachten wir die Verteilung der Restklassen des Kerns \(R_k(n)\) modulo \(12\) und diskutieren eine beobachtete Hierarchie der vier Familien \(B,C,A,E\) im Lichte des Chebyshev-Bias. Zweitens analysieren wir dichte Primzahlvierlinge
+		\[
+		Q_4=(p,p+2,p+6,p+8)
+		\]
+		und führen einen kanal-korrigierten Trigger der Form
+		\[
+		T_c(Q_4)=B_\pi(Q_4)+c\cdot \mathbf{1}_{\{EA-BC-BC-EA\}}(Q_4)
+		\]
+		ein. Numerisch zeigt sich, dass Werte von \(c\) nahe bei \(6\) die Korrelation mit lokalen Clustergrößen, insbesondere mit der Distanz zum nächsten Primzahlzwilling, verbessern. Drittens diskutieren wir ein vereinfachtes probabilistisches Schalenmodell, das heuristische Aussagen über Entropie, Kovarianz und Wartezeiten motiviert.
+		
+		Die Arbeit trennt bewusst zwischen streng deterministischen Resultaten, numerischer Evidenz und heuristischen Modellannahmen. Ziel ist es, einen strukturellen Rahmen bereitzustellen, der Schalenarithmetik, logarithmische Massenbilanzen, Primzahlkonstellationen und Restklassenasymmetrien in einer gemeinsamen Sprache beschreibt.
+	\end{abstract}
+	
+	\tableofcontents
+	
+	\section{Einleitung}
+	
+	\subsection{Motivation}
+	
+	Die Primzahlen größer als \(3\) liegen notwendig in den vier Restklassen
+	\[
+	1,\ 5,\ 7,\ 11 \pmod{12}.
+	\]
+	Diese elementare Beobachtung legt nahe, Primfaktorzerlegungen nicht nur multiplikativ, sondern zugleich nach Restklassenfamilien zu organisieren. Eine solche Sichtweise ist insbesondere dann natürlich, wenn man ganze Zahlen schrittweise relativ zu einer wachsenden Primzahlschale
+	\[
+	P_k=\{2,3,5,\dots,p_k\}
+	\]
+	reduziert und den verbleibenden Restkern untersucht.
+	
+	Die hier entwickelte Perspektive beruht auf zwei komplementären Fragen:
+	\begin{enumerate}[label=(\arabic*)]
+		\item Wie verteilt sich die logarithmische Masse einer Zahl \(n\) zwischen bereits aufgelöster Schale und verbleibendem Kern?
+		\item Welche strukturellen Informationen über Primzahlmuster, Restklassenbias und lokale Konstellationen lassen sich aus dieser Massenbilanz gewinnen?
+	\end{enumerate}
+	
+	\subsection{Ziel und Aufbau}
+	
+	Die Arbeit verfolgt drei Ziele:
+	\begin{enumerate}[label=(\roman*)]
+		\item Entwicklung eines deterministischen Rahmens für Schalenreduktion, Restkern und logarithmische Modusdifferenzen.
+		\item Ordnung numerischer Beobachtungen zu Restklassenhierarchien und Primzahlkonstellationen.
+		\item Formulierung heuristischer Modelle, ohne numerische Phänomene vorschnell als streng bewiesene Sätze auszugeben.
+	\end{enumerate}
+	
+	Der Aufbau ist wie folgt:
+	\begin{itemize}
+		\item \cref{sec:grundlagen} führt die Schalenreduktion und die Modusgrößen ein.
+		\item \cref{sec:balance_wechsel} enthält den deterministischen Kern.
+		\item \cref{sec:bias} diskutiert numerische und heuristische Beobachtungen zur Restklassenhierarchie.
+		\item \cref{sec:vierlinge} behandelt Anwendungen auf Primzahlvierlinge, Triggerfunktionen und lokale Konstellationsdynamik.
+		\item \cref{sec:modelle} formuliert vereinfachte probabilistische Modellideen.
+		\item \cref{sec:schluss} fasst die Resultate zusammen.
+	\end{itemize}
+	
+	\section{Grundlagen der Schalenreduktion}
+	\label{sec:grundlagen}
+	
+	\subsection{Die reduzierte Zahlenmenge}
+	
+	Wir betrachten die Menge
+	\[
+	\M:=\{n\in\N:\gcd(n,6)=1\}.
+	\]
+	Für \(n\in\M\) treten alle Primfaktoren größer als \(3\) in genau einer der vier Restklassen
+	\[
+	1,\ 5,\ 7,\ 11 \pmod{12}
+	\]
+	auf. Diese werden durch die vier Familien
+	\[
+	E,\ A,\ B,\ C
+	\]
+	repräsentiert, wobei
+	\[
+	E\equiv 1,\qquad
+	A\equiv 5,\qquad
+	B\equiv 7,\qquad
+	C\equiv 11 \pmod{12}.
+	\]
+	
+	\subsection{Primzahlschalen und Restkern}
+	
+	Für \(k\ge 1\) sei
+	\[
+	P_k=\{2,3,5,\dots,p_k\}
+	\]
+	die \(k\)-te Primzahlschale. Zu \(n\in\M\) definieren wir den durch die Schale bereits aufgelösten Anteil
+	\[
+	S_k(n):=\prod_{p\le p_k} p^{v_p(n)}
+	\]
+	sowie den verbleibenden Restkern
+	\[
+	R_k(n):=\frac{n}{S_k(n)}.
+	\]
+	
+	\subsection{Restklassenzerlegung des Kerns}
+	
+	Der Restkern \(R_k(n)\) wird nach den vier Restklassen modulo \(12\) zerlegt:
+	\[
+	E_k(n):=\prod_{\substack{q^a\parallel R_k(n)\\ q\equiv 1\ (12)}} q^a,\qquad
+	A_k(n):=\prod_{\substack{q^a\parallel R_k(n)\\ q\equiv 5\ (12)}} q^a,
+	\]
+	\[
+	B_k(n):=\prod_{\substack{q^a\parallel R_k(n)\\ q\equiv 7\ (12)}} q^a,\qquad
+	C_k(n):=\prod_{\substack{q^a\parallel R_k(n)\\ q\equiv 11\ (12)}} q^a.
+	\]
+	Damit gilt
+	\[
+	R_k(n)=E_k(n)A_k(n)B_k(n)C_k(n).
+	\]
+	
+	Je nach Fragestellung betrachten wir Modi
+	\[
+	M\in\{E,A,B,C,EA,BC,ABC,R\},
+	\]
+	wobei \(M_k(n)\) jeweils als Produkt der zugehörigen Faktoren verstanden wird.
+	
+	\subsection{Logarithmische Massenbilanz}
+	
+	\begin{definition}[Modusdifferenz]
+		Für \(n\in\M\) und einen Modus \(M\) definieren wir
+		\[
+		L_k^M(n):=\log M_k(n)-\log S_k(n).
+		\]
+	\end{definition}
+	
+	Diese Größe vergleicht die im Restkern verbleibende logarithmische Masse des Modus \(M\) mit der bereits absorbierten logarithmischen Schalenmasse.
+	
+	\subsection{Balance- und Wechselpunkte}
+	
+	\begin{definition}[Balance- und Wechselpunkt]
+		Für \(n\in\M\) und einen Modus \(M\) definieren wir
+		\[
+		\pi_{\bal}^M(n):=p_j,
+		\]
+		wobei \(j\) der kleinste Index ist, für den \(S_j(n)>1\), \(M_j(n)>1\) und \(|L_j^M(n)|\) minimal wird.
+		
+		Weiter definieren wir
+		\[
+		\pi_{\wech}^M(n):=p_j,
+		\]
+		wobei \(j\) der kleinste Index ist, für den
+		\[
+		L_{j-1}^M(n)>0,\qquad L_j^M(n)\le 0,\qquad L_j^M(n)\neq 0
+		\]
+		gilt.
+	\end{definition}
+	
+	\begin{lemma}[Nichttrivialität]
+		\label{lem:nichttrivial}
+		Für \(n\in\M\) gilt:
+		\begin{enumerate}[label=(\roman*)]
+			\item \(S_k(n)>1\) genau dann, wenn \(n\) einen Primfaktor \(\le p_k\) besitzt.
+			\item \(M_k(n)>1\) genau dann, wenn der Restkern \(R_k(n)\) einen Primfaktor in den Restklassen des Modus \(M\) besitzt.
+		\end{enumerate}
+	\end{lemma}
+	
+	\begin{proof}
+		Beides folgt unmittelbar aus den Definitionen von \(S_k(n)\), \(R_k(n)\) und der Restklassenzerlegung.
+	\end{proof}
+	
+	\section{Deterministischer Kern: Balance und Wechsel im Restmodus}
+	\label{sec:balance_wechsel}
+	
+	Der mathematisch am stärksten kontrollierbare Fall ist der Restmodus
+	\[
+	M=R.
+	\]
+	
+	\subsection{Logarithmische Primfaktormassen}
+	
+	Sei
+	\[
+	n=\prod_{i=1}^t p_i^{a_i},
+	\qquad
+	3<p_1<\dots<p_t,
+	\]
+	und setze
+	\[
+	A_i:=a_i\log p_i.
+	\]
+	
+	\begin{satz}[Balance- und Wechselpunkt im Restmodus]
+		\label{satz:restmodus_allgemein}
+		Sei
+		\[
+		n=\prod_{i=1}^t p_i^{a_i},
+		\qquad
+		3<p_1<\dots<p_t,
+		\qquad
+		A_i:=a_i\log p_i.
+		\]
+		Dann gilt für den Restmodus \(M=R\):
+		\begin{enumerate}[label=(\arabic*)]
+			\item Ist \(j\) der kleinste Index mit
+			\[
+			A_j\ge \sum_{i>j}A_i,
+			\]
+			so gilt
+			\[
+			\pi_{\bal}^R(n)=p_j.
+			\]
+			
+			\item Ist \(\ell\) der kleinste Index mit
+			\[
+			\sum_{i\le \ell}A_i\ge \sum_{i>\ell}A_i,
+			\]
+			so gilt
+			\[
+			\pi_{\wech}^R(n)=p_\ell.
+			\]
+		\end{enumerate}
+	\end{satz}
+	
+	\begin{proof}
+		Zwischen zwei aufeinanderfolgenden Primfaktoren der Zerlegung bleibt die Reststruktur konstant. Für einen Schalenindex im Intervall zwischen \(p_{i-1}\) und \(p_i\) ist die logarithmische Bilanz des Restmodus gleich
+		\[
+		L^R = \sum_{j\ge i}A_j-\sum_{j<i}A_j.
+		\]
+		Der erste Nichttrivialitätsindex, an dem der Betrag minimal wird, ist genau der erste Index \(j\), für den die aktuelle Masseneinheit \(A_j\) mindestens so groß ist wie die gesamte verbleibende rechte Masse. Das ergibt die Formel für \(\pi_{\bal}^R(n)\).
+		
+		Der erste echte Vorzeichenwechsel tritt genau dann auf, wenn die bereits absorbierte Log-Masse die verbleibende Restmasse erstmals nicht unterschreitet. Das ist äquivalent zur Minimalität von \(\ell\) mit
+		\[
+		\sum_{i\le \ell}A_i\ge \sum_{i>\ell}A_i.
+		\]
+	\end{proof}
+	
+	\begin{korollar}[Der Fall \(n=pqr\)]
+		\label{kor:pqr}
+		Für
+		\[
+		n=pqr,\qquad 3<p<q<r,
+		\]
+		gilt
+		\[
+		\pi_{\bal}^R(n)=\pi_{\wech}^R(n)=q.
+		\]
+	\end{korollar}
+	
+	\begin{proof}
+		Hier sind \(A_1=\log p\), \(A_2=\log q\), \(A_3=\log r\). Da \(q\) der mittlere Primfaktor ist, wird die Ungleichung für Balance und Wechsel erstmals bei \(q\) erfüllt.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Dieser Satz bildet den deterministischen Kern der Arbeit. Alles Weitere ist numerische oder heuristische Weiterführung dieses Grundschemas.
+	\end{bemerkung}
+	
+	\section{Restklassenhierarchie und Chebyshev-Bias}
+	\label{sec:bias}
+	
+	In den numerischen Daten erscheint für geeignete Schalenparameter eine beobachtete Hierarchie der Familien
+	\[
+	B>C>A>E.
+	\]
+	
+	\begin{proposition}[Heuristik zur Restklassenhierarchie]
+		\label{prop:biasheuristik}
+		Numerische Daten und Heuristiken auf Basis des Chebyshev-Bias legen nahe, dass für geeignete Schalenparameter eine asymptotische Rangordnung
+		\[
+		\omega_B>\omega_C>\omega_A>\omega_E
+		\]
+		zu erwarten ist.
+	\end{proposition}
+	
+	\begin{bemerkung}
+		Diese Aussage wird hier bewusst nicht als vollständig bewiesener asymptotischer Satz formuliert. Sie dient als numerisch und heuristisch motivierter Leitfaden für die spätere Interpretation der Modusgewichte.
+	\end{bemerkung}
+	
+	\section{Anwendungen auf Primzahlvierlinge}
+	\label{sec:vierlinge}
+	
+	\subsection{Dichte Primzahlvierlinge}
+	
+	Wir betrachten dichte Primzahlvierlinge der Form
+	\[
+	Q_4(p)=(p,p+2,p+6,p+8).
+	\]
+	
+	\begin{definition}[Kanal-korrigierter Trigger]
+		\label{def:trigger}
+		Für einen dichten Primzahlvierling \(Q_4\) und einen festen Pivot \(\pi\) definieren wir
+		\[
+		T_c(Q_4):=B_\pi(Q_4)+c\cdot \mathbf{1}_{\{EA-BC-BC-EA\}}(Q_4),
+		\]
+		wobei
+		\[
+		\mathbf{1}_{\{EA-BC-BC-EA\}}(Q_4)=
+		\begin{cases}
+			1,&\text{falls }Q_4\text{ grob den Typ }EA-BC-BC-EA\text{ besitzt},\\
+			0,&\text{sonst.}
+		\end{cases}
+		\]
+	\end{definition}
+	
+	\subsection{Numerische Kalibrierung des Kanalbonus}
+	
+	\begin{satz}[Numerische Kalibrierung]
+		\label{satz:kalibrierung}
+		In den getesteten Daten wird die Korrelation des Triggers \(T_c\) mit lokalen Clustergrößen durch Kanalboni \(c\) im Bereich um \(6\) verbessert. Ein stabiles lineares Optimum liegt numerisch nahe bei
+		\[
+		c^*=6.
+		\]
+	\end{satz}
+	
+	\begin{bemerkung}
+		Die Formulierung ist bewusst numerisch. Die Daten sprechen für ein stabiles Optimum im Bereich um \(6\), nicht für einen streng bewiesenen global eindeutigen Maximalwert in voller Allgemeinheit.
+	\end{bemerkung}
+	
+	\subsection{Strukturelle Plausibilität von \(c=6\)}
+	
+	\begin{bemerkung}
+		Die Zahl \(6\) ist im Vierlingskontext nicht zufällig:
+		\begin{enumerate}[label=(\arabic*)]
+			\item Sie ist die kleinste volle \(2,3\)-glatte Grundperiode.
+			\item Im Vierling
+			\[
+			(p,p+2,p+6,p+8)
+			\]
+			trennt sie die beiden Zweierpaare
+			\[
+			(p,p+2)\qquad\text{und}\qquad (p+6,p+8).
+			\]
+			\item Sie besitzt damit eine natürliche Interpretation als minimale Transport- oder Synchronisationslänge des aktiven Kanals.
+		\end{enumerate}
+	\end{bemerkung}
+	
+	\subsection{Distanz zum nächsten Primzahlzwilling}
+	
+	\begin{definition}[Zwillingsdistanz]
+		\label{def:gap}
+		Sei \(Q_4(p)=(p,p+2,p+6,p+8)\) ein dichter Primzahlvierling und
+		\[
+		Z_{\mathrm{next}}(Q_4)=(q,q+2)
+		\]
+		der nächste Primzahlzwilling rechts von \(Q_4\). Dann definieren wir
+		\[
+		\Gap(Q_4):=q-(p+8).
+		\]
+	\end{definition}
+	
+	\begin{satz}[Der Trigger als Distanzsignal]
+		\label{satz:distanzsignal}
+		Für die getesteten dichten Primzahlvierlinge korrelieren sowohl \(B_\pi(Q_4)\) als auch \(T^*(Q_4)\) negativ mit der Distanz zum nächsten Primzahlzwilling. Dabei trägt
+		\[
+		T^*(Q_4):=B_\pi(Q_4)+6\cdot \mathbf{1}_{\{EA-BC-BC-EA\}}(Q_4)
+		\]
+		das stärkere numerische Signal.
+	\end{satz}
+	
+	\begin{bemerkung}
+		Der Trigger \(T^*\) wirkt damit eher als \emph{Distanz- oder Dichtetrigger} denn als Typtrigger. Hohe Werte von \(T^*\) signalisieren statistisch eine Umgebung, in der der Zahlenraum schneller wieder in eine Zwillingslage zurückfindet.
+	\end{bemerkung}
+	
+	\begin{satz}[Kanalasymmetrie]
+		\label{satz:kanalasymmetrie}
+		Der grobe Kanal
+		\[
+		EA-BC-BC-EA
+		\]
+		ist numerisch nicht nur balanceaktiver, sondern liegt auch im Mittel näher am nächsten Primzahlzwilling als
+		\[
+		BC-EA-EA-BC.
+		\]
+	\end{satz}
+	
+	\begin{bemerkung}
+		Dagegen zeigt sich für den \emph{Typ} des nächsten Zwillings (\(AB\) oder \(CE\)) nur ein sehr schwaches Signal. Die Vierlingsstruktur beeinflusst also eher den Abstand bis zur nächsten Zwillingslage als deren feinen Typ.
+	\end{bemerkung}
+	
+	\subsection{Hierarchie der Triggerwirkung}
+	
+	\begin{korollar}
+		\label{kor:hierarchie}
+		Der Trigger \(T^*(Q_4)\) wirkt numerisch auf mindestens zwei Ebenen:
+		\begin{enumerate}[label=(\roman*)]
+			\item lokal auf die Ergänzbarkeit
+			\[
+			Q_4\to Q_5,
+			\]
+			\item mittelfristig auf die Distanz
+			\[
+			Q_4\to Z_{\mathrm{next}}.
+			\]
+		\end{enumerate}
+		Dagegen wirkt \(T^*(Q_4)\) kaum auf den feinen Typ des nächsten Zwillings.
+	\end{korollar}
+	
+	\section{Heuristische Modelle: Entropie, Kovarianz, Wartezeiten}
+	\label{sec:modelle}
+	
+	Die bisherigen numerischen Beobachtungen legen nahe, dass die Schalenarithmetik nicht nur deterministische Balancepunkte erzeugt, sondern auch eine modellhafte probabilistische Sprache zulässt.
+	
+	\begin{proposition}[Modellhypothese zur Wartezeit]
+		\label{prop:wartezeit}
+		In einem vereinfachten Schalenmodell mit \(k\) aufgelösten Primfaktoren ergibt sich heuristisch ein Wartezeitgesetz der Form
+		\[
+		2^{4-k}-1.
+		\]
+	\end{proposition}
+	
+	\begin{bemerkung}
+		Diese Aussage bezieht sich ausdrücklich auf ein vereinfachtes Modell und nicht auf einen streng bewiesenen stationären Prozess der Primzahlen selbst. Sie dient als heuristische Illustration dafür, wie Entropie, Kovarianz und lokale Clusterbildung im Schalenbild miteinander verknüpft sein könnten.
+	\end{bemerkung}
+	
+	\section{Schlussbemerkungen}
+	\label{sec:schluss}
+	
+	Die vorliegende Notiz trennt drei Ebenen:
+	\begin{enumerate}[label=(\arabic*)]
+		\item \textbf{Deterministische Resultate:} Der Restmodus \(R\) erlaubt eine explizite Beschreibung von Balance- und Wechselpunkten durch kumulierte logarithmische Primfaktormassen.
+		\item \textbf{Numerische Evidenz:} Für dichte Primzahlvierlinge zeigt ein kanal-korrigierter Trigger \(T^*\) konsistente Signale sowohl für die lokale Ergänzbarkeit als auch für die Distanz zum nächsten Primzahlzwilling.
+		\item \textbf{Heuristische Modellierung:} Entropie-, Bias- und Wartezeitphänomene lassen sich in einer probabilistischen Schalenperspektive plausibel motivieren.
+	\end{enumerate}
+	
+	Die stärkste mathematische Basis liegt derzeit im deterministischen Kern des Restmodus. Die numerischen Teile liefern eine kohärente Erweiterung, während die probabilistischen Aussagen vorläufig als heuristische Strukturhypothesen zu verstehen sind.
+	
+	\medskip
+	
+	Als nächste Schritte bieten sich insbesondere an:
+	\begin{itemize}
+		\item eine schärfere formale Herleitung der Restklassenhierarchie,
+		\item eine systematische Untersuchung höherer Cluster, insbesondere des nächsten dichten Vierlings,
+		\item sowie eine präzisere theoretische Ableitung des Kanalbonus \(c^*=6\).
+	\end{itemize}
+	
+\end{document}

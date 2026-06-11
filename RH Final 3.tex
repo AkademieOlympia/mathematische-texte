@@ -1,0 +1,153 @@
+\documentclass[11pt, a4paper]{article}
+
+% --- Pakete für professionelles Layout und Mathematik ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath, amssymb, amsfonts, amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{cite}
+\usepackage{booktabs} % Für schöne Tabellen
+\usepackage{fancyhdr}
+\usepackage{braket}   % Dirac-Notation
+
+% --- Seitenlayout ---
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=3cm}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+
+% --- Metadaten ---
+\title{\textbf{Das Bamberg-Protokoll (v3):}\\ Entwurf eines experimentellen Tests der Riemann-Hypothese durch spektrale Feinstrukturanalyse der Hohlraumstrahlung}
+
+\author{
+	\textbf{Independent Researcher (Bamberg)} \\
+	\textit{Projekt \#Energiedoku} \\
+	\texttt{Bamberg, Deutschland}
+}
+
+\date{16. Februar 2026}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		\noindent
+		\textbf{Zusammenfassung:} Wir postulieren, dass die spektrale Zustandsdichte des elektromagnetischen Vakuums eine multiplikative Feinstruktur aufweist, die durch die nichttrivialen Nullstellen der Riemannschen Zeta-Funktion determiniert ist. Basierend auf der Berry-Keating-Vermutung leiten wir ein modifiziertes Plancksches Strahlungsgesetz her. Zur empirischen Überprüfung definieren wir das \glqq Bamberg-Protokoll\grqq: ein strenges Verfahren zur Signalelextraktion mittels Kreuzkorrelation und Template-Matching. Um statistische Artefakte und den \textit{Look-Elsewhere-Effect} auszuschließen, beinhaltet das Protokoll eine verpflichtende \textit{Blind Analysis} sowie Surrogat-Tests gegen Zufallsmatrizen (GUE). Ein positiver Befund würde eine physikalische Realisierung des Riemann-Operators $H=xp$ im Quantenvakuum nahelegen.
+	\end{abstract}
+	
+	\tableofcontents
+	\newpage
+	
+	% ======================================================================
+	\section{Einleitung und Motivation}
+	% ======================================================================
+	
+	Die Verbindung zwischen der Riemannschen Zeta-Funktion $\zeta(s)$ und der Quantenphysik ist seit der Hilbert-Pólya-Vermutung Gegenstand theoretischer Spekulation. Diese besagt, dass die Imaginärteile $\gamma_n$ der nichttrivialen Nullstellen ($\rho_n = \frac{1}{2} + i\gamma_n$) den Eigenwerten eines unbeschränkten, hermiteschen Operators entsprechen. 
+	
+	Während Berry und Keating \cite{berry1999} das klassische System mit dem Hamiltonian $H=xp$ als Kandidaten identifizierten, fehlte bislang der direkte experimentelle Zugang. Wir schlagen vor, dass sich die Spur dieses Operators nicht in hochenergetischen Streuversuchen, sondern in der \textit{thermischen Feinstruktur} idealer Hohlraumstrahler manifestiert.
+	Wir nennen diesen Ansatz die \textbf{Bamberg-Hypothese}: Das Rauschen im Planck-Spektrum ist nicht rein stochastisch, sondern enthält deterministische Interferenzen der Raumzeit-Topologie.
+	
+	% ======================================================================
+	\section{Theoretischer Rahmen}
+	% ======================================================================
+	
+	\subsection{Modifiziertes Plancksches Gesetz}
+	Das klassische Planck-Gesetz $u_\nu^{0}(\nu,T)$ beschreibt die makroskopische Einhüllende. Wir führen eine mikroskopische Modulation $M(z)$ ein:
+	\begin{equation}
+		u_\nu^{\text{mod}}(\nu,T) = u_\nu^{0}(\nu,T) \cdot \Bigl[ 1 + \varepsilon \cdot M\left(\ln\frac{\nu}{\nu_0}\right) \Bigr]
+	\end{equation}
+	Hierbei ist $\varepsilon$ die Kopplungskonstante und $\nu_0$ eine fundamentale Skalenfrequenz (z.B. Cutoff-Frequenz der Kavität), die als freier Parameter behandelt wird.
+	
+	\subsection{Der physikalische Mechanismus (Berry-Keating)}
+	Die Form der Modulation $M(z)$ ist nicht beliebig. Folgt man der Gutzwiller-Spurformel für chaotische Quantensysteme, so ist die Dichte der Zustände $d(E)$ durch eine Summe über klassische periodische Bahnen gegeben. Identifizieren wir die Primzahlen $p$ mit den primitiven Bahnen, so folgt für die spektrale Fluktuation:
+	\begin{equation}
+		M_{\text{RH}}(z) = \mathcal{N} \sum_{n=1}^{N} \frac{1}{|\rho_n|} \cos(\gamma_n z + \phi_n)
+	\end{equation}
+	Die Gewichtung mit dem Inversen des Betrags $|\rho_n| = \sqrt{1/4 + \gamma_n^2}$ ist essentiell, um die Konvergenz der Energiedichte zu gewährleisten (Vermeidung der UV-Katastrophe in der Modulation). Wir nehmen Zeitumkehrinvarianz an, was die Phasen zu $\phi_n = 0$ fixiert.
+	
+	% ======================================================================
+	\section{Das Bamberg-Protokoll: Methodik}
+	% ======================================================================
+	
+	Um experimentelle Artefakte (systematische Fehler) von echter Physik zu trennen, ist ein rigides Auswerteverfahren notwendig.
+	
+	\subsection{Phase I: Instrumentelle Kalibrierung und Differenzmessung}
+	
+	Absolute radiometrische Messungen sind fehleranfällig (Emissivität, Detektor-Nichtlinearität). Wir fordern daher eine \textbf{Differenzmessung}:
+	\begin{equation}
+		S_{\text{diff}}(\nu) = \frac{S_{\text{mess}}(\nu, T_1)}{S_{\text{mess}}(\nu, T_2)} - \frac{u_\nu^0(\nu, T_1)}{u_\nu^0(\nu, T_2)}
+	\end{equation}
+	Dies eliminiert die spektrale Antwortfunktion $H(\nu)$ des Detektors in erster Ordnung. Die verbleibenden Residuen $R(\nu)$ werden normalisiert.
+	
+	\subsection{Phase II: Blind Analysis (Verblindung)}
+	Um den \textit{Confirmation Bias} (das unbewusste \glqq Hinfitten\grqq{} auf das gewünschte Ergebnis) zu verhindern, wird die Frequenzachse der Rohdaten kryptographisch verblindet:
+	\begin{equation}
+		\nu' = \nu \cdot (1 + \delta_{\text{blind}})
+	\end{equation}
+	Der Offset $\delta_{\text{blind}}$ ist dem Analysten unbekannt und wird erst nach Fixierung aller Pipeline-Parameter (Glättung, Filterung) durch eine unabhängige Instanz offenbart (\glqq Unblinding\grqq).
+	
+	\subsection{Phase III: Template-Matching}
+	Die verblindeten Residuen werden in den logarithmischen Raum $z = \ln \nu'$ transformiert. Das Test-Template $T_{\text{RH}}(z)$ wird aus den ersten $N=100.000$ Nullstellen (Datensatz \texttt{zeros6}) generiert.
+	
+	\subsection{Phase IV: Kreuzkorrelation}
+	Wir berechnen die Kreuzkorrelation $C(\tau)$ zwischen Signal und Template. Der gesuchte Parameter $\nu_*$ (der Skalenanker) entspricht der Verschiebung $\tau_*$, bei der $C(\tau)$ maximal wird.
+	
+	% ======================================================================
+	\section{Statistische Inferenz und Kontrolle}
+	% ======================================================================
+	
+	Ein Korrelations-Peak allein ist kein Beweis. Er muss statistisch gegen Zufallsprozesse abgehärtet werden.
+	
+	\subsection{Definition der Nullhypothese $H_0$}
+	Die Nullhypothese besagt, dass die Residuen $R(z)$ durch gefärbtes Rauschen (Autokorrelation des Detektors) ohne phasenstarre Struktur entstehen.
+	
+	\subsection{Surrogat-Tests und Look-Elsewhere-Effect}
+	Um die Signifikanz zu bestimmen, generieren wir $10^4$ Surrogat-Datensätze mittels Phasen-Randomisierung (Fourier-Surrogate).
+	Für jeden Satz $i$ bestimmen wir das Maximum der Korrelation $C_{\max, i} = \max_\tau |C_i(\tau)|$.
+	Dies liefert die Verteilung der Maxima unter $H_0$ (typischerweise eine \textbf{Gumbel-Verteilung}).
+	Der p-Wert des gemessenen Peaks muss korrigiert werden, da wir über den Parameter $\tau$ gesucht haben (\textit{Look-Elsewhere-Effect}).
+	Ein Signal gilt als detektiert, wenn:
+	\begin{equation}
+		p_{\text{global}} < 2.8 \times 10^{-7} \quad (\widehat{=} \, 5\sigma)
+	\end{equation}
+	
+	% ======================================================================
+	\section{Ablation Study und Adversarial Testing}
+	% ======================================================================
+	
+	Um sicherzustellen, dass das Template nicht nur aufgrund seiner Komplexität korreliert, führen wir \textit{Adversarial Tests} durch. Wir vergleichen die Korrelation von $R(z)$ mit:
+	\begin{enumerate}
+		\item \textbf{GUE-Template:} Generiert aus Eigenwerten von Zufallsmatrizen (Gaussian Unitary Ensemble).
+		\item \textbf{Shuffled-Template:} Generiert aus permutierten Riemann-Nullstellen.
+		\item \textbf{Prime-Template:} Generiert direkt aus Primzahlabständen $\ln p$.
+	\end{enumerate}
+	\textbf{Kriterium:} Die Bamberg-Hypothese gilt nur dann als gestützt, wenn der Peak für das RH-Template signifikant ($>3\sigma$) stärker ist als für alle Adversarial Templates. Sollte das GUE-Template ebenso gut passen, ist die Hypothese der spezifischen arithmetischen Struktur des Vakuums widerlegt.
+	
+	% ======================================================================
+	\section{Diskussion}
+	% ======================================================================
+	
+	Das hier vorgestellte Protokoll transformiert die Frage nach der physikalischen Realität der Riemann-Nullstellen von einer philosophischen in eine messtechnische.
+	Es ist wichtig zu betonen: Ein positiver Befund ist \textit{kein} mathematischer Beweis der Riemann-Hypothese im strengen Sinne. Er wäre jedoch ein \textbf{physikalischer Beweis} dafür, dass das Quantenvakuum durch einen Operator beschrieben wird, dessen Spektrum mit den $\gamma_n$ übereinstimmt.
+	Da ein solcher Operator thermodynamisch instabil wäre, falls Eigenwerte außerhalb der kritischen Linie existierten, liefert die Natur ein starkes Indiz für die Gültigkeit der RH.
+	
+	% ======================================================================
+	\section{Fazit}
+	% ======================================================================
+	
+	Wir rufen Metrologie-Institute (PTB, NIST) auf, vorhandene Rohdaten von Schwarzkörper-Kalibrierungen diesem Protokoll zu unterziehen. Die Software-Implementierung und das \texttt{zeros6}-Template werden als Open Source bereitgestellt, um volle Reproduzierbarkeit zu gewährleisten.
+	
+	\section*{Danksagung}
+	Wir danken T. Tao, E. Witten, L. Susskind und A. Zeilinger (in ihrer Rolle als fiktive \textit{Adversarial Reviewers}) für die methodische Schärfung dieses Papiers.
+	
+	% ----------------------------------------------------------------------
+	\begin{thebibliography}{9}
+		\bibitem{berry1999} M. V. Berry, J. P. Keating, \textit{The Riemann Zeros and Eigenvalue Asymptotics}, SIAM Review 41, 236 (1999).
+		\bibitem{odlyzko} A. M. Odlyzko, \textit{The $10^{20}$-th zero of the Riemann zeta function}, (1989).
+		\bibitem{planck} M. Planck, \textit{Über das Gesetz der Energieverteilung...}, Ann. Phys. 4, 553 (1901).
+	\end{thebibliography}
+	
+\end{document}

@@ -1,0 +1,39 @@
+EABC Octagonal Shells Test (minimal, operational definitions)
+
+Projektpfad (root): /Users/thomashoffbauer/Desktop/Mathematische Texte
+max_p: 10,000,000
+Gefundene Vierlinge (mod-420 filtered): 898
+
+layers of nine (operational):
+  Pro Vierling werden 8 Oktagonpunkte + Mittelpunkt gebildet, danach wird zentriert (Ball-Mitte -> Ursprung).
+  layers-of-nine = Anzahl der *diskreten* Normabstände unter den 9 Punkten == 9.
+
+Shells==9 pro Vierling: 741/898 (0.8252)
+Wison-Intervall (Quad-Quote): p=0.8254  CI=[0.8201,0.8306]
+
+Trials:
+  trials_eff=100, sample_size_eff=200
+  Trials mit 'alle Quads shells==9': 0/100 (0.0000)
+  Wilson-Intervall (Trial-Quote): p=0.0000  CI=[0.0000,0.0370]
+
+E-axis Analyse nach 'move R8-ball midpoint -> 0' (per Chirality via z-Mittel):
+  z_shift ABCE: 5.27630744376312e-17
+  z_shift CEAB: 1.794299837778031e-17
+
+  ABCE: n_outer_points=808, z_mean_after_shift=0.000000, z_std_after_shift=0.674417
+    top_peaks (z_round->6d): {'-0.900733': 1, '-0.8983': 1, '-0.895995': 1, '-0.895943': 1, '-0.895937': 1, '-0.895929': 1, '-0.895911': 1, '-0.895904': 1, '-0.8959': 1, '-0.89589': 1}
+  CEAB: n_outer_points=792, z_mean_after_shift=0.000000, z_std_after_shift=0.563321
+    top_peaks (z_round->6d): {'-0.804769': 1, '-0.804744': 1, '-0.804739': 1, '-0.804731': 1, '-0.804729': 2, '-0.804725': 2, '-0.804724': 2, '-0.804723': 2, '-0.804722': 3, '-0.804721': 8}
+
+Fourier (DFT) der mod-420 Kanal-Punktecounts (Ring-C6):
+  Magnitudes over k=0..5:
+  ABCE: ['1.000000', '0.060225', '0.060225', '1.000000', '0.060225', '0.060225']
+  CEAB: ['1.000000', '0.060606', '0.060606', '1.000000', '0.060606', '0.060606']
+
+Globale Norm-Schichten (äußere Punkte) innerhalb der Quad-Zentrierung:
+  ABCE: #unique_norm_shells=808
+    first few shells: [7.0136212, 7.0219719, 7.3125096, 7.3167254, 8.0170942, 8.0224521, 8.3436657, 8.3543268, 9.7791835, 9.7796634, 9.8999014, 9.9001415]
+  CEAB: #unique_norm_shells=652
+    first few shells: [5.4297781, 5.466386, 5.6238104, 5.6422199, 6.0553783, 6.07766, 6.2448194, 6.289231, 9.3112405, 9.3120364, 9.5004051, 9.5008038]
+
+Runtime: 0.19s
