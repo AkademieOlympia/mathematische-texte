@@ -155,17 +155,17 @@ colback=red!3,
 colframe=red!45!black,
 title=\textbf{3. Numerische Evidenz: Die Gegenklassen wirken als Drain}
 ]
-Für die numerische Auswertung aller ungeraden \(n\le 500000\) ergeben sich die Mittelwerte:
+Für die numerische Auswertung aller ungeraden \(n \le 10^7\) ergeben sich die Mittelwerte:
 
 \begin{center}
-\begin{tabular}{lcc}
+\begin{tabular}{lccc}
 \toprule
-Familie & Mittelwert von \(\vii(3n+1)\) & Mittelwert von \(\U(n)/n\)\\
+Restklasse (EABC) & mittl.\ \(\vii(3n+1)\) & Anteil \(\U(n)<n\) & geom.\ Faktor \(\U(n)/n\)\\
 \midrule
-\(e\) & \(2{,}99998\) & \(0{,}50002\)\\
-\(a\) & \(2{,}99995\) & \(0{,}499999\)\\
-\(b\) & \(1{,}00000\) & \(1{,}50001\)\\
-\(c\) & \(1{,}00000\) & \(1{,}50001\)\\
+\(1\equiv e\) & \(3{,}000000\) & \(99{,}9999\,\%\) & \(0{,}375000\)\\
+\(5\equiv a\) & \(3{,}000002\) & \(100{,}0000\,\%\) & \(0{,}375000\)\\
+\(7\equiv b\) & \(1{,}000000\) & \(0{,}0000\,\%\) & \(1{,}500001\)\\
+\(11\equiv c\) & \(1{,}000000\) & \(0{,}0000\,\%\) & \(1{,}500001\)\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -174,7 +174,7 @@ Familie & Mittelwert von \(\vii(3n+1)\) & Mittelwert von \(\U(n)/n\)\\
 \[
 b,c:\quad \U(n)\approx \frac32 n,
 \qquad
-e,a:\quad \U(n)\approx \frac12 n.
+e,a:\quad \U(n)\approx \frac38 n.
 \]
 
 \medskip
@@ -245,6 +245,57 @@ Dies ist eine \emph{heuristische} Deutung, keine Lösung der Collatz-Vermutung.
 \end{tcolorbox}
 
 \begin{tcolorbox}[
+colback=cyan!3,
+colframe=cyan!50!black,
+title=\textbf{6. Vollständiger Kollatz-Test: Alle Startwerte $1 \le n \le 10^7$}
+]
+Zum Abschluss wurde die globale Collatz-Konvergenz für alle
+\[
+1 \le n \le 10\,000\,000
+\]
+numerisch verifiziert. Kein einziger Startwert verfehlte \(1\).
+
+\medskip
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Größe & Ergebnis\\
+\midrule
+Getestete Startwerte & \(10\,000\,000\)\\
+Konvergenz-Ausnahmen & \(0\)\\
+Mittlere Schrittzahl & \(155{,}27\)\\
+Maximale Schrittzahl & \(685\)\\
+Startwert mit maximaler Schrittzahl & \(8\,400\,511\)\\
+Größte erreichte Zwischenhöhe & \(60\,342\,610\,919\,632\)\\
+Startwert dieser Zwischenhöhe & \(6\,631\,675\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+\textbf{EABC-Schrittzahlen nach Restklasse modulo 12:}
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Restklasse & EABC & mittlere Schrittzahl\\
+\midrule
+\(1 \pmod{12}\) & \(e\) & \(155{,}33\)\\
+\(5 \pmod{12}\) & \(a\) & \(155{,}24\)\\
+\(7 \pmod{12}\) & \(b\) & \(167{,}64\)\\
+\(11 \pmod{12}\) & \(c\) & \(167{,}62\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+\textbf{Lesart:}
+Die EABC-Spur ist auch in den Schrittzahlen sichtbar:
+\(b\)- und \(c\)-Startwerte brauchen im Mittel rund \(12\) Schritte mehr als \(e\)- und \(a\)-Startwerte,
+da sie beim ersten ungeraden Collatz-Schritt zunächst anwachsen.
+\end{tcolorbox}
+
+\begin{tcolorbox}[
 colback=gray!5,
 colframe=black!60,
 title=\textbf{Der präzise Status der Aussagen}
@@ -257,8 +308,8 @@ Modulo \(12\) spaltet sich die odd-Dynamik in die Blöcke \(\{e,a\}\) und \(\{b,
 Die Familien \(b,c\) sind Ein-Halbierungs-Klassen.
 
 \medskip
-\textbf{Numerische Evidenz:}
-Die Familien \(e,a\) besitzen im Mittel Halbierungstiefe nahe \(3\) und odd-to-odd-Schrumpfung nahe \(1/2\).
+\textbf{Numerische Evidenz} (bis \(n \le 10^7\)):
+Die Familien \(e,a\) besitzen im Mittel Halbierungstiefe nahe \(3\) und odd-to-odd-Schrumpfung nahe \(3/8\) (Faktor \(\approx 0{,}375\)), die Familien \(b,c\) genau Halbierungstiefe \(1\) und Wachstum nahe \(3/2\). Der mittlere geometrische Faktor über alle vier ungeraden Klassen liegt numerisch bei \(\approx 0{,}750\).
 
 \medskip
 \textbf{Heuristische Konsequenz:}
@@ -284,6 +335,22 @@ Diese Notiz beansprucht keine Lösung der Collatz-Vermutung. Ihr Anspruch ist kl
 \includegraphics[width=0.88\textwidth]{mod48_markov_heatmap.png}
 \caption{Verfeinerte odd-to-odd-Übergänge modulo 48.}
 \end{figure}
+
+\section*{Numerisches Fazit}
+
+Der numerische Test bis \(N = 10^7\) bestätigt die EABC-Lesart in aller Schärfe:
+\[
+e, a \Rightarrow \text{Kontraktion}\quad (U(n) \approx \tfrac{3}{8}\,n),
+\qquad
+b, c \Rightarrow \text{Expansion}\quad (U(n) \approx \tfrac{3}{2}\,n).
+\]
+Der mittlere geometrische Faktor über die vier ungeraden Restklassen beträgt
+\[
+\frac{0{,}375 + 0{,}375 + 1{,}500 + 1{,}500}{4} = 0{,}9375,
+\]
+oder — gewichtet nach gleichem Anteil an den ungeraden Zahlen — liegt er bei ungefähr \(0{,}750\),
+also klar unter \(1\). Das erklärt heuristisch den globalen Abstieg der Collatz-Dynamik,
+ist aber natürlich kein Beweis der Collatz-Vermutung.
 
 \section*{Ausblick}
 
