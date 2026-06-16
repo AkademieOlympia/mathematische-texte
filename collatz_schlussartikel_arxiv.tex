@@ -862,6 +862,42 @@ Offen & Uniformität über $E\subset\Ztwo$ (punktweise Brücke zu allen $n\in\N$
 \end{tabular}
 \end{center}
 
+\subsection{Rolle von Lean~4}
+\label{subsec:lean-rolle}
+
+Lean~4 ist in diesem Projekt kein numerischer Collatz-Test und kein Ersatz
+für die LaTeX-Argumentation. Es ist ein \emph{Beweisassistent}: Aussagen
+werden wie Programme formuliert; jeder Schritt ist maschinell geprüft oder
+explizit als \texttt{sorry} (offen) markiert.
+
+Drei Statusstufen trennen epistemisch sauber:
+\begin{itemize}[nosep]
+  \item \textbf{bewiesen} (ohne \texttt{sorry}) --- z.\,B.\ C-Ketten-Endlichkeit
+    in \texttt{collatz\_density.lean};
+  \item \textbf{formal widerlegt} --- negative Sätze sind gleichwertig mit positiven
+    Lemmata: \texttt{dist\_to\_one\_not\_uniform\_bound} zeigt, dass eine
+    Uniformitätsstrategie über $\disttwo(n,1)$ scheitert;
+  \item \textbf{offen} --- die punktweise Uniformität $\disttwo(T^k(n),E)\to 0$
+    (Stufe~E in \texttt{collatz\_z2\_attraktor.lean}).
+\end{itemize}
+
+In \texttt{collatz\_uniformity.lean} liegen LTE-Kompensation, Mischschranken und
+Dichteverbindungen formal vor; in \texttt{collatz\_z2\_attraktor.lean} die
+2-adische Metrik, endliche Ausnahmemengen \texttt{ExceptionSetApprox}, Monotonie
+und Invarianz $T(E)\subseteq E$. Der Limes
+$E=\overline{\bigcup_N E_{N,N}}$ und die globale Uniformität bleiben offen.
+
+Die Infrastruktur nutzt Mathlib~4 ($\Ztwo$ als \texttt{PadicInt~2},
+\texttt{padicValNat}, \texttt{closure}). Wo Mathlib endet (vollständige
+Perron-Frobenius-Theorie, punktweiser Birkhoff-Satz), endet der
+formalisierte Teil --- dokumentiert, nicht verschwiegen.
+
+\begin{tcolorbox}[kern,title={Bedeutung von Lean}]
+Lean liefert hier \emph{formal abgesicherte Strukturtheorie mit klar isolierter
+Uniformitätslücke}: beglaubigt, was bewiesen ist; beglaubigt, was widerlegt ist;
+und lokalisiert die verbleibende Front an der Attraktormenge $E\subset\Ztwo$.
+\end{tcolorbox}
+
 \subsection{Taos Hauptergebnis (präzise)}
 
 Für jede Funktion $f:\N\to\R$ mit $f(n)\to\infty$:

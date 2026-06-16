@@ -1,0 +1,115 @@
+% collatz_spektrum_entwurf.tex
+% Populärwissenschaftlicher Entwurf (Spektrum-Stil)
+% Kompilierung: pdflatex collatz_spektrum_entwurf.tex
+
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{parskip}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage[most]{tcolorbox}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{spektrumblue}{RGB}{0,85,150}
+
+\titleformat{\section}{\large\bfseries\color{spektrumblue}}{\thesection.}{0.5em}{}
+
+\tcbset{
+  infobox/.style={
+    colback=blue!4,colframe=spektrumblue,fonttitle=\bfseries,
+    arc=2pt,boxrule=0.8pt,left=6pt,right=6pt,top=4pt,bottom=4pt},
+}
+
+\newcommand{\Ztwo}{\mathbb{Z}_2}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE\bfseries Die Collatz-Vermutung: Zwischen Spielerei und tiefster Struktur}\\[0.6em]
+  {\normalsize Entwurf für \emph{Spektrum der Wissenschaft}}\\[1em]
+  {\normalsize Thomas Hoffbauer}\\[1.2em]
+\end{center}
+
+\noindent\textbf{Lead.}
+Seit fast neunzig Jahren multiplizieren Mathematiker ungerade Zahlen mit drei,
+addieren eins, halbieren so oft es geht --- und wissen nicht, warum jede Bahn
+bei eins enden sollte. Ein strukturiertes Forschungsprogramm ordnet die Dynamik
+nicht mehr dem Fixpunkt, sondern der Geometrie der 2-adischen Zahlen $\Ztwo$ zu.
+
+\section*{Kurzfassung}
+
+Die Collatz-Regel ist trivial; der Beweis ist es nicht. Terence Tao zeigte 2019,
+dass \emph{fast alle} Startzahlen gutartig sind --- doch ``fast alle'' ist nicht
+``alle''. Das Projekt kartiert die odd-to-odd-Dynamik über eine EABC-Klassifikation
+modulo~12, beweisbare C-Ketten-Struktur und einen Paradigmenwechsel: Uniformität
+als Kontraktion gegen eine Ausnahmemenge $E\subset\Ztwo$, nicht als Nähe zu~$1$.
+\textbf{Die Vermutung bleibt offen.}
+
+\begin{tcolorbox}[infobox,title={Was ist Lean?}]
+Lean ist ein \emph{Beweisassistent}, kein Rechner, der Milliarden Collatz-Schritte
+durchprobiert. Mathematische Aussagen werden darin wie Programme geschrieben;
+jeder Beweisschritt wird maschinell geprüft oder als explizit offen markiert.
+Lean beglaubigt damit, was wirklich bewiesen ist --- und was formal widerlegt ist.
+Für die Collatz-Forschung trennt es zuverlässig Strukturtheorie von Vermutung.
+\end{tcolorbox}
+
+\begin{tcolorbox}[infobox,title={Was ist formalisiert?}]
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}p{0.42\textwidth}p{0.48\textwidth}@{}}
+\toprule
+\textbf{Status} & \textbf{Inhalt} \\
+\midrule
+Bewiesen (Lean) &
+mod-12-Struktur, C-Ketten-Endlichkeit, LTE-Kompensation,
+2-adische Metrik $\mathrm{dist}_2$, Ausnahmemengen $E_N$ \\
+Formal widerlegt &
+Uniformität über $\mathrm{dist}_2(n,1)$; pauschale $\nu_2$-Schranken \\
+Numerisch / heuristisch &
+Blockdrift $\Lambda\approx -0{,}830$, mod-12-Mischung \\
+\textbf{Offen} &
+Limes $E\subset\Ztwo$; Uniformität $\mathrm{dist}_2(T^k(n),E)\to 0$;
+volle Collatz-Vermutung \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{tcolorbox}
+
+\section*{Historische Einordnung}
+
+Lothar Collatz formulierte die Vermutung in den 1930er Jahren. Paul Erd\H{o}s
+soll gesagt haben, die Mathematik sei noch nicht reif dafür. Tao (2019) bewies
+asymptotische Gutartigkeit für fast alle Startwerte --- ein Durchbruch, der die
+punktweise Lücke nicht schließt. Numerische Tests bis weit über $10^{20}$ finden
+kein Gegenbeispiel; das ersetzt keinen Beweis.
+
+\section*{Struktur statt Rätsel}
+
+Die EABC-Klassifikation (Reste $1,5,7,11$ mod~12) verwandelt Bahnen in Wörter
+über $\{\mathrm{E},\mathrm{A},\mathrm{B},\mathrm{C}\}$. Bewiesen sind unter anderem
+Endlichkeit von C-Ketten, Verbot von B$\to$B und erzwungene EA-Schritte nach
+maximalen C-Ketten. Falsch gewesene Hoffnungen --- globale Schranken über
+$\mathrm{dist}_2(n,1)$ --- sind formal widerlegt und grenzen den Suchraum ein.
+
+\section*{Offenes Ende}
+
+Die Collatz-Vermutung bleibt ein Spiegel zwischen Spiel und Tiefe. Was das Projekt
+liefert, ist eine präzise kartographierte Landschaft: formal abgesicherte
+Strukturtheorie mit klar isolierter Uniformitätslücke an $E\subset\Ztwo$.
+Ob dieser geometrische Ansatz den letzten Schritt von ``fast alle'' zu ``alle''
+ermöglicht, ist ungewiss --- die Frage ist erstmals geometrisch präzise gestellt.
+
+\vspace{0.8em}
+\noindent\small\textit{Der Autor arbeitet an der formalen Strukturtheorie der
+odd-to-odd Collatz-Dynamik. Eine ausführliche Darstellung liegt als Preprint vor;
+die Collatz-Vermutung bleibt offen.}
+
+\end{document}
