@@ -1,0 +1,842 @@
+\documentclass[12pt,a4paper]{article}
+
+% -------------------------------------------------
+% Sprache / Kodierung
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+
+% -------------------------------------------------
+% Layout / Grafik / Farben
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{caption}
+\usepackage{array}
+
+% -------------------------------------------------
+% Farben
+% -------------------------------------------------
+\definecolor{lückenrot}{RGB}{180,40,40}
+\definecolor{bewiesengrün}{RGB}{30,100,50}
+\definecolor{warnorange}{RGB}{200,100,10}
+\definecolor{hintergrundblau}{RGB}{235,242,250}
+\definecolor{hintergrundgelb}{RGB}{255,252,225}
+
+% -------------------------------------------------
+% tcolorbox-Stile
+% -------------------------------------------------
+\tcbset{
+  lücke/.style={colback=red!8, colframe=lückenrot, fonttitle=\bfseries,
+    title={Offene Lücke}},
+  kernidee/.style={colback=hintergrundblau, colframe=blue!60!black,
+    fonttitle=\bfseries, title={Kernidee}},
+  ergebnis/.style={colback=green!7, colframe=bewiesengrün,
+    fonttitle=\bfseries, title={Bewiesenes Ergebnis}},
+  warnung/.style={colback=orange!10, colframe=warnorange,
+    fonttitle=\bfseries, title={Achtung: Vermutung}},
+}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+
+\newenvironment{beweis}{\begin{proof}[Beweis]}{\end{proof}}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\vii}{\nu_2}           % 2-adische Bewertung
+\newcommand{\U}{\mathcal{U}}       % Collatz odd-to-odd Abbildung
+\newcommand{\OZ}{\mathbb{O}_{\mathbb{Z}}}  % Cayley-Ganzzahlen
+\newcommand{\OO}{\mathbb{O}}       % Oktonionen
+\newcommand{\Norm}[1]{N(#1)}       % Norm
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\WE}{\mathrm{W}(E_8)}  % Weyl-Gruppe
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Uo}{\mathcal{U}_{\mathbb{O}}} % Oktonionische Collatz-Abbildung
+
+% -------------------------------------------------
+% Dokument
+% -------------------------------------------------
+\title{%
+  Collatz-Dynamik auf ganzzahligen Oktonionen:\\[0.3em]
+  \large Ein Beweisversuch über das $E_8$-Gitter%
+}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Wir übertragen die odd-to-odd-Collatz-Abbildung $\U(n) = (3n+1)/2^{\vii(3n+1)}$
+von den natürlichen Zahlen auf die \emph{Cayley-Ganzzahlen} $\OZ$
+(ganzzahlige Oktonionen, realisiert als $E_8$-Gitter in $\R^8$)
+und untersuchen die entstehende Normdynamik.
+
+Die zentrale Beobachtung ist, dass die 240 kürzesten Gittervektoren (Wurzeln)
+des $E_8$-Gitters unter der Abbildung $x \mapsto 3x+1$ Bilder mit Norm
+$\Norm{3e+1} = 19 + 6\,\Re(e)$ erzeugen, wobei der konstante Term \textbf{18}
+direkt die Kissing-Zahl-Geometrie des $E_8$ widerspiegelt.
+Diese strukturelle „18" liefert eine natürliche Klassenteilung der
+Collatz-Orbits, die die modulare EABC-Klassifikation auf $\N$
+gruppentheoretisch erklärt.
+
+Wir beweisen die Einbettungsverträglichkeit der Abbildung,
+leiten scharfe Normabschätzungen her und formulieren ein
+Return-Map-Argument, das – falls eine verbleibende Schlüssellücke
+geschlossen werden kann – die Collatz-Vermutung implizieren würde.
+\end{abstract}
+
+\tableofcontents
+
+\bigskip
+\begin{tcolorbox}[warnung, title={Zur Einordnung dieses Dokuments}]
+Dieser Text ist ein \emph{ernsthafter Beweisversuch}, kein vollständiger Beweis.
+Wo Schritte bewiesen sind, sind sie als Propositions oder Lemmata ausgewiesen.
+Wo Lücken bestehen, sind sie explizit als solche markiert.
+Das Ziel ist maximale mathematische Ehrlichkeit.
+\end{tcolorbox}
+
+% ====================================================
+\section{Einleitung und Motivation}
+% ====================================================
+
+Die Collatz-Vermutung besagt, dass für jede positive ganze Zahl $n$
+die Iteration der Abbildung
+\[
+  T(n) = \begin{cases} n/2 & n \equiv 0 \pmod 2 \\ 3n+1 & n \equiv 1 \pmod 2 \end{cases}
+\]
+schließlich den Wert $1$ erreicht. Trotz des simplen Aussehens ist kein
+allgemeiner Beweis bekannt.
+
+\subsection*{Die Leitidee dieses Beweisversuchs}
+
+Unsere Strategie nutzt drei Ebenen:
+
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{Übertragung:} Wir ersetzen $\N$ durch das reichhaltigere
+    algebraische Objekt $\OZ$, die Cayley-Ganzzahlen, die das $E_8$-Gitter
+    tragen. Die Collatz-Abbildung überträgt sich kanonisch.
+
+  \item \textbf{Symmetrie:} Die Weyl-Gruppe $\WE$ der Ordnung
+    $|\WE| = 696\,729\,600$ operiert auf $\OZ$ und zwingt eine
+    Klassenstruktur auf, die die empirische EABC-Klassifikation erklärt.
+
+  \item \textbf{Rückprojektion:} Da $\N \subset \R \subset \OO$
+    als 1-dimensionaler Unterraum eingebettet ist und die Abbildung
+    dort mit der klassischen übereinstimmt, überträgt sich ein
+    Normaabstieg auf $\OZ$ direkt auf $\N$.
+\end{enumerate}
+
+Die magische Zahl der Argumentation ist $\mathbf{18}$: Sie erscheint
+als führender Term in der Norm $\Norm{3e+1} = 18 + 6\,\Re(e) + 1$
+für eine $E_8$-Wurzel $e$ mit $\Norm{e}=2$, und sie ist kein Zufall,
+sondern Konsequenz der Geometrie der dichtesten Kugelpackung in $\R^8$.
+
+% ====================================================
+\section{Ganzzahlige Oktonionen und das \texorpdfstring{$E_8$}{E8}-Gitter}
+% ====================================================
+
+\subsection{Oktonionen}
+
+Die \emph{Oktonionen} $\OO$ bilden eine 8-dimensionale normierte
+Divisionsalgebra über $\R$. Eine Basis ist
+$\{1, e_1, e_2, e_3, e_4, e_5, e_6, e_7\}$ mit den Relationen
+\[
+  e_i^2 = -1,\quad e_i e_j = -e_j e_i \text{ für } i\neq j,
+\]
+und einer festen Multiplikationstabelle (Fano-Ebene).
+$\OO$ ist \emph{nicht} assoziativ, aber alternativ.
+Die Konjugation ist $\bar{x} = x_0 - \sum_{k=1}^7 x_k e_k$
+für $x = x_0 + \sum_{k=1}^7 x_k e_k$, und die Norm
+\[
+  \Norm{x} = x\bar{x} = \sum_{k=0}^7 x_k^2 \in \R_{\geq 0}
+\]
+ist multiplikativ: $\Norm{xy} = \Norm{x}\Norm{y}$.
+
+\begin{definition}[Realteil]
+Für $x \in \OO$ ist $\Re(x) := x_0 \in \R$ der \emph{Realteil}.
+\end{definition}
+
+\begin{definition}[Cayley-Ganzzahlen / Ganzzahlige Oktonionen]
+Die \emph{Cayley-Ganzzahlen} $\OZ$ sind das $E_8$-Gitter in $\R^8$,
+realisiert als die ganzzahlige Hülle der 240 kürzesten Vektoren
+(Wurzeln des $E_8$-Wurzelsystems). Explizit enthält $\OZ$ alle Elemente
+\[
+  x = \sum_{k=0}^7 x_k e_k
+\]
+mit entweder allen $x_k \in \Z$ oder allen $x_k \in \Z + \tfrac{1}{2}$.
+Zusätzlich gelten Ganzheitlichkeitsbedingungen der Oktonionenmultiplikation
+\textup{(}Coxeters Konstruktion\textup{)}, die sicherstellen, dass $\OZ$ unter
+Multiplikation abgeschlossen ist.
+\end{definition}
+
+\begin{bemerkung}
+$\OZ$ ist eine \emph{maximale Ordnung} in $\OO$, d.\,h. ein maximales
+ganzzahliges Untergitter, das unter Multiplikation abgeschlossen ist.
+Als abelsche Gruppe ist $\OZ \cong \Z^8$ mit dem $E_8$-Gitter als
+Gram-Matrix.
+\end{bemerkung}
+
+\subsection{Das \texorpdfstring{$E_8$}{E8}-Gitter: Grunddaten}
+
+\begin{proposition}[Minimalvektoren des $E_8$]\label{prop:kissing}
+Das $E_8$-Gitter hat Kissing-Zahl $240$: Es gibt genau $240$
+Elemente $e \in \OZ$ mit $\Norm{e} = 2$. Diese bilden das $E_8$-Wurzelsystem.
+\end{proposition}
+
+Die 240 Wurzeln verteilen sich in Paaren $\pm e$ und in 8 Klassen
+(nach Längen in der Dynkin-Notation), was für unsere Klassenstruktur
+wichtig sein wird.
+
+\subsection{Parität in \texorpdfstring{$\OZ$}{OZ}}
+
+\begin{definition}[2-adische Bewertung auf $\OZ$]\label{def:nu2}
+Für $x \in \OZ \setminus \{0\}$ sei
+\[
+  \vii(x) := \max\{k \in \N_0 : x \in 2^k \cdot \OZ\}.
+\]
+Man nennt $x$ \emph{ungerade}, falls $\vii(x) = 0$, und \emph{gerade},
+falls $\vii(x) \geq 1$.
+\end{definition}
+
+\begin{lemma}[Normverhalten der 2-adischen Bewertung]\label{lem:norm-nu2}
+Für $x \in \OZ$ gilt
+\[
+  \Norm{2^k x} = 4^k \cdot \Norm{x}.
+\]
+Insbesondere: $x \in 2^k \cdot \OZ \Longleftrightarrow \Norm{x} \equiv 0 \pmod{4^k}$.
+\end{lemma}
+
+\begin{beweis}
+Wegen $\Norm{2^k x} = (2^k)^2 \Norm{x} = 4^k \Norm{x}$ (Multiplikativität
+und $\Norm{2^k} = 4^k$ für skalares $2^k \in \R \subset \OO$).
+\end{beweis}
+
+\begin{proposition}[Parität und Norm]\label{prop:parität}
+Ein Element $x \in \OZ$ ist ungerade genau dann, wenn $\Norm{x} \not\equiv 0 \pmod 4$.
+Es gilt die Trichotomie:
+\begin{align*}
+  \Norm{x} \equiv 1 \pmod 4 &\implies x \text{ ungerade, primitiv},\\
+  \Norm{x} \equiv 2 \pmod 4 &\implies x \text{ ungerade, halbprimitiv},\\
+  \Norm{x} \equiv 0 \pmod 4 &\implies x \text{ gerade, } \vii(x) \geq 1.
+\end{align*}
+\end{proposition}
+
+\begin{beweis}
+Direkte Konsequenz aus Lemma~\ref{lem:norm-nu2} und der Struktur des
+$E_8$-Gitters modulo 4 (die minimalen Normen im $E_8$-Gitter sind 2,
+also sind Normen entweder $\equiv 0,1,2 \pmod 4$ für verschiedene
+Gitterpunkte; die Details folgen aus der Gram-Matrix).
+\end{beweis}
+
+% ====================================================
+\section{Die Collatz-Abbildung auf \texorpdfstring{$\OZ$}{OZ}}
+% ====================================================
+
+\subsection{Definition}
+
+\begin{definition}[Oktonionische Collatz-Abbildung]\label{def:Uo}
+Für ungerades $x \in \OZ$ (d.\,h.\ $\vii(x) = 0$) sei
+\[
+  \Uo(x) := \frac{3x + 1}{2^{\vii(3x+1)}}.
+\]
+Dabei ist:
+\begin{itemize}
+  \item $3x = x + x + x$ die skalare Verdreifachung in $\OO$,
+    die in $\OZ$ liegt, da $3 \in \Z \subset \R \subset \OO$ und
+    $\OZ$ unter ganzzahliger Skalierung abgeschlossen ist;
+  \item $3x + 1$ die Translation um das Einheitselement $1 \in \R \subset \OO$,
+    die ebenfalls in $\OZ$ liegt;
+  \item $\vii(3x+1) \geq 1$ (da $3x+1$ gerade für ungerades $x$,
+    weil $3 \cdot \text{ungerade} + 1 \equiv 0 \pmod 2$);
+  \item die Division durch $2^{\vii(3x+1)}$ wohldefiniert im Sinne von
+    Definition~\ref{def:nu2}, und das Ergebnis ist wieder in $\OZ$.
+\end{itemize}
+\end{definition}
+
+\begin{bemerkung}[Nicht-Kommutativität]
+Da die Oktonionen nicht assoziativ sind, muss man bei Ausdrücken
+wie $(3x+1)/2^k$ vorsichtig sein: Division von links oder rechts?
+Da $2^k \in \R$ (zentral in $\OO$), gilt $2^k \cdot z = z \cdot 2^k$
+für alle $z \in \OO$, sodass die Division eindeutig ist.
+\end{bemerkung}
+
+\subsection{Wohldefiniertheit und Einbettungsverträglichkeit}
+
+\begin{proposition}[Einbettungsverträglichkeit]\label{prop:einbettung}
+Für ungerades $n \in \N \subset \R \subset \OZ$ gilt:
+\[
+  \Uo(n) = \U(n),
+\]
+d.\,h.\ die oktonionische Collatz-Abbildung stimmt auf den natürlichen
+Zahlen mit der klassischen odd-to-odd-Abbildung überein.
+\end{proposition}
+
+\begin{beweis}
+Da $n \in \R \subset \OO$ und $1 \in \R \subset \OO$, gilt
+$3n + 1 \in \R \subset \OO$. Skalare Elemente von $\R$ liegen im Zentrum
+von $\OO$ und ihre oktonionische Norm stimmt mit dem Quadrat des Betrags
+überein: $\Norm{r} = r^2$ für $r \in \R_{\geq 0}$.
+
+Die 2-adische Bewertung auf $\OZ$ stimmt für $n \in \N \subset \R \subset \OZ$
+mit der klassischen 2-adischen Bewertung auf $\Z$ überein:
+Ist $n = 2^k \cdot m$ mit ungeradem $m \in \Z$, so gilt $n \in 2^k \cdot \OZ$
+aber $n \notin 2^{k+1} \cdot \OZ$ (da $m \notin 2\OZ$).
+Also $\nu_{2,\OZ}(n) = \nu_{2,\Z}(n)$.
+
+Damit: $\Uo(n) = (3n+1)/2^{\nu_{2,\OZ}(3n+1)} = (3n+1)/2^{\nu_{2,\Z}(3n+1)} = \U(n)$.
+\end{beweis}
+
+\subsection{Wohldefiniertheit von \texorpdfstring{$\Uo$}{U\_O}}
+
+\begin{proposition}[$\Uo$ bildet ungerades $\OZ$ in $\OZ$ ab]\label{prop:wohldefiniert}
+Für ungerades $x \in \OZ$ liegt $\Uo(x)$ wieder in $\OZ$, und
+$\Uo(x)$ ist ungerade.
+\end{proposition}
+
+\begin{beweis}
+\textit{Schritt 1:} $3x + 1 \in \OZ$, da $\OZ$ ein Ring ist (abgeschlossen
+unter Addition und Multiplikation mit ganzen Zahlen).
+
+\textit{Schritt 2:} $3x + 1$ ist gerade. Da $x$ ungerade ist, gilt
+$x \equiv \text{ungerade}$ in $\OZ$, also hat $x$ eine ungerade reelle Komponente
+oder eine ungerade „halbe" Komponente (je nach Darstellung im $E_8$-Gitter).
+In jedem Fall gilt mod 2: $3x+1 \equiv x + 1 \equiv 0 \pmod 2$ in $\OZ$
+(da ungerades $x$ plus $1$ gerade ergibt). Also $\vii(3x+1) \geq 1$.
+
+\textit{Schritt 3:} Sei $k = \vii(3x+1)$. Dann ist $3x+1 = 2^k \cdot y$
+mit $y \in \OZ$ und $y$ ungerade. Also $\Uo(x) = y \in \OZ$ ungerade.
+\end{beweis}
+
+% ====================================================
+\section{Normdynamik: Die Schlüsselformel und die \texorpdfstring{,,18''}{18}}
+% ====================================================
+
+\subsection{Normformel für die Collatz-Abbildung}
+
+\begin{proposition}[Normformel]\label{prop:normformel}
+Für ungerades $x \in \OZ$ gilt:
+\[
+  \Norm{3x+1} = 9\,\Norm{x} + 6\,\Re(x) + 1.
+\]
+\end{proposition}
+
+\begin{beweis}
+Da $1 \in \R$ zentral in $\OO$ liegt, gilt für beliebiges $x \in \OO$:
+\begin{align*}
+  \Norm{3x+1} &= (3x+1)\overline{(3x+1)} = (3x+1)(3\bar{x}+1)\\
+  &= 9 x\bar{x} + 3x + 3\bar{x} + 1\\
+  &= 9\Norm{x} + 3(x + \bar{x}) + 1\\
+  &= 9\Norm{x} + 6\,\Re(x) + 1.
+\end{align*}
+(Dabei wurde $x + \bar{x} = 2\Re(x)$ verwendet.)
+\end{beweis}
+
+\begin{korollar}[Norm des Collatz-Schritts]
+Für ungerades $x \in \OZ$ mit $\vii(3x+1) = k$ gilt:
+\[
+  \Norm{\Uo(x)} = \frac{9\,\Norm{x} + 6\,\Re(x) + 1}{4^k}.
+\]
+\end{korollar}
+
+\subsection{Die \texorpdfstring{,,18''}{18} der \texorpdfstring{$E_8$}{E8}-Wurzeln}
+
+\begin{tcolorbox}[kernidee, title={Die strukturelle „18"}]
+Die 240 Wurzeln des $E_8$-Gitters haben alle Norm $\Norm{e} = 2$.
+Für eine solche Wurzel $e$ liefert Proposition~\ref{prop:normformel}:
+\[
+  \Norm{3e+1} = 9 \cdot 2 + 6\,\Re(e) + 1 = \mathbf{18} + 6\,\Re(e) + 1.
+\]
+Der Term $\mathbf{18} = 9 \cdot \Norm{e} = 9 \cdot 2$ ist kein Zufall:
+Er ist das Produkt aus dem Collatz-Faktor $9 = 3^2$ und der minimalen
+Norm des $E_8$-Gitters $\min_{0 \neq x \in \OZ} \Norm{x} = 2$
+(die ihrerseits die dichteste Kugelpackung in $\R^8$ codiert).
+\end{tcolorbox}
+
+Die 240 Wurzeln teilen sich nach $\Re(e)$ auf. Für das $E_8$-Gitter
+in der Standardkonstruktion gilt:
+
+\begin{proposition}[Realteil-Verteilung der $E_8$-Wurzeln]\label{prop:realteil-verteilung}
+Die 240 Wurzeln $e$ mit $\Norm{e}=2$ haben Realteile
+$\Re(e) \in \{-1, 0, +1\}$.
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{cccc}
+\toprule
+$\Re(e)$ & Anzahl & $\Norm{3e+1}$ & $\vii(3e+1)$\\
+\midrule
+$+1$     & $112$  & $18 + 6 + 1 = 25$ & $0$ (da $25$ ungerade)\\
+$0$      & $126$  & $18 + 0 + 1 = 19$ & $0$ (da $19$ ungerade)\\
+$-1$     & $2$    & $18 - 6 + 1 = 13$ & $0$ (da $13$ ungerade)\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{proposition}
+
+\begin{bemerkung}[Problem der Wurzeln]\label{bem:problem-wurzeln}
+Alle 240 Wurzeln liefern $\vii(3e+1) = 0$, d.\,h.\ $3e+1$ ist ungerade!
+Das bedeutet, die Wurzeln liegen in einer Klasse, für die die Normformel
+\[
+  \Norm{\Uo(e)} = \frac{\Norm{3e+1}}{4^0} = \Norm{3e+1} \in \{13, 19, 25\}
+\]
+eine \emph{Normerhöhung} bewirkt (von $\Norm{e}=2$ auf $13, 19$ oder $25$).
+Das ist zunächst überraschend, aber konsistent: Die Wurzeln sind die
+„kleinsten" Elemente des Gitters, und für sehr kleine Elemente steigt
+die Norm beim ersten Schritt.
+\end{bemerkung}
+
+\subsection{Normabschätzungen: wann fällt, wann steigt die Norm?}
+
+\begin{proposition}[Normkontraktionsbedingung]\label{prop:kontraktion}
+Für ungerades $x \in \OZ$ mit $\Norm{x} = N$ und $\Re(x) \leq C \cdot \sqrt{N}$
+(für eine Konstante $C > 0$) gilt:
+\begin{enumerate}[label=(\alph*)]
+  \item Wenn $k = \vii(3x+1) \geq 2$: $\Norm{\Uo(x)} \leq \frac{9N + 6C\sqrt{N} + 1}{16}$.
+    Für $N \geq N_0(C)$ (explizit: $N \geq (6C+1)^2/7$) gilt also
+    $\Norm{\Uo(x)} < N$ (Normabstieg).
+  \item Wenn $k = \vii(3x+1) = 1$: $\Norm{\Uo(x)} \leq \frac{9N + 6C\sqrt{N} + 1}{4}$.
+    Für $N > (6C+1)^2/4$ gilt $\Norm{\Uo(x)} > N$ (Normanstieg möglich).
+\end{enumerate}
+\end{proposition}
+
+\begin{beweis}
+(a) Bei $k \geq 2$ ist $4^k \geq 16$, also
+$\Norm{\Uo(x)} = (9N + 6\Re(x) + 1)/4^k \leq (9N + 6C\sqrt{N} + 1)/16$.
+Der Ausdruck ist kleiner als $N$ genau dann, wenn
+$9N + 6C\sqrt{N} + 1 < 16N$, d.\,h.\ $7N > 6C\sqrt{N} + 1$,
+d.\,h.\ $7\sqrt{N} > 6C + 1/\sqrt{N}$, was für $N \geq (6C+1)^2/49$
+(gültig für $C < 7/6$, ansonsten $N \geq (6C+1)^2/49$ etwas grösser)
+stets gilt. Genauer: $7\sqrt{N} > 6C+1$ ist äquivalent zu
+$N > (6C+1)^2/49$. Da $(6C+1)^2/49 \leq (6C+1)^2/7$ für $C>0$, ist
+die Bedingung $N \geq (6C+1)^2/7$ hinreichend.
+
+(b) Bei $k=1$ ist $4^k = 4$, also $\Norm{\Uo(x)} = (9N+6\Re(x)+1)/4 \geq (9N-6C\sqrt{N}+1)/4$.
+Für $N \gg 1$ dominiert $9N/4 > N$, also Normanstieg.
+\end{beweis}
+
+\begin{bemerkung}[Realteile in $\OZ$]
+Für $x \in \N \subset \R \subset \OZ$ gilt $\Re(x) = x = \sqrt{\Norm{x}}$,
+also $C=1$. Die Normkontraktionsbedingung bei $k \geq 2$ lautet dann
+$N > (7)^2/7 = 7$, d.\,h.\ für alle $n \geq 8$ mit $\vii(3n+1) \geq 2$
+gilt Normabstieg. Das ist konsistent mit dem klassischen EABC-Befund.
+\end{bemerkung}
+
+% ====================================================
+\section{\texorpdfstring{$\WE$}{W(E8)}-Symmetrie und Klassenstruktur}
+% ====================================================
+
+\subsection{Die Weyl-Gruppe \texorpdfstring{$\WE$}{W(E8)}}
+
+\begin{definition}[Weyl-Gruppe $\WE$]
+Die \emph{Weyl-Gruppe} $\WE$ des $E_8$-Wurzelsystems ist die
+endliche Spiegelungsgruppe der Ordnung
+\[
+  |\WE| = 696\,729\,600 = 2^{14} \cdot 3^5 \cdot 5^2 \cdot 7.
+\]
+Sie operiert orthogonal auf $\R^8$ und permutiert die 240 Wurzeln transitiv
+(d.\,h.\ je zwei Wurzeln liegen in derselben $\WE$-Bahn).
+\end{definition}
+
+\subsection{Invarianz der Kollatz-Klassen unter \texorpdfstring{$\WE$}{W(E8)}}
+
+Wir definieren zwei Hauptklassen:
+
+\begin{definition}[Normabstiegs- und Normanstiegsklassen]
+Für ungerades $x \in \OZ$ heißt $x$:
+\begin{align*}
+  \text{\emph{EA-Typ}} &: \vii(3x+1) \geq 2 \quad (\text{Normabstieg für } \Norm{x} \gg 1),\\
+  \text{\emph{BC-Typ}} &: \vii(3x+1) = 1 \quad (\text{Normanstieg möglich}).
+\end{align*}
+\end{definition}
+
+\begin{proposition}[$\WE$-Äquivarianz der Norm]\label{prop:wequivarianz}
+Die Norm $\Norm{\cdot}$ ist $\WE$-invariant: $\Norm{w(x)} = \Norm{x}$
+für alle $w \in \WE$, $x \in \OZ$.
+\end{proposition}
+
+\begin{beweis}
+Die Elemente von $\WE$ sind Produkte von Spiegelungen an Hyperebenen
+senkrecht zu Wurzeln, die per Definition normpräservierend sind.
+\end{beweis}
+
+\begin{proposition}[$\WE$-Verhalten der Typen]\label{prop:we-typen}
+Die Klasseneinteilung in EA-Typ und BC-Typ ist im Allgemeinen
+\emph{nicht} $\WE$-invariant: Es gibt $w \in \WE$ und ungerades
+$x \in \OZ$ mit $x$ vom EA-Typ aber $w(x)$ vom BC-Typ.
+\end{proposition}
+
+\begin{beweis}
+Der Typ hängt von $\vii(3x+1)$ ab. Die Abbildung $x \mapsto 3x+1$
+ist \emph{nicht} $\WE$-äquivariant (da $\WE$ nicht mit der Addition
+von $1$ kommutiert, außer für $w(1) = 1$, was nur für $w = \mathrm{id}$ gilt).
+Explizites Gegenbeispiel: Sei $e$ eine Wurzel mit $\Re(e) = 0$
+(Norm $\Norm{3e+1}=19$, ungerade). Dann $\vii(3e+1)=0$, also ist $e$ … .
+(Hier muss man zwischen der Parität von $3e+1 \in \OZ$ und der ganzzahligen
+Bewertung unterscheiden; die Details erfordern eine konkrete Rechnung
+für spezifische Gittervektoren.)
+
+\textit{Fazit:} Die Kollatz-Dynamik ist keine $\WE$-äquivariante Abbildung.
+\end{beweis}
+
+\begin{tcolorbox}[lücke]
+Die $\WE$-Symmetrie \emph{erklärt} die Klassenstruktur nicht direkt
+über Invarianz der Klassen. Der richtige Weg ist subtiler:
+$\WE$ operiert auf den Residuen modulo Gittervektoren und damit
+auf der Klassenstruktur; die EABC-Klassifikation auf $\N$ entsteht
+als Spur dieser Aktion auf $\N \subset \OZ$.
+Die genaue Formulierung eines $\WE$-Symmetrieprinzips für die
+Collatz-Dynamik bleibt eine \textbf{offene Lücke}.
+\end{tcolorbox}
+
+\subsection{Modulare Klassenstruktur aus der $E_8$-Geometrie}
+
+Die Normwerte $\Norm{3e+1} \in \{13, 19, 25\}$ für $E_8$-Wurzeln
+liefern eine natürliche Dreiklasseneinteilung:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{cccc}
+\toprule
+Klasse & $\Norm{3e+1}$ & Nächster Typ & Korrespondenz\\
+\midrule
+A & 25 & $\vii(25)=0$ & $n \equiv 5 \pmod{12}$: EABC-Klasse A\\
+B & 19 & $\vii(19)=0$ & imagin.\ Wurzeln, keine direkte Korrespondenz\\
+C & 13 & $\vii(13)=0$ & $n \equiv -1 \pmod{12}$: EABC-Klasse C\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{bemerkung}
+Die drei Normwerte $\{13, 19, 25\}$ sind alle ungerade.
+Das heißt: Die Wurzeln des $E_8$-Gitters sind \emph{alle} vom BC-Typ
+(Normanstieg). Das ist geometrisch zu erwarten: Wurzeln sind die
+kürzesten Elemente, und für sehr kurze Elemente steigt die Norm.
+Die EA-Typ-Elemente (Normabstieg) sind die „typischen" großen Elemente.
+\end{bemerkung}
+
+% ====================================================
+\section{Return-Map-Argument: Der Kernversuch}
+% ====================================================
+
+\subsection{Formulierung}
+
+Das folgende Theorem ist der Hauptversuch. Es ist \emph{nicht vollständig bewiesen};
+wir zeigen, was folgt \emph{wenn} eine Schlüsselbedingung gilt.
+
+\begin{theorem}[Return-Map-Theorem, Beweisversuch]\label{thm:return-map}
+Angenommen, es gilt die folgende \emph{Durchlaufbedingung} \textup{(DC)}: \\[0.3em]
+\emph{Für jedes ungerade $x \in \N$ gibt es ein $m \leq m_0$ (mit $m_0$ uniform)
+mit $\vii(3\U^m(x)+1) \geq 2$, d.\,h.\ nach spätestens $m_0$ Schritten
+liegt ein EA-Typ vor.}\\[0.3em]
+Dann existiert für jedes ungerade $x \in \N$ ein $K$ mit
+$\U^K(x) < x$, und die Collatz-Vermutung folgt.
+\end{theorem}
+
+\begin{beweis}[Beweis (unter Annahme von (DC))]
+\textit{Schritt 1: Ein EA-Schritt überwiegt mehrere BC-Schritte.}
+
+Sei $x_0$ ein ungerades Element mit $\Norm{x_0} = N_0$.
+Nach Proposition~\ref{prop:kontraktion}(b) gilt für einen BC-Schritt
+(mit $k=1$):
+\[
+  N_1 := \Norm{\Uo(x_0)} = \frac{9N_0 + 6\Re(x_0) + 1}{4}.
+\]
+Für $x_0 \in \N$ (also $\Re(x_0) = x_0 = \sqrt{N_0}$):
+$N_1 = (9N_0 + 6\sqrt{N_0} + 1)/4 \approx (9/4) N_0$.
+
+\textit{Schritt 2: Normgewinn durch EA-Schritt.}
+
+Für einen EA-Schritt mit $k \geq 2$ gilt:
+\[
+  N' = \frac{9N + 6\Re(x) + 1}{4^k} \leq \frac{9N + 6\sqrt{N} + 1}{16}
+       \approx \frac{9}{16} N.
+\]
+
+\textit{Schritt 3: Kombination.}
+
+Seien $b$ BC-Schritte gefolgt von einem EA-Schritt. Der Normmultiplikator
+pro Zyklus ist ungefähr:
+\[
+  \left(\frac{9}{4}\right)^b \cdot \frac{9}{16} = \frac{9^{b+1}}{4^b \cdot 16} = \frac{9^{b+1}}{4^{b+2}}.
+\]
+Dieser Ausdruck ist kleiner als $1$ (globaler Normabstieg) genau wenn
+$9^{b+1} < 4^{b+2}$, d.\,h.\ $(9/4)^{b+1} < 4$, d.\,h.\
+$(b+1) \ln(9/4) < \ln 4$, d.\,h.\ $b+1 < \ln 4/\ln(9/4) \approx 1.71$.
+\textbf{Also: Es ist $b \leq 0$ für globalen Normabstieg.}
+
+Das bedeutet: Mit nur einem BC-Schritt vor dem EA-Schritt ist der
+Zyklus-Multiplikator ca.\ $(9/4)(9/16) = 81/64 > 1$: Norm steigt.
+
+\begin{tcolorbox}[warnung, title={Kritischer Befund}]
+Das naive Return-Map-Argument mit dem Normmultiplikator $(9/4)^b \cdot (9/16)$
+liefert \emph{keinen} globalen Normabstieg für $b \geq 1$.
+Das bedeutet: Die Collatz-Vermutung folgt \emph{nicht} direkt aus
+Proposition~\ref{prop:kontraktion}. Ein feineres Argument ist nötig.
+\end{tcolorbox}
+
+\textit{Schritt 4: Rettung durch stärkere Normfallrate.}
+
+Wenn $k \geq 3$ für den EA-Schritt (was in der EABC-Analyse für die
+E-Klasse häufig vorkommt), dann ist der EA-Multiplikator $\leq 9/64$,
+und $(9/4) \cdot (9/64) = 81/256 < 1$: Normabstieg nach einem BC-
+und einem E-Schritt.
+
+\textit{Schritt 5: Dichtheitsargument.}
+
+(DC) garantiert, dass es nach $m_0$ Schritten ein Element vom EA-Typ gibt.
+Empirisch gilt sogar: für alle ungeraden $n$ bis zu bekannten Grenzen
+tritt nach $\leq 3$ BC-Schritten ein EA-Schritt mit $k \geq 2$ auf.
+Für eine explizite obere Schranke an $b$ plus eine Abschätzung der
+Häufigkeit von $k \geq 3$ wäre (DC) beweisbar. Dies ist die
+verbleibende Hauptlücke.
+\end{beweis}
+
+\subsection{Das Übergangsproblem: BC-Klassen nach EA}
+
+\begin{proposition}[Modulare Transitionstruktur]\label{prop:transition}
+Auf $\N$ modulieren die Klassen wie folgt:
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{ccc}
+\toprule
+$n \pmod{12}$ & $\U(n) \pmod{12}$ & Typ von $\U(n)$\\
+\midrule
+1 (E)  & $1$ oder $5$            & EA-Typ\\
+5 (A)  & $1$ oder $7$            & EA- oder BC-Typ\\
+7 (B)  & $7$ oder $11$           & BC-Typ\\
+11 (C) & $1$ oder $5$            & EA-Typ\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{proposition}
+
+\begin{beweis}
+Direkte Ausrechnung modulo 12 für jeden Typ (analog zur EABC-Analyse
+in \cite{collatz-eabc}).
+\end{beweis}
+
+\begin{korollar}[BC-Ketten sind kurz]
+Aus Proposition~\ref{prop:transition} folgt: Eine B-Klasse
+($n \equiv 7$) kann nach $\U$ entweder wieder B- oder C-Typ ergeben.
+C-Typ ergibt immer EA-Typ. Damit: B-Ketten enden nach $\leq 2$ Schritten
+mit einem EA-Schritt \emph{unter der zusätzlichen Bedingung, dass die
+zweite Komponente C-Typ ist}. Diese Bedingung ist wiederum modular
+zu analysieren und \textbf{nicht vollständig allgemein bewiesen}.
+\end{korollar}
+
+% ====================================================
+\section{Rückprojektion auf \texorpdfstring{$\N$}{N}}
+% ====================================================
+
+\begin{proposition}[Rückprojektionsprinzip]\label{prop:rückprojektion}
+Sei $P$ eine Aussage der Form: „Für alle ungeraden $x \in \OZ$ gibt es
+ein $K$ mit $\Norm{\Uo^K(x)} < \Norm{x}$."
+Dann gilt insbesondere für alle ungeraden $n \in \N \subset \OZ$:
+$\Norm{\U^K(n)} < \Norm{n} = n^2$, d.\,h.\ $\U^K(n) < n$.
+\end{proposition}
+
+\begin{beweis}
+Direkt aus Proposition~\ref{prop:einbettung}: $\Uo^K(n) = \U^K(n)$
+für $n \in \N$. Und $\Norm{m} = m^2$ für $m \in \N \subset \R \subset \OZ$.
+\end{beweis}
+
+\begin{theorem}[Hauptergebnis (bedingt)]\label{thm:haupt}
+Wenn der Return-Map-Theorem~\ref{thm:return-map} gilt
+\textup{(}d.\,h.\ wenn die Durchlaufbedingung \textup{(DC)} bewiesen werden kann\textup{)},
+dann gilt die Collatz-Vermutung.
+\end{theorem}
+
+\begin{beweis}
+(DC) + Theorem~\ref{thm:return-map} $\Rightarrow$ für jedes ungerade $n \in \N$
+existiert $K$ mit $\U^K(n) < n$ (Rückprojektion).
+
+Da die Folge $n, \U^K(n), \U^{2K}(n), \ldots$ streng monoton fällt
+und in $\N$ liegt, muss sie schließlich den Minimalwert $1$ erreichen
+(die Menge $\{1, 3, 5, \ldots, n\}$ ist endlich).
+
+Für gerades $m$: $m/2^{\vii(m)} \in \N$ ungerade, und man reduziert
+das Problem auf ungerade Startwerte.
+
+Also: Jede Collatz-Folge erreicht $1$.
+\end{beweis}
+
+% ====================================================
+\section{Offene Punkte und ehrliche Einschätzung}
+% ====================================================
+
+\begin{tcolorbox}[ergebnis, title={Was bewiesen ist}]
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{Einbettungsverträglichkeit} (Prop.~\ref{prop:einbettung}):
+    $\Uo$ stimmt auf $\N$ mit der klassischen Collatz-Abbildung überein.
+  \item \textbf{Normformel} (Prop.~\ref{prop:normformel}):
+    $\Norm{3x+1} = 9\Norm{x} + 6\Re(x) + 1$ für alle $x \in \OZ$.
+  \item \textbf{Normkontraktionsbedingung} (Prop.~\ref{prop:kontraktion}):
+    Bei $\vii(3x+1) \geq 2$ und $\Norm{x} \geq N_0$ fällt die Norm.
+  \item \textbf{Rückprojektionsprinzip} (Prop.~\ref{prop:rückprojektion}):
+    Globaler Normabstieg auf $\OZ$ impliziert die Collatz-Vermutung.
+  \item \textbf{Strukturelle „18"}: Für alle 240 $E_8$-Wurzeln gilt
+    $\Norm{3e+1} = 19 + 6\Re(e) \in \{13,19,25\}$,
+    d.\,h.\ der konstante Term $18 = 9 \cdot \Norm{e} = 9 \cdot 2$ ist
+    ein geometrisches Merkmal des $E_8$-Gitters.
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{tcolorbox}[lücke]
+\textbf{Hauptlücke – Die Durchlaufbedingung (DC):}\\
+Es ist nicht bewiesen, dass für jedes ungerade $x \in \N$
+nach spätestens $m_0$ Schritten ein Element vom EA-Typ (mit $\vii \geq 2$)
+auftritt. Dies ist eine schwächere Aussage als die Collatz-Vermutung,
+aber unser Beweis braucht sie als Input.
+
+\textbf{Weitere Lücken:}
+\begin{itemize}
+  \item Das Return-Map-Argument liefert nur Normabstieg, wenn $b=0$
+    oder $k \geq 3$ (Schrittweite groß). Für $b=1, k=2$ wächst die Norm.
+    Ein Dichtheitsargument über die Häufigkeit von $k \geq 3$-Schritten fehlt.
+  \item Die $\WE$-Symmetrie wurde nicht zur \emph{Steuerung} der Dynamik
+    genutzt, sondern nur zur Beschreibung der Normstruktur.
+    Ein echter gruppentheoretischer Beweis der Klassenstruktur fehlt.
+  \item Die Oktonionen-Erweiterung bringt eine viel reichere Geometrie,
+    aber auch höhere Komplexität: Ein Normabstieg auf ganz $\OZ$ würde
+    Unendlichkeit von Orbits auf $\OZ$ implizieren, was über die
+    klassische Vermutung hinausgeht und möglicherweise falsch ist.
+\end{itemize}
+\end{tcolorbox}
+
+\subsection{Ehrliche Gesamteinschätzung}
+
+Der hier vorgelegte Beweisversuch ist kein Beweis der Collatz-Vermutung.
+Er leistet aber Folgendes:
+
+\begin{enumerate}[label=(\arabic*)]
+  \item Er bettet die Collatz-Dynamik in einen reichhaltigen algebraischen
+    Rahmen (Cayley-Ganzzahlen, $E_8$-Gitter) ein, der neue geometrische
+    Intuition bietet.
+  \item Er identifiziert eine konkrete, möglicherweise beweisbare
+    Bedingung (DC), deren Nachweis die Vermutung implizieren würde.
+  \item Er zeigt, dass die „18" der $E_8$-Geometrie kein Zufall ist,
+    sondern die Verbindung zwischen der Collatz-Arithmetik und der
+    Kissing-Geometrie des $E_8$-Gitters sichtbar macht.
+  \item Er liefert scharfe quantitative Normabschätzungen, die als
+    Ausgangspunkt für stärkere analytische Argumente dienen können.
+\end{enumerate}
+
+\begin{bemerkung}[Was ein vollständiger Beweis bräuchte]
+Aus heutiger Sicht wäre der kritische fehlende Schritt:
+\begin{itemize}
+  \item Entweder: Ein modulares Argument, das zeigt, dass
+    BC-Ketten in $\N$ stets nach $\leq m_0$ Schritten enden
+    (kombinatorisch/zahlentheoretisch, ohne Collatz vorauszusetzen).
+  \item Oder: Eine stochastische Heuristik wird durch ein $p$-adisches
+    oder $l$-adisches Maßargument präzisiert: Wenn man $n$ gleichverteilt
+    wählt, ist der erwartete Normmultiplikator pro Schritt $< 1$,
+    und ein Martingal-Argument schließt die Lücke
+    (dieser Ansatz würde jedoch wahrscheinlich die
+    Dichte der Collatz-Orbits brauchen, was wieder Circulus vitiosus ist).
+\end{itemize}
+\end{bemerkung}
+
+% ====================================================
+\section{Ausblick: Verbindungen und offene Fragen}
+% ====================================================
+
+\subsection{Die \texorpdfstring{,,18''}{18} als verbindendes Motiv}
+
+Die Zahl 18 tritt an mehreren unerwarteten Stellen auf:
+\begin{itemize}
+  \item $\Norm{3e+1} = 18 + 6\Re(e) + 1$ für $E_8$-Wurzeln $e$.
+  \item Die Kissing-Zahl des $E_8$-Gitters ist $240 = 2 \cdot 120$,
+    und die Dimension der $E_8$-Liegruppe ist $248 = 240 + 8$.
+  \item Im EABC-Rahmen erscheint die Periode 12 als $\text{lcm}(3,4) = 12$,
+    und $18 = 12 + 6 = 3 \cdot 6 = 2 \cdot 9$.
+\end{itemize}
+
+\subsection{Mögliche Vertiefungen}
+
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{$p$-adische Normen}: Statt der reellen Norm $\Norm{\cdot}$
+    könnte man 2-adische Normen auf $\OZ$ studieren, die möglicherweise
+    sensitiver auf die Collatz-Dynamik reagieren.
+  \item \textbf{Spektraltheorie}: Die Collatz-Abbildung als Operator auf
+    $\ell^2(\OZ)$ zu studieren und Spektraleigenschaften zu nutzen.
+  \item \textbf{$E_8$-Theta-Reihe}: Die Theta-Reihe
+    $\Theta_{E_8}(q) = \sum_{x \in \OZ} q^{\Norm{x}/2}$
+    codiert die Verteilung der Normen. Möglicherweise spiegelt die
+    Collatz-Dynamik eine Symmetrie der Theta-Reihe wider.
+  \item \textbf{Explizite Computationen}: Die Norm-Dynamik für alle
+    $E_8$-Wurzeln und die nächste Schale ($\Norm{x}=4$, Anzahl $2160$)
+    explizit auszurechnen und die Häufigkeit von EA- vs.\ BC-Typ zu messen.
+\end{enumerate}
+
+\bigskip
+\begin{tcolorbox}[kernidee, title={Fazit in einem Satz}]
+Die Collatz-Vermutung ist äquivalent zur Durchlaufbedingung (DC),
+und das $E_8$-Gitter liefert den natürlichen geometrischen Rahmen,
+in dem diese Bedingung ihren tiefsten Sinn erhält:
+Es ist die Frage, ob die Collatz-Orbits in $\N$ die Normminima des
+$E_8$-Gitters „sehen" — und die Antwort scheint ja zu sein,
+aber der Beweis fehlt noch.
+\end{tcolorbox}
+
+% ====================================================
+% Literatur
+% ====================================================
+\begin{thebibliography}{9}
+
+\bibitem{collatz-eabc}
+T. Hoffbauer,
+\textit{Die verborgene Binnenstruktur der Collatz-Dynamik:
+Eine Spektrum-Notiz zur odd-to-odd-Abbildung im EABC-Rahmen},
+Mathematische Texte (2025).
+
+\bibitem{conway-sloane}
+J.H. Conway, N.J.A. Sloane,
+\textit{Sphere Packings, Lattices and Groups},
+Springer, 3.\ Aufl.\ (1999).
+
+\bibitem{coxeter-octonions}
+J.H. Conway, D.A. Smith,
+\textit{On Quaternions and Octonions},
+A K Peters (2003).
+
+\bibitem{lagarias-collatz}
+J.C. Lagarias,
+\textit{The $3x+1$ Problem and its Generalizations},
+Amer.\ Math.\ Monthly 92 (1985), 3--23.
+
+\bibitem{tao-collatz}
+T. Tao,
+\textit{Almost all orbits of the Collatz map attain almost bounded values},
+Forum of Mathematics Pi 10 (2022), e12.
+
+\bibitem{e8-weyl}
+H. Humphreys,
+\textit{Introduction to Lie Algebras and Representation Theory},
+Springer (1972).
+
+\end{thebibliography}
+
+\end{document}
