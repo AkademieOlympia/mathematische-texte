@@ -4,6 +4,26 @@
 
   Ergänzt collatz_density_appendix.lean.
   Alle Theoreme in diesem File sind ohne sorry.
+
+  -- Mathlib-Funde (Juni 2026, v4.29.0) — siehe collatz_lean_mathlib_update.tex --
+  --
+  -- BEREITS GENUTZT:
+  --   padicValNat.mul, padicValNat.pow, padicValNat.div_of_dvd  (PadicVal.Basic)
+  --   pow_padicValNat_dvd, padicValNat_dvd_iff_le               (MaxPowDiv / PadicVal)
+  --   Nat.card_multiples, Nat.div_div_eq_div_mul                (Dichte C-Ketten)
+  --   Filter.Tendsto, tendsto_pow_atTop_nhds_zero_of_norm_lt_one (Mischschranken)
+  --   Nat.ModEq, modEq_zero_iff_dvd                               (3^j mod 8)
+  --
+  -- NÄCHSTE SCHRITTE (Mathlib vorhanden, noch nicht eingebunden):
+  --   emultiplicity_pow, emultiplicity_mul     (Data.Nat.Multiplicity) — volles LTE p=2
+  --   geometricPMFRealSum                    (Probability.Distributions.Geometric)
+  --   tsum_choose_mul_geometric_of_norm_lt_one (Analysis.SpecificLimits.Normed) — Tail-Reihe
+  --   Stirling.log_stirlingSeq_diff_le         (Analysis.SpecialFunctions.Stirling)
+  --   riemannZeta_two_mul_nat                   (NumberTheory.LSeries.HurwitzZetaValues)
+  --
+  -- FEHLT IN MATHLIB:
+  --   Kingman-Subadditivität, punktweiser Birkhoff-Satz, Collatz-Ergodizität,
+  --   vollständiger Perron-Frobenius, von-Staudt-Clausen (v4.29), asymptotische Nat.density
 -/
 
 import Mathlib.NumberTheory.Padics.PadicVal
