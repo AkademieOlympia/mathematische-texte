@@ -351,7 +351,7 @@ schw\"acher als voller Collatz, aber st\"arker als fast-\"uberall-Aussagen
 % =================================================
 
 Stand 16.\ Juni 2026 (Mathlib~4.29, gepr\"uft via \texttt{ptolemaeus-lean/Ptolemaeus}):
-\textbf{0~\texttt{sorry}} in der Datei; 18 bewiesene Lemmata/Theoreme.
+\textbf{0~\texttt{sorry}} in der Datei; Stufen A--D formalisiert (vgl.\ \S\ref{sec:roadmap}).
 
 \begin{lstlisting}
 -- collatz_z2_attraktor.lean (Auszug, kompiliert)
@@ -377,23 +377,25 @@ end CollatzZ2
   \item $\N$-Br\"ucke: \texttt{dist2\_nat\_cast\_of\_le}, \texttt{dist2\_nat\_one};
   \item LTE: \texttt{lteMinimal}, \texttt{lteMinimal\_dist\_to\_one} $\Rightarrow$
     \texttt{dist\_to\_one\_not\_uniform\_bound} (Gegenbeispiel $n=4\cdot3^r-1$);
-  \item \texttt{distToExceptionSet} mit \texttt{distToExceptionSet\_le\_dist}.
+  \item \texttt{distToExceptionSet} mit \texttt{distToExceptionSet\_le\_dist};
+  \item \texttt{iterateU}, \texttt{collatzU\_odd}, \texttt{collatzU\_maps\_exception\_approx}.
 \end{itemize}
 \end{tcolorbox}
 
 \begin{tcolorbox}[bewiesen,title={ExceptionSetApprox und Limes $E$ (Lean)}]
 \begin{itemize}[nosep]
+  \item \texttt{inTrivialAttraktorApprox n K}: $\exists k\leq K,\ U^k(n)=1$ (nicht $\|n-1\|_2<1$);
   \item \texttt{ExceptionSetApprox N K}: $E_{N,K}=\{x\in\Ztwo:\exists n\leq N\text{ ungerade},
     (n:\Ztwo)=x,\ \neg\text{\texttt{inTrivialAttraktorApprox}\,}n\,K\}$;
   \item Monotonie: $N_1\leq N_2\Rightarrow E_{N_1,K}\subseteq E_{N_2,K}$;
     $K_1\leq K_2\Rightarrow E_{N,K_2}\subseteq E_{N,K_1}$;
   \item \texttt{ExceptionSetAccum} $=\bigcup_N E_{N,N}$;
-    \texttt{ExceptionSet} $=\overline{\texttt{ExceptionSetAccum}}$ (entspricht Definition~\ref{def:E});
-  \item \texttt{exitsExceptionApprox}, \texttt{inTrivialAttraktorApprox}: Austritt nach $K$ Schritten.
+    \texttt{ExceptionSet} $=\overline{\texttt{ExceptionSetAccum}}$;
+  \item Invarianz: $x\in E_{N,K},\ K>0\Rightarrow U(x)\in E_{3N+1,K-1}$.
 \end{itemize}
 \end{tcolorbox}
 
-\begin{tcolorbox}[heuristik,title={Noch offen}]
+\begin{tcolorbox}[heuristik,title={Noch offen (Stufe E)}]
 \begin{itemize}[nosep]
   \item Verkn\"upfung \texttt{ExceptionSet} mit Collatz-Konvergenz f\"ur alle $n\in\N$;
   \item \texttt{distToExceptionSet} bei $E=\emptyset$: Mathlib liefert $\mathrm{sInf}\,\emptyset=0$,
@@ -404,10 +406,64 @@ end CollatzZ2
 
 \begin{tcolorbox}[kern,title={Mathlib-Imports (4.29)}]
 \textbf{Funktionieren:} \texttt{PadicIntegers} (\texttt{PadicInt}), \texttt{PadicVal.Basic},
-\texttt{Algebra.Ring.Parity}, \texttt{Data.Real.Archimedean}, \texttt{Topology.MetricSpace.Ultra.Basic}.\\
+\texttt{Algebra.Ring.Parity}, \texttt{Data.Real.Archimedean}, \texttt{Topology.MetricSpace.Ultra.Basic},
+\texttt{Topology.Closure}.\\
 \textbf{Nicht als Modul:} \texttt{Mathlib.NumberTheory.Padics.PadicInt} (Alias fehlt),
 \texttt{Mathlib.Data.Nat.Parity} (ersetzt durch \texttt{Algebra.Ring.Parity}).
 \end{tcolorbox}
+
+% =================================================
+\section{Lean-Roadmap Stufen A--E}
+\label{sec:roadmap}
+% =================================================
+
+Nach PR~\#20 wird die Formalisierung in f\"unf Stufen aufgebaut.
+Stand 16.\ Juni 2026: \textbf{0~\texttt{sorry}} in \texttt{collatz\_z2\_attraktor.lean}.
+
+\begin{center}
+\begin{tabular}{@{}lllp{5.5cm}@{}}
+\toprule
+Stufe & Lean-Objekt & Status & Inhalt \\
+\midrule
+A & \texttt{ExceptionSetApprox N K} & \textcolor{bewiesengruen}{definiert} &
+  Endliche $E_{N,K}\subset\Ztwo$ aus odd-to-odd-Bahnen \\
+B & \texttt{ExceptionSetApprox\_mono\_N/K} & \textcolor{bewiesengruen}{bewiesen} &
+  Monotonie in $N$ und $K$ (s.\ unten) \\
+C & \texttt{ExceptionSet} & \textcolor{bewiesengruen}{definiert} &
+  $E=\overline{\bigcup_N E_{N,N}}$ \\
+D & \texttt{collatzU\_maps\_exception\_approx} & \textcolor{bewiesengruen}{bewiesen} &
+  $U(E_{N,K})\subseteq E_{3N+1,K-1}$ f\"ur $K>0$ \\
+E & $\disttwo(U^k(n),E)\not\to 0$ & \textcolor{lueckenrot}{offen} &
+  Punktweise Uniformit\"at (\S\ref{sec:uniform}) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Pr\"azise Definition von $E$ (Lean-Version)}
+
+\begin{definition}[Limes $E$ in $\Ztwo$]
+\label{def:E-lean}
+\[
+  E\ :=\ \overline{\bigcup_{N\in\N} E_{N,N}}^{\;\Ztwo}
+  \qquad\text{(\texttt{closure (ExceptionSetAccum)}).}
+\]
+Hier ist $E_{N,K}$ die Menge ungerader Starts $n\leq N$, deren Bahn
+$U^k(n)$ f\"ur kein $k\leq K$ den Wert $1$ erreicht, eingebettet in $\Ztwo$.
+\end{definition}
+
+\begin{bemerkung}[Kugel vs.\ Zyklus]
+Die 2-adische Kugel $\|x-1\|_2<1$ enth\"alt \emph{alle} ungeraden $n\in\N$
+(Lemma \texttt{odd\_nat\_in\_trivial\_ball}). Die endliche Approximation verwendet
+daher Erreichen von $U^k(n)=1$, nicht blo\ss{} $\|U^k(n)-1\|_2<1$.
+\end{bemerkung}
+
+\subsection{Monotonie-Richtung (Stufe B)}
+
+\begin{itemize}[nosep]
+  \item $N_1\leq N_2\Rightarrow E_{N_1,K}\subseteq E_{N_2,K}$ (mehr Startpunkte);
+  \item $K_1\leq K_2\Rightarrow E_{N,K_2}\subseteq E_{N,K_1}$ (l\"angere Beobachtung
+    $\Rightarrow$ weniger Ausnahmen) --- \emph{nicht} die umgekehrte Inklusion.
+\end{itemize}
 
 % =================================================
 \section{Offene Fragen}
