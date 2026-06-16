@@ -28,6 +28,23 @@ Konvergenz.
 
 ---
 
+## 1a. Abgrenzung: ABCE/CEAB-Drehung (bewiesen)
+
+- **Status: bewiesen** — kein offener Punkt. Markierte Primvierlinge
+  $Q(p)=(p,p+2,p+6,p+8)$ werden modulo $12$ eindeutig als $\mathrm{ABCE}$ bzw.
+  $\mathrm{CEAB}$ klassifiziert ($p\bmod{12}\in\{5,11\}$).
+- **CEAB** ist die zyklische Verschiebung von **ABCE** auf dem Flavor-Ring
+  $E\to A\to B\to C\to E$ (Operator $T$ in `EABC.lean`, `chiralityOrder`).
+- **Belege:** `EABC.lean` ($T^4=\mathrm{id}$), `Projektionszeuge.tex`
+  (Projektionszeuge, Startkanten), `collatz_hurwitz_polytop_eabc.tex`
+  (Satz mod-$12$-Vierling), `Miller_alt.tex` ($C_4$-Rotation der Primlücken).
+- **Nicht vermischen:** Diese Drehung betrifft mod-$12$-Chiralität und
+  Primvierlings-Kodierung — **nicht** die offene Collatz-Brücke
+  „endliche EABC-Grammatik $\Rightarrow$ $E_\infty=\emptyset$“
+  (vgl. `collatz_equivalenz_e_infty.tex`).
+
+---
+
 ## 2. Uniformitätslücke (Stufe E: $\mathrm{dist}_2(T^k(n),E)\to 0$)
 
 - **Zentrale offene Frage:** Negativer mittlerer Drift ($\Lambda\approx -0.830$) und
@@ -154,6 +171,8 @@ Wo Mathlib endet, endet der formalisierte Teil — dokumentiert, nicht verschwie
 
 ## Referenzen
 
+- `EABC.lean`, `Projektionszeuge.tex`, `collatz_hurwitz_polytop_eabc.tex`, `Miller_alt.tex` — ABCE/CEAB (bewiesen)
+- `collatz_equivalenz_e_infty.tex` — $E_\infty$ vs. $E_{\mathrm{diag}}$, offene Brücke
 - `collatz_schlussartikel_arxiv.tex` — §Uniformität, Epilog, Anhang Lean §9.2
 - `collatz_z2_attraktor.tex` — §8 Roadmap, §Offene Fragen
 - `collatz_z2_attraktor.lean` — Stufen A–E
