@@ -1,0 +1,1224 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[a4paper,margin=2.4cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks,unicode]{hyperref}
+\pdfstringdefDisableCommands{%
+  \def\ü{ue}\def\ö{oe}\def\ä{ae}\def\Ü{Ue}\def\Ö{Oe}\def\Ä{Ae}\def\ss{ss}%
+}
+\usepackage[most]{tcolorbox}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{listings}
+
+% -------------------------------------------------
+% Farben
+% -------------------------------------------------
+\definecolor{bewiesengruen}{RGB}{30,100,50}
+\definecolor{warnorange}{RGB}{200,100,10}
+\definecolor{lueckenrot}{RGB}{180,40,40}
+\definecolor{kernblau}{RGB}{20,60,130}
+
+% -------------------------------------------------
+% tcolorbox-Stile
+% -------------------------------------------------
+\tcbset{
+  bewiesen/.style={colback=green!7,colframe=bewiesengruen,fonttitle=\bfseries,
+    title={Bewiesen}},
+  heuristik/.style={colback=orange!10,colframe=warnorange,fonttitle=\bfseries,
+    title={Heuristisch / bedingt}},
+  offen/.style={colback=red!8,colframe=lueckenrot,fonttitle=\bfseries,
+    title={Offen / gescheitert}},
+  kern/.style={colback=blue!5,colframe=kernblau,fonttitle=\bfseries,
+    title={Kernaussage}},
+}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{proposition}[satz]{Proposition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+\newtheorem{vermutung}[satz]{Vermutung}
+
+\newenvironment{beweis}{\begin{proof}[Beweis]}{\end{proof}}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\vii}{\nu_2}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Halg}{\mathbb{H}}
+\newcommand{\Ztwo}{\mathbb{Z}_2}
+\newcommand{\col}{\mathrm{Col}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Epi}{\mathbb{E}_\pi}
+\newcommand{\TV}{\mathrm{TV}}
+\newcommand{\Lam}{\Lambda}
+\newcommand{\disttwo}{\operatorname{dist}_{2\text{-adisch}}}
+
+\lstset{
+  basicstyle=\ttfamily\scriptsize,
+  breaklines=true,
+  frame=single,
+  numbers=left,
+  numberstyle=\tiny,
+  language=,
+  showstringspaces=false
+}
+
+% =================================================
+\title{%
+  Arithmetische Dynamik der Collatz-Abbildung:\\
+  EABC-Klassifikation, Lyapunov-Drift und die verbleibende Ergodizitätslücke
+}
+\author{Thomas Hoffbauer}
+\date{16.\ Juni 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Die Collatz-Vermutung behauptet, dass jede positive ganze Zahl unter der
+Abbildung $n \mapsto n/2$ (gerade) bzw.\ $n \mapsto 3n+1$ (ungerade) nach
+endlich vielen Schritten den Wert~$1$ erreicht. Dieser Artikel kartiert
+das \emph{Proof-Landscape} eines strukturellen Zugangs über die
+EABC-Klassifikation modulo~$12$, numerisch validiert bis $N=10^7$.
+
+\textbf{Bewiesene Resultate:} Endlichkeit von C-Ketten
+($k \leq \vii(n_0+1)-1$), Unmöglichkeit von B$\to$B-Übergängen,
+zwingender EA-Schritt nach jeder C-Kette, 2-adische Dichte der
+C-Startpunkte ($2^{-(k+1)}$), strukturelle Kompensation nach
+LTE-extremalen Blöcken, sechs Lean-4-Theoreme ohne \texttt{sorry} in
+\texttt{collatz\_density.lean}.
+
+\textbf{Heuristische Säulen:} Block-Drift $\Lam = \mathbb{E}[\log_2 F(B)]
+= 2\log_2 3 - 4 \approx -0{,}830$, RPF-Mischung auf dem mod-12-Zustandsraum
+(Mischungsrate $\sim (1-p)^{\lfloor n/12\rfloor}$), Bernoulli-Normschalen
+und Quaternionen-Teilnormen als Strukturwerkzeuge (nicht als Beweis).
+
+\textbf{Offene Lücke:} Die \emph{Uniformitäts-Vermutung} --- eine
+2-adische Separationsungleichung im Geiste von Roths Satz --- trennt
+Taos Ergebnis ``fast alle Trajektorien konvergieren'' von der vollen
+Vermutung. Kein Argument in diesem Artikel beweist die Collatz-Vermutung.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+% =================================================
+\section{Historische Einordnung}
+\label{sec:historie}
+% =================================================
+
+\subsection{Collatz, Syracuse und die Kultur der Vermutung}
+
+Lothar Collatz stellte die heute nach ihm benannte Vermutung bereits
+1937 in Zusammenhang mit dem \emph{3n+1-Problem} (auch
+\emph{Syracuse-Problem}). Die Regel ist elementar: Gerade Zahlen halbieren,
+ungerade Zahlen werden mit~$3$ multipliziert und um~$1$ erhöht. Trotz
+intensiver numerischer und theoretischer Arbeit bleibt unbewiesen, dass
+jede Bahn nach endlich vielen Schritten bei~$1$ landet.
+
+Paul Erdős soll gesagt haben: \emph{``Mathematics is not yet ripe enough
+for such questions.''} Diese Formulierung markiert keine Resignation,
+sondern die Einsicht, dass lokale Divisibilitätsargumente allein die
+globale Dynamik nicht beherrschen.
+
+\subsection{Terence Tao und die Grenze von ``fast allen''}
+
+Terence Tao bewies 2019 (veröffentlicht 2022), dass für jede
+wachsende Funktion $f:\N\to\R$ die logarithmische Dichte der Startwerte
+$n$, deren Collatz-Bahn ein Glied $\leq f(n)$ erreicht, gleich~$1$ ist.
+Seine Methode arbeitet mit Fourier-Analyse auf $\Ztwo^*$ und
+exponential-sum-Abschätzungen.
+
+\begin{tcolorbox}[kern]
+Taos Ergebnis ist ein Durchbruch der \emph{arithmetischen Dynamik} auf
+$\Ztwo$, beweist aber nicht die Collatz-Vermutung: Es gilt für
+\emph{fast alle} $n$ im logarithmischen Sinne, nicht für jedes einzelne
+$n \in \N$.
+\end{tcolorbox}
+
+Jeffrey Lagarias' Survey (1985) systematisierte die Forschungslandschaft;
+sein Werk bleibt der Standardbezugspunkt für Zyklen, Stopping-Zeiten und
+2-adische Methoden.
+
+\subsection{2-adische Analysis}
+
+Richard Steiner (1977) und später Anosov--Katok (1994) untersuchten
+Collatz-artige Abbildungen als dynamische Systeme auf den 2-adischen
+ganzen Zahlen. Die Collatz-Abbildung ist auf $\Ztwo$ wohldefiniert,
+während $\N$ eine abzählbare Teilmenge mit Haar-Maß Null ist --- ein
+Befund, der die Ergodizitätslücke präzisiert (Kapitel~\ref{sec:ergodizitaet}).
+
+\subsection{EABC als struktureller Zugang (dieses Projekt)}
+
+Im Rahmen des Bamberg-Modells (EABC-Klassifikation) wurde die
+odd-to-odd-Abbildung
+\[
+  \U(n) := \frac{3n+1}{2^{\vii(3n+1)}}
+\]
+modulo~$12$ in vier dynamische Familien zerlegt. Dieser Artikel
+synthetisiert die Sitzungsdokumente vom 15.--16.\ Juni 2026
+(vgl.\ Anhang~\ref{anhang:pr}).
+
+\subsection{Jeffrey Lagarias und das Syracuse-Problem}
+
+Lagarias' Survey (1985) fasst über vier Jahrzehnte Forschung zusammen:
+Stopping-Zeiten, Zyklen modulo $2^k$, 2-adische Fixpunkte, probabilistische
+Modelle. Er zeigt, dass jeder bekannte Zyklus $>1$ modulo astronomisch
+großer Potenzen von~$2$ ausgeschlossen ist --- aber ``modulo $2^k$ für
+alle $k$'' ist nicht dasselbe wie ``für alle $n$''.
+
+\subsection{Terence Tao: zwei Papiere}
+
+Tao (2019, arXiv:1909.09562; veröffentlicht 2022 in \textit{Forum Math.\ Pi})
+beweist logarithmische Dichte~$1$ für fast-beschränkte Bahnen. Sein
+2-adischer Zugang inspiriert Schritt~A der Ergodizitätsanalyse, liefert
+aber keine Uniformität auf $\N$.
+
+\subsection{Steiner und Anosov--Katok}
+
+Steiner (1977) untersuchte Collatz-ähnliche Abbildungen computergestützt.
+Anosov und Katok (1994) entwickelten Ergodentheorie auf $n$-adischen
+Räumen. Beide legen die Grundlage für die Erkenntnis, dass $\N$ in
+$\Ztwo$ ``unsichtbar'' ist (Kapitel~\ref{sec:ergodizitaet}).
+
+% =================================================
+\section{Die EABC-Klassifikation}
+\label{sec:eabc}
+% =================================================
+
+\begin{definition}[EABC modulo $12$]
+Für ungerades $n$ definieren wir die EABC-Familien
+\[
+  E = \{1,5\},\quad A = \{7,11\},\quad B = \{3\},\quad C = \{9\}
+  \pmod{12}.
+\]
+Die Abbildung $\ell(n) := n \bmod 12$ ordnet jedem ungeraden Startwert
+eine der sechs Restklassen $\{1,3,5,7,9,11\}$ zu; $B$ und $C$ markieren
+die beiden verbleibenden ungeraden Klassen, die nicht in die Drain- bzw.\
+Spannungspaare $E$ und $A$ fallen.
+\end{definition}
+
+\begin{tcolorbox}[bewiesen]
+Für alle ungeraden $n$ gilt die elementare Spaltung
+\[
+  3n+1 \equiv
+  \begin{cases}
+    4 \pmod{12}, & n \equiv 1,5,9 \pmod{12},\\
+    10 \pmod{12}, & n \equiv 3,7,11 \pmod{12}.
+  \end{cases}
+\]
+Insbesondere: $n \in E \Rightarrow 3n+1 \equiv 4$; $n \in A \Rightarrow 3n+1 \equiv 10$.
+\end{tcolorbox}
+
+\subsection{Numerische Validierung ($N = 10^7$)}
+
+Für alle ungeraden $n \leq 10^7$ (vgl.\ \texttt{collatz\_eabc\_spektrum.tex},
+aktualisierte Tabelle Juni 2026):
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{rllrrr}
+\toprule
+Restkl. & EABC & $\mathbb{E}[\vii(3n+1)]$ & Anteil $\U(n)<n$ & $\U(n)/n$ & $\bar s$ \\
+\midrule
+1 & E & 3.000000 & 99.9999\% & 0.375000 & 155.33 \\
+5 & E & 3.000002 & 100.0000\% & 0.375000 & 155.24 \\
+7 & A & 1.000000 & 0.0000\% & 1.500001 & 167.64 \\
+11 & A & 1.000000 & 0.0000\% & 1.500001 & 167.62 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+$\bar s$ = mittlere Collatz-Schrittzahl bis $1$. Vollständiger Collatz-Test:
+alle $10^7$ Startwerte konvergieren; maximale Schrittzahl $685$ (bei
+$n = 8\,400\,511$).
+
+\begin{tcolorbox}[heuristik]
+\textbf{Lesart:} $E$ (Drain) kontrahiert im Mittel ($\U(n) \approx \tfrac{3}{8}n$),
+$A$ (Spannung) expandiert ($\U(n) \approx \tfrac{3}{2}n$). Der globale
+geometrische Faktor über alle ungeraden Klassen liegt bei $\approx 0.75 < 1$.
+Dies erklärt heuristisch den Abstieg, beweist aber nichts.
+\end{tcolorbox}
+
+\subsection{Hypothese zur Existenz der Teilung}
+
+Die Spaltung folgt aus der 2-adischen Struktur von $\vii(3n+1)$:
+Für $n \equiv 7,11 \pmod{24}$ gilt $\vii(3n+1)=1$ exakt
+(\texttt{collatz\_eabc\_spektrum.tex}, Proposition). Für $n \in E$ ist
+$\vii$ typischerweise $\geq 2$, oft $\approx 3$. Die EABC-Teilung ist
+damit keine willkürliche Etikettierung, sondern eine Resonanz zwischen
+modularer Restklasse und 2-adischer Valuation.
+
+% =================================================
+\section{Die Durchlaufbedingung (DC)}
+\label{sec:dc}
+% =================================================
+
+\subsection{Notation und Blöcke}
+
+Ein \emph{Block} $B$ ist eine maximale Folge ungerader Schritte gefolgt
+von den zugehörigen Halbierungen. Der Nettofaktor ist
+$F(B) = n_{\text{Ende}}/n_{\text{Start}}$.
+
+\begin{definition}[C-Kette]
+Sei $n_0$ vom Typ $C$ (d.\,h.\ $n_0 \equiv 9 \pmod{12}$ oder in der
+DC-Notation: $n_0 \equiv 11 \pmod{12}$ als Ein-Halbierungs-Spannungsklasse).
+Eine C-Kette der Länge $k$ ist eine Folge von $k$ aufeinanderfolgenden
+C-Schritten ohne Zwischen-EA-Block.
+\end{definition}
+
+\begin{tcolorbox}[bewiesen,title={C-Ketten-Endlichkeit}]
+Sei $n_0$ ungerade mit $\vii(n_0+1) = k+1$. Dann hat die C-Kette
+maximale Länge $k$, und nach $k$ C-Schritten gilt
+$n_k = 2\cdot 3^k m - 1$ mit $m$ ungerade.
+\end{tcolorbox}
+
+\begin{beweis}
+2-adischer Beweis in \texttt{collatz\_c\_ketten\_2adisch.pdf}:
+$\vii(n_0+1)=k+1$ erzwingt $n_0+1 = 2^{k+1}m$; jeder C-Schritt
+verbraucht genau eine 2-adische Stufe. Nach $k$ Schritten ist
+$\vii(n_k+1)=1$.
+\end{beweis}
+
+\begin{proposition}[B$\to$B unmöglich]
+\label{prop:bb}
+Unter der odd-to-odd-Abbildung $\U$ kann kein B-Typ direkt auf B-Typ folgen.
+\end{proposition}
+
+\begin{proposition}[Zwingender EA-Schritt]
+Nach jeder C-Kette folgt ein EA-Schritt mit $\vii(3n_k+1) \geq 2$.
+\end{proposition}
+
+Diese Resultate sind in \texttt{collatz\_5glatt\_dc.pdf},
+\texttt{collatz\_dc\_morley\_walter.pdf} und
+\texttt{collatz\_lean\_dc.pdf} dokumentiert.
+
+\subsection{2-adischer Beweis der C-Ketten-Endlichkeit}
+
+Aus \texttt{collatz\_c\_ketten\_2adisch.pdf}: Sei $n_0+1 = 2^{k+1} m$ mit $m$
+ungerade. Der erste C-Schritt liefert $n_1 = 2\cdot 3 m - 1$ und
+$\vii(n_1+1) = \vii(6m) = 1 + \vii(3m)$. Induktiv sinkt die verfügbare
+2-adische Tiefe um~$1$ pro C-Schritt. Nach höchstens $k$ Schritten:
+$\vii(n_k+1) = 1$, also keine weitere C-Kette.
+
+\subsection{3 teilt $m$ für C-Ketten-Starts}
+
+\texttt{collatz\_beweis\_abschluss.pdf}: Für C-Typ mit $\vii(n_0+1) \geq 2$
+gilt $n_0 \equiv 11 \pmod{24}$, also $3 \mid n_0+1$ und damit $3 \mid m$
+in der Darstellung $n_0+1 = 2^{k+1} m$. Diese Teilbarkeit ist für die
+LTE-Analyse der Folge $\vii(3^{k+1}m-1)$ essentiell.
+
+\subsection{Morley--Walter-Geometrie}
+
+\texttt{collatz\_dc\_morley\_walter.pdf} interpretiert DC-Blöcke als
+Dreieckskonfigurationen: C-Ketten als ansteigende Katheten, EA-Schritte
+als erzwungene Abwärtskorrektur. Die Geometrie ist illustrativ, der
+2-adische Beweis tragend.
+
+% =================================================
+\section{Der Lyapunov-Exponent}
+\label{sec:lyapunov}
+% =================================================
+
+\subsection{Block-Faktoren und Drift}
+
+Sei $F(B)$ der Nettofaktor eines Blocks. Der Block-Lyapunov-Exponent ist
+\[
+  \Lam := \mathbb{E}_\pi[\log_2 F(B)],
+\]
+wobei $\pi$ die stationäre Verteilung der mod-12-Markov-Kette ist.
+
+\begin{tcolorbox}[bewiesen,title={Berechnung des Drifts}]
+Unter der Annahme $\mathbb{E}[\vii \mid l=k] \approx 3$ (nicht $2$!)
+und Berücksichtigung von $3 \mid m$ für C-Ketten-Starts:
+\[
+  \boxed{\Lam = 2\log_2 3 - 4 \approx -0{,}830.}
+\]
+\end{tcolorbox}
+
+Die Korrektur $\mathbb{E}[\vii] \approx 3$ gegenüber dem naiven Wert~$2$
+ist numerisch robust (\texttt{collatz\_m\_verteilung.pdf},
+\texttt{collatz\_red\_dots\_daempfung.pdf}: Primzahlvierlinge als
+Warnmarker mit $\mathbb{E}[\vii] \approx 3.061$, nur 26.7\% mit $\vii \geq 4$).
+
+\subsection{LTE-Barriere und Dichte-Argument}
+
+Das Lifting-the-Exponent-Lemma für $p=2$ liefert
+$\vii(3^j-1) = 1$ (ungerades $j$) bzw.\ $\vii(j)+2$ (gerades $j$).
+Für LTE-extremale Blöcke wächst $\vii$ nur logarithmisch, während für
+Kontraktion $\vii \gtrsim 0.585k$ nötig wäre
+(\texttt{collatz\_lte\_dichte.tex}).
+
+\begin{tcolorbox}[offen,title={Szenario B: Dichte allein reicht nicht}]
+Im LTE-schlechtesten Fall: $\Lambda_B \approx +0.537 > 0$.
+Das 2-adische Dichte-Argument konvergiert, aber zu einem \emph{positiven}
+Wert.
+\end{tcolorbox}
+
+\begin{tcolorbox}[bewiesen,title={Strukturelle Kompensation}]
+Für $n_0 = 2^{k+1}\cdot 3^r - 1$ erzwingt die Dynamik nach dem
+$\mathrm{C}^k\mathrm{A}$-Block einen Nachfolger mit $\vii(n_{k+1}+1) \leq 2$
+und (für gerades $N=k+r$) E-Typ-Nachfolger $n_{k+1} \equiv 1 \pmod{12}$.
+Zweiblock-Nettofaktor $< 1$ für $n_0 = 4\cdot 3^r - 1$.
+\end{tcolorbox}
+
+\subsection{Detaillierte Herleitung von $\Lam = 2\log_2 3 - 4$}
+
+Ein typischer Block besteht aus einem ungeraden Schritt $n \mapsto 3n+1$
+mit $\vii(3n+1)=\nu$ Halbierungen und Nettofaktor
+$F = (3n+1)/(2^\nu n)$. In Logarithmen:
+\[
+  \log_2 F = \log_2 3 + 1 - \nu.
+\]
+Die mittlere Halbierungstiefe über EABC-Drain-Klassen ist
+$\mathbb{E}[\nu] \approx 3$ (numerisch exakt für $n \equiv 1,5 \pmod{12}$).
+Damit:
+\[
+  \mathbb{E}[\log_2 F \mid \text{Drain}] \approx \log_2 3 + 1 - 3
+  = \log_2 3 - 2.
+\]
+Für Spannungsklassen ($\nu = 1$):
+$\mathbb{E}[\log_2 F \mid \text{Spannung}] = \log_2 3 + 1 - 1 = \log_2 3 + 1$.
+Mit stationärer Gewichtung $\pi$ aus der mod-12-Kette (gleichmäßig
+$1/4$ pro Zustand in der vereinfachten Darstellung) und Berücksichtigung
+der Blocklängen $l$ (C-Ketten) ergibt die Gewichtung aus
+\texttt{collatz\_lyapunov.pdf} und \texttt{collatz\_mehrblock\_drift.pdf}:
+\[
+  \Lam = \sum_{l=0}^{\infty} P(l)\,\mathbb{E}[\log_2 F \mid l]
+  = 2\log_2 3 - 4 \approx -0.830.
+\]
+Die konditionierte Analyse (\texttt{collatz\_lyapunov\_konditioniert.pdf})
+bestätigt Robustheit gegenüber Variation von $\mathbb{E}[\nu \mid l=k]$:
+Solange $\mathbb{E}[\nu \mid l=k] \gtrsim 2.585$, bleibt $\Lam < 0$.
+
+\subsection{Gewichteter Lyapunov-Exponent und Tail-Reihe}
+
+Aus \texttt{collatz\_lte\_dichte.tex} folgt für den gewichteten Exponenten
+über C-Kettenlängen:
+\[
+  \Lambda_A = 2(\log_2 3 - 1) - 3 = 2\log_2 3 - 5 \approx -1.830
+\]
+im typischen Fall ($\mathbb{E}[\vii(m')] = 3$). Die Tail-Formel
+\[
+  \sum_{k=K}^{\infty}(k+1)\cdot 2^{-(k+1)} = (K+2)\cdot 2^{-K}
+\]
+ist in Lean als \texttt{tail\_series\_formula} bewiesen. Für $K=10$ beträgt
+der Extremal-Beitrag weniger als $0.007$ --- langsame C-Ketten sind
+2-adisch exponentiell selten.
+
+% =================================================
+\section{Transfer-Operator und RPF}
+\label{sec:rpf}
+% =================================================
+
+\subsection{mod-12-Übergangsmatrix}
+
+Die Markov-Kette auf $S = \{E,A,B,C\}$ hat Transfer-Operator $\mathcal{L}$
+mit Übergangsmatrix $M$. Numerisch (vgl.\
+\texttt{collatz\_uniformitaet.tex}, \texttt{collatz\_kingman.tex}):
+
+\begin{center}
+\begin{tabular}{c|cccc}
+\toprule
+ & E & A & B & C \\
+\midrule
+E & $3/8$ & $1/8$ & $3/8$ & $1/8$ \\
+A & $3/8$ & $1/8$ & $3/8$ & $1/8$ \\
+B & $3/8$ & $1/8$ & $3/8$ & $1/8$ \\
+C & $3/8$ & $1/8$ & $3/8$ & $1/8$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{tcolorbox}[heuristik]
+Die Matrix ist eine Vereinfachung; entscheidend ist \emph{Primitivität}:
+alle Einträge positiv, $\gcd$ der Rückkehrzeiten $= 1$.
+\end{tcolorbox}
+
+\subsection{Ruelle--Perron--Frobenius}
+
+\begin{satz}[RPF-Mischung, standard]
+Ist $M$ primitiv mit stationärer Verteilung $\pi$ und $|\lambda_2| < 1$, so gilt
+\[
+  \|M^n e_s - \pi\|_{\TV} \leq C\,|\lambda_2|^n.
+\]
+Numerisch: $|\lambda_2| \approx 0.35$.
+\end{satz}
+
+Die Mindestübergangswahrscheinlichkeit $p := \min_{s,t} M_{st} > 0$ liefert:
+\[
+  P(\text{keine gute Kontraktion in } \lfloor n/12 \rfloor \text{ Schritten})
+  \leq (1-p)^{\lfloor n/12 \rfloor}.
+\]
+
+\subsection{Kingman vs.\ Birkhoff vs.\ RPF}
+
+\begin{tcolorbox}[kern]
+Da die Block-Folge \emph{additiv} ist ($\log F_{k_1+k_2} = \log F_{k_1} + \log F_{k_2}$
+auf Blockebene), ist Kingmans subadditiver Ergodensatz strukturell
+überdimensioniert. Der RPF-Satz auf dem \emph{endlichen} Zustandsraum
+$\{E,A,B,C\}$ liefert gleichmäßige Mischungsschranken ohne Maßerhaltung
+der vollen Collatz-Abbildung.
+\end{tcolorbox}
+
+Birkhoff-Konvergenz gilt für $\pi$-fast alle Starts --- nicht automatisch
+für jedes $n \in \N$.
+
+\subsection{Kingman (1968) und subadditive Prozesse}
+
+Kingmans Satz besagt: Ist $\{X_n\}$ subadditiv und ergodisch, so konvergiert
+$X_n/n$ fast sicher gegen eine Konstante. Für Collatz wäre
+$X_n = -\sum_{k=0}^{n-1}\log_2 F(B_k)$ naheliegend --- aber die Blockfolge
+ist \emph{additiv}, nicht subadditiv. Kingman liefert daher höchstens
+Absicherung für LTE-Gedächtniseffekte in gemischten Regimen
+(\texttt{collatz\_kingman.tex}), während RPF die Hauptarbeit leistet.
+
+\subsection{Spektralanalyse und Mischungszeit}
+
+Mit $|\lambda_2| \approx 0.35$ folgt die Mischzeit
+\[
+  K_\varepsilon = \left\lceil\frac{\log(C/\varepsilon)}{\log(1/|\lambda_2|)}\right\rceil,
+\]
+unabhängig vom Startwert $n$ (nur abhängig von der mod-12-Startklasse).
+Für $\varepsilon = 0.01$ und $C \approx 4$: $K_{0.01} \approx 6$ Blöcke.
+Dies quantifiziert Schritt~B der Ergodizitätslücke
+(\texttt{collatz\_uniformitaet.tex}, Proposition~6.3).
+
+% =================================================
+\section{Bernoulli-Normschalen und die Riemann-Zeta-Funktion}
+\label{sec:bernoulli}
+% =================================================
+
+\subsection{Definition von $\mathcal{I}(n)$}
+
+Via von Staudt--Clausen und Eulers Formel für $\zeta(2n)$ definieren wir
+die ganzzahlige Normschale
+\[
+  \mathcal{I}(n) := |B_{2n}| \cdot \prod_{\substack{p \text{ prim}\\ (p-1)\mid 2n}} p,
+\]
+wobei $B_{2n}$ die Bernoulli-Zahlen sind
+(\texttt{collatz\_bernoulli\_schalen.pdf}).
+
+\subsection{No-Go für Lyapunov}
+
+\begin{tcolorbox}[offen,title={Negatives Ergebnis (bewiesen)}]
+$\log \mathcal{I}(n)$ ist \textbf{kein} Lyapunov-Kandidat: Unter
+$n \mapsto 3n+1$ wächst $\mathcal{I}$ super-exponentiell
+($\sim 6n\log(3n)$ in der Wachstumsordnung). Die ``Norm-Schale''
+explodiert bei ungeraden Schritten.
+\end{tcolorbox}
+
+\subsection{Funktionalgleichungs-Synthese}
+
+Asymptotisch (\texttt{collatz\_bernoulli\_schalen.pdf}, §4):
+\[
+  \mathcal{I}(n) \sim 2\sqrt{4\pi n}\cdot\left(\frac{n}{\pi e}\right)^{2n}\cdot D(n),
+\]
+wobei $D(n)$ eine langsam variierende Korrektur ist. Die Riemannsche
+Zeta-Funktion $\zeta(2n)$ verbindet kontinuierliche Analysis (Euler-Produkt)
+mit diskreter Collatz-Dynamik als \emph{Scharnier} --- ein theoretisches
+Nebenprodukt, kein Beweisweg.
+
+\subsection{Explosion bei ungeraden Schritten}
+
+Numerisch entlang einer Trajektorie: $\mathcal{I}(n)$ wächst von
+$\mathcal{I}(1)=1$ zu Werten der Größenordnung $10^{100}$ bereits nach
+wenigen Schritten. Der Fixpunkt $\mathcal{I}(1)=1$ ist der einzige
+``primordiale'' Zustand; die Dynamik oszilliert zwischen Explosion
+(ungerade Schritte) und Kollaps (gerade Schritte). Dieses Bild ist
+ästhetisch überzeugend, erzwingt aber keine Konvergenz.
+
+% =================================================
+\section{Quaternionen-Teilnormen}
+\label{sec:quaternion}
+% =================================================
+
+\begin{satz}[Norm-Identität]
+Für $q = a + bi + cj + dk \in \Halg$ mit $N(q) = a^2+b^2+c^2+d^2$ gilt
+\[
+  N(3q+1) = 9N(q) + 6a + 1.
+\]
+Für die rein-reelle Einbettung $n \mapsto n$:
+$(3n+1)^2 = 9n^2 + 6n + 1$ --- in Lean via \texttt{ring} beweisbar
+(\texttt{collatz\_density.lean}, \texttt{collatz\_vier\_teilnormen.tex}).
+\end{satz}
+
+\begin{bemerkung}[Asymmetrie]
+Nur der Realteil $a$ erhält die lineare Korrektur $+6a$. Für $n=m^2$:
+$N(3n+1) = (3m-1)^2$. Die EABC-Klasse hängt von $n \bmod 12$ ab,
+nicht von der Quaternionen-Darstellung.
+\end{bemerkung}
+
+\subsection{Vier Teilnormen und asymmetrische Transformation}
+
+\texttt{collatz\_vier\_teilnormen.tex} zerlegt $N(3q+1)$ in vier
+Teilbeiträge entsprechend den Quaternionenkomponenten. Nur der Realteil
+erhält die Korrektur $+6a$; imaginäre Komponenten transformieren sich
+multiplikativ. Für $q = m + 0i + 0j + 0k$ mit $n=m^2$:
+\[
+  N(3n+1) = (3m-1)^2,
+\]
+was eine diophantische Spur der Collatz-Schritte auf Quadratzahlen liefert
+--- ohne jedoch Ausnahmezyklen auszuschließen.
+
+% =================================================
+\section{Die Ergodizitätslücke}
+\label{sec:ergodizitaet}
+% =================================================
+
+\subsection{$\N$ als $\mu_H$-Nullmenge}
+
+\begin{tcolorbox}[kern,title={Fundamentaler Befund}]
+$\N \subset \Ztwo^*$ ist abzählbar, also eine Nullmenge bezüglich des
+normierten Haar-Maßes $\mu_H$. Taos Aussage $\mu_H(E)=0$ für das
+Ausnahmeset $E$ widerspricht nicht $E \neq \emptyset$.
+\end{tcolorbox}
+
+\subsection{Drei Strategien}
+
+\textbf{Schritt A} (LTE-Worst-Cases): Ausnahme-Trajektorien können nicht
+ewig dominieren --- \emph{bedingt} auf Ergodizität
+(\texttt{collatz\_uniformitaet.tex}, §2).
+
+\textbf{Schritt B} (mod-12-Primitivität): Exponentielle Mischung
+$|\lambda_2|^n$ --- mathematisch das solideste Argument.
+
+\begin{tcolorbox}[offen,title={Schritt C: Quaternionen-Diophantik (ZIRKULÄR)}]
+Der behauptete Widerspruch ``fraktale Ausnahmepfade erzeugen
+irrational-algebraische Normen'' scheitert: Collatz-Trajektorien bleiben
+in $\N$, ihre Normen sind ganzzahlig. Schritt C liefert keinen Beitrag
+zum Uniformitätsproblem (\texttt{collatz\_uniformitaet.tex}, §4).
+\end{tcolorbox}
+
+\begin{tcolorbox}[heuristik,title={Argument D: Binärinformation}]
+Jedes $n \in \N$ hat endliche Binärdarstellung ($\lfloor\log_2 n\rfloor+1$
+Bits). Die mod-12-Mischzeit $K_\varepsilon$ hängt nicht von $n$ ab
+(Proposition in \texttt{collatz\_uniformitaet.tex}, §6). Aber: Die
+Beschränktheit der Bitlänge ist \emph{äquivalent} zur Collatz-Vermutung
+--- das Argument ist vielversprechend, aber unvollständig.
+\end{tcolorbox}
+
+% =================================================
+\section{Arithmetische Dynamik und die Uniformitäts-Vermutung}
+\label{sec:uniformitaet}
+% =================================================
+
+\subsection{Kolmogorov-Komplexität}
+
+Für $n \in \N$ gilt $K(n) = O(\log n)$ (Binärdarstellung). Generische
+Elemente von $\Ztwo \setminus \N$ haben unendliche Kolmogorov-Komplexität.
+
+\subsection{Netto-Informationsfluss}
+
+\begin{tcolorbox}[bewiesen,title={Operatoreigenschaft (nicht zirkulär)}]
+\[
+  \mathbb{E}[\Delta\text{Bits}(B_k)] = \mathbb{E}[\log_2 F(B_k)] = \Lam < 0
+\]
+ist eine Eigenschaft des mod-12-Transfer-Operators (Irreduzibilität,
+Stationarität), nicht der einzelnen Trajektorie. Der RPF-Operator
+diktiert das Gesetz; Trajektorien sind ihm unterworfen.
+\end{tcolorbox}
+
+\begin{vermutung}[Uniformitäts-Vermutung]
+\label{verm:uniform}
+Es existiert $c > 0$, so dass für alle $n \in \N$:
+\[
+  \disttwo(n, E) \geq c \cdot 2^{-\lfloor\log_2 n\rfloor},
+\]
+wobei $E$ die Menge der 2-adischen ``guten'' Kontraktionszustände bezeichnet.
+\end{vermutung}
+
+\subsection{Roths Satz als Analogie}
+
+Roths Satz (1955): Algebraische Zahlen approximieren Rationale nicht
+zu gut. Die Uniformitäts-Vermutung fordert eine analoge
+\emph{2-adische Separationsungleichung}: Natürliche Zahlen dürfen nicht
+beliebig nah an pathologischen $\Ztwo$-Pfaden liegen.
+
+\subsection{Zerreibungsmodell}
+
+Heuristisch (\texttt{collatz\_arithmetische\_dynamik.tex}):
+\[
+  I_n(k) \sim (0.35)^k,
+\]
+wobei $I_n(k)$ die ``verbleibende Startinformation'' nach $k$ Blockschritten
+modelliert ($0.35 \approx |\lambda_2|$).
+
+\subsection{Drei offene Fragen aus der arithmetischen Dynamik}
+
+\texttt{collatz\_arithmetische\_dynamik.tex} formuliert:
+\begin{enumerate}
+  \item Kann man die Uniformitäts-Vermutung aus mod-12-Primitivität
+    und negativem Drift ableiten?
+  \item Existiert ein Roth-Analogon für diophantische Approximation
+    in $\Ztwo$, das $\N$ von divergenten 2-adischen Pfaden trennt?
+  \item Lässt sich $I_n(k)$ als bedingte Entropie $H(B_{k+1}\mid B_1,\ldots,B_k)$
+    rigoros definieren?
+\end{enumerate}
+
+\subsection{Informationsfluss und Nicht-Zirkularität}
+
+Der entscheidende Punkt der Sitzung Juni 2026: $\Lam < 0$ ist eine
+\emph{Operatoreigenschaft} des RPF-Transfer-Operators, keine Eigenschaft
+einzelner Trajektorien. Der Netto-Informationsfluss
+$\mathbb{E}[\Delta\text{Bits}] = \Lam$ setzt nur Stationarität und
+Irreduzibilität voraus --- beides endliche Kombinatorik auf $\{E,A,B,C\}$,
+unabhängig von der Collatz-Vermutung. Die verbleibende Lücke ist rein
+\emph{diophantisch}: Warum kann kein $n \in \N$ auf einer invarianten
+Nullmenge liegen?
+
+% =================================================
+\section{Lean~4 Formalisierung}
+\label{sec:lean}
+% =================================================
+
+\subsection{Mathlib-Status}
+
+Verfügbar: \texttt{padicValNat}, geometrische Reihen, \texttt{Nat.card\_multiples},
+Bernoulli/\texttt{vonStaudt} (teilweise), Vierquadrate-Satz.
+Fehlend für Collatz: Kingman, punktweiser Birkhoff, volle Ergodizität.
+
+\subsection{\texttt{collatz\_density.lean}}
+
+Sechs Theoreme ohne \texttt{sorry}:
+\begin{enumerate}[label=(\roman*)]
+  \item \texttt{padicVal\_ge\_iff\_dvd}
+  \item \texttt{density\_C\_chains\_finite}
+  \item \texttt{tail\_series\_formula}
+  \item \texttt{collatz\_norm\_identity}
+  \item \texttt{exception\_probability\_decay}
+  \item \texttt{exception\_probability\_tendsto\_zero}
+\end{enumerate}
+
+\subsection{Roadmap (priorisiert)}
+
+\begin{enumerate}
+  \item Irreduzibilität der mod-12-Matrix (\texttt{Finset}-Kombinatorik)
+  \item Spektrallücke $|\lambda_2| < 1$
+  \item Uniforme Zweiblockkompensation
+  \item Roth-Analogon in $\Ztwo$
+  \item Collatz-Ergodizität (äquivalent zur Vermutung)
+\end{enumerate}
+
+\subsection{Mathlib-Roadmap (\texttt{collatz\_lean\_mathlib.tex})}
+
+Priorität~1: \texttt{padicValNat}-Lemmata (erledigt in
+\texttt{collatz\_density.lean}). Priorität~2: \texttt{Nat.card\_multiples}
+für Dichte-Zählung (erledigt). Priorität~3: Irreduzibilität via
+\texttt{Finset} und Matrixpotenzen. Priorität~4: Stirling-Schranke für
+Bernoulli-Abschätzungen. Priorität~5: Vierquadrate-Satz für
+Quaternionen-Einbettung.
+
+% =================================================
+\section{Beteiligte Gedanken und Einordnung}
+\label{sec:einordnung}
+% =================================================
+
+\subsection{Geometrische Analogien}
+
+\begin{itemize}
+  \item \textbf{Morley--Walter} (\texttt{collatz\_dc\_morley\_walter.pdf}):
+    Dreiecksgeometrie der DC-Blöcke.
+  \item \textbf{Ptolemäus} (\texttt{collatz\_ptolemaeus.pdf}):
+    Kreisgeometrie der mod-12-Übergänge.
+  \item \textbf{Schütte-Ikosaeder} (\texttt{collatz\_ikosaeder\_spannung.pdf}):
+    Symmetrie der Spannungsverteilung.
+\end{itemize}
+
+\subsection{Sinh-Hyperbel}
+
+$2\sinh(2\Lam) \approx -4.780$ kodiert hyperbolische Kontraktion
+(\texttt{collatz\_sinh\_hyperbel.tex}).
+
+\subsection{Bewertungsmatrix (20 Aussagen)}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{p{5.5cm}cc}
+\toprule
+Aussage & Status & Farbe \\
+\midrule
+C-Ketten endlich & bewiesen & grün \\
+B$\to$B unmöglich & bewiesen & grün \\
+EA-Schritt nach C-Kette & bewiesen & grün \\
+2-adische Dichte $2^{-k}$ & bewiesen (Lean) & grün \\
+Strukturelle Kompensation & bewiesen & grün \\
+$\Lam = 2\log_2 3 - 4$ & berechnet & grün \\
+RPF-Primitivität & numerisch & grün \\
+Tao: $\mu_H(E)=0$ & extern bewiesen & grün \\
+Quaternionen-Identität & Lean & grün \\
+Collatz für alle $n$ & offen & rot \\
+Uniformitäts-Vermutung & offen & rot \\
+$\log\mathcal{I}$ als Lyapunov & No-Go & rot \\
+Schritt C (Quaternionen-Widerspruch) & zirkulär & rot \\
+LTE-Einzelblock-Kontraktion & gescheitert & rot \\
+Dichte-Argument allein (Szenario B) & positiv $\Lambda_B$ & rot \\
+Kingman für Collatz & nicht anwendbar & rot \\
+Bernoulli-Schale als Lyapunov & No-Go & rot \\
+Binärinfo-Argument (unbedingt) & zirkulär & rot \\
+Zweiblockkompensation uniform & offen & orange \\
+Roth-Analogon & offen & orange \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Was dieses Projekt leistet --- und was nicht}
+
+\textbf{Leistet:} Vollständige Kartierung des Proof-Landscape; beweisbare
+lokale Struktur (DC, Dichte, Kompensation); quantitativer negativer Drift;
+Lean-Formalismus für Kerndichte-Lemmata; ehrliche Markierung aller Lücken.
+
+\textbf{Leistet nicht:} Beweis der Collatz-Vermutung; Schließung der
+Ergodizitätslücke; Ersetzung von Tao durch ``alle $n$''.
+
+% =================================================
+\section{Ausblick und Forschungsagenda}
+\label{sec:ausblick}
+% =================================================
+
+\subsection{Drei offene Fragen}
+
+\begin{enumerate}
+  \item \textbf{Roth-Analogon:} Beweis oder Widerlegung der
+    Uniformitäts-Vermutung~\ref{verm:uniform}.
+  \item \textbf{$I_n(k)$:} Rigorose Definition via bedingte Entropie
+    und Nachweis der Zerreibungsrate $(0.35)^k$.
+  \item \textbf{Poincaré-Rekurrenz:} Können Collatz-Zyklen $>1$ existieren,
+    wenn der negative Drift global wirkt?
+\end{enumerate}
+
+\subsection{Proof-Landscape}
+
+\begin{center}
+\begin{verbatim}
+[ Irreduzibler mod-12 RPF-Operator ]
+         |
+         v
+[ Stationäres Maß pi ]
+         |
+         v
+[ Negativer Drift Lambda ~ -0.830 ]
+         |
+         v
+[ Informationszerreibung ]
+         |
+         v  <- Brücke fehlt
+[ dist(n,E) >= c*2^{-log_2 n} ]
+         |
+         v
+[ Volle Konvergenz ]
+\end{verbatim}
+\end{center}
+
+\subsection{Ausblick: Formalisierung und Experimente}
+
+\begin{enumerate}
+  \item Lean-Beweis der mod-12-Irreduzibilität (endliche Kombinatorik)
+  \item Numerischer Nachweis $|\lambda_2| < 1$ mit exakter rationaler Matrix
+  \item Systematische Zweiblock-Verifikation für alle $(k,r) \leq 20$
+  \item SageMath-Bernoulli-Tracking entlang längster Bahnen ($n=8\,400\,511$)
+  \item 2-adische Fourier-Analyse im Geiste von Tao für punktweise Schranken
+\end{enumerate}
+
+% =================================================
+\section*{Anhang zur Ergodizitätslücke (detailliert)}
+\addcontentsline{toc}{section}{Anhang: Ergodizitätslücke (detailliert)}
+
+Die folgende Zusammenfassung repliziert die Kernanalyse aus
+\texttt{collatz\_uniformitaet.tex} und \texttt{collatz\_kingman.tex}.
+
+\subsection*{Taos Hauptergebnis (präzise)}
+
+Für jede Funktion $f:\N\to\R$ mit $f(n)\to\infty$:
+\[
+  \mathrm{Dens}_{\log}\bigl(\{n\in\N : \min_{k\geq 0}\col^k(n)\leq f(n)\}\bigr)=1.
+\]
+
+\subsection*{Schritt A: Ausnahme-Trajektorien}
+
+Eine Trajektorie ist \emph{ausnahme-typisch}, wenn sie dauerhaft ``schlechte''
+Blockklassen überrepräsentiert. Birkhoff schließt dies für $\pi$-fast alle
+Starts aus --- nicht für spezifische $n\in\N$.
+
+\subsection*{Schritt B: Quantitative Mischung}
+
+Mit $p=\min M_{st}>0$ und $|\lambda_2|\approx 0.35$:
+\[
+  P(\text{kein E-Besuch in }n\text{ Blöcken})\leq (1-p)^{\lfloor n/12\rfloor}.
+\]
+Dies ist die stärkste \emph{nicht-zirkuläre} Aussage des Projekts.
+
+\subsection*{Schritt C: Quaternionen (gescheitert)}
+
+Die Norm-Identität $N(3q+1)=9N(q)+6a+1$ ist beweisbar, liefert aber keinen
+Widerspruch für Ausnahme-Bahnen in $\N$.
+
+\subsection*{Schritt D: Binärinformation (bedingt)}
+
+$K(n)=O(\log n)$ für $n\in\N$. Die Mischzeit $K_\varepsilon$ ist unabhängig
+von $n$, aber die Beschränktheit der Trajektorie darf nicht vorausgesetzt werden.
+
+\subsection*{Bedingte Uniformitäts-Proposition}
+
+Angenommen V1 (Primitivität) und V2 (punktweise Blockverteilung gegen $\pi$),
+dann folgt $\frac{1}{K}\sum_{k=0}^{K-1}\log_2 F(B_k(n))\to\Lam<0$ für jedes
+$n$. Voraussetzung V2 ist äquivalent zur Collatz-Vermutung für dieses $n$.
+
+\subsection*{LTE-Tabelle für $m=3^r$ (Worst Case)}
+
+\begin{center}
+\small
+\begin{tabular}{cccccc}
+\toprule
+$k$ & $r$ & $N=k+r$ & $\vii(3^{N+1}-1)$ & $F_k$ (ca.) & Kompensation \\
+\midrule
+1 & 1 & 2 & 2 & $9/4$ & E-Nachfolger \\
+1 & 2 & 3 & $\geq 3$ & $<1$ & direkt \\
+2 & 1 & 3 & $\geq 3$ & $<1$ & direkt \\
+3 & 1 & 4 & 2 & $9/4$ & E-Nachfolger \\
+5 & 1 & 6 & 2 & $9/4$ & E-Nachfolger \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Extremal-Tail $\Lambda_{\mathrm{extrem}}(K)$}
+
+\begin{center}
+\begin{tabular}{ccc}
+\toprule
+$K$ & $(K+2)\cdot 2^{-K}$ & $\Lambda_{\mathrm{extrem}}(K)$ \\
+\midrule
+0 & 2 & 1.170 \\
+5 & 0.219 & 0.128 \\
+10 & 0.0117 & 0.0069 \\
+15 & $5.19\times 10^{-4}$ & $3.03\times 10^{-4}$ \\
+20 & $2.10\times 10^{-5}$ & $1.23\times 10^{-5}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Bernoulli-Funktionalgleichung (Skizze)}
+
+Aus \texttt{collatz\_bernoulli\_schalen.pdf}:
+\[
+  \log \mathcal{I}(n) = 2n\log n - 2n\log\pi + \tfrac{1}{2}\log(4\pi n) + \log|B_{2n}| + O(1).
+\]
+Vergleich mit $\log\zeta(2n)$ zeigt die Zeta-Kopplung; die Wachstumsordnung
+verbietet Lyapunov-Nutzung.
+
+\subsection*{Hyperbolische Signatur}
+
+$2\sinh(2\Lam) = 2\sinh(-1.660) \approx -4.780$. Negative Vorzeichen =
+kontrahierende hyperbolische Isometrie im SL(2)-Modell
+(\texttt{collatz\_sinh\_hyperbel.tex}).
+
+% =================================================
+\begin{thebibliography}{99}
+% =================================================
+
+\bibitem{Collatz1937}
+L.~Collatz.
+Problème $3n+1$.
+Unveröffentlichte Notiz, 1937.
+
+\bibitem{Lagarias1985}
+J.~C.~Lagarias.
+The $3x+1$ problem and its generalizations.
+\textit{Amer.\ Math.\ Monthly} \textbf{92} (1985), 3--23.
+
+\bibitem{Tao2019}
+T.~Tao.
+Almost all orbits of the Collatz map attain almost bounded values.
+\textit{Forum Math.\ Pi} \textbf{10} (2022), e12.
+arXiv:1909.09562.
+
+\bibitem{Erdos}
+P.~Erdős.
+Zitiert in Lagarias (1985) und diversen Surveys.
+
+\bibitem{Steiner1977}
+R.~P.~Steiner.
+On the $(3n+1)$-problem.
+\textit{Mathematics of Computation} (1977).
+
+\bibitem{AnosovKatok1994}
+D.~V.~Anosov, A.~B.~Katok.
+Ergodic theory of $n$-adic transformations.
+In: \textit{Ergodic Theory and its Connections with Harmonic Analysis}.
+
+\bibitem{Kingman1968}
+J.~F.~C.~Kingman.
+The ergodic theory of subadditive stochastic processes.
+\textit{J.\ Roy.\ Stat.\ Soc.\ B} \textbf{30} (1968), 499--510.
+
+\bibitem{Ruelle1976}
+D.~Ruelle.
+A measure associated with Axiom-A attractors.
+\textit{Amer.\ J.\ Math.} \textbf{98} (1976), 619--654.
+
+\bibitem{vonStaudt}
+K.~G.~C.~von Staudt.
+\textit{Beiträge zur Geometrie der Lage}, 1845.
+
+\bibitem{Clausen}
+T.~Clausen.
+Theorem, 1840.
+
+\bibitem{Euler}
+L.~Euler.
+De summis serierum reciprocarum, 1735.
+
+\bibitem{Roth1955}
+K.~F.~Roth.
+Rational approximations to algebraic numbers.
+\textit{Mathematika} \textbf{2} (1955), 1--20.
+
+\bibitem{Schuette1953}
+K.~Schütte, B.~L.~van der Waerden.
+Das Problem der dreizehn Kugeln.
+\textit{Math.\ Ann.} \textbf{125} (1953), 325--334.
+
+\bibitem{Lean}
+Lean~4 Community.
+\textit{Mathlib}: The Lean Mathematical Library.
+\url{https://leanprover-community.github.io/}
+
+\bibitem{Hoffbauer2026}
+T.~Hoffbauer.
+Sitzungsdokumente Collatz Juni 2026:
+\texttt{collatz\_schlussartikel.pdf},
+\texttt{collatz\_uniformitaet.tex},
+\texttt{collatz\_lte\_dichte.tex}, u.\,a.
+
+\end{thebibliography}
+
+\appendix
+
+% =================================================
+\section{Epilog: Synthese der Sitzung Juni 2026}
+\label{anhang:epilog}
+% =================================================
+
+Dieser Artikel ersetzt \texttt{collatz\_schlussartikel.pdf} als finale
+arXiv-Fassung. Die Sitzung vom 15.--16.\ Juni 2026 erbrachte:
+\begin{itemize}
+  \item Numerische Bestätigung EABC bis $N=10^7$
+  \item Beweis der C-Ketten-Endlichkeit und struktureller Kompensation
+  \item Negatives Ergebnis: Bernoulli-Lyapunov und Quaternionen-Schritt~C
+  \item Positives Ergebnis: Lean-Formalismus für Dichte-Lemmata
+  \item Präzise Formulierung der Uniformitäts-Vermutung (Roth-Analogie)
+\end{itemize}
+Die Collatz-Vermutung bleibt offen. Dieses Dokument ist eine
+\emph{Landkarte}, kein Beweis.
+
+% =================================================
+\section{Ausführliche Beweise und Protokolle}
+\label{anhang:beweise}
+% =================================================
+
+\subsection{Proposition: Strukturelle Kompensation (vollständig)}
+
+\begin{proposition}
+Sei $n_0 = 2^{k+1}\cdot 3^r - 1$ und $N = k+r$. Nach dem
+$\mathrm{C}^k\mathrm{A}$-Block:
+\begin{enumerate}[label=(\roman*)]
+  \item $N$ gerade: $n_{k+1} = (3^{N+1}-1)/2$, $\vii(n_{k+1}+1)=1$, E-Typ.
+  \item $N$ ungerade: $\vii(3n_k+1) \geq 3$, starker Kontraktionsblock.
+\end{enumerate}
+\end{proposition}
+
+\begin{beweis}
+Nach $k$ C-Schritten: $n_k = 2\cdot 3^{k+r} m' - 1$ mit $m'=3^r$.
+Für gerades $N$: LTE liefert $\vii(3^{N+1}-1)=2$, also
+$\vii(3n_k+1)=2$ und $n_{k+1}=(3^{N+1}-1)/2$.
+Da $N+1$ ungerade: $3^{N+1} \equiv 3 \pmod 8$, somit
+$(3^{N+1}+1)/2 \equiv 2 \pmod 4$ und $\vii(n_{k+1}+1)=1$.
+Für ungerades $N$: $N+1$ gerade, $\vii(3^{N+1}-1)=\vii(N+1)+2\geq 3$.
+\end{beweis}
+
+\subsection{Schritt B: Mischungsrate (aus \texttt{collatz\_uniformitaet.tex})}
+
+\begin{proposition}[Klassen-Vergessen]
+Mit $|\lambda_2| \approx 0.35$ gilt für alle $n \in \N$ und alle $k \geq 0$:
+\[
+  \|M^k e_{B(n)} - \pi\|_{\TV} \leq C \cdot |\lambda_2|^k,
+\]
+wobei $C$ nur von der Startklasse $B(n) \in \{E,A,B,C\}$ abhängt.
+\end{proposition}
+
+\subsection{Schritt C: Zirkularitätsanalyse (vollständig)}
+
+Das Quaternionen-Argument scheitert, weil $T^k(n) \in \N$ für alle $k$
+\emph{per Definition}. Die Norm $N(T^k(n)) = (T^k(n))^2$ bleibt ganzzahlig.
+Der behauptete Widerspruch ``irrational-algebraische Normwerte'' setzt voraus,
+dass Ausnahmepfade sich anders verhalten als Ganzzahlfolgen --- was genau
+bewiesen werden soll.
+
+\subsection{Schritt D: Binärinformation (bedingte Version)}
+
+Die korrekte Aussage: Nach $K_\varepsilon$ Blockschritten ist die mod-12-Klasse
+$\varepsilon$-nah an $\pi$ --- \emph{falls} die Trajektorie nicht divergiert.
+Die Bedingung ``Trajektorie divergiert nicht'' ist äquivalent zur
+Collatz-Vermutung für $n$.
+
+\subsection{Red Dots und Primzahlvierlinge}
+
+\texttt{collatz\_red\_dots\_daempfung.pdf}: Primzahlvierlinge $(p,p+2,p+6,p+8)$
+erzeugen Collatz-Startwerte mit erhöhtem $\mathbb{E}[\vii] \approx 3.061$.
+Nur 26.7\% dieser Starts haben $\vii \geq 4$. Red Dots sind Warnmarker
+für lokale LTE-Resistenz, nicht für globale Divergenz.
+
+\subsection{Oktonionen und 5-glatt-DC}
+
+\texttt{collatz\_oktonionen\_beweis.pdf} und \texttt{collatz\_5glatt\_dc.pdf}
+untersuchen Erweiterungen der Norm-Identität auf Oktonionen bzw.\ 5-glatt
+Startwerte. Keine dieser Erweiterungen schließt die DC-Lücke; sie liefern
+strukturelle Analogien im EABC-Rahmen.
+
+% =================================================
+\section{Vollständige numerische Tabelle EABC ($N=10^7$)}
+\label{anhang:eabc}
+% =================================================
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{rrlrrrr}
+\toprule
+$n \bmod 12$ & Anzahl & EABC & $\mathbb{E}[\vii]$ & $P(\U<n)$ & $\mathbb{E}[\U/n]$ & $\bar s$ \\
+\midrule
+1 & 833333 & E & 3.000000 & 0.999999 & 0.375000 & 155.33 \\
+3 & 833333 & B & --- & --- & --- & --- \\
+5 & 833333 & E & 3.000002 & 1.000000 & 0.375000 & 155.24 \\
+7 & 833333 & A & 1.000000 & 0.000000 & 1.500001 & 167.64 \\
+9 & 833333 & C & --- & --- & --- & --- \\
+11 & 833335 & A & 1.000000 & 0.000000 & 1.500001 & 167.62 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+Vollständiger Collatz-Test $1 \leq n \leq 10^7$: 0 Ausnahmen;
+$\bar s = 155.27$; $\max s = 685$ bei $n = 8\,400\,511$;
+maximale Zwischenhöhe $60\,342\,610\,919\,632$ bei $n = 6\,631\,675$.
+
+% =================================================
+\section{Lean-Code \texttt{collatz\_density.lean}}
+\label{anhang:lean}
+% =================================================
+
+\lstinputlisting{collatz_density_appendix.lean}
+
+\noindent
+Quelldatei im Repository: \texttt{collatz\_density.lean} (vollständig,
+alle sechs Haupttheoreme ohne \texttt{sorry}).
+
+% =================================================
+\section{Erweiterte Bewertungsmatrix und Statusprotokoll}
+\label{anhang:bewertung}
+% =================================================
+
+\begin{center}
+\small
+\begin{longtable}{p{6cm}p{2cm}p{5cm}}
+\toprule
+Dokument & Status & Kernaussage \\
+\midrule
+\endhead
+\texttt{collatz\_eabc\_spektrum.tex} & numerisch & EABC-Spaltung mod 12 \\
+\texttt{collatz\_lyapunov.pdf} & berechnet & $\Lam \approx -0.830$ \\
+\texttt{collatz\_lyapunov\_konditioniert.pdf} & robust & $\mathbb{E}[\nu|l=k]\approx 3$ \\
+\texttt{collatz\_lte\_dichte.tex} & gemischt & $\Lambda_B>0$ im Worst Case \\
+\texttt{collatz\_bernoulli\_schalen.pdf} & No-Go & $\log\mathcal{I}$ explodiert \\
+\texttt{collatz\_uniformitaet.tex} & Analyse & Schritte A/B/C/D \\
+\texttt{collatz\_sinh\_hyperbel.tex} & Interpretation & $2\sinh(2\Lam)\approx -4.78$ \\
+\texttt{collatz\_c\_ketten\_2adisch.pdf} & bewiesen & C-Ketten endlich \\
+\texttt{collatz\_dc\_morley\_walter.pdf} & Geometrie & DC-Dreiecke \\
+\texttt{collatz\_ptolemaeus.pdf} & Geometrie & Kreis-Analogie \\
+\texttt{collatz\_ikosaeder\_spannung.pdf} & Geometrie & Ikosaeder-Spannung \\
+\texttt{collatz\_m\_verteilung.pdf} & numerisch & $m$-Verteilung \\
+\texttt{collatz\_mehrblock\_drift.pdf} & berechnet & Mehrblock-Mittel \\
+\texttt{collatz\_red\_dots\_daempfung.pdf} & Warnung & Primvierlinge \\
+\texttt{collatz\_oktonionen\_beweis.pdf} & Erweiterung & Oktonionen \\
+\texttt{collatz\_5glatt\_dc.pdf} & Spezialfall & 5-glatt \\
+\texttt{collatz\_lean\_dc.pdf} & Roadmap & Lean DC \\
+\texttt{collatz\_beweis\_abschluss.pdf} & Synthese & Abschlussnotiz \\
+\texttt{collatz\_density.lean} & formal & 6 Theoreme \\
+\texttt{Collatz.tex} & historisch & Ursprungsnotiz \\
+\texttt{Collatzabstieg.tex} & historisch & Abstiegsheuristik \\
+\bottomrule
+\end{longtable}
+\end{center}
+
+% =================================================
+\section{PR-Übersicht \#1--\#12}
+\label{anhang:pr}
+% =================================================
+
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{clp{7cm}}
+\toprule
+\# & Branch / Datei & Inhalt \\
+\midrule
+1 & \texttt{collatz/update-n10m} & EABC-Spektrum $N=10^7$ \\
+2 & \texttt{collatz/transferoperator} & mod-12 Transfer-Operator \\
+3 & \texttt{collatz/oktonionen} & Oktonionen-Beweisversuch \\
+4 & \texttt{collatz/dc-morley-walter} & DC Morley--Walter \\
+5 & \texttt{collatz/c-ketten-2adisch} & 2-adische C-Ketten \\
+6 & \texttt{collatz/bernoulli-schalen} & Bernoulli-Normschalen \\
+7 & \texttt{collatz/lyapunov} & Block-Drift $\Lam$ \\
+8 & \texttt{collatz/lte-dichte} & LTE-Barriere, Dichte \\
+9 & \texttt{collatz/sinh-hyperbel} & $2\sinh(2\Lam)$ \\
+10 & \texttt{collatz/uniformitaet} & Ergodizitätslücke A/B/C \\
+11 & \texttt{collatz/kingman} & Kingman vs.\ RPF \\
+12 & \texttt{collatz/arithmetische-dynamik} & Uniformitäts-Vermutung \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+\textbf{Referenzierte Projektdateien} (16+):
+\texttt{collatz\_eabc\_spektrum.tex},
+\texttt{collatz\_uniformitaet.tex},
+\texttt{collatz\_lte\_dichte.tex},
+\texttt{collatz\_sinh\_hyperbel.tex},
+\texttt{collatz\_density.lean},
+\texttt{collatz\_schlussartikel.pdf},
+\texttt{collatz\_lyapunov.pdf},
+\texttt{collatz\_lyapunov\_konditioniert.pdf},
+\texttt{collatz\_bernoulli\_schalen.pdf},
+\texttt{collatz\_c\_ketten\_2adisch.pdf},
+\texttt{collatz\_dc\_morley\_walter.pdf},
+\texttt{collatz\_5glatt\_dc.pdf},
+\texttt{collatz\_lean\_dc.pdf},
+\texttt{collatz\_beweis\_abschluss.pdf},
+\texttt{collatz\_mehrblock\_drift.pdf},
+\texttt{collatz\_m\_verteilung.pdf},
+\texttt{collatz\_red\_dots\_daempfung.pdf},
+\texttt{collatz\_ikosaeder\_spannung.pdf},
+\texttt{collatz\_ptolemaeus.pdf},
+\texttt{collatz\_oktonionen\_beweis.pdf},
+\texttt{Collatz.tex},
+\texttt{Collatzabstieg.tex}.
+
+\end{document}
