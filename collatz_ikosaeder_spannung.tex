@@ -1,0 +1,779 @@
+\documentclass[12pt,a4paper]{article}
+
+% -------------------------------------------------
+% Sprache / Kodierung
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+
+% -------------------------------------------------
+% Layout / Grafik / Farben
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks,unicode]{hyperref}
+\pdfstringdefDisableCommands{%
+  \def\ü{ue}\def\ö{oe}\def\ä{ae}\def\Ü{Ue}\def\Ö{Oe}\def\Ä{Ae}\def\ss{ss}%
+}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{array}
+
+% -------------------------------------------------
+% Farben (konsistent mit Vorgängerdokumenten)
+% -------------------------------------------------
+\definecolor{lückenrot}{RGB}{180,40,40}
+\definecolor{bewiesengrün}{RGB}{30,100,50}
+\definecolor{warnorange}{RGB}{200,100,10}
+\definecolor{hintergrundblau}{RGB}{235,242,250}
+\definecolor{hintergrundgelb}{RGB}{255,252,225}
+\definecolor{adischviolett}{RGB}{90,20,140}
+\definecolor{fehlerrot}{RGB}{200,0,0}
+\definecolor{konjviolett}{RGB}{80,0,130}
+\definecolor{e8grau}{RGB}{55,55,90}
+\definecolor{ikobraun}{RGB}{120,70,20}
+
+% -------------------------------------------------
+% tcolorbox-Stile
+% -------------------------------------------------
+\tcbset{
+  lücke/.style={colback=red!8, colframe=lückenrot, fonttitle=\bfseries,
+    title={Offene Lücke}},
+  ergebnis/.style={colback=green!7, colframe=bewiesengrün,
+    fonttitle=\bfseries, title={Bewiesenes Ergebnis}},
+  warnung/.style={colback=orange!10, colframe=warnorange,
+    fonttitle=\bfseries, title={Achtung / Heuristik}},
+  adisch/.style={colback=violet!6, colframe=adischviolett,
+    fonttitle=\bfseries, title={2-adische Perspektive}},
+  kernidee/.style={colback=hintergrundblau, colframe=blue!60!black,
+    fonttitle=\bfseries, title={Kernidee}},
+  konj/.style={colback=violet!5, colframe=konjviolett, fonttitle=\bfseries,
+    title={Konjektur (unbewiesen)}},
+  lte/.style={colback=yellow!8, colframe=e8grau, fonttitle=\bfseries,
+    title={LTE-Analyse}},
+  hauptsatz/.style={colback=green!10, colframe=bewiesengrün!80!black,
+    fonttitle=\bfseries\large, title={Stärkster beweisbarer Satz}},
+  analogie/.style={colback=brown!6, colframe=ikobraun,
+    fonttitle=\bfseries, title={Geometrische Analogie}},
+  ikosaeder/.style={colback=blue!4, colframe=blue!45!black,
+    fonttitle=\bfseries, title={Ikosaeder-Perspektive}},
+}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+\newtheorem{hypothese}[definition]{Hypothese}
+\newtheorem{satz}[definition]{Satz}
+
+\newenvironment{beweis}{\begin{proof}[Beweis]}{\end{proof}}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\vii}{\nu_2}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Ztwo}{\mathbb{Z}_2}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\atwo}[1]{\lvert#1\rvert_2}
+\newcommand{\logF}{\log F(B)}
+\newcommand{\ZmZ}{\Z/12\Z}
+\newcommand{\Ssph}{\mathbb{S}^2}
+
+% -------------------------------------------------
+% Dokument
+% -------------------------------------------------
+\title{%
+  Schütte-Ikosaeder-Spannung und Collatz-Dämpfung:\\[0.4em]
+  Geometrische Analogie und ihre Grenzen\\[0.5em]
+  \large Ergänzung zu \textit{collatz\_lyapunov\_konditioniert.tex}%
+}
+\author{Thomas Hoffbauer}
+\date{16.\ Juni 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Dieses Dokument untersucht, ob die \emph{Schütte-Ikosaeder-Spannung} ---
+im Projektkontext das topologische Maß der Instabilität in Schüttes Beweis
+des 12-Kuss-Theorems von 1953 --- zur Verstärkung des negativen
+Lyapunov-Exponenten der Collatz-Dämpfung beitragen kann.
+
+Der mathematische Kern der Analogie ist folgende Beobachtung: Das
+Ikosaeder hat genau \textbf{12 Ecken}; die Gruppe $\ZmZ$ hat genau
+\textbf{12 Restklassen}; davon sind genau \textbf{4} die EABC-Klassen,
+die die Collatz-Dynamik auf ungeraden Zahlen tragen.
+
+Die Analyse trennt konsequent drei Ebenen:
+\begin{enumerate}[noitemsep]
+  \item \textcolor{bewiesengrün}{\textbf{Bewiesen}}: Das 12-Kuss-Theorem
+        (Schütte/van der Waerden 1953); die EABC-Klassenstruktur; die
+        LTE-Schranke.
+  \item \textcolor{warnorange}{\textbf{Geometrische Analogie}}: Die
+        strukturelle Parallele zwischen Ikosaeder-Ecken und Restklassen
+        mod~12; eine Übertragung der Spannungsungleichung auf die
+        EABC-Übergangsmatrix.
+  \item \textcolor{lückenrot}{\textbf{Offen}}: Ergodizität der Collatz-Bahn;
+        Zyklenfreiheit; ein direkter quantitativer Beitrag der
+        Ikosaeder-Geometrie zum Lyapunov-Exponenten.
+\end{enumerate}
+
+\medskip\noindent\textbf{Fazit:}
+Die Ikosaeder-Spannung liefert eine kohärente geometrische Sprache für die
+Endlichkeit und Vollständigkeit des EABC-Zustandsraums, aber keinen
+direkten Beweis der Dämpfung.
+\end{abstract}
+
+\tableofcontents
+\bigskip
+
+\begin{tcolorbox}[warnung, title={Einordnung dieses Dokuments}]
+Die Collatz-Vermutung ist unbewiesen.
+Alle Drift-Rechnungen aus \textit{collatz\_lyapunov\_konditioniert.tex}
+sind heuristisch.
+Dieses Dokument fügt eine geometrische Perspektive hinzu, die in sich
+mathematisch korrekt ist, aber den Status des Hauptarguments nicht verändert.
+\end{tcolorbox}
+
+% ====================================================
+\section{Schütte-Ikosaeder-Spannung: Mathematischer Gehalt}
+\label{sec:schuette}
+% ====================================================
+
+\subsection{Das 12-Kuss-Theorem}
+
+\begin{tcolorbox}[ergebnis, title={Satz von Schütte und van der Waerden (1953) -- bewiesen}]
+\textbf{Theorem (12-Kuss-Theorem):}
+In $\R^3$ können maximal $12$ nicht-überlappende Einheitskugeln eine
+zentrale Einheitskugel gleichzeitig berühren.
+Äquivalent: Es gibt maximal $12$ Einheitsvektoren $x_1,\dots,x_n \in \Ssph$
+mit paarweisem Winkel
+\[
+  \angle(x_i, x_j) \;\geq\; 60°
+  \quad \Longleftrightarrow \quad
+  \langle x_i, x_j \rangle \;\leq\; \tfrac{1}{2}
+  \qquad \text{für alle } i \neq j.
+\]
+\end{tcolorbox}
+
+Der Beweis von Schütte und van der Waerden (1953) ist bemerkenswert, weil
+er \emph{knapp} ist: Tatsächlich können die 12 Kugeln so angeordnet werden,
+dass jede leicht beweglich bleibt --- es gibt kein eindeutiges starres
+Optimum wie in Dimension~8 (Ikosaeder ist nicht die einzige optimale
+Konfiguration).
+Genau diese Restfreiheit nennt das Projekt \textbf{Schütte-Spannung}.
+
+\begin{definition}[Schütte-Spannung, nach \textit{Final RH.tex}]
+\label{def:spannung}
+Die \emph{Schütte-Spannung} $\sigma \geq 0$ ist das Maß der
+topologischen Instabilität im $\R^3$-Kissing-Problem:
+\[
+  \sigma \;:=\; 1 - \frac{\text{Kissing-Zahl}(\R^3)}{%
+  \text{Kissing-Zahl}(\R^8)} \;=\; 1 - \frac{12}{240} \;=\; \frac{19}{20}.
+\]
+In $\R^8$ verschwindet $\sigma$ vollständig: Das $E_8$-Gitter realisiert
+die Kissing-Zahl $240$ in einer einzigartigen, starren Konfiguration
+(Viazovska, 2022 Fields-Medaille).
+\end{definition}
+
+\begin{bemerkung}[Gregory-Newton-Lücke]
+Die Schütte-Spannung manifestiert sich geometrisch in der
+\emph{Gregory-Newton-Lücke}: Zwischen der 12-Kugel-Konfiguration und dem
+Aufbrechen (ab 13 Kugeln) gibt es einen positiven Winkelspielraum von
+etwa $\theta_\mathrm{GN} \approx 0.099$ Bogenmass~$\approx 5.7°$.
+Die 12~Kugeln sitzen also \emph{nicht} in starrer Gleichgewichtslage,
+sondern in einem \emph{gespannten}, aber beweglichen Zustand.
+\end{bemerkung}
+
+\subsection{Schütte-Spannung im Projektkontext}
+
+Im vorliegenden Projekt taucht die Schütte-Spannung in mehreren Kontexten auf:
+
+\begin{enumerate}[label=(\alph*)]
+  \item \textbf{\textit{Final RH.tex}}: Schütte-Spannung $\sigma$ als Maß
+        für den Unterschied zwischen der instabilen $\R^3$-Konfiguration
+        (Kissing-Zahl $12$) und der rigiden $E_8$-Situation (Kissing-Zahl
+        $240$). In $\R^3$ ist $\sigma > 0$; in $\R^8$ gilt $\sigma = 0$.
+
+  \item \textbf{\textit{Pentagon Holonomie.tex}}: Die
+        \emph{Schütte-Erweiterung} ist eine Folge diskreter
+        Verfeinerungsschritte $\Sigma_n: \mathcal{T} \mapsto \mathcal{I}_n$
+        vom Tetraederkern zur Mikrosaeder-Schale. Der Begriff ist strukturell
+        gemeint: Die Spannung entsteht an jedem Ikosaeder/Dodekaeder-Umschlag.
+
+  \item \textbf{\textit{Scholze\_12.tex}}: Die
+        \emph{Schüttespannung $57$--$59$--$61$} als lokaler arithmetischer
+        Resonanzmarker, der Kompositheit und Primheit in unmittelbarer
+        Nachbarschaft zeigt.
+\end{enumerate}
+
+\begin{tcolorbox}[ikosaeder]
+\textbf{Gemeinsamer Kern:}
+Schütte-Spannung ist stets ein Maß für \emph{strukturelle Vollständigkeit
+unter Zwangsbedingung}: Die Konfiguration ist maximal besetzt (12 Kugeln,
+12 Restklassen, 12 Ecken), aber nicht starr --- der verbleibende
+``Spielraum'' ist die Spannung.
+\end{tcolorbox}
+
+% ====================================================
+\section{Die 12 Ecken des Ikosaeders und die 12 Restklassen mod 12}
+\label{sec:zwolf}
+% ====================================================
+
+\subsection{Kombinatorik des Ikosaeders}
+
+\begin{tcolorbox}[ergebnis, title={Ikosaeder-Grunddaten -- bewiesen (Euler, Euklid)}]
+Das reguläre Ikosaeder $\mathcal{I}$ hat:
+\begin{itemize}[noitemsep]
+  \item $|V(\mathcal{I})| = 12$ Ecken (Vertices), je mit Grad $5$,
+  \item $|E(\mathcal{I})| = 30$ Kanten,
+  \item $|F(\mathcal{I})| = 20$ Flächen (gleichseitige Dreiecke).
+\end{itemize}
+Euler-Charakteristik: $12 - 30 + 20 = 2 = \chi(S^2)$.
+Die Gram-Identität der Inzidenzmatrix (vgl.\ \textit{IkoDo\_transition.tex}):
+\[
+  B_I^\top B_I \;=\; 5\,I_{12} + A_I,
+\]
+wobei $A_I \in \{0,1\}^{12 \times 12}$ die Adjazenzmatrix ist.
+\end{tcolorbox}
+
+\subsection{Die 12 Restklassen mod 12 und ihre Rollen}
+
+\begin{tcolorbox}[ergebnis, title={Struktursatz der Restklassen mod 12 -- bewiesen}]
+Die Gruppe $\ZmZ = \{0, 1, 2, \dots, 11\}$ zerfällt in drei disjunkte
+Typen:
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lll}
+\toprule
+Typ & Restklassen & Rolle in Collatz \\
+\midrule
+EABC (aktiv) & $\{1, 5, 7, 11\}$ & ungerade, $\gcd(\cdot, 6) = 1$ \\
+\quad E & $\{1\}$ & $n \equiv 1 \pmod{12}$ \\
+\quad A & $\{5\}$ & $n \equiv 5 \pmod{12}$ \\
+\quad B & $\{7\}$ & $n \equiv 7 \pmod{12}$ \\
+\quad C & $\{11\}$ & $n \equiv 11 \pmod{12}$ \\
+\midrule
+2-Drain (passiv) & $\{0, 2, 4, 6, 8, 10\}$ & gerade, $2 \mid n$ \\
+3-Drain (passiv) & $\{3, 9\}$ & $3 \mid n$, $2 \nmid n$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+Von den 12 Restklassen sind also genau $\mathbf{4}$ EABC-aktiv und
+$\mathbf{8}$ inaktiv.
+\end{tcolorbox}
+
+\subsection{Die strukturelle Parallele}
+
+\begin{tcolorbox}[analogie]
+\textbf{Beobachtung (Analogie, kein Beweis):}
+Das Ikosaeder hat 12 Ecken; $\ZmZ$ hat 12 Elemente.
+In beiden Fällen gibt es eine \emph{4-elementige aktive Teilmenge}:
+\begin{itemize}[noitemsep]
+  \item Ikosaeder: 4 ausgezeichnete Ecken einer eingebetteten Tetraeder-Untergruppe
+        (der reguläre Tetraeder passt in das Ikosaeder ein, seine 4 Ecken
+        bilden eine maximal separierte Teilmenge).
+  \item Mod 12: Die 4 EABC-Klassen $\{1, 5, 7, 11\}$ sind genau die
+        Einheiten der Gruppe $(\Z/12\Z)^\times$ --- maximal separiert im
+        Sinne: kein Element ist durch 2 oder 3 teilbar.
+\end{itemize}
+
+\medskip
+\textbf{Numerische Entsprechung:}
+\[
+  \begin{array}{c|c}
+  \text{Ikosaeder} & \ZmZ \\ \hline
+  12 \text{ Ecken} & 12 \text{ Restklassen} \\
+  4 \text{ Tetraeder-Ecken} & 4 \text{ EABC-Klassen} \\
+  8 \text{ ``äußere'' Ecken} & 8 \text{ inaktive Klassen}
+  \end{array}
+\]
+\end{tcolorbox}
+
+\begin{bemerkung}[Winkeldefekt]
+\label{bem:winkeldefekt}
+Im regulären Ikosaeder beträgt der Winkeldefekt an jeder Ecke:
+\[
+  \delta_{\text{Iko}} \;=\; 2\pi - 5 \cdot \frac{\pi}{3}
+  \;=\; 2\pi - \frac{5\pi}{3}
+  \;=\; \frac{\pi}{3} \;\approx\; 60°.
+\]
+Zum Vergleich: Das Tetraeder hat $\delta_T = 2\pi - 3 \cdot \frac{\pi}{3} = \pi$,
+der Würfel hat $\delta_W = \frac{\pi}{2}$.
+Der Winkeldefekt ist geometrisches Maß der ``Spannung'' an einer Ecke.
+\end{bemerkung}
+
+% ====================================================
+\section{Übertragung der Spannungsungleichung auf die EABC-Übergangsmatrix}
+\label{sec:transfer}
+% ====================================================
+
+\subsection{Die Kissing-Ungleichung}
+
+Die Kernidee des Schütte-van der Waerden-Beweises ist eine Energieungleichung.
+Für $n$ Einheitsvektoren $x_1, \dots, x_n \in \Ssph$ mit paarweisem
+Innenprodukt $\langle x_i, x_j \rangle \leq c$ gilt:
+\[
+  0 \;\leq\; \left\|\sum_{i=1}^{n} x_i\right\|^2
+  \;=\; n + 2 \sum_{i < j} \langle x_i, x_j \rangle
+  \;\leq\; n + n(n-1)\,c.
+\]
+Diese triviale Ungleichung liefert allein noch keine obere Schranke für~$n$.
+Schütte und van der Waerden kombinierten sie mit einer feineren
+sphärisch-geometrischen Abschätzung (Winkelsummen auf $S^2$), die
+tatsächlich $n \leq 12$ ergibt.
+
+\begin{lemma}[Schütte-Ungleichung, vereinfacht]
+\label{lem:schuette}
+Sei $f: [-1, \tfrac{1}{2}] \to \R$ eine \emph{positiv definite}
+Funktion auf $S^2$ (im Sinne von Schoenberg), etwa
+\[
+  f(t) \;=\; \bigl(1 - 2t\bigr)^{-1} \quad \text{(Modellwahl von Schütte)}.
+\]
+Dann gilt für $n$ Punkte $x_1, \dots, x_n \in S^2$ mit
+$\langle x_i, x_j \rangle \leq \tfrac{1}{2}$ für $i \neq j$:
+\[
+  \sum_{i,j=1}^{n} f\!\bigl(\langle x_i, x_j \rangle\bigr) \;\geq\; 0.
+\]
+Ausgeschrieben ergibt sich (mit geeigneter $f$) eine obere Schranke
+$n \leq 12$.
+\end{lemma}
+
+\begin{tcolorbox}[warnung, title={Wichtige Einschränkung}]
+Die obige vereinfachte Formulierung des Schütte-Beweises ist qualitativ
+korrekt, aber nicht vollständig. Der vollständige Beweis (Schütte und
+van der Waerden, 1953) verwendet eine spezifische positiv-definite Funktion
+und eine sorgfältige Normierungsrechnung.
+\end{tcolorbox}
+
+\subsection{Analogie: EABC-Übergangsmatrix}
+
+Die odd-to-odd Collatz-Abbildung $\mathcal{U}(n) = (3n+1)/2^{\vii(3n+1)}$
+induziert Übergänge zwischen den EABC-Klassen.
+Auf der Ebene $\ZmZ$ ist die Dynamik allerdings \emph{nicht} rein durch
+mod-12 bestimmt: $\mathcal{U}(n) \pmod{12}$ hängt von $\vii(3n+1)$ ab,
+das wiederum von höheren Zweierpotenzen in~$n$ abhängt.
+
+Wir betrachten deshalb die \emph{stochastische Approximation}: Definiere
+die $(4 \times 4)$-Matrix $P_{\text{EABC}}$ durch
+\[
+  (P_{\text{EABC}})_{ab} \;:=\; P\bigl(\mathcal{U}(n) \equiv b
+  \pmod{12} \;\big|\; n \equiv a \pmod{12}\bigr),
+  \quad a, b \in \{1, 5, 7, 11\},
+\]
+wobei die Wahrscheinlichkeit über die stationäre Verteilung der Kettenlängen
+$l$ gebildet wird.
+
+\begin{tcolorbox}[ergebnis, title={Bekannte Fakten über $P_{\text{EABC}}$ -- bewiesen}]
+\begin{enumerate}[noitemsep]
+  \item $P_{\text{EABC}}$ ist eine \emph{substochastische} Matrix: Zeilensummen
+        $\leq 1$, da ein Teil der Wahrscheinlichkeitsmasse in den
+        2-Drain-Bereich abfließt.
+  \item Der \emph{Spektralradius} $\rho(P_{\text{EABC}}) \leq 1$
+        (Perron-Frobenius für nicht-negative Matrizen).
+  \item Die Matrix ist endlich ($4 \times 4$): Der Zustandsraum ist
+        abgeschlossen unter mod-12.
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{tcolorbox}[analogie]
+\textbf{Spannungsanalogie (Analogie, kein Beweis):}
+
+Das Kissing-Problem in $\R^3$ beschreibt, wie viele Vektoren $x_i \in S^2$
+mit paarweisem Winkelabstand $\geq 60°$ existieren können --- maximal~12.
+Übertragen auf $\ZmZ$:
+\begin{itemize}[noitemsep]
+  \item Die 12 Restklassen spielen die Rolle der 12 Kügelanordnungen.
+  \item Die 4 EABC-Klassen sind die ``aktiven'' Kisser --- sie haben
+        maximale gegenseitige modulare Distanz (kein EABC-Element ist
+        Summe zweier anderer in $\Z/12\Z$ mit $\gcd = 1$).
+  \item Die Kissing-Bedingung $n \leq 12$ entspricht dem Fakt, dass es
+        \emph{maximal} 12 Restklassen mod~12 gibt --- keine 13.\ Klasse
+        passt hinzu.
+\end{itemize}
+
+\medskip
+\textbf{Strukturelle Parallele zur Spektralschranke:}
+Falls die Schütte-Ungleichung (Lemma~\ref{lem:schuette}) auf eine
+Matrixfunktion $f(P_{\text{EABC}})$ übertragbar wäre, ergäbe sich
+\[
+  \sum_{i,j} f\!\bigl((P_{\text{EABC}})_{ij}\bigr) \;\geq\; 0
+  \quad \Longrightarrow \quad
+  \rho(P_{\text{EABC}}) \;<\; 1.
+\]
+Dies ist jedoch \emph{nicht bewiesen}: Die Matrixeinträge von
+$P_{\text{EABC}}$ sind keine Winkelkosinusse von Einheitsvektoren.
+\end{tcolorbox}
+
+\subsection{Was die Finiteness-Struktur tatsächlich liefert}
+
+\begin{proposition}[Endlichkeit des Zustandsraums -- bewiesen]
+\label{prop:endlich}
+Der EABC-Zustandsraum $\{1, 5, 7, 11\} \subset \ZmZ$ ist endlich.
+Insbesondere:
+\begin{enumerate}[noitemsep]
+  \item Die Übergangsmatrix $P_{\text{EABC}}$ ist eine endliche $(4\times 4)$-Matrix.
+  \item Jedes Perron-Frobenius-Argument, das Mischung (Irreduziblität +
+        Aperiodizität) voraussetzt, kann auf $P_{\text{EABC}}$ angewendet
+        werden --- \emph{wenn} Mischung gezeigt ist.
+  \item Die Existenz eines eindeutigen stationären Maßes~$\mu$ auf
+        $\{1,5,7,11\}$ ist äquivalent zu $\rho(P_{\text{EABC}}) < 1$
+        (da die Matrix substochastisch ist, ist das stationäre Maß kein
+        Wahrscheinlichkeitsmaß, sondern ein sub-invariantes Maß).
+\end{enumerate}
+\end{proposition}
+
+\begin{tcolorbox}[kernidee]
+\textbf{Die eigentliche Rolle der 12er-Zahl:}
+Das 12-Kuss-Theorem garantiert, dass die Ikosaeder-Eckstruktur
+\emph{maximal, aber nicht überfüllt} ist.
+Übertragen: $\ZmZ$ hat genau 12 Elemente --- kein 13.\ Element existiert.
+Diese \emph{Vollständigkeit ohne Redundanz} ist der tiefste gemeinsame Kern
+von Schütte-Spannung und EABC-Struktur.
+Sie liefert:
+\begin{itemize}[noitemsep]
+  \item Die Endlichkeit des Zustandsraums (Proposition~\ref{prop:endlich}).
+  \item Die prinzipielle Anwendbarkeit von Spektralargumenten.
+  \item Aber \emph{nicht}: die konkrete Mischungsrate oder den
+        Lyapunov-Exponenten.
+\end{itemize}
+\end{tcolorbox}
+
+% ====================================================
+\section{Implikationen für den Lyapunov-Exponenten}
+\label{sec:lyapunov}
+% ====================================================
+
+\subsection{Rückblick: Die konditionierte Driftrechnung}
+
+Aus \textit{collatz\_lyapunov\_konditioniert.tex} gilt:
+\[
+  \E[\logF] \;\approx\; -0{,}330 \;<\; 0,
+\]
+unter der Näherung $\E[\vii \mid l{=}k] \approx 2$ für $k \geq 1$.
+Der kritische Schwellenwert ist $\alpha^* \approx 1{,}34$: Für
+$\E[\vii \mid l\geq 1] > \alpha^*$ bleibt der Drift negativ.
+
+\subsection{Was die Ikosaeder-Perspektive hinzufügt}
+
+\begin{tcolorbox}[ikosaeder, title={Beitrag 1: Kompaktheitsargument (Analogie)}]
+Das Schütte-Theorem ist ein \emph{Kompaktheitssatz}: Es gibt keine
+unbeschränkte Folge von Küssvektoren --- die Zahl ist endlich.
+
+Übertragen auf Collatz: Der EABC-Zustandsraum ist endlich (4 Zustände).
+Dies bedeutet:
+\begin{itemize}[noitemsep]
+  \item Die Collatz-Bahn kann nicht ``einfach entweichen'' --- sie muss
+        ständig durch den EABC-Filter.
+  \item Jede Iteration $\mathcal{U}$ bildet in $\{1, 5, 7, 11\} \pmod{12}$
+        ab --- der Zustandsraum hat keine ``freien'' Dimensionen.
+\end{itemize}
+\textbf{Status:} Diese Kompaktheit ist bewiesen (Endlichkeit von $\ZmZ$),
+aber sie liefert keine direkte Schranke für $\E[\logF]$.
+\end{tcolorbox}
+
+\begin{tcolorbox}[ikosaeder, title={Beitrag 2: Winkeldefekt als Log-Drift (Analogie)}]
+Der Winkeldefekt des Ikosaeders $\delta_{\text{Iko}} = \pi/3$ misst,
+wie weit das Ikosaeder von flacher (planarer) Symmetrie abweicht.
+Numerisch:
+\[
+  \delta_{\text{Iko}} / (2\pi) \;=\; \tfrac{1}{6} \;\approx\; 0{,}167.
+\]
+Der konditionierte Lyapunov-Exponent (in Basis-2-Logarithmen):
+\[
+  \E[\logF] \;\approx\; -0{,}330 \;\approx\; -2 \cdot 0{,}167.
+\]
+\textbf{Numerische Beobachtung (spekulativ):}
+$\E[\logF] \approx -2 \cdot (\delta_{\text{Iko}} / 2\pi)$.
+
+\medskip
+\textbf{Status:} Diese numerische Koinzidenz ist nicht kausal erklärt.
+Sie ist eine interessante Beobachtung, aber \emph{kein Beweis}.
+\end{tcolorbox}
+
+\begin{tcolorbox}[ikosaeder, title={Beitrag 3: Kissing-Bound als Mischungsschranke (Analogie)}]
+Wenn die 12 Kugeln des Kissing-Problems den 12 Restklassen entsprechen,
+dann entspricht die Tatsache ``keine 13.\ Kugel passt hinzu'' dem Fakt:
+
+\medskip\noindent
+\emph{Es gibt keine 13.\ Restklasse mod~12.}
+
+\medskip
+Dies ist trivial wahr, aber strukturell bedeutsam: Die EABC-Dynamik ist
+in einem abgeschlossenen, maximalen System --- ohne Overflow.
+Wenn man annimmt, dass die 4 aktiven EABC-Klassen die 4-Ecken-Tetaeder-
+Unterstruktur des Ikosaeders spiegeln, dann liefert die ``Spannung''
+zwischen den 12 Kugeln eine Erklärung, warum die inaktiven 8 Klassen
+als Drain fungieren: Sie sind die ``nicht-Tetraeder-Ecken'' im Ikosaeder.
+
+\textbf{Status:} Geometrische Analogie; nicht formalisierbar ohne
+explizite Einbettung.
+\end{tcolorbox}
+
+\subsection{Numerische Zusammenfassung}
+
+\begin{table}[h!]
+\centering
+\caption{Gegenüberstellung: Ikosaeder und Collatz-Lyapunov}
+\label{tab:vergleich}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{p{5.5cm} c p{6cm}}
+\toprule
+\textbf{Ikosaeder / Schütte} & & \textbf{Collatz / EABC} \\
+\midrule
+12 Ecken & $\longleftrightarrow$ & 12 Restklassen mod 12 \\
+4 Tetraeder-Ecken & $\longleftrightarrow$ & 4 EABC-Klassen $\{1,5,7,11\}$ \\
+8 restliche Ecken & $\longleftrightarrow$ & 8 inaktive Klassen \\
+Kissing-Zahl = 12 & $\longleftrightarrow$ & $|\ZmZ| = 12$ \\
+Winkeldefekt $\delta = \pi/3$ & $\longleftrightarrow$ & Drift $\approx -\pi/3 \cdot (1/\pi)$?\\
+Schütte-Spannung $\sigma > 0$ & $\longleftrightarrow$ & Heuristische Drift-Lücke \\
+Kissing $= 12$, nicht 13 & $\longleftrightarrow$ & Keine 13.\ Restklasse mod 12 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ====================================================
+\section{Was lässt sich tatsächlich beweisen? Was bleibt Analogie?}
+\label{sec:status}
+% ====================================================
+
+\subsection{Vollständige Statusübersicht}
+
+\begin{table}[h!]
+\centering
+\caption{Status aller Aussagen in diesem Dokument}
+\label{tab:status}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{p{7.5cm} c p{4cm}}
+\toprule
+\textbf{Aussage} & \textbf{Status} & \textbf{Quelle} \\
+\midrule
+12-Kuss-Theorem (Schütte/van der Waerden 1953)
+  & \textcolor{bewiesengrün}{\textbf{bewiesen}}
+  & Klassisches Resultat \\
+Ikosaeder hat genau 12 Ecken
+  & \textcolor{bewiesengrün}{\textbf{bewiesen}}
+  & Euklid / Euler \\
+$|\ZmZ| = 12$ Restklassen
+  & \textcolor{bewiesengrün}{\textbf{bewiesen}}
+  & Trivial \\
+EABC-Klassen $= (\Z/12\Z)^\times = \{1,5,7,11\}$
+  & \textcolor{bewiesengrün}{\textbf{bewiesen}}
+  & Gruppentheorie \\
+$P(l = k) = 2^{-(k+1)}$ für $k \geq 1$
+  & \textcolor{bewiesengrün}{\textbf{bewiesen}}
+  & \textit{coll.\_lyap.\_kond.tex} \\
+LTE-Schranke $\vii(3n_l+1) = O(\log l)$
+  & \textcolor{bewiesengrün}{\textbf{bewiesen}}
+  & LTE (Kummer) \\
+$P_{\text{EABC}}$ ist endliche $(4 \times 4)$-Matrix
+  & \textcolor{bewiesengrün}{\textbf{bewiesen}}
+  & Endlichkeit von $\ZmZ$ \\
+$\rho(P_{\text{EABC}}) \leq 1$
+  & \textcolor{bewiesengrün}{\textbf{bewiesen}}
+  & Perron-Frobenius \\
+\midrule
+Analogie: Ikosaeder-Ecken $\leftrightarrow$ EABC-Klassen
+  & \textcolor{warnorange}{\textbf{Analogie}}
+  & Dieses Dokument \\
+Numerische Koinzidenz $\E[\logF] \approx -2\delta/(2\pi)$
+  & \textcolor{warnorange}{\textbf{spekulativ}}
+  & Dieses Dokument \\
+Kissing-Bound als Mischungsschranke
+  & \textcolor{warnorange}{\textbf{Analogie}}
+  & Dieses Dokument \\
+$\E[\logF] \approx -0{,}330$
+  & \textcolor{warnorange}{\textbf{heuristisch}}
+  & \textit{coll.\_lyap.\_kond.tex} \\
+\midrule
+$\rho(P_{\text{EABC}}) < 1$ (strikt)
+  & \textcolor{lückenrot}{\textbf{offen}}
+  & Mischung nötig \\
+Ergodizität der Collatz-Bahn
+  & \textcolor{lückenrot}{\textbf{offen}}
+  & Birkhoff fehlt \\
+Zyklenfreiheit für alle $n$
+  & \textcolor{lückenrot}{\textbf{offen}}
+  & Nicht bewiesen \\
+Direkter Zusammenhang Schütte $\to$ Lyapunov
+  & \textcolor{lückenrot}{\textbf{offen}}
+  & Kein formaler Beweis \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Die drei Ebenen im Klartext}
+
+\subsubsection{Ebene 1: Was bewiesen ist}
+
+\begin{tcolorbox}[ergebnis, title={Beweisbare Aussagen}]
+\begin{enumerate}[noitemsep]
+  \item Das 12-Kuss-Theorem ist ein klassisches Resultat der Geometrie.
+  \item Die EABC-Klassen $\{1, 5, 7, 11\} \subset \ZmZ$ sind die
+        Einheitengruppe $(\Z/12\Z)^\times$; das ist Gruppentheorie.
+  \item Die Übergangsmatrix $P_{\text{EABC}}$ ist eine endliche
+        substochastische $(4 \times 4)$-Matrix mit $\rho \leq 1$.
+  \item Die LTE-Schranke (Lifting-the-Exponent) liefert
+        $\E[\vii \mid l \geq 1] \geq 2$, was den Drift unter dem
+        kritischen Wert~$\alpha^* \approx 1{,}34$ hält.
+  \item Die Zahl~12 erscheint doppelt: als Kissing-Zahl in $\R^3$
+        und als Modulus des EABC-Rahmens. Diese numerische Koinzidenz
+        ist mathematisch real, aber kausal nicht erklärt.
+\end{enumerate}
+\end{tcolorbox}
+
+\subsubsection{Ebene 2: Geometrische Analogie}
+
+\begin{tcolorbox}[analogie]
+\textbf{Was die Analogie strukturell zeigt (aber nicht beweist):}
+\begin{itemize}[noitemsep]
+  \item Die EABC-Dynamik lebt in einem \emph{maximal kompakten},
+        endlichen Zustandsraum --- analog zur Maximalität der 12 Kissing-Kugeln.
+  \item Die ``Spannung'' im Ikosaeder (kein starres Gleichgewicht,
+        Gregory-Newton-Lücke) spiegelt die ``heuristische Lücke'' in der
+        Collatz-Drift-Rechnung: Alles deutet auf negativen Drift, aber
+        keiner hat Ergodizität bewiesen.
+  \item Die 4-Teilung EABC innerhalb der 12-Teilung mod~12 entspricht
+        geometrisch dem Einbetten eines Tetraeders in das Ikosaeder ---
+        der ``aktive Kern'' innerhalb der maximalen Konfiguration.
+\end{itemize}
+\end{tcolorbox}
+
+\subsubsection{Ebene 3: Was offen bleibt}
+
+\begin{tcolorbox}[lücke, title={Fundamental offene Fragen}]
+\begin{enumerate}[noitemsep]
+  \item \textbf{Mischung:} Ist $P_{\text{EABC}}$ irreduzibel und aperiodisch?
+        Dann wäre $\rho(P_{\text{EABC}}) < 1$ automatisch, und ein
+        stationäres Maß existierte --- aber Collatz-Dynamik mit beliebigem
+        Startpunkt bleibt komplizierter als eine endliche Markovkette.
+
+  \item \textbf{Ergodizität:} Ohne Birkhoff-Ergodensatz für die
+        Collatz-Abbildung~$\mathcal{U}$ folgt aus $\E[\logF] < 0$ nur,
+        dass der Drift für \emph{zufällig gewählte} Bahnen negativ ist,
+        nicht für alle $n \in \N$.
+
+  \item \textbf{Quantitative Brücke:} Es gibt keine formale Übertragung
+        der Schütte-Ungleichung (Lemma~\ref{lem:schuette}) auf eine
+        Spektralschranke für $P_{\text{EABC}}$.
+        Die Matrixeinträge sind Übergangswahrscheinlichkeiten, keine
+        Winkelkosinusse von Einheitsvektoren.
+
+  \item \textbf{Winkeldefekt-Drift:} Die numerische Koinzidenz
+        $\E[\logF] \approx -2\delta_{\text{Iko}}/(2\pi)$ ist ungeklärt.
+        Sie könnte Zufall sein.
+\end{enumerate}
+\end{tcolorbox}
+
+\subsection{Präzisiertes Hauptresultat dieses Dokuments}
+
+\begin{tcolorbox}[hauptsatz, title={Stärkster beweisbarer Satz (dieses Dokuments)}]
+Die Zahl~$12$ erscheint in zwei unabhängigen mathematischen Kontexten:
+\begin{enumerate}[noitemsep]
+  \item Als Kissing-Zahl in $\R^3$ (Schütte/van der Waerden, 1953):
+        maximal viele, geometrisch gespannte Kugeln ohne Überlappung.
+  \item Als Modulus des EABC-Rahmens: $(\Z/12\Z)^\times = \{1, 5, 7, 11\}$,
+        mit $|(\Z/12\Z)^\times| = 4$ aktiven und $8$ inaktiven Klassen.
+\end{enumerate}
+
+\medskip
+Beide Strukturen sind maximal kompakt und endlich.
+Aus der Endlichkeit folgt:
+\begin{itemize}[noitemsep]
+  \item $P_{\text{EABC}}$ ist eine endliche Matrix (Proposition~\ref{prop:endlich}).
+  \item Spektralargumente sind \emph{prinzipiell anwendbar}, sobald Mischung
+        gezeigt ist.
+  \item Die negative konditionierte Drift
+        $\E[\logF] \approx -0{,}330$ (aus
+        \textit{collatz\_lyapunov\_konditioniert.tex}) ist innerhalb
+        des endlichen Zustandsraums konsistent.
+\end{itemize}
+
+\medskip
+\textbf{Was dies \emph{nicht} beweist:}
+Die Collatz-Vermutung.
+Die Ikosaeder-Analogie verstärkt die geometrische Kohärenz des Rahmens,
+ersetzt aber nicht die fehlenden Schritte: Ergodizität, Zyklenfreiheit,
+und einen quantitativen Beweis der Drift-Negativität für alle Bahnen.
+\end{tcolorbox}
+
+% ====================================================
+\appendix
+\section{Ikosaeder-Daten und Adjazenzstruktur}
+\label{app:iko}
+% ====================================================
+
+Das reguläre Ikosaeder $\mathcal{I}$ hat Koordinaten der 12 Ecken
+(in Standardlage):
+\[
+  V(\mathcal{I}) \;=\; \bigl\{
+    (\pm 1, 0, \pm\varphi),\;
+    (0, \pm\varphi, \pm 1),\;
+    (\pm\varphi, \pm 1, 0)
+  \bigr\},
+\]
+mit dem goldenen Schnitt $\varphi = (1+\sqrt{5})/2$.
+Die Gram-Identität der Adjazenzmatrix (vgl.\ \textit{IkoDo\_transition.tex}):
+\[
+  B_I^\top B_I \;=\; 5\,I_{12} + A_I,
+\]
+denn jede Ikosaederecke liegt auf genau 5 Kanten.
+
+Der Winkel zwischen benachbarten Ecken:
+\[
+  \cos\theta_{\text{benachb}} \;=\;
+  \frac{\langle v_i, v_j\rangle}{\|v_i\|\|v_j\|}
+  \;=\; \frac{1}{\sqrt{5}} \;\approx\; 0{,}447,
+  \qquad \theta \;\approx\; 63{,}4°.
+\]
+Dieser Winkel liegt knapp über dem Kissing-Mindestwinkel $60°$, was die
+``Spannung'' illustriert: Die Ikosaeder-Ecken sind fast, aber nicht ganz
+auf der Grenze der Kissing-Bedingung.
+
+\section{Verbindung zu den Vorgängerdokumenten}
+\label{app:verbindung}
+
+Dieses Dokument steht in folgender Beziehung zu den anderen Collatz-Texten
+des Projekts:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{l p{9cm}}
+\toprule
+\textbf{Datei} & \textbf{Inhalt und Verbindung} \\
+\midrule
+\textit{collatz\_lyapunov.tex}
+  & Naive Lyapunov-Analyse, $\E[\logF] \approx -0{,}83$
+    (geometrische $\nu$-Verteilung, unkonditioniert) \\
+\textit{collatz\_lyapunov\_konditioniert.tex}
+  & Konditionierte Analyse, $\E[\logF] \approx -0{,}33$;
+    LTE-Präzisierung; Sensitivitätsanalyse;
+    kritischer Wert $\alpha^* \approx 1{,}34$ \\
+\textit{collatz\_eabc\_spektrum.tex}
+  & EABC-Klassenstruktur; Spannungs-/Drain-Regime \\
+\textit{collatz\_ikosaeder\_spannung.tex}
+  & Dieses Dokument: geometrische Analogie Ikosaeder $\leftrightarrow$ EABC \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{document}

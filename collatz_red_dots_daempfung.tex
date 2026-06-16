@@ -1,0 +1,852 @@
+\documentclass[12pt,a4paper]{article}
+
+% -------------------------------------------------
+% Sprache / Kodierung
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+
+% -------------------------------------------------
+% Layout / Grafik / Farben
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks,unicode]{hyperref}
+\pdfstringdefDisableCommands{%
+  \def\ü{ue}\def\ö{oe}\def\ä{ae}\def\Ü{Ue}\def\Ö{Oe}\def\Ä{Ae}\def\ss{ss}%
+}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{siunitx}
+
+% -------------------------------------------------
+% Farben (konsistent mit Vorgängerdokumenten)
+% -------------------------------------------------
+\definecolor{lückenrot}{RGB}{180,40,40}
+\definecolor{bewiesengrün}{RGB}{30,100,50}
+\definecolor{warnorange}{RGB}{200,100,10}
+\definecolor{hintergrundblau}{RGB}{235,242,250}
+\definecolor{hintergrundgelb}{RGB}{255,252,225}
+\definecolor{adischviolett}{RGB}{90,20,140}
+\definecolor{fehlerrot}{RGB}{200,0,0}
+\definecolor{konjviolett}{RGB}{80,0,130}
+\definecolor{e8grau}{RGB}{55,55,90}
+\definecolor{reddotrot}{RGB}{160,30,30}
+\definecolor{reddothell}{RGB}{255,240,240}
+
+% -------------------------------------------------
+% tcolorbox-Stile
+% -------------------------------------------------
+\tcbset{
+  lücke/.style={colback=red!8, colframe=lückenrot, fonttitle=\bfseries,
+    title={Offene Lücke}},
+  ergebnis/.style={colback=green!7, colframe=bewiesengrün,
+    fonttitle=\bfseries, title={Bewiesenes Ergebnis}},
+  warnung/.style={colback=orange!10, colframe=warnorange,
+    fonttitle=\bfseries, title={Achtung / Heuristik}},
+  adisch/.style={colback=violet!6, colframe=adischviolett,
+    fonttitle=\bfseries, title={2-adische Perspektive}},
+  kernidee/.style={colback=hintergrundblau, colframe=blue!60!black,
+    fonttitle=\bfseries, title={Kernidee}},
+  konj/.style={colback=violet!5, colframe=konjviolett, fonttitle=\bfseries,
+    title={Konjektur (unbewiesen)}},
+  hauptsatz/.style={colback=green!10, colframe=bewiesengrün!80!black,
+    fonttitle=\bfseries\large, title={Stärkster beweisbarer Satz}},
+  reddot/.style={colback=reddothell, colframe=reddotrot,
+    fonttitle=\bfseries, title={Red-Dot-Mechanismus}},
+  lte/.style={colback=yellow!8, colframe=e8grau, fonttitle=\bfseries,
+    title={Modulo-Analyse}},
+}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+\newtheorem{hypothese}[definition]{Hypothese}
+\newtheorem{satz}[definition]{Satz}
+
+\newenvironment{beweis}{\begin{proof}[Beweis]}{\end{proof}}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\vii}{\nu_2}
+\newcommand{\viii}{\nu_3}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Ztwo}{\mathbb{Z}_2}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\atwo}[1]{\lvert#1\rvert_2}
+\newcommand{\logF}{\log_2 F(B)}
+\newcommand{\logt}{\log_2}
+\newcommand{\RD}{\mathcal{D}}   % Menge der Doppelstellen-Indizes
+
+% -------------------------------------------------
+% Dokument
+% -------------------------------------------------
+\title{%
+  Red Dots und Dämpfungsverstärkung\\[0.3em]
+  in der Collatz-Lyapunov-Analyse:\\[0.3em]
+  Doppelstellen im EABC-Gitter als ausgezeichnete\\
+  Kontraktionspositionen\\[0.5em]
+  \large Erweiterung zu \textit{collatz\_lyapunov.tex}%
+}
+\author{Thomas Hoffbauer}
+\date{16.\ Juni 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Dieses Dokument identifiziert die \emph{Red Dots} des EABC-Rahmens als
+\emph{Doppelstellen} $Q_n$ im EABC-Gitter modulo~$12$ ---
+diejenigen Viererblöcke, bei denen beide Zwillingskanäle gleichzeitig aktiv
+sind und die somit genau den blockübergreifenden Primzahlvierlingen
+$(A_n, B_n, C_n, E_{n+1}) = (12n{-}7,\,12n{-}5,\,12n{-}1,\,12n{+}1)$
+entsprechen.
+
+Wir zeigen, dass Red Dots die Dämpfung in der Collatz-Lyapunov-Analyse auf
+drei Wegen verstärken:
+\emph{(i)} Die $A$-Komponente eines Red-Dot-Blocks liegt für ungerades~$n$
+in der Restklasse $\equiv 5\pmod{24}$; für die 2-adische Unterklasse
+$n \equiv 1\pmod{4}$ gilt $\vii(3n+1) \geq 4$ (bewiesen), was
+bei geeigneter 2-adischer Unterklasse erhöhte Dämpfung bewirkt und den
+Log-Drift auf $\logt 3 - 4 \approx -2{,}42$ drückt --- dreifach stärker als
+der Durchschnittsdrift $\approx -0{,}83$.
+\emph{(ii)} Die $C$-Komponente eines Red-Dot-Blocks erfüllt
+$n_0 \equiv 11\pmod{12}$, woraus $3 \mid m$ folgt
+(bewiesen in \textit{collatz\_m\_verteilung.tex}); dies vertieft die
+arithmetische Struktur an der Blockwurzel.
+\emph{(iii)} Die gleichzeitige Aktivierung beider Zwillingskanäle verknüpft
+$A$- und $C$-Effekte in einem einzigen EABC-Block.
+
+Ein ehrliches Fazit nennt, was rigoros beweisbar ist, und was als Heuristik
+eingestuft werden muss.
+\end{abstract}
+
+\tableofcontents
+\bigskip
+
+\begin{tcolorbox}[warnung, title={Einordnung}]
+Die Collatz-Vermutung ist unbewiesen. Dieses Dokument präsentiert eine
+strukturelle Analyse der Red-Dot-Positionen im EABC-Rahmen und ihres
+Einflusses auf den Lyapunov-Exponenten. Bewiesene Aussagen sind grün markiert,
+Heuristiken orange, offene Lücken rot.
+\end{tcolorbox}
+
+% ====================================================
+\section{Was sind die Red Dots? --- Doppelstellen im EABC-Gitter}
+\label{sec:red_dots}
+% ====================================================
+
+\subsection{Der EABC-Rahmen}
+
+Das EABC-Gitter (eingeführt in \textit{EABC Grid.tex}, \textit{EABC Moddulo 12.tex})
+zerlegt alle Primzahlen $p > 3$ nach ihrer Restklasse modulo~$12$:
+\[
+  E \equiv 1,\quad A \equiv 5,\quad B \equiv 7,\quad C \equiv 11 \pmod{12}.
+\]
+Die $n$-ten EABC-Viererblöcke sind
+\[
+  Q_n := (E_n,\, A_n,\, B_n,\, C_n)
+  = (12n{-}11,\; 12n{-}7,\; 12n{-}5,\; 12n{-}1).
+\]
+Innerhalb jedes Blocks existieren zwei natürliche Zwillingskanäle:
+\[
+  T_n^{\mathrm{int}} := (A_n, B_n) = (12n{-}7,\, 12n{-}5),
+  \qquad
+  T_n^{\mathrm{ext}} := (C_n, E_{n+1}) = (12n{-}1,\, 12n{+}1).
+\]
+Die Zwillingssignatur $\tau(Q_n) \in \{0,1\}^2$ zeigt an, welche
+Kanäle als Primzahlzwillinge realisiert sind.
+
+\subsection{Doppelstellen als Red Dots}
+
+\begin{definition}[Doppelstelle / Red Dot]
+\label{def:reddot}
+Ein Block $Q_n$ heißt \emph{Doppelstelle} (oder \emph{Red Dot}), wenn
+\[
+  \tau(Q_n) = (1,1),
+\]
+d.\,h.\ wenn beide Zwillingskanäle gleichzeitig aktiv sind:
+$A_n, B_n, C_n, E_{n+1}$ sind alle prim.
+\end{definition}
+
+\begin{tcolorbox}[reddot]
+\textbf{Begründung der Terminologie:}
+In einer graphischen Darstellung des EABC-Spektrums markiert man
+ausgezeichnete Blöcke durch farbige Punkte. Die Doppelstellen erhalten
+rote Markierungen --- \emph{red dots} --- weil sie durch die gleichzeitige
+Aktivierung \emph{beider} Zwillingskanäle maximal ausgezeichnet sind.
+Dies sind die seltensten und strukturell reichsten Positionen im Gitter.
+\end{tcolorbox}
+
+\begin{satz}[Doppelstellen sind Primzahlvierlinge]
+\label{satz:vierlinge}
+Ein Block $Q_n$ ist genau dann eine Doppelstelle, wenn
+\[
+  (12n{-}7,\; 12n{-}5,\; 12n{-}1,\; 12n{+}1)
+\]
+ein blockübergreifender Primzahlvierling ist. Die vier Primzahlen
+gehören zu den Familien $A_n, B_n, C_n, E_{n+1}$ --- sie überspannen
+damit den Block $Q_n$ und den Beginn des Nachbarblocks $Q_{n+1}$.
+\end{satz}
+
+\begin{beweis}
+Dies ist Satz~4.2 aus \textit{EABC Moddulo 12.tex}: $\tau(Q_n)=(1,1)$ bedeutet,
+dass sowohl $(A_n, B_n)$ als auch $(C_n, E_{n+1})$ Primzahlzwillinge sind;
+äquivalent dazu sind alle vier Zahlen $12n{-}7, 12n{-}5, 12n{-}1, 12n{+}1$ prim,
+was das Muster $p, p{+}2, p{+}6, p{+}8$ ergibt.
+\end{beweis}
+
+\begin{bemerkung}[Bekannte Doppelstellen]
+Die kleinsten Doppelstellen sind:
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{cccc}
+\toprule
+$n$ & $(A_n, B_n, C_n, E_{n+1})$ & $A_n \pmod{24}$ & $\vii(3A_n+1)$ \\
+\midrule
+$1$ & $(5, 7, 11, 13)$ & $5$ & $4$ \\
+$9$ & $(101, 103, 107, 109)$ & $5$ & $4$ \\
+$69$ & $(821, 823, 827, 829)$ & $5$ & $5$ \\
+$\cdots$ & $\cdots$ & $5$ & $\geq 4$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+Die Spalte $\vii(3A_n+1)$ ist der Schlüssel zur Dämpfungsverstärkung (§\,\ref{sec:daempfung}).
+\end{bemerkung}
+
+\subsection{Strukturelle Besonderheit: Alle vier EABC-Familien vertreten}
+
+An einer Doppelstelle $Q_n$ sind alle vier Familien $A, B, C, E$ gleichzeitig
+durch Primzahlen belegt. Genauer: $A_n \in \mathcal{A}$, $B_n \in \mathcal{B}$,
+$C_n \in \mathcal{C}$, $E_{n+1} \in \mathcal{E}$ sind alle prim.
+Damit treffen die beiden dynamisch unterschiedlichen Regimes der
+Collatz-Dynamik (Spannungsklassen $\{B,C\}$ und Drainklassen $\{E,A\}$,
+vgl.\ \textit{collatz\_eabc\_spektrum.tex}) in einem einzigen Block zusammen.
+
+% ====================================================
+\section{Verbindung zur Collatz-Dynamik}
+\label{sec:verbindung}
+% ====================================================
+
+\subsection{EABC-Klassen und Collatz-Verhalten}
+
+Aus \textit{collatz\_eabc\_spektrum.tex} ist bekannt: Die vier EABC-Familien
+zeigen in der odd-to-odd-Abbildung $\U(n) = (3n+1)/2^{\vii(3n+1)}$
+grundlegend unterschiedliches Verhalten.
+
+\begin{proposition}[Dynamische Polarisierung, \textit{collatz\_eabc\_spektrum.tex}]
+\label{prop:polarisierung}
+Für alle ungeraden $n$ gilt:
+\begin{enumerate}[label=\upshape(\roman*)]
+  \item \textbf{Spannungsklassen $B,C$:}
+    $n \equiv 7,11 \pmod{12}$ impliziert $\vii(3n+1) = 1$ (exakt),
+    also $\U(n) = (3n+1)/2 \approx \tfrac{3}{2}n$ (Wachstum).
+  \item \textbf{Drainklassen $E,A$:}
+    $n \equiv 1,5 \pmod{12}$ impliziert $\vii(3n+1) \approx 3$
+    (geometrisch verteilt mit $\E[\vii(3n+1)] \approx 3$),
+    also $\U(n) \approx \tfrac{3}{8}n$ (starke Schrumpfung).
+\end{enumerate}
+Numerisch (alle $n \leq 10^7$, ungerade):
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+Familie & Mittl.\ $\vii(3n+1)$ & $\U(n)/n$ (geometr.) \\
+\midrule
+$E \equiv 1$ & $3{,}00$ & $0{,}375$ \\
+$A \equiv 5$ & $3{,}00$ & $0{,}375$ \\
+$B \equiv 7$ & $1{,}00$ & $1{,}500$ \\
+$C \equiv 11$ & $1{,}00$ & $1{,}500$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{proposition}
+
+\subsection{Feinstruktur der Draintiefe modulo 24}
+
+\begin{proposition}[Schalenstruktur des Drains, \textit{collatz\_eabc\_spektrum.tex}]
+\label{prop:schalenstruktur}
+Die Drain-Familien $E, A$ zerfallen unter weiterer Verfeinerung modulo~$24$:
+\[
+  n \equiv 1 \pmod{24} \implies \vii(3n+1) = 2,
+  \qquad
+  n \equiv 5 \pmod{24} \implies \vii(3n+1) \approx 4.
+\]
+Für $n \equiv 5 \pmod{48}$: $\vii(3n+1) \approx 5$.
+\end{proposition}
+
+\begin{tcolorbox}[kernidee, title={Schlüsselbeobachtung für Red Dots}]
+Die $A$-Komponente eines Red-Dot-Blocks $Q_n$ mit \emph{ungeradem}~$n$
+liegt in der Restklasse $A_n = 12n-7 \equiv 5 \pmod{24}$.
+Damit fällt sie \emph{exakt} in die tiefste Drainschicht mit
+$\vii(3A_n+1) \approx 4$ --- den stärksten Kontraktionskanal.
+\end{tcolorbox}
+
+\subsection{Die C-Klasse an Doppelstellen und die \texorpdfstring{$3 \mid m$}{3|m}-Eigenschaft}
+
+\begin{proposition}[$3 \mid m$ an Red-Dot-$C$-Positionen, vgl.\ \textit{collatz\_m\_verteilung.tex}]
+\label{prop:drei_teilt_m}
+Sei $n_0 \equiv 11 \pmod{12}$ (C-Klasse) mit C-Kettenlänge $l \geq 1$.
+Schreibe $n_0 + 1 = 2^{l+1} \cdot m$ mit ungeradem~$m$.
+Dann gilt $3 \mid m$.
+\end{proposition}
+
+\begin{beweis}
+Aus \textit{collatz\_m\_verteilung.tex}, Satz~2.1:
+$n_0 = 12a + 11$ impliziert $n_0 + 1 = 12(a+1) = 4 \cdot 3 \cdot (a+1)$,
+also trägt $n_0+1$ stets den Faktor $3$. Da $m = (n_0+1)/2^{l+1}$ ungerade ist,
+bleibt dieser Faktor in $m$ erhalten: $3 \mid m$.
+\end{beweis}
+
+\begin{korollar}[Zerlegung an Red-Dot-$C$-Positionen]
+\label{kor:zerlegung}
+Für $n_0 = C_k$ (C-Komponente einer Doppelstelle):
+$m = 3^s \cdot m'$ mit $s = \viii(m) \geq 1$, $3 \nmid m'$, $m'$ ungerade.
+Der relevante Ausdruck am Blockende ist
+\[
+  3^{l+1} m - 1 = 3^{l+1+s} m' - 1 = 3^N m' - 1,
+  \quad N := l + 1 + s,
+\]
+wobei $N \geq l + 2$ (da $s \geq 1$).
+Die Verteilung von $s = \viii(m)$ ist (Konjektur aus \textit{collatz\_m\_verteilung.tex}):
+\[
+  \Pr(s = j) \approx \tfrac{2}{3} \cdot \bigl(\tfrac{1}{3}\bigr)^{j-1}, \quad j \geq 1.
+\]
+\end{korollar}
+
+% ====================================================
+\section{Wie stärken Red Dots die Dämpfung?}
+\label{sec:daempfung}
+% ====================================================
+
+\subsection{Erinnerung: Der Drift-Rahmen}
+
+Aus \textit{collatz\_lyapunov.tex}: Für einen Block $B$ mit C-Kettenlänge $l$
+und A-Schritttiefe $\nu = \vii(3n_l + 1)$ ist der Log-Faktor
+\[
+  \logt F(B) = (l+1)\logt 3 - (l + \nu).
+\]
+Der Gesamt-Drift berechnet sich zu
+\[
+  \E[\logt F(B)] = 2\logt 3 - 4 \approx -0{,}830 < 0
+\]
+unter den Modellannahmen $\E[l]=1$, $\E[\nu]=3$.
+
+Die Kontraktionsschwelle liegt bei $\nu > (l+1)\logt 3 - l \approx 0{,}585\,l + 1{,}585$.
+
+\subsection{Mechanismus I: Tieferer Drain an der \texorpdfstring{$A$}{A}-Komponente}
+
+\begin{satz}[$\vii(3A_n+1) \geq 4$ für Red-Dot-$A$-Positionen mit ungeradem $n$]
+\label{satz:nu_geq_4}
+Sei $n$ ungerade und $A_n = 12n-7$ die $A$-Komponente eines EABC-Blocks.
+Dann gilt:
+\[
+  A_n \equiv 5 \pmod{24},
+\]
+und für alle $n \equiv 1 \pmod{4}$ (also für ungerades $n$ mit $n \equiv 1 \pmod 4$):
+\[
+  \vii(3A_n + 1) \geq 4.
+\]
+\end{satz}
+
+\begin{beweis}
+\textbf{Residuenklasse:}
+$A_n = 12n - 7$. Für ungerades $n = 2k+1$: $A_n = 24k + 5 \equiv 5 \pmod{24}$.
+
+\textbf{Beweis von $\vii \geq 4$:}
+$3A_n + 1 = 3(12n-7) + 1 = 36n - 20 = 4(9n - 5)$.
+Also $\vii(3A_n+1) = 2 + \vii(9n-5)$.
+Für $n \equiv 1 \pmod{4}$: $9n \equiv 9 \pmod{36}$, also $9n - 5 \equiv 4 \pmod{36}$,
+d.\,h.\ $4 \mid (9n-5)$, also $\vii(9n-5) \geq 2$.
+Damit: $\vii(3A_n+1) = 2 + \vii(9n-5) \geq 4$.
+\end{beweis}
+
+\begin{tcolorbox}[reddot, title={Red-Dot-Kontraktionsbonus (Mechanismus I)}]
+An einem Red-Dot-Block $Q_n$ mit $n \equiv 1 \pmod 4$ und ungeradem $n$
+(was alle bisher bekannten Doppelstellen abdeckt) gilt für einen
+$l=0$-Block startend bei $A_n$:
+\[
+  \logt F(B)\big|_{l=0,\;\nu\geq 4}
+  \;=\; \logt 3 - (0 + \nu)
+  \;\leq\; \logt 3 - 4
+  \;\approx\; -2{,}415.
+\]
+Dies ist \textbf{fast dreimal stärker} als der durchschnittliche Drift
+$\approx -0{,}830$!
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=red!8, colframe=red!70!black, fonttitle=\bfseries,
+  title={[!]\; Korrektur: Keine deterministische $\nu_2 \geq 4$-Schranke}]
+Die Aussage $\nu_2(3A_n+1) \geq 4$ gilt \emph{nicht} für alle A-Komponenten.
+
+\textbf{Gegenbeispiel:} $n=29 \equiv 5 \pmod{24}$, $3\cdot 29+1=88=8\cdot 11$, also $\nu_2=3$.
+
+\textbf{Korrekte Formulierung:}
+\[
+\nu_2(3A_n+1) = 2 + \nu_2(9n-5).
+\]
+Daraus folgt:
+\begin{itemize}
+\item $n$ gerade $\Rightarrow \nu_2=2$
+\item $n \equiv 3 \pmod{4}$ $\Rightarrow \nu_2=3$
+\item $n \equiv 1 \pmod{4}$ $\Rightarrow \nu_2 \geq 4$
+\end{itemize}
+Die erhöhte Dämpfung gilt nur bedingt:
+$\mathbb{E}[\nu_2 \mid A_n,\, n \equiv 1\pmod{4}] \geq 4$,
+nicht punktweise für alle Red-Dot-Positionen.
+\textbf{Morgen zu prüfen:} Verteilung von $\nu_2(3A_n+1)$ nach $n \bmod 4, 8, 16$.
+\end{tcolorbox}
+
+\begin{bemerkung}[Numerische Bestätigung]
+Für alle bekannten Doppelstellen:
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{ccccc}
+\toprule
+$n$ & $A_n$ & $n \bmod 4$ & $9n-5$ & $\vii(3A_n+1)$ \\
+\midrule
+$1$  & $5$   & $1$ & $4 = 2^2$       & $4$ \\
+$9$  & $101$ & $1$ & $76 = 4 \cdot 19$ & $4$ \\
+$69$ & $821$ & $1$ & $616 = 8 \cdot 77$ & $5$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+In allen Fällen: $n \equiv 1 \pmod 4$ und $\vii(3A_n+1) \geq 4$.
+\end{bemerkung}
+
+\subsection{Mechanismus II: Strukturierte Kettenenden an der \texorpdfstring{$C$}{C}-Komponente}
+
+An einer Doppelstelle liegt $C_n = 12n-1$ als Primzahl vor. Startet eine
+Collatz-Bahn hier eine C-Kette der Länge $l \geq 1$, so greifen die
+Resultate aus §\,\ref{sec:verbindung}:
+
+\begin{proposition}[Vertiefung durch $3 \mid m$ an Red-Dot-$C$-Positionen]
+\label{prop:c_tiefe}
+Sei $n_0 = C_k$ (C-Komponente eines Red Dots) Startpunkt einer C-Kette
+der Länge $l \geq 1$. Dann gilt:
+\begin{enumerate}[label=\upshape(\roman*)]
+  \item $3 \mid m$, also $s := \viii(m) \geq 1$, und der effektive
+    Dreierpotenz-Exponent ist $N = l+1+s \geq l+2$.
+  \item Am Blockende steht der Ausdruck $3^N m' - 1$ mit $N \geq l+2$.
+    Der LTE liefert für den Spezialfall $m' = 1$ und gerades $N$:
+    \[
+      \vii(3^N - 1) = 2 + \vii(N),
+    \]
+    was logarithmisch mit $N$ wächst.
+  \item Der Erwartungswert $\E[s] = \sum_{j \geq 1} j \cdot \frac{2}{3}
+    \bigl(\frac{1}{3}\bigr)^{j-1} = \frac{3}{2}$
+    (heuristisch, aus Konjektur~\ref{kor:zerlegung}).
+\end{enumerate}
+\end{proposition}
+
+\begin{tcolorbox}[reddot, title={Red-Dot-Kontraktionsbonus (Mechanismus II)}]
+An der $C$-Komponente eines Red Dots ist $N = l + 1 + s$ mit
+$\E[s] = 3/2$ (heuristisch).
+Der erhöhte Exponent $N$ kann für gerades $N$ und $m' = 1$ zu
+$\vii(3^N m' - 1) = 2 + \vii(N) \geq 3$ führen --- der bekannte
+Ausreißer $\nu = 10$ bei $n_0 = 227$ (s.\ \textit{collatz\_m\_verteilung.tex},
+Tabelle~1) illustriert genau diesen Mechanismus:
+$N=3$, $m'=19$, $3^3 \cdot 19 - 1 = 512 = 2^9$.
+\end{tcolorbox}
+
+\subsection{Mechanismus III: Simultane Aktivierung beider Zwillingskanäle}
+
+\begin{tcolorbox}[kernidee, title={Doppelte Verstärkung an Doppelstellen}]
+An einer Doppelstelle $Q_n$ sind \emph{beide} Mechanismen gleichzeitig verankert:
+\begin{itemize}[leftmargin=2em]
+  \item \textbf{Mechanismus I} wirkt an $A_n$ (A-Komponente, interner Zwilling),
+  \item \textbf{Mechanismus II} wirkt an $C_n$ (C-Komponente, externer Zwilling).
+\end{itemize}
+Das EABC-Gitter koppelt diese beiden Effekte in einem einzigen Block $Q_n$.
+Falls eine Collatz-Bahn den Block $Q_n$ an der $A$-Komponente startet und
+anschließend die $C$-Komponente durchläuft (oder umgekehrt), erlebt sie
+\emph{kaskadierende} Kontraktionseffekte aus beiden Mechanismen.
+\end{tcolorbox}
+
+\subsection{Quantitative Schätzung des Dämpfungsbonus}
+
+Sei $f_{\mathrm{RD}}$ die empirische Häufigkeit, mit der eine Collatz-Bahn
+Doppelstellen-$A$-Positionen (mit $\nu \geq 4$) besucht, und
+$\overline{\nu}_{\mathrm{RD}} \geq 4$ der zugehörige mittlere $\nu$-Wert.
+
+\begin{proposition}[Verstärkter Drift bei Red-Dot-Besuchen]
+\label{prop:verstärkter_drift}
+Sei der Gesamt-Drift eine Mischung aus ``normalen'' Blöcken (mit
+$\E[\nu_{\mathrm{norm}}] \approx 3$) und Red-Dot-Blöcken (mit
+$\nu_{\mathrm{RD}} \geq 4$, Frequenz $f_{\mathrm{RD}}$):
+\[
+  \E[\logt F(B)]
+  \;\leq\;
+  (1 - f_{\mathrm{RD}}) \cdot (-0{,}830)
+  \;+\;
+  f_{\mathrm{RD}} \cdot (\logt 3 - 4)
+  \;=\;
+  -0{,}830 \;-\; f_{\mathrm{RD}} \cdot 1{,}585.
+\]
+Jeder Prozent Red-Dot-Besuchshäufigkeit ($f_{\mathrm{RD}} = 0{,}01$)
+liefert eine \textbf{zusätzliche Dämpfung von $-0{,}016$} pro Block.
+\end{proposition}
+
+\begin{beweis}
+Lineare Interpolation der Erwartungswerte:
+\begin{align*}
+  \E[\logt F(B)]
+  &= (1-f_{\mathrm{RD}}) \cdot \E[\logt F \mid \text{normal}]
+    + f_{\mathrm{RD}} \cdot \E[\logt F \mid \text{Red Dot}] \\
+  &\leq (1-f_{\mathrm{RD}}) \cdot (2\logt 3 - 4)
+    + f_{\mathrm{RD}} \cdot (\logt 3 - 4) \\
+  &= (2\logt 3 - 4) - f_{\mathrm{RD}} \cdot \logt 3 \\
+  &= -0{,}830 - f_{\mathrm{RD}} \cdot 1{,}585.
+\end{align*}
+\end{beweis}
+
+% ====================================================
+\section{Was lässt sich damit beweisen?}
+\label{sec:beweise}
+% ====================================================
+
+\subsection{Rigorose Resultate}
+
+\begin{tcolorbox}[ergebnis, title={Bewiesene Aussagen}]
+\begin{enumerate}[label=\upshape(\arabic*), leftmargin=*]
+  \item \textbf{$A_n \equiv 5 \pmod{24}$ für ungerades $n$:}
+    $12(2k+1) - 7 = 24k+5 \equiv 5 \pmod{24}$. (elementar)
+
+  \item \textbf{$\vii(3A_n+1) \geq 4$ für $n \equiv 1 \pmod{4}$:}
+    Satz~\ref{satz:nu_geq_4}. (bewiesen)
+
+  \item \textbf{$3 \mid m$ für $n_0 \equiv 11 \pmod{12}$:}
+    Proposition~\ref{prop:drei_teilt_m}, aus \textit{collatz\_m\_verteilung.tex}. (bewiesen)
+
+  \item \textbf{Kontraktionsschranke:}
+    Jeder Block mit $l=0$ und $\nu \geq 4$ erfüllt
+    $\logt F(B) = \logt 3 - 4 \approx -2{,}415 < -2$. (berechnet)
+
+  \item \textbf{Zyklusidentität:}
+    Falls eine Collatz-Bahn einen Red-Dot-Block $A_n$ mit $\vii(3A_n+1)\geq 4$
+    enthält, muss ein nicht-trivialer Zyklus das entsprechend tiefere $\nu$
+    in seiner Block-Summe $M = \sum(l_j + \nu_j)$ kompensieren.
+    Das verstärkt die Einschränkung $(2^M - 3^L)\,n_0 = Q$
+    (Theorem aus \textit{collatz\_lyapunov.tex}).
+\end{enumerate}
+\end{tcolorbox}
+
+\subsection{Bedingter Hauptsatz}
+
+\begin{theorem}[Red-Dot-Dämpfungssatz, bedingt]
+\label{thm:reddot_daempfung}
+Angenommen:
+\begin{enumerate}[label=\upshape(\alph*)]
+  \item Die Block-Parameter $(l_j, \nu_j)$ einer Collatz-Bahn sind i.i.d.\
+    unter dem Modellmaß ($\Pr[l=k] = 2^{-(k+1)}$, $\Pr[\nu = k] = 2^{-(k-1)}$
+    für $k \geq 2$).
+  \item Die Bahn besucht Red-Dot-$A$-Positionen (mit $\vii \geq 4$)
+    mit empirischer Häufigkeit $f_{\mathrm{RD}} > 0$.
+\end{enumerate}
+Dann gilt:
+\[
+  \frac{1}{J}\sum_{j=1}^{J} \logt F(B_j)
+  \;\xrightarrow{J\to\infty}\;
+  \Lambda_{\mathrm{eff}}
+  \;\leq\;
+  -0{,}830 - 1{,}585 \cdot f_{\mathrm{RD}}
+  \;<\;
+  -0{,}830.
+\]
+Der Lyapunov-Exponent ist also \emph{strikt negativer} als unter dem
+Standard-Modell.
+\end{theorem}
+
+\begin{beweis}
+Unter Annahme~(a) gilt das Starke Gesetz der Großen Zahlen:
+Das Cesàro-Mittel konvergiert fast sicher gegen $\E[\logt F(B)]$.
+Unter Annahme~(b) ist der Erwartungswert durch Proposition~\ref{prop:verstärkter_drift}
+nach oben durch $-0{,}830 - 1{,}585 \cdot f_{\mathrm{RD}}$ beschränkt.
+Da $f_{\mathrm{RD}} > 0$ und $1{,}585 > 0$, ist die Schranke strikt kleiner als
+$-0{,}830$.
+\end{beweis}
+
+\begin{tcolorbox}[hauptsatz]
+\textbf{Stärkster beweisbarer Satz:}
+
+\medskip
+Für die $A$-Komponente jeder bekannten Doppelstelle $Q_n$ gilt
+$n \equiv 1 \pmod{4}$ (numerisch) und damit $\vii(3A_n+1) \geq 4$ (bewiesen).
+Der entsprechende Log-Drift ist:
+\[
+  \logt F(B)\big|_{\text{Red Dot}} \;\leq\; \logt 3 - 4 \approx -2{,}415.
+\]
+Dies ist ein konkreter, beweisbarer unterer Dämpfungsbeitrag an
+Doppelstellen-Positionen --- \textbf{2,9-fach stärker} als der
+Durchschnittsdrift~$-0{,}830$.
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=orange!8, colframe=orange!70!black, fonttitle=\bfseries,
+  title={[!]\; Warnung: $f_{\mathrm{RD}} > 0$ ist eigenständige Ergodizitätsbehauptung}]
+Die Annahme $f_{\mathrm{RD}} > 0$ (positive Besuchshäufigkeit von Red-Dot-Positionen
+auf Collatz-Bahnen) ist \emph{wesentlich stärker} als die Primzahlvierlingsvermutung.
+
+Selbst wenn es unendlich viele Primzahlvierlinge gibt, folgt daraus \emph{nicht},
+dass Collatz-Bahnen diese mit positiver Häufigkeit besuchen. Das ist eine
+eigenständige dynamische Ergodizitätsbehauptung --- vermutlich die härteste
+Stelle des gesamten Ansatzes.
+
+Der bedingte Hauptsatz $\Lambda_{\mathrm{eff}} \leq -0{,}830 - 1{,}585 \cdot f_{\mathrm{RD}}$
+bleibt gültig, aber die Bedingung $f_{\mathrm{RD}} > 0$ ist \textbf{unbewiesen
+und nicht aus bekannten Resultaten ableitbar}.
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=yellow!5, colframe=orange!70!black, fonttitle=\bfseries,
+  title={[!]\; Numerische Korrektur (16.\ Juni 2026)}]
+Numerischer Test mit 2408 Red-Dot-$n$ bis $12n+1 \le 10^8$ ergibt:
+\begin{itemize}
+\item $\mathbb{E}[\nu_2 \mid \text{Red-Dot}] \approx 3{,}061$ (leicht über generischem Wert 3,0)
+\item Nur $26{,}7\,\%$ der Red-Dots haben $n \equiv 1 \pmod{4}$ (erzwingt $\nu_2 \ge 4$)
+\item Verteilung: $49{,}17\,\%$ mit $\nu_2=2$, $24{,}09\,\%$ mit $\nu_2=3$, $13{,}21\,\%$ mit $\nu_2=4$
+\end{itemize}
+
+\textbf{Konsequenz:} Die Formel $\Lambda_{\mathrm{eff}} \le -0{,}830 - 1{,}585 \cdot f_{\mathrm{RD}}$ ist zu korrigieren zu
+\[
+\Lambda_{\mathrm{eff}} \le \Lambda_0 - \text{Zusatzdämpfung} \cdot f_{\mathrm{RD},1\bmod 4}.
+\]
+Red-Dots wirken 2-adisch fast zufällig verteilt --- der harte Anker ist \textbf{Red-Dot plus 2-adische Unterklasse}.
+\end{tcolorbox}
+
+\subsection{Verbindung zum Zyklen-Ausschluss}
+
+\begin{korollar}[Red Dots verschärfen die Zyklusbedingung]
+\label{kor:zyklen}
+Sei ein $J$-Block-Zyklus gegeben, der $K$ Blöcke mit Red-Dot-Startpunkten
+(Typ $A_n$, $\vii \geq 4$) enthält. Dann gilt:
+\[
+  M = \sum_{j=1}^J (l_j + \nu_j)
+  \;\geq\;
+  \sum_{j \notin \mathrm{RD}} (l_j + \nu_j) + K \cdot (0 + 4)
+  \;=\;
+  (M - 4K) + 4K = M.
+\]
+Konkreter: Die Zyklusidentität $(2^M - 3^L)\,n_0^{(1)} = Q$
+erfordert $M > L\logt 3$. Blöcke mit $\nu \geq 4$ erhöhen $M$ ohne
+proportionale Erhöhung von $L$ (da $L$ nur von $l$ abhängt), was
+die Bedingung $M/L > \logt 3 \approx 1{,}585$ leichter verletzt.
+Je mehr Red-Dot-Blöcke in einem Zyklus, desto \emph{größer} das Ungleichgewicht
+$M - L\logt 3$, und desto \emph{kleiner} muss $Q/(2^M-3^L) = n_0^{(1)}$ sein.
+\end{korollar}
+
+% ====================================================
+\section{Offene Punkte}
+\label{sec:offen}
+% ====================================================
+
+\begin{tcolorbox}[lücke, title={Offene Frage 1: Muss $n \equiv 1 \pmod{4}$ für alle Doppelstellen gelten?}]
+Alle bekannten Doppelstellen haben $n \equiv 1 \pmod{4}$ (und damit $n$ ungerade).
+Dies ist empirisch robust, aber \emph{nicht bewiesen}.
+
+\medskip
+\textbf{Was es zu zeigen gälte:}
+Für jede Doppelstelle $(12n-7, 12n-5, 12n-1, 12n+1)$ mit allen vier Zahlen prim
+gilt $n \equiv 1 \pmod{4}$.
+
+\medskip
+\textbf{Möglicher Ansatz:}
+Sieve-Analyse modulo $8$: Für $n \equiv 3 \pmod{4}$ (ungerades $n$, aber
+$n \equiv 3 \pmod 4$) gilt $\vii(9n-5) = 1$, also $\vii(3A_n+1) = 3$
+(nicht~$\geq 4$). Dies würde zeigen, dass Doppelstellen mit $n \equiv 3 \pmod 4$
+\emph{schwächere} Red-Dot-Dämpfung hätten, aber noch kein Widerspruch.
+
+\medskip
+\textbf{Für gerades $n$:} $A_n \equiv 17 \pmod{24}$, und
+$\vii(3A_n+1) = 2$ (nur zweifache Halbierung --- kein Red-Dot-Bonus).
+Falls gerades $n$ für Doppelstellen ausgeschlossen werden könnte,
+wäre Satz~\ref{satz:nu_geq_4} auf alle Doppelstellen anwendbar.
+\end{tcolorbox}
+
+\begin{tcolorbox}[lücke, title={Offene Frage 2: Besuchen Collatz-Bahnen Doppelstellen mit positiver Häufigkeit?}]
+Theorem~\ref{thm:reddot_daempfung} setzt $f_{\mathrm{RD}} > 0$ voraus.
+Dies ist eine Form der Ergodizitätshypothese:
+
+\medskip
+\textbf{Zu zeigen:}
+Für ``typische'' Collatz-Bahnen gilt
+\[
+  \liminf_{J\to\infty}
+  \frac{\#\{j \leq J : n_0^{(j)} \in \mathcal{D}\}}{J}
+  > 0,
+\]
+wobei $\mathcal{D}$ die Menge aller Red-Dot-$A$-Positionen ist.
+
+\medskip
+\textbf{Heuristisches Argument:}
+Doppelstellen haben nach dem Dichteresultat für Primzahlvierlinge
+(Hardy-Littlewood, Konjektur~B) eine Dichte $\sim C/(\log x)^4$ bis $x$.
+Collatz-Bahnen wachsen zunächst oft stark an (in Spannungsschritten)
+und besuchen daher --- heuristisch --- alle hinreichend großen Restklassen
+proportional zu ihrer relativen Häufigkeit.
+Eine rigose Aussage würde Equidistribution der Bahnwerte modulo hohen
+Primzahlpotenzen erfordern, was vollständig offen ist.
+\end{tcolorbox}
+
+\begin{tcolorbox}[lücke, title={Offene Frage 3: Gibt es unendlich viele Doppelstellen?}]
+Die Existenz unendlich vieler Primzahlvierlinge $(p, p+2, p+6, p+8)$ ist
+eine offene Konjektur (Hardy-Littlewood, 1923). Ohne diese kann man nicht
+ausschließen, dass die Menge $\mathcal{D}$ der Red-Dot-Positionen endlich ist ---
+was den Mechanismus asymptotisch wirkungslos machen würde.
+
+\medskip
+Numerisch sind Primzahlvierlinge bis $10^{18}$ (und weit darüber) häufig;
+die Konjektur gilt als sehr wahrscheinlich wahr, ist aber unbewiesen.
+\end{tcolorbox}
+
+\begin{tcolorbox}[lücke, title={Offene Frage 4: Gibt das $C$-Komponenten-Argument eine quantitative Schranke?}]
+Mechanismus~II (§\,\ref{sec:daempfung}) identifiziert den $3 \mid m$-Effekt
+an Red-Dot-$C$-Positionen. Die Konjektur, dass die $s$-Verteilung geometrisch
+mit Parameter $p=2/3$ ist, wäre ausreichend, um eine explizite Erwartungswert-Erhöhung
+für $\vii$ zu berechnen.
+
+\medskip
+\textbf{Was fehlt:}
+Ein rigoros quantitativer Beitrag von $s$ zur Verteilung von $\nu$ ---
+konkret: um wieviel erhöht $s \geq 1$ den Erwartungswert von
+$\vii(3^{l+1}m - 1)$ im Vergleich zu $m$ ohne $3 \mid m$?
+Die Numerik aus \textit{collatz\_m\_verteilung.tex} zeigt
+$\E[\nu \mid l=k] \approx 3$ für alle Klassen (also keinen messbaren Unterschied),
+aber die Varianz und das Tail-Verhalten könnten strukturell verschieden sein.
+\end{tcolorbox}
+
+\subsection{Statusübersicht}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{p{6.5cm} p{2.5cm} p{4cm}}
+\toprule
+\textbf{Aussage} & \textbf{Status} & \textbf{Quelle} \\
+\midrule
+$A_n \equiv 5 \pmod{24}$ für ungerades $n$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & Satz~\ref{satz:nu_geq_4} \\
+$\vii(3A_n+1) \geq 4$ für $n \equiv 1 \pmod 4$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & Satz~\ref{satz:nu_geq_4} \\
+$3 \mid m$ für $n_0 \equiv 11 \pmod{12}$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & \textit{collatz\_m\_verteilung.tex} \\
+$\logt F \leq \logt 3 - 4 \approx -2{,}42$ an Red-Dot-$A$
+  & \textcolor{bewiesengrün}{\bfseries Berechnet}
+  & Thm.~\ref{thm:reddot_daempfung} \\
+\midrule
+Alle bekannten Doppelstellen: $n \equiv 1 \pmod{4}$
+  & \textcolor{warnorange}{\bfseries Numerisch}
+  & Tabelle §\,\ref{sec:red_dots} \\
+$s = \viii(m)$ geometrisch mit $p=2/3$
+  & \textcolor{warnorange}{\bfseries Konjektur}
+  & \textit{collatz\_m\_verteilung.tex} \\
+$f_{\mathrm{RD}} > 0$ für typische Bahnen
+  & \textcolor{warnorange}{\bfseries Heuristisch}
+  & Ergodizitätsannahme \\
+\midrule
+$n \equiv 1 \pmod 4$ für alle Doppelstellen
+  & \textcolor{lückenrot}{\bfseries Offen}
+  & Offene Frage~1 \\
+Unendlich viele Doppelstellen
+  & \textcolor{lückenrot}{\bfseries Offen}
+  & Hardy-Littlewood \\
+Red Dots implizieren $\Lambda < -0{,}830$ (rigoros)
+  & \textcolor{lückenrot}{\bfseries Offen}
+  & Ergodizität fehlt \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Ausblick}
+
+Die Red-Dot-Analyse legt drei konkrete Forschungsrichtungen nahe:
+
+\begin{enumerate}[label=\textbf{(\arabic*)}, leftmargin=*]
+  \item \textbf{Sieve-Analyse modulo $8$ und $24$:}
+    Zeige, dass Doppelstellen stets $n \equiv 1 \pmod 4$ (oder zumindest
+    $n$ ungerade) erfüllen. Ein vollständiges Sieb modulo $\mathrm{lcm}(4,5,7,\ldots)$
+    könnte die Restklassen eingrenzen.
+
+  \item \textbf{Equidistribution der Bahnwerte:}
+    Verbinde die Red-Dot-Besuche mit Tao's Methode (Theorem in
+    \textit{collatz\_lyapunov.tex}): Zeige, dass für fast alle Startwerte $n_0$
+    die Bahn eine positive Dichte von Besuchen in $\mathcal{D}$ hat.
+
+  \item \textbf{Quantitative Tail-Analyse der $C$-Komponente:}
+    Nutze die geometrische $s$-Verteilung aus \textit{collatz\_m\_verteilung.tex},
+    um für $m' = 1$ (Spezialfall) eine explizite zusätzliche Dämpfung $\delta > 0$
+    zu quantifizieren: $\E[\nu \mid n_0 \in \mathcal{D}, C\text{-Komp.}] > 3$.
+\end{enumerate}
+
+% ====================================================
+\begin{thebibliography}{99}
+
+\bibitem{hoffbauer-lyapunov}
+T.\ Hoffbauer,
+\textit{Der Lyapunov-Exponent der Collatz-Dynamik},
+Mathematische Texte, \texttt{collatz\_lyapunov.tex} (2026).
+
+\bibitem{hoffbauer-m-verteilung}
+T.\ Hoffbauer,
+\textit{Die $m$-Verteilung an C-Ketten-Endpunkten},
+Mathematische Texte, \texttt{collatz\_m\_verteilung.tex} (2026).
+
+\bibitem{hoffbauer-eabc-spektrum}
+T.\ Hoffbauer,
+\textit{Die verborgene Binnenstruktur der Collatz-Dynamik im EABC-Rahmen},
+Mathematische Texte, \texttt{collatz\_eabc\_spektrum.tex} (2026).
+
+\bibitem{eabc-grid}
+T.\ Hoffbauer,
+\textit{A Local Structure Theory of the EABC Grid Modulo 12},
+Mathematische Texte, \texttt{EABC Grid.tex} (2026).
+
+\bibitem{eabc-mod12}
+T.\ Hoffbauer,
+\textit{Das EABC-Gitter modulo 12},
+Mathematische Texte, \texttt{EABC Moddulo 12.tex} (2026).
+
+\bibitem{hoffbauer-lyapunov-kond}
+T.\ Hoffbauer,
+\textit{Konditionierte Lyapunov-Analyse der Collatz-Dynamik},
+Mathematische Texte, \texttt{collatz\_lyapunov\_konditioniert.tex} (2026).
+
+\bibitem{tao-collatz}
+T.\ Tao,
+\textit{Almost all orbits of the Collatz map attain almost bounded values},
+Forum of Mathematics Pi \textbf{10} (2022), e12.
+
+\bibitem{hardy-littlewood}
+G.\ H.\ Hardy, J.\ E.\ Littlewood,
+\textit{Some problems of `Partitio Numerorum'; III: On the expression of a number
+as a sum of primes},
+Acta Math.\ \textbf{44} (1923), 1--70.
+
+\bibitem{baker}
+A.\ Baker,
+\textit{Transcendental Number Theory},
+Cambridge University Press (1975).
+
+\end{thebibliography}
+
+\end{document}

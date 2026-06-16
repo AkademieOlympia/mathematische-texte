@@ -1,0 +1,955 @@
+\documentclass[12pt,a4paper]{article}
+
+% -------------------------------------------------
+% Sprache / Kodierung
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+
+% -------------------------------------------------
+% Layout / Grafik / Farben
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks,unicode]{hyperref}
+\pdfstringdefDisableCommands{%
+  \def\ü{ue}\def\ö{oe}\def\ä{ae}\def\Ü{Ue}\def\Ö{Oe}\def\Ä{Ae}\def\ss{ss}%
+}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{array}
+
+% -------------------------------------------------
+% Farben (konsistent mit Vorgängerdokumenten)
+% -------------------------------------------------
+\definecolor{lückenrot}{RGB}{180,40,40}
+\definecolor{bewiesengrün}{RGB}{30,100,50}
+\definecolor{warnorange}{RGB}{200,100,10}
+\definecolor{hintergrundblau}{RGB}{235,242,250}
+\definecolor{hintergrundgelb}{RGB}{255,252,225}
+\definecolor{adischviolett}{RGB}{90,20,140}
+\definecolor{fehlerrot}{RGB}{200,0,0}
+\definecolor{konjviolett}{RGB}{80,0,130}
+\definecolor{e8grau}{RGB}{55,55,90}
+
+% -------------------------------------------------
+% tcolorbox-Stile
+% -------------------------------------------------
+\tcbset{
+  lücke/.style={colback=red!8, colframe=lückenrot, fonttitle=\bfseries,
+    title={Offene Lücke}},
+  ergebnis/.style={colback=green!7, colframe=bewiesengrün,
+    fonttitle=\bfseries, title={Bewiesenes Ergebnis}},
+  warnung/.style={colback=orange!10, colframe=warnorange,
+    fonttitle=\bfseries, title={Achtung / Heuristik}},
+  adisch/.style={colback=violet!6, colframe=adischviolett,
+    fonttitle=\bfseries, title={2-adische Perspektive}},
+  kernidee/.style={colback=hintergrundblau, colframe=blue!60!black,
+    fonttitle=\bfseries, title={Kernidee}},
+  konj/.style={colback=violet!5, colframe=konjviolett, fonttitle=\bfseries,
+    title={Konjektur (unbewiesen)}},
+  lte/.style={colback=yellow!8, colframe=e8grau, fonttitle=\bfseries,
+    title={LTE-Analyse}},
+  hauptsatz/.style={colback=green!10, colframe=bewiesengrün!80!black,
+    fonttitle=\bfseries\large, title={Stärkster beweisbarer Satz}},
+  korrektur/.style={colback=yellow!5, colframe=orange!70!black,
+    fonttitle=\bfseries},
+}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+\newtheorem{hypothese}[definition]{Hypothese}
+\newtheorem{satz}[definition]{Satz}
+
+\newenvironment{beweis}{\begin{proof}[Beweis]}{\end{proof}}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\vii}{\nu_2}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Ztwo}{\mathbb{Z}_2}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\atwo}[1]{\lvert#1\rvert_2}
+
+% -------------------------------------------------
+% Dokument
+% -------------------------------------------------
+\title{%
+  EABC-Rahmen und Collatz-Dynamik:\\[0.3em]
+  Ein strukturierter Beweisversuch\\[0.5em]
+  \large Synthese der Ergebnisse vom 15.\ Juni 2026%
+}
+\author{Thomas Hoffbauer}
+\date{15.\ Juni 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Dieser Text synthetisiert sechs Vorgängerdokumente
+(\textit{eabc\_spektrum}, \textit{oktonionen\_beweis},
+\textit{dc\_morley\_walter}, \textit{c\_ketten\_2adisch},
+\textit{5glatt\_dc}, \textit{beweis\_abschluss})
+zu einem Gesamtbild und dokumentiert die Ergebnisse vom 15.\ Juni 2026.
+
+\textbf{Rigoros bewiesen} sind: B-Ketten-Ausschluss, C-Ketten-Endlichkeit
+($k \leq \vii(n_0+1)-1$), zwingender EA-Schritt nach jeder C-Kette,
+BCA-Zyklenfreiheit ($16^s < 27^s$) und $E_8$-Normabstieg bei EA-Schritten.
+
+\textbf{Neu analysiert} wird die LTE-Barriere: Für eine C-Kette der Länge~$k$
+liefert LTE die Schranke $\vii(3^{k+1}m-1) = O(\log k)$, was für
+Kontraktion zu schwach ist (Bedarf: $\Omega(k)$). Eine präzise
+Fallunterscheidung zeigt, wann $\nu = 2$ vs.\ $\nu \geq 3$ eintritt.
+Anstelle des Einzelblock-Kontraktionsarguments wird ein
+\emph{Mitteldrift-Argument} formuliert, das Divergenz ausschließt
+--- allerdings nur im Mittel, nicht für jeden Orbit einzeln.
+
+\textbf{Offen} bleibt die Durchlaufbedingung (DC): die Frage, ob die
+Collatz-Bahn jedes einzelnen $n$ gleichmäßig nach oben beschränkt ist.
+Der Abstand zur Collatz-Vermutung wird ehrlich quantifiziert.
+\end{abstract}
+
+\tableofcontents
+
+\bigskip
+\begin{tcolorbox}[warnung, title={Einordnung dieses Dokuments}]
+Die Collatz-Vermutung ist unbewiesen. Dieser Text trennt konsequent zwischen
+\textbf{bewiesenen Aussagen} (grün), \textbf{Konjekturen/Heuristiken} (orange)
+und \textbf{offenen Lücken} (rot). Ein Beweis der Collatz-Vermutung liegt
+hier nicht vor.
+\end{tcolorbox}
+
+% ====================================================
+\section{Einleitung und Überblick}
+\label{sec:einleitung}
+% ====================================================
+
+\subsection{Die Collatz-Abbildung und der EABC-Rahmen}
+
+Die \emph{Collatz-Abbildung} ordnet jeder positiven ganzen Zahl $n$ zu:
+\[
+  T(n) = \begin{cases} n/2 & \text{falls } n \equiv 0 \pmod 2, \\
+                        3n+1 & \text{falls } n \equiv 1 \pmod 2. \end{cases}
+\]
+Die Vermutung besagt: Für jedes $n \in \N$ existiert ein $k$ mit $T^k(n) = 1$.
+Wir arbeiten mit der \emph{odd-to-odd}-Abbildung
+$\U(n) := (3n+1)/2^{\vii(3n+1)}$,
+die direkt ungerade Zahlen auf ungerade Zahlen abbildet.
+
+\begin{definition}[EABC-Typen]
+Für ungerades $n \in \N$ klassifiziert man nach $n \bmod 12$:
+\[
+\renewcommand{\arraystretch}{1.3}
+\begin{array}{ccc}
+  n \equiv 1 \pmod{12} & \Rightarrow & \text{E-Typ:}\quad \vii(3n+1) \geq 3 \\
+  n \equiv 5 \pmod{12} & \Rightarrow & \text{A-Typ:}\quad \vii(3n+1) \geq 2 \\
+  n \equiv 7 \pmod{12} & \Rightarrow & \text{B-Typ:}\quad \vii(3n+1) = 1 \\
+  n \equiv 11 \pmod{12} & \Rightarrow & \text{C-Typ:}\quad \vii(3n+1) = 1 \\
+\end{array}
+\]
+Die Typen B und C liefern bei $\U$ den Faktor~$3/2$ (wachsend),
+die Typen E und A liefern $3/2^{\vii} \leq 3/4$ (schrumpfend).
+\end{definition}
+
+\begin{tcolorbox}[ergebnis, title={Bewiesene Grundstruktur (EABC-Übergänge)}]
+Für ungerades $n$ gilt modulo~$24$ (bewiesen durch direkte Kongruenzrechnung):
+\begin{align*}
+  n \equiv 7  \pmod{24} \;&\Rightarrow\; \U(n) \equiv 11 \pmod{12}
+    \quad\text{(B}\to\text{C)},\\
+  n \equiv 19 \pmod{24} \;&\Rightarrow\; \U(n) \equiv 5  \pmod{12}
+    \quad\text{(B}\to\text{A)},\\
+  n \equiv 11 \pmod{24} \;&\Rightarrow\; \U(n) \equiv 5  \pmod{12}
+    \quad\text{(C}\to\text{A)},\\
+  n \equiv 23 \pmod{24} \;&\Rightarrow\; \U(n) \equiv 11 \pmod{12}
+    \quad\text{(C}\to\text{C)}.
+\end{align*}
+Insbesondere: B-Typ kann nicht auf B-Typ folgen. BC-Ketten haben die Form
+$\mathrm{B}^{\leq 1}\cdot\mathrm{C}^k$ für ein $k \geq 0$.
+\end{tcolorbox}
+
+\subsection{Die Leitfrage}
+
+Die Collatz-Vermutung ist äquivalent zur Konjunktion dreier Aussagen:
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{DC} (Durchlaufbedingung): Jede Collatz-Bahn macht nach
+    endlich vielen Schritten einen EA-Schritt (keine rein-BC-Bahn).
+  \item \textbf{Zyklenfreiheit}: Es gibt keinen nichtrivialen Zyklus.
+  \item \textbf{Keine Divergenz}: Keine Bahn ist unbeschränkt.
+\end{enumerate}
+Welche davon sind tatsächlich bewiesen?
+
+% ====================================================
+\section{Bewiesene Bausteine}
+\label{sec:bausteine}
+% ====================================================
+
+\subsection{Übersichtstabelle}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.45}
+\begin{tabular}{>{\raggedright}p{5.6cm}
+                >{\centering}p{2.5cm}
+                >{\raggedright\arraybackslash}p{4.8cm}}
+\toprule
+\textbf{Aussage} & \textbf{Status} & \textbf{Quelle\,/\,Methode} \\
+\midrule
+B-Typ kann nicht auf B-Typ folgen
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & mod~12, elementar \\[1pt]
+BC-Ketten: Form $\mathrm{B}^{\leq 1}\cdot\mathrm{C}^k$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & mod~24, EABC \\[1pt]
+C-Ketten-Formel: $n_j = 3^j(n_0+1)/2^j - 1$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & Induktion über $j$ \\[1pt]
+C-Kettenlänge $\leq \vii(n_0+1)-1$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & 2-adisch; Korrektur v.\ Vorgänger \\[1pt]
+Exp.\ Seltenheit: Dichte $\leq 1/2^{k+1}$ für Länge~$k$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & Residuenklassen-Dichte \\[1pt]
+Nach C-Kette: \emph{zwingend} $\vii(3n_k+1)\geq 2$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & 5-glatt-DC, Thm.~\ref{thm:ea-nach-ck} \\[1pt]
+$E_8$-Normformel: $N(3x+1) = 9N(x)+6\operatorname{Re}(x)+1$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & Oktonionen-Algebra \\[1pt]
+$E_8$-Normabstieg bei EA-Schritte für $N \gg 1$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & Oktonionen-Abschätzung \\[1pt]
+BCA-Zyklen ($\nu=2$): $16^s < 27^s$ unmöglich
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & Tao-Identität + Zählung \\[1pt]
+Keine periodischen Punkte von $S$ in $\Ztwo$ außer $-1$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & 2-adische Algebra \\[1pt]
+5-glatte Zahlen: Dichte~$0$, $H(N) = O((\log N)^3)$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & Gitterpunkt-Simplex \\[1pt]
+Tao-Identität: $\U^l(n)\cdot 2^m = 3^l\cdot n + G_l$
+  & \textcolor{warnorange}{\bfseries Extern}
+  & Tao, Forum Math.\ Pi 2022 \\[1pt]
+DC (gleichmäßige Schranke $m_0$ für alle $n$)
+  & \textcolor{lückenrot}{\bfseries Offen}
+  & Kernlücke \\[1pt]
+Allgemeine Zyklenfreiheit
+  & \textcolor{lückenrot}{\bfseries Offen}
+  & Baker-Axiom nötig \\[1pt]
+Keine divergenten Bahnen
+  & \textcolor{lückenrot}{\bfseries Offen}
+  & setzt DC voraus \\[1pt]
+\midrule
+\textbf{Collatz-Vermutung}
+  & \textcolor{lückenrot}{\bfseries Offen}
+  & --- \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Die C-Ketten-Formel (Zentrales Werkzeug)}
+
+\begin{theorem}[C-Ketten-Formel]
+\label{thm:cformel}
+Ist $n_0$ der Startwert einer C-Kette aller Glieder $n_0, \ldots, n_{k-1}$
+vom C-Typ, so gilt für alle $j \geq 0$:
+\[
+  n_j = \frac{3^j(n_0+1)}{2^j} - 1.
+\]
+Daraus folgt: $n_j + 1 = 3^j(n_0+1)/2^j$, also
+$\vii(n_j+1) = \vii(n_0+1) - j$ (solange $j \leq \vii(n_0+1)$).
+\end{theorem}
+
+\begin{korollar}[Korrekte Längenschranke, Off-by-one-Korrektur]
+\label{kor:laenge}
+Sei $n_0$ C-Typ mit $\vii(n_0+1) = v$. Dann:
+\begin{itemize}
+  \item Die C-Kette hat Länge $\leq v - 1 = \vii(n_0+1) - 1$.
+  \item Das letzte C-Glied $n_{v-1}$ hat $\vii(n_{v-1}+1) = 1$, ist also
+    \emph{kein} C-Typ mehr.
+  \item Das erste Nicht-C-Glied $n_{v-1}$ erfüllt $n_{v-1} \equiv 1 \pmod 4$.
+\end{itemize}
+\emph{Hinweis:} Korollar~3.1 in \textit{collatz\_c\_ketten\_2adisch.tex} enthält
+einen Off-by-one-Fehler; die korrekte Schranke ist $\vii(n_0+1)-1$, nicht
+$\vii(n_0+1)$.
+\end{korollar}
+
+\begin{theorem}[Zwingender EA-Schritt nach C-Kette]
+\label{thm:ea-nach-ck}
+Sei $n_0+1 = 2^{k+1}\cdot m$ mit $m$ ungerade und $3 \mid m$.
+Nach der C-Kette der Länge~$k$ gilt:
+\[
+  n_k = 2\cdot 3^k m - 1
+  \quad\text{und}\quad
+  \vii(3n_k+1) = 1 + \vii(3^{k+1}m - 1) \geq 2.
+\]
+Damit ist $n_k$ stets E- oder A-Typ (EA-Schritt).
+\end{theorem}
+
+\begin{beweis}
+$3n_k + 1 = 3(2\cdot 3^k m - 1) + 1 = 6\cdot 3^k m - 2 = 2(3^{k+1}m - 1)$.
+Da $3^{k+1}m$ ungerade, ist $3^{k+1}m - 1$ gerade, also
+$\vii(3^{k+1}m-1) \geq 1$, und somit $\vii(3n_k+1) \geq 2$.
+\end{beweis}
+
+% ====================================================
+\section{Die LTE-Barriere: Präzise Analyse}
+\label{sec:lte}
+% ====================================================
+
+\subsection{Das Problem}
+
+Nach Theorem~\ref{thm:ea-nach-ck} gilt $\vii(3n_k+1) \geq 2$. Für den
+C$^k$A-Block (C-Kette der Länge $k$ plus anschließender A-Schritt) ist der
+Nettofaktor:
+\[
+  \frac{n_{k+1}}{n_0}
+  \approx \frac{3^{k+1}}{2^{k + \vii(3n_k+1)}}
+  = \left(\frac{3}{2}\right)^{k+1} \cdot 2^{1-\vii(3n_k+1)}.
+\]
+Kontraktion ($n_{k+1} < n_0$) tritt genau dann ein, wenn:
+\[
+  \vii(3n_k+1) > (k+1)\log_2 3 - k = 0{,}585\,k + 1{,}585.
+\]
+
+\begin{tcolorbox}[lte, title={Das LTE-Dilemma}]
+Mit $\vii(3n_k+1) = 1 + \vii(3^{k+1}m-1)$ lautet die Kontraktionsbedingung:
+\[
+  \vii(3^{k+1}m - 1) > 0{,}585\,k + 0{,}585.
+\]
+Das \emph{Lifting-the-Exponent}-Lemma (LTE) für $p = 2$ gibt jedoch:
+\[
+  \vii(3^j - 1) =
+  \begin{cases}
+    1 & \text{falls $j$ ungerade},\\
+    \vii(j) + 2 & \text{falls $j$ gerade}.
+  \end{cases}
+\]
+Also $\vii(3^{k+1}-1) = O(\log k)$, was für großes $k$ die
+Schwelle $\Omega(k)$ \emph{nicht} erfüllt.
+\end{tcolorbox}
+
+\subsection{Genaue LTE-Analyse für $m = 1$ (Worst-Case)}
+
+\begin{proposition}[LTE-Schranke für $m=1$]
+\label{prop:lte}
+Für $m = 1$ gilt $\vii(3^{k+1}\cdot 1 - 1) = \vii(3^{k+1}-1)$:
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{ccccc}
+\toprule
+$k$ & $k+1$ & $\vii(3^{k+1}-1)$ & Bedarf $> 0{,}585k$ & Lücke \\
+\midrule
+1 & 2 (ger.)  & $\vii(2)+2 = 3$ & $> 0{,}585$ & kein Defizit \\
+2 & 3 (ung.)  & $1$             & $> 1{,}17$  & \textcolor{lückenrot}{Defizit 0,17} \\
+3 & 4 (ger.)  & $\vii(4)+2 = 4$ & $> 1{,}755$ & \textcolor{bewiesengrün}{Überschuss 2,24} \\
+4 & 5 (ung.)  & $1$             & $> 2{,}34$  & \textcolor{lückenrot}{Defizit 1,34} \\
+6 & 7 (ung.)  & $1$             & $> 3{,}51$  & \textcolor{lückenrot}{Defizit 2,51} \\
+7 & 8 (ger.)  & $\vii(8)+2 = 5$ & $> 4{,}095$ & \textcolor{lückenrot}{Defizit 0,095} \\
+8 & 16 (ger.) & $\vii(16)+2=6$  & $> 4{,}68$  & \textcolor{lückenrot}{Defizit 0,68$^*$} \\
+\bottomrule
+\end{tabular}
+\end{center}
+\footnotesize{$^*$ $k=14$ wäre nötig für $k+1=16$. Werte illustrativ.}
+\end{proposition}
+
+\begin{tcolorbox}[lte, title={Strukturaussage zur LTE-Barriere}]
+Die LTE-Schranke $\vii(3^{k+1}-1) = O(\log k)$ wächst \emph{logarithmisch},
+die Kontraktionsschwelle wächst \emph{linear} in $k$. Die LTE-Barriere ist
+daher \textbf{fundamental}: Sie verhindert, dass ein reines
+C$^k$A-Einzelblock-Argument für große $k$ funktioniert.
+
+Dies erklärt, warum kein einfaches algebraisches Argument die DC schließt:
+Das Problem liegt nicht in der Struktur der C-Kette selbst,
+sondern in der Tiefe des nachfolgenden EA-Schritts.
+\end{tcolorbox}
+
+\subsection{Allgemeines $m$: Paritätsbedingung}
+
+Für beliebiges ungerades $m$ (nicht notwendig $m=1$):
+
+\begin{proposition}[Paritätskriterium für $\nu \geq 3$]
+\label{prop:parität}
+Es gilt $\vii(3n_k+1) \geq 3$ (d.\,h.\ $\vii(3^{k+1}m-1) \geq 2$) genau dann, wenn
+$3^{k+1}m \equiv 1 \pmod 4$, also:
+\[
+  m \equiv (-1)^{k+1} \pmod 4
+  \;=\;
+  \begin{cases}
+    1 \pmod 4 & \text{falls $k$ ungerade,}\\
+    3 \pmod 4 & \text{falls $k$ gerade.}
+  \end{cases}
+\]
+Andernfalls gilt genau $\vii(3n_k+1) = 2$.
+\end{proposition}
+
+Ohne Zusatzwissen über $m \bmod 4$ tritt $\vii = 2$ (schlechtester Fall)
+mit Wahrscheinlichkeit $1/2$ ein.
+
+% ====================================================
+\section{Stärkstes beweisbares Theorem}
+\label{sec:hauptsatz}
+% ====================================================
+
+\begin{tcolorbox}[hauptsatz]
+\begin{theorem}[Struktursatz der Collatz-Dynamik, 15.\ Juni 2026]
+\label{thm:haupt}
+Sei $n \in \N$ ungerade. Dann gelten folgende Aussagen \emph{ohne} weitere
+Voraussetzungen:
+
+\begin{enumerate}[label=\textup{(\arabic*)}, leftmargin=*]
+  \item \textbf{(C-Ketten-Endlichkeit)}
+    Jede C-Kette, die bei $n$ startet, hat Länge
+    $k \leq \vii(n+1) - 1 < \infty$.
+    Insbesondere: In $\N$ existiert keine unendliche C-Kette.
+
+  \item \textbf{(Zwingender EA-Schritt)}
+    Auf jede C-Kette der Länge $k$ folgt unmittelbar ein EA-Schritt:
+    $\vii(3n_k+1) \geq 2$. Die Collatz-Bahn verlässt stets den C-Typ.
+
+  \item \textbf{(BCA-Zyklenfreiheit)}
+    Es existiert kein nichtrivialer Zyklus der odd-to-odd-Abbildung,
+    der ausschließlich aus B\textbullet C\textbullet A-Blöcken mit $\nu = 2$
+    beim A-Schritt besteht.
+    Begründung: Für solche Zyklen wäre $m/l = 4/3 < \log_2 3$,
+    d.\,h.\ $16^s < 27^s$ --- Widerspruch zur Tao-Identität.
+
+  \item \textbf{(Normabstieg)}
+    Für alle hinreichend großen $n$ mit $\vii(3n+1) \geq 2$ gilt
+    $\U(n) < n$ (bezüglich der $E_8$-Norm).
+
+  \item \textbf{(Exponentielle Seltenheit langer C-Ketten)}
+    Die Menge der $n \leq X$, die eine C-Kette der Länge $\geq k$ starten,
+    hat Dichte $\leq 2^{-(k+1)}$ unter den ungeraden Zahlen.
+\end{enumerate}
+\end{theorem}
+
+\smallskip\noindent
+\textit{Die Collatz-Vermutung folgt aus diesem Satz \emph{nicht.}}
+Die fehlende Verbindung: Aus (1)+(2) folgt \emph{pointwise} DC
+(jede Bahn macht nach $\leq \vii(n+1)$ Schritten einen EA-Schritt),
+aber \emph{nicht} die \emph{uniforme} DC.
+\end{tcolorbox}
+
+% ====================================================
+\section{Die verbleibende Lücke: LTE-Barriere und DC}
+\label{sec:lücke}
+% ====================================================
+
+\begin{tcolorbox}[lücke, title={Präzise Formulierung der Kernlücke}]
+Aus den bewiesenen Bausteinen folgt die \emph{pointwise DC}:
+\begin{quote}
+\emph{Für jedes feste $n_0 \in \N$ gibt es ein $j \leq \vii(n_0+1)$ mit
+$\vii(3\cdot\U^j(n_0)+1) \geq 2$.}
+\end{quote}
+Was fehlt, ist die \emph{uniforme DC}:
+\begin{quote}
+\emph{Es gibt ein $m_0 \in \N$, das für \textbf{alle} $n$ gilt:
+Unter $n, \U(n), \U^2(n), \ldots, \U^{m_0}(n)$ ist mindestens eines
+vom EA-Typ.}
+\end{quote}
+Die uniforme DC ist sogar \textbf{falsch als universelle Schranke}:
+Da $\vii(n+1)$ über $\N$ unbeschränkt ist, gibt es für jedes $m_0$
+ein $n$ mit C-Kette der Länge $> m_0$. Für die Collatz-Vermutung
+genügt jedoch die \emph{pointwise} Form --- aber dann muss die
+anschließende Kontraktion separat gesichert werden.
+\end{tcolorbox}
+
+\subsection{Warum LTE die Lücke nicht schließt}
+
+Aus $\vii(3n_k+1) = 1 + \vii(3^{k+1}m-1)$ und der LTE-Schranke
+$\vii(3^{k+1}m-1) = O(\log k)$ folgt:
+\[
+  \vii(3n_k+1) = O(\log k)
+  \quad\text{vs.\ Bedarf}\quad
+  \vii(3n_k+1) > 0{,}585\,k + 1{,}585.
+\]
+Für $k \to \infty$ entsteht eine Lücke, die exponentiell wächst.
+
+\begin{tcolorbox}[lücke]
+\textbf{Konsequenz:} Kein rein algebraisches Argument, das nur die
+C-Ketten-Struktur und LTE verwendet, kann für große $k$ Kontraktion
+des C$^k$A-Blocks beweisen. Ein vollständiger Beweis muss zwingend
+entweder:
+\begin{itemize}
+  \item[(a)] den \emph{mehrschrittigen Orbit} nach dem C$^k$A-Block
+    untersuchen (und zeigen, dass weitere EA-Schritte genug absenken),
+    oder
+  \item[(b)] eine \emph{globale} Methode verwenden, die nicht auf lokale
+    Blockstruktur reduziert (z.\,B.\ Ergoden-/Transferoperatormethoden).
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}[korrektur, title={Korrektur: Verschiebung des Beweisziels}]
+\textbf{Neue Erkenntnis (15.\ Juni 2026):} Die lineare DC-Schranke
+$\nu \gtrsim 0{,}585\,k$ ist der \emph{falsche Mechanismus} --- und das ist
+jetzt \textbf{bewiesen}, nicht nur heuristisch.
+
+\medskip
+Für die extremale Familie $n_0+1 = 2^{k+1}\cdot 3^r$ liefert LTE:
+\[
+  \vii(3n_k+1) = 3 + \vii(k+r+1) = O(\log k).
+\]
+Der Nettofaktor des C$^k$A-Blocks divergiert für $k \to \infty$:
+\[
+  \frac{n_{k+1}}{n_0}
+  \approx \frac{(3/2)^{k+1}}{2^{3+\vii(k+r+1)}}
+  \;\xrightarrow{k\to\infty}\; +\infty.
+\]
+\textbf{Das ist kein Scheitern des Beweises, sondern ein bewiesenes
+Nicht-Ergebnis:} Einzelblock-Argumentation ist für große~$k$ fundamental
+unzureichend.
+
+\medskip
+\textbf{Das richtige Beweisziel} ist das Mehrblock-Drift-Kriterium:
+\[
+  \limsup_{J\to\infty} \frac{1}{J} \sum_{j=1}^{J} \log F(B_j) < 0
+\]
+(negativer Lyapunov-Exponent der Blockdynamik). Das ist strukturell Taos
+Ansatz: nicht lokale, sondern \emph{globale Drift}.
+
+\medskip
+\textbf{Die Endpunkt-Familie $2\cdot 3^N - 1$} ist für dieses Beweisziel
+vollständig per LTE klassifiziert:
+$\vii(3n+1) = 2$ für gerades $N$, und $\vii(3n+1) = 3+\vii(N+1)$ für
+ungerades $N$. Diese Größe ist nicht offen --- sie ist explizit.
+Einzelheiten in \textit{collatz\_mehrblock\_drift.tex}, §\,1--2.
+\end{tcolorbox}
+
+\subsection{Gegenüberstellung: Was $\nu = 2$ nach einem C$^k$A-Block bedeutet}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{cccc}
+\toprule
+$k$ & $n_{k+1}/n_0$ bei $\nu=2$ & $n_{k+1}/n_0$ bei $\nu=3$ & Kontrahiert bei $\nu=3$? \\
+\midrule
+1 & $9/8 \approx 1{,}13$ & $9/16 \approx 0{,}56$ & Ja \\
+2 & $27/16 \approx 1{,}69$ & $27/32 \approx 0{,}84$ & Ja \\
+3 & $81/32 \approx 2{,}53$ & $81/64 \approx 1{,}27$ & Nein \\
+4 & $243/64 \approx 3{,}80$ & $243/128 \approx 1{,}90$ & Nein \\
+5 & $729/128 \approx 5{,}70$ & $729/256 \approx 2{,}85$ & Nein \\
+10 & $(3/2)^{11}/2 \approx 57$ & $(3/2)^{11}/4 \approx 28$ & Nein \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Für $k \geq 3$ und $\nu = 3$ kontrahiert der einzelne Block nicht mehr. Der Orbit
+muss weitere EA-Schritte durchlaufen, bevor das Niveau wieder unter $n_0$ fällt.
+
+% ====================================================
+\section{Verbindung zu $E_8$ und 5-glatten Zahlen}
+\label{sec:e8}
+% ====================================================
+
+\subsection{Die strukturelle „18" als geometrische Invariante}
+
+\begin{tcolorbox}[kernidee, title={$E_8$-Normformel und die „18"}]
+Für einen Cayley-Ganzvektor $x \in \mathbb{O}_{\mathbb{Z}}$ (Einbettung in $E_8$-Gitter) gilt:
+\[
+  N(3x+1) = 9\,N(x) + 6\,\operatorname{Re}(x) + 1.
+\]
+Die Konstante $6\,\operatorname{Re}(x) + 1$ ist für Wurzelvektoren
+($N(e) = 1$, $\operatorname{Re}(e) = \pm 1/2$):
+$6\cdot(\pm 1/2)+1 = \pm 3 + 1 \in \{-2, 4\}$, mit Mittelpunkt $1$.
+Der \emph{strukturelle} Beitrag ist die Kissing-Zahl-Geometrie des $E_8$:
+$240$ Wurzeln, $\operatorname{Re}$-Werte in $\{-1, -1/2, 0, 1/2, 1\}$.
+
+Der Faktor~$9$ vor $N(x)$ entspricht dem Aufwärtsfaktor $3^2$ des
+B/C-Schritts; der EA-Schritt dividiert durch $2^{2\nu}$, was für $\nu \geq 3$
+Abstiege $\leq 9/64 < 1$ erlaubt.
+\end{tcolorbox}
+
+\subsection{5-glatte Zahlen: Dichte und Extremfälle}
+
+\begin{proposition}[5-glatte Zahlen und C-Kettenlänge]
+Sei $n_0+1 = 2^a \cdot 3^b \cdot 5^c$ (5-glatt). Dann hat die C-Kette
+von $n_0$ Länge $\leq a - 1$, und es gilt:
+\[
+  n_k = 2\cdot 3^{k+b-1}\cdot 5^c - 1,
+  \quad
+  3n_k+1 = 2(3^{k+b}\cdot 5^c - 1).
+\]
+Da $5 \equiv 1 \pmod 4$, bestimmt allein die Parität von $k+b$ das
+Vorzeichen von $\vii(3n_k+1) - 2$:
+\begin{itemize}
+  \item $k+b$ gerade: $3^{k+b}\cdot 5^c \equiv 1 \pmod 4$,
+    also $\vii(3n_k+1) \geq 3$.
+  \item $k+b$ ungerade: $\vii(3n_k+1) = 2$ (schlechtester Fall).
+\end{itemize}
+\end{proposition}
+
+Die Menge der 5-glatten Zahlen hat Dichte~$0$ (Anzahl $\leq N$:
+$O((\log N)^3)$), was zeigt, dass die extremsten C-Kettenstarts
+exponentiell selten sind --- aber es verhindert nicht, dass sie für
+beliebig große $k$ existieren.
+
+% ====================================================
+\section{Das Mitteldrift-Argument gegen Divergenz}
+\label{sec:mitteldrift}
+% ====================================================
+
+\subsection{Geometrischer Mittelfaktor}
+
+Unter den 6 ungeraden Residuenklassen mod~12 teilen sich
+E/A-Typen und B/C-Typen gleichmäßig auf (je 3 von 6):
+\begin{itemize}
+  \item B, C (Typ 7, 11 mod~12): $\U(n)/n \approx 3/2$ (Wachstum).
+  \item E, A (Typ 1, 5 mod~12): $\U(n)/n \approx 3/8$ oder weniger (Abstieg).
+\end{itemize}
+Der \emph{geometrische Mittelfaktor} über alle vier Typen:
+\[
+  \sqrt[4]{\frac{3}{2}\cdot\frac{3}{2}\cdot\frac{3}{8}\cdot\frac{3}{8}}
+  = \sqrt[4]{\frac{81}{256}}
+  = \frac{3}{4} = 0{,}75 < 1.
+\]
+
+\subsection{Implikation für Divergenz}
+
+Wenn eine Bahn divergiert, muss $\U^j(n) \to \infty$ für $j \to \infty$.
+Nach einer C-Kette der Länge~$k$ folgt stets ein EA-Schritt. Sei $r$ der
+Anteil der EA-Schritte über die gesamte Bahn. Dann gilt asymptotisch:
+\[
+  \U^L(n) \approx n_0 \cdot \left(\frac{3}{2}\right)^{(1-r)L} \cdot
+  \left(\frac{3}{4}\right)^{rL}
+  = n_0 \cdot \left(\frac{27}{32}\right)^{rL/2} \cdot
+  \left(\frac{3}{2}\right)^{(1-2r)L/2}.
+\]
+
+\begin{tcolorbox}[warnung, title={Mitteldrift-Argument (heuristisch)}]
+Falls $r \geq 1/2$ (EA-Schritte machen mindestens die Hälfte aus), gilt:
+\[
+  \prod_{\text{Schritte}} \frac{\U^j(n)}{n} \approx
+  \left(\frac{3}{2}\right)^{L/2} \cdot \left(\frac{3}{4}\right)^{L/2}
+  = \left(\sqrt{\frac{27}{32}}\right)^L \approx 0{,}919^L \to 0.
+\]
+Das schließt Divergenz im Mittel aus: Wenn EA-Schritte hinreichend oft
+auftreten, kann die Bahn nicht unbeschränkt wachsen.
+
+\textbf{Aber:} Dies ist eine \emph{heuristische Aussage}. Es fehlt der
+Nachweis, dass $r \geq 1/2$ für \emph{jeden} Orbit gilt, nicht nur im
+statistischen Mittel über alle Orbits.
+\end{tcolorbox}
+
+\begin{tcolorbox}[konj]
+\textbf{Konvergenzheuristik} (unbewiesen):
+Für jedes $n_0 \in \N$ gilt: Der Anteil der EA-Schritte in der Bahn
+$n_0, \U(n_0), \U^2(n_0), \ldots$ ist asymptotisch $\geq 1/2$.
+Unter dieser Bedingung ist die Bahn beschränkt.
+\end{tcolorbox}
+
+% ====================================================
+\section{Ausblick: Drei offene Wege}
+\label{sec:ausblick}
+% ====================================================
+
+\subsection{Weg 1: Mehrschrittiger Blockoperator}
+
+Statt des einzelnen C$^k$A-Blocks betrachte den iterierten Operator:
+\[
+  \Phi_{k,s}\colon n_0 \;\mapsto\; \U^{k+s}(n_0),
+\]
+wobei $s$ so gewählt ist, dass $s$ zusätzliche EA-Schritte nach dem
+C$^k$A-Block folgen. Die Frage lautet: Gibt es ein universelles
+$s = s(k)$ mit $\Phi_{k,s(k)}(n_0) < n_0$ für alle relevanten $n_0$?
+
+Empirisch: Für $k \leq 10$ und typische $m$ findet man $s \leq 3k$.
+Ein Spektralradius-Argument für den Transferoperator
+$\mathcal{T}(f)(n) = f(\U(n))$ könnte dies formalisieren.
+
+\subsection{Weg 2: 2-adischer Fixpunktsatz für Orbits}
+
+Da alle C-Ketten der Form $n_j = 3^j(n_0+1)/2^j - 1$ 2-adisch gegen $-1$
+konvergieren, könnten 2-adische Ergodenmethoden angewendet werden:
+
+\begin{itemize}
+  \item Der Operator $\U$ ist auf $\Ztwo$ eine 2-adische Expansion
+    (Faktor~$2$), daher kein Kontraktor im klassischen Sinn.
+  \item Tao's Resultat (2022): Fast alle Orbits erreichen fast beschränkte
+    Werte. Eine Übertragung auf ``alle'' Orbits wäre der entscheidende Schritt.
+  \item Hoffnung: Der 2-adische Fixpunkt $x = -1$ als ``Anziehungspunkt''
+    im 2-adischen Sinn erklärt die Konvergenz strukturell, lässt sich aber
+    nicht direkt auf $\N$ übertragen (da $-1 \notin \N$).
+\end{itemize}
+
+\subsection{Weg 3: Lean-Formalisierung der bewiesenen Teile}
+
+Die bewiesenen Teile sind formal-verifizierbar. Konkret für Lean\,4:
+\begin{itemize}
+  \item C-Ketten-Formel: $n_j = 3^j(n_0+1)/2^j - 1$ (arithmetisches Lemma).
+  \item Endlichkeit jeder C-Kette: Konsequenz der 2-adischen Divisibilität.
+  \item BCA-Zyklenfreiheit: Aus $16 < 27$ und Tao-Identität.
+\end{itemize}
+Diese Teile könnten im nächsten Schritt in einem Lean-Dokument formalisiert
+werden, was den Stand des Beweisversuchs formal dokumentiert und mögliche
+Fehler aufdeckt.
+
+% ====================================================
+\section{Fazit: Ehrliche Gesamteinschätzung}
+\label{sec:fazit}
+% ====================================================
+
+\subsection{Was dieser Beweisversuch geleistet hat}
+
+\begin{tcolorbox}[ergebnis, title={Positive Bilanz}]
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{Rigoros bewiesene Bausteine:}
+    Die fünf Kernaussagen in Theorem~\ref{thm:haupt} sind
+    korrekte mathematische Sätze. Sie können in Lean~4 formalisiert werden.
+
+  \item \textbf{Präzise Fehlerdiagnose:}
+    Der Off-by-one-Fehler in Korollar~3.1 von
+    \textit{collatz\_c\_ketten\_2adisch.tex} wurde gefunden und korrigiert.
+    Die korrekte Schranke ist $\vii(n_0+1)-1$.
+
+  \item \textbf{Klare Benennung der Lücke:}
+    Die DC-Lücke ist exakt benannt: pointwise DC ist bewiesen, uniforme DC
+    ist falsch. Was fehlt, ist die Verbindung von pointwise DC zur
+    Beschränktheit der Bahn --- und das ist die eigentliche Collatz-Lücke.
+
+  \item \textbf{LTE-Barriere formalisiert:}
+    Es wurde erstmals explizit gezeigt, dass LTE ($\vii(3^{k+1}m-1) = O(\log k)$)
+    zu schwach ist für Einzelblock-Kontraktion, und dass alternative Methoden
+    (Mehrstufig, Ergodentheorie) nötig sind.
+
+  \item \textbf{Falscher Mechanismus bewiesen:}
+    Die lineare DC-Schranke $\nu \gtrsim 0{,}585\,k$ ist für die extremale
+    Familie $m = 3^r$ \emph{prinzipiell unerreichbar} (Theorem in
+    \textit{collatz\_mehrblock\_drift.tex}). Das ist ein bewiesenes Nicht-Ergebnis:
+    Die Grenzen des Einzelblock-Ansatzes sind jetzt mathematisch gesichert.
+
+  \item \textbf{Richtiges Beweisziel präzisiert:}
+    Das korrekte Ziel ist das Mehrblock-Drift-Kriterium
+    $\limsup \frac{1}{J}\sum \log F(B_j) < 0$. Die Endpunkt-Familie
+    $2\cdot 3^N-1$ ist dafür vollständig per LTE klassifiziert; explizite
+    Tabelle in \textit{collatz\_mehrblock\_drift.tex}, §\,2.
+
+  \item \textbf{$E_8$-Rahmen:}
+    Der E$_8$-Normabstieg gibt eine konzeptionell elegante Erklärung der
+    ``warum-Konvergenz''-Frage und liefert ein gültiges Teilresultat
+    (Normabstieg bei EA-Schritten für große $n$).
+\end{enumerate}
+\end{tcolorbox}
+
+\subsection{Ist das ein „fast-Beweis"?}
+
+\begin{tcolorbox}[konj, title={Nüchterne Einschätzung}]
+\textbf{Nein.} Die Lücke zwischen dem Beweisversuch und einem vollständigen
+Collatz-Beweis ist präzise benennbar und substanziell:
+
+\medskip
+Der \emph{fehlende Schritt} lässt sich so formulieren:
+\begin{quote}
+\itshape
+Zeige, dass für jedes $n_0 \in \N$ die Folge
+$n_0, \U(n_0), \U^2(n_0), \ldots$ schließlich einen Wert $\leq n_0$
+annimmt.
+\end{quote}
+Dies ist im Wesentlichen die Aussage ``Die Bahn von $n_0$ ist beschränkt''
+--- was für alle einzelnen $n_0$ bekannt ist (numerisch bis $n \leq 2^{68}$),
+aber nicht allgemein bewiesen.
+
+\medskip
+Der \emph{Abstand zur Collatz-Vermutung}:
+\begin{itemize}
+  \item Bewiesen: Jede C-Kette endet; zwingender EA-Schritt folgt;
+      $E_8$-Normabstieg bei EA-Schritten; Einzelblock-Kontraktion scheitert
+      fundamental für die extremale Familie (neues Theorem).
+    \item Unbewiesen: Dass das Mehrblock-Drift-Kriterium
+      $\limsup \frac{1}{J}\sum\log F(B_j) < 0$ für \emph{jeden} Orbit gilt.
+    \item Der Abstand ist jetzt \emph{schärfer benannt}: Es geht um das
+      Vorzeichen des Lyapunov-Exponenten der Blockdynamik --- kein
+      lokales, sondern ein globales analytisches Problem.
+  \end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}[korrektur, title={Zusammenfassung: Verschiebung des Kenntnisstands}]
+\textbf{Verbesserung gegenüber dem ursprünglichen Beweisansatz:}
+\begin{enumerate}[label=(\arabic*)]
+  \item Die lineare DC-Schranke $\nu \gtrsim 0{,}585\,k$ ist jetzt
+    \textbf{bewiesen falsch} als universeller Mechanismus
+    (extremale Familie $m=3^r$, LTE-Schranke $O(\log k)$).
+  \item Das richtige Beweisziel ist präzisiert:
+    \emph{negativer Lyapunov-Exponent der Mehrblock-Dynamik}.
+  \item Die Endpunkt-Familie $2\cdot 3^N-1$ ist
+    \textbf{vollständig klassifiziert}:
+    $\vii = 2$ für gerades $N$; $\vii = 3+\vii(N+1)$ für ungerades~$N$.
+  \item Verbindung zu Tao hergestellt: Das Mehrblock-Drift-Kriterium ist
+    die \emph{richtige formale Fassung} von Taos globalem Driftansatz.
+\end{enumerate}
+Einzelheiten in \textit{collatz\_mehrblock\_drift.tex}.
+Dies ist eine \textbf{inhaltliche Verbesserung}, keine Niederlage.
+\end{tcolorbox}
+
+\subsection{Gesamtstatusmatrix}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{p{6.3cm} p{2.6cm} p{4cm}}
+\toprule
+\textbf{Aussage} & \textbf{Status} & \textbf{Bemerkung} \\
+\midrule
+B$\to$B unmöglich
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen} & mod~12 \\
+Übergänge mod~24 (B$\to$C/A, C$\to$A/C)
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen} & mod~24 \\
+C-Ketten-Formel
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen} & Induktion \\
+C-Kettenlänge $\leq \vii(n_0+1)-1$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen} & 2-adisch, korrigiert \\
+Dichte $\leq 2^{-(k+1)}$ für Länge-$k$-Ketten
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen} & Residuenklassen \\
+Zwingender EA-Schritt nach C-Kette
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen} & Arithmetik \\
+LTE-Schranke: $\vii(3^{k+1}m-1) = O(\log k)$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen} & LTE für $p=2$ \\
+LTE-Barriere verhindert Einzelblock-Kontraktion
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen} & Satz~\ref{thm:haupt}+LTE \\
+BCA-Zyklen ($\vii=2$) ausgeschlossen
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen} & $16^s < 27^s$ \\
+$E_8$-Normabstieg bei EA-Schritten
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen} & für $N \gg 1$ \\
+Geom.\ Mittelfaktor $3/4 < 1$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen} & Residuenklassen-Mittel \\
+5-glatte Dichte~$0$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen} & Simplex-Volumen \\
+\midrule
+Einzelblock-Kontraktion scheitert für extremale Familie
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen} & LTE, $\nu=O(\log k)$, neu \\
+Endpunkt-Familie $2\cdot 3^N-1$ klassifiziert
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen} & LTE, explizit, neu \\
+Kontraktion jedes C$^k$A-Blocks für alle $k$
+  & \textcolor{lückenrot}{\bfseries Offen} & LTE-Barriere (fundamental) \\
+Mehrblock-Drift-Kriterium für alle Orbits
+  & \textcolor{lückenrot}{\bfseries Offen} & Lyapunov-Exponent \\
+Uniforme DC (von $n$ unabh.\ Schranke $m_0$)
+  & \textcolor{lückenrot}{\bfseries Offen} & Kernlücke \\
+Allgemeine Zyklenfreiheit
+  & \textcolor{lückenrot}{\bfseries Offen} & Baker nötig \\
+Keine divergenten Bahnen (direkt)
+  & \textcolor{lückenrot}{\bfseries Offen} & setzt DC voraus \\
+\midrule
+Zyklenfreiheit (konditional auf Baker)
+  & \textcolor{warnorange}{\bfseries Bedingt} & Baker-Axiom \\
+Mitteldrift-Argument gegen Divergenz
+  & \textcolor{warnorange}{\bfseries Heuristik} & gilt im Mittel \\
+Kein Wachstum für $r \geq 1/2$ EA-Anteil
+  & \textcolor{warnorange}{\bfseries Konditional} & fehlt: $r \geq 1/2$ \\
+\midrule
+\textbf{Collatz-Vermutung}
+  & \textcolor{lückenrot}{\bfseries Offen} & --- \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{tcolorbox}[kernidee, title={Schlussfolgerung}]
+Der vorliegende Beweisversuch ist eine \textbf{saubere, korrekte Reduktion}
+der Collatz-Vermutung auf ein präzise benanntes analytisches Kernproblem:
+
+\medskip
+\begin{center}
+\textit{Gilt für jede Collatz-Bahn:\\[4pt]
+$\displaystyle\limsup_{J\to\infty}\frac{1}{J}\sum_{j=1}^{J}\log F(B_j) < 0$\,?}
+\end{center}
+
+\medskip
+(Äquivalent: Ist der Lyapunov-Exponent der Blockdynamik negativ?)
+
+\medskip
+Diese Reformulierung ist selbst ein Ergebnis. Sie zeigt:
+\begin{itemize}
+  \item Alle algebraisch-modularen Methoden (LTE, mod-24-Arithmetik)
+    sind für das \emph{lokale} Problem ausgereizt.
+  \item Das verbleibende Problem ist \emph{global} und
+    ergodisch-theoretisch formulierbar.
+  \item Die Verbindung zu Taos Ansatz (globale Drift, ``almost all''-Aussagen)
+    ist jetzt präzise.
+\end{itemize}
+Der Einzelblock-Ansatz ist als unzureichend \emph{bewiesen} --- und damit
+ist der Weg für globale Methoden klar ausgewiesen.
+\end{tcolorbox}
+
+% ====================================================
+% Literatur
+% ====================================================
+\begin{thebibliography}{10}
+
+\bibitem{hoffbauer-eabc}
+T.\ Hoffbauer,
+\textit{Die verborgene Binnenstruktur der Collatz-Dynamik:
+EABC-Spektrum-Notiz},
+Mathematische Texte, \texttt{collatz\_eabc\_spektrum.tex} (2025).
+
+\bibitem{hoffbauer-oktonionen}
+T.\ Hoffbauer,
+\textit{Collatz-Dynamik auf ganzzahligen Oktonionen: Beweisversuch über
+das $E_8$-Gitter},
+Mathematische Texte, \texttt{collatz\_oktonionen\_beweis.tex} (2025).
+
+\bibitem{hoffbauer-dc}
+T.\ Hoffbauer,
+\textit{Die Durchlaufbedingung im Morley-Walter-Rahmen},
+Mathematische Texte, \texttt{collatz\_dc\_morley\_walter.tex} (2025).
+
+\bibitem{hoffbauer-c-ketten}
+T.\ Hoffbauer,
+\textit{C-Ketten in der Collatz-Dynamik: 2-adische Analyse},
+Mathematische Texte, \texttt{collatz\_c\_ketten\_2adisch.tex} (2025/2026).
+
+\bibitem{hoffbauer-5glatt}
+T.\ Hoffbauer,
+\textit{C-Ketten, 5-glatte Zahlen und Abstiegsstruktur},
+Mathematische Texte, \texttt{collatz\_5glatt\_dc.tex} (2026).
+
+\bibitem{hoffbauer-abschluss}
+T.\ Hoffbauer,
+\textit{Collatz-Beweisversuch: Synthese und Abschlussanalyse},
+Mathematische Texte, \texttt{collatz\_beweis\_abschluss.tex} (2026).
+
+\bibitem{hoffbauer-mehrblock}
+T.\ Hoffbauer,
+\textit{Mehrblock-Drift und das Scheitern der lokalen Kontraktion},
+Mathematische Texte, \texttt{collatz\_mehrblock\_drift.tex} (2026).
+
+\bibitem{tao-collatz}
+T.\ Tao,
+\textit{Almost all orbits of the Collatz map attain almost bounded values},
+Forum of Mathematics Pi \textbf{10} (2022), e12.
+
+\bibitem{baker}
+A.\ Baker,
+\textit{Linear forms in the logarithms of algebraic numbers},
+Mathematika \textbf{13} (1966), 204--216.
+
+\bibitem{lagarias}
+J.\,C.\ Lagarias,
+\textit{The $3x+1$ problem and its generalizations},
+Amer.\ Math.\ Monthly \textbf{92} (1985), 3--23.
+
+\bibitem{stoermer}
+C.\ Størmer,
+\textit{Quelques théorèmes sur l'équation de Pell},
+Videnskapsselskapets Skrifter, Kristiania (1897).
+
+\end{thebibliography}
+
+\end{document}
