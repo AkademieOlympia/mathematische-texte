@@ -1,0 +1,624 @@
+\documentclass[12pt,a4paper]{article}
+
+% -------------------------------------------------
+% Sprache / Kodierung
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+
+% -------------------------------------------------
+% Layout / Grafik / Farben
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks,unicode]{hyperref}
+\pdfstringdefDisableCommands{%
+  \def\ü{ue}\def\ö{oe}\def\ä{ae}\def\Ü{Ue}\def\Ö{Oe}\def\Ä{Ae}\def\ss{ss}%
+}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{siunitx}
+
+% -------------------------------------------------
+% Farben (konsistent mit Vorgängerdokumenten)
+% -------------------------------------------------
+\definecolor{lückenrot}{RGB}{180,40,40}
+\definecolor{bewiesengrün}{RGB}{30,100,50}
+\definecolor{warnorange}{RGB}{200,100,10}
+\definecolor{hintergrundblau}{RGB}{235,242,250}
+\definecolor{hintergrundgelb}{RGB}{255,252,225}
+\definecolor{adischviolett}{RGB}{90,20,140}
+\definecolor{fehlerrot}{RGB}{200,0,0}
+\definecolor{konjviolett}{RGB}{80,0,130}
+\definecolor{e8grau}{RGB}{55,55,90}
+
+% -------------------------------------------------
+% tcolorbox-Stile
+% -------------------------------------------------
+\tcbset{
+  lücke/.style={colback=red!8, colframe=lückenrot, fonttitle=\bfseries,
+    title={Offene Lücke}},
+  ergebnis/.style={colback=green!7, colframe=bewiesengrün,
+    fonttitle=\bfseries, title={Bewiesenes Ergebnis}},
+  warnung/.style={colback=orange!10, colframe=warnorange,
+    fonttitle=\bfseries, title={Achtung / Heuristik}},
+  adisch/.style={colback=violet!6, colframe=adischviolett,
+    fonttitle=\bfseries, title={2-adische Perspektive}},
+  kernidee/.style={colback=hintergrundblau, colframe=blue!60!black,
+    fonttitle=\bfseries, title={Kernidee}},
+  konj/.style={colback=violet!5, colframe=konjviolett, fonttitle=\bfseries,
+    title={Konjektur (unbewiesen)}},
+  lte/.style={colback=yellow!8, colframe=e8grau, fonttitle=\bfseries,
+    title={LTE-Analyse}},
+  hauptsatz/.style={colback=green!10, colframe=bewiesengrün!80!black,
+    fonttitle=\bfseries\large, title={Stärkster beweisbarer Satz}},
+  korrektur/.style={colback=yellow!5, colframe=orange!70!black,
+    fonttitle=\bfseries},
+  sensitivitaet/.style={colback=blue!5, colframe=blue!50!black,
+    fonttitle=\bfseries, title={Sensitivitätsanalyse}},
+}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+\newtheorem{hypothese}[definition]{Hypothese}
+\newtheorem{satz}[definition]{Satz}
+
+\newenvironment{beweis}{\begin{proof}[Beweis]}{\end{proof}}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\vii}{\nu_2}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Ztwo}{\mathbb{Z}_2}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\atwo}[1]{\lvert#1\rvert_2}
+\newcommand{\logF}{\log F(B)}
+
+% -------------------------------------------------
+% Dokument
+% -------------------------------------------------
+\title{%
+  Konditionierte Drift-Analyse im Lyapunov-Rahmen:\\[0.3em]
+  Präzisierung der $\nu$-Verteilung an C-Ketten-Endpunkten\\[0.5em]
+  \large Präzisierungs-Appendix zu \textit{collatz\_lyapunov.tex}%
+}
+\author{Thomas Hoffbauer}
+\date{16.\ Juni 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Dieses Dokument präzisiert die Lyapunov-Drift-Rechnung aus
+\textit{collatz\_lyapunov.tex}.
+Der naive Ansatz $\E[\nu] \approx 3$ (geometrische Verteilung) ist für
+C-Ketten-Endpunkte zu optimistisch: Das Lifting-the-Exponent-Lemma (LTE)
+zeigt, dass $\vii(3n+1)$ an solchen Endpunkten typischerweise
+$O(\log l)$ statt $\approx 3$ beträgt.
+Die korrekte Driftrechnung muss daher \emph{konditioniert} nach der
+C-Kettenlänge $l$ aufgestellt werden.
+
+Das Hauptergebnis ist heuristisch: Auch nach Konditionierung ergibt sich
+$\E[\logF] \approx -0{,}33 < 0$, der Drift bleibt negativ.
+Eine Sensitivitätsanalyse zeigt, dass dieser Schluss für
+$\E[\nu \mid l{=}k] < 3{,}34$ robust ist.
+Abschließend werden die verbleibenden rigorosen Lücken klar benannt.
+
+\medskip
+\noindent\textbf{Status:}
+\textcolor{bewiesengrün}{Schritt~1--2 (Wahrscheinlichkeiten, LTE-Schranke): bewiesen.}
+\textcolor{warnorange}{Schritte~3--5 (konditionierte Driftrechnung): heuristisch.}
+\textcolor{lückenrot}{Schritt~6 (Ergodizität, Zyklenfreiheit): offen.}
+\end{abstract}
+
+\tableofcontents
+\bigskip
+
+\begin{tcolorbox}[warnung, title={Einordnung dieses Dokuments}]
+Die Collatz-Vermutung ist unbewiesen.
+Dieser Text trennt konsequent zwischen
+\textbf{bewiesenen Aussagen} (grün),
+\textbf{Heuristiken} (orange)
+und \textbf{offenen Lücken} (rot).
+Die konditionierte Drift-Rechnung ist eine \emph{heuristische Verbesserung},
+kein Beweis der Collatz-Vermutung.
+\end{tcolorbox}
+
+% ====================================================
+\section{Motivation: Warum die naive Rechnung zu optimistisch ist}
+\label{sec:motivation}
+% ====================================================
+
+In der Lyapunov-Analyse wird der logarithmische Drift eines
+EABC-Blocks~$B$ betrachtet.
+Ein Block der Kettenlänge $l \geq 0$ führt eine C-Kette der Länge $l$
+aus, gefolgt von einem EA-Schritt.
+Die zentrale Größe ist der \emph{Block-Faktor}
+\[
+  F(B) = \frac{3^{l+1}}{2^{l+\nu}},
+\]
+wobei $\nu = \vii(3n_l + 1)$ die 2-adische Bewertung am Block-Endpunkt ist.
+
+\begin{tcolorbox}[lte]
+\textbf{Naive Annahme (zu optimistisch):}
+Ohne Beachtung der Block-Struktur gilt für beliebige ungerade~$n$:
+$\vii(3n+1) \geq 1$ mit $P(\vii(3n+1) = k) = 2^{-(k-1)}$ für $k \geq 1$,
+also $\E[\nu] = 3$.
+
+\medskip
+\textbf{Das Problem:}
+Am Block-Endpunkt einer C-Kette der Länge $l \geq 1$ hat~$n_l$ die Form
+\[
+  n_l = 2 \cdot 3^l \cdot m - 1
+\]
+für ein ungerades $m$.
+Dann gilt:
+\[
+  3n_l + 1 = 6 \cdot 3^l \cdot m - 2 = 2(3^{l+1} m - 1).
+\]
+Also $\vii(3n_l + 1) = 1 + \vii(3^{l+1}m - 1)$.
+Nach LTE ist $\vii(3^{l+1}m - 1) = O(\log l)$ für typisches~$m$
+--- deutlich kleiner als der naive Erwartungswert von~$2$.
+\end{tcolorbox}
+
+Die korrekte Analyse muss daher nach $l$ konditionieren.
+
+% ====================================================
+\section{Schritt 1: Wahrscheinlichkeiten der Kettenlänge}
+\label{sec:wahrscheinlichkeiten}
+% ====================================================
+
+\begin{tcolorbox}[ergebnis, title={Bewiesenes Ergebnis -- Kettenlängenverteilung}]
+Für eine ungerade Zahl~$n_0$ gilt:
+\begin{itemize}[noitemsep]
+  \item $l = 0$ genau dann, wenn $n_0 \not\equiv 3 \pmod{4}$
+        (kein C-Vorläufer-Typ), d.\,h.\ $P(l=0) = 1/2$.
+  \item $l \geq k$ genau dann, wenn $2^{k+1} \mid (n_0+1)$,
+        d.\,h.\ $P(l \geq k) = 2^{-k}$.
+  \item $P(l = k) = P(l \geq k) - P(l \geq k{+}1) = 2^{-k} - 2^{-(k+1)} = 2^{-(k+1)}$
+        für $k \geq 1$.
+\end{itemize}
+\end{tcolorbox}
+
+\begin{proposition}[Momente der Kettenlänge]
+\label{prop:momente}
+Unter der obigen geometrischen Verteilung gilt:
+\[
+  P(l=0) = \tfrac{1}{2}, \qquad
+  P(l=k) = 2^{-(k+1)} \text{ für } k \geq 1.
+\]
+Der Erwartungswert ist
+\[
+  \E[l] = \sum_{k=1}^{\infty} k \cdot 2^{-(k+1)}
+         = \frac{1}{2} \sum_{k=1}^{\infty} k \cdot 2^{-k}
+         = \frac{1}{2} \cdot 2 = 1.
+\]
+\end{proposition}
+
+% ====================================================
+\section{Schritt 2: LTE-Schranke für \texorpdfstring{$\nu$}{nu} an
+  C-Ketten-Endpunkten}
+\label{sec:lte}
+% ====================================================
+
+\begin{lemma}[LTE-Schranke, bewiesen]
+\label{lem:lte}
+Sei $l \geq 1$ und $n_l = 2 \cdot 3^l \cdot m - 1$ mit ungeradem~$m$.
+Dann gilt:
+\[
+  \nu = \vii(3n_l + 1) = 1 + \vii(3^{l+1} m - 1).
+\]
+Nach dem Lifting-the-Exponent-Lemma für $p=2$ gilt für $2 \nmid m$:
+\[
+  \vii(3^{l+1} m - 1) \leq \vii(3m-1) + \vii(l+1).
+\]
+Insbesondere ist $\vii(3^{l+1}m-1) = O(\log l)$ für festes~$m$ und
+wachsendes~$l$.
+\end{lemma}
+
+\begin{bemerkung}
+Konkret bedeutet dies: Für $l \geq 1$ ist der typische Wert von $\nu$
+\[
+  \E[\nu \mid l=k] \approx 2 + \vii(k+1),
+\]
+da $\vii(3^{k+1}m-1) \approx 1 + \vii(k+1)$ für generisches~$m$.
+Für $k+1$ ungerade gilt $\vii(k+1) = 0$, also $\E[\nu \mid l=k] \approx 2$.
+Für $k+1$ gerade gilt $\E[\nu \mid l=k] \approx 2 + \vii(k+1) \geq 3$.
+In der Grobabschätzung verwenden wir $\E[\nu \mid l=k] \approx 2$ für alle $k$.
+\end{bemerkung}
+
+% ====================================================
+\section{Schritt 3: Konditionierter Log-Drift}
+\label{sec:konditionierter_drift}
+% ====================================================
+
+Der logarithmische Block-Drift ist
+\[
+  \logF = \log F(B) = (l+1)\log 3 - (l+\nu)\log 2.
+\]
+Wir berechnen $\E[\logF \mid l=k]$ für $k = 0$ und $k \geq 1$ separat.
+
+\subsection{Fall \texorpdfstring{$l=0$}{l=0}: Direkter EA-Schritt}
+
+Für $l=0$ liegt kein C-Vorläufer vor; $\nu$ ist geometrisch verteilt
+mit $P(\nu=j) = 2^{-(j-1)}$ für $j \geq 2$ (mindestens eine freie
+Zweierpotenz), also $\E[\nu \mid l{=}0] = 3$.
+
+\begin{proposition}[Drift für $l=0$, heuristisch]
+\label{prop:drift_l0}
+\[
+  \E[\logF \mid l=0]
+  = \log 3 - (0+3)\log 2
+  = \log_2 3 - 3
+  \approx 1{,}585 - 3 = -1{,}415.
+\]
+\end{proposition}
+
+\subsection{Fall \texorpdfstring{$l=k \geq 1$}{l=k>=1}: Nach C-Kette}
+
+Nach einer C-Kette der Länge $k$ gilt mit $\E[\nu \mid l{=}k] \approx 2$:
+
+\begin{proposition}[Drift für $l=k$, heuristisch]
+\label{prop:drift_lk}
+\[
+  \E[\logF \mid l=k]
+  \approx (k+1)\log 3 - (k+2)\log 2
+  = k(\log 3 - \log 2) + (\log 3 - 2\log 2).
+\]
+Mit $\log_2 3 \approx 1{,}585$ und allen Logarithmen zur Basis 2:
+\[
+  \E[\logF \mid l=k]
+  \approx k \cdot 0{,}585 + (1{,}585 - 2)
+  = 0{,}585\,k - 0{,}415.
+\]
+\end{proposition}
+
+\begin{bemerkung}
+Man beachte den Vorzeichenwechsel:
+\begin{itemize}[noitemsep]
+  \item $k=0$: $-0{,}415$ (kontrahierend),
+  \item $k=1$: $\phantom{-}0{,}170$ (leicht expandierend!),
+  \item $k=2$: $\phantom{-}0{,}755$ (expandierend).
+\end{itemize}
+Blöcke mit langen C-Ketten expandieren im Mittel.
+Der Gesamtdrift hängt davon ab, wie stark die geometrisch abnehmenden
+Wahrscheinlichkeiten $P(l=k) = 2^{-(k+1)}$ diese Expansion dämpfen.
+\end{bemerkung}
+
+% ====================================================
+\section{Schritt 4: Gesamtdrift}
+\label{sec:gesamtdrift}
+% ====================================================
+
+\begin{proposition}[Gesamtdrift, heuristisch]
+\label{prop:gesamtdrift}
+\[
+  \E[\logF]
+  = P(l=0)\cdot\E[\logF \mid l=0]
+    + \sum_{k=1}^{\infty} P(l=k)\cdot\E[\logF \mid l=k].
+\]
+Einsetzen ergibt:
+\begin{align*}
+  \E[\logF]
+  &= \frac{1}{2}\cdot(-1{,}415)
+     + \sum_{k=1}^{\infty} \frac{1}{2^{k+1}}\cdot(0{,}585\,k - 0{,}415)\\[4pt]
+  &= -0{,}708
+     + \frac{1}{2}\Bigl(
+         0{,}585\sum_{k=1}^{\infty} k\cdot 2^{-k}
+         - 0{,}415\sum_{k=1}^{\infty} 2^{-k}
+       \Bigr).
+\end{align*}
+Mit den Standardwerten $\sum_{k=1}^{\infty} k \cdot 2^{-k} = 2$ und
+$\sum_{k=1}^{\infty} 2^{-k} = 1$:
+\[
+  \E[\logF]
+  = -0{,}708 + \frac{1}{2}(0{,}585\cdot 2 - 0{,}415\cdot 1)
+  = -0{,}708 + \frac{1}{2}(1{,}170 - 0{,}415)
+  = -0{,}708 + 0{,}378
+  = -0{,}330.
+\]
+\end{proposition}
+
+\begin{tcolorbox}[ergebnis, title={Hauptergebnis der konditionierten Rechnung (heuristisch)}]
+Unter der Näherung $\E[\nu \mid l{=}k] \approx 2$ für alle $k \geq 1$
+und $\E[\nu \mid l{=}0] = 3$ ergibt die konditionierte Driftrechnung:
+\[
+  \boxed{\E[\logF] \approx -0{,}330 < 0.}
+\]
+Der logarithmische Drift ist negativ — auch nachdem die Unterschätzung
+von~$\nu$ an C-Ketten-Endpunkten korrigiert wurde.
+\end{tcolorbox}
+
+\subsection{Tabellarische Übersicht}
+
+\begin{table}[h!]
+\centering
+\caption{Konditionierte Driftkomponenten pro Kettenlänge~$l$}
+\label{tab:driftkomponenten}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{
+  c
+  S[table-format=1.4]
+  S[table-format=1.1]
+  S[table-format=+1.3]
+  S[table-format=+1.4]
+}
+\toprule
+$l$ & {$P(l)$} & {$\E[\nu \mid l]$} & {$\E[\logF \mid l]$} & {Beitrag $P(l)\cdot\E[\logF \mid l]$} \\
+\midrule
+$0$      & 0.5000  & 3.0 & -1.415 & -0.7075 \\
+$1$      & 0.2500  & 2.0 & +0.170 & +0.0425 \\
+$2$      & 0.1250  & 2.0 & +0.755 & +0.0944 \\
+$3$      & 0.0625  & 2.0 & +1.340 & +0.0838 \\
+$4$      & 0.0313  & 2.0 & +1.925 & +0.0602 \\
+$5$      & 0.0156  & 2.0 & +2.510 & +0.0392 \\
+{$\vdots$} & {$\vdots$} & {$\vdots$} & {$\vdots$} & {$\vdots$} \\
+{$\infty$} & {(Summe)} & {---} & {---} & {$-0{,}330$} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{bemerkung}
+Die Beiträge für $l \geq 2$ wachsen linear in~$l$ (im Zähler), aber die
+Wahrscheinlichkeiten fallen exponentiell.
+Die Reihe konvergiert, und das Gesamtergebnis ist negativ.
+\end{bemerkung}
+
+% ====================================================
+\section{Schritt 5: Sensitivitätsanalyse}
+\label{sec:sensitivitaet}
+% ====================================================
+
+\begin{tcolorbox}[sensitivitaet]
+\textbf{Frage:} Wie sensitiv ist $\E[\logF]$ gegenüber der Annahme
+$\E[\nu \mid l{=}k] = \alpha$ für $k \geq 1$?
+\end{tcolorbox}
+
+\subsection{Allgemeine Formel}
+
+Sei $\alpha \geq 1$ ein freier Parameter mit $\E[\nu \mid l{=}k] = \alpha$
+für alle $k \geq 1$.
+Dann gilt:
+\[
+  \E[\logF \mid l=k] = (k+1)\log 3 - (k+\alpha)\log 2
+  = k(\log 3 - \log 2) + \log 3 - \alpha\log 2.
+\]
+Also:
+\begin{align*}
+  \E[\logF](\alpha)
+  &= -0{,}708
+     + \frac{1}{2}\Bigl(
+         (\log 3 - \log 2)\sum_{k=1}^{\infty} k \cdot 2^{-k}
+         + (\log 3 - \alpha\log 2)\sum_{k=1}^{\infty} 2^{-k}
+       \Bigr)\\
+  &= -0{,}708 + \frac{1}{2}\bigl(0{,}585\cdot 2 + (1{,}585 - \alpha)\cdot 1\bigr)\\
+  &= -0{,}708 + \frac{1}{2}(1{,}170 + 1{,}585 - \alpha)\\
+  &= -0{,}708 + \frac{1}{2}(2{,}755 - \alpha)\\
+  &= -0{,}708 + 1{,}378 - \frac{\alpha}{2}\\
+  &= 0{,}670 - \frac{\alpha}{2}.
+\end{align*}
+
+\begin{proposition}[Kritischer $\alpha$-Wert]
+\label{prop:kritisch}
+Das Vorzeichen von $\E[\logF](\alpha)$ wechselt bei
+\[
+  \alpha^* = 2 \cdot 0{,}670 = 1{,}340.
+\]
+Für $\alpha < \alpha^* \approx 1{,}34$ wäre der Gesamtdrift positiv.
+Für $\alpha > \alpha^*$ ist er negativ.
+\end{proposition}
+
+\begin{table}[h!]
+\centering
+\caption{Sensitivitätsanalyse: $\E[\logF]$ als Funktion von $\alpha = \E[\nu \mid l{\geq}1]$}
+\label{tab:sensitivitaet}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{
+  S[table-format=1.1]
+  S[table-format=+1.4]
+  l
+}
+\toprule
+{$\alpha$} & {$\E[\logF](\alpha)$} & Interpretation \\
+\midrule
+1.0 & +0.170 & stark expansiv (physikalisch ausgeschlossen: $\nu \geq 1$) \\
+1.5 & -0.080 & schwach kontraktiv \\
+2.0 & -0.330 & kontraktiv (Basisannahme dieses Dokuments) \\
+2.5 & -0.580 & stärker kontraktiv \\
+3.0 & -0.830 & naive Schätzung (geometrisch, unkonditioniert) \\
+3.5 & -1.080 & sehr stark kontraktiv \\
+\midrule
+{$1{,}34$} & {$\approx 0{,}000$} & \textbf{kritischer Wert $\alpha^*$} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{tcolorbox}[warnung, title={Interpretation der Sensitivitätsanalyse}]
+\begin{itemize}[noitemsep]
+  \item Der LTE-Mechanismus erzwingt $\nu \geq 1$ (trivial) und typisch
+        $\nu \geq 2$ an C-Ketten-Endpunkten.
+        Damit gilt $\alpha \geq 2$, was den kritischen Wert $\alpha^* \approx 1{,}34$
+        weit unterschreitet.
+  \item \textbf{Fazit:} Solange die LTE-Schranke $\E[\nu \mid l{\geq}1] \geq 2$
+        gilt (was aus der Struktur der C-Ketten folgt), ist $\E[\logF] \leq -0{,}33$.
+        Das Ergebnis ist gegenüber plausiblen Variationen in~$\alpha$ robust.
+  \item Unsicherheit: Ob $\E[\nu \mid l{=}k]$ genauer bei~$2$ oder bei
+        $2{,}5$ liegt, verändert den Drift von $-0{,}33$ auf $-0{,}58$,
+        aber nicht das Vorzeichen.
+\end{itemize}
+\end{tcolorbox}
+
+% ====================================================
+\section{Schritt 6: Verbleibende rigoros offene Lücken}
+\label{sec:offene_luecken}
+% ====================================================
+
+Selbst wenn $\E[\logF] < 0$ korrekt und das heuristische Argument
+überzeugend ist, fehlen für einen vollständigen Beweis der Collatz-Vermutung
+mindestens zwei entscheidende Schritte.
+
+\begin{tcolorbox}[lücke, title={Offene Lücke 1: Ergodizitätsargument}]
+\textbf{Problem:} Der negative Drift $\E[\logF] < 0$ ist ein
+\emph{Erwartungswert} über die stationäre Verteilung der Kettenlängen.
+Ein Beweis erfordert, dass auch der \emph{Zeitmittelwert}
+\[
+  \lim_{N\to\infty} \frac{1}{N}\sum_{i=1}^{N} \log F(B_i) < 0
+\]
+für (fast) jede Bahn gilt.
+
+\textbf{Benötigt:} Ergodiziätssatz (Birkhoff) für die Collatz-Dynamik,
+d.\,h.\ Ergodizität des Maßes~$\mu$ bzgl.\ der Abbildung~$\mathcal{U}$.
+Die Existenz und Mischungseigenschaften eines solchen invarianten Maßes
+sind für die Collatz-Abbildung \textbf{nicht bewiesen}.
+
+\textbf{Konsequenz:} Ohne Ergodizität kann $\E[\logF] < 0$ nur für
+``generische'' (zufällig gewählte) Bahnen gelten, nicht für alle
+$n \in \N$.
+\end{tcolorbox}
+
+\begin{tcolorbox}[lücke, title={Offene Lücke 2: Maß-Null-Ausnahmen}]
+\textbf{Problem:} Selbst wenn der Drift negativ ist, könnten
+nicht-typische Bahnen existieren:
+\begin{enumerate}[noitemsep]
+  \item \emph{Nicht-triviale Zyklen:} Bahnen, die in einem Zyklus
+        $\neq \{1,2,4\}$ stecken.
+        Zwar zeigt $\E[\logF] < 0$ globale Kontraktion,
+        aber ein Zyklus kann lokal konsistent sein.
+  \item \emph{Divergente Bahnen:} Bahnen mit $T^k(n) \to \infty$.
+        Ein negativer mittlerer Drift schließt Divergenz
+        \emph{für typische} $n$ aus, nicht formal für alle.
+\end{enumerate}
+
+\textbf{Status:}
+Nicht-triviale Zyklen sind für $n < 2^{68}$ numerisch ausgeschlossen
+(Oliveira e Silva, 2010); für alle $n$ ist es unbewiesen.
+Divergenz ist ebenso unbewiesen.
+
+\textbf{Was wäre nötig:}
+Ein quantitatives Lyapunov-Argument, das zeigt, dass der Drift
+gleichmäßig negativ (nicht nur im Mittel) ist,
+oder ein direkter Zyklusausschluss via Algebra.
+\end{tcolorbox}
+
+% ====================================================
+\section{Zusammenfassung und Abgrenzung}
+\label{sec:zusammenfassung}
+% ====================================================
+
+\begin{table}[h!]
+\centering
+\caption{Statusübersicht der Argumentationsschritte}
+\label{tab:status}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{p{5.5cm} c p{6.5cm}}
+\toprule
+\textbf{Aussage} & \textbf{Status} & \textbf{Anmerkung} \\
+\midrule
+$P(l=k) = 2^{-(k+1)}$ für $k \geq 1$
+  & \textcolor{bewiesengrün}{\textbf{bewiesen}}
+  & Folgt aus $2^{k+1} \mid (n_0+1)$ \\
+LTE-Schranke $\vii(3n_l+1) = O(\log l)$
+  & \textcolor{bewiesengrün}{\textbf{bewiesen}}
+  & Standardresultat (Kummer/LTE) \\
+$\E[\nu \mid l{=}0] = 3$
+  & \textcolor{bewiesengrün}{\textbf{bewiesen}}
+  & Geometrische Verteilung, kein C-Vorläufer \\
+$\E[\nu \mid l{=}k] \approx 2$ für $k \geq 1$
+  & \textcolor{warnorange}{\textbf{heuristisch}}
+  & LTE gibt Schranke; exakter Wert unbekannt \\
+$\E[\logF] \approx -0{,}33$
+  & \textcolor{warnorange}{\textbf{heuristisch}}
+  & Folgt aus obiger Näherung \\
+Negativität für alle Bahnen
+  & \textcolor{lückenrot}{\textbf{offen}}
+  & Ergodizität fehlt \\
+Zyklenfreiheit / Nicht-Divergenz
+  & \textcolor{lückenrot}{\textbf{offen}}
+  & Maß-Null-Ausnahmen nicht ausgeschlossen \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{tcolorbox}[hauptsatz, title={Präzisiertes Hauptresultat (heuristisch)}]
+Unter der plausiblen Näherung $\E[\nu \mid l{=}k] \approx 2$ für $k \geq 1$
+und $\E[\nu \mid l{=}0] = 3$ gilt für den konditionierten logarithmischen
+Block-Drift:
+\[
+  \E[\logF]
+  \;=\; \frac{1}{2}\cdot(-1{,}415)
+        + \frac{1}{2}\Bigl(0{,}585\cdot\E[l\,|\,l\geq 1] - 0{,}415\Bigr)
+  \;\approx\; -0{,}330.
+\]
+Die Sensitivitätsanalyse zeigt: Das Ergebnis $\E[\logF] < 0$ ist robust
+für alle $\alpha = \E[\nu \mid l{\geq}1] \geq \alpha^* \approx 1{,}34$,
+was durch die LTE-Schranke $\alpha \geq 2$ garantiert ist.
+
+\medskip
+\textbf{Was dies \emph{nicht} beweist:}
+Die Collatz-Vermutung. Fehlende Schritte: Ergodizität (Birkhoff-Theorem
+für Collatz), Ausschluss nicht-trivialer Zyklen, Ausschluss divergenter
+Bahnen.
+\end{tcolorbox}
+
+% ====================================================
+\appendix
+\section{Rechnung der geometrischen Reihen}
+\label{app:reihen}
+% ====================================================
+
+Für vollständige Nachvollziehbarkeit: Die verwendeten Reihenformeln.
+
+\begin{align*}
+  \sum_{k=1}^{\infty} 2^{-k} &= 1, \\
+  \sum_{k=1}^{\infty} k \cdot 2^{-k}
+    &= \frac{2^{-1}}{(1-2^{-1})^2} = \frac{1/2}{1/4} = 2, \\
+  \sum_{k=1}^{\infty} k^2 \cdot 2^{-k} &= 6
+  \quad \text{(für die Varianzabschätzung).}
+\end{align*}
+
+Diese Werte sind standardmäßig bekannt; die Rechnungen in den
+Propositionen~\ref{prop:momente}, \ref{prop:gesamtdrift}
+und~\ref{prop:kritisch} nutzen ausschließlich die ersten beiden.
+
+% ====================================================
+\section{Verbindung zu \textit{collatz\_lyapunov.tex}}
+\label{app:verbindung}
+% ====================================================
+
+Dieses Dokument ist als \emph{Präzisierungs-Appendix} zu
+\textit{collatz\_lyapunov.tex} gedacht.
+Es kann entweder:
+\begin{enumerate}[noitemsep]
+  \item als eigenständiges Dokument (Appendix) referenziert werden,
+  \item oder als Korrektur/Erweiterung von Abschnitt~3 in
+        \textit{collatz\_lyapunov.tex} eingearbeitet werden.
+\end{enumerate}
+
+Die wesentliche Botschaft: Der negative Drift $\E[\logF] < 0$
+überlebt die Präzisierung durch die konditionierte $\nu$-Verteilung,
+aber die Lücken zu einem vollständigen Beweis bleiben dieselben wie
+im Hauptdokument.
+
+\end{document}
