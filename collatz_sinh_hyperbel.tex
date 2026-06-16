@@ -1,0 +1,466 @@
+\documentclass[12pt,a4paper]{article}
+
+% -------------------------------------------------
+% Sprache / Kodierung
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+
+% -------------------------------------------------
+% Layout / Grafik / Farben
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks,unicode]{hyperref}
+\pdfstringdefDisableCommands{%
+  \def\ü{ue}\def\ö{oe}\def\ä{ae}\def\Ü{Ue}\def\Ö{Oe}\def\Ä{Ae}\def\ss{ss}%
+}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{array}
+
+% -------------------------------------------------
+% Farben
+% -------------------------------------------------
+\definecolor{lückenrot}{RGB}{180,40,40}
+\definecolor{bewiesengrün}{RGB}{30,100,50}
+\definecolor{warnorange}{RGB}{200,100,10}
+\definecolor{hintergrundblau}{RGB}{235,242,250}
+\definecolor{hintergrundgelb}{RGB}{255,252,225}
+\definecolor{hyperviolett}{RGB}{90,20,140}
+\definecolor{sinhblau}{RGB}{0,60,140}
+\definecolor{grautext}{RGB}{60,60,80}
+
+% -------------------------------------------------
+% tcolorbox-Stile
+% -------------------------------------------------
+\tcbset{
+  ergebnis/.style={colback=green!7, colframe=bewiesengrün,
+    fonttitle=\bfseries, title={Ergebnis}},
+  warnung/.style={colback=orange!10, colframe=warnorange,
+    fonttitle=\bfseries, title={Achtung / Heuristik}},
+  kernidee/.style={colback=hintergrundblau, colframe=blue!60!black,
+    fonttitle=\bfseries, title={Kernidee}},
+  hyper/.style={colback=violet!5, colframe=hyperviolett,
+    fonttitle=\bfseries, title={Hyperbolische Interpretation}},
+  fazit/.style={colback=hintergrundgelb, colframe=sinhblau,
+    fonttitle=\bfseries, title={Fazit}},
+  lücke/.style={colback=red!8, colframe=lückenrot,
+    fonttitle=\bfseries, title={Offene Frage}},
+}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{bemerkung}{Bemerkung}[section]
+\newtheorem{definition}{Definition}[section]
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\arcosh}{\operatorname{arcosh}}
+\newcommand{\sinh}{\operatorname{sinh}}
+\renewcommand{\cosh}{\operatorname{cosh}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Lamb}{\Lambda}
+
+% =================================================
+\title{\textbf{Die Funktion $2\sinh(2x)$ unter Collatz-Schritten}\\
+\large Hyperbolische Geometrie, Möbius-Matrizen\\
+und die Interpretation des Drift-Exponenten $\Lamb$}
+\author{Thomas Hoffbauer}
+\date{Juni 2026}
+% =================================================
+
+\begin{document}
+\maketitle
+\tableofcontents
+\bigskip
+
+\begin{abstract}
+Wir untersuchen die Funktion $f(x) = e^{2x} - e^{-2x} = 2\sinh(2x)$
+als mögliche Hilfsgröße zur Analyse des Collatz-Problems.
+Der direkte Einsatz als Lyapunov-Funktion scheitert, da $f$ unter dem
+ungeraden Schritt explodiert.
+Interessanter ist die algebraische Struktur von $f(3x+1)$
+als Ausdruck in $\sinh(2x)$ und $\cosh(2x)$ (Chebyshev-artige Identität)
+sowie die Deutung über hyperbolische $2{\times}2$-Matrizen:
+Die Collatz-Schritte werden zu Möbius-Transformationen auf $\mathbb{H}$,
+und $2\sinh(2\Lamb)$ ist ein natürlicher Ausdruck für den bereits
+bekannten Block-Drift $\Lamb \approx -0{,}830$,
+der Konvergenz als \emph{negative} Größe kodiert.
+Abschließend wird die Verbindung zur Selberg-Spurformel als Ausblick skizziert.
+\end{abstract}
+
+% =================================================
+\section{Die Funktion $f(x)=2\sinh(2x)$ unter Collatz-Schritten}
+% =================================================
+
+Sei $T\colon \N \to \N$ der Collatz-Operator,
+\[
+  T(n) = \begin{cases} n/2 & n \equiv 0 \pmod{2},\\
+                       3n+1 & n \equiv 1 \pmod{2}.\end{cases}
+\]
+Wir betrachten die Funktion $f\colon \R \to \R$,
+\[
+  f(x) \;=\; e^{2x} - e^{-2x} \;=\; 2\sinh(2x).
+\]
+
+\subsection{Gerader Schritt $x \mapsto x/2$}
+
+\[
+  f\!\left(\tfrac{x}{2}\right) = 2\sinh(x).
+\]
+Das Verhältnis zum ursprünglichen Wert ist
+\[
+  \frac{f(x)}{f(x/2)} = \frac{2\sinh(2x)}{2\sinh(x)}
+  = \frac{2\sinh(x)\cosh(x)}{\sinh(x)} = 2\cosh(x).
+\]
+\textbf{Jeder Halbierungsschritt dividiert $f(x)$ durch $2\cosh(x) \ge 2$.}
+
+\subsection{Ungerader Schritt $x \mapsto 3x+1$}
+
+\[
+  f(3x+1) = 2\sinh\!\bigl(2(3x+1)\bigr) = 2\sinh(6x+2).
+\]
+Mit $u = e^{2x}$ gilt $f(x) = u - u^{-1}$ und
+\[
+  f(3x+1) = e^{2} \cdot u^{3} - e^{-2} \cdot u^{-3}.
+\]
+Für großes $x$ wächst $f(3x+1) \approx e^{6x+2}$, während $f(x) \approx e^{2x}$.
+Das Wachstum um Faktor $e^{4x+2}$ macht $f$ als Lyapunov-Funktion
+für den ungeraden Schritt \emph{ungeeignet}.
+
+\begin{tcolorbox}[warnung]
+Die Funktion $2\sinh(2x)$ ist \textbf{keine} Lyapunov-Funktion für Collatz:
+Unter $x \mapsto 3x+1$ wächst $f$ exponentiell, unter $x \mapsto x/2$ fällt $f$
+zwar, aber nicht hinreichend, um die Explosionen zu kompensieren.
+\end{tcolorbox}
+
+\subsection{Logarithmischer Ansatz}
+
+Definiere $L(x) = \log f(x) \approx 2x$ für $x \gg 1$.
+\begin{align*}
+  \text{Gerader Schritt:} &\quad L(x/2) \approx x, \quad \Delta L \approx -x.\\
+  \text{Ungerader Schritt:} &\quad L(3x+1) \approx 6x+2, \quad \Delta L \approx 4x+2.
+\end{align*}
+Normierung $g(x) = L(x)/x \approx 2$ ist asymptotisch trivial.
+
+% =================================================
+\section{Chebyshev-artige Identität: $f(3x+1)$ algebraisch aufgelöst}
+% =================================================
+
+Setze zur Abkürzung $s = \sinh(2x)$ und $c = \cosh(2x)$,
+so dass $f(x) = 2s$ und $c^2 - s^2 = 1$.
+
+\subsection{Zerlegung über Additionstheoreme}
+
+\[
+  2\sinh(6x+2) = 2\bigl[\cosh(2)\sinh(6x) + \sinh(2)\cosh(6x)\bigr].
+\]
+Mit $A = 2x$ und den Tripel-Formeln für Sinus-Hyperbolicus:
+\[
+  \sinh(3A) = 3\sinh A + 4\sinh^3 A,
+  \qquad
+  \cosh(3A) = 4\cosh^3 A - 3\cosh A,
+\]
+ergibt sich
+\begin{align*}
+  \sinh(6x) &= \sinh(3 \cdot 2x) = 3s + 4s^3,\\
+  \cosh(6x) &= \cosh(3 \cdot 2x) = 4c^3 - 3c.
+\end{align*}
+Eingesetzt:
+\[
+  \boxed{
+    f(3x+1) = 2\cosh(2)\bigl(3s + 4s^3\bigr)
+            + 2\sinh(2)\bigl(4c^3 - 3c\bigr),
+    \quad s = \sinh(2x),\; c = \cosh(2x).
+  }
+\]
+
+\subsection{Struktur im Ring $\R[s,c]\,/\,(c^2-s^2-1)$}
+
+Das Ergebnis ist ein Polynom vom Grad 3 in $(s,c)$ mit der algebraischen
+Nebenbedingung $c^2 = 1 + s^2$, d.\,h.\ $f(3x+1)$ liegt im Ring
+\[
+  \mathcal{R} = \R[s, c]\,\big/\,(c^2 - s^2 - 1).
+\]
+Dies ist die \emph{Chebyshev-artige} Struktur: analog zu den Chebyshev-Polynomen,
+die $T_n(\cos\theta) = \cos(n\theta)$ ausdrücken, wird hier $\sinh(3 \cdot 2x)$
+als kubisches Polynom in $\sinh(2x)$ (plus $\cosh$-Term) geschrieben.
+
+\begin{tcolorbox}[ergebnis]
+\textbf{Algebraische Schließung.}
+$f(3x+1)$ ist ausdrückbar als Polynom in $(\sinh(2x), \cosh(2x))$ mit reellen Koeffizienten
+$2\cosh(2) \approx 7{,}524$ und $2\sinh(2) \approx 7{,}254$.
+Eine ``reine'' Schließung in $\sinh(2x)$ allein existiert nicht
+(wegen der notwendigen $\cosh$-Terme), aber im Ring $\mathcal{R}$ ist die
+Abbildung $s \mapsto f(3x+1)$ ein wohldefinierter algebraischer Endomorphismus.
+\end{tcolorbox}
+
+% =================================================
+\section{Hyperbolische Matrizen und Möbius-Transformationen}
+% =================================================
+
+\subsection{Collatz-Schritte als Möbius-Transformationen}
+
+Der Collatz-Schritt $n \mapsto 3n+1$ ist eine affine Abbildung
+$z \mapsto 3z+1$, entsprechend der $GL(2,\R)$-Matrix
+\[
+  A_{\text{odd}} = \begin{pmatrix} 3 & 1 \\ 0 & 1 \end{pmatrix},
+  \qquad
+  \tr(A_{\text{odd}}) = 4, \quad \det(A_{\text{odd}}) = 3.
+\]
+Für den geraden Schritt $n \mapsto n/2$ verwenden wir
+\[
+  A_{\text{even}} = \begin{pmatrix} 1 & 0 \\ 0 & 2 \end{pmatrix},
+  \qquad
+  \tr(A_{\text{even}}) = 3, \quad \det(A_{\text{even}}) = 2.
+\]
+
+\subsection{Hyperbolizitätskriterium}
+
+Für eine Matrix $M \in GL(2,\R)$ mit $\det M > 0$ ist die zugehörige
+Möbius-Transformation auf $\mathbb{H}$ genau dann \emph{hyperbolisch}, wenn
+\[
+  |\tr M|^2 > 4 \det M.
+\]
+\begin{itemize}[leftmargin=2em]
+  \item $A_{\text{odd}}$: $\tr^2 = 16 > 4 \cdot 3 = 12$ — \textbf{hyperbolisch}.
+  \item $A_{\text{even}}$: $\tr^2 = 9 > 4 \cdot 2 = 8$ — \textbf{hyperbolisch}.
+\end{itemize}
+Beide Collatz-Schritte sind also hyperbolische Isometrien von $\mathbb{H}$.
+
+\begin{bemerkung}
+Bei der Normierung $A_{\text{even}} = \begin{pmatrix}1/2&0\\0&1\end{pmatrix}$
+($\det = 1/2$) erhält man $\tr = 3/2$ und $\tr^2 = 9/4 < 4 \cdot 1/2 = 2$? Nein:
+$4\det = 2$, $\tr^2 = 9/4 > 2$ — immer noch hyperbolisch,
+aber nur knapp ($|\tr| = 3/2 < 2$). Das Kriterium $|\tr| > 2$ gilt nur für
+$SL(2,\R)$-Matrizen ($\det = 1$); für allgemeine $GL(2,\R)$ muss $\tr^2 > 4\det$
+verwendet werden.
+\end{bemerkung}
+
+\subsection{Verschiebungslängen und $2\sinh(2\lambda)$}
+
+Für eine normierte Matrix $\hat M = M/\sqrt{\det M} \in SL(2,\R)$ gilt
+$|\tr \hat M| = 2\cosh(\lambda)$, wobei $\lambda > 0$ die
+(halbe) hyperbolische Verschiebungslänge ist.
+
+\medskip
+\textbf{Ungerader Schritt:}
+\[
+  \hat A_{\text{odd}} = \frac{A_{\text{odd}}}{\sqrt{3}}
+  = \begin{pmatrix} \sqrt{3} & 1/\sqrt{3} \\ 0 & 1/\sqrt{3} \end{pmatrix},
+  \quad |\tr \hat A_{\text{odd}}| = \frac{4}{\sqrt{3}} \approx 2{,}309.
+\]
+Also $\cosh(\lambda_{\text{odd}}) = \tfrac{2}{\sqrt{3}}$,
+\[
+  \lambda_{\text{odd}} = \arcosh\!\left(\tfrac{2}{\sqrt{3}}\right)
+  = \ln\!\left(\tfrac{2}{\sqrt{3}} + \sqrt{\tfrac{4}{3}-1}\right)
+  = \ln\!\left(\tfrac{2+1}{\sqrt{3}}\right) = \ln\!\left(\sqrt{3}\right)
+  = \tfrac{1}{2}\ln 3 \approx 0{,}549.
+\]
+Wir berechnen nun $2\sinh(2\lambda_{\text{odd}})$:
+\begin{align*}
+  \sinh\!\bigl(\tfrac{1}{2}\ln 3\bigr) &= \tfrac{1}{2}(e^{\ln 3/2} - e^{-\ln 3/2})
+  = \tfrac{1}{2}(\sqrt{3} - 1/\sqrt{3}) = \frac{1}{\sqrt{3}},\\
+  \cosh\!\bigl(\tfrac{1}{2}\ln 3\bigr) &= \frac{2}{\sqrt{3}} \quad\text{(wie oben)},\\
+  \sinh(2\lambda_{\text{odd}}) &= 2\sinh(\lambda_{\text{odd}})\cosh(\lambda_{\text{odd}})
+  = 2 \cdot \frac{1}{\sqrt{3}} \cdot \frac{2}{\sqrt{3}} = \frac{4}{3}.
+\end{align*}
+\[
+  \boxed{2\sinh(2\lambda_{\text{odd}}) = \frac{8}{3} \approx 2{,}667.}
+\]
+
+\medskip
+\textbf{Gerader Schritt:}
+\[
+  \hat A_{\text{even}} = \frac{A_{\text{even}}}{\sqrt{2}}
+  = \begin{pmatrix} 1/\sqrt{2} & 0 \\ 0 & \sqrt{2} \end{pmatrix},
+  \quad |\tr \hat A_{\text{even}}| = \frac{1}{\sqrt{2}} + \sqrt{2}
+  = \frac{3}{\sqrt{2}} \approx 2{,}121.
+\]
+Also $\cosh(\lambda_{\text{even}}) = \tfrac{3}{2\sqrt{2}}$,
+\[
+  \lambda_{\text{even}} = \arcosh\!\left(\tfrac{3}{2\sqrt{2}}\right) = \tfrac{1}{2}\ln 2
+  \approx 0{,}347.
+\]
+\[
+  \sinh(\lambda_{\text{even}}) = \frac{1}{\sqrt{2} \cdot \sqrt{2}}
+  \cdot\tfrac{1}{?}\ldots
+\]
+Einfacher direkt: Die Eigenvalues von $\hat A_{\text{even}}$ sind $1/\sqrt{2}$ und $\sqrt{2}$.
+Die Verschiebungslänge ist $\ell_{\text{even}} = \ln(\sqrt{2}/(1/\sqrt{2})) = \ln 2$,
+also $\lambda_{\text{even}} = \ell_{\text{even}}/2 = \tfrac{1}{2}\ln 2$.
+Damit:
+\[
+  2\sinh(2\lambda_{\text{even}}) = 2\sinh(\ln 2)
+  = 2 \cdot \tfrac{1}{2}(2 - 1/2) = \frac{3}{2}.
+\]
+
+\medskip
+\textbf{Korrekturnote zu einem häufigen Rechenfehler.}
+Die Annahme $2\lambda = \arcosh(4)$ (d.\,h.\ $\cosh(2\lambda) = 4$)
+und damit $2\sinh(2\lambda) = 2\sqrt{15}$ ist falsch,
+wenn man von $\cosh(\lambda) = 2$ ausgeht:
+\[
+  \cosh(2\lambda) = 2\cosh^2(\lambda) - 1 = 2 \cdot 4 - 1 = 7 \ne 4.
+\]
+Richtig ist daher (bei naiver Wahl $\tr A_{\text{odd}} = 4$ und $\cosh\lambda = 2$):
+\[
+  \sinh(2\lambda) = 2\sinh\lambda \cosh\lambda = 2\cdot\sqrt{3}\cdot 2 = 4\sqrt{3},
+  \quad 2\sinh(2\lambda) = 8\sqrt{3} \approx 13{,}856.
+\]
+Diese naive Wahl ignoriert die Normierung ($\det A_{\text{odd}} = 3$); die korrekte
+normierte Rechnung liefert $2\sinh(2\lambda_{\text{odd}}) = 8/3 \approx 2{,}667$.
+
+% =================================================
+\section{$2\sinh(2\Lambda)\approx -4{,}780$ — hyperbolische Interpretation des Drifts}
+% =================================================
+
+\subsection{Rückblick auf den Block-Drift}
+
+Aus der Lyapunov-Analyse (vgl.\ \texttt{collatz\_lyapunov.pdf}) sei
+\[
+  \Lambda \approx -0{,}830
+\]
+der mittlere logarithmische Drift pro Collatz-Block (einem ungeraden Schritt gefolgt
+von $k$ geraden Schritten). Dabei gilt $\Lambda < 0$ genau dann, wenn
+fast alle Trajektorien gegen $1$ konvergieren.
+
+\subsection{Der Ausdruck $2\sinh(2\Lambda)$}
+
+\[
+  2\sinh(2\Lambda) = 2\sinh(2 \times (-0{,}830))
+  = 2\sinh(-1{,}660)
+  \approx 2 \times (-2{,}390) = -4{,}780.
+\]
+Die \textbf{negative Vorzeichen} ist entscheidend.
+
+\begin{tcolorbox}[hyper]
+In der hyperbolischen Geometrie kodiert $e^\lambda - e^{-\lambda} = 2\sinh(\lambda)$
+die \emph{gerichtete} Abweichung vom Identitätselement der Isometrie:
+positive Werte bedeuten Expansion, negative Werte bedeuten Kontraktion
+im hyperbolischen Sinne.
+
+Der Wert $2\sinh(2\Lambda) \approx -4{,}780$ ist daher interpretierbar als
+\emph{hyperbolische Konvergenz-Signatur}: Die Collatz-Trajektorie bewegt sich
+(im Mittel) in die kontrahierende Richtung in $\mathbb{H}$.
+\end{tcolorbox}
+
+\subsection{Verbindung zur Verschiebungslänge}
+
+Für eine hyperbolische Isometrie $M$ mit Fixpunkten $p_+, p_- \in \partial\mathbb{H}$
+gilt für die Verschiebungslänge $d$:
+\[
+  \cosh(d/2) = \frac{|\tr M|}{2}, \qquad
+  \sinh(d) = \sqrt{\cosh^2(d) - 1}.
+\]
+Die Produkt-Isometrie eines Collatz-Blocks
+(ein $A_{\text{odd}}$ gefolgt von $k$ Potenzen von $A_{\text{even}}$)
+hat eine gerichtete Verschiebung, die sich als $\ln$-Drift schreibt.
+Für den \emph{mittleren} Block gilt mit $\Lambda \approx -0{,}830$:
+\[
+  d_{\text{Block}} = 2|\Lambda| \approx 1{,}660,
+  \qquad
+  |\sinh(d_{\text{Block}})| \approx 2{,}390.
+\]
+Das negative Vorzeichen von $\Lambda$ bedeutet, dass die Bewegung
+\emph{zum} attraktiven Fixpunkt $0$ hin gerichtet ist — Konvergenz.
+
+% =================================================
+\section{Verbindung zur Selberg-Spurformel (Ausblick)}
+% =================================================
+
+\subsection{Spektrale Interpretation}
+
+Die Selberg-Spurformel verbindet geometrische Daten (periodische Geodäten
+auf $\Gamma\backslash\mathbb{H}$) mit spektralen Daten (Eigenwerte des
+Laplace-Beltrami-Operators $\Delta_{\mathbb{H}}$). Die zentralen Terme
+der primitiven Geodäten der Länge $\ell$ sind:
+\[
+  \sum_{\gamma \text{ primitiv}} \frac{\ell(\gamma)}{2\sinh(\ell(\gamma)/2)}.
+\]
+
+\subsection{Substitution $x \mapsto ir$}
+
+Für \emph{imaginäre} $x = ir$ gilt:
+\[
+  f(ir) = e^{2ir} - e^{-2ir} = 2i\sin(2r).
+\]
+Der Übergang $\sinh(2x) \to i\sin(2r)$ entspricht dem Wechsel von
+hyperbolischer zu elliptischer Geometrie — genau der Wechsel,
+der in der Selberg-Spurformel zwischen dem hyperbolischen Teil und
+dem spektralen Teil vermittelt.
+
+\begin{tcolorbox}[lücke]
+\textbf{Offene Frage.}
+Sei $\Gamma = \langle A_{\text{odd}}, A_{\text{even}}\rangle \subset GL(2,\R)$.
+\begin{enumerate}[label=(\roman*)]
+  \item Ist $\Gamma$ diskret? (Für eine Anwendung der Selberg-Theorie nötig.)
+  \item Was ist das Spektrum von $\Delta$ auf $\Gamma\backslash\mathbb{H}$?
+  \item Wie hängt der Spektrallückenparameter mit dem Drift $\Lambda$ zusammen?
+\end{enumerate}
+Diese Fragen sind nicht trivial — die erzeugenden Matrizen haben
+$\det \ne 1$, was eine Einbettung in $SL(2,\R)$ erfordert.
+\end{tcolorbox}
+
+\subsection{Realistisches Assessment}
+
+Der direkte Weg Collatz $\to$ Selberg-Spurformel ist \emph{spekulativ}:
+Die Gruppe $\Gamma$ ist vermutlich nicht diskret (affine Matrizen mit
+irrationalen Koeffizienten nach $SL(2,\R)$-Normierung).
+Jedoch ist die \emph{formale} Analogie aufschlussreich:
+Der Drift-Exponent $\Lambda$ spielt die Rolle der hyperbolischen Verschiebungslänge,
+und $2\sinh(2\Lambda)$ ist der natürliche hyperbolisch-geometrische Ausdruck dafür.
+
+% =================================================
+\section{Fazit}
+% =================================================
+
+\begin{tcolorbox}[fazit]
+\begin{enumerate}[label=\textbf{\arabic*.}]
+  \item \textbf{$f(x) = 2\sinh(2x)$ als Lyapunov-Funktion: nicht geeignet.}
+        Unter $x \mapsto 3x+1$ wächst $f$ wie $e^{6x+2}$; keine Konvergenz erzwingbar.
+
+  \item \textbf{Chebyshev-artige Struktur: vorhanden und interessant.}
+        $f(3x+1)$ ist ein Polynom vom Grad~3 in $(\sinh(2x), \cosh(2x))$
+        mit algebraischer Relation $c^2 - s^2 = 1$.
+        Diese Struktur könnte in Transfer-Operator-Formalismen nutzbar sein.
+
+  \item \textbf{$2\sinh(2\Lambda) \approx -4{,}780$ ist bedeutsam.}
+        Der negative Wert kodiert hyperbolische Kontraktion.
+        Er ist kein neues Ergebnis, sondern eine \emph{geometrisch transparente
+        Umschreibung} des bekannten Drift-Exponenten $\Lambda \approx -0{,}830$.
+
+  \item \textbf{Verbindung zur Selberg-Spurformel: formal interessant, aber spekulativ.}
+        Die Substitution $x \mapsto ir$ verwandelt $2\sinh(2x)$ in $2i\sin(2r)$,
+        was formal in der Selberg-Formel erscheint. Eine rigorose Verbindung
+        setzt Diskretheit von $\Gamma$ voraus.
+\end{enumerate}
+\end{tcolorbox}
+
+\bigskip
+
+\noindent\textbf{Zusammenfassung in einer Zeile:}
+Die Funktion $2\sinh(2x)$ scheitert als Lyapunov-Funktion,
+aber $2\sinh(2\Lambda) \approx -4{,}780$ ist ein natürlicher
+hyperbolisch-geometrischer Ausdruck der Collatz-Konvergenz,
+und die Chebyshev-artige Algebrastruktur bietet einen Ansatzpunkt
+für Transfer-Operator-Methoden.
+
+\end{document}
