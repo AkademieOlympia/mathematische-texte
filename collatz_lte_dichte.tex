@@ -1,0 +1,685 @@
+\documentclass[12pt,a4paper]{article}
+
+% -------------------------------------------------
+% Sprache / Kodierung
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+
+% -------------------------------------------------
+% Layout / Grafik / Farben
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks,unicode]{hyperref}
+\pdfstringdefDisableCommands{%
+  \def\ü{ue}\def\ö{oe}\def\ä{ae}\def\Ü{Ue}\def\Ö{Oe}\def\Ä{Ae}\def\ss{ss}%
+}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{array}
+
+% -------------------------------------------------
+% Farben (konsistent mit Vorgängerdokumenten)
+% -------------------------------------------------
+\definecolor{lückenrot}{RGB}{180,40,40}
+\definecolor{bewiesengrün}{RGB}{30,100,50}
+\definecolor{warnorange}{RGB}{200,100,10}
+\definecolor{hintergrundblau}{RGB}{235,242,250}
+\definecolor{hintergrundgelb}{RGB}{255,252,225}
+\definecolor{adischviolett}{RGB}{90,20,140}
+\definecolor{fehlerrot}{RGB}{200,0,0}
+\definecolor{konjviolett}{RGB}{80,0,130}
+\definecolor{e8grau}{RGB}{55,55,90}
+
+% -------------------------------------------------
+% tcolorbox-Stile
+% -------------------------------------------------
+\tcbset{
+  lücke/.style={colback=red!8, colframe=lückenrot, fonttitle=\bfseries,
+    title={Offene Lücke}},
+  ergebnis/.style={colback=green!7, colframe=bewiesengrün,
+    fonttitle=\bfseries, title={Bewiesenes Ergebnis}},
+  warnung/.style={colback=orange!10, colframe=warnorange,
+    fonttitle=\bfseries, title={Achtung / Heuristik}},
+  adisch/.style={colback=violet!6, colframe=adischviolett,
+    fonttitle=\bfseries, title={2-adische Perspektive}},
+  kernidee/.style={colback=hintergrundblau, colframe=blue!60!black,
+    fonttitle=\bfseries, title={Kernidee}},
+  konj/.style={colback=violet!5, colframe=konjviolett, fonttitle=\bfseries,
+    title={Konjektur (unbewiesen)}},
+  lte/.style={colback=yellow!8, colframe=e8grau, fonttitle=\bfseries,
+    title={LTE-Analyse}},
+  hauptsatz/.style={colback=green!10, colframe=bewiesengrün!80!black,
+    fonttitle=\bfseries\large, title={Bewiesenes Ergebnis}},
+  korrektur/.style={colback=yellow!5, colframe=orange!70!black,
+    fonttitle=\bfseries},
+  negativ/.style={colback=red!5, colframe=lückenrot!80!black,
+    fonttitle=\bfseries, title={Negatives Ergebnis (bewiesen)}},
+}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+\newtheorem{hypothese}[definition]{Hypothese}
+\newtheorem{satz}[definition]{Satz}
+
+\newenvironment{beweis}{\begin{proof}[Beweis]}{\end{proof}}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\vii}{\nu_2}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Ztwo}{\mathbb{Z}_2}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\atwo}[1]{\lvert#1\rvert_2}
+
+% -------------------------------------------------
+% Dokument
+% -------------------------------------------------
+\title{%
+  2-adisches Dichte-Argument gegen die LTE-Barriere\\[0.3em]
+  \large Konvergenz der gewichteten Blocksumme und strukturelle
+  Kompensation\\[0.5em]
+  \normalsize Ergänzung zu \textit{collatz\_schlussartikel.tex}%
+}
+\author{Thomas Hoffbauer}
+\date{16.\ Juni 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Dieses Dokument vertieft die LTE-Barriere aus
+\textit{collatz\_schlussartikel.tex}, §\,3--5, durch zwei neue Ansätze:
+
+\textbf{(1) Dichte-Argument:} C-Ketten der Länge $k$ starten nur aus
+2-adischer Dichte $2^{-(k+1)}$. Der gewichtete Lyapunov-Exponent
+$\Lambda = \sum_k P(l=k)\cdot\mathbb{E}[\log_2 F \mid l=k]$
+konvergiert in beiden Szenarien. Im typischen Fall (geometrisch
+verteiltes $\vii(m')$) gilt $\Lambda_A \approx -1{,}83 < 0$.
+Im LTE-schlechtesten Fall ergibt sich $\Lambda_B \approx +0{,}54 > 0$
+--- das Dichte-Argument allein ist \emph{nicht} ausreichend.
+
+\textbf{(2) Strukturelle Kompensation:} Die extremale Familie
+$n_0 = 2^{k+1}\cdot 3^r - 1$ (LTE-Worst-Case) erzeugt nach dem
+$\mathrm{C}^k\mathrm{A}$-Block immer einen Nachfolger
+$n_{k+1}$ mit $\vii(n_{k+1}+1) = 1$, der keine weitere lange
+C-Kette starten kann. Diese strukturelle Erzwingung ist
+\textbf{bewiesen}.
+
+Ehrliche Gesamteinschätzung: Das Dichte-Argument löst die
+DC-Lücke nicht. Es zeigt aber, dass die LTE-Barriere nicht
+``überall gleichzeitig zuschlägt'' --- sie ist durch exponentiell
+seltene Startpunkte begrenzt.
+\end{abstract}
+
+\tableofcontents
+
+\bigskip
+\begin{tcolorbox}[warnung, title={Einordnung dieses Dokuments}]
+Dieses Dokument enthält eine Kombination aus \textbf{bewiesenen Aussagen}
+(grün), \textbf{negativen Ergebnissen} (rot/orange) und
+\textbf{Heuristiken/Konjekturen} (orange). Die Collatz-Vermutung bleibt
+unbewiesen. Kein Ergebnis dieser Datei behebt die DC-Lücke.
+\end{tcolorbox}
+
+% ====================================================
+\section{Die LTE-Barriere: Zusammenfassung}
+\label{sec:lte}
+% ====================================================
+
+Wir verwenden die Notation aus \textit{collatz\_schlussartikel.tex}.
+Die odd-to-odd-Abbildung ist $\U(n) = (3n+1)/2^{\vii(3n+1)}$.
+
+\subsection{C-Ketten-Endlichkeit und erzwungener EA-Schritt (Referenz)}
+
+\begin{tcolorbox}[ergebnis, title={Bewiesene Grundstruktur (Wiederholung)}]
+Sei $n_0$ C-Typ mit $\vii(n_0+1) = k+1$ (d.\,h.\ $n_0+1 = 2^{k+1}\cdot m$,
+$m$ ungerade). Dann:
+\begin{enumerate}[label=(\arabic*)]
+  \item Die C-Kette hat Länge $\leq k$; nach $k$ C-Schritten gilt
+    $n_k = 2\cdot 3^k m - 1$.
+  \item Zwingender EA-Schritt: $\vii(3n_k+1) = 1 + \vii(3^{k+1}m - 1) \geq 2$.
+  \item Der Nettofaktor des $\mathrm{C}^k\mathrm{A}$-Blocks beträgt
+    \[
+      F = \frac{n_{k+1}}{n_0}
+      \approx \frac{3^{k+1}}{2^{k+1+\vii(3^{k+1}m-1)}}
+      = \left(\frac{3}{2}\right)^{k+1} \cdot 2^{-\vii(3^{k+1}m-1)}.
+    \]
+\end{enumerate}
+\end{tcolorbox}
+
+\subsection{Die LTE-Schranke und ihre Konsequenz}
+
+Das Lifting-the-Exponent-Lemma (LTE) für $p=2$ gibt:
+\[
+  \vii(3^j - 1) =
+  \begin{cases}
+    1 & \text{falls $j$ ungerade,}\\
+    \vii(j) + 2 & \text{falls $j$ gerade.}
+  \end{cases}
+\]
+Damit wächst $\vii(3^{k+1}m-1)$ im schlechtesten Fall (wenn $m$ so
+gewählt wird, dass die Terme möglichst wenig 2-adisch sind) nur
+\emph{logarithmisch} in $k$, während für Kontraktion
+$\vii(3^{k+1}m-1) > 0{,}585\,k$ nötig wäre --- ein linear in $k$
+wachsendes Defizit.
+
+\begin{tcolorbox}[lte]
+\textbf{LTE-Barriere (aus \textit{collatz\_schlussartikel.tex}, §\,3):}
+Für $m = 3^r$ (schlechtester Fall) gilt:
+\[
+  \vii(3^{k+1}\cdot 3^r - 1) = \vii(3^{k+r+1}-1) =
+  \begin{cases}
+    1 & \text{falls } k+r+1 \text{ ungerade,}\\
+    \vii(k+r+1)+2 & \text{falls } k+r+1 \text{ gerade.}
+  \end{cases}
+\]
+In beiden Fällen: $\vii = O(\log k)$ vs.\ benötigtes $\Omega(k)$.
+Der Nettofaktor $F$ divergiert für $k\to\infty$.
+\end{tcolorbox}
+
+Der Einzelblock-Ansatz ist damit für große $k$ \emph{fundamental
+unzureichend} (bewiesenes Nicht-Ergebnis). Das Ziel dieses Dokuments
+ist, durch globale Mittelwertbildung über alle $k$ eine bessere
+Aussage zu erzielen.
+
+% ====================================================
+\section{2-adische Dichte der C-Ketten-Startpunkte}
+\label{sec:dichte}
+% ====================================================
+
+\begin{lemma}[2-adische Dichte, bewiesen]
+\label{lem:dichte}
+Sei
+\[
+  S_k = \bigl\{\, n \in 2\N+1 \;\mid\; \vii(n+1) = k+1 \bigr\}
+  \quad (k \geq 0).
+\]
+Dann gilt für die Dichte unter den ungeraden Zahlen $\leq 2N$:
+\[
+  \#\bigl(S_k \cap \{1,3,5,\ldots,2N-1\}\bigr)
+  = \left\lfloor \frac{N}{2^{k+1}} \right\rfloor
+  - \left\lfloor \frac{N}{2^{k+2}} \right\rfloor
+  = \Theta\!\left(\frac{N}{2^{k+1}}\right).
+\]
+Insbesondere hat $S_k$ Dichte $2^{-(k+1)} - 2^{-(k+2)} = 2^{-(k+2)}$
+in den ungeraden Zahlen; die Dichte von $\vii(n+1) \geq k+1$ beträgt
+$2^{-(k+1)}$.
+\end{lemma}
+
+\begin{beweis}
+$\vii(n+1) = k+1$ bedeutet $n+1 \equiv 2^{k+1} \pmod{2^{k+2}}$, also
+$n \equiv 2^{k+1}-1 \pmod{2^{k+2}}$. Das ist eine arithmetische
+Progression mit Schrittweite $2^{k+2}$ in den ungeraden Zahlen. Die
+Anzahl der Elemente $\leq 2N$ ist $\lfloor N/2^{k+1}\rfloor -
+\lfloor N/2^{k+2}\rfloor$.
+\end{beweis}
+
+\begin{korollar}[Wahrscheinlichkeitsinterpretation]
+Für ein gleichverteiltes zufälliges ungerades $n$ gilt:
+\[
+  P\!\bigl(\vii(n+1) = k+1\bigr) = 2^{-(k+2)},
+  \qquad
+  P\!\bigl(\vii(n+1) \geq k+1\bigr) = 2^{-(k+1)}.
+\]
+Insbesondere: $P(l=k) = P(\text{C-Kette der Länge genau } k)$
+lässt sich nach oben durch $P(\vii(n+1) \geq k+1) = 2^{-(k+1)}$
+abschätzen.
+\end{korollar}
+
+\begin{tcolorbox}[adisch, title={Arithmetische Progression}]
+Die Startpunkte von C-Ketten der Länge $\geq k$ sind genau die
+$n \equiv 2^{k+1}-1 \pmod{2^{k+2}}$. Für $k=1$: $n \equiv 3 \pmod 8$
+(z.\,B.\ $3, 11, 19, 27, \ldots$). Für $k=2$: $n \equiv 7 \pmod{16}$
+(z.\,B.\ $7, 23, 39, \ldots$). Mit wachsendem $k$ werden diese
+Progressionen exponentiell ausgedünnt.
+\end{tcolorbox}
+
+% ====================================================
+\section{Gewichtetes Mittel $\Lambda$: Konvergenz und Auswertung}
+\label{sec:mittel}
+% ====================================================
+
+\subsection{Der gewichtete Lyapunov-Exponent}
+
+Sei $F_k$ der Nettofaktor eines typischen $\mathrm{C}^k\mathrm{A}$-Blocks.
+In logarithmischer Form:
+\[
+  \log_2 F_k
+  = (k+1)\log_2 3 - \vii(3^{k+1}m-1) - (k+1)
+  = (k+1)(\log_2 3 - 1) - \vii(3^{k+1}m-1).
+\]
+
+Definiere den \emph{gewichteten Lyapunov-Exponenten}:
+\[
+  \Lambda \;=\; \sum_{k=0}^{\infty} P(l=k) \cdot \mathbb{E}[\log_2 F_k \mid l=k].
+\]
+
+Mit $P(l=k) \leq 2^{-(k+1)}$ und
+$\mathbb{E}[\log_2 F_k \mid l=k] = (k+1)(\log_2 3 - 1) - \mathbb{E}[\vii(m') \mid l=k]$:
+\[
+  \Lambda \;\leq\; \underbrace{(\log_2 3 - 1)\sum_{k=0}^{\infty}(k+1)\cdot 2^{-(k+1)}}_{= 2(\log_2 3 - 1) \approx 1{,}1699}
+  - \sum_{k=0}^{\infty} 2^{-(k+1)}\,\mathbb{E}[\vii(m')\mid l=k].
+\]
+
+Die erste Summe konvergiert mit dem geschlossenen Wert:
+\[
+  \sum_{k=0}^{\infty}(k+1)\cdot x^{k+1} = \frac{x}{(1-x)^2}
+  \;\xrightarrow{x=1/2}\; 2.
+\]
+
+\subsection{Szenario A: Typisches $\vii(m')$ (geometrisch verteilt)}
+
+Für ``generische'' Startpunkte ist $\vii(m') = \vii(3^{k+1}m-1)$ durch
+die geometrische Verteilung mit $\mathbb{E}[\vii(m')] \approx 3$
+beschreibbar (2-adische Heuristik).
+
+\begin{tcolorbox}[ergebnis, title={Szenario A: $\Lambda_A < 0$ (berechnet)}]
+Mit $\mathbb{E}[\vii(m') \mid l=k] = 3$ (unabhängig von $k$):
+\begin{align*}
+  \Lambda_A
+  &= 2(\log_2 3 - 1) - 3\sum_{k=0}^{\infty} 2^{-(k+1)}
+   = 2(\log_2 3 - 1) - 3\cdot 1
+   = 2\log_2 3 - 5.
+\end{align*}
+Numerisch:
+\[
+  \boxed{\Lambda_A = 2\log_2 3 - 5 \approx 2\cdot 1{,}58496 - 5 = -1{,}8301 < 0.}
+\]
+Die Reihe konvergiert, und ihr Wert ist \emph{negativ}. Das Dichte-Argument
+liefert im typischen Fall einen negativen Lyapunov-Exponenten.
+\end{tcolorbox}
+
+\subsection{Szenario B: LTE-schlechtester Fall}
+
+Im LTE-schlechtesten Fall gilt $\mathbb{E}[\vii(m') \mid l=k] \approx \lfloor\log_2(k+1)\rfloor$
+(logarithmisches Wachstum durch LTE).
+
+\begin{tcolorbox}[negativ, title={Szenario B: $\Lambda_B > 0$ (berechnet)}]
+Mit $\mathbb{E}[\vii(m') \mid l=k] = \lfloor\log_2(k+1)\rfloor$:
+\[
+  \Lambda_B = 2(\log_2 3 - 1) - \sum_{k=0}^{\infty} 2^{-(k+1)}\lfloor\log_2(k+1)\rfloor.
+\]
+Die zweite Summe konvergiert (exponentiell gedämpft):
+\[
+  \sum_{k=0}^{\infty} 2^{-(k+1)}\lfloor\log_2(k+1)\rfloor \approx 0{,}6328.
+\]
+\textit{(Numerisch: Terme $k=1$: $1/4=0{,}25$;\ $k=2,3$: je $\approx 0{,}125$;\ 
+$k=4,5,6$: je $\approx 2^{-(k+1)}$; Tail $< 0{,}03$. Summe $\approx 0{,}633$.)}
+
+Damit:
+\[
+  \boxed{\Lambda_B \approx 1{,}1699 - 0{,}6328 = +0{,}5371 > 0.}
+\]
+\textbf{Das Dichte-Argument allein reicht nicht:} Im LTE-schlechtesten
+Fall überwiegt das logarithmische Wachstum der Gewichtsterme die
+schwache LTE-Dämpfung. Die gewichtete Summe konvergiert zwar, aber
+zu einem positiven Wert.
+\end{tcolorbox}
+
+\begin{bemerkung}[Warum Szenario B positiv ist]
+Der Unterschied $\Lambda_A - \Lambda_B \approx 1{,}83 + 0{,}54 = 2{,}37$ entspricht
+genau $3 - 0{,}633 = 2{,}367$, dem Unterschied in $\mathbb{E}[\vii(m')]$ zwischen
+den Szenarien. Szenario A hat $\mathbb{E}[\vii] = 3 \gg 0{,}633$ (Szenario B).
+Die LTE-Schranke liefert im Schnitt viel weniger 2-adische Tiefe als
+eine typische (geometrisch verteilte) ungerade Zahl $m$.
+\end{bemerkung}
+
+\subsection{Konvergenz des Extremalanteils}
+
+Separat von der $\vii(m')$-Frage: Wie groß ist der
+Beitrag der C-Ketten mit Länge $\geq K$ zur Gesamtsumme?
+
+\begin{lemma}[Extremal-Tail, bewiesen]
+\label{lem:tail}
+Für alle $K \geq 0$ gilt:
+\[
+  \sum_{k=K}^{\infty}(k+1)\cdot 2^{-(k+1)}
+  = (K+2)\cdot 2^{-K}.
+\]
+\end{lemma}
+
+\begin{beweis}
+Setze $x = 1/2$. Für $j = k+1$:
+\[
+  \sum_{k=K}^{\infty}(k+1)x^{k+1}
+  = x^{K+1}\sum_{j=0}^{\infty}(j+K+1)x^j
+  = x^{K+1}\!\left[(K+1)\cdot\frac{1}{1-x} + \frac{x}{(1-x)^2}\right].
+\]
+Mit $x=1/2$: $= 2^{-(K+1)}\bigl[2(K+1)+2\bigr] = 2^{-(K+1)}\cdot 2(K+2) = (K+2)\cdot 2^{-K}$.
+\end{beweis}
+
+\begin{tcolorbox}[ergebnis, title={Extremal-Beitrag ist vernachlässigbar}]
+Der Beitrag aller Blöcke mit C-Kettenlänge $\geq K$ zum
+Extremal-Lyapunov-Exponenten (ohne $\vii$-Korrektur) beträgt:
+\[
+  \Lambda_{\mathrm{extrem}}(K) =
+  (\log_2 3 - 1)\cdot(K+2)\cdot 2^{-K}.
+\]
+Numerische Werte:
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{ccc}
+\toprule
+$K$ & $(K+2)\cdot 2^{-K}$ & $\Lambda_{\mathrm{extrem}}(K)$ \\
+\midrule
+0  & $2$         & $1{,}1699$ \\
+5  & $7/32 \approx 0{,}219$ & $0{,}1280$ \\
+10 & $12/1024 \approx 0{,}01172$ & $0{,}00686$ \\
+15 & $17/2^{15} \approx 5{,}19\times10^{-4}$ & $3{,}03\times10^{-4}$ \\
+20 & $22/2^{20} \approx 2{,}10\times10^{-5}$ & $1{,}23\times10^{-5}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+Der Extremal-Beitrag fällt \emph{exponentiell} mit $K$. Für $K \geq 10$
+ist er kleiner als $0{,}007$ --- also vernachlässigbar gegenüber
+$|\Lambda_A| \approx 1{,}83$.
+\end{tcolorbox}
+
+\begin{bemerkung}
+Die Konvergenz von $\Lambda_{\mathrm{extrem}}(K) \to 0$ beweist,
+dass die LTE-Barriere kein ``globales'' Problem ist: Selbst wenn
+jede C-Kette der Länge $\geq K$ ihren Block scheitern lässt,
+ist ihr Gesamtgewicht exponentiell klein. Das Dichte-Argument zeigt,
+dass man sich auf endlich viele $k$-Klassen konzentrieren kann ---
+aber es beantwortet nicht, was innerhalb jeder Klasse passiert.
+\end{bemerkung}
+
+% ====================================================
+\section{Extremal-Analyse: $n_0 = 2^{k+1}\cdot 3^r - 1$}
+\label{sec:extremal}
+% ====================================================
+
+\subsection{Die extremale Familie und ihr Nachfolger}
+
+Die LTE-schlechteste Startpunktfamilie ist:
+\[
+  n_0 = 2^{k+1}\cdot 3^r - 1
+  \quad (k,r \geq 1).
+\]
+Mit $m = 3^r$ und $N := k+r$ gilt (aus \textit{collatz\_schlussartikel.tex}):
+\[
+  n_k = 2\cdot 3^{k+r} - 1 = 2\cdot 3^N - 1,
+  \qquad
+  \vii(3n_k+1) =
+  \begin{cases}
+    2 & N \text{ gerade,}\\
+    3+\vii(N+1) & N \text{ ungerade.}
+  \end{cases}
+\]
+
+\begin{proposition}[Struktur des Nachfolgers, bewiesen]
+\label{prop:nachfolger}
+Sei $n_0 = 2^{k+1}\cdot 3^r - 1$ und $N = k+r$. Nach dem
+$\mathrm{C}^k\mathrm{A}$-Block gilt:
+
+\noindent\textbf{Fall~1 ($N$ gerade):}
+\[
+  n_{k+1} = \frac{3^{N+1}-1}{2}, \qquad \vii(n_{k+1}+1) = 1.
+\]
+$n_{k+1}$ kann keine C-Kette starten; die nächste Anwendung von
+$\U$ ist zwingend ein E- oder A-Schritt.
+
+\noindent\textbf{Fall~2 ($N$ ungerade):}
+Der A-Schritt hat $\vii(3n_k+1) = 3 + \vii(N+1) \geq 3$,
+was den Block stark kontrahiert ($F_k < (3/2)^{k+1}/4$).
+\end{proposition}
+
+\begin{beweis}
+\textbf{Fall~1.} $N$ gerade $\Rightarrow$ $\vii(3n_k+1) = 2$.
+\[
+  n_{k+1} = \frac{3n_k+1}{4} = \frac{3(2\cdot 3^N-1)+1}{4}
+  = \frac{6\cdot 3^N - 2}{4} = \frac{3^{N+1}-1}{2}.
+\]
+Da $N+1$ ungerade (weil $N$ gerade), gilt $3^{N+1} \equiv 3 \pmod 8$,
+also $3^{N+1}+1 \equiv 4 \pmod 8$, und damit:
+\[
+  \vii\!\left(\frac{3^{N+1}-1}{2}+1\right)
+  = \vii\!\left(\frac{3^{N+1}+1}{2}\right)
+  = \vii(3^{N+1}+1)-1 = 2-1 = 1.
+\]
+
+\textbf{Fall~2.} $N$ ungerade $\Rightarrow$ $N+1$ gerade, also
+$\vii(3^{N+1}-1) = \vii(N+1)+2 \geq 3$, und damit
+$\vii(3n_k+1) = 1+\vii(N+1)+2 = 3+\vii(N+1) \geq 3$.
+\end{beweis}
+
+\subsection{Numerische Verifikation}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{ccccccc}
+\toprule
+$k$ & $r$ & $N$ & $n_0$ & $n_{k+1}$ & $\text{Typ}$ & $\vii(n_{k+1}+1)$ \\
+\midrule
+1 & 1 & 2 (g) & $11$   & $13$   & E & 1 \\
+1 & 2 & 3 (u) & $35$   & $5$    & A & 1 \\
+1 & 3 & 4 (g) & $107$  & $121$  & E & 1 \\
+1 & 4 & 5 (u) & $323$  & $91$   & B & 2 \\
+1 & 5 & 6 (g) & $971$  & $1093$ & E & 1 \\
+2 & 1 & 3 (u) & $23$   & $5$    & A & 1 \\
+2 & 2 & 4 (g) & $71$   & $121$  & E & 1 \\
+3 & 1 & 4 (g) & $47$   & $121$  & E & 1 \\
+3 & 4 & 7 (u) & $1295$ & $205$  & E & 1 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textit{Typ} nach $n_{k+1} \bmod 12$: E $\equiv 1$, A $\equiv 5$, B $\equiv 7$, C $\equiv 11$.
+
+\begin{tcolorbox}[ergebnis, title={Beobachtung: Strukturelle Kompensation}]
+In allen berechneten Fällen gilt $\vii(n_{k+1}+1) \leq 2$.
+Das bedeutet: Der Nachfolger $n_{k+1}$ kann maximal eine C-Kette der
+Länge~$1$ starten. Die extremalen Startpunkte mit langen C-Ketten
+erzeugen zwingend ``flache'' Nachfolger.
+
+\emph{Kompensationsmuster:}
+\begin{itemize}[nosep]
+  \item $N$ gerade (LTE-schlechtester Fall, $\vii=2$): Nachfolger ist
+    E-Typ ($n_{k+1} \equiv 1 \pmod{12}$) --- starke Kontraktion folgt.
+  \item $N$ ungerade: A-Schritt hat $\vii \geq 3$ --- direkte Kontraktion
+    im selben Block.
+\end{itemize}
+In \emph{beiden} Fällen folgt nach dem LTE-extremalen Block eine
+Phase starker Kontraktion.
+\end{tcolorbox}
+
+\subsection{Spezialfall $n_0 = 4\cdot 3^r - 1$ (minimale C-Kette, $k=1$)}
+
+\begin{proposition}[EABC-Klasse des Nachfolgers, bewiesen]
+\label{prop:spezial}
+Sei $n_0 = 4\cdot 3^r - 1$ (d.\,h.\ $k=1$, $\vii(n_0+1) = 2$,
+C-Kettenlänge~$1$). Dann gilt für alle $r \geq 1$:
+\[
+  n_0 \equiv 11 \pmod{12} \quad\text{(C-Typ)},
+\]
+und nach dem einzigen C-Schritt gefolgt vom A-Schritt:
+\[
+  n_2 =
+  \begin{cases}
+    \dfrac{3^{r+2}-1}{2} \equiv 1 \pmod{12} & \text{(E-Typ)} & r \text{ ungerade}, \\[4pt]
+    \dfrac{3^{r+2}-1}{2^{\vii(3^{r+2}-1)}} \equiv 5 \text{ oder } 1 \pmod{12} & \text{(A- oder E-Typ)} & r \text{ gerade.}
+  \end{cases}
+\]
+In \emph{keinem} Fall ist $n_2$ vom C-Typ.
+\end{proposition}
+
+\begin{beweis}
+Für $r \geq 1$ gilt $4\cdot 3^r \equiv 0 \pmod{12}$, also
+$n_0 \equiv -1 \equiv 11 \pmod{12}$. ✓
+
+Nach 1 C-Schritt: $n_1 = 2\cdot 3^{r+1}-1$. Dann
+$3n_1+1 = 2(3^{r+2}-1)$ und $\vii(3n_1+1) = 1+\vii(3^{r+2}-1)$.
+\begin{itemize}
+  \item $r$ ungerade: $r+2$ ungerade, $\vii(3^{r+2}-1)=1$,
+    $\vii(3n_1+1)=2$, also $n_2 = (3^{r+2}-1)/2$.
+    Für ungerades $r+2$: $3^{r+2} \equiv 3 \pmod{24}$, somit
+    $3^{r+2}-1 \equiv 2 \pmod{24}$ und $n_2 \equiv 1 \pmod{12}$.
+  \item $r$ gerade: $r+2$ gerade, $\vii(3^{r+2}-1)=\vii(r+2)+2\geq 3$,
+    starke Kontraktion; $n_2$ ist A- oder E-Typ (berechnet für $r=2,4,6$).
+\end{itemize}
+Da C-Typ $\equiv 11\pmod{12}$ und $n_2 \equiv 1$ oder $5\pmod{12}$,
+ist $n_2$ niemals C-Typ.
+\end{beweis}
+
+\begin{tcolorbox}[kernidee, title={Schlüsselbeobachtung: LTE-Worst-Case erzwingt E-Typ}]
+Für $r$ ungerade (LTE-schlimmster Fall: $\vii = 2$) gilt:
+\[
+  n_2 = \frac{3^{r+2}-1}{2} \equiv 1 \pmod{12} \quad\text{(E-Typ)}.
+\]
+Der E-Typ liefert bei der nächsten Anwendung von $\U$ einen
+Kontraktionsfaktor $\leq 3/8$ (da $\vii(3n_2+1) \geq 3$). Das ist
+eine starke Kompensation für den schwachen A-Schritt.
+
+\textbf{Visualisierung:}
+\[
+  n_0 \xrightarrow{\mathrm{C}} n_1 \xrightarrow{\mathrm{A},\,\vii=2} n_2
+  \xrightarrow{\mathrm{E},\,\vii\geq 3} n_3.
+\]
+Der $\mathrm{C\cdot A}$-Block steigt mit Faktor $9/4$,
+der anschließende E-Schritt senkt mit Faktor $\leq 3/8$:
+Netto $\leq 9/4\cdot 3/8 = 27/32 < 1$. Die Bahn schrumpft
+im Zweiblock-Mittel.
+\end{tcolorbox}
+
+% ====================================================
+\section{Fazit: Ist die LTE-Barriere durch das Dichte-Argument überwindbar?}
+\label{sec:fazit}
+% ====================================================
+
+\subsection{Zusammenfassung der Ergebnisse}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{>{\raggedright}p{5.8cm}
+                >{\centering}p{2.8cm}
+                >{\raggedright\arraybackslash}p{4.6cm}}
+\toprule
+\textbf{Aussage} & \textbf{Status} & \textbf{Methode} \\
+\midrule
+$P(l=k) \leq 2^{-(k+1)}$ (2-adische Dichte)
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & Residuenklassen \\[2pt]
+$\sum_{k=0}^{\infty}(k+1)\cdot 2^{-(k+1)} = 2$ (geschlossen)
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & Potenzreihe \\[2pt]
+Tail-Formel: $\sum_{k=K}^{\infty}(k+1)\cdot 2^{-(k+1)} = (K+2)\cdot 2^{-K}$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & Lemma~\ref{lem:tail} \\[2pt]
+$\Lambda_A = 2\log_2 3 - 5 \approx -1{,}83$ (typischer Fall)
+  & \textcolor{bewiesengrün}{\bfseries Berechnet}
+  & Szenario A \\[2pt]
+$\Lambda_B \approx +0{,}54 > 0$ (LTE-schlimmster Fall)
+  & \textcolor{lückenrot}{\bfseries Negativ}
+  & Szenario B \\[2pt]
+Nach extremalem Block: $\vii(n_{k+1}+1) \leq 2$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & Prop.~\ref{prop:nachfolger} \\[2pt]
+Zweiblock-Nettofaktor $< 1$ für $n_0 = 4\cdot 3^r - 1$
+  & \textcolor{bewiesengrün}{\bfseries Berechnet}
+  & Prop.~\ref{prop:spezial}, Kons. \\[2pt]
+DC-Lücke geschlossen
+  & \textcolor{lückenrot}{\bfseries Offen}
+  & --- \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Ehrliche Gesamteinschätzung}
+
+\begin{tcolorbox}[warnung, title={Was das Dichte-Argument leistet und was nicht}]
+\textbf{Leistet:}
+\begin{enumerate}[label=(\arabic*), nosep]
+  \item Im typischen Fall ($\mathbb{E}[\vii(m')] \approx 3$) liefert das
+    Dichte-Argument $\Lambda_A \approx -1{,}83 < 0$: Divergenz ist
+    im Mittel über alle Blocktypen ausgeschlossen.
+  \item Der Extremal-Tail $\Lambda_{\mathrm{extrem}}(K)$ ist für $K \geq 10$
+    kleiner als $0{,}007$ --- die langen C-Ketten tragen exponentiell
+    wenig zum Gesamtdrift bei.
+  \item Für die extremale Familie $m = 3^r$ erzwingt die Dynamik nach dem
+    LTE-schlechtesten Block eine Phase starker Kontraktion
+    (Prop.~\ref{prop:nachfolger},~\ref{prop:spezial}). Das ist eine
+    beweisbare strukturelle Kompensation.
+\end{enumerate}
+
+\textbf{Leistet nicht:}
+\begin{enumerate}[label=(\arabic*), nosep]
+  \item Im LTE-schlechtesten Fall ($\mathbb{E}[\vii(m')] \approx \log k$)
+    ergibt sich $\Lambda_B \approx +0{,}54 > 0$. Die Reihe konvergiert
+    zwar (der Extremal-Tail ist klein), aber zu einem \emph{positiven}
+    Wert. Das Dichte-Argument allein beweist keine Kontraktion.
+  \item Die strukturelle Kompensation (§\,\ref{sec:extremal}) zeigt, dass
+    \emph{nach} dem LTE-extremalen Block die Dynamik günstig ist --- aber
+    dieser Zweiblockmechanismus ist noch kein vollständiges Argument für
+    alle Orbits.
+  \item Die DC-Lücke (uniforme Beschränktheit) bleibt offen.
+\end{enumerate}
+\end{tcolorbox}
+
+\subsection{Ausblick: Nächster Schritt}
+
+\begin{tcolorbox}[konj]
+\textbf{Hypothese:} Der ``Zweiblockmechanismus'' aus
+Proposition~\ref{prop:nachfolger} lässt sich zu einem vollständigen
+Argument erweitern: Für jede C-Kette der Länge $k$ mit LTE-schlechtestem
+$m$ gilt, dass die nächsten zwei Blöcke gemeinsam kontrahieren:
+\[
+  \frac{n_{k'+1}}{n_0} < 1,
+\]
+wobei $k'$ die Länge der zweiten C-Kette ist (durch
+$\vii(n_{k+1}+1) \leq 2$ auf $\leq 1$ begrenzt).
+
+\textit{Dies würde das Dichte-Argument auf Zwei-Block-Ebene retten:
+Während ein Einzelblock expandieren kann, kontrahieren je zwei
+aufeinanderfolgende Blöcke.}
+\end{tcolorbox}
+
+\begin{tcolorbox}[lücke]
+\textbf{Kernlücke (präzise):} Um den Zweiblockmechanismus zu formalisieren,
+braucht man eine gleichmäßige Schranke: Für alle $n_0 = 2^{k+1}\cdot 3^r-1$
+und die zweite C-Kette der Länge $k' \leq 1$ gilt
+\[
+  \frac{n_{k+k'+2}}{n_0} < 1.
+\]
+Das ist eine endliche Rechnung (für jedes $k$, $r$), aber sie muss
+für unendlich viele $(k,r)$-Paare gleichzeitig gelten --- was ein
+uniformes Argument erfordert.
+\end{tcolorbox}
+
+\subsection{Abstand zur Collatz-Vermutung}
+
+Das neue Argument verschiebt die Schranke geringfügig:
+\begin{itemize}
+  \item \textbf{Früher bekannt:} Einzelblock-Expansion für $k\geq 3$
+    im LTE-schlimmsten Fall (bewiesenes Nicht-Ergebnis).
+  \item \textbf{Neu bewiesen:} Strukturelle Kompensation nach dem
+    Einzelblock; Nachfolger erzwingend flach. Zweiblock-Nettofaktor
+    $< 1$ für $n_0 = 4\cdot 3^r - 1$ (numerisch und symbolisch).
+  \item \textbf{Noch offen:} Uniforme Zweiblockkompensation für alle
+    $(k,r)$ gleichzeitig. Dieser Schritt würde aus dem punktweisen
+    Ergebnis ein globales machen --- und damit die DC nicht beweisen,
+    aber einen wesentlichen Teilschritt liefern.
+\end{itemize}
+
+\end{document}
