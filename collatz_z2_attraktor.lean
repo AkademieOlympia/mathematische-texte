@@ -4,6 +4,13 @@
 
   PadicInt-Grundstruktur (Mathlib 4.29): ‖x-y‖₂, Einbettung ℕ ↪ ℤ₂, sInf dist₂(·,E).
   Valuations-Lemmas für ℕ: vgl. collatz_uniformity.lean (lteWorst, padicValNat).
+
+  Roadmap (PR #20 Nachfolge):
+    Stufe A — ExceptionSetApprox N K
+    Stufe B — Monotonie in N und K
+    Stufe C — Limes E = closure(⋃_N E_{N,N})
+    Stufe D — U-Invarianz `collatzU_maps_exception_approx`
+    Stufe E — Uniformität dist₂(T^k(n),E) → 0 (offen)
 -/
 
 import Mathlib.NumberTheory.Padics.PadicIntegers
@@ -11,6 +18,8 @@ import Mathlib.NumberTheory.Padics.PadicVal.Basic
 import Mathlib.Algebra.Ring.Parity
 import Mathlib.Data.Real.Archimedean
 import Mathlib.Topology.MetricSpace.Ultra.Basic
+import Mathlib.Topology.Basic
+import Mathlib.Topology.Closure
 
 namespace CollatzZ2
 
@@ -38,15 +47,6 @@ abbrev U_odd := collatzU
 /-- Natürliche Zahl mit endlicher 2-adischer Entwicklung (jedes n ∈ ℕ liegt in ℤ₂). -/
 def isNatural (x : Z2) : Prop :=
   ∃ n : ℕ, x = (n : Z2)
-
-/-- E_K: Punkte mit Komplexität > K — Platzhalter bis Collatz-Bahn-Analyse formalisiert ist. -/
-def highComplexity (_K : ℕ) (_x : Z2) : Prop :=
-  -- TODO: echte Komplexitätsfunktion auf ℤ₂; derzeit nur Typ-Skelett.
-  False
-
-/-- Endliche Ausnahme-Approximation E_K (Platzhalter: noch keine Collatz-Bahn-Analyse). -/
-def ExceptionSetApprox (_K : ℕ) : Finset ℕ :=
-  Finset.empty
 
 /-- dist₂(n, E) für n ∈ ℕ: Infimum der 2-adischen Abstände zu E ⊂ ℤ₂. -/
 noncomputable def distToExceptionSet (n : ℕ) (E : Set Z2) : ℝ :=
@@ -213,13 +213,222 @@ theorem distToExceptionSet_le_dist (n : ℕ) (E : Set Z2) (e : Z2) (he : e ∈ E
     rcases hr with ⟨_, _, rfl⟩
     exact dist2_nonneg _ _⟩
 
-/-- Austritt aus E_K nach endlich vielen Schritten (Uniformitäts-Vermutung) — noch offen. -/
-def exitsExceptionApprox (_n _K : ℕ) : Prop :=
-  -- TODO: Iteration von collatzU formalisieren (Function.iterate).
-  True
+/-! ### Stufe A: iterateU, trivialer Attraktor, ExceptionSetApprox -/
 
-/-- Triviale 2-adische Nachbarschaft von 1: noch zu formalisieren als ‖x-1‖ < 1. -/
-def inTrivialAttraktorApprox (n : ℕ) : Prop :=
-  n % 2 = 1 ∧ n = 1
+/-- Nach `k` odd-to-odd-Schritten: `U^k(n)` (für ungerades `n`). -/
+def iterateU (n : ℕ) : ℕ → ℕ
+  | 0 => n
+  | k + 1 =>
+    if h : Odd n then iterateU (collatzU n h) k else n
+
+private lemma collatzU_odd (n : ℕ) (h : Odd n) : Odd (collatzU n h) := by
+  rcases (Nat.even_xor_odd (collatzU n h)).or with heven | hod
+  · exfalso
+    unfold collatzU at heven
+    set m := 3 * n + 1 with hm
+    set v := padicValNat 2 m
+    set q := m / 2 ^ v
+    have hm_ne : m ≠ 0 := by
+      rcases h with ⟨k, rfl⟩
+      omega
+    have hdiv : 2 ^ v ∣ m := pow_padicValNat_dvd
+    have heq : q * 2 ^ v = m := Nat.div_mul_cancel hdiv
+    have h2 : 2 ∣ q := even_iff_two_dvd.mp heven
+    have hpow₁ : 2 ^ v * 2 ∣ 2 ^ v * q := Nat.mul_dvd_mul_left (2 ^ v) h2
+    have hpow₂ : 2 ^ (v + 1) ∣ q * 2 ^ v := by simpa [pow_succ', Nat.mul_comm] using hpow₁
+    have hpow : 2 ^ (v + 1) ∣ m := by simpa [← heq] using hpow₂
+    exact pow_succ_padicValNat_not_dvd (p := 2) hm_ne hpow
+  · exact hod
+
+theorem iterateU_odd (n : ℕ) (k : ℕ) (h : Odd n) : Odd (iterateU n k) := by
+  induction k generalizing n with
+  | zero => exact h
+  | succ k ih =>
+    rw [iterateU, dif_pos h]
+    exact ih (collatzU n h) (collatzU_odd n h)
+
+theorem iterateU_succ (n : ℕ) (k : ℕ) (h : Odd n) :
+    iterateU n (k + 1) = iterateU (collatzU n h) k := by
+  simp [iterateU, h]
+
+theorem collatzU_le (n : ℕ) (h : Odd n) (N : ℕ) (hn : n ≤ N) :
+    collatzU n h ≤ 3 * N + 1 := by
+  unfold collatzU
+  have hm : 3 * n + 1 ≤ 3 * N + 1 := by nlinarith
+  exact Nat.le_trans (Nat.div_le_self _ _) hm
+
+/-- Triviale 2-adische Kugel `A_triv = {x : ‖x-1‖₂ < 1}` (TeX §2). -/
+def inTrivialAttraktorBall (x : Z2) : Prop :=
+  dist2 x 1 < 1
+
+/-- Jedes ungerade `n ∈ ℕ` liegt in `A_triv` (‖n-1‖₂ ≤ 1/2 < 1). -/
+theorem odd_nat_in_trivial_ball (n : ℕ) (h : Odd n) :
+    inTrivialAttraktorBall (n : Z2) := by
+  unfold inTrivialAttraktorBall
+  rcases h with ⟨k, rfl⟩
+  by_cases hk : k = 0
+  · subst hk
+    simp [dist2_self]
+  · have hn' : 1 < 2 * k + 1 := by omega
+    rw [dist2_nat_one (2 * k + 1) hn']
+    simp only [show (2 * k + 1) - 1 = 2 * k by omega]
+    have hv : 1 ≤ padicValNat 2 (2 * k) :=
+      (padicValNat_dvd_iff_le (show 2 * k ≠ 0 by omega)).mp ⟨k, rfl⟩
+    have hle : (2 : ℝ) ^ (-(padicValNat 2 (2 * k) : ℤ)) ≤ (1 / 2 : ℝ) := by
+      calc
+        _ ≤ (2 : ℝ) ^ (-(1 : ℤ)) :=
+          zpow_right_mono₀ (by norm_num : (1 : ℝ) ≤ 2) (neg_le_neg_iff.mpr (by exact_mod_cast hv))
+        _ = 1 / 2 := by norm_num
+    linarith
+
+/--
+Pragmatische endliche Attraktor-Approximation: Bahn erreicht den trivialen
+odd-to-odd-Zyklus `{1}` innerhalb von `K` Schritten.
+
+Hinweis: `dist2 (n:ℤ₂) 1 < 1` ist für alle ungeraden `n` sofort erfüllt
+(`odd_nat_in_trivial_ball`); daher verwenden wir `iterateU n k = 1`.
+-/
+def inTrivialAttraktorApprox (n : ℕ) (K : ℕ) : Prop :=
+  ∃ k ≤ K, iterateU n k = 1
+
+/-- Austritt aus `E_{N,K}` nach höchstens `K` Schritten (Uniformitäts-Vermutung). -/
+def exitsExceptionApprox (n _N K : ℕ) : Prop :=
+  inTrivialAttraktorApprox n K
+
+/--
+`E_{N,K}`: 2-adische Punkte, die von einem ungeraden Start `n ≤ N` stammen,
+dessen odd-to-odd-Bahn nach `K` Schritten den trivialen Zyklus noch nicht trifft.
+-/
+def ExceptionSetApprox (N K : ℕ) : Set Z2 :=
+  { x |
+    ∃ n : ℕ, Odd n ∧ n ≤ N ∧ (n : Z2) = x ∧ ¬ inTrivialAttraktorApprox n K }
+
+/-! ### Stufe B: Monotonie -/
+
+theorem inTrivialAttraktorApprox_mono_K {n K₁ K₂ : ℕ} (hK : K₁ ≤ K₂)
+    (htriv : inTrivialAttraktorApprox n K₁) :
+    inTrivialAttraktorApprox n K₂ := by
+  rcases htriv with ⟨k, hk, heq⟩
+  exact ⟨k, le_trans hk hK, heq⟩
+
+theorem not_inTrivialAttraktorApprox_mono_K {n K₁ K₂ : ℕ} (hK : K₁ ≤ K₂)
+    (hex : ¬ inTrivialAttraktorApprox n K₂) :
+    ¬ inTrivialAttraktorApprox n K₁ := by
+  intro htriv
+  exact hex (inTrivialAttraktorApprox_mono_K hK htriv)
+
+/-- Mehr Startpunkte (`N` wächst) vergrößert die endliche Ausnahme-Approximation. -/
+theorem ExceptionSetApprox_mono_N {N₁ N₂ K : ℕ} (hN : N₁ ≤ N₂) :
+    ExceptionSetApprox N₁ K ⊆ ExceptionSetApprox N₂ K := by
+  intro x hx
+  rcases hx with ⟨n, ho, hn, heq, hnot⟩
+  exact ⟨n, ho, le_trans hn hN, heq, hnot⟩
+
+/--
+Längere Beobachtung (`K` wächst) verkleinert die Ausnahmemenge:
+`K₁ ≤ K₂ ⇒ E_{N,K₂} ⊆ E_{N,K₁}` (nicht die umgekehrte Richtung).
+-/
+theorem ExceptionSetApprox_mono_K {N K₁ K₂ : ℕ} (hK : K₁ ≤ K₂) :
+    ExceptionSetApprox N K₂ ⊆ ExceptionSetApprox N K₁ := by
+  intro x hx
+  rcases hx with ⟨n, ho, hn, heq, hnot⟩
+  exact ⟨n, ho, hn, heq, not_inTrivialAttraktorApprox_mono_K hK hnot⟩
+
+/-! ### Stufe C: Limes E = closure(⋃_N E_{N,N}) -/
+
+/-- Vereinigung aller Diagonal-Approximationen `E_{N,N}`. -/
+def ExceptionSetAccum : Set Z2 :=
+  Set.iUnion fun N => ExceptionSetApprox N N
+
+/--
+Endliche Vereinigung `⋃_{k ≤ N} E_{N,k}` (alternative Lesart des Limes).
+-/
+def ExceptionSetUnion (N : ℕ) : Set Z2 :=
+  ⋃ k ∈ Set.Icc 0 N, ExceptionSetApprox N k
+
+/--
+Ausnahmemenge `E ⊂ ℤ₂`: 2-adische Hülle der schlechten endlichen Präfixe.
+
+Äquivalent: `x ∈ E` genau dann, wenn zu jedem `ε > 0` ein `N` und
+`e ∈ E_{N,N}` mit `dist₂(x,e) < ε` existiert.
+-/
+noncomputable def ExceptionSet : Set Z2 :=
+  closure ExceptionSetAccum
+
+theorem mem_ExceptionSetAccum {x : Z2} :
+    x ∈ ExceptionSetAccum ↔ ∃ N, x ∈ ExceptionSetApprox N N := by
+  simp [ExceptionSetAccum, Set.mem_iUnion]
+
+theorem ExceptionSetApprox_subset_accum (N : ℕ) :
+    ExceptionSetApprox N N ⊆ ExceptionSetAccum := by
+  intro x hx
+  simp only [ExceptionSetAccum, Set.mem_iUnion]
+  exact ⟨N, hx⟩
+
+theorem ExceptionSetAccum_subset_ExceptionSet :
+    ExceptionSetAccum ⊆ ExceptionSet := by
+  intro x hx
+  unfold ExceptionSet
+  exact subset_closure hx
+
+/-! ### Stufe B: Hilfslemma für Stufe D -/
+
+private lemma inTrivialAttraktorApprox_succ_iff (n : ℕ) (K : ℕ) (h : Odd n) :
+    inTrivialAttraktorApprox n (K + 1) ↔ n = 1 ∨ inTrivialAttraktorApprox (collatzU n h) K := by
+  constructor
+  · intro ⟨k, hk, heq⟩
+    rcases eq_or_ne k 0 with rfl | hk0
+    · exact Or.inl (by simpa [iterateU] using heq)
+    · refine Or.inr ?_
+      obtain ⟨k', hk', rfl⟩ := Nat.exists_eq_succ_of_ne_zero hk0
+      refine ⟨k', ?_, ?_⟩
+      · omega
+      · simpa [iterateU_succ n k' h] using heq
+  · intro hcases
+    rcases hcases with rfl | htriv
+    · exact ⟨0, Nat.zero_le _, by simpa [iterateU]⟩
+    · rcases htriv with ⟨k, hk, heq⟩
+      exact ⟨k + 1, by omega, by simpa [iterateU_succ n k h] using heq⟩
+
+private lemma not_inTrivialAttraktorApprox_succ_iff (n : ℕ) (K : ℕ) (h : Odd n) (hn1 : n ≠ 1) :
+    (¬ inTrivialAttraktorApprox n (K + 1)) ↔ ¬ inTrivialAttraktorApprox (collatzU n h) K := by
+  rw [inTrivialAttraktorApprox_succ_iff n K h]
+  simp [hn1]
+
+/-! ### Stufe D: U-Invarianz der endlichen Approximationen -/
+
+/--
+Odd-to-odd-Schritt erhält Ausnahme-Status (bei positivem Horizont):
+
+`x ∈ E_{N,K}` mit `K > 0` und `x = n` ungerade ⇒ `U(n) ∈ E_{3N+1, K-1}`.
+
+Beweisplan:
+1. `n ≠ 1` aus `¬ inTrivialAttraktorApprox n K` und `K > 0`.
+2. `not_inTrivialAttraktorApprox_succ_iff` liefert `¬ inTrivialAttraktorApprox (U n) (K-1)`.
+3. `collatzU n h ≤ 3N+1` via `collatzU_le`.
+4. Einbettung `(U n : ℤ₂)` stimmt mit `collatzU` überein.
+-/
+theorem collatzU_maps_exception_approx (N K : ℕ) (n : ℕ) (h : Odd n) (_hn : n ≤ N)
+    (_hK : 0 < K) (hex : (n : Z2) ∈ ExceptionSetApprox N K) :
+    (collatzU n h : Z2) ∈ ExceptionSetApprox (3 * N + 1) (K - 1) := by
+  rcases hex with ⟨n', ho, hn', heq, hnot⟩
+  have hn_eq : n' = n := Nat.cast_injective (R := Z2) heq
+  have hn1 : n' ≠ 1 := by
+    intro h1
+    subst h1
+    exact hnot ⟨0, Nat.zero_le _, by simpa [iterateU]⟩
+  have hK' : K - 1 + 1 = K := by omega
+  have hnot' : ¬ inTrivialAttraktorApprox (collatzU n' ho) (K - 1) := by
+    rw [← not_inTrivialAttraktorApprox_succ_iff n' (K - 1) ho hn1, hK']
+    exact hnot
+  have hmem : (collatzU n' ho : Z2) ∈ ExceptionSetApprox (3 * N + 1) (K - 1) :=
+    ⟨collatzU n' ho, collatzU_odd n' ho, collatzU_le n' ho N hn', rfl, hnot'⟩
+  convert hmem using 1
+  simp [hn_eq]
+
+/-!
+Stufe E (offen): Punktweise Uniformität
+`∀ n, dist₂(T^k(n), E) → 0` für geeignete Iterationszahl — siehe TeX §4.
+-/
 
 end CollatzZ2
