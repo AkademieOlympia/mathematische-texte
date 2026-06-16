@@ -298,43 +298,57 @@ schw\"acher als voller Collatz, aber st\"arker als fast-\"uberall-Aussagen
 \end{tcolorbox}
 
 % =================================================
-\section{Lean-Skizze: \texttt{collatz\_z2\_attraktor.lean}}
+\section{Lean-Status: \texttt{collatz\_z2\_attraktor.lean}}
 \label{sec:lean}
 % =================================================
 
-Das Lean-Ger\"ust importiert Padics aus Mathlib und trennt bewiesene
-$\vii$-Lemmas von noch offenen 2-adischen Normen.
+Stand 16.\ Juni 2026 (Mathlib~4.29, gepr\"uft via \texttt{ptolemaeus-lean/Ptolemaeus}):
+\textbf{0~\texttt{sorry}} in der Datei; 18 bewiesene Lemmata/Theoreme.
 
 \begin{lstlisting}
--- collatz_z2_attraktor.lean (Auszug)
-import Mathlib.NumberTheory.Padics.PadicInt
-import Mathlib.NumberTheory.Padics.PadicVal
+-- collatz_z2_attraktor.lean (Auszug, kompiliert)
+import Mathlib.NumberTheory.Padics.PadicIntegers
+import Mathlib.NumberTheory.Padics.PadicVal.Basic
+import Mathlib.Algebra.Ring.Parity
 
 namespace CollatzZ2
-
-def oddPart (n : Nat) : Nat := ...
-
-def U_odd (n : Nat) (h : Odd n) : Nat := ...
-
--- dist_2 auf Z: |a-b|_2 = 2^{-padicValNat 2 (a-b)}
-def dist2Nat (a b : Nat) : Rat := ...
-
-def ExceptionSetApprox (K : Nat) : Finset Nat := ...
-
-theorem dist_to_one_not_uniform :
-    Exists (fun n => dist2Nat n 1 = 1/2) := by sorry
-
+abbrev Z2 := PadicInt 2
+noncomputable def dist2 (x y : Z2) : Real := norm (x - y)
+noncomputable def distToExceptionSet (n : Nat) (E : Set Z2) : Real := ...
+theorem dist_to_one_not_uniform_bound :
+    Exists (fun n => dist2 (n : Z2) (1 : Z2) = 1/2) := ...
 end CollatzZ2
 \end{lstlisting}
 
-\begin{tcolorbox}[heuristik,title={Mathlib-Roadmap}]
-\textbf{Jetzt:} \texttt{padicValNat} f\"ur $\vii(n-m)$ und LTE-Dichte
-(vgl.\ \texttt{collatz\_uniformity.lean}).\\
-\textbf{N\"achster Schritt:} \texttt{PadicInt.norm} bzw.\ \texttt{Padic.norm}
-f\"ur $|x-y|_2$ auf eingebetteten $\N\hookrightarrow\Ztwo$.\\
-\textbf{Offen:} Formale Definition von $E$ als Filter-Limes; Mathlib liefert
-Topologie auf $\Ztwo$, aber keine Collatz-spezifische Ausnahmemenge.
-\texttt{sorry} nur an diesen L\"ucken, nicht bei bereits bewiesenen Valuations-Lemmas.
+\begin{tcolorbox}[bewiesen,title={Formalisiert (ohne \texttt{sorry})}]
+\begin{itemize}[nosep]
+  \item \texttt{oddZ2Embed}, \texttt{natToPadic}: $\N\hookrightarrow\Ztwo$;
+  \item \texttt{dist2}: $|x-y|_2=\|x-y\|$ via \texttt{PadicInt.norm\_eq\_zpow\_neg\_valuation};
+  \item Metrik: \texttt{dist2\_nonneg}, \texttt{dist2\_comm}, \texttt{dist2\_eq\_zero\_iff},
+    \texttt{dist2\_ultrametric};
+  \item $\N$-Br\"ucke: \texttt{dist2\_nat\_cast\_of\_le}, \texttt{dist2\_nat\_one};
+  \item LTE: \texttt{lteMinimal}, \texttt{lteMinimal\_dist\_to\_one} $\Rightarrow$
+    \texttt{dist\_to\_one\_not\_uniform\_bound} (Gegenbeispiel $n=4\cdot3^r-1$);
+  \item \texttt{distToExceptionSet} mit \texttt{distToExceptionSet\_le\_dist}.
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}[heuristik,title={Noch offen (kein \texttt{sorry}, aber Platzhalter/TODO)}]
+\begin{itemize}[nosep]
+  \item \texttt{highComplexity}, \texttt{ExceptionSetApprox}: echte $E_K$ aus Collatz-Bahnen;
+  \item \texttt{exitsExceptionApprox}: Iteration von \texttt{collatzU} (\texttt{Function.iterate});
+  \item \texttt{inTrivialAttraktorApprox}: formal als $\|x-1\|_2<1$ auf $\Ztwo$;
+  \item Limes-Definition von $E$ (Definition~\ref{def:E}) als abgeschlossene H\"ulle in $\Ztwo$;
+  \item \texttt{distToExceptionSet} bei $E=\emptyset$: Mathlib liefert $\mathrm{sInf}\,\emptyset=0$,
+    TeX-Konvention $\disttwo(n,\emptyset)=1$ noch nicht eingebaut.
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}[kern,title={Mathlib-Imports (4.29)}]
+\textbf{Funktionieren:} \texttt{PadicIntegers} (\texttt{PadicInt}), \texttt{PadicVal.Basic},
+\texttt{Algebra.Ring.Parity}, \texttt{Data.Real.Archimedean}, \texttt{Topology.MetricSpace.Ultra.Basic}.\\
+\textbf{Nicht als Modul:} \texttt{Mathlib.NumberTheory.Padics.PadicInt} (Alias fehlt),
+\texttt{Mathlib.Data.Nat.Parity} (ersetzt durch \texttt{Algebra.Ring.Parity}).
 \end{tcolorbox}
 
 % =================================================
