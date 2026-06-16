@@ -1,0 +1,349 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[a4paper,margin=2.4cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks,unicode]{hyperref}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+
+\definecolor{bewiesengruen}{RGB}{30,100,50}
+\definecolor{warnorange}{RGB}{200,100,10}
+\definecolor{lueckenrot}{RGB}{180,40,40}
+\definecolor{kernblau}{RGB}{20,60,130}
+
+\tcbset{
+  bewiesen/.style={colback=green!7,colframe=bewiesengruen,fonttitle=\bfseries},
+  heuristik/.style={colback=orange!10,colframe=warnorange,fonttitle=\bfseries},
+  offen/.style={colback=red!8,colframe=lueckenrot,fonttitle=\bfseries},
+  kern/.style={colback=blue!5,colframe=kernblau,fonttitle=\bfseries},
+}
+
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+\newtheorem{vermutung}[satz]{Vermutung}
+
+\newcommand{\vii}{\nu_2}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Ztwo}{\mathbb{Z}_2}
+\newcommand{\Ztwost}{\mathbb{Z}_2^{\ast}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\disttwo}{\operatorname{dist}_2}
+\newcommand{\Einf}{E^{\infty}}
+\newcommand{\Ediag}{E^{\mathrm{diag}}}
+\newcommand{\Etail}{E^{\mathrm{tail}}}
+\newcommand{\Ecap}{E^{\cap}}
+
+\title{%
+  Äquivalenzkette Collatz $\leftrightarrow$ $E^{\infty}$ $\leftrightarrow$\\
+  EABC-Grammatik
+}
+\author{Thomas Hoffbauer}
+\date{17.\ Juni 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Exakte Definitionen für odd-to-odd-Collatz, $E_{N,K}$, $\Ediag$ und
+$\Einf$; Äquivalenz Collatz $\Leftrightarrow$ $\Einf\cap\N=\emptyset$
+und Formulierung~B; Nicht-Äquivalenz von $\Ediag$ (Beispiel $27$);
+Skizze Satz~L und EABC-Grammatik. \textbf{Collatz nicht bewiesen.}
+\end{abstract}
+
+% =================================================
+\section{Einleitung}
+\label{sec:einleitung}
+% =================================================
+
+Die klassische Collatz-Vermutung verlangt punktweise Konvergenz:
+jede Bahn erreicht den Zyklus $(1,2,4)$.
+Bewiesen sind dagegen nur \emph{mittlere} oder \emph{fast-sichere}
+Aussagen (z.\,B.\ Tao 2019: logarithmische Dichte~$1$ für beschränkte
+Bahnen). Der Engpass ist die Brücke
+\[
+  \text{Mittel / Markov / Drift}\quad\nRightarrow\quad\forall n\in\N.
+\]
+
+In der 2-adischen Geometrisierung wird eine abgeschlossene Ausnahmemenge
+$E\subset\Ztwo$ als Limes endlicher Approximationen konstruiert.
+Die naheliegende Wahl
+\[
+  E\;:=\;\Ediag\;:=\;\overline{\bigcup_{N\in\N} E_{N,N}}^{\;\Ztwo}
+\]
+ist \textbf{nicht} äquivalent zur Collatz-Vermutung.
+Beispiel $n=27$: Die odd-to-odd-Stoppzeit $\tau(27)$ liegt bei
+$\approx 41$ Schritten (deutlich über $27$).
+Für $N=K=27$ gilt daher $27\in E_{27,27}$ und folglich
+$27\in\Ediag\cap\N$ --- obwohl Collatz für $27$ wahr ist
+(die Bahn erreicht $1$).
+Der Diagonal-Limes misst \emph{endliche Beobachtungsfenster},
+nicht ewige Nicht-Konvergenz.
+
+% =================================================
+\section{Definitionen}
+\label{sec:def}
+% =================================================
+
+Sei $\Ztwo$ der Ring der 2-adischen ganzen Zahlen.
+Jedes ungerade $n\in\N$ identifizieren wir mit seinem Bild in $\Ztwo$.
+
+\begin{definition}[Odd-to-odd-Abbildung und Stoppzeit]
+\label{def:U}
+Für ungerades $x\in\Ztwo$ mit $3x+1\neq 0$ setzen wir
+\[
+  \U(x):=\frac{3x+1}{2^{\vii(3x+1)}}\in\Ztwo.
+\]
+Auf $\N$ liefert $\U$ die übliche odd-to-odd-Collatz-Kette.
+Die \emph{Stoppzeit} (falls sie existiert) ist
+\[
+  \tau(n):=\min\{K\geq 1:\ \U^K(n)=1\}\in\N\cup\{\infty\}.
+\]
+\end{definition}
+
+\begin{definition}[Endliche Ausnahmeapproximationen]
+\label{def:ENK}
+Für $N,K\in\N$ sei
+\[
+  E_{N,K}\ :=\ \bigl\{x\in\Ztwo:\ \exists\,\text{ungerades }n\leq N,\ (n)_{\Ztwo}=x,\
+  \ \forall k\leq K:\ \U^k(n)\neq 1\bigr\}.
+\]
+Monotonie: $N_1\leq N_2\Rightarrow E_{N_1,K}\subseteq E_{N_2,K}$;
+$K_1\leq K_2\Rightarrow E_{N,K_2}\subseteq E_{N,K_1}$.
+Der \emph{Diagonal-Akkumulator} und sein Abschluss sind
+\[
+  E^{\mathrm{acc}}\ :=\ \bigcup_{N\in\N} E_{N,N},
+  \qquad
+  \Ediag\ :=\ \overline{E^{\mathrm{acc}}}^{\;\Ztwo}.
+\]
+\end{definition}
+
+\begin{definition}[$E^{\infty}$ und Hilfsmengen]
+\label{def:Einfty}
+\[
+  \Einf\ :=\ \bigl\{n\in\N:\ n\ \text{ungerade},\ \forall K\in\N:\ \U^K(n)\neq 1\bigr\}
+  \ =\ \{\,n\ \text{ungerade}:\ \tau(n)=\infty\,\}.
+\]
+Kurz erwähnt:
+\begin{itemize}[nosep]
+  \item $\Ecap:=\bigcap_{N} E_{N,N}$; für $n\in\N$ gilt
+    $n\in\Ecap\cap\N\Leftrightarrow\tau(n)=\infty$, also
+    $\Ecap\cap\N=\Einf$.
+  \item $\Etail\subset\Ztwo$: Punkte, deren Bahn den trivialen Bereich
+    $A_{\mathrm{triv}}:=\{x:\ |x-1|_2<1\}$ in keinem endlichen
+    Präfix trifft (2-adische Tail-Ausnahme).
+\end{itemize}
+\end{definition}
+
+\begin{definition}[2-adische Distanz]
+\label{def:dist2}
+Für $x,y\in\Ztwo$, $x\neq y$: $|x-y|_2:=2^{-\vii(x-y)}$.
+Für $n\in\N$, $E\subset\Ztwo$:
+$\disttwo(n,E):=\inf_{e\in E}|n-e|_2$,
+mit $\disttwo(n,\emptyset)=1$.
+\end{definition}
+
+\begin{bemerkung}[Warum $\disttwo(\cdot,1)$ scheitert]
+\label{rem:dist1}
+Die naive Uniformität $\disttwo(n,1)\geq c\cdot 2^{-\lfloor\log_2 n\rfloor}$
+ist \textbf{widerlegt}: Für $n_0=2^{k+1}3^r-1$ bleibt
+$\disttwo(n_0,1)$ oft bei $1/2$ konstant (LTE-Familie), während
+$c\cdot 2^{-\lfloor\log_2 n\rfloor}\to 0$.
+Formal: \texttt{dist\_to\_one\_not\_uniform\_bound} in
+\texttt{collatz\_z2\_attraktor.lean}.
+Der Attraktor ist $A_{\mathrm{triv}}$ bzw.\ eine echte Ausnahmemenge,
+nicht der isolierte Punkt $1\in\Ztwo$.
+\end{bemerkung}
+
+% =================================================
+\section{Äquivalenzkette}
+\label{sec:aek}
+% =================================================
+
+\begin{satz}[Collatz $\Leftrightarrow$ $E^{\infty}$]
+\label{sat:collatz-einf}
+Sei \emph{Collatz (odd-to-odd)} die Aussage:
+$\forall$ ungerade $n\in\N\ \exists K:\ \U^K(n)=1$.
+Dann gilt
+\[
+  \text{Collatz (odd-to-odd)}\quad\Longleftrightarrow\quad
+  \Einf\cap\N=\emptyset.
+\]
+\end{satz}
+
+\begin{proof}
+$\Rightarrow$: Ist Collatz wahr, existiert für jedes ungerade $n$ ein $K$
+mit $\U^K(n)=1$, also $n\notin\Einf$.
+
+$\Leftarrow$: Ist $\Einf\cap\N=\emptyset$, hat jedes ungerade $n$ endliche
+Stoppzeit $\tau(n)<\infty$, d.\,h.\ $\U^{\tau(n)}(n)=1$.
+\end{proof}
+
+\begin{satz}[Collatz $\Leftrightarrow$ Formulierung~B]
+\label{sat:formB}
+Collatz (odd-to-odd) ist äquivalent zu
+\[
+  \forall n\in\N\ \exists K\in\N:\quad n\notin E_{n,K}.
+\]
+\end{satz}
+
+\begin{proof}
+Für ungerades $n$ gilt $n\in E_{n,K}$ genau dann, wenn
+$\forall k\leq K:\ \U^k(n)\neq 1$, also genau wenn $\tau(n)>K$.
+Daher $\exists K:\ n\notin E_{n,K}\Leftrightarrow\tau(n)<\infty$.
+\end{proof}
+
+\begin{satz}[Nicht-Äquivalenz: $\Ediag$ vs.\ Collatz]
+\label{sat:nondiag}
+Unter der Collatz-Vermutung gilt $\Ediag\cap\N\neq\emptyset$.
+Insbesondere ist $\Ediag\cap\N=\emptyset$ \textbf{streng schwächer}
+als Collatz und nicht äquivalent.
+\end{satz}
+
+\begin{proof}
+Sei $n=27$. Dann $\tau(27)>27$, also $27\in E_{27,27}\subseteq E^{\mathrm{acc}}$
+und damit $27\in\Ediag\cap\N$.
+Unter Collatz ist dennoch $\tau(27)<\infty$, also $27\notin\Einf$.
+\end{proof}
+
+\begin{vermutung}[Zusammenhang $\Ediag$ und $\Einf$ in $\Ztwo$]
+\label{verm:z2}
+In $\Ztwo$ gilt $\Einf\subseteq\Ediag$ (jede natürliche Ausnahme liegt im
+Diagonal-Limes). Die Umkehrung und die Relation zu $\Etail$ sind offen:
+Ist $\Ediag\cap\N$ genau die Menge der $n$ mit $\tau(n)>n$ für
+\emph{irgendwelche} endlichen Fenster, oder gibt es 2-adische Grenzpunkte
+in $\Ediag\setminus\N$, die Collatz nicht reflektieren?
+\end{vermutung}
+
+\begin{tcolorbox}[kern,title={Formulierungen}]
+Collatz-äquivalent: $\Einf\cap\N=\emptyset$;
+$\forall n\ \exists K:\ n\notin E_{n,K}$.
+Nicht äquivalent: $\Ediag\cap\N=\emptyset$ (Satz~\ref{sat:nondiag});
+$\disttwo(n,1)\geq c\cdot 2^{-\log n}$ (Bem.~\ref{rem:dist1}).
+\end{tcolorbox}
+
+% =================================================
+\section{Satz~L (Zwischenlemma)}
+\label{sec:satzL}
+% =================================================
+
+\begin{vermutung}[Satz~L: präperiodischer EABC-Tail]
+\label{verm:satzL}
+Sei $w(n)=(w_k)_{k\geq 0}\in\{E,A,B,C\}^{\N}$ die EABC-Paritätsfolge
+der odd-to-odd-Bahn von $n$ (Restklassen $\bmod 12$ der ungeraden
+Zwischenwerte). Dann ist $w(n)$ \emph{präperiodisch} im Sinne:
+\[
+  \forall N_0\in\N\ \exists k\geq N_0,\ p\geq 1:\quad
+  w_{k+j}=w_{k+j+p}\quad\text{für alle }j\geq 0
+  \text{ bis zum ersten }K\text{ mit }\U^K(n)=1.
+\]
+\end{vermutung}
+
+\begin{bemerkung}[Plausibilität]
+Bewiesen: endliche C-Ketten, Verbot B$\to$B, EA-Zwang nach C.
+Satz~L wäre asymptotische Wort-Regularität vor Erreichen von~$1$.
+\textbf{Status: offen;} aus Satz~L folgt Collatz nicht ohne Uniformität.
+\end{bemerkung}
+
+% =================================================
+\section{Grammatik und symbolische Dynamik}
+\label{sec:grammatik}
+% =================================================
+
+\begin{definition}[EABC-Sprache]
+\label{def:grammatik}
+Alphabet $\mathcal{A}=\{E,A,B,C\}$ mit
+$E\equiv 1$, $A\equiv 5$, $B\equiv 7$, $C\equiv 11\pmod{12}$.
+Sei $\mathcal{L}\subset\mathcal{A}^*$ die Menge der \emph{realisierbaren}
+endlichen Wörter, die als EABC-Folge einer odd-to-odd-Collatz-Bahn
+vorkommen. Zulässigkeit (bewiesen bzw.\ strukturell):
+\begin{enumerate}[label=(\roman*),nosep]
+  \item kein Teilwort $BB$;
+  \item C-Ketten endlich: nach $C^k$, $k\geq 1$, folgt kein weiteres $C$
+    über die maximale C-Kettenlänge hinaus;
+  \item EA-Zwang: nach jeder maximalen C-Kette tritt ein Block mit
+    $\vii\geq 2$ auf (EA-Schritt).
+\end{enumerate}
+\end{definition}
+
+\begin{satz}[Grammatik-Formulierung (konzeptionell)]
+\label{sat:grammatik}
+Collatz (odd-to-odd) ist äquivalent zur Aussage:
+Jede unendliche Realisierung $w\in\mathcal{A}^{\N}$, die von einem
+ungeraden $n\in\N$ erzeugt wird, enthält nur endlich viele Symbole
+vor dem ersten Auftreten des Zyklus $E$-Tail zum Fixpunkt~$1$;
+äquivalent: es gibt keine unendliche realisierbare Wortfolge in
+$\mathcal{L}$, deren zugehörige Bahn $\U^K(n)\neq 1$ für alle $K$ erfüllt.
+\end{satz}
+
+\begin{bemerkung}
+Die 2-adische Shift-Konjugation
+$\Phi\circ S\circ\Phi^{-1}=T$ auf $\Ztwo$
+~\cite{BernsteinLagarias1996,Bernstein1994} und die Paritäts-Isometrie
+$Q$~\cite{Rozier2019,Lagarias1985} liefern den topologischen Rahmen:
+Collatz wird zur Frage nach zulässigen unendlichen Paritätswörtern
+in einer Untersprache von $\{0,1\}^{\N}$, gefiltert durch EABC-Regeln.
+\end{bemerkung}
+
+% =================================================
+\section{Epilog}
+\label{sec:epilog}
+% =================================================
+
+Die 2-adische Geometrisierung verbindet die Äquivalenzkette mit
+EABC-Struktur, LTE-Kompensation, Markov-Mischung auf $\{E,A,B,C\}$
+und dem Grenzobjekt $\Einf\subset\Ediag\subset\Ztwo$.
+Bewiesen sind lokale Grammatikregeln und Dichteaussagen;
+\textbf{nicht bewiesen} ist die punktweise Brücke
+\[
+  \text{Struktur auf Blöcken}\quad\Longrightarrow\quad
+  \Einf\cap\N=\emptyset.
+\]
+
+\begin{tcolorbox}[offen,title={Verbleibende Lücke}]
+Zwischen Formulierung~B ($\forall n\ \exists K:\ n\notin E_{n,K}$)
+und dem Diagonal-Limes $\Ediag$ liegt genau die Uniformitätsfrage:
+\emph{wie} wächst $K(n)$ mit $n$, und gibt es 2-adische Grenzpunkte,
+die endliche Fenster täuschen, ohne in $\Einf$ zu liegen?
+Satz~L wäre ein Zwischenschritt; sein Beweis oder seine Widerlegung
+würde die Grammatik- und $E^{\infty}$-Formulierung schärfen.
+\end{tcolorbox}
+
+% =================================================
+\begin{thebibliography}{99}
+% =================================================
+
+\bibitem{BernsteinLagarias1996}
+D.~J.~Bernstein und J.~C.~Lagarias.
+The $3x+1$ conjugacy map.
+\textit{Canad.\ J.\ Math.} \textbf{48} (1996), 1154--1169.
+
+\bibitem{Bernstein1994}
+D.~J.~Bernstein.
+A non-iterative $2$-adic statement of the $3x+1$ conjecture.
+\textit{Proc.\ Amer.\ Math.\ Soc.} \textbf{121} (1994), 405--408.
+
+\bibitem{Rozier2019}
+O.~Rozier.
+Parity sequences of the $3x+1$ map on the $2$-adic integers and Euclidean embedding.
+\textit{Integers} \textbf{19} (2019), A8.
+arXiv:1805.00133.
+
+\bibitem{Lagarias1985}
+J.~C.~Lagarias.
+The $3x+1$ problem and its generalizations.
+\textit{Amer.\ Math.\ Monthly} \textbf{92} (1985), 3--23.
+
+\end{thebibliography}
+
+\end{document}
