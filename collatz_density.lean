@@ -19,6 +19,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Nat.Parity
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
 import Mathlib.Analysis.SpecificLimits.Basic
+import Mathlib.Data.Nat.Factorization.Basic
 
 -- ============================================================
 -- §1: Hilfssatz — padicValNat 2 (n+1) ≥ k ↔ 2^k ∣ (n+1)
@@ -87,9 +88,33 @@ theorem density_C_chains_finite (N k : ℕ) :
     (Finset.filter (fun n => padicValNat 2 (n + 1) ≥ k + 1)
       (Finset.filter Odd (Finset.range (2 * N + 1)))).card
     = N / 2 ^ k := by
-  -- Bijektion: n ↦ m = (n+1)/2^(k+1), m ∈ Finset.range (N/2^k + 1) \ {0}
-  -- Die Bedingung 2^(k+1) ∣ (n+1) mit n+1 ≤ 2N liefert m ∈ {1,...,⌊N/2^k⌋}.
-  sorry
+  -- Schritt 1: Odd-Filter überflüssig (2^(k+1) | n+1 → 2 | n+1 → n ungerade)
+  -- und padicValNat-Bedingung äquivalent zu Teilbarkeit (padicVal_succ_ge_iff_dvd).
+  have hset_eq : Finset.filter (fun n => padicValNat 2 (n + 1) ≥ k + 1)
+      (Finset.filter Odd (Finset.range (2 * N + 1))) =
+      (Finset.range (2 * N + 1)).filter (fun e => 2 ^ (k + 1) ∣ e + 1) := by
+    ext n
+    simp only [Finset.mem_filter, Finset.mem_range]
+    constructor
+    · rintro ⟨⟨hn, _⟩, hpadic⟩
+      exact ⟨hn, (padicVal_succ_ge_iff_dvd n (k + 1)).mp hpadic⟩
+    · intro ⟨hn, hdvd⟩
+      refine ⟨⟨hn, ?_⟩, (padicVal_succ_ge_iff_dvd n (k + 1)).mpr hdvd⟩
+      -- n ist ungerade: aus 2^(k+1) | n+1 folgt 2 | n+1, also n ungerade
+      have h2 : 2 ∣ n + 1 := (dvd_pow_self 2 (Nat.succ_ne_zero k)).trans hdvd
+      obtain ⟨d, hd⟩ := h2
+      exact ⟨d - 1, by omega⟩
+  -- Schritt 2: Nat.card_multiples anwenden
+  -- Satz: #{e ∈ range n | p ∣ e+1} = n / p
+  rw [hset_eq]
+  have h_count : ((Finset.range (2 * N + 1)).filter (fun e => 2 ^ (k + 1) ∣ e + 1)).card =
+      (2 * N + 1) / 2 ^ (k + 1) := Nat.card_multiples (2 * N + 1) (2 ^ (k + 1))
+  rw [h_count]
+  -- Schritt 3: Arithmetische Vereinfachung (2N+1) / 2^(k+1) = N / 2^k
+  -- Beweis: 2^(k+1) = 2 * 2^k, dann (2N+1)/(2*2^k) = (2N+1)/2 / 2^k = N / 2^k
+  rw [show (2 : ℕ) ^ (k + 1) = 2 * 2 ^ k from by ring, ← Nat.div_div_eq_div_mul]
+  have h_div : (2 * N + 1) / 2 = N := by omega
+  rw [h_div]
 
 -- Korollar: Relative Dichte der C-Ketten-Starts fällt exponentiell
 theorem density_C_chains_bound (k : ℕ) :
@@ -219,8 +244,10 @@ theorem exception_probability_tendsto_zero (p : ℝ) (hp0 : 0 < p) (hp1 : p < 1)
       - Rückwärtsrichtung: padicValNat.le_of_dvd (Mathlib)
 
   §3 (density_C_chains_finite):
-    ✗ sorry — Filterbedingung auf ≥ k+1 korrigiert (Formel N/2^k korrekt für
-      C-Ketten-Starts mit ν₂(n+1) ≥ k+1). Noch offen: formales Finset-Zählargument.
+    ✓ Geschlossen via Nat.card_multiples + Nat.div_div_eq_div_mul + omega.
+      Strategie: Odd-Filter redundant (2^(k+1)|n+1 → n ungerade), dann
+      Nat.card_multiples (2N+1) (2^(k+1)) = (2N+1)/2^(k+1),
+      arithmetische Vereinfachung (2N+1)/(2·2^k) = (2N+1)/2/2^k = N/2^k.
 
   §4 (geom_series_deriv):
     ✓ Geschlossen via hasSum_pow_mul_geometric_of_abs_lt_one 1
