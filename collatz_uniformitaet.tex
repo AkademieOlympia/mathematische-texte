@@ -712,4 +712,224 @@ Schritt C: Quaternionen-Diophantik
     \textit{collatz\_lte\_dichte.tex}, \textit{collatz\_schlussartikel.tex}.
 \end{itemize}
 
+% ====================================================
+\section{Das Binärinformations-Argument: Analyse und Einordnung}
+\label{sec:binaer}
+% ====================================================
+
+\subsection{Das intuitive Argument}
+\label{sec:binaer:intuitiv}
+
+\begin{tcolorbox}[colback=orange!9, colframe=warnorange, fonttitle=\bfseries,
+  title={Argument D: Endliche Binärinformation (vielversprechend, aber unvollständig)}]
+Jede natürliche Zahl $x \in \N$ besitzt eine \textbf{endliche Binärdarstellung}
+mit $\lfloor\log_2 x\rfloor + 1$ Bits. Das Argument lautet:
+
+\medskip
+\textit{``Sobald die Trajektorie die ``Länge'' dieser Binärdarstellung abgelaufen hat,
+bricht die lokale Speicherfähigkeit des Startwerts zusammen. Die exponentielle
+Mischungsrate $(1-p)^{\lfloor n/12\rfloor}$ frisst die endliche Information
+in endlicher Zeit auf.''}
+
+\medskip
+\textbf{Intuitive Stärke:} Der Startwert $x$ trägt nur $\lfloor\log_2 x\rfloor + 1$
+Bits Information. Nach hinreichend vielen Collatz-Schritten --- mit exponentiell
+mischender mod-12-Dynamik --- sollte diese endliche Information gegen die
+stationäre Verteilung $\pi$ ``eingeebnet'' sein: kein Startwert $x$ kann
+dauerhaft bestimmte mod-12-Klassen bevorzugen.
+
+\medskip
+\textbf{Status:} Das Argument ist intuitiv ansprechend und greift die richtige
+Idee auf (endliche Information des Starts), aber enthält --- wie in \S\,\ref{sec:binaer:zirkel}
+gezeigt --- eine subtile Zirkularität.
+\end{tcolorbox}
+
+\subsection{Die präzise Zirkularitätsprüfung}
+\label{sec:binaer:zirkel}
+
+\begin{tcolorbox}[lücke, title={Das zentrale Problem: Bitlänge wächst mit der Trajektorie}]
+Der Collatz-Schritt $n \mapsto 3n+1$ kann die Bitlänge \emph{vergrößern}:
+\[
+  n \text{ hat } \lfloor\log_2 n\rfloor + 1 \text{ Bits},
+  \qquad
+  3n+1 \text{ hat ca.\ } \lfloor\log_2 n\rfloor + 2 \text{ Bits.}
+\]
+Präziser gilt:
+\[
+  \lfloor\log_2(3n+1)\rfloor \approx \lfloor\log_2 n\rfloor + \log_2 3
+  \approx \lfloor\log_2 n\rfloor + 1{,}58.
+\]
+Die ``endliche Information'' des Startwerts $x$ wird durch die wachsenden
+Folgeglieder \emph{erweitert}, nicht ``aufgefressen''. Nach $k$ ungeraden
+Collatz-Schritten kann die Bitlänge bis auf
+$\lfloor\log_2 x\rfloor + k \cdot \log_2 3 \approx \lfloor\log_2 x\rfloor + 1{,}58\,k$
+angewachsen sein.
+\end{tcolorbox}
+
+\begin{proposition}[Äquivalenz mit Nicht-Divergenz]
+\label{prop:bitlaenge}
+Die Aussage ``Die Bitlänge der Trajektorie $(T^k(n))_{k\geq 0}$ bleibt nach
+oben beschränkt'' ist \textbf{äquivalent zur Collatz-Vermutung für $n$} (im Sinne
+der Nicht-Divergenz).
+\end{proposition}
+
+\begin{beweis}
+$(\Rightarrow)$: Ist die Bitlänge beschränkt, so ist die Trajektorie beschränkt,
+also periodisch. Da die einzige bekannte Periode die $1 \to 4 \to 2 \to 1$-Schleife
+ist, folgt Konvergenz gegen $1$.
+
+$(\Leftarrow)$: Konvergiert die Trajektorie gegen $1$, so ist sie letztlich beschränkt,
+also auch die Bitlänge.
+\end{beweis}
+
+\begin{tcolorbox}[zirkel]
+\textbf{Die Zirkularität von Argument D:} Man darf nicht annehmen, dass die
+Trajektorie beschränkt bleibt --- und damit nicht, dass ihre Bitlänge durch
+$\lfloor\log_2 x\rfloor + \mathrm{const}$ beschränkt ist. Genau diese
+Annahme ist das, was bewiesen werden soll.
+
+\medskip
+\textbf{Vergleich mit Schritt C:} Argument D enthält dieselbe versteckte
+Zirkularität wie Schritt C (\S\,\ref{sec:schrittC}): Beide setzen implizit
+voraus, dass die Trajektorie sich ``kontrolliert'' verhält, um daraus die
+Kontrolle abzuleiten.
+\end{tcolorbox}
+
+\subsection{Was korrekt bleibt: 2-adische Endlichkeit vs.\ Konvergenz}
+\label{sec:binaer:adisch}
+
+Trotz der Zirkularität enthält Argument D einen richtigen Kern, der präzisiert
+werden kann:
+
+\begin{tcolorbox}[adisch, title={Korrekte Aussagen zur 2-adischen Struktur}]
+\begin{enumerate}[label=(\arabic*), nosep]
+  \item \textbf{Endlichkeit in $\N$ vs.\ $\Ztwo$:} Für $n \in \N$ ist die
+    Binärdarstellung endlich. Für allgemeines $x \in \Ztwo$ ist die
+    2-adische Darstellung unendlich. Elemente $\N \subset \Ztwo^*$ sind
+    \emph{isoliert} in der 2-adischen Topologie.
+
+  \item \textbf{Fixpunkte auf $\Ztwo$:} Die Collatz-Abbildung auf $\Ztwo$
+    besitzt Fixpunkte, z.\,B.\ $x = -1$ (da $3\cdot(-1)+1 = -2 \to -1$).
+    Elemente von $\N$ liegen weit von diesen $p$-adischen Fixpunkten entfernt
+    --- aber ob sie zu $1$ konvergieren, folgt daraus nicht.
+
+  \item \textbf{Tao's 2-adische Methode:} Taos Beweis nutzt gerade die
+    \emph{unendliche} 2-adische Entwicklung für die Fourier-Analyse auf $\Ztwo^*$.
+    Die Endlichkeit der Darstellung von $n \in \N$ hilft dort nicht direkt.
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{bemerkung}[Warum Endlichkeit nicht genügt]
+Sei $x \in \N$ mit Binärdarstellung der Länge $L = \lfloor\log_2 x\rfloor + 1$.
+Die Tatsache $L < \infty$ unterscheidet $x$ topologisch von generischen
+$\Ztwo$-Elementen, liefert aber keine arithmetische Schranke für die Dynamik.
+Die Collatz-Abbildung ist nicht isometrisch bzgl.\ der 2-adischen Norm:
+$|T(n)|_2$ kann kleiner oder größer als $|n|_2$ sein.
+\end{bemerkung}
+
+\subsection{Das stärkere, bedingte Argument}
+\label{sec:binaer:bedingt}
+
+Eine \emph{korrekte} und substanzielle Version des Informations-Arguments ist
+die folgende bedingte Aussage, die RPF für die Konditionierung nutzt:
+
+\begin{tcolorbox}[kernidee, title={Das bedingte Informations-Argument (korrekt)}]
+Sei $n \in \N$ gegeben. Definiere $K(n)$ als den Index, nach dem die
+mod-12-Klasse von $T^k(n)$ ``gut gemischt'' ist --- d.\,h.\ den kleinsten
+$K$, so dass:
+\[
+  \bigl\|M^K e_{B(n)} - \pi\bigr\|_{\TV} \leq \varepsilon
+\]
+für ein vorgewähltes $\varepsilon > 0$. Dann gilt:
+\[
+  K(n) \leq \frac{\log(C \cdot \varepsilon^{-1})}{\log(|\lambda_2|^{-1})},
+\]
+wobei $C > 0$ von der Startklasse $B(n) \in \{E,A,B,C\}$ abhängt (nur 4 Fälle).
+Dieser Wert $K(n)$ ist \textbf{endlich und explizit berechenbar} --- unabhängig
+von der Größe von $n$.
+
+\medskip
+\textbf{Was das bedeutet:} Nach $K(n)$ Blockschritten ist die mod-12-Klasse
+gut gemischt, \emph{falls die Trajektorie bis dahin nicht divergiert}. Das ist:
+\begin{enumerate}[label=(\alph*), nosep]
+  \item Kein Beweis der Nicht-Divergenz (conditio sine qua non).
+  \item Aber: eine \emph{quantitative} Verstärkung gegenüber Schritt B.
+    Die Mischungszeit hängt \emph{nicht} von $n$ ab, sondern nur von der
+    mod-12-Klasse des Startwerts.
+  \item Damit: Die ``endliche Binärinformation'' von $n$ verliert ihren
+    Einfluss auf die Klassen-Dynamik nach $K(n)$ Schritten --- \emph{bedingt}
+    auf Nicht-Divergenz.
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{proposition}[Klassen-Vergessen nach $K(n)$ Schritten]
+\label{prop:vergessen}
+Sei $p := \min_{s,t \in S} M_{st} > 0$ die kleinste Übergangswahrscheinlichkeit
+der mod-12-Kette, und sei $|\lambda_2| < 1$ die Spektrallücke. Dann gibt es
+$C > 0$ (unabhängig von $n$), so dass für alle $n \in \N$ und alle $k \geq 0$:
+\[
+  \bigl\|M^k e_{B(n)} - \pi\bigr\|_{\TV} \leq C \cdot |\lambda_2|^k.
+\]
+Insbesondere: Nach
+\[
+  K_\varepsilon := \left\lceil\frac{\log(C/\varepsilon)}{\log(1/|\lambda_2|)}\right\rceil
+  \quad \text{Schritten}
+\]
+ist $\|M^{K_\varepsilon} e_{B(n)} - \pi\|_{\TV} \leq \varepsilon$
+für \textbf{jeden} Startpunkt $n \in \N$ (da $K_\varepsilon$ nicht von $n$ abhängt).
+\end{proposition}
+
+\begin{beweis}
+Direkt aus Theorem~\ref{thm:mischung} mit $C = \max_{s \in S} C_s$ über
+die endlich vielen Startklassen $s \in \{E, A, B, C\}$.
+\end{beweis}
+
+\begin{tcolorbox}[bewmat, title={Vergleichende Einordnung der vier Argumente}]
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{>{\raggedright}p{2.0cm}
+                >{\centering}p{2.2cm}
+                >{\centering}p{1.8cm}
+                >{\raggedright\arraybackslash}p{5.2cm}}
+\toprule
+\textbf{Argument} & \textbf{Stärke} & \textbf{Zirkulär?} & \textbf{Kernaussage} \\
+\midrule
+Schritt A (Ergodentheorie)
+  & \textcolor{warnorange}{\bfseries Bedingt}
+  & Ja (implizit)
+  & Keine ewigen Ausnahmen --- setzt Ergodizität voraus \\[2pt]
+Schritt B (RPF mod-12)
+  & \textcolor{bewiesengrün}{\bfseries Quantitativ}
+  & Nein
+  & Mischung in $K_\varepsilon$ Schritten, unabhängig von $n$ \\[2pt]
+Schritt C (Quaternionen)
+  & \textcolor{lückenrot}{\bfseries Schwach}
+  & \textbf{Ja}
+  & Kein echter Beitrag (§\,\ref{sec:schrittC}) \\[2pt]
+Arg.\ D (Binärinfo)
+  & \textcolor{warnorange}{\bfseries Bedingt}
+  & \textbf{Ja}
+  & Korrekt nur bedingt auf Nicht-Divergenz \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{tcolorbox}
+
+\begin{tcolorbox}[warnung, title={Fazit zu Argument D}]
+Das Binärinformations-Argument ist \textbf{intuitiv wertvoll}, weil es auf
+den richtigen Mechanismus zeigt: Die endliche ``Gedächtnistiefe'' eines
+Startwerts $n \in \N$ sollte nach hinreichend vielen Schritten gegen die
+stationäre Verteilung eingeebnet werden. Der präzise Inhalt dieser Idee
+ist Proposition~\ref{prop:vergessen} (keine Abhängigkeit von $n$ in $K_\varepsilon$).
+
+Zur Schließung der Uniformitätslücke fehlt jedoch der entscheidende Schritt:
+der Nachweis, dass die Trajektorie \emph{überhaupt} $K_\varepsilon$ Schritte
+macht, ohne zu divergieren. Das ist zirkulär.
+
+\textbf{Nächster echter Schritt:} Kombiniere Prop.~\ref{prop:vergessen}
+mit einer \emph{Divergenzausschluss}-Schranke --- z.\,B.\ über 2-adische
+Kontraktionsargumente oder eine positive untere Schranke für die
+Konvergenzwahrscheinlichkeit in den ersten $K_\varepsilon$ Schritten.
+\end{tcolorbox}
+
 \end{document}

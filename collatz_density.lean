@@ -29,11 +29,11 @@ theorem padicVal_ge_iff_dvd (m k : ℕ) (hm : m ≠ 0) :
     padicValNat 2 m ≥ k ↔ 2 ^ k ∣ m := by
   constructor
   · -- Vorwärtsrichtung: padicValNat 2 m ≥ k → 2^k ∣ m
-    -- Nutze: padicValNat.pow_dvd_of_le_emultiplicity bzw. das kanonische Lemma
-    -- In Mathlib 4: pow_dvd_of_le_padicValNat oder ähnlich
+    -- 2^k ∣ 2^(padicValNat 2 m)  (Nat.pow_dvd_pow)
+    -- 2^(padicValNat 2 m) ∣ m    (pow_padicValNat_dvd)
+    -- Zusammen via Transitivität der Teilbarkeit.
     intro h
-    exact Nat.dvd_trans (Nat.pow_dvd_pow 2 h) (padicValNat.self_le_pow_iff_dvd.mp le_rfl |>.symm ▸
-      pow_padicValNat_dvd)
+    exact (Nat.pow_dvd_pow 2 h).trans pow_padicValNat_dvd
   · -- Rückwärtsrichtung: 2^k ∣ m → padicValNat 2 m ≥ k
     intro h
     exact padicValNat.le_of_dvd (by norm_num) hm h
@@ -77,32 +77,28 @@ theorem C_chain_start_class (k : ℕ) :
 -- ============================================================
 
 /-- Unter den ungeraden Zahlen in {1, 3, ..., 2N-1} gibt es genau ⌊N/2^k⌋
-    viele mit padicValNat 2 (n+1) ≥ k. -/
+    viele mit padicValNat 2 (n+1) ≥ k+1 (d.h. 2^(k+1) ∣ (n+1)).
+
+    KORREKTUR gegenüber dem ursprünglichen Entwurf: Die Filterbedingung muss
+    ≥ k+1 (nicht ≥ k) lauten, damit die Formel N/2^k stimmt.
+    Beweis: n ungerade mit 2^(k+1)∣(n+1) ↔ n+1 = 2^(k+1)·m, m ∈ {1,...,⌊N/2^k⌋}
+    (da n+1 ≤ 2N ↔ m ≤ 2N/2^(k+1) = N/2^k). Das sind genau ⌊N/2^k⌋ Elemente. -/
 theorem density_C_chains_finite (N k : ℕ) :
-    (Finset.filter (fun n => padicValNat 2 (n + 1) ≥ k)
+    (Finset.filter (fun n => padicValNat 2 (n + 1) ≥ k + 1)
       (Finset.filter Odd (Finset.range (2 * N + 1)))).card
     = N / 2 ^ k := by
-  -- Beweis-Idee:
-  -- Die Bedingung ν₂(n+1) ≥ k ist äquivalent zu 2^k ∣ (n+1).
-  -- Ungerade n mit 2^k ∣ (n+1) in {0,...,2N}:
-  --   n+1 ∈ {2^k, 2·2^k, ..., ⌊2N/2^k⌋·2^k} ∩ {gerade durch 2^k teilbar}
-  -- Das sind genau ⌊N/2^k⌋ Elemente.
+  -- Bijektion: n ↦ m = (n+1)/2^(k+1), m ∈ Finset.range (N/2^k + 1) \ {0}
+  -- Die Bedingung 2^(k+1) ∣ (n+1) mit n+1 ≤ 2N liefert m ∈ {1,...,⌊N/2^k⌋}.
   sorry
-  -- Für k=0: Alle ungeraden n tragen bei: N Stück in {1,...,2N-1}. ✓
-  -- Für k=1: n+1 ≡ 0 (mod 2), also n ungerade — alle N Stück. Moment,
-  --   nein: k=1 bedeutet 2^1=2 ∣ (n+1), also n+1 gerade, also n ungerade.
-  --   Das sind alle ungeraden n: N/2^1 = N/2. Passt für gerades N.
-  -- Für k≥2: geometrisch ausgedünnte Progression. Formel N/2^k.
 
 -- Korollar: Relative Dichte der C-Ketten-Starts fällt exponentiell
 theorem density_C_chains_bound (k : ℕ) :
     ∀ N : ℕ, 0 < N →
-    (Finset.filter (fun n => padicValNat 2 (n + 1) ≥ k)
+    (Finset.filter (fun n => padicValNat 2 (n + 1) ≥ k + 1)
       (Finset.filter Odd (Finset.range (2 * N + 1)))).card
     ≤ N / 2 ^ k + 1 := by
   intro N _
   rw [density_C_chains_finite]
-  -- N / 2^k ≤ N / 2^k + 1 trivialerweise
   exact Nat.le_add_right _ _
 
 -- ============================================================
@@ -114,12 +110,12 @@ theorem density_C_chains_bound (k : ℕ) :
 
 private theorem geom_series_deriv (x : ℝ) (hx : |x| < 1) :
     ∑' j : ℕ, (j : ℝ) * x ^ j = x / (1 - x) ^ 2 := by
-  have hx' : ‖x‖ < 1 := by rwa [Real.norm_eq_abs]
-  have hsummable := summable_pow_mul_geometric_of_norm_lt_one 1 hx'
-  rw [show (fun n : ℕ => (n : ℝ) ^ 1 * x ^ n) = (fun n => (n : ℝ) * x ^ n) by
-    simp [pow_one]] at hsummable
-  -- Die Formel folgt aus der Ableitung der geometrischen Reihe
-  sorry
+  -- hasSum_pow_mul_geometric_of_abs_lt_one 1 hx liefert für n=1:
+  --   HasSum (fun i => (i:ℝ)^1 * x^i) (x / (1-x)^2)
+  -- Nach simp [pow_one]: HasSum (fun i => (i:ℝ) * x^i) (x/(1-x)^2)
+  have h := hasSum_pow_mul_geometric_of_abs_lt_one 1 hx
+  simp only [pow_one] at h
+  exact h.tsum_eq
 
 /-- Das Korollar: Σ_{k≥K} (k+1) · 2^{-(k+1)} = (K+2) · 2^{-K}. -/
 theorem tail_series_formula (K : ℕ) :
@@ -140,15 +136,31 @@ theorem tail_series_formula (K : ℕ) :
     ring
   simp_rw [h]
   rw [tsum_add]
-  · -- Erster Teil: (K+1) · (1/2)^(K+1) · Σ_k (1/2)^k = (K+1) · (1/2)^(K+1) · 2
+  · -- Ziel nach rw [tsum_add]:
+    --   (Σ_k (K+1)·(1/2)^(K+1)·(1/2)^k) + (Σ_k k·(1/2)^(K+1)·(1/2)^k)
+    --   = (K+2)·(1/2)^K
     rw [tsum_mul_left, tsum_geometric_two]
-    -- Zweiter Teil: (1/2)^(K+1) · Σ_k k · (1/2)^k = (1/2)^(K+1) · 2
-    --   denn Σ_k k · (1/2)^k = (1/2)/(1-1/2)^2 = 2
-    sorry
-  · -- Summierbarkeit des ersten Summanden
+    -- Jetzt: (K+1)·(1/2)^(K+1)·2 + Σ_k k·(1/2)^(K+1)·(1/2)^k = (K+2)·(1/2)^K
+    -- Berechne Σ_k k·(1/2)^(K+1)·(1/2)^k = (1/2)^(K+1) · Σ_k k·(1/2)^k
+    have h_deriv : ∑' k : ℕ, (k : ℝ) * (1 / 2 : ℝ) ^ k = 2 := by
+      have hgd := geom_series_deriv (1 / 2 : ℝ) (by norm_num)
+      -- hgd : Σ k·(1/2)^k = (1/2)/(1-1/2)^2 = (1/2)/(1/4) = 2
+      have : (1 / 2 : ℝ) / (1 - 1 / 2) ^ 2 = 2 := by norm_num
+      linarith
+    have h_second : ∑' k : ℕ, (k : ℝ) * (1 / 2 : ℝ) ^ (K + 1) * (1 / 2) ^ k =
+        (1 / 2 : ℝ) ^ (K + 1) * 2 := by
+      simp_rw [show ∀ k : ℕ, (k : ℝ) * (1 / 2 : ℝ) ^ (K + 1) * (1 / 2) ^ k =
+                  (1 / 2 : ℝ) ^ (K + 1) * ((k : ℝ) * (1 / 2) ^ k) from
+                  fun k => by ring]
+      rw [tsum_mul_left, h_deriv]
+    rw [h_second]
+    -- Ziel: (K+1)·(1/2)^(K+1)·2 + (1/2)^(K+1)·2 = (K+2)·(1/2)^K
+    push_cast
+    ring
+  · -- Summierbarkeit des ersten Summanden: (K+1)·(1/2)^(K+1)·(1/2)^k
     apply Summable.const_smul
     exact summable_geometric_two
-  · -- Summierbarkeit des zweiten Summanden
+  · -- Summierbarkeit des zweiten Summanden: k·(1/2)^(K+1)·(1/2)^k
     apply Summable.congr (summable_pow_mul_geometric_of_norm_lt_one 1 (by norm_num : ‖(1:ℝ)/2‖ < 1))
     intro k
     simp [pow_one]
@@ -203,19 +215,18 @@ theorem exception_probability_tendsto_zero (p : ℝ) (hp0 : 0 < p) (hp1 : p < 1)
 
   §1 (padicVal_ge_iff_dvd):
     ✓ Bikonditional padicValNat 2 m ≥ k ↔ 2^k ∣ m
+      - Vorwärtsrichtung: (Nat.pow_dvd_pow 2 h).trans pow_padicValNat_dvd
       - Rückwärtsrichtung: padicValNat.le_of_dvd (Mathlib)
-      - Vorwärtsrichtung: pow_padicValNat_dvd + Nat.pow_dvd_pow
-      - Noch sorry für genaue Verkettung der Mathlib-Lemmata
 
   §3 (density_C_chains_finite):
-    ✗ sorry — benötigt detailliertes Finset-Zählargument über
-      arithmetische Progressionen mod 2^k
+    ✗ sorry — Filterbedingung auf ≥ k+1 korrigiert (Formel N/2^k korrekt für
+      C-Ketten-Starts mit ν₂(n+1) ≥ k+1). Noch offen: formales Finset-Zählargument.
+
+  §4 (geom_series_deriv):
+    ✓ Geschlossen via hasSum_pow_mul_geometric_of_abs_lt_one 1
 
   §4 (tail_series_formula):
-    ⊕ Struktur klar, Hauptidentität sorry — benötigt:
-      - tsum_geometric_two ✓ (aus Mathlib)
-      - Σ k·(1/2)^k = 2 (aus Ableitung der geometrischen Reihe)
-      - tsum_add und Summierbarkeit
+    ✓ Geschlossen: geom_series_deriv + tsum_geometric_two + tsum_mul_left + ring
 
   §5 (collatz_norm_identity):
     ✓ Vollständig bewiesen via `ring`
