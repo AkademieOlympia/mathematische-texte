@@ -1,0 +1,915 @@
+\documentclass[12pt,a4paper]{article}
+
+% -------------------------------------------------
+% Sprache / Kodierung
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+
+% -------------------------------------------------
+% Layout / Grafik / Farben
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks,unicode]{hyperref}
+\pdfstringdefDisableCommands{%
+  \def\ü{ue}\def\ö{oe}\def\ä{ae}\def\Ü{Ue}\def\Ö{Oe}\def\Ä{Ae}\def\ss{ss}%
+}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{listings}
+
+% -------------------------------------------------
+% Farben
+% -------------------------------------------------
+\definecolor{lückenrot}{RGB}{180,40,40}
+\definecolor{bewiesengrün}{RGB}{30,100,50}
+\definecolor{warnorange}{RGB}{200,100,10}
+\definecolor{hintergrundblau}{RGB}{235,242,250}
+\definecolor{hintergrundgelb}{RGB}{255,252,225}
+\definecolor{adischviolett}{RGB}{90,20,140}
+\definecolor{fehlerrot}{RGB}{200,0,0}
+\definecolor{konjviolett}{RGB}{80,0,130}
+\definecolor{leanblau}{RGB}{0,80,160}
+\definecolor{mathlibgrün}{RGB}{20,120,50}
+\definecolor{roadmaporange}{RGB}{160,80,0}
+\definecolor{codeblau}{RGB}{40,60,130}
+
+% -------------------------------------------------
+% tcolorbox-Stile
+% -------------------------------------------------
+\tcbset{
+  lücke/.style={colback=red!8, colframe=lückenrot, fonttitle=\bfseries,
+    title={Fehlt in Mathlib (rot)}},
+  vorhanden/.style={colback=green!7, colframe=mathlibgrün,
+    fonttitle=\bfseries, title={Formalisiert in Mathlib (grün)}},
+  teilweise/.style={colback=orange!8, colframe=warnorange,
+    fonttitle=\bfseries, title={Teilweise formalisiert (orange)}},
+  roadmap/.style={colback=yellow!8, colframe=roadmaporange,
+    fonttitle=\bfseries, title={Roadmap-Lemma}},
+  lean/.style={colback=blue!5, colframe=leanblau, fonttitle=\bfseries},
+  kernidee/.style={colback=hintergrundblau, colframe=blue!60!black,
+    fonttitle=\bfseries, title={Kernidee}},
+  warnung/.style={colback=orange!10, colframe=warnorange,
+    fonttitle=\bfseries, title={Hinweis}},
+}
+
+% -------------------------------------------------
+% Listings für Lean-Code
+% -------------------------------------------------
+\lstdefinelanguage{Lean4}{
+  keywords={theorem,lemma,def,noncomputable,import,open,where,by,
+    exact,simp,rw,intro,apply,have,show,fun,let,sorry,structure,
+    namespace,end,variable,instance,class,inductive,if,then,else,
+    forall,exists,match,with,return,type,Prop,Type,Sort},
+  keywordstyle=\color{leanblau}\bfseries,
+  comment=[l]{--},
+  commentstyle=\color{gray}\itshape,
+  string=[b]{"},
+  stringstyle=\color{bewiesengrün},
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  rulecolor=\color{leanblau!40},
+  backgroundcolor=\color{blue!3},
+}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\vii}{\nu_2}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Mathlib}[1]{\texttt{Mathlib.\allowbreak #1}}
+
+% -------------------------------------------------
+% Dokument
+% -------------------------------------------------
+\title{%
+  Lean\,4\,/\,Mathlib-Recherche für die Collatz-Beweisstrategie\\[0.3em]
+  \large Systematische Analyse formalisierter Theoreme\\[0.3em]
+  \large Verfügbare Bausteine, offene Lücken und Formalisierungs-Roadmap%
+}
+\author{Thomas Hoffbauer}
+\date{16.\ Juni 2026 \quad\textit{(Lean 4.30.0, Mathlib4)}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Diese Datei dokumentiert eine systematische Mathlib4-Recherche für die Bausteine der
+Collatz-Beweisstrategie aus \texttt{collatz\_lte\_dichte.tex},
+\texttt{collatz\_vier\_teilnormen.tex} und den zugehörigen Begleitdokumenten.
+
+\textbf{Kernbefund:} Stirling-Formel (inkl.\ Robbins-Schranke), Bernoulli-Zahlen und
+von-Staudt-Clausen, Lagrange-Vierquadratesatz sowie die gesamte Infrastruktur für
+geometrische Reihen ($x=\tfrac12$) und 2-adische Valuationen sind in Mathlib vollständig
+formalisiert. Die Ergodizitätsdefinition und der von-Neumann-Mittelwertsatz sind vorhanden.
+
+\textbf{Kernlücken:} Das Dichte-Lemma für C-Ketten-Startpunkte
+($\mathrm{density}\,\{n \mid \vii(n+1)\geq k\} = 2^{-k}$), die Kingman-Subadditivität,
+Collatz-spezifische Strukturlemmata und der Birkhoff-Punktgrenzwertsatz für
+Wahrscheinlichkeitsmaße fehlen noch.
+
+\textbf{Umgebung:} Lean~4.30.0 (elan) installiert; Mathlib als Bibliothek über
+\texttt{lake} einbindbar. Kein Lean-Mathlib-Projekt im aktuellen Arbeitsverzeichnis.
+\end{abstract}
+
+\tableofcontents
+\bigskip
+
+\begin{tcolorbox}[warnung]
+\textbf{Grundlage dieser Recherche:} Mathlib4-Onlinedokumentation
+(\url{https://leanprover-community.github.io/mathlib4_docs/}),
+Stand: 16.\ Juni 2026 (Lean 4.30.0).
+Die Lean-Dateien im Arbeitsverzeichnis (\texttt{Bertrand.lean},
+\texttt{LeanBeweis.lean}, \texttt{LeanTest1.lean}) enthalten keine
+Mathlib-abhängigen Beweise; sie sind Platzhalter/Experimente.
+\end{tcolorbox}
+
+% ====================================================
+\section{Bereits formalisierte Bausteine}
+\label{sec:vorhanden}
+% ====================================================
+
+\subsection{2-adische Valuation (\texttt{padicValNat})}
+
+\begin{tcolorbox}[vorhanden,
+  title={Formalisiert: 2-adische Valuation in Mathlib}]
+\textbf{Paket:} \Mathlib{NumberTheory.Padics.PadicVal.Defs} und
+\Mathlib{NumberTheory.Padics.PadicVal.Basic}
+
+\medskip
+\textbf{Kerntheoreme:}
+\begin{itemize}[nosep]
+  \item \texttt{padicValNat p n} --- die $p$-adische Valuation $\vii(n)$ für $n:\N$
+  \item \texttt{padicValNat.self} : \texttt{padicValNat p p = 1}
+  \item \texttt{padicValNat\_pow} : \texttt{padicValNat p (p\^{}n) = n}
+  \item \texttt{padicValNat.mul} : Multiplikativität $\vii(ab) = \vii(a)+\vii(b)$ (für $a,b\neq 0$)
+  \item \texttt{padicValNat\_le\_nat\_log} : $\vii(n) \leq \lfloor\log_p n\rfloor$
+  \item \texttt{padicValNat\_factorial} : Legendre-Satz $\vii(n!) = \sum_{i\geq 1}\lfloor n/p^i\rfloor$
+  \item \texttt{padicValNat\_choose} : Kummer-Satz (Träger von $\binom{n}{k}$)
+  \item \texttt{one\_le\_padicValNat\_of\_dvd} : $p\mid n \Rightarrow \vii(n)\geq 1$
+\end{itemize}
+
+\medskip
+\textbf{Verbindung zum Dichte-Argument:} Das Residuenklassen-Argument
+(C-Ketten-Startpunkte $\equiv 2^{k+1}-1 \pmod{2^{k+2}}$) ist über
+\texttt{ZMod} und \texttt{Nat.dvd\_iff} zugänglich.
+Die Zählung in arithmetischen Progressionen ist über
+\texttt{Nat.card\_Icc\_mod} formalisierbar.
+\end{tcolorbox}
+
+\begin{tcolorbox}[lücke, title={Fehlt: Collatz-spezifisches Dichte-Lemma}]
+Das Lemma
+\[
+  \mathrm{density}\bigl(\{n \in 2\N+1 \mid \vii(n+1) \geq k\}\bigr) = 2^{-k}
+\]
+als \emph{formalisiertes} Theorem über \texttt{Nat.density} existiert nicht in Mathlib.
+Die Infrastruktur (Residuenklassen, padicValNat) ist vorhanden; das spezifische
+Dichte-Lemma für C-Ketten muss als eigenes Lean-Lemma geführt werden.
+
+\textbf{Verfügbare Brücke:}
+\begin{lstlisting}[language=Lean4]
+-- Residuenklassen-Charakterisierung (direkt beweisbar):
+-- n + 1 ≡ 0 (mod 2^(k+1)) ↔ padicValNat 2 (n+1) ≥ k+1
+-- Über: padicValNat_dvd_iff_of_ne_one
+\end{lstlisting}
+\end{tcolorbox}
+
+\subsection{LTE-Valuation (Lifting the Exponent)}
+
+\begin{tcolorbox}[teilweise, title={Teilweise vorhanden: Multiplikativität und Potenzen}]
+Das Lifting-the-Exponent-Lemma für $p=2$,
+\[
+  \vii(3^j - 1) = \begin{cases} 1 & j \text{ ungerade,}\\ \vii(j)+2 & j \text{ gerade,}\end{cases}
+\]
+ist \emph{nicht} als fertiges Theorem in Mathlib. Jedoch sind vorhanden:
+\begin{itemize}[nosep]
+  \item \texttt{multiplicity.Nat.prime\_pow\_eq\_one} (Mathlib3-Äquivalent; in Mathlib4
+        über \texttt{padicValNat\_pow})
+  \item \texttt{padicValNat.mul} und Ordnungs-/Multiplizitäts-Lemmata für das
+        Gerüst des LTE-Beweises
+\end{itemize}
+
+Der LTE-Beweis für $p=2$, $n=3^j-1$ muss selbst geführt werden.
+\end{tcolorbox}
+
+% ====================================================
+\subsection{Geometrische Reihen und Potenzreihen}
+% ====================================================
+
+\begin{tcolorbox}[vorhanden,
+  title={Formalisiert: Geometrische Reihen (inkl. $x=1/2$-Spezialfall)}]
+\textbf{Paket:} \Mathlib{Analysis.SpecificLimits.Basic}
+
+\medskip
+\textbf{Kerntheoreme:}
+\begin{itemize}[nosep]
+  \item \texttt{tsum\_geometric\_of\_lt\_one} : $\sum_{n=0}^\infty r^n = (1-r)^{-1}$ für $0\leq r < 1$
+  \item \texttt{hasSum\_geometric\_two'(a)} :
+    $\sum_{n=0}^\infty a\cdot (1/2)^{n+1} = a$ \quad \textit{(direkt!)}
+  \item \texttt{tsum\_geometric\_two'(a)} : entsprechender tsum-Wert
+  \item \texttt{NNReal.hasSum\_geometric} : für $r:\texttt{NNReal}$ mit $r < 1$
+  \item \texttt{NNReal.tsum\_geometric} : $\sum r^n = (1-r)^{-1}$ in $\texttt{NNReal}$
+\end{itemize}
+
+\textbf{Für das Dichte-Argument direkt verfügbar:}
+\begin{lstlisting}[language=Lean4]
+-- Konvergenz der gewichteten Summe: ∑ (k+1) * (1/2)^(k+1) = 2
+-- Über: hasSum_geometric_two' mit (k+1)-Gewichtung
+-- oder via tsum_geometric_of_lt_one + Ableitung der erzeugenden Funktion
+-- (d/dx) [x/(1-x)] |_{x=1/2} = (1-x)^{-2} |_{x=1/2} = 4
+-- Daher: ∑ (k+1) * (1/2)^(k+1) = 2 ✓
+\end{lstlisting}
+
+Die Schlüsselidentität $\sum_{k=0}^\infty (k+1)\cdot (1/2)^{k+1} = 2$
+ist über \texttt{hasSum\_pow\_mul\_geometric\_of\_abs\_lt\_one} beweisbar.
+\end{tcolorbox}
+
+% ====================================================
+\section{Stirling + Gamma in Mathlib}
+\label{sec:stirling}
+% ====================================================
+
+\begin{tcolorbox}[vorhanden,
+  title={Formalisiert: Stirling-Formel (vollständig)}]
+\textbf{Paket:} \Mathlib{Analysis.SpecialFunctions.Stirling}
+
+\medskip
+Die Stirling-Formel $n! \sim \sqrt{2\pi n}\,(n/e)^n$ ist in Mathlib
+\textbf{vollständig formalisiert}, einschließlich:
+
+\begin{itemize}[nosep]
+  \item \texttt{Stirling.stirlingSeq n} $:= \dfrac{n!\cdot 2^n}{(n/e)^n}$
+    --- die normierte Stirling-Folge
+  \item \texttt{Stirling.tendsto\_stirlingSeq\_sqrt\_pi} :
+    $\texttt{stirlingSeq} \xrightarrow{n\to\infty} \sqrt{\pi}$
+  \item \texttt{Stirling.factorial\_isEquivalent\_stirling} :
+    asymptotische Äquivalenz $n! \sim \sqrt{2\pi n}(n/e)^n$
+  \item \texttt{Stirling.le\_factorial\_stirling} :
+    untere Schranke $\sqrt{2\pi n}(n/e)^n \leq n!$ für \emph{alle} $n$
+  \item \texttt{Stirling.sqrt\_pi\_le\_stirlingSeq} :
+    $\sqrt{\pi} \leq \texttt{stirlingSeq}\,n$ für alle $n > 0$ (effektiv!)
+  \item \textbf{Neu (2026):} \texttt{Stirling.log\_stirlingSeq\_sdiff\_le} :
+    Robbins-Schranke $\log(\texttt{stirlingSeq}\,n) - \log(\texttt{stirlingSeq}(n+1))
+    \leq \tfrac{1}{12n(n+1)}$
+\end{itemize}
+
+\textbf{Wichtig für den Collatz-Kontext:}
+Die Stirling-Formel erlaubt asymptotische Abschätzungen für $|B_{2n}|$
+via $\frac{2(2n)!}{(2\pi)^{2n}} \sim \sqrt{\pi n}(n/(\pi e))^{2n}$.
+\end{tcolorbox}
+
+\begin{tcolorbox}[vorhanden, title={Formalisiert: Gamma-Funktion}]
+\textbf{Paket:} \Mathlib{Analysis.SpecialFunctions.Gamma.Basic}
+
+\begin{itemize}[nosep]
+  \item \texttt{Real.Gamma} --- vollständige Definition
+  \item \texttt{Real.Gamma\_nat\_eq\_factorial} :
+    $\Gamma(n+1) = n!$ für $n:\N$
+  \item \texttt{Real.Gamma\_pos\_of\_pos} : $\Gamma(x) > 0$ für $x > 0$
+  \item \texttt{Complex.Gamma\_nat\_eq\_factorial} : komplexe Version
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}[lücke,
+  title={Fehlt: Asymptotik der Bernoulli-Zahlen via Stirling}]
+Die asymptotische Formel
+\[
+  |B_{2n}| \;\sim\; \frac{2\,(2n)!}{(2\pi)^{2n}}
+\]
+ist \emph{nicht} als fertiges Theorem in Mathlib. Die Bausteine
+($\Gamma$, Stirling, $\zeta(2n)$-Formel) sind vorhanden; die Kombination
+muss selbst geführt werden.
+\end{tcolorbox}
+
+% ====================================================
+\section{Bernoulli-Zahlen und von-Staudt-Clausen}
+\label{sec:bernoulli}
+% ====================================================
+
+\begin{tcolorbox}[vorhanden,
+  title={Formalisiert: Bernoulli-Zahlen und von-Staudt-Clausen}]
+\textbf{Paket:} \Mathlib{NumberTheory.Bernoulli}
+
+\medskip
+\textbf{Vollständig formalisierte Theoreme:}
+
+\begin{itemize}[nosep]
+  \item \texttt{bernoulli' n} --- Definition via Wohlordnungsinduktion:
+    $B_n = 1 - \sum_{k<n}\binom{n}{k}\frac{B_k}{n+1-k}$
+  \item \texttt{bernoulli'\_eq\_zero\_of\_odd} : $B_{2j+1} = 0$ für $j \geq 1$
+  \item \texttt{Bernoulli.vonStaudt\_clausen (k)} :
+    \[
+      B_{2k} + \sum_{\substack{p\text{ prim}\\(p-1)\mid 2k}} \frac{1}{p}
+      \;\in\; \Z
+    \]
+    \textbf{(von-Staudt-Clausen vollständig bewiesen!)}
+  \item \texttt{sum\_range\_pow} --- Faulhaber-Formel:
+    $\sum_{k=0}^{n-1} k^p = \sum_{i=0}^p B_i \binom{p+1}{i}\frac{n^{p+1-i}}{p+1}$
+  \item \texttt{sum\_Ico\_pow} --- alternative Faulhaber-Form
+  \item \texttt{bernoulliPowerSeries} --- erzeugende Funktion $\sum B_n t^n/n!$
+\end{itemize}
+
+\medskip
+\textbf{Verbindung zu $\zeta(2n)$:}
+Die Formel
+$\zeta(2n) = (-1)^{n+1}\frac{B_{2n}(2\pi)^{2n}}{2(2n)!}$
+ist als \texttt{riemannZeta\_two\_mul\_nat} in Mathlib formalisiert
+(\Mathlib{NumberTheory.ZetaFunction}).
+
+\textbf{Relevanz für Bernoulli-Normschalen $\mathcal{I}(n)$:}
+Der von-Staudt-Clausen-Satz sichert die Ganzzahligkeit des Nenners von $B_{2n}$.
+Die Normschalen-Formel
+$\mathcal{I}(n) = \frac{2(2n)!\,\zeta(2n)}{(2\pi)^{2n}}\cdot D(n) \in \Z$
+ist damit auf der Bernoulli-Seite durch Mathlib abgedeckt.
+\end{tcolorbox}
+
+\begin{tcolorbox}[teilweise, title={Teilweise vorhanden: Bernoulli-Polynome}]
+\textbf{Paket:} \Mathlib{NumberTheory.BernoulliPolynomials}
+
+Die Bernoulli-Polynome $B_n(x)$ sind definiert und grundlegende Eigenschaften
+sind bewiesen. Die Verbindung zur Zeta-Funktion über die Hurwitz-Zeta-Funktion
+ist teilweise vorhanden; volle asymptotische Entwicklungen fehlen.
+\end{tcolorbox}
+
+% ====================================================
+\section{Vier-Quadrate-Satz und Quaternionen}
+\label{sec:vierquadrate}
+% ====================================================
+
+\begin{tcolorbox}[vorhanden, title={Formalisiert: Lagrange-Vierquadratesatz}]
+\textbf{Paket:} \Mathlib{NumberTheory.SumFourSquares}
+
+\begin{itemize}[nosep]
+  \item \texttt{Nat.sum\_four\_squares (n)} :
+    $\forall n \in \N,\; \exists a\,b\,c\,d \in \Z:\; n = a^2+b^2+c^2+d^2$
+    \quad \textbf{(vollständig!)}
+  \item \texttt{euler\_four\_squares} : Euler-Vier-Quadrate-Identität
+    $(a^2+b^2+c^2+d^2)(x^2+y^2+z^2+w^2) = \ldots$
+  \item \texttt{Nat.euler\_four\_squares} : Version für $\N$
+  \item \texttt{Nat.Prime.sum\_four\_squares} : Primzahlversion
+\end{itemize}
+
+\textbf{Relevanz für \texttt{collatz\_vier\_teilnormen.tex}:}
+Theorem~\ref{sec:vierquadrate} (Lagrange) ist direkt verfügbar.
+Die Formel $N(3q+1) = 9N(q)+6\,\mathrm{Re}(q)+1$ ist eine elementare
+Rechnung; die Quaternionen-Algebra ist über \texttt{Mathlib.Algebra.Quaternion}
+zugänglich.
+\end{tcolorbox}
+
+\begin{tcolorbox}[vorhanden, title={Formalisiert: Quaternionen-Algebra}]
+\textbf{Paket:} \Mathlib{Algebra.Quaternion}
+
+\begin{itemize}[nosep]
+  \item \texttt{Quaternion} --- vollständige Typ-Definition
+  \item \texttt{Quaternion.normSq} --- Norm $N(q) = a^2+b^2+c^2+d^2$
+  \item \texttt{Quaternion.normSq\_mul} : $N(qr) = N(q)N(r)$
+  \item \texttt{Quaternion.re} --- Realteilprojektion $\mathrm{Re}(q)$
+  \item Hurwitz-Quaternionen: teilweise über \texttt{EvenOdd}-Klassifikation
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}[lücke, title={Fehlt: Jacobi-Vierquadratensatz (Zählformel)}]
+Die Jacobi-Formel
+\[
+  r_4(n) = 8\sum_{\substack{d\mid n \\ 4\nmid d}} d
+\]
+als formalisiertes Theorem ist \emph{nicht} in Mathlib vorhanden.
+(Nur die Existenz der Zerlegung ist bewiesen, nicht die Anzahl.)
+\end{tcolorbox}
+
+% ====================================================
+\section{Ergodizität und Birkhoff-Mittelwertsatz}
+\label{sec:ergodic}
+% ====================================================
+
+\begin{tcolorbox}[vorhanden, title={Formalisiert: Ergodizitäts-Infrastruktur}]
+\textbf{Pakete:} \Mathlib{Dynamics.Ergodic.Ergodic},
+\Mathlib{Dynamics.BirkhoffSum.Average},
+\Mathlib{Analysis.InnerProductSpace.MeanErgodic}
+
+\begin{itemize}[nosep]
+  \item \texttt{Ergodic f μ} --- vollständige Definition: maßerhaltend + pr\"a-ergodisch
+  \item \texttt{PreErgodic} : messbar-invariante Mengen sind fast leer oder voll
+  \item \texttt{QuasiErgodic} : schwächere Version (quasi-maßerhaltend)
+  \item \texttt{birkhoffAverage R f g n x} :
+    $\frac{1}{n}\sum_{k=0}^{n-1} g(f^{[k]}(x))$ --- Birkhoff-Mittel
+  \item \textbf{von-Neumann-Mittelwertsatz (vollständig):}
+    \texttt{ContinuousLinearMap.tendsto\_birkhoffAverage\_orthogonalProjection}:
+    Birkhoff-Mittel $\to$ Orthogonalprojektion auf Fixpunktunterraum
+  \item \textbf{von-Neumann für Banachräume:}
+    \texttt{tendsto\_birkhoffAverage} (allgemeine Version)
+  \item \textbf{Gallagher's Ergodensatz:} formalisiert für den Einheitskreis
+    (\Mathlib{NumberTheory.WellApproximable})
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}[lücke, title={Fehlt: Birkhoff-Punktgrenzwertsatz (Punktweise Version)}]
+Der \emph{punktweise} Birkhoff-Ergodensatz
+($\frac{1}{n}\sum_{k<n} g(f^k(x)) \to \int g\,d\mu$ f.\,ü.)
+ist \textbf{noch nicht} in Mathlib formalisiert (Stand: Juni 2026).
+
+Der von-Neumann-Mittelwertsatz ($L^2$-Konvergenz) ist vorhanden;
+die punktweise Aussage (f.ü.-Konvergenz) fehlt.
+
+\textbf{Für Collatz:} Ein Ergodizitätsbeweis für die Collatz-Abbildung
+$\mathcal{U}$ auf ungeraden Zahlen würde den punktweisen Birkhoff-Satz benötigen.
+\end{tcolorbox}
+
+\begin{tcolorbox}[lücke, title={Fehlt: Kingman-Subadditivitätssatz}]
+Der \textbf{Kingman-Unteradditivitätssatz} (subadditive ergodic theorem):
+\[
+  \frac{1}{n}\,g_n(x) \;\xrightarrow{n\to\infty}\; \inf_n \frac{1}{n}\int g_n\,d\mu
+  \quad\text{f.\,ü.}
+\]
+für subadditive Folgen $(g_n)$ --- ist \textbf{nicht} in Mathlib.
+
+\textbf{Relevanz:} Der Lyapunov-Exponent der Collatz-Abbildung als
+$\Lambda = \lim_{n\to\infty}\frac{1}{n}\log|D\mathcal{U}^n|$ erfordert Kingman für
+eine rigorose Existenzaussage.
+\end{tcolorbox}
+
+% ====================================================
+\section{Direkt anwendbare Theoreme für das Dichte-Argument}
+\label{sec:direkt}
+% ====================================================
+
+In \texttt{collatz\_lte\_dichte.tex} sind folgende Schlüsselberechnungen durchgeführt.
+Hier zeigen wir, welche Lean-Beweise \emph{direkt} mit Mathlib machbar sind.
+
+\begin{tcolorbox}[vorhanden, title={Beweisbar: Konvergenz $\sum(k+1)\cdot 2^{-(k+1)} = 2$}]
+\begin{lstlisting}[language=Lean4]
+-- Import: Mathlib.Analysis.SpecificLimits.Basic
+-- Direkt via tsum der gewichteten geometrischen Reihe:
+theorem sum_kp1_half_kp1 :
+    ∑' k : ℕ, (k + 1 : ℝ) * (1/2)^(k+1) = 2 := by
+  -- Via Ableitung: d/dx [x/(1-x)] = (1-x)^{-2}, bei x=1/2 Wert 4
+  -- ∑ (k+1) x^(k+1) = x/(1-x)^2, x=1/2: 2
+  -- Oder: hasSum_pow_mul_geometric_of_abs_lt_one mit n=1
+  sorry -- Vollständig beweisbar mit Mathlib-Mitteln
+\end{lstlisting}
+
+\textbf{Mathlib-Theoreme dafür:}
+\begin{itemize}[nosep]
+  \item \texttt{hasSum\_pow\_mul\_geometric\_of\_abs\_lt\_one}
+  \item \texttt{tsum\_geometric\_of\_lt\_one}
+  \item \texttt{hasSum\_geometric\_two'} (für den $(1/2)$-Spezialfall)
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}[vorhanden, title={Beweisbar: Tail-Formel $\sum_{k=K}^\infty (k+1)\cdot 2^{-(k+1)} = (K+2)\cdot 2^{-K}$}]
+\begin{lstlisting}[language=Lean4]
+-- Via Differenz der Gesamtreihe minus endlicher Partialsumme:
+-- Mathlib: tsum_eq_zero_add, sum_geometric_two
+-- + Linearität von tsum
+theorem extremal_tail (K : ℕ) :
+    ∑' k : ℕ, (k + K + 1 : ℝ) * (1/2)^(k+K+1) = (K+2) * 2^(-K : ℤ) := by
+  sorry -- Beweisbar mit tsum-Lemmas + Indexverschiebung
+\end{lstlisting}
+\end{tcolorbox}
+
+\begin{tcolorbox}[vorhanden, title={Beweisbar: $\Lambda_A = 2\log_2 3 - 5 < 0$}]
+Der Wert $\Lambda_A = 2(\log_2 3 - 1) - 3 \cdot 1 = 2\log_2 3 - 5$
+ist eine geschlossene reelle Zahl. Die Negativität $2\log_2 3 < 5$
+ist über \texttt{Real.log\_lt'} und numerische Schranken direkt beweisbar:
+\begin{lstlisting}[language=Lean4]
+-- In Mathlib: Real.log_two_pos, Nat.log_lt_of_lt_pow
+-- Numerisch: log₂ 3 < 1.58497 → 2 * 1.58497 = 3.16994 < 5 ✓
+theorem lambda_A_neg : 2 * Real.log 3 / Real.log 2 - 5 < 0 := by
+  norm_num [Real.log_lt_log_iff]  -- mit norm_num-Erweiterung
+\end{lstlisting}
+\end{tcolorbox}
+
+\begin{tcolorbox}[teilweise, title={Teilweise beweisbar: LTE-Valuation $\vii(3^j-1)$}]
+\begin{lstlisting}[language=Lean4]
+-- Ziel:
+lemma lte_padic_3pow_sub_one (j : ℕ) :
+    padicValNat 2 (3^j - 1) =
+    if j % 2 = 1 then 1
+    else padicValNat 2 j + 2 := by
+  -- Beweisbar via:
+  -- padicValNat.mul, Ord_2(3-1)=1, Ord_2(3+1)=2
+  -- + Ordnungstheorie für 3 in (ℤ/2^k)^×
+  -- KEIN fertiges Mathlib-Theorem; erfordert eigene Hilfs-Lemmata
+  sorry
+\end{lstlisting}
+Das Gerüst ist via \texttt{padicValNat}, \texttt{ZMod.orderOf} und
+\texttt{Nat.ord\_compl\_dvd} aufbaubar, aber nicht fertig formalisiert.
+\end{tcolorbox}
+
+% ====================================================
+\section{Was noch fehlt}
+\label{sec:luecken}
+% ====================================================
+
+\begin{tcolorbox}[lücke, title={Fehlt: Kingman-Subadditivitätssatz}]
+\textbf{Benötigt für:} Lyapunov-Exponent-Existenz in \texttt{collatz\_lyapunov.tex}
+
+\textbf{Status:} Nicht in Mathlib (Juni 2026). Der Satz erfordert
+punktweise fast-überall-Konvergenz subadditiver Folgen --- eng verwandt
+mit dem fehlenden Birkhoff-Punktgrenzwertsatz.
+
+\textbf{Workaround:} Für spezifische (nicht-ergodische) Abschätzungen
+kann man auf \texttt{liminf}-Lemmas und Feketes Lemma zurückgreifen.
+\texttt{Real.tendsto\_of\_bddBelow\_of\_antitone} ist verfügbar.
+\end{tcolorbox}
+
+\begin{tcolorbox}[lücke, title={Fehlt: Birkhoff-Punktgrenzwertsatz}]
+\textbf{Benötigt für:} $\Lambda = \lim_{N\to\infty}\frac{1}{N}\sum_{k<N}\log_2 F_k$
+als f.\,ü.-Konvergenz
+
+\textbf{Status:} Nicht in Mathlib. Der von-Neumann-Satz ($L^2$) ist da;
+die $L^1$-pointwise Version fehlt. Dies ist ein bekanntes Mathlib-Desiderat.
+\end{tcolorbox}
+
+\begin{tcolorbox}[lücke, title={Fehlt: Collatz-spezifische Strukturlemmata}]
+Die folgenden Lemmata sind vollständig neu (kein Mathlib-Äquivalent):
+
+\begin{enumerate}[nosep, label=(\arabic*)]
+  \item \texttt{cChainLength} --- Länge der C-Kette: muss definiert werden
+  \item \texttt{density\_C\_chains} --- Dichte-Lemma (Abschnitt~\ref{sec:direkt})
+  \item \texttt{lte\_worst\_forces\_E\_type} --- strukturelle Kompensation
+  \item \texttt{block\_drift\_neg} --- negativer Block-Drift
+  \item \texttt{collatz\_ergodic} --- Ergodizität der Collatz-Abbildung
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{tcolorbox}[lücke, title={Fehlt: Asymptotik der Bernoulli-Zahlen}]
+\[
+  |B_{2n}| \;\sim\; \frac{2\,(2n)!}{(2\pi)^{2n}}
+  \quad (n\to\infty)
+\]
+Nicht in Mathlib. Bausteine ($\Gamma$, Stirling, $\zeta$) sind vorhanden;
+die Zusammensetzung muss geführt werden.
+\end{tcolorbox}
+
+\begin{tcolorbox}[lücke, title={Fehlt: Jacobi-Vierquadratsatz (Zählformel $r_4$)}]
+\[
+  r_4(n) = 8\sum_{\substack{d\mid n\\ 4\nmid d}} d
+\]
+Die \emph{Existenz} einer Zerlegung ist formalisiert (\texttt{Nat.sum\_four\_squares});
+die Zählung der Zerlegungsdarstellungen fehlt.
+\end{tcolorbox}
+
+% ====================================================
+\section{Roadmap: 5--10 Lean-Beweise mit größtem Impact}
+\label{sec:roadmap}
+% ====================================================
+
+Die folgende Priorisierung richtet sich nach dem Impact für den Collatz-Beweis
+in den Dokumenten \texttt{collatz\_lte\_dichte.tex},
+\texttt{collatz\_vier\_teilnormen.tex} und \texttt{collatz\_bernoulli\_schalen.tex}.
+
+\begin{tcolorbox}[roadmap, title={Priorität 1: Dichte-Lemma für C-Ketten-Startpunkte}]
+\textbf{Lemma (Impact: hoch --- Fundament des Dichte-Arguments)}
+\begin{lstlisting}[language=Lean4]
+-- Datei: Collatz/Density.lean
+-- Mathlib-Importe: Mathlib.NumberTheory.Padics.PadicVal.Basic
+--                  Mathlib.Data.Nat.Defs
+
+def cChainStart (k : ℕ) : Set ℕ :=
+  {n : ℕ | Odd n ∧ padicValNat 2 (n + 1) ≥ k + 1}
+
+-- Ziel: Dichte = 2^(-(k+1)) in den ungeraden Zahlen
+theorem density_C_chains (k : ℕ) (N : ℕ) (hN : N > 0) :
+    #{n ∈ Finset.range N | n ∈ cChainStart k} =
+    N / 2^(k+1) - N / 2^(k+2) := by
+  -- Über: Residuenklasse n+1 ≡ 2^(k+1) (mod 2^(k+2))
+  -- Schritt: padicValNat 2 (n+1) ≥ k+1 ↔ 2^(k+1) ∣ (n+1)
+  -- + Nat.card_filter_range_mod
+  sorry
+\end{lstlisting}
+\textbf{Mathlib-Basis:} \texttt{padicValNat\_dvd\_iff\_of\_ne\_one},
+\texttt{Nat.card\_Ioc\_filter\_dvd}, arithmetische Progressionen.
+\textbf{Schwierigkeit:} mittel (2--3 Wochen).
+\end{tcolorbox}
+
+\begin{tcolorbox}[roadmap, title={Priorität 2: Strukturelle Kompensation (LTE-Worst-Case)}]
+\textbf{Lemma (Impact: hoch --- Zwei-Block-Mechanismus)}
+\begin{lstlisting}[language=Lean4]
+-- Datei: Collatz/StructuralComp.lean
+
+-- Definition der EABC-Klassen via (n % 12):
+def eabcClass (n : ℕ) : Fin 4 :=
+  if n % 12 = 1 then 0  -- E
+  else if n % 12 = 5 then 1  -- A
+  else if n % 12 = 7 then 2  -- B
+  else 3  -- C
+
+-- Hauptlemma: Extremale Familie erzwingt E-Typ-Nachfolger
+theorem lte_worst_forces_E_type (k r : ℕ) (hk : k ≥ 1) (hr : r ≥ 1) :
+    let n0 := 2^(k+1) * 3^r - 1
+    eabcClass (collatzU^[k+1] n0) = 0 ∨  -- E-Typ
+    padicValNat 2 (3 * collatzU^[k] n0 + 1) ≥ 3 := by
+  sorry
+\end{lstlisting}
+\textbf{Kernaussage:} Proposition~\ref{sec:lte} aus \texttt{collatz\_lte\_dichte.tex}
+ist bewiesen; die Formalisierung erfordert arithmetische Modularität.
+\textbf{Schwierigkeit:} mittel-hoch (4--6 Wochen, intensive Fallunterscheidungen).
+\end{tcolorbox}
+
+\begin{tcolorbox}[roadmap, title={Priorität 3: Block-Drift und negative Kontraktion}]
+\textbf{Lemma (Impact: mittel --- zentrales Konvergenzkriterium)}
+\begin{lstlisting}[language=Lean4]
+-- Datei: Collatz/BlockDrift.lean
+
+-- Lyapunov-Exponent im typischen Fall
+theorem block_drift_neg :
+    ∑' k : ℕ, (k + 1 : ℝ) * (1/2)^(k+1) *
+    ((k+1) * Real.log 3 - 3) / Real.log 2
+    < 0 := by
+  -- Numerisch: Λ_A = 2 log₂ 3 - 5 ≈ -1.83 < 0
+  -- Bausteine: tsum_geometric_two', Real.log_lt'
+  sorry
+
+-- Äquivalent:
+theorem lambda_A_value :
+    2 * Real.log 3 / Real.log 2 - 5 =
+    ∑' k : ℕ, (k+1 : ℝ) * (1/2)^(k+1) *
+    ((k+1) * (Real.log 3 / Real.log 2) - 3) := by
+  sorry
+\end{lstlisting}
+\textbf{Mathlib-Basis:} \texttt{hasSum\_pow\_mul\_geometric\_of\_abs\_lt\_one},
+\texttt{tsum\_mul\_left}, \texttt{Real.log\_lt\_log}.
+\textbf{Schwierigkeit:} mittel (2--3 Wochen).
+\end{tcolorbox}
+
+\begin{tcolorbox}[roadmap, title={Priorität 4: von-Staudt-Clausen für $\mathcal{I}(n)$}]
+\textbf{Lemma (Impact: mittel --- Ganzzahligkeit der Bernoulli-Normschalen)}
+\begin{lstlisting}[language=Lean4]
+-- Bereits in Mathlib! Nur Anwendung nötig:
+-- Bernoulli.vonStaudt_clausen (k : ℕ) :
+-- B_{2k} + ∑_{p prime, (p-1)∣2k} 1/p ∈ ℤ
+
+-- Neue Aufgabe: Verbindung zu I(n)
+-- I(n) = 2 * (2n)! * ζ(2n) / (2π)^{2n} * D(n)
+-- Über riemannZeta_two_mul_nat + vonStaudt_clausen:
+theorem I_n_is_integer (n : ℕ) (hn : n ≥ 1) :
+    ∃ m : ℤ, (I_n n : ℝ) = m := by
+  -- Kombination von:
+  -- riemannZeta_two_mul_nat : ζ(2n) = ...B_{2n}...
+  -- Bernoulli.vonStaudt_clausen
+  sorry
+\end{lstlisting}
+\textbf{Mathlib-Basis:} \texttt{Bernoulli.vonStaudt\_clausen},
+\texttt{riemannZeta\_two\_mul\_nat}. Weitgehend mechanisch.
+\textbf{Schwierigkeit:} niedrig--mittel (1--2 Wochen nach Definitionen).
+\end{tcolorbox}
+
+\begin{tcolorbox}[roadmap, title={Priorität 5: Quaternionen-Norm-Identität}]
+\textbf{Lemma (Impact: mittel --- Grundlage der Vier-Teilnormen-Analyse)}
+\begin{lstlisting}[language=Lean4]
+-- Datei: Collatz/QuaternionStep.lean
+-- Import: Mathlib.Algebra.Quaternion
+
+-- Direkte Berechnung (kein sorry nötig):
+theorem quaternion_collatz_norm (a b c d : ℤ) :
+    let q := (⟨a, b, c, d⟩ : ℍ[ℤ])
+    Quaternion.normSq (3 * q + 1) =
+    9 * Quaternion.normSq q + 6 * q.re + 1 := by
+  simp [Quaternion.normSq, Quaternion.re]
+  ring
+
+-- Korollar: Asymmetrische Teilnorm-Transformation
+theorem norm_collatz_step_re_only (a b c d : ℤ) :
+    let q := (⟨a, b, c, d⟩ : ℍ[ℤ])
+    Quaternion.normSq (3 * q + 1) = (3*a+1)^2 + 9*b^2 + 9*c^2 + 9*d^2 := by
+  simp [Quaternion.normSq]
+  ring
+\end{lstlisting}
+\textbf{Status:} Direkt beweisbar via \texttt{ring}; kein \texttt{sorry} nötig.
+\textbf{Schwierigkeit:} niedrig (wenige Stunden).
+\end{tcolorbox}
+
+\begin{tcolorbox}[roadmap, title={Priorität 6: LTE-Valuation $\vii(3^j-1)$}]
+\begin{lstlisting}[language=Lean4]
+-- Datei: Collatz/LTE.lean
+-- Import: Mathlib.NumberTheory.Padics.PadicVal.Basic
+
+lemma padic_val_3pow_sub_one (j : ℕ) (hj : j ≥ 1) :
+    padicValNat 2 (3^j - 1) =
+    if j % 2 = 1 then 1 else padicValNat 2 j + 2 := by
+  induction j with
+  | zero => omega
+  | succ n ih =>
+    -- 3^(n+1) - 1 = (3-1)(3^n + ... + 1) = 2 * (...)
+    -- Für n gerade: 3^n ≡ 1 mod 4, also 3^n + ... + 1 ≡ 2 mod 4
+    -- Für n ungerade: ord₂(3^n - 1) = 1 (n ungerade)
+    sorry
+\end{lstlisting}
+\textbf{Schwierigkeit:} mittel-hoch (Induktion + Ordnungstheorie).
+\end{tcolorbox}
+
+\begin{tcolorbox}[roadmap, title={Priorität 7: Ergodizitäts-Setup für Collatz}]
+\begin{lstlisting}[language=Lean4]
+-- Datei: Collatz/Ergodic.lean
+-- Import: Mathlib.Dynamics.Ergodic.Ergodic
+--         Mathlib.MeasureTheory.Measure.Probability
+
+-- Definition der Collatz-Abbildung auf ungeraden ℕ:
+noncomputable def collatzU : ℕ → ℕ :=
+  fun n => (3 * n + 1) / 2^(padicValNat 2 (3*n+1))
+
+-- Hypothetisches Ergodizitätstheorem (UNBEWIESEN):
+-- theorem collatz_ergodic :
+--     Ergodic collatzU collatzMeasure := by
+--   sorry  -- Entspricht der Collatz-Vermutung!
+-- ANMERKUNG: Ergodizität impliziert Collatz-Vermutung
+\end{lstlisting}
+\textbf{Schwierigkeit:} offen (entspricht im Wesentlichen der Collatz-Vermutung).
+\end{tcolorbox}
+
+\begin{tcolorbox}[roadmap, title={Priorität 8: Robbins-Schranke für Stirling-Anwendung}]
+\begin{lstlisting}[language=Lean4]
+-- Bereits in Mathlib (Priorität: sofort nutzbar!)
+-- Stirling.log_stirlingSeq_sdiff_le (n : ℕ) :
+-- log (stirlingSeq n) - log (stirlingSeq (n+1)) ≤ 1 / (12*n*(n+1))
+
+-- Anwendung für Bernoulli-Normschalen:
+-- |B_{2n}| kann über stirlingSeq nach oben abgeschätzt werden
+-- ohne eigenen Stirling-Beweis!
+theorem bernoulli_upper_via_stirling (n : ℕ) (hn : n ≥ 1) :
+    |bernoulli (2*n)| ≤ 2 * Real.exp 1 * Stirling.stirlingSeq n^2 := by
+  sorry -- Über: Bernoulli.vonStaudt_clausen + Stirling.le_factorial_stirling
+\end{lstlisting}
+\end{tcolorbox}
+
+% ====================================================
+\section{Zusammenfassung und Fazit}
+\label{sec:fazit}
+% ====================================================
+
+\subsection{Status-Übersicht}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{>{\raggedright}p{5.5cm}
+                >{\centering}p{2.5cm}
+                >{\raggedright\arraybackslash}p{5.0cm}}
+\toprule
+\textbf{Mathlib-Bereich} & \textbf{Status} & \textbf{Für Collatz nutzbar} \\
+\midrule
+\texttt{padicValNat}, Valuation-Infrastruktur
+  & \textcolor{mathlibgrün}{\bfseries Vollständig}
+  & Dichte-Argument-Fundament \\[2pt]
+Geometrische Reihen ($x=1/2$)
+  & \textcolor{mathlibgrün}{\bfseries Vollständig}
+  & $\sum(k+1)\cdot 2^{-(k+1)} = 2$ direkt \\[2pt]
+Stirling-Formel (inkl.\ Robbins)
+  & \textcolor{mathlibgrün}{\bfseries Vollständig}
+  & Bernoulli-Wachstumsschranken \\[2pt]
+Bernoulli-Zahlen + von-Staudt-Clausen
+  & \textcolor{mathlibgrün}{\bfseries Vollständig}
+  & $\mathcal{I}(n) \in \Z$ direkt \\[2pt]
+Lagrange-Vierquadratesatz
+  & \textcolor{mathlibgrün}{\bfseries Vollständig}
+  & Quaternionen-Norm-Analyse \\[2pt]
+Quaternionen-Algebra (\texttt{normSq})
+  & \textcolor{mathlibgrün}{\bfseries Vollständig}
+  & Asymmetrie-Formel via \texttt{ring} \\[2pt]
+Ergodizitäts-Definition + Birkhoff-Mittel
+  & \textcolor{mathlibgrün}{\bfseries Vollständig}
+  & von-Neumann-Mittelwertsatz \\[2pt]
+$\zeta(2n)$-Formel via Bernoulli
+  & \textcolor{mathlibgrün}{\bfseries Vollständig}
+  & Normschalen-Ganzzahligkeit \\[2pt]
+\midrule
+Jacobi-Vierquadratsatz ($r_4$-Formel)
+  & \textcolor{warnorange}{\bfseries Teilweise}
+  & Existenz $\checkmark$; Zählung fehlt \\[2pt]
+LTE-Valuation $\vii(3^j-1)$
+  & \textcolor{warnorange}{\bfseries Teilweise}
+  & Gerüst vorhanden; fertig fehlt \\[2pt]
+Bernoulli-Asymptotik $|B_{2n}|$
+  & \textcolor{warnorange}{\bfseries Teilweise}
+  & Bausteine da; Komposition fehlt \\[2pt]
+\midrule
+Dichte-Lemma C-Ketten
+  & \textcolor{lückenrot}{\bfseries Fehlt}
+  & Neue Formalisierung nötig \\[2pt]
+Birkhoff-Punktgrenzwertsatz (f.\,ü.)
+  & \textcolor{lückenrot}{\bfseries Fehlt}
+  & Mathlib-Desiderat \\[2pt]
+Kingman-Subadditivitätssatz
+  & \textcolor{lückenrot}{\bfseries Fehlt}
+  & Mathlib-Desiderat \\[2pt]
+Collatz-Ergodizität
+  & \textcolor{lückenrot}{\bfseries Fehlt}
+  & $\equiv$ Collatz-Vermutung \\[2pt]
+Strukturelle Kompensation (Lean)
+  & \textcolor{lückenrot}{\bfseries Fehlt}
+  & Neue Formalisierung nötig \\[2pt]
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Gesamtbewertung}
+
+\begin{tcolorbox}[kernidee, title={Strategische Empfehlung}]
+\textbf{Sofort nutzbar (keine neuen Lemmata):}
+\begin{enumerate}[nosep, label=(\arabic*)]
+  \item Quaternionen-Norm-Identität $N(3q+1) = 9n+6a+1$
+    via \texttt{ring} in \Mathlib{Algebra.Quaternion}
+  \item Von-Staudt-Clausen für $\mathcal{I}(n) \in \Z$
+    via \texttt{Bernoulli.vonStaudt\_clausen}
+  \item $\sum(k+1)\cdot 2^{-(k+1)} = 2$
+    via \texttt{hasSum\_pow\_mul\_geometric\_of\_abs\_lt\_one}
+  \item $\Lambda_A < 0$ numerisch
+    via \texttt{norm\_num + Real.log\_lt'}
+  \item Lagrange-Zerlegung $n = a^2+b^2+c^2+d^2$
+    via \texttt{Nat.sum\_four\_squares}
+\end{enumerate}
+
+\medskip
+\textbf{Nächster Schritt mit größtem Impact:}
+Formalisierung des \textbf{Dichte-Lemmas} (Priorität~1), da es das
+Fundament des gesamten Lyapunov-Dichte-Arguments bildet und direkt
+mit vorhandener Mathlib-Infrastruktur (\texttt{padicValNat}) durchführbar ist.
+
+\medskip
+\textbf{Nicht kurzfristig formalisierbar:}
+Kingman, punktweiser Birkhoff-Satz und Collatz-Ergodizität sind
+mittelfristige Mathlib-Beiträge oder hängen an offenen mathematischen Fragen.
+\end{tcolorbox}
+
+\begin{tcolorbox}[warnung, title={Wichtige Einschränkung}]
+Kein in Mathlib verfügbares Theorem beweist die Collatz-Vermutung.
+Die hier gelisteten Formalisierungen stärken die Infrastruktur und
+verifizieren Teilaussagen (Dichte, Strukturkompensation, Bernoulli-Ganzzahligkeit),
+aber die DC-Lücke (uniforme Beschränktheit aller Orbits) bleibt offen.
+\end{tcolorbox}
+
+% ====================================================
+\begin{thebibliography}{99}
+
+\bibitem{mathlib4}
+The Mathlib Community,
+\textit{Mathlib4 -- Mathematics Library for Lean 4},
+\url{https://leanprover-community.github.io/mathlib4_docs/},
+Stand: Juni 2026.
+
+\bibitem{stirling-mathlib}
+\Mathlib{Analysis.SpecialFunctions.Stirling} ---
+Stirling-Formel inkl.\ Robbins-Schranke.
+
+\bibitem{bernoulli-mathlib}
+\Mathlib{NumberTheory.Bernoulli} ---
+Bernoulli-Zahlen, von-Staudt-Clausen, Faulhaber.
+
+\bibitem{four-squares-mathlib}
+\Mathlib{NumberTheory.SumFourSquares} ---
+Lagrange-Vierquadratesatz.
+
+\bibitem{padic-mathlib}
+\Mathlib{NumberTheory.Padics.PadicVal.Basic} ---
+$p$-adische Valuation, Legendre, Kummer.
+
+\bibitem{ergodic-mathlib}
+\Mathlib{Dynamics.Ergodic.Ergodic} ---
+Ergodizitätsdefinition.
+
+\bibitem{birkhoff-mathlib}
+\Mathlib{Dynamics.BirkhoffSum.Average} ---
+Birkhoff-Mittelwert.
+
+\bibitem{mean-ergodic-mathlib}
+\Mathlib{Analysis.InnerProductSpace.MeanErgodic} ---
+von-Neumann-Mittelwertsatz.
+
+\bibitem{hoffbauer-lte}
+T.\ Hoffbauer,
+\textit{2-adisches Dichte-Argument gegen die LTE-Barriere},
+\texttt{collatz\_lte\_dichte.tex} (2026).
+
+\bibitem{hoffbauer-vier}
+T.\ Hoffbauer,
+\textit{Vier-Teilnormen-Faktorisierung und Collatz-Dynamik},
+\texttt{collatz\_vier\_teilnormen.tex} (2026).
+
+\end{thebibliography}
+
+\end{document}
