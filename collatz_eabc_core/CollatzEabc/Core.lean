@@ -8,6 +8,7 @@
 -/
 
 import CollatzEabc.Density
+import CollatzEabc.Mod12Matrix
 import CollatzEabc.Uniformity
 import CollatzEabc.Z2Attraktor
 import CollatzEabc.Open
