@@ -10,7 +10,8 @@
     Stufe B — Monotonie in N und K
     Stufe C — Limes E = closure(⋃_N E_{N,N})
     Stufe D — U-Invarianz `collatzU_maps_exception_approx`
-    Stufe E — Uniformität dist₂(T^k(n),E) → 0 (offen)
+    Stufe E — Uniformität dist₂(T^k(n),E_diag) → 0 (offen);
+              Collatz ⇔ E_∞ = ∅ (≠ E_diag ∩ ℕ; vgl. collatz_equivalenz_e_infty.tex)
 -/
 
 import Mathlib.NumberTheory.Padics.PadicIntegers
@@ -428,8 +429,11 @@ theorem collatzU_maps_exception_approx (N K : ℕ) (n : ℕ) (h : Odd n) (_hn : 
   simp [hn_eq]
 
 /-!
-Stufe E (offen): Punktweise Uniformität und dokumentierte Beweisversuche.
-Siehe auch `collatz_uniformity_e.lean` (Spiegel der Strategien 1–5).
+Stufe E (offen): Punktweise Uniformität zu `ExceptionSet` (= E_diag in ℤ₂)
+und dokumentierte Beweisversuche. Collatz selbst ist äquivalent zu
+`E_∞ = ∅` mit `E_∞ = { n | Odd n ∧ ∀ K, iterateU n K ≠ 1 }` — nicht zu
+`E_diag ∩ ℕ = ∅` (Gegenbeispiel n = 27). Siehe `collatz_equivalenz_e_infty.tex`
+und `CollatzEabc.Open` (`ExceptionSetInfinity`).
 -/
 
 /-- Punktweise Uniformität / Austritt aus endlicher Ausnahme-Approximation (TeX Vermutung). -/

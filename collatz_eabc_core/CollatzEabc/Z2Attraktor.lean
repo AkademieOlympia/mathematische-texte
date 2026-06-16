@@ -340,9 +340,11 @@ def ExceptionSetUnion (N : ℕ) : Set Z2 :=
   ⋃ k ∈ Set.Icc 0 N, ExceptionSetApprox N k
 
 /--
-Ausnahmemenge `E ⊂ ℤ₂`: 2-adische Hülle der schlechten endlichen Präfixe.
+Ausnahmemenge `E_diag ⊂ ℤ₂`: 2-adische Hülle der schlechten endlichen Präfixe
+(Beobachtungsschatten, TeX `E_{\mathrm{diag}}`). **Nicht** Collatz-äquivalent;
+die echte Ausnahmemenge ist `ExceptionSetInfinity` in `CollatzEabc.Open` (E_∞).
 
-Äquivalent: `x ∈ E` genau dann, wenn zu jedem `ε > 0` ein `N` und
+Äquivalent: `x ∈ E_diag` genau dann, wenn zu jedem `ε > 0` ein `N` und
 `e ∈ E_{N,N}` mit `dist₂(x,e) < ε` existiert.
 -/
 noncomputable def ExceptionSet : Set Z2 :=

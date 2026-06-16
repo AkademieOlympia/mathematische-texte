@@ -16,9 +16,11 @@ Konvergenz.
   erreicht nach endlich vielen Schritten den Zyklus $(1,2,4)$.
 - **Odd-to-odd-Form:** Für jedes ungerade $n\in\mathbb{N}$ existiert $K<\infty$ mit
   $U^{K}(n)=1$ (Abbildung $U$ aus `collatz_z2_attraktor.lean`).
-- **2-adische Lesart:** $E\cap\mathbb{N}=\emptyset$, wobei
-  $E=\overline{\bigcup_N E_{N,N}}$ die abgeschlossene Ausnahmemenge ist
-  (`ExceptionSet` in Lean).
+- **Echte Ausnahmemenge:** $E_\infty=\{n\in\mathbb{N}_{\mathrm{odd}}:\forall K,\;U^K(n)\neq 1\}$;
+  Collatz $\Leftrightarrow$ $E_\infty=\emptyset$ (`ExceptionSetInfinity` in `CollatzEabc.Open`).
+- **Nicht äquivalent:** $E_{\mathrm{diag}}\cap\mathbb{N}=\emptyset$ mit
+  $E_{\mathrm{diag}}=\overline{\bigcup_N E_{N,N}}$ (`ExceptionSet` / `ExceptionSetDiag` in Lean) —
+  Gegenbeispiel $n=27$ vor Erreichen von $1$; siehe `collatz_equivalenz_e_infty.tex`.
 - **Status:** Offen. Tao (2019) beweist nur logarithmische Dichte $1$ für
   „fast bounded“-Bahnen — **nicht** punktweise Konvergenz.
 - **Zyklen $>1$:** Bekannte Ausschlüsse modulo $2^k$ für endliches $k$; „für alle $k$“
@@ -47,8 +49,11 @@ Konvergenz.
 
 - **Definition (Lean):** `ExceptionSet = closure (⋃_N ExceptionSetApprox N N)` —
   2-adische Hülle der Starts $n\leq N$, deren Bahn $U^k(n)\neq 1$ für alle $k\leq N$.
+- **Abgrenzung:** Collatz $\Leftrightarrow$ $E_\infty=\emptyset$ (präzise); $E_{\mathrm{diag}}$ ist
+  nur der 2-adische Beobachtungsschatten — nicht dieselbe Aussage.
 - **Offene Fragen (TeX §8 F1–F5):**
-  - Ist $E\cap\mathbb{N}=\emptyset$ äquivalent zu Collatz oder strikt schwächer?
+  - Ist punktweise Uniformität $\mathrm{dist}_2(U^k(n),E_{\mathrm{diag}})\to 0$ äquivalent zu Collatz
+    oder strikt schwächer?
   - Stimmt der Limes $E$ mit der kleinsten abgeschlossenen $U$-invarianten Hülle von
     $A_{\mathrm{triv}}$ überein?
   - Ist $E$ wirklich der „richtige“ Attraktor, oder nur ein endlich approximierter Limes
