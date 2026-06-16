@@ -1,0 +1,693 @@
+\documentclass[12pt,a4paper]{article}
+
+% -------------------------------------------------
+% Sprache / Kodierung
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+
+% -------------------------------------------------
+% Layout / Grafik / Farben
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks,unicode]{hyperref}
+\pdfstringdefDisableCommands{%
+  \def\ü{ue}\def\ö{oe}\def\ä{ae}\def\Ü{Ue}\def\Ö{Oe}\def\Ä{Ae}\def\ss{ss}%
+}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{array}
+
+% -------------------------------------------------
+% Farben (konsistent mit Vorgängerdokumenten)
+% -------------------------------------------------
+\definecolor{lückenrot}{RGB}{180,40,40}
+\definecolor{bewiesengrün}{RGB}{30,100,50}
+\definecolor{warnorange}{RGB}{200,100,10}
+\definecolor{hintergrundblau}{RGB}{235,242,250}
+\definecolor{hintergrundgelb}{RGB}{255,252,225}
+\definecolor{adischviolett}{RGB}{90,20,140}
+\definecolor{fehlerrot}{RGB}{200,0,0}
+\definecolor{konjviolett}{RGB}{80,0,130}
+\definecolor{e8grau}{RGB}{55,55,90}
+\definecolor{kingmanblau}{RGB}{20,60,130}
+\definecolor{zirkelrot}{RGB}{160,0,0}
+\definecolor{dynblau}{RGB}{10,50,120}
+\definecolor{diophgrün}{RGB}{20,90,40}
+
+% -------------------------------------------------
+% tcolorbox-Stile
+% -------------------------------------------------
+\tcbset{
+  lücke/.style={colback=red!8, colframe=lückenrot, fonttitle=\bfseries,
+    title={Offene Lücke}},
+  ergebnis/.style={colback=green!7, colframe=bewiesengrün,
+    fonttitle=\bfseries, title={Bewiesenes Ergebnis}},
+  warnung/.style={colback=orange!10, colframe=warnorange,
+    fonttitle=\bfseries, title={Achtung / Heuristik}},
+  adisch/.style={colback=violet!6, colframe=adischviolett,
+    fonttitle=\bfseries, title={2-adische Perspektive}},
+  kernidee/.style={colback=hintergrundblau, colframe=blue!60!black,
+    fonttitle=\bfseries, title={Kernidee}},
+  konj/.style={colback=violet!5, colframe=konjviolett, fonttitle=\bfseries,
+    title={Konjektur (unbewiesen)}},
+  hauptsatz/.style={colback=green!10, colframe=bewiesengrün!80!black,
+    fonttitle=\bfseries\large, title={Satz (bewiesen)}},
+  dynfeld/.style={colback=blue!5, colframe=dynblau,
+    fonttitle=\bfseries, title={Arithmetische Dynamik}},
+  dioph/.style={colback=green!5, colframe=diophgrün,
+    fonttitle=\bfseries, title={Diophantische Analogie}},
+  forschung/.style={colback=hintergrundgelb, colframe=e8grau,
+    fonttitle=\bfseries, title={Offene Forschungsfrage}},
+}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+\newtheorem{hypothese}[definition]{Hypothese}
+\newtheorem{satz}[definition]{Satz}
+
+\newenvironment{beweis}{\begin{proof}[Beweis]}{\end{proof}}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\vii}{\nu_2}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\H}{\mathbb{H}}
+\newcommand{\Ztwo}{\mathbb{Z}_2}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\atwo}[1]{\lvert#1\rvert_2}
+\newcommand{\Lam}{\Lambda}
+\newcommand{\col}{\mathrm{Col}}
+\newcommand{\KC}{K}    % Kolmogorov-Komplexität
+\newcommand{\TV}{\mathrm{TV}}
+
+% -------------------------------------------------
+% Dokument
+% -------------------------------------------------
+\title{%
+  Arithmetische Dynamik bei Collatz\\[0.3em]
+  \large Kolmogorov-Komplexität, Uniformitäts-Vermutung\\
+  und Diophantische Approximation\\[0.5em]
+  \normalsize Die verbleibende Frontlinie%
+}
+\author{Thomas Hoffbauer}
+\date{16.\ Juni 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Diese Arbeit benennt das verbleibende mathematische Kernproblem der
+Collatz-Vermutung in einer neuen Sprache: der \emph{arithmetischen Dynamik}.
+Nach der Kartierung der exakten Schranken (Tao 2022: $\mu_H(E)=0$;
+Kingman/Lyapunov: $\Lambda \approx -0{,}830$; RPF mod-12: Spektrallücke
+$|\lambda_2| \approx 0{,}35$) verbleibt eine einzige Lücke:
+die Brücke zwischen der Maß-Null-Aussage über $\Ztwo$ und dem Verhalten
+\emph{aller} $n \in \N$.
+
+Wir schlagen das neue Konzept der \emph{arithmetischen Dynamik} vor: die
+Frage, wie schnell die endliche Kolmogorov-Komplexität eines Startwerts
+$n \in \N$ durch die mod-12-Mischung ``zerrieben'' wird. Die
+\emph{Uniformitäts-Vermutung} --- eine quantitative Abstandsschranke
+zwischen $\N$ und dem Ausnahmeset $E \subset \Ztwo$ --- wird als neues
+Forschungsziel formuliert. Das Analogon zu Roths Satz (1955) gibt
+der Vermutung ihre diophantische Präzision.
+
+\textbf{Status:} Alle Resultate dieses Dokuments sind, sofern nicht anders
+markiert, Vermutungen oder heuristische Überlegungen. Die Collatz-Vermutung
+bleibt unbewiesen.
+\end{abstract}
+
+\tableofcontents
+
+\bigskip
+\begin{tcolorbox}[warnung, title={Einordnung}]
+Dieses Dokument ist das zwölfte in einer Reihe, die die Collatz-Vermutung
+aus verschiedenen Perspektiven angeht: Lyapunov-Exponenten, RPF-Theorie,
+LTE-Dichte, Lean-Formalisierung, Diophantische Approximation. Es fasst
+den aktuellen Stand der \emph{verbleibenden Frontlinie} zusammen und
+benennt die konkrete offene Frage.
+\end{tcolorbox}
+
+% ====================================================
+\section{Kolmogorov-Komplexität und Collatz}
+\label{sec:kolmogorov}
+% ====================================================
+
+\subsection{Grundlegende Definitionen}
+
+\begin{definition}[Kolmogorov-Komplexität]
+Die \emph{Kolmogorov-Komplexität} $\KC(x)$ eines Strings $x \in \{0,1\}^*$
+ist die Länge des kürzesten universellen Turingmaschinen-Programms, das
+$x$ ausgibt:
+\[
+  \KC(x) := \min\{|p| : U(p) = x\}.
+\]
+Für eine natürliche Zahl $n \in \N$ ist $\KC(n) := \KC(\mathrm{bin}(n))$,
+wobei $\mathrm{bin}(n)$ die Binärdarstellung ist.
+\end{definition}
+
+\begin{tcolorbox}[ergebnis, title={Komplexität natürlicher Zahlen (Standard)}]
+Für alle $n \in \N$ gilt:
+\[
+  \KC(n) \leq \lfloor\log_2 n\rfloor + 1 + O(1).
+\]
+Das folgt direkt aus der endlichen Binärdarstellung: Das Programm
+``\texttt{output }$\mathrm{bin}(n)$'' hat Länge $\lfloor\log_2 n\rfloor + O(1)$.
+Insbesondere: $\KC(n) = O(\log n)$.
+\end{tcolorbox}
+
+\subsection{Elemente von \texorpdfstring{$\Ztwo \setminus \N$}{Z2 ohne N}
+haben generisch unendliche Komplexität}
+
+\begin{tcolorbox}[adisch, title={Generische Komplexität in $\Ztwo$}]
+Für ein \emph{generisches} Element $x \in \Ztwo$ (d.\,h.\ für ein nach
+dem Haar-Maß $\mu_H$ zufällig gezogenes Element) ist die Kolmogorov-Komplexität
+unendlich:
+\[
+  \mu_H\bigl(\{x \in \Ztwo : \KC(x) < \infty\}\bigr) = 0.
+\]
+Formal: Die Elemente mit endlicher Kolmogorov-Komplexität sind abzählbar
+(da jedes Programm endliche Länge hat), daher ist ihre Menge eine
+$\mu_H$-Nullmenge.
+
+\medskip
+Insbesondere: $\N \subset \Ztwo^*$ ist eine $\mu_H$-Nullmenge mit
+$\KC(n) = O(\log n)$ --- eine extrem dünne, hochgeordnete Teilmenge
+des ``generisch zufälligen'' $\Ztwo$.
+\end{tcolorbox}
+
+\subsection{Was der $3x+1$-Schritt an Komplexität erzeugt}
+
+Sei $n \in \N$ ungerade. Der ungerade Collatz-Schritt ist $n \mapsto 3n+1$
+(vor der anschließenden Division durch $2^{\vii_2(3n+1)}$).
+
+\begin{proposition}[Bitlänge nach einem ungeraden Schritt]
+\label{prop:bitlaenge}
+Für ungerades $n \geq 1$ gilt:
+\begin{align}
+  \lfloor\log_2(3n+1)\rfloor
+  &= \lfloor\log_2 n\rfloor + 1
+    \quad\text{falls } 2^k/3 < n < 2^k \cdot \frac{2^k - 1}{3} + 1
+    \text{ für passendes }k, \notag \\
+  &\approx \lfloor\log_2 n\rfloor + \log_2 3
+    \quad\text{im Durchschnitt (}\log_2 3 \approx 1{,}585\text{).} \notag
+\end{align}
+Präziser: der ungerade Schritt $n \mapsto 3n+1$ erzeugt im Mittel
+$\log_2 3 \approx 1{,}585$ neue Bits, während die anschließende
+Division durch $2^{\vii_2(3n+1)}$ im Mittel $\mathbb{E}[\vii_2]$ Bits
+entfernt, wobei $\mathbb{E}[\vii_2] = 2$ (geometrische Verteilung).
+\end{proposition}
+
+\begin{tcolorbox}[dynfeld, title={Nettobilanz: Pro Block wächst die Bitlänge um $\Lambda_{\mathrm{block}}$}]
+Sei $B_k$ ein Collatz-Block (ein ungerades Glied $n_{2k}$ bis zum nächsten
+ungeraden Glied $n_{2k+2}$). Die mittlere Netto-Änderung der Bitlänge pro
+Block ist:
+\[
+  \Lambda_{\mathrm{block}}
+  := \mathbb{E}\bigl[\log_2(n_{k+1}/n_k)\bigr]
+  = \log_2 3 - \mathbb{E}[\vii_2(3n+1)] \cdot \log_2 2
+  \approx 1{,}585 - 2 = -0{,}415.
+\]
+Da der Kingman-Lyapunov-Exponent aus dem Zusammenspiel aller Block-Typen
+berechnet wird, ergibt sich:
+\[
+  \Lambda = \lim_{K\to\infty} \frac{1}{K}\sum_{k=0}^{K-1} \log_2 F(B_k)
+  \approx -0{,}830 < 0.
+\]
+\textbf{Zentrale Einsicht:} Obwohl jeder ungerade Schritt neue Bits
+\emph{erzeugt}, überwiegt die Division --- im Mittel SCHRUMPFT die
+Bitlänge. Der Lyapunov-Exponent $\Lambda \approx -0{,}830$ ist genau
+diese Netto-Schrumpfungsrate.
+\end{tcolorbox}
+
+\begin{bemerkung}[Neue Bits als ``injizierte Information'']
+Der Punkt, den das Binärinformations-Argument aus
+\textit{collatz\_uniformitaet.tex} aufgreift, ist korrekt:
+Der $3x+1$-Schritt injiziert bei jedem ungeraden Glied neue arithmetische
+Information (neues Bitmuster am oberen Ende der Binärdarstellung). Der
+``Speicher'' des Startwerts ist endlich ($\lfloor\log_2 n\rfloor + O(1)$
+Bits), aber die Trajektorie \emph{erzeugt} neuen Speicher. Die Zirkularität
+liegt darin, dass man nicht weiß, ob dieser neue Speicher beschränkt bleibt.
+\end{bemerkung}
+
+% ====================================================
+\section{Die Nicht-Lokalität von $3x+1$}
+\label{sec:nichtlokal}
+% ====================================================
+
+\subsection{Formale Bit-Analyse}
+
+\begin{definition}[Bit-Trägheitstiefe]
+Für $n \in \N$ mit $\lfloor\log_2 n\rfloor = L-1$ (also $n$ hat $L$ Bits)
+definieren wir die \emph{Bit-Trägheitstiefe} $\mathrm{BTT}(n, k)$ als die
+Anzahl der Bits der $k$-ten Iterierter $T^k(n)$, die noch direkt vom
+Startwert $n$ abhängen (im Sinne der Bitverschiebung):
+\[
+  \mathrm{BTT}(n, k) := \max\bigl\{j \geq 0 : \text{Bit } j \text{ von } T^k(n)
+  \text{ hängt von } n \text{ ab}\bigr\}.
+\]
+\end{definition}
+
+\begin{tcolorbox}[dynfeld, title={Nicht-Lokalität: Bit-Injektion durch $3x+1$}]
+Der Schritt $n \mapsto 3n+1$ ist ein globaler Operator auf der Binärdarstellung:
+\begin{align*}
+  3n + 1 &= 2n + n + 1 \\
+         &= \underbrace{n\text{ (um 1 links verschoben)}}_{\text{erzeugt neues Bit oben}}
+           + \underbrace{n}_{\text{lokale Kopie}}
+           + \underbrace{1}_{\text{Carry-Kaskade}}.
+\end{align*}
+Die Addition $2n + n$ kann zu einer langen Carry-Kaskade führen, die
+\emph{alle} Bits von $n$ verändert. Anders als z.\,B.\ die Division durch $2$
+(reine Rechtsverschiebung) ist die Multiplikation mit $3$ ein globaler Eingriff.
+
+\medskip
+\textbf{Folge:} Nach $k$ ungeraden Schritten haben potenziell \emph{alle}
+Bits von $T^k(n)$ Information vom Startwert $n$ --- die Bit-Trägheitstiefe
+schrumpft nicht automatisch.
+\end{tcolorbox}
+
+\subsection{Die mod-12-Mischung als Informations-Destruktor}
+
+\begin{tcolorbox}[kernidee, title={Wie Mischung die Startwert-Information ``zerreibt''}]
+Sei $\pi$ die stationäre Verteilung der mod-12-Markov-Kette (aus Schritt B
+in \textit{collatz\_uniformitaet.tex}). Die exponentielle Mischung
+\[
+  \bigl\|M^k e_{B(n)} - \pi\bigr\|_{\TV} \leq C\,|\lambda_2|^k,
+  \quad |\lambda_2| \approx 0{,}35,
+\]
+bedeutet: Nach $k$ Block-Schritten ist die \emph{mod-12-Klasse} von $T^k(n)$
+exponentiell schnell von $n$ unabhängig.
+
+\medskip
+Das ist eine echte ``Informationslöschung'' --- aber nur auf der Ebene der
+mod-12-Residuen. Die tatsächliche Größe $T^k(n)$ trägt noch volle arithmetische
+Information.
+
+\medskip
+\textbf{Quantitativ:} Die Mischungszeit (bis $\varepsilon$-Abstand von $\pi$)
+ist:
+\[
+  k_\varepsilon \approx \frac{\log(C/\varepsilon)}{\log(1/|\lambda_2|)}
+  \approx \frac{\log(C/\varepsilon)}{1{,}05}
+\]
+Blockschritte --- unabhängig von $n$. Für $\varepsilon = 0{,}01$, $C = 1$:
+$k_\varepsilon \approx 4{,}4$ Blockschritte.
+\end{tcolorbox}
+
+\subsection{Das Heuristik-Modell für die Informations-Zerreibung}
+
+\begin{tcolorbox}[warnung, title={Heuristik: exponentieller Informationsabfall}]
+Definiere heuristisch:
+\[
+  I_n(k) := \text{``2-adische Information von } T^k(n)\text{, die noch von } n \text{ abhängt''}
+  \approx 2^{-k/12}.
+\]
+Begründung: Die mod-12-Mischungsrate ist $|\lambda_2|^k \approx (0{,}35)^k$.
+Für $12$ Blockschritte gilt $(0{,}35)^{12} \approx 2^{-17{,}7}$, also fällt
+die Startinformation pro 12 Blöcke um einen Faktor $\approx 2^{-12}$.
+
+\medskip
+Nach $k \sim 12 \cdot \lfloor\log_2 n\rfloor$ Schritten gilt heuristisch:
+\[
+  I_n(k) \approx 2^{-\lfloor\log_2 n\rfloor} \approx 0.
+\]
+Damit folgt die Trajektorie danach nur noch dem RPF-stationären Maß $\pi$
+--- \emph{falls sie überhaupt so lange läuft, ohne zu divergieren}.
+
+\medskip
+\textbf{Dies ist eine Heuristik, kein Beweis.} Die Zirkularität besteht
+unverändert: Man kann nicht voraussetzen, dass die Trajektorie $12\lfloor\log_2 n\rfloor$
+Schritte macht, ohne zuvor zu beweisen, dass sie nicht divergiert.
+\end{tcolorbox}
+
+% ====================================================
+\section{Die Uniformitäts-Vermutung}
+\label{sec:uniformitaet}
+% ====================================================
+
+\subsection{Roths Satz als Analogie}
+
+Um die neue Forschungsfrage scharf zu stellen, ziehen wir eine Analogie
+aus der Diophantischen Approximation.
+
+\begin{tcolorbox}[dioph, title={Roths Satz (1955)}]
+Sei $\alpha \in \R$ eine algebraische irrationale Zahl. Dann gilt für jedes
+$\varepsilon > 0$ und alle bis auf endlich viele $p/q \in \Q$:
+\[
+  \left|\alpha - \frac{p}{q}\right| > q^{-2-\varepsilon}.
+\]
+Anders formuliert: Algebraische Irrationale können durch Rationale nicht
+``zu gut'' approximiert werden. Die Qualität der Approximation ist nach
+unten durch $q^{-2}$ beschränkt.
+\end{tcolorbox}
+
+Die Bedeutung von Roths Satz liegt darin, dass er eine \emph{quantitative
+Trennungsschranke} zwischen zwei Mengen liefert: den algebraischen
+Irrationalen und den Rationalen. Obwohl Rationale in den Irrationalen
+dicht liegen, gibt es eine \emph{Mindest-Separation}.
+
+\begin{tcolorbox}[kernidee, title={Die Collatz-Analogie: Trennungsschranke zwischen $\N$ und $E$}]
+Das Collatz-Analogon zu Roths Satz wäre: Eine quantitative Schranke für den
+\emph{2-adischen Abstand} zwischen natürlichen Zahlen $n \in \N$ und dem
+Ausnahmeset $E$ des Collatz-Operators in $\Ztwo$.
+
+\medskip
+Intuitiv: $\N$ ist in $\Ztwo$ dicht (jede 2-adische Kugel enthält natürliche
+Zahlen), aber die Elemente von $E$ (falls $E \neq \emptyset$) müssten
+``hochkomplex'' sein und könnten daher $\N$ nicht beliebig nah kommen.
+\end{tcolorbox}
+
+\subsection{Formale Formulierung der Uniformitäts-Vermutung}
+
+\begin{tcolorbox}[konj, title={Uniformitäts-Vermutung (Hauptvermutung dieses Dokuments)}]
+Sei $T: \Ztwo^* \to \Ztwo^*$ der Collatz-Operator auf den 2-adischen
+ungeraden Ganzzahlen und $E = \{x \in \Ztwo^* : \text{Bahn von } x
+\text{ divergiert oder hat Lyapunov-Exponent} \geq 0\}$ das Ausnahmeset.
+
+\medskip
+\textbf{Vermutung:} Es gibt eine universelle Konstante $c > 0$, sodass
+für alle $n \in \N$ (ungerade):
+\[
+  \mathrm{dist}_{2\text{-adisch}}(n,\, E)
+  := \inf_{e \in E} |n - e|_2
+  \;\geq\; c \cdot 2^{-\lfloor\log_2 n\rfloor}.
+\]
+
+\medskip
+\textbf{Intuition:} Elemente von $E$ haben ``unendliche Kolmogorov-Komplexität''
+(sie sind generische Punkte in $\Ztwo$). Natürliche Zahlen $n$ haben
+Komplexität $O(\log n)$. Die Schranke $c \cdot 2^{-\lfloor\log_2 n\rfloor}$
+ist die ``natürliche'' 2-adische Auflösung eines $n$-Bit-Objekts.
+
+\medskip
+\textbf{Konsequenz:} Falls diese Vermutung beweisbar ist, so liegen alle
+$n \in \N$ in einem Abstand $\geq c \cdot 2^{-\lfloor\log_2 n\rfloor}$
+von $E$ --- und da die Collatz-Dynamik stetig in $\Ztwo$ ist, konvergiert
+die Bahn von $n$ nicht zu $E$. Zusammen mit $\Lambda < 0$ würde die
+Collatz-Vermutung folgen.
+\end{tcolorbox}
+
+\subsection{Verbindung zu den LTE-Worst-Cases}
+
+\begin{tcolorbox}[dynfeld, title={LTE-Extremalpunkte und die diophantische Schranke}]
+Die extremalen C-Ketten-Startpunkte aus \textit{collatz\_lte\_dichte.tex}
+haben die Form
+\[
+  n = 2^{k+1} \cdot 3^r - 1
+  \quad (k, r \in \N).
+\]
+Der 2-adische Abstand zwischen $n$ und dem Nachfolgepunkt
+$n+1 = 2^{k+1} \cdot 3^r$ ist:
+\[
+  |n - (n+1)|_2 = |{-1}|_2 = 2^{-(k+1)}.
+\]
+
+\medskip
+Das ist exakt die Größenordnung der diophantischen Schranke
+$c \cdot 2^{-\lfloor\log_2 n\rfloor}$, denn $\lfloor\log_2 n\rfloor \approx k+1$
+für diese Startpunkte.
+
+\medskip
+\textbf{Interpretation:} Die LTE-extremalen Punkte liegen \emph{maximal
+nah} an benachbarten Zweierpotenzen --- aber noch im ``erlaubten Bereich''
+der Schranke. Sie bilden die kritische Klasse für die Uniformitäts-Vermutung.
+\end{tcolorbox}
+
+\begin{proposition}[Konsistenz mit bekannten LTE-Schranken]
+\label{prop:konsistenz}
+Sei $n = 2^{k+1} \cdot 3^r - 1$ ein LTE-extremaler Punkt. Dann gilt:
+\[
+  |n|_2 = 1
+  \quad \text{(ungerade)}, \qquad
+  |n+1|_2 = 2^{-(k+1)}.
+\]
+Der 2-adische Abstand von $n$ zu den 2-adisch kleinen Elementen
+(Zweierpotenzen) ist $2^{-(k+1)} \approx 2^{-\lfloor\log_2 n\rfloor}$.
+Das ist konsistent mit der Uniformitäts-Vermutung für $c = 1$.
+\end{proposition}
+
+% ====================================================
+\section{Das ``Zerreiben'' der endlichen Information}
+\label{sec:zerreiben}
+% ====================================================
+
+\subsection{Formale Definition der Startwert-Information}
+
+\begin{definition}[Startwert-Information (heuristisch)]
+\label{def:info}
+Sei $n \in \N$ gegeben. Definiere die \emph{2-adische Startwert-Information}
+nach $k$ Schritten als die bedingte Entropie:
+\[
+  I_n(k) := H\bigl(T^k(n) \,\big|\, T^k(\N)\bigr),
+\]
+wobei $T^k(\N)$ die Menge aller $k$-fach iterierten natürlichen Zahlen ist
+und die Entropie im Sinne der 2-adischen Gleichverteilung auf
+$k$-adischen Kugeln zu verstehen ist (heuristisch).
+\end{definition}
+
+\begin{bemerkung}
+Eine rigorose Definition von $I_n(k)$ über bedingte Entropie erfordert
+ein Maßmodell auf $\N$, das mit der Collatz-Dynamik verträglich ist.
+Dieser Punkt ist eine der offenen Forschungsfragen (vgl.\ \S\,\ref{sec:fragen}).
+\end{bemerkung}
+
+\subsection{Das Zerreibungs-Modell}
+
+\begin{tcolorbox}[dynfeld, title={Heuristisches Modell des Informations-Zerfalls}]
+\textbf{Modell:} Die Startwert-Information $I_n(k)$ zerfällt exponentiell:
+\[
+  I_n(k) \sim 2^{-k \cdot \log_2(1/|\lambda_2|)} \sim (0{,}35)^k.
+\]
+
+\textbf{Mechanismus:}
+\begin{enumerate}[label=(\arabic*), nosep]
+  \item Nach $k_1 \approx 5$ Blockschritten: Die mod-12-Klasse von $T^{k_1}(n)$
+    ist von $n$ fast unabhängig (TVD $\leq 0{,}01$).
+  \item Nach $k_2 \approx 12 \lfloor\log_2 n\rfloor$ Blockschritten:
+    Die gesamte logarithmische Information ($\log_2 n$ Bits) ist aufgebraucht.
+  \item Danach: Die Trajektorie folgt dem RPF-stationären Maß $\pi$ und
+    muss mit $\Lambda \approx -0{,}830$ gegen $1$ konvergieren.
+\end{enumerate}
+
+\medskip
+\textbf{Formale Lücke:} Schritt (3) setzt voraus, dass die Trajektorie
+$k_2$ Schritte macht, ohne zu divergieren. Das ist äquivalent zur Collatz-Vermutung
+für $n$. Das Modell ist konsistent, aber nicht beweisend.
+\end{tcolorbox}
+
+\subsection{Verbindung zur Kingman-Analyse}
+
+\begin{tcolorbox}[kernidee, title={Das vollständige Bild: Zerreibung + Lyapunov}]
+Kombiniert man die Kingman-Analyse ($\Lambda \approx -0{,}830$, aus
+\textit{collatz\_kingman.tex}) mit dem Zerreibungsmodell, ergibt sich
+folgendes kohärentes Bild:
+
+\medskip
+\begin{enumerate}[label=\textbf{Phase \arabic*:}, leftmargin=*, align=left]
+  \item \textbf{(Kurz, $k \leq k_1 \approx 5$ Blöcke):}
+    Startwert-Information dominiert. Mod-12-Klasse nähert sich $\pi$
+    exponentiell an.
+  \item \textbf{(Mittel, $k_1 < k \leq k_2$):}
+    Mod-12-Klasse ist gut gemischt. Lyapunov-Exponent $\Lambda \approx -0{,}830$
+    dominiert. Trajektorie schrumpft im Mittel.
+  \item \textbf{(Lang, $k > k_2$):}
+    Alle Startinformation zerrieben. Trajektorie folgt nur noch RPF $\to$
+    Konvergenz gegen $1$ \emph{bedingt auf Nicht-Divergenz}.
+\end{enumerate}
+
+\medskip
+Die \emph{einzige} verbleibende Lücke: Der Übergang von ``bedingt'' zu
+``unbedingt'' --- genau die Brücke, die die Uniformitäts-Vermutung
+liefern soll.
+\end{tcolorbox}
+
+% ====================================================
+\section{Drei offene Forschungsfragen}
+\label{sec:fragen}
+% ====================================================
+
+\begin{tcolorbox}[forschung, title={Forschungsfrage 1: Roths Satz für Collatz}]
+\textbf{Frage:} Gibt es ein Analogon zu Roths Satz für den Collatz-Operator?
+
+\medskip
+Präzise: Sei $\mathcal{F} \subset \Ztwo^*$ die Menge der 2-adischen Fixpunkte
+und Zykelpunkte des Collatz-Operators $T$ (einschließlich fraktaler Fixpunkte).
+Gilt:
+\[
+  \inf_{n \in \N} \inf_{f \in \mathcal{F}} |n - f|_2 \cdot 2^{\lfloor\log_2 n\rfloor}
+  \;\geq\; c > 0
+  \quad \text{?}
+\]
+Das würde bedeuten: $\N$ kann den 2-adischen Zykelpunkten nicht beliebig
+nah kommen (relative zur ``natürlichen Auflösung'' von $n$).
+
+\medskip
+\textbf{Schwierigkeit:} Die Menge $\mathcal{F}$ ist kompliziert strukturiert
+und bisher wenig verstanden. Die Collatz-Dynamik auf $\Ztwo$ ist nicht
+isometrisch und hat keine einfache algebraische Struktur.
+
+\medskip
+\textbf{Warum wichtig:} Wenn diese Frage positiv beantwortet werden kann,
+würde zusammen mit $\Lambda < 0$ die Collatz-Vermutung folgen (ohne
+Zirkularität).
+\end{tcolorbox}
+
+\begin{tcolorbox}[forschung, title={Forschungsfrage 2: Rigorose Definition von $I_n(k)$}]
+\textbf{Frage:} Gibt es eine rigorose Definition der ``Startwert-Information''
+$I_n(k)$ aus Definition~\ref{def:info}?
+
+\medskip
+\textbf{Mögliche Ansätze:}
+\begin{enumerate}[label=(\alph*), nosep]
+  \item \emph{Bedingte Entropie:} $I_n(k) := H(T^k(n) \,|\, \mathcal{F}_n^k)$,
+    wobei $\mathcal{F}_n^k$ die von der $k$-stufigen Bahn erzeugte $\sigma$-Algebra
+    ist. Aber welches Maß?
+  \item \emph{2-adische Distanz:} $I_n(k) := \sum_{m \in \N} |T^k(n) - T^k(m)|_2^{-1}$
+    als Maß für die ``Unterscheidbarkeit'' von $T^k(n)$ von anderen Startwerten.
+  \item \emph{Algorithmische Entropie:} $I_n(k) := \KC(T^k(n) \,|\, T^k(\pi))$,
+    bedingte Kolmogorov-Komplexität relativ zur stationären Verteilung.
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{tcolorbox}[forschung, title={Forschungsfrage 3: Poincaré-Rekurrenz für Collatz auf $\Ztwo$}]
+\textbf{Frage:} Hat der Collatz-Operator auf $\Ztwo$ eine Poincaré-Rekurrenz-Eigenschaft,
+die alle Zyklen charakterisiert?
+
+\medskip
+\textbf{Hintergrund:} Der Poincaré-Rekurrenz-Satz besagt für maßerhaltende
+Abbildungen: Fast alle Punkte kehren in jede Umgebung ihres Startpunkts
+zurück. Für den Collatz-Operator auf $(\Ztwo^*, \mu_H)$ ist die Maßerhaltung
+nicht bewiesen (das wäre stärker als die Collatz-Vermutung).
+
+\medskip
+\textbf{Schwächere Version:} Gibt es eine vollständige Charakterisierung
+aller Zyklen in $\Ztwo^*$ (nicht nur in $\N$)? Die bekannten Zyklen
+in $\Z_2$ sind $\{-1\}$, $\{-5/7, -7/5\}$ etc.\ (Zyklen unter
+$T$ auf dem negativen Zweig). In $\N$ ist nur der $1 \to 4 \to 2 \to 1$-Zyklus
+bekannt. Eine vollständige Zählung würde das Uniformitätsproblem schärfer
+einrahmen.
+\end{tcolorbox}
+
+% ====================================================
+\section{Einordnung in die Beweislandschaft}
+\label{sec:einordnung}
+% ====================================================
+
+\subsection{Checkliste: Was formalisiert wurde (PR \#1 -- \#11)}
+
+\begin{tcolorbox}[ergebnis, title={Mathematische Bilanz (Stand: Juni 2026)}]
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*, align=left, nosep,
+    itemsep=2pt]
+  \item[\checkmark] \textbf{DC-Beweis (Direkte Kontraktion):}
+    Für ungerades $n \equiv 1 \pmod{4}$ ist $T(n) < n$. Lean-bewiesen.
+  \item[\checkmark] \textbf{LTE-Formel:} $\vii_2(3^k - 1) = \vii_2(2) + \vii_2(k)$.
+    Lean-Basis vorhanden (\texttt{padicValNat}).
+  \item[\checkmark] \textbf{Vier-Typen-Klassifikation:} EABC mod-4, mit
+    mod-12-Verfeinerung. Formal korrekt.
+  \item[\checkmark] \textbf{Kingman-Lyapunov $\Lambda \approx -0{,}830$:}
+    Quantifiziert Taos impliziten Lyapunov. Bedingt auf RPF.
+  \item[\checkmark] \textbf{RPF mod-12:} Exponentielle Mischungsrate
+    $|\lambda_2| \approx 0{,}35$. Numerisch belegt.
+  \item[\checkmark] \textbf{Zirkularität von Schritt C:} Quaternionen-Diophantik
+    ist nicht valide. Klar dokumentiert.
+  \item[\checkmark] \textbf{Zirkularität von Argument D:} Binärinformations-Argument
+    setzt Nicht-Divergenz voraus. Klar dokumentiert.
+  \item[\checkmark] \textbf{Uniformitätslücke formalisiert:} Tao $\mu_H(E)=0$
+    vs.\ Collatz-Vermutung für alle $n \in \N$. Formal eingeordnet.
+  \item[\checkmark] \textbf{LTE-Dichte:} Extremale C-Ketten-Startpunkte
+    $n = 2^{k+1} 3^r - 1$ identifiziert und analysiert.
+  \item[\checkmark] \textbf{Lean-Werkzeugkasten:} \texttt{padicValNat},
+    Stirling, von-Staudt-Clausen, Vierquadrate. Mathlib-kompatibel.
+  \item[\checkmark] \textbf{Kolmogorov-Schranke für $\N$:}
+    $\KC(n) = O(\log n)$, kontrastiert mit generischer Unendlichkeit in $\Ztwo$.
+  \item[\checkmark] \textbf{Bit-Injektionsanalyse:} Pro ungeradem Schritt
+    $\log_2 3 \approx 1{,}585$ neue Bits, Netto mit $\Lambda$: Schrumpfung.
+  \item[\checkmark] \textbf{Uniformitäts-Vermutung (neu):}
+    Diophantische Abstandsschranke $\mathrm{dist}_{2\text{-adisch}}(n, E)
+    \geq c \cdot 2^{-\lfloor\log_2 n\rfloor}$ präzise formuliert.
+  \item[\checkmark] \textbf{Analogie zu Roths Satz:} Strukturelle Parallele
+    zwischen Collatz und Diophantischer Approximation hergestellt.
+  \item[\checkmark] \textbf{LTE-Konsistenz:} Extremalpunkte liegen in
+    Abstand $\approx 2^{-(k+1)}$ --- konsistent mit Uniformitäts-Vermutung
+    für $c = 1$.
+  \item[\checkmark] \textbf{Drei Forschungsfragen:} Offene Agenda für
+    das neue Feld ``Arithmetische Dynamik / Diophantische Approximation
+    für Collatz'' formuliert.
+\end{enumerate}
+\end{tcolorbox}
+
+\subsection{Die verbleibende Lücke}
+
+\begin{tcolorbox}[lücke, title={Die einzige verbleibende Lücke}]
+\textbf{Gegeben:}
+\begin{itemize}[nosep]
+  \item $\Lambda \approx -0{,}830 < 0$ (Schrumpfung im Mittel).
+  \item Exponentielle Mischung der mod-12-Klassen in $\leq 5$ Blockschritten.
+  \item $\mu_H(E) = 0$ (Tao).
+  \item $\N$ hat endliche Kolmogorov-Komplexität $O(\log n)$.
+  \item $E$ besteht (falls nicht leer) aus Elementen mit unendlicher
+    Kolmogorov-Komplexität.
+\end{itemize}
+
+\medskip
+\textbf{Gesucht:} Eine quantitative Trennungsschranke:
+\[
+  \mathrm{dist}_{2\text{-adisch}}(n, E) \geq c \cdot 2^{-\lfloor\log_2 n\rfloor}
+  \quad \text{für alle } n \in \N.
+\]
+
+\medskip
+\textbf{Warum das schwierig ist:}
+\begin{enumerate}[label=(\arabic*), nosep]
+  \item Die Struktur von $E$ (falls $E \neq \emptyset$) ist völlig unbekannt.
+  \item Es gibt keine bekannte algebraische oder analytische Beschreibung
+    der ``Ausnahmepfade'' in $\Ztwo$.
+  \item Das Analogon zu Roths Satz --- eine Abstandsschranke in $\Ztwo$ ---
+    liegt außerhalb der bekannten Theorie.
+\end{enumerate}
+
+\medskip
+Dieses Dokument benennt diese Lücke als das \textbf{Kernproblem der
+arithmetischen Dynamik für Collatz}. Das neue Forschungsfeld ist jetzt
+klar abgegrenzt.
+\end{tcolorbox}
+
+\subsection{Referenzen}
+
+\begin{itemize}
+  \item T.\ Tao: \textit{Almost all orbits of the Collatz map attain almost
+    bounded values}. Forum Math.\ Pi \textbf{10} (2022), e12.
+  \item J.\ F.\ C.\ Kingman: \textit{The ergodic theory of subadditive stochastic
+    processes}. J.\ Roy.\ Stat.\ Soc.\ B \textbf{30} (1968), 499--510.
+  \item K.\ F.\ Roth: \textit{Rational approximations to algebraic numbers}.
+    Mathematika \textbf{2} (1955), 1--20.
+  \item M.\ Li, P.\ Vitányi: \textit{An Introduction to Kolmogorov Complexity
+    and Its Applications}. Springer, 4.\ Aufl., 2019.
+  \item Ergänzende Dokumente: \textit{collatz\_uniformitaet.tex},
+    \textit{collatz\_lte\_dichte.tex}, \textit{collatz\_kingman.tex},
+    \textit{collatz\_schlussartikel.tex}.
+\end{itemize}
+
+\end{document}

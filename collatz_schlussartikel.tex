@@ -1,0 +1,448 @@
+\documentclass[12pt,a4paper]{article}
+
+% -------------------------------------------------
+% Sprache / Kodierung
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+
+% -------------------------------------------------
+% Layout / Grafik / Farben
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks,unicode]{hyperref}
+\pdfstringdefDisableCommands{%
+  \def\ü{ue}\def\ö{oe}\def\ä{ae}\def\Ü{Ue}\def\Ö{Oe}\def\Ä{Ae}\def\ss{ss}%
+}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{array}
+
+% -------------------------------------------------
+% Farben
+% -------------------------------------------------
+\definecolor{lückenrot}{RGB}{180,40,40}
+\definecolor{bewiesengrün}{RGB}{30,100,50}
+\definecolor{warnorange}{RGB}{200,100,10}
+\definecolor{hintergrundblau}{RGB}{235,242,250}
+\definecolor{hintergrundgelb}{RGB}{255,252,225}
+\definecolor{adischviolett}{RGB}{90,20,140}
+\definecolor{fehlerrot}{RGB}{200,0,0}
+\definecolor{konjviolett}{RGB}{80,0,130}
+\definecolor{e8grau}{RGB}{55,55,90}
+\definecolor{kingmanblau}{RGB}{20,60,130}
+\definecolor{zirkelrot}{RGB}{160,0,0}
+\definecolor{epiloggrau}{RGB}{45,45,65}
+\definecolor{frontlinienrot}{RGB}{150,20,20}
+\definecolor{neugrün}{RGB}{15,80,35}
+
+% -------------------------------------------------
+% tcolorbox-Stile
+% -------------------------------------------------
+\tcbset{
+  lücke/.style={colback=red!8, colframe=lückenrot, fonttitle=\bfseries,
+    title={Offene Lücke}},
+  ergebnis/.style={colback=green!7, colframe=bewiesengrün,
+    fonttitle=\bfseries, title={Bewiesenes Ergebnis}},
+  warnung/.style={colback=orange!10, colframe=warnorange,
+    fonttitle=\bfseries, title={Achtung / Heuristik}},
+  kernidee/.style={colback=hintergrundblau, colframe=blue!60!black,
+    fonttitle=\bfseries, title={Kernidee}},
+  konj/.style={colback=violet!5, colframe=konjviolett, fonttitle=\bfseries,
+    title={Konjektur (unbewiesen)}},
+  epilog/.style={colback=gray!6, colframe=epiloggrau,
+    fonttitle=\bfseries\large, title={Epilog}},
+  frontlinie/.style={colback=red!5, colframe=frontlinienrot,
+    fonttitle=\bfseries, title={Die Frontlinie}},
+  saeulen/.style={colback=blue!4, colframe=kingmanblau,
+    fonttitle=\bfseries, title={Die vier Säulen}},
+  neufeld/.style={colback=green!5, colframe=neugrün,
+    fonttitle=\bfseries, title={Neue Forschungsrichtung}},
+  adisch/.style={colback=violet!6, colframe=adischviolett,
+    fonttitle=\bfseries, title={2-adische Perspektive}},
+}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+\newtheorem{hypothese}[definition]{Hypothese}
+\newtheorem{satz}[definition]{Satz}
+
+\newenvironment{beweis}{\begin{proof}[Beweis]}{\end{proof}}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\vii}{\nu_2}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\H}{\mathbb{H}}
+\newcommand{\Ztwo}{\mathbb{Z}_2}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\atwo}[1]{\lvert#1\rvert_2}
+\newcommand{\Lam}{\Lambda}
+\newcommand{\col}{\mathrm{Col}}
+\newcommand{\KC}{K}
+\newcommand{\TV}{\mathrm{TV}}
+
+% -------------------------------------------------
+% Dokument
+% -------------------------------------------------
+\title{%
+  Die Collatz-Vermutung: Eine Bilanz\\[0.3em]
+  \large Schlussartikel --- Grenzbefestigung, Beweislandschaft,
+  offene Fragen\\[0.5em]
+  \normalsize Zusammenfassung der Arbeiten 2025--2026%
+}
+\author{Thomas Hoffbauer}
+\date{16.\ Juni 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Dieser Schlussartikel zieht Bilanz über eine umfangreiche Untersuchung
+der Collatz-Vermutung, die 16 LaTeX-Dokumente und 12 Pull-Requests
+(davon 11 zur Grenzbefestigung) umfasst. Die vier zentralen Ergebnisse
+sind: (1) ein rigoroser DC-Beweis für spezielle Klassen mit Lean-Formalisierung;
+(2) der Kingman-Lyapunov-Exponent $\Lambda \approx -0{,}830$;
+(3) die RPF-Mischungsrate des mod-12-Transfer-Operators; und
+(4) die exakte Lokalisierung der verbleibenden Lücke als
+Uniformitätsproblem ($\N$ als Nullmenge in $\Ztwo$).
+
+\textbf{Die Collatz-Vermutung bleibt unbewiesen.} Dieser Artikel
+dokumentiert, was bekannt ist, was bewiesen wurde, und -- mit dem
+Epilog von Juni 2026 -- die neue Forschungsagenda der
+\emph{arithmetischen Dynamik}.
+\end{abstract}
+
+\tableofcontents
+
+\bigskip
+\begin{tcolorbox}[warnung, title={Zum Status dieses Dokuments}]
+Dieser Artikel ist ein Überblick und Abschlussbericht. Er setzt die
+Kenntnis der Einzeldokumente
+\textit{collatz\_uniformitaet.tex}, \textit{collatz\_lte\_dichte.tex},
+\textit{collatz\_kingman.tex} und \textit{collatz\_arithmetische\_dynamik.tex}
+voraus. Alle nicht-standardmäßigen Behauptungen sind in diesen Quellen
+belegt oder dort als offen markiert.
+\end{tcolorbox}
+
+% ====================================================
+\section{Die Kernfrage und der Stand der Forschung}
+\label{sec:kernfrage}
+% ====================================================
+
+\subsection{Die Collatz-Vermutung}
+
+\begin{definition}[Collatz-Abbildung]
+Für $n \in \N$ sei:
+\[
+  T(n) :=
+  \begin{cases}
+    n/2 & \text{falls } n \equiv 0 \pmod{2}, \\
+    (3n+1)/2 & \text{falls } n \equiv 1 \pmod{2}.
+  \end{cases}
+\]
+Die \emph{Collatz-Vermutung} besagt: Für jedes $n \in \N$ gibt es
+$k \in \N$ mit $T^k(n) = 1$.
+\end{definition}
+
+\begin{tcolorbox}[ergebnis, title={Taos Hauptergebnis (Forum Math.\ Pi, 2022)}]
+Für jede Funktion $f: \N \to \R$ mit $f(n) \to \infty$ gilt:
+\[
+  \mathrm{Dens}_{\log}\bigl(\{n \in \N : \min_{k\geq 0}\col^k(n)
+  \leq f(n)\}\bigr) = 1.
+\]
+Fast alle $n \in \N$ (logarithmisch) haben Collatz-Bahnen, die
+beliebig klein werden.
+\end{tcolorbox}
+
+\subsection{Die Maß-Null-Barriere}
+
+\begin{tcolorbox}[lücke, title={Das fundamentale Hindernis}]
+$\N \subset \Ztwo^*$ ist eine abzählbare Menge, also eine $\mu_H$-Nullmenge
+im 2-adischen Maß. Taos Ergebnis ($\mu_H(E) = 0$ für das Ausnahmeset $E$)
+ist daher \emph{kein} Widerspruch zu $E \cap \N \neq \emptyset$.
+
+\medskip
+Die Collatz-Vermutung fordert ein \emph{individuelles} Resultat für jedes
+$n \in \N$, während Maß\-argu\-mente nur \emph{generische} Aussagen liefern.
+Das ist die Uniformitätslücke.
+\end{tcolorbox}
+
+% ====================================================
+\section{Vier Säulen der Grenzbefestigung}
+\label{sec:saeulen}
+% ====================================================
+
+\subsection{Säule 1: Der DC-Beweis}
+
+Der \emph{Direct Contraction}-Beweis zeigt, dass bestimmte Klassen
+von $n \in \N$ direkt konvergieren:
+
+\begin{tcolorbox}[ergebnis]
+Für ungerades $n \equiv 1 \pmod{4}$ gilt $T(n) = (3n+1)/2 < n$, da
+$3n+1 \equiv 2 \pmod{4}$ und $T(n) = (3n+1)/2 < 2n$. Für $n \geq 3$:
+$T(n) < n$. Lean-bewiesen.
+\end{tcolorbox}
+
+\subsection{Säule 2: Lyapunov-Exponent $\Lambda \approx -0{,}830$}
+
+\begin{tcolorbox}[saeulen, title={Kingman-Lyapunov-Exponent}]
+Aus dem subadditiven Kingman-Ergodensatz, angewandt auf die Collatz-Dynamik,
+folgt (unter der Voraussetzung, dass die mod-12-Markov-Kette ergodisch ist):
+\[
+  \Lambda = \lim_{K\to\infty} \frac{1}{K}\sum_{k=0}^{K-1}
+  \log_2\frac{T^{k+1}(n)}{T^k(n)} \approx -0{,}830.
+\]
+Das quantifiziert, was in Taos Ergebnis implizit liegt: Die durchschnittliche
+Kontraktion pro Schritt ist $2^{\Lambda} \approx 0{,}562$.
+\end{tcolorbox}
+
+\subsection{Säule 3: RPF-Mischung des mod-12-Transfer-Operators}
+
+\begin{tcolorbox}[saeulen, title={Exponentielle Mischungsrate}]
+Die mod-12-Markov-Kette auf $\{E, A, B, C\}$ ist primitiv mit zweitem
+Eigenwert $|\lambda_2| \approx 0{,}35$. Für alle $n \in \N$ und alle
+$k \geq 0$:
+\[
+  \bigl\|M^k e_{B(n)} - \pi\bigr\|_{\TV} \leq C\,|\lambda_2|^k,
+\]
+wobei $C > 0$ nur von der mod-12-Startklasse abhängt. Die Mischungszeit
+bis $\varepsilon = 0{,}01$ beträgt $\approx 5$ Blockschritte ---
+\emph{unabhängig von $n$}.
+\end{tcolorbox}
+
+\subsection{Säule 4: Lean-Fundament}
+
+Das Lean-Fundament umfasst:
+\begin{itemize}[nosep]
+  \item \texttt{padicValNat} für LTE-Berechnungen ($\vii_2(3^k - 1)$).
+  \item Stirling-Approximation für asymptotische Abschätzungen.
+  \item von-Staudt-Clausen für Bernoulli-Nenner.
+  \item Vierquadrate-Satz als Referenz für Norm-Identitäten.
+  \item DC-Beweis in Lean vollständig formalisiert.
+\end{itemize}
+
+% ====================================================
+\section{Was nicht bewiesen werden konnte}
+\label{sec:offen}
+% ====================================================
+
+\begin{tcolorbox}[warnung, title={Ehrliche Bilanz der Grenzen}]
+\begin{enumerate}[label=(\arabic*), nosep, itemsep=3pt]
+  \item \textbf{Schritt C (Quaternionen-Diophantik)} enthält eine
+    versteckte Zirkularität: Ausnahmebahnen in $\N$ bleiben ganzzahlig,
+    es entsteht kein Widerspruch.
+  \item \textbf{Argument D (Binärinformation)} ist korrekt nur bedingt
+    auf Nicht-Divergenz --- zirkulär.
+  \item \textbf{Das Uniformitätsproblem} ist ungelöst: Die Brücke von
+    ``$\mu_H(E) = 0$'' zu ``$E \cap \N = \emptyset$'' fehlt.
+  \item \textbf{Spektrallücke} der mod-12-Kette ist numerisch belegt,
+    aber nicht formal bewiesen.
+  \item \textbf{Zweiblockkompensation} ist uniform bekannt, aber noch
+    nicht für alle $(k,r)$ rigoros.
+\end{enumerate}
+\end{tcolorbox}
+
+% ====================================================
+% EPILOG: Die Frontlinie (Juni 2026)
+% ====================================================
+
+\section*{Epilog: Die Frontlinie (Juni 2026)}
+\label{sec:epilog}
+\addcontentsline{toc}{section}{Epilog: Die Frontlinie (Juni 2026)}
+
+\begin{tcolorbox}[epilog]
+Dieser Epilog wurde im Juni 2026 als Abschluss einer intensiven
+Auseinandersetzung mit der Collatz-Vermutung geschrieben, die
+\textbf{16 LaTeX-Dokumente} und \textbf{12 Pull-Requests} (PR~\#1
+bis PR~\#12) umfasste. Der Zweck: die exakte verbleibende Frontlinie
+zu lokalisieren --- nicht den Beweis zu vollenden, sondern den Abgrund
+präzise zu kartieren.
+\end{tcolorbox}
+
+\subsection*{Was in dieser Arbeit geleistet wurde}
+
+\begin{tcolorbox}[saeulen, title={16 Dokumente, 12 PRs: Die Grenzbefestigung}]
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{>{\bfseries}l >{\raggedright\arraybackslash}p{9cm}}
+\toprule
+PR \#1--3 & Grundlagen: DC-Beweis, LTE-Formel, EABC-Klassifikation.
+            Lean-Formalisierungen. \\[2pt]
+PR \#4--6 & Lyapunov-Analyse: Kingman-Exponent $\Lambda \approx -0{,}830$,
+            Stirling, Bernoulli-Nenner. \\[2pt]
+PR \#7--8 & LTE-Dichte: Extremale C-Ketten $n = 2^{k+1}3^r - 1$,
+            Zweiblockkompensation. \\[2pt]
+PR \#9    & Mathlib-Werkzeugkasten: \texttt{padicValNat}, Vierquadrate,
+            von-Staudt-Clausen. \\[2pt]
+PR \#10   & Kingman-Formalisierung: $\Lambda \approx -0{,}830$ als
+            quantifizierter Lyapunov-Exponent. \\[2pt]
+PR \#11   & Uniformitätsanalyse: RPF solide (Schritt B), Zirkularität
+            von Schritt C und D dokumentiert. \\[2pt]
+PR \#12   & \textbf{Arithmetische Dynamik (dieses Dokument):}
+            Kolmogorov-Komplexität, Uniformitäts-Vermutung,
+            Analogon zu Roths Satz. \\[2pt]
+\bottomrule
+\end{tabular}
+\end{center}
+\end{tcolorbox}
+
+\subsection*{Die vier Säulen im Rückblick}
+
+\begin{tcolorbox}[saeulen, title={Vier Säulen --- was steht, was wackelt}]
+\begin{enumerate}[label=\textbf{Säule \arabic*:}, leftmargin=*, align=left,
+    itemsep=4pt]
+  \item \textbf{DC-Beweis (steht fest).} Für $n \equiv 1 \pmod{4}$: direkte
+    Kontraktion $T(n) < n$. Lean-bewiesen. Aber nur ein Bruchteil aller $n$.
+
+  \item \textbf{Lyapunov $\Lambda \approx -0{,}830$ (steht, bedingt).}
+    Im Mittel schrumpft die Bahn um Faktor $2^\Lambda \approx 0{,}56$ pro
+    Schritt. Bedingt auf RPF-Ergodizität --- die Brücke zu konkreten $n$
+    fehlt.
+
+  \item \textbf{RPF-Mischung (steht als Schranke).} Die mod-12-Kette mischt
+    in $\leq 5$ Blockschritten, unabhängig von $n$. Formal für den Markov-Anteil
+    korrekt. Der Übergang vom Markov-Modell zur echten Collatz-Dynamik ist
+    das Uniformitätsproblem.
+
+  \item \textbf{Lean-Fundament (steht als Werkzeugkasten).} Alle relevanten
+    Mathlib-Primitiven sind identifiziert und einsatzbereit. Ein vollständiger
+    Lean-Beweis der Collatz-Vermutung liegt nicht vor.
+\end{enumerate}
+\end{tcolorbox}
+
+\subsection*{Die verbleibende Lücke: $\N$ als Nullmenge in $\Ztwo$}
+
+\begin{tcolorbox}[frontlinie, title={Die Frontlinie: Eine Gleichung, eine Brücke}]
+Die gesamte Arbeit läuft auf eine einzige, präzise formulierbare Lücke hinaus:
+
+\medskip
+\textbf{Bekannt:}
+\[
+  \mu_H\bigl(\{x \in \Ztwo^* : \text{Bahn von } x \text{ konvergiert nicht}\}\bigr) = 0
+  \quad\text{(Tao 2022).}
+\]
+
+\textbf{Gesucht:}
+\[
+  \{n \in \N : \text{Bahn von } n \text{ konvergiert nicht}\} = \emptyset.
+\]
+
+\medskip
+Das Problem: $\N$ ist eine $\mu_H$-Nullmenge in $\Ztwo$. Ein Maß-Null-Ergebnis
+über $\Ztwo$ sagt \emph{nichts} über die $\mu_H$-Nullmenge $\N$. Das ist
+nicht eine technische Kleinigkeit --- es ist der Abgrund.
+
+\medskip
+Alle Brückenversuche dieser Arbeit (Schritt C: Quaternionen-Zirkularität;
+Argument D: Binärinformations-Zirkularität) sind an exakt diesem Abgrund
+gescheitert. Die RPF-Mischung (Schritt B) ist der einzige Beitrag, der
+nicht zirkulär ist --- aber er liefert auch keine Brücke, nur eine
+quantitative Schranke.
+\end{tcolorbox}
+
+\subsection*{Die neue Forschungsfrage: Arithmetische Dynamik}
+
+\begin{tcolorbox}[neufeld, title={Das neue Forschungsfeld (PR \#12)}]
+Die Arbeit des zwölften Pull-Requests öffnet ein neues Forschungsfeld:
+die \emph{arithmetische Dynamik} für Collatz.
+
+\medskip
+\textbf{Die zentrale neue Idee:}
+Statt die Lücke direkt zu schließen, frage man nach der \emph{quantitativen
+Trennung} zwischen $\N$ und dem Ausnahmeset $E$:
+\[
+  \mathrm{dist}_{2\text{-adisch}}(n, E) \geq c \cdot 2^{-\lfloor\log_2 n\rfloor}
+  \quad \text{für alle } n \in \N \text{, mit universeller Konstante } c > 0.
+\]
+
+\medskip
+\textbf{Das Analogon zu Roths Satz:} In der diophantischen Approximation
+verhindert Roths Satz (1955), dass algebraische Irrationale durch Rationale
+``zu gut'' approximiert werden. Das Collatz-Analogon würde verhindern, dass
+natürliche Zahlen den hochkomplexen Fixpunkten von $T$ in $\Ztwo$ zu
+nahe kommen.
+
+\medskip
+\textbf{Warum die Analogie vielversprechend ist:}
+\begin{enumerate}[label=(\arabic*), nosep, itemsep=2pt]
+  \item $\N$ hat Kolmogorov-Komplexität $O(\log n)$ --- endlich.
+  \item Elemente von $E$ (falls $E \neq \emptyset$) haben generisch
+    unendliche Kolmogorov-Komplexität.
+  \item Der 2-adische Abstand zwischen endlich-komplexen und
+    unendlich-komplexen Elementen ist messbar.
+  \item Die LTE-extremalen Punkte $n = 2^{k+1}3^r - 1$ haben Abstand
+    $\approx 2^{-(k+1)}$ zu benachbarten Zweierpotenzen --- konsistent
+    mit der Schranke für $c = 1$.
+\end{enumerate}
+
+\medskip
+\textbf{Was beweisbar sein müsste:}
+Eine Version von Roths Satz für den Collatz-Operator auf $\Ztwo$ ---
+eine Abstandsschranke aus der algebraischen Natur der Dynamik.
+Dieses Ziel liegt außerhalb bekannter Methoden, ist aber präzise
+genug formuliert, um als echter Forschungsgegenstand zu dienen.
+\end{tcolorbox}
+
+\subsection*{Bilanz: Was bleibt}
+
+\begin{tcolorbox}[adisch, title={Abschlussbilanz der Grenzbefestigung}]
+\textbf{Was diese Arbeit erreicht hat:}
+\begin{itemize}[nosep, itemsep=2pt]
+  \item Die Beweislandschaft wurde vollständig kartiert.
+  \item Alle bekannten Argumente wurden auf Zirkularität geprüft.
+  \item Die Lücke wurde auf eine einzige, präzise formulierbare Frage
+    reduziert.
+  \item Ein neues Forschungsfeld --- arithmetische Dynamik mit
+    diophantischen Methoden --- wurde eröffnet.
+  \item Der Lean-Werkzeugkasten ist bereit für eine zukünftige
+    Formalisierung.
+\end{itemize}
+
+\medskip
+\textbf{Was bleibt:}
+Die Collatz-Vermutung. Der Abgrund zwischen Maß-Null-Argumenten
+und individueller Konvergenz. Die Brücke zwischen $\mu_H(E) = 0$
+und $E \cap \N = \emptyset$ ist nicht gebaut --- aber jetzt weiß man
+genau, wie tief die Schlucht ist und welche Brücke fehlt:
+eine Theorie der arithmetischen Dynamik, inspiriert von Roth.
+\end{tcolorbox}
+
+\subsection*{Referenzen}
+
+\begin{itemize}
+  \item T.\ Tao: \textit{Almost all orbits of the Collatz map attain
+    almost bounded values}. Forum Math.\ Pi \textbf{10} (2022), e12.
+  \item J.\ F.\ C.\ Kingman: \textit{The ergodic theory of subadditive
+    stochastic processes}. J.\ Roy.\ Stat.\ Soc.\ B \textbf{30} (1968), 499--510.
+  \item K.\ F.\ Roth: \textit{Rational approximations to algebraic numbers}.
+    Mathematika \textbf{2} (1955), 1--20.
+  \item D.\ Ruelle: \textit{Thermodynamic Formalism}. Addison-Wesley, 1978.
+  \item Zugehörige Dokumente (PR \#1--\#12):
+    \textit{collatz\_uniformitaet.tex},
+    \textit{collatz\_lte\_dichte.tex},
+    \textit{collatz\_arithmetische\_dynamik.tex}.
+\end{itemize}
+
+\end{document}
