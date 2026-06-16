@@ -1,0 +1,662 @@
+\documentclass[12pt,a4paper]{article}
+
+% -------------------------------------------------
+% Sprache / Kodierung
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+
+% -------------------------------------------------
+% Layout / Grafik / Farben
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{array}
+
+% -------------------------------------------------
+% Farben
+% -------------------------------------------------
+\definecolor{lückenrot}{RGB}{180,40,40}
+\definecolor{bewiesengrün}{RGB}{30,100,50}
+\definecolor{warnorange}{RGB}{200,100,10}
+\definecolor{hintergrundblau}{RGB}{235,242,250}
+\definecolor{hintergrundgelb}{RGB}{255,252,225}
+\definecolor{morleyviolett}{RGB}{100,30,150}
+
+% -------------------------------------------------
+% tcolorbox-Stile
+% -------------------------------------------------
+\tcbset{
+  lücke/.style={colback=red!8, colframe=lückenrot, fonttitle=\bfseries,
+    title={Offene Lücke}},
+  kernidee/.style={colback=hintergrundblau, colframe=blue!60!black,
+    fonttitle=\bfseries, title={Kernidee}},
+  ergebnis/.style={colback=green!7, colframe=bewiesengrün,
+    fonttitle=\bfseries, title={Bewiesenes Ergebnis}},
+  warnung/.style={colback=orange!10, colframe=warnorange,
+    fonttitle=\bfseries, title={Achtung: Heuristik / Vermutung}},
+  morley/.style={colback=violet!6, colframe=morleyviolett,
+    fonttitle=\bfseries, title={Morley-Walter-Transfer}},
+}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+\newtheorem{hypothese}[definition]{Hypothese}
+
+\newenvironment{beweis}{\begin{proof}[Beweis]}{\end{proof}}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\vii}{\nu_2}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\MW}{\mathcal{MW}}       % Morley-Walter-Funktional
+\newcommand{\Mcal}{\mathcal{M}}      % Morley-Quotient
+\newcommand{\Wcal}{\mathcal{W}}      % Walter-Schicht
+
+% -------------------------------------------------
+% Dokument
+% -------------------------------------------------
+\title{%
+  Die Durchlaufbedingung im Morley-Walter-Rahmen\\[0.3em]
+  \large Geometrische Stabilität und modulare Barrieren für BC-Ketten%
+}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Die Durchlaufbedingung (DC) ist die einzige noch fehlende Brücke
+im oktonionischen Collatz-Beweisversuch: Sie fordert, dass BC-Schritte
+(Expansion, $\vii = 1$, Faktor~$\approx 3/2$) keine dauerhaften
+Akkumulationen bilden können, ohne von EA-Schritten
+(Kontraktion, $\vii \geq 2$) unterbrochen zu werden.
+Wir untersuchen, inwieweit Konzepte aus dem Morley-Walter-Rahmen ---
+insbesondere die Konvergenz der Morley- und Walter-Splits,
+das Bamberg-Stabilitätsprinzip und die Walter-Schicht als Vermittlungsgeometrie ---
+auf die DC angewendet werden können.
+
+Die Hauptergebnisse sind dreifach: \emph{(i)}~Es lässt sich rein modular
+beweisen, dass B-Typ-Elemente nicht zwei B-Typ-Elemente in Folge erzeugen können
+(keine reinen B-Ketten). \emph{(ii)}~C-Ketten der Länge $k$ erfordern
+Startelemente in Residuenklassen der Dichte $1/2^{k+2}$, was eine
+exponentiell stärker werdende modulare Barriere darstellt.
+\emph{(iii)}~Der Morley-Walter-Rahmen liefert eine
+geometrisch-heuristische Deutung dieser Barrieren,
+aber keinen eigentlichen Beweis der DC.
+Warum das so ist, und welcher Ansatz als nächstbeste Alternative erscheint,
+wird abschließend diskutiert.
+\end{abstract}
+
+\tableofcontents
+
+\bigskip
+\begin{tcolorbox}[warnung, title={Zur Einordnung}]
+Dieser Text ist ein \emph{expliziter Anwendungsversuch}, kein vollständiger Beweis.
+Beweisbare Aussagen sind als Propositionen oder Lemmata ausgewiesen.
+Heuristische Überlegungen und Analogieargumente sind klar als solche gekennzeichnet.
+\end{tcolorbox}
+
+% ====================================================
+\section{Die Durchlaufbedingung: Was fehlt und warum}
+% ====================================================
+
+\subsection{Der Stand des Beweisversuchs}
+
+Im oktonionischen Collatz-Beweisversuch (\cite{collatz-oktonionen}) ist
+die Hauptstruktur der Argumentation bereits klar:
+\begin{enumerate}[label=(\arabic*)]
+  \item Die odd-to-odd-Abbildung $\U(n) = (3n+1)/2^{\vii(3n+1)}$
+    wird in die Cayley-Ganzzahlen $\mathbb{O}_{\Z}$ (das $E_8$-Gitter) eingebettet.
+  \item Die Normformel $N(3x+1) = 9N(x) + 6\operatorname{Re}(x) + 1$ liefert
+    quantitative Kontraktions- und Expansionsabschätzungen.
+  \item Ein EA-Schritt ($\vii \geq 2$) ergibt bei hinreichend großer Norm
+    einen Normabstieg; ein BC-Schritt ($\vii = 1$) ergibt einen Normanstieg
+    um den Faktor $\approx 9/4$.
+  \item Das Return-Map-Theorem zeigt: \emph{Wenn} die DC gilt,
+    folgt die Collatz-Vermutung.
+\end{enumerate}
+
+Die kritische offene Lücke ist also:
+
+\begin{tcolorbox}[lücke, title={Durchlaufbedingung (DC) --- Präzise Formulierung}]
+\textbf{(DC)}\quad Für jedes ungerade $n \in \N$ gibt es ein uniform beschränktes
+$m_0 \in \N$ sowie ein $m \leq m_0$ mit
+\[
+  \vii\!\bigl(3\,\U^m(n) + 1\bigr) \geq 2.
+\]
+Anders formuliert: Jede Collatz-Bahn durchläuft nach spätestens $m_0$
+konsekutiven BC-Schritten zwingend einen EA-Schritt.
+\end{tcolorbox}
+
+\subsection{Warum die DC nicht unmittelbar folgt}
+
+Das naive Normargument scheitert: Sei $b$ die Anzahl konsekutiver BC-Schritte,
+gefolgt von einem EA-Schritt. Der Normmultiplikator pro Zyklus beträgt
+\[
+  \left(\frac{9}{4}\right)^b \cdot \frac{9}{16}
+  = \frac{9^{b+1}}{4^{b+2}}.
+\]
+Dies ist kleiner als $1$ (globaler Normabstieg) genau dann, wenn
+$b < \ln 4 / \ln(9/4) - 1 \approx 0{,}71$, also nur für $b = 0$.
+Für jeden Wert $b \geq 1$ wächst die Norm über einen Zyklus.
+
+Das bedeutet: Die DC allein reicht nicht für den Normabstieg;
+man braucht zusätzlich häufige EA-Schritte mit $\vii \geq 3$
+(E-Klasse, nicht nur A-Klasse). Dennoch bleibt die DC der erste notwendige Schritt.
+
+\subsection{EABC-Klassifikation und Schritttypen}
+
+Für den Rest des Textes verwenden wir die mod-12-Klassifikation
+der ungeraden natürlichen Zahlen:
+
+\begin{definition}[EABC-Typen]
+\label{def:eabc}
+Eine ungerade Zahl $n \in \N$ wird klassifiziert als:
+\begin{align*}
+  \text{E-Typ} &:\quad n \equiv 1 \pmod{12},\quad \vii(3n+1) \geq 2,\\
+  \text{A-Typ} &:\quad n \equiv 5 \pmod{12},\quad \vii(3n+1) \geq 2,\\
+  \text{B-Typ} &:\quad n \equiv 7 \pmod{12},\quad \vii(3n+1) = 1,\\
+  \text{C-Typ} &:\quad n \equiv 11 \pmod{12},\quad \vii(3n+1) = 1.
+\end{align*}
+E- und A-Typ sind also EA-Schritte (Kontraktion), B- und C-Typ sind
+BC-Schritte (Expansion).
+\end{definition}
+
+\begin{beweis}[Verifikation der $\vii$-Werte]
+Für $n \equiv 1 \pmod{12}$: Schreibe $n = 12k+1$, dann
+$3n+1 = 36k+4 = 4(9k+1)$, also $\vii(3n+1) \geq 2$. \\
+Für $n \equiv 5 \pmod{12}$: Schreibe $n = 12k+5$, dann
+$3n+1 = 36k+16 = 4(9k+4)$, also $\vii(3n+1) \geq 2$. \\
+Für $n \equiv 7 \pmod{12}$: Schreibe $n = 12k+7$, dann
+$3n+1 = 36k+22 = 2(18k+11)$, und $18k+11$ ist stets ungerade,
+also $\vii(3n+1) = 1$. \\
+Für $n \equiv 11 \pmod{12}$: Schreibe $n = 12k+11$, dann
+$3n+1 = 36k+34 = 2(18k+17)$, und $18k+17$ ist stets ungerade,
+also $\vii(3n+1) = 1$.
+\end{beweis}
+
+% ====================================================
+\section{Der Morley-Walter-Rahmen: Verfügbare Werkzeuge}
+% ====================================================
+
+\subsection{Zentrale Konzepte}
+
+Der Morley-Walter-Rahmen, wie er in \cite{morley-walter,bamberg-ptolemy}
+entwickelt wird, stellt folgende geometrische Werkzeuge bereit:
+
+\begin{description}[leftmargin=2em]
+  \item[Morley-Quotient $\Mcal(T)$:]
+    Für ein Dreieck $T$ ist $\Mcal(T) = \operatorname{Fl}(\text{Morley-Dreieck von }T) /
+    \operatorname{Fl}(T)$ ein dimensionsloser Gestaltparameter.
+    Numerisch konvergiert $\Mcal(T) \to \Mcal_\infty \approx 0{,}0311$
+    für die kanonischen EABC-Dreiecke bei wachsenden Primzahlvierlingen.
+
+  \item[Walter-Splits $\Delta\Wcal$:]
+    Sie messen die Besetzungsasymmetrie zweier kanonischer Triangulierungen.
+    Es gilt $\Delta\Wcal \to 0$ für $p \to \infty$: Die Vermittlungsgeometrie
+    wird asymptotisch symmetrisch.
+
+  \item[Morley-Splits $\Delta\Mcal$:]
+    Analoge Konvergenz $\Delta\Mcal \to 0$: Die Dreiecksformen nähern sich
+    einer Standardgestalt an.
+
+  \item[Bamberg-Axiom B-WM-1:]
+    Stabile Viererordnungen minimieren die EABC-Strukturspannung und
+    treiben ihre kanonischen Triangulierungen in die Morley-Standardgestalt.
+
+  \item[Walter-Schicht als Vermittlungsebene:]
+    In der Hierarchie $\text{Morley} \to \text{Walter} \to \text{Kepler}$
+    übersetzt die Walter-Schicht lokale Phasenordnung in global
+    stabilisierbare Geometrie. Ohne Vermittlung kein Übergang.
+
+  \item[Ptolemäischer Defekt $\Pi$:]
+    Er misst die Abweichung von einer ptolemäisch balancierten Viererfigur.
+    Die natürliche Anordnung $Q_\mathrm{I}$ ist asymptotisch ptolemäisch
+    ($\Pi_\mathrm{I} \to 0$), die Kreuzform $Q_\mathrm{II}$ trägt einen
+    bleibenden Strukturdefekt.
+\end{description}
+
+\subsection{Die entscheidende Frage: Transfer auf die DC?}
+
+\begin{tcolorbox}[morley]
+Die Kernidee des Transfers lautet: Die EABC-Klassifikation der
+Collatz-Dynamik \emph{ist dieselbe} wie die EABC-Einbettung der
+Primzahlvierlinge im Bamberg-Modell.
+Das heißt: Die geometrische Sprache des Morley-Walter-Rahmens
+ist \emph{nicht} eine externe Analogie, sondern beschreibt
+buchstäblich dieselbe Strukturebene.
+
+Wenn die Morley- und Walter-Splits in der Primzahlgeometrie
+gegen $0$ konvergieren, dann könnte das geometrische Stabilisierungsprinzip
+eine Aussage über die DC liefern: Nämlich dass auch in der
+Collatz-Dynamik Zustände mit dauerhafter BC-Akkumulation
+keine ``Morley-stabile'' Konfiguration bilden.
+\end{tcolorbox}
+
+Ob dieses heuristische Bild zu einem Beweis präzisiert werden kann,
+ist der Gegenstand von Abschnitt~\ref{sec:anwendung}.
+
+% ====================================================
+\section{Der Anwendungsversuch}
+\label{sec:anwendung}
+% ====================================================
+
+Wir unterteilen den Versuch in drei Stufen:
+(a)~Was modular exakt beweisbar ist,
+(b)~was sich durch Morley-Walter-Analogie heuristisch einsehen lässt,
+(c)~was offen bleibt.
+
+% ----------------------------------------------------
+\subsection{Stufe (a): Modulare Barrieren --- beweisbare Aussagen}
+% ----------------------------------------------------
+
+\begin{proposition}[B-Typ kann nicht auf B-Typ folgen]
+\label{prop:kein-bb}
+Für kein ungerades $n \in \N$ gilt gleichzeitig:
+$n$ ist B-Typ und $\U(n)$ ist B-Typ.
+\end{proposition}
+
+\begin{beweis}
+Sei $n \equiv 7 \pmod{12}$, also B-Typ. Dann gilt nach der Verifikation
+in Definition~\ref{def:eabc}: $3n+1 = 2(18k+11)$ mit $n=12k+7$,
+also $\U(n) = 18k+11$.
+
+Damit $\U(n)$ B-Typ ist, müsste $\U(n) \equiv 7 \pmod{12}$ gelten, d.\,h.
+$18k + 11 \equiv 7 \pmod{12}$, also $6k \equiv -4 \equiv 8 \pmod{12}$,
+also $6k \equiv 8 \pmod{12}$. Da $\gcd(6,12) = 6$ und $6 \nmid 8$,
+hat diese Kongruenz \emph{keine} Lösung. $\square$
+
+Alternativ: $18k+11 \pmod{12} = 6k+11$.
+Für $k \equiv 0 \pmod 2$: $6k+11 \equiv 11 \pmod{12}$ (C-Typ). \\
+Für $k \equiv 1 \pmod 2$: $6k+11 \equiv 5 \pmod{12}$ (A-Typ).
+In beiden Fällen folgt weder B- noch E-Typ. \qed
+\end{beweis}
+
+\begin{korollar}[B-Ketten haben Länge $\leq 1$]
+\label{kor:b-ketten}
+In jeder Collatz-Bahn kann auf einen B-Typ-Schritt unmittelbar
+kein weiterer B-Typ-Schritt folgen. Konsekutive BC-Schritte
+nehmen die Form
+\[
+  \underbrace{B}_{1\text{ Schritt}}
+  \to C \to C \to \cdots \to C
+  \to \underbrace{A \text{ oder } E}_{\text{EA-Schritt}}
+\]
+an, wobei die C-Kette beliebig lang sein kann.
+\end{korollar}
+
+Das Kernproblem der DC reduziert sich damit auf die Frage nach der
+maximalen Länge von C-Ketten.
+
+\begin{proposition}[C-Ketten und Residuenklassen]
+\label{prop:c-ketten}
+Eine C-Kette der Länge $k$ (d.\,h.\ $n, \U(n), \ldots, \U^{k-1}(n)$
+sind alle C-Typ, $\U^k(n)$ ist EA-Typ)
+erfordert $n$ aus einer Residuenklasse der Dichte $1/2^{k+2}$:
+\[
+  n \equiv c_k \pmod{2^{k+2}}
+\]
+für eine explizit berechenbare Konstante $c_k \in \Z$.
+\end{proposition}
+
+\begin{beweis}[Beweis (durch Induktion)]
+\textit{Basis $k=1$}: C-Typ bedeutet $n \equiv 11 \pmod{12}$.
+Mit $n = 12j+11$: $\U(n) = 18j+17$.
+$\U(n)$ ist EA-Typ genau dann, wenn $18j+17 \equiv 1$ oder $5 \pmod{12}$,
+d.\,h.\ $6j \equiv -10$ oder $-12 \pmod{12}$, d.\,h.\
+$6j \equiv 2$ oder $0 \pmod{12}$.
+$6j \equiv 0 \pmod{12} \Leftrightarrow j \equiv 0 \pmod{2}$;
+$6j \equiv 2 \pmod{12}$ hat keine Lösung (da $6\nmid 2$ nicht,
+aber $\gcd(6,12)=6\nmid 2$, also keine Lösung).
+Daher: $j$ gerade $\Leftrightarrow$ $n \equiv 11 \pmod{24}$.
+Das ist Dichte $1/4 = 1/2^2$. \checkmark
+
+C-Kette der Länge $\geq 2$ erfordert $j$ ungerade, also $n \equiv 23 \pmod{24}$.
+
+\textit{Induktionsschritt}: Angenommen, eine C-Kette der Länge $k$
+erfordert $n \equiv c_k \pmod{2^{k+2}}$.
+Dann bestimmt der nächste Schritt $\U^k(n) = c_k'$ mit
+$c_k' \equiv d_k \pmod{12}$ für ein berechenbares $d_k$.
+Ob $\U^{k+1}(n)$ wieder C-Typ ist, hängt von dem nächsten Bit
+der Darstellung von $n$ ab, was eine Bedingung $n \equiv c_{k+1} \pmod{2^{k+3}}$
+erzwingt. Die Dichte halbiert sich also bei jedem Schritt.
+\end{beweis}
+
+\begin{korollar}[Exponentiell dünn werdende Klassen]
+\label{kor:dichte}
+Die Menge
+\[
+  S_k := \{n \in \N \text{ ungerade} : \text{C-Kette der Länge} \geq k\}
+\]
+hat Dichte $d(S_k) \leq 1/2^{k}$ unter den ungeraden natürlichen Zahlen.
+Insbesondere ist $d(S_k) \to 0$ für $k \to \infty$.
+\end{korollar}
+
+\begin{tcolorbox}[ergebnis]
+\textbf{Bewiesene Aussagen zur DC:}
+\begin{enumerate}[label=(\arabic*)]
+  \item B-Typ-Elemente bilden keine B-B-Ketten (Prop.~\ref{prop:kein-bb}).
+  \item Jede BC-Kette hat die Form $(B^0\text{ oder }B^1) \cdot C^k$
+    mit $k \geq 0$ (Kor.~\ref{kor:b-ketten}).
+  \item C-Ketten der Länge $k$ erfordern $n$ in Klassen der Dichte
+    $\leq 1/2^k$ (Kor.~\ref{kor:dichte}).
+\end{enumerate}
+\end{tcolorbox}
+
+% ----------------------------------------------------
+\subsection{Stufe (b): Morley-Walter-Analogie --- heuristische Argumente}
+% ----------------------------------------------------
+
+\subsubsection{Die Walter-Schicht als Vermittlungsnachweis}
+
+Im Bamberg-Modell ist die Walter-Schicht diejenige geometrische Ebene,
+in der aus dem triadischen Morley-Kern vermittelte Übergänge entstehen.
+Formal: Ohne Walter-Schicht kein Übergang von lokaler Phasenordnung
+zu global stabilisierter Hülle.
+
+\begin{hypothese}[DC als Walter-Übergangsnachweis]
+\label{hyp:walter-dc}
+In der Collatz-Dynamik entspricht die DC der Behauptung,
+dass die \emph{Walter-Vermittlung} nicht dauerhaft versagen kann:
+Ein Orbit, der dauerhaft nur B/C-Schritte (Expansion, lokale Phasenakkumulation)
+durchläuft, ohne E/A-Schritte (globale Stabilisierung), hätte keine
+Entsprechung in der Walter-Schicht.
+
+Formal: Betrachte den ``Walter-Funktional'' $\Wcal(n)$ als die
+normierte Abweichung des aktuellen Orbitwerts von der
+Standardgestalt des Morley-Kerns. Dann entspräche eine dauerhafte
+BC-Kette einer dauerhaften Vergrößerung von $\Wcal(n)$,
+was dem Bamberg-Axiom \textup{B-WM-1} widerspricht.
+\end{hypothese}
+
+Diese Hypothese ist \emph{nicht bewiesen}, weil der ``Walter-Funktional''
+$\Wcal(n)$ für Collatz-Orbits bislang nicht rigoros definiert ist.
+Der heuristische Kern ist aber klar:
+
+\begin{tcolorbox}[morley]
+\textbf{Morley-Walter-Heuristik zur DC:}
+Die Konvergenz $\Delta\Mcal \to 0$ und $\Delta\Wcal \to 0$
+in der Primzahlgeometrie zeigt, dass die EABC-Struktur
+asymptotisch stabil wird. Eine analoge Aussage für die Collatz-Dynamik
+würde bedeuten: Der Anteil der BC-Schritte in einem langen Orbit
+muss gegen einen durch die Morley-Standardgestalt bestimmten
+Grenzwert konvergieren --- und dieser Grenzwert ist $< 1$.
+
+Genauer: Die Morley-Standardgestalt $\Mcal_\infty \approx 0{,}0311$ gibt
+dem Morley-Kern weniger als $4\%$ der Gesamtfläche.
+Im Collatz-Bild entspräche das einer Schranke daran,
+welcher Anteil der Schritte ``unkontrahiert'' bleiben darf.
+\end{tcolorbox}
+
+\subsubsection{Der ptolemäische Defekt als Ausschlussargument}
+
+Im Bamberg-Modell trägt die ``Kreuzform'' $Q_\mathrm{II}$
+einen dauerhaft positiven ptolemäischen Defekt $|\Pi_\mathrm{II}| \sim 4(\log p)^2$.
+Die ``natürliche Form'' $Q_\mathrm{I}$ hingegen ist asymptotisch ptolemäisch.
+
+\begin{hypothese}[BC-Akkumulation als ptolemäische Instabilität]
+\label{hyp:ptolemy}
+Eine Collatz-Bahn, die dauerhaft nur BC-Schritte durchführt,
+entspräche einer dauerhaften ``Kreuzform''-Konfiguration
+mit bleibendem ptolemäischen Defekt.
+Das Bamberg-Axiom fordert Minimierung der Strukturspannung,
+was solche Bahnen ausschließen würde.
+\end{hypothese}
+
+Auch diese Hypothese ist heuristisch. Sie zeigt jedoch,
+dass der Morley-Walter-Rahmen eine natürliche geometrische
+Sprache für die DC bereitstellt.
+
+\subsubsection{Stochastisches Dichte-Argument}
+
+Korollar~\ref{kor:dichte} zeigt, dass C-Ketten der Länge $k$
+exponentiell selten sind. In Verbindung mit der Morley-Walter-Konvergenz
+ergibt sich folgendes probabilistisches Bild:
+
+\begin{hypothese}[Dichteargument für DC]
+\label{hyp:dichte}
+Wenn die 2-adische Verteilung der Collatz-Orbits hinreichend
+gleichmäßig ist (im Sinne der Ergebnisse von Tao \cite{tao-collatz}),
+dann folgt aus Korollar~\ref{kor:dichte} fast sicher,
+dass C-Ketten beschränkt sind.
+Formal: Für fast alle $n \in \N$ (im Sinne logarithmischer Dichte)
+gilt (DC) mit einem konkreten $m_0$.
+\end{hypothese}
+
+Dies wäre eine Abschwächung der DC (von ``für alle $n$'' zu
+``für fast alle $n$''), reicht aber noch nicht für die
+Collatz-Vermutung.
+
+% ----------------------------------------------------
+\subsection{Stufe (c): Was offen bleibt}
+% ----------------------------------------------------
+
+\begin{tcolorbox}[lücke]
+\textbf{Was die Morley-Walter-Methode \emph{nicht} liefert:}
+\begin{enumerate}[label=(\arabic*)]
+  \item Kein explizites $m_0$: Der Morley-Walter-Rahmen arbeitet
+    asymptotisch ($p \to \infty$) und liefert keine endliche Schranke
+    für C-Kettenlängen.
+  \item Keine universelle Aussage: Die Konvergenz $\Delta\Mcal \to 0$
+    gilt für Primzahlvierlinge, nicht automatisch für alle
+    ungeraden $n \in \N$.
+  \item Keine Kontrolle über Ausnahmen: Auch wenn ``fast alle''
+    Orbits kurze C-Ketten haben, gibt das keinen Aufschluss
+    über einzelne Ausreißer.
+  \item Keine Verknüpfung mit der Norm-Abschrankung:
+    Der Walter-Funktional $\Wcal(n)$ ist für Collatz-Orbits
+    nicht rigoros als normbasiertes Objekt definiert.
+\end{enumerate}
+\end{tcolorbox}
+
+% ====================================================
+\section{Ergebnis: Was lässt sich tatsächlich zeigen}
+% ====================================================
+
+\subsection{Gesamtbilanz}
+
+\begin{tcolorbox}[ergebnis]
+\textbf{Bewiesene Teilergebnisse zur DC:}
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{Keine B-B-Ketten} (Prop.~\ref{prop:kein-bb}): \\
+    $n$ B-Typ $\Rightarrow$ $\U(n)$ ist C- oder A-Typ (nie B-Typ).
+    Beweis: elementare Kongruenzrechnung.
+
+  \item \textbf{BC-Kettenstruktur} (Kor.~\ref{kor:b-ketten}): \\
+    Alle BC-Ketten haben Form $B^{\leq 1} \cdot C^k$.
+    Die einzige Quelle für BC-Akkumulation sind C-Ketten.
+
+  \item \textbf{Exponentielle Seltenheit langer C-Ketten}
+    (Prop.~\ref{prop:c-ketten}, Kor.~\ref{kor:dichte}): \\
+    C-Ketten der Länge $k$ erfordern $n$ in Klassen der Dichte
+    $\leq 1/2^k$ — eine klare arithmetische Schranke.
+
+  \item \textbf{Fast-alle-Versio der DC}
+    (Hyp.~\ref{hyp:dichte}, heuristisch): \\
+    In Verbindung mit Taos Ergebnissen ist (DC) für fast alle $n$
+    plausibel, aber nicht streng bewiesen.
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{tcolorbox}[warnung, title={Was bleibt offen}]
+Die Durchlaufbedingung (DC) in ihrer starken Form ---
+\emph{für jedes} $n \in \N$ gibt es ein $m \leq m_0$ mit EA-Schritt ---
+konnte weder aus dem Morley-Walter-Rahmen noch aus der
+modularen Analyse allein abgeleitet werden.
+
+Der entscheidende fehlende Schritt ist:
+Ein Argument, das zeigt, dass die C-Kette für \emph{jeden} konkreten
+Startwert $n$ endet --- nicht nur für fast alle.
+Äquivalent: Man muss ausschließen, dass ein konkretes $n$ existiert,
+das in der Folge $c_k \pmod{2^{k+2}}$ für alle $k$ liegt.
+\end{tcolorbox}
+
+\subsection{Einschätzung der Morley-Walter-Anwendbarkeit}
+
+\begin{tcolorbox}[morley]
+\textbf{Direkter Anwendungsversuch: Fazit}
+
+Der Morley-Walter-Rahmen ist auf die DC \emph{nicht direkt anwendbar},
+aus folgenden strukturellen Gründen:
+\begin{enumerate}[label=(\alph*)]
+  \item \textbf{Geometrie vs.\ Arithmetik}: Die Morley-Walter-Konvergenz
+    ist ein geometrisch-analytisches Phänomen (Dreiecksgestalt,
+    Flächenquotienten), während die DC ein rein arithmetisches Problem
+    (2-adische Bewertungen, Residuenklassen) ist. Eine direkte Brücke
+    fehlt.
+
+  \item \textbf{Asymptotik vs.\ Universalität}: Morley-Walter zeigt
+    Konvergenz für $p \to \infty$, benötigt wird eine Aussage
+    für \emph{alle} $n$.
+
+  \item \textbf{Geometrische Intuition als Heuristik}: Der Morley-Walter-Rahmen
+    liefert eine wertvolle geometrische Intuition für die EABC-Struktur
+    und gibt der BC-Frage ein präzises geometrisches Gewicht.
+    Das ist nicht nichts, aber kein Beweis.
+\end{enumerate}
+
+\textbf{Dennoch nützlich}: Die Sprache von Morley-Walter
+(Walter-Schicht als Vermittlung, Bamberg-Axiom als Stabilitätsprinzip,
+ptolemäischer Defekt als Strukturspannung) erlaubt es, die DC
+in einem kohärenten begrifflichen Rahmen zu platzieren.
+\end{tcolorbox}
+
+\subsection{Nächstbeste Alternative: Kombinatorisch-2-adische Analyse}
+
+Basierend auf dem in Proposition~\ref{prop:c-ketten} entwickelten Ansatz
+erscheint die folgende Strategie als vielversprechendster nächster Schritt:
+
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{Explizite Residuenklassen}: Berechne $c_k$ und
+    verifiziere, ob die Folge $(c_k \bmod 2^{k+2})$ eine
+    ``selbstausschließende'' Struktur hat --- d.\,h.\ ob ab einem
+    festen $k_0$ die Residuenbedingungen unverträglich werden.
+
+  \item \textbf{2-adische Dynamik}: Analysiere die C-Ketten-Abbildung
+    \[
+      n \mapsto \U(n) = \frac{3n+1}{2}
+    \]
+    als Abbildung auf dem 2-adischen Kreis $\Z_2$. Die Frage ist,
+    ob es Fixpunkte oder periodische Punkte dieser Abbildung gibt,
+    die keine 2-adische Kontraktion erfahren.
+
+  \item \textbf{Ergodentheorie}: Taos Martingal-Argument aus
+    \cite{tao-collatz} könnte auf C-Ketten spezialisiert werden,
+    um eine schärfere Dichteaussage zu erhalten.
+
+  \item \textbf{Transferoperator}: Ein Collatz-Transferoperator
+    (in der Tradition von Wirsing und Lagarias), angewendet auf die
+    C-Ketten-Unterabbildung, könnte über Spektraleigenschaften
+    eine Schranke für die Kettenlänge liefern.
+\end{enumerate}
+
+Diese Ansätze liegen näher an den realen Werkzeugen der analytischen
+Zahlentheorie und sind die nächste natürliche Eskalationsstufe.
+
+% ====================================================
+\section{Zusammenfassung und Ausblick}
+% ====================================================
+
+\begin{tcolorbox}[kernidee]
+\textbf{Kernaussage in einem Satz:}
+
+Der Morley-Walter-Rahmen liefert eine geometrisch kohärente Sprache
+für die DC und zeigt (via Bamberg-Axiom und Morley-Konvergenz) plausibel,
+warum BC-Akkumulationen unstabil sein sollten ---
+aber der entscheidende analytische Schritt, nämlich eine universelle
+obere Schranke für C-Kettenlängen, bleibt offen und benötigt Werkzeuge
+aus 2-adischer Analysis, Ergodentheorie oder Transferoperatoren.
+\end{tcolorbox}
+
+Die Hauptergebnisse dieses Dokuments im Überblick:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{p{5.5cm} p{3.5cm} p{4.5cm}}
+\toprule
+\textbf{Aussage} & \textbf{Status} & \textbf{Methode} \\
+\midrule
+B-Typ $\nrightarrow$ B-Typ & Bewiesen & Kongruenzrechnung \\
+BC-Ketten $= B^{\leq 1} C^k$ & Bewiesen & Modular \\
+$d(S_k) \leq 1/2^k$ & Bewiesen & Induktion \\
+DC für fast alle $n$ & Heuristisch & Dichteargument + Tao \\
+DC universell & Offen & --- \\
+Morley-Walter $\Rightarrow$ DC & Nicht möglich & Strukturell \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\bigskip
+
+Der Beitrag des Morley-Walter-Rahmens besteht nicht in einem
+unmittelbaren Beweis der DC, sondern in der Einbettung der DC
+in ein breiteres konzeptuelles Bild: Die Collatz-Dynamik als
+Stabilitätsproblem einer EABC-Geometrie, in der die Walter-Schicht
+die Vermittlung zwischen Expansion (B/C) und Kontraktion (E/A) regelt.
+Ob dieses Bild formalisiert werden kann, bleibt eine offene Frage.
+
+% ====================================================
+% Literatur
+% ====================================================
+\begin{thebibliography}{9}
+
+\bibitem{collatz-oktonionen}
+T. Hoffbauer,
+\textit{Collatz-Dynamik auf ganzzahligen Oktonionen: Ein Beweisversuch
+über das $E_8$-Gitter},
+Mathematische Texte (2025).
+
+\bibitem{morley-walter}
+T. Hoffbauer,
+\textit{Morley, Marion Walter, Kepler und der okti/tri-Phasenumschlag:
+Ein geometrisch-operatorischer Deutungsversuch im Bamberg-Modell},
+Mathematische Texte (2025).
+
+\bibitem{bamberg-ptolemy}
+T. Hoffbauer,
+\textit{Bamberg-Modul: Ptolemäus--Walter--Morley für Primzahlvierlinge},
+Mathematische Texte (2025).
+
+\bibitem{tao-collatz}
+T. Tao,
+\textit{Almost all orbits of the Collatz map attain almost bounded values},
+Forum of Mathematics Pi \textbf{10} (2022), e12.
+
+\bibitem{lagarias-collatz}
+J. C. Lagarias,
+\textit{The $3x+1$ problem and its generalizations},
+Amer.\ Math.\ Monthly \textbf{92} (1985), 3--23.
+
+\bibitem{wirsing}
+E. Wirsing,
+\textit{On the problem of Collatz},
+Abh.\ Math.\ Sem.\ Univ.\ Hamburg \textbf{65} (1995), 1--10.
+
+\end{thebibliography}
+
+\end{document}

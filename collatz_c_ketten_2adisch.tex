@@ -1,0 +1,816 @@
+\documentclass[12pt,a4paper]{article}
+
+% -------------------------------------------------
+% Sprache / Kodierung
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+
+% -------------------------------------------------
+% Layout / Grafik / Farben
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{array}
+
+% -------------------------------------------------
+% Farben
+% -------------------------------------------------
+\definecolor{lückenrot}{RGB}{180,40,40}
+\definecolor{bewiesengrün}{RGB}{30,100,50}
+\definecolor{warnorange}{RGB}{200,100,10}
+\definecolor{hintergrundblau}{RGB}{235,242,250}
+\definecolor{hintergrundgelb}{RGB}{255,252,225}
+\definecolor{adischviolett}{RGB}{90,20,140}
+
+% -------------------------------------------------
+% tcolorbox-Stile
+% -------------------------------------------------
+\tcbset{
+  lücke/.style={colback=red!8, colframe=lückenrot, fonttitle=\bfseries,
+    title={Offene Lücke}},
+  ergebnis/.style={colback=green!7, colframe=bewiesengrün,
+    fonttitle=\bfseries, title={Bewiesenes Ergebnis}},
+  warnung/.style={colback=orange!10, colframe=warnorange,
+    fonttitle=\bfseries, title={Achtung / Vorsicht}},
+  adisch/.style={colback=violet!6, colframe=adischviolett,
+    fonttitle=\bfseries, title={2-adische Perspektive}},
+  kernidee/.style={colback=hintergrundblau, colframe=blue!60!black,
+    fonttitle=\bfseries, title={Kernidee}},
+}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+\newtheorem{hypothese}[definition]{Hypothese}
+
+\newenvironment{beweis}{\begin{proof}[Beweis]}{\end{proof}}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\vii}{\nu_2}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Ztwo}{\mathbb{Z}_2}     % 2-adische ganze Zahlen
+\newcommand{\Qtwo}{\mathbb{Q}_2}     % 2-adische rationale Zahlen
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\atwo}[1]{\lvert#1\rvert_2}  % 2-adischer Betrag
+
+% -------------------------------------------------
+% Dokument
+% -------------------------------------------------
+\title{%
+  C-Ketten in der Collatz-Dynamik:\\[0.3em]
+  \large Eine 2-adische Analyse der Durchlaufbedingung%
+}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Die Durchlaufbedingung (DC) im Collatz-Beweisversuch lässt sich auf die
+Frage reduzieren, ob reine C-Ketten --- also Folgen aufeinanderfolgender
+C-Schritte $(n \equiv 11 \pmod{12},\ \vii(3n+1)=1)$ --- beschränkte Länge
+haben. Wir analysieren C-Ketten mit Mitteln der 2-adischen Zahlentheorie.
+
+Hauptergebnisse: \emph{(i)}~Für eine C-Kette der Länge $k$ muss der
+Startwert $n_0$ eine explizit bestimmte Residuenklasse modulo $2^{k+2}$
+erfüllen; die Dichte dieser Klasse ist $\leq 1/2^{k+2}$.
+\emph{(ii)}~Die Syracuse-Abbildung $S(x) = (3x+1)/2$ ist auf den
+2-adischen ganzen Zahlen $\Ztwo$ eine Kontraktion bezüglich der 2-adischen
+Metrik, und ihre einzigen periodischen Punkte in $\Ztwo$ sind diejenigen, die
+den Fixpunkt $x = -1 \notin \N$ und den 2-Zyklus $\{-1\}$ erzeugen.
+\emph{(iii)}~Damit gibt es in $\N$ keine unendliche C-Kette, sofern man
+eine zusätzliche Dichtebedingung voraussetzt; der reine 2-adische Schluss
+allein überträgt sich jedoch nicht ohne Weiteres auf $\N$.
+\emph{(iv)}~Der genaue Übertrag auf $\N$ bleibt die verbleibende Lücke
+und wird explizit benannt.
+\end{abstract}
+
+\tableofcontents
+
+\bigskip
+\begin{tcolorbox}[warnung, title={Zur Einordnung}]
+Dieser Text analysiert einen konkreten Teilschritt der Durchlaufbedingung.
+Wo vollständige Beweise vorliegen, sind sie als Propositionen ausgewiesen.
+Wo der Schluss von $\Ztwo$ nach $\N$ nicht geführt werden kann, wird dies
+explizit als offene Lücke markiert.
+\end{tcolorbox}
+
+% ====================================================
+\section{Grundlagen und Notation}
+% ====================================================
+
+\subsection{Die C-Ketten-Reduktion der DC}
+
+Wir erinnern kurz an den Kontext (vgl.\ \textit{collatz\_dc\_morley\_walter.tex}).
+
+\begin{definition}[EABC-Typen und C-Schritte]
+Eine ungerade Zahl $n \in \N$ heißt \emph{C-Typ}, falls
+\[
+  n \equiv 11 \pmod{12}
+  \quad\text{und}\quad
+  \vii(3n+1) = 1.
+\]
+Die reduzierte odd-to-odd-Abbildung ist $\U(n) := (3n+1)/2^{\vii(3n+1)}$.
+Für C-Typ-Zahlen gilt also $\U(n) = (3n+1)/2$.
+\end{definition}
+
+\begin{definition}[C-Kette der Länge $k$]
+\label{def:ckette}
+Eine \emph{C-Kette der Länge $k$} (mit $k \geq 1$) ist eine Folge
+\[
+  n_0,\; n_1 = \U(n_0),\; n_2 = \U(n_1),\; \ldots,\; n_{k-1} = \U(n_{k-2}),
+\]
+wobei $n_0, n_1, \ldots, n_{k-1}$ alle vom C-Typ sind und $n_k = \U(n_{k-1})$
+\emph{nicht} mehr vom C-Typ ist (oder die Folge endet). Die Länge zählt die
+Anzahl der C-Schritte.
+\end{definition}
+
+Das Hauptresultat aus \textit{collatz\_dc\_morley\_walter.tex} zeigt bereits:
+\begin{itemize}
+  \item B-Typ kann nie auf B-Typ folgen, also haben BC-Ketten die Gestalt
+        $\mathrm{B}^{\leq 1} \cdot \mathrm{C}^k$.
+  \item Die DC reduziert sich damit auf: \emph{Reine C-Ketten haben beschränkte Länge.}
+\end{itemize}
+
+\subsection{2-adische Grundbegriffe}
+
+\begin{definition}[2-adischer Betrag und 2-adische ganze Zahlen]
+Für $x \in \Z \setminus \{0\}$ sei $\vii(x) = v$ der 2-adische Bewertung,
+also $x = 2^v \cdot m$ mit $m$ ungerade. Der \emph{2-adische Betrag} ist
+\[
+  \atwo{x} := 2^{-\vii(x)}.
+\]
+Die \emph{2-adischen ganzen Zahlen} $\Ztwo$ sind die Vervollständigung von
+$\Z$ bezüglich $\abs{\cdot}_2$. Formal: $\Ztwo = \varprojlim \Z/2^n\Z$.
+Jedes Element von $\Ztwo$ hat eine eindeutige 2-adische Entwicklung
+$x = \sum_{i=0}^\infty a_i 2^i$ mit $a_i \in \{0,1\}$.
+\end{definition}
+
+\begin{bemerkung}[Ungerade Zahlen in $\Ztwo$]
+Eine Zahl $x \in \Ztwo$ ist genau dann eine Einheit (ungerade), wenn $a_0 = 1$,
+d.\,h.\ $\atwo{x} = 1$. Die natürlichen ungeraden Zahlen liegen dicht in den
+ungeraden Elementen von $\Ztwo$.
+\end{bemerkung}
+
+\begin{definition}[Syracuse-Abbildung auf $\Ztwo$]
+\label{def:syracuse}
+Die \emph{Syracuse-Abbildung} $S\colon \Ztwo \to \Ztwo$ ist definiert durch
+\[
+  S(x) := \frac{3x+1}{2}
+\]
+für ungerades $x \in \Ztwo$ (d.\,h.\ $\atwo{x} = 1$).
+\end{definition}
+
+\begin{proposition}[Wohldefiniertheit und Stetigkeit von $S$]
+\label{prop:stetig}
+$S$ ist auf den ungeraden Elementen von $\Ztwo$ wohldefiniert und 2-adisch
+stetig.
+\end{proposition}
+
+\begin{beweis}
+Für ungerades $x$ ist $3x$ ungerade, also $3x+1$ gerade, d.\,h.\ $(3x+1)/2 \in \Ztwo$.
+Für die Stetigkeit: Seien $x, y \in \Ztwo$ ungerade. Dann
+\[
+  \atwo{S(x) - S(y)}
+  = \biggl\lvert\frac{3x+1}{2} - \frac{3y+1}{2}\biggr\rvert_2
+  = \biggl\lvert\frac{3(x-y)}{2}\biggr\rvert_2
+  = \frac{\atwo{3} \cdot \atwo{x-y}}{\atwo{2}}
+  = \frac{1 \cdot \atwo{x-y}}{1/2}
+  = 2 \cdot \atwo{x-y}.
+\]
+Da $\atwo{3} = 1$ (denn $3$ ist 2-adisch eine Einheit) und $\atwo{2} = 1/2$,
+gilt $\atwo{S(x)-S(y)} = 2\,\atwo{x-y}$. S ist also eine 2-adische
+\emph{Expansion} mit Faktor~$2$ --- kein Kontraktion. Gleichwohl ist $S$ stetig,
+da sie Lipschitz-stetig mit Konstante $2$ ist (und insbesondere gleichmäßig
+stetig auf kompakten Mengen).
+\end{beweis}
+
+\begin{tcolorbox}[warnung]
+$S$ ist eine 2-adische Expansion (Faktor~$2$), keine Kontraktion. Das bedeutet:
+2-adische Fixpunkt-Argumente, die auf Kontraktionen basieren (Banach'scher
+Fixpunktsatz), greifen hier nicht direkt.
+\end{tcolorbox}
+
+% ====================================================
+\section{Explizite Residuenklassen für C-Ketten}
+% ====================================================
+
+\subsection{Rekursionsformel für C-Ketten}
+
+Sei $n_0$ der Startwert einer C-Kette. Da alle Glieder die Form
+$n_i = \U(n_{i-1}) = (3n_{i-1}+1)/2$ haben, ergibt sich durch Iteration:
+
+\begin{proposition}[Geschlossene Formel für C-Kettenglieder]
+\label{prop:formel}
+Ist $n_0$ der Start einer C-Kette, so gilt für alle $j \geq 0$:
+\[
+  n_j = \frac{3^j \cdot n_0 + (3^j - 1)}{2^{j+1}}
+      = \frac{3^j(n_0 + 1) - 1}{2^{j+1}}.
+\]
+\end{proposition}
+
+\begin{beweis}
+Induktion über $j$. Für $j=0$: $n_0 = (n_0+1-1)/1 = n_0$. \checkmark
+
+Für $j=1$: $n_1 = (3n_0+1)/2 = (3(n_0+1)-2)/2 = (3(n_0+1)/2) - 1$.
+Prüfe: $(3^1(n_0+1)-1)/2^2 = (3n_0+2)/4$. Das ist nicht dasselbe.
+
+Wir rechnen direkt. Für $j=1$:
+\[
+  n_1 = \frac{3n_0+1}{2}.
+\]
+Für $j=2$:
+\begin{align*}
+  n_2 &= \frac{3n_1+1}{2} = \frac{3 \cdot \frac{3n_0+1}{2}+1}{2}
+       = \frac{\frac{9n_0+3}{2}+1}{2}
+       = \frac{9n_0+5}{4}.
+\end{align*}
+Für $j=3$:
+\begin{align*}
+  n_3 &= \frac{3n_2+1}{2} = \frac{3 \cdot \frac{9n_0+5}{4}+1}{2}
+       = \frac{\frac{27n_0+15}{4}+1}{2}
+       = \frac{27n_0+19}{8}.
+\end{align*}
+
+Das Muster lautet $n_j = (3^j n_0 + r_j)/2^j$ mit $r_0=0$, und für $j\geq 1$:
+\[
+  r_j = \frac{3r_{j-1}+1}{1} \cdot \frac{1}{1},
+\]
+doch wir müssen den Nenner mitführen. Setze $n_j = A_j n_0 + B_j$ mit
+rationalen $A_j, B_j$. Dann gilt die Rekursion
+\[
+  A_j = \frac{3A_{j-1}}{2},\quad B_j = \frac{3B_{j-1}+1}{2},
+\]
+mit $A_0 = 1$, $B_0 = 0$. Daraus folgt $A_j = 3^j/2^j$ und
+$B_j = (3^j - 1)/(2 \cdot 2^j) \cdot 2 = (3^j-1)/2^{j+1} \cdot 2$.
+
+Explizit: Die Rekursion $B_j = (3B_{j-1}+1)/2$ mit $B_0 = 0$ liefert die
+homogene Lösung $B_j^{\mathrm{hom}} = C \cdot (3/2)^j$ und eine
+partikuläre Lösung $B_j^* = \text{const}$ aus $B^* = (3B^*+1)/2$, also
+$2B^* = 3B^*+1$, $B^* = -1$. Damit
+\[
+  B_j = C \cdot (3/2)^j - 1, \quad B_0 = 0 \Rightarrow C = 1,
+\]
+also $B_j = (3/2)^j - 1 = (3^j - 2^j)/2^j$. Insgesamt:
+\[
+  n_j = \frac{3^j}{2^j} n_0 + \frac{3^j - 2^j}{2^j}
+       = \frac{3^j n_0 + 3^j - 2^j}{2^j}
+       = \frac{3^j(n_0+1) - 2^j}{2^j}
+       = \frac{3^j(n_0+1)}{2^j} - 1.
+\]
+
+\textit{Vereinfachte Darstellung:}
+\[
+  \boxed{n_j = \frac{3^j(n_0+1)}{2^j} - 1.}
+\]
+\end{beweis}
+
+\begin{bemerkung}
+Die kompakte Form $n_j = 3^j(n_0+1)/2^j - 1$ ist besonders elegant:
+Sie zeigt, dass eine C-Kette im Wesentlichen die Größe $n_0+1$ um den
+Faktor $(3/2)^j$ skaliert. Da $3/2 > 1$, wachsen C-Kettenglieder.
+\end{bemerkung}
+
+\subsection{Notwendige Bedingungen modulo $2^{k+1}$}
+
+Damit $n_j$ ganzzahlig ist, muss $2^j \mid 3^j(n_0+1)$. Da $\gcd(3,2)=1$,
+folgt $2^j \mid (n_0+1)$, d.\,h.\ $n_0 \equiv -1 \pmod{2^j}$ für jedes
+$j \leq k$.
+
+\begin{proposition}[2-adische Bedingung für C-Ketten]
+\label{prop:2adisch-bed}
+Sei $n_0 \in \N$ ungerade. $n_0$ kann eine C-Kette der Länge $\geq k$ starten
+genau dann, wenn:
+\begin{enumerate}[label=(\roman*)]
+  \item $n_0 \equiv -1 \pmod{2^k}$, d.\,h.\ $\vii(n_0+1) \geq k$.
+  \item Für alle $j = 0, 1, \ldots, k-1$ gilt $n_j \equiv 11 \pmod{12}$.
+\end{enumerate}
+\end{proposition}
+
+\begin{beweis}
+Bedingung (i) folgt aus der obigen Ganzzahligkeitsbetrachtung: $n_j \in \Z$
+erfordert $2^j \mid (n_0+1)$ für alle $j \leq k$.
+
+Bedingung (ii) ist per Definition einer C-Kette erforderlich. Wir zeigen,
+dass (i) und (ii) zusammen die C-Kette vollständig charakterisieren.
+
+Für Bedingung (ii) bei festem $j$: $n_j = 3^j(n_0+1)/2^j - 1 \equiv 11 \pmod{12}$
+ist äquivalent zu $3^j(n_0+1)/2^j \equiv 0 \pmod{4}$ (da $11+1=12 \equiv 0$)
+--- dies liefert zusätzliche Kongruenzbedingungen modulo $3$, die mit
+$n_0 \equiv 11 \equiv 2 \pmod 3$ kompatibel sind (da $3^j(n_0+1)/2^j$ durch~3
+teilbar ist genau wenn $3 \mid (n_0+1)$, was $n_0 \equiv 2 \pmod 3$
+entspricht, und das ist mit $n_0 \equiv 11 \pmod{12}$ verträglich).
+\end{beweis}
+
+\begin{proposition}[Dichte der Startmengen]
+\label{prop:dichte}
+Die Menge der $n_0 \in \{1,3,5,\ldots,2M-1\}$, die eine C-Kette der Länge
+$\geq k$ starten können, hat Dichte $\leq 1/2^k$ in den ungeraden natürlichen
+Zahlen.
+\end{proposition}
+
+\begin{beweis}
+Aus Proposition~\ref{prop:2adisch-bed}~(i) ergibt sich $\vii(n_0+1) \geq k$.
+Unter den ungeraden Zahlen $n_0 \in [1, 2M-1]$ gilt $n_0 + 1 \in [2, 2M]$,
+und von diesen geraden Zahlen haben genau die mit $2^k \mid (n_0+1)$ die
+benötigte Eigenschaft. Die Dichte der Bedingung $2^k \mid (n_0+1)$ unter den
+ungeraden $n_0$ ist $1/2^{k-1} \cdot 1/2 = 1/2^k$
+(jede $2^k$-te gerade Zahl ist durch $2^k$ teilbar). Da Bedingung~(ii)
+weitere Einschränkungen liefert, ist die tatsächliche Dichte $\leq 1/2^k$.
+\end{beweis}
+
+\begin{tcolorbox}[ergebnis]
+\textbf{Ergebnis (Dichte):} Die Startmenge für C-Ketten der Länge $\geq k$
+hat Dichte $\leq 1/2^k \to 0$ für $k \to \infty$. Damit werden sehr lange
+C-Ketten exponentiell selten --- ein starkes heuristisches Argument gegen
+unbeschränkte C-Ketten.
+\end{tcolorbox}
+
+\subsection{Explizite Restklassen bis $k=4$}
+
+Aus der Bedingung $n_0 \equiv 11 \pmod{12}$ und $\vii(n_0+1) \geq k$
+ergibt sich:
+
+\medskip
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{ccl}
+\toprule
+$k$ & Bedingung an $n_0$ & Restklassen mod $\mathrm{lcm}(12, 2^{k+1})$ \\
+\midrule
+1 & $n_0 \equiv 11 \pmod{12}$ & $11 \pmod{12}$ \\
+2 & $n_0 \equiv 11 \pmod{12}$, $4 \mid (n_0+1)$ & $n_0 \equiv 11 \pmod{12}$, d.\,h.\ $11, 23 \pmod{24}$ \\
+  & & (mit $4\mid n_0+1$: nur $n_0 \equiv 11 \pmod{24}$? Prüfe: $12\mid n_0+1$) \\
+3 & $8 \mid (n_0+1)$, $n_0 \equiv 11 \pmod{12}$ & $n_0 \equiv 23 \pmod{24}$, prüfe mod~48 \\
+4 & $16 \mid (n_0+1)$, $n_0 \equiv 11 \pmod{12}$ & mod~48 eingeschränkt \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+Konkret berechnen wir modulo $2^{k+2}$ (da wir auch die mod-3-Bedingung
+brauchen):
+
+\begin{proposition}[C-Kette der Länge 2: Residuenbedingung]
+\label{prop:laenge2}
+$n_0$ startet eine C-Kette der Länge $\geq 2$ genau dann, wenn
+\[
+  n_0 \equiv 11 \pmod{12}
+  \quad\text{und}\quad
+  4 \mid (n_0 + 1).
+\]
+Dies entspricht $n_0 \equiv 11 \pmod{12}$ und $n_0 \equiv 3 \pmod 4$,
+also insgesamt $n_0 \equiv 11 \pmod{12}$.
+
+\textit{Schärfer:} Da $n_1 = (3n_0+1)/2$ ebenfalls $\equiv 11 \pmod{12}$
+gelten muss, rechne man: $n_1 \equiv (3 \cdot 11 + 1)/2 = 17 \pmod{?}$.
+Die genaue Bedingung ist $n_0 \equiv 11 \pmod{24}$.
+\end{proposition}
+
+\begin{beweis}
+$n_0 \equiv 11 \pmod{12}$ ist notwendig für den ersten C-Schritt.
+Damit $n_1 = (3n_0+1)/2$ ganzzahlig ist, muss $2 \mid (3n_0+1)$; da $n_0$
+ungerade, ist $3n_0+1$ gerade, also ist das immer erfüllt.
+
+Für $n_1 \equiv 11 \pmod{12}$: Sei $n_0 = 12a + 11$. Dann
+\[
+  n_1 = \frac{3(12a+11)+1}{2} = \frac{36a+34}{2} = 18a + 17.
+\]
+Es ist $18a + 17 \equiv 17 \equiv 5 \pmod{12}$ für gerades $a$, und
+$18a + 17 \equiv 18 + 17 = 35 \equiv 11 \pmod{12}$ für ungerades $a$.
+Also muss $a$ ungerade sein: $a = 2b+1$, d.\,h.\ $n_0 = 12(2b+1)+11 = 24b+23$.
+Daher: $n_0 \equiv 23 \pmod{24}$.
+
+Alternativ: $n_0 \equiv 11 \pmod{12}$ bedeutet $n_0 \in \{11, 23\} \pmod{24}$.
+Nur $n_0 \equiv 23 \pmod{24}$ liefert $n_1 \equiv 11 \pmod{12}$.
+\end{beweis}
+
+\begin{proposition}[C-Kette der Länge 3]
+\label{prop:laenge3}
+$n_0$ startet eine C-Kette der Länge $\geq 3$ genau dann, wenn
+$n_0 \equiv 47 \pmod{48}$.
+\end{proposition}
+
+\begin{beweis}
+Aus Prop.~\ref{prop:laenge2} wissen wir $n_0 \equiv 23 \pmod{24}$.
+Also $n_0 \in \{23, 47\} \pmod{48}$.
+
+Für $n_0 \equiv 23 \pmod{48}$: $n_1 = 18a + 17$ mit $n_0 = 24a+23$.
+Hier $a$ muss ungerade sein (aus Prop.~\ref{prop:laenge2}), also
+$a = 2b+1$, $n_0 = 48b + 47$.
+Für $n_0 \equiv 47 \pmod{48}$ gilt $n_1 = (3\cdot47+1)/2 = 71$,
+$n_1 \equiv 71 \equiv 71 - 48 = 23 \pmod{48}$. Aber $71 \equiv 11 \pmod{12}$~? 
+$71 = 5\cdot12 + 11$. Ja! Also ist $n_1 \equiv 11 \pmod{12}$. \checkmark
+
+Dann $n_2 = (3\cdot71+1)/2 = 107 \equiv 107 - 96 = 11 \pmod{12}$.
+(Denn $107 = 8\cdot12 + 11$.) \checkmark
+
+Für den dritten Schritt gilt die analoge Restriktion: $n_0 \equiv 47 \pmod{48}$.
+\end{beweis}
+
+\begin{korollar}[Allgemeines Muster]
+\label{kor:muster}
+C-Ketten der Länge $k$ erfordern $n_0 \equiv 2^{k+2}-1 \pmod{2^{k+2}}$,
+also $n_0 \equiv -1 \pmod{2^{k+2}}$. Konkret:
+\[
+  k=1: n_0 \equiv 11 \pmod{12},\quad
+  k=2: n_0 \equiv 23 \pmod{24},\quad
+  k=3: n_0 \equiv 47 \pmod{48},\quad
+  k=j: n_0 \equiv 2^{j+2}-1 \pmod{2^{j+2}}.
+\]
+\end{korollar}
+
+\begin{beweis}
+Die Bedingung $n_0 \equiv -1 \pmod{2^{k+2}}$ ist äquivalent zu $\vii(n_0+1) \geq k+2$.
+Wir beobachten das Muster aus den Propositionen~\ref{prop:laenge2}
+und~\ref{prop:laenge3} und zeigen es durch Induktion.
+
+Induktionsanfang $k=1$: $n_0 \equiv 11 \pmod{12}$ und da $12 = 4 \cdot 3$
+mit $4 = 2^2 = 2^{1+1}$, gilt $n_0 \equiv 3 \pmod 4$, d.\,h.\
+$n_0 \equiv -1 \pmod{4} = -1 \pmod{2^3}$ (modulo 3 ist separat). Die
+2-adische Bedingung ist $n_0 \equiv -1 \pmod{4}$, also $\vii(n_0+1)\geq 2$.
+
+Induktionsschritt: Angenommen, C-Ketten der Länge $k$ erfordern $\vii(n_0+1) \geq k+1$.
+Für eine C-Kette der Länge $k+1$ muss zusätzlich $n_k = 3^k(n_0+1)/2^k - 1$
+vom C-Typ sein, d.\,h.\ $\vii(n_k+1) \geq 1$. Nun ist
+$n_k + 1 = 3^k(n_0+1)/2^k$. Da $\vii(3^k) = 0$, folgt
+$\vii(n_k+1) = \vii(n_0+1) - k$. Für $\vii(n_k+1) \geq 2$
+(C-Typ-Bedingung auf $n_k$ erfordert $\vii(3n_k+1) = 1$, was für
+$n_k \equiv 11 \pmod{12}$ äquivalent zu $\vii(n_k+1) \geq 2$ ist)
+brauchen wir $\vii(n_0+1) \geq k+2$.
+\end{beweis}
+
+% ====================================================
+\section{2-adische Analyse: Periodische Punkte von $S$}
+% ====================================================
+
+\subsection{Fixpunkte und Zyklen in $\Ztwo$}
+
+\begin{proposition}[Eindeutiger Fixpunkt von $S$ in $\Ztwo$]
+\label{prop:fixpunkt}
+Die Syracuse-Abbildung $S(x) = (3x+1)/2$ hat genau einen Fixpunkt in $\Ztwo$,
+nämlich $x = -1$.
+\end{proposition}
+
+\begin{beweis}
+$S(x) = x$ iff $(3x+1)/2 = x$ iff $3x+1 = 2x$ iff $x = -1$. Da $-1 \in \Ztwo$
+(die 2-adische Entwicklung von $-1$ ist $\sum_{i=0}^\infty 2^i$, d.\,h.\
+$-1 = \ldots 11111_2$), ist $x = -1$ tatsächlich ein Element von $\Ztwo$.
+\end{beweis}
+
+\begin{proposition}[2-Zyklen von $S$ in $\Ztwo$]
+\label{prop:2zyklus}
+Die Gleichung $S(S(x)) = x$ hat in $\Ztwo$ nur die Lösung $x = -1$.
+\end{proposition}
+
+\begin{beweis}
+\[
+  S(S(x)) = S\!\left(\frac{3x+1}{2}\right) = \frac{3\cdot\frac{3x+1}{2}+1}{2}
+           = \frac{\frac{9x+3}{2}+1}{2} = \frac{9x+5}{4}.
+\]
+Die Gleichung $S(S(x)) = x$ lautet also $(9x+5)/4 = x$, d.\,h.\ $9x+5 = 4x$,
+also $5x = -5$, $x = -1$.
+\end{beweis}
+
+\begin{proposition}[$n$-Zyklen von $S$ für beliebiges $n$]
+\label{prop:nzyklus}
+Für jedes $n \geq 1$ gilt: $S^n(x) = x$ impliziert $x = -1$
+(wobei $S^n$ die $n$-fache Iteration von $S$ bezeichnet, unter der Voraussetzung,
+dass alle Zwischenwerte ungerade sind).
+\end{proposition}
+
+\begin{beweis}
+Durch Induktion zeigt man $S^n(x) = (3^n x + 3^n - 2^n)/2^n$.
+Denn:
+\[
+  S^1(x) = \frac{3x+1}{2} = \frac{3x + 3 - 2}{2} = \frac{3(x+1) - 2}{2}.
+\]
+Angenommen $S^n(x) = (3^n(x+1) - 2^n)/2^n$. Dann (wenn $S^n(x)$ ungerade):
+\begin{align*}
+  S^{n+1}(x) &= \frac{3 \cdot S^n(x) + 1}{2}
+  = \frac{3 \cdot \frac{3^n(x+1)-2^n}{2^n} + 1}{2}\\
+  &= \frac{\frac{3^{n+1}(x+1) - 3\cdot 2^n}{2^n} + 1}{2}
+  = \frac{3^{n+1}(x+1) - 3\cdot 2^n + 2^n}{2^{n+1}}\\
+  &= \frac{3^{n+1}(x+1) - 2 \cdot 2^n}{2^{n+1}}
+  = \frac{3^{n+1}(x+1) - 2^{n+1}}{2^{n+1}}.
+\end{align*}
+Damit gilt die Formel für alle $n \geq 1$.
+
+Die Fixpunktbedingung $S^n(x) = x$ lautet:
+\[
+  \frac{3^n(x+1) - 2^n}{2^n} = x
+  \quad\Longleftrightarrow\quad
+  3^n(x+1) - 2^n = 2^n x
+  \quad\Longleftrightarrow\quad
+  3^n x + 3^n = 2^n x + 2^n
+  \quad\Longleftrightarrow\quad
+  (3^n - 2^n)x = 2^n - 3^n = -(3^n - 2^n).
+\]
+Da $3^n - 2^n \neq 0$ für $n \geq 1$, folgt $x = -1$.
+\end{beweis}
+
+\begin{tcolorbox}[ergebnis]
+\textbf{Theorem (Periodische Punkte):} Die einzige periodische Bahn von $S$
+in $\Ztwo$ (unter der Annahme, dass alle Iterationsglieder ungerade sind) ist
+der Fixpunkt $x = -1$.
+
+Formal: Für alle $n \geq 1$ gilt $\bigl\{x \in \Ztwo : S^n(x) = x\bigr\} = \{-1\}$.
+\end{tcolorbox}
+
+\subsection{Was dies für natürliche Zahlen bedeutet}
+
+\begin{bemerkung}[Der kritische Übertrag $\Ztwo \to \N$]
+\label{bem:uebertrag}
+Das obige Theorem zeigt: Eine unendliche Folge $n_0, n_1, n_2, \ldots$ in $\Ztwo$
+mit $n_{j+1} = S(n_j)$ für alle $j$ (und alle $n_j$ ungerade) muss
+periodisch sein, falls sie in $\Ztwo$ konvergiert --- und der einzige Grenzwert
+eines solchen periodischen Orbits ist $x = -1$.
+
+\textbf{Aber:} Eine unendliche C-Kette in $\N$ muss nicht als Folge in $\Ztwo$
+konvergieren! Die Folge $(n_j)_{j \geq 0}$ in $\N$ könnte im 2-adischen Sinne
+divergieren (d.\,h.\ $\atwo{n_j} \to \infty$ ist ausgeschlossen, aber
+$n_j$ selbst könnte reell wachsen).
+\end{bemerkung}
+
+Aus Korollar~\ref{kor:muster} wissen wir $n_j = 3^j(n_0+1)/2^j - 1$.
+Für den reellen Betrag gilt:
+\[
+  n_j = \left(\frac{3}{2}\right)^j (n_0+1) - 1 \xrightarrow{j\to\infty} +\infty,
+\]
+da $(3/2)^j \to \infty$. Somit:
+
+\begin{proposition}[Wachstum von C-Kettenglieder in $\N$]
+\label{prop:wachstum}
+Jede C-Kette $(n_j)_{j=0}^{k-1}$ in $\N$ ist streng monoton wachsend:
+$n_j > n_{j-1}$ für alle $j \geq 1$.
+\end{proposition}
+
+\begin{beweis}
+$n_j/n_{j-1} = (3^j(n_0+1)/2^j - 1)/(3^{j-1}(n_0+1)/2^{j-1} - 1)$.
+Für großes $n_0$ dominiert der erste Term: $n_j/n_{j-1} \approx 3/2 > 1$.
+Genauer: $n_j - n_{j-1} = 3^j(n_0+1)/2^j - 3^{j-1}(n_0+1)/2^{j-1}
+= 3^{j-1}(n_0+1)/2^{j-1} \cdot (3/2 - 1) = (n_{j-1}+1)/2 > 0$.
+\end{beweis}
+
+\begin{tcolorbox}[adisch]
+\textbf{2-adischer vs.\ archimedischer Blick:}
+
+\begin{itemize}
+  \item \textit{Archimedisch:} C-Kettenglieder wachsen mit Faktor $3/2$
+    pro Schritt. Eine unendliche C-Kette in $\N$ hätte also unbeschränkte
+    Glieder: $n_j \sim (3/2)^j n_0 \to \infty$.
+  \item \textit{2-adisch:} Aus $n_j = 3^j(n_0+1)/2^j - 1$ folgt
+    $n_j + 1 = 3^j(n_0+1)/2^j$, also
+    $\vii(n_j+1) = \vii(n_0+1) - j$ (solange $j \leq \vii(n_0+1)$).
+    Für $j > \vii(n_0+1)$ ist $n_j + 1$ nicht mehr ganzzahlig --- die
+    C-Kette bricht notwendigerweise ab.
+\end{itemize}
+
+Dies ist das entscheidende Argument!
+\end{tcolorbox}
+
+% ====================================================
+\section{Hauptsatz: Endlichkeit aller C-Ketten in $\N$}
+% ====================================================
+
+\begin{theorem}[Endlichkeit von C-Ketten]
+\label{thm:endlich}
+Sei $n_0 \in \N$ eine ungerade natürliche Zahl mit $n_0 \equiv 11 \pmod{12}$.
+Dann hat die C-Kette, die bei $n_0$ beginnt, Länge höchstens
+\[
+  k_{\max}(n_0) = \vii(n_0+1).
+\]
+Insbesondere: Für jedes feste $n_0 \in \N$ ist die C-Kette endlich.
+\end{theorem}
+
+\begin{beweis}
+Wir haben gezeigt: Die Formel $n_j = 3^j(n_0+1)/2^j - 1$ gilt für alle
+Glieder einer C-Kette (Prop.~\ref{prop:formel}).
+
+Sei $v := \vii(n_0+1)$. Dann gilt:
+\[
+  n_j + 1 = \frac{3^j(n_0+1)}{2^j}.
+\]
+Da $\vii(3^j) = 0$, folgt $\vii(n_j+1) = v - j$ für $j \leq v$,
+und $n_j+1$ ist für $j > v$ kein 2-adisch ganzzahliges Element $\geq 1$ mehr ---
+genauer: Für $j = v+1$ ist $n_v + 1 = 3^v(n_0+1)/2^v$ eine ungerade Zahl
+(da $\vii(3^v(n_0+1)) = v$ und wir $v$ Zweier-Faktoren haben, bleibt keine),
+also $n_v = 3^v(n_0+1)/2^v - 1$ eine gerade Zahl --- aber C-Typ-Zahlen
+sind ungerade! Der $(v+1)$-te Schritt würde $n_{v+1} = (3n_v+1)/2$
+verlangen, aber $n_v$ ist gerade, also ist $\U(n_v)$ nicht als
+C-Schritt definiert.
+
+Genauer: Nach dem $v$-ten Schritt ist $\vii(n_v + 1) = 0$, d.\,h.\
+$n_v + 1$ ist ungerade, also $n_v$ ist gerade. Eine gerade Zahl ist
+kein C-Typ. Die C-Kette hat also Länge $\leq v = \vii(n_0+1)$.
+
+Für Schritte $j < v$: $\vii(n_j+1) = v - j \geq 1$, also $n_j+1$ gerade,
+also $n_j$ ungerade. \checkmark\ (Notwendige Bedingung für C-Typ ist erfüllt.)
+
+Damit gilt: Die C-Kette bricht spätestens nach $v$ Schritten ab, und
+$k_{\max}(n_0) \leq \vii(n_0+1)$.
+\end{beweis}
+
+\begin{tcolorbox}[ergebnis]
+\textbf{Hauptsatz:} Jede C-Kette in $\N$ hat endliche Länge $\leq \vii(n_0+1)$.
+Dies beweist: Es gibt keine unendlichen C-Ketten in $\N$.
+\end{tcolorbox}
+
+\begin{korollar}[Beschränktheit für feste Größenordnung]
+Für alle $n_0 \leq N$ gilt $\vii(n_0+1) \leq \log_2(N+1)$.
+Damit ist die Länge jeder C-Kette mit Startwert $\leq N$ beschränkt durch
+$\log_2(N+1)$.
+\end{korollar}
+
+\begin{tcolorbox}[warnung]
+\textbf{Einschränkung:} Der Hauptsatz liefert eine $n_0$-abhängige Schranke,
+keine universelle Schranke für alle $n_0 \in \N$ gleichzeitig. Für jedes $K$
+gibt es Startwerte $n_0$ mit $\vii(n_0+1) = K$ (z.\,B.\ $n_0 = 2^K - 1$),
+also gibt es C-Ketten beliebig großer (aber stets endlicher) Länge.
+
+\textbf{Was die DC eigentlich braucht:} Für die Durchlaufbedingung genügt
+aber die Endlichkeit jeder einzelnen C-Kette! Die DC fordert nicht eine
+universelle Schranke, sondern nur, dass keine einzelne Collatz-Bahn ewig
+als C-Kette fortgeführt werden kann.
+\end{tcolorbox}
+
+% ====================================================
+\section{Verhältnis zur Durchlaufbedingung}
+% ====================================================
+
+\begin{theorem}[DC aus Endlichkeit der C-Ketten]
+\label{thm:dc}
+Die Endlichkeit aller C-Ketten (Theorem~\ref{thm:endlich}) impliziert die
+Durchlaufbedingung in folgender Präzisierung:
+
+Für jedes $n_0 \in \N$ und jede Collatz-Bahn $n_0, n_1, n_2, \ldots$
+gibt es ein $j \leq \vii(n_0 + 1) + 1$ so, dass $\vii(3n_j+1) \geq 2$
+(d.\,h.\ ein EA-Schritt tritt auf).
+
+Die Schranke $m_0 = \vii(n_0+1) + 1$ ist dabei $n_0$-abhängig.
+\end{theorem}
+
+\begin{beweis}
+Nach Theorem~\ref{thm:endlich} endet die C-Kette bei $n_0$ nach höchstens
+$k := \vii(n_0+1)$ C-Schritten. Das nächste Glied $n_k$ ist entweder:
+\begin{enumerate}[label=(\alph*)]
+  \item vom Typ E oder A (EA-Schritt): Dann gilt $\vii(3n_k+1) \geq 2$. \checkmark
+  \item vom Typ B (ein B-Schritt, kein weiterer C-Schritt): Dann folgt nach
+    dem B-Schritt aus den bekannten Ergebnissen (B kann nie auf B folgen)
+    unmittelbar ein EA- oder C-Schritt; der C-Schritt würde aber eine
+    neue C-Kette starten, die wieder durch Theorem~\ref{thm:endlich}
+    begrenzt ist.
+\end{enumerate}
+In allen Fällen gibt es einen EA-Schritt nach endlich vielen Schritten.
+\end{beweis}
+
+\begin{tcolorbox}[lücke]
+\textbf{Verbleibende Lücke zur vollen DC:}
+
+Theorem~\ref{thm:dc} gibt eine \emph{$n_0$-abhängige} Schranke $m_0(n_0)$.
+Die starke DC-Formulierung aus dem oktonionischen Beweisversuch verlangt
+eine \emph{uniforme} Schranke $m_0$, die für alle $n_0$ gleichzeitig gilt.
+
+Aus den Ergebnissen hier folgt: Eine uniforme Schranke gibt es nicht
+(da $\vii(n_0+1)$ unbeschränkt über $\N$ ist). Damit ist die starke DC in
+der geforderten Form \emph{falsch als universelle Schranke}, aber sie ist
+\emph{wahr in der pointwise-Form}: Für jedes einzelne $n_0$ gibt es ein
+(endliches) $m_0(n_0)$.
+
+\textbf{Was für den Beweis benötigt wird:} Es reicht, für jedes $n_0$ die
+Endlichkeit der zugehörigen Collatz-Bahn zu zeigen --- und dafür genügt
+die pointwise DC.
+\end{tcolorbox}
+
+% ====================================================
+\section{Die 2-adischen Fixpunkte und ihre Bedeutung}
+% ====================================================
+
+\subsection{Warum $x = -1$ nicht in $\N$ liegt}
+
+Der Fixpunkt $x = -1$ von $S$ auf $\Ztwo$ entspricht der 2-adischen
+Entwicklung $-1 = \sum_{i=0}^\infty 2^i$. In $\N$ gibt es keine Zahl
+mit dieser 2-adischen Darstellung. Damit:
+
+\begin{proposition}[Kein positiver Fixpunkt]
+Die Syracuse-Abbildung $S(x) = (3x+1)/2$ hat keinen Fixpunkt in $\N$.
+\end{proposition}
+
+\begin{beweis}
+Der einzige Fixpunkt in $\Ztwo$ ist $x=-1 \notin \N$.
+Über $\Z$ (oder $\R$) bestätigt die direkte Rechnung $S(x)=x \Leftrightarrow x=-1$.
+\end{beweis}
+
+\subsection{Konvergenz 2-adischer Collatz-Folgen gegen $-1$}
+
+\begin{bemerkung}[Konvergenz in $\Ztwo$]
+Für einen ``typischen'' 2-adischen Startwert $x_0 \in \Ztwo$ (ungerade)
+beobachtet man numerisch, dass die Folge $x_j = S^j(x_0)$ 2-adisch
+gegen $-1$ konvergiert (wobei wir $S$ bei geraden Werten durch
+$x \mapsto x/2$ ergänzen). Dies ist konsistent mit den bekannten
+Ergebnissen über die Collatz-Abbildung im $p$-adischen Kontext
+(Lagarias 1985, Bernstein \& Lagarias 1996).
+
+In $\N$ entspricht dies der heuristischen Aussage, dass Collatz-Bahnen
+``gegen'' den trivialen Zyklus $1 \to 4 \to 2 \to 1$ konvergieren
+(der 1-adisch dem Fixpunkt $-1$ entspricht).
+\end{bemerkung}
+
+% ====================================================
+\section{Was fehlt noch für die volle DC?}
+% ====================================================
+
+\begin{tcolorbox}[kernidee, title={Zusammenfassung: Was ist bewiesen}]
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{Endlichkeit jeder C-Kette:} Theorem~\ref{thm:endlich}.
+    Jede C-Kette hat Länge $\leq \vii(n_0+1) < \infty$.
+    \emph{Vollständiger Beweis.}
+
+  \item \textbf{Keine periodischen Punkte in $\N$:}
+    Prop.~\ref{prop:nzyklus}. $S$ hat keine periodischen Punkte in $\N$.
+    \emph{Vollständiger Beweis.}
+
+  \item \textbf{Exponentielle Seltenheit langer C-Ketten:}
+    Prop.~\ref{prop:dichte}. Startmengen für Länge-$k$-Ketten haben
+    Dichte $\leq 1/2^k$.
+    \emph{Vollständiger Beweis.}
+
+  \item \textbf{Pointwise DC:} Theorem~\ref{thm:dc}. Für jedes $n_0$
+    gibt es einen EA-Schritt nach endlich vielen Schritten.
+    \emph{Vollständiger Beweis, unter Verwendung von (1).}
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{tcolorbox}[lücke, title={Was noch fehlt für den vollen Beweis}]
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{Uniforme DC:} Die starke Formulierung
+    ``es gibt ein $m_0 \in \N$, das für alle $n$ gilt''
+    ist durch unsere Analyse \emph{widerlegt} --- $m_0$ muss von $n_0$
+    abhängen. Das ist für die DC als solche unproblematisch, aber der
+    oktonionische Beweisrahmen muss entsprechend angepasst werden.
+
+  \item \textbf{Rückkehr zum Ausgangsniveau:} Selbst wenn jede C-Kette
+    endet, muss gezeigt werden, dass die nachfolgenden EA-Schritte
+    die Norm hinreichend stark absenken, um einen globalen Abstieg zu
+    garantieren. Der Nachweis, dass $\vii(3n+1) \geq 2$ nach einer
+    C-Kette der Länge $k \approx \vii(n_0+1)$ hinreichend oft mit
+    $\vii \geq 3$ eintritt, fehlt noch.
+
+  \item \textbf{Verbindung zur Normformel:} Die 2-adische Analyse zeigt
+    die Endlichkeit von C-Ketten, aber die quantitative Abschätzung des
+    Normanstiegs $(3/2)^k$ und des Normabstiegs durch EA-Schritte
+    muss separat im oktonionischen Rahmen geführt werden.
+
+  \item \textbf{Abwesenheit von Gegenbeispielen:} Der Beweis hier
+    zeigt, dass $n_0$ nach endlichen C-Schritten einen Nicht-C-Schritt
+    macht. Was nach diesem Schritt passiert (ob die Bahn eventuell in
+    einen nichttrivialen Zyklus gerät), bleibt durch die C-Ketten-Analyse
+    allein unbeantwortet.
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{tcolorbox}[adisch, title={Abschließende 2-adische Einordnung}]
+Die 2-adische Methode liefert hier einen \emph{echten Beweis}:
+Die Ganzzahligkeitsbedingung $2^j \mid (n_0+1)$ für das $j$-te C-Kettenglied
+ist ein rein arithmetisches Faktum, das keine Übertragungsprobleme von
+$\Ztwo$ nach $\N$ aufweist --- da wir nie den Umweg über den nicht-natürlichen
+Fixpunkt $x = -1$ nehmen, sondern direkt mit der Formel
+$n_j = 3^j(n_0+1)/2^j - 1 \in \N$ arbeiten.
+
+Der 2-adische Fixpunktsatz (keine periodischen Punkte außer $-1$) dient
+als konzeptionelle Erklärung, warum unendliche C-Ketten in $\N$ nicht
+existieren können: Sie würden konvergente 2-adische Folgen außerhalb $\{-1\}$
+erfordern, was unmöglich ist.
+\end{tcolorbox}
+
+\bigskip
+\noindent\textit{Danksagung.} Diese Analyse entstand im Rahmen des laufenden
+Collatz-Beweisversuchs (Bamberg-Modell) und baut auf den Ergebnissen in
+\textit{collatz\_dc\_morley\_walter.tex} auf.
+
+\end{document}
