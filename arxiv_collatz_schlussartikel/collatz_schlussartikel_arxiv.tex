@@ -668,6 +668,10 @@ Für die naive Wahl $E=\{1\}$ bzw.\ $\disttwo(n,1)$ ist diese Form
 \textbf{widerlegt} (Juni 2026; \texttt{collatz\_angriff\_uniformitaet.tex}).
 Offen bleibt eine \emph{präzise} punktweise Uniformitätsaussage über eine
 geeignete Menge $E\subset\Ztwo$ der Kontraktionszustände --- nicht Distanz zu~$1$.
+Die 2-adische Literatur~\cite{BernsteinLagarias1996,Rozier2019} studiert Collatz
+über Paritätsfolgen und Shift-Konjugation auf $\Ztwo$; der nächste Schritt ist,
+$E$ als abgeschlossenen Attraktor-/Ausnahmekomplex zu konstruieren und
+$\disttwo(U^k(n),E)$ statt $\disttwo(n,1)$ zu uniformisieren.
 \end{tcolorbox}
 \begin{vermutung}[Uniformitäts-Vermutung (präzisiert)]
 \label{verm:uniform}
@@ -804,7 +808,24 @@ Uniformitäts-Vermutung~\ref{verm:uniform}:
 Der gegenwärtige Stand liefert \emph{keine} Collatz-Beweisung, sondern eine
 formal abgesicherte Strukturtheorie mit einer klar isolierten
 Uniformitätslücke.
+Die präzise Formulierung dieser Lücke verschiebt den Zielraum: nicht
+$\disttwo(n,1)$ (widerlegt für LTE-Familien), sondern $\disttwo(n,E)$ bzw.\
+$\disttwo(U^k(n),E)$ für eine abgeschlossene Ausnahmemenge
+$E\subset\Ztwo$~\cite{BernsteinLagarias1996,Rozier2019}.
+Details und Lean-Gerüst in \texttt{collatz\_z2\_attraktor.tex}.
 \end{tcolorbox}
+
+\paragraph{2-adischer Paradigmenwechsel.}
+Bernstein und Lagarias zeigen, dass die Collatz-Abbildung auf $\Ztwo$
+topologisch konjugiert zur 2-adischen Shift-Dynamik ist~\cite{BernsteinLagarias1996};
+Rozier etabliert die bijektive Paritätskodierung $Q:\Ztwo\to\Ztwo$ als
+2-adische Isometrie~\cite{Rozier2019}.
+Daraus folgt: Uniformitätsfragen sind geometrische Ultrametrik-Fragen
+($\disttwo(T^k(n),E)\to 0$?) über ein invariantes Objekt~$E$, nicht
+Punktnähe zu~$1$.
+In Mathlib ist $\Ztwo$ als \texttt{PadicInt~2} vollständig formalisiert;
+\texttt{collatz\_z2\_attraktor.lean} enthält $\disttwo$, Ultrametrik und
+\texttt{ExceptionSetApprox}, der Limes $E=\overline{\bigcup_N E_{N,N}}$ bleibt offen.
 
 \begin{center}
 \begin{verbatim}
@@ -840,6 +861,42 @@ Offen & Uniformität über $E\subset\Ztwo$ (punktweise Brücke zu allen $n\in\N$
 \bottomrule
 \end{tabular}
 \end{center}
+
+\subsection{Rolle von Lean~4}
+\label{subsec:lean-rolle}
+
+Lean~4 ist in diesem Projekt kein numerischer Collatz-Test und kein Ersatz
+für die LaTeX-Argumentation. Es ist ein \emph{Beweisassistent}: Aussagen
+werden wie Programme formuliert; jeder Schritt ist maschinell geprüft oder
+explizit als \texttt{sorry} (offen) markiert.
+
+Drei Statusstufen trennen epistemisch sauber:
+\begin{itemize}[nosep]
+  \item \textbf{bewiesen} (ohne \texttt{sorry}) --- z.\,B.\ C-Ketten-Endlichkeit
+    in \texttt{collatz\_density.lean};
+  \item \textbf{formal widerlegt} --- negative Sätze sind gleichwertig mit positiven
+    Lemmata: \texttt{dist\_to\_one\_not\_uniform\_bound} zeigt, dass eine
+    Uniformitätsstrategie über $\disttwo(n,1)$ scheitert;
+  \item \textbf{offen} --- die punktweise Uniformität $\disttwo(T^k(n),E)\to 0$
+    (Stufe~E in \texttt{collatz\_z2\_attraktor.lean}).
+\end{itemize}
+
+In \texttt{collatz\_uniformity.lean} liegen LTE-Kompensation, Mischschranken und
+Dichteverbindungen formal vor; in \texttt{collatz\_z2\_attraktor.lean} die
+2-adische Metrik, endliche Ausnahmemengen \texttt{ExceptionSetApprox}, Monotonie
+und Invarianz $T(E)\subseteq E$. Der Limes
+$E=\overline{\bigcup_N E_{N,N}}$ und die globale Uniformität bleiben offen.
+
+Die Infrastruktur nutzt Mathlib~4 ($\Ztwo$ als \texttt{PadicInt~2},
+\texttt{padicValNat}, \texttt{closure}). Wo Mathlib endet (vollständige
+Perron-Frobenius-Theorie, punktweiser Birkhoff-Satz), endet der
+formalisierte Teil --- dokumentiert, nicht verschwiegen.
+
+\begin{tcolorbox}[kern,title={Bedeutung von Lean}]
+Lean liefert hier \emph{formal abgesicherte Strukturtheorie mit klar isolierter
+Uniformitätslücke}: beglaubigt, was bewiesen ist; beglaubigt, was widerlegt ist;
+und lokalisiert die verbleibende Front an der Attraktormenge $E\subset\Ztwo$.
+\end{tcolorbox}
 
 \subsection{Taos Hauptergebnis (präzise)}
 
@@ -885,6 +942,22 @@ Unveröffentlichte Notiz, 1937.
 J.~C.~Lagarias.
 The $3x+1$ problem and its generalizations.
 \textit{Amer.\ Math.\ Monthly} \textbf{92} (1985), 3--23.
+
+\bibitem{BernsteinLagarias1996}
+D.~J.~Bernstein und J.~C.~Lagarias.
+The $3x+1$ conjugacy map.
+\textit{Canad.\ J.\ Math.} \textbf{48} (1996), 1154--1169.
+
+\bibitem{Bernstein1994}
+D.~J.~Bernstein.
+A non-iterative $2$-adic statement of the $3x+1$ conjecture.
+\textit{Proc.\ Amer.\ Math.\ Soc.} \textbf{121} (1994), 405--408.
+
+\bibitem{Rozier2019}
+O.~Rozier.
+Parity sequences of the $3x+1$ map on the $2$-adic integers and Euclidean embedding.
+\textit{Integers} \textbf{19} (2019), A8.
+arXiv:1805.00133.
 
 \bibitem{Tao2019}
 T.~Tao.
