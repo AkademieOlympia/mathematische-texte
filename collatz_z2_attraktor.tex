@@ -91,7 +91,7 @@ LTE-Dichte, negativer mittlerer Drift in Blockmodellen), aber nicht die
 punktweise Aussage f\"ur alle $n\in\N$.
 
 \begin{tcolorbox}[kern,title={Verschiebung der Leitfrage}]
-\emph{Benutzer-Leitfrage:} Nicht prim\"ar ``erreicht jede Bahn $1$?'',
+Nicht prim\"ar ``erreicht jede Bahn $1$?'',
 sondern: \textbf{Warum kann keine Trajektorie dauerhaft vom 2-adischen
 Attraktorbereich der trivialen Nachbarschaft getrennt bleiben?}
 \end{tcolorbox}
@@ -108,6 +108,48 @@ mittlerem Verhalten folgt nicht automatisch, dass ein \emph{festes} $n$
 nicht in einer pathologischen 2-adischen Komponente verharrt.
 Dieses Dokument fixiert die Begriffe $E$ und $\disttwo(n,E)$ als
 gemeinsame Sprache f\"ur diesen Angriff.
+
+% =================================================
+\section{Literatur und paradigmatischer Kontext}
+\label{sec:literatur}
+% =================================================
+
+Die 2-adische Collatz-Literatur studiert die Dynamik nicht prim\"ar als
+Abstandsfrage zu~$1$, sondern \"uber \emph{Parit\"atsfolgen}, \emph{Shift-Dynamik}
+und \emph{Konjugation auf} $\Ztwo$.
+Auf $\Ztwo$ ist die volle Collatz-Abbildung $T$ topologisch konjugiert zur
+2-adischen Shift-Abbildung~$S$:
+es existiert ein eindeutiger Hom\"oomorphismus $\Phi:\Ztwo\to\Ztwo$ mit
+$\Phi\circ S\circ\Phi^{-1}=T$~\cite{BernsteinLagarias1996,Bernstein1994}.
+Die Parit\"atsvektor-Funktion $Q$ ordnet jedem $x\in\Ztwo$ die Folge
+$(T^k(x)\bmod 2)_{k\geq 0}$ als 2-adische Zahl zu; $Q$ ist bijektiv und
+eine 2-adische Isometrie~\cite{Rozier2019,Lagarias1985}.
+In Lean/Mathlib ist $\Ztwo$ als \texttt{PadicInt~2} modelliert: vollst\"andiger,
+nichtarchimedischer, normierter Ring und diskreter Bewertungsring (DVR).
+
+\begin{tcolorbox}[kern,title={Paradigmenwechsel: Zielraum der Uniformit\"atsfrage}]
+Der n\"achste Schritt ist nicht, eine globale Schranke f\"ur $\disttwo(n,1)$
+zu erzwingen, sondern eine \textbf{ausgezeichnete abgeschlossene Menge}
+$E\subset\Ztwo$ zu konstruieren --- als Ausnahme-, Attraktor- oder
+Grenzkomplex der nicht-trivialen Bahnen.
+Die offene Uniformit\"atsfrage lautet geometrisch in der Ultrametrik:
+\[
+  \forall n\in\N\ \exists K(n):\quad \disttwo\bigl(U^{K(n)}(n),E\bigr)\geq\eta
+  \quad\text{oder \"aquivalent}\quad
+  \disttwo\bigl(U^k(n),E\bigr)\not\to 0\ \text{entlang der Bahn},
+\]
+wobei $E$ invariant oder asymptotisch invariant unter $U$ sein soll.
+\end{tcolorbox}
+
+\subsection{Warum $\disttwo(\cdot,1)$ als Zielobjekt scheitert}
+
+Der Punkt $1\in\Ztwo$ ist als Attraktor-Ziel zu klein: Parit\"atsfolgen,
+LTE-Worst-F\"alle ($n_0=2^{k+1}3^r-1$) und 2-adische Restklassen verlangen
+ein \emph{invariantes} oder \emph{asymptotisch invariantes} Objekt~$E$,
+nicht einen isolierten Fixpunkt.
+Die naive Form $\disttwo(n,1)\geq c\cdot 2^{-\lfloor\log_2 n\rfloor}$ ist
+\textbf{widerlegt} (\S\ref{sec:widerlegt}); die korrekte Frage ist
+$\disttwo(n,E)$ bzw.\ $\disttwo(U^k(n),E)$.
 
 % =================================================
 \section{Definitionen}
@@ -186,7 +228,7 @@ Dieses Dokument verwendet Definition~\ref{def:E}; die Alternativen sind
 Für $n_0=2^{k+1}3^r-1$ mit $k,r\geq 1$ gilt $\vii(n_0+1)=k+1$, also
 $|n_0-(-1)|_2=2^{-(k+1)}$ und insbesondere für $k=1$ oft $\disttwo(n_0,1)=1/2$.
 Diese Familie illustriert, warum Uniformitätsaussagen über $\disttwo(\cdot,1)$
-nicht den Attraktor $A_{\mathrm{triv}}$ treffen (vgl.\ PR~\#17).
+nicht den Attraktor $A_{\mathrm{triv}}$ treffen.
 
 \begin{center}
 \begin{tabular}{@{}lll@{}}
@@ -238,7 +280,7 @@ Die Distanz zu $1$ ist \emph{nicht} dasselbe wie $\disttwo(n,E)$; siehe \S\ref{s
 \label{sec:widerlegt}
 % =================================================
 
-Aus \texttt{collatz\_angriff\_uniformitaet.tex} (Pull Request \#17) und numerischen
+Aus \texttt{collatz\_angriff\_uniformitaet.tex} und numerischen
 Gegenbeispielen folgt:
 
 \begin{tcolorbox}[bewiesen,title={Falscher Attraktor: Abstand zu $1$}]
@@ -254,7 +296,7 @@ nicht der einzelne Punkt $1\in\Ztwo$.
 \end{tcolorbox}
 
 \begin{tcolorbox}[bewiesen,title={Widerlegte $c\cdot 2^{-\log n}$-Form}]
-Ebenfalls widerlegt (Proposition in PR~\#17): Jede Schranke der Form
+Ebenfalls widerlegt: Jede Schranke der Form
 $\disttwo(n,E)\geq c\cdot 2^{-\lfloor\log_2 n\rfloor}$ mit festem $c>0$,
 die nur $\disttwo(\cdot,1)$ testet, scheitert an expliziten $n_0$.
 Eine korrekte Uniformit\"atsaussage muss $E$ (oder $E_K$) explizit tragen
@@ -269,23 +311,29 @@ plausibler 2-adischer Heuristiken und zwingen zur pr\"azisen Definition~\ref{def
 \label{sec:uniform}
 % =================================================
 
-\begin{vermutung}[Punktweise Uniformit\"at / Austritt aus $E_K$]
+\begin{vermutung}[Punktweise Uniformit\"at / Austritt aus $E$]
 \label{verm:uniform}
 F\"ur jedes $n\in\N$ existiert $K(n)<\infty$, sodass die odd-to-odd-Trajektorie
-nach h\"ochstens $K(n)$ Schritten \emph{nicht} in der endlichen Ausnahme-Approximation
-$E_{K(n)}$ liegt; \"aquivalent (unter Collatz-Konvergenz): $U^{K(n)}(n)\notin E_{K(n)}$.
+nach h\"ochstens $K(n)$ Schritten den trivialen Attraktorbereich erreicht;
+\"aquivalent: $U^{K(n)}(n)\notin E_{K(n)}$ f\"ur die endliche Approximation
+$E_K$ aus Definition~\ref{def:E}.
+Geometrisch in der Ultrametrik: entlang keiner nat\"urlichen Bahn darf
+$\disttwo(U^k(n),E)\to 0$ gelten, ohne dass $A_{\mathrm{triv}}$ getroffen wird.
 \end{vermutung}
 
-\begin{tcolorbox}[offen,title={\"Aquivalente Distanz-Formulierung (bedingt)}]
-\emph{Wenn} $E\subset\Ztwo$ die in Definition~\ref{def:E} beschriebene
-Ausnahmemenge ist und \emph{wenn} jede nicht-triviale Bahn positiven Abstand
-zu $A_{\mathrm{triv}}$ hat, dann ist Vermutung~\ref{verm:uniform} \"aquivalent zu:
+\begin{tcolorbox}[offen,title={Pr\"azise offene Frage (geometrisch)}]
+Sei $E\subset\Ztwo$ die abgeschlossene Ausnahmemenge aus Definition~\ref{def:E}
+(bzw.\ der Limes $E=\overline{\bigcup_N E_{N,N}}$).
+Die Uniformit\"atsl\"ucke ist die punktweise Aussage
 \[
-  \forall n\in\N\ \exists K(n):\quad \disttwo(U^{K(n)}(n),E)\geq 2^{-\alpha}
+  \forall n\in\N\ \exists K(n):\quad
+  \disttwo\bigl(U^{K(n)}(n),E\bigr)\geq\eta_n>0
+  \quad\text{oder}\quad
+  U^{K(n)}(n)\in A_{\mathrm{triv}},
 \]
-f\"ur eine feste Tiefenschranke $\alpha$ (noch zu kalibrieren), oder schw\"acher:
-$\disttwo(n,E)$ kann nicht entlang der ganzen Bahn gegen $0$ tendieren, ohne
-$A_{\mathrm{triv}}$ zu treffen.
+mit $E$ als invariantem Grenzobjekt statt $\{1\}$.
+Schw\"acher formuliert: $\disttwo(U^k(n),E)\not\to 0$ f\"ur $k\to\infty$,
+solange die Bahn nicht in $A_{\mathrm{triv}}$ eintritt.
 \end{tcolorbox}
 
 \begin{tcolorbox}[kern]
@@ -333,14 +381,24 @@ end CollatzZ2
 \end{itemize}
 \end{tcolorbox}
 
-\begin{tcolorbox}[heuristik,title={Noch offen (kein \texttt{sorry}, aber Platzhalter/TODO)}]
+\begin{tcolorbox}[bewiesen,title={ExceptionSetApprox und Limes $E$ (Lean)}]
 \begin{itemize}[nosep]
-  \item \texttt{highComplexity}, \texttt{ExceptionSetApprox}: echte $E_K$ aus Collatz-Bahnen;
-  \item \texttt{exitsExceptionApprox}: Iteration von \texttt{collatzU} (\texttt{Function.iterate});
-  \item \texttt{inTrivialAttraktorApprox}: formal als $\|x-1\|_2<1$ auf $\Ztwo$;
-  \item Limes-Definition von $E$ (Definition~\ref{def:E}) als abgeschlossene H\"ulle in $\Ztwo$;
+  \item \texttt{ExceptionSetApprox N K}: $E_{N,K}=\{x\in\Ztwo:\exists n\leq N\text{ ungerade},
+    (n:\Ztwo)=x,\ \neg\text{\texttt{inTrivialAttraktorApprox}\,}n\,K\}$;
+  \item Monotonie: $N_1\leq N_2\Rightarrow E_{N_1,K}\subseteq E_{N_2,K}$;
+    $K_1\leq K_2\Rightarrow E_{N,K_2}\subseteq E_{N,K_1}$;
+  \item \texttt{ExceptionSetAccum} $=\bigcup_N E_{N,N}$;
+    \texttt{ExceptionSet} $=\overline{\texttt{ExceptionSetAccum}}$ (entspricht Definition~\ref{def:E});
+  \item \texttt{exitsExceptionApprox}, \texttt{inTrivialAttraktorApprox}: Austritt nach $K$ Schritten.
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}[heuristik,title={Noch offen}]
+\begin{itemize}[nosep]
+  \item Verkn\"upfung \texttt{ExceptionSet} mit Collatz-Konvergenz f\"ur alle $n\in\N$;
   \item \texttt{distToExceptionSet} bei $E=\emptyset$: Mathlib liefert $\mathrm{sInf}\,\emptyset=0$,
-    TeX-Konvention $\disttwo(n,\emptyset)=1$ noch nicht eingebaut.
+    TeX-Konvention $\disttwo(n,\emptyset)=1$ noch nicht eingebaut;
+  \item Uniformit\"ats-Vermutung~\ref{verm:uniform} als Lean-Theorem.
 \end{itemize}
 \end{tcolorbox}
 
@@ -372,6 +430,35 @@ end CollatzZ2
 Dieses Arbeitspaket definiert Begriffe und sammelt widerlegte Heuristiken;
 es beansprucht keinen Beweis der Collatz-Vermutung noch von
 Vermutung~\ref{verm:uniform}.
+Die Uniformit\"atsl\"ucke ist pr\"azise: nicht Abstand zu~$1$, sondern Abstand
+zu einem noch zu konstruierenden 2-adischen Attraktor $E\subset\Ztwo$.
 \end{tcolorbox}
+
+% =================================================
+\begin{thebibliography}{99}
+% =================================================
+
+\bibitem{BernsteinLagarias1996}
+D.~J.~Bernstein und J.~C.~Lagarias.
+The $3x+1$ conjugacy map.
+\textit{Canad.\ J.\ Math.} \textbf{48} (1996), 1154--1169.
+
+\bibitem{Bernstein1994}
+D.~J.~Bernstein.
+A non-iterative $2$-adic statement of the $3x+1$ conjecture.
+\textit{Proc.\ Amer.\ Math.\ Soc.} \textbf{121} (1994), 405--408.
+
+\bibitem{Rozier2019}
+O.~Rozier.
+Parity sequences of the $3x+1$ map on the $2$-adic integers and Euclidean embedding.
+\textit{Integers} \textbf{19} (2019), A8.
+arXiv:1805.00133.
+
+\bibitem{Lagarias1985}
+J.~C.~Lagarias.
+The $3x+1$ problem and its generalizations.
+\textit{Amer.\ Math.\ Monthly} \textbf{92} (1985), 3--23.
+
+\end{thebibliography}
 
 \end{document}
