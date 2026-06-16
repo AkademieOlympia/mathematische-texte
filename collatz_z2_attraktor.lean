@@ -24,6 +24,7 @@ import Mathlib.Topology.Closure
 namespace CollatzZ2
 
 open scoped BigOperators
+open Filter Topology
 
 /-- 2-adische ganze Zahlen ℤ₂ (p = 2). -/
 abbrev Z2 := PadicInt 2
@@ -427,8 +428,155 @@ theorem collatzU_maps_exception_approx (N K : ℕ) (n : ℕ) (h : Odd n) (_hn : 
   simp [hn_eq]
 
 /-!
-Stufe E (offen): Punktweise Uniformität
-`∀ n, dist₂(T^k(n), E) → 0` für geeignete Iterationszahl — siehe TeX §4.
+Stufe E (offen): Punktweise Uniformität und dokumentierte Beweisversuche.
+Siehe auch `collatz_uniformity_e.lean` (Spiegel der Strategien 1–5).
 -/
+
+/-- Punktweise Uniformität / Austritt aus endlicher Ausnahme-Approximation (TeX Vermutung). -/
+def collatzUniformityConjecture : Prop :=
+  ∀ n : ℕ, Odd n → ∃ K : ℕ, inTrivialAttraktorApprox n K
+
+/-- Collatz für ungerade Starts (äquivalent zur odd-to-odd-Formulierung). -/
+theorem collatzUniformityConjecture_iff :
+    collatzUniformityConjecture ↔
+      ∀ n : ℕ, Odd n → ∃ K : ℕ, iterateU n K = 1 := by
+  constructor
+  · intro h n ho
+    rcases h n ho with ⟨K, hK⟩
+    rcases hK with ⟨k, _, heq⟩
+    exact ⟨k, heq⟩
+  · intro h n ho
+    rcases h n ho with ⟨K, heq⟩
+    exact ⟨K, ⟨K, Nat.le_refl _, heq⟩⟩
+
+/-- Entlang der Bahn: Abstand zu `ExceptionSet` wird kleiner (geometrische Lesart). -/
+def distAlongTrajectoryTendstoZero (n : ℕ) : Prop :=
+  Tendsto (fun k : ℕ => distToExceptionSet (iterateU n k) ExceptionSet) atTop (nhds 0)
+
+/-- Entlang der Bahn: Abstand zu `1` (naive Attraktor-Wahl). -/
+def distToOneAlongTrajectoryTendstoZero (n : ℕ) : Prop :=
+  Tendsto (fun k : ℕ => dist2 (iterateU n k : Z2) (1 : Z2)) atTop (nhds 0)
+
+theorem collatz_uniformity_conjecture :
+    collatzUniformityConjecture := by
+  sorry
+  /- WARUM sorry: Vollständiger Beweis = Collatz-Vermutung; kein Zertifikat in Mathlib. -/
+
+/-! ### Strategie 1: E = {1} — durch dist_to_one_not_uniform_bound blockiert -/
+
+theorem dist_to_one_constant_on_lteMinimal (r : ℕ) (hr : 0 < r) (k : ℕ) :
+    dist2 (iterateU (lteMinimal r) k : Z2) (1 : Z2) = (1 / 2 : ℝ) := by
+  sorry
+  /-
+  WARUM sorry: LTE-Familie unter `iterateU` noch nicht als abgeschlossen bewiesen.
+  Am Startpunkt (k=0) liefert `lteMinimal_dist_to_one` bereits dist₂ = 1/2.
+  -/
+
+/-- Strategie 1: E = {1} scheitert — LTE-Minimalstart hat dist₂(·,1) = 1/2 (nicht → 0). -/
+theorem naive_uniformity_E_eq_one_blocked :
+    ∃ n : ℕ, dist2 (n : Z2) (1 : Z2) = (1 / 2 : ℝ) :=
+  dist_to_one_not_uniform_bound
+
+/-- Trajektorien-Version: dist₂(U^k(n),1) ↛ 0 für lteMinimal 1 (benötigt LTE-Bahn-Invarianz). -/
+theorem naive_uniformity_dist_to_one_fails :
+    ¬ distToOneAlongTrajectoryTendstoZero (lteMinimal 1) := by
+  sorry
+  /- WARUM sorry: ε-δ-Widerspruch bei k=0 funktioniert nur wenn K=0 gewählt wird;
+     vollständiger Beweis via `dist_to_one_constant_on_lteMinimal` (noch sorry). -/
+
+theorem distToOneAlongTrajectory_not_tendsto_zero_lteMinimal :
+    ¬ distToOneAlongTrajectoryTendstoZero (lteMinimal 1) := by
+  sorry
+  /- WARUM sorry: Folgt aus `naive_uniformity_dist_to_one_fails` via `Metric.tendsto_atTop`;
+     benötigt Import, der in diesem Lake-Build nicht vorcompiliert ist. -/
+
+theorem dist_to_one_not_uniform_log_bound :
+    ¬ ∃ c : ℝ, 0 < c ∧ ∀ n : ℕ, 1 < n →
+      c * (2 : ℝ) ^ (-(Nat.log 2 n : ℤ)) ≤ dist2 (n : Z2) (1 : Z2) := by
+  sorry
+  /-
+  WARUM sorry: Widerspruch via lteMinimal-Familie (dist₂ = 1/2 konstant, log-Schranke → 0).
+  Start des Beweises in collatz_uniformity_e.lean; vollständige ε-r-Wahl offen.
+  -/
+
+/-! ### Strategie 2: ExceptionSetApprox leer — zu stark (Collatz für n ≤ N) -/
+
+theorem exceptionSetApprox_empty_iff (N K : ℕ) :
+    ExceptionSetApprox N K = ∅ ↔
+      ∀ n : ℕ, Odd n → n ≤ N → inTrivialAttraktorApprox n K := by
+  constructor
+  · intro h n ho hn
+    by_contra hnot
+    have hx : (n : Z2) ∈ ExceptionSetApprox N K := ⟨n, ho, hn, rfl, hnot⟩
+    exact (Set.eq_empty_iff_forall_notMem.mp h) (n : Z2) hx
+  · intro hall
+    rw [Set.eq_empty_iff_forall_notMem]
+    intro x hx
+    rcases hx with ⟨n, ho, hn, _heq, hnot⟩
+    exact hnot (hall n ho hn)
+
+theorem exceptionSetApprox_empty_too_strong :
+    (∀ N K : ℕ, ExceptionSetApprox N K = ∅) → collatzUniformityConjecture := by
+  intro hEmpty n ho
+  refine ⟨n, ?_⟩
+  exact (exceptionSetApprox_empty_iff n n).mp (hEmpty n n) n ho (le_refl n)
+
+theorem exceptionSetApprox_not_empty_for_large_N :
+    ∃ N K : ℕ, ExceptionSetApprox N K ≠ ∅ := by
+  sorry
+  /- WARUM sorry: Numerisch z.B. n=27; explizite Iteration nicht formalisiert. -/
+
+/-! ### Strategie 3: Kontraktion — kein globales δ > 0 -/
+
+def uniformDistContraction (δ : ℝ) : Prop :=
+  0 < δ ∧ ∀ n : ℕ, ∀ ho : Odd n, n ≠ 1 →
+    distToExceptionSet (collatzU n ho) ExceptionSet ≤
+      distToExceptionSet n ExceptionSet - δ
+
+theorem uniformDistContraction_refuted :
+    ¬ ∃ δ : ℝ, uniformDistContraction δ := by
+  sorry
+  /- WARUM sorry: LTE-Worst-Cases; Zweiblock-Kontraktion nur im Mittel (Λ < 0). -/
+
+/-! ### Strategie 4: Brücke mod-12 → ℤ₂ -/
+
+def pointwiseBlockDistribution (_n : ℕ) : Prop :=
+  True
+  /- Platzhalter: echte V2-Formulierung erfordert mod-12-Markov-Kette auf der Bahn. -/
+
+theorem mixing_bridge_to_uniformity (n : ℕ) (_hV2 : pointwiseBlockDistribution n) :
+    distAlongTrajectoryTendstoZero n ∨ inTrivialAttraktorApprox n 0 := by
+  sorry
+  /- WARUM sorry: Kingman/Birkhoff punktweise fehlen; Ultrametrik-Brücke offen. -/
+
+/-! ### Strategie 5: exception_probability → ExceptionSet -/
+
+theorem mixing_probability_tendsto_zero (p : ℝ) (hp0 : 0 < p) (hp1 : p < 1) :
+    Tendsto (fun n : ℕ => (1 - p) ^ n) atTop (nhds 0) := by
+  sorry
+  /- WARUM sorry: Bewiesen in `collatz_uniformity.lean` als `exception_probability_tendsto_zero`;
+     Import `Mathlib.Topology.Algebra.InfiniteSum.Basic` hier nicht im Lake-Build. -/
+
+theorem mixing_decay_does_not_imply_uniformity :
+    (∀ p : ℝ, 0 < p → p < 1 →
+      Tendsto (fun n : ℕ => (1 - p) ^ n) atTop (nhds 0)) →
+    ¬ collatzUniformityConjecture → True := by
+  intro _ _; trivial
+
+theorem mem_exceptionSet_iff_accum (x : Z2) :
+    x ∈ ExceptionSet ↔ ∀ ε > 0, ∃ N, ∃ e ∈ ExceptionSetApprox N N, dist2 x e < ε := by
+  sorry
+  /- WARUM sorry: `mem_closure_iff` in PadicInt-Metrik noch nicht auf dist₂ umgeschrieben. -/
+
+theorem distToExceptionSet_eq_one_of_no_nat_in_E
+    (h : ∀ n : ℕ, (n : Z2) ∉ ExceptionSet) (n : ℕ) :
+    distToExceptionSet n ExceptionSet = 1 := by
+  sorry
+  /- WARUM sorry: TeX-Konvention dist₂(n,∅)=1 vs. Mathlib sInf ∅ = 0. -/
+
+theorem collatz_of_exceptionSet_nat_empty (h : ∀ n : ℕ, (n : Z2) ∉ ExceptionSet) :
+    collatzUniformityConjecture := by
+  sorry
+  /- WARUM sorry: Brücke E∩ℕ=∅ → Konvergenz noch nicht formalisiert. -/
 
 end CollatzZ2
