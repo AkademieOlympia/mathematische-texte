@@ -488,21 +488,18 @@ $k$ & $r$ & $N$ & $n_0$ & $n_{k+1}$ & $\text{Typ}$ & $\vii(n_{k+1}+1)$ \\
 
 \textit{Typ} nach $n_{k+1} \bmod 12$: E $\equiv 1$, A $\equiv 5$, B $\equiv 7$, C $\equiv 11$.
 
-\begin{tcolorbox}[ergebnis, title={Beobachtung: Strukturelle Kompensation}]
-In allen berechneten Fällen gilt $\vii(n_{k+1}+1) \leq 2$.
-Das bedeutet: Der Nachfolger $n_{k+1}$ kann maximal eine C-Kette der
-Länge~$1$ starten. Die extremalen Startpunkte mit langen C-Ketten
-erzeugen zwingend ``flache'' Nachfolger.
+\begin{tcolorbox}[colback=red!8,colframe=red!60!black,title={Korrektur (Juni 2026)}]
+Eine frühere Fassung behauptete pauschal $\vii(n_{k+1}+1)\leq 2$ nach
+extremalen Blöcken; das ist zu stark (Gegenbeispiel $k{=}1$, $r{=}10$).
+Siehe \texttt{collatz\_angriff\_uniformitaet.tex}.
+\end{tcolorbox}
 
-\emph{Kompensationsmuster:}
-\begin{itemize}[nosep]
-  \item $N$ gerade (LTE-schlechtester Fall, $\vii=2$): Nachfolger ist
-    E-Typ ($n_{k+1} \equiv 1 \pmod{12}$) --- starke Kontraktion folgt.
-  \item $N$ ungerade: A-Schritt hat $\vii \geq 3$ --- direkte Kontraktion
-    im selben Block.
-\end{itemize}
-In \emph{beiden} Fällen folgt nach dem LTE-extremalen Block eine
-Phase starker Kontraktion.
+\begin{tcolorbox}[ergebnis, title={Strukturelle Kompensation (präzise)}]
+Proposition~\ref{prop:nachfolger} (Lean: \texttt{lte\_even\_N\_successor\_valuation\_one}):
+Für gerades $N=k+r$ gilt nach dem $\mathrm{C}^k\mathrm{A}$-Block
+$\vii(n_{k+1}+1)=1$; der Nachfolger ist E-Typ und startet keine C-Kette.
+Für ungerades $N$ erfolgt die Kompensation im selben Block über
+$\vii(3n_k+1)\geq 3$, nicht über einen pauschal flachen Nachfolger.
 \end{tcolorbox}
 
 \subsection{Spezialfall $n_0 = 4\cdot 3^r - 1$ (minimale C-Kette, $k=1$)}
@@ -593,9 +590,12 @@ $\Lambda_A = 2\log_2 3 - 5 \approx -1{,}83$ (typischer Fall)
 $\Lambda_B \approx +0{,}54 > 0$ (LTE-schlimmster Fall)
   & \textcolor{lückenrot}{\bfseries Negativ}
   & Szenario B \\[2pt]
-Nach extremalem Block: $\vii(n_{k+1}+1) \leq 2$
+Gerades $N=k+r$: $\vii(n_{k+1}+1)=1$ nach extremalem Block
   & \textcolor{bewiesengrün}{\bfseries Bewiesen}
-  & Prop.~\ref{prop:nachfolger} \\[2pt]
+  & Prop.~\ref{prop:nachfolger}, Lean \\[2pt]
+Pauschale $\vii(n_{k+1}+1)\leq 2$ für alle $(k,r)$
+  & \textcolor{lückenrot}{\bfseries Widerlegt}
+  & \texttt{collatz\_angriff\_uniformitaet.tex} \\[2pt]
 Zweiblock-Nettofaktor $< 1$ für $n_0 = 4\cdot 3^r - 1$
   & \textcolor{bewiesengrün}{\bfseries Berechnet}
   & Prop.~\ref{prop:spezial}, Kons. \\[2pt]
@@ -647,8 +647,10 @@ $m$ gilt, dass die nächsten zwei Blöcke gemeinsam kontrahieren:
 \[
   \frac{n_{k'+1}}{n_0} < 1,
 \]
-wobei $k'$ die Länge der zweiten C-Kette ist (durch
-$\vii(n_{k+1}+1) \leq 2$ auf $\leq 1$ begrenzt).
+wobei $k'$ die Länge der zweiten C-Kette ist; für gerades
+$N=k+r$ ist $\vii(n_{k+1}+1)=1$ (Prop.~\ref{prop:nachfolger}), für
+ungerades $N$ muss die Kompensation blockintern über $\vii(3n_k+1)\geq 3$
+argumentiert werden.
 
 \textit{Dies würde das Dichte-Argument auf Zwei-Block-Ebene retten:
 Während ein Einzelblock expandieren kann, kontrahieren je zwei

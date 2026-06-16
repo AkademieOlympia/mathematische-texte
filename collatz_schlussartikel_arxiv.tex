@@ -455,10 +455,16 @@ Das 2-adische Dichte-Argument konvergiert, aber zu einem \emph{positiven}
 Wert --- Dichte allein erzwingt keine punktweise Kontraktion.
 \end{tcolorbox}
 
-\begin{tcolorbox}[bewiesen,title={Strukturelle Kompensation}]
-Für $n_0 = 2^{k+1}\cdot 3^r - 1$ erzwingt die Dynamik nach dem
-$\mathrm{C}^k\mathrm{A}$-Block einen Nachfolger mit $\vii(n_{k+1}+1) \leq 2$
-und (für gerades $N=k+r$) E-Typ-Nachfolger $n_{k+1} \equiv 1 \pmod{12}$.
+\begin{tcolorbox}[colback=red!8,colframe=lueckenrot,title={Korrektur (Juni 2026)}]
+Frühere Fassungen behaupteten pauschal $\vii(n_{k+1}+1)\leq 2$; siehe
+\texttt{collatz\_angriff\_uniformitaet.tex} (Gegenbeispiel $k{=}1$, $r{=}10$).
+\end{tcolorbox}
+\begin{tcolorbox}[bewiesen,title={Strukturelle Kompensation (präzise)}]
+Für $n_0 = 2^{k+1}\cdot 3^r - 1$ und gerades $N=k+r$ gilt nach dem
+$\mathrm{C}^k\mathrm{A}$-Block $\vii(n_{k+1}+1)=1$ und
+$n_{k+1}\equiv 1\pmod{12}$ (E-Typ; Lean
+\texttt{lte\_even\_N\_successor\_valuation\_one}).
+Für ungerades $N$ kontrahiert der Block über $\vii(3n_k+1)\geq 3$.
 Zweiblock-Nettofaktor $< 1$ für $n_0 = 4\cdot 3^r - 1$.
 \end{tcolorbox}
 
@@ -655,13 +661,21 @@ nicht der einzelnen Trajektorie. Der negative Drift gilt für das
 gemischte Blockmodell; die punktweise Lücke bleibt offen.
 \end{tcolorbox}
 
-\begin{vermutung}[Uniformitäts-Vermutung]
+\begin{tcolorbox}[heuristik,title={Uniformität (historische Form; heuristisch / widerlegt für $\disttwo(\cdot,1)$)}]
+Eine frühere Vermutung forderte $c>0$ mit
+$\disttwo(n,E)\geq c\cdot 2^{-\lfloor\log_2 n\rfloor}$ für alle $n\in\N$.
+Für die naive Wahl $E=\{1\}$ bzw.\ $\disttwo(n,1)$ ist diese Form
+\textbf{widerlegt} (Juni 2026; \texttt{collatz\_angriff\_uniformitaet.tex}).
+Offen bleibt eine \emph{präzise} punktweise Uniformitätsaussage über eine
+geeignete Menge $E\subset\Ztwo$ der Kontraktionszustände --- nicht Distanz zu~$1$.
+\end{tcolorbox}
+\begin{vermutung}[Uniformitäts-Vermutung (präzisiert)]
 \label{verm:uniform}
-Es existiert $c > 0$, so dass für alle $n \in \N$:
-\[
-  \disttwo(n, E) \geq c \cdot 2^{-\lfloor\log_2 n\rfloor},
-\]
-wobei $E$ die Menge der 2-adischen Kontraktionszustände bezeichnet.
+Es existieren eine endliche bzw.\ abzählbare Menge $E\subset\Ztwo$ von
+Kontraktionszuständen und eine uniforme (in $n$) untere Schranke für die
+2-adische Trennung $\disttwo(n,E)$ entlang jeder natürlichen Trajektorie,
+sofern diese nicht divergiert. Eine konkrete Form mit $c\cdot 2^{-\log n}$
+ist nicht mehr als Arbeitsannahme zu verwenden.
 \end{vermutung}
 
 \subsection{Roths Satz als Analogie}
@@ -784,25 +798,47 @@ Uniformitäts-Vermutung~\ref{verm:uniform}:
   \item 2-adische Fourier-Analyse im Geiste von Tao für punktweise Schranken.
 \end{enumerate}
 
+\subsection{Epilog: Proof Landscape (Juni 2026)}
+
+\begin{tcolorbox}[kern,title={Kernaussage}]
+Der gegenwärtige Stand liefert \emph{keine} Collatz-Beweisung, sondern eine
+formal abgesicherte Strukturtheorie mit einer klar isolierten
+Uniformitätslücke.
+\end{tcolorbox}
+
 \begin{center}
 \begin{verbatim}
 [ Irreduzibler mod-12 RPF-Operator ]
-         |
-         v
-[ Stationäres Maß pi ]
-         |
-         v
-[ Negativer Drift Lambda ~ -0.830 ]  (heuristisch)
-         |
-         v
-[ Klassenmischung |lambda_2| ~ 0.35 ]
-         |
-         v  <- Brücke fehlt
-[ dist(n,E) >= c*2^{-log_2 n} ]  (Uniformitätsvermutung)
-         |
-         v
-[ Volle Konvergenz ]
+                 |
+                 v
+     [ Stationäres Maß pi ]
+                 |
+                 v
+[ Negativer Drift Lambda ~ -0.830 ]  (numerisch/heuristisch)
+                 |
+                 v
+[ Informationszerreibung / Mischung W(n)<=70 ]
+                 |
+          Brücke fehlt:
+  Uniformität über E subset Z_2 (nicht dist zu 1)
+                 |
+                 v
+       [ Volle Konvergenz -- OFFEN ]
 \end{verbatim}
+\end{center}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Status} & \textbf{Inhalt} \\
+\midrule
+Bewiesen & DC, C-Ketten, EA-Zwang, 2-adische Startdichte \\
+Lean & Kernstruktur (\texttt{collatz\_density.lean}, \texttt{collatz\_uniformity.lean}) \\
+Numerisch / heuristisch & $\Lambda$, mod-12-Mischung, $W(n)\leq 70$ \\
+Offen & Uniformität über $E\subset\Ztwo$ (punktweise Brücke zu allen $n\in\N$) \\
+\bottomrule
+\end{tabular}
 \end{center}
 
 \subsection{Taos Hauptergebnis (präzise)}
