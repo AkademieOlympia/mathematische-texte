@@ -1,0 +1,363 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[a4paper,margin=2.4cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks,unicode]{hyperref}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{listings}
+
+\definecolor{bewiesengruen}{RGB}{30,100,50}
+\definecolor{warnorange}{RGB}{200,100,10}
+\definecolor{lueckenrot}{RGB}{180,40,40}
+\definecolor{kernblau}{RGB}{20,60,130}
+
+\tcbset{
+  bewiesen/.style={colback=green!7,colframe=bewiesengruen,fonttitle=\bfseries},
+  heuristik/.style={colback=orange!10,colframe=warnorange,fonttitle=\bfseries},
+  offen/.style={colback=red!8,colframe=lueckenrot,fonttitle=\bfseries},
+  kern/.style={colback=blue!5,colframe=kernblau,fonttitle=\bfseries},
+}
+
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+\newtheorem{vermutung}[satz]{Vermutung}
+
+\newcommand{\vii}{\nu_2}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Ztwo}{\mathbb{Z}_2}
+\newcommand{\Ztwost}{\mathbb{Z}_2^{\ast}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Col}{\mathrm{Col}}
+\newcommand{\disttwo}{\operatorname{dist}_2}
+
+\lstset{
+  basicstyle=\ttfamily\scriptsize,
+  breaklines=true,
+  frame=single,
+  numbers=left,
+  numberstyle=\tiny,
+  language=,
+  showstringspaces=false
+}
+
+\title{%
+  Die Ausnahmemenge $E\subset\mathbb{Z}_2$ und die 2-adische Distanz\\
+  $\mathrm{dist}_2(n,E)$ als Uniformitäts-Objekt
+}
+\author{Thomas Hoffbauer}
+\date{16.\ Juni 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Die Collatz-Vermutung wird hier nicht erneut in der klassischen Form
+``jede Bahn erreicht $1$?'' angegangen.
+Stattdessen fragen wir, warum keine Trajektorie dauerhaft vom
+2-adischen Attraktorbereich der triviale Zyklus-Nachbarschaft getrennt bleibt.
+Wir definieren die odd-to-odd-Abbildung $U$ auf $\Ztwost$,
+präzisieren eine Ausnahmemenge $E\subset\Ztwo$ als 2-adischen Limes
+nicht-trivialer Bahnen und studieren $\disttwo(n,E)$.
+Bekannte Widerlegungen falscher Attraktoren (Abstand zu $1$, naive
+$c\cdot 2^{-\log n}$-Schranke) werden referenziert.
+Die verbleibende Uniformitäts-Vermutung wird punktweise formuliert.
+Ein Lean-Gerüst \texttt{collatz\_z2\_attraktor.lean} skizziert die Formalisierung.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+% =================================================
+\section{Motivation: vom globalen Ziel zum 2-adischen Attraktor}
+\label{sec:motivation}
+% =================================================
+
+Die klassische Collatz-Frage lautet: Konvergiert jede Bahn $n,\Col(n),\Col^2(n),\ldots$
+nach endlich vielen Schritten zum Zyklus $(1,2,4)$?
+Bewiesen ist eine reiche modulare Struktur (EABC, C-Ketten-Endlichkeit,
+LTE-Dichte, negativer mittlerer Drift in Blockmodellen), aber nicht die
+punktweise Aussage f\"ur alle $n\in\N$.
+
+\begin{tcolorbox}[kern,title={Verschiebung der Leitfrage}]
+\emph{Benutzer-Leitfrage:} Nicht prim\"ar ``erreicht jede Bahn $1$?'',
+sondern: \textbf{Warum kann keine Trajektorie dauerhaft vom 2-adischen
+Attraktorbereich der trivialen Nachbarschaft getrennt bleiben?}
+\end{tcolorbox}
+
+Intuitiv tr\"agt die odd-to-odd-Dynamik
+\[
+  U(n)=\frac{3n+1}{2^{\vii(3n+1)}},\qquad n\ \text{ungerade},
+\]
+Information in $\Ztwo$ nach links (h\"ohere $2$-Potenzen in Differenzen),
+w\"ahrend der bekannte Attraktor $1,2,4,\ldots$ eine \emph{2-adische Umgebung}
+von $1$ beschreibt.
+Die offene Uniformit\"atsl\"ucke ist dann: Aus fast-sicherem oder
+mittlerem Verhalten folgt nicht automatisch, dass ein \emph{festes} $n$
+nicht in einer pathologischen 2-adischen Komponente verharrt.
+Dieses Dokument fixiert die Begriffe $E$ und $\disttwo(n,E)$ als
+gemeinsame Sprache f\"ur diesen Angriff.
+
+% =================================================
+\section{Definitionen}
+\label{sec:def}
+% =================================================
+
+\subsection{Odd-to-odd Collatz auf $\Ztwost$}
+
+Sei $\Ztwo$ der Ring der 2-adischen ganzen Zahlen und
+$\Ztwost=\Ztwo\setminus\{0\}$.
+Jedes ungerade $n\in\N$ identifizieren wir mit seinem Bild in $\Ztwo$.
+
+\begin{definition}[Odd-to-odd-Abbildung]
+\label{def:U}
+F\"ur ungerades $x\in\Ztwo$ mit $3x+1\neq 0$ setzen wir
+\[
+  U(x):=\frac{3x+1}{2^{\vii(3x+1)}}\in\Ztwo,
+\]
+sofern die $2$-Bewertung $\vii(3x+1)$ endlich ist (f\"ur alle $x\in\Ztwost$ der Fall).
+Einschr\"ankung auf $\N$ liefert die \"ubliche Collatz-Kette auf ungeraden Startwerten.
+\end{definition}
+
+\begin{bemerkung}
+Die Abbildung $U$ ist auf $\Ztwost$ wohldefiniert und kontinuierlich in der
+2-adischen Topologie; f\"ur die punktweise Collatz-Vermutung reicht jedoch
+die Einschr\"ankung $U^K:\N\to\N$ nicht aus --- genau hier liegt die L\"ucke.
+\end{bemerkung}
+
+\subsection{Trivialer Attraktor und $E$}
+
+\begin{definition}[Triviale 2-adische Nachbarschaft]
+\[
+  A_{\mathrm{triv}}:=\{x\in\Ztwo : |x-1|_2 < 1\}
+  = 1+2\Ztwo .
+\]
+Entspricht Bahnen, die in der Collatz-Dynamik in den Zyklus $(1,2,4)$ fallen
+(nach Einbettung ungerader Schritte in die volle Dynamik).
+\end{definition}
+
+\begin{definition}[Ausnahmemenge $E$ (Limes-Version)]
+\label{def:E}
+Eine Trajektorie $(x_k)_{k\geq 0}$ mit $x_{k+1}=U(x_k)$ hei\ss e
+\emph{trivial}, wenn es $K$ gibt mit $x_K\in A_{\mathrm{triv}}$.
+Sonst hei\ss e sie \emph{ausnahme-typisch} (divergent im 2-adischen Sinne
+oder nicht-trivial zyklisch).
+F\"ur $K\in\N$ sei $E_K\subset\N$ die Menge der $n\leq K$, deren
+\emph{nat\"urliche} Collatz-Bahn ausnahme-typisch ist (divergiert oder
+Zyklus $\neq(1,2,4)$).
+Wir setzen
+\[
+  E:=\bigcap_{K\in\N}\overline{\{x\in\Ztwo : \exists n\in E_K,\ |x-n|_2\leq 2^{-K}\}}^{\;2\text{-adisch}},
+\]
+also den Schnitt der abgeschlossenen H\"ullen divergenter bzw.\ nicht-trivial
+zyklischer Pr\"afixe in $\Ztwo$.
+\end{definition}
+
+\begin{tcolorbox}[heuristik,title={Alternative Lesarten von $E$}]
+\begin{enumerate}[label=(\alph*),nosep]
+  \item \textbf{Divergenz in $\N$:} $n$ mit unbeschr\"ankter Bahn --- klassisch,
+    aber ohne Beweis der Leerheit.
+  \item \textbf{Nicht-triviale Zyklen:} endliche Perioden $\neq(1,2,4)$;
+    bekannt unentschieden, in $\Ztwo$ als endliche Orbits modul $2^M$ testbar.
+  \item \textbf{Haar-Null vs.\ $\N$:} In $\Ztwo$ ist $A_{\mathrm{triv}}$ eine
+    offene Umgebung; ``fast alle'' 2-adische Punkte sind trivial \emph{als Ma\ss e},
+    nicht als nat\"urliche Zahlen.
+  \item \textbf{Pr\"afix-Limes:} $E$ als oben --- betont 2-adische Koh\"arenz
+    langsam wachsender Pr\"afixe statt einzelner Diophantischer Ausnahmen.
+\end{enumerate}
+Dieses Dokument verwendet Definition~\ref{def:E}; die Alternativen sind
+\"aquivalent \emph{nur} unter zus\"atzlichen, derzeit unbewiesenen Annahmen.
+\end{tcolorbox}
+
+
+\subsection{Beispiel: LTE-Familie und Abstand zu $1$}
+
+Für $n_0=2^{k+1}3^r-1$ mit $k,r\geq 1$ gilt $\vii(n_0+1)=k+1$, also
+$|n_0-(-1)|_2=2^{-(k+1)}$ und insbesondere für $k=1$ oft $\disttwo(n_0,1)=1/2$.
+Diese Familie illustriert, warum Uniformitätsaussagen über $\disttwo(\cdot,1)$
+nicht den Attraktor $A_{\mathrm{triv}}$ treffen (vgl.\ PR~\#17).
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Start $n_0$ & $\vii(n_0-1)$ & $\disttwo(n_0,1)$ \\
+\midrule
+$4\cdot 3^r-1$ & $\geq 2$ & $\leq 1/4$ oder $1/2$ (je nach $r$) \\
+$2^{k+1}-1$ (Mersenne-artig) & $k+1$ & $2^{-k}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Verbindung zu $E_K$ und natürlichen Zahlen}
+
+Für festes $K$ ist $E_K$ endlich und berechenbar, sofern man Collatz-Bahnen
+bis zur Divergenzsschwelle oder Zykluserkennung simuliert.
+Die Uniformitäts-Vermutung verlangt, dass kein $n\in\N$ für alle $K$
+in $E_K$ verbleibt --- eine punktweise Aussage, die strenger ist als
+``$E_K$ hat Dichte $0$ für jedes $K$''.
+
+
+\subsection{2-adische Metrik und $\disttwo(n,E)$}
+
+F\"ur $x,y\in\Ztwo$, $x\neq y$, setzen wir
+\[
+  |x-y|_2 := 2^{-\vii(x-y)} .
+\]
+F\"ur $n\in\N$ und $E\subset\Ztwo$
+\[
+  \disttwo(n,E):=\inf_{e\in E}|n-e|_2 ,
+\]
+mit der Konvention $\disttwo(n,\emptyset)=1$, falls $E=\emptyset$.
+
+\begin{definition}[Endliche Approximation $E_K$]
+F\"ur Rechnungen in $\N$ nutzen wir parallel
+\[
+  E_K:=\{n\in\N : n\leq K\ \text{und Bahn ausnahme-typisch}\},
+\]
+und die uniforme Bedingung $U^K(n)\notin E_K$ aus \S\ref{sec:uniform}.
+\end{definition}
+
+\begin{bemerkung}
+F\"ur $a,b\in\Z$ gilt $\disttwo(a,b)=2^{-\vii(a-b)}$.
+Die Distanz zu $1$ ist \emph{nicht} dasselbe wie $\disttwo(n,E)$; siehe \S\ref{sec:widerlegt}.
+\end{bemerkung}
+
+% =================================================
+\section{Was widerlegt wurde}
+\label{sec:widerlegt}
+% =================================================
+
+Aus \texttt{collatz\_angriff\_uniformitaet.tex} (Pull Request \#17) und numerischen
+Gegenbeispielen folgt:
+
+\begin{tcolorbox}[bewiesen,title={Falscher Attraktor: Abstand zu $1$}]
+Die naive Uniformit\"atsform
+\[
+  \disttwo(n,1)\geq c\cdot 2^{-\lfloor\log_2 n\rfloor}
+\]
+ist \textbf{widerlegt}: F\"ur LTE-Familien $n_0=2^{k+1}3^r-1$ bleibt
+$\disttwo(n_0,1)=2^{-\vii(n_0-1)}$ oft bei $1/2$ konstant, w\"ahrend
+$c\cdot 2^{-\lfloor\log_2 n\rfloor}\to 0$.
+Der relevante Attraktor ist $A_{\mathrm{triv}}$ bzw.\ die Menge $E$,
+nicht der einzelne Punkt $1\in\Ztwo$.
+\end{tcolorbox}
+
+\begin{tcolorbox}[bewiesen,title={Widerlegte $c\cdot 2^{-\log n}$-Form}]
+Ebenfalls widerlegt (Proposition in PR~\#17): Jede Schranke der Form
+$\disttwo(n,E)\geq c\cdot 2^{-\lfloor\log_2 n\rfloor}$ mit festem $c>0$,
+die nur $\disttwo(\cdot,1)$ testet, scheitert an expliziten $n_0$.
+Eine korrekte Uniformit\"atsaussage muss $E$ (oder $E_K$) explizit tragen
+und darf den Attraktor nicht durch $1$ ersetzen.
+\end{tcolorbox}
+
+Diese Negativresultate sind wertvoll: Sie verbieten eine Klasse scheinbar
+plausibler 2-adischer Heuristiken und zwingen zur pr\"azisen Definition~\ref{def:E}.
+
+% =================================================
+\section{Uniformit\"ats-Vermutung (pr\"azisiert)}
+\label{sec:uniform}
+% =================================================
+
+\begin{vermutung}[Punktweise Uniformit\"at / Austritt aus $E_K$]
+\label{verm:uniform}
+F\"ur jedes $n\in\N$ existiert $K(n)<\infty$, sodass die odd-to-odd-Trajektorie
+nach h\"ochstens $K(n)$ Schritten \emph{nicht} in der endlichen Ausnahme-Approximation
+$E_{K(n)}$ liegt; \"aquivalent (unter Collatz-Konvergenz): $U^{K(n)}(n)\notin E_{K(n)}$.
+\end{vermutung}
+
+\begin{tcolorbox}[offen,title={\"Aquivalente Distanz-Formulierung (bedingt)}]
+\emph{Wenn} $E\subset\Ztwo$ die in Definition~\ref{def:E} beschriebene
+Ausnahmemenge ist und \emph{wenn} jede nicht-triviale Bahn positiven Abstand
+zu $A_{\mathrm{triv}}$ hat, dann ist Vermutung~\ref{verm:uniform} \"aquivalent zu:
+\[
+  \forall n\in\N\ \exists K(n):\quad \disttwo(U^{K(n)}(n),E)\geq 2^{-\alpha}
+\]
+f\"ur eine feste Tiefenschranke $\alpha$ (noch zu kalibrieren), oder schw\"acher:
+$\disttwo(n,E)$ kann nicht entlang der ganzen Bahn gegen $0$ tendieren, ohne
+$A_{\mathrm{triv}}$ zu treffen.
+\end{tcolorbox}
+
+\begin{tcolorbox}[kern]
+Die Collatz-Vermutung impliziert $E\cap\N=\emptyset$ und damit
+$\disttwo(n,E)=1$ f\"ur alle $n$; umgekehrt folgt aus Vermutung~\ref{verm:uniform}
+allein ohne Zusatzinformation \emph{nicht} automatisch Konvergenz nach $1$.
+Die Uniformit\"ats-Vermutung ist eine \textbf{Zwischenstufe}: strukturell
+schw\"acher als voller Collatz, aber st\"arker als fast-\"uberall-Aussagen
+(Tao, Birkhoff auf Blockmodellen).
+\end{tcolorbox}
+
+% =================================================
+\section{Lean-Skizze: \texttt{collatz\_z2\_attraktor.lean}}
+\label{sec:lean}
+% =================================================
+
+Das Lean-Ger\"ust importiert Padics aus Mathlib und trennt bewiesene
+$\vii$-Lemmas von noch offenen 2-adischen Normen.
+
+\begin{lstlisting}
+-- collatz_z2_attraktor.lean (Auszug)
+import Mathlib.NumberTheory.Padics.PadicInt
+import Mathlib.NumberTheory.Padics.PadicVal
+
+namespace CollatzZ2
+
+def oddPart (n : Nat) : Nat := ...
+
+def U_odd (n : Nat) (h : Odd n) : Nat := ...
+
+-- dist_2 auf Z: |a-b|_2 = 2^{-padicValNat 2 (a-b)}
+def dist2Nat (a b : Nat) : Rat := ...
+
+def ExceptionSetApprox (K : Nat) : Finset Nat := ...
+
+theorem dist_to_one_not_uniform :
+    Exists (fun n => dist2Nat n 1 = 1/2) := by sorry
+
+end CollatzZ2
+\end{lstlisting}
+
+\begin{tcolorbox}[heuristik,title={Mathlib-Roadmap}]
+\textbf{Jetzt:} \texttt{padicValNat} f\"ur $\vii(n-m)$ und LTE-Dichte
+(vgl.\ \texttt{collatz\_uniformity.lean}).\\
+\textbf{N\"achster Schritt:} \texttt{PadicInt.norm} bzw.\ \texttt{Padic.norm}
+f\"ur $|x-y|_2$ auf eingebetteten $\N\hookrightarrow\Ztwo$.\\
+\textbf{Offen:} Formale Definition von $E$ als Filter-Limes; Mathlib liefert
+Topologie auf $\Ztwo$, aber keine Collatz-spezifische Ausnahmemenge.
+\texttt{sorry} nur an diesen L\"ucken, nicht bei bereits bewiesenen Valuations-Lemmas.
+\end{tcolorbox}
+
+% =================================================
+\section{Offene Fragen}
+\label{sec:offen}
+% =================================================
+
+\begin{enumerate}[label=\textbf{F\arabic*.}]
+  \item Ist $E\cap\N=\emptyset$ \"aquivalent zur Collatz-Vermutung, oder strikt schw\"acher?
+  \item Gibt es $c>0$ und eine Funktion $\psi(n)\to 0$ (nicht $2^{-\log n}$), sodass
+    $\disttwo(n,E)\geq c\cdot\psi(n)$ f\"ur alle bekannten Gegenfamilien gilt?
+  \item L\"asst sich Vermutung~\ref{verm:uniform} aus einem endlichen
+    mod-$2^M$-Zertifikat plus LTE-Reset (gerades $N$) ableiten?
+  \item Welche Menge in $\Ztwo$ ist die kleinste abgeschlossene $U$-invariante
+    H\"ulle von $A_{\mathrm{triv}}$ --- und stimmt sie mit dem Limes-Definierten $E^c$ \"uberein?
+  \item Kann $\disttwo(n,E)$ f\"ur LTE-Familien $2^{k+1}3^r-1$ asymptotisch
+    numerisch stabilisiert werden, um eine vermutete untere Schranke zu kalibrieren?
+\end{enumerate}
+
+\begin{tcolorbox}[offen,title={Ehrliche Einordnung}]
+Dieses Arbeitspaket definiert Begriffe und sammelt widerlegte Heuristiken;
+es beansprucht keinen Beweis der Collatz-Vermutung noch von
+Vermutung~\ref{verm:uniform}.
+\end{tcolorbox}
+
+\end{document}
