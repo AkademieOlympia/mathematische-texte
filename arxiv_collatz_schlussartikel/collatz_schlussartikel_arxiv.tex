@@ -58,6 +58,7 @@
 % -------------------------------------------------
 \newcommand{\vii}{\nu_2}
 \newcommand{\N}{\mathbb{N}}
+\newcommand{\Nodd}{\mathbb{N}_{\mathrm{odd}}}
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Ztwo}{\mathbb{Z}_2}
@@ -827,6 +828,16 @@ In Mathlib ist $\Ztwo$ als \texttt{PadicInt~2} vollständig formalisiert;
 \texttt{collatz\_z2\_attraktor.lean} enthält $\disttwo$, Ultrametrik und
 \texttt{ExceptionSetApprox}, der Limes $E=\overline{\bigcup_N E_{N,N}}$ bleibt offen.
 
+\paragraph{Präzisierung $E_\infty$ vs.\ $E_{\mathrm{diag}}$.}
+Die Collatz-Vermutung ist äquivalent zu
+$E_\infty=\{n\in\Nodd:\forall K,\;U^K(n)\neq 1\}=\emptyset$,
+nicht zur Leerheit von $E_{\mathrm{diag}}\cap\N$
+(vgl.\ $n=27$ vor Erreichen von~$1$)~\cite{HoffbauerEinfty2026}.
+Der diagonale Schatten $E_{\mathrm{diag}}=\overline{\bigcup_N E_{N,N}}$
+misst endliche Beobachtungsfenster; in \texttt{CollatzEabc.Open} heißen die
+Objekte \texttt{ExceptionSetInfinity} bzw.\ \texttt{ExceptionSetDiag}.
+Ein mögliches Präperiodizitäts-Lemma (Lemma~E) bleibt offen.
+
 \begin{center}
 \begin{verbatim}
 [ Irreduzibler mod-12 RPF-Operator ]
@@ -988,6 +999,12 @@ Rational approximations to algebraic numbers.
 D.~Ruelle.
 A measure associated with Axiom-A attractors.
 \textit{Amer.\ J.\ Math.} \textbf{98} (1976), 619--654.
+
+\bibitem{HoffbauerEinfty2026}
+T.~Hoffbauer.
+\emph{Die letzte offene Stufe: vom endlichen Schattenraum zur unendlichen Ausnahme.}
+Internes Notizblatt, Juni 2026;
+\texttt{collatz\_equivalenz\_e\_infty.tex}.
 
 \bibitem{Lean}
 Lean~4 Community.
