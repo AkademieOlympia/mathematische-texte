@@ -1,0 +1,292 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks,unicode]{hyperref}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{listings}
+
+\definecolor{mathlibgruen}{RGB}{20,120,50}
+\definecolor{lueckenrot}{RGB}{180,40,40}
+\definecolor{leanblau}{RGB}{0,80,160}
+\definecolor{warnorange}{RGB}{200,100,10}
+
+\tcbset{
+  vorhanden/.style={colback=green!7,colframe=mathlibgruen,fonttitle=\bfseries},
+  neu/.style={colback=blue!5,colframe=leanblau,fonttitle=\bfseries},
+  luecke/.style={colback=red!8,colframe=lueckenrot,fonttitle=\bfseries},
+  warnung/.style={colback=orange!10,colframe=warnorange,fonttitle=\bfseries},
+}
+
+\lstdefinelanguage{Lean4}{
+  keywords={theorem,lemma,def,import,open,by,exact,rw,intro,apply,have,show,namespace,end},
+  keywordstyle=\color{leanblau}\bfseries,
+  comment=[l]{--}, commentstyle=\color{gray}\itshape,
+  basicstyle=\ttfamily\small, breaklines=true, frame=single
+}
+
+\newcommand{\Mathlib}[1]{\texttt{Mathlib.\allowbreak #1}}
+\newcommand{\vii}{\nu_2}
+
+\title{Mathlib-Update nach Uniformitäts-Angriff\\[0.2em]
+\large Nutzbare Theoreme, Lean-Skizzen, offene Lücken}
+\author{Thomas Hoffbauer}
+\date{16.\ Juni 2026 \quad (Mathlib v4.29.0, Lean 4.30.0)}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Fortführung von \texttt{collatz\_lean\_mathlib.tex} nach dem Uniformitäts-Angriff
+(\texttt{collatz\_uniformity.lean}, \texttt{collatz\_angriff\_uniformitaet.tex}).
+Recherche in Mathlib4 v4.29.0 (lokal: \texttt{.lake/packages/mathlib}).
+\textbf{Neu bewiesen ohne \texttt{sorry}:} LTE-Reset (gerades~$N$), C-Ketten-Dichte
+$N/2^k$, Mischschranken $(1-p)^n\to 0$.
+\end{abstract}
+
+\tableofcontents
+\bigskip
+
+% ============================================================
+\section{Bereits genutzte Theoreme (exakte Mathlib-Namen)}
+\label{sec:genutzt}
+% ============================================================
+
+Die folgenden Theoreme sind in \texttt{collatz\_uniformity.lean} und
+\texttt{collatz\_density\_appendix.lean} \emph{tatsächlich} importiert und angewendet.
+
+\begin{tcolorbox}[vorhanden,title={Padics / 2-adisch}]
+\begin{tabular}{@{}p{5.8cm}p{7.8cm}@{}}
+\textbf{Theorem} & \textbf{Datei / Nutzen} \\
+\midrule
+\texttt{padicValNat.mul} & \Mathlib{NumberTheory.Padics.PadicVal.Basic} \\
+& $\vii(ab)=\vii(a)+\vii(b)$; LTE-Worst-Familie \\
+\texttt{padicValNat.pow} & \Mathlib{NumberTheory.Padics.PadicVal.Basic} \\
+& $\vii(a^n)=n\,\vii(a)$; Potenzen von $3^r$ \\
+\texttt{padicValNat.div\_of\_dvd} & \Mathlib{NumberTheory.Padics.PadicVal.Basic} \\
+& $\vii((3^{N+1}+1)/2)$ aus $\vii(3^{N+1}+1)$ \\
+\texttt{pow\_padicValNat\_dvd} & \Mathlib{Data.Nat.MaxPowDiv} \\
+& $2^{\vii(m)}\mid m$; Dichte-Äquivalenz \\
+\texttt{padicValNat\_dvd\_iff\_le} & \Mathlib{NumberTheory.Padics.PadicVal.Basic} \\
+& $\vii(n)\geq k \Leftrightarrow 2^k\mid n$ \\
+\texttt{padicValNat\_eq\_emultiplicity} & \Mathlib{NumberTheory.Padics.PadicVal.Defs} \\
+& Brücke zu \texttt{emultiplicity} \\
+\end{tabular}
+\end{tcolorbox}
+
+\begin{tcolorbox}[vorhanden,title={Kombinatorik / Dichte}]
+\begin{tabular}{@{}p{5.8cm}p{7.8cm}@{}}
+\texttt{Nat.card\_multiples} & \Mathlib{Data.Nat.Factorization.Basic} \\
+& Zählung $|\{e<2N+1 : 2^{k+1}\mid e+1\}|$ \\
+\texttt{Nat.div\_div\_eq\_div\_mul} & \Mathlib{Data.Nat.Basic} \\
+& Umformung $N/(2\cdot 2^k)=N/2^k$ \\
+\texttt{Finset.card\_filter} & \Mathlib{Data.Finset.Filter} \\
+& explizite Dichte auf \texttt{Finset.range} \\
+\end{tabular}
+\end{tcolorbox}
+
+\begin{tcolorbox}[vorhanden,title={Analysis / Mischschranken}]
+\begin{tabular}{@{}p{5.8cm}p{7.8cm}@{}}
+\texttt{Filter.Tendsto} (via \texttt{atTop}, \texttt{nhds 0}) & \Mathlib{Topology.Basic} \\
+\texttt{tendsto\_pow\_atTop\_nhds\_zero\_of\_norm\_lt\_one} & \Mathlib{Topology.Algebra.InfiniteSum.Basic} \\
+& $(1-p)^n\to 0$ für $p\in(0,1)$ \\
+\texttt{tsum\_geometric\_two} & \Mathlib{Analysis.SpecificLimits.Basic} \\
+& $\sum (1/2)^n=2$ in \texttt{tail\_series\_formula} \\
+\texttt{hasSum\_choose\_mul\_geometric\_of\_norm\_lt\_one} & \Mathlib{Analysis.SpecificLimits.Normed} \\
+& gewichtete Reihe $\sum (k{+}1)(1/2)^{k+1}=2$ \\
+\end{tabular}
+\end{tcolorbox}
+
+\begin{tcolorbox}[vorhanden,title={Modulare Arithmetik}]
+\begin{tabular}{@{}p{5.8cm}p{7.8cm}@{}}
+\texttt{Nat.ModEq} / \texttt{modEq\_zero\_iff\_dvd} & \Mathlib{Data.Nat.ModEq} \\
+& $3^j\equiv 3\pmod 8$ für ungerades $j$ \\
+\texttt{Nat.dvd\_iff\_mod\_eq\_zero} & \Mathlib{Data.Nat.ModEq} \\
+& Residuenklassen-Charakterisierung \\
+\end{tabular}
+\end{tcolorbox}
+
+% ============================================================
+\section{Neu entdeckte nutzbare Theoreme (priorisiert)}
+\label{sec:neu}
+% ============================================================
+
+Priorität nach Impact für die Uniformitätslücke (Mischzeit, LTE, Dichte, Ergodik).
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+
+\item \textbf{\texttt{emultiplicity\_pow} / \texttt{emultiplicity\_mul}}\\
+\textit{Pfad:} \Mathlib{Data.Nat.Multiplicity}\\
+\textit{Nutzen:} LTE-Gerüst für $\vii(3^j-1)$, $\vii(3^j+1)$; direkter Vorgänger von
+\texttt{padicValNat.pow}. Nächster Schritt: vollständiges LTE-Lemma für $p=2$ formalisieren.
+
+\item \textbf{\texttt{padicValNat\_mul\_pow\_left/right}}\\
+\textit{Pfad:} \Mathlib{NumberTheory.Padics.PadicVal.Basic}\\
+\textit{Nutzen:} $\vii(2^{k+1}\cdot 3^r)=\vii(2^{k+1})+\vii(3^r)=k{+}1$ für LTE-Worst-Start
+$n=2^{k+1}3^r-1$ (bereits in \texttt{lteWorst\_valuation}).
+
+\item \textbf{\texttt{geometricPMFRealSum}}\\
+\textit{Pfad:} \Mathlib{Probability.Distributions.Geometric}\\
+\textit{Nutzen:} Probabilistische Lesart der Mischschranken: Wartezeit bis
+``Ausnahme'' (C-Kette) hat geometrische Verteilung; $\sum_n (1-p)^n p = 1$.
+
+\item \textbf{\texttt{tsum\_choose\_mul\_geometric\_of\_norm\_lt\_one}}\\
+\textit{Pfad:} \Mathlib{Analysis.SpecificLimits.Normed}\\
+\textit{Nutzen:} Tail-Identität $\sum_{k\geq K}(k{+}1)2^{-(k+1)}=(K{+}2)2^{-K}$
+(\texttt{tail\_series\_formula}) ohne \texttt{sorry}; verallgemeinert auf beliebiges $r<1$.
+
+\item \textbf{\texttt{Stirling.log\_stirlingSeq\_diff\_le}} (Robbins-Schranke)\\
+\textit{Pfad:} \Mathlib{Analysis.SpecialFunctions.Stirling}\\
+\textit{Nutzen:} Asymptotik der Bernoulli-Normschalen $\mathcal{I}(n)$ via
+\texttt{riemannZeta\_two\_mul\_nat}.
+
+\item \textbf{\texttt{riemannZeta\_two\_mul\_nat}}\\
+\textit{Pfad:} \Mathlib{NumberTheory.LSeries.HurwitzZetaValues}\\
+\textit{Nutzen:} $\zeta(2n)$ in Bernoulli-Zahlen; Verbindung Bernoulli-Schalen $\leftrightarrow$ Zeta.
+
+\item \textbf{\texttt{ContinuousLinearMap.tendsto\_birkhoffAverage\_orthogonalProjection}}\\
+\textit{Pfad:} \Mathlib{Analysis.InnerProductSpace.MeanErgodic}\\
+\textit{Nutzen:} Von-Neumann-Mittelwertsatz ($L^2$); einziger rigoroser Ergodensatz in Mathlib.
+Für Collatz-Mitteldrift nur indirekt (Hilbertraum-Modell nötig).
+
+\item \textbf{\texttt{Ergodic} / \texttt{PreErgodic}}\\
+\textit{Pfad:} \Mathlib{Dynamics.Ergodic.Ergodic}\\
+\textit{Nutzen:} Definition maßerhaltender ergodischer Systeme; Voraussetzung für jeden
+Ergodizitätsbeweis der Collatz-Abbildung auf ungeraden Restklassen.
+
+\item \textbf{\texttt{Matrix.IsPrimitive} / \texttt{IsIrreducible}}\\
+\textit{Pfad:} \Mathlib{LinearAlgebra.Matrix.Irreducible.Defs}\\
+\textit{Nutzen:} Spektraltheorie für nichtnegative Übergangsmatrizen (mod-$2^m$-Ketten).
+\textbf{Vollständiger Perron-Frobenius-Satz fehlt} (nur Definitionen + Irreduzibilität).
+
+\item \textbf{\texttt{Probability.Kernel.IonescuTulcea.traj}}\\
+\textit{Pfad:} \Mathlib{Probability.Kernel.IonescuTulcea.Traj}\\
+\textit{Nutzen:} Markov-Ketten-Infrastruktur (Trajektorienmaß aus Übergangskernen).
+Collatz als Markov-Kette auf $\mathbb{Z}/2^m\mathbb{Z}$ formalisierbar, aber nicht vorgefertigt.
+
+\end{enumerate}
+
+\begin{tcolorbox}[warnung,title={Korrektur zur Vorgänger-Recherche}]
+\texttt{Bernoulli.vonStaudt\_clausen} ist in Mathlib v4.29.0 \textbf{nicht} auffindbar
+(\texttt{grep} über gesamtes Paket leer). Vorhanden sind
+\texttt{bernoulli'\_eq\_zero\_of\_odd}, \texttt{sum\_range\_pow} (Faulhaber) und
+\texttt{riemannZeta\_two\_mul\_nat}. Der von-Staudt-Clausen-Satz müsste neu formalisiert
+oder in einem älteren Mathlib-Branch gesucht werden.
+\end{tcolorbox}
+
+% ============================================================
+\section{Lean-Skizzen: nächste fünf Lemmata}
+\label{sec:skizzen}
+% ============================================================
+
+\subsection{Lemma 1: Vollständiges LTE für $p=2$, $a=3$}
+
+\begin{lstlisting}[language=Lean4]
+import Mathlib.NumberTheory.Padics.PadicVal
+import Mathlib.Data.Nat.Multiplicity
+import Mathlib.Data.Nat.Parity
+
+/-- LTE: nu_2(3^j - 1) fuer alle j. -/
+theorem padicVal_two_three_pow_sub_one (j : Nat) :
+    padicValNat 2 (3 ^ j - 1) =
+    if j % 2 = 1 then 1 else padicValNat 2 j + 2 := by
+  -- emultiplicity_pow, padicValNat_eq_emultiplicity
+  -- Induktion auf j; ungerader Fall via 3^j ≡ 3 (mod 8)
+  sorry
+\end{lstlisting}
+
+\subsection{Lemma 2: LTE-Worst-Familie vollständig}
+
+\begin{lstlisting}[language=Lean4]
+import Mathlib.NumberTheory.Padics.PadicVal
+
+theorem lte_worst_valuation_general (k r : Nat) :
+    padicValNat 2 (2 ^ (k + 1) * 3 ^ r - 1 + 1) = k + 1 := by
+  -- Bereits in collatz_uniformity.lean als lteWorst_valuation
+  -- Nutzt: padicValNat.mul, padicValNat.pow, Nat.coprime_pow_left_iff
+  sorry
+\end{lstlisting}
+
+\subsection{Lemma 3: Ausnahmewahrscheinlichkeit als geometrische Reihe}
+
+\begin{lstlisting}[language=Lean4]
+import Mathlib.Probability.Distributions.Geometric
+import Mathlib.Topology.Algebra.InfiniteSum.Basic
+
+theorem exception_prob_sum_one (p : Real) (hp0 : 0 < p) (hp1 : p < 1) :
+    ∑' n : Nat, (1 - p) ^ n * p = 1 := by
+  -- geometricPMFRealSum
+  sorry
+\end{lstlisting}
+
+\subsection{Lemma 4: Tail-Summe der gewichteten 2-adischen Reihe}
+
+\begin{lstlisting}[language=Lean4]
+import Mathlib.Analysis.SpecificLimits.Normed
+
+theorem tail_weighted_half (K : Nat) :
+    ∑' k : Nat, (k + K + 1 : Real) * (1/2 : Real) ^ (k + K + 1)
+    = (K + 2 : Real) * (1/2) ^ K := by
+  -- tsum_choose_mul_geometric_of_norm_lt_one 1 (by norm_num)
+  -- Indexverschiebung + tsum_nat_add
+  sorry
+\end{lstlisting}
+
+\subsection{Lemma 5: mod-$8$-Zyklus für $3^j$}
+
+\begin{lstlisting}[language=Lean4]
+import Mathlib.Data.Nat.ModEq
+
+theorem three_pow_mod8 (j : Nat) :
+    3 ^ j % 8 = if j % 2 = 0 then 1 else 3 := by
+  -- Induktion; Nat.ModEq, omega
+  -- Bereits privat in collatz_uniformity.lean (three_pow_odd_mod8)
+  sorry
+\end{lstlisting}
+
+% ============================================================
+\section{Was fehlt und neu formalisiert werden muss}
+\label{sec:fehlt}
+% ============================================================
+
+\begin{tcolorbox}[luecke,title={Definitiv nicht in Mathlib (Stand Juni 2026)}]
+\begin{itemize}[nosep]
+  \item \textbf{Collatz-spezifisch:} Konvergenz aller Orbits, Uniformitätslücke,
+    DC-Beschränktheit, Tao-artige Resultate.
+  \item \textbf{Kingman-Subadditivitätssatz} (punktweise / fast überall).
+  \item \textbf{Birkhoff-Ergodensatz} (punktweise f.\,ü.-Version).
+  \item \textbf{Perron-Frobenius} (vollständiger Spektralsatz für primitive Matrizen).
+  \item \textbf{von-Staudt-Clausen} (in v4.29 nicht gefunden).
+  \item \textbf{Jacobi-Vierquadratensatz} ($r_4(n)=8\sum_{d\mid n,4\nmid d}d$).
+  \item \textbf{Asymptotik $|B_{2n}|$} via Stirling (Bausteine vorhanden, Kombination fehlt).
+  \item \textbf{Nat.density} für C-Ketten auf $\mathbb{N}$ (nur endliche \texttt{Finset}-Zählung
+    bewiesen; asymptotische Dichte $2^{-k}$ als \texttt{Measure} fehlt).
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}[vorhanden,title={Bereits in eigenen Lean-Dateien (ohne sorry)}]
+\begin{itemize}[nosep]
+  \item \texttt{lte\_even\_N\_successor\_valuation\_one} --- LTE-Reset gerades $N$
+  \item \texttt{density\_C\_chains\_finite} --- $|S\cap[0,2N]|=N/2^k$
+  \item \texttt{mixing\_probability\_tendsto\_zero} --- $(1-p)^n\to 0$
+  \item \texttt{padicVal\_two\_three\_pow\_odd\_plus\_one} --- $\vii(3^j+1)=2$ für ungerades $j$
+\end{itemize}
+\end{tcolorbox}
+
+\section*{Referenzen}
+\begin{itemize}[nosep]
+  \item Mathlib4 v4.29.0: \url{https://leanprover-community.github.io/mathlib4_docs/}
+  \item \texttt{collatz\_uniformity.lean}, \texttt{collatz\_density\_appendix.lean}
+  \item \texttt{collatz\_lean\_mathlib.tex} (Branch \texttt{collatz/lean-mathlib})
+  \item \texttt{collatz\_angriff\_uniformitaet.tex}
+\end{itemize}
+
+\end{document}
