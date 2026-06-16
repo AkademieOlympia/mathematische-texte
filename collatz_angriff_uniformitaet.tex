@@ -1,0 +1,485 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[a4paper,margin=2.4cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks,unicode]{hyperref}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{graphicx}
+
+\definecolor{bewiesengruen}{RGB}{30,100,50}
+\definecolor{warnorange}{RGB}{200,100,10}
+\definecolor{lueckenrot}{RGB}{180,40,40}
+\definecolor{kernblau}{RGB}{20,60,130}
+
+\tcbset{
+  bewiesen/.style={colback=green!7,colframe=bewiesengruen,fonttitle=\bfseries},
+  heuristik/.style={colback=orange!10,colframe=warnorange,fonttitle=\bfseries},
+  offen/.style={colback=red!8,colframe=lueckenrot,fonttitle=\bfseries},
+  kern/.style={colback=blue!5,colframe=kernblau,fonttitle=\bfseries},
+}
+
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{proposition}[satz]{Proposition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+\newtheorem{vermutung}[satz]{Vermutung}
+
+\newcommand{\vii}{\nu_2}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Ztwo}{\mathbb{Z}_2}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\Lam}{\Lambda}
+\newcommand{\disttwo}{\operatorname{dist}_{2\text{-adisch}}}
+
+\lstset{
+  basicstyle=\ttfamily\scriptsize,
+  breaklines=true,
+  frame=single,
+  numbers=left,
+  numberstyle=\tiny,
+  language=,
+  showstringspaces=false
+}
+
+\title{%
+  Neuer Angriff auf die Uniformitätslücke:\\
+  Mischzeit, 2-adische Separation und Lean-Formalismus
+}
+\author{Thomas Hoffbauer}
+\date{16.\ Juni 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Die Collatz-Vermutung bleibt offen. Bewiesen sind C-Ketten-Endlichkeit,
+EA-Zwang, 2-adische Startdichte $2^{-(k+1)}$ und strukturelle Kompensation
+nach LTE-extremalen Blöcken mit \emph{geradem} $N=k+r$.
+Die verbleibende Lücke ist punktweise: von negativem mittlerem Drift
+$\Lam\approx -0{,}83$ und mod-$12$-Mischung zu Konvergenz für \emph{alle}
+$n\in\N$.
+
+Dieses Dokument bearbeitet drei parallele Angriffsvektoren:
+\textbf{(A)}~Mischzeit-Lemma und numerische E-Typ-Wartezeiten bis $10^6$;
+\textbf{(B)}~2-adische Distanzen und Roth-Analogon für LTE-Familien;
+\textbf{(C)}~Lean-Erweiterung \texttt{collatz\_uniformity.lean}.
+Ehrliche Einordnung: Ein neues Lemma (LTE-Reset für gerades $N$) ist in Lean
+ohne \texttt{sorry} bewiesen; die Uniformitäts-Vermutung in ihrer
+naiven 2-adischen Form wird durch Gegenbeispiele widerlegt; die
+Mischzeit-Hypothese $O(\log n)$ ist numerisch gestützt, aber nicht bewiesen.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+% =================================================
+\section{Die offene Lücke (präzise)}
+\label{sec:luecke}
+% =================================================
+
+\subsection{Was bewiesen ist}
+
+Aus \texttt{collatz\_schlussartikel\_arxiv.tex} und
+\texttt{collatz\_lte\_dichte.tex} folgt die folgende modulare Struktur
+der odd-to-odd-Abbildung $\U(n)=(3n+1)/2^{\vii(3n+1)}$:
+
+\begin{enumerate}[label=(\roman*)]
+  \item C-Ketten sind endlich; B$\to$B ist verboten; nach jeder maximalen
+    C-Kette folgt zwingend EA.
+  \item Startpunkte mit $\vii(n+1)\geq k+1$ haben unter ungeraden
+    $n\leq 2N+1$ die Anzahl $N/2^k$ (Lean: \texttt{density\_C\_chains\_finite}).
+  \item Im typischen Fall ($\mathbb{E}[\vii(m')]\approx 3$):
+    $\Lam_A=2\log_2 3-5\approx -1{,}83$.
+  \item Nach LTE-Worst-Block mit \emph{geradem} $N=k+r$:
+    $\vii(n_{k+1}+1)=1$ (strukturelle Kompensation, §\ref{sec:lean}).
+\end{enumerate}
+
+\subsection{Was offen bleibt}
+
+\begin{tcolorbox}[offen,title={Uniformitäts-Vermutung (offen)}]
+Es existiert $c>0$, sodass für alle $n\in\N$ gilt
+\[
+  \disttwo(n,E) \geq c\cdot 2^{-\lfloor\log_2 n\rfloor},
+\]
+wobei $E\subset\Ztwo$ die Menge der Ausnahme-Pfade bezeichnet
+(divergente Trajektorien oder Zyklen $\neq(1,2,4)$).
+\end{tcolorbox}
+
+\begin{definition}[$E_K$ und Ausnahme-Starts]
+Für $K\in\N$ sei $E_K\subset\N$ die Menge der $n\leq K$, deren
+Collatz-Trajektorie divergiert oder einen Zyklus $\neq(1,2,4)$ erreicht.
+Die \emph{ausnahme-typischen} 2-adischen Pfade sind
+\[
+  E := \bigcup_{K\to\infty} \text{(2-adische Abschlüsse divergenter Präfixe)}.
+\]
+\end{definition}
+
+\begin{tcolorbox}[kern]
+Die Brücke fehlt zwischen:
+\begin{center}
+\begin{tabular}{ccc}
+\textbf{Markov-/Drift-Ebene} & $\longrightarrow$ & \textbf{Punkt-Ebene} \\
+$\Lam<0$, $|\lambda_2|<1$, $(1-p)^n\to 0$ & & $\forall n\in\N$: Konvergenz \\
+\end{tabular}
+\end{center}
+Taos Ergebnis gilt für \emph{fast alle} Starts; Birkhoff für
+$\pi$-fast alle Blockfolgen --- nicht für jede einzelne natürliche Zahl.
+\end{tcolorbox}
+
+\subsection{Was \emph{nicht} wiederholt wird}
+
+\begin{itemize}[nosep]
+  \item Bernoulli-Normschale $\mathcal{I}(n)$ als Lyapunov (No-Go, bewiesen).
+  \item Quaternionen-Diophantik als Widerspruch (Schritt~C, zirkulär).
+  \item Binärinformation allein ohne Beschränktheitsannahme.
+  \item RH aus Hurwitz-Symmetrie.
+\end{itemize}
+
+% =================================================
+\section{Angriff A: Mischzeit und numerische Daten}
+\label{sec:angriffA}
+% =================================================
+
+\subsection{Lemma-Kandidaten}
+
+\begin{lemma}[Mischzeit, Markov-Modell]
+\label{lem:mischzeit}
+Sei $M$ die primitive $4\times 4$-Übergangsmatrix auf
+$\{E,A,B,C\}$ mit Spektrallücke $|\lambda_2|<1$ und
+$p:=\min_{s,t}M_{st}>0$. Dann existiert $K(\varepsilon)$,
+\emph{unabhängig} vom Start $n_0$, sodass nach $K$ Block-Schritten
+im \emph{Markov-Modell}
+\[
+  \|M^K e_s-\pi\|_{\mathrm{TV}} \leq \varepsilon
+  \quad\Rightarrow\quad
+  P_{\mathrm{Markov}}(\text{kein E-Besuch in }K\text{ Blöcken})
+  \leq (1-p)^{\lfloor K/12\rfloor}.
+\]
+\end{lemma}
+
+\begin{tcolorbox}[heuristik,title={Zirkularitäts-Warnung}]
+Lemma~\ref{lem:mischzeit} gilt für die \emph{Markov-Kette}, nicht
+automatisch für Collatz-Trajektorien $n\in\N$. Die Trajektorie
+``folgt'' $M$ nur unter einer Gleichverteilungsannahme, die für
+ein fixes $n$ der Collatz-Vermutung äquivalent sein kann.
+\end{tcolorbox}
+
+\begin{lemma}[LTE-Reset, gerades $N$]
+\label{lem:ltereset}
+Sei $n_0=2^{k+1}\cdot 3^r-1$ mit geradem $N=k+r$. Nach dem
+$\mathrm{C}^k\mathrm{A}$-Block gilt
+\[
+  n_{k+1}=\frac{3^{N+1}-1}{2},\qquad \vii(n_{k+1}+1)=1.
+\]
+Der Nachfolger kann keine C-Kette der Länge $\geq 2$ starten.
+\end{lemma}
+
+\begin{tcolorbox}[bewiesen,title={Korrektur zum ungeraden $N$}]
+Für \emph{ungerades} $N=k+r$ gilt Lemma~\ref{lem:ltereset} \textbf{nicht}:
+Numerisch $n_0=4\cdot 3^{10}-1=236195$ liefert nach dem Block
+$\vii(n_{k+1}+1)=6$. Stattdessen wirkt die Kompensation \emph{im selben}
+Block durch $\vii(3n_k+1)\geq 3$ (Fall~2 in
+\texttt{collatz\_lte\_dichte.tex}).
+\end{tcolorbox}
+
+\subsection{Numerisches Protokoll}
+
+Skript: \texttt{collatz\_mixing\_test.py}. Für $n=1,\ldots,10^6$ messen wir
+die Wartezeit $W(n)$ bis zum ersten E-Typ-Block (EABC-Klasse $\equiv 1\pmod{12}$).
+
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{lrr}
+\toprule
+Größe & Wert & Interpretation \\
+\midrule
+Stichproben & $10^6$ & alle $n$ \\
+Fehlschläge & $0$ & kein Timeout \\
+$\max W(n)$ & $70$ & bei $n=920553$ \\
+$\max W(n)/\log_2(10^6)$ & $\approx 3{,}51$ & $O(\log n)$-Kandidat \\
+Mittelwert $\mathbb{E}[W]$ & $5{,}94$ & \\
+Median & $4$ & \\
+90\%-Quantil & $15$ & \\
+99\%-Quantil & $29$ & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{lrrrr}
+\toprule
+Startklasse & E & A & B & C \\
+\midrule
+$\max W(n)$ & $0$ & $58$ & $69$ & $61$ \\
+$\mathbb{E}[W]$ & $0$ & $5{,}90$ & $7{,}92$ & $7{,}96$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{proposition}[Numerische Mischzeit-Hypothese]
+\label{prop:mischhyp}
+Für alle untersuchten $n\leq 10^6$ gilt
+\[
+  W(n) \leq 4\cdot\lfloor\log_2 n\rfloor + C
+\]
+mit $C\leq 10$. Insbesondere $W(n)=O(\log n)$.
+\end{proposition}
+
+\begin{bemerkung}
+Proposition~\ref{prop:mischhyp} ist \emph{numerisch}, nicht bewiesen.
+Die schlechteste Klasse ist B/C (längere Wartezeiten), konsistent mit
+dem Verbot B$\to$B und erzwungenem EA nach C-Ketten.
+\end{bemerkung}
+
+\subsection{Empirische mod-$12$-Matrix}
+
+Für ungerade $n\leq 5\cdot 10^5$ ergibt die \emph{einschrittige}
+Übergangsmatrix $n\mapsto \U(n)$:
+
+\begin{center}
+\small
+\begin{tabular}{c|cccc}
+\toprule
+ & $E$ & $A$ & $B$ & $C$ \\
+\midrule
+$E$ & $0{,}333$ & $0{,}167$ & $0{,}333$ & $0{,}167$ \\
+$A$ & $0{,}333$ & $0{,}167$ & $0{,}333$ & $0{,}167$ \\
+$B$ & $0$ & $0{,}500$ & $0$ & $0{,}500$ \\
+$C$ & $0$ & $0{,}500$ & $0$ & $0{,}500$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Spektrum: $|\lambda_2|\approx 0{,}0045$ (deutlich kleiner als die
+vereinfachte Matrix mit $|\lambda_2|\approx 0{,}35$ in
+\texttt{collatz\_schlussartikel\_arxiv.tex}).
+Die B/C-Zeilen reflektieren das B$\to$B-Verbot: von B und C geht es
+nur nach A oder C bzw.\ A oder B.
+
+\begin{tcolorbox}[heuristik]
+Die extrem schnelle Mischung im einschrittigen Modell ($|\lambda_2|\ll 1$)
+widerspricht \emph{nicht} der Uniformitätslücke: Block-Schritte (mit
+variabler $\vii$-Tiefe) sind dynamisch reicher als EABC-Einschritte.
+\end{tcolorbox}
+
+% =================================================
+\section{Angriff B: 2-adische Distanzen und Roth-Analogon}
+\label{sec:angriffB}
+% =================================================
+
+\subsection{Definition und Roth-Analogie}
+
+Für $a,b\in\Z$ setzen wir $\disttwo(a,b):=2^{-\vii(a-b)}$ ($a\neq b$).
+Roths Satz~\cite{Roth1955} besagt: algebraische Zahlen approximieren
+Rationale nicht über $O(1/q^2)$ hinaus. Die Uniformitäts-Vermutung
+fordert ein \emph{2-adisches} Analogon:
+\[
+  \disttwo(n,E) \geq c\cdot 2^{-\lfloor\log_2 n\rfloor}
+  \quad\text{für alle }n\in\N.
+\]
+
+\subsection{LTE-Familien}
+
+\subsubsection{$n_0=2^{k+1}\cdot 3^r-1$ (LTE extremal)}
+
+Für $300$ Paare $(k,r)$ mit $1\leq k\leq 20$, $1\leq r\leq 15$:
+
+\begin{itemize}[nosep]
+  \item $\disttwo(n_0,1)=0{,}5$ für \emph{alle} getesteten Paare
+    (da $n_0\equiv -1\equiv 3\pmod 4$, also $\vii(n_0-1)=2$).
+  \item Lemma~\ref{lem:ltereset} (gerades $N$): $\vii(n_{k+1}+1)=1$ in
+    $150$ Fällen mit geradem $N$.
+  \item Gegenbeispiel ungerades $N$: $(k,r)=(1,10)$, $n_0=236195$,
+    Nachfolger $\vii(n_{k+1}+1)=6$.
+\end{itemize}
+
+\subsubsection{$n_0=4\cdot 3^r-1$ (minimale C-Kette)}
+
+Nach $\mathrm{C}\cdot\mathrm{A}$-Block ist $n_2$ stets A- oder E-Typ,
+niemals C-Typ (bewiesen in \texttt{collatz\_lte\_dichte.tex},
+Prop.~spezial). Für $r$ ungerade (LTE-schlimmster Fall $\vii=2$):
+$n_2=(3^{r+2}-1)/2\equiv 1\pmod{12}$ (E-Typ).
+
+\subsection{Negatives Ergebnis: naive Uniformitätsschranke}
+
+\begin{proposition}[Widerlegung der dist-zu-1-Form]
+\label{prop:counter}
+Für $n=2^{k+1}\cdot 3^r-1$ mit $k,r\geq 1$ gilt
+$\disttwo(n,1)=0{,}5$, während $c\cdot 2^{-\lfloor\log_2 n\rfloor}\to 0$
+für $n\to\infty$. Die Schranke
+\[
+  \disttwo(n,1)\geq c\cdot 2^{-\lfloor\log_2 n\rfloor}
+\]
+ist für kein $c>0$ und alle großen $n$ erfüllbar.
+\end{proposition}
+
+\begin{beweis}
+$n_0+1=2^{k+1}\cdot 3^r$ ist durch $4$ teilbar, aber nicht durch $8$
+(für $k\geq 1$), also $\vii(n_0-1)=2$ und $\disttwo(n_0,1)=2^{-2}=1/2$.
+Für $n_0\to\infty$ ist $2^{-\lfloor\log_2 n_0\rfloor}\leq 1/n_0\to 0$.
+\end{beweis}
+
+\begin{tcolorbox}[offen,title={Konsequenz}]
+Die Uniformitäts-Vermutung muss $E$ präziser wählen: nicht
+$\disttwo(n,1)$, sondern Abstand zu \emph{divergenten} 2-adischen
+Fixpunkt-Komponenten von $\U$ auf $\Ztwo\setminus\N$.
+Natürliche Zahlen können $1$ 2-adisch beliebig ``nah'' sein
+(konstante Distanz $1/2$), ohne pathologisch zu sein.
+\end{tcolorbox}
+
+\subsection{Roth-Analogon: Status}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{>{\raggedright}p{5.5cm}cc}
+\toprule
+\textbf{Familie} & \textbf{Getestet} & \textbf{Ergebnis} \\
+\midrule
+LTE-Worst $2^{k+1}3^r-1$ & $300$ Paare & $\vii=1$ nach Block (nur $N$ gerade) \\
+Minimal $4\cdot 3^r-1$ & $r\leq 15$ & stets A/E-Nachfolger \\
+$\disttwo(n,E_{\mathrm{div}})$ & --- & nicht berechenbar (leeres $E_{\mathrm{div}}$?) \\
+Uniformität $\geq c\cdot 2^{-\log n}$ & --- & \textbf{widerlegt} für $\disttwo(\cdot,1)$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% =================================================
+\section{Angriff C: Lean-Status}
+\label{sec:lean}
+% =================================================
+
+Datei: \texttt{collatz\_uniformity.lean}. Ergänzt
+\texttt{collatz\_density\_appendix.lean}.
+
+\subsection{Neu bewiesen (ohne \texttt{sorry})}
+
+\begin{enumerate}[label=(\roman*)]
+  \item \texttt{lteWorst\_valuation}: $\vii(n_0+1)=k+1$ für
+    $n_0=2^{k+1}\cdot 3^r-1$.
+  \item \texttt{padicVal\_two\_three\_pow\_odd\_plus\_one}:
+    $\vii(3^j+1)=2$ für ungerades $j$.
+  \item \texttt{lte\_even\_N\_successor\_valuation\_one}:
+    Fall~1 des LTE-Reset (Lemma~\ref{lem:ltereset}).
+  \item \texttt{lte\_worst\_even\_N\_forces\_low\_valuation}:
+    strukturelle Kompensation für gerades $N$.
+  \item \texttt{mixing\_probability\_tendsto\_zero}:
+    $(1-p)^n\to 0$; Verbindung zu
+    \texttt{exception\_probability\_tendsto\_zero}.
+  \item \texttt{density\_C\_chains\_finite}: Duplikat für Kontext.
+\end{enumerate}
+
+\subsection{Roadmap (offen)}
+
+\begin{enumerate}[label=(\roman*)]
+  \item \texttt{mixing\_probability\_bound} mit explizitem $p$ aus
+    endlicher mod-$12$-Matrix (Finset-Spektrum).
+  \item LTE Fall~2 (ungerades $N$): $\vii(3n_k+1)\geq 3$ formalisieren.
+  \item Uniforme Zweiblock-Kompensation $\frac{n_{k+k'+2}}{n_0}<1$.
+  \item Roth-Analogon in $\mathbb{Z}_2$ als separates Projekt.
+\end{enumerate}
+
+Auszug \texttt{lte\_even\_N\_successor\_valuation\_one}:
+\begin{lstlisting}
+theorem lte_even_N_successor_valuation_one (N : Nat) (hN : Even N) :
+    padicValNat 2 ((3 ^ (N + 1) - 1) / 2 + 1) = 1
+\end{lstlisting}
+
+% =================================================
+\section{Was neu ist vs.\ was scheiterte}
+\label{sec:ehrlich}
+% =================================================
+
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{>{\raggedright}p{6.2cm}cc}
+\toprule
+\textbf{Aussage} & \textbf{Status} & \textbf{Methode} \\
+\midrule
+LTE-Reset $\vii=1$ (gerades $N$) & \textcolor{bewiesengruen}{Neu bewiesen} & Lean + mod~8 \\
+$\vii(n_{k+1}+1)\leq 2$ für \emph{alle} LTE-Worst & \textcolor{lueckenrot}{Widerlegt} & $k{=}1,r{=}10$ \\
+$W(n)=O(\log n)$ für E-Typ-Mischzeit & \textcolor{warnorange}{Numerisch} & $10^6$ Starts \\
+Uniformität $\disttwo(n,1)\geq c\cdot 2^{-\log n}$ & \textcolor{lueckenrot}{Widerlegt} & Prop.~\ref{prop:counter} \\
+$(1-p)^n\to 0$ (Mischschranken) & \textcolor{bewiesengruen}{Bewiesen} & Lean \\
+Collatz für alle $n$ & \textcolor{lueckenrot}{Offen} & --- \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Warum kein Durchbruch}
+
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{Markov $\neq$ Trajektorie.} Selbst optimale Mischung des
+    endlichen Operators überträgt sich nicht auf $\N\subset\Ztwo$
+    (Haar-Nullmenge).
+  \item \textbf{LTE-Barriere im Einzelblock.} $\Lam_B>0$ im schlechtesten
+    Fall; Kompensation wirkt nur über Mehrblock-Mechanismen.
+  \item \textbf{Falsche Uniformitätsform.} Abstand zu $1\in\Ztwo$ skaliert
+    nicht mit $2^{-\log n}$; die Vermutung braucht eine präzisere Wahl von $E$.
+  \item \textbf{Fall~2 (ungerades $N$).} Hohe $\vii$ im Block ersetzt
+    niedrige $\vii(n+1)$ beim Nachfolger --- zwei verschiedene
+    Kompensationsmechanismen.
+\end{enumerate}
+
+% =================================================
+\section{Nächster Schritt}
+\label{sec:nächster}
+% =================================================
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+  \item \textbf{Präzisiere $E$.} Definiere $E$ als Vereinigung der
+    2-adischen Attraktoren divergenter Bahnen in $\Ztwo$ (nicht $\{1\}$).
+    Teste $\disttwo(n,E)$ für LTE-Familien numerisch mit wachsendem
+  $k,r$ bis $10^8$.
+  \item \textbf{Mischzeit-Lemma formalisieren.} Beweise oder widerlege:
+    $W(n)\leq C\log n$ für alle $n$ (stärker als Collatz selbst?).
+  \item \textbf{Zweiblock-Uniformität.} Für alle LTE-Worst $(k,r)$:
+    $\frac{n_{k+k'+2}}{n_0}<1$ mit $k'\leq 1$ nach Fall~1, plus
+    separater Fall~2-Beweis.
+  \item \textbf{Lean: mod-$12$-Irreduzibilität.} Endliche Kombinatorik
+    der Block-Übergänge als nächstes Lemma ohne \texttt{sorry}.
+  \item \textbf{Erweiterte Numerik.} $W(n)$ bis $10^8$; Korrelation mit
+    $\lfloor\log_2 n\rfloor$ und C-Kettenlänge.
+\end{enumerate}
+
+\begin{tcolorbox}[kern]
+\textbf{Fazit:} Der Angriff liefert ein \emph{neues} Lean-Lemma
+(LTE-Reset, gerades $N$), numerische Evidenz für $W(n)=O(\log n)$,
+und ein \emph{negatives} Resultat zur naiven Uniformitätsform.
+Die Collatz-Vermutung bleibt offen; die Lücke ist schärfer kartiert.
+\end{tcolorbox}
+
+\begin{thebibliography}{9}
+\bibitem{Roth1955}
+K.~F.~Roth.
+Rational approximations to algebraic numbers.
+\textit{Mathematika} \textbf{2} (1955), 1--20.
+
+\bibitem{Tao2019}
+T.~Tao.
+Almost all orbits of the Collatz map attain almost bounded values.
+\textit{Forum Math.\ Pi} \textbf{10} (2022), e12.
+
+\bibitem{Schlussartikel}
+T.~Hoffbauer.
+EABC-Klassifikation und Uniformitätslücke.
+\texttt{collatz\_schlussartikel\_arxiv.tex}, 2026.
+
+\bibitem{LTEDichte}
+T.~Hoffbauer.
+2-adisches Dichte-Argument gegen die LTE-Barriere.
+\texttt{collatz\_lte\_dichte.tex}, 2026.
+\end{thebibliography}
+
+\end{document}
