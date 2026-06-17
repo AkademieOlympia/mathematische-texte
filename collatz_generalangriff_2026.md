@@ -184,17 +184,18 @@ gesichert bzw. epistemisch abgegrenzt), sondern beim **Übergang strukturell →
 von lokal zulässigen EABC-Wörtern und typischen Bahnen zu einer Aussage über **jedes**
 $n\in\mathbb{N}$ (odd-to-odd).
 
-### Top-3 neu eingordnet (Priorität Juni 2026, revidiert)
+### Top-5 neu eingordnet (Priorität Juni 2026, nach Stufe 2B)
 
-| Rang | Kandidat | Vermutete Stärke | Stufe |
-|------|----------|------------------|-------|
-| **1** | **Realisierbarkeit** $\mathcal{L}_{\mathrm{arith}}\subsetneq\mathcal{L}$ (L₂) | **stärkster operativer Zweig** — quantifizierte Lücke | **2** |
-| **2** | **Treue Kodierung $\kappa$** (L₄) | fundamentale Brücke; macht verborgene Realisierbarkeitsregeln sichtbar | **1** |
-| **3** | **Präperiodizität** Lemma E (L₁) | vermutlich nahe an Collatz | **3** |
+| Rang | Kandidat | Status | Stufe |
+|------|----------|--------|-------|
+| **1** | **Kodierungsfreie $\mathcal{L}_{\mathrm{arith}}$** / $\mathcal{L}_{\mathrm{arith}}^*$ | zentral offen | **3** |
+| **2** | **$R(k)\to 0$** (Dünnheits-Conjecture) | experimentell gestützt, kein Theorem | **3** |
+| **3** | **Entropie $h_F$** | Schätzer $\approx 1{,}19$; κ-robust? | **3** |
+| **4** | **Dynamische Konsequenzen** ($F_n \to$ Trajektorien) | Brücke fehlt | Pipeline |
+| **5** | **Lemma E** (Präperiodizität) | TeX-Skizze | später |
 
-Die frühere Reihenfolge $\kappa\to L_{\mathrm{arith}}\to$ Lemma E ist nach dem Stufe-2-Befund
-**umgedreht**: Die Realisierbarkeitslücke ist numerisch und formal greifbar; $\kappa$ und Lemma E
-schließen erst danach an.
+Stufe 2/2B (PR #39/#40) ist **abgeschlossen**: $\mathcal{L}_{\mathrm{arith}}\subsetneq\mathcal{L}$ gesichert,
+BE als kodierungsunabhängiger Zeuge **widerlegt**. Nächster Angriff: **Kodierungsinvarianz**, nicht Collatz.
 
 ### Warum $\kappa$ (Stufe 1) weiterhin zentral?
 
@@ -221,18 +222,17 @@ als Bahnwort $w(n)$ eines $n\in\mathbb{N}_{\mathrm{odd}}$. Schlechte **unendlich
 formal in $\mathcal{L}^{\mathbb{N}}$ liegen, ohne dass ein natürliches $n$ sie realisiert —
 das ist die operationale Form der Brücke (vgl. L₂, `collatz_equivalenz_e_infty.tex`).
 
-### Generalangriff-Prioritäten (Stufe 1–3, revidiert Juni 2026)
+### Generalangriff-Prioritäten (Stufe 3, Juni 2026)
 
-| Rang | Stufe | PR / Zweig | Kernfrage |
-|------|-------|------------|-----------|
-| **1** | $\mathcal{L}_{\mathrm{arith}}$-Realisierbarkeit | **PR #39** `collatz/l-arith-stufe2` | Welche $w\in\mathcal{L}$ sind Bahnwörter? Wie groß ist die Lücke? |
-| **2** | Treue Kodierung $\kappa$ | PR #38 `collatz/kappa-encoding` | Injektivität, Dynamiktreue; verborgene Realisierbarkeitsregeln |
-| **3** | Präperiodizität (Lemma E) | offen | Endliche Beobachtungsschlechtigkeit $\Rightarrow$ Präperiodizität |
+| Rang | Stufe | Status | Kernfrage |
+|------|-------|--------|-----------|
+| **1** | Kodierungsinvarianz | **aktiv** | Welche Eigenschaften überleben κ-Wechsel? $\mathcal{L}_{\mathrm{arith}}^*$? |
+| — | $\mathcal{L}_{\mathrm{arith}}\subsetneq\mathcal{L}$ | **abgeschlossen** (PR #39) | Massive Verdünnung gesichert |
+| — | κ-Robustheit / BE-Negativtest | **abgeschlossen** (PR #40) | BE nicht kodierungsunabhängig |
+| **5** | Lemma E | später | Präperiodizität — nicht Stufe-3-Kern |
 
-**Nutzer-Priorität (Juni 2026):** PR **#39** ($L_{\mathrm{arith}}$) ist der **stärkste Zweig**
-des Generalangriffs — nicht philosophischer Anhang, sondern methodischer Rahmen im Tao-Stil
-(vgl. `collatz_formalisierung_tao_stil.md`, Abschnitt *Methodik 2*). Treue $\kappa$ (Stufe 1)
-und Lemma E (Stufe 3) bauen auf der quantifizierten Realisierbarkeitslücke auf.
+**Aktueller Fokus:** `collatz_stufe3_kodierungsinvarianz.md` — Fragen A/B/C, keine Collatz-Beweisansprüche.
+Treue $\kappa$ (Stufe 1) und Geometrie/Präzession sind **zurückgestellt** (epistemisch abgegrenzt).
 
 ### Stufe 1 — Implementierung (Juni 2026)
 
@@ -347,19 +347,16 @@ Collatz impliziert, ist weiterhin eine punktweise Aussage über **natürliche** 
 **$E_\infty=\emptyset$** (äquivalent zu Collatz). Die lokale Grammatik liefert dafür **keine** Implikation;
 jede scheinbar schwächere Formulierung ist meist nur **Umformulierung** derselben Lücke.
 
-**Strategisch (Juni 2026, nach Stufe-2-Befund):** Drei-Stufen-Angriff — Priorität revidiert;
-vgl. Abschnitt *Strategische Verfeinerung*.
+**Strategisch (Juni 2026, nach Stufe 2B):** Stufe 2/2B abgeschlossen; **Stufe 3 = Kodierungsinvarianz**.
+vgl. `collatz_stufe3_kodierungsinvarianz.md`.
 
-**Stufe 2 — $\mathcal{L}_{\mathrm{arith}}\subsetneq\mathcal{L}$ (L₂):** Stärkster operativer Zweig;
-quantifizierte Realisierbarkeitslücke ($|L_{\mathrm{arith}}(10)|/|L(10)|\approx 0{,}0087$);
-Tao-Methodik mit fünf Ebenen (`collatz_formalisierung_tao_stil.md`).
+**Stufe 2 + 2B (PR #39/#40):** $\mathcal{L}_{\mathrm{arith}}\subsetneq\mathcal{L}$ gesichert;
+BE nicht kodierungsunabhängig; $R(10)$ klein für $\kappa_1,\kappa_2,\kappa_3$.
 
-**Stufe 1 — $\kappa$ (L₄):** Fundamentale Brücke zwischen $\mathbb{Z}_2$, EABC-Wörtern und
-$\Phi_{\mathrm{pref}}$; soll verborgene Verbotsregeln von $\mathcal{L}_{\mathrm{arith}}$ sichtbar machen.
+**Stufe 3 — Kodierungsinvarianz:** κ-invariante Eigenschaften, Äquivalenzklassen, $\mathcal{L}_{\mathrm{arith}}^*$.
+Kein direkter Collatz-Angriff.
 
-**Stufe 3 — Lemma E (L₁):** Zwischenlemma — trennt endliche Beobachtungsschlechtigkeit von
-unendlicher Nichtkonvergenz **für den präperiodischen Anteil**; vermutlich **näher an Collatz**
-als Stufe 1–2, daher zuletzt im Angriffsplan.
+**Lemma E (L₁):** Rang 5 in der neuen Hierarchie — späterer Endpunkt der Pipeline.
 
 Zerlegung (unverändert gültig):
 Collatz $\Leftrightarrow$ (keine Divergenz) $\land$ (kein nichttrivialer Zyklus) $\land$
@@ -367,13 +364,15 @@ Collatz $\Leftrightarrow$ (keine Divergenz) $\land$ (kein nichttrivialer Zyklus)
 
 ---
 
-## Top-3 Kandidaten-Lemmas (Kurzliste, revidiert Juni 2026)
+## Top-5 offene Fragen (Kurzliste, Stufe 3, Juni 2026)
 
-| Rang | Stufe | Lemma | Warum |
-|------|-------|-------|-------|
-| **1** | **2** | **L₂ Arithmetische Realisierbarkeit** | Stärkster operativer Zweig: $|L_{\mathrm{arith}}(10)|/|L(10)|\approx 0{,}0087$; $\mathrm{BE}$ als erster Zeuge; Tao-Methodik mit fünf Ebenen |
-| **2** | **1** | **L₄ Treue Kodierung $\kappa$** | Fundamentale Brücke $n\leftrightarrow$ EABC-Wort; macht verborgene Realisierbarkeitsregeln sichtbar |
-| **3** | **3** | **L₁ Lemma E** (Präperiodizität) | Zwischenlemma skizziert; reduziert globale Frage auf präperiodische EABC-Analyse; Lean-Grundgerüst vorhanden |
+| Rang | Frage | Status |
+|------|-------|--------|
+| **1** | Kodierungsfreie $\mathcal{L}_{\mathrm{arith}}$ / $\mathcal{L}_{\mathrm{arith}}^*$ | zentral offen |
+| **2** | $R(k)\to 0$ (Dünnheits-Conjecture) | experimentell gestützt |
+| **3** | Entropie $h_F$ κ-robust? | heuristisch |
+| **4** | Dynamische Konsequenzen ($F_n \to$ Trajektorien) | Brücke fehlt |
+| **5** | Lemma E (Präperiodizität) | TeX-Skizze, später |
 
 ---
 
@@ -383,6 +382,8 @@ Collatz $\Leftrightarrow$ (keine Divergenz) $\land$ (kein nichttrivialer Zyklus)
 - `CollatzEabc.Open` / `ExceptionSetInfinity` — Lean-Äquivalenz Collatz $\Leftrightarrow$ $E_\infty=\emptyset$
 - `collatz_offene_punkte.md` — Synthese offener Punkte, Negativresultate
 - `collatz_formalisierung_tao_stil.md` — Methodik: Lean als Wahrheitsfilter (Tao/IEANTN/PNT+; ICERM Mai 2026)
+- `collatz_stufe3_kodierungsinvarianz.md` — Stufe 3: Fragen A/B/C, Kodierungsinvarianz
+- `collatz_stufe2b_kappa_robustheit.md` — Stufe 2B: κ-Robustheit (PR #40)
 - `collatz_forbidden_words.py` / `collatz_forbidden_words.json` — $F_n$-Katalog, $R(k)$-Tabelle
 - `collatz_kepler_gedankenexperiment.tex` — $\kappa$, $\Phi_{\mathrm{pref}}$, Diskriminantentest
 - `collatz_schlussartikel_arxiv.tex` — Epilog, Uniformität, EABC-Struktur
@@ -442,9 +443,8 @@ fünf getrennten Ebenen (vgl. `collatz_formalisierung_tao_stil.md`, *Methodik 2*
 | Beobachtung: $\mathrm{BE}$ tritt nicht auf | ja (minimaler Zeuge, Länge 2) |
 | Theorem: $\mathrm{BE}\notin\mathcal{L}_{\mathrm{arith}}$ für alle $n$ | **nein** (offen) |
 
-**Priorität:** PR **#39** abgeschlossen (Stufe 2). Aktuell: PR **#40** (Stufe 2B, κ-Robustheit).
-Treue $\kappa$ (Stufe 1) soll verborgene Verbotsregeln von $\mathcal{L}_{\mathrm{arith}}$ sichtbar machen;
-Lemma E (Stufe 3) schließt später an.
+**Priorität:** PR **#39** und **#40** abgeschlossen (Stufe 2/2B). Aktuell: **Stufe 3** Kodierungsinvarianz
+(`collatz_stufe3_kodierungsinvarianz.md`). Lemma E ist Rang 5, nicht Stufe-3-Kern.
 
 ### Verbindung zu PR #38 ($\kappa$-Negativresultat)
 
@@ -523,22 +523,35 @@ $R(10)$ bleibt für alle drei Varianten klein ($\kappa_2$: $\approx 0{,}0041$, s
 **Artefakte:** `collatz_kappa_robustheit.py`, `collatz_kappa_robustheit.json`,
 `collatz_stufe2b_kappa_robustheit.md`, `tests/test_kappa_robustheit.py`.
 
-**Nächster Schritt:** κ-Klassifikation (dynamiktreu, injektiv, shiftäquivalent, …) — nicht $10^8$-Bootstrap.
+**Nächster Schritt:** Stufe 3 — Kodierungsinvarianz (`collatz_stufe3_kodierungsinvarianz.md`).
 
 ---
 
-## Stufe 2B — κ-Robustheit (PR #40, Juni 2026)
+## Stufe 3 — Kodierungsinvarianz (Juni 2026)
 
-> **PR #39 geschlossen:** $\mathcal{L}_{\mathrm{arith}}\subsetneq\mathcal{L}$ experimentell beantwortet
-> (BE, $F_n$-Katalog, $R(k)$). **Nicht** weiter erweitern — kritische Schwachstelle ist κ-Abhängigkeit.
+> **Boxed (Stufe 3):**  
+> *Konkrete Verbotslisten sind κ-abhängig; die Ausdünnung $R(k)$ erscheint dagegen möglicherweise robust.*
 
-**Artefakte:** `collatz_kappa_robustheit.py`, `collatz_kappa_robustheit.json`,
-`collatz_stufe2b_kappa_robustheit.md`.
+PR **#39** und **#40** sind auf `main` gemergt. Stufe 3 greift **nicht** Collatz direkt an, sondern
+definiert die nächste Forschungsfrage: welche Eigenschaften der Realisierbarkeitslücke überleben Kodierungswechsel?
 
-**Kernbefund ($n\leq 10^6$):** $\kappa_1$ (naiv) und $\kappa_3$ (Successor) aligniert — BE verboten,
-minimales Gegenbeispiel BE. $\kappa_2$ ($\nu_2$-Rotation) **nicht robust**: BE realisierbar,
-$R(4)\approx 0{,}97$. Stufe-2-Lücke ist **κ-abhängig** (Fall B möglich).
+**Kombinationsnarrativ:**
 
-> **Boxed (offen):** Welche arithmetischen Regeln erzeugen die verbotenen Wörter? BE ist Symptom, nicht Erklärung.
+| PR | Befund |
+|----|--------|
+| **#39** | $\mathcal{L}_{\mathrm{arith}} \subsetneq \mathcal{L}$ — massive Verdünnung ($R(10)\approx 0{,}87\,\%$ bei $\kappa_1$) |
+| **#40** | BE **nicht** kodierungsunabhängig ($\kappa_2$ realisiert BE; $\kappa_1/\kappa_3$ verbieten es) |
 
-**Entropie:** $h_F \approx \max_n (1/n)\log|F_n| \approx 1{,}19$ für $n\leq 8$ (Schätzer, kein Theorem).
+**Drei Leitfragen:** (A) κ-invariante Eigenschaften? (B) Äquivalenz $\kappa_i \sim \kappa_j$? (C) universelles $\mathcal{L}_{\mathrm{arith}}^* = \bigcap_\kappa \mathcal{L}_{\mathrm{arith}}^\kappa$?
+
+**Referenz $R(10)$:** $\kappa_1$: 0,0087 · $\kappa_2$: 0,0041 · $\kappa_3$: 0,0088.
+
+**Neue Prioritätshierarchie** (ersetzt Attraktor/Geometrie/Präzession/κ):
+
+1. Kodierungsfreie Definition von $\mathcal{L}_{\mathrm{arith}}$
+2. Verhalten von $R(k)$
+3. Entropie $h_F$
+4. Dynamische Konsequenzen
+5. Lemma E (späterer Endpunkt)
+
+**Vollständiger Plan:** `collatz_stufe3_kodierungsinvarianz.md`.

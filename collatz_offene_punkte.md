@@ -24,31 +24,37 @@ dynamische Konsequenzen — nicht mehr nur $\kappa\to L_{\mathrm{arith}}\to$ Lem
 TeX `collatz_kappa_encoding.tex` — naive $\kappa_K$ dynamiktreu, aber **nicht** injektiv (PR #38).
 - **Stufe 1 begonnen:** `CollatzEabc.Kappa.lean` (`kappaPrefix`, `FaithfulKappa`, `kappaConjecture`);
   numerischer Test `collatz_kappa_test.py` (Injektivität/Kollisionen, Dynamik-Shift).
-- **Stufe 2 begonnen (PR #39):** `collatz_l_arith_test.py`, `collatz_forbidden_words.py`,
+- **Stufe 2 begonnen (PR #39, gemergt):** `collatz_l_arith_test.py`, `collatz_forbidden_words.py`,
   `CollatzEabc.ArithLanguage.lean` — Grammatik $L(k)$ vs. $L_{\mathrm{arith}}(k)$;
   $F_n$-Katalog ($\mathrm{BE}$ Hero in $F_2$); Vollliste $F_n$ für $n\leq 8$.
+- **Stufe 2B abgeschlossen (PR #40, gemergt):** BE **nicht** kodierungsunabhängig;
+  $R(10)$ klein für $\kappa_1,\kappa_2,\kappa_3$; `collatz_stufe2b_kappa_robustheit.md`.
+- **Stufe 3 aktiv:** Kodierungsinvarianz — `collatz_stufe3_kodierungsinvarianz.md`
+  (Fragen A/B/C; keine Collatz-Beweisansprüche).
 - **IEANTN-Parallele (Tao, ICERM Mai 2026):** PNT+-Formalisierung mit living spreadsheet
   und Sicherheitsmargen — methodisches Vorbild für EABC-Zeugenbuchhaltung, kein Collatz-Transfer.
 
-### Generalangriff-Prioritäten (Juni 2026, Tao-Stil — Forschungsorganisation)
+### Generalangriff-Prioritäten (Stufe 3, Juni 2026)
 
-**Strategische Verschiebung:** Von „Attraktor suchen“ zu **arithmetischer Grammatik**
-hinter zulässigen Collatz-Wörtern. Drei Ebenen: **A** formale Objekte (gesund),
-**B** numerische Evidenz (sauber), **C** fehlende Brücke $L_{\mathrm{arith}}\to$ Collatz-Dynamik.
+**Strategische Verschiebung:** Stufe 2/2B abgeschlossen (PR #39/#40). Nächster Angriff:
+**Kodierungsinvarianz** — welche Eigenschaften der Realisierbarkeitslücke überleben κ-Wechsel?
+Attraktor, Geometrie, Präzession sind **zurückgestellt**.
 
-| # | Angriff | Status | Artefakt |
-|---|---------|--------|----------|
-| **1** | $F_n = L(n)\setminus L_{\mathrm{arith}}(n)$ katalogisieren | **begonnen** | `collatz_forbidden_words.json` ($n\leq 8$ vollständig; $\mathrm{BE}\in F_2$) |
-| **2** | $R(k)=|L_{\mathrm{arith}}\cap L|/|L|$ — Grenzwert? | **Experiment** | $R(4)\approx 0{,}54$; $R(8)\approx 0{,}057$; $R(10)\approx 0{,}012$ ($n\leq 10^7$) |
-| **3** | Dependency Graph ABCE$\to\kappa\to L_{\mathrm{arith}}\to F_n\to$ Lemma E | dokumentiert | `collatz_generalangriff_2026.md` (mermaid) |
-| **4** | Große Läufe $n\leq 10^7$ | **durchgeführt** | BE stabil; $|L_{\mathrm{arith}}(10)|$ wächst, Ratio noch $\gg 0$ |
+| # | Frage | Status | Artefakt |
+|---|-------|--------|----------|
+| **1** | Kodierungsfreie $\mathcal{L}_{\mathrm{arith}}$ / $\mathcal{L}_{\mathrm{arith}}^*$ | **zentral offen** | `collatz_stufe3_kodierungsinvarianz.md` |
+| **2** | $R(k)\to 0$ (Dünnheits-Conjecture) | **Experiment** | $R(10)$: $\kappa_1$ 0,0087; $\kappa_2$ 0,0041; $\kappa_3$ 0,0088 |
+| **3** | Entropie $h_F$ κ-robust? | **heuristisch** | $h_F \approx 1{,}19$ ($n\leq 8$, Schätzer) |
+| **4** | Dynamische Konsequenzen ($F_n \to$ Trajektorien) | **Brücke fehlt** | Pipeline |
+| **5** | Lemma E (Präperiodizität) | **später** | TeX-Skizze |
 
 | Rang | Zweig | Status |
 |------|-------|--------|
-| **1** | $L_{\mathrm{arith}}\subsetneq L$, $F_n$-Katalog (PR #39) | **stärkster Zweig** |
-| **2** | Treue $\kappa$ (`FaithfulKappa`, PR #38) | naive $\kappa$ verworfen |
-| **3** | Lemma E (Präperiodizität) | TeX-Skizze, nicht in Lean |
-| — | Uniformität Stufe E | verworfen als Hauptweg |
+| **1** | Kodierungsinvarianz (Stufe 3) | **aktiv** |
+| — | $L_{\mathrm{arith}}\subsetneq L$ (PR #39) | **abgeschlossen** |
+| — | BE κ-abhängig (PR #40) | **abgeschlossen** |
+| — | Attraktor / Uniformität | zurückgestellt |
+| — | Geometrie / Präzession | epistemisch abgegrenzt |
 
 Methodischer Rahmen: `collatz_formalisierung_tao_stil.md` (*Methodik 2*).
 
@@ -174,7 +180,9 @@ Methodischer Rahmen: `collatz_formalisierung_tao_stil.md` (*Methodik 2*).
 | $z_0$ dynamisch relevant | **NEIN** | Algebraischer Anker $z_0=\zeta(-1)(12+\mathrm{i})$ | $\mathrm{dist}_2(\cdot,E_\infty)$ |
 | $\Phi_{\mathrm{pref}}$ | **offen** | Wohldefiniert auf EABC-Wörtern (`PrefProjection.lean`) | Brücke $\Phi=\Phi_{\mathrm{pref}}\circ\kappa$ ohne Datentest |
 | Treue $\kappa$ (Stufe 1) | **begonnen** | Naive $\kappa_K$ + `FaithfulKappa`-Schnittstelle (`Kappa.lean`); Dynamik sorry-frei | Injektivität / Vollständigkeit der naiven mod-12-$\kappa$ **verneint** (`collatz_kappa_test.json`, PR #38) |
-| $L_{\mathrm{arith}}$ (Stufe 2) | **begonnen** | $F_n$-Katalog; $R(10)\approx 0{,}012$ ($n\leq 10^7$); $w=\mathrm{BE}\in F_2$, kein Theorem | Vollständige Charakterisierung; $\mathrm{BE}\notin\mathcal{L}_{\mathrm{arith}}$ für alle $n$; $\lim_{k\to\infty}R(k)$ (`collatz_forbidden_words.py`, PR #39) |
+| $L_{\mathrm{arith}}$ (Stufe 2) | **abgeschlossen** | $F_n$-Katalog; $R(10)\approx 0{,}87\,\%$ ($\kappa_1$); $\mathrm{BE}\in F_2$ bei $\kappa_1$ | Vollständige Charakterisierung; $\lim_{k\to\infty}R(k)$ |
+| $\kappa$-Robustheit (Stufe 2B) | **abgeschlossen** | BE **nicht** kodierungsunabhängig ($\kappa_2$ realisiert BE); $R(10)$ klein für alle drei $\kappa$ | kodierungsfreie $\mathcal{L}_{\mathrm{arith}}$ |
+| Kodierungsinvarianz (Stufe 3) | **aktiv** | Fragen A/B/C; $\mathcal{L}_{\mathrm{arith}}^*$ offen | κ-Äquivalenzklassen; asymptotisches $R(k)$ |
 | Collatz / $E_\infty$ | **NEIN** | Äquivalenz präzise formuliert | Beweis |
 
 ### 4b. Projektions-/Kepler-Taxonomie (EABC, nicht Collatz)
@@ -277,7 +285,9 @@ Wo Mathlib endet, endet der formalisierte Teil — dokumentiert, nicht verschwie
 - `EABC.lean`, `Projektionszeuge.tex`, `collatz_hurwitz_polytop_eabc.tex`, `Miller_alt.tex` — ABCE/CEAB (bewiesen)
 - `collatz_equivalenz_e_infty.tex` — $E_\infty$ vs. $E_{\mathrm{diag}}$, offene Brücke
 - `collatz_schlussartikel_arxiv.tex` — §Uniformität, Epilog, Anhang Lean §9.2
-- `collatz_z2_attraktor.tex` — §8 Roadmap, §Offene Fragen
+- `collatz_stufe3_kodierungsinvarianz.md` — Stufe 3: Kodierungsinvarianz, Fragen A/B/C
+- `collatz_stufe2b_kappa_robustheit.md` — Stufe 2B: κ-Robustheit (PR #40)
+- `collatz_generalangriff_2026.md` — Forschungsreport, revidierte Prioritäten
 - `collatz_z2_attraktor.lean` — Stufen A–E
 - `collatz_uniformity_e.lean` — Beweisversuche Stufe E
 - `collatz_kepler_gedankenexperiment.tex` — geometrisches Gedankenexperiment ($\Phi$, $K_{12}$, Stirling/Bernoulli; spekulativ)
