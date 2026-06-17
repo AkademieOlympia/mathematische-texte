@@ -19,8 +19,8 @@
 > *Geometrischer Operator mit überraschender lokaler Stabilität* — Definitionsrobustheit von $T_M^{(g)}$, Krümmungssensor $F_M$.
 
 > **Boxed (Roadmap):**  
-> *PR #44 mergen (M1) → M2: Krümmungs-Signatur → M3: Morley-Sensor*  
-> — M1 **abgeschlossen** (PR #44); M2 **abgeschlossen** (PR #45, Synthese `b2ec630`); M3 **ausstehend**.
+> *PR #44 mergen (M1) → M2 ($F_M$, $G_M$ auf Ebene / $S^2$ / $H^2$) → M3 (dualer Exponentenfit)*  
+> — M1 **abgeschlossen** (PR #44); M2 **abgeschlossen** (PR #46); M3 **ausstehend**.
 
 ---
 
@@ -118,32 +118,38 @@ M1-Ergebnis (PR #44): Szenario **D** — log-log-Steigung $\approx 3$ für alle 
 
 ---
 
-## M2 — Krümmungs-Signatur (erweitert, PR #46)
+## M2 — Krümmungs-Signatur (abgeschlossen, PR #46)
 
-M2 testet $F_M(\varepsilon, K)$ und den **signierten** Morley-Fehler $G_M(\varepsilon, K)$ für $K \in \{0, +1, -1\}$. Kontroll- und Testflächen mit bekannter $K_G$, **dieselbe $\varepsilon$-Familie** $\{0{,}05, 0{,}08, 0{,}12, 0{,}18, 0{,}25, 0{,}35\}$:
+M2 testet $F_M$ und $G_M$ auf Kontroll- und Testflächen mit bekannter $K_G \in \{0, +1, -1\}$, **dieselbe $\varepsilon$-Familie** $\{0{,}05, 0{,}08, 0{,}12, 0{,}18, 0{,}25, 0{,}35\}$.
 
-**Reviewer-Punkt (F_M-Limitierung):** $F_M = \sum_i (\theta_i^M - \pi/3)^2$ ist **nichtnegativ** — ein reiner Betragssensor. Daher kann $F_M(K{=}{+}1) = F_M(K{=}{-}1)$ bei unterschiedlicher Geometrie gelten; $F_M$ misst Krümmungs**stärke**, nicht Vorzeichen.
+**Definitionen:**
+$$F_M(\Delta) = \sum_i (\theta_i^M - \pi/3)^2, \qquad
+G_M(\Delta) = \sum_i (\theta_i^M - \pi/3).$$
 
-**Ergänzung:** Signierter Morley-Fehler
-$$G_M(\Delta) = \sum_i (\theta_i^M - \pi/3).$$
-Klassische DG: sphärische Dreiecke haben Winkelsumme $> \pi$, hyperbolische $< \pi$. Ein guter Morley-Sensor sollte diese Differenz detektieren.
+**Kernpunkt:** $F_M$ ist ein **Betragssensor** (Krümmungsstärke), **kein** natürlicher Vorzeichensensor. Da $F_M \geq 0$, kann $F_M(K{=}{+}1) \approx F_M(K{=}{-}1)$ bei gleicher Fläche gelten.
 
-| Raum | $F_M$ | $G_M$ |
-|------|-------|-------|
-| Ebene $\mathbb{R}^2$ | $\approx 0$ | $\approx 0$ |
-| Sphäre $S^2$ | $> 0$ | $+1{,}04\times 10^{-3}$ |
-| Hyperbolisch $H^2$ | $> 0$ | $-1{,}04\times 10^{-3}$ |
+> **Boxed (M2-Leitfragen):**  
+> 1. Ist Morley bei $K \neq 0$ verzerrt?  
+> 2. Detektiert Morley das Vorzeichen von $K$?
 
-**Kanoniche Variante:** `local_chart` (nach M1-Evidenz). Quelle: `collatz_morley_m2_sensor.json`.
+> **Boxed (M2-Roadmap):**  
+> - **M2a:** $F_M$ als Krümmungsstärke-Sensor  
+> - **M2b:** $G_M$ als signierter Krümmungs-Sensor
 
-> **Boxed (Leitfrage M2):**  
-> *Misst $T_M^{(g)}$ nur Krümmungsstärke oder auch Krümmungsvorzeichen?*
-> - **M2a (Stärke):** $F_M \sim c\,|K|^\alpha A^\beta$ — $F_M$ ist nichtnegativ, trennt $S^2$ und $H^2$ **nicht** ($S^2/H^2 \approx 1{,}001$).
-> - **M2b (Vorzeichen):** $G_M(K{>}0) \neq G_M(K{<}0)$ — **entgegengesetzte Vorzeichen** auf $S^2$ vs. $H^2$ (Median-Ratio $\approx -1$).
-> - **Befund (Juni 2026):** $F_M$ allein → Welt 1 (Stärke); **$G_M$ trennt Vorzeichen** — kombinierter Sensor $(F_M, G_M)$ empfohlen.
+**Testmatrix** (Median über $\varepsilon$-Familie, `local_chart`, Quelle: `collatz_morley_m2_sensor.json`):
 
-> **Boxed (M2-Sensoren):**  
-> *M2 studiert beide Größen: $F_M$ (Betrag) und signiertes $G_M$ (Richtung). Kein Theorem — nur numerische Evidenz.*
+| Raum | $K$ | $F_M$ | $G_M$ |
+|------|-----|-------|-------|
+| Ebene | $0$ | $\approx 0$ ($6{,}2\times 10^{-31}$) | $\approx 0$ ($2{,}2\times 10^{-16}$) |
+| Sphäre | $+1$ | $> 0$ ($4{,}1\times 10^{-7}$) | $> 0$ ($+1{,}04\times 10^{-3}$) |
+| Hyperbolisch | $-1$ | $> 0$ ($4{,}1\times 10^{-7}$) | $< 0$ ($-1{,}04\times 10^{-3}$) |
+
+**Durchbruchskriterium:** $\operatorname{sign}(G_M) = \operatorname{sign}(K_G)$ — **erreicht** (Juni 2026): $G_M > 0$ auf $S^2$, $G_M < 0$ auf $H^2$, $G_M \approx 0$ auf $\mathbb{R}^2$, bei jedem $\varepsilon$ der Familie.
+
+**Vorbehalt:** $G_M$ muss definitionsunabhängig genug sein; die einfache Summe ist der erste Test. Orientierte Varianten (Fläche, Umlaufzahl, geodätischer Exzess) folgen später.
+
+> **Boxed (M2-Befund):**  
+> *M2a: $F_M$ misst Krümmungsstärke ($F_M \approx 0$ bei $K{=}0$, $F_M > 0$ bei $K \neq 0$; $S^2/H^2 \approx 1{,}001$). M2b: $G_M$ trennt Vorzeichen — kombinierter Sensor $(F_M, G_M)$ empfohlen. Kein Theorem — nur numerische Evidenz.*
 
 ### M2a — Stärke $F_M$
 
@@ -186,16 +192,18 @@ Nach Ebene / $S^2$ / $H^2$ ist der **reguläre Ikosaeder** die natürliche **4. 
 
 ---
 
-## M3 — Morley-Sensor (nach M1 + M2, noch nicht aktiv)
+## M3 — Dualer Exponentenfit (ausstehend, erst nach M2)
 
-Erst wenn M2-Vorzeichenstruktur und Geometrietabelle geklärt (s.o.):
+M2 ist abgeschlossen (Vorzeichenstruktur geklärt). M3 testet **getrennte** Skalierungsgesetze:
 
-$$F_M(\Delta) = \sum_i (\theta_i^M - \pi/3)^2, \qquad
-\text{Test: } F_M(\Delta) \stackrel{?}{=} c\,K_G(p)\,A + O(A^2).$$
+$$F_M \stackrel{?}{=} c_F\,|K_G|^\alpha A^\beta, \qquad
+G_M \stackrel{?}{=} c_G\,K_G^\alpha A^\beta.$$
 
-Sekundär: $F_M \propto K_G^2 A^2$ als Alternativ-Conjecture — **M2 deutet eher auf** $F_M \propto A^2$ **ohne starke $K_G$-Kopplung**.
+Beachte: bei $G_M$ steht $K_G$ **ohne** Betrag — Vorzeichenkopplung ist Teil der Conjecture. M2c lieferte erste $F_M$-Evidenz ($\beta \approx 2$, schwache $|K_G|$-Kopplung); M3 ergänzt den parallelen $G_M$-Fit.
 
-**CLI:** `collatz_morley_tm_numerik.py m3` (hinter Flag, nicht Default).
+**Gate:** M3 erst nach dokumentierter M2a/b-Tabelle und $\operatorname{sign}(G_M) = \operatorname{sign}(K_G)$.
+
+**CLI:** `collatz_morley_tm_numerik.py m3` (hinter Flag, nicht Default — noch nicht auf dualen Fit erweitert).
 
 **Epistemisches Label:** **Conjecture** — nur Evidenz, kein Beweis.
 
@@ -215,6 +223,6 @@ Sekundär: $F_M \propto K_G^2 A^2$ als Alternativ-Conjecture — **M2 deutet ehe
 
 1. ~~M1~~ — abgeschlossen (PR #44).
 2. ~~M2: Krümmungs-Signatur ($F_M$ + $G_M$)~~ — erweitert (PR #46).
-3. **M3:** Morley-Sensor — $F_M$-Skalierung als Conjecture-Test (ausstehend).
+3. **M3:** Dualer Exponentenfit $F_M \sim c_F |K|^\alpha A^\beta$, $G_M \sim c_G K^\alpha A^\beta$ (ausstehend).
 4. Optional: Ikosaeder-20-Flächen-Lauf (4. Stufe nach $R^2/S^2/H^2$).
 5. Optional: Lean-Definitionen (`MorleyOperator`) — ohne Collatz-`sorry`.

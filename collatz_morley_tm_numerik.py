@@ -7,7 +7,7 @@ Reihenfolge (Reviewer-Vorgabe, Tao-Stil)
 M1  Operator-Konsistenz: vier Realisierungen von T_M^(g) auf schrumpfenden
     geodätischen Dreiecken Δ_ε; paarweise Abstände d_ij(ε); Skalierung O(ε) vs O(ε²).
 M2  Modellräume: R² (K_G=0), S² (K_G>0), H² (K_G<0) — nach bestandener M1.
-M3  Morley-Sensor: F_M(Δ), Tests F_M ∝ K_G A bzw. K_G² A² — erst nach M1+M2.
+M3  Dualer Exponentenfit: F_M ~ c_F |K_G|^α A^β, G_M ~ c_G K_G^α A^β — erst nach M2a/b.
 
 Epistemischer Rahmen
 --------------------
@@ -1215,7 +1215,7 @@ def run_m2_sensor(
         "M2c: F_M = c |K_G|^α A^β — α, β aus Daten, nicht vorausgesetzt.",
         "Kanoniche Variante: local_chart (M1: O(ε³)-Evidenz für 2.-Ordnung-Geometrie).",
         "K_G=0 nur Kontrolle (F_M≈0, G_M≈0); Exponentenfit nur K_G≠0.",
-        "M3 erst nach geklärter M2-Vorzeichenstruktur.",
+        "M3 erst nach M2a/b: getrennte Fits F_M~c_F|K|^α A^β, G_M~c_G K^α A^β.",
     ]
 
     return M2Report(
@@ -1236,11 +1236,11 @@ def run_m2_sensor(
 def run_m3_sensor(
     variant: str = "geodesic_angles",
 ) -> M3NumerikReport:
-    """M3: Morley-Sensor F_M — nur nach M1+M2 sinnvoll."""
+    """M3: Dualer Exponentenfit — nur nach abgeschlossenem M2a/b."""
     notes = [
-        "M3: F_M ~ c * K_G * A ist Conjecture, kein Theorem.",
-        "K_G=1 auf der Einheitskugel; kg_area = K_G * Area.",
-        "Vor M3 sollten M1-Varianten konsistent (O(ε²)) sein.",
+        "M3 (geplant): F_M ~ c_F |K_G|^α A^β, G_M ~ c_G K_G^α A^β — getrennte Fits.",
+        "Gate: M2-Vorzeichenstruktur sign(G_M)=sign(K_G) dokumentiert.",
+        "Aktuell: Legacy F_M ~ c·K_G·A auf S² (Rückwärtskompatibilität).",
     ]
     euc_max = max(morley_form_fm(t) for t in euclidean_smoke_triangles())
     scaling = probe_sphere_scaling(variant=variant)
