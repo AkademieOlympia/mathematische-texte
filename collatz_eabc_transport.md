@@ -5,9 +5,10 @@
 **Tao-Labels:** Definition | Theorem | Heuristik | Experiment
 
 **Querverweise:**
-- `collatz_eabc_holonomie.md` — projektive Holonomie $\mathcal H_E$, $\omega(Q)$, $\chi_E(N)$ (Stufen 5–6 der Holonomie-Hierarchie)
-- `collatz_eabc_holonomie_test.py` — Vierlings-$\chi_E$, Lean-Chiralität
-- `collatz_eabc_transition_graph.py` / `.json` — Numerik (Übergangsmatrix, Zyklus-Bias, Nullmodell)
+- `collatz_eabc_zyklus_holonomie.md` — **kanonisch:** $\chi_E(N)$ auf Primfolge-Gleitfenstern, $\mathrm{Hol}_E$, Hypothese
+- `collatz_eabc_holonomie.md` — Vierlings-Orientierung $\omega(Q)$, $\chi_E^{\mathrm{quad}}(N)$, projektive Holonomie $\mathcal H_E$
+- `collatz_eabc_holonomie_test.py` — Vierlings-$\chi_E^{\mathrm{quad}}$, Lean-Chiralität
+- `collatz_eabc_transition_graph.py` / `.json` — Numerik (Übergangsmatrix, $\chi_E$, Nullmodelle, $\mathrm{Hol}_E$-Schätzung)
 - `eabc_from_lean.py` — $\kappa=\texttt{class\_of}$, Rotation $t\colon E\!\to\!A\!\to\!B\!\to\!C\!\to\!E$
 - `collatz_eabc_invarianzprogramm.md` — globale Observable $\chi(x)$
 
@@ -97,22 +98,25 @@ $$\Omega=-1.$$
 
 ---
 
-## 6. Transport-Chiralität $\chi_{\mathrm{trans}}(N)$
+## 6. Transport-Chiralität $\chi_E(N)$ (Gleitfenster)
 
-**Definition.**
-$$\chi_{\mathrm{trans}}(N):=
-\frac{\#W=\mathrm{ABCE}-\#W=\mathrm{CEAB}}
-{\#W=\mathrm{ABCE}+\#W=\mathrm{CEAB}}
+**Kanonsiche Definition:** `collatz_eabc_zyklus_holonomie.md` §4.
+
+$$\chi_E(N):=
+\frac{\displaystyle\sum_{n:\,p_{n+3}\le N}\Omega(Q_n)}
+{\displaystyle\#\{n:\,p_{n+3}\le N,\;\Omega(Q_n)\neq 0\}}
 \in[-1,1],$$
 
-gezählt über alle 4-Fenster entlang der Primfolge mit $p_{n+3}\le N$.
+mit $Q_n=(X_n,X_{n+1},X_{n+2},X_{n+3})$ auf der Primfolge und $\Omega=+1$ (ABCE), $-1$ (CEAB), $0$ sonst.
 
-**Analogon zu Vierlings-$\chi_E$:**
-$$\chi_E(N)=\frac{\#\mathrm{ABCE}-\#\mathrm{CEAB}}{\#\mathrm{ABCE}+\#\mathrm{CEAB}}$$
+**Legacy-Notation:** $\chi_{\mathrm{trans}}(N):=\chi_E(N)$ (dieses Dokument, frühere Version).
+
+**Vergleichsträger (Vierlinge):**
+$$\chi_E^{\mathrm{quad}}(N)=\frac{\#\mathrm{ABCE}-\#\mathrm{CEAB}}{\#\mathrm{ABCE}+\#\mathrm{CEAB}}$$
 
 auf **Prim-Vierlingen** $Q(p)=(p,p{+}2,p{+}6,p{+}8)$ (`collatz_eabc_holonomie.md` §4).
 
-**Experiment:** `collatz_eabc_transition_graph.py::chi_transport_vs_quadruplet`.
+**Experiment:** `collatz_eabc_transition_graph.py::chi_E_sliding`, `chi_sliding_vs_quadruplet`.
 
 ---
 

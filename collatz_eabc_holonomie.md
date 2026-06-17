@@ -10,7 +10,8 @@
 - `collatz_eabc_oktonion_assoziator_spektralhypothese.md` — $\Gamma_E$-Projektion, $M_n^E(t)$ (Oktanion-Ebene)
 - `collatz_eabc_invarianzprogramm.md` — globale Observable $\chi(x)$; Stufe 1–2 ($\kappa$, $\sigma(Q)$)
 - `collatz_eabc_holonomie_test.py` / `.json` — Numerik ($\chi_E$, $\omega$, $\mathcal H_E$-Stub, Vergleich zu $\chi$)
-- `collatz_eabc_transport.md` / `collatz_eabc_transition_graph.py` — **Stufe-5-Kandidat** $T\colon\kappa(p_n)\mapsto\kappa(p_{n+1})$, $\chi_{\mathrm{trans}}$ vs. $\chi_E$
+- `collatz_eabc_zyklus_holonomie.md` — **kanonisch:** $\chi_E(N)$ auf Primfolge-Gleitfenstern, $\mathrm{Hol}_E$-Hypothese
+- `collatz_eabc_transport.md` / `collatz_eabc_transition_graph.py` — Transport $T_n$, $G_E$; $\chi_E$ (Gleitfenster) vs. $\chi_E^{\mathrm{quad}}$ (Vierlinge)
 - `eabc_from_lean.py` / `EABC.lean` — Chiralität ABCE / CEAB
 
 ---
