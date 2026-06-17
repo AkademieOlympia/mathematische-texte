@@ -158,18 +158,121 @@ dieses Dokument liefert die **mathematisch prüfbare Formulierung**.
 
 ---
 
-## 7. Implementierung und Querverweise
+---
 
-| Artefakt | Rolle |
-|----------|-------|
-| `collatz_eabc_invarianzprogramm.py` | Numerik: $V(x)$, $S(x)$, $\chi(x)$, $\sigma(Q)$, $\mu$-Schätzung |
-| `collatz_eabc_invarianzprogramm.json` | JSON-Output (Experiment) |
-| `tests/test_eabc_invarianzprogramm.py` | Unit-Tests ($\kappa$, Simplex, Referenzwerte) |
-| `eabc_from_lean.py` | Referenz-Implementierung von $\kappa$ |
-| `collatz_generalangriff_2026.md` | Strategischer Pointer |
-| `collatz_eabc_bernoulli_uebersetzung.md` §22 | Philosophischer Querverweis hierher |
+## 8. EABC-Fluktuationsfeld
+
+**Motivation:** Das Forschungsproblem betrifft die Struktur von Überschüssen und Defiziten zwischen
+EABC-Restklassen — nicht die Existenz von $4n+1$-Primzahlen. Dirichlet liefert
+$E,A,B,C\sim\pi(x)/4$ asymptotisch (führende Ordnung bekannt); die Information steckt in den
+Abweichungen.
+
+### Definition 6 (Fluktuationsvektor $\delta(x)$)
+
+\[
+\delta_E(x)=E(x)-\frac{\pi_{>3}(x)}{4},\quad
+\delta_A(x)=A(x)-\frac{\pi_{>3}(x)}{4},\ \ldots
+\]
+\[
+\delta(x)=\bigl(\delta_E,\delta_A,\delta_B,\delta_C\bigr)\in\mathbb{R}^4,\qquad
+\sum_i \delta_i(x)=0.
+\]
+Damit liegt $\delta(x)$ in der Hyperebene
+\[
+\mathcal{E}=\Bigl\{v\in\mathbb{R}^4:\sum_i v_i=0\Bigr\}.
+\]
+
+**Label:** **Definition**.
+
+### Definition 7 (Chirale Fluktuationsasymmetrie $\chi_{\mathrm{fluct}}$)
+
+\[
+\chi_{\mathrm{fluct}}(x)=(\delta_E+\delta_C)-(\delta_A+\delta_B)=(E+C)-(A+B).
+\]
+Die bestehende Observable aus §2 erfüllt
+\[
+\chi(x)=\frac{\chi_{\mathrm{fluct}}(x)}{\pi_{>3}(x)}.
+\]
+
+**Label:** **Definition** (vereinheitlichte Benennung mit $\chi$ aus Def.\,4 / Beispiel).
+
+### Definition 8 (EABC-Energie $H(x)$)
+
+\[
+H(x)=\|\delta(x)\|_2^2=\sum_{i\in\{E,A,B,C\}}\delta_i(x)^2.
+\]
+Es gilt $H(x)=0$ genau dann, wenn die vier Klassen perfekt gleich verteilt sind.
+
+**Label:** **Definition**.
+
+### Definition 9 (Kovarianz $K(x)$)
+
+Für eine diskrete Implementierung: **laufende bzw.\ Stichproben-Kovarianz** der Folge
+$\bigl(\delta(x)\bigr)_{x\ge 5}$ an Primzähl-Punkten (Gitterschritte $x=5,6,\ldots$).
+Die Matrix $K\in\mathbb{R}^{4\times 4}$ schätzt die gemeinsame Variabilität der
+Klassenfluktuationen.
+
+**Label:** **Definition** (Experiment: `fluctuation_covariance_at_grid` in der Implementierung).
+
+### Forschungsproblem A (Skalierung von $H$ und $\chi$)
+
+Existieren Grenzwerte, $\limsup$- oder $\liminf$-Größen für
+\[
+\frac{H(x)}{\pi_{>3}(x)}\qquad\text{oder}\qquad
+\frac{\chi(x)}{\sqrt{\pi_{>3}(x)}}?
+\]
+
+**Label:** **Forschungsfrage**.
+
+### Forschungsproblem B (Spektrum von $K$)
+
+Welche Eigenwerte und Eigenvektoren hat $K$? Lassen sich Eigenrichtungen mit den
+EABC-Koordinaten $(E,A,B,C)$ oder mit Primzahl-Statistik interpretieren?
+
+**Label:** **Forschungsfrage**.
+
+### Forschungsproblem C (Fouriermoden auf Klein $V_4$)
+
+Orthogonale Moden (Reihenfolge $E,A,B,C$):
+\[
+\Phi_0=(1,1,1,1),\quad
+\Phi_1=(1,-1,1,-1),\quad
+\Phi_2=(1,1,-1,-1),\quad
+\Phi_3=(1,-1,-1,1).
+\]
+Wegen $\sum_i\delta_i=0$ ist $c_0=0$ und
+\[
+\delta(x)=c_1(x)\Phi_1+c_2(x)\Phi_2+c_3(x)\Phi_3,
+\quad
+c_i(x)=\frac{\delta(x)\cdot\Phi_i}{\|\Phi_i\|^2}=\frac{\delta(x)\cdot\Phi_i}{4}.
+\]
+
+**Label:** **Definition** + **Forschungsfrage** (Statistik der $c_i$).
+
+### Conjecture (EABC-Spektralhypothese)
+
+Die asymptotische Statistik der Modenkoeffizienten $c_i(x)$ enthält ehrliche Information über
+$L$-Funktionen modulo $12$ bzw.\ über die Verteilung der $\zeta$-Nullstellen — ohne Behauptung
+bereits bewiesener Grenzwerte.
+
+**Label:** **Conjecture**.
+
+**Experiment:** `collatz_eabc_invarianzprogramm.py` $\to$ JSON-Feld `fluctuation_field`.
 
 ---
 
-*Epistemische Einordnung: Definitionen 1–5 sind nicht verhandelbar; Forschungsfragen und
-Arbeitshypothese sind explizit offen und falsifizierbar.*
+## 9. Implementierung und Querverweise (aktualisiert)
+
+| Artefakt | Rolle |
+|----------|-------|
+| `collatz_eabc_invarianzprogramm.py` | Numerik: $V$, $S$, $\chi$, $\delta$, $H$, $K$, $c_i$, $\sigma(Q)$ |
+| `collatz_eabc_invarianzprogramm.json` | JSON-Output inkl.\ `fluctuation_field` |
+| `tests/test_eabc_invarianzprogramm.py` | Unit-Tests ($\kappa$, Simplex, Fluktuationsfeld) |
+| `eabc_from_lean.py` | Referenz-Implementierung von $\kappa$ |
+| `collatz_generalangriff_2026.md` | Strategischer Pointer |
+| `collatz_eabc_bernoulli_uebersetzung.md` §22 | Philosophischer Querverweis (falls auf Branch) |
+
+---
+
+*Epistemische Einordnung: Definitionen 1–9 sind nicht verhandelbar; Forschungsfragen,
+Forschungsprobleme A–C und Arbeitshypothese/Spektralhypothese sind explizit offen und falsifizierbar.*
