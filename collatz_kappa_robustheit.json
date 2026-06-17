@@ -1,0 +1,549 @@
+{
+  "stage": "2B",
+  "title": "\u03ba-Robustheit und Entropie von L_arith",
+  "pr39_closed": "PR #39 beantwortet: L_arith \u228a L experimentell (BE, Ratios, F_n-Katalog); keine weitere Erweiterung \u2014 Stufe 2B testet \u03ba-Abh\u00e4ngigkeit.",
+  "boxed_open_question": "Welche arithmetischen Regeln erzeugen die verbotenen W\u00f6rter? BE ist Symptom, nicht Erkl\u00e4rung.",
+  "test1_kappa_comparison": {
+    "limit": 1000000,
+    "variants": [
+      {
+        "variant": "kappa1_naive_mod12",
+        "label": "\u03ba\u2081",
+        "description": "Naive mod-12-Klasse entlang odd-to-odd-Bahn: Buchstabe_i = classOf(iterateU(n,i)); Abbruch bei classOf=none (n\u22613,9 mod 12). Identisch mit collatz_l_arith_test.realized_words_by_length.",
+        "minimal_counterexamples": [
+          {
+            "word": "BE",
+            "length": 2
+          }
+        ],
+        "be_forbidden": true,
+        "F_n_sizes": {
+          "2": 1,
+          "3": 6,
+          "4": 38,
+          "5": 183,
+          "6": 807,
+          "7": 3403,
+          "8": 13975
+        },
+        "ratios": [
+          {
+            "k": 4,
+            "grammar_count": 89,
+            "arith_in_L": 48,
+            "arith_total": 108,
+            "ratio": 0.5393258426966292,
+            "grammar_enumerated": true
+          },
+          {
+            "k": 8,
+            "grammar_count": 68753,
+            "arith_in_L": 3836,
+            "arith_total": 8656,
+            "ratio": 0.055793928992189434,
+            "grammar_enumerated": true
+          },
+          {
+            "k": 10,
+            "grammar_count": 2860558,
+            "arith_in_L": 24818,
+            "arith_total": 57979,
+            "ratio": 0.008675929661275877,
+            "grammar_enumerated": true
+          }
+        ],
+        "entropy": {
+          "per_length": [
+            {
+              "n": 2,
+              "F_n_size": 1,
+              "h_n": 0.0
+            },
+            {
+              "n": 3,
+              "F_n_size": 6,
+              "h_n": 0.5972531564093516
+            },
+            {
+              "n": 4,
+              "F_n_size": 38,
+              "h_n": 0.9093965399315964
+            },
+            {
+              "n": 5,
+              "F_n_size": 183,
+              "h_n": 1.0418972305682843
+            },
+            {
+              "n": 6,
+              "F_n_size": 807,
+              "h_n": 1.1155539447116583
+            },
+            {
+              "n": 7,
+              "F_n_size": 3403,
+              "h_n": 1.161773239214415
+            },
+            {
+              "n": 8,
+              "F_n_size": 13975,
+              "h_n": 1.1931281622529124
+            }
+          ],
+          "h_F_limsup_estimate": 1.1931281622529124,
+          "reference_sizes_kappa1_n1e6": {
+            "2": 1,
+            "3": 6,
+            "4": 38,
+            "5": 183,
+            "6": 807,
+            "7": 3402,
+            "8": 13924
+          },
+          "note": "h_F = limsup_{n\u2192\u221e} (1/n) log |F_n|; hier nur endliche n\u22648, kein asymptotischer Beweis"
+        }
+      },
+      {
+        "variant": "kappa2_nu2_rotate",
+        "label": "\u03ba\u2082",
+        "description": "\u03bd\u2082-Blocktyp: Buchstabe_i = t^{\u03bd\u2082(3n_i+1) mod 4}(classOf(n_i)) mit n_i=iterateU(n,i), t die EABC-Rotation E\u2192A\u2192B\u2192C\u2192E. Nutzt die 2-adische Tiefe des geraden Blocks vor dem n\u00e4chsten ungeraden Wert \u2014 gleiche mod-12-Basis, andere Feinstruktur.",
+        "minimal_counterexamples": [
+          {
+            "word": "EAEAA",
+            "length": 5
+          },
+          {
+            "word": "EAABA",
+            "length": 5
+          },
+          {
+            "word": "EBAAA",
+            "length": 5
+          },
+          {
+            "word": "AEAAA",
+            "length": 5
+          },
+          {
+            "word": "AAAEA",
+            "length": 5
+          }
+        ],
+        "be_forbidden": false,
+        "F_n_sizes": {
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 17,
+          "6": 304,
+          "7": 2440,
+          "8": 13353
+        },
+        "ratios": [
+          {
+            "k": 4,
+            "grammar_count": 89,
+            "arith_in_L": 86,
+            "arith_total": 256,
+            "ratio": 0.9662921348314607,
+            "grammar_enumerated": true
+          },
+          {
+            "k": 8,
+            "grammar_count": 68753,
+            "arith_in_L": 4458,
+            "arith_total": 22836,
+            "ratio": 0.06484080694660596,
+            "grammar_enumerated": true
+          },
+          {
+            "k": 10,
+            "grammar_count": 2860558,
+            "arith_in_L": 11834,
+            "arith_total": 71883,
+            "ratio": 0.004136955097571872,
+            "grammar_enumerated": true
+          }
+        ],
+        "entropy": {
+          "per_length": [
+            {
+              "n": 5,
+              "F_n_size": 17,
+              "h_n": 0.5666426688112433
+            },
+            {
+              "n": 6,
+              "F_n_size": 304,
+              "h_n": 0.9528379502343703
+            },
+            {
+              "n": 7,
+              "F_n_size": 2440,
+              "h_n": 1.1142504740410353
+            },
+            {
+              "n": 8,
+              "F_n_size": 13353,
+              "h_n": 1.1874370447104956
+            }
+          ],
+          "h_F_limsup_estimate": 1.1874370447104956,
+          "reference_sizes_kappa1_n1e6": {
+            "2": 1,
+            "3": 6,
+            "4": 38,
+            "5": 183,
+            "6": 807,
+            "7": 3402,
+            "8": 13924
+          },
+          "note": "h_F = limsup_{n\u2192\u221e} (1/n) log |F_n|; hier nur endliche n\u22648, kein asymptotischer Beweis"
+        }
+      },
+      {
+        "variant": "kappa3_successor_block",
+        "label": "\u03ba\u2083",
+        "description": "Successor-/Block-Kodierung: Buchstabe_i = classOf(iterateU(n,i+1)) f\u00fcr i<k-1, letzter Buchstabe = classOf(iterateU(n,k-1)). Kodiert die Klasse des *n\u00e4chsten* odd-to-odd-Zustands (Nachfolger im EA-Block-Sinne), nicht den aktuellen.",
+        "minimal_counterexamples": [
+          {
+            "word": "BE",
+            "length": 2
+          }
+        ],
+        "be_forbidden": true,
+        "F_n_sizes": {
+          "2": 1,
+          "3": 6,
+          "4": 38,
+          "5": 183,
+          "6": 807,
+          "7": 3402,
+          "8": 13979
+        },
+        "ratios": [
+          {
+            "k": 4,
+            "grammar_count": 89,
+            "arith_in_L": 48,
+            "arith_total": 108,
+            "ratio": 0.5393258426966292,
+            "grammar_enumerated": true
+          },
+          {
+            "k": 8,
+            "grammar_count": 68753,
+            "arith_in_L": 3832,
+            "arith_total": 8649,
+            "ratio": 0.055735749712739806,
+            "grammar_enumerated": true
+          },
+          {
+            "k": 10,
+            "grammar_count": 2860558,
+            "arith_in_L": 25073,
+            "arith_total": 58619,
+            "ratio": 0.008765073108113872,
+            "grammar_enumerated": true
+          }
+        ],
+        "entropy": {
+          "per_length": [
+            {
+              "n": 2,
+              "F_n_size": 1,
+              "h_n": 0.0
+            },
+            {
+              "n": 3,
+              "F_n_size": 6,
+              "h_n": 0.5972531564093516
+            },
+            {
+              "n": 4,
+              "F_n_size": 38,
+              "h_n": 0.9093965399315964
+            },
+            {
+              "n": 5,
+              "F_n_size": 183,
+              "h_n": 1.0418972305682843
+            },
+            {
+              "n": 6,
+              "F_n_size": 807,
+              "h_n": 1.1155539447116583
+            },
+            {
+              "n": 7,
+              "F_n_size": 3402,
+              "h_n": 1.1617312532794009
+            },
+            {
+              "n": 8,
+              "F_n_size": 13979,
+              "h_n": 1.193163935308891
+            }
+          ],
+          "h_F_limsup_estimate": 1.193163935308891,
+          "reference_sizes_kappa1_n1e6": {
+            "2": 1,
+            "3": 6,
+            "4": 38,
+            "5": 183,
+            "6": 807,
+            "7": 3402,
+            "8": 13924
+          },
+          "note": "h_F = limsup_{n\u2192\u221e} (1/n) log |F_n|; hier nur endliche n\u22648, kein asymptotischer Beweis"
+        }
+      }
+    ],
+    "comparison": {
+      "be_forbidden_all_variants": false,
+      "minimal_counterexample": {
+        "kappa1_naive_mod12": {
+          "word": "BE",
+          "length": 2
+        },
+        "kappa2_nu2_rotate": {
+          "word": "EAEAA",
+          "length": 5
+        },
+        "kappa3_successor_block": {
+          "word": "BE",
+          "length": 2
+        }
+      },
+      "R_k_by_variant": {
+        "4": {
+          "kappa1_naive_mod12": 0.5393258426966292,
+          "kappa2_nu2_rotate": 0.9662921348314607,
+          "kappa3_successor_block": 0.5393258426966292
+        },
+        "8": {
+          "kappa1_naive_mod12": 0.055793928992189434,
+          "kappa2_nu2_rotate": 0.06484080694660596,
+          "kappa3_successor_block": 0.055735749712739806
+        },
+        "10": {
+          "kappa1_naive_mod12": 0.008675929661275877,
+          "kappa2_nu2_rotate": 0.004136955097571872,
+          "kappa3_successor_block": 0.008765073108113872
+        }
+      },
+      "F_n_sizes_by_variant": {
+        "2": {
+          "kappa1_naive_mod12": 1,
+          "kappa2_nu2_rotate": 0,
+          "kappa3_successor_block": 1
+        },
+        "3": {
+          "kappa1_naive_mod12": 6,
+          "kappa2_nu2_rotate": 0,
+          "kappa3_successor_block": 6
+        },
+        "4": {
+          "kappa1_naive_mod12": 38,
+          "kappa2_nu2_rotate": 0,
+          "kappa3_successor_block": 38
+        },
+        "5": {
+          "kappa1_naive_mod12": 183,
+          "kappa2_nu2_rotate": 17,
+          "kappa3_successor_block": 183
+        },
+        "6": {
+          "kappa1_naive_mod12": 807,
+          "kappa2_nu2_rotate": 304,
+          "kappa3_successor_block": 807
+        },
+        "7": {
+          "kappa1_naive_mod12": 3403,
+          "kappa2_nu2_rotate": 2440,
+          "kappa3_successor_block": 3402
+        },
+        "8": {
+          "kappa1_naive_mod12": 13975,
+          "kappa2_nu2_rotate": 13353,
+          "kappa3_successor_block": 13979
+        }
+      },
+      "interpretation": "Mindestens eine \u03ba-Variante realisiert BE \u2014 \u03ba-abh\u00e4ngig, Fall B m\u00f6glich."
+    },
+    "kappa_specs": {
+      "kappa1_naive_mod12": {
+        "id": "kappa1_naive_mod12",
+        "label": "\u03ba\u2081",
+        "description": "Naive mod-12-Klasse entlang odd-to-odd-Bahn: Buchstabe_i = classOf(iterateU(n,i)); Abbruch bei classOf=none (n\u22613,9 mod 12). Identisch mit collatz_l_arith_test.realized_words_by_length.",
+        "dynamics_note": "Dynamiktreu (Lean naiveKappa_shift); nicht injektiv (PR #38)."
+      },
+      "kappa2_nu2_rotate": {
+        "id": "kappa2_nu2_rotate",
+        "label": "\u03ba\u2082",
+        "description": "\u03bd\u2082-Blocktyp: Buchstabe_i = t^{\u03bd\u2082(3n_i+1) mod 4}(classOf(n_i)) mit n_i=iterateU(n,i), t die EABC-Rotation E\u2192A\u2192B\u2192C\u2192E. Nutzt die 2-adische Tiefe des geraden Blocks vor dem n\u00e4chsten ungeraden Wert \u2014 gleiche mod-12-Basis, andere Feinstruktur.",
+        "dynamics_note": "Experimentell; testet ob Verbotsmuster von \u03bd\u2082-Information stammen."
+      },
+      "kappa3_successor_block": {
+        "id": "kappa3_successor_block",
+        "label": "\u03ba\u2083",
+        "description": "Successor-/Block-Kodierung: Buchstabe_i = classOf(iterateU(n,i+1)) f\u00fcr i<k-1, letzter Buchstabe = classOf(iterateU(n,k-1)). Kodiert die Klasse des *n\u00e4chsten* odd-to-odd-Zustands (Nachfolger im EA-Block-Sinne), nicht den aktuellen.",
+        "dynamics_note": "Shift um einen odd-to-odd-Schritt; EA-Marker implizit \u00fcber Nachfolger."
+      }
+    }
+  },
+  "test2_bootstrap_kappa1": {
+    "variant": "kappa1_naive_mod12",
+    "limits": [
+      1000000,
+      10000000
+    ],
+    "rows": [
+      {
+        "limit": 1000000,
+        "be_forbidden": true,
+        "minimal_word": "BE",
+        "minimal_length": 2,
+        "F_n_sizes": {
+          "2": 1,
+          "3": 6,
+          "4": 38,
+          "5": 183,
+          "6": 807,
+          "7": 3403,
+          "8": 13975
+        },
+        "ratios": [
+          {
+            "k": 4,
+            "grammar_count": 89,
+            "arith_in_L": 48,
+            "arith_total": 108,
+            "ratio": 0.5393258426966292,
+            "grammar_enumerated": true
+          },
+          {
+            "k": 8,
+            "grammar_count": 68753,
+            "arith_in_L": 3836,
+            "arith_total": 8656,
+            "ratio": 0.055793928992189434,
+            "grammar_enumerated": true
+          },
+          {
+            "k": 10,
+            "grammar_count": 2860558,
+            "arith_in_L": 24818,
+            "arith_total": 57979,
+            "ratio": 0.008675929661275877,
+            "grammar_enumerated": true
+          }
+        ],
+        "new_minimal_vs_prev": [
+          "BE"
+        ]
+      },
+      {
+        "limit": 10000000,
+        "be_forbidden": true,
+        "minimal_word": "BE",
+        "minimal_length": 2,
+        "F_n_sizes": {
+          "2": 1,
+          "3": 6,
+          "4": 38,
+          "5": 183,
+          "6": 807,
+          "7": 3402,
+          "8": 13924
+        },
+        "ratios": [
+          {
+            "k": 4,
+            "grammar_count": 89,
+            "arith_in_L": 48,
+            "arith_total": 108,
+            "ratio": 0.5393258426966292,
+            "grammar_enumerated": true
+          },
+          {
+            "k": 8,
+            "grammar_count": 68753,
+            "arith_in_L": 3887,
+            "arith_total": 8747,
+            "ratio": 0.05653571480517214,
+            "grammar_enumerated": true
+          },
+          {
+            "k": 10,
+            "grammar_count": 2860558,
+            "arith_in_L": 34043,
+            "arith_total": 76902,
+            "ratio": 0.011900824943944503,
+            "grammar_enumerated": true
+          }
+        ],
+        "new_minimal_vs_prev": []
+      }
+    ]
+  },
+  "test3_entropy": {
+    "per_length": [
+      {
+        "n": 2,
+        "F_n_size": 1,
+        "h_n": 0.0
+      },
+      {
+        "n": 3,
+        "F_n_size": 6,
+        "h_n": 0.5972531564093516
+      },
+      {
+        "n": 4,
+        "F_n_size": 38,
+        "h_n": 0.9093965399315964
+      },
+      {
+        "n": 5,
+        "F_n_size": 183,
+        "h_n": 1.0418972305682843
+      },
+      {
+        "n": 6,
+        "F_n_size": 807,
+        "h_n": 1.1155539447116583
+      },
+      {
+        "n": 7,
+        "F_n_size": 3403,
+        "h_n": 1.161773239214415
+      },
+      {
+        "n": 8,
+        "F_n_size": 13975,
+        "h_n": 1.1931281622529124
+      }
+    ],
+    "h_F_limsup_estimate": 1.1931281622529124,
+    "reference_sizes_kappa1_n1e6": {
+      "2": 1,
+      "3": 6,
+      "4": 38,
+      "5": 183,
+      "6": 807,
+      "7": 3402,
+      "8": 13924
+    },
+    "note": "h_F = limsup_{n\u2192\u221e} (1/n) log |F_n|; hier nur endliche n\u22648, kein asymptotischer Beweis"
+  },
+  "honest_limits": [
+    "Drei \u03ba-Varianten sind dokumentierte Experimente, keine treue FaithfulKappa",
+    "Bootstrap und Vergleich auf ungeraden n \u2264 jeweilige Grenze",
+    "n \u2261 3,9 (mod 12): classOf=none \u2014 kein Beitrag zu L_arith",
+    "F_n-Vollliste nur n \u2264 8; |F_8| aus Referenzlauf",
+    "10^8-Bootstrap optional (--include-1e8); Laufzeit speicherintensiv",
+    "h_F-Sch\u00e4tzung aus endlichen n \u2014 keine asymptotische Aussage",
+    "Kein Collatz-Beweis; \u03ba-Robustheit \u2260 arithmetische Erkl\u00e4rung von BE"
+  ]
+}

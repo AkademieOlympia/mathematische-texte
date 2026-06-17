@@ -442,8 +442,8 @@ fünf getrennten Ebenen (vgl. `collatz_formalisierung_tao_stil.md`, *Methodik 2*
 | Beobachtung: $\mathrm{BE}$ tritt nicht auf | ja (minimaler Zeuge, Länge 2) |
 | Theorem: $\mathrm{BE}\notin\mathcal{L}_{\mathrm{arith}}$ für alle $n$ | **nein** (offen) |
 
-**Priorität:** PR **#39** ist der **stärkste operative Zweig** des Generalangriffs. Treue $\kappa$
-(Stufe 1) soll verborgene Verbotsregeln von $\mathcal{L}_{\mathrm{arith}}$ sichtbar machen;
+**Priorität:** PR **#39** abgeschlossen (Stufe 2). Aktuell: PR **#40** (Stufe 2B, κ-Robustheit).
+Treue $\kappa$ (Stufe 1) soll verborgene Verbotsregeln von $\mathcal{L}_{\mathrm{arith}}$ sichtbar machen;
 Lemma E (Stufe 3) schließt später an.
 
 ### Verbindung zu PR #38 ($\kappa$-Negativresultat)
@@ -496,3 +496,21 @@ des Verhältnisses) bleibt offen.
 
 **Offen:** Vollständige Charakterisierung von $\mathcal{L}_{\mathrm{arith}}$; Zusammenhang mit
 treuer $\kappa$; unendliche Wörter vs. endliche Präfixe.
+
+---
+
+## Stufe 2B — κ-Robustheit (PR #40, Juni 2026)
+
+> **PR #39 geschlossen:** $\mathcal{L}_{\mathrm{arith}}\subsetneq\mathcal{L}$ experimentell beantwortet
+> (BE, $F_n$-Katalog, $R(k)$). **Nicht** weiter erweitern — kritische Schwachstelle ist κ-Abhängigkeit.
+
+**Artefakte:** `collatz_kappa_robustheit.py`, `collatz_kappa_robustheit.json`,
+`collatz_stufe2b_kappa_robustheit.md`.
+
+**Kernbefund ($n\leq 10^6$):** $\kappa_1$ (naiv) und $\kappa_3$ (Successor) aligniert — BE verboten,
+minimales Gegenbeispiel BE. $\kappa_2$ ($\nu_2$-Rotation) **nicht robust**: BE realisierbar,
+$R(4)\approx 0{,}97$. Stufe-2-Lücke ist **κ-abhängig** (Fall B möglich).
+
+> **Boxed (offen):** Welche arithmetischen Regeln erzeugen die verbotenen Wörter? BE ist Symptom, nicht Erklärung.
+
+**Entropie:** $h_F \approx \max_n (1/n)\log|F_n| \approx 1{,}19$ für $n\leq 8$ (Schätzer, kein Theorem).
