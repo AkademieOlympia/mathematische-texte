@@ -10,9 +10,10 @@ Konvergenz.
 
 ### Forschungsstrategie
 
-**Methodik (Tao-Stil):** Lean als Buchhaltungsmaschine für fragile Mathematik — explizite
-Zeugenmengen, abhängige Definitionen und Negativtests statt impliziter Heuristikverschmelzung;
-vgl. `collatz_formalisierung_tao_stil.md`.
+**Methodik (Tao-Stil / IEANTN-Parallele):** Lean als Buchhaltungsmaschine für fragile
+Mathematik — explizite Zeugenmengen, abhängige Definitionen, living spreadsheet und
+Negativtests statt impliziter Heuristikverschmelzung; vgl. `collatz_formalisierung_tao_stil.md`
+(Tao ICERM Folien Mai 2026, PNT+; **nicht** Collatz-inhaltlich).
 
 Systematische Suche nach der kleinsten fehlenden Brücke **L** mit
 *(EABC-/Lean-Struktur) + L ⟹ Collatz*: siehe `collatz_generalangriff_2026.md`
@@ -25,6 +26,8 @@ TeX `collatz_kappa_encoding.tex` — naive $\kappa_K$ dynamiktreu, aber **nicht*
 - **Stufe 2 begonnen (PR #39):** `collatz_l_arith_test.py`, `CollatzEabc.ArithLanguage.lean` —
   Grammatik $L(k)$ vs. arithmetische Realisierbarkeit $L_{\mathrm{arith}}(k)$; minimales
   Gegenbeispiel $w=\mathrm{BE}$ (Länge 2); Vollliste für $k\leq 10$ bei $n\leq 10^6$.
+- **IEANTN-Parallele (Tao, ICERM Mai 2026):** PNT+-Formalisierung mit living spreadsheet
+  und Sicherheitsmargen — methodisches Vorbild für EABC-Zeugenbuchhaltung, kein Collatz-Transfer.
 
 ### Generalangriff-Prioritäten (Juni 2026, revidiert)
 

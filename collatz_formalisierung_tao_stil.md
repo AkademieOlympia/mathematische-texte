@@ -4,21 +4,26 @@
 PR #38–#39). **Epistemische Warnung:** Kein Collatz-Beweisanspruch — methodische Einordnung
 der Formalisierungsarbeit.
 
+**Quelle (methodisch, nicht inhaltlich):** Terence Tao, ICERM-Vortrag/Folien Mai 2026 —
+Formalisierung der Primzahlzahlensatz-Kette (**PNT+**) im Rahmen von **IEANTN** (Integrated
+Explicit Arithmetic Number Theory). PNT+ und Collatz sind **verschiedene mathematische
+Objekte**; übertragbar ist nur die Formalisierungsdisziplin, nicht der Beweisinhalt.
+
 ---
 
 ## Tao-Stil: Lean nicht als Orakel
 
-Terence Tao hat in der Formalisierung der Primzahlzahlensatz-Kette (PNT+) Lean nicht als
-**Entdeckungsmaschine** oder Beweisorakel eingesetzt, sondern als **Buchhaltungsmaschine**
-für fragile Mathematik: explizite Konstanten, Fehlerterme, Kettenabhängigkeiten und
-jede implizite Annahme werden sichtbar gemacht, bevor sie in den nächsten Schritt übergeht.
+Terence Tao hat in PNT+ Lean nicht als **Entdeckungsmaschine** oder Beweisorakel eingesetzt,
+sondern als **Buchhaltungsmaschine** für fragile Mathematik: explizite Konstanten, Fehlerterme,
+Kettenabhängigkeiten und jede implizite Annahme werden sichtbar gemacht, bevor sie in den
+nächsten Schritt übergeht.
 
 Diese Haltung überträgt sich direkt auf EABC/Collatz — mit anderen Objekten, aber derselben
 Disziplin: Definitionen, Zeugen, Heuristiken und Theoreme dürfen nicht unbemerkt ineinander
 übergehen.
 
-| Tao / PNT+ | EABC / Collatz |
-|------------|----------------|
+| Tao / PNT+ / IEANTN | EABC / Collatz |
+|---------------------|----------------|
 | explizite Fehlerterme | explizite Zeugenmengen ($E_\infty$, $E_{\mathrm{diag}}$, $E_{N,N}$) |
 | abhängige Konstanten | abhängige Definitionen ($\kappa$, $\mathcal{L}$, $\mathcal{L}_{\mathrm{arith}}$) |
 | PNT-Ketten | $\kappa \to L_{\mathrm{arith}} \to$ Lemma E |
@@ -30,6 +35,56 @@ Disziplin: Definitionen, Zeugen, Heuristiken und Theoreme dürfen nicht unbemerk
 > **Wert der Formalisierung:** Sie verhindert, dass Definitionen, Zeugen, Heuristiken und
 > Theoreme unbemerkt ineinander übergehen — und schneidet falsche Pfade ab, bevor sie
 > strategische Ressourcen binden.
+
+---
+
+## Tao-Methodik: Lean als Wahrheitsfilter und lebende Buchhaltung
+
+Im IEANTN-Projekt (Tao, ICERM Mai 2026) ist Lean ein **explizites Konstanten-Ledger** —
+ein „living spreadsheet“: jede numerische Konstante aus der Literatur wird in Lean
+nachvollziehbar gebucht, mit Abhängigkeiten und Fehlerfortpflanzung, statt in Tabellen
+oder Skizzen zu verharren.
+
+**Kernsatz (EABC-Übertragung):** $|L(k)|$ und $|L_{\mathrm{arith}}(k)|$ sind die
+**formal kontrollierte Evidenzschicht** für Stufe 2 — Definition, Zeuge, Experiment und
+Theorem bleiben getrennt (vgl. *Methodik 2* unten). Die Ratio ist Buchhaltung, kein Collatz-Beweis.
+
+### IEANTN-Inhalt (belegbar, Mai 2026)
+
+| Bereich | Status in IEANTN |
+|---------|------------------|
+| Chebyshev, Costa-Pereira, Goldbach-Typ | formalisiert |
+| Ramanujan $\pi(x)$, Erdős 392 | formalisiert |
+| Log-/Prim-/Primlücken-Tabellen | formalisiert |
+| lcm-Klassifikation | formalisiert |
+| Mertens | in Arbeit |
+| Fiori–Kadiri–Swidinsky / Büthe | in Arbeit |
+| Chirre–Helfgott $\zeta\to$primary-Pipeline | in Arbeit |
+
+**Methodische Regeln (IEANTN → EABC):**
+
+- **FP-Fehler in Literatur-Tabellen:** Gleitkomma- und Rundungsfehler in klassischen
+  Konstantentabellen erzwingen explizite **Sicherheitsmargen** (typisch Faktoren $1{,}01$ /
+  $1{,}02$) — in EABC: konservative Realisierbarkeitsfenster statt punktgenauer Heuristik.
+- **Computation-heavy Dateien:** Minimale Imports, um Build-Zeit und Abhängigkeitsgraph
+  beherrschbar zu halten — analog zu `collatz_l_arith_test.py` / schlanken Lean-Modulen.
+- **Autoformalizer:** Gefährlich bei `sorry` — generierter Code ohne Beweislast erzeugt
+  Scheinsicherheit; Tao-Stil verlangt explizite `Prop`-Schnittstellen und Negativtests.
+
+### Übertragungstabelle Tao / IEANTN → EABC
+
+| IEANTN (PNT+) | EABC (Collatz-Generalangriff) |
+|---------------|-------------------------------|
+| Log-Tabellen | $\kappa$-Präfixtabellen |
+| Primtabellen | $L_{\mathrm{arith}}$-Zeugenlisten |
+| safety margin ($1{,}01$ / $1{,}02$) | konservative Realisierbarkeitsfenster |
+| $\zeta \to$ primary $\to$ secondary | $\kappa \to L_{\mathrm{arith}} \to$ Lemma E |
+| FP-Fehler in Lit-Tabellen | Python-/Enum-/Hash-Kollisionen (naive $\kappa$) |
+| living spreadsheet (Lean-Konstanten-Ledger) | lebender Zeugen-/Gegenzeugen-Graph |
+
+> **Boxed:** EABC braucht eine **Lean-CI-Kultur** mit Sicherheitsmargen, expliziten Tabellen
+> und einem nachvollziehbaren Abhängigkeitsgraph — nicht mehr Heuristik in einem Dokument,
+> sondern Buchhaltung über PRs, Tests und `Prop`-Schnittstellen.
 
 ---
 
@@ -69,8 +124,9 @@ kontinuierlicher Integrität in großen Formalisierungsprojekten.
 
 Die Stufe-2-Arbeit ($\mathcal{L}_{\mathrm{arith}}\subsetneq\mathcal{L}$, PR #39) ist kein
 philosophischer Anhang, sondern **methodischer Rahmen** für die Interpretation numerischer
-und formaler Befunde. Analog zu Taos PNT+-Kette werden Definition, Zeuge, Experiment, Theorem
-und Vermutung strikt getrennt — bevor daraus strategische Prioritäten abgeleitet werden.
+und formaler Befunde. Analog zu Taos PNT+-/IEANTN-Kette (living spreadsheet, explizite
+Tabellen, Sicherheitsmargen) werden Definition, Zeuge, Experiment, Theorem und Vermutung
+strikt getrennt — bevor daraus strategische Prioritäten abgeleitet werden.
 
 ### Die fünf Ebenen
 
@@ -126,6 +182,7 @@ Präperiodizität anbinden.
 
 ## Referenzen
 
+- Terence Tao — ICERM-Vortrag/Folien Mai 2026 (PNT+, IEANTN; methodische Quelle, kein Collatz-Bezug)
 - Tao (2019) — logarithmische Dichte für „almost bounded“ Collatz-Bahnen (nicht punktweise Konvergenz)
 - `collatz_generalangriff_2026.md` — Forschungsplan Stufe 1–3
 - `collatz_offene_punkte.md` — Synthese offener Punkte und Negativresultate
