@@ -20,6 +20,8 @@
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
 \newtheorem{bemerkung}[definition]{Bemerkung}
+\theoremstyle{remark}
+\newtheorem{remark}[definition]{Bemerkung}
 
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\N}{\mathbb{N}}
@@ -525,138 +527,38 @@ Keine Aussage dieser Art ist bewiesen; $\mathcal{E}_\infty$ ist ein
 \emph{geometrisches Platzhalterobjekt} für die offene Collatz-Brücke.
 
 %======================================================================
-\section{Bernoulli-Uhr auf zwei chiralen Ellipsenachsen}
+\section{Bernoulli-Uhr auf einer chiralen Doppelellipse}
 \label{sec:bernoulli-uhr}
 %======================================================================
 
-\subsection{Chirale Achsen und Dreiertakt}
-
-Zwei chiral konjugierte Ellipsenachsen kodieren die bewiesene ABCE/CEAB-Dualität
-(Abschnitt~3). Schreibe
+\begin{definition}[Bernoulli-Uhr]
+Sei $z_0=-1-\mathrm{i}/12$, $r_m=2^{-m}$, $\theta_m=\pi/2\cdot m$.
+Für $m\geq 1$:
 \[
-\mathcal{E}_+:\ \text{ABCE-Achse},\qquad
-\mathcal{E}_-:\ \text{CEAB-Achse},\qquad
-\theta_-=\theta_++\pi.
-\]
-Auf dem Zwölfer-Kreis $K_{12}$ (Abschnitt~2) läuft ein \emph{Dreiertakt}:
-jede Zelle $m\in\N$ trägt Radialgewicht, Phasenwinkel und ein
-Bernoulli-Tripel.
-
-\begin{definition}[Bernoulli-Zelle und Dreiertakt]
-Für $m\in\N$ setze
-\[
-r_m:=2^{-m},\qquad
-\theta_m:=\frac{\pi}{2}\,m,
-\]
-und das \emph{Bernoulli-Tripel}
-\[
-\mathcal{B}_m:=(B_{2m-2},\,B_{2m},\,B_{2m+2}).
-\]
-Die Phasenindizes auf dem viergliedrigen EABC-Ring sind
-$\lfloor\theta_m/(\pi/2)\rfloor\equiv m\bmod 4$; der Dreiertakt
-verschiebt die Tripel-Indizes um $\pm1$ auf $\{0,1,2,3\}$.
-Da $3\cdot(2\pi/12)=\pi/2$, entspricht jeder Collatz-Dreierschritt auf
-dem Zwölferkreis einem Vierteltakt $E\to A\to B\to C$.
-\end{definition}
-
-\subsection{Gewichtsformel \texorpdfstring{$U(m)$}{U(m)}}
-
-Mit Einheitsphasen $u_k\in\{1,\mathrm{i},-1,-\mathrm{i}\}$ aus
-Abschnitt~\ref{sec:phi} ($u_k=\omega_{12}^{3k}$ auf $K_{12}$) und
-Phasenindex $k_m:=m\bmod 4$ definiere die \emph{chirale Zellabbildung}
-\[
-U_+(m):=r_m\Bigl(
-  B_{2m-2}\,u_{k_m-1}+B_{2m}\,u_{k_m}+B_{2m+2}\,u_{k_m+1}
-\Bigr)\ \in\ \C,
-\]
-\[
-U_-(m):=r_m\Bigl(
-  B_{2m-2}\,\overline{u_{k_m-1}}+B_{2m}\,\overline{u_{k_m}}
-  +B_{2m+2}\,\overline{u_{k_m+1}}
-\Bigr)=e^{\mathrm{i}\pi}\,U_+(m)\quad(\text{chirale Konjugation}).
-\]
-Die Summe $U_+(m)+U_-(m)=2r_m B_{2m}\,u_{k_m}\in\R$ isoliert die
-\emph{mittlere} Bernoulli-Komponente; die Imaginärteile kodieren die
-ABCE/CEAB-Asymmetrie ($\chi_H(\mathrm{ABCE})=+\mathrm{i}$,
-$\chi_H(\mathrm{CEAB})=-\mathrm{i}$).
-
-\paragraph{Anker-Tripel um $z_0$.}
-Alternativ, zentriert am Referenzpunkt $z_0$:
-\[
-\mathcal{U}(m):=\Bigl(
+U(m)=\bigl(
 z_0-r_m B_{2m-2}e^{\mathrm{i}\theta_m},\;
 z_0+r_m B_{2m}e^{\mathrm{i}\theta_m},\;
 z_0+r_m B_{2m+2}e^{\mathrm{i}\theta_m}
-\Bigr)\ \in\ \C^3,
-\]
-mit linker, zentraler und rechter Bernoulli-Stufe auf $K_{12}$.
-
-\begin{bemerkung}[Bezug zu $\Phpref$]
-In Lean ist $r_m=\rho(w)$ für $|w|=m$ und $u_{k_m}$ die Spur von
-\texttt{phaseUnit} in \texttt{PrefProjection.lean}; die komplexe
-Spur $z_0+r_m u$ bleibt im TeX, die rationale Kernabbildung ist
-sorry-frei.
-\end{bemerkung}
-
-\subsection{Anker \texorpdfstring{$z_0$}{z0} und Zeta-Spezialwerte}
-
-Klassisch gilt für $m\geq 1$
-\[
-\zeta\bigl(1-2m\bigr)=\zeta\bigl(-(2m-1)\bigr)=-\frac{B_{2m}}{2m},
-\qquad\text{äquivalent}\quad
+\bigr),
+\qquad
 B_{2m}=-2m\,\zeta(1-2m).
 \]
-Für $m=1$: $B_2=-2\zeta(-1)=1/6$ und $z_0=\zeta(-1)(12+\mathrm{i})$.
-Der Nenner~$12$ verknüpft $\zeta(-1)$ mit dem mod-$12$-Flavor-Ring und
-dem Radius $|z_0+1|=1/12$ auf $K_{12}$.
-
-\subsection{Drei Schichten}
-
-\begin{center}
-  \begin{tabular}{@{}lll@{}}
-    \toprule
-    Aussage & Schicht & Status \\
-    \midrule
-    $B_{2m}=-2m\,\zeta(1-2m)$, $B_0=1$, $B_2=1/6$ & algebraisch & exakt (Standard) \\
-    $\mathcal{B}_m=(B_{2m-2},B_{2m},B_{2m+2})$, von Staudt--Clausen & algebraisch & exakt \\
-  $r_m=2^{-m}$, $\theta_m=\pi m/2$, $U_\pm(m)$ aus $\mathcal{B}_m$ & geometrisch & plausibel \\
-    $U_\pm(m)$ misst Collatz-Drift / $\vii$-Takt & dynamisch & offen \\
-    Bernoulli-Uhr $\Rightarrow$ $E_\infty=\emptyset$ & dynamisch & \textbf{nicht behauptet} \\
-    \bottomrule
-  \end{tabular}
-\end{center}
-
-\subsection{Definition, Bemerkung, Non-Claim}
-
-\begin{definition}[Bernoulli-Uhr (Gedankenmodell)]
-Die \emph{Bernoulli-Uhr} ist die Familie $\{(r_m,\theta_m,\mathcal{B}_m,U_\pm(m))\}_{m\geq 1}$
-auf den chiralen Ellipsenachsen $\mathcal{E}_\pm$. Sie ordnet jeder Tiefe~$m$
-ein radial gedämpftes Bernoulli-Tripel einer $\pi/2$-Phasenrotation auf
-$K_{12}$ zu. Die Uhr ist ein \emph{Lesemodell} für die bereits in
-Abschnitt~\ref{sec:stirling-bernoulli} dokumentierte
-Bernoulli--Zeta--Zwölf-Linie, nicht ein dynamisches Theorem der
-Collatz-Abbildung~$U$.
+Dreierschritt: $3\cdot 2\pi/12=\pi/2$.
 \end{definition}
 
-\begin{bemerkung}
-Die Tripel-Indizes $(2m-2,2m,2m+2)$ sind ungerade Bernoulli-Indizes
-mit gemeinsamer Parität; für $m=1$ entsteht $(B_0,B_2,B_4)=(1,1/6,-1/30)$.
-Die Hoffbauersche Zwölf-Linie (\texttt{Staudt.tex}) markiert jene $m$,
-deren Zetawert $\zeta(1-2m)$ Nenner~$12$ trägt; $m=1$ ist der Urfall
-$\zeta(-1)=-1/12$.
-\end{bemerkung}
+\begin{remark}[Chirale Interpretation]
+Vierteltakt $E\to A\to B\to C\to E$, ABCE vs.\ CEAB um $\pi$,
+$z_0=\zeta(-1)(12+\mathrm{i})$, geometrische Organisation $\{B_{2m}\}$.
+\end{remark}
 
-\paragraph{Non-Claim.}
+\begin{remark}[Nichtbehauptung]
 \begin{itemize}[nosep]
-  \item Die Bernoulli-Uhr beweist \textbf{nicht} die Collatz-Vermutung.
-  \item $U_\pm(m)$ ist \textbf{nicht} als Lyapunov-Funktion etabliert
-    (Bernoulli-Normschale $\mathcal{I}(n)$ ist No-Go,
-    \texttt{collatz\_schlussartikel\_arxiv.tex}).
-  \item Eine Identifikation ``Dreiertakt $\leftrightarrow$ odd-to-odd-Block''
-    ist \textbf{nicht} formalisiert; sie bleibt Spekulation.
-  \item Hurwitz-Quaternionen mod~$12$ sind im Literatur nicht als
-    Bernoulli-Uhr dokumentiert.
+  \item nicht Collatz,
+  \item nicht Konjugation,
+  \item nicht $E_\infty$,
+  \item nicht Beweis.
 \end{itemize}
+\end{remark}
 
 \subsection{arXiv- und Lean-Belege (ehrlich)}
 
@@ -780,7 +682,7 @@ Nullstellenort der Zetafunktion.
     Stereographie $\sigma:S^2\to\Chat$ & Standard & \texttt{Edinburg.py} \\
     $\Einf=\emptyset$ $\Leftrightarrow$ Collatz & präzise, offen & \texttt{collatz\_equivalenz\_e\_infty.tex} \\
     $\Phpref:\SigmaEABC^{<\omega}\to\mathcal{M}$ & wohldefiniert (Wörter) & dieses Notizblatt, \texttt{PrefProjection.lean} \\
-    Bernoulli-Uhr $U_\pm(m)$, $\mathcal{U}(m)$ & Gedankenmodell & Abschnitt~\ref{sec:bernoulli-uhr}, \texttt{BernoulliClock.lean} \\
+    Bernoulli-Uhr $U(m)$ & Gedankenmodell & Abschnitt~\ref{sec:bernoulli-uhr}, \texttt{BernoulliClock.lean} \\
     $\Phi=\Phpref\circ\kappa:\Ztwo\to\mathcal{M}$, $\mathcal{E}_\infty\subset\mathcal{M}$ & Spekulation & dieses Notizblatt \\
   \bottomrule
   \end{tabular}
