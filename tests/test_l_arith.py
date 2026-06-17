@@ -39,8 +39,9 @@ def test_minimal_counterexample_be():
 
 def test_run_suite_smoke():
     result = run_suite([5], limit=2000, max_enumerate=10_000)
-    assert result["lengths"][0]["grammar_enumerated"]
-    assert result["lengths"][0]["grammar_count"] > 0
+    row = result["lengths"][0]
+    assert row["grammar_enumerated"]
+    assert row["grammar_count"] > 0
 
 
 def test_full_enum_k4_ratio():

@@ -342,7 +342,7 @@ grammatisch zulässige Wörter können ohne passendes $n$ existieren.
 
 | Artefakt | Inhalt |
 |----------|--------|
-| **Python** | `collatz_l_arith_test.py` — Grammatik $L(k)$ (BB-Verbot, endliche $C$-Ketten, EA nach $C^*_{\max}$), Vollliste für $k\leq 8$, Stichprobe darüber |
+| **Python** | `collatz_l_arith_test.py` — Grammatik $L(k)$ (BB-Verbot, endliche $C$-Ketten, EA nach $C^*_{\max}$); Vollliste bis $|L(k)|\lesssim 3\times 10^6$ |
 | **JSON** | `collatz_l_arith_test.json` — Ratios, minimale Gegenbeispiele, ehrliche Grenzen |
 | **Lean** | `CollatzEabc/ArithLanguage.lean` — `isGrammarValid` (BB), `RealizableWord` |
 | **pytest** | `tests/test_l_arith.py` |
@@ -361,7 +361,9 @@ grammatisch zulässige Wörter können ohne passendes $n$ existieren.
 | 6 | 2091 | 432 | 0,207 | Vollliste |
 | 7 | 11589 | 1295 | 0,112 | Vollliste |
 | 8 | 68753 | 3836 | 0,056 | Vollliste |
-| 10+ | $\gg 10^6$ | — | Stichprobe | $|L(10)|\approx 2{,}9\times 10^6$ — keine Vollliste |
+| 10 | $2\,860\,558$ | $24\,818$ | $\approx 0{,}0087$ | Vollliste ($n\leq 10^6$) |
+| 20 | $\approx 3{,}3\times 10^{15}$ | — | Stichprobe | $|L(20)|$ nicht aufzählbar |
+| 30 | $\approx 3{,}8\times 10^{25}$ | — | Stichprobe | nur $|L(30)|$ per DP |
 
 **Minimales Gegenbeispiel:** $w=\mathrm{BE}$ (Länge 2) — grammatisch zulässig, aber kein
 ungerades $n\leq 10^6$ mit $\kappa$-Präfix $\mathrm{BE}$.

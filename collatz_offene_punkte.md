@@ -20,7 +20,7 @@ TeX `collatz_kappa_encoding.tex` — naive $\kappa_K$ dynamiktreu, aber **nicht*
   numerischer Test `collatz_kappa_test.py` (Injektivität/Kollisionen, Dynamik-Shift).
 - **Stufe 2 begonnen (PR #39):** `collatz_l_arith_test.py`, `CollatzEabc.ArithLanguage.lean` —
   Grammatik $L(k)$ vs. arithmetische Realisierbarkeit $L_{\mathrm{arith}}(k)$; minimales
-  Gegenbeispiel $w=\mathrm{BE}$ (Länge 2); Vollliste für $k\leq 8$.
+  Gegenbeispiel $w=\mathrm{BE}$ (Länge 2); Vollliste für $k\leq 10$ bei $n\leq 10^6$.
 
 ### Generalangriff-Prioritäten (Juni 2026)
 

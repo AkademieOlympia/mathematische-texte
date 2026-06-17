@@ -236,7 +236,7 @@ class LengthReport:
 
 
 def _should_full_enumerate(k: int, grammar_count: int, max_enumerate: int) -> bool:
-    return k <= FULL_ENUM_MAX_K and grammar_count <= max_enumerate
+    return grammar_count <= max_enumerate
 
 
 def analyze_length(
@@ -280,7 +280,7 @@ def analyze_length(
         sample_non_realizable=non_real[:10],
         notes=(
             f"|L({k})|={grammar_count} — Stichprobe n={len(sample_words)} "
-            f"(Vollliste ab k>{FULL_ENUM_MAX_K} oder |L|>{max_enumerate})"
+            f"(Vollliste nur wenn |L(k)| ≤ {max_enumerate})"
         ),
     )
 
@@ -349,7 +349,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="L_arith vs L")
     parser.add_argument("--lengths", type=int, nargs="+", default=DEFAULT_LENGTHS)
     parser.add_argument("--limit", type=int, default=1_000_000)
-    parser.add_argument("--max-enumerate", type=int, default=500_000)
+    parser.add_argument("--max-enumerate", type=int, default=3_000_000)
     parser.add_argument("--output", type=Path, default=Path("collatz_l_arith_test.json"))
     args = parser.parse_args()
     result = run_suite(args.lengths, args.limit, args.max_enumerate)
