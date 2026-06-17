@@ -305,8 +305,10 @@ bereits bewiesener Grenzwerte.
 | `eabc_from_lean.py` | Referenz-Implementierung von $\kappa$ |
 | `collatz_generalangriff_2026.md` | Strategischer Pointer |
 | `collatz_eabc_quaternion_mass_hypothese.md` §12 | **EABC-Spektralgeometrische Hauptvermutung** ($D(n)=I(\mu_n)-I_{\mathrm{ref}}(n)$, Emergenz) |
+| `collatz_eabc_quaternion_mass_hypothese.md` §13 | **EABC-Spektralgeometrische Erzeugerhypothese** ($\hat D(s)=\sum D(n)/n^s$, Bernoulli-Brücke) |
 | `collatz_eabc_shell_defekt_test.py` | Experiment: $I_{\mathrm{ref}}$-Vergleich (rolling, cumulative, $\omega$-, $\tau$-Stratum, $\mu_\infty$) |
-| `collatz_eabc_bernoulli_uebersetzung.md` §22 | Philosophischer Querverweis (falls auf Branch) |
+| `collatz_eabc_dirichlet_D.py` | Experiment: Partialsummen $\hat D_N(s)$, Vergleich zu $\zeta$ und Bernoulli |
+| `collatz_eabc_bernoulli_uebersetzung.md` §17–§22 | Bernoulli-Sensor, $V_n$-Defekt, philosophischer Querverweis (Branch `collatz/eabc-bernoulli-sensor`) |
 
 ---
 

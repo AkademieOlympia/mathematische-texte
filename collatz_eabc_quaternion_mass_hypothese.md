@@ -4,11 +4,13 @@
 **Branch:** `collatz/eabc-euklidische-hebung` (PR #54)  
 **Experiment:** `collatz_eabc_hurwitz_orbit_test.py` → `collatz_eabc_hurwitz_orbit.json`  
 **Σ→p-Defekt:** `collatz_eabc_shell_defekt_test.py` → `collatz_eabc_shell_defekt.json`  
+**Dirichlet-Erzeuger:** `collatz_eabc_dirichlet_D.py` → `collatz_eabc_dirichlet_D.json`  
 **Tao-Labels:** Definition | Theorem | Conjecture | Heuristik | Experiment
 
 **Querverweise:** `collatz_eabc_normabstieg_hypothese.md` · `collatz_eabc_euklidische_hebung.md` ·
 `collatz_eabc_invarianzprogramm.md` · `collatz_eabc_gauss_spaltung_hypothese.md` ·
-`collatz_eabc_eisenstein_spaltung.md` · `collatz_morley_tm_numerik.py` (Morley-Parallel, getrennte Spur)
+`collatz_eabc_eisenstein_spaltung.md` · `collatz_eabc_bernoulli_uebersetzung.md` (Branch `collatz/eabc-bernoulli-sensor`) ·
+`collatz_morley_tm_numerik.py` (Morley-Parallel, getrennte Spur)
 
 > **Hinweis:** `collatz_eabc_hurwitz_spaltung.md` ist ein **Redirect** auf dieses Dokument.
 
@@ -410,6 +412,95 @@ Schalengröße $|\Sigma_n|$.
 
 ---
 
+## 13. EABC-Spektralgeometrische Erzeugerhypothese ($\hat D(s)$)
+
+### 13.1 Ontologie: Höhenfunktion statt Arithmetik zuerst
+
+**Heuristik (Ontologie-Shift).** Die kanonische Grundmenge ist nicht die Menge der Primzahlen,
+sondern die **disjunkte Vereinigung aller Normschalen**
+$$\mathcal H^{\mathrm{shell}} := \bigsqcup_{n\ge 1} \Sigma_n.$$
+Die **Höhenfunktion** (Norm) ist
+$$N : \mathcal H^{\mathrm{shell}} \longrightarrow \mathbb{Z}_{\ge 1},\qquad q \longmapsto N(q).$$
+Die arithmetische Zahl $n$ ist das **Label** des Normniveaus, nicht das ontologische Ursprungsobjekt.
+Die fundamentale Abbildung bleibt
+$$\boxed{\; n \longmapsto \Sigma_n \longmapsto \mu_n \;},$$
+und erst daraus werden Invarianten $I(\mu_n)$ und Anomalien $D(n)$ abgeleitet (§12).
+
+**Label:** Höhen-Ontologie $\mathcal H^{\mathrm{shell}}$, $N$ = **Heuristik** (präzisiert §12.1).
+
+### 13.2 Hauptobjekt-Upgrade: Dirichlet-Reihe statt $D(n)$ allein
+
+Tiefe Strukturen in der Zahlentheorie erscheinen historisch oft erst in **Erzeugerfunktionen**
+(Euler-Produkte, $\zeta$, $L$-Funktionen). Entsprechend ist das entscheidende Testobjekt nicht
+die punktweise Folge $D(n)$, sondern die **Dirichlet-Reihe**
+$$\boxed{\;\hat D(s) := \sum_{n\ge 1} \frac{D(n)}{n^s}\;},$$
+wobei $D(n)$ die skalare Anomalie aus §12.4 ist (Experiment: euklidische Norm
+$\|I(\mu_n)-I_{\mathrm{ref}}(n)\|$; bevorzugte Referenzen: **rolling** oder **$\mu_\infty$-Proxy**).
+
+**Definition.** Für reelles oder komplexes $s$ und endliches $N$:
+$$\hat D_N(s) := \sum_{2\le n\le N} \frac{D(n)}{n^s}$$
+ist die **Partialsumme** (explorativ; Konvergenz bei $s\le 1$ nicht vorausgesetzt).
+
+**Label:** $\hat D(s)$, $\hat D_N(s)$ = **Definition** + **Experiment**
+(`collatz_eabc_dirichlet_D.py`).
+
+### 13.3 Bernoulli-Brücke (Conjecture / Heuristik)
+
+Für die Riemann-Zeta-Funktion gilt bekanntlich für $m\ge 1$
+$$\zeta(1-2m) = -\frac{B_{2m}}{2m},$$
+wobei $B_{2m}$ die Bernoulli-Zahlen sind (z.\,B. $B_2=\tfrac16$, $B_4=-\tfrac{1}{30}$).
+
+**Heuristik / offene Frage:** Existiert eine Skalierung oder Renormierung, sodass Werte von
+$\hat D(s)$ bei negativen ganzzahligen $s$ **Bernoulli-artige** Endlich-Korrekturen tragen?
+Explorativ fragt das Experiment nach $\hat D(-2)$, $\hat D(-4)$ und vergleicht mit $B_2$, $B_4$
+— **ohne** Gleichheitsbehauptung (vgl. `collatz_eabc_bernoulli_uebersetzung.md`, Bernoulli-Sensor).
+
+**Epistemische Warnung:** $\zeta(-2)=\zeta(-4)=0$ (triviale Nullstellen); die natürliche
+Bernoulli-Korrespondenz liegt bei **ungeraden** negativen $s$ ($\zeta(-1)$, $\zeta(-3)$, …).
+Die Wahl $s\in\{-2,-4,\ldots\}$ ist dennoch ein numerischer Stresstest für Wachstum und
+Renormierungsbedarf der Partialsummen.
+
+**Label:** Bernoulli-Analogie für $\hat D$ = **Conjecture** / **Heuristik** + **Experiment**.
+
+### 13.4 Boxed Erzeugerhypothese
+
+> **Conjecture (EABC-Spektralgeometrische Erzeugerhypothese).**
+> Sei $\mathcal H^{\mathrm{shell}}=\bigsqcup_n\Sigma_n$ mit Höhenfunktion $N$ und kanonischen
+> EABC-Maßen $\mu_n$ wie in §5–§12. Sei $D(n)=I(\mu_n)-I_{\mathrm{ref}}(n)$ die Anomaliefunktion
+> mit geometrisch motivierter Referenz $I_{\mathrm{ref}}$ (rolling oder $\mu_\infty$-Proxy).
+>
+> Die **Dirichlet-Erzeugerfunktion**
+> $$\hat D(s)=\sum_{n\ge 1}\frac{D(n)}{n^s}$$
+> ist das **entscheidende Spektralobjekt** der Theorie: Primzahl- und Schalenstruktur sollen sich
+> nicht primär in einzelnen $D(n)$, sondern in der **globalen analytischen Signatur** von $\hat D$
+> (Pole, Residuen, Bernoulli-artige Werte bei negativen $s$, Vergleich zu $\zeta$ und $L$-Funktionen)
+> manifestieren.
+>
+> **Falsifikation (Experiment):** Wenn $\hat D_N(s)$ für alle untersuchten $s$ und wachsendes $N$
+> lediglich ein **Repackaging** bekannter arithmetischer Dirichlet-Reihen ist (z.\,B. Vielfaches
+> von $\sum \tau(n)/n^s$, $\sum \omega(n)/n^s$ oder Partialsummen von $\zeta(s)$ ohne zusätzliche
+> EABC-Geometrie), dann liefert die Erzeugerhypothese **keine neue** analytische Struktur.
+
+**Label:** EABC-Spektralgeometrische Erzeugerhypothese = **Conjecture**;
+`collatz_eabc_dirichlet_D.py` = **Experiment**.
+
+### 13.5 Kritische Bewertungsleiter (epistemisch)
+
+| Stufe | Objekt | Neuheit vs. Arithmetik |
+|-------|--------|-------------------------|
+| 1 | $p \mapsto \Sigma_p$ | **nicht** neu — klassische Hurwitz-Geometrie |
+| 2 | $n \mapsto \Sigma_n \mapsto \mu_n$ | Perspektivwechsel (§12), aber zählbar |
+| 3 | $\mu_n \mapsto I(\mu_n)$ | erste **Invariante** der EABC-Geometrie |
+| 4 | $I(\mu_n) \mapsto D(n)$ | erste **Anomalie**; $I_{\mathrm{ref}}$-Wahl kritisch |
+| 5 | $D(n) \mapsto \hat D(s)$ | **entscheidender Test** — analytische Globalisierung |
+
+Die Leiter endet nicht bei $D(n)$: erst die Erzeugerfunktion vergleicht die EABC-Spektralgeometrie
+mit dem Kanon analytischer Zahlentheorie ($\zeta$, Bernoulli, $L$-Funktionen).
+
+**Label:** Bewertungsleiter = **Heuristik** (Methodologie).
+
+---
+
 ## Vergleich Gauß / Eisenstein / Hurwitz
 
 | Aspekt | Gauß $\mathbb{Z}[i]$ | Eisenstein $\mathbb{Z}[\omega]$ | Hurwitz $\mathbb{H}_{\mathrm H}$ |
@@ -439,7 +530,11 @@ Schalengröße $|\Sigma_n|$.
 | Primzahlen als $|D(n)|$-Singularitäten / Emergenz | **Conjecture** |
 | Bernoulli $V_n$-Korrelation mit $|D(n)|$ | **Heuristik** + **Experiment** |
 | `collatz_eabc_shell_defekt_test.py` | **Experiment** |
+| EABC-Spektralgeometrische Erzeugerhypothese (§13) | **Conjecture** |
+| $\hat D(s)=\sum D(n)/n^s$ | **Definition** + **Experiment** |
+| Bernoulli-Brücke $\hat D(-2m)$ vs.\ $B_{2m}$ | **Heuristik** + **Experiment** |
+| `collatz_eabc_dirichlet_D.py` | **Experiment** |
 
 ---
 
-*Kanonsiche Quaternionen-EABC-Maßhypothese: Objekte sind $\Sigma_n$, $\mu_n$, $I(\mu_n)$, $D(n)$ — nicht einzelne $q$; Primzahlen emergieren als mögliche Spektralanomalien (§12).*
+*Kanonsiche Quaternionen-EABC-Maßhypothese: Objekte sind $\Sigma_n$, $\mu_n$, $I(\mu_n)$, $D(n)$, $\hat D(s)$ — nicht einzelne $q$; Primzahlen emergieren als mögliche Spektralanomalien (§12); die analytische Signatur ist $\hat D(s)$ (§13).*
