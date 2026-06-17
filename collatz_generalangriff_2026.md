@@ -25,6 +25,11 @@ Die Collatz-Vermutung bleibt offen.
 nicht den punktweisen Ausschluss von $E_\infty$. Jede minimal plausible L muss daher den Sprung von
 *lokal zulässig* zu *global für jedes $n\in\mathbb{N}_{\mathrm{odd}}$ realisiert* leisten.
 
+> **Boxed (Generalangriff):** Finde die **minimale Brücke** zwischen $E_\infty$ und $\mathbb{N}$.
+
+**PR-Bedeutung (Generalangriff 2026):** EABC $\not\Rightarrow$ Collatz — aber
+*(bewiesene EABC-/Lean-Struktur)* **+ kleine Brücke L** $\Rightarrow$ Collatz.
+
 ---
 
 ## Bekannter Stand
@@ -74,6 +79,58 @@ bleiben **offen** (`collatz_kepler_gedankenexperiment.tex`).
 | **C** | $E_\infty$ vs. Approximationen | Dreier-Trennung $E_{\mathrm{diag}}, E_{\mathrm{tail}}, E_\infty$ (`collatz_equivalenz_e_infty.tex`); Lean-Brücke `ExceptionSetInfinity` ≠ `ExceptionSetDiag` |
 | **D** | $\Phi_{\mathrm{pref}}$ mit echtem Diskriminantentest | Wörter aus Bahn-Präfixen $\kappa_K(n)$, nicht nur Primvierling-Länge 4; Kriterium aus `collatz_kepler_gedankenexperiment.tex` |
 | **E** | Falsifikation | Drift/Uniformität/Präzession/Bernoulli nicht weiter als Hauptangriff; negative Tests dokumentieren |
+
+---
+
+## Strategische Verfeinerung (Juni 2026)
+
+### Lücken-Diagnose
+
+Die verbleibende Lücke liegt **nicht** bei mod-12, Chiralität oder Geometrie (diese Ebenen sind
+gesichert bzw. epistemisch abgegrenzt), sondern beim **Übergang strukturell → punktweise**:
+von lokal zulässigen EABC-Wörtern und typischen Bahnen zu einer Aussage über **jedes**
+$n\in\mathbb{N}$ (odd-to-odd).
+
+### Top-3 neu eingordnet
+
+| Kandidat | Vermutete Stärke | Stufe |
+|----------|------------------|-------|
+| **Treue Kodierung $\kappa$** (L₄) | vermutlich **fundamentale Brücke** | **1** |
+| **Realisierbarkeit** $\mathcal{L}_{\mathrm{arith}}\subsetneq\mathcal{L}$ (L₂) | möglicherweise **schwächer** | **2** |
+| **Präperiodizität** Lemma E (L₁) | vermutlich **nahe an Collatz** | **3** |
+
+### Warum $\kappa$ zuerst?
+
+Drei Abbildungen aus demselben $n$:
+
+- $n \mapsto$ Parität $\mapsto$ EABC-Blockschritt,
+- $n \mapsto \Phi_{\mathrm{pref}}(\kappa(\cdot))$,
+- $n \mapsto \mathbb{Z}_2$ (2-adische Metrik).
+
+**Frage:** Geht dabei Information verloren? Eine **treue** Kodierung $\kappa$ würde die Collatz-Frage
+in eine **symbolische** Frage über EABC-Wörter übersetzen — und damit Auftrag B (Grammatik) mit
+Auftrag D ($\Phi_{\mathrm{pref}}$) verbinden.
+
+Konkrete Stufe-1-Prüfpunkte:
+
+1. Ist $\kappa$ **injektiv** (auf relevanten Präfixen)?
+2. Ist $\kappa$ **dynamiktreu** (Präfixe von $\kappa(U^k(n))$ = EABC-Blockschritte der Bahn)?
+3. Wo genau tritt **Informationsverlust** auf ($n \to$ Parität $\to$ EABC vs. $n \to \mathbb{Z}_2$)?
+
+### $\mathcal{L}_{\mathrm{arith}}\subsetneq\mathcal{L}$
+
+Nicht jedes grammatisch zulässige Wort $w\in\mathcal{L}$ ist **arithmetisch realisierbar**
+als Bahnwort $w(n)$ eines $n\in\mathbb{N}_{\mathrm{odd}}$. Schlechte **unendliche** Wörter können
+formal in $\mathcal{L}^{\mathbb{N}}$ liegen, ohne dass ein natürliches $n$ sie realisiert —
+das ist die operationale Form der Brücke (vgl. L₂, `collatz_equivalenz_e_infty.tex`).
+
+### Generalangriff-Prioritäten (Stufe 1–3)
+
+| Stufe | Auftrag | Kernfrage |
+|-------|---------|-----------|
+| **1** | Treue Kodierung $\kappa$ | Injektivität, Dynamiktreue, Informationsverlust |
+| **2** | $\mathcal{L}_{\mathrm{arith}}$-Realisierbarkeit | Welche $w\in\mathcal{L}^{\mathbb{N}}$ sind Bahnwörter? |
+| **3** | Präperiodizität (Lemma E) | Endliche Beobachtungsschlechtigkeit $\Rightarrow$ Präperiodizität |
 
 ---
 
@@ -181,29 +238,34 @@ Collatz impliziert, ist weiterhin eine punktweise Aussage über **natürliche** 
 **$E_\infty=\emptyset$** (äquivalent zu Collatz). Die lokale Grammatik liefert dafür **keine** Implikation;
 jede scheinbar schwächere Formulierung ist meist nur **Umformulierung** derselben Lücke.
 
-**Strategisch minimal-plausibel** (Forschungsauftrag A):
+**Strategisch (Juni 2026, nach Verfeinerung):** Drei-Stufen-Angriff — siehe Abschnitt
+*Strategische Verfeinerung*.
 
-> **Lemma E** als Zwischenlemma, plus explizite Zerlegung  
-> Collatz $\Leftrightarrow$ (keine Divergenz) $\land$ (kein nichttrivialer Zyklus) $\land$ (Lemma E für präperiodischen Rest)
+**Stufe 1 — $\kappa$ (L₄):** Fundamentale Brücke zwischen $\mathbb{Z}_2$, EABC-Wörtern und
+$\Phi_{\mathrm{pref}}$. Ohne treue Kodierung bleibt die dynamische Frage symbolisch unzugänglich;
+erste positive Evidenz bei langen Integrationsstrom-Wörtern (`collatz_phi_pref_test.json`).
 
-Lemma E ist in `collatz_equivalenz_e_infty.tex` und `collatz_schlussartikel_arxiv.tex` (Epilog) als
-**strategischer Kandidat** benannt — es trennt endliche Beobachtungsschlechtigkeit von unendlicher
-Nichtkonvergenz **für den präperiodischen Anteil**, ohne Divergenz zu beweisen.
+**Stufe 2 — $\mathcal{L}_{\mathrm{arith}}\subsetneq\mathcal{L}$ (L₂):** Klarste operationale Form
+der offenen Brücke für Auftrag B; boxed Ziel in `collatz_equivalenz_e_infty.tex`.
 
-**Zweitens:** **L₂ (Realisierbarkeit)** — klarste operationale Form der offenen Brücke für Auftrag B.
+**Stufe 3 — Lemma E (L₁):** Zwischenlemma in `collatz_equivalenz_e_infty.tex` und
+`collatz_schlussartikel_arxiv.tex` (Epilog) — trennt endliche Beobachtungsschlechtigkeit von
+unendlicher Nichtkonvergenz **für den präperiodischen Anteil**; vermutlich **näher an Collatz**
+als Stufe 1–2, daher zuletzt im Angriffsplan.
 
-**Drittens:** **$\kappa$ + $\Phi_{\mathrm{pref}}$** (L₄) — für Auftrag D, nach echtem Diskriminantentest
-(bereits erste positive Evidenz bei langen Integrationsstrom-Wörtern).
+Zerlegung (unverändert gültig):
+Collatz $\Leftrightarrow$ (keine Divergenz) $\land$ (kein nichttrivialer Zyklus) $\land$
+(Lemma E für präperiodischen Rest).
 
 ---
 
 ## Top-3 Kandidaten-Lemmas (Kurzliste)
 
-| Rang | Lemma | Warum |
-|------|-------|-------|
-| **1** | **L₁ Lemma E** (Präperiodizität) | Einziges im Repo explizit als Zwischenlemma skizziert; reduziert globale Frage auf periodische/präperiodische EABC-Analyse; Lean-Grundgerüst vorhanden |
-| **2** | **L₂ Arithmetische Realisierbarkeit** | Präzise Trennung Grammatik vs. Realisierung; boxed Ziel in `collatz_equivalenz_e_infty.tex`; direkter Auftrag B |
-| **3** | **L₄ Treue Kodierung $\kappa$** | Verbindet Auftrag D (Φ_pref-Diskriminant) mit dynamischer Collatz-Frage; explorativ gestützt, aber $\kappa$ offen |
+| Rang | Stufe | Lemma | Warum |
+|------|-------|-------|-------|
+| **1** | **1** | **L₄ Treue Kodierung $\kappa$** | Fundamentale Brücke $n\leftrightarrow$ EABC-Wort $\leftrightarrow\mathbb{Z}_2$; Informationsverlust-Frage; verbindet Auftrag D ($\Phi_{\mathrm{pref}}$) mit dynamischer Collatz-Frage |
+| **2** | **2** | **L₂ Arithmetische Realisierbarkeit** | Präzise Trennung $\mathcal{L}_{\mathrm{arith}}\subsetneq\mathcal{L}$; schlechte unendliche Wörter formal, aber nicht in $\mathbb{N}$ realisierbar |
+| **3** | **3** | **L₁ Lemma E** (Präperiodizität) | Im Repo als Zwischenlemma skizziert; reduziert globale Frage auf präperiodische EABC-Analyse; vermutlich nahe an Collatz; Lean-Grundgerüst vorhanden |
 
 ---
 

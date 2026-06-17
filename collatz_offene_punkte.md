@@ -12,7 +12,8 @@ Konvergenz.
 
 Systematische Suche nach der kleinsten fehlenden Brücke **L** mit
 *(EABC-/Lean-Struktur) + L ⟹ Collatz*: siehe `collatz_generalangriff_2026.md`
-(Kandidaten L₁–L₆, Top-3: Lemma E, Realisierbarkeit, $\kappa$).
+(Kandidaten L₁–L₆; **Stufe 1–3:** $\kappa$, $\mathcal{L}_{\mathrm{arith}}$-Realisierbarkeit,
+Lemma E; Abschnitt *Strategische Verfeinerung (Juni 2026)*).
 
 ---
 
