@@ -86,8 +86,11 @@ def test_run_sensor_structure(tmp_path: Path):
     out = tmp_path / "sensor.json"
     report = run_sensor(10)
     assert report["framework"] == "EABC"
-    assert report["sensor"] == "Phi_B"
+    assert report["sensor"] == "Phi"
+    assert report["hypothesis"] == "EABC-Resonanzhypothese der Zetafunktion"
     assert len(report["samples"]) == 10
+    sample0 = report["samples"][0]
+    assert sample0["E_n"] == sample0["V"]["E"]
     assert "stats" in report
     out.write_text(json.dumps(report), encoding="utf-8")
     loaded = json.loads(out.read_text(encoding="utf-8"))

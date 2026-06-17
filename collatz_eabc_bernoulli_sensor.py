@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """
-EABC-Bernoulli-Sensor: von-Staudt-Clausen-Primsignaturen als EABC-Vektoren.
+EABC-Resonanzhypothese-Sensor: von-Staudt-Clausen-Primsignaturen als EABC-Zustände.
 
-Φ_B(n) = V(B_{2n}) zählt Primzahlen p mit p-1 | 2n nach nativer EABC-Restklasse
-(E=1, A=5, B=7, C=11 mod 12). Kein Collatz-Beweis, kein RH-Beweis.
+Φ(n) = V_n = (E_n, A_n, B_n, C_n) zählt Primzahlen p ∈ P_n mit p-1 | 2n nach nativer
+EABC-Restklasse (E≡1, A≡5, B≡7, C≡11 mod 12). ERPC = EABC — kein separates Projekt.
+
+Notation: Python-Felder e,a,b,c entsprechen Dokumentation E_n, A_n, B_n, C_n.
 
 Ausführung:
     python3 collatz_eabc_bernoulli_sensor.py
@@ -61,13 +63,19 @@ def staudt_denominator(two_n: int, primes: list[int] | None = None) -> int:
 
 @dataclass(frozen=True, slots=True)
 class EabcVector:
-    e: int
-    a: int
-    b: int
-    c: int
+    """EABC-Zustandsvektor V_n = (E_n, A_n, B_n, C_n); Felder e,a,b,c = E_n,…,C_n."""
+
+    e: int  # E_n: Anzahl p ≡ 1 (mod 12) in P_n
+    a: int  # A_n: Anzahl p ≡ 5 (mod 12)
+    b: int  # B_n: Anzahl p ≡ 7 (mod 12)
+    c: int  # C_n: Anzahl p ≡ 11 (mod 12)
 
     def as_tuple(self) -> tuple[int, int, int, int]:
         return (self.e, self.a, self.b, self.c)
+
+    def as_doc_dict(self) -> dict[str, int]:
+        """Alias-Schlüssel E_n, A_n, B_n, C_n (Dokumentationsnotation)."""
+        return {"E_n": self.e, "A_n": self.a, "B_n": self.b, "C_n": self.c}
 
     @property
     def total(self) -> int:
@@ -75,7 +83,7 @@ class EabcVector:
 
 
 def v_bernoulli(sig: list[int]) -> EabcVector:
-    """V(B_{2n}): EABC-Zählvektor über PrimeSig (nur p ≡ 1,5,7,11 mod 12)."""
+    """V_n = (E_n, A_n, B_n, C_n): EABC-Zählvektor über P_n (p ≡ 1,5,7,11 mod 12)."""
     counts = {EClass.E: 0, EClass.A: 0, EClass.B: 0, EClass.C: 0}
     for p in sig:
         cls = class_of(p)
@@ -181,6 +189,7 @@ def run_sensor(max_n: int = 100) -> dict[str, Any]:
                 "non_eabc_primes": r.non_eabc,
                 "staudt_denominator": r.staudt_denominator,
                 "V": {"E": r.v.e, "A": r.v.a, "B": r.v.b, "C": r.v.c},
+                **r.v.as_doc_dict(),
                 "sigma": r.sigma,
                 "chi": r.chi,
                 "i_chir": r.i_chir,
@@ -189,17 +198,18 @@ def run_sensor(max_n: int = 100) -> dict[str, Any]:
 
     return {
         "framework": "EABC",
-        "sensor": "Phi_B",
+        "hypothesis": "EABC-Resonanzhypothese der Zetafunktion",
+        "sensor": "Phi",
         "description": (
-            "EABC-Deutung von-Staudt-Clausen-Signaturen: "
-            "V(B_{2n}) zählt PrimeSig nach nativer mod-12-EABC-Klassifikation."
+            "EABC-Zustände V_n=(E_n,A_n,B_n,C_n) aus von-Staudt-Clausen-Signaturen P_n; "
+            "mod-12: E≡1, A≡5, B≡7, C≡11. Falsifikation: V_n vs. Δt_k."
         ),
         "epistemic_label": "Experiment",
         "max_n": max_n,
         "samples": samples,
         "stats": _asymmetry_stats(rows),
         "future_tests": {
-            "zeta_coupling": "V(B_{2n}) vs. Δt_n (benötigt Nullstellendaten)",
+            "zeta_coupling": "V_n vs. Δt_k (Resonanzhypothese, benötigt Nullstellendaten)",
             "curvature": "K_B(n) vs. π(x)-Li(x) (zukünftig)",
         },
     }
@@ -229,7 +239,7 @@ def verify_staudt_sympy(max_n: int = 20) -> list[dict[str, Any]]:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="EABC-Bernoulli-Sensor Φ_B")
+    parser = argparse.ArgumentParser(description="EABC-Resonanz-Sensor Φ(n)=V_n")
     parser.add_argument("--max-n", type=int, default=100, help="Obergrenze für n (B_{2n})")
     parser.add_argument(
         "--output",
