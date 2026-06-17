@@ -2,7 +2,8 @@
 """
 Experiment: Lean-Kopplung des EABC-Bernoulli-Sensors Φ(n)=V_n.
 
-Prüft, ob von-Staudt-Clausen-Primsignaturen P_n dieselbe mod-12-EABC-Klassifikation
+EABC-Zerlegungsprinzip: N = (N_glatt, N_EABC). Dieses Experiment prüft die N_EABC-Schicht:
+ob von-Staudt-Clausen-Primsignaturen P_n dieselbe mod-12-EABC-Klassifikation
 tragen wie die formale Lean-Schicht (`EABC.lean` → `eabc_from_lean.py`) und wendet
 Lean-observable Strukturen (T-Rotation, Chiralität, Vierlinge, Bernoulli-Uhr) auf P_n an.
 

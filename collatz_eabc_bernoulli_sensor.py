@@ -2,8 +2,11 @@
 """
 EABC-Resonanzhypothese-Sensor: von-Staudt-Clausen-Primsignaturen als EABC-Zustände.
 
+EABC-Zerlegungsprinzip: N = (N_glatt, N_EABC). Dieser Sensor liest N_EABC entlang der
+Bernoulli-Brücke s=-2n → ζ(1-2n) → PrimeSig(B_{2n}) → V_n.
+
 Φ(n) = V_n = (E_n, A_n, B_n, C_n) zählt Primzahlen p ∈ P_n mit p-1 | 2n nach nativer
-EABC-Restklasse (E≡1, A≡5, B≡7, C≡11 mod 12). ERPC = EABC — kein separates Projekt.
+EABC-Restklasse (E≡1, A≡5, B≡7, C≡11 mod 12). Bernoulli = Übersetzungsobjekt, nicht Endobjekt.
 
 Notation: Python-Felder e,a,b,c entsprechen Dokumentation E_n, A_n, B_n, C_n.
 

@@ -4,10 +4,7 @@
 (Definition / Zeuge / Experiment / Theorem / Conjecture / Heuristik / Negativtest).
 **Kein Collatz-Beweis. Kein Beweis der Riemann-Hypothese.**
 
-**Terminologie:** *ERPC* bezeichnet in diesem Repo **dieselbe EABC-Struktur**
-(Restklassen $E,A,B,C$ mod $12$, chirale Sensoren $\sigma$, $\chi$, $\iota_{\mathrm{chir}}$).
-Es gibt kein separates „ERPC-Projekt neben EABC“ — die Resonanz-/Bernoulli-/Zeta-Theorie
-ist die **EABC-Deutung** trivialer Zetawerte und von-Staudt-Clausen-Signaturen.
+*Hinweis:* Der veraltete Begriff *ERPC* wurde durch **EABC-Zerlegungsprinzip** ersetzt.
 
 **Querverweise:** `Staudt.tex`, `collatz_kepler_gedankenexperiment.tex` (Bernoulli-Uhr),
 `eabc_from_lean.py`, `collatz_bernoulli_schalen.pdf`, `energiedoku_eabc_c4_kohaerenz.tex`,
@@ -15,7 +12,39 @@ ist die **EABC-Deutung** trivialer Zetawerte und von-Staudt-Clausen-Signaturen.
 
 ---
 
-## 1. Zentrale Fragestellung
+## 1. EABC-Zerlegungsprinzip
+
+**Definition (Zerlegungsprinzip).** Jede natürliche Zahl $N$ besitzt zwei komplementäre Komponenten:
+\[
+N = (N_{\mathrm{glatt}},\, N_{\mathrm{EABC}}).
+\]
+
+| Komponente | Rolle | Typische Größen |
+|------------|-------|-----------------|
+| $N_{\mathrm{glatt}}$ | **metrisch / skalierend** — kontinuierliche Arithmetikschicht | $\log N$, Primdichte, $\Omega(N)$, Wachstum, analytische Näherungen ($\pi(x)$, $\mathrm{Li}(x)$, $\zeta(s)$, $\Gamma(s)$) |
+| $N_{\mathrm{EABC}}$ | **Orientierung im EABC-Raum** — chirale Symmetrieschicht | Prime-Faktorzerlegung nach $E\equiv 1$, $A\equiv 5$, $B\equiv 7$, $C\equiv 11 \pmod{12}$; Zustandsvektor $V(N)=(e,a,b,c)$ mit gewichteten Exponenten pro Klasse |
+
+$N_{\mathrm{glatt}}$ trägt das **analytische Skelett** (Skala, Dichte, glatte Approximationen);
+$N_{\mathrm{EABC}}$ trägt die **Orientierung** (Restklassen-Bilanz, chirale Sensoren $\sigma$, $\chi$, $\iota_{\mathrm{chir}}$).
+EABC ist damit **Symmetrie-/Orientierungsraum**, nicht bloße Primklassifikation.
+
+---
+
+## 2. Grundhypothese: glatte und EABC-Dynamik
+
+> **Conjecture (Grundhypothese).** Klassische analytische Größen ($\pi(x)$, $\zeta(s)$, $\Gamma(s)$, $B_{2n}$)
+> stammen überwiegend aus $N_{\mathrm{glatt}}$; Fluktuationen, Resonanzen und Bias aus $N_{\mathrm{EABC}}$:
+> \[
+> \text{Arithmetik} = \text{glatte Dynamik} + \text{EABC-Dynamik}.
+> \]
+
+**Label: Conjecture** — heuristische Leitlinie, nicht als Theorem behauptet.
+Der Bernoulli-/Zeta-Zweig in diesem Dokument ist die **EABC-Deutung** trivialer Zetawerte
+und von-Staudt-Clausen-Signaturen entlang dieser Zerlegung.
+
+---
+
+## 3. Zentrale Fragestellung
 
 Die **EABC-Resonanzhypothese der Zetafunktion** fragt, ob die Folge der
 EABC-Zustandsvektoren $V_1,V_2,\ldots$ an der äquidistanten Achse trivialer Nullstellen
@@ -24,6 +53,8 @@ als **spektrale Projektion** dieser Resonanz lesbar sind.
 
 | Ebene | Label in diesem Text |
 |-------|----------------------|
+| $N=(N_{\mathrm{glatt}},N_{\mathrm{EABC}})$, Zerlegungsprinzip | **Definition** |
+| Arithmetik = glatte + EABC-Dynamik | **Conjecture** |
 | EABC mod $12$, $V_n=(E_n,A_n,B_n,C_n)$ | **Definition** |
 | von Staudt--Clausen, $\mathrm{PrimeSig}(B_{2n})$ | **Definition** (klassisches Theorem) |
 | Sensor $\Phi$, chirale Observablen | **Definition / Zeuge** |
@@ -34,7 +65,7 @@ als **spektrale Projektion** dieser Resonanz lesbar sind.
 
 ---
 
-## 2. Äquidistante Basis: triviale Nullstellen
+## 4. Äquidistante Basis und Bernoulli-Brücke
 
 **Definition.** Die trivialen Nullstellen der Riemannschen Zetafunktion liegen bei
 \[
@@ -46,16 +77,17 @@ Jede Stufe $n$ kodiert einen rationalen Spezialwert:
 \[
 \zeta(1-2n) = -\frac{B_{2n}}{2n},
 \]
-wobei $B_{2n}$ die geraden Bernoulli-Zahlen sind. Bernoulli-Zahlen sind damit die
-**Übersetzer** von Zeta-Spezialwerten in rationale Arithmetik — nicht identisch mit
-einzelnen Primzahlen, sondern Filtrationsobjekte.
+wobei $B_{2n}$ die geraden Bernoulli-Zahlen sind. Bernoulli-Zahlen sind **Übersetzungsobjekte**:
+sie überführen die äquidistante Struktur trivialer Nullstellen ($N_{\mathrm{glatt}}$)
+in die EABC-Schicht ($N_{\mathrm{EABC}}$) — nicht Endobjekte, sondern Operatoren
+von glatten Gitterpunkten $s=-2n$ zu rationalen Arithmetikdaten und Primsignaturen.
 
 > **Boxed (Präzision):** Bernoulli $\neq$ Prim. Die Korrespondenz verläuft zwischen
 > **Filtrationen** $\{B_{2n}\}_{n\ge 1} \longleftrightarrow \{p\ \text{prim}: p-1\mid 2n\}_{n\ge 1}$.
 
 ---
 
-## 3. von Staudt--Clausen und Primsignaturen
+## 5. von Staudt--Clausen und Primsignaturen
 
 **Definition (von Staudt--Clausen).** Für gerade Bernoulli-Zahlen $B_{2n}$ ($n\ge 1$):
 \[
@@ -75,7 +107,7 @@ nicht Hauptangriff.
 
 ---
 
-## 4. Native EABC mod $12$ und Zustandsvektor $V_n$
+## 6. Native EABC mod $12$ und Zustandsvektor $V_n$
 
 Die vier EABC-Familien sind **Definition** (nicht Brücke zu einem externen Modul):
 \[
@@ -107,25 +139,24 @@ Python-Felder `e,a,b,c` mappen auf $E_n,\ldots,C_n$).
 
 ---
 
-## 5. EABC-Resonanzhypothese (Conjecture)
+## 7. EABC-Resonanzhypothese (Conjecture)
 
-> **Conjecture (Resonanzhypothese).** Die Folge $V_1,V_2,V_3,\ldots$ ist **nicht zufällig**:
-> sie trägt eine **diskrete Resonanzstruktur der Primzahlen** entlang der äquidistanten
-> Achse trivialer Nullstellen. Nichttriviale Nullstellen
-> \[
-> \rho_k = \tfrac12 + \mathrm{i}\,t_k
-> \]
-> sind die **spektrale Projektion** dieser Resonanz auf die kritische Linie.
+> **Conjecture (Resonanzhypothese, EABC-Version).**
+> - **Triviale Nullstellen** $s=-2n$: äquidistante Ausgangsstruktur ($N_{\mathrm{glatt}}$).
+> - **Bernoulli** $B_{2n}$: liest Primresonanzen über $\mathrm{PrimeSig}(B_{2n})=P_n$.
+> - **EABC-Zerlegung** $V_n=(E_n,A_n,B_n,C_n)$: offenbart Orientierung der Resonanzen ($N_{\mathrm{EABC}}$).
+> - **Nichttriviale Nullstellen** $\rho_k=\tfrac12+\mathrm{i}\,t_k$: **spektrale Projektion**
+>   der EABC-durchdrungenen Struktur auf die kritische Linie.
 
-Intuition: Die flache Gitterachse $s=-2n$ liefert über Bernoulli und $P_n$ eine
-arithmetische „Grundschwingung“; Abweichungen und Korrelationen in $V_n$ kodieren
-Information, die im Spektrum der nichttrivialen Nullstellen wieder auftaucht.
+Die Folge $V_1,V_2,V_3,\ldots$ ist **nicht zufällig**: sie trägt diskrete Primresonanz
+entlang der trivialen Achse; Abweichungen in $V_n$ kodieren EABC-Dynamik, die im
+Spektrum der nichttrivialen Nullstellen wieder auftaucht.
 
-**Label: Conjecture** — empirisch falsifizierbar (Abschnitt 8), nicht als Theorem behauptet.
+**Label: Conjecture** — empirisch falsifizierbar (Abschnitt 10), nicht als Theorem behauptet.
 
 ---
 
-## 6. Starke Form: Abbildung auf das Spektrum (Conjecture)
+## 8. Starke Form: Abbildung auf das Spektrum (Conjecture)
 
 > **Conjecture (starke Form).** Es existiert eine (deterministische oder statistische)
 > Abbildung
@@ -143,21 +174,21 @@ Hypothese **widerlegt**.
 
 ---
 
-## 7. Geometrische Interpretation (Heuristik)
+## 9. Geometrische Interpretation (Heuristik)
 
-Fünfgliedrige Lesart als Projektionskette:
+Fünfgliedrige Lesart als Projektionskette (EABC-Zerlegungsprinzip):
 
-1. **Äquidistante Basis:** Triviale Nullstellen $s=-2n$ bilden ein flaches, gleichabständiges Gitter auf $\mathrm{Re}(s)<0$.
-2. **Krümmung durch Bernoulli:** $\zeta(1-2n)=-B_{2n}/(2n)$ koppelt jedes Gitterpunkt an rationale Bernoulli-Daten.
-3. **Diskrete Prim-Einbettung:** $P_n$ legt Primzahlen als lokale „Massen“ auf die Stufe $n$.
-4. **EABC-Faserung:** $V_n=(E_n,A_n,B_n,C_n)$ ordnet diese Massen der nativen mod-$12$-Symmetrie zu (chirale Bilanz $\sigma$, $\chi$, $\iota_{\mathrm{chir}}$).
-5. **Spektrale Projektion:** Nichttriviale Nullstellen $\rho_k=\tfrac12+\mathrm{i}t_k$ erscheinen als gekrümmte Projektion der Resonanz auf $\mathrm{Re}(s)=\tfrac12$; RH entspricht der Fixierung dieser Projektion.
+1. **Äquidistante Basis ($N_{\mathrm{glatt}}$):** Triviale Nullstellen $s=-2n$ — gleichabständiges Gitter auf $\mathrm{Re}(s)<0$.
+2. **Bernoulli-Übersetzung:** $\zeta(1-2n)=-B_{2n}/(2n)$ — Operator von glatten Gitterpunkten zu rationalen Daten.
+3. **Primresonanz:** $P_n=\mathrm{PrimeSig}(B_{2n})$ — diskrete Einbettung der Primstruktur.
+4. **EABC-Orientierung ($N_{\mathrm{EABC}}$):** $V_n=(E_n,A_n,B_n,C_n)$ — Symmetrie-/Orientierungsraum mod $12$ ($\sigma$, $\chi$, $\iota_{\mathrm{chir}}$).
+5. **Spektrale Projektion:** Nichttriviale Nullstellen $\rho_k=\tfrac12+\mathrm{i}t_k$ — Spektrum der EABC-durchdrungenen Struktur auf $\mathrm{Re}(s)=\tfrac12$; RH als Fixierung dieser Projektion.
 
 **Label: Heuristik / Conjecture** — geometrische Metapher, kein Beweisanspruch.
 
 ---
 
-## 8. Falsifizierbarkeit und Experimente
+## 10. Falsifizierbarkeit und Experimente
 
 **Falsifikationskriterium.** Berechne $V_n$ für viele $n$, vergleiche mit bekannten
 Nullstellenabständen $\Delta t_k$. **Keine** systematische Korrelation $\Rightarrow$
@@ -188,7 +219,19 @@ Falsifikationstest der Resonanzhypothese.
 
 ---
 
-## 9. Boxed Kurzform
+## 11. Nomenklatur
+
+| Begriff | Bedeutung in diesem Zweig |
+|---------|---------------------------|
+| **EABC** | Symmetrie-/Orientierungsraum (mod $12$) |
+| **glatt** ($N_{\mathrm{glatt}}$) | Metrische / analytische Schicht |
+| **Bernoulli** | Übersetzungsobjekte (nicht Endobjekte) |
+| **triviale Nullstellen** | Äquidistante Ausgangsstruktur |
+| **nichttriviale Nullstellen** | Spektrum der EABC-durchdrungenen Struktur |
+
+---
+
+## 12. Boxed Kurzform
 
 $$\boxed{
 \text{Triviale Nullstellen}
@@ -204,7 +247,7 @@ $$\boxed{
 
 ---
 
-## 10. Parallele Tracks (nicht verschmolzen)
+## 13. Parallele Tracks (nicht verschmolzen)
 
 Der EABC-Bernoulli-/Resonanz-Zweig läuft **parallel** zu anderen Sensoren:
 
@@ -219,12 +262,15 @@ Morley und $\kappa$ bleiben eigenständige Angriffslinien. Der Resonanz-Zweig nu
 
 ---
 
-## 11. Tao-Labels und nächste Schritte
+## 14. Tao-Labels und nächste Schritte
 
 | Aussage | Tao-Label |
 |---------|-----------|
+| $N=(N_{\mathrm{glatt}},N_{\mathrm{EABC}})$, Zerlegungsprinzip | Definition |
+| Arithmetik = glatte + EABC-Dynamik | Conjecture |
 | EABC mod $12$, $V_n=(E_n,A_n,B_n,C_n)$ | Definition |
 | PrimeSig aus von Staudt--Clausen | Definition (Theorem) |
+| Bernoulli als Übersetzungsobjekt | Definition |
 | $\Phi$, $\sigma$, $\chi$, $\iota_{\mathrm{chir}}$ | Definition + Experiment |
 | Resonanzstruktur $V_1,V_2,\ldots$ | Conjecture |
 | $\Phi:V_n\to\rho_k$ bzw. $\Delta t_k$ | Conjecture |
@@ -238,7 +284,7 @@ Morley und $\kappa$ bleiben eigenständige Angriffslinien. Der Resonanz-Zweig nu
 
 ---
 
-## 12. Experiment: Lean-Kopplung (Tao Experiment)
+## 15. Experiment: Lean-Kopplung (Tao Experiment)
 
 > **Hinweis:** „LEA-M“ im Gespräch war eine Fehlhörung von **Lean** — gemeint ist die
 > formale EABC-Schicht (`EABC.lean` → `eabc_from_lean.py`), kein separates Modul.

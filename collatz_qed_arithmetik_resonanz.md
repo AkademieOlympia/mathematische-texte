@@ -159,7 +159,7 @@ Renormierung als Schnitt/Invarianz, Negativtests als Buchhaltung — im Sinne vo
 | `collatz_stufe3_kappa_invarianz.md` | $\kappa$, $R(k)$, $\mathcal{L}_{\mathrm{arith}}^*$ |
 | `collatz_morley_stufen_m.md` | M1 → M2 → M3 |
 | `collatz_morley_gm_beweisversuch.md` | $G_M$, $\Phi_M$, Babylon 3-4-5 |
-| `collatz_eabc_bernoulli_uebersetzung.md` | EABC-Bernoulli-Sensor $\Phi_B$, von Staudt--Clausen |
+| `collatz_eabc_bernoulli_uebersetzung.md` | EABC-Zerlegungsprinzip, Bernoulli-Sensor $\Phi$, von Staudt--Clausen |
 
 ---
 
