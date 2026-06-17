@@ -210,6 +210,8 @@ als **spektrale Projektion** dieser Resonanz lesbar sind.
 | EABC-Tetraeder, Kepler-Füllung, Prim-Defekte | **Forschungsvision** (§17) |
 | $\mathcal{K}(N)$, $D(N)$, $\Pi$, $\Phi_{\mathrm{def}}$ | **Conjecture** (§17, offen) |
 | $6n\pm 1$, $4n\pm 1$, EABC-Geometrie-Hypothese, Modulo $12$ | **Heuristik / Conjecture** (§18) |
+| Holographisches Leitbild (Susskind, Maldacena) | **Heuristik** (§19, Analogie) |
+| EABC-Holographiehypothese, Fünfersprünge | **Conjecture / Forschungsvision** (§19) |
 
 ---
 
@@ -441,6 +443,8 @@ Morley und $\kappa$ bleiben eigenständige Angriffslinien. Der Resonanz-Zweig nu
 | Peano $\to$ Defektprojektion, Tetraeder, Kepler-Füllung | Conjecture / Heuristik / Forschungsvision |
 | $\mathcal{K}(N)$, $D(N)$, $\Pi$, $\Phi_{\mathrm{def}}$ | Conjecture (offen) |
 | EABC-Geometrie-Hypothese ($6n\pm 1$, $4n\pm 1$, Mod $12$) | Heuristik / Conjecture (§18) |
+| Holographisches Leitbild (Susskind, Maldacena) | Heuristik (§19, Analogie) |
+| EABC-Holographiehypothese, Fünfersprünge | Conjecture / Forschungsvision (§19) |
 
 **Nächste Schritte:**
 1. Test 1 auf größeres $n$ und mit expliziten Zufalls-Nullmodellen vergleichen.
@@ -700,7 +704,8 @@ $(E,A,B,C)$ — nicht $\mathcal{K}(N)$ oder $\mathcal{D}_{\mathrm{krit}}$.
 **Label: Forschungsvision** — explizit von Theorem-Ebene getrennt.
 
 Vertiefung der geometrischen Lesart von $6n\pm 1$, $4n\pm 1$ und Modulo $12$:
-**§18 (EABC-Geometrie-Hypothese)**.
+**§18 (EABC-Geometrie-Hypothese)**. Holographisches Leitbild und Rand–Bulk-Lesart:
+**§19 (EABC-Holographiehypothese)**.
 
 ---
 
@@ -887,6 +892,191 @@ Die EABC-Geometrie-Hypothese schließt an §17.5–§17.6 an:
 Dieser Abschnitt **ersetzt** weder §1 (Zerlegungsprinzip) noch §17 (Forschungsvision);
 er **spezialisiert** deren geometrische Lesart auf die $6n\pm 1$/$4n\pm 1$-Muster und
 Modulo $12$. Kein Collatz-Beweis, kein etabliertes Primzahl-Theorem.
+
+---
+
+## 19. EABC-Holographiehypothese
+
+Dieser Abschnitt formuliert die **EABC-Holographiehypothese** — ein holographisches
+**Leitbild** für die Rand–Bulk-Struktur der EABC-Forschungsvision. Er ist **keine**
+Identifikation mit etablierter Stringtheorie und **kein** Beweis arithmetischer EABC-Aussagen.
+
+**Querverweise:** §2 (Bernoulli-Kette, Zustandsraum), §17 (Kepler-Füllung, Oktanionen/Hurwitz,
+Peano-Projektion), §18 (EABC-Geometrie mod $12$), `PAPER_HURWITZ_RESONANZ.md`,
+`collatz_kepler_gedankenexperiment.tex`, `Vier Fünf Synchronisation.py`,
+`Niedrigstes Primzahlmuster.tex`, `Tri - Okto.tex` (Fibonacci-Defekte).
+
+### 19.1 Etablierte Physik: Holographisches Prinzip und AdS/CFT (Heuristik / Hintergrund)
+
+**Heuristik (physikalischer Hintergrund, nur Analogie).** In der etablierten theoretischen
+Physik besagt das **holographische Prinzip** (Leonard Susskind; vgl. die Diskussion um
+Informationsparadoxa und schwarze Löcher), dass die Freiheitsgrade einer Raumzeitregion
+durch Daten auf ihrer **Randfläche** kodiert werden können — nicht als arithmetischer Satz,
+sondern als physikalisches Leitbild.
+
+**Heuristik (AdS/CFT, nur Analogie).** Juan Maldacena (1997) formulierte die **AdS/CFT-Dualität**:
+eine Quantengravitationstheorie in einem höherdimensionalen Anti-de-Sitter-Raum (AdS) ist
+dual zu einer konformen Feldtheorie (CFT) auf dem Rand. Dies ist eine **physikalische Dualität**
+zwischen Bulk- und Randtheorie — **kein** Beweis der EABC-Arithmetik und **keine** Behauptung,
+dass „EABC = AdS/CFT".
+
+| Physik (etabliert) | Rolle in diesem Text |
+|--------------------|----------------------|
+| Holographisches Prinzip (Susskind) | **Heuristik** — Rand kodiert Bulk-Information |
+| AdS/CFT (Maldacena 1997) | **Heuristik** — höherdimensionale Bulk-Dynamik $\leftrightarrow$ Rand-CFT |
+| EABC-Arithmetik | **eigenständig** — weder aus AdS/CFT abgeleitet noch damit identisch |
+
+**Label: Heuristik** — etablierte Physik als **Analogievorlage**, nicht als arithmetischer Beweis.
+
+### 19.2 Fünfersprünge: Kollapsmarker in der Tetraederfüllung (Definition / Forschungsvision)
+
+**Definition (Projektbegriff: Fünfersprünge).** Unter **Fünfersprüngen** verstehen wir in
+diesem Forschungszweig **diskrete Kollapsereignisse** in der tetraedrischen EABC-Füllung:
+Stellen, an denen eine lokale Vier-Kanal-Konfiguration ($E,A,B,C$ mod $12$) nicht zufällig
+weiterwächst, sondern einen **strukturierten Sprung** vollzieht — analog zum Übergang
+Vierling $\to$ Fünfling in der lokalen Primgeometrie.
+
+**Etablierte Vorlage (Theorem / Definition, unabhängig von der Holographie-Lesart).** Ein
+**dichter Primzahlfünfling** ist ein Muster
+\[
+(p,\,p+2,\,p+6,\,p+8,\,p+12)
+\]
+mit allen fünf Werten prim ($p>3$); der Übergang vom **Primzahlvierling**
+$(p,p+2,p+6,p+8)$ zum Fünfling ist die Ergänzung um $p+12$ (vgl. `Niedrigstes Primzahlmuster.tex`,
+`Strukturtheorie.tex`). In der EABC-Lesart ist dies eine **orientierte Erweiterung** einer
+blockübergreifenden Vierlings-Doppelstelle — kein zufälliges fünftes Primglied.
+
+**Forschungsvision (Fünfersprünge $\neq$ bloße Numerik).** In der Kepler-/Tetraederfüllung
+(§17.5–§17.6, §18) sind Fünfersprünge **keine** willkürlichen Abstände auf der Peano-Achse,
+sondern **Kollapsmarker**: Punkte, an denen die innere Füllgeometrie eine neue Randbeschreibung
+erzwingt. Die Fibonacci-Skalierung (§19.3) ordnet diesen Sprüngen eine **Selbstähnlichkeitsstufe**
+zu.
+
+**Experiment (Vorläufig):** `Vier Fünf Synchronisation.py` testet, ob Vierling$\to$Fünfling-
+Erweiterungen mit Balancewechseln relativ zu Pivot-Primzahlen korrelieren (EABC-Grobklassen
+$EA$ vs. $BC$, $\Delta$- und $\Sigma$-Sprünge).
+
+**Label:** Definition für Fünfling/Vierling als **etablierte lokale Primgeometrie**;
+**Fünfersprünge** als **Projektbegriff** — die vollständige Abbildung auf die
+8D-Tetraederfüllung ist **noch zu präzisieren**.
+
+### 19.3 Fibonacci-Skalierung und Kollapskette (Conjecture / Heuristik)
+
+**Definition (Fibonacci).** Die Fibonacci-Folge $(F_k)_{k\ge 1}$ erfüllt
+\[
+F_{k+1}=F_k+F_{k-1},\qquad F_1=F_2=1,
+\]
+und das Verhältnis konvergiert gegen den goldenen Schnitt
+\[
+\frac{F_{k+1}}{F_k}\longrightarrow \varphi=\frac{1+\sqrt{5}}{2}.
+\]
+
+**Heuristik (Fibonacci als Skalenleiter).** In der EABC-Füllungsvision skalieren aufeinanderfolgende
+Kollapsstufen nicht linear auf der Peano-Achse, sondern nach **Fibonacci-Verhältnissen** —
+Selbstähnlichkeit zwischen lokaler Tetraederzelle und größerer Packungsschale (vgl. Fibonacci-
+Defekte in `Tri - Okto.tex`).
+
+**Conjecture (EABC-Kollapskette).** Die Kette
+\[
+\text{EABC-Füllung}
+\;\to\;
+\text{Fibonacci-Skalierung}
+\;\to\;
+\text{Kollapsereignis (Fünfersprung)}
+\;\to\;
+\text{neue Randbeschreibung}
+\]
+beschreibt, wie innere tetraedrische Füllung auf der **Peano-Achse** als diskrete Sprünge
+sichtbar wird — parallel zur fünfgliedrigen Projektionskette in §10 (Bernoulli $\to$ PrimeSig
+$\to$ $V_n$ $\to$ Spektrum), aber geometrisch auf Kepler-/Defektdynamik bezogen.
+
+**Label: Conjecture / Heuristik** — Forschungsbild; Fibonacci-Konvergenz ist **Theorem**,
+die EABC-Kopplung **offen**.
+
+### 19.4 Holographische Analogie: Rand kodiert Bulk (Heuristik, keine Identität)
+
+> **Heuristik (holographische Analogie, nicht Identität).** Wie bei holographischen Dualitäten
+> in der Physik (Susskind; Maldacena AdS/CFT): die **innere Entwicklung** eines höherdimensionalen
+> Füllraums lässt sich — so die Forschungsvision — durch **Randdaten** kodieren. In der EABC-Lesart
+> trägt der Rand die chirale Orientierung $(E,A,B,C)$ mod $12$; das Bulk trägt die volle
+> tetraedrische/oktonionische Füllgeometrie (§17.4, §17.5).
+
+**Wichtig:** Dies ist eine **Analogie**, keine Behauptung „EABC ist AdS/CFT". AdS/CFT ist eine
+physikalische Dualität zwischen Gravitation und Feldtheorie; die EABC-Holographiehypothese ist
+ein **arithmetisch-geometrisches Forschungsbild** mit ähnlicher Rand–Bulk-Struktur.
+
+**Label: Heuristik** — explizit von physikalischer Dualität und arithmetischem Beweis getrennt.
+
+### 19.5 EABC-Holographie-Tabelle (Analogie)
+
+| Rolle | EABC-Lesart | Physikalische Analogie (nur Leitbild) |
+|-------|-------------|---------------------------------------|
+| **Bulk** | 8D-Tetraederfüllung / Oktanionen-Hurwitz-Kette (§17.4) | höherdimensionaler AdS-Bulk |
+| **Boundary** | EABC-Randdaten $(E,A,B,C)$ mod $12$, $Q_4(N)$, $V_n$ | CFT auf dem Rand |
+| **Spectrum** | Primstruktur, Zeta-Nullstellen, Bernoulli-Signaturen (§2, §8) | Spektrum der Randtheorie |
+
+**Querverweise:** §17.4 (Oktanionen, Hurwitz-Theorem), §18.5 (Modulo $12$ als erste Projektion),
+§2.7 (Bernoulli-Kette als Übersetzer von trivialer Achse zu EABC-Zustandsraum).
+
+**Label: Heuristik / Conjecture** — Tabelle als strukturierende Analogie, nicht als Theorem.
+
+### 19.6 Boxed: EABC-Holographiehypothese (Conjecture)
+
+$$\boxed{
+\begin{aligned}
+&\textbf{EABC-Holographiehypothese.}\\[4pt]
+&\text{Die Primstruktur ist die eindimensionale Projektion einer höherdimensionalen}\\
+&\text{EABC-Tetraederfüllung (Bulk $\to$ Peano-Achse).}\\[4pt]
+&\text{Fünfersprünge sind Fibonacci-skalierte Kollapsmarker dieser Füllung}\\
+&\text{(Vierling $\to$ Fünfling als lokale Vorlage; vollständige Theorie offen).}\\[4pt]
+&\text{EABC-Randdaten } (E,A,B,C) \bmod 12 \text{ können — so die Conjecture —}\\
+&\text{die innere arithmetische Füllungsdynamik rekonstruieren.}
+\end{aligned}
+}$$
+
+**Label: Conjecture** — zentrale Forschungshypothese dieses Abschnitts; **nicht** etablierte
+Physik oder Zahlentheorie; **nicht** die Behauptung EABC $=$ AdS/CFT.
+
+### 19.7 Kompakte Projektionskette (boxed)
+
+$$\boxed{
+\text{Peano-Achse}
+\;\leftarrow\;
+\text{EABC-Randdaten}
+\;\leftarrow\;
+\text{8D-Tetraederfüllung}
+}$$
+
+Lesart (rechts nach links gelesen): die **8D-Tetraederfüllung** (Hurwitz-Kette bis $\mathbb{O}$,
+§17.4; Kepler-Füllmechanismus, §17.5) projiziert auf **EABC-Randdaten** mod $12$ (§1, §7, §18);
+diese projizieren weiter auf die sichtbare **Peano-Achse** $S(n)=n+1$ (§17.2).
+
+Verknüpfung mit der Bernoulli-Kette (§2.7):
+\[
+\text{triviale Nullstellen} \to \text{Bernoulli} \to \text{EABC-Konfigurationsraum}
+\to \text{Spektrum} \to \text{Primzahl-Bias}.
+\]
+Die Holographiehypothese **ergänzt** diese analytische Kette um die geometrische Rand–Bulk-Lesart.
+
+**Label: Conjecture / Forschungsvision** — kompakte Zusammenfassung, kein Beweis.
+
+### 19.8 Epistemische Zusammenfassung
+
+| Aussage | Label |
+|---------|-------|
+| Holographisches Prinzip (Susskind) | **Heuristik** (Physik-Hintergrund) |
+| AdS/CFT (Maldacena 1997) | **Heuristik** (Analogievorlage, keine Identität) |
+| Dichter Primzahlfünfling, Vierling$\to$Fünfling | **Theorem / Definition** (lokale Primgeometrie) |
+| Fünfersprünge als Kollapsmarker | **Definition / Forschungsvision** (Projektbegriff, teils offen) |
+| Fibonacci $F_{k+1}/F_k\to\varphi$ | **Theorem** |
+| Fibonacci-Skalierung der Kollapskette | **Conjecture / Heuristik** |
+| Bulk = 8D-Füllung, Boundary = EABC mod $12$ | **Heuristik / Conjecture** |
+| EABC-Holographiehypothese (boxed) | **Conjecture** |
+| Peano-Achse $\leftarrow$ Randdaten $\leftarrow$ 8D-Füllung | **Conjecture / Forschungsvision** |
+
+Dieser Abschnitt **ersetzt** weder §17 (Forschungsvision) noch §18 (Geometrie-Hypothese) noch
+§2 (Bernoulli-/Zustandsraum); er **ergänzt** sie um ein holographisches Leitbild. Kein Collatz-
+Beweis, kein Beweis der Riemann-Hypothese, **keine** Behauptung physikalischer Dualität für EABC.
 
 ---
 
