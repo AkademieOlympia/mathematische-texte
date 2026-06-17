@@ -7,6 +7,9 @@ $\forall n$ ungerade $\exists K: U^K(n)=1$).
 **Epistemische Warnung:** Dieses Dokument ist ein **Forschungsplan**, kein Collatz-Beweis.
 Die Collatz-Vermutung bleibt offen.
 
+**Lücke L (Kartierung):** Exakte `Prop`-Formulierung, Lean-Grenzen und gerankte Zwischenlemma →
+`collatz_luecke_L_kartierung.md` (Branch `collatz/luecke-L-kartierung`).
+
 **Methodik:** Lean als Wahrheitsfilter im Tao-Stil (IEANTN/PNT+-Parallele, ICERM Mai 2026) —
 siehe `collatz_formalisierung_tao_stil.md` (explizite Zeugenmengen, living spreadsheet,
 Sicherheitsmargen, Negativtests, PR-Kultur statt impliziter Heuristikverschmelzung).
@@ -378,6 +381,7 @@ Collatz $\Leftrightarrow$ (keine Divergenz) $\land$ (kein nichttrivialer Zyklus)
 
 ## Referenzen
 
+- `collatz_luecke_L_kartierung.md` — **L** als Lean-`Prop`, bewiesen vs. offen, blockierende Lemma
 - `collatz_equivalenz_e_infty.tex` — Lemma E, $E_\infty$ vs. $E_{\mathrm{diag}}$, Realisierbarkeits-Lemma
 - `CollatzEabc.Open` / `ExceptionSetInfinity` — Lean-Äquivalenz Collatz $\Leftrightarrow$ $E_\infty=\emptyset$
 - `collatz_offene_punkte.md` — Synthese offener Punkte, Negativresultate
