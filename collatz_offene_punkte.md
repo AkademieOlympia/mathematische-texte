@@ -54,7 +54,7 @@ Attraktor, Geometrie, Präzession sind **zurückgestellt**.
 | — | $L_{\mathrm{arith}}\subsetneq L$ (PR #39) | **abgeschlossen** |
 | — | BE κ-abhängig (PR #40) | **abgeschlossen** |
 | — | Attraktor / Uniformität | zurückgestellt |
-| — | Geometrie / Präzession | epistemisch abgegrenzt |
+| — | Geometrie / Präzession | epistemisch abgegrenzt; Morley-Sensorik → `collatz_morley_metrik_erweiterung.md` |
 
 Methodischer Rahmen: `collatz_formalisierung_tao_stil.md` (*Methodik 2*).
 
