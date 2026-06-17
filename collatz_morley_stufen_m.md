@@ -118,29 +118,34 @@ M1-Ergebnis (PR #44): Szenario **D** — log-log-Steigung $\approx 3$ für alle 
 
 ---
 
-## M2 — Krümmungs-Signatur (abgeschlossen, PR #45)
+## M2 — Krümmungs-Signatur (erweitert, PR #46)
 
-M2 testet $F_M(\varepsilon, K)$ **nur** für $K \in \{0, +1, -1\}$. Kontroll- und Testflächen mit bekannter $K_G$, **dieselbe $\varepsilon$-Familie** $\{0{,}05, 0{,}08, 0{,}12, 0{,}18, 0{,}25, 0{,}35\}$:
+M2 testet $F_M(\varepsilon, K)$ und den **signierten** Morley-Fehler $G_M(\varepsilon, K)$ für $K \in \{0, +1, -1\}$. Kontroll- und Testflächen mit bekannter $K_G$, **dieselbe $\varepsilon$-Familie** $\{0{,}05, 0{,}08, 0{,}12, 0{,}18, 0{,}25, 0{,}35\}$:
 
-| Raum | $K$ | Erwartung | $F_M$ (Median, `local_chart`) |
-|------|-----|-----------|-------------------------------|
-| Ebene $\mathbb{R}^2$ | $0$ | $F_M \approx 0$ | $6{,}2\times 10^{-31}$ |
-| Sphäre $S^2$ | $+1$ | $F_M > 0$ | $4{,}1\times 10^{-7}$ |
-| Hyperbolische Ebene $H^2$ | $-1$ | offen: gleich/anders als Sphäre | $4{,}1\times 10^{-7}$ ($S^2/H^2 \approx 1{,}001$) |
+**Reviewer-Punkt (F_M-Limitierung):** $F_M = \sum_i (\theta_i^M - \pi/3)^2$ ist **nichtnegativ** — ein reiner Betragssensor. Daher kann $F_M(K{=}{+}1) = F_M(K{=}{-}1)$ bei unterschiedlicher Geometrie gelten; $F_M$ misst Krümmungs**stärke**, nicht Vorzeichen.
+
+**Ergänzung:** Signierter Morley-Fehler
+$$G_M(\Delta) = \sum_i (\theta_i^M - \pi/3).$$
+Klassische DG: sphärische Dreiecke haben Winkelsumme $> \pi$, hyperbolische $< \pi$. Ein guter Morley-Sensor sollte diese Differenz detektieren.
+
+| Raum | $F_M$ | $G_M$ |
+|------|-------|-------|
+| Ebene $\mathbb{R}^2$ | $\approx 0$ | $\approx 0$ |
+| Sphäre $S^2$ | $> 0$ | $+1{,}04\times 10^{-3}$ |
+| Hyperbolisch $H^2$ | $> 0$ | $-1{,}04\times 10^{-3}$ |
 
 **Kanoniche Variante:** `local_chart` (nach M1-Evidenz). Quelle: `collatz_morley_m2_sensor.json`.
 
 > **Boxed (Leitfrage M2):**  
 > *Misst $T_M^{(g)}$ nur Krümmungsstärke oder auch Krümmungsvorzeichen?*
-> - **Stärke allein:** $F_M \sim c\,|K|^\alpha A^\beta$
-> - **Vorzeichen-Sensor:** $F_M(K{>}0) \neq F_M(K{<}0)$ — stärkere Variante
-> - **Befund (Juni 2026):** **Welt 1** (Stärke), Vorzeichen noch nicht getrennt — $S^2 \approx H^2$ bei gleichem $|K|$.
+> - **M2a (Stärke):** $F_M \sim c\,|K|^\alpha A^\beta$ — $F_M$ ist nichtnegativ, trennt $S^2$ und $H^2$ **nicht** ($S^2/H^2 \approx 1{,}001$).
+> - **M2b (Vorzeichen):** $G_M(K{>}0) \neq G_M(K{<}0)$ — **entgegengesetzte Vorzeichen** auf $S^2$ vs. $H^2$ (Median-Ratio $\approx -1$).
+> - **Befund (Juni 2026):** $F_M$ allein → Welt 1 (Stärke); **$G_M$ trennt Vorzeichen** — kombinierter Sensor $(F_M, G_M)$ empfohlen.
 
-Empirisch: fit $F_M = c\,|K_G|^\alpha A^\beta + o(A^\beta)$ — **Exponenten aus Daten**, nicht vorausgesetzt.
+> **Boxed (M2-Sensoren):**  
+> *M2 studiert beide Größen: $F_M$ (Betrag) und signiertes $G_M$ (Richtung). Kein Theorem — nur numerische Evidenz.*
 
-### M2a/b/c — Geometrietabelle (Pflicht vor M3)
-
-Median über die $\varepsilon$-Familie, Variante `local_chart`, Stand Juni 2026:
+### M2a — Stärke $F_M$
 
 | Geometrie | $F_M$ | $F_M/A$ | $F_M/A^2$ |
 |-----------|-------|---------|-----------|
@@ -148,11 +153,19 @@ Median über die $\varepsilon$-Familie, Variante `local_chart`, Stand Juni 2026:
 | Sphäre $K=+1$ | $4{,}1\times 10^{-7}$ | $1{,}2\times 10^{-5}$ | $3{,}8\times 10^{-4}$ |
 | Hyperbolisch $K=-1$ | $4{,}1\times 10^{-7}$ | $1{,}2\times 10^{-5}$ | $3{,}9\times 10^{-4}$ |
 
-**Lesart M2a:** $F_M \approx 0$ auf der Ebene (Kontrolle); $F_M > 0$ auf $S^2$ und $H^2$.  
-**Lesart M2b:** $F_M(S^2) \approx F_M(H^2)$ bei gleichem $\varepsilon$ (Median-Ratio $S^2/H^2 \approx 1{,}001$) → **Welt 1** (Abhängigkeit von $|K_G|$, nicht Vorzeichen); **Welt 2 nicht gestützt**.  
-**Lesart M2c:** $F_M/A^2$ auf gekrümmten Flächen $\sim 10^{-4}$, auf der Ebene $\sim 10^{-27}$ — konsistent mit $F_M \propto A^2$ in dieser Bandbreite.
+**Lesart:** $F_M \approx 0$ auf der Ebene; $F_M > 0$ auf $S^2$ und $H^2$; $F_M(S^2) \approx F_M(H^2)$ → Abhängigkeit von $|K_G|$, nicht Vorzeichen.
 
-### M2b — Exponentenfit (nach ausgefüllter Tabelle)
+### M2b — Vorzeichen $G_M$
+
+| Geometrie | $G_M$ (Median) | Vorzeichen |
+|-----------|----------------|------------|
+| Ebene $K=0$ | $2{,}2\times 10^{-16}$ | $\approx 0$ |
+| Sphäre $K=+1$ | $+1{,}04\times 10^{-3}$ | positiv |
+| Hyperbolisch $K=-1$ | $-1{,}04\times 10^{-3}$ | negativ |
+
+**Lesart:** $G_M \approx 0$ auf $\mathbb{R}^2$ (Morley-Satz); auf gekrümmten Flächen **stabile Vorzeichentrennung** $S^2 > 0$, $H^2 < 0$ bei jedem $\varepsilon$ der Familie. $|G_M(S^2)| \approx |G_M(H^2)|$ — Betrag analog zu $F_M$, Vorzeichen orthogonal.
+
+### M2c — Exponentenfit $F_M$ (nach ausgefüllter Tabelle)
 
 $$F_M \stackrel{?}{=} c\,|K_G|^\alpha A^\beta \qquad (\alpha,\beta \text{ aus Daten}).$$
 
@@ -160,16 +173,16 @@ Erste Anpassung (nur $K_G \neq 0$): $c \approx 3{,}9\times 10^{-4}$, $\alpha \ap
 
 **Artefakte:** `collatz_morley_tm_numerik.py m2`, `collatz_morley_m2_sensor.json`, `tests/test_morley_m2_sensor.py`.
 
-**Epistemisches Label:** **Experiment**.
+**Epistemisches Label:** **Experiment** — numerische Evidenz, kein Theorem.
 
 > **Boxed (M2-Gate):**  
-> *M2a/b/c-Tabelle und Vorzeichenstruktur dokumentiert (Juni 2026). M3 (Morley-Sensor) ist der nächste Schritt — Conjecture-Ebene.*
+> *M2a/b/c-Tabelle, $F_M$- und $G_M$-Vorzeichenstruktur dokumentiert (Juni 2026). M3 (Morley-Sensor) ist der nächste Schritt — Conjecture-Ebene.*
 
 ---
 
-## Ikosaeder — natürliche Testumgebung
+## Ikosaeder — natürliche Testumgebung (4. Stufe, geplant)
 
-Ein regulärer Ikosaeder hat **20 dreieckige Flächen** — eine diskrete Triangulation mit bekannter Kombinatorik. `eabc_icosahedron_test.py` konstruiert Ikosaeder-Ecken, Kanten und Dreiecksflächen auf der Einheitskugel und koppelt EABC-Labels an mod-12-Restklassen. Das liefert eine **Brücke** von diskreter Triangulation zu $T_M^{(g)}$ auf $S^2$: jedes Ikosaeder-Dreieck ist ein Kandidat für $F_M(\Delta)$ und Morley-Fluss $\Delta_{n+1} = T_M(\Delta_n)$. Noch **nicht** durchgeführt: systematischer M2-Lauf auf allen 20 Flächen (nächster Schritt nach M2b-Verfeinerung).
+Nach Ebene / $S^2$ / $H^2$ ist der **reguläre Ikosaeder** die natürliche **4. Teststufe**: diskretes Polyeder mit 20 dreieckigen Flächen, bekannter Kombinatorik und Ikosaeder–Dodekaeder-Dualität. `eabc_icosahedron_test.py` konstruiert Ikosaeder-Ecken, Kanten und Dreiecksflächen auf der Einheitskugel und koppelt EABC-Labels an mod-12-Restklassen. Das liefert eine **Brücke** von diskreter Triangulation zu $T_M^{(g)}$ auf $S^2$: jedes Ikosaeder-Dreieck ist ein Kandidat für $F_M(\Delta)$, $G_M(\Delta)$ und Morley-Fluss $\Delta_{n+1} = T_M(\Delta_n)$. Noch **nicht** durchgeführt: systematischer M2-Lauf auf allen 20 Flächen.
 
 ---
 
@@ -201,7 +214,7 @@ Sekundär: $F_M \propto K_G^2 A^2$ als Alternativ-Conjecture — **M2 deutet ehe
 ## Nächste Schritte (kurz)
 
 1. ~~M1~~ — abgeschlossen (PR #44).
-2. ~~M2: Krümmungs-Signatur~~ — abgeschlossen (PR #45, `b2ec630`).
+2. ~~M2: Krümmungs-Signatur ($F_M$ + $G_M$)~~ — erweitert (PR #46).
 3. **M3:** Morley-Sensor — $F_M$-Skalierung als Conjecture-Test (ausstehend).
-4. Optional: M2-Verfeinerung ($\alpha,\beta$ breitere $\varepsilon$-Bandbreite; Ikosaeder-20-Flächen-Lauf).
+4. Optional: Ikosaeder-20-Flächen-Lauf (4. Stufe nach $R^2/S^2/H^2$).
 5. Optional: Lean-Definitionen (`MorleyOperator`) — ohne Collatz-`sorry`.

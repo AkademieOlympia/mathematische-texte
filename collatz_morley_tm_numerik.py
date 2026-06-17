@@ -166,12 +166,31 @@ def morley_vertices_euclidean(vertices: Sequence[Vec2]) -> tuple[Vec2, Vec2, Vec
     return p_ab, p_bc, p_ca
 
 
+def _morley_target_angle() -> float:
+    return math.pi / 3.0
+
+
+def _morley_fm_from_angles(angles: Sequence[float]) -> float:
+    target = _morley_target_angle()
+    return sum((ang - target) ** 2 for ang in angles)
+
+
+def _morley_gm_from_angles(angles: Sequence[float]) -> float:
+    """G_M(Δ) = Σ (θ_i^M - π/3) — signierter Morley-Fehler."""
+    target = _morley_target_angle()
+    return sum(ang - target for ang in angles)
+
+
 def morley_form_fm(vertices: Sequence[Array]) -> float:
     """F_M(Δ) = Σ (θ_i^M - π/3)^2 für Morley-Dreieck (euklidisch)."""
     mor = morley_vertices_euclidean(vertices)
-    angles = _triangle_angles(mor)
-    target = math.pi / 3.0
-    return sum((ang - target) ** 2 for ang in angles)
+    return _morley_fm_from_angles(_triangle_angles(mor))
+
+
+def morley_form_gm(vertices: Sequence[Array]) -> float:
+    """G_M(Δ) = Σ (θ_i^M - π/3) für Morley-Dreieck (euklidisch)."""
+    mor = morley_vertices_euclidean(vertices)
+    return _morley_gm_from_angles(_triangle_angles(mor))
 
 
 # ---------------------------------------------------------------------------
@@ -383,11 +402,19 @@ def morley_vertices_sphere(vertices: Sequence[Vec3], variant: str) -> tuple[Vec3
     return MORLEY_VARIANTS[variant](vertices)
 
 
-def morley_form_fm_sphere(vertices: Sequence[Vec3], variant: str = "geodesic_angles") -> float:
+def _morley_angles_sphere(vertices: Sequence[Vec3], variant: str) -> tuple[float, float, float]:
     mor = morley_vertices_sphere(vertices, variant)
-    angles = tuple(_spherical_angle(mor[(i + 2) % 3], mor[i], mor[(i + 1) % 3]) for i in range(3))
-    target = math.pi / 3.0
-    return sum((ang - target) ** 2 for ang in angles)
+    return tuple(
+        _spherical_angle(mor[(i + 2) % 3], mor[i], mor[(i + 1) % 3]) for i in range(3)
+    )
+
+
+def morley_form_fm_sphere(vertices: Sequence[Vec3], variant: str = "geodesic_angles") -> float:
+    return _morley_fm_from_angles(_morley_angles_sphere(vertices, variant))
+
+
+def morley_form_gm_sphere(vertices: Sequence[Vec3], variant: str = "geodesic_angles") -> float:
+    return _morley_gm_from_angles(_morley_angles_sphere(vertices, variant))
 
 
 def _point_distance(a: Array, b: Array) -> float:
@@ -557,6 +584,7 @@ class M2SurfaceSample:
     epsilon: float
     area: float
     f_m: float
+    g_m: float
     f_m_over_a: float
 
 
@@ -577,6 +605,7 @@ class M2GeometrySummary:
     geometry: str
     kg: float
     f_m_median: float
+    g_m_median: float
     f_m_over_a_median: float
     f_m_over_a2_median: float
     n_epsilons: int
@@ -584,21 +613,30 @@ class M2GeometrySummary:
 
 @dataclass
 class M2SignTest:
-    """M2a: Vorzeichen-/Nullstruktur vor Exponentenfit."""
+    """M2a (F_M Stärke) + M2b (G_M Vorzeichen) vor Exponentenfit."""
 
     plane_fm_median: float
     sphere_fm_median: float
     hyperbolic_fm_median: float
+    plane_gm_median: float
+    sphere_gm_median: float
+    hyperbolic_gm_median: float
     plane_near_zero: bool
     sphere_positive: bool
     hyperbolic_positive: bool
+    plane_gm_near_zero: bool
     paired_epsilons: list[float]
     sphere_fm_at_eps: list[float]
     hyperbolic_fm_at_eps: list[float]
+    sphere_gm_at_eps: list[float]
+    hyperbolic_gm_at_eps: list[float]
     ratio_sphere_over_hyperbolic: list[float]
     median_ratio_sphere_over_hyperbolic: float
     curvature_sign_detected: bool
+    gm_opposite_signs: bool
+    gm_sign_detected: bool
     interpretation: str
+    gm_interpretation: str
 
 
 @dataclass
@@ -838,13 +876,19 @@ def morley_vertices_hyperbolic_local_chart(vertices: Sequence[Vec3]) -> tuple[Ve
     )
 
 
-def morley_form_fm_hyperbolic(vertices: Sequence[Vec3]) -> float:
+def _morley_angles_hyperbolic(vertices: Sequence[Vec3]) -> tuple[float, float, float]:
     mor = morley_vertices_hyperbolic_local_chart(vertices)
-    angles = tuple(
+    return tuple(
         _hyperbolic_angle(mor[(i + 2) % 3], mor[i], mor[(i + 1) % 3]) for i in range(3)
     )
-    target = math.pi / 3.0
-    return sum((ang - target) ** 2 for ang in angles)
+
+
+def morley_form_fm_hyperbolic(vertices: Sequence[Vec3]) -> float:
+    return _morley_fm_from_angles(_morley_angles_hyperbolic(vertices))
+
+
+def morley_form_gm_hyperbolic(vertices: Sequence[Vec3]) -> float:
+    return _morley_gm_from_angles(_morley_angles_hyperbolic(vertices))
 
 
 def _triangle_angles_hyperboloid(vertices: Sequence[Vec3]) -> tuple[float, float, float]:
@@ -899,6 +943,16 @@ def _m2_fm_for_surface(surface: str, tri: Sequence[Array], variant: str) -> floa
     raise ValueError(f"unbekannte Fläche: {surface}")
 
 
+def _m2_gm_for_surface(surface: str, tri: Sequence[Array], variant: str) -> float:
+    if surface == "R2":
+        return morley_form_gm(tri)
+    if surface == "S2":
+        return morley_form_gm_sphere(tri, variant=variant)
+    if surface == "H2":
+        return morley_form_gm_hyperbolic(tri)
+    raise ValueError(f"unbekannte Fläche: {surface}")
+
+
 def _m2_triangle_area(surface: str, tri: Sequence[Array]) -> float:
     if surface == "R2":
         return _triangle_area(tri)
@@ -943,6 +997,11 @@ def _median_fm(samples: Sequence[M2SurfaceSample], surface: str) -> float:
     return float(np.median(vals)) if vals else float("nan")
 
 
+def _median_gm(samples: Sequence[M2SurfaceSample], surface: str) -> float:
+    vals = [s.g_m for s in samples if s.surface == surface]
+    return float(np.median(vals)) if vals else float("nan")
+
+
 def _compute_m2_geometry_table(samples: Sequence[M2SurfaceSample]) -> list[M2GeometrySummary]:
     """M2a/b/c: F_M, F_M/A, F_M/A² — Median über ε pro Geometrie."""
     labels = (
@@ -956,6 +1015,7 @@ def _compute_m2_geometry_table(samples: Sequence[M2SurfaceSample]) -> list[M2Geo
         if not pts:
             continue
         f_m_vals = [s.f_m for s in pts]
+        g_m_vals = [s.g_m for s in pts]
         ratio_a = [s.f_m_over_a for s in pts if math.isfinite(s.f_m_over_a)]
         ratio_a2 = [
             s.f_m / (s.area * s.area)
@@ -967,6 +1027,7 @@ def _compute_m2_geometry_table(samples: Sequence[M2SurfaceSample]) -> list[M2Geo
                 geometry=geom_label,
                 kg=kg,
                 f_m_median=float(np.median(f_m_vals)),
+                g_m_median=float(np.median(g_m_vals)),
                 f_m_over_a_median=float(np.median(ratio_a)) if ratio_a else float("nan"),
                 f_m_over_a2_median=float(np.median(ratio_a2)) if ratio_a2 else float("nan"),
                 n_epsilons=len(pts),
@@ -976,19 +1037,25 @@ def _compute_m2_geometry_table(samples: Sequence[M2SurfaceSample]) -> list[M2Geo
 
 
 def _compute_m2_sign_test(samples: Sequence[M2SurfaceSample]) -> M2SignTest:
-    """M2a: F_M bei K_G=0, K_G>0, K_G<0; Vergleich S² vs H² bei gleichem ε."""
+    """M2a: F_M bei K_G=0, K_G>0, K_G<0; M2b: G_M-Vorzeichen S² vs H²."""
     plane_med = _median_fm(samples, "R2")
     sphere_med = _median_fm(samples, "S2")
     hyper_med = _median_fm(samples, "H2")
+    plane_gm_med = _median_gm(samples, "R2")
+    sphere_gm_med = _median_gm(samples, "S2")
+    hyper_gm_med = _median_gm(samples, "H2")
 
     plane_near_zero = all(s.f_m < 1e-20 for s in samples if s.surface == "R2")
     sphere_positive = all(s.f_m > 0.0 for s in samples if s.surface == "S2")
     hyperbolic_positive = all(s.f_m > 0.0 for s in samples if s.surface == "H2")
+    plane_gm_near_zero = all(abs(s.g_m) < 1e-12 for s in samples if s.surface == "R2")
 
     eps_set = sorted({s.epsilon for s in samples})
     paired_eps: list[float] = []
     sphere_at_eps: list[float] = []
     hyper_at_eps: list[float] = []
+    sphere_gm_at_eps: list[float] = []
+    hyper_gm_at_eps: list[float] = []
     ratios: list[float] = []
     for eps in eps_set:
         s_pt = next((s for s in samples if s.surface == "S2" and s.epsilon == eps), None)
@@ -998,11 +1065,24 @@ def _compute_m2_sign_test(samples: Sequence[M2SurfaceSample]) -> M2SignTest:
         paired_eps.append(float(eps))
         sphere_at_eps.append(s_pt.f_m)
         hyper_at_eps.append(h_pt.f_m)
+        sphere_gm_at_eps.append(s_pt.g_m)
+        hyper_gm_at_eps.append(h_pt.g_m)
         ratios.append(s_pt.f_m / h_pt.f_m)
 
     med_ratio = float(np.median(ratios)) if ratios else float("nan")
-    # Vorzeichen erkannt, wenn S²/H² systematisch von 1 abweicht (>5 %)
+    # F_M: Vorzeichen erkannt, wenn S²/H² systematisch von 1 abweicht (>5 %)
     sign_detected = math.isfinite(med_ratio) and (med_ratio < 0.95 or med_ratio > 1.05)
+
+    # G_M: entgegengesetzte Vorzeichen oder systematische Trennung
+    gm_opposite = (
+        math.isfinite(sphere_gm_med)
+        and math.isfinite(hyper_gm_med)
+        and sphere_gm_med * hyper_gm_med < 0.0
+    )
+    gm_paired_opposite = bool(sphere_gm_at_eps and hyper_gm_at_eps) and all(
+        sg * hg < 0.0 for sg, hg in zip(sphere_gm_at_eps, hyper_gm_at_eps, strict=True)
+    )
+    gm_sign_detected = gm_opposite or gm_paired_opposite
 
     if sign_detected:
         interpretation = (
@@ -1015,20 +1095,45 @@ def _compute_m2_sign_test(samples: Sequence[M2SurfaceSample]) -> M2SignTest:
     else:
         interpretation = "Vorzeichenstruktur unklar — weitere Daten nötig."
 
+    if gm_sign_detected:
+        gm_interpretation = (
+            "G_M trennt Krümmungsvorzeichen (S² und H² haben entgegengesetztes Vorzeichen)."
+        )
+    elif plane_gm_near_zero and math.isfinite(sphere_gm_med) and math.isfinite(hyper_gm_med):
+        if abs(sphere_gm_med - hyper_gm_med) < 1e-6 * max(abs(sphere_gm_med), abs(hyper_gm_med), 1e-18):
+            gm_interpretation = (
+                "G_M≈0 auf R²; G_M(S²)≈G_M(H²) → auch signierter Sensor trennt Vorzeichen nicht."
+            )
+        else:
+            gm_interpretation = (
+                "G_M unterscheidet Mediane, aber ohne stabiles Vorzeichenmuster S² vs H²."
+            )
+    else:
+        gm_interpretation = "G_M-Vorzeichenstruktur unklar — weitere Daten nötig."
+
     return M2SignTest(
         plane_fm_median=plane_med,
         sphere_fm_median=sphere_med,
         hyperbolic_fm_median=hyper_med,
+        plane_gm_median=plane_gm_med,
+        sphere_gm_median=sphere_gm_med,
+        hyperbolic_gm_median=hyper_gm_med,
         plane_near_zero=plane_near_zero,
         sphere_positive=sphere_positive,
         hyperbolic_positive=hyperbolic_positive,
+        plane_gm_near_zero=plane_gm_near_zero,
         paired_epsilons=paired_eps,
         sphere_fm_at_eps=sphere_at_eps,
         hyperbolic_fm_at_eps=hyper_at_eps,
+        sphere_gm_at_eps=sphere_gm_at_eps,
+        hyperbolic_gm_at_eps=hyper_gm_at_eps,
         ratio_sphere_over_hyperbolic=ratios,
         median_ratio_sphere_over_hyperbolic=med_ratio,
         curvature_sign_detected=sign_detected,
+        gm_opposite_signs=gm_opposite,
+        gm_sign_detected=gm_sign_detected,
         interpretation=interpretation,
+        gm_interpretation=gm_interpretation,
     )
 
 
@@ -1065,6 +1170,7 @@ def run_m2_sensor(
                 tri = hyperboloid_patch_triangle(side_angle=float(eps), orientation=orientation)
             area = _m2_triangle_area(surf, tri)
             fm = _m2_fm_for_surface(surf, tri, variant=variant)
+            gm = _m2_gm_for_surface(surf, tri, variant=variant)
             ratio = fm / area if area > 1e-16 else float("nan")
             samples.append(
                 M2SurfaceSample(
@@ -1073,6 +1179,7 @@ def run_m2_sensor(
                     epsilon=float(eps),
                     area=area,
                     f_m=fm,
+                    g_m=gm,
                     f_m_over_a=ratio,
                 )
             )
@@ -1103,10 +1210,11 @@ def run_m2_sensor(
     )
 
     notes = [
-        "M2a (Priorität): Vorzeichenstruktur F_M vs K_G — vor Exponentenfit.",
-        "M2b: F_M = c |K_G|^α A^β — α, β aus Daten, nicht vorausgesetzt.",
+        "M2a: F_M — Krümmungsstärke (|K_G|-Sensor, nichtnegativ).",
+        "M2b: G_M = Σ(θ_i^M - π/3) — signierter Morley-Fehler, Vorzeichen-Sensor.",
+        "M2c: F_M = c |K_G|^α A^β — α, β aus Daten, nicht vorausgesetzt.",
         "Kanoniche Variante: local_chart (M1: O(ε³)-Evidenz für 2.-Ordnung-Geometrie).",
-        "K_G=0 nur Kontrolle (F_M≈0); Exponentenfit nur K_G≠0.",
+        "K_G=0 nur Kontrolle (F_M≈0, G_M≈0); Exponentenfit nur K_G≠0.",
         "M3 erst nach geklärter M2-Vorzeichenstruktur.",
     ]
 
@@ -1194,19 +1302,20 @@ def _print_m2_report(report: M2Report) -> None:
     print(f"Euklid max F_M (K_G=0): {report.euclidean_fm_max:.3e}")
 
     if report.geometry_table:
-        print("\nM2a/b/c — Geometrietabelle (Median über ε-Familie):")
-        print(f"  {'Geometrie':<22} {'F_M':>12} {'F_M/A':>12} {'F_M/A²':>12}")
+        print("\nM2a/b — Geometrietabelle (Median über ε-Familie):")
+        print(f"  {'Geometrie':<22} {'F_M':>12} {'G_M':>12} {'F_M/A':>12} {'F_M/A²':>12}")
         for row in report.geometry_table:
             print(
                 f"  {row.geometry:<22} "
                 f"{row.f_m_median:12.3e} "
+                f"{row.g_m_median:12.3e} "
                 f"{row.f_m_over_a_median:12.3e} "
                 f"{row.f_m_over_a2_median:12.3e}"
             )
 
     if report.sign_test is not None:
         st = report.sign_test
-        print("\nM2a — Vorzeichenstruktur (Priorität):")
+        print("\nM2a — F_M Stärke (Priorität):")
         print(f"  R²  (K_G=0):  median F_M = {st.plane_fm_median:.3e}  near_zero={st.plane_near_zero}")
         print(f"  S²  (K_G>0):  median F_M = {st.sphere_fm_median:.3e}  positive={st.sphere_positive}")
         print(f"  H²  (K_G<0):  median F_M = {st.hyperbolic_fm_median:.3e}  positive={st.hyperbolic_positive}")
@@ -1225,6 +1334,24 @@ def _print_m2_report(report: M2Report) -> None:
             print(f"    ε={eps:.3f}  F_M(S²)={fs:.5e}  F_M(H²)={fh:.5e}  ratio={r:.4f}")
         print(f"  → {st.interpretation}")
 
+        print("\nM2b — G_M Vorzeichen:")
+        print(f"  R²  (K_G=0):  median G_M = {st.plane_gm_median:.3e}  near_zero={st.plane_gm_near_zero}")
+        print(f"  S²  (K_G>0):  median G_M = {st.sphere_gm_median:.3e}")
+        print(f"  H²  (K_G<0):  median G_M = {st.hyperbolic_gm_median:.3e}")
+        print(
+            f"  G_M Vorzeichen: opposite_medians={st.gm_opposite_signs}  "
+            f"sign_detected={st.gm_sign_detected}"
+        )
+        print("  Paarvergleich (ε, G_M(S²), G_M(H²)):")
+        for eps, gs, gh in zip(
+            st.paired_epsilons,
+            st.sphere_gm_at_eps,
+            st.hyperbolic_gm_at_eps,
+            strict=True,
+        ):
+            print(f"    ε={eps:.3f}  G_M(S²)={gs:.5e}  G_M(H²)={gh:.5e}")
+        print(f"  → {st.gm_interpretation}")
+
     print("\nM2a — F_M/A nach Fläche:")
     for surf in ("R2", "S2", "H2"):
         pts = [s for s in report.samples if s.surface == surf]
@@ -1238,7 +1365,7 @@ def _print_m2_report(report: M2Report) -> None:
     if report.exponent_fit is not None:
         ef = report.exponent_fit
         print(
-            f"\nM2b — F_M ≈ c |K_G|^α A^β:  c≈{ef.c:.5f}, α≈{ef.alpha:.3f}, β≈{ef.beta:.3f}, "
+            f"\nM2c — F_M ≈ c |K_G|^α A^β:  c≈{ef.c:.5f}, α≈{ef.alpha:.3f}, β≈{ef.beta:.3f}, "
             f"R²≈{ef.r2:.4f}  (n={ef.n_samples})"
         )
     if report.naive_c is not None and math.isfinite(report.naive_c):

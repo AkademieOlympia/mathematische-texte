@@ -12,7 +12,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from collatz_morley_tm_numerik import (
     hyperboloid_patch_triangle,
+    morley_form_fm,
     morley_form_fm_hyperbolic,
+    morley_form_gm,
+    morley_form_gm_hyperbolic,
     run_m2_sensor,
 )
 
@@ -93,12 +96,50 @@ def test_m2_geometry_table_present():
     assert len(report.geometry_table) == 3
     for row in report.geometry_table:
         assert math.isfinite(row.f_m_median)
+        assert math.isfinite(row.g_m_median)
         assert math.isfinite(row.f_m_over_a_median)
         assert math.isfinite(row.f_m_over_a2_median)
     plane = next(r for r in report.geometry_table if r.kg == 0.0)
     sphere = next(r for r in report.geometry_table if r.kg == 1.0)
     assert plane.f_m_median < 1e-20
     assert sphere.f_m_median > 0.0
+
+
+def test_m2_euclidean_gm_near_zero():
+    """M2b: G_M≈0 auf R² (Morley-Satz — gleichseitiger Kern)."""
+    report = run_m2_sensor(epsilons=[0.08, 0.16])
+    st = report.sign_test
+    assert st is not None
+    assert st.plane_gm_near_zero is True
+    assert abs(st.plane_gm_median) < 1e-12
+
+
+def test_m2_gm_definition_euclidean():
+    """G_M = Σ(θ-π/3), F_M = Σ(θ-π/3)² auf R²."""
+    from collatz_morley_tm_numerik import euclidean_patch_triangle
+
+    tri = euclidean_patch_triangle(0.12)
+    assert abs(morley_form_gm(tri)) < 1e-12
+    assert morley_form_fm(tri) < 1e-20
+
+
+def test_m2_gm_hyperbolic_finite():
+    tri = hyperboloid_patch_triangle(side_angle=0.12)
+    gm = morley_form_gm_hyperbolic(tri)
+    assert math.isfinite(gm)
+
+
+def test_m2_gm_opposite_signs_sphere_hyperbolic():
+    """M2b: G_M(S²)>0, G_M(H²)<0 — Vorzeichen trennt Krümmung."""
+    report = run_m2_sensor(epsilons=[0.06, 0.10, 0.14, 0.18])
+    st = report.sign_test
+    assert st is not None
+    assert st.gm_sign_detected is True
+    assert st.sphere_gm_median > 0.0
+    assert st.hyperbolic_gm_median < 0.0
+    for gs, gh in zip(st.sphere_gm_at_eps, st.hyperbolic_gm_at_eps, strict=True):
+        assert gs > 0.0
+        assert gh < 0.0
 
 
 def test_m2_json_cli(tmp_path):
@@ -117,3 +158,7 @@ def test_m2_json_cli(tmp_path):
     assert st["plane_near_zero"] is True
     assert st["sphere_positive"] is True
     assert st["hyperbolic_positive"] is True
+    assert "plane_gm_median" in st
+    assert "sphere_gm_median" in st
+    assert "hyperbolic_gm_median" in st
+    assert "gm_sign_detected" in st
