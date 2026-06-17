@@ -7,6 +7,9 @@ $\forall n$ ungerade $\exists K: U^K(n)=1$).
 **Epistemische Warnung:** Dieses Dokument ist ein **Forschungsplan**, kein Collatz-Beweis.
 Die Collatz-Vermutung bleibt offen.
 
+**Methodik:** Lean als Wahrheitsfilter im Tao-Stil — siehe `collatz_formalisierung_tao_stil.md`
+(explizite Zeugenmengen, Negativtests, PR-Kultur statt impliziter Heuristikverschmelzung).
+
 ---
 
 ## Ziel und Erfolgskriterium
@@ -285,6 +288,7 @@ Collatz $\Leftrightarrow$ (keine Divergenz) $\land$ (kein nichttrivialer Zyklus)
 - `collatz_equivalenz_e_infty.tex` — Lemma E, $E_\infty$ vs. $E_{\mathrm{diag}}$, Realisierbarkeits-Lemma
 - `CollatzEabc.Open` / `ExceptionSetInfinity` — Lean-Äquivalenz Collatz $\Leftrightarrow$ $E_\infty=\emptyset$
 - `collatz_offene_punkte.md` — Synthese offener Punkte, Negativresultate
+- `collatz_formalisierung_tao_stil.md` — Methodik: Lean als Wahrheitsfilter (Tao-Stil)
 - `collatz_kepler_gedankenexperiment.tex` — $\kappa$, $\Phi_{\mathrm{pref}}$, Diskriminantentest
 - `collatz_schlussartikel_arxiv.tex` — Epilog, Uniformität, EABC-Struktur
 
