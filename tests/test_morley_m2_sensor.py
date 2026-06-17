@@ -103,6 +103,8 @@ def test_m2_geometry_table_present():
     sphere = next(r for r in report.geometry_table if r.kg == 1.0)
     assert plane.f_m_median < 1e-20
     assert sphere.f_m_median > 0.0
+    assert math.isfinite(plane.w_m_median)
+    assert abs(plane.w_m_median) < 1e-10
 
 
 def test_m2_euclidean_gm_near_zero():
@@ -162,3 +164,6 @@ def test_m2_json_cli(tmp_path):
     assert "sphere_gm_median" in st
     assert "hyperbolic_gm_median" in st
     assert "gm_sign_detected" in st
+    assert "plane_wm_median" in st
+    assert "wm_sign_detected" in st
+    assert st["plane_wm_near_zero"] is True
