@@ -125,6 +125,7 @@ physikalische Gültigkeit der Collatz-Arbeit oder umgekehrt.
 
 - Collatz ist **bewiesen**.
 - QED **erklärt** Collatz oder EABC.
+- Der Casimir-Effekt **beweist** Primzahl-Bias — die EABC-Lesart nutzt Casimir als **$\Delta$-Spektrum-Bild** (Konfigurationsasymmetrie), nicht als Elektrodynamik-Metapher; vgl. `collatz_eabc_bernoulli_uebersetzung.md` §2.
 - Arithmetische Verdünnung $R(k)$ ist eine physikalische Konstante.
 - Morley-Sensorik ersetzt $\kappa$-Invarianz — die Zweige bleiben **parallel** (`collatz_stufe3_kappa_invarianz.md`, κ–Morley-Asymmetrie).
 
@@ -159,7 +160,14 @@ Renormierung als Schnitt/Invarianz, Negativtests als Buchhaltung — im Sinne vo
 | `collatz_stufe3_kappa_invarianz.md` | $\kappa$, $R(k)$, $\mathcal{L}_{\mathrm{arith}}^*$ |
 | `collatz_morley_stufen_m.md` | M1 → M2 → M3 |
 | `collatz_morley_gm_beweisversuch.md` | $G_M$, $\Phi_M$, Babylon 3-4-5 |
-| `collatz_eabc_bernoulli_uebersetzung.md` | EABC-Zerlegungsprinzip, Bernoulli-Sensor $\Phi$, von Staudt--Clausen |
+| `collatz_eabc_bernoulli_uebersetzung.md` | EABC-Zerlegungsprinzip, Zustandsraum/$\Delta Q_4$, Bernoulli-Sensor $\Phi$, von Staudt--Clausen |
+
+### Casimir als $\Delta$-Spektrum (nicht QED-Metapher)
+
+Die EABC-Theorie in `collatz_eabc_bernoulli_uebersetzung.md` §2 trennt **Casimir-Konfigurationsasymmetrie**
+($\Delta E = E_{\mathrm{innen}}-E_{\mathrm{aussen}}$) von der QED-Resonanz dieses Dokuments.
+Gemeinsam ist nur das epistemische Muster: **Observable = Differenz im Zustandsraum**, nicht Einzelmodus.
+**Label: Heuristik / Querverweis** — kein physikalischer oder arithmetischer Beweis der Verbindung.
 
 ---
 

@@ -10,9 +10,11 @@ from collatz_eabc_bernoulli_sensor import (
     EabcVector,
     bernoulli_row,
     chi_eabc,
+    delta_q4,
     i_chir,
     non_eabc_primes,
     prime_sig,
+    q4_vector,
     run_sensor,
     sigma_eabc,
     staudt_denominator,
@@ -95,3 +97,15 @@ def test_run_sensor_structure(tmp_path: Path):
     out.write_text(json.dumps(report), encoding="utf-8")
     loaded = json.loads(out.read_text(encoding="utf-8"))
     assert loaded["max_n"] == 10
+
+
+def test_q4_vector_counts_primes_up_to_n():
+    """Q_4(N) zählt EABC-Klassen über alle p ≤ N."""
+    primes = _sieve_primes(50)
+    v = q4_vector(30, primes)
+    # p≤30 in EABC: 5(A),7(B),11(C),13(A),17(E),19(A),23(E),29(A)
+    assert v.as_tuple() == (1, 3, 2, 2)
+    d = delta_q4(v)
+    assert d["sigma"] == sigma_eabc(v)
+    assert d["chi"] == chi_eabc(v)
+    assert d["a_minus_c"] == v.a - v.c

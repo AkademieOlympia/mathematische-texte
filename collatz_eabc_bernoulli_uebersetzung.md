@@ -8,7 +8,8 @@
 
 **Querverweise:** `Staudt.tex`, `collatz_kepler_gedankenexperiment.tex` (Bernoulli-Uhr),
 `eabc_from_lean.py`, `collatz_bernoulli_schalen.pdf`, `energiedoku_eabc_c4_kohaerenz.tex`,
-`collatz_eabc_bernoulli_sensor.py`, `CollatzEabc.BernoulliClock.lean`.
+`collatz_eabc_bernoulli_sensor.py`, `CollatzEabc.BernoulliClock.lean`,
+`collatz_qed_arithmetik_resonanz.md` (Casimir als $\Delta$-Spektrum, nicht QED-Metapher).
 
 ---
 
@@ -30,7 +31,142 @@ EABC ist damit **Symmetrie-/Orientierungsraum**, nicht bloße Primklassifikation
 
 ---
 
-## 2. Grundhypothese: glatte und EABC-Dynamik
+## 2. EABC-Zustandsraum und Casimir-Spektrum (nicht EM)
+
+Dieser Abschnitt präzisiert das EABC-Zerlegungsprinzip (§1) durch ein **Zustandsraum-Bild**:
+Observablen entstehen aus **Asymmetrien erlaubter Konfigurationen**, nicht aus einzelnen Primobjekten.
+Die Analogie bezieht sich auf **Casimir-Spektrum und Konfigurationsdichte**, **nicht** auf
+virtuelle Teilchen oder die QED-Metapher in `collatz_qed_arithmetik_resonanz.md`.
+
+### 2.1 Casimir-Kern: Observable als Differenz (Heuristik)
+
+**Heuristik (Casimir, nicht Elektrodynamik).** Im klassischen Casimir-Effekt ist die messbare Größe
+nicht die absolute Energie im Volumen, sondern die **Differenz** zwischen zwei Randbedingungen:
+\[
+\Delta E := E_{\mathrm{innen}} - E_{\mathrm{aussen}},
+\]
+wobei $E_{\mathrm{innen}}$ und $E_{\mathrm{aussen}}$ die (formalen) Energiesummen über erlaubte
+Moden unter **verschiedenen** Zustandsraum-Geometrien bezeichnen. Die Kraft folgt aus
+$\partial\Delta E/\partial d$ — die **Observable ist die Asymmetrie des Zustandsraums**, nicht ein
+einzelner Modus.
+
+**Label: Heuristik** — physikalisches Leitbild, kein arithmetischer Beweis.
+
+### 2.2 Allgemeines Zustandsraumprinzip (Conjecture / Heuristik)
+
+> **Conjecture (Zustandsraumprinzip, allgemein).** Viele arithmetische und physikalische Observablen
+> sind **Differenzen in der Dichte erlaubter Konfigurationen** eines zugrunde liegenden Zustandsraums,
+> nicht absolute Größen einzelner Elemente.
+
+| Domäne | Zustandsraum (skizzenhaft) | Observable als Differenz |
+|--------|---------------------------|--------------------------|
+| Thermodynamik | Mikrozustände $\Omega$ | $S = k\log\Omega$ (logarithmische Dichte) |
+| Pfadintegrale | Pfade mit Randbedingung | Relativgewicht gegen Referenzmaß |
+| Casimir | Modenspektrum im Kasten vs. außen | $\Delta E = E_{\mathrm{innen}}-E_{\mathrm{aussen}}$ |
+| Primzahlen | Globale Teilbarkeits-/Restklassenstruktur | Abweichungen von glatten Dichten ($\pi(x)-\mathrm{Li}(x)$, Bias) |
+
+**Label: Conjecture / Heuristik** — Forschungsprogramm, keine abgeschlossene Theorie.
+
+### 2.3 EABC-Version: $Q_4(N)$ und $\Delta Q_4(N)$ (Definition)
+
+**Definition ($Q_4(N)$).** Für $N\ge 2$ sei
+\[
+Q_4(N) := \bigl(E(N), A(N), B(N), C(N)\bigr),
+\]
+wobei $E(N),A(N),B(N),C(N)$ die Anzahlen der Primzahlen $p\le N$ in den jeweiligen
+EABC-Klassen $p\equiv 1,5,7,11\pmod{12}$ sind (Primzahlen $2,3$ und $p>12$ außerhalb der vier
+Klassen werden separat gezählt, analog §7). $Q_4(N)$ ist damit der **aggregierte EABC-Zustandsvektor**
+über alle erlaubten Primkonfigurationen bis zur Skala $N$ — nicht die Einzelprimzahl $p$.
+
+**Definition ($\Delta Q_4(N)$).** Die **beobachtbare EABC-Asymmetrie** ist die Differenzstruktur
+innerhalb $Q_4(N)$, insbesondere
+\[
+\Delta Q_4(N) := \bigl(\sigma(N), \chi(N)\bigr),
+\qquad
+\sigma(N):=(E+A)-(B+C),\quad \chi(N):=(E+B)-(A+C),
+\]
+sowie die spezifische Kongruenz-Asymmetrie $A(N)-C(N)$ (Diagonalen $A$ vs. $C$ mod $12$).
+**Fundamental ist $\Delta Q_4(N)$, nicht $Q_4(N)$ allein** — analog zu $\Delta E$ im Casimir-Fall.
+
+Implementierung: `collatz_eabc_bernoulli_sensor.py` (`q4_vector`, `delta_q4`).
+
+**Label: Definition** — Zähldefinition; physikalische Casimir-Analogie bleibt **Heuristik**.
+
+### 2.4 Casimir-Analogie über Kongruenz-Asymmetrie (Heuristik)
+
+Die EABC-Lesart **vermeidet** das Bild virtueller Teilchen. Stattdessen:
+
+| Casimir (physikalisch) | EABC (arithmetisch) | Label |
+|------------------------|---------------------|-------|
+| Modenspektrum $\{\omega_n\}$ | Primspektrum / PrimeSig-Filtration $\{P_n\}$ | Definition / Experiment |
+| Energiesumme $\sum f(\omega_n)$ | Konfigurationsdichte / Zählvektor $Q_4(N)$, $V_n$ | Definition |
+| Kraft aus $\partial\Delta E/\partial d$ | **Bias** aus $\Delta Q_4(N)$, $\sigma$, $\chi$ | Conjecture / Experiment |
+| Randbedingung „innen“ vs. „außen“ | Kongruenz-Asymmetrie $A$ vs. $C$ mod $12$ | Definition |
+
+Kette: **Spektrum $\to$ Energie $\to$ Kraft** (Casimir) entspricht heuristisch
+**Primspektrum $\to$ Konfigurationsdichte $\to$ Bias** (EABC).
+
+**Label: Heuristik** — strukturelle Analogie, kein Theorem über Primzahlen.
+
+### 2.5 Zeta-Verbindung (Conjecture)
+
+> **Conjecture (Zeta-Spektrum).** Nichttriviale Nullstellen $\rho_n=\tfrac12+\mathrm{i}t_n$ der
+> Riemannschen Zetafunktion wirken — analog zu erlaubten Casimir-Eigenmoden — als **globales
+> Spektrum**, das die Dichte arithmetischer Observablen mitprägt. Die explizite Formel
+> \[
+> \pi(x) \;\longleftrightarrow\; \{\rho_n\}
+> \]
+> zeigt: nicht einzelne Nullstellen, sondern die **gesamte spektrale Struktur** zählt.
+
+Diese Conjecture verknüpft §2 mit der **EABC-Resonanzhypothese** (§8): Bernoulli-Stufe $n$ liefert
+$V_n$ entlang trivialer Nullstellen; nichttriviale $\rho_k$ sind die postulierte spektrale Projektion.
+
+**Label: Conjecture** — klassische explizite Formel ist **Theorem**; EABC-Deutung ist **Conjecture**.
+
+### 2.6 Boxed: EABC-Zustandsraum-Hypothese
+
+$$\boxed{
+\text{Arithmetische Bias-Strukturen entstehen aus Asymmetrien des EABC-Zustandsraums.}
+}$$
+
+**Lesart:** Primzahlen sind **beobachtbare Ereignisse** (Realisierungen erlaubter Konfigurationen);
+der **Zustandsraum** (EABC-Klassen, $Q_4(N)$, PrimeSig-Filtrationen) ist **fundamental**.
+Nicht „Prim erzeugt EABC“, sondern: **EABC bestimmt, welche Primkonfigurationen möglich sind.**
+
+**Label: Conjecture** — Forschungshypothese, epistemisch ehrlich nicht als etablierte Mathematik.
+
+### 2.7 Boxed: Bernoulli-Kette (Übersetzer)
+
+$$\boxed{
+\text{triviale Nullstellen}
+\;\to\;
+\text{Bernoulli}
+\;\to\;
+\text{EABC-Konfigurationsraum}
+\;\to\;
+\text{nichttriviales Spektrum}
+\;\to\;
+\text{Primzahl-Bias}
+}$$
+
+Bernoulli-Zahlen sind **Übersetzer** von der äquidistanten Achse $s=-2,-4,-6,\ldots$ ($N_{\mathrm{glatt}}$)
+in den **asymmetrischen** EABC-Zustandsraum ($N_{\mathrm{EABC}}$); vgl. §5 (Bernoulli-Brücke) und §7 ($V_n$).
+
+**Label: Definition / Heuristik** — Bernoulli-Staudt ist **Theorem**; die Kette als Ganzes **Conjecture**.
+
+### 2.8 Philosophischer Kern (Conjecture)
+
+> **Conjecture (Forschungsprogramm).** Die gemeinsame Struktur zwischen Casimir-Physik und
+> EABC-Arithmetik ist nicht „alles ist ähnlich“, sondern: **Geometrie des Konfigurationsraums +
+> Modenselektion** erzeugt Observable als **Differenzen**. Primzahlen sind nicht die erzeugende
+> Ursache der EABC-Struktur — EABC legt fest, **welche** Primkonfigurationen zulässig sind und
+> welche Bias-Observablen $\Delta Q_4(N)$ messbar werden.
+
+**Label: Conjecture** — philosophische Präzisierung, strenger als bloße Analogie.
+
+---
+
+## 3. Grundhypothese: glatte und EABC-Dynamik
 
 > **Conjecture (Grundhypothese).** Klassische analytische Größen ($\pi(x)$, $\zeta(s)$, $\Gamma(s)$, $B_{2n}$)
 > stammen überwiegend aus $N_{\mathrm{glatt}}$; Fluktuationen, Resonanzen und Bias aus $N_{\mathrm{EABC}}$:
@@ -44,7 +180,7 @@ und von-Staudt-Clausen-Signaturen entlang dieser Zerlegung.
 
 ---
 
-## 3. Zentrale Fragestellung
+## 4. Zentrale Fragestellung
 
 Die **EABC-Resonanzhypothese der Zetafunktion** fragt, ob die Folge der
 EABC-Zustandsvektoren $V_1,V_2,\ldots$ an der äquidistanten Achse trivialer Nullstellen
@@ -54,6 +190,8 @@ als **spektrale Projektion** dieser Resonanz lesbar sind.
 | Ebene | Label in diesem Text |
 |-------|----------------------|
 | $N=(N_{\mathrm{glatt}},N_{\mathrm{EABC}})$, Zerlegungsprinzip | **Definition** |
+| Casimir-$\Delta E$, Zustandsraumprinzip | **Heuristik / Conjecture** |
+| $Q_4(N)$, $\Delta Q_4(N)$, EABC-Zustandsraum-Hypothese | **Definition / Conjecture** |
 | Arithmetik = glatte + EABC-Dynamik | **Conjecture** |
 | EABC mod $12$, $V_n=(E_n,A_n,B_n,C_n)$ | **Definition** |
 | von Staudt--Clausen, $\mathrm{PrimeSig}(B_{2n})$ | **Definition** (klassisches Theorem) |
@@ -65,7 +203,7 @@ als **spektrale Projektion** dieser Resonanz lesbar sind.
 
 ---
 
-## 4. Äquidistante Basis und Bernoulli-Brücke
+## 5. Äquidistante Basis und Bernoulli-Brücke
 
 **Definition.** Die trivialen Nullstellen der Riemannschen Zetafunktion liegen bei
 \[
@@ -87,7 +225,7 @@ von glatten Gitterpunkten $s=-2n$ zu rationalen Arithmetikdaten und Primsignatur
 
 ---
 
-## 5. von Staudt--Clausen und Primsignaturen
+## 6. von Staudt--Clausen und Primsignaturen
 
 **Definition (von Staudt--Clausen).** Für gerade Bernoulli-Zahlen $B_{2n}$ ($n\ge 1$):
 \[
@@ -107,7 +245,7 @@ nicht Hauptangriff.
 
 ---
 
-## 6. Native EABC mod $12$ und Zustandsvektor $V_n$
+## 7. Native EABC mod $12$ und Zustandsvektor $V_n$
 
 Die vier EABC-Familien sind **Definition** (nicht Brücke zu einem externen Modul):
 \[
@@ -139,7 +277,7 @@ Python-Felder `e,a,b,c` mappen auf $E_n,\ldots,C_n$).
 
 ---
 
-## 7. EABC-Resonanzhypothese (Conjecture)
+## 8. EABC-Resonanzhypothese (Conjecture)
 
 > **Conjecture (Resonanzhypothese, EABC-Version).**
 > - **Triviale Nullstellen** $s=-2n$: äquidistante Ausgangsstruktur ($N_{\mathrm{glatt}}$).
@@ -152,11 +290,15 @@ Die Folge $V_1,V_2,V_3,\ldots$ ist **nicht zufällig**: sie trägt diskrete Prim
 entlang der trivialen Achse; Abweichungen in $V_n$ kodieren EABC-Dynamik, die im
 Spektrum der nichttrivialen Nullstellen wieder auftaucht.
 
-**Label: Conjecture** — empirisch falsifizierbar (Abschnitt 10), nicht als Theorem behauptet.
+**Label: Conjecture** — empirisch falsifizierbar (Abschnitt 11), nicht als Theorem behauptet.
+
+Die Resonanzhypothese setzt das **Zustandsraum-Bild** (§2) fort: $V_n$ ist die PrimeSig-Filtration
+entlang trivialer Nullstellen; $\Delta Q_4(N)$ und $\sigma,\chi$ sind die aggregierte Asymmetrie
+des EABC-Konfigurationsraums.
 
 ---
 
-## 8. Starke Form: Abbildung auf das Spektrum (Conjecture)
+## 9. Starke Form: Abbildung auf das Spektrum (Conjecture)
 
 > **Conjecture (starke Form).** Es existiert eine (deterministische oder statistische)
 > Abbildung
@@ -174,10 +316,11 @@ Hypothese **widerlegt**.
 
 ---
 
-## 9. Geometrische Interpretation (Heuristik)
+## 10. Geometrische Interpretation (Heuristik)
 
-Fünfgliedrige Lesart als Projektionskette (EABC-Zerlegungsprinzip):
+Fünfgliedrige Lesart als Projektionskette (EABC-Zerlegungsprinzip, vgl. §2 Zustandsraum):
 
+0. **Konfigurationsraum:** $Q_4(N)$, Observable $\Delta Q_4(N)$ — Asymmetrie erlaubter EABC-Konfigurationen.
 1. **Äquidistante Basis ($N_{\mathrm{glatt}}$):** Triviale Nullstellen $s=-2n$ — gleichabständiges Gitter auf $\mathrm{Re}(s)<0$.
 2. **Bernoulli-Übersetzung:** $\zeta(1-2n)=-B_{2n}/(2n)$ — Operator von glatten Gitterpunkten zu rationalen Daten.
 3. **Primresonanz:** $P_n=\mathrm{PrimeSig}(B_{2n})$ — diskrete Einbettung der Primstruktur.
@@ -188,7 +331,7 @@ Fünfgliedrige Lesart als Projektionskette (EABC-Zerlegungsprinzip):
 
 ---
 
-## 10. Falsifizierbarkeit und Experimente
+## 11. Falsifizierbarkeit und Experimente
 
 **Falsifikationskriterium.** Berechne $V_n$ für viele $n$, vergleiche mit bekannten
 Nullstellenabständen $\Delta t_k$. **Keine** systematische Korrelation $\Rightarrow$
@@ -199,6 +342,7 @@ $\Rightarrow$ es existiert eine arithmetisch–spektrale Brücke — weiter zu p
 |---|------|--------|-------|
 | **1** | EABC-Asymmetrien in $V_n$ ($\sigma$, $\chi$, $\iota_{\mathrm{chir}}$) | **implementiert** | Experiment |
 | **1b** | Lean-Kopplung: $V_n$ vs. `class_of` (formale EABC-Schicht) | **implementiert** | Experiment |
+| **1c** | $\Delta Q_4(N)$ vs. $\pi(N)-\mathrm{Li}(N)$ (Zustandsraum-Bias) | **zukünftig** | Experiment |
 | **2** | $V_n$ vs. $\Delta t_k$ (Korrelation, Kreuzspektrum) | **zukünftig** | Experiment |
 | **3** | Krümmung $K_B(n)$ vs. $\pi(x)-\mathrm{Li}(x)$ | **zukünftig** | Experiment |
 
@@ -219,11 +363,14 @@ Falsifikationstest der Resonanzhypothese.
 
 ---
 
-## 11. Nomenklatur
+## 12. Nomenklatur
 
 | Begriff | Bedeutung in diesem Zweig |
 |---------|---------------------------|
 | **EABC** | Symmetrie-/Orientierungsraum (mod $12$) |
+| **Zustandsraum** | Menge erlaubter EABC-Konfigurationen; Observable = $\Delta Q_4$ |
+| **$Q_4(N)$** | Aggregierter EABC-Zählvektor über Primzahlen $p\le N$ |
+| **$\Delta Q_4(N)$** | Chirale Asymmetrie $(\sigma,\chi)$, $A-C$-Bias |
 | **glatt** ($N_{\mathrm{glatt}}$) | Metrische / analytische Schicht |
 | **Bernoulli** | Übersetzungsobjekte (nicht Endobjekte) |
 | **triviale Nullstellen** | Äquidistante Ausgangsstruktur |
@@ -231,7 +378,7 @@ Falsifikationstest der Resonanzhypothese.
 
 ---
 
-## 12. Boxed Kurzform
+## 13. Boxed Kurzform
 
 $$\boxed{
 \text{Triviale Nullstellen}
@@ -247,7 +394,7 @@ $$\boxed{
 
 ---
 
-## 13. Parallele Tracks (nicht verschmolzen)
+## 14. Parallele Tracks (nicht verschmolzen)
 
 Der EABC-Bernoulli-/Resonanz-Zweig läuft **parallel** zu anderen Sensoren:
 
@@ -262,11 +409,14 @@ Morley und $\kappa$ bleiben eigenständige Angriffslinien. Der Resonanz-Zweig nu
 
 ---
 
-## 14. Tao-Labels und nächste Schritte
+## 15. Tao-Labels und nächste Schritte
 
 | Aussage | Tao-Label |
 |---------|-----------|
 | $N=(N_{\mathrm{glatt}},N_{\mathrm{EABC}})$, Zerlegungsprinzip | Definition |
+| Casimir-$\Delta E$, allg. Zustandsraumprinzip | Heuristik / Conjecture |
+| $Q_4(N)$, $\Delta Q_4(N)$ | Definition |
+| EABC-Zustandsraum-Hypothese, Bernoulli-Kette (§2) | Conjecture / Heuristik |
 | Arithmetik = glatte + EABC-Dynamik | Conjecture |
 | EABC mod $12$, $V_n=(E_n,A_n,B_n,C_n)$ | Definition |
 | PrimeSig aus von Staudt--Clausen | Definition (Theorem) |
@@ -284,7 +434,7 @@ Morley und $\kappa$ bleiben eigenständige Angriffslinien. Der Resonanz-Zweig nu
 
 ---
 
-## 15. Experiment: Lean-Kopplung (Tao Experiment)
+## 16. Experiment: Lean-Kopplung (Tao Experiment)
 
 > **Hinweis:** „LEA-M“ im Gespräch war eine Fehlhörung von **Lean** — gemeint ist die
 > formale EABC-Schicht (`EABC.lean` → `eabc_from_lean.py`), kein separates Modul.

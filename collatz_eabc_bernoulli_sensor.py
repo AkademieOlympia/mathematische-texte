@@ -100,6 +100,25 @@ def v_bernoulli(sig: list[int]) -> EabcVector:
     )
 
 
+def q4_vector(n: int, primes: list[int] | None = None) -> EabcVector:
+    """Q_4(N): EABC-Zählvektor über alle Primzahlen p ≤ N in den vier Klassen (§2.3)."""
+    if n < 2:
+        return EabcVector(0, 0, 0, 0)
+    if primes is None:
+        primes = _sieve_primes(n)
+    return v_bernoulli([p for p in primes if p <= n])
+
+
+def delta_q4(v: EabcVector) -> dict[str, int]:
+    """ΔQ_4(N): chirale Asymmetrie-Observablen aus Q_4(N) — σ, χ, A−C (§2.3)."""
+    return {
+        "sigma": sigma_eabc(v),
+        "chi": chi_eabc(v),
+        "a_minus_c": v.a - v.c,
+        "i_chir": i_chir(v),
+    }
+
+
 def non_eabc_primes(sig: list[int]) -> list[int]:
     """Primzahlen in PrimeSig außerhalb der vier EABC-Klassen (typisch 2, 3)."""
     return [p for p in sig if class_of(p) is None]
