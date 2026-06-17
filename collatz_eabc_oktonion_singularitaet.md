@@ -5,6 +5,7 @@
 **Stub:** `collatz_eabc_oktonion_shell_stub.py` → `collatz_eabc_oktonion_shell_stub.json` (nur $r_8(n)$, $n\le 10$)  
 **Produktbäume:** `collatz_eabc_product_tree_stub.py` → `collatz_eabc_product_tree_stub.json` (Catalan/Klammerung, H vs. O)  
 **Associator:** `collatz_eabc_oktonion_associator.py` → `collatz_eabc_oktonion_associator.json` ($\mathfrak{a}_E(n)$, Sampling $n\le 50$)  
+**Associator-Spektrum:** `collatz_eabc_oktonion_spectrum.py` → `collatz_eabc_oktonion_spectrum.json` ($M_n(t)$, $N(x)N(y)N(z)=n$, $n\le 30$–$50$)  
 **Tao-Labels:** Definition | Theorem | Conjecture | Heuristik | Experiment (Quaternion-Referenz)
 
 **Querverweise:**
@@ -173,6 +174,48 @@ ein Klammerungspaar $(xy)z$ vs. $x(yz)$, $\mathbb{Z}^8$-Stub (nicht Hurwitz $\ma
 
 **Label:** Assoziator, $\mathfrak{a}_E$ = **Definition**; Prim-Minimierung = **Theorem** (trivial per Definition);
 Zusammengesetzt-Profil = **Experiment** (explorativ).
+
+---
+
+## 3.8 Assoziator-Spektrum $M_n(t)$ (Produktnorm-Constraint)
+
+**Korrektur (Kritik).** Der bloße Assoziator auf $\Sigma_a\times\Sigma_b\times\Sigma_c$ ohne
+Produktnorm-Bedingung ist **zu universell** — er misst eine Eigenschaft von $\mathbb{O}$, nicht der
+Schale $\Sigma_n$. Die relevante Menge ist
+
+$$\mathfrak{a}_n := \{(x,y,z)\in\Lambda_{\mathbb{O}}^3 : N(x)\,N(y)\,N(z)=n\}.$$
+
+**Definition (Assoziator-Norm).**
+$$\alpha(x,y,z) := N\bigl([x,y,z]\bigr),\qquad
+\alpha_E(x,y,z) := N\bigl(\Gamma((xy)z)-\Gamma(x(yz))\bigr).$$
+
+**Definition (Spektrum).** Für ganzzahliges $t=\alpha^2$ (bzw. $t=\alpha_E^2$):
+$$M_n(t) := \#\{(x,y,z)\in\mathfrak{a}_n : \alpha(x,y,z)^2 = t\},\qquad
+M_n^E(t) \text{ analog für }\alpha_E.$$
+
+**Conjecture (Dirichlet-Spektrum).**
+$$S_n(s) := \sum_{\alpha>0} \frac{m_n(\alpha)}{\alpha^s},\qquad m_n(\alpha)=M_n(\alpha^2),$$
+mit $s\in\mathbb{C}$, $\mathrm{Re}(s)>1$ — **partielle** Summen bei $s=1,2$ im Experiment;
+analytische Fortsetzung und globale Konvergenz **offen**.
+
+**Boxed Frage (charakteristisches Prim-Spektrum).**
+> $$\boxed{\;\text{Besitzen Prim-Normniveaus } n=p \text{ ein charakteristisches Assoziator-Spektrum } M_p(t) \text{ (Support, Form, } S_p(s)\text{) — nicht bloß Maximierung von } \mathfrak{a}_E\text{?}\;}$$
+
+**Heuristik (Stabilität).** Prim-Schalen könnten **kleineren** Support oder niedrigere mittlere
+$\alpha_E$ zeigen (Stabilität unter Klammerung), nicht zwingend maximale $\mathfrak{a}_E$ bei
+zusammengesetztem $n$. Beide Richtungen sind testbar.
+
+**Experiment** (`collatz_eabc_oktonion_spectrum.py`, $n\le 30$–$50$, Sampling):
+- Constraint $N(x)N(y)N(z)=n$ erlaubt Prim-Daten via $(1,1,p)$, $(1,p,1)$, $(p,1,1)$.
+- Histogramme $M_n(t)$, $M_n^E(t)$; Vergleich $n=6$ (zusammengesetzt) vs. $n=7$ (prim): KL-Abstand,
+  Support-Größe, Mittel/Varianz von $\alpha$.
+- Partielle $S_n(1)$, $S_n(2)$ für kleines $n$.
+
+**Ehrliche Grenze:** Stichprobe auf $\mathfrak{a}_n$, keine volle Enumeration; $\mathbb{Z}^8$-Stub
+(nicht Hurwitz $\mathbb{O}_{\mathrm H}$); $|\mathfrak{a}_n|$ wächst schnell mit Faktorisierungsvielfalt.
+
+**Label:** $M_n(t)$, $\mathfrak{a}_n$ = **Definition**; $S_n(s)$ = **Conjecture**;
+Prim-Spektrum-Charakteristik = **Conjecture** + **Experiment**.
 
 ---
 

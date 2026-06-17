@@ -2,21 +2,25 @@
 """
 EABC-Associator-Observable für Oktanionen (Γ-Differenz bei Klammerung).
 
-Kanonsiche Theorie: collatz_eabc_oktonion_singularitaet.md §3.7
-                   collatz_eabc_plattenuebergang.md §2.6
+Kanonsiche Theorie: collatz_eabc_oktonion_singularitaet.md §3.7–§3.8
+                   collatz_eabc_plattenuebergang.md §2.6–§2.7
 
 Fundamentale Größen:
   [x,y,z] = (xy)z - x(yz)                    (algebraischer Assoziator)
   A(T1,T2) = ||P_T1(...) - P_T2(...)||       (Baum-Abhängigkeit)
   Γ_EABC-Assoziator = smooth_Γ((xy)z) - smooth_Γ(x(yz))  (16 glatt-EABC-Koordinaten)
-  𝔞_E(n) = mittlere EABC-Assoziator-Norm über Stichproben zu n = abc
+  𝔞_E(n) = mittlere EABC-Assoziator-Norm über Stichproben zu n = abc (a,b,c≥2)
+
+Spektrum M_n(t): siehe collatz_eabc_oktonion_spectrum.py — Constraint N(x)N(y)N(z)=n,
+Histogramm der Assoziator-Norm α=N([x,y,z]) über 𝔞_n (nicht nur Schalen-Mittel).
 
 Sampling (n ≤ 50): repräsentative Faktorisierungen n = abc, a,b,c ≥ 2;
-keine volle Σ_n-Enumeration (r_8(n) ~ n^{3/2}).
+keine volle Σ_n-Enumeration (r_8(n) ~ n^{3/2}); Z^8-Stub (Hurwitz-Limitation).
 
 Ausführung:
     python3 collatz_eabc_oktonion_associator.py
     python3 collatz_eabc_oktonion_associator.py --max-n 50 --samples 30
+    python3 collatz_eabc_oktonion_spectrum.py   # M_n(t)-Histogramme
 """
 
 from __future__ import annotations
@@ -426,8 +430,9 @@ def associator_report(
     return {
         "meta": {
             "hypothesis_doc": [
-                "collatz_eabc_oktonion_singularitaet.md §3.7",
-                "collatz_eabc_plattenuebergang.md §2.6",
+                "collatz_eabc_oktonion_assoziator_spektralhypothese.md",
+                "collatz_eabc_oktonion_singularitaet.md §3.7–§3.8",
+                "collatz_eabc_plattenuebergang.md §2.6–§2.7",
             ],
             "script": "collatz_eabc_oktonion_associator.py",
             "lattice": "Z^8 stub (nicht Hurwitz O_H)",

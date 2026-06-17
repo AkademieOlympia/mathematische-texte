@@ -7,6 +7,7 @@
 - `collatz_eabc_shell_defekt_test.py` → `collatz_eabc_shell_defekt.json`
 - `collatz_eabc_product_tree_stub.py` → `collatz_eabc_product_tree_stub.json` (Produktbäume, H vs. O)
 - `collatz_eabc_oktonion_associator.py` → `collatz_eabc_oktonion_associator.json` ($\mathfrak{a}_E(n)$, EABC-Associator)
+- `collatz_eabc_oktonion_spectrum.py` → `collatz_eabc_oktonion_spectrum.json` ($M_n(t)$, Assoziator-Spektrum)
 
 **Tao-Labels:** Definition | Theorem | Conjecture | Heuristik | Experiment
 
@@ -132,6 +133,30 @@ zu Faktorisierungen $n=abc$ ($a,b,c\ge 2$) und Klammerung $(xy)z$ vs. $x(yz)$.
 
 **Label:** $\mathfrak{a}_E$ = **Definition** + **Experiment**; Prim-Minimum = **Theorem** (trivial);
 ob Zusammengesetzte **maximieren** = **offen** (Profil variiert mit Faktorisierung).
+
+---
+
+## 2.7 Assoziator-Spektrum $M_n(t)$ und $S_n(s)$
+
+**Korrektur.** Assoziator-Observables allein auf $\Sigma_a\times\Sigma_b\times\Sigma_c$ ohne
+$N(x)N(y)N(z)=n$ sind **O-Eigenschaft**, nicht Schalen-Spektrum. Die kanonische Menge ist
+$$\mathfrak{a}_n=\{(x,y,z): N(x)N(y)N(z)=n\},\quad
+\alpha(x,y,z)=N([x,y,z]),\quad
+M_n(t)=\#\{\text{triples in }\mathfrak{a}_n : \alpha^2=t\}.$$
+
+**Conjecture (Spektral).** $S_n(s)=\sum_\alpha m_n(\alpha)/\alpha^s$; partielle Werte bei $s=1,2$
+im Stub (`collatz_eabc_oktonion_spectrum.py`).
+
+**Boxed Frage.**
+> $$\boxed{\;\text{Prim-Platten } \Sigma_p \text{ besitzen charakteristisches } M_p(t)\text{-Spektrum — Support/Form, nicht bloß } \mathfrak{a}_E\text{-Maximum.}\;}$$
+
+**Experiment** ($n\le 30$–$50$): Histogramme $M_n$, $M_n^E$; Prim vs. zusammengesetzt via KL-Abstand,
+Mittel, Varianz, Support; Paarvergleich $n=6$ vs. $n=7$. Prim können **kleinere** $\alpha_E$-Profile
+(Stabilität) zeigen — beide Richtungen testbar.
+
+**Grenze:** Sampling, $\mathbb{Z}^8$-Stub, keine Hurwitz-Enumeration.
+
+**Label:** $M_n(t)$ = **Definition**; $S_n(s)$ = **Conjecture**; Prim-Spektrum = **Experiment**.
 
 ---
 
