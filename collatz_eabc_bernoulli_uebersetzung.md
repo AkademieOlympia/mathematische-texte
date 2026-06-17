@@ -1274,6 +1274,196 @@ Anlass für präzisere Definition der Rekonfigurationsfenster, kein Beweis.
 Dieser Abschnitt **ersetzt** weder §17–§19 noch §2; er **synthetisiert** sie zum
 Fünfstufenprogramm. Kein Collatz-Beweis, kein Beweis der Riemann-Hypothese.
 
+**Querverweis:** §21 präzisiert die **epistemische Lesart** von Primzahlen, Fossilien und
+Invarianten — insbesondere die Unterscheidung **Definition** (Primzahl) vs. **Conjecture**
+(EABC als erzeugende Struktur).
+
+---
+
+## 21. Epistemik: Primzahlen, Fossilien und Invarianten
+
+Dieser Abschnitt formuliert die **epistemologische Kernfrage** des EABC-Programms: Was bleibt
+invariant, wenn einzelne Primzahlen „verschwinden"? Er ergänzt §1 (Zerlegungsprinzip),
+§2 (Zustandsraum, $\Delta Q_4$) und §20 (Fünfstufenprogramm) um eine explizite
+**Forschungsvision** — strikt getrennt von **Definitionen** und **Theoremen**.
+
+**Querverweise:** §1 ($N_{\mathrm{glatt}}$ vs. $N_{\mathrm{EABC}}$), §2 ($Q_4$, $\Delta Q_4$,
+$\sigma$, $\chi$, $\iota_{\mathrm{chir}}$), §7 ($V_n$), §20 (Projektionslexikon),
+`collatz_eabc_bernoulli_sensor.py`, `collatz_eabc_bernoulli_lean_test.py` (Quadrupelzeuge).
+
+### 21.1 Physik und Mathematik: keine Identifikation
+
+| Domäne | Objektstatus | Typisches Beispiel |
+|--------|--------------|-------------------|
+| **Physik** | theoretische Rekonstruktion aus Beobachtung | Elektron, Urknall — keine direkten „Dinge", sondern Modellobjekte |
+| **Mathematik** | exakte Definition | $p$ prim $\Longleftrightarrow p>1$ und genau zwei positive Teiler |
+
+**Epistemische Warnung.** Primzahlen sind **nicht** „hypothetisch wie Elektronen". Sie sind
+**mathematisch wohldefiniert** und in jedem konkreten Modell der Arithmetik eindeutig festgelegt.
+Diese Unterscheidung ist **nicht verhandelbar** und gilt unabhängig von jeder EABC-Lesart.
+
+**Label: Definition** — Standard-Zahlentheorie; keine EABC-Behauptung.
+
+### 21.2 Fossil-Metapher: Knochen vs. Fossilien (Conjecture / Forschungsvision)
+
+Die zweite Hälfte der Fossil-Metapher ist **tiefer** und betrifft nur die **Conjecture-Ebene**:
+
+> Primzahlen können **reale mathematische Objekte** sein und gleichwohl **keine fundamentalen
+> Objekte der Theorie** — sichtbare Manifestationen einer tieferen Symmetriestruktur.
+
+| Traditionelle Zahlentheorie | Tiefere geometrische Lesart (Forschungsvision) |
+|----------------------------|------------------------------------------------|
+| Ausgangspunkt: Primzahlen | Ausgangspunkt: Symmetrien, Zustandsräume, Invarianten |
+| Primzahlen erzeugen Muster | Struktur erzeugt Primzahlen als **beobachtbare Spuren** |
+| Frage: „Wo ist die nächste Primzahl?" | Frage: „Welche Geometrie erzeugt die beobachteten Invarianten?" |
+
+**Label: Conjecture / Forschungsvision** — heuristisches Umbewerten, kein Ersatz der Primzahldefinition.
+
+### 21.3 Physik-Analogien (Heuristik, keine Identität)
+
+Die folgenden Bilder dienen **nur** der Orientierung im Tao-Stil (Heuristik $\neq$ Theorem):
+
+| Epoche | Zuerst „Realität" | Später fundamentale Struktur | Frühere „Realität" wird |
+|--------|-------------------|------------------------------|-------------------------|
+| Newton | Planeten | Gesetze, Hamiltonian | Lösung der Struktur |
+| Quantenmechanik | Spektrallinien | Hilbert-Raum, Operatoren | Projektion / Eigenwert |
+| QFT | Teilchen | Felder | Anregungen / Moden |
+
+**EABC-Lesart (Conjecture):**
+
+| Klassisch | EABC |
+|-----------|------|
+| Primzahlen $\to$ Muster | EABC-Struktur $\to$ Primzahlen |
+| Prim als **Ursache** | Prim als **beobachtbare Manifestation** |
+
+Primzahlen sind in dieser Lesart **Randdaten** oder **Knochen** — nicht das Skelett der Theorie
+(vgl. §19.4, §20.5: Prim als Randprojektion kritischer Defekte).
+
+**Label: Heuristik** — Analogie, keine physikalische oder zahlentheoretische Identität.
+
+### 21.4 Epistemologische Kernfrage
+
+> **Kernfrage (Forschungsvision).** Was bleibt invariant, wenn einzelne Primzahlen aus der
+> Beschreibung verschwinden?
+
+Die Physik interessiert sich für **Symmetrien**, **Erhaltungssätze**, **Spektren**,
+**Korrelationsfunktionen** — nicht für das Schicksal eines einzelnen Elektrons. Analog
+postuliert das EABC-Programm, dass die **tragfähigen mathematischen Observablen** nicht
+einzelne Primzahlen $p$, sondern **statistische und strukturelle Invarianten** über große
+Primdynamiken sind.
+
+**Konkrete Kandidaten (Definition / Experiment):**
+
+| Observable | Rolle | Quelle |
+|------------|-------|--------|
+| $\sigma(N)$, $\chi(N)$ | chirale Bilanz im EABC-Raum | §2.3, Sensor |
+| $\iota_{\mathrm{chir}}(n)$ | spezifische Chiralitätskennung | `collatz_eabc_bernoulli_sensor.py` |
+| $V_n=(E_n,A_n,B_n,C_n)$ | Bernoulli-induzierte Zustandsfolge | §7, §2 |
+| $\Delta Q_4(N)=(\sigma,\chi)$ | beobachtbare Asymmetrie (nicht $Q_4$ allein) | §2.3 |
+| Quadrupelzeuge auf $P_n$ | lokale Witness-Struktur, $T$-Rotation | `collatz_eabc_bernoulli_lean_test.py` |
+
+**Label:** Definitionen und Experimente für die Observablen; **Conjecture** für deren Rolle als
+„Fundament" statt Einzelprimzahlen.
+
+### 21.5 Forschungsprogramm-Verschiebung
+
+**Erfolgskriterium (Forschungsvision).** Der Erfolg des EABC-Programms wäre **nicht** eine neue
+Formel für die $n$-te Primzahl, sondern ein neues **Invariantenfunktional**
+\[
+\mathcal{I}(E,A,B,C)
+\]
+das über enorme Primdynamiken **stabil** bleibt — analog zu erhaltenen Größen in der Physik.
+
+Gesuchte Eigenschaften von $\mathcal{I}$:
+
+1. **Stabilität** unter Weglassen einzelner Primzahlen in endlichen Fenstern;
+2. **Korrelation** mit spektralen Daten ($\Delta t_k$, Zeta-Nullstellen; §8, §9);
+3. **Reproduzierbarkeit** in Sensor- und Lean-Experimenten ($\sigma$, $\chi$, Quadrupelzeuge);
+4. **Geometrische Interpretierbarkeit** im EABC-Tetraeder (§1, §18).
+
+**Label: Forschungsvision** — Programmverschiebung, kein erfülltes Kriterium.
+
+### 21.6 Boxed: Fossil-Heuristik (stärkste Form)
+
+$$\boxed{
+\begin{aligned}
+&\textbf{Fossil-Heuristik (EABC, Conjecture).}\\[4pt]
+&\text{Primzahlen sind \emph{nicht} die Fossilien — sie sind die \textbf{Knochen}.}\\[4pt]
+&\text{Die eigentlichen „Fossilien" sind statistische Invarianten, Chiralitäten,}\\
+&\text{Resonanzen und Spektren, die über Milliarden von Primereignissen}\\
+&\text{beständig bleiben.}\\[4pt]
+&\text{Verschiebung der Leitfrage:}\\
+&\text{von „Wo ist die nächste Primzahl?"}\\
+&\text{zu „Welche Geometrie erzeugt die beobachteten Invarianten?"}
+\end{aligned}
+}$$
+
+Diese boxed Form **präzisiert** §17.2 (Prim als Defekt) und §20.3 (Prim als beobachtbarer Defekt
+auf der Achse): Knochen sind sichtbar und real — aber das **paläontologische Interesse** gilt
+den **Fossilien** = Invarianten.
+
+**Label: Heuristik / Conjecture** — Leitbild, kein Theorem.
+
+### 21.7 Offene strukturelle Verbindungen (ehrlich)
+
+Ob das EABC-Programm die bekannten **organisierenden Strukturen** der Zahlentheorie trifft, ist
+**offen**. Als ehrliche Querverweise (keine Behauptung der Erfassung):
+
+| Autor / Struktur | Rolle (skizzenhaft) | EABC-Bezug (offen) |
+|------------------|---------------------|-------------------|
+| **Riemann** | analytische Zetafunktion, Spektralprogramm | §2, §8: $V_n$, Zeta-Spektrum |
+| **Weyl** | Spektraltheorem, Gleichverteilung | mod-$12$-Gleichgewicht, $\sigma$, $\chi$ |
+| **Connes** | nichtkommutative Geometrie, Spektralrealisierung | EABC als diskreter Zustandsraum (spekulativ) |
+| **Penrose** | tieferer geometrischer Hintergrund (Twistor, Pentagonalität) | Fünfersprünge, $\varphi$ (§19–§20; spekulativ) |
+
+**Epistemisch ehrlich:** Diese Namen markieren **mögliche** strukturelle Nachbarschaft — nicht
+bewiesene Einbettung. Ob EABC eine nützliche Projektion dieser Gesamtstruktur liefert, ist
+**Forschungsfrage**, kein etabliertes Resultat.
+
+**Label: Heuristik / offen.**
+
+### 21.8 Tao-Einordnung und Verknüpfung mit §1, §2, §20
+
+| Ebene | Inhalt in diesem Abschnitt |
+|-------|---------------------------|
+| **Definition** | Primzahl; $Q_4$, $\Delta Q_4$, $\sigma$, $\chi$, $V_n$; Quadrupelzeuge |
+| **Experiment** | Sensor- und Lean-Tests auf Stabilität der Observablen |
+| **Theorem** | (keine neuen in §21) |
+| **Conjecture** | EABC-Struktur erzeugt Primmanifestationen; $\mathcal{I}(E,A,B,C)$ als Fundament |
+| **Heuristik** | Fossil-Metapher, Physik-Analogien |
+| **Forschungsvision** | Verschiebung von Primformeln zu Invarianten-Geometrie |
+
+**Synthese mit dem Zerlegungsprinzip (§1):** $N_{\mathrm{glatt}}$ trägt Skala und Dichte;
+$N_{\mathrm{EABC}}$ trägt Orientierung. §21 behauptet nicht, dass Primzahlen „unreal" sind —
+sondern dass **$N_{\mathrm{EABC}}$ und seine Invarianten** der angemessene Gegenstand einer
+**tieferen** Theorie sein könnten, während Einzelprimzahlen die **sichtbare Projektion** bleiben.
+
+**Synthese mit dem Zustandsraum (§2):** $\Delta Q_4(N)$, nicht $Q_4(N)$ allein, verkörpert
+das epistemologische Prinzip: Observablen sind **Differenzen und Asymmetrien**, nicht absolute
+Einzelzählungen.
+
+**Synthese mit §20:** Das Fünfstufenprogramm beschreibt **wie** die Projektion $F\to B\to\mathbb{N}$
+abläuft; §21 beschreibt **warum** epistemisch danach gefragt werden sollte — und welches
+Erfolgsmaß ($\mathcal{I}$ statt $p_n$-Formel) gilt.
+
+### 21.9 Epistemische Zusammenfassung
+
+| Aussage | Label |
+|---------|-------|
+| $p$ prim $\Longleftrightarrow$ zwei Teiler | **Definition** (Standard) |
+| Primzahlen $\neq$ hypothetische Physikobjekte | **Epistemische Warnung** |
+| Prim als Knochen, Invarianten als Fossilien | **Heuristik / Conjecture** |
+| EABC-Struktur $\to$ Primmanifestation | **Conjecture** |
+| Newton/QM/QFT-Analogien | **Heuristik** (keine Identität) |
+| $\mathcal{I}(E,A,B,C)$ als Erfolgskriterium | **Forschungsvision** |
+| Fossil-Heuristik (boxed) | **Heuristik / Conjecture** |
+| Riemann / Weyl / Connes / Penrose | **offen** (Querverweise) |
+| $\sigma$, $\chi$, $\iota_{\mathrm{chir}}$, $V_n$, $\Delta Q_4$, Quadrupelzeuge | **Definition / Experiment** |
+
+Dieser Abschnitt **ersetzt** weder §1–§2 noch §17–§20; er **epistemisiert** das gesamte
+EABC-Programm. Kein Collatz-Beweis, kein Beweis der Riemann-Hypothese, **keine** Behauptung,
+Primzahlen seien „weniger real" als in der Standardarithmetik.
+
 ---
 
 *Epistemische Einordnung gemischt je Abschnitt. Definitionen und Experimente sind streng;
