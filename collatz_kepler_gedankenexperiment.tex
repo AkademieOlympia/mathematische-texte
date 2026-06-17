@@ -32,6 +32,9 @@
 \newcommand{\vii}{\nu_2}
 \newcommand{\omegaT}{\omega_{12}}
 \newcommand{\dist}{\mathrm{dist}}
+\newcommand{\SigmaEABC}{\{E,A,B,C\}}
+\newcommand{\iotaE}{\iota_{\mathrm{E}}}
+\newcommand{\Phpref}{\Phi_{\mathrm{pref}}}
 
 \title{Collatz--Kepler-Gedankenexperiment:\\
   $z_0$, chirale Ellipsen und die Riemann-Kompaktkugel\\
@@ -47,10 +50,12 @@ Dieses Notizblatt verbindet drei Schichten des Collatz- und EABC-Programms:
 den komplexen Ankerpunkt $z_0=-1-\mathrm{i}/12$, die chirale
 ABCE/CEAB-Dualität der Primvierlingsellipse und die stereographische
 Projektion zwischen Riemann-Kompaktkugel und komplexer Ebene.
-Es handelt sich um ein \emph{Gedankenexperiment} zur geometrischen
-Kodierung von Collatz-Bahnen in einem erweiterten Phasenraum
-$\mathcal{M}=\C\times\R$ (bzw.\ $S^2\times\R$).
-Die Collatz-Vermutung bleibt offen; hier wird keine Lösung beansprucht.
+Zentral ist die wohldefinierte Vorabbildung
+$\Phi_{\mathrm{pref}}:\{E,A,B,C\}^{<\omega}\to\C\times\R$ auf
+EABC-Wörtern; die dynamische Collatz-Brücke $\Phi:\mathbb{Z}_2\to\mathcal{M}$
+folgt erst über eine offene Präfixkodierung $\kappa$.
+Es handelt sich um ein \emph{Gedankenexperiment} --- kein Beweisanspruch.
+Die Collatz-Vermutung bleibt offen.
 \end{abstract}
 
 %======================================================================
@@ -94,10 +99,11 @@ Dieses Notizblatt trennt bewusst drei epistemische Schichten:
 Exakte Aussagen (z.\,B.\ $z_0=\zeta(-1)\cdot(12+\mathrm{i})$,
 ABCE/CEAB mod~$12$) dürfen nicht mit geometrischen Lesarten
 (Zwölfer-Kreis, Kugelprojektion) oder dynamischen Vermutungen
-($\Phi:\Ztwo\to\mathcal{M}$, $\mathcal{E}_\infty\subset\mathcal{M}$)
-vermischt werden. Die offene Aufgabe ist die Konstruktion einer
-Abbildung $\Phi$, die Collatz-Bahnen konsistent in $\mathcal{M}$
-eintaucht.
+($\Phpref:\SigmaEABC^{<\omega}\to\mathcal{M}$,
+$\Phi:\Ztwo\to\mathcal{M}$, $\mathcal{E}_\infty\subset\mathcal{M}$)
+vermischt werden. Zuerst ist die wohldefinierte Wortabbildung
+$\Phpref$ zu konstruieren; die Collatz-Brücke $\Phi$ folgt erst
+über eine Präfixkodierung $\kappa$ (Abschnitt~\ref{sec:phi}).
 
 %======================================================================
 \section{Der Punkt \texorpdfstring{$z_0=-1-\mathrm{i}/12$}{z0=-1-i/12}}
@@ -108,7 +114,8 @@ eintaucht.
 Der Punkt $z_0$ ist ein \emph{Ankerpunkt} der Projektion: Er fixiert
 Orientierung und Skala im komplexen Flavor-Ring. Die eigentliche
 offene Aufgabe ist die dynamische Abbildung $\Phi:\Ztwo\to\mathcal{M}$
-(Abschnitt~\ref{sec:phi}), nicht die arithmetische Identität
+(Abschnitt~\ref{sec:phi}), vorgebaut als $\Phpref$ auf EABC-Wörtern,
+nicht die arithmetische Identität
 $z_0=\zeta(-1)\cdot(12+\mathrm{i})$.
 
 \subsection{Anker in der komplexen Ebene}
@@ -344,17 +351,144 @@ $\pi_{\C}(\iota(w),t)=(w,t)$. Der Anker $P_0\in S^2$ fixiert eine
 berühren (für endliche Bahnen mit $|z+1|\gg 0$).
 
 %======================================================================
-\section{Skizze \texorpdfstring{$\Phi:\Ztwo\to\mathcal{M}$}{Phi: Z2→M}}
+\section{Wohldefinierte Vorabbildung \texorpdfstring{$\Phpref$}{Phi\_pref}}
 \label{sec:phi}
 %======================================================================
 
-\subsection{Zentrale offene Aufgabe}
+\subsection{EABC-Alphabet und Restklassen modulo~$12$}
 
-Die Konstruktion einer Abbildung
+Das EABC-Alphabet ist $\SigmaEABC=\{E,A,B,C\}$.
+Jeder Buchstabe kodiert eine primfähige Restklasse modulo~$12$
+(\texttt{EABC.lean}, \texttt{CollatzEabc.Mod12Matrix}):
 \[
-\Phi:\ \Ztwo\longrightarrow \mathcal{M}=\C\times\R
+E\equiv 1,\quad A\equiv 5,\quad B\equiv 7,\quad C\equiv 11\pmod{12}.
 \]
-ist die zentrale offene Aufgabe dieses Gedankenexperiments.
+Endliche Wörter liegen in $\SigmaEABC^{<\omega}=\bigcup_{n\in\N}\SigmaEABC^n$;
+$|w|$ bezeichnet die Wortlänge.
+
+\subsection{Phasenindex, \texorpdfstring{$\Theta(w)$}{Theta(w)} und Einheitsphase \texorpdfstring{$u(w)$}{u(w)}}
+
+\begin{definition}[Phasenindex und kumulative Phase]
+Der \emph{Phasenindex} ist
+\[
+\iotaE:\ \SigmaEABC\longrightarrow \{0,1,2,3\},\qquad
+E\mapsto 0,\ A\mapsto 1,\ B\mapsto 2,\ C\mapsto 3.
+\]
+Für $w=w_0\cdots w_{n-1}\in\SigmaEABC^n$ setze
+\[
+\Theta(w):=\sum_{j=0}^{n-1}\iotaE(w_j)\ \in\ \Z,
+\qquad
+\Theta_{4}(w):=\Theta(w)\bmod 4.
+\]
+Die \emph{Einheitsphase} ist
+\[
+u(w):=\exp\!\Bigl(\mathrm{i}\,\frac{\pi}{2}\,\Theta_{4}(w)\Bigr)
+\ \in\ \{1,\mathrm{i},-1,-\mathrm{i}\}.
+\]
+\end{definition}
+
+\begin{definition}[Chiralitätswörter]
+Die kanonischen Chiralitätswörter sind
+$\mathrm{ABCE}$ und $\mathrm{CEAB}$ (Abschnitt~\ref{sec:c-asymmetrie},
+\texttt{Projektionszeuge\_Primvierling.tex}).
+\end{definition}
+
+\begin{bemerkung}[Chiralitätsaxiom]
+Die Hurwitz-Phasen erfüllen
+$\chi_H(\mathrm{ABCE})=+\mathrm{i}$ und
+$\chi_H(\mathrm{CEAB})=-\mathrm{i}$
+(\texttt{energiedoku\_eabc\_c4\_kohaerenz.tex}).
+Wir fixieren die Vorabbildung so, dass für die Chiralitätswörter
+explizit gilt:
+\[
+u(\mathrm{ABCE})=+\mathrm{i},\qquad
+u(\mathrm{CEAB})=-\mathrm{i}=-\,u(\mathrm{ABCE}).
+\]
+Für allgemeine Wörter wird $u(w)$ über $\Theta_{4}$ und den
+Startbuchstaben gelesen; die Konsistenz mit $\chi_H$ auf
+$\{\mathrm{ABCE},\mathrm{CEAB}\}$ ist die chirale Normalisierung.
+\end{bemerkung}
+
+\subsection{Anker \texorpdfstring{$z_0$}{z0} und Zwölfer-Kreis \texorpdfstring{$K_{12}$}{K12}}
+
+Der Anker $z_0=-1-\mathrm{i}/12$ und der Zwölfer-Kreis
+$K_{12}=\{z\in\C:\ |z+1|=1/12\}$ sind in
+Abschnitt~3 definiert. Sie fixieren Orientierung und radiale
+Skala der Vorabbildung; $z_0\in K_{12}$ liegt auf der
+$C$-Seite (CEAB-Start, $C\equiv 11\pmod{12}$).
+
+\subsection{Radialkoordinate und komplexe Spur}
+
+Für $w\in\SigmaEABC^{<\omega}$ setze die \emph{Radialkomponente}
+\[
+\rho(w):=2^{-|w|}\in(0,1],
+\qquad
+z(w):=z_0+\rho(w)\,u(w)\in\C.
+\]
+Der Punkt $z(w)$ liegt in einer $\rho(w)$-Umgebung von $z_0$;
+für $|w|\to\infty$ konvergiert $z(w)\to z_0$ auf $K_{12}$.
+
+\subsection{Zeitkoordinate und Vorabbildung \texorpdfstring{$\Phpref$}{Phi\_pref}}
+
+\begin{definition}[Vorabbildung auf EABC-Wörtern]
+Die reelle \emph{Zeitkoordinate} ist $t(w):=|w|\in\N$.
+Die \emph{Vorabbildung} ist
+\[
+\boxed{\;
+\Phpref:\ \SigmaEABC^{<\omega}\longrightarrow \mathcal{M}=\C\times\R,\qquad
+\Phpref(w)=\bigl(z(w),\,t(w)\bigr).
+\;}
+\]
+\end{definition}
+
+\noindent
+Damit ist $\Phpref$ auf rein kombinatorischen EABC-Wörtern
+\emph{wohldefiniert} --- ohne Collatz-Dynamik, ohne $\Ztwo$-Einbettung
+und ohne Behauptung über Bahnen.
+
+\subsection{Einschränkung: Wörter zuerst, Collatz erst über Kodierung}
+
+$\Phpref$ lebt auf $\SigmaEABC^{<\omega}$, nicht auf $\Ztwo$.
+Eine Collatz-Anbindung erfordert eine \emph{Präfixkodierung}
+\[
+\kappa:\ \Ztwo\longrightarrow \SigmaEABC^{<\omega}
+\quad\text{(bzw.\ }\kappa_K:\Ztwo\to\SigmaEABC^K\text{ für festes }K\text{)},
+\]
+sodass
+\[
+\Phi_K:=\Phpref\circ\kappa_K:\ \Ztwo\longrightarrow \mathcal{M}.
+\]
+Die Konstruktion von $\kappa$ (aus odd-to-odd-Bahnen, 2-adischen
+Präfixen oder endlichen Grammatikfenstern) ist \emph{offen} und
+getrennt von der Definition von $\Phpref$.
+Spekulative Kandidaten ($\vii$-Summen, LTE-Blöcke,
+$\|x\|_2^{-1}$) bleiben Heuristiken für $\kappa$, nicht für
+$\Phpref$ selbst.
+
+\subsection{Lean-kompatibler Kern}
+
+Statt $\exp(\mathrm{i}\theta)$ kodieren die vier Einheitsphasen
+als Gitterpaare in $\Z\times\Z$ (\texttt{CollatzEabc.PrefProjection}):
+\[
+1\mapsto(1,0),\quad
+\mathrm{i}\mapsto(0,1),\quad
+-1\mapsto(-1,0),\quad
+-\mathrm{i}\mapsto(0,-1).
+\]
+Die Abbildung $\mathrm{phaseUnit}:\Z/4\Z\to\Z\times\Z$ ist
+sorry-frei formalisierbar; die komplexe Spur $z(w)$ bleibt
+im TeX-Notizblatt, bis eine $\C$-Einbettung in Mathlib
+explizit gewünscht ist.
+
+\subsection{Brücke zu \texorpdfstring{$\Phi:\Ztwo\to\mathcal{M}$}{Phi: Z2→M} und \texorpdfstring{$\Einf$}{E\_infty}}
+
+Die zentrale \emph{dynamische} offene Aufgabe bleibt
+\[
+\Phi:\ \Ztwo\longrightarrow \mathcal{M},
+\qquad
+\Phi=\Phpref\circ\kappa
+\]
+für eine noch zu konstruierende Kodierung $\kappa$.
 Collatz ist äquivalent zu
 \[
 \Einf=\emptyset
@@ -362,62 +496,9 @@ Collatz ist äquivalent zu
 \text{keine ungerade Bahn erreicht den trivialen Fixpunkt }1,
 \]
 spekulativ gelesen als: jede Bahn $\gamma(k)=\Phi(U^k(n))$ in
-$\mathcal{M}$ trifft irgendwann die \emph{Fixpunktregion}
-(triviale Attraktorschale), statt als invariante Kurve mit
+$\mathcal{M}$ trifft irgendwann die Fixpunktregion, statt mit
 $t\to\infty$ in $\mathcal{E}_\infty$ zu verharren
 (vgl.\ \texttt{collatz\_equivalenz\_e\_infty.tex}).
-
-\subsection{Erster Ansatz}
-
-Setze für $x\in\Ztwo$ (2-adischer Collatz-Shadow)
-\[
-\Phi(x)=\bigl(\varphi_{\mathrm{phase}}(x),\ \varphi_{\mathrm{time}}(x)\bigr)
-=\bigl(e^{\mathrm{i}\theta(x)},\ \lambda(x)\bigr)\in\mathcal{M},
-\]
-mit
-\[
-\theta(x):=\frac{\pi}{6}\cdot\mathrm{phase}_{\mathrm{ABCE}}(x),
-\qquad
-\lambda(x):=\vii(x+1)\quad\text{oder}\quad \lambda(x)=\log_2 x
-\]
-(für eingebettete natürliche $x=n\in\Nodd$).
-Hier ist $\mathrm{phase}_{\mathrm{ABCE}}(x)\in\{0,1,2,3\}$ der
-Index des aktuellen EABC-Symbols auf dem Vierzyklus
-($E=0,A=1,B=2,C=3$); der Faktor $\pi/6$ normiert den
-$2\pi/12$-Flavor-Ring auf ein Sechstelkreis-Intervall.
-
-\paragraph{Phase ($\varphi_{\mathrm{phase}}$).}
-Alternativ aus dem EABC-Wort $w(x)$ der Bahn:
-\[
-\varphi_{\mathrm{phase}}(x)
-  := \sum_{j=0}^{J-1} c_{w_j}\,\omegaT^{j}
-  \quad\text{oder}\quad
-  \exp\!\Bigl(\mathrm{i}\,\arg_{\omegaT}(w(x))\Bigr),
-\]
-wobei $c_E=1$, $c_A=\omegaT$, $c_B=\omegaT^2$, $c_C=\omegaT^3$
-die Flavor-Gewichte nach \texttt{BM Messprotokoll.tex} sind.
-ABCE- und CEAB-Start führen zu Phasen, die um $\pi$ auf dem
-Vierzyklus versetzt sind; komplex konjugiert
-($\overline{\mathrm{ABCE}}=\mathrm{CEAB}$, $\pm\mathrm{i}$).
-
-\paragraph{Radialabstand / 2-adische Dichte.}
-LTE-Blöcke (vgl.\ \texttt{collatz\_lte\_dichte.tex}) kompensieren
-lokal die $\vii$-Defizite; ihr Beitrag kann als
-\[
-r(x):=\|x\|_2^{-1}\quad\text{oder}\quad
-\prod_{\text{LTE}} 2^{-\vii}
-\]
-in eine radiale Koordinate $|z|$ oder eine Höhenfunktion auf $S^2$
-eingelesen werden. Dies ist eine \emph{Spekulation}: LTE-Endlichkeit
-ist bewiesen, die globale Kopplung an $|z|$ nicht.
-
-\paragraph{Zeit ($\varphi_{\mathrm{time}}$).}
-Die Wahl $\lambda(x)=\vii(x+1)$ koppelt die reelle Koordinate an die
-2-adische Struktur der Collatz-Bahn; $\lambda(x)=\log_2 x$ misst
-logarithmische Tiefe. Setze alternativ $\varphi_{\mathrm{time}}(x):=k$
-für den Iterationsindex oder eine monotone Funktion der $\vii$-Summe.
-Natürliche Zahlen $n\in\Nodd\hookrightarrow\Ztwo$ erhalten so ein Bild
-$\Phi(n)\in\mathcal{M}$.
 
 \subsection{\texorpdfstring{$\Einf$}{E\_infty} als geometrisches Objekt in \texorpdfstring{$\mathcal{M}$}{M}}
 
@@ -541,7 +622,8 @@ Nullstellenort der Zetafunktion.
     Stirling$\to|B_{2n}|$ & Mathlib-Baustein, Kombination offen & \texttt{collatz\_lean\_mathlib\_update.tex} \\
     Stereographie $\sigma:S^2\to\Chat$ & Standard & \texttt{Edinburg.py} \\
     $\Einf=\emptyset$ $\Leftrightarrow$ Collatz & präzise, offen & \texttt{collatz\_equivalenz\_e\_infty.tex} \\
-    $\Phi:\Ztwo\to\mathcal{M}$, $\mathcal{E}_\infty\subset\mathcal{M}$ & Spekulation & dieses Notizblatt \\
+    $\Phpref:\SigmaEABC^{<\omega}\to\mathcal{M}$ & wohldefiniert (Wörter) & dieses Notizblatt, \texttt{PrefProjection.lean} \\
+    $\Phi=\Phpref\circ\kappa:\Ztwo\to\mathcal{M}$, $\mathcal{E}_\infty\subset\mathcal{M}$ & Spekulation & dieses Notizblatt \\
   \bottomrule
   \end{tabular}
 \end{center}

@@ -12,3 +12,4 @@ import CollatzEabc.Mod12Matrix
 import CollatzEabc.Uniformity
 import CollatzEabc.Z2Attraktor
 import CollatzEabc.Open
+import CollatzEabc.PrefProjection
