@@ -1648,6 +1648,18 @@ der EABC-Invarianz-Hypothese.
 philosophisch durch **Messreihe vs. zugrundeliegende Dynamik** — präziser und näher an der
 physikalischen Praxis (Spektroskopie, Erhaltungsgrößen).
 
+
+### 22.11 Mathematisch strikte Formulierung (Querverweis)
+
+Die **kanonische Definitionsebene** (Definitionen 1–5, Forschungsfragen 1–2, Arbeitshypothese)
+liegt in `collatz_eabc_invarianzprogramm.md` — epistemisch **strenger** als die Messreihen-
+Metapher in §22.1–§22.7. Numerik: `collatz_eabc_invarianzprogramm.py` →
+`collatz_eabc_invarianzprogramm.json`. Strategischer Pointer: `collatz_generalangriff_2026.md`
+(EABC-Invarianzprogramm).
+
+**Label:** **Definition / Forschungsfrage** (externes Dokument); §22.1–§22.10 bleiben
+**Conjecture / Heuristik / Forschungsvision**.
+
 ### 22.10 Epistemische Zusammenfassung
 
 | Aussage | Label |
