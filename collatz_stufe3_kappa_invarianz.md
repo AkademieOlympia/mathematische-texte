@@ -219,9 +219,9 @@ Ersetzt die frühere Priorität (Attraktor, Geometrie, Präzession, κ als Haupt
 
 **Bewusst zurückgestellt:** Attraktor $E$, Geometrie ($\Phi_{\mathrm{pref}}$, Präzession), treue $\kappa$ als **Hauptangriff** — epistemisch abgegrenzt oder in Stufe 1/2B bearbeitet.
 
-### Geometrischer Nebenzweig: Morley-erweiterte Metrik
+### Geometrischer Nebenzweig: Morley-Sensorik (nicht Metrik)
 
-Parallel zur arithmetischen Stufe-3-Pipeline existiert ein **definitorischer** geometrischer Rahmen: Morley-Kern pro Dreieck, zelluläres Datenpaket $\mathcal{G}_M = (g,\mathcal{T},\operatorname{Mor}(\mathcal{T}),K_M,\Omega_M)$ und EABC-Brücke $(A,B,C)\mapsto(A,B,C,E)$ auf triangulierten Riemannschen Flächen. Eine mögliche Verzahnung mit $\kappa$-Robustheit von $R(k)$ ist **spekulativ und offen** — kein Collatz-Beweisanspruch. Vollständige Definitionen: `collatz_morley_metrik_erweiterung.md`.
+Parallel zur arithmetischen Stufe-3-Pipeline existiert ein **definitorischer** geometrischer Rahmen: Morley-Kern pro Dreieck, Sensoren $F_M$ (Gleichseitigkeitsabweichung), $S_M$ (Skala), kombiniertes $K_M$, diskretes Konformitätsfeld $\mu_M$ und Operator $T_M : \Delta \mapsto \mathrm{Mor}(\Delta)$ auf triangulierten Flächen — näher an Regge-/diskreter konformer Geometrie als an einer neuen Riemann-Metrik. EABC-Brücke: $(A,B,C)\mapsto(E_A,E_B,E_C)$ als **Operator**, nicht als zusätzlicher Punkt $E$. Verzahnung mit $\kappa$-Robustheit ist **spekulativ und offen**. Vollständige Definitionen: `collatz_morley_metrik_erweiterung.md`.
 
 ---
 
@@ -278,6 +278,6 @@ Parallel zur arithmetischen Stufe-3-Pipeline existiert ein **definitorischer** g
 | `collatz_kappa_robustheit.py` / `.json` | Drei-κ-Experimente |
 | `collatz_forbidden_words.py` / `.json` | $F_n$-Katalog ($\kappa_1$) |
 | `collatz_generalangriff_2026.md` | Forschungsreport, Stufe-3-Verweis |
-| `collatz_morley_metrik_erweiterung.md` | Morley-erweiterte Metrik, EABC-Brücke (heuristisch) |
+| `collatz_morley_metrik_erweiterung.md` | Morley-Sensorik ($F_M$, $S_M$, $K_M$, $\mu_M$, $T_M$); Brücke, nicht Hauptangriff |
 | `collatz_offene_punkte.md` | Synthese, revidierte Prioritäten |
 | `CollatzEabc.Kappa.lean` | `FaithfulKappa`, `kappaConjecture` |

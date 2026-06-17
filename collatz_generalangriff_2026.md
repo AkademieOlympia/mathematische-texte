@@ -65,7 +65,7 @@ Mittelteil ist die **arithmetische Grammatik** hinter zulässigen Collatz-Wörte
 |-----|-----|
 | Attraktor $E$ / Uniformität suchen | **Arithmetische Grammatik** hinter zulässigen Collatz-Wörtern |
 | Einzelkette $\kappa\to L_{\mathrm{arith}}\to$ Lemma E | Pipeline mit **verbotenen Mustern** $F_n$ und dynamischen Konsequenzen |
-| Geometrie als Hauptangriff | Geometrie epistemisch abgegrenzt; **$F_n$-Katalog** als Nullstellenkatalog |
+| Geometrie als Hauptangriff | Geometrie epistemisch abgegrenzt; **$F_n$-Katalog** als Nullstellenkatalog; Morley als **Sensor** ($F_M$, $S_M$, $K_M$) — `collatz_morley_metrik_erweiterung.md` |
 
 ### Vier Angriffspunkte (PR #39)
 
@@ -558,6 +558,8 @@ definiert die nächste Forschungsfrage: welche Eigenschaften der Realisierbarkei
 
 **Vollständiger Plan:** `collatz_stufe3_kappa_invarianz.md` (Branch `collatz/kappa-invarianz-stufe3`).
 
-### Morley-erweiterte Metrik (geometrischer Nebenzweig)
+**Geometrische Brücke (abgegrenzt):** `collatz_morley_metrik_erweiterung.md` — Morley nicht als Metrik, sondern als diskreter Krümmungs- und Konformitätssensor ($F_M$, $S_M$, $K_M$, $\mu_M$, Operator $T_M$).
 
-Unabhängig von der operativen Stufe-3-Arbeit (Fragen A/B/C zu $\kappa$ und $R(k)$) formalisiert `collatz_morley_metrik_erweiterung.md` einen **zellulären Erweiterungsrahmen** für triangulierte Riemannsche Flächen: klassisches $g$ plus Morley-Datenpaket $\mathcal{G}_M$, diskreter Krümmungssensor $K_M(\Delta)=\sum(\angle_j-\pi/3)^2$ (nicht Gauß-Krümmung), erweiterte Bogenlänge $ds_M^2=ds^2+\lambda\,d\mu_M^2$, und heuristische Brücke Dreieck $(A,B,C)+\operatorname{Mor}(\Delta)\leadsto$ EABC-Zelle $(A,B,C,E)$. Bezug zu `MorleyWalter.tex`, `bamberg_ptolemy_walter_morley.tex`, `collatz_dc_morley_walter.pdf`. Eine Verbindung zur $\kappa$-Robustheit von Sprachverdünnung ist **spekulativ** — epistemisch zurückgestellt, **kein** Collatz-Beweisanspruch.
+### Morley-Sensorik (geometrischer Nebenzweig)
+
+Unabhängig von der operativen Stufe-3-Arbeit formalisiert `collatz_morley_metrik_erweiterung.md` Morley als **diskreten Krümmungs- und Konformitätssensor** (nicht als neue Riemann-Metrik): **Morley-Form** $F_M$ (Gleichseitigkeitsabweichung), **Morley-Skala** $S_M$ (Flächenverhältnis), kombiniertes $K_M = \alpha F_M + \beta(S_M-S_0)^2$, diskretes **Konformitätsfeld** $\mu_M = (m_2-m_1)/(z_2-z_1)$ und Operator $T_M : \Delta \mapsto \mathrm{Mor}(\Delta)$ mit EABC-Brücke $(A,B,C)\mapsto(E_A,E_B,E_C)$. Nähe zu Regge-Kalkül und diskreter konformer Geometrie. Gauß-Asymptotik $K_M \sim c_1 K_G + \cdots$ ist **Conjecture** (offen). Bezug zu `MorleyWalter.tex`, `collatz_dc_morley_walter.pdf`. Verbindung zu κ-Robustheit **spekulativ** — kein Collatz-Beweisanspruch.
