@@ -19,6 +19,10 @@ Krümmungssensor. G_M wird als signierter Morley-Fehler eingeführt; er ist kein
 bewiesener Krümmungssensor, sondern eine experimentelle Testgröße. M2 prüft, ob
 sign(G_M) mit sign(K_G) korreliert.
 
+W_M ist ein experimenteller Walter-Flächensensor: W_M = Area(H_W)/Area(Δ) − 1/10.
+Auf R² folgt W_M ≈ 0 aus dem Marion-Walter-Satz; auf S²/H² nur chart-nähe
+Numerik — kein bewiesener Satz auf gekrümmten Flächen.
+
 Grenzen (ehrlich)
 -----------------
 - Vier Varianten sind numerische Approximationen, keine Levi-Civita-Implementierung
@@ -196,6 +200,167 @@ def morley_form_gm(vertices: Sequence[Array]) -> float:
     """G_M(Δ) = Σ (θ_i^M - π/3) für Morley-Dreieck (euklidisch)."""
     mor = morley_vertices_euclidean(vertices)
     return _morley_gm_from_angles(_triangle_angles(mor))
+
+
+# ---------------------------------------------------------------------------
+# Marion Walter (Flächen-Sensor W_M) — euklidisch exakt, gekrümmt chart-nah
+# ---------------------------------------------------------------------------
+
+WALTER_EUCLIDEAN_AREA_RATIO = 1.0 / 10.0
+
+
+def _trisect_segment(p: Array, q: Array) -> tuple[Array, Array]:
+    """Teilt Strecke pq in Drittel; Rückgabe der beiden inneren Trisektionspunkte."""
+    p = np.asarray(p, dtype=float)
+    q = np.asarray(q, dtype=float)
+    return p + (q - p) / 3.0, p + 2.0 * (q - p) / 3.0
+
+
+def _point_in_open_triangle_2d(p: Vec2, a: Vec2, b: Vec2, c: Vec2, tol: float = 1e-9) -> bool:
+    v0 = c - a
+    v1 = b - a
+    v2 = p - a
+    d00 = float(np.dot(v0, v0))
+    d01 = float(np.dot(v0, v1))
+    d11 = float(np.dot(v1, v1))
+    d20 = float(np.dot(v2, v0))
+    d21 = float(np.dot(v2, v1))
+    den = d00 * d11 - d01 * d01
+    if abs(den) < 1e-18:
+        return False
+    v = (d11 * d20 - d01 * d21) / den
+    w = (d00 * d21 - d01 * d20) / den
+    return v > tol and w > tol and v + w < 1.0 - tol
+
+
+def _polygon_area_2d(vertices: Sequence[Vec2]) -> float:
+    pts = [np.asarray(v, dtype=float) for v in vertices]
+    if len(pts) < 3:
+        return 0.0
+    area2 = 0.0
+    for i in range(len(pts)):
+        x1, y1 = pts[i]
+        x2, y2 = pts[(i + 1) % len(pts)]
+        area2 += x1 * y2 - x2 * y1
+    return 0.5 * abs(area2)
+
+
+def _walter_cevian_intersections_euclidean(vertices: Sequence[Vec2]) -> list[Vec2]:
+    """
+    Marion-Walter-Konstruktion in R²: Seitentrisektion, Cevianen zum Gegen-Eck.
+
+    Die 12 inneren Schnittpunkte verschiedener Cevianen; das zentrale Hexagon
+    wird durch die 6 Schnittpunkte mit kleinstem Abstand zum Dreieckschwerpunkt
+    approximiert (äquivalent zur klassischen HIJKLO-Reihenfolge).
+    """
+    a, b, c = [np.asarray(v, dtype=float) for v in vertices]
+    if _signed_area2(a, b, c) < 0:
+        a, c = c, a
+    d, e = _trisect_segment(b, c)
+    f, g = _trisect_segment(c, a)
+    h, i = _trisect_segment(a, b)
+    cevians = (
+        (a, d),
+        (a, e),
+        (b, f),
+        (b, g),
+        (c, h),
+        (c, i),
+    )
+    inner: list[Vec2] = []
+    for i_idx in range(len(cevians)):
+        o1, t1 = cevians[i_idx]
+        d1 = t1 - o1
+        for j_idx in range(i_idx + 1, len(cevians)):
+            o2, t2 = cevians[j_idx]
+            if np.allclose(o1, o2):
+                continue
+            d2 = t2 - o2
+            try:
+                p = _line_intersection_2d(o1, d1, o2, d2)
+            except ValueError:
+                continue
+            if _point_in_open_triangle_2d(p, a, b, c):
+                inner.append(p)
+    uniq: list[Vec2] = []
+    for p in inner:
+        if not any(float(np.linalg.norm(p - q)) < 1e-8 for q in uniq):
+            uniq.append(p)
+    if len(uniq) < 6:
+        raise ValueError("Walter-Hexagon: zu wenige innere Schnittpunkte")
+    centroid = (a + b + c) / 3.0
+    uniq.sort(key=lambda p: float(np.linalg.norm(p - centroid)))
+    return uniq[:6]
+
+
+def walter_hexagon_vertices_euclidean(vertices: Sequence[Vec2]) -> tuple[Vec2, ...]:
+    """Eckpunkte des zentralen Walter-Hexagons (geordnet um den Schwerpunkt)."""
+    hex_pts = _walter_cevian_intersections_euclidean(vertices)
+    cen = np.mean(hex_pts, axis=0)
+    ordered = sorted(hex_pts, key=lambda p: math.atan2(p[1] - cen[1], p[0] - cen[0]))
+    return tuple(ordered)
+
+
+def walter_hexagon_area(vertices: Sequence[Array]) -> float:
+    """
+    Fläche des Walter-Hexagons H_W(Δ).
+
+    R²: exakte Marion-Walter-Konstruktion (Satz: Fläche = Area(Δ)/10).
+    S²/H²: lokale Karte am Schwerpunkt (chart-nah, keine Geodätik-Garantie).
+    """
+    verts = [np.asarray(v, dtype=float) for v in vertices]
+    if len(verts) == 3 and verts[0].shape == (2,):
+        return _polygon_area_2d(walter_hexagon_vertices_euclidean(verts))
+    if len(verts) == 3 and verts[0].shape == (3,):
+        a, b, c = [_unit(v) for v in verts]
+        p = _triangle_centroid_sphere(a, b, c)
+        e1, e2 = _tangent_basis_at_sphere(p)
+        tri2d = (
+            _log_map_sphere(p, a, e1, e2),
+            _log_map_sphere(p, b, e1, e2),
+            _log_map_sphere(p, c, e1, e2),
+        )
+        return walter_hexagon_area(tri2d)
+    raise ValueError("walter_hexagon_area: Dreieck in R² oder S² erwartet")
+
+
+def walter_hexagon_area_hyperbolic(vertices: Sequence[Vec3]) -> float:
+    """Walter-Hexagonfläche via lokaler Karte am Hyperboloid-Schwerpunkt."""
+    a, b, c = [_hyperboloid_normalize(np.asarray(v, dtype=float)) for v in vertices]
+    p = _triangle_centroid_hyperboloid(a, b, c)
+    e1, e2 = _tangent_basis_at_hyperboloid(p)
+    tri2d = (
+        _log_map_hyperboloid(p, a, e1, e2),
+        _log_map_hyperboloid(p, b, e1, e2),
+        _log_map_hyperboloid(p, c, e1, e2),
+    )
+    return walter_hexagon_area(tri2d)
+
+
+def walter_form_wm(vertices: Sequence[Array], triangle_area: float | None = None) -> float:
+    """
+    W_M(Δ) = Area(H_W(Δ)) / Area(Δ) − 1/10.
+
+    Auf R² gilt W_M ≈ 0 (Marion-Walter-Satz). Auf S²/H² ist dies ein
+    experimenteller chart-näher Walter-Krümmungssensor — kein Theorem.
+    """
+    verts = [np.asarray(v, dtype=float) for v in vertices]
+    if triangle_area is None:
+        if len(verts) == 3 and verts[0].shape == (2,):
+            triangle_area = _triangle_area(verts)
+        elif len(verts) == 3 and verts[0].shape == (3,):
+            raise ValueError("walter_form_wm: triangle_area für S²/H² angeben")
+        else:
+            raise ValueError("walter_form_wm: ungültige Eckpunkte")
+    if triangle_area < 1e-18:
+        return 0.0
+    if len(verts) == 3 and verts[0].shape == (2,):
+        hex_area = walter_hexagon_area(verts)
+    elif len(verts) == 3 and verts[0].shape == (3,):
+        hex_area = walter_hexagon_area(verts)
+    else:
+        raise ValueError("walter_form_wm: Dreieck in R² oder S² erwartet")
+    return hex_area / triangle_area - WALTER_EUCLIDEAN_AREA_RATIO
 
 
 # ---------------------------------------------------------------------------
@@ -652,6 +817,7 @@ class M2SurfaceSample:
     area: float
     f_m: float
     g_m: float
+    w_m: float
     f_m_over_a: float
 
 
@@ -673,6 +839,7 @@ class M2GeometrySummary:
     kg: float
     f_m_median: float
     g_m_median: float
+    w_m_median: float
     f_m_over_a_median: float
     f_m_over_a2_median: float
     n_epsilons: int
@@ -680,7 +847,7 @@ class M2GeometrySummary:
 
 @dataclass
 class M2SignTest:
-    """M2a (F_M Stärke) + M2b (G_M Vorzeichen) vor Exponentenfit."""
+    """M2a (F_M Stärke) + M2b (G_M Vorzeichen) + W_M (Walter-Fläche) vor Exponentenfit."""
 
     plane_fm_median: float
     sphere_fm_median: float
@@ -688,22 +855,37 @@ class M2SignTest:
     plane_gm_median: float
     sphere_gm_median: float
     hyperbolic_gm_median: float
+    plane_wm_median: float
+    sphere_wm_median: float
+    hyperbolic_wm_median: float
     plane_near_zero: bool
     sphere_positive: bool
     hyperbolic_positive: bool
     plane_gm_near_zero: bool
+    plane_wm_near_zero: bool
     paired_epsilons: list[float]
     sphere_fm_at_eps: list[float]
     hyperbolic_fm_at_eps: list[float]
     sphere_gm_at_eps: list[float]
     hyperbolic_gm_at_eps: list[float]
+    sphere_wm_at_eps: list[float]
+    hyperbolic_wm_at_eps: list[float]
     ratio_sphere_over_hyperbolic: list[float]
     median_ratio_sphere_over_hyperbolic: float
     curvature_sign_detected: bool
     gm_opposite_signs: bool
     gm_sign_detected: bool
+    wm_opposite_signs: bool
+    wm_sign_detected: bool
+    gm_wm_same_sign_sphere: bool
+    gm_wm_same_sign_hyperbolic: bool
+    gm_wm_sign_agreement: bool
+    wm_kg_sign_sphere: bool
+    wm_kg_sign_hyperbolic: bool
+    wm_kg_sign_agreement: bool
     interpretation: str
     gm_interpretation: str
+    wm_interpretation: str
 
 
 @dataclass
@@ -1020,6 +1202,20 @@ def _m2_gm_for_surface(surface: str, tri: Sequence[Array], variant: str) -> floa
     raise ValueError(f"unbekannte Fläche: {surface}")
 
 
+def _m2_wm_for_surface(surface: str, tri: Sequence[Array]) -> float:
+    """W_M mit geodätischer Dreiecksfläche als Nenner (Hexagon chart-nah auf S²/H²)."""
+    area = _m2_triangle_area(surface, tri)
+    if surface == "R2":
+        return walter_form_wm(tri, triangle_area=area)
+    if surface == "S2":
+        hex_area = walter_hexagon_area(tri)
+        return hex_area / area - WALTER_EUCLIDEAN_AREA_RATIO if area > 1e-18 else 0.0
+    if surface == "H2":
+        hex_area = walter_hexagon_area_hyperbolic(tri)
+        return hex_area / area - WALTER_EUCLIDEAN_AREA_RATIO if area > 1e-18 else 0.0
+    raise ValueError(f"unbekannte Fläche: {surface}")
+
+
 def _m2_triangle_area(surface: str, tri: Sequence[Array]) -> float:
     if surface == "R2":
         return _triangle_area(tri)
@@ -1142,6 +1338,7 @@ def _collect_m3_samples(
             area = _m2_triangle_area(surf, tri)
             fm = _m2_fm_for_surface(surf, tri, variant=variant)
             gm = _m2_gm_for_surface(surf, tri, variant=variant)
+            wm = _m2_wm_for_surface(surf, tri)
             ratio = fm / area if area > 1e-16 else float("nan")
             samples.append(
                 M2SurfaceSample(
@@ -1151,6 +1348,7 @@ def _collect_m3_samples(
                     area=area,
                     f_m=fm,
                     g_m=gm,
+                    w_m=wm,
                     f_m_over_a=ratio,
                 )
             )
@@ -1240,6 +1438,11 @@ def _median_gm(samples: Sequence[M2SurfaceSample], surface: str) -> float:
     return float(np.median(vals)) if vals else float("nan")
 
 
+def _median_wm(samples: Sequence[M2SurfaceSample], surface: str) -> float:
+    vals = [s.w_m for s in samples if s.surface == surface]
+    return float(np.median(vals)) if vals else float("nan")
+
+
 def _compute_m2_geometry_table(samples: Sequence[M2SurfaceSample]) -> list[M2GeometrySummary]:
     """M2a/b/c: F_M, F_M/A, F_M/A² — Median über ε pro Geometrie."""
     labels = (
@@ -1254,6 +1457,7 @@ def _compute_m2_geometry_table(samples: Sequence[M2SurfaceSample]) -> list[M2Geo
             continue
         f_m_vals = [s.f_m for s in pts]
         g_m_vals = [s.g_m for s in pts]
+        w_m_vals = [s.w_m for s in pts]
         ratio_a = [s.f_m_over_a for s in pts if math.isfinite(s.f_m_over_a)]
         ratio_a2 = [
             s.f_m / (s.area * s.area)
@@ -1266,6 +1470,7 @@ def _compute_m2_geometry_table(samples: Sequence[M2SurfaceSample]) -> list[M2Geo
                 kg=kg,
                 f_m_median=float(np.median(f_m_vals)),
                 g_m_median=float(np.median(g_m_vals)),
+                w_m_median=float(np.median(w_m_vals)),
                 f_m_over_a_median=float(np.median(ratio_a)) if ratio_a else float("nan"),
                 f_m_over_a2_median=float(np.median(ratio_a2)) if ratio_a2 else float("nan"),
                 n_epsilons=len(pts),
@@ -1275,18 +1480,22 @@ def _compute_m2_geometry_table(samples: Sequence[M2SurfaceSample]) -> list[M2Geo
 
 
 def _compute_m2_sign_test(samples: Sequence[M2SurfaceSample]) -> M2SignTest:
-    """M2a: F_M bei K_G=0, K_G>0, K_G<0; M2b: G_M-Vorzeichen S² vs H²."""
+    """M2a: F_M bei K_G=0, K_G>0, K_G<0; M2b: G_M-Vorzeichen; W_M Walter-Fläche."""
     plane_med = _median_fm(samples, "R2")
     sphere_med = _median_fm(samples, "S2")
     hyper_med = _median_fm(samples, "H2")
     plane_gm_med = _median_gm(samples, "R2")
     sphere_gm_med = _median_gm(samples, "S2")
     hyper_gm_med = _median_gm(samples, "H2")
+    plane_wm_med = _median_wm(samples, "R2")
+    sphere_wm_med = _median_wm(samples, "S2")
+    hyper_wm_med = _median_wm(samples, "H2")
 
     plane_near_zero = all(s.f_m < 1e-20 for s in samples if s.surface == "R2")
     sphere_positive = all(s.f_m > 0.0 for s in samples if s.surface == "S2")
     hyperbolic_positive = all(s.f_m > 0.0 for s in samples if s.surface == "H2")
     plane_gm_near_zero = all(abs(s.g_m) < 1e-12 for s in samples if s.surface == "R2")
+    plane_wm_near_zero = all(abs(s.w_m) < 1e-10 for s in samples if s.surface == "R2")
 
     eps_set = sorted({s.epsilon for s in samples})
     paired_eps: list[float] = []
@@ -1294,6 +1503,8 @@ def _compute_m2_sign_test(samples: Sequence[M2SurfaceSample]) -> M2SignTest:
     hyper_at_eps: list[float] = []
     sphere_gm_at_eps: list[float] = []
     hyper_gm_at_eps: list[float] = []
+    sphere_wm_at_eps: list[float] = []
+    hyper_wm_at_eps: list[float] = []
     ratios: list[float] = []
     for eps in eps_set:
         s_pt = next((s for s in samples if s.surface == "S2" and s.epsilon == eps), None)
@@ -1305,13 +1516,13 @@ def _compute_m2_sign_test(samples: Sequence[M2SurfaceSample]) -> M2SignTest:
         hyper_at_eps.append(h_pt.f_m)
         sphere_gm_at_eps.append(s_pt.g_m)
         hyper_gm_at_eps.append(h_pt.g_m)
+        sphere_wm_at_eps.append(s_pt.w_m)
+        hyper_wm_at_eps.append(h_pt.w_m)
         ratios.append(s_pt.f_m / h_pt.f_m)
 
     med_ratio = float(np.median(ratios)) if ratios else float("nan")
-    # F_M: Vorzeichen erkannt, wenn S²/H² systematisch von 1 abweicht (>5 %)
     sign_detected = math.isfinite(med_ratio) and (med_ratio < 0.95 or med_ratio > 1.05)
 
-    # G_M: entgegengesetzte Vorzeichen oder systematische Trennung
     gm_opposite = (
         math.isfinite(sphere_gm_med)
         and math.isfinite(hyper_gm_med)
@@ -1321,6 +1532,34 @@ def _compute_m2_sign_test(samples: Sequence[M2SurfaceSample]) -> M2SignTest:
         sg * hg < 0.0 for sg, hg in zip(sphere_gm_at_eps, hyper_gm_at_eps, strict=True)
     )
     gm_sign_detected = gm_opposite or gm_paired_opposite
+
+    wm_opposite = (
+        math.isfinite(sphere_wm_med)
+        and math.isfinite(hyper_wm_med)
+        and sphere_wm_med * hyper_wm_med < 0.0
+    )
+    wm_paired_opposite = bool(sphere_wm_at_eps and hyper_wm_at_eps) and all(
+        sw * hw < 0.0 for sw, hw in zip(sphere_wm_at_eps, hyper_wm_at_eps, strict=True)
+    )
+    wm_sign_detected = wm_opposite or wm_paired_opposite
+
+    sphere_samples = [s for s in samples if s.surface == "S2"]
+    hyper_samples = [s for s in samples if s.surface == "H2"]
+    gm_wm_same_sign_sphere = bool(sphere_samples) and all(
+        s.g_m * s.w_m > 0.0 or abs(s.g_m) < 1e-12 or abs(s.w_m) < 1e-12 for s in sphere_samples
+    )
+    gm_wm_same_sign_hyperbolic = bool(hyper_samples) and all(
+        s.g_m * s.w_m > 0.0 or abs(s.g_m) < 1e-12 or abs(s.w_m) < 1e-12 for s in hyper_samples
+    )
+    gm_wm_sign_agreement = gm_wm_same_sign_sphere and gm_wm_same_sign_hyperbolic
+
+    wm_kg_sign_sphere = bool(sphere_samples) and all(
+        s.w_m * s.kg > 0.0 or abs(s.w_m) < 1e-12 for s in sphere_samples
+    )
+    wm_kg_sign_hyperbolic = bool(hyper_samples) and all(
+        s.w_m * s.kg > 0.0 or abs(s.w_m) < 1e-12 for s in hyper_samples
+    )
+    wm_kg_sign_agreement = wm_kg_sign_sphere and wm_kg_sign_hyperbolic
 
     if sign_detected:
         interpretation = (
@@ -1349,6 +1588,21 @@ def _compute_m2_sign_test(samples: Sequence[M2SurfaceSample]) -> M2SignTest:
     else:
         gm_interpretation = "G_M-Vorzeichenstruktur unklar — weitere Daten nötig."
 
+    if wm_sign_detected and gm_wm_sign_agreement and wm_kg_sign_agreement:
+        wm_interpretation = (
+            "W_M (chart-nah) zeigt Vorzeichenkorrelation mit G_M und sign(K_G) — experimentell, kein Walter-Theorem auf S²/H²."
+        )
+    elif wm_sign_detected:
+        wm_interpretation = (
+            "W_M trennt S²/H² im Vorzeichen; Kopplung zu G_M oder K_G nur teilweise — chart-Näherung."
+        )
+    elif plane_wm_near_zero:
+        wm_interpretation = (
+            "W_M≈0 auf R² (Marion-Walter-Kontrolle); auf gekrümmten Flächen kein klares Vorzeichenmuster."
+        )
+    else:
+        wm_interpretation = "W_M-Struktur unklar — Walter auf S²/H² nicht theorematisch abgesichert."
+
     return M2SignTest(
         plane_fm_median=plane_med,
         sphere_fm_median=sphere_med,
@@ -1356,22 +1610,37 @@ def _compute_m2_sign_test(samples: Sequence[M2SurfaceSample]) -> M2SignTest:
         plane_gm_median=plane_gm_med,
         sphere_gm_median=sphere_gm_med,
         hyperbolic_gm_median=hyper_gm_med,
+        plane_wm_median=plane_wm_med,
+        sphere_wm_median=sphere_wm_med,
+        hyperbolic_wm_median=hyper_wm_med,
         plane_near_zero=plane_near_zero,
         sphere_positive=sphere_positive,
         hyperbolic_positive=hyperbolic_positive,
         plane_gm_near_zero=plane_gm_near_zero,
+        plane_wm_near_zero=plane_wm_near_zero,
         paired_epsilons=paired_eps,
         sphere_fm_at_eps=sphere_at_eps,
         hyperbolic_fm_at_eps=hyper_at_eps,
         sphere_gm_at_eps=sphere_gm_at_eps,
         hyperbolic_gm_at_eps=hyper_gm_at_eps,
+        sphere_wm_at_eps=sphere_wm_at_eps,
+        hyperbolic_wm_at_eps=hyper_wm_at_eps,
         ratio_sphere_over_hyperbolic=ratios,
         median_ratio_sphere_over_hyperbolic=med_ratio,
         curvature_sign_detected=sign_detected,
         gm_opposite_signs=gm_opposite,
         gm_sign_detected=gm_sign_detected,
+        wm_opposite_signs=wm_opposite,
+        wm_sign_detected=wm_sign_detected,
+        gm_wm_same_sign_sphere=gm_wm_same_sign_sphere,
+        gm_wm_same_sign_hyperbolic=gm_wm_same_sign_hyperbolic,
+        gm_wm_sign_agreement=gm_wm_sign_agreement,
+        wm_kg_sign_sphere=wm_kg_sign_sphere,
+        wm_kg_sign_hyperbolic=wm_kg_sign_hyperbolic,
+        wm_kg_sign_agreement=wm_kg_sign_agreement,
         interpretation=interpretation,
         gm_interpretation=gm_interpretation,
+        wm_interpretation=wm_interpretation,
     )
 
 
@@ -1409,6 +1678,7 @@ def run_m2_sensor(
             area = _m2_triangle_area(surf, tri)
             fm = _m2_fm_for_surface(surf, tri, variant=variant)
             gm = _m2_gm_for_surface(surf, tri, variant=variant)
+            wm = _m2_wm_for_surface(surf, tri)
             ratio = fm / area if area > 1e-16 else float("nan")
             samples.append(
                 M2SurfaceSample(
@@ -1418,6 +1688,7 @@ def run_m2_sensor(
                     area=area,
                     f_m=fm,
                     g_m=gm,
+                    w_m=wm,
                     f_m_over_a=ratio,
                 )
             )
@@ -1450,9 +1721,10 @@ def run_m2_sensor(
     notes = [
         "M2a: F_M — Krümmungsstärke-Testgröße (nichtnegativ, |K_G|-Proxy).",
         "M2b: G_M = Σ(θ_i^M - π/3) — signierter Morley-Fehler; experimenteller Kandidat; M2 prüft sign(G_M) vs sign(K_G).",
+        "M2b': W_M = Area(H_W)/Area(Δ) − 1/10 — Walter-Flächensensor; R² exakt (Marion-Walter), S²/H² chart-nah (kein Theorem).",
         "M2c: F_M = c |K_G|^α A^β — α, β aus Daten, nicht vorausgesetzt.",
         "Kanoniche Variante: local_chart (M1: O(ε³)-Evidenz für 2.-Ordnung-Geometrie).",
-        "K_G=0 nur Kontrolle (F_M≈0, G_M≈0); Exponentenfit nur K_G≠0.",
+        "K_G=0 nur Kontrolle (F_M≈0, G_M≈0, W_M≈0); Exponentenfit nur K_G≠0.",
         "M3 erst nach M2a/b: getrennte Fits F_M~c_F|K|^α A^β, G_M~c_G K^α A^β.",
     ]
 
@@ -1632,12 +1904,13 @@ def _print_m2_report(report: M2Report) -> None:
 
     if report.geometry_table:
         print("\nM2a/b — Geometrietabelle (Median über ε-Familie):")
-        print(f"  {'Geometrie':<22} {'F_M':>12} {'G_M':>12} {'F_M/A':>12} {'F_M/A²':>12}")
+        print(f"  {'Geometrie':<22} {'F_M':>12} {'G_M':>12} {'W_M':>12} {'F_M/A':>12} {'F_M/A²':>12}")
         for row in report.geometry_table:
             print(
                 f"  {row.geometry:<22} "
                 f"{row.f_m_median:12.3e} "
                 f"{row.g_m_median:12.3e} "
+                f"{row.w_m_median:12.3e} "
                 f"{row.f_m_over_a_median:12.3e} "
                 f"{row.f_m_over_a2_median:12.3e}"
             )
@@ -1680,6 +1953,32 @@ def _print_m2_report(report: M2Report) -> None:
         ):
             print(f"    ε={eps:.3f}  G_M(S²)={gs:.5e}  G_M(H²)={gh:.5e}")
         print(f"  → {st.gm_interpretation}")
+
+        print("\nM2b' — W_M Walter-Fläche (experimentell, chart-nah auf S²/H²):")
+        print(f"  R²  (K_G=0):  median W_M = {st.plane_wm_median:.3e}  near_zero={st.plane_wm_near_zero}")
+        print(f"  S²  (K_G>0):  median W_M = {st.sphere_wm_median:.3e}")
+        print(f"  H²  (K_G<0):  median W_M = {st.hyperbolic_wm_median:.3e}")
+        print(
+            f"  W_M Vorzeichen: opposite_medians={st.wm_opposite_signs}  "
+            f"sign_detected={st.wm_sign_detected}"
+        )
+        print(
+            f"  sign(G_M) vs sign(W_M): S²={st.gm_wm_same_sign_sphere}  H²={st.gm_wm_same_sign_hyperbolic}  "
+            f"gesamt={st.gm_wm_sign_agreement}"
+        )
+        print(
+            f"  sign(W_M) vs sign(K_G): S²={st.wm_kg_sign_sphere}  H²={st.wm_kg_sign_hyperbolic}  "
+            f"gesamt={st.wm_kg_sign_agreement}"
+        )
+        print("  Paarvergleich (ε, W_M(S²), W_M(H²)):")
+        for eps, ws, wh in zip(
+            st.paired_epsilons,
+            st.sphere_wm_at_eps,
+            st.hyperbolic_wm_at_eps,
+            strict=True,
+        ):
+            print(f"    ε={eps:.3f}  W_M(S²)={ws:.5e}  W_M(H²)={wh:.5e}")
+        print(f"  → {st.wm_interpretation}")
 
     print("\nM2a — F_M/A nach Fläche:")
     for surf in ("R2", "S2", "H2"):

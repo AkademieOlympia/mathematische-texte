@@ -67,6 +67,33 @@ $\varepsilon$-Familie: $\{0{,}05,\;0{,}08,\;0{,}12,\;0{,}18,\;0{,}25,\;0{,}35\}$
 
 ---
 
+## Walter-Sensor $W_M$ — unabhängige Flächeninformation (M2-Erweiterung)
+
+Morley ($F_M$, $G_M$) misst **Winkelstruktur** des Morley-Dreiecks; Marion Walter misst **Flächenstruktur** des zentralen Hexagons $H_W(\Delta)$:
+
+$$W_M(\Delta) = \frac{\mathrm{Area}(H_W(\Delta))}{\mathrm{Area}(\Delta)} - \frac{1}{10}.$$
+
+| Aspekt | $G_M$ (Winkel) | $W_M$ (Fläche) |
+|--------|----------------|----------------|
+| Euklidische Referenz | Morley-Satz → $\approx 0$ | Marion-Walter-Satz → $\approx 0$ |
+| Gekrümmt | chart-basierter Morley-Operator | chart-nähe Trisektion + Cevianen |
+| Epistemischer Status | experimenteller Vorzeichen-Kandidat | experimenteller Flächen-Kandidat |
+| Theorem auf $S^2/H^2$? | nein | **nein** |
+
+**Numerik (Median, `local_chart`, `collatz_morley_m2_sensor.json`):**
+
+| Raum | $W_M$ |
+|------|-------|
+| $\mathbb{R}^2$ | $\approx 0$ |
+| $S^2$ | $\approx -6{,}8\times 10^{-4}$ |
+| $H^2$ | $\approx +6{,}8\times 10^{-4}$ |
+
+**Vorzeichen-Test:** $\operatorname{sign}(G_M)=\operatorname{sign}(K_G)$ (ja), aber $\operatorname{sign}(W_M)=-\operatorname{sign}(G_M)$ auf $S^2/H^2$ — $W_M$ ist **nicht** parallel zum Morley-Vorzeichensensor, sondern liefert orthogonale Flächeninformation. Das spricht **für** die Unabhängigkeit der Sensoren, nicht für einen einfachen gemeinsamen Krümmungsindikator.
+
+**Implementierung:** `walter_hexagon_area`, `walter_form_wm` in `collatz_morley_tm_numerik.py`; Tests in `tests/test_morley_walter_wm.py`.
+
+---
+
 ## Argumente **für** den experimentellen Kandidaten
 
 1. **Vorzeichenkonsistenz:** $\operatorname{sign}(G_M)=\operatorname{sign}(K_G)$ auf $S^2$ und $H^2$ bei jedem $\varepsilon$ der Familie — nicht nur im Median.
@@ -83,7 +110,8 @@ $\varepsilon$-Familie: $\{0{,}05,\;0{,}08,\;0{,}12,\;0{,}18,\;0{,}25,\;0{,}35\}$
 3. **Eine kanonische Variante im Fit:** Der Exponentenfit nutzt `local_chart`; Varianten-Invarianz von $c_G$, $\beta$ ist nicht gefittet.
 4. **Konstantes $|K_G|$:** Auf $S^2/H^2$ mit $K_G=\pm 1$ ist $\alpha$ degeneriert — echte $|K|$-Skalierung braucht variable Krümmung oder mehr Modellräume.
 5. **Hyperbolisches $H^2$:** Numerisches Patch-Modell, keine vollständige Levi-Civita-Implementierung.
-6. **Keine globale Aussage:** M1-$O(\varepsilon^3)$-Evidenz rechtfertigt keine Aussage über globale Krümmungserkennung.
+6. **Orthogonale Sensoren:** $W_M$ (Fläche) und $G_M$ (Winkel) können entgegengesetzte Vorzeichen auf $S^2/H^2$ zeigen — kombinierte $(F_M, G_M, W_M)$-Analyse nötig, kein einzelner Krümmungsindikator.
+7. **Keine globale Aussage:** M1-$O(\varepsilon^3)$-Evidenz rechtfertigt keine Aussage über globale Krümmungserkennung.
 
 ---
 

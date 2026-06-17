@@ -124,38 +124,59 @@ M1-Ergebnis (PR #44): Szenario **D** — log-log-Steigung $\approx 3$ für alle 
 
 > **M2 testet, ob sign(G_M) mit sign(K_G) korreliert.**
 
-M2 prüft $F_M$ und $G_M$ auf Kontroll- und Testflächen mit bekannter $K_G \in \{0, +1, -1\}$, **dieselbe $\varepsilon$-Familie** $\{0{,}05, 0{,}08, 0{,}12, 0{,}18, 0{,}25, 0{,}35\}$.
+M2 prüft $F_M$, $G_M$ und $W_M$ auf Kontroll- und Testflächen mit bekannter $K_G \in \{0, +1, -1\}$, **dieselbe $\varepsilon$-Familie** $\{0{,}05, 0{,}08, 0{,}12, 0{,}18, 0{,}25, 0{,}35\}$.
 
 **Definitionen:**
 $$F_M(\Delta) = \sum_i (\theta_i^M - \pi/3)^2, \qquad
-G_M(\Delta) = \sum_i (\theta_i^M - \pi/3).$$
+G_M(\Delta) = \sum_i (\theta_i^M - \pi/3), \qquad
+W_M(\Delta) = \frac{\mathrm{Area}(H_W(\Delta))}{\mathrm{Area}(\Delta)} - \frac{1}{10}.$$
 
 > G_M wird als signierter Morley-Fehler eingeführt. Er ist kein bewiesener Krümmungssensor, sondern eine experimentelle Testgröße, mit der geprüft wird, ob der geodätische Morley-Operator zwischen positiver und negativer Krümmung unterscheiden kann.
+
+> $W_M$ nutzt die Marion-Walter-Hexagonkonstruktion (Seitentrisektion, Cevianen zum Gegen-Eck). Auf $\mathbb{R}^2$ gilt $\mathrm{Area}(H_W)=\mathrm{Area}(\Delta)/10$ **als Theorem**; auf $S^2/H^2$ nur chart-nähe Numerik (`local_chart` am Schwerpunkt) — **kein** Walter-Theorem auf gekrümmten Flächen.
+
+**Morley vs. Walter (unabhängige Sensoren):**
+
+| Sensor | Misst | Euklidische Referenz | Gekrümmt |
+|--------|-------|----------------------|----------|
+| $F_M$ | Winkelstruktur (Betrag) | Morley-Satz ($\approx 0$) | Krümmungsstärke-Proxy |
+| $G_M$ | Winkelstruktur (Vorzeichen) | Morley-Satz ($\approx 0$) | experimenteller Vorzeichen-Kandidat |
+| $W_M$ | Flächenstruktur | Marion-Walter ($1/10$) | experimenteller Flächen-Kandidat (chart-nah) |
 
 **Kernpunkt:** $F_M$ ist eine **nichtnegative Testgröße** (Krümmungsstärke-Proxy), **kein** natürlicher Vorzeichen-Indikator. Da $F_M \geq 0$, kann $F_M(K{=}{+}1) \approx F_M(K{=}{-}1)$ bei gleicher Fläche gelten.
 
 > **Boxed (M2-Leitfragen):**  
 > 1. Ist Morley bei $K \neq 0$ verzerrt?  
-> 2. Korreliert $\operatorname{sign}(G_M)$ mit $\operatorname{sign}(K_G)$?
+> 2. Korreliert $\operatorname{sign}(G_M)$ mit $\operatorname{sign}(K_G)$?  
+> 3. Liefert $W_M$ unabhängige Flächeninformation — und korreliert $\operatorname{sign}(W_M)$ mit $\operatorname{sign}(G_M)$ bzw. $\operatorname{sign}(K_G)$?
 
 > **Boxed (M2-Roadmap):**  
 > - **M2a:** $F_M$ als Krümmungsstärke-Testgröße  
-> - **M2b:** $G_M$ als experimenteller Kandidat für Vorzeichen-Kopplung
+> - **M2b:** $G_M$ als experimenteller Kandidat für Vorzeichen-Kopplung  
+> - **M2b':** $W_M$ als experimenteller Walter-Flächensensor (chart-nah auf $S^2/H^2$)
 
 **Testmatrix** (Median über $\varepsilon$-Familie, `local_chart`, Quelle: `collatz_morley_m2_sensor.json`):
 
-| Raum | $K$ | $F_M$ | $G_M$ |
-|------|-----|-------|-------|
-| Ebene | $0$ | $\approx 0$ ($6{,}2\times 10^{-31}$) | $\approx 0$ ($2{,}2\times 10^{-16}$) |
-| Sphäre | $+1$ | $> 0$ ($4{,}1\times 10^{-7}$) | $> 0$ ($+1{,}04\times 10^{-3}$) |
-| Hyperbolisch | $-1$ | $> 0$ ($4{,}1\times 10^{-7}$) | $< 0$ ($-1{,}04\times 10^{-3}$) |
+| Raum | $K$ | $F_M$ | $G_M$ | $W_M$ |
+|------|-----|-------|-------|-------|
+| Ebene | $0$ | $\approx 0$ ($6{,}2\times 10^{-31}$) | $\approx 0$ ($2{,}2\times 10^{-16}$) | $\approx 0$ ($0$) |
+| Sphäre | $+1$ | $> 0$ ($4{,}1\times 10^{-7}$) | $> 0$ ($+1{,}04\times 10^{-3}$) | $< 0$ ($-6{,}8\times 10^{-4}$) |
+| Hyperbolisch | $-1$ | $> 0$ ($4{,}1\times 10^{-7}$) | $< 0$ ($-1{,}04\times 10^{-3}$) | $> 0$ ($+6{,}8\times 10^{-4}$) |
 
-**Durchbruchskriterium:** $\operatorname{sign}(G_M) = \operatorname{sign}(K_G)$ — **erreicht** (Juni 2026): $G_M > 0$ auf $S^2$, $G_M < 0$ auf $H^2$, $G_M \approx 0$ auf $\mathbb{R}^2$, bei jedem $\varepsilon$ der Familie.
+**Vorzeichen-Vergleich (stärkerer Test, chart-nah):**
 
-**Vorbehalt:** $G_M$ muss definitionsunabhängig genug sein; die einfache Summe ist der erste Test. Orientierte Varianten (Fläche, Umlaufzahl, geodätischer Exzess) folgen später.
+| Paarung | Ergebnis |
+|---------|----------|
+| $\operatorname{sign}(G_M) = \operatorname{sign}(K_G)$ | ja (S²/H²) |
+| $\operatorname{sign}(W_M) = \operatorname{sign}(K_G)$ | **nein** — anti-parallel |
+| $\operatorname{sign}(G_M) = \operatorname{sign}(W_M)$ | **nein** — entgegengesetzt |
+
+**Durchbruchskriterium $G_M$:** $\operatorname{sign}(G_M) = \operatorname{sign}(K_G)$ — **erreicht** (Juni 2026). $W_M$ trennt $S^2/H^2$ im Vorzeichen, aber **nicht** parallel zu $G_M$ — unabhängiger Flächensensor, kein Walter-Theorem auf $S^2/H^2$.
+
+**Vorbehalt:** $G_M$ muss definitionsunabhängig genug sein; die einfache Summe ist der erste Test. $W_M$ auf $S^2/H^2$ ist chart-nähe Approximation — das Marion-Walter-Theorem gilt nur euklidisch. Orientierte Varianten folgen später.
 
 > **Boxed (M2-Befund):**  
-> *M2a: $F_M$ korreliert mit Krümmungsstärke ($F_M \approx 0$ bei $K{=}0$, $F_M > 0$ bei $K \neq 0$; $S^2/H^2 \approx 1{,}001$). M2b: $\operatorname{sign}(G_M)$ korreliert mit $\operatorname{sign}(K_G)$ — kombinierte Testgrößen $(F_M, G_M)$ empfohlen. Nur numerische Evidenz, kein bewiesener Krümmungssensor.*
+> *M2a: $F_M$ korreliert mit Krümmungsstärke. M2b: $\operatorname{sign}(G_M)$ korreliert mit $\operatorname{sign}(K_G)$. M2b': $W_M \approx 0$ auf $\mathbb{R}^2$ (Marion-Walter-Kontrolle); auf $S^2/H^2$ trennt $W_M$ Vorzeichen, aber anti-parallel zu $G_M$ — unabhängiger Flächensensor. Nur numerische Evidenz, kein bewiesener Krümmungssensor.*
 
 ### M2a — Stärke $F_M$
 
@@ -183,7 +204,7 @@ $$F_M \stackrel{?}{=} c\,|K_G|^\alpha A^\beta \qquad (\alpha,\beta \text{ aus Da
 
 Erste Anpassung (nur $K_G \neq 0$): $c \approx 3{,}9\times 10^{-4}$, $\alpha \approx 0$, $\beta \approx 2$, $R^2 \approx 0{,}9998$ — $F_M \propto A^2$, schwache $|K_G|$-Kopplung in dieser $\varepsilon$-Bandbreite.
 
-**Artefakte:** `collatz_morley_tm_numerik.py m2`, `collatz_morley_m2_sensor.json`, `tests/test_morley_m2_sensor.py`.
+**Artefakte:** `collatz_morley_tm_numerik.py m2`, `collatz_morley_m2_sensor.json`, `tests/test_morley_m2_sensor.py`, `tests/test_morley_walter_wm.py`.
 
 **Epistemisches Label:** **Experiment** — numerische Evidenz, kein Theorem.
 
