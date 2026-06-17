@@ -6,8 +6,9 @@
 **Tao-Labels:** Definition | Theorem | Conjecture | Heuristik | Experiment (Quaternion-Referenz)
 
 **Querverweise:**
-- `collatz_eabc_quaternion_mass_hypothese.md` §12–§13 (Spektralgeometrie, $\hat D(s)$) — **Quaternion-Referenzdaten**
-- `collatz_eabc_zerlegungsregimen.md` / `collatz_eabc_Z_decomposition_test.py` — $Z(n)$, $\Delta Z$, Prim als Regimengrenze
+- `collatz_eabc_plattenuebergang.md` — **kanonsiche Plattenübergangs-Hypothese** ($\Sigma_n$-Folge, Produktirreduzibilität)
+- `collatz_eabc_quaternion_mass_hypothese.md` §12–§14 (Spektralgeometrie, $\hat D(s)$, Platten-Testbed) — **Quaternion-Referenzdaten**
+- `collatz_eabc_zerlegungsregimen.md` / `collatz_eabc_Z_decomposition_test.py` — $Z(n)$, $\Delta Z$, operative Regimen-Zählung
 - `collatz_eabc_euklidische_hebung.md` §4, §8–§9 (Hurwitz-Kette $\mathbb{R}\subset\mathbb{C}\subset\mathbb{H}\subset\mathbb{O}$)
 - `collatz_eabc_normabstieg_hypothese.md` (Norm-Defekt-Abstieg, Gauß–EABC-Brücke)
 - `collatz_eabc_bernoulli_uebersetzung.md` §17 (Forschungsvision Defekt-Tetraeder, $\mathcal{D}_{\mathrm{krit}}$)
@@ -80,6 +81,26 @@ $$\Sigma_a \star \Sigma_b \;\leadsto\; \text{Faltung von Maßen } \mu_a, \mu_b.$
 Prim-Schalen wären **irreduzibel** in diesem Bild — keine nichttriviale Faktorisierung $n=ab$.
 
 **Label:** EABC-Organisation = **Heuristik**; $N(xy)=N(x)N(y)$ = **Theorem**.
+
+---
+
+## 3.5 Platten als Normschichtfolge ($\Sigma_n$-Index)
+
+**Definition (Platte).** Die Folge $(\Sigma_n^{(8)})_{n\ge 1}$ auf $\Lambda_{\mathbb{O}}$ ist die **diskrete
+Plattenstruktur** in $\mathbb{R}^8$; der Index $n$ ist das Normniveau (nicht „Primzahl als Punkt").
+Siehe `collatz_eabc_plattenuebergang.md` für die vollständige **EABC-Plattenübergangs-Hypothese**.
+
+**Conjecture (Plattenübergang).** $\Sigma_p^{(8)}$ ist eine **nicht zusammensetzbare Übergangsschicht**:
+keine nichttriviale Produktzerlegung $\Sigma_a\times\Sigma_b\to\Sigma_p$ für $p=ab$, $a,b>1$.
+Das ist die 8D-Lesart von „Prim unterbricht produktinduzierte Plattenzerlegung".
+
+**Quaternion-Testbed ($n\le 200$):** In $\mathbb{H}_{\mathrm H}$ zeigen $Z(n)$, $\Delta Z(n)$ und $D(n)$
+mit rolling-$I_{\mathrm{ref}}$ **kein** EABC-Signal über klassische Faktorisierung hinaus
+(`collatz_eabc_Z_decomposition.json`, `collatz_eabc_shell_defekt.json`). Die oktonionische Hypothese
+bleibt **offen**, bis $\mu_n$ in 8D existiert.
+
+**Label:** Plattenfolge = **Definition**; Plattenübergangs-Hypothese = **Conjecture**;
+Quaternion-Befund = **Experiment** (vgl. `collatz_eabc_plattenuebergang.md` §4–§6).
 
 ---
 

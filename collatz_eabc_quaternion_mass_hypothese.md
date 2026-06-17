@@ -9,8 +9,9 @@
 **Tao-Labels:** Definition | Theorem | Conjecture | Heuristik | Experiment
 
 **Querverweise:** `collatz_eabc_normabstieg_hypothese.md` · `collatz_eabc_euklidische_hebung.md` ·
+`collatz_eabc_plattenuebergang.md` (kanonsiche $\Sigma_n$-Plattenhypothese, PR #54) ·
 `collatz_eabc_oktonion_singularitaet.md` (8D-Forschungsprogramm, PR #54) ·
-`collatz_eabc_zerlegungsregimen.md` ($Z(n)$, $\Delta Z$, Prim als Regimengrenze) ·
+`collatz_eabc_zerlegungsregimen.md` ($Z(n)$, $\Delta Z$, operative Regimen-Zählung) ·
 `collatz_eabc_invarianzprogramm.md` · `collatz_eabc_gauss_spaltung_hypothese.md` ·
 `collatz_eabc_eisenstein_spaltung.md` · `collatz_eabc_bernoulli_uebersetzung.md` (Branch `collatz/eabc-bernoulli-sensor`) ·
 `collatz_morley_tm_numerik.py` (Morley-Parallel, getrennte Spur)
@@ -502,6 +503,28 @@ Die Leiter endet nicht bei $D(n)$: erst die Erzeugerfunktion vergleicht die EABC
 mit dem Kanon analytischer Zahlentheorie ($\zeta$, Bernoulli, $L$-Funktionen).
 
 **Label:** Bewertungsleiter = **Heuristik** (Methodologie).
+
+---
+
+## 14. Plattenübergang — Quaternion als Testbed vor $\mathbb{O}$
+
+**Heuristik (Plattenfolge).** Die Normschalen $(\Sigma_n)_{n\ge 1}$ auf $\mathbb{H}_{\mathrm H}$ bilden eine
+diskrete **Schichtfolge**; Primzahlen sind Normniveaus, an denen die produktinduzierte Zerlegung
+$\Sigma_a\times\Sigma_b\to\Sigma_{ab}$ **unterbrochen** wird. Kanonische Formulierung:
+`collatz_eabc_plattenuebergang.md`.
+
+**Experiment (Quaternion, $n\le 200$, ohne Neuberechnung):**
+
+| Kanal | Quelle | Befund |
+|-------|--------|--------|
+| $Z(n)$, $\Delta Z(n)$ | `collatz_eabc_Z_decomposition.json` | $Z_{\mathrm{EABC}}\approx Z_{\mathrm{fact}}$ ($r=0.88$); $Z(p)=0$; $\Delta Z$-Prim-Ratio 1.64 aber $\omega$-Repackaging |
+| $D(n)=I(\mu_n)-I_{\mathrm{ref}}$ | `collatz_eabc_shell_defekt.json` | rolling: kein Prim-Überhang (Ratio 0.90); Top-10-$|D|$: 0 Prim |
+
+**Fazit:** Quaternionen liefern das **implementierte Testbed** für die Plattenhypothese, bevor volles
+$\Lambda_{\mathbb{O}}$ budgetiert wird. Bisher **kein** Signal, das über klassische Produktirreduzibilität
+und $\omega(n)$ hinausgeht — die 8D-Frage bleibt offen (`collatz_eabc_oktonion_singularitaet.md` §3.5).
+
+**Label:** Plattenübergang = **Conjecture**; Quaternion-Tests = **Experiment** (epistemisch hohl bzw. Prim-$D$ nicht gestützt).
 
 ---
 

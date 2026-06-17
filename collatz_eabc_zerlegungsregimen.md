@@ -5,7 +5,13 @@
 **Experiment:** `collatz_eabc_Z_decomposition_test.py` → `collatz_eabc_Z_decomposition.json`  
 **Tao-Labels:** Definition | Theorem | Conjecture | Heuristik | Experiment
 
+> **Kanonsiche Plattenformulierung:** `collatz_eabc_plattenuebergang.md` — $(\Sigma_n)_{n\ge 1}$ als
+> diskrete Normschichtfolge auf $\Lambda_{\mathbb{O}}$; Prim = produkt-irreduzible Übergangsschicht.
+> Dieses Dokument enthält die **operativen** $Z(n)$-, $\Delta Z$- und $\mathcal{Z}_{\mathrm{regime}}$-Definitionen
+> (Quaternion-Testbed).
+
 **Querverweise:**
+- `collatz_eabc_plattenuebergang.md` — **Haupt-Hypothese** (Plattenübergang, boxed Conjecture, scharfe Fragen)
 - `collatz_eabc_quaternion_mass_hypothese.md` §1–§5 ($\Sigma_n$, $\mu_n$, $I(\mu_n)$) — **Quaternion-Referenz**
 - `collatz_eabc_oktonion_singularitaet.md` §3 (Faktorisierung $n=ab$, $\Sigma_a\star\Sigma_b$) — **8D-Analogie**
 - `collatz_eabc_shell_defekt_test.py` (Spektral-Defekt $D(n)$, Prim-Emergenz §12)
@@ -89,7 +95,8 @@ repackagiert, ist **nichts Neues** gegenüber klassischer Faktorisierung gewonne
 
 | Dokument | Bezug |
 |----------|-------|
-| `collatz_eabc_quaternion_mass_hypothese.md` §12 | Prim-Emergenz via $D(n)=I(\mu_n)-I_{\mathrm{ref}}$ — **komplementär** (Spektral-Defekt vs. Zerlegungszahl) |
+| `collatz_eabc_plattenuebergang.md` | **Kanonsiche** Plattenhypothese ($\Sigma_n$-Folge, boxed Conjecture) |
+| `collatz_eabc_quaternion_mass_hypothese.md` §14 | Prim-Emergenz via $D(n)=I(\mu_n)-I_{\mathrm{ref}}$ — **komplementär** (Spektral-Defekt vs. Zerlegungszahl) |
 | `collatz_eabc_oktonion_singularitaet.md` §3 | $n=ab$: Faltung $\Sigma_a\star\Sigma_b$; Prim = irreduzibel in Maßstruktur — **8D-Programm** |
 | `collatz_eabc_shell_defekt_test.py` | Rolling-$D(n)$: kein Prim-Überhang; $\Delta Z$-Test ist **unabhängiger** Kanal |
 
