@@ -1,0 +1,68 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage[margin=2.5cm]{geometry}
+
+\title{Treue Kodierung $\kappa$ --- Stufe~1 (Generalangriff 2026)}
+\author{CollatzEabc / Forschungsnotiz}
+\date{Juni 2026}
+
+\begin{document}
+\maketitle
+
+\paragraph{Epistemische Warnung.}
+Dies ist \textbf{kein} Collatz-Beweis. Wir formalisieren nur die Schnittstelle
+für eine hypothetische treue Kodierung $\kappa$ und testen die \emph{naive}
+mod-12-Variante numerisch.
+
+\section{Definition (odd-to-odd)}
+
+Sei $U:\mathbb{N}_{\mathrm{odd}}\to\mathbb{N}_{\mathrm{odd}}$ der odd-to-odd-Collatz-Schritt
+(vgl.\ \texttt{CollatzZ2.collatzU}, \texttt{iterateU} in Lean).
+Für $n$ ungerade und $K\in\mathbb{N}$ setzen wir die \textbf{naive Präfix-Kodierung}
+\[
+  \kappa_K(n) := \bigl(\mathrm{classOf}(U^0(n)),\ldots,\mathrm{classOf}(U^{K-1}(n))\bigr)
+  \in (\{E,A,B,C\}\cup\{\bot\})^K,
+\]
+wobei $\mathrm{classOf}(m)$ die mod-12-EABC-Klasse ist ($\bot$ wenn $m\not\equiv 1,5,7,11\pmod{12}$).
+
+Lean: \texttt{CollatzEabc.kappaPrefix}, \texttt{classOfLetter}.
+
+\section{Dynamiktreue (bewiesen für naive $\kappa$)}
+
+Für jedes ungerade $n$ und $i<K$ gilt auf Indexebene
+\[
+  \kappa_K(U(n))_i =
+  \begin{cases}
+    \kappa_K(n)_{i+1} & i+1<K,\\
+    \mathrm{classOf}(U^K(n)) & i=K-1.
+  \end{cases}
+\]
+Lean: \texttt{kappaPrefix\_get\_shift}, \texttt{naiveKappaDynamics\_holds}.
+Python: \texttt{check\_dynamics} in \texttt{collatz\_kappa\_test.py} --- bei $N=10^5$, $K=4$: \textbf{0 Fehler}.
+
+\section{Offene treue $\kappa$ (Vermutung)}
+
+Eine \textbf{treue} Kodierung (Struktur \texttt{FaithfulKappa K} in Lean) verlangt:
+\begin{itemize}
+  \item volle Wörter in $\{E,A,B,C\}^K$ ohne $\bot$;
+  \item Übereinstimmung mit $\mathrm{classOf}\circ U^i$;
+  \item Shift+Append-Dynamik wie oben;
+  \item Injektivität auf ungeraden Starts für festes $K$.
+\end{itemize}
+\texttt{kappaConjecture} : $\forall K>0$, \texttt{faithfulKappaExists K} --- \textbf{offen}.
+
+\section{Numerische Befunde ($N=10^5$, $K=4$)}
+
+\begin{itemize}
+  \item \textbf{Injektivität:} \textbf{nein}. Ca.\ $1{,}47\times 10^8$ Kollisionspaare unter $50000$ ungeraden Starts; z.\,B.\ viele Starts teilen $\kappa_4=\texttt{ABCE}$.
+  \item \textbf{Vollständigkeit:} nur $33333/50000$ Starts liefern volle Wörter; $\approx 8{,}3\%$ der Schritte sind $\bot$ (Starts $\equiv 3,9\pmod{12}$).
+  \item \textbf{Dynamik:} die Shift+Append-Relation gilt für die naive $\kappa_K$ (konsistent mit Lean).
+\end{itemize}
+
+\paragraph{Schluss.}
+Die naive mod-12-Kodierung ist \textbf{dynamiktreu}, aber weder injektiv noch informationserhaltend.
+Stufe~1 sucht eine \emph{stärkere} $\kappa$ (oder beweist, dass keine existiert) --- ohne Collatz zu beweisen.
+
+\end{document}
