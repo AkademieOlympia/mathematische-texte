@@ -26,7 +26,7 @@ Disziplin: Definitionen, Zeugen, Heuristiken und Theoreme dürfen nicht unbemerk
 |---------------------|----------------|
 | explizite Fehlerterme | explizite Zeugenmengen ($E_\infty$, $E_{\mathrm{diag}}$, $E_{N,N}$) |
 | abhängige Konstanten | abhängige Definitionen ($\kappa$, $\mathcal{L}$, $\mathcal{L}_{\mathrm{arith}}$) |
-| PNT-Ketten | $\kappa \to L_{\mathrm{arith}} \to$ Lemma E |
+| PNT-Ketten | Arithmetik $\to \kappa \to L_{\mathrm{arith}} \to F_n \to$ dynamische Konsequenzen |
 | Formalisierung gegen Konstantenfehler | Formalisierung gegen Bedeutungsverschiebung |
 | CI-Kultur (kontinuierliche Integrität) | PR-/Zeugen-/Negativtest-Kultur |
 
@@ -78,7 +78,7 @@ Theorem bleiben getrennt (vgl. *Methodik 2* unten). Die Ratio ist Buchhaltung, k
 | Log-Tabellen | $\kappa$-Präfixtabellen |
 | Primtabellen | $L_{\mathrm{arith}}$-Zeugenlisten |
 | safety margin ($1{,}01$ / $1{,}02$) | konservative Realisierbarkeitsfenster |
-| $\zeta \to$ primary $\to$ secondary | $\kappa \to L_{\mathrm{arith}} \to$ Lemma E |
+| $\zeta \to$ primary $\to$ secondary | Arithmetik $\to \kappa \to L_{\mathrm{arith}} \to F_n \to$ Lemma E / Dynamik |
 | FP-Fehler in Lit-Tabellen | Python-/Enum-/Hash-Kollisionen (naive $\kappa$) |
 | living spreadsheet (Lean-Konstanten-Ledger) | lebender Zeugen-/Gegenzeugen-Graph |
 
@@ -113,6 +113,12 @@ Zielsetzung?* — analog zu Taos expliziten Fehlertermen in der PNT-Kette.
    naive $\kappa$ dokumentiert und verworfen — soll verborgene Realisierbarkeitsregeln sichtbar machen.
 3. **Stufe 3 (Lemma E):** Präperiodizität nur nach geklärter Definition von $E_{N,N}$ und
    Realisierbarkeit — keine Bedeutungsverschiebung zwischen $E_{\mathrm{diag}}$ und $E_\infty$.
+
+**Forschungsorganisation (Juni 2026):** Vier Angriffspunkte — $F_n$-Katalog, $R(k)$-Grenzwert,
+Dependency Graph, große Läufe $n\leq 10^7$ — siehe `collatz_generalangriff_2026.md`,
+Abschnitt *Generalangriff auf Forschungsorganisation (Tao-Stil)*. Pipeline:
+Arithmetik $\to \kappa \to L_{\mathrm{arith}} \to$ **verbotene Muster** $\to$ dynamische Konsequenzen
+(nicht mehr nur $\kappa\to L_{\mathrm{arith}}\to$ Lemma E).
 
 **PR-/Test-Kultur:** Jeder Zweig liefert Zeugen (positive Evidenz), Negativtests (verworfene
 Pfade) und Lean-Schnittstellen (`Prop` mit klarer Beweisstrategie) — vergleichbar mit
@@ -184,6 +190,7 @@ Präperiodizität anbinden.
 
 - Terence Tao — ICERM-Vortrag/Folien Mai 2026 (PNT+, IEANTN; methodische Quelle, kein Collatz-Bezug)
 - Tao (2019) — logarithmische Dichte für „almost bounded“ Collatz-Bahnen (nicht punktweise Konvergenz)
-- `collatz_generalangriff_2026.md` — Forschungsplan Stufe 1–3
+- `collatz_generalangriff_2026.md` — Forschungsplan Stufe 1–3; Abschnitt *Generalangriff auf Forschungsorganisation*
+- `collatz_forbidden_words.py` / `collatz_forbidden_words.json` — $F_n$-Katalog (Nullstellenkatalog-Stil)
 - `collatz_offene_punkte.md` — Synthese offener Punkte und Negativresultate
 - `CollatzEabc.Kappa`, `CollatzEabc.ArithLanguage` — Lean-Schnittstellen

@@ -36,6 +36,95 @@ nicht den punktweisen Ausschluss von $E_\infty$. Jede minimal plausible L muss d
 
 ---
 
+## Generalangriff auf Forschungsorganisation (Tao-Stil)
+
+**Gegenstand:** Nicht Collatz direkt, sondern die **Forschungsorganisation** —
+welche Objekte gesund sind, welche Evidenz sauber, welche Brücken fehlen, und
+wo der nächste messbare Angriff liegt. Methodik: Definition / Zeuge / Experiment /
+Theorem / Conjecture strikt trennen (`collatz_formalisierung_tao_stil.md`).
+
+### Drei Ebenen (Stand Juni 2026)
+
+| Ebene | Inhalt | Status |
+|-------|--------|--------|
+| **A — Formale Objekte** | EABC, ABCE/CEAB, Span, Witness, Ellipse, $\kappa$, $\mathcal{L}(k)$, $\mathcal{L}_{\mathrm{arith}}(k)$ | **gesund** — Lean/Python-Schnittstellen, klare `Prop`-Grenzen |
+| **B — Numerische Evidenz** | Präzession negativ ($r\approx -0{,}18$); $\Phi_{\mathrm{pref}}$ Länge 4 trivial; naive $\kappa$ nicht injektiv; $w=\mathrm{BE}$; Ratio $\approx 0{,}87\,\%$ bei $k=10$ | **sauber** — Negativtests dokumentiert, keine Heuristikverschmelzung |
+| **C — Fehlende Brücken** | Arithmetik $\to \kappa \to \mathcal{L}_{\mathrm{arith}}$ operationalisiert | **Lücke:** $\mathcal{L}_{\mathrm{arith}} \to$ Collatz-Dynamik fehlt |
+
+### Neue Pipeline (nicht mehr nur $\kappa\to L_{\mathrm{arith}}\to$ Lemma E)
+
+$$\boxed{\text{Arithmetik} \;\to\; \kappa \;\to\; \mathcal{L}_{\mathrm{arith}}
+\;\to\; \textbf{Verbotene Muster } F_n \;\to\; \textbf{Dynamische Konsequenzen}}$$
+
+Lemma E bleibt **ein** möglicher Endpunkt der Kette, nicht die einzige. Der operative
+Mittelteil ist die **arithmetische Grammatik** hinter zulässigen Collatz-Wörtern.
+
+### Strategische Verschiebung
+
+| Alt | Neu |
+|-----|-----|
+| Attraktor $E$ / Uniformität suchen | **Arithmetische Grammatik** hinter zulässigen Collatz-Wörtern |
+| Einzelkette $\kappa\to L_{\mathrm{arith}}\to$ Lemma E | Pipeline mit **verbotenen Mustern** $F_n$ und dynamischen Konsequenzen |
+| Geometrie als Hauptangriff | Geometrie epistemisch abgegrenzt; **$F_n$-Katalog** als Nullstellenkatalog |
+
+### Vier Angriffspunkte (PR #39)
+
+| # | Angriff | Artefakt | Frage |
+|---|---------|----------|-------|
+| **1** | **$F_n$ katalogisieren** | `collatz_forbidden_words.py` $\to$ `collatz_forbidden_words.json` | Minimale verbotene Wörter $F_n = \mathcal{L}(n)\setminus\mathcal{L}_{\mathrm{arith}}(n)$; $\mathrm{BE}$ als Hero ($F_2$) |
+| **2** | **$R(k)=|L_{\mathrm{arith}}\cap L|/|L|$** | Ratios $k=4,8,10$ | Strebt $R(k)\to 0$? (Conjecture-Ebene) |
+| **3** | **Dependency Graph** | unten | ABCE $\to$ Span/Witness/$\kappa$ $\to$ $L_{\mathrm{arith}}$ $\to$ BE,$F_3$,$F_4$ $\to$ Lemma E |
+| **4** | **Große Läufe** $n\leq 10^7$ | `collatz_forbidden_words.json` | BE stabil? Ratios? neue Gegenbeispiele? |
+
+### Dependency Graph (Forschungsorganisation)
+
+```mermaid
+flowchart TD
+  ABCE["ABCE/CEAB (bewiesen)"]
+  Span["Span-Zeuge"]
+  Wit["Witness / Ellipse"]
+  Kap["κ (naiv: dynamiktreu, nicht injektiv)"]
+  Lg["Grammatik L(k)"]
+  La["L_arith(k)"]
+  Fn["Verbotene Muster F_n"]
+  BE["BE (F_2 Hero)"]
+  E["Lemma E (Präperiodizität)"]
+  Col["Collatz-Dynamik (OFFEN)"]
+
+  ABCE --> Span
+  ABCE --> Wit
+  Span --> Kap
+  Wit --> Kap
+  Kap --> La
+  Lg --> La
+  Lg --> Fn
+  La --> Fn
+  Fn --> BE
+  Fn --> E
+  E -.->|"Brücke fehlt"| Col
+  La -.->|"Brücke fehlt"| Col
+```
+
+### $F_n$-Katalog (Experiment, $n\leq 10^7$)
+
+$F_n := \mathcal{L}(n)\setminus\mathcal{L}_{\mathrm{arith}}(n)$ auf Suchtiefe ungerade $n\leq 10^7$.
+Vollständige Enumeration für $n\leq 8$ (`enumeration_complete: true`).
+
+| $n$ | $|F_n|$ | $|L(n)|$ | Hero / Anfang |
+|-----|---------|----------|---------------|
+| 2 | 1 | 8 | **BE** |
+| 3 | 6 | 23 | ABE, BEA, BEB, BEE, CEA, EBE |
+| 4 | 38 | 89 | AABE, … |
+| 5 | 183 | 410 | AAABE, … |
+| 6 | 807 | 2091 | AAAABE, … |
+| 7 | 3402 | 11589 | AAAAABE, … |
+| 8 | 13924 | 68753 | AAAAAABE, … |
+
+**$R(k)$ bei $n\leq 10^7$:** $R(4)\approx 0{,}539$; $R(8)\approx 0{,}057$; $R(10)\approx 0{,}012$.
+BE bleibt bei $10^7$ **stabil** (nicht realisiert). Ob $R(k)\to 0$ — **offen** (Conjecture).
+
+---
+
 ## Bekannter Stand
 
 ### Ebene A — bewiesen (arithmetischer Kern)
@@ -294,6 +383,7 @@ Collatz $\Leftrightarrow$ (keine Divergenz) $\land$ (kein nichttrivialer Zyklus)
 - `CollatzEabc.Open` / `ExceptionSetInfinity` — Lean-Äquivalenz Collatz $\Leftrightarrow$ $E_\infty=\emptyset$
 - `collatz_offene_punkte.md` — Synthese offener Punkte, Negativresultate
 - `collatz_formalisierung_tao_stil.md` — Methodik: Lean als Wahrheitsfilter (Tao/IEANTN/PNT+; ICERM Mai 2026)
+- `collatz_forbidden_words.py` / `collatz_forbidden_words.json` — $F_n$-Katalog, $R(k)$-Tabelle
 - `collatz_kepler_gedankenexperiment.tex` — $\kappa$, $\Phi_{\mathrm{pref}}$, Diskriminantentest
 - `collatz_schlussartikel_arxiv.tex` — Epilog, Uniformität, EABC-Struktur
 
@@ -371,10 +461,10 @@ grammatisch zulässige Wörter können ohne passendes $n$ existieren.
 
 | Artefakt | Inhalt |
 |----------|--------|
-| **Python** | `collatz_l_arith_test.py` — Grammatik $L(k)$ (BB-Verbot, endliche $C$-Ketten, EA nach $C^*_{\max}$); Vollliste bis $|L(k)|\lesssim 3\times 10^6$ |
-| **JSON** | `collatz_l_arith_test.json` — Ratios, minimale Gegenbeispiele, ehrliche Grenzen |
+| **Python** | `collatz_l_arith_test.py` — Grammatik $L(k)$; `collatz_forbidden_words.py` — $F_n$-Katalog |
+| **JSON** | `collatz_l_arith_test.json` — Ratios; `collatz_forbidden_words.json` — $F_n$, $R(k)$ |
 | **Lean** | `CollatzEabc/ArithLanguage.lean` — `isGrammarValid` (BB), `RealizableWord` |
-| **pytest** | `tests/test_l_arith.py` |
+| **pytest** | `tests/test_l_arith.py`, `tests/test_forbidden_words.py` |
 
 **Grammatikregeln** (vgl. `collatz_equivalenz_e_infty.tex`, `collatz_schlussartikel_arxiv.tex` §C-Ketten):
 1. $BB\notin\mathcal{L}$

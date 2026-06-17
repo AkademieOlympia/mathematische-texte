@@ -17,29 +17,39 @@ Negativtests statt impliziter Heuristikverschmelzung; vgl. `collatz_formalisieru
 
 Systematische Suche nach der kleinsten fehlenden Brücke **L** mit
 *(EABC-/Lean-Struktur) + L ⟹ Collatz*: siehe `collatz_generalangriff_2026.md`
-(Kandidaten L₁–L₆; **Stufe 1–3:** $L_{\mathrm{arith}}$-Realisierbarkeit (Priorität 1), $\kappa$,
-Lemma E; Abschnitt *Strategische Verfeinerung (Juni 2026)*).
+(Kandidaten L₁–L₆; Abschnitt *Generalangriff auf Forschungsorganisation (Tao-Stil)*).
+**Pipeline (revidiert):** Arithmetik $\to \kappa \to L_{\mathrm{arith}} \to$ verbotene Muster $F_n \to$
+dynamische Konsequenzen — nicht mehr nur $\kappa\to L_{\mathrm{arith}}\to$ Lemma E.
 **Stufe 1 begonnen (Juni 2026):** Lean `CollatzEabc.Kappa`, Python `collatz_kappa_test.py`,
 TeX `collatz_kappa_encoding.tex` — naive $\kappa_K$ dynamiktreu, aber **nicht** injektiv (PR #38).
 - **Stufe 1 begonnen:** `CollatzEabc.Kappa.lean` (`kappaPrefix`, `FaithfulKappa`, `kappaConjecture`);
   numerischer Test `collatz_kappa_test.py` (Injektivität/Kollisionen, Dynamik-Shift).
-- **Stufe 2 begonnen (PR #39):** `collatz_l_arith_test.py`, `CollatzEabc.ArithLanguage.lean` —
-  Grammatik $L(k)$ vs. arithmetische Realisierbarkeit $L_{\mathrm{arith}}(k)$; minimales
-  Gegenbeispiel $w=\mathrm{BE}$ (Länge 2); Vollliste für $k\leq 10$ bei $n\leq 10^6$.
+- **Stufe 2 begonnen (PR #39):** `collatz_l_arith_test.py`, `collatz_forbidden_words.py`,
+  `CollatzEabc.ArithLanguage.lean` — Grammatik $L(k)$ vs. $L_{\mathrm{arith}}(k)$;
+  $F_n$-Katalog ($\mathrm{BE}$ Hero in $F_2$); Vollliste $F_n$ für $n\leq 8$.
 - **IEANTN-Parallele (Tao, ICERM Mai 2026):** PNT+-Formalisierung mit living spreadsheet
   und Sicherheitsmargen — methodisches Vorbild für EABC-Zeugenbuchhaltung, kein Collatz-Transfer.
 
-### Generalangriff-Prioritäten (Juni 2026, revidiert)
+### Generalangriff-Prioritäten (Juni 2026, Tao-Stil — Forschungsorganisation)
+
+**Strategische Verschiebung:** Von „Attraktor suchen“ zu **arithmetischer Grammatik**
+hinter zulässigen Collatz-Wörtern. Drei Ebenen: **A** formale Objekte (gesund),
+**B** numerische Evidenz (sauber), **C** fehlende Brücke $L_{\mathrm{arith}}\to$ Collatz-Dynamik.
+
+| # | Angriff | Status | Artefakt |
+|---|---------|--------|----------|
+| **1** | $F_n = L(n)\setminus L_{\mathrm{arith}}(n)$ katalogisieren | **begonnen** | `collatz_forbidden_words.json` ($n\leq 8$ vollständig; $\mathrm{BE}\in F_2$) |
+| **2** | $R(k)=|L_{\mathrm{arith}}\cap L|/|L|$ — Grenzwert? | **Experiment** | $R(4)\approx 0{,}54$; $R(8)\approx 0{,}057$; $R(10)\approx 0{,}012$ ($n\leq 10^7$) |
+| **3** | Dependency Graph ABCE$\to\kappa\to L_{\mathrm{arith}}\to F_n\to$ Lemma E | dokumentiert | `collatz_generalangriff_2026.md` (mermaid) |
+| **4** | Große Läufe $n\leq 10^7$ | **durchgeführt** | BE stabil; $|L_{\mathrm{arith}}(10)|$ wächst, Ratio noch $\gg 0$ |
 
 | Rang | Zweig | Status |
 |------|-------|--------|
-| **1** | $L_{\mathrm{arith}}\subsetneq L$ (PR #39) | **stärkster Zweig** — $|L_{\mathrm{arith}}(10)|=24\,818$ vs. $|L(10)|=2\,860\,558$ (Ratio $\approx 0{,}0087$); Tao-Methodik fünf Ebenen |
-| **2** | Treue $\kappa$ (`FaithfulKappa`, PR #38) | naive $\kappa$ verworfen; treue $\kappa$ offen; soll Realisierbarkeitsregeln sichtbar machen |
+| **1** | $L_{\mathrm{arith}}\subsetneq L$, $F_n$-Katalog (PR #39) | **stärkster Zweig** |
+| **2** | Treue $\kappa$ (`FaithfulKappa`, PR #38) | naive $\kappa$ verworfen |
 | **3** | Lemma E (Präperiodizität) | TeX-Skizze, nicht in Lean |
 | — | Uniformität Stufe E | verworfen als Hauptweg |
 
-**Prioritätsumkehr:** Früher $\kappa\to L_{\mathrm{arith}}\to$ Lemma E; nach Stufe-2-Befund
-ist $L_{\mathrm{arith}}$ der operative Einstieg, $\kappa$ und Lemma E schließen an.
 Methodischer Rahmen: `collatz_formalisierung_tao_stil.md` (*Methodik 2*).
 
 ---
@@ -164,7 +174,7 @@ Methodischer Rahmen: `collatz_formalisierung_tao_stil.md` (*Methodik 2*).
 | $z_0$ dynamisch relevant | **NEIN** | Algebraischer Anker $z_0=\zeta(-1)(12+\mathrm{i})$ | $\mathrm{dist}_2(\cdot,E_\infty)$ |
 | $\Phi_{\mathrm{pref}}$ | **offen** | Wohldefiniert auf EABC-Wörtern (`PrefProjection.lean`) | Brücke $\Phi=\Phi_{\mathrm{pref}}\circ\kappa$ ohne Datentest |
 | Treue $\kappa$ (Stufe 1) | **begonnen** | Naive $\kappa_K$ + `FaithfulKappa`-Schnittstelle (`Kappa.lean`); Dynamik sorry-frei | Injektivität / Vollständigkeit der naiven mod-12-$\kappa$ **verneint** (`collatz_kappa_test.json`, PR #38) |
-| $L_{\mathrm{arith}}$ (Stufe 2) | **begonnen** | $|L_{\mathrm{arith}}(10)|=24\,818$ vs. $|L(10)|=2\,860\,558$ (Ratio $\approx 0{,}0087$); $w=\mathrm{BE}$ erster Zeuge, kein Theorem | Vollständige Charakterisierung; $\mathrm{BE}\notin\mathcal{L}_{\mathrm{arith}}$ für alle $n$; $\lim_{k\to\infty}|L_{\mathrm{arith}}|/|L|$ (`collatz_l_arith_test.py`, PR #39) |
+| $L_{\mathrm{arith}}$ (Stufe 2) | **begonnen** | $F_n$-Katalog; $R(10)\approx 0{,}012$ ($n\leq 10^7$); $w=\mathrm{BE}\in F_2$, kein Theorem | Vollständige Charakterisierung; $\mathrm{BE}\notin\mathcal{L}_{\mathrm{arith}}$ für alle $n$; $\lim_{k\to\infty}R(k)$ (`collatz_forbidden_words.py`, PR #39) |
 | Collatz / $E_\infty$ | **NEIN** | Äquivalenz präzise formuliert | Beweis |
 
 ### 4b. Projektions-/Kepler-Taxonomie (EABC, nicht Collatz)
