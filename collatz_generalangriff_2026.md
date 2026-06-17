@@ -126,11 +126,15 @@ das ist die operationale Form der Brücke (vgl. L₂, `collatz_equivalenz_e_inft
 
 ### Generalangriff-Prioritäten (Stufe 1–3)
 
-| Stufe | Auftrag | Kernfrage |
-|-------|---------|-----------|
-| **1** | Treue Kodierung $\kappa$ | Injektivität, Dynamiktreue, Informationsverlust |
-| **2** | $\mathcal{L}_{\mathrm{arith}}$-Realisierbarkeit | Welche $w\in\mathcal{L}^{\mathbb{N}}$ sind Bahnwörter? |
-| **3** | Präperiodizität (Lemma E) | Endliche Beobachtungsschlechtigkeit $\Rightarrow$ Präperiodizität |
+| Rang | Stufe | PR / Zweig | Kernfrage |
+|------|-------|------------|-----------|
+| **1** | Treue Kodierung $\kappa$ | PR #38 `collatz/kappa-encoding` | Injektivität, Dynamiktreue, Informationsverlust |
+| **2** | $\mathcal{L}_{\mathrm{arith}}$-Realisierbarkeit | **PR #39** `collatz/l-arith-stufe2` | Welche $w\in\mathcal{L}$ sind Bahnwörter? |
+| **3** | Präperiodizität (Lemma E) | offen | Endliche Beobachtungsschlechtigkeit $\Rightarrow$ Präperiodizität |
+
+**Nutzer-Priorität (Juni 2026):** PR **#39** und treue $\kappa$ (Stufe 1) sind die beiden
+wichtigsten Zweige des Generalangriffs; Stufe 2 operationalisiert die offene Brücke aus
+`collatz_equivalenz_e_infty.tex` Frage (ii).
 
 ### Stufe 1 — Implementierung (Juni 2026)
 
@@ -310,3 +314,62 @@ Collatz $\Leftrightarrow$ (keine Divergenz) $\land$ (kein nichttrivialer Zyklus)
 - **Vollständigkeit:** $33333/50000$ Starts ohne $\bot$-Einträge; $\approx 8{,}3\%$ undefinierte Schritte ($n\equiv 3,9\pmod{12}$)
 
 Die naive mod-12-$\kappa$ ist eine **Brückenskizze**, keine treue Kodierung im Sinne von `FaithfulKappa`.
+
+---
+
+## Stufe 2 — $\mathcal{L}_{\mathrm{arith}}$ (L₂, Juni 2026)
+
+> **Boxed (Stufe 2):** Welche EABC-Wörter sind **tatsächlich arithmetisch realisierbar**?
+> $\mathcal{L}_{\mathrm{arith}}\subsetneq\mathcal{L}$ könnte die erste echte Brücke zwischen
+> Collatz-Arithmetik, symbolischer Dynamik und Lemma E sein.
+
+**Priorität:** PR **#39** (dieser Zweig) ist neben treuer $\kappa$ (Stufe 1 / PR #38) der
+wichtigste Generalangriff-Zweig — beide hängen zusammen: treue $\kappa$ soll verborgene
+Verbotsregeln von $\mathcal{L}_{\mathrm{arith}}$ sichtbar machen.
+
+### Verbindung zu PR #38 ($\kappa$-Negativresultat)
+
+| Befund (Stufe 1) | Konsequenz für Stufe 2 |
+|------------------|------------------------|
+| Naive $\kappa_K$ **dynamiktreu** | Realisierbarkeitstest über `kappaPrefixWord` ist konsistent mit Bahn |
+| Naive $\kappa_K$ **nicht injektiv** | $\kappa_{\mathrm{naiv}}$ reicht nicht als finale Brücke |
+| $\approx 8{,}3\,\%$ undefinierte Schritte ($n\equiv 3,9\pmod{12}$) | Diese Starts tragen nicht zu $\mathcal{L}_{\mathrm{arith}}$ bei |
+
+Die Lücke $\mathcal{L}_{\mathrm{arith}}\subsetneq\mathcal{L}$ bleibt damit **operational**:
+grammatisch zulässige Wörter können ohne passendes $n$ existieren.
+
+### Implementierung
+
+| Artefakt | Inhalt |
+|----------|--------|
+| **Python** | `collatz_l_arith_test.py` — Grammatik $L(k)$ (BB-Verbot, endliche $C$-Ketten, EA nach $C^*_{\max}$), Vollliste für $k\leq 8$, Stichprobe darüber |
+| **JSON** | `collatz_l_arith_test.json` — Ratios, minimale Gegenbeispiele, ehrliche Grenzen |
+| **Lean** | `CollatzEabc/ArithLanguage.lean` — `isGrammarValid` (BB), `RealizableWord` |
+| **pytest** | `tests/test_l_arith.py` |
+
+**Grammatikregeln** (vgl. `collatz_equivalenz_e_infty.tex`, `collatz_schlussartikel_arxiv.tex` §C-Ketten):
+1. $BB\notin\mathcal{L}$
+2. Endliche $C$-Ketten mit Kapazität $\mathrm{cap}\geq 1$
+3. Zwang $C^*_{\max}\to EA$ nach maximaler $C$-Kette
+
+### Ehrliche Testergebnisse ($n\leq 10^6$, ungerade Starts mit vollständigem $\kappa$-Präfix)
+
+| $k$ | $|L(k)|$ | $|L_{\mathrm{arith}}\cap L(k)|$ | Ratio | Methode |
+|-----|----------|----------------------------------|-------|---------|
+| 4 | 89 | 48 | 0,539 | Vollliste |
+| 5 | 410 | 144 | 0,351 | Vollliste |
+| 6 | 2091 | 432 | 0,207 | Vollliste |
+| 7 | 11589 | 1295 | 0,112 | Vollliste |
+| 8 | 68753 | 3836 | 0,056 | Vollliste |
+| 10+ | $\gg 10^6$ | — | Stichprobe | $|L(10)|\approx 2{,}9\times 10^6$ — keine Vollliste |
+
+**Minimales Gegenbeispiel:** $w=\mathrm{BE}$ (Länge 2) — grammatisch zulässig, aber kein
+ungerades $n\leq 10^6$ mit $\kappa$-Präfix $\mathrm{BE}$.
+
+**Interpretation (kein Beweisanspruch):** Die Ratio $|L_{\mathrm{arith}}|/|L|$ fällt mit $k$
+— viele grammatische Wörter sind (auf endlicher Suchtiefe) nicht realisierbar. Das stützt
+$\mathcal{L}_{\mathrm{arith}}\subsetneq\mathcal{L}$, beweist aber weder Collatz noch
+$L_{\mathrm{arith}}=\mathcal{L}$.
+
+**Offen:** Vollständige Charakterisierung von $\mathcal{L}_{\mathrm{arith}}$; Zusammenhang mit
+treuer $\kappa$; unendliche Wörter vs. endliche Präfixe.
