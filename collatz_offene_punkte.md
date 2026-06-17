@@ -16,7 +16,7 @@ vgl. `collatz_formalisierung_tao_stil.md`.
 
 Systematische Suche nach der kleinsten fehlenden Brücke **L** mit
 *(EABC-/Lean-Struktur) + L ⟹ Collatz*: siehe `collatz_generalangriff_2026.md`
-(Kandidaten L₁–L₆; **Stufe 1–3:** $\kappa$, $\mathcal{L}_{\mathrm{arith}}$-Realisierbarkeit,
+(Kandidaten L₁–L₆; **Stufe 1–3:** $L_{\mathrm{arith}}$-Realisierbarkeit (Priorität 1), $\kappa$,
 Lemma E; Abschnitt *Strategische Verfeinerung (Juni 2026)*).
 **Stufe 1 begonnen (Juni 2026):** Lean `CollatzEabc.Kappa`, Python `collatz_kappa_test.py`,
 TeX `collatz_kappa_encoding.tex` — naive $\kappa_K$ dynamiktreu, aber **nicht** injektiv (PR #38).
@@ -26,14 +26,18 @@ TeX `collatz_kappa_encoding.tex` — naive $\kappa_K$ dynamiktreu, aber **nicht*
   Grammatik $L(k)$ vs. arithmetische Realisierbarkeit $L_{\mathrm{arith}}(k)$; minimales
   Gegenbeispiel $w=\mathrm{BE}$ (Länge 2); Vollliste für $k\leq 10$ bei $n\leq 10^6$.
 
-### Generalangriff-Prioritäten (Juni 2026)
+### Generalangriff-Prioritäten (Juni 2026, revidiert)
 
 | Rang | Zweig | Status |
 |------|-------|--------|
-| **1** | Treue $\kappa$ (`FaithfulKappa`, PR #38) | naive $\kappa$ verworfen; treue $\kappa$ offen |
-| **2** | $L_{\mathrm{arith}}\subsetneq L$ (PR #39) | numerische Evidenz; Lean-Schnittstelle |
+| **1** | $L_{\mathrm{arith}}\subsetneq L$ (PR #39) | **stärkster Zweig** — $|L_{\mathrm{arith}}(10)|=24\,818$ vs. $|L(10)|=2\,860\,558$ (Ratio $\approx 0{,}0087$); Tao-Methodik fünf Ebenen |
+| **2** | Treue $\kappa$ (`FaithfulKappa`, PR #38) | naive $\kappa$ verworfen; treue $\kappa$ offen; soll Realisierbarkeitsregeln sichtbar machen |
 | **3** | Lemma E (Präperiodizität) | TeX-Skizze, nicht in Lean |
 | — | Uniformität Stufe E | verworfen als Hauptweg |
+
+**Prioritätsumkehr:** Früher $\kappa\to L_{\mathrm{arith}}\to$ Lemma E; nach Stufe-2-Befund
+ist $L_{\mathrm{arith}}$ der operative Einstieg, $\kappa$ und Lemma E schließen an.
+Methodischer Rahmen: `collatz_formalisierung_tao_stil.md` (*Methodik 2*).
 
 ---
 
@@ -157,7 +161,7 @@ TeX `collatz_kappa_encoding.tex` — naive $\kappa_K$ dynamiktreu, aber **nicht*
 | $z_0$ dynamisch relevant | **NEIN** | Algebraischer Anker $z_0=\zeta(-1)(12+\mathrm{i})$ | $\mathrm{dist}_2(\cdot,E_\infty)$ |
 | $\Phi_{\mathrm{pref}}$ | **offen** | Wohldefiniert auf EABC-Wörtern (`PrefProjection.lean`) | Brücke $\Phi=\Phi_{\mathrm{pref}}\circ\kappa$ ohne Datentest |
 | Treue $\kappa$ (Stufe 1) | **begonnen** | Naive $\kappa_K$ + `FaithfulKappa`-Schnittstelle (`Kappa.lean`); Dynamik sorry-frei | Injektivität / Vollständigkeit der naiven mod-12-$\kappa$ **verneint** (`collatz_kappa_test.json`, PR #38) |
-| $L_{\mathrm{arith}}$ (Stufe 2) | **begonnen** | $L_{\mathrm{arith}}\subsetneq L$ auf $k\leq 8$; $w=\mathrm{BE}$ minimal nicht realisierbar | Vollständige Charakterisierung; unendliche Wörter (`collatz_l_arith_test.py`, PR #39) |
+| $L_{\mathrm{arith}}$ (Stufe 2) | **begonnen** | $|L_{\mathrm{arith}}(10)|=24\,818$ vs. $|L(10)|=2\,860\,558$ (Ratio $\approx 0{,}0087$); $w=\mathrm{BE}$ erster Zeuge, kein Theorem | Vollständige Charakterisierung; $\mathrm{BE}\notin\mathcal{L}_{\mathrm{arith}}$ für alle $n$; $\lim_{k\to\infty}|L_{\mathrm{arith}}|/|L|$ (`collatz_l_arith_test.py`, PR #39) |
 | Collatz / $E_\infty$ | **NEIN** | Äquivalenz präzise formuliert | Beweis |
 
 ### 4b. Projektions-/Kepler-Taxonomie (EABC, nicht Collatz)

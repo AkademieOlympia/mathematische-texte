@@ -94,15 +94,19 @@ gesichert bzw. epistemisch abgegrenzt), sondern beim **Übergang strukturell →
 von lokal zulässigen EABC-Wörtern und typischen Bahnen zu einer Aussage über **jedes**
 $n\in\mathbb{N}$ (odd-to-odd).
 
-### Top-3 neu eingordnet
+### Top-3 neu eingordnet (Priorität Juni 2026, revidiert)
 
-| Kandidat | Vermutete Stärke | Stufe |
-|----------|------------------|-------|
-| **Treue Kodierung $\kappa$** (L₄) | vermutlich **fundamentale Brücke** | **1** |
-| **Realisierbarkeit** $\mathcal{L}_{\mathrm{arith}}\subsetneq\mathcal{L}$ (L₂) | möglicherweise **schwächer** | **2** |
-| **Präperiodizität** Lemma E (L₁) | vermutlich **nahe an Collatz** | **3** |
+| Rang | Kandidat | Vermutete Stärke | Stufe |
+|------|----------|------------------|-------|
+| **1** | **Realisierbarkeit** $\mathcal{L}_{\mathrm{arith}}\subsetneq\mathcal{L}$ (L₂) | **stärkster operativer Zweig** — quantifizierte Lücke | **2** |
+| **2** | **Treue Kodierung $\kappa$** (L₄) | fundamentale Brücke; macht verborgene Realisierbarkeitsregeln sichtbar | **1** |
+| **3** | **Präperiodizität** Lemma E (L₁) | vermutlich nahe an Collatz | **3** |
 
-### Warum $\kappa$ zuerst?
+Die frühere Reihenfolge $\kappa\to L_{\mathrm{arith}}\to$ Lemma E ist nach dem Stufe-2-Befund
+**umgedreht**: Die Realisierbarkeitslücke ist numerisch und formal greifbar; $\kappa$ und Lemma E
+schließen erst danach an.
+
+### Warum $\kappa$ (Stufe 1) weiterhin zentral?
 
 Drei Abbildungen aus demselben $n$:
 
@@ -127,17 +131,18 @@ als Bahnwort $w(n)$ eines $n\in\mathbb{N}_{\mathrm{odd}}$. Schlechte **unendlich
 formal in $\mathcal{L}^{\mathbb{N}}$ liegen, ohne dass ein natürliches $n$ sie realisiert —
 das ist die operationale Form der Brücke (vgl. L₂, `collatz_equivalenz_e_infty.tex`).
 
-### Generalangriff-Prioritäten (Stufe 1–3)
+### Generalangriff-Prioritäten (Stufe 1–3, revidiert Juni 2026)
 
 | Rang | Stufe | PR / Zweig | Kernfrage |
 |------|-------|------------|-----------|
-| **1** | Treue Kodierung $\kappa$ | PR #38 `collatz/kappa-encoding` | Injektivität, Dynamiktreue, Informationsverlust |
-| **2** | $\mathcal{L}_{\mathrm{arith}}$-Realisierbarkeit | **PR #39** `collatz/l-arith-stufe2` | Welche $w\in\mathcal{L}$ sind Bahnwörter? |
+| **1** | $\mathcal{L}_{\mathrm{arith}}$-Realisierbarkeit | **PR #39** `collatz/l-arith-stufe2` | Welche $w\in\mathcal{L}$ sind Bahnwörter? Wie groß ist die Lücke? |
+| **2** | Treue Kodierung $\kappa$ | PR #38 `collatz/kappa-encoding` | Injektivität, Dynamiktreue; verborgene Realisierbarkeitsregeln |
 | **3** | Präperiodizität (Lemma E) | offen | Endliche Beobachtungsschlechtigkeit $\Rightarrow$ Präperiodizität |
 
-**Nutzer-Priorität (Juni 2026):** PR **#39** und treue $\kappa$ (Stufe 1) sind die beiden
-wichtigsten Zweige des Generalangriffs; Stufe 2 operationalisiert die offene Brücke aus
-`collatz_equivalenz_e_infty.tex` Frage (ii).
+**Nutzer-Priorität (Juni 2026):** PR **#39** ($L_{\mathrm{arith}}$) ist der **stärkste Zweig**
+des Generalangriffs — nicht philosophischer Anhang, sondern methodischer Rahmen im Tao-Stil
+(vgl. `collatz_formalisierung_tao_stil.md`, Abschnitt *Methodik 2*). Treue $\kappa$ (Stufe 1)
+und Lemma E (Stufe 3) bauen auf der quantifizierten Realisierbarkeitslücke auf.
 
 ### Stufe 1 — Implementierung (Juni 2026)
 
@@ -252,18 +257,17 @@ Collatz impliziert, ist weiterhin eine punktweise Aussage über **natürliche** 
 **$E_\infty=\emptyset$** (äquivalent zu Collatz). Die lokale Grammatik liefert dafür **keine** Implikation;
 jede scheinbar schwächere Formulierung ist meist nur **Umformulierung** derselben Lücke.
 
-**Strategisch (Juni 2026, nach Verfeinerung):** Drei-Stufen-Angriff — siehe Abschnitt
-*Strategische Verfeinerung*.
+**Strategisch (Juni 2026, nach Stufe-2-Befund):** Drei-Stufen-Angriff — Priorität revidiert;
+vgl. Abschnitt *Strategische Verfeinerung*.
+
+**Stufe 2 — $\mathcal{L}_{\mathrm{arith}}\subsetneq\mathcal{L}$ (L₂):** Stärkster operativer Zweig;
+quantifizierte Realisierbarkeitslücke ($|L_{\mathrm{arith}}(10)|/|L(10)|\approx 0{,}0087$);
+Tao-Methodik mit fünf Ebenen (`collatz_formalisierung_tao_stil.md`).
 
 **Stufe 1 — $\kappa$ (L₄):** Fundamentale Brücke zwischen $\mathbb{Z}_2$, EABC-Wörtern und
-$\Phi_{\mathrm{pref}}$. Ohne treue Kodierung bleibt die dynamische Frage symbolisch unzugänglich;
-erste positive Evidenz bei langen Integrationsstrom-Wörtern (`collatz_phi_pref_test.json`).
+$\Phi_{\mathrm{pref}}$; soll verborgene Verbotsregeln von $\mathcal{L}_{\mathrm{arith}}$ sichtbar machen.
 
-**Stufe 2 — $\mathcal{L}_{\mathrm{arith}}\subsetneq\mathcal{L}$ (L₂):** Klarste operationale Form
-der offenen Brücke für Auftrag B; boxed Ziel in `collatz_equivalenz_e_infty.tex`.
-
-**Stufe 3 — Lemma E (L₁):** Zwischenlemma in `collatz_equivalenz_e_infty.tex` und
-`collatz_schlussartikel_arxiv.tex` (Epilog) — trennt endliche Beobachtungsschlechtigkeit von
+**Stufe 3 — Lemma E (L₁):** Zwischenlemma — trennt endliche Beobachtungsschlechtigkeit von
 unendlicher Nichtkonvergenz **für den präperiodischen Anteil**; vermutlich **näher an Collatz**
 als Stufe 1–2, daher zuletzt im Angriffsplan.
 
@@ -273,13 +277,13 @@ Collatz $\Leftrightarrow$ (keine Divergenz) $\land$ (kein nichttrivialer Zyklus)
 
 ---
 
-## Top-3 Kandidaten-Lemmas (Kurzliste)
+## Top-3 Kandidaten-Lemmas (Kurzliste, revidiert Juni 2026)
 
 | Rang | Stufe | Lemma | Warum |
 |------|-------|-------|-------|
-| **1** | **1** | **L₄ Treue Kodierung $\kappa$** | Fundamentale Brücke $n\leftrightarrow$ EABC-Wort $\leftrightarrow\mathbb{Z}_2$; Informationsverlust-Frage; verbindet Auftrag D ($\Phi_{\mathrm{pref}}$) mit dynamischer Collatz-Frage |
-| **2** | **2** | **L₂ Arithmetische Realisierbarkeit** | Präzise Trennung $\mathcal{L}_{\mathrm{arith}}\subsetneq\mathcal{L}$; schlechte unendliche Wörter formal, aber nicht in $\mathbb{N}$ realisierbar |
-| **3** | **3** | **L₁ Lemma E** (Präperiodizität) | Im Repo als Zwischenlemma skizziert; reduziert globale Frage auf präperiodische EABC-Analyse; vermutlich nahe an Collatz; Lean-Grundgerüst vorhanden |
+| **1** | **2** | **L₂ Arithmetische Realisierbarkeit** | Stärkster operativer Zweig: $|L_{\mathrm{arith}}(10)|/|L(10)|\approx 0{,}0087$; $\mathrm{BE}$ als erster Zeuge; Tao-Methodik mit fünf Ebenen |
+| **2** | **1** | **L₄ Treue Kodierung $\kappa$** | Fundamentale Brücke $n\leftrightarrow$ EABC-Wort; macht verborgene Realisierbarkeitsregeln sichtbar |
+| **3** | **3** | **L₁ Lemma E** (Präperiodizität) | Zwischenlemma skizziert; reduziert globale Frage auf präperiodische EABC-Analyse; Lean-Grundgerüst vorhanden |
 
 ---
 
@@ -323,13 +327,33 @@ Die naive mod-12-$\kappa$ ist eine **Brückenskizze**, keine treue Kodierung im 
 
 ## Stufe 2 — $\mathcal{L}_{\mathrm{arith}}$ (L₂, Juni 2026)
 
-> **Boxed (Stufe 2):** Welche EABC-Wörter sind **tatsächlich arithmetisch realisierbar**?
-> $\mathcal{L}_{\mathrm{arith}}\subsetneq\mathcal{L}$ könnte die erste echte Brücke zwischen
-> Collatz-Arithmetik, symbolischer Dynamik und Lemma E sein.
+> **Boxed (Stufe 2 — Kernbefund):**
+> $$|L_{\mathrm{arith}}(10)| = 24\,818\quad\text{gegen}\quad |L(10)| = 2\,860\,558
+> \quad\Rightarrow\quad \text{Ratio}\approx 0{,}0087\;\;(99{,}13\,\%\text{ ausgeschlossen})$$
+>
+> **Hauptbefund:** $L_{\mathrm{arith}}\ll L$ — strukturell, nicht nur punktuell.
+> $w=\mathrm{BE}$ ist der erste sichtbare Zeuge für $\mathcal{L}_{\mathrm{arith}}\subsetneq\mathcal{L}$,
+> kein Theorem über alle $n$.
 
-**Priorität:** PR **#39** (dieser Zweig) ist neben treuer $\kappa$ (Stufe 1 / PR #38) der
-wichtigste Generalangriff-Zweig — beide hängen zusammen: treue $\kappa$ soll verborgene
-Verbotsregeln von $\mathcal{L}_{\mathrm{arith}}$ sichtbar machen.
+**Tao-Einordnung (methodischer Rahmen, kein Beweisanspruch):** Die Stufe-2-Interpretation folgt
+fünf getrennten Ebenen (vgl. `collatz_formalisierung_tao_stil.md`, *Methodik 2*):
+
+1. **Definition:** Alphabet, Grammatik $\mathcal{L}(k)$, $BB$-Verbot, $C$-Kapazität, $C^*_{\max}\to EA$
+2. **Zeuge:** konkrete nicht-realisierbare Wörter ($\mathrm{BE}$, …)
+3. **Experiment:** Ratios, Häufigkeiten, Volllisten ($k=10$-Daten)
+4. **Theorem:** bewiesene Ausschlüsse innerhalb $\mathcal{L}$ ($BB$, endliche $C$, …)
+5. **Conjecture:** $\displaystyle\lim_{k\to\infty}|L_{\mathrm{arith}}|/|L|$
+
+| Aspekt | Status |
+|--------|--------|
+| Definition formalisiert | ja (`ArithLanguage.lean`, `collatz_l_arith_test.py`) |
+| Experiment ($k=10$, $n\leq 10^6$) | $24\,818$ Realisierungen über naive $\kappa$ |
+| Beobachtung: $\mathrm{BE}$ tritt nicht auf | ja (minimaler Zeuge, Länge 2) |
+| Theorem: $\mathrm{BE}\notin\mathcal{L}_{\mathrm{arith}}$ für alle $n$ | **nein** (offen) |
+
+**Priorität:** PR **#39** ist der **stärkste operative Zweig** des Generalangriffs. Treue $\kappa$
+(Stufe 1) soll verborgene Verbotsregeln von $\mathcal{L}_{\mathrm{arith}}$ sichtbar machen;
+Lemma E (Stufe 3) schließt später an.
 
 ### Verbindung zu PR #38 ($\kappa$-Negativresultat)
 
@@ -372,10 +396,12 @@ grammatisch zulässige Wörter können ohne passendes $n$ existieren.
 **Minimales Gegenbeispiel:** $w=\mathrm{BE}$ (Länge 2) — grammatisch zulässig, aber kein
 ungerades $n\leq 10^6$ mit $\kappa$-Präfix $\mathrm{BE}$.
 
-**Interpretation (kein Beweisanspruch):** Die Ratio $|L_{\mathrm{arith}}|/|L|$ fällt mit $k$
-— viele grammatische Wörter sind (auf endlicher Suchtiefe) nicht realisierbar. Das stützt
-$\mathcal{L}_{\mathrm{arith}}\subsetneq\mathcal{L}$, beweist aber weder Collatz noch
-$L_{\mathrm{arith}}=\mathcal{L}$.
+**Interpretation (Tao-Stil, kein Beweisanspruch):** Auf Experimentebene fällt die Ratio
+$|L_{\mathrm{arith}}|/|L|$ mit $k$ — bei $k=10$ sind $99{,}13\,\%$ der grammatischen Wörter
+auf der Suchtiefe $n\leq 10^6$ nicht realisierbar. Das ist **strukturelle Evidenz** für
+$\mathcal{L}_{\mathrm{arith}}\subsetneq\mathcal{L}$, kein Collatz-Beweis und kein Theorem,
+dass $\mathrm{BE}$ für alle $n$ ausgeschlossen ist. Die Conjecture-Ebene ($\lim_{k\to\infty}$
+des Verhältnisses) bleibt offen.
 
 **Offen:** Vollständige Charakterisierung von $\mathcal{L}_{\mathrm{arith}}$; Zusammenhang mit
 treuer $\kappa$; unendliche Wörter vs. endliche Präfixe.
