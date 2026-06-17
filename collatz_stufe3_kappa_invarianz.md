@@ -219,9 +219,9 @@ Ersetzt die frühere Priorität (Attraktor, Geometrie, Präzession, κ als Haupt
 
 **Bewusst zurückgestellt:** Attraktor $E$, Geometrie ($\Phi_{\mathrm{pref}}$, Präzession), treue $\kappa$ als **Hauptangriff** — epistemisch abgegrenzt oder in Stufe 1/2B bearbeitet.
 
-### Geometrischer Nebenzweig: Morley-Sensorik (nicht Metrik)
+### Geometrischer Nebenzweig: Morley-Operator (nicht Metrik)
 
-Parallel zur arithmetischen Stufe-3-Pipeline existiert ein **definitorischer** geometrischer Rahmen: Morley-Kern pro Dreieck, Sensoren $F_M$ (Gleichseitigkeitsabweichung), $S_M$ (Skala), kombiniertes $K_M$, diskretes Konformitätsfeld $\mu_M$ und Operator $T_M : \Delta \mapsto \mathrm{Mor}(\Delta)$ auf triangulierten Flächen — näher an Regge-/diskreter konformer Geometrie als an einer neuen Riemann-Metrik. EABC-Brücke: $(A,B,C)\mapsto(E_A,E_B,E_C)$ als **Operator**, nicht als zusätzlicher Punkt $E$. Verzahnung mit $\kappa$-Robustheit ist **spekulativ und offen**. Vollständige Definitionen: `collatz_morley_metrik_erweiterung.md`.
+Parallel zur arithmetischen Stufe-3-Pipeline existiert ein **definitorischer** geometrischer Rahmen in `collatz_morley_metrik_erweiterung.md` (§ **Geometrie zweiter Ordnung**): Grundobjekt ist das Dreieck $(A,B,C)$ statt $(p,v)$; zentraler Akteur $T_M : \mathcal{T}(M)\to\mathcal{T}(M)$ mit Morley-Fluss $\Delta_{n+1}=T_M(\Delta_n)$. Sensoren $F_M$, $S_M$, $K_M$, $\mu_M$ messen Zustände; EABC: $E=T_M$, nicht Punkt $E$. Offene Hauptfrage: Invarianten von $T_M$ auf triangulierten Flächen. Ikosaeder–Dodekaeder-Dualität (`eabc_icosahedron_test.py`) koppelt Triangulierung und Renormierung. Verzahnung mit $\kappa$-Robustheit **spekulativ** — Rang 6+, kein Stufe-3-Kern.
 
 ---
 
