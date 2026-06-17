@@ -132,6 +132,13 @@ das ist die operationale Form der Brücke (vgl. L₂, `collatz_equivalenz_e_inft
 | **2** | $\mathcal{L}_{\mathrm{arith}}$-Realisierbarkeit | Welche $w\in\mathcal{L}^{\mathbb{N}}$ sind Bahnwörter? |
 | **3** | Präperiodizität (Lemma E) | Endliche Beobachtungsschlechtigkeit $\Rightarrow$ Präperiodizität |
 
+### Stufe 1 — Implementierung (Juni 2026)
+
+- **Lean:** `CollatzEabc.Kappa` — `kappaPrefix`, `FaithfulKappa`, `kappaConjecture`; Theorem `naiveKappa_shift`.
+- **Python:** `collatz_kappa_test.py` — bei $K=8$, $n\leq 5000$: viele Starts mit `none` (mod $12\notin\{1,5,7,11\}$),
+  Kollisionen unter definierten Starts; **Dynamik-Shift** für naive $\kappa$ verifiziert.
+- **Fazit:** Treue $\kappa$ ist **stärker** als naive Präfix-Kodierung; `faithfulKappaExists K` bleibt offen.
+
 ---
 
 ## Kandidaten-Lemmas
@@ -276,3 +283,30 @@ Collatz $\Leftrightarrow$ (keine Divergenz) $\land$ (kein nichttrivialer Zyklus)
 - `collatz_offene_punkte.md` — Synthese offener Punkte, Negativresultate
 - `collatz_kepler_gedankenexperiment.tex` — $\kappa$, $\Phi_{\mathrm{pref}}$, Diskriminantentest
 - `collatz_schlussartikel_arxiv.tex` — Epilog, Uniformität, EABC-Struktur
+
+---
+
+## Stufe 1 — Implementierung (κ, Juni 2026)
+
+**Lean:** `collatz_eabc_core/CollatzEabc/Kappa.lean`
+
+| Objekt | Inhalt |
+|--------|--------|
+| `EabcWord` | `List EabcLetter` |
+| `classOfLetter` | mod-12 $\to$ `Option EabcLetter` |
+| `kappaPrefix n K` | erste $K$ Schritte als `List (Option EabcLetter)` |
+| `FaithfulKappa K` | Schnittstelle: volle Wörter, Klassenübereinstimmung, Shift+Append, Injektivität |
+| `kappaConjecture` | $\forall K>0$, existiert treue $\kappa$ — **offen** |
+| `kappaPrefix_get_shift` | Dynamiktreue der **naiven** $\kappa$ (sorry-frei) |
+
+**Python:** `collatz_kappa_test.py` → `collatz_kappa_test.json`
+
+**TeX:** `collatz_kappa_encoding.tex`
+
+### Ehrliche Testergebnisse ($N=10^5$, $K=4$)
+
+- **Dynamiktreue:** ja (0 Fehler; deckt sich mit Lean `kappaPrefix_get_shift`)
+- **Injektivität:** nein ($\sim 1{,}47\times 10^8$ Kollisionspaare)
+- **Vollständigkeit:** $33333/50000$ Starts ohne $\bot$-Einträge; $\approx 8{,}3\%$ undefinierte Schritte ($n\equiv 3,9\pmod{12}$)
+
+Die naive mod-12-$\kappa$ ist eine **Brückenskizze**, keine treue Kodierung im Sinne von `FaithfulKappa`.

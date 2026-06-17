@@ -14,6 +14,10 @@ Systematische Suche nach der kleinsten fehlenden Brücke **L** mit
 *(EABC-/Lean-Struktur) + L ⟹ Collatz*: siehe `collatz_generalangriff_2026.md`
 (Kandidaten L₁–L₆; **Stufe 1–3:** $\kappa$, $\mathcal{L}_{\mathrm{arith}}$-Realisierbarkeit,
 Lemma E; Abschnitt *Strategische Verfeinerung (Juni 2026)*).
+**Stufe 1 begonnen (Juni 2026):** Lean `CollatzEabc.Kappa`, Python `collatz_kappa_test.py`,
+TeX `collatz_kappa_encoding.tex` — naive $\kappa_K$ dynamiktreu, aber **nicht** injektiv.
+- **Stufe 1 begonnen:** `CollatzEabc.Kappa.lean` (`kappaPrefix`, `FaithfulKappa`, `kappaConjecture`);
+  numerischer Test `collatz_kappa_test.py` (Injektivität/Kollisionen, Dynamik-Shift).
 
 ---
 
@@ -136,6 +140,7 @@ Lemma E; Abschnitt *Strategische Verfeinerung (Juni 2026)*).
 | $I(Q)\to\Pi(Q)$ | **negativ** | Schwach negative Korrelation auf Integrationsstrom-Vierlingen (`collatz_praezession_test.py`) | Kopplung $\Pi=\beta K$; Collatz |
 | $z_0$ dynamisch relevant | **NEIN** | Algebraischer Anker $z_0=\zeta(-1)(12+\mathrm{i})$ | $\mathrm{dist}_2(\cdot,E_\infty)$ |
 | $\Phi_{\mathrm{pref}}$ | **offen** | Wohldefiniert auf EABC-Wörtern (`PrefProjection.lean`) | Brücke $\Phi=\Phi_{\mathrm{pref}}\circ\kappa$ ohne Datentest |
+| Treue $\kappa$ (Stufe 1) | **begonnen** | Naive $\kappa_K$ + `FaithfulKappa`-Schnittstelle (`Kappa.lean`); Dynamik sorry-frei | Injektivität / Vollständigkeit der naiven mod-12-$\kappa$ **verneint** (`collatz_kappa_test.json`) |
 | Collatz / $E_\infty$ | **NEIN** | Äquivalenz präzise formuliert | Beweis |
 
 ### 4b. Projektions-/Kepler-Taxonomie (EABC, nicht Collatz)

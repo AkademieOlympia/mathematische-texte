@@ -14,3 +14,4 @@ import CollatzEabc.Z2Attraktor
 import CollatzEabc.Open
 import CollatzEabc.PrefProjection
 import CollatzEabc.BernoulliClock
+import CollatzEabc.Kappa
