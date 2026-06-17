@@ -20,7 +20,7 @@
 
 > **Boxed (Roadmap):**  
 > *PR #44 mergen (M1) → M2 ($F_M$, $G_M$ auf Ebene / $S^2$ / $H^2$) → M3 (dualer Exponentenfit)*  
-> — M1 **abgeschlossen** (PR #44); M2 **abgeschlossen** (PR #46); M3 **ausstehend**.
+> — M1 **abgeschlossen** (PR #44); M2 **abgeschlossen** (PR #46); M3 **abgeschlossen** (PR #47, experimentell).
 
 ---
 
@@ -182,7 +182,7 @@ Erste Anpassung (nur $K_G \neq 0$): $c \approx 3{,}9\times 10^{-4}$, $\alpha \ap
 **Epistemisches Label:** **Experiment** — numerische Evidenz, kein Theorem.
 
 > **Boxed (M2-Gate):**  
-> *M2a/b/c-Tabelle, $F_M$- und $G_M$-Vorzeichenstruktur dokumentiert (Juni 2026). M3 (Morley-Sensor) ist der nächste Schritt — Conjecture-Ebene.*
+> *M2a/b/c-Tabelle, $F_M$- und $G_M$-Vorzeichenstruktur dokumentiert (Juni 2026). M3 (dualer Fit) abgeschlossen — siehe Beweisversuch-Dokument.*
 
 ---
 
@@ -192,20 +192,36 @@ Nach Ebene / $S^2$ / $H^2$ ist der **reguläre Ikosaeder** die natürliche **4. 
 
 ---
 
-## M3 — Dualer Exponentenfit (ausstehend, erst nach M2)
+## M3 — Dualer Exponentenfit (abgeschlossen, PR #47, experimentell)
 
 M2 ist abgeschlossen (Vorzeichenstruktur geklärt). M3 testet **getrennte** Skalierungsgesetze:
 
 $$F_M \stackrel{?}{=} c_F\,|K_G|^\alpha A^\beta, \qquad
 G_M \stackrel{?}{=} c_G\,K_G^\alpha A^\beta.$$
 
-Beachte: bei $G_M$ steht $K_G$ **ohne** Betrag — Vorzeichenkopplung ist Teil der Conjecture. M2c lieferte erste $F_M$-Evidenz ($\beta \approx 2$, schwache $|K_G|$-Kopplung); M3 ergänzt den parallelen $G_M$-Fit.
+Beachte: bei $G_M$ steht $K_G$ **ohne** Betrag — Vorzeichenkopplung ist Teil der Conjecture. Ebene ($K_G=0$) ist Kontrolle und aus den Fits ausgeschlossen.
 
-**Gate:** M3 erst nach dokumentierter M2a/b-Tabelle und $\operatorname{sign}(G_M) = \operatorname{sign}(K_G)$.
+**Ergebnisse** (`collatz_morley_tm_numerik.py m3`, Quelle: `collatz_morley_m3_beweisversuch.json`):
 
-**CLI:** `collatz_morley_tm_numerik.py m3` (hinter Flag, nicht Default — noch nicht auf dualen Fit erweitert).
+| Sensor | $c$ | $\alpha$ | $\beta$ | $R^2$ | $n$ |
+|--------|-----|----------|---------|-------|-----|
+| $F_M$ | $3{,}88\times 10^{-4}$ | $\approx 0$ | $\approx 2$ | $0{,}9998$ | 12 |
+| $G_M$ | $3{,}41\times 10^{-2}$ | $\approx 0$ | $\approx 1$ | $0{,}9998$ | 12 |
 
-**Epistemisches Label:** **Conjecture** — nur Evidenz, kein Beweis.
+**Lesart:** $F_M \propto A^2$ (quadratischer Fehler); $G_M \propto A$ (linear, signiert). $\alpha$ ist auf $S^2/H^2$ mit $|K_G|\equiv 1$ nicht identifizierbar.
+
+**$G_M$-Cross-Check:** $\operatorname{sign}(G_M)=\operatorname{sign}(K_G)$ stabil über alle $\varepsilon$ und alle vier M1-Varianten.
+
+**Beweisversuch-Dokument:** [`collatz_morley_gm_beweisversuch.md`](collatz_morley_gm_beweisversuch.md) — Argumente für/gegen, Grenzen, nächste Schritte.
+
+**CLI:** `collatz_morley_tm_numerik.py m3` → `collatz_morley_m3_beweisversuch.json`.
+
+**Artefakte:** `tests/test_morley_m3_beweisversuch.py`.
+
+**Epistemisches Label:** **Conjecture / Experiment** — nur Evidenz, kein Beweis.
+
+> **Boxed (M3-Befund):**  
+> *Dualer Fit bestätigt $F_M \propto A^2$ und $G_M \propto A$ mit hohem $R^2$. Vorzeichen von $G_M$ ist über $\varepsilon$ und Varianten stabil — plausibler signierter Krümmungssensor, aber definitionsabhängig und nur numerisch.*
 
 ---
 
@@ -223,6 +239,7 @@ Beachte: bei $G_M$ steht $K_G$ **ohne** Betrag — Vorzeichenkopplung ist Teil d
 
 1. ~~M1~~ — abgeschlossen (PR #44).
 2. ~~M2: Krümmungs-Signatur ($F_M$ + $G_M$)~~ — erweitert (PR #46).
-3. **M3:** Dualer Exponentenfit $F_M \sim c_F |K|^\alpha A^\beta$, $G_M \sim c_G K^\alpha A^\beta$ (ausstehend).
+3. ~~**M3:** Dualer Exponentenfit $F_M \sim c_F |K|^\alpha A^\beta$, $G_M \sim c_G K^\alpha A^\beta$~~ — experimentell (PR #47).
 4. Optional: Ikosaeder-20-Flächen-Lauf (4. Stufe nach $R^2/S^2/H^2$).
-5. Optional: Lean-Definitionen (`MorleyOperator`) — ohne Collatz-`sorry`.
+5. Optional: orientiertes $G_M$, Varianten-Invarianz von $c_G$ und $\beta$.
+6. Optional: Lean-Definitionen (`MorleyOperator`) — ohne Collatz-`sorry`.

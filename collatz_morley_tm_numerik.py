@@ -567,7 +567,69 @@ class ScalingSample:
 
 
 @dataclass
+class M3ExponentFit:
+    """Dualer Exponentenfit F_M oder G_M."""
+
+    model: str
+    c: float
+    alpha: float
+    beta: float
+    r2: float
+    n_samples: int
+    log_c: float
+    kg_domain: str
+
+
+@dataclass
+class M3PlaneControl:
+    """Ebene K_G=0 — Kontrolle, aus Krümmungs-Fits ausgeschlossen."""
+
+    n_samples: int
+    f_m_max: float
+    g_m_max_abs: float
+    f_m_near_zero: bool
+    g_m_near_zero: bool
+
+
+@dataclass
+class M3VariantSignRow:
+    variant: str
+    sphere_gm_positive: bool
+    hyperbolic_gm_negative: bool
+    plane_gm_near_zero: bool
+    sign_matches_kg: bool
+
+
+@dataclass
+class M3SignCrossCheck:
+    """G_M-Vorzeichen über ε und Operatorvarianten."""
+
+    stable_across_eps: bool
+    sphere_gm_positive_all_eps: bool
+    hyperbolic_gm_negative_all_eps: bool
+    plane_gm_near_zero_all_eps: bool
+    variant_rows: list[M3VariantSignRow]
+    all_variants_sign_ok: bool
+
+
+@dataclass
+class M3BeweisversuchReport:
+    stage: str = "M3"
+    variant: str = "local_chart"
+    epsilons: list[float] = field(default_factory=list)
+    samples: list[M2SurfaceSample] = field(default_factory=list)
+    plane_control: M3PlaneControl | None = None
+    f_m_fit: M3ExponentFit | None = None
+    g_m_fit: M3ExponentFit | None = None
+    sign_cross_check: M3SignCrossCheck | None = None
+    m2_gate_passed: bool = False
+    notes: list[str] = field(default_factory=list)
+
+
+@dataclass
 class M3NumerikReport:
+    """Rückwärtskompatibilität für ältere Tests (Legacy S²-Skalierung)."""
+
     stage: str = "M3"
     realization: str = "geodesic_angles_great_circles"
     euclidean_fm_max: float = 0.0
@@ -983,6 +1045,177 @@ def _multilinear_log_fit(
     return float(log_c), float(alpha), float(beta), float(r2)
 
 
+def _signed_gm_log_fit(
+    kg: Sequence[float],
+    log_a: Sequence[float],
+    gm: Sequence[float],
+) -> tuple[float, float, float, float, float]:
+    """
+    G_M ~ c_G K_G^α A^β auf K_G≠0.
+
+  Vorzeichenkopplung sign(G_M)=sign(K_G) vorausgesetzt (M2b); Fit in log|·|-Raum,
+    c_G mit Vorzeichen aus Median(G_M / (K_G^α A^β)).
+    """
+    kg_arr = np.asarray(kg, dtype=float)
+    log_a_arr = np.asarray(log_a, dtype=float)
+    gm_arr = np.asarray(gm, dtype=float)
+    mask = (np.abs(kg_arr) > 1e-12) & (np.abs(gm_arr) > 1e-18)
+    if int(np.sum(mask)) < 3:
+        return float("nan"), float("nan"), float("nan"), float("nan")
+    kg_m = kg_arr[mask]
+    log_a_m = log_a_arr[mask]
+    gm_m = gm_arr[mask]
+    log_abs_kg = np.log(np.abs(kg_m))
+    log_abs_gm = np.log(np.abs(gm_m))
+    log_c_abs, alpha, beta, r2 = _multilinear_log_fit(log_abs_kg, log_a_m, log_abs_gm)
+    if not math.isfinite(log_c_abs):
+        return float("nan"), alpha, beta, r2
+    c_abs = math.exp(log_c_abs)
+    denom = np.sign(kg_m) * (np.abs(kg_m) ** alpha) * np.exp(beta * log_a_m)
+    safe = np.abs(denom) > 1e-30
+    ratios = gm_m[safe] / denom[safe]
+    c_signed = float(np.median(ratios)) if len(ratios) else c_abs
+    if not math.isfinite(c_signed) or abs(c_signed) < 1e-30:
+        c_signed = c_abs
+    log_c_signed = math.log(abs(c_signed)) if abs(c_signed) > 0 else float("nan")
+    return log_c_signed, alpha, beta, r2, c_signed
+
+
+def _fit_m3_fm(samples: Sequence[M2SurfaceSample]) -> M3ExponentFit:
+    curved = [s for s in samples if abs(s.kg) > 1e-12 and s.f_m > 1e-18 and s.area > 1e-18]
+    log_abs_kg = [math.log(abs(s.kg)) for s in curved]
+    log_a = [math.log(s.area) for s in curved]
+    log_fm = [math.log(s.f_m) for s in curved]
+    log_c, alpha, beta, r2 = _multilinear_log_fit(log_abs_kg, log_a, log_fm)
+    return M3ExponentFit(
+        model="F_M ~ c_F |K_G|^α A^β",
+        c=math.exp(log_c) if math.isfinite(log_c) else float("nan"),
+        alpha=alpha,
+        beta=beta,
+        r2=r2,
+        n_samples=len(curved),
+        log_c=log_c,
+        kg_domain="|K_G|>0 (Ebene ausgeschlossen)",
+    )
+
+
+def _fit_m3_gm(samples: Sequence[M2SurfaceSample]) -> M3ExponentFit:
+    curved = [s for s in samples if abs(s.kg) > 1e-12 and abs(s.g_m) > 1e-18 and s.area > 1e-18]
+    log_a = [math.log(s.area) for s in curved]
+    kg = [s.kg for s in curved]
+    gm = [s.g_m for s in curved]
+    log_c, alpha, beta, r2, c_signed = _signed_gm_log_fit(kg, log_a, gm)
+    return M3ExponentFit(
+        model="G_M ~ c_G K_G^α A^β",
+        c=c_signed,
+        alpha=alpha,
+        beta=beta,
+        r2=r2,
+        n_samples=len(curved),
+        log_c=log_c,
+        kg_domain="K_G≠0, signiert (Ebene ausgeschlossen)",
+    )
+
+
+def _collect_m3_samples(
+    epsilons: Sequence[float],
+    orientation: float,
+    variant: str,
+) -> list[M2SurfaceSample]:
+    surfaces = (("R2", 0.0), ("S2", 1.0), ("H2", -1.0))
+    samples: list[M2SurfaceSample] = []
+    for surf, kg in surfaces:
+        for eps in epsilons:
+            if surf == "R2":
+                tri = euclidean_patch_triangle(float(eps), orientation=orientation)
+            elif surf == "S2":
+                tri = sphere_patch_triangle(
+                    np.array([0.0, 0.0, 1.0]), float(eps), orientation=orientation
+                )
+            else:
+                tri = hyperboloid_patch_triangle(side_angle=float(eps), orientation=orientation)
+            area = _m2_triangle_area(surf, tri)
+            fm = _m2_fm_for_surface(surf, tri, variant=variant)
+            gm = _m2_gm_for_surface(surf, tri, variant=variant)
+            ratio = fm / area if area > 1e-16 else float("nan")
+            samples.append(
+                M2SurfaceSample(
+                    surface=surf,
+                    kg=kg,
+                    epsilon=float(eps),
+                    area=area,
+                    f_m=fm,
+                    g_m=gm,
+                    f_m_over_a=ratio,
+                )
+            )
+    return samples
+
+
+def _m3_plane_control(samples: Sequence[M2SurfaceSample]) -> M3PlaneControl:
+    plane = [s for s in samples if s.surface == "R2"]
+    f_max = max((s.f_m for s in plane), default=0.0)
+    g_max = max((abs(s.g_m) for s in plane), default=0.0)
+    return M3PlaneControl(
+        n_samples=len(plane),
+        f_m_max=f_max,
+        g_m_max_abs=g_max,
+        f_m_near_zero=all(s.f_m < 1e-20 for s in plane),
+        g_m_near_zero=all(abs(s.g_m) < 1e-12 for s in plane),
+    )
+
+
+def _m3_sign_cross_check(
+    epsilons: Sequence[float],
+    orientation: float,
+    primary_variant: str,
+) -> M3SignCrossCheck:
+    """G_M-Vorzeichen über ε (Primärvariante) und alle M1-Varianten."""
+    primary = _collect_m3_samples(epsilons, orientation, primary_variant)
+    sphere_all_pos = all(s.g_m > 0.0 for s in primary if s.surface == "S2")
+    hyper_all_neg = all(s.g_m < 0.0 for s in primary if s.surface == "H2")
+    plane_all_zero = all(abs(s.g_m) < 1e-12 for s in primary if s.surface == "R2")
+    stable = sphere_all_pos and hyper_all_neg and plane_all_zero
+
+    variant_rows: list[M3VariantSignRow] = []
+    for var in VARIANT_NAMES:
+        pts = _collect_m3_samples(epsilons, orientation, var)
+        sp_pos = all(s.g_m > 0.0 for s in pts if s.surface == "S2")
+        hy_neg = all(s.g_m < 0.0 for s in pts if s.surface == "H2")
+        pl_zero = all(abs(s.g_m) < 1e-12 for s in pts if s.surface == "R2")
+        curved = [s for s in pts if abs(s.kg) > 1e-12]
+        sign_ok = all(
+            (s.g_m > 0 and s.kg > 0) or (s.g_m < 0 and s.kg < 0) for s in curved
+        )
+        variant_rows.append(
+            M3VariantSignRow(
+                variant=var,
+                sphere_gm_positive=sp_pos,
+                hyperbolic_gm_negative=hy_neg,
+                plane_gm_near_zero=pl_zero,
+                sign_matches_kg=sign_ok,
+            )
+        )
+
+    return M3SignCrossCheck(
+        stable_across_eps=stable,
+        sphere_gm_positive_all_eps=sphere_all_pos,
+        hyperbolic_gm_negative_all_eps=hyper_all_neg,
+        plane_gm_near_zero_all_eps=plane_all_zero,
+        variant_rows=variant_rows,
+        all_variants_sign_ok=all(r.sign_matches_kg for r in variant_rows),
+    )
+
+
+def _m2_gate_from_sign(sign_test: M2SignTest) -> bool:
+    return (
+        sign_test.plane_near_zero
+        and sign_test.sphere_positive
+        and sign_test.hyperbolic_positive
+        and sign_test.gm_sign_detected
+    )
+
+
 def _m1_gate_passed(m1: M1Report, min_slope: float = 2.75) -> bool:
     for fit in m1.fits:
         if fit.pair == "local_chart__exp_euclidean":
@@ -1233,14 +1466,59 @@ def run_m2_sensor(
     )
 
 
-def run_m3_sensor(
-    variant: str = "geodesic_angles",
-) -> M3NumerikReport:
-    """M3: Dualer Exponentenfit — nur nach abgeschlossenem M2a/b."""
+def run_m3_beweisversuch(
+    epsilons: Sequence[float] | None = None,
+    orientation: float = 0.37,
+    variant: str = "local_chart",
+    check_variants: bool = True,
+) -> M3BeweisversuchReport:
+    """
+    M3: Dualer Exponentenfit — F_M ~ c_F |K_G|^α A^β, G_M ~ c_G K_G^α A^β.
+
+    Experimentell, kein Beweis. Ebene (K_G=0) nur Kontrolle; Fits nur K_G≠0.
+    """
+    if epsilons is None:
+        epsilons = [0.05, 0.08, 0.12, 0.18, 0.25, 0.35]
+
+    samples = _collect_m3_samples(epsilons, orientation, variant)
+    plane = _m3_plane_control(samples)
+    f_fit = _fit_m3_fm(samples)
+    g_fit = _fit_m3_gm(samples)
+    sign_check = (
+        _m3_sign_cross_check(epsilons, orientation, variant)
+        if check_variants
+        else None
+    )
+    m2_sign = _compute_m2_sign_test(samples)
+    gate = _m2_gate_from_sign(m2_sign)
+
     notes = [
-        "M3 (geplant): F_M ~ c_F |K_G|^α A^β, G_M ~ c_G K_G^α A^β — getrennte Fits.",
-        "Gate: M2-Vorzeichenstruktur sign(G_M)=sign(K_G) dokumentiert.",
-        "Aktuell: Legacy F_M ~ c·K_G·A auf S² (Rückwärtskompatibilität).",
+        "M3 Beweisversuch: experimentell — kein Theorem, keine Collatz-Folgerung.",
+        "F_M-Fit: |K_G|>0 gepoolt (S²+H²); Ebene separat als Kontrolle.",
+        "G_M-Fit: signiertes K_G; Vorzeichenkopplung sign(G_M)=sign(K_G) aus M2b vorausgesetzt.",
+        f"Kanoniche Variante: {variant} (M1: O(ε³)-Evidenz für 2.-Ordnung-Geometrie).",
+        "α schlecht identifizierbar bei konstantem |K_G|∈{1} auf Kontrollflächen.",
+        "Nächste Schritte: orientiertes G_M, Ikosaeder-20-Flächen, Definitions-Invarianz.",
+    ]
+
+    return M3BeweisversuchReport(
+        variant=variant,
+        epsilons=list(epsilons),
+        samples=samples,
+        plane_control=plane,
+        f_m_fit=f_fit,
+        g_m_fit=g_fit,
+        sign_cross_check=sign_check,
+        m2_gate_passed=gate,
+        notes=notes,
+    )
+
+
+def run_m3_sensor_legacy(variant: str = "geodesic_angles") -> M3NumerikReport:
+    """Legacy M3: F_M ~ c·K_G·A auf S² (Rückwärtskompatibilität älterer Tests)."""
+    notes = [
+        "Legacy-M3: nur S²-Skalierung F_M ~ c·K_G·A.",
+        "Für dualen Fit: run_m3_beweisversuch() bzw. CLI `m3`.",
     ]
     euc_max = max(morley_form_fm(t) for t in euclidean_smoke_triangles())
     scaling = probe_sphere_scaling(variant=variant)
@@ -1255,9 +1533,24 @@ def run_m3_sensor(
     )
 
 
+def run_m3_sensor(
+    epsilons: Sequence[float] | None = None,
+    orientation: float = 0.37,
+    variant: str = "local_chart",
+    check_variants: bool = True,
+) -> M3BeweisversuchReport:
+    """M3-Haupteinstieg: dualer Exponentenfit (Alias für run_m3_beweisversuch)."""
+    return run_m3_beweisversuch(
+        epsilons=epsilons,
+        orientation=orientation,
+        variant=variant,
+        check_variants=check_variants,
+    )
+
+
 def run_numerik() -> M3NumerikReport:
-    """Rückwärtskompatibler Alias für M3 (ältere Tests)."""
-    return run_m3_sensor()
+    """Rückwärtskompatibler Alias für Legacy-M3 (ältere Tests)."""
+    return run_m3_sensor_legacy()
 
 
 # ---------------------------------------------------------------------------
@@ -1282,18 +1575,49 @@ def _print_m1_report(report: M1Report) -> None:
         print(f"  • {note}")
 
 
-def _print_m3_report(report: M3NumerikReport) -> None:
-    print("=== Morley M3: Sensor F_M (S²) ===")
-    print(f"Realisierung: {report.realization}")
-    print(f"Euklid max F_M (soll ~0): {report.euclidean_fm_max:.3e}")
-    for s in report.sphere_scaling:
-        ratio = s.f_m / s.kg_area if s.kg_area > 0 else float("nan")
+def _print_m3_report(report: M3BeweisversuchReport) -> None:
+    print("=== Morley M3: Dualer Exponentenfit (Beweisversuch) ===")
+    print(f"Variante: {report.variant}  |  M2-Gate: {'bestanden' if report.m2_gate_passed else 'offen'}")
+    print(f"ε-Familie: {', '.join(f'{e:.3f}' for e in report.epsilons)}")
+
+    if report.plane_control is not None:
+        pc = report.plane_control
         print(
-            f"  side={s.side_angle:.3f} rad  Area={s.area:.5f}  "
-            f"F_M={s.f_m:.5e}  F_M/Area={ratio:.5e}"
+            f"\nEbene K_G=0 (Kontrolle, aus Fit ausgeschlossen): "
+            f"max F_M={pc.f_m_max:.3e}, max|G_M|={pc.g_m_max_abs:.3e}  "
+            f"F_M≈0={pc.f_m_near_zero}, G_M≈0={pc.g_m_near_zero}"
         )
-    if report.fit_slope is not None:
-        print(f"Lineare Anpassung F_M ~ c * (K_G A): c ≈ {report.fit_slope:.5f}, R² ≈ {report.fit_r2:.4f}")
+
+    if report.f_m_fit is not None:
+        ff = report.f_m_fit
+        print(
+            f"\nF_M ≈ c_F |K_G|^α A^β:  c_F≈{ff.c:.5e}, α≈{ff.alpha:.3f}, β≈{ff.beta:.3f}, "
+            f"R²≈{ff.r2:.4f}  (n={ff.n_samples}, {ff.kg_domain})"
+        )
+    if report.g_m_fit is not None:
+        gf = report.g_m_fit
+        print(
+            f"G_M ≈ c_G K_G^α A^β:   c_G≈{gf.c:.5e}, α≈{gf.alpha:.3f}, β≈{gf.beta:.3f}, "
+            f"R²≈{gf.r2:.4f}  (n={gf.n_samples}, {gf.kg_domain})"
+        )
+
+    if report.sign_cross_check is not None:
+        sc = report.sign_cross_check
+        print("\nG_M-Vorzeichen-Cross-Check:")
+        print(
+            f"  stabil über ε: {sc.stable_across_eps}  "
+            f"(S²>0={sc.sphere_gm_positive_all_eps}, H²<0={sc.hyperbolic_gm_negative_all_eps}, "
+            f"R²≈0={sc.plane_gm_near_zero_all_eps})"
+        )
+        print(f"  alle Varianten sign(G_M)=sign(K_G): {sc.all_variants_sign_ok}")
+        for row in sc.variant_rows:
+            print(
+                f"    {row.variant}: S²+={row.sphere_gm_positive}  H²-={row.hyperbolic_gm_negative}  "
+                f"R²≈0={row.plane_gm_near_zero}  sign_ok={row.sign_matches_kg}"
+            )
+
+    for note in report.notes:
+        print(f"  • {note}")
 
 
 def _print_m2_report(report: M2Report) -> None:
@@ -1383,15 +1707,20 @@ def main() -> None:
         nargs="?",
         default="m1",
         choices=("m1", "m2", "m3"),
-        help="m1=Varianten-Konsistenz (Default), m2=Modellräume, m3=F_M-Sensor",
+        help="m1=Varianten-Konsistenz (Default), m2=Modellräume, m3=dualer Exponentenfit",
     )
     parser.add_argument("--json", type=str, default="", help="JSON-Ausgabepfad")
     parser.add_argument(
         "--variant",
         type=str,
-        default="geodesic_angles",
+        default="local_chart",
         choices=VARIANT_NAMES,
-        help="T_M^(g)-Variante für M3",
+        help="T_M^(g)-Variante für M2/M3",
+    )
+    parser.add_argument(
+        "--no-variant-check",
+        action="store_true",
+        help="M3: Varianten-Cross-Check überspringen (schneller)",
     )
     args = parser.parse_args()
 
@@ -1400,11 +1729,14 @@ def main() -> None:
         _print_m1_report(report)
         payload = asdict(report)
     elif args.mode == "m2":
-        report = run_m2_sensor()
+        report = run_m2_sensor(variant=args.variant)
         _print_m2_report(report)
         payload = asdict(report)
     else:
-        report = run_m3_sensor(variant=args.variant)
+        report = run_m3_beweisversuch(
+            variant=args.variant,
+            check_variants=not args.no_variant_check,
+        )
         _print_m3_report(report)
         payload = asdict(report)
 
@@ -1413,7 +1745,7 @@ def main() -> None:
         out = {
             "m1": "collatz_morley_m1_konsistenz.json",
             "m2": "collatz_morley_m2_sensor.json",
-            "m3": "",
+            "m3": "collatz_morley_m3_beweisversuch.json",
         }[args.mode]
     if out:
         with open(out, "w", encoding="utf-8") as fh:
