@@ -98,6 +98,12 @@ Konvergenz.
 - **Informationszerreibung:** Heuristik $I_n(k)\sim(0.35)^k$; rigorose Definition als
   bedingte Entropie $H(B_{k+1}\mid B_1,\ldots,B_k)$ offen.
 - **Bernoulli-Normschale:** Lyapunov-Nutzung ist No-Go (bewiesen).
+- **$\Phi_{\mathrm{pref}}$ (wohldefiniert):** Vorabbildung auf EABC-Wörtern
+  $\Phi_{\mathrm{pref}}:\{E,A,B,C\}^{<\omega}\to\mathbb{C}\times\mathbb{R}$ mit
+  $z(w)=z_0+2^{-|w|}u(w)$, $t(w)=|w|$; Lean-Kern in
+  `collatz_eabc_core/CollatzEabc/PrefProjection.lean` (Phasen als $\mathbb{Z}\times\mathbb{Z}$).
+  **Kein Collatz-Anspruch** — die dynamische Brücke $\Phi=\Phi_{\mathrm{pref}}\circ\kappa$
+  bleibt offen (`collatz_kepler_gedankenexperiment.tex`, Abschnitt~Φ\_pref).
 - **Geometrisches Gedankenexperiment:** Spekulative Skizze
   $\Phi:\mathbb{Z}_2\to\mathcal{M}=\mathbb{C}\times\mathbb{R}$,
   Zwölfer-Kreis $K_{12}$, Stirling--Bernoulli--Zeta-Anbindung und
