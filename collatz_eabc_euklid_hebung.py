@@ -44,6 +44,11 @@ def defect_z(x: int) -> int:
     return 0
 
 
+def epsilon_z(x: int) -> int:
+    """ε(x) = N(x) - N(Π(x)); auf Λ_Z = Z stets 0."""
+    return 0
+
+
 # ---------------------------------------------------------------------------
 # Z[i] — Gaußsche Ganzzahlen (a + b*i)
 # ---------------------------------------------------------------------------
@@ -98,6 +103,17 @@ def g_inv_exact(a: Gauss) -> tuple[Gauss, int]:
     if n == 0:
         raise ValueError("division by zero")
     return g_conj(a), n
+
+
+def epsilon_zi(x: Gauss) -> int:
+    """
+    ε(x) = N(x) - N(Π(x)) — lokaler Normdefekt.
+
+    Für x ∈ Z[i] (Gitterpunkt): Π(x) = x, also ε(x) = 0.
+    Für rationale Koordinaten vor Rundung: N(x) - N(Π(x)) ≥ 0.
+    """
+    pi_x = g_round_nearest(x)
+    return max(0, g_norm_sq(x) - g_norm_sq(pi_x))
 
 
 def euclidean_step_zi(x: Gauss, y: Gauss) -> tuple[Gauss, Gauss]:

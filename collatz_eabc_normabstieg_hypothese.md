@@ -10,7 +10,8 @@ Forschungsfrage | Forschungsvision | Experiment.
 - `collatz_eabc_euklidische_hebung.md` — algebraischer Kontext, Hurwitz-Kette (PR #54)
 - `collatz_eabc_invarianzprogramm.md` — EABC-Fluktuationsfeld $\delta(x)$, $\kappa$-Klassifikation
 - `collatz_generalangriff_2026.md` — strategischer Pointer
-- `collatz_eabc_gauss_defekt_test.py` — Experiment zur testbaren Teilhypothese (§8)
+- `collatz_eabc_gauss_defekt_test.py` — Experiment zur trivialen Teilhypothese (§8)
+- `collatz_eabc_gauss_faktor_eabc_test.py` — Experiment Z[i]-Faktor → EABC (§9)
 
 ---
 
@@ -100,11 +101,61 @@ $x\mid y$.
 \]
 Misst die Abweichung von $x$ vom Gitter (Peano-Projektion in $\mathbb{R}$).
 
+### Definition 3 (Lokaler Normdefekt)
+
+\[
+\varepsilon(x) := N(x) - N(\Pi_A(x)), \qquad x\in\Lambda_A
+\]
+(oder $x\in A$ vor Gitterprojektion). Auf dem Gitter $\Lambda_A$ gilt $\varepsilon(x)=0$;
+der interessante Wert liegt im **Defektfeld** $x-\Pi_A(x)$ und dessen Normstatistik.
+
 **Heuristik.** Die **iterierte Defektreduktion** unter $E_A$ ist das primäre Objekt — **nicht**
 Divisibilität oder Faktorzerlegung allein. In $\mathbb{O}$ bleibt Normabstieg möglich, während
 klassischer $\gcd$ wegfällt.
 
 **Label:** **Definition**; Defektreduktion statt Divisibilität = **Heuristik / Forschungsvision**.
+
+---
+
+## 4a. Universelle Invariante über R, C, H, O
+
+| Algebra | Ordnung / Struktur | Was „funktioniert“ euklidisch |
+|---------|-------------------|------------------------------|
+| $\mathbb{R}$ | totale Ordnung | **Normabstieg** $|r|<|y|$ |
+| $\mathbb{C}$ | Norm + Rotation | **Normabstieg** $N(r)<N(y)$ |
+| $\mathbb{H}$ | Norm + Rotation (nicht-kommutativ) | **Normabstieg** $N(r)<N(y)$ |
+| $\mathbb{O}$ | Norm + Alternativität | **Normabstieg** (offen); kein assoziativer $\gcd$ |
+
+**Durchbruch (Heuristik):** Nicht $D_A(x,y)$ allein, sondern die Frage: **Welche universelle
+Größe bleibt über R, C, H, O erhalten?** Antwort-Kandidat: **multiplikative Norm** $N$ und
+**Normabstieg** unter dem Hebungsoperator $E_A$. Euklidisches $\mathbb{Z}$ ist der
+1D-Spezialfall dieser Kette.
+
+**Label:** **Heuristik / Forschungsvision**.
+
+---
+
+## 4b. Bernoulli-Lücke und Defektfeld (Heuristik)
+
+Bernoulli-Summation misst Diskretisierungsdefekte:
+\[
+\sum_{n=a}^{b} f(n) - \int_a^b f(x)\,dx.
+\]
+**Heuristik:** Peano-Diskretisierung, Bernoulli-Kontinuumslücke und EABC-Orientierungen sind
+drei Gesichter eines **Defektfeldes**; lokale Normdefekte $\varepsilon(x)$ sind die
+arithmetische Feinauflösung auf dem Gitter $\Lambda_A$.
+
+**Label:** **Heuristik** (kein etablierter Isomorphismus).
+
+---
+
+## 4c. Einheitliches Bild (Forschungsvision)
+
+$$\text{Peano (diskret)} \;\longleftrightarrow\; \text{Bernoulli (Kontinuumslücke)}
+\;\longleftrightarrow\; \text{EABC (Orientierungen)} \;\longleftrightarrow\;
+\text{Normabstieg (lokale Defekte } \varepsilon).$$
+
+**Label:** **Forschungsvision**.
 
 ---
 
@@ -196,14 +247,52 @@ p\equiv 3\pmod 4 \quad\stackrel{?}{\longleftrightarrow}\quad \kappa(p)\in\{B,C\}
 
 **Experiment:** `collatz_eabc_gauss_defekt_test.py` $\to$ `collatz_eabc_gauss_defekt.json`.
 
+**Epistemische Warnung:** Die grobe bipartite Zuordnung split $\leftrightarrow E\cup A$ ist
+**arithmetisch trivial** (mod $4$ × mod $12$). Sie beweist keine geometrische EABC-Brücke.
+
 ---
 
-## 9. Forschungsprogramm (vier Schritte)
+## 9. Stärkere Konjektur und Forschungspriorität Z[i]
 
-1. **Formalisation** von $E_A$, $D_A(x,y)$ und $\widetilde{D}_A(x)$ für $A\in\{\mathbb{R},\mathbb{C},\mathbb{H}\}$
-   (Python-Stub `collatz_eabc_euklid_hebung.py`; Lean-Ziel in `collatz_eabc_core`).
-2. **Gauß–EABC-Test** (§8): empirische Korrelation split/inert mit $\kappa$ für $p\le N$;
-   ehrliche Berichterstattung (grobe vs.\ feine Zuordnung).
+### Conjecture (Defektfeld-Singularitäten)
+
+$$\boxed{
+\text{Primzahlen sind Singularitäten eines universellen Defektfeldes.}
+}$$
+
+Richtung der Kausalität: **Defekte $\to$ Primzahlen**, nicht umgekehrt. In $\mathbb{Z}[i]$
+„sieht“ das Defektfeld die **Geometrie**; die Projektion auf $\mathbb{Z}$ liefert $4n\pm 1$;
+EABC ist die **feinere Auflösung** derselben Orientierungsgeometrie auf der Peano-Achse.
+
+**Label:** **Conjecture / Forschungsvision**.
+
+### Forschungsfrage (Experiment, nicht-trivial)
+
+Für $p\equiv 1\pmod 4$, $p=a^2+b^2$ (kanonisch $0<a\le b$): projiziere $(a,b)$ mod $12$ auf
+EABC-Klassen ($\kappa$ via `eabc_from_lean`, nur für Reste $\in\{1,5,7,11\}$).
+
+**Frage:** Ist die Verteilung $(a,b)\mapsto(E,A,B,C)$ **asymmetrisch**? Erscheinen
+Vierlings-Biases oder Chiralitäten $\Rightarrow$ erste echte Brücke $\mathbb{Z}[i]\to$EABC.
+
+**Experiment:** `collatz_eabc_gauss_faktor_eabc_test.py` $\to$
+`collatz_eabc_gauss_faktor_eabc.json`.
+
+**Strukturelle Voraussage:** Für $p\equiv 1\pmod 4$ ist genau eine Faktorleg gerade
+$\Rightarrow$ höchstens **eine** EABC-sichtbare Leg pro Paar; beide gleichzeitig unmöglich.
+Der Test prüft $\kappa(p)$ vs.\ ungerade Leg, gerade-Leg-mod-$12$-Verteilung und Shuffle-Null.
+
+**Priorität:** $\mathbb{Z}[i]$ vor $\mathbb{O}$ — assoziatives Gitter, Gauß-Euklid etabliert,
+direkter Primideal-Zugang.
+
+---
+
+## 10. Forschungsprogramm (vier Schritte)
+
+1. **Formalisation** von $E_A$, $D_A(x,y)$, $\widetilde{D}_A(x)$ und $\varepsilon(x)$ für
+   $A\in\{\mathbb{R},\mathbb{C},\mathbb{H}\}$ (Python-Stub `collatz_eabc_euklid_hebung.py`;
+   Lean-Ziel in `collatz_eabc_core`).
+2. **Gauß–EABC-Test (§8):** empirische Korrelation split/inert mit $\kappa$ — ehrlich als
+   trivial einstufen; **Z[i]-Faktortest (§9)** als nicht-triviale Fortsetzung.
 3. **Hurwitz-Erweiterung:** Defektklassen in $\mathbb{H}_{\mathrm H}$ und Vergleich mit
    EABC-Primideal-Resonanz (`PAPER_HURWITZ_RESONANZ.md`).
 4. **Oktanionen / Projektion:** kanonische $\Pi_{\mathbb{O}}$, Defekt-Abstieg ohne assoziativen
@@ -213,18 +302,22 @@ p\equiv 3\pmod 4 \quad\stackrel{?}{\longleftrightarrow}\quad \kappa(p)\in\{B,C\}
 
 ---
 
-## 10. Zusammenfassung
+## 11. Zusammenfassung
 
 $$\boxed{
+\text{Primzahlen sind Singularitäten eines universellen Defektfeldes}
+\quad\text{(Conjecture);}
+$$
+$$\boxed{
 \text{Primzahlen sind eindimensionale Schatten irreduzibler Normdefekte.}
-}$$
+\quad\text{(Spezialfall $\mathbb{Z}$).}
+$$
 
 Die **EABC-Normabstiegs-Hypothese** behauptet einen einheitlichen algebraischen Rahmen
-$(\Lambda_A,N,\Pi_A,E_A,D_A)$ über die Hurwitz-Kette, in dem die mod-$12$-EABC-Klassen
+$(\Lambda_A,N,\Pi_A,E_A,D_A,\varepsilon)$ über die Hurwitz-Kette, in dem die mod-$12$-EABC-Klassen
 die sichtbare 1D-Projektion höherdimensionaler Defektstruktur sind. Die Gauß–EABC-Brücke (§8)
-ist der erste **testbare** Spezialfall; Split/inert in $\mathbb{Z}[i]$ ist **Theorem**,
-die interpretative Zuordnung zu $E,A,B,C$ bleibt **Conjecture/Heuristik** bis zur
-feineren Hurwitz-Verknüpfung.
+ist **arithmetisch trivial**; der **Z[i]-Faktortest** (§9) ist der erste nicht-triviale
+empirische Zugang.
 
 ---
 
