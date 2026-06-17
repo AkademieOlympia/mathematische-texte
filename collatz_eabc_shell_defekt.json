@@ -1,0 +1,2359 @@
+{
+  "meta": {
+    "hypothesis_doc": "collatz_eabc_quaternion_mass_hypothese.md",
+    "perspective": "Σ→p: n ↦ Σ_n ↦ μ_n; Primzahlen als Defekt-Singularitäten (Conjecture)",
+    "invariants": "I(μ_n) = (H_n, χ_n, K_trace)",
+    "defect": "D(n) = I(μ_n) − I_avg(n); Baselines: rolling, ω(n)-Stratum, global",
+    "max_n": 50,
+    "rolling_window": 5,
+    "shell_count": 49,
+    "K_scale_for_magnitude": 1.534339
+  },
+  "bernoulli_heuristic": {
+    "mu_infinity_proxy": {
+      "H": 2.083874,
+      "chi": 2.433396
+    },
+    "prime_mean_delta_H": 0.272752,
+    "composite_mean_delta_H": -0.120332,
+    "heuristic": "μ_n − μ_∞ als endliche-Schalen-Korrektur (Bernoulli-Heuristik, nicht bewiesen)"
+  },
+  "prime_vs_composite": {
+    "rolling": {
+      "key": "D_rolling",
+      "prime_count": 15,
+      "composite_count": 34,
+      "mean_abs_D_prime": 1.205049,
+      "mean_abs_D_composite": 1.34476,
+      "median_abs_D_prime": 1.433247,
+      "median_abs_D_composite": 1.228226,
+      "ratio_mean_prime_over_composite": 0.896107,
+      "primes_larger_on_mean": false,
+      "top10_outliers": [
+        {
+          "n": 48,
+          "is_prime": false,
+          "magnitude": 2.591553,
+          "omega": 2
+        },
+        {
+          "n": 40,
+          "is_prime": false,
+          "magnitude": 2.440627,
+          "omega": 2
+        },
+        {
+          "n": 19,
+          "is_prime": true,
+          "magnitude": 2.306496,
+          "omega": 1
+        },
+        {
+          "n": 49,
+          "is_prime": false,
+          "magnitude": 2.069071,
+          "omega": 1
+        },
+        {
+          "n": 22,
+          "is_prime": false,
+          "magnitude": 1.981194,
+          "omega": 2
+        },
+        {
+          "n": 21,
+          "is_prime": false,
+          "magnitude": 1.953393,
+          "omega": 2
+        },
+        {
+          "n": 28,
+          "is_prime": false,
+          "magnitude": 1.942627,
+          "omega": 2
+        },
+        {
+          "n": 27,
+          "is_prime": false,
+          "magnitude": 1.933316,
+          "omega": 1
+        },
+        {
+          "n": 45,
+          "is_prime": false,
+          "magnitude": 1.879491,
+          "omega": 2
+        },
+        {
+          "n": 39,
+          "is_prime": false,
+          "magnitude": 1.774987,
+          "omega": 2
+        }
+      ],
+      "primes_in_top10": 1,
+      "epistemic_note": "Exploratives Muster — kein Beweis, dass Primzahlen systematisch größere |D(n)| tragen. Kleine N, Schalengröße korreliert mit n; Baseline-Wahl beeinflusst Verhältnis."
+    },
+    "omega_stratum": {
+      "key": "D_omega",
+      "prime_count": 15,
+      "composite_count": 34,
+      "mean_abs_D_prime": 1.337601,
+      "mean_abs_D_composite": 1.122849,
+      "median_abs_D_prime": 1.434064,
+      "median_abs_D_composite": 0.949615,
+      "ratio_mean_prime_over_composite": 1.191256,
+      "primes_larger_on_mean": true,
+      "top10_outliers": [
+        {
+          "n": 39,
+          "is_prime": false,
+          "magnitude": 2.702095,
+          "omega": 2
+        },
+        {
+          "n": 45,
+          "is_prime": false,
+          "magnitude": 2.556039,
+          "omega": 2
+        },
+        {
+          "n": 33,
+          "is_prime": false,
+          "magnitude": 2.333095,
+          "omega": 2
+        },
+        {
+          "n": 3,
+          "is_prime": true,
+          "magnitude": 2.287896,
+          "omega": 1
+        },
+        {
+          "n": 7,
+          "is_prime": true,
+          "magnitude": 2.057256,
+          "omega": 1
+        },
+        {
+          "n": 21,
+          "is_prime": false,
+          "magnitude": 1.975359,
+          "omega": 2
+        },
+        {
+          "n": 37,
+          "is_prime": true,
+          "magnitude": 1.936776,
+          "omega": 1
+        },
+        {
+          "n": 5,
+          "is_prime": true,
+          "magnitude": 1.889615,
+          "omega": 1
+        },
+        {
+          "n": 49,
+          "is_prime": false,
+          "magnitude": 1.814015,
+          "omega": 1
+        },
+        {
+          "n": 43,
+          "is_prime": true,
+          "magnitude": 1.771537,
+          "omega": 1
+        }
+      ],
+      "primes_in_top10": 5,
+      "epistemic_note": "Exploratives Muster — kein Beweis, dass Primzahlen systematisch größere |D(n)| tragen. Kleine N, Schalengröße korreliert mit n; Baseline-Wahl beeinflusst Verhältnis."
+    },
+    "global": {
+      "key": "D_global",
+      "prime_count": 15,
+      "composite_count": 34,
+      "mean_abs_D_prime": 1.362123,
+      "mean_abs_D_composite": 1.150132,
+      "median_abs_D_prime": 1.392662,
+      "median_abs_D_composite": 1.140072,
+      "ratio_mean_prime_over_composite": 1.184319,
+      "primes_larger_on_mean": true,
+      "top10_outliers": [
+        {
+          "n": 39,
+          "is_prime": false,
+          "magnitude": 2.258152,
+          "omega": 2
+        },
+        {
+          "n": 37,
+          "is_prime": true,
+          "magnitude": 2.224088,
+          "omega": 1
+        },
+        {
+          "n": 45,
+          "is_prime": false,
+          "magnitude": 2.15148,
+          "omega": 2
+        },
+        {
+          "n": 49,
+          "is_prime": false,
+          "magnitude": 2.126213,
+          "omega": 1
+        },
+        {
+          "n": 43,
+          "is_prime": true,
+          "magnitude": 2.054852,
+          "omega": 1
+        },
+        {
+          "n": 41,
+          "is_prime": true,
+          "magnitude": 2.02533,
+          "omega": 1
+        },
+        {
+          "n": 33,
+          "is_prime": false,
+          "magnitude": 1.924757,
+          "omega": 2
+        },
+        {
+          "n": 31,
+          "is_prime": true,
+          "magnitude": 1.914664,
+          "omega": 1
+        },
+        {
+          "n": 19,
+          "is_prime": true,
+          "magnitude": 1.772891,
+          "omega": 1
+        },
+        {
+          "n": 3,
+          "is_prime": true,
+          "magnitude": 1.770047,
+          "omega": 1
+        }
+      ],
+      "primes_in_top10": 6,
+      "epistemic_note": "Exploratives Muster — kein Beweis, dass Primzahlen systematisch größere |D(n)| tragen. Kleine N, Schalengröße korreliert mit n; Baseline-Wahl beeinflusst Verhältnis."
+    }
+  },
+  "rows": [
+    {
+      "n": 2,
+      "shell_size": 24,
+      "H_n": 1.791759,
+      "chi_n": 2.0,
+      "K_trace": 1.0,
+      "distinct_gamma": 6,
+      "is_prime": true,
+      "omega": 1,
+      "I_avg_rolling": [
+        1.18318,
+        3.266667,
+        0.533334
+      ],
+      "I_avg_omega": [
+        2.277425,
+        2.130296,
+        1.934081
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": 0.60858,
+        "chi": -1.266667,
+        "K_trace": 0.466666,
+        "magnitude": 1.437818
+      },
+      "D_omega": {
+        "H": -0.485666,
+        "chi": -0.130296,
+        "K_trace": -0.934081,
+        "magnitude": 0.789599
+      },
+      "D_global": {
+        "H": -0.292115,
+        "chi": -0.433396,
+        "K_trace": -0.534339,
+        "magnitude": 0.628048
+      }
+    },
+    {
+      "n": 3,
+      "shell_size": 96,
+      "H_n": 1.098612,
+      "chi_n": 3.666667,
+      "K_trace": 0.305556,
+      "distinct_gamma": 5,
+      "is_prime": true,
+      "omega": 1,
+      "I_avg_rolling": [
+        1.400134,
+        2.777778,
+        0.726852
+      ],
+      "I_avg_omega": [
+        2.308932,
+        2.054538,
+        1.965646
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": -0.301522,
+        "chi": 0.888889,
+        "K_trace": -0.421296,
+        "magnitude": 0.977973
+      },
+      "D_omega": {
+        "H": -1.21032,
+        "chi": 1.612129,
+        "K_trace": -1.66009,
+        "magnitude": 2.287896
+      },
+      "D_global": {
+        "H": -0.985262,
+        "chi": 1.23327,
+        "K_trace": -1.228783,
+        "magnitude": 1.770047
+      }
+    },
+    {
+      "n": 4,
+      "shell_size": 24,
+      "H_n": 1.098612,
+      "chi_n": 3.0,
+      "K_trace": 0.75,
+      "distinct_gamma": 5,
+      "is_prime": false,
+      "omega": 1,
+      "I_avg_rolling": [
+        1.517673,
+        2.81685,
+        0.700479
+      ],
+      "I_avg_omega": [
+        2.308932,
+        2.084841,
+        1.945444
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": -0.419061,
+        "chi": 0.18315,
+        "K_trace": 0.049521,
+        "magnitude": 0.458473
+      },
+      "D_omega": {
+        "H": -1.21032,
+        "chi": 0.915159,
+        "K_trace": -1.195444,
+        "magnitude": 1.705705
+      },
+      "D_global": {
+        "H": -0.985262,
+        "chi": 0.566604,
+        "K_trace": -0.784339,
+        "magnitude": 1.246233
+      }
+    },
+    {
+      "n": 5,
+      "shell_size": 144,
+      "H_n": 1.233767,
+      "chi_n": 3.333333,
+      "K_trace": 0.555556,
+      "distinct_gamma": 7,
+      "is_prime": true,
+      "omega": 1,
+      "I_avg_rolling": [
+        1.46529,
+        2.839744,
+        0.706669
+      ],
+      "I_avg_omega": [
+        2.302789,
+        2.06969,
+        1.954283
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": -0.231523,
+        "chi": 0.49359,
+        "K_trace": -0.151113,
+        "magnitude": 0.554016
+      },
+      "D_omega": {
+        "H": -1.069021,
+        "chi": 1.263644,
+        "K_trace": -1.398727,
+        "magnitude": 1.889615
+      },
+      "D_global": {
+        "H": -0.850107,
+        "chi": 0.899937,
+        "K_trace": -0.978783,
+        "magnitude": 1.392662
+      }
+    },
+    {
+      "n": 6,
+      "shell_size": 96,
+      "H_n": 1.386294,
+      "chi_n": 3.0,
+      "K_trace": 0.75,
+      "distinct_gamma": 4,
+      "is_prime": false,
+      "omega": 2,
+      "I_avg_rolling": [
+        1.510289,
+        2.820513,
+        0.71457
+      ],
+      "I_avg_omega": [
+        1.972004,
+        2.679127,
+        1.281816
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": -0.123995,
+        "chi": 0.179487,
+        "K_trace": 0.03543,
+        "magnitude": 0.219371
+      },
+      "D_omega": {
+        "H": -0.585709,
+        "chi": 0.320873,
+        "K_trace": -0.531816,
+        "magnitude": 0.752431
+      },
+      "D_global": {
+        "H": -0.69758,
+        "chi": 0.566604,
+        "K_trace": -0.784339,
+        "magnitude": 1.033911
+      }
+    },
+    {
+      "n": 7,
+      "shell_size": 192,
+      "H_n": 1.098612,
+      "chi_n": 3.333333,
+      "K_trace": 0.305556,
+      "distinct_gamma": 5,
+      "is_prime": true,
+      "omega": 1,
+      "I_avg_rolling": [
+        1.49789,
+        2.871795,
+        0.718113
+      ],
+      "I_avg_omega": [
+        2.308932,
+        2.06969,
+        1.965646
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": -0.399278,
+        "chi": 0.461538,
+        "K_trace": -0.412557,
+        "magnitude": 0.666887
+      },
+      "D_omega": {
+        "H": -1.21032,
+        "chi": 1.263644,
+        "K_trace": -1.66009,
+        "magnitude": 2.057256
+      },
+      "D_global": {
+        "H": -0.985262,
+        "chi": 0.899937,
+        "K_trace": -1.228783,
+        "magnitude": 1.556276
+      }
+    },
+    {
+      "n": 8,
+      "shell_size": 24,
+      "H_n": 1.791759,
+      "chi_n": 2.0,
+      "K_trace": 1.0,
+      "distinct_gamma": 6,
+      "is_prime": false,
+      "omega": 1,
+      "I_avg_rolling": [
+        1.537348,
+        2.986081,
+        0.711254
+      ],
+      "I_avg_omega": [
+        2.277425,
+        2.130296,
+        1.934081
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": 0.254411,
+        "chi": -0.986081,
+        "K_trace": 0.288746,
+        "magnitude": 1.035614
+      },
+      "D_omega": {
+        "H": -0.485666,
+        "chi": -0.130296,
+        "K_trace": -0.934081,
+        "magnitude": 0.789599
+      },
+      "D_global": {
+        "H": -0.292115,
+        "chi": -0.433396,
+        "K_trace": -0.534339,
+        "magnitude": 0.628048
+      }
+    },
+    {
+      "n": 9,
+      "shell_size": 312,
+      "H_n": 2.222906,
+      "chi_n": 2.384615,
+      "K_trace": 0.986686,
+      "distinct_gamma": 13,
+      "is_prime": false,
+      "omega": 1,
+      "I_avg_rolling": [
+        1.523002,
+        2.880952,
+        0.75703
+      ],
+      "I_avg_omega": [
+        2.257828,
+        2.112813,
+        1.934686
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": 0.699904,
+        "chi": -0.496337,
+        "K_trace": 0.229656,
+        "magnitude": 0.870988
+      },
+      "D_omega": {
+        "H": -0.034922,
+        "chi": 0.271802,
+        "K_trace": -0.948,
+        "magnitude": 0.675901
+      },
+      "D_global": {
+        "H": 0.139032,
+        "chi": -0.048781,
+        "K_trace": -0.547653,
+        "magnitude": 0.386146
+      }
+    },
+    {
+      "n": 10,
+      "shell_size": 144,
+      "H_n": 1.233767,
+      "chi_n": 3.333333,
+      "K_trace": 0.555556,
+      "distinct_gamma": 7,
+      "is_prime": false,
+      "omega": 2,
+      "I_avg_rolling": [
+        1.727851,
+        2.686081,
+        0.880698
+      ],
+      "I_avg_omega": [
+        1.978635,
+        2.664634,
+        1.29027
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": -0.494083,
+        "chi": 0.647253,
+        "K_trace": -0.325142,
+        "magnitude": 0.841404
+      },
+      "D_omega": {
+        "H": -0.744868,
+        "chi": 0.668699,
+        "K_trace": -0.734714,
+        "magnitude": 1.109631
+      },
+      "D_global": {
+        "H": -0.850107,
+        "chi": 0.899937,
+        "K_trace": -0.978783,
+        "magnitude": 1.392662
+      }
+    },
+    {
+      "n": 11,
+      "shell_size": 288,
+      "H_n": 2.022809,
+      "chi_n": 2.333333,
+      "K_trace": 0.972222,
+      "distinct_gamma": 8,
+      "is_prime": true,
+      "omega": 1,
+      "I_avg_rolling": [
+        1.635431,
+        2.752747,
+        0.858476
+      ],
+      "I_avg_omega": [
+        2.266923,
+        2.115144,
+        1.935343
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": 0.387378,
+        "chi": -0.419414,
+        "K_trace": 0.113746,
+        "magnitude": 0.57573
+      },
+      "D_omega": {
+        "H": -0.244115,
+        "chi": 0.218189,
+        "K_trace": -0.963121,
+        "magnitude": 0.707969
+      },
+      "D_global": {
+        "H": -0.061066,
+        "chi": -0.100063,
+        "K_trace": -0.562117,
+        "magnitude": 0.384655
+      }
+    },
+    {
+      "n": 12,
+      "shell_size": 96,
+      "H_n": 1.098612,
+      "chi_n": 3.666667,
+      "K_trace": 0.305556,
+      "distinct_gamma": 5,
+      "is_prime": false,
+      "omega": 2,
+      "I_avg_rolling": [
+        1.868669,
+        2.497192,
+        1.097056
+      ],
+      "I_avg_omega": [
+        1.984512,
+        2.650141,
+        1.30114
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": -0.770057,
+        "chi": 1.169475,
+        "K_trace": -0.7915,
+        "magnitude": 1.492236
+      },
+      "D_omega": {
+        "H": -0.885899,
+        "chi": 1.016525,
+        "K_trace": -0.995584,
+        "magnitude": 1.496386
+      },
+      "D_global": {
+        "H": -0.985262,
+        "chi": 1.23327,
+        "K_trace": -1.228783,
+        "magnitude": 1.770047
+      }
+    },
+    {
+      "n": 13,
+      "shell_size": 336,
+      "H_n": 2.879487,
+      "chi_n": 1.809524,
+      "K_trace": 1.62585,
+      "distinct_gamma": 21,
+      "is_prime": true,
+      "omega": 1,
+      "I_avg_rolling": [
+        1.723032,
+        2.703419,
+        0.9753
+      ],
+      "I_avg_omega": [
+        2.227983,
+        2.138954,
+        1.905633
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": 1.156455,
+        "chi": -0.893895,
+        "K_trace": 0.65055,
+        "magnitude": 1.521909
+      },
+      "D_omega": {
+        "H": 0.651504,
+        "chi": -0.32943,
+        "K_trace": -0.279783,
+        "magnitude": 0.752484
+      },
+      "D_global": {
+        "H": 0.795613,
+        "chi": -0.623873,
+        "K_trace": 0.091511,
+        "magnitude": 1.012805
+      }
+    },
+    {
+      "n": 14,
+      "shell_size": 192,
+      "H_n": 1.386294,
+      "chi_n": 3.0,
+      "K_trace": 0.75,
+      "distinct_gamma": 4,
+      "is_prime": false,
+      "omega": 2,
+      "I_avg_rolling": [
+        2.006702,
+        2.497705,
+        1.206773
+      ],
+      "I_avg_omega": [
+        1.972004,
+        2.679127,
+        1.281816
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": -0.620408,
+        "chi": 0.502295,
+        "K_trace": -0.456773,
+        "magnitude": 0.851958
+      },
+      "D_omega": {
+        "H": -0.585709,
+        "chi": 0.320873,
+        "K_trace": -0.531816,
+        "magnitude": 0.752431
+      },
+      "D_global": {
+        "H": -0.69758,
+        "chi": 0.566604,
+        "K_trace": -0.784339,
+        "magnitude": 1.033911
+      }
+    },
+    {
+      "n": 15,
+      "shell_size": 576,
+      "H_n": 2.157964,
+      "chi_n": 2.0,
+      "K_trace": 1.555556,
+      "distinct_gamma": 11,
+      "is_prime": false,
+      "omega": 2,
+      "I_avg_rolling": [
+        1.830621,
+        2.692576,
+        1.083105
+      ],
+      "I_avg_omega": [
+        1.938453,
+        2.722605,
+        1.246792
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": 0.327342,
+        "chi": -0.692576,
+        "K_trace": 0.472451,
+        "magnitude": 0.825608
+      },
+      "D_omega": {
+        "H": 0.219511,
+        "chi": -0.722605,
+        "K_trace": 0.308764,
+        "magnitude": 0.781562
+      },
+      "D_global": {
+        "H": 0.074089,
+        "chi": -0.433396,
+        "K_trace": 0.021217,
+        "magnitude": 0.439901
+      }
+    },
+    {
+      "n": 16,
+      "shell_size": 24,
+      "H_n": 1.098612,
+      "chi_n": 3.0,
+      "K_trace": 0.75,
+      "distinct_gamma": 5,
+      "is_prime": false,
+      "omega": 1,
+      "I_avg_rolling": [
+        2.10352,
+        2.384243,
+        1.351855
+      ],
+      "I_avg_omega": [
+        2.308932,
+        2.084841,
+        1.945444
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": -1.004907,
+        "chi": 0.615757,
+        "K_trace": -0.601855,
+        "magnitude": 1.24212
+      },
+      "D_omega": {
+        "H": -1.21032,
+        "chi": 0.915159,
+        "K_trace": -1.195444,
+        "magnitude": 1.705705
+      },
+      "D_global": {
+        "H": -0.985262,
+        "chi": 0.566604,
+        "K_trace": -0.784339,
+        "magnitude": 1.246233
+      }
+    },
+    {
+      "n": 17,
+      "shell_size": 432,
+      "H_n": 2.794478,
+      "chi_n": 1.777778,
+      "K_trace": 2.469136,
+      "distinct_gamma": 20,
+      "is_prime": true,
+      "omega": 1,
+      "I_avg_rolling": [
+        1.841514,
+        2.639799,
+        1.113275
+      ],
+      "I_avg_omega": [
+        2.231847,
+        2.140397,
+        1.867302
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": 0.952964,
+        "chi": -0.862021,
+        "K_trace": 1.355861,
+        "magnitude": 1.559521
+      },
+      "D_omega": {
+        "H": 0.56263,
+        "chi": -0.362619,
+        "K_trace": 0.601834,
+        "magnitude": 0.775822
+      },
+      "D_global": {
+        "H": 0.710604,
+        "chi": -0.655619,
+        "K_trace": 0.934797,
+        "magnitude": 1.142795
+      }
+    },
+    {
+      "n": 18,
+      "shell_size": 312,
+      "H_n": 1.423121,
+      "chi_n": 3.538462,
+      "K_trace": 0.408284,
+      "distinct_gamma": 11,
+      "is_prime": false,
+      "omega": 2,
+      "I_avg_rolling": [
+        2.01527,
+        2.36373,
+        1.430471
+      ],
+      "I_avg_omega": [
+        1.970403,
+        2.655716,
+        1.296674
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": -0.592149,
+        "chi": 1.174731,
+        "K_trace": -1.022187,
+        "magnitude": 1.474607
+      },
+      "D_omega": {
+        "H": -0.547282,
+        "chi": 0.882746,
+        "K_trace": -0.88839,
+        "magnitude": 1.189119
+      },
+      "D_global": {
+        "H": -0.660753,
+        "chi": 1.105065,
+        "K_trace": -1.126055,
+        "magnitude": 1.482018
+      }
+    },
+    {
+      "n": 19,
+      "shell_size": 480,
+      "H_n": 3.135265,
+      "chi_n": 1.133333,
+      "K_trace": 2.438889,
+      "distinct_gamma": 25,
+      "is_prime": true,
+      "omega": 1,
+      "I_avg_rolling": [
+        1.694736,
+        2.723291,
+        1.139825
+      ],
+      "I_avg_omega": [
+        2.216357,
+        2.16969,
+        1.868677
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": 1.440529,
+        "chi": -1.589957,
+        "K_trace": 1.299064,
+        "magnitude": 2.306496
+      },
+      "D_omega": {
+        "H": 0.918908,
+        "chi": -1.036356,
+        "K_trace": 0.570212,
+        "magnitude": 1.434064
+      },
+      "D_global": {
+        "H": 1.051391,
+        "chi": -1.300063,
+        "K_trace": 0.90455,
+        "magnitude": 1.772891
+      }
+    },
+    {
+      "n": 20,
+      "shell_size": 144,
+      "H_n": 1.233767,
+      "chi_n": 3.333333,
+      "K_trace": 0.555556,
+      "distinct_gamma": 7,
+      "is_prime": false,
+      "omega": 2,
+      "I_avg_rolling": [
+        1.972881,
+        2.361355,
+        1.481983
+      ],
+      "I_avg_omega": [
+        1.978635,
+        2.664634,
+        1.29027
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": -0.739114,
+        "chi": 0.971978,
+        "K_trace": -0.926427,
+        "magnitude": 1.362204
+      },
+      "D_omega": {
+        "H": -0.744868,
+        "chi": 0.668699,
+        "K_trace": -0.734714,
+        "magnitude": 1.109631
+      },
+      "D_global": {
+        "H": -0.850107,
+        "chi": 0.899937,
+        "K_trace": -0.978783,
+        "magnitude": 1.392662
+      }
+    },
+    {
+      "n": 21,
+      "shell_size": 768,
+      "H_n": 2.903401,
+      "chi_n": 1.25,
+      "K_trace": 2.4375,
+      "distinct_gamma": 21,
+      "is_prime": false,
+      "omega": 2,
+      "I_avg_rolling": [
+        1.800407,
+        2.655403,
+        1.225478
+      ],
+      "I_avg_omega": [
+        1.906043,
+        2.755214,
+        1.208447
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": 1.102994,
+        "chi": -1.405403,
+        "K_trace": 1.212022,
+        "magnitude": 1.953393
+      },
+      "D_omega": {
+        "H": 0.997358,
+        "chi": -1.505214,
+        "K_trace": 1.229053,
+        "magnitude": 1.975359
+      },
+      "D_global": {
+        "H": 0.819527,
+        "chi": -1.183396,
+        "K_trace": 0.903161,
+        "magnitude": 1.555165
+      }
+    },
+    {
+      "n": 22,
+      "shell_size": 288,
+      "H_n": 1.098612,
+      "chi_n": 3.666667,
+      "K_trace": 0.305556,
+      "distinct_gamma": 5,
+      "is_prime": false,
+      "omega": 2,
+      "I_avg_rolling": [
+        2.17993,
+        2.240403,
+        1.608978
+      ],
+      "I_avg_omega": [
+        1.984512,
+        2.650141,
+        1.30114
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": -1.081317,
+        "chi": 1.426264,
+        "K_trace": -1.303422,
+        "magnitude": 1.981194
+      },
+      "D_omega": {
+        "H": -0.885899,
+        "chi": 1.016525,
+        "K_trace": -0.995584,
+        "magnitude": 1.496386
+      },
+      "D_global": {
+        "H": -0.985262,
+        "chi": 1.23327,
+        "K_trace": -1.228783,
+        "magnitude": 1.770047
+      }
+    },
+    {
+      "n": 23,
+      "shell_size": 576,
+      "H_n": 1.464816,
+      "chi_n": 2.666667,
+      "K_trace": 1.416667,
+      "distinct_gamma": 13,
+      "is_prime": true,
+      "omega": 1,
+      "I_avg_rolling": [
+        1.973723,
+        2.495958,
+        1.281509
+      ],
+      "I_avg_omega": [
+        2.292286,
+        2.099993,
+        1.915141
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": -0.508906,
+        "chi": 0.170708,
+        "K_trace": 0.135158,
+        "magnitude": 0.543955
+      },
+      "D_omega": {
+        "H": -0.82747,
+        "chi": 0.566674,
+        "K_trace": -0.498474,
+        "magnitude": 1.054216
+      },
+      "D_global": {
+        "H": -0.619058,
+        "chi": 0.23327,
+        "K_trace": -0.117672,
+        "magnitude": 0.66598
+      }
+    },
+    {
+      "n": 24,
+      "shell_size": 96,
+      "H_n": 1.386294,
+      "chi_n": 3.0,
+      "K_trace": 0.75,
+      "distinct_gamma": 4,
+      "is_prime": false,
+      "omega": 2,
+      "I_avg_rolling": [
+        2.104314,
+        2.295445,
+        1.500569
+      ],
+      "I_avg_omega": [
+        1.972004,
+        2.679127,
+        1.281816
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": -0.71802,
+        "chi": 0.704555,
+        "K_trace": -0.750569,
+        "magnitude": 1.118592
+      },
+      "D_omega": {
+        "H": -0.585709,
+        "chi": 0.320873,
+        "K_trace": -0.531816,
+        "magnitude": 0.752431
+      },
+      "D_global": {
+        "H": -0.69758,
+        "chi": 0.566604,
+        "K_trace": -0.784339,
+        "magnitude": 1.033911
+      }
+    },
+    {
+      "n": 25,
+      "shell_size": 744,
+      "H_n": 2.266245,
+      "chi_n": 1.580645,
+      "K_trace": 2.288241,
+      "distinct_gamma": 30,
+      "is_prime": false,
+      "omega": 1,
+      "I_avg_rolling": [
+        1.849274,
+        2.624048,
+        1.169523
+      ],
+      "I_avg_omega": [
+        2.255858,
+        2.149357,
+        1.875524
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": 0.416971,
+        "chi": -1.043402,
+        "K_trace": 1.118718,
+        "magnitude": 1.339466
+      },
+      "D_omega": {
+        "H": 0.010387,
+        "chi": -0.568712,
+        "K_trace": 0.412717,
+        "magnitude": 0.629202
+      },
+      "D_global": {
+        "H": 0.182371,
+        "chi": -0.852751,
+        "K_trace": 0.753902,
+        "magnitude": 1.000936
+      }
+    },
+    {
+      "n": 26,
+      "shell_size": 336,
+      "H_n": 2.102855,
+      "chi_n": 2.857143,
+      "K_trace": 0.872449,
+      "distinct_gamma": 17,
+      "is_prime": false,
+      "omega": 2,
+      "I_avg_rolling": [
+        2.028216,
+        2.246398,
+        1.517873
+      ],
+      "I_avg_omega": [
+        1.940849,
+        2.685338,
+        1.276493
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": 0.074638,
+        "chi": 0.610745,
+        "K_trace": -0.645424,
+        "magnitude": 0.745338
+      },
+      "D_omega": {
+        "H": 0.162006,
+        "chi": 0.171805,
+        "K_trace": -0.404044,
+        "magnitude": 0.353705
+      },
+      "D_global": {
+        "H": 0.018981,
+        "chi": 0.423746,
+        "K_trace": -0.66189,
+        "magnitude": 0.604991
+      }
+    },
+    {
+      "n": 27,
+      "shell_size": 960,
+      "H_n": 3.089055,
+      "chi_n": 1.266667,
+      "K_trace": 2.453056,
+      "distinct_gamma": 39,
+      "is_prime": false,
+      "omega": 1,
+      "I_avg_rolling": [
+        1.818432,
+        2.480445,
+        1.216062
+      ],
+      "I_avg_omega": [
+        2.218457,
+        2.163629,
+        1.868033
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": 1.270623,
+        "chi": -1.213779,
+        "K_trace": 1.236994,
+        "magnitude": 1.933316
+      },
+      "D_omega": {
+        "H": 0.870598,
+        "chi": -0.896962,
+        "K_trace": 0.585023,
+        "magnitude": 1.306852
+      },
+      "D_global": {
+        "H": 1.005181,
+        "chi": -1.16673,
+        "K_trace": 0.918717,
+        "magnitude": 1.652324
+      }
+    },
+    {
+      "n": 28,
+      "shell_size": 192,
+      "H_n": 1.098612,
+      "chi_n": 3.333333,
+      "K_trace": 0.305556,
+      "distinct_gamma": 5,
+      "is_prime": false,
+      "omega": 2,
+      "I_avg_rolling": [
+        2.248091,
+        2.073779,
+        1.733416
+      ],
+      "I_avg_omega": [
+        1.984512,
+        2.664634,
+        1.30114
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": -1.149479,
+        "chi": 1.259555,
+        "K_trace": -1.42786,
+        "magnitude": 1.942627
+      },
+      "D_omega": {
+        "H": -0.885899,
+        "chi": 0.668699,
+        "K_trace": -0.995584,
+        "magnitude": 1.285693
+      },
+      "D_global": {
+        "H": -0.985262,
+        "chi": 0.899937,
+        "K_trace": -1.228783,
+        "magnitude": 1.556276
+      }
+    },
+    {
+      "n": 29,
+      "shell_size": 720,
+      "H_n": 2.650514,
+      "chi_n": 1.866667,
+      "K_trace": 1.932222,
+      "distinct_gamma": 26,
+      "is_prime": true,
+      "omega": 1,
+      "I_avg_rolling": [
+        2.193752,
+        2.198223,
+        1.528774
+      ],
+      "I_avg_omega": [
+        2.238391,
+        2.136356,
+        1.891707
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": 0.456762,
+        "chi": -0.331557,
+        "K_trace": 0.403448,
+        "magnitude": 0.622657
+      },
+      "D_omega": {
+        "H": 0.412123,
+        "chi": -0.26969,
+        "K_trace": 0.040515,
+        "magnitude": 0.493229
+      },
+      "D_global": {
+        "H": 0.56664,
+        "chi": -0.56673,
+        "K_trace": 0.397883,
+        "magnitude": 0.842324
+      }
+    },
+    {
+      "n": 30,
+      "shell_size": 576,
+      "H_n": 1.464816,
+      "chi_n": 3.0,
+      "K_trace": 0.666667,
+      "distinct_gamma": 13,
+      "is_prime": false,
+      "omega": 3,
+      "I_avg_rolling": [
+        2.470356,
+        2.001557,
+        1.87408
+      ],
+      "I_avg_omega": [
+        2.007521,
+        2.75,
+        0.734375
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": -1.005539,
+        "chi": 0.998443,
+        "K_trace": -1.207413,
+        "magnitude": 1.62088
+      },
+      "D_omega": {
+        "H": -0.542705,
+        "chi": 0.25,
+        "K_trace": -0.067708,
+        "magnitude": 0.599146
+      },
+      "D_global": {
+        "H": -0.619058,
+        "chi": 0.566604,
+        "K_trace": -0.867672,
+        "magnitude": 1.011961
+      }
+    },
+    {
+      "n": 31,
+      "shell_size": 768,
+      "H_n": 2.859797,
+      "chi_n": 0.833333,
+      "K_trace": 2.623264,
+      "distinct_gamma": 25,
+      "is_prime": true,
+      "omega": 1,
+      "I_avg_rolling": [
+        2.326524,
+        2.29862,
+        1.548265
+      ],
+      "I_avg_omega": [
+        2.228878,
+        2.183326,
+        1.860296
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": 0.533273,
+        "chi": -1.465287,
+        "K_trace": 1.074999,
+        "magnitude": 1.709481
+      },
+      "D_omega": {
+        "H": 0.630919,
+        "chi": -1.349993,
+        "K_trace": 0.762968,
+        "magnitude": 1.570926
+      },
+      "D_global": {
+        "H": 0.775923,
+        "chi": -1.600063,
+        "K_trace": 1.088925,
+        "magnitude": 1.914664
+      }
+    },
+    {
+      "n": 32,
+      "shell_size": 24,
+      "H_n": 1.791759,
+      "chi_n": 2.0,
+      "K_trace": 1.0,
+      "distinct_gamma": 6,
+      "is_prime": false,
+      "omega": 1,
+      "I_avg_rolling": [
+        2.555553,
+        2.061152,
+        2.033103
+      ],
+      "I_avg_omega": [
+        2.277425,
+        2.130296,
+        1.934081
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": -0.763793,
+        "chi": -0.061152,
+        "K_trace": -1.033103,
+        "magnitude": 1.02004
+      },
+      "D_omega": {
+        "H": -0.485666,
+        "chi": -0.130296,
+        "K_trace": -0.934081,
+        "magnitude": 0.789599
+      },
+      "D_global": {
+        "H": -0.292115,
+        "chi": -0.433396,
+        "K_trace": -0.534339,
+        "magnitude": 0.628048
+      }
+    },
+    {
+      "n": 33,
+      "shell_size": 1152,
+      "H_n": 3.40476,
+      "chi_n": 1.666667,
+      "K_trace": 3.331597,
+      "distinct_gamma": 43,
+      "is_prime": false,
+      "omega": 2,
+      "I_avg_rolling": [
+        2.317961,
+        2.227818,
+        1.653638
+      ],
+      "I_avg_omega": [
+        1.884244,
+        2.737098,
+        1.169573
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": 1.086798,
+        "chi": -0.561152,
+        "K_trace": 1.677959,
+        "magnitude": 1.640729
+      },
+      "D_omega": {
+        "H": 1.520516,
+        "chi": -1.070431,
+        "K_trace": 2.162024,
+        "magnitude": 2.333095
+      },
+      "D_global": {
+        "H": 1.320886,
+        "chi": -0.76673,
+        "K_trace": 1.797258,
+        "magnitude": 1.924757
+      }
+    },
+    {
+      "n": 34,
+      "shell_size": 432,
+      "H_n": 2.473325,
+      "chi_n": 2.444444,
+      "K_trace": 0.996914,
+      "distinct_gamma": 21,
+      "is_prime": false,
+      "omega": 2,
+      "I_avg_rolling": [
+        2.646922,
+        1.930993,
+        2.200938
+      ],
+      "I_avg_omega": [
+        1.924741,
+        2.703282,
+        1.271081
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": -0.173597,
+        "chi": 0.513452,
+        "K_trace": -1.204024,
+        "magnitude": 0.953704
+      },
+      "D_omega": {
+        "H": 0.548584,
+        "chi": -0.258837,
+        "K_trace": -0.274167,
+        "magnitude": 0.632353
+      },
+      "D_global": {
+        "H": 0.389451,
+        "chi": 0.011048,
+        "K_trace": -0.537425,
+        "magnitude": 0.523908
+      }
+    },
+    {
+      "n": 35,
+      "shell_size": 1152,
+      "H_n": 2.966635,
+      "chi_n": 2.166667,
+      "K_trace": 2.9375,
+      "distinct_gamma": 27,
+      "is_prime": false,
+      "omega": 2,
+      "I_avg_rolling": [
+        2.455917,
+        2.105437,
+        1.869213
+      ],
+      "I_avg_omega": [
+        1.903293,
+        2.715359,
+        1.186708
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": 0.510718,
+        "chi": 0.061229,
+        "K_trace": 1.068287,
+        "magnitude": 0.86565
+      },
+      "D_omega": {
+        "H": 1.063342,
+        "chi": -0.548692,
+        "K_trace": 1.750792,
+        "magnitude": 1.653423
+      },
+      "D_global": {
+        "H": 0.882761,
+        "chi": -0.26673,
+        "K_trace": 1.403161,
+        "magnitude": 1.298743
+      }
+    },
+    {
+      "n": 36,
+      "shell_size": 312,
+      "H_n": 2.222906,
+      "chi_n": 2.384615,
+      "K_trace": 0.986686,
+      "distinct_gamma": 13,
+      "is_prime": false,
+      "omega": 2,
+      "I_avg_rolling": [
+        2.718279,
+        1.945547,
+        2.359703
+      ],
+      "I_avg_omega": [
+        1.935629,
+        2.705883,
+        1.271526
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": -0.495373,
+        "chi": 0.439068,
+        "K_trace": -1.373017,
+        "magnitude": 1.11308
+      },
+      "D_omega": {
+        "H": 0.287277,
+        "chi": -0.321267,
+        "K_trace": -0.28484,
+        "magnitude": 0.469259
+      },
+      "D_global": {
+        "H": 0.139032,
+        "chi": -0.048781,
+        "K_trace": -0.547653,
+        "magnitude": 0.386146
+      }
+    },
+    {
+      "n": 37,
+      "shell_size": 912,
+      "H_n": 3.325108,
+      "chi_n": 1.649123,
+      "K_trace": 4.097568,
+      "distinct_gamma": 41,
+      "is_prime": true,
+      "omega": 1,
+      "I_avg_rolling": [
+        2.522832,
+        2.210763,
+        1.859725
+      ],
+      "I_avg_omega": [
+        2.207728,
+        2.146245,
+        1.793282
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": 0.802276,
+        "chi": -0.56164,
+        "K_trace": 2.237843,
+        "magnitude": 1.756795
+      },
+      "D_omega": {
+        "H": 1.11738,
+        "chi": -0.497122,
+        "K_trace": 2.304286,
+        "magnitude": 1.936776
+      },
+      "D_global": {
+        "H": 1.241233,
+        "chi": -0.784274,
+        "K_trace": 2.563229,
+        "magnitude": 2.224088
+      }
+    },
+    {
+      "n": 38,
+      "shell_size": 480,
+      "H_n": 2.326142,
+      "chi_n": 2.6,
+      "K_trace": 0.99,
+      "distinct_gamma": 17,
+      "is_prime": false,
+      "omega": 2,
+      "I_avg_rolling": [
+        2.758065,
+        2.094463,
+        2.475074
+      ],
+      "I_avg_omega": [
+        1.931141,
+        2.696518,
+        1.271382
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": -0.431923,
+        "chi": 0.505537,
+        "K_trace": -1.485074,
+        "magnitude": 1.174282
+      },
+      "D_omega": {
+        "H": 0.395001,
+        "chi": -0.096518,
+        "K_trace": -0.281382,
+        "magnitude": 0.446064
+      },
+      "D_global": {
+        "H": 0.242268,
+        "chi": 0.166604,
+        "K_trace": -0.544339,
+        "magnitude": 0.460774
+      }
+    },
+    {
+      "n": 39,
+      "shell_size": 1344,
+      "H_n": 3.456787,
+      "chi_n": 1.142857,
+      "K_trace": 3.443878,
+      "distinct_gamma": 37,
+      "is_prime": false,
+      "omega": 2,
+      "I_avg_rolling": [
+        2.506805,
+        2.306844,
+        1.993748
+      ],
+      "I_avg_omega": [
+        1.881982,
+        2.759872,
+        1.164691
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": 0.949983,
+        "chi": -1.163987,
+        "K_trace": 1.45013,
+        "magnitude": 1.774987
+      },
+      "D_omega": {
+        "H": 1.574805,
+        "chi": -1.617015,
+        "K_trace": 2.279187,
+        "magnitude": 2.702095
+      },
+      "D_global": {
+        "H": 1.372913,
+        "chi": -1.290539,
+        "K_trace": 1.909539,
+        "magnitude": 2.258152
+      }
+    },
+    {
+      "n": 40,
+      "shell_size": 144,
+      "H_n": 1.233767,
+      "chi_n": 3.333333,
+      "K_trace": 0.555556,
+      "distinct_gamma": 7,
+      "is_prime": false,
+      "omega": 2,
+      "I_avg_rolling": [
+        2.804269,
+        2.022839,
+        2.598471
+      ],
+      "I_avg_omega": [
+        1.978635,
+        2.664634,
+        1.29027
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": -1.570501,
+        "chi": 1.310494,
+        "K_trace": -2.042915,
+        "magnitude": 2.440627
+      },
+      "D_omega": {
+        "H": -0.744868,
+        "chi": 0.668699,
+        "K_trace": -0.734714,
+        "magnitude": 1.109631
+      },
+      "D_global": {
+        "H": -0.850107,
+        "chi": 0.899937,
+        "K_trace": -0.978783,
+        "magnitude": 1.392662
+      }
+    },
+    {
+      "n": 41,
+      "shell_size": 1008,
+      "H_n": 3.344713,
+      "chi_n": 1.619048,
+      "K_trace": 3.620748,
+      "distinct_gamma": 41,
+      "is_prime": true,
+      "omega": 1,
+      "I_avg_rolling": [
+        2.498791,
+        2.210935,
+        2.095424
+      ],
+      "I_avg_omega": [
+        2.206837,
+        2.147612,
+        1.814956
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": 0.845921,
+        "chi": -0.591887,
+        "K_trace": 1.525324,
+        "magnitude": 1.433247
+      },
+      "D_omega": {
+        "H": 1.137876,
+        "chi": -0.528564,
+        "K_trace": 1.805792,
+        "magnitude": 1.720256
+      },
+      "D_global": {
+        "H": 1.260838,
+        "chi": -0.814349,
+        "K_trace": 2.086409,
+        "magnitude": 2.02533
+      }
+    },
+    {
+      "n": 42,
+      "shell_size": 768,
+      "H_n": 2.007521,
+      "chi_n": 2.75,
+      "K_trace": 0.734375,
+      "distinct_gamma": 17,
+      "is_prime": false,
+      "omega": 3,
+      "I_avg_rolling": [
+        2.660674,
+        2.092711,
+        2.584698
+      ],
+      "I_avg_omega": [
+        1.464816,
+        3.0,
+        0.666667
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": -0.653153,
+        "chi": 0.657289,
+        "K_trace": -1.850323,
+        "magnitude": 1.520833
+      },
+      "D_omega": {
+        "H": 0.542705,
+        "chi": -0.25,
+        "K_trace": 0.067708,
+        "magnitude": 0.599146
+      },
+      "D_global": {
+        "H": -0.076353,
+        "chi": 0.316604,
+        "K_trace": -0.799964,
+        "magnitude": 0.614734
+      }
+    },
+    {
+      "n": 43,
+      "shell_size": 1056,
+      "H_n": 3.145123,
+      "chi_n": 1.787879,
+      "K_trace": 4.045914,
+      "distinct_gamma": 45,
+      "is_prime": true,
+      "omega": 1,
+      "I_avg_rolling": [
+        2.324264,
+        2.390678,
+        1.874343
+      ],
+      "I_avg_omega": [
+        2.215909,
+        2.139938,
+        1.79563
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": 0.820859,
+        "chi": -0.602799,
+        "K_trace": 2.171571,
+        "magnitude": 1.743642
+      },
+      "D_omega": {
+        "H": 0.929214,
+        "chi": -0.352059,
+        "K_trace": 2.250284,
+        "magnitude": 1.771537
+      },
+      "D_global": {
+        "H": 1.061249,
+        "chi": -0.645518,
+        "K_trace": 2.511575,
+        "magnitude": 2.054852
+      }
+    },
+    {
+      "n": 44,
+      "shell_size": 288,
+      "H_n": 2.022809,
+      "chi_n": 2.333333,
+      "K_trace": 0.972222,
+      "distinct_gamma": 8,
+      "is_prime": false,
+      "omega": 2,
+      "I_avg_rolling": [
+        2.522558,
+        2.225255,
+        2.474671
+      ],
+      "I_avg_omega": [
+        1.944329,
+        2.708112,
+        1.272155
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": -0.49975,
+        "chi": 0.108078,
+        "K_trace": -1.502449,
+        "magnitude": 1.10467
+      },
+      "D_omega": {
+        "H": 0.078479,
+        "chi": -0.374779,
+        "K_trace": -0.299933,
+        "magnitude": 0.42992
+      },
+      "D_global": {
+        "H": -0.061066,
+        "chi": -0.100063,
+        "K_trace": -0.562117,
+        "magnitude": 0.384655
+      }
+    },
+    {
+      "n": 45,
+      "shell_size": 1872,
+      "H_n": 3.224943,
+      "chi_n": 1.794872,
+      "K_trace": 4.155819,
+      "distinct_gamma": 61,
+      "is_prime": false,
+      "omega": 2,
+      "I_avg_rolling": [
+        2.234595,
+        2.442235,
+        1.91515
+      ],
+      "I_avg_omega": [
+        1.892062,
+        2.731524,
+        1.133737
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": 0.990348,
+        "chi": -0.647363,
+        "K_trace": 2.240669,
+        "magnitude": 1.879491
+      },
+      "D_omega": {
+        "H": 1.332881,
+        "chi": -0.936652,
+        "K_trace": 3.022082,
+        "magnitude": 2.556039
+      },
+      "D_global": {
+        "H": 1.141069,
+        "chi": -0.638525,
+        "K_trace": 2.62148,
+        "magnitude": 2.15148
+      }
+    },
+    {
+      "n": 46,
+      "shell_size": 576,
+      "H_n": 2.022809,
+      "chi_n": 2.333333,
+      "K_trace": 0.972222,
+      "distinct_gamma": 8,
+      "is_prime": false,
+      "omega": 2,
+      "I_avg_rolling": [
+        2.479369,
+        2.283395,
+        2.419949
+      ],
+      "I_avg_omega": [
+        1.944329,
+        2.708112,
+        1.272155
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": -0.45656,
+        "chi": 0.049939,
+        "K_trace": -1.447727,
+        "magnitude": 1.049395
+      },
+      "D_omega": {
+        "H": 0.078479,
+        "chi": -0.374779,
+        "K_trace": -0.299933,
+        "magnitude": 0.42992
+      },
+      "D_global": {
+        "H": -0.061066,
+        "chi": -0.100063,
+        "K_trace": -0.562117,
+        "magnitude": 0.384655
+      }
+    },
+    {
+      "n": 47,
+      "shell_size": 1152,
+      "H_n": 2.504537,
+      "chi_n": 2.333333,
+      "K_trace": 2.993056,
+      "distinct_gamma": 23,
+      "is_prime": true,
+      "omega": 1,
+      "I_avg_rolling": [
+        2.310985,
+        2.366438,
+        2.017245
+      ],
+      "I_avg_omega": [
+        2.245026,
+        2.115144,
+        1.843487
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": 0.193553,
+        "chi": -0.033105,
+        "K_trace": 0.975811,
+        "magnitude": 0.665606
+      },
+      "D_omega": {
+        "H": 0.259511,
+        "chi": 0.218189,
+        "K_trace": 1.149569,
+        "magnitude": 0.822371
+      },
+      "D_global": {
+        "H": 0.420663,
+        "chi": -0.100063,
+        "K_trace": 1.458717,
+        "magnitude": 1.044427
+      }
+    },
+    {
+      "n": 48,
+      "shell_size": 96,
+      "H_n": 1.098612,
+      "chi_n": 3.666667,
+      "K_trace": 0.305556,
+      "distinct_gamma": 5,
+      "is_prime": false,
+      "omega": 2,
+      "I_avg_rolling": [
+        2.555183,
+        2.121167,
+        2.58444
+      ],
+      "I_avg_omega": [
+        1.984512,
+        2.650141,
+        1.30114
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": -1.456571,
+        "chi": 1.545499,
+        "K_trace": -2.278884,
+        "magnitude": 2.591553
+      },
+      "D_omega": {
+        "H": -0.885899,
+        "chi": 1.016525,
+        "K_trace": -0.995584,
+        "magnitude": 1.496386
+      },
+      "D_global": {
+        "H": -0.985262,
+        "chi": 1.23327,
+        "K_trace": -1.228783,
+        "magnitude": 1.770047
+      }
+    },
+    {
+      "n": 49,
+      "shell_size": 1368,
+      "H_n": 3.186771,
+      "chi_n": 1.491228,
+      "K_trace": 3.919591,
+      "distinct_gamma": 42,
+      "is_prime": false,
+      "omega": 1,
+      "I_avg_rolling": [
+        2.108833,
+        2.539289,
+        1.738522
+      ],
+      "I_avg_omega": [
+        2.214016,
+        2.153422,
+        1.801372
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": 1.077938,
+        "chi": -1.048061,
+        "K_trace": 2.181069,
+        "magnitude": 2.069071
+      },
+      "D_omega": {
+        "H": 0.972755,
+        "chi": -0.662194,
+        "K_trace": 2.118219,
+        "magnitude": 1.814015
+      },
+      "D_global": {
+        "H": 1.102897,
+        "chi": -0.942168,
+        "K_trace": 2.385252,
+        "magnitude": 2.126213
+      }
+    },
+    {
+      "n": 50,
+      "shell_size": 744,
+      "H_n": 1.779289,
+      "chi_n": 2.774194,
+      "K_trace": 1.032258,
+      "distinct_gamma": 31,
+      "is_prime": false,
+      "omega": 2,
+      "I_avg_rolling": [
+        2.407534,
+        2.323887,
+        2.469249
+      ],
+      "I_avg_omega": [
+        1.954917,
+        2.688945,
+        1.269544
+      ],
+      "I_avg_global": [
+        2.083874,
+        2.433396,
+        1.534339
+      ],
+      "D_rolling": {
+        "H": -0.628245,
+        "chi": 0.450307,
+        "K_trace": -1.436991,
+        "magnitude": 1.214332
+      },
+      "D_omega": {
+        "H": -0.175628,
+        "chi": 0.085249,
+        "K_trace": -0.237286,
+        "magnitude": 0.249057
+      },
+      "D_global": {
+        "H": -0.304585,
+        "chi": 0.340797,
+        "K_trace": -0.502081,
+        "magnitude": 0.562133
+      }
+    }
+  ],
+  "verdict": "rolling: kein Prim-Überhang (Prim 1.2050 vs zusammengesetzt 1.3448); Top-10-|D|-Ausreißer: 1/10 sind prim",
+  "epistemic_status": "Experiment — testet heuristische Σ→p-Vermutung auf kleinem n; negative oder schwache Prim-Separation falsifiziert die naive Singularitätslesart nicht vollständig, deutet aber auf nötige Verfeinerung (Schalengröße, ω-Stratum, asymptotisches μ_∞)."
+}
