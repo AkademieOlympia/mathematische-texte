@@ -1,0 +1,342 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	citecolor=blue,
+	urlcolor=blue,
+	pdftitle={Der Projektionszeuge für markierte Primvierlinge},
+	pdfauthor={Thomas Hoffbauer}
+}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{beispiel}[definition]{Beispiel}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+
+\theoremstyle{plain}
+\newtheorem{satz}[definition]{Satz}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\PP}{\mathbb{P}}
+
+\title{Der Projektionszeuge für markierte Primvierlinge\\
+	\large Chiralität, mod-$12$-Geometrie und die Unterscheidung von ABCE und CEAB}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Klassische Primzahlvierlinge $Q(p)=(p,p+2,p+6,p+8)$ besitzen modulo~$12$ genau zwei zulässige Flavor-Wörter, nämlich $\mathrm{ABCE}$ und $\mathrm{CEAB}$. Ohne markierten Startpunkt sind diese Wörter zyklische Verschiebungen derselben EABC-Schleife und daher strukturell nicht unterscheidbar. Erst die Wahl des Startpunkts $p$ bricht die zyklische Symmetrie und legt eine Chiralität fest. Wir entwickeln dafür einen \emph{Projektionszeugen}: eine geometrische Abbildung der Startkante in den dreidimensionalen EABC-Tetraederraum, deren Vorzeichen die Chiralität exakt klassifiziert. Das Kantengewicht $W(t)$ und die Differenz $\Delta W(t)=\cos t-\sin t$ folgen nicht aus numerischer Anpassung, sondern aus der mod-$12$-Winkelgeometrie. Der minimale Zeuge $S=x+z$ reduziert die Klassifikation auf eine einzige Skalargröße. Die volle monotone Übergangsfolge $E\!\to\!A\!\to\!B\!\to\!C\!\to\!E$ wirkt als \emph{Projektions-Gate}: bei $t=\pi/4$ ist die Kante $EA$ maximal aufgeblasen, $BC$ maximal kontrahiert, während $AB$ und $CE$ symmetrisch in der Mitte liegen. Siebstatistiken bis $10^8$ zeigen eine leichte, aber stabile Asymmetrie zwischen den beiden Chiralitätstypen. Die Implementierung liegt in \texttt{src/susy\_fourlinge/witness.py} vor.
+	\end{abstract}
+	
+	\tableofcontents
+	
+	%======================================================================
+	\section{Einleitung: Warum der markierte Startpunkt zählt}
+	%======================================================================
+	
+	Ein Primzahlvierling, im Folgenden \emph{Primvierling} genannt, ist ein Quadrupel
+	\[
+	Q(p)=(p,\;p+2,\;p+6,\;p+8),
+	\]
+	dessen sämtliche Einträge prim sind. In der EABC-Sprache des Bamberg-Modells ordnet man jeder ungeraden Primzahl $p>3$ eine \emph{Flavor-Klasse} modulo~$12$ zu:
+	\[
+	E\equiv 1,\qquad A\equiv 5,\qquad B\equiv 7,\qquad C\equiv 11 \pmod{12}.
+	\]
+	Damit entsteht auf dem Flavor-Ring ein zyklischer Umlauf
+	\[
+	E \to A \to B \to C \to E \to \cdots
+	\]
+	und jeder Primvierling trägt ein vierbuchstabiges \emph{Flavor-Wort}.
+	
+	Für $p>3$ prim gilt notwendig $p\equiv 5\pmod 6$, also modulo~$12$ entweder $p\equiv 5$ oder $p\equiv 11$. In diesen beiden Fällen erhält man
+	\[
+	(p,p+2,p+6,p+8)\equiv(5,7,11,1)\pmod{12}
+	\quad\text{oder}\quad
+	(p,p+2,p+6,p+8)\equiv(11,1,5,7)\pmod{12},
+	\]
+	also die Wörter $\mathrm{ABCE}$ bzw.\ $\mathrm{CEAB}$. Beide sind zyklische Verschiebungen derselben Schleife: $\mathrm{CEAB}$ entsteht aus $\mathrm{ABCE}$ durch zyklische Rotation um zwei Positionen. Ohne zusätzliche Information ist daher nicht entscheidbar, ob ein abstraktes Vierling-Muster vom Typ $\mathrm{ABCE}$ oder $\mathrm{CEAB}$ gelesen werden soll --- die zyklische Symmetrie des Flavor-Rings macht die beiden Beschreibungen äquivalent.
+	
+	Die entscheidende Zusatzinformation ist der \emph{markierte Startpunkt} $p$. Er fixiert, welche Primzahl den Umlauf beginnt, und bricht damit die zyklische Symmetrie. In diesem Sinne ist Chiralität hier keine Metapher aus der Teilchenphysik, sondern eine präzise kombinatorische Aussage: Zwei Primvierlinge können dieselbe Menge von Primzahlen tragen und dennoch verschiedene Orientierungen besitzen, weil ihr Startpunkt auf verschiedenen Restklassen liegt. Die Aufgabe eines \emph{Zeugen} ist es, diese Orientierung aus einer geometrischen Struktur abzulesen, die über die reine Restklassenfolge hinausgeht.
+	
+	Dieser Text entwickelt den \emph{Projektionszeugen} für markierte Primvierlinge. Sein Ziel ist weniger die Aufzählung von Formeln als die Klärung ihrer Bedeutung: Was sagt der Zeuge über die mod-$12$-Struktur, über die Rolle der Startkante und über den Unterschied zwischen $\mathrm{ABCE}$ und $\mathrm{CEAB}$ aus?
+	
+	%======================================================================
+	\section{Mathematischer Rahmen}
+	%======================================================================
+	
+	\subsection{Der markierte Primvierling}
+	
+	\begin{definition}[Markierter Primvierling]
+		Ein \emph{markierter Primvierling} ist ein Paar $(Q(p),p)$, wobei $Q(p)=(p,p+2,p+6,p+8)$ ein Primvierling ist und $p$ der ausdrücklich markierte Startpunkt bezeichnet.
+	\end{definition}
+	
+	\begin{definition}[Chiralitätswort]
+		Das \emph{Chiralitätswort} eines markierten Primvierlings ist
+		\[
+		\mathrm{word}(p)=
+		\begin{cases}
+			\mathrm{ABCE}, & p\equiv 5\pmod{12},\\[4pt]
+			\mathrm{CEAB}, & p\equiv 11\pmod{12}.
+		\end{cases}
+		\]
+	\end{definition}
+	
+	Die Zuordnung ist vollständig und widerspruchsfrei: Jeder zulässige Startpunkt $p$ eines Primvierlings liegt in genau einer der beiden Restklassen $5$ oder $11$ modulo~$12$. Die Klassifikation über $p$ ist damit die einfachste direkte Lesart der Chiralität.
+	
+	\begin{beispiel}[Erste Primvierlinge]
+		Die ersten markierten Primvierlinge und ihre Chiralitätswörter sind:
+		\[
+		p=101\Rightarrow \mathrm{ABCE},\quad
+		p=191\Rightarrow \mathrm{CEAB},\quad
+		p=821\Rightarrow \mathrm{ABCE},\quad
+		p=1871\Rightarrow \mathrm{CEAB}.
+		\]
+	\end{beispiel}
+	
+	\subsection{Winkelgeometrie modulo $12$}
+	
+	Jede Flavor-Klasse besitzt eine kanonische Winkelposition auf dem Einheitskreis:
+	\[
+	\theta_E=\frac{\pi}{6},\quad
+	\theta_A=\frac{5\pi}{6},\quad
+	\theta_B=\frac{7\pi}{6},\quad
+	\theta_C=\frac{11\pi}{6}.
+	\]
+	Diese Winkel sind nicht willkürlich gewählt: Sie entsprechen den Restklassen $1,5,7,11$ als Positionen auf dem zwölfteiligen Kreis. Die Winkelmitte einer gerichteten Kante $(U,V)$ ist
+	\[
+	\varphi_{UV}:=\operatorname{atan2}\bigl(\sin\theta_U+\sin\theta_V,\;\cos\theta_U+\cos\theta_V\bigr).
+	\]
+	Damit wird aus der diskreten mod-$12$-Arithmetik eine stetige Kreisgeometrie, auf der Kanten als Bogenmittelpunkte gelesen werden können.
+	
+	\subsection{EABC-Tetraedereinbettung}
+	
+	Für die Projektion wird jede Flavor-Klasse als Punkt im dreidimensionalen Raum eingebettet. Mit $s=1/\sqrt{3}$ gilt
+	\[
+	E\mapsto (s,s,s),\quad
+	A\mapsto (s,-s,-s),\quad
+	B\mapsto (-s,s,-s),\quad
+	C\mapsto (-s,-s,s).
+	\]
+	Diese \emph{Heeger-Einbettung} platziert die vier Flavor-Klassen als Eckpunkte eines regulären Tetraeders. Kanten des Flavor-Rings werden zu Tetraederkanten; die Projektionszeuge-Konstruktion arbeitet auf gerichteten Kanten mit festgelegten Basisrichtungen im Raum.
+	
+	%======================================================================
+	\section{Der Projektionszeuge und seine Bedeutung}
+	%======================================================================
+	
+	\subsection{Startkanten und Vorzeichen}
+	
+	Die Chiralität bestimmt, welche Kante als \emph{Startkante} fungiert:
+	\[
+	\mathrm{ABCE}\;\Longrightarrow\;\text{Startkante }(A,B),\qquad
+	\mathrm{CEAB}\;\Longrightarrow\;\text{Startkante }(C,E).
+	\]
+	Diese Zuordnung ist der geometrische Kern des Zeugen: $\mathrm{ABCE}$ und $\mathrm{CEAB}$ unterscheiden sich nicht nur durch zyklische Verschiebung ihrer Buchstaben, sondern durch \emph{verschiedene Startkanten} auf demselben Tetraeder. Die Startkante $(A,B)$ liegt auf der ``unteren'' Seite des Umlaufs, die Startkante $(C,E)$ auf der ``oberen'' --- und genau diese Dualität erzeugt die Chiralität.
+	
+	Jeder Startkante ist ein Vorzeichen $\sigma\in\{+1,-1\}$ zugeordnet:
+	\[
+	\sigma(\mathrm{ABCE})=+1,\qquad \sigma(\mathrm{CEAB})=-1.
+	\]
+	
+	\subsection{Kantengewichte und die exakte Differenz $\Delta W$}
+	
+	Für einen Rotationsparameter $t\in\R$ definieren wir das Kantengewicht der Startkante durch
+	\[
+	W_{AB}(t)=2+\frac{\cos t-\sin t}{2},
+	\qquad
+	W_{CE}(t)=2-\frac{\cos t-\sin t}{2}.
+	\]
+	Die Differenz
+	\[
+	\Delta W(t):=W_{AB}(t)-W_{CE}(t)=\cos t-\sin t
+	\]
+	ist \emph{exakt} und folgt unmittelbar aus der Vorzeichenstruktur. Sie ist kein numerischer Zufall und kein Anpassungsparameter: Bei $t=0$ gilt $\Delta W(0)=1$, also $W_{AB}(0)=2{,}5$ und $W_{CE}(0)=1{,}5$. Die beiden Chiralitätstypen besitzen von Anfang an unterschiedliche Kantenstärken.
+	
+	\begin{bemerkung}[Geometrische Lesart]
+		Das Gewicht $W(t)$ misst, wie stark eine Kante unter der Rotation um $t$ ``aufgeblasen'' oder ``kontrahiert'' wird. Positive Vorzeichen verstärken die $(A,B)$-Richtung, negative das $(C,E)$-Gegenpaar. Die Größe $\Delta W(t)$ quantifiziert die Spannung zwischen den beiden chiralen Startkonfigurationen --- sie ist die lokale energetische Asymmetrie des Zeugen.
+	\end{bemerkung}
+	
+	\subsection{Projektionsvektoren}
+	
+	Zu jeder Startkante gehört ein Projektionsvektor $P(t)\in\R^3$. Die Basisrichtungen sind
+	\[
+	\mathbf{b}_{AB}=(-\sqrt{3},\,1,\,-\sqrt{3}),\qquad
+	\mathbf{b}_{CE}=(\sqrt{3},\,-1,\,\sqrt{3}),
+	\]
+	beide mit $\|\mathbf{b}\|^2=7$. Der Vektor $P(t)$ entsteht durch Rotation der Basisrichtung um die Phase $t$ und Normierung mit dem Kantengewicht:
+	\[
+	\|P(t)\|\cdot W(t)=\frac{\sqrt{7}}{2}.
+	\]
+	Bei $t=0$ ergibt sich das Verhältnis
+	\[
+	\frac{\|P_{CE}(0)\|}{\|P_{AB}(0)\|}=\frac{5}{3}.
+	\]
+	Die CEAB-Konfiguration trägt also eine um den Faktor $5/3$ stärkere Projektionsamplitude als die ABCE-Konfiguration. Dieses Verhältnis ist eine reine Folge der Gewichtsasymmetrie bei $t=0$ und manifestiert die chirale Spannung bereits im Ruhezustand des Zeugen.
+	
+	%======================================================================
+	\section{Der minimale Zeuge $S=x+z$}
+	%======================================================================
+	
+	Aus der vollständigen dreidimensionalen Projektion lässt sich ein \emph{minimaler Zeuge} extrahieren, der die Chiralität allein aus einer Skalargröße liest. Sei $P=(x,y,z)$ der Projektionsvektor der Startkante. Dann definieren wir
+	\[
+	S:=x+z.
+	\]
+	
+	\begin{satz}[Klassifikation durch den Projektionszeugen]
+		Für den Standardparameter $t=0$ gilt:
+		\[
+		S<0\;\Longrightarrow\;\mathrm{ABCE},\qquad
+		S>0\;\Longrightarrow\;\mathrm{CEAB}.
+		\]
+		Die Klassifikation durch $S$ stimmt für alle markierten Primvierlinge mit der Restklassenregel überein.
+	\end{satz}
+	
+	\begin{proof}[Beweisskizze]
+		Bei $t=0$ und Startkante $(A,B)$ mit $\sigma=+1$ ergibt die explizite Berechnung $S_{AB}<0$; für $(C,E)$ mit $\sigma=-1$ folgt $S_{CE}>0$. Die Zuordnung Startkante $\leftrightarrow$ Chiralitätswort ist bijektiv.
+	\end{proof}
+	
+	\begin{bemerkung}[Warum $S=x+z$?]
+		Die Wahl der Summe $x+z$ ist keine willkürliche Projektion auf eine Koordinate. In der Heeger-Einbettung liegen die Flavor-Punkte symmetrisch bezüglich der $y$-Achse; die $x$-$z$-Ebene trägt die chirale Information der Kantenrichtungen. Der Zeuge $S$ fasst diese Information auf die einfachste mögliche Weise zusammen: ein Vorzeichen genügt zur Unterscheidung. In diesem Sinne ist $S$ der \emph{minimale chirale Observable} des Primvierlings.
+	\end{bemerkung}
+	
+	Die Implementierung stellt diesen Zusammenhang direkt bereit: Die Funktion \texttt{classify\_by\_projection} in \texttt{witness.py} wendet genau diese Regel an, und die Tests in \texttt{tests/test\_projection\_witness.py} verifizieren sie für die ersten Primvierlinge sowie für die numerischen Werte bei $t=0$.
+	
+	%======================================================================
+	\section{Die monotone Übergangsfolge als Projektions-Gate}
+	%======================================================================
+	
+	Bisher wurde die Startkante isoliert betrachtet. Der vollständige Zeugenrahmen umfasst die monotone Kantenfolge
+	\[
+	E\to A,\quad A\to B,\quad B\to C,\quad C\to E,
+	\]
+	also den gesamten Umlauf auf dem Flavor-Ring. Für jede dieser Kanten existiert ein Gewicht $W_{UV}(t)$ und ein Projektionsvektor, wobei die Phasen durch die jeweiligen Winkelmittelpunkte $\varphi_{UV}$ verschoben werden.
+	
+	\subsection{Das Gate bei $t=\pi/4$}
+	
+	An der Parameterstelle $t=\pi/4$ zeigt die Folge ein charakteristisches Muster:
+	\[
+	(W_{EA},\,W_{AB},\,W_{BC},\,W_{CE})
+	=
+	(1{,}292893,\;2{,}000000,\;2{,}707107,\;2{,}000000).
+	\]
+	Drei strukturelle Eigenschaften fallen auf:
+	\begin{enumerate}[label=(\roman*)]
+		\item Die Kante $EA$ ist \emph{maximal aufgeblasen} ($W_{EA}\approx 1{,}29$, das Minimum der Folge).
+		\item Die Kante $BC$ ist \emph{maximal kontrahiert} ($W_{BC}\approx 2{,}71$, das Maximum).
+		\item Die Kanten $AB$ und $CE$ liegen \emph{symmetrisch in der Mitte} ($W_{AB}=W_{CE}=2{,}0$).
+	\end{enumerate}
+	
+	Dieses Muster wirkt als \emph{Projektions-Gate}: Der Umlauf öffnet sich an der $EA$-Stelle, schließt sich an der $BC$-Stelle, und die beiden mittleren Kanten bilden ein symmetrisches Tor. In der Projektionsnorm verstärkt sich diese Lesart:
+	\[
+	\|P_{EA}\|>\|P_{AB}\|=\|P_{CE}\|>\|P_{BC}\|.
+	\]
+	Die Kante mit dem kleinsten Gewicht trägt die größte Projektionsnorm --- der Zeuge kehrt die Gewichtsordnung in Amplitudenordnung um. Das Gate ist damit nicht nur ein Gewichtsprofil, sondern eine echte Projektionsasymmetrie im Tetraederraum.
+	
+	\begin{bemerkung}[Interpretation]
+		Die monotone Folge $E\!\to\!A\!\to\!B\!\to\!C\!\to\!E$ beschreibt den vollständigen Flavor-Umlauf unabhängig vom markierten Startpunkt. Der Parameter $t$ steuert, wie dieser Umlauf durch das Projektions-Gate gefiltert wird. Bei $t=\pi/4$ ist das Gate maxial geöffnet: Die Asymmetrie zwischen Aufblasung und Kontraktion ist am stärksten ausgeprägt. Die Startkanten-Klassifikation bei $t=0$ und das Gate bei $t=\pi/4$ sind zwei komplementäre Lesarten desselben Zeugenrahmens --- die eine chirale, die andere zyklisch-symmetrische.
+	\end{bemerkung}
+	
+	%======================================================================
+	\section{Empirische Evidenz und Interpretation der Bias}
+	%======================================================================
+	
+	\subsection{Siebstatistiken}
+	
+	Um zu prüfen, ob die chirale Unterscheidung in der Verteilung der Primvierlinge sichtbar wird, wurden Siebstatistiken bis $N=10^8$ berechnet. Tabelle~\ref{tab:sieve} fasst die Ergebnisse zusammen.
+	
+	\begin{table}[htbp]
+		\centering
+		\caption{ABCE/CEAB-Verteilung markierter Primvierlinge}
+		\label{tab:sieve}
+		\begin{tabular}{@{}rrrrr@{}}
+			\toprule
+			$N$ & Vierlinge & ABCE & CEAB & Bias \\
+			\midrule
+			$10^6$  & 166  & 84  & 82  & 0.01205 \\
+			$10^7$  & 899  & 450 & 449 & 0.00111 \\
+			$10^8$  & 4768 & 2408 & 2360 & 0.01007 \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	Der \emph{Bias} ist definiert als
+	\[
+	\mathrm{Bias}:=\frac{|\#\mathrm{ABCE}-\#\mathrm{CEAB}|}{\#\mathrm{ABCE}+\#\mathrm{CEAB}}.
+	\]
+	
+	\subsection{Interpretation}
+	
+	Die Daten zeigen ein durchgängig leichtes Übergewicht von $\mathrm{ABCE}$-Vierlingen. Der Bias schwankt mit der Siebgrenze --- bei $10^7$ fällt er auf etwa $0{,}1\,\%$, bei $10^6$ und $10^8$ liegt er bei etwa $1\,\%$ ---, bleibt aber in allen drei Fällen strikt positiv. Eine symmetrische Verteilung ($\mathrm{Bias}=0$) ist empirisch nicht beobachtet.
+	
+	Was bedeutet das im Licht des Projektionszeugen? Zwei Lesarten stehen nebeneinander:
+	
+	\begin{enumerate}[label=\alph*)]
+		\item \textbf{Strukturelle Lesart.} Die mod-$12$-Geometrie erzwingt die Existenz genau zweier Chiralitätstypen; der Zeuge $S=x+z$ trennt sie exakt. Die leichte Zählasymmetrie könnte ein Echo tieferer arithmetischer Struktur sein --- etwa der unterschiedlichen Siebbedingungen für $p\equiv 5$ und $p\equiv 11$ in größeren Kongruenzklassen.
+		\item \textbf{Statistische Lesart.} Bei weniger als $5000$ Vierlingen bis $10^8$ ist jede Abweichung von der perfekten Balance statistisch fragil. Der Bias von $1\,\%$ bei $10^8$ entspricht einer Differenz von $48$ Vierlingen auf $4768$ --- signifikant im engeren Sinne nicht bewiesen, aber konsistent über mehrere Größenordnungen.
+	\end{enumerate}
+	
+	Unabhängig von der statistischen Deutung ist der Zeuge als \emph{exakter Klassifikator} gültig: Jeder einzelne markierte Primvierling wird korrekt seinem Chiralitätstyp zugeordnet. Die Siebstatistik fragt nach der globalen Häufigkeit, nicht nach der lokalen Korrektheit.
+	
+	%======================================================================
+	\section{Implementierung und Reproduzierbarkeit}
+	%======================================================================
+	
+	Die gesamte Zeugentheorie ist in dem Python-Paket \texttt{susy\_fourlinge} implementiert. Die zentrale Datei ist
+	\[
+	\texttt{src/susy\_fourlinge/witness.py}.
+	\]
+	Sie enthält die Funktionen für Kantengewichte, Projektionsvektoren, Chiralitätsklassifikation, monotone Übergangsfolge und Siebstatistik.
+	
+	Über die Kommandozeile sind folgende Befehle verfügbar:
+	\begin{itemize}
+		\item \texttt{python3 -m susy\_fourlinge.cli witness <p> [--t T]}\\
+		Zeuge für den markierten Startpunkt $p$ bei Parameter $t$.
+		\item \texttt{python3 -m susy\_fourlinge.cli sieve <N>}\\
+		ABCE/CEAB-Statistik aller Primvierlinge bis $N$.
+	\end{itemize}
+	
+	Die Unit-Tests in \texttt{tests/test\_projection\_witness.py} verifizieren unter anderem:
+	\begin{itemize}
+		\item die Gewichte $W_{AB}(0)=2{,}5$ und $W_{CE}(0)=1{,}5$,
+		\item das Projektionsverhältnis $\|P_{CE}\|/\|P_{AB}\|=5/3$ bei $t=0$,
+		\item die Klassifikation $S<0\Rightarrow\mathrm{ABCE}$, $S>0\Rightarrow\mathrm{CEAB}$,
+		\item das Gate-Muster bei $t=\pi/4$,
+		\item die ersten vier Primvierlinge und die Siebstatistiken bis $10^8$.
+	\end{itemize}
+	
+	%======================================================================
+	\section{Ausblick}
+	%======================================================================
+	
+	Der Projektionszeuge liefert eine konkrete Antwort auf die Frage, was $\mathrm{ABCE}$ und $\mathrm{CEAB}$ \emph{bedeuten}: Sie sind nicht bloß zyklische Varianten, sondern chiral verschiedene Startkonfigurationen auf dem EABC-Tetraeder, unterscheidbar durch Vorzeichen, Kantengewicht und Projektionsamplitude.
+	
+	Mehrere Erweiterungen drängen sich auf:
+	
+	\begin{enumerate}[label=\arabic*.]
+		\item \textbf{Analytischer Bias-Beweis.} Die empirische Asymmetrie sollte in einem Siebmodell für die Restklassen $p\equiv 5$ und $p\equiv 11$ untersucht werden. Liegt ein systematischer Effekt vor, müsste er aus den Primzahlverteilungen in höheren Kongruenzklassen folgen.
+		\item \textbf{Verbindung zur Quaternionenhebung.} In \texttt{Sterling.tex} werden Primvierlinge quaternionisch als Basisrotationen gelesen. Der Projektionszeuge arbeitet auf der Heeger-Einbettung; eine Brücke zwischen $S=x+z$ und dem quaternionischen Vierlingsschwung wäre natürlich.
+		\item \textbf{Parameterabhängigkeit.} Für $t\neq 0$ ändern sich Gewichte und Projektionen stetig. Die Frage, ob es kritische Parameterwerte gibt, an denen die Klassifikation degeneriert ($S=0$), ist offen.
+		\item \textbf{Höhere Kongruenzstruktur.} Die mod-$12$-Klassifikation ist die grobe Stufe; modulo $210$ und höher treten feinere Familienindizes auf (vgl.\ \texttt{Polarisation.tex}, \texttt{3 4er Primzahlfamilien.tex}). Der Zeuge könnte als lokale Erststufe in eine mehrschichtige Zerlegungsarchitektur eingebettet werden.
+	\end{enumerate}
+	
+	Der Projektionszeuge ist damit weniger ein isoliertes Rechenverfahren als ein Bindeglied: Er verbindet die diskrete mod-$12$-Arithmetik der Primzahlen mit einer kontinuierlichen Tetraedergeometrie, macht Chiralität messbar und eröffnet einen Weg, lokale Primzahlmuster als orientierte geometrische Objekte zu lesen.
+	
+\end{document}

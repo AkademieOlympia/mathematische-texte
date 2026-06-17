@@ -14,3 +14,6 @@ import CollatzEabc.Z2Attraktor
 import CollatzEabc.Open
 import CollatzEabc.PrefProjection
 import CollatzEabc.BernoulliClock
+import CollatzEabc.Primvierling.Basic
+import CollatzEabc.Primvierling.Mod12
+import CollatzEabc.Primvierling.KeplerEllipse

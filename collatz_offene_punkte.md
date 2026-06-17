@@ -216,6 +216,36 @@ Wo Mathlib endet, endet der formalisierte Teil — dokumentiert, nicht verschwie
 
 ---
 
+## Forschungsstrategie (Juni 2026)
+
+Asymmetrische Evidenzlandschaft — was belegt ist, was getestet und nicht gestützt wurde:
+
+| Objekt | Status |
+|--------|--------|
+| Primvierling $\to$ mod $12$ $\to$ ABCE/CEAB | Lean-bewiesen |
+| Schwerpunkt $M=p+4$ | Lean/Python/TeX |
+| Normalform $(-4,-2,2,4)$ | Lean/Python/TeX |
+| Chiralitäts-Bijektion | Lean-bewiesen |
+| Span-Regel $10+12g$ | numerischer Zeuge |
+| Ptolemäischer Projektionszeuge | numerisch/geometrisch |
+| $\Phi_{\mathrm{pref}}$ (Länge $4$) | formal, trivial |
+| $I(Q)\to\Pi(Q)$ | negativ getestet ($r\approx -0.14\ldots -0.18$) |
+| Bernoulli-Uhr | Definition, keine Evidenz |
+
+**Prioritäten nach Merge von PR #35:**
+
+1. **Hoch:** Witness $\leftrightarrow$ Ellipse formal abschließen:
+   $M=p+4 \to (-4,-2,2,4) \to (a,b,e)$.
+2. **Mittel:** $\Phi_{\mathrm{pref}}$ nur mit echtem Diskriminantentest
+   (Integrationsstrom vs.\ Zufall).
+3. **Niedrig:** Bernoulli-Uhr (definitorisch).
+4. **Sehr niedrig:** Präzession $I\to\Pi$ (getestet, nicht gestützt).
+
+Wissenschaftlicher Wert negativer Tests: Idee $\to$ Test $\to$ nicht bestätigt
+(vgl.\ `collatz_praezession_info.tex`, PR #35).
+
+---
+
 ## Priorisierte Lean-Roadmap (Anhang)
 
 1. Irreduzibilität der mod-12-Matrix (`Finset`-Kombinatorik)
