@@ -215,6 +215,9 @@ als **spektrale Projektion** dieser Resonanz lesbar sind.
 | Drei Wachstumsprojektionen, Fünfstufenprogramm | **Conjecture / Forschungsvision** (§20) |
 | EABC-Holographie-Vermutung (boxed, §20) | **Conjecture** |
 | Fibonacci-Rekonfigurations-Scan | **Experiment** (§20, optional) |
+| EABC-Invarianz-Hypothese, Primzahlen als Messreihe | **Conjecture / Forschungsvision** (§22) |
+| Balmer-/Klein-Erlangen-Analogien | **Heuristik** (§22) |
+| EABC-Invarianz-Hypothese (boxed, §22) | **Conjecture** |
 
 ---
 
@@ -451,6 +454,9 @@ Morley und $\kappa$ bleiben eigenständige Angriffslinien. Der Resonanz-Zweig nu
 | Drei Wachstumsprojektionen, Fünfstufenprogramm | Conjecture / Forschungsvision (§20) |
 | EABC-Holographie-Vermutung (boxed) | Conjecture (§20) |
 | Fibonacci-Rekonfigurations-Scan | Experiment (§20) |
+| EABC-Invarianz-Hypothese, Messreihen-Lesart | Conjecture / Forschungsvision (§22) |
+| Balmer-/Klein-Erlangen-Analogien | Heuristik (§22) |
+| EABC-Invarianz-Hypothese (boxed) | Conjecture (§22) |
 
 **Nächste Schritte:**
 1. Test 1 auf größeres $n$ und mit expliziten Zufalls-Nullmodellen vergleichen.
@@ -1276,7 +1282,8 @@ Fünfstufenprogramm. Kein Collatz-Beweis, kein Beweis der Riemann-Hypothese.
 
 **Querverweis:** §21 präzisiert die **epistemische Lesart** von Primzahlen, Fossilien und
 Invarianten — insbesondere die Unterscheidung **Definition** (Primzahl) vs. **Conjecture**
-(EABC als erzeugende Struktur).
+(EABC als erzeugende Struktur). §22 **verfeinert** diese Lesart: Primzahlen als **Messreihe**
+(Spektrallinien-Heuristik) statt Knochen/Fossilien-Metapher.
 
 ---
 
@@ -1463,6 +1470,200 @@ Erfolgsmaß ($\mathcal{I}$ statt $p_n$-Formel) gilt.
 Dieser Abschnitt **ersetzt** weder §1–§2 noch §17–§20; er **epistemisiert** das gesamte
 EABC-Programm. Kein Collatz-Beweis, kein Beweis der Riemann-Hypothese, **keine** Behauptung,
 Primzahlen seien „weniger real" als in der Standardarithmetik.
+
+**Querverweis:** §22 **verfeinert und übertrifft** philosophisch die Fossil-Metapher (Knochen vs.
+Fossilien): Primzahlen werden dort als **Messreihe** (Spektrallinien) gelesen, nicht als
+„Realität" oder bloße Fossilien.
+
+---
+
+## 22. EABC-Invarianz-Hypothese: Primzahlen als Messreihe
+
+Dieser Abschnitt verschiebt die epistemische Lesart von §21: Primzahlen sind weder bloße
+„Realität" noch nur „Fossilien" — sie sind das, was Physiker eine **Messreihe** nennen:
+beobachtbare, diskrete Datenpunkte, die eine **tiefere Struktur** sichtbar machen, ohne
+selbst diese Struktur zu sein.
+
+**Querverweise:** §1 (Zerlegungsprinzip $N_{\mathrm{glatt}}$ vs. $N_{\mathrm{EABC}}$),
+§2 ($\Delta Q_4$, $\sigma$, $\chi$, $\iota_{\mathrm{chir}}$, $V_n$), §7 (Bernoulli-Signaturen),
+§8–§9 (Zeta-Spektrum), §18 (Klein-$V_4$, EABC-Tetraeder), §21 (Fossil-Metapher — hier
+präzisiert), `collatz_generalangriff_2026.md` (Morley-Parallelzweig, **nicht** fusionieren).
+
+### 22.1 Primzahlen als Messreihe (Definition vs. Forschungsvision)
+
+| Ebene | Aussage | Label |
+|-------|---------|-------|
+| **Standard** | $p$ prim $\Longleftrightarrow p>1$ und genau zwei positive Teiler | **Definition** |
+| **Messreihen-Lesart** | Die Folge $2,3,5,7,\ldots$ ist **beobachtbare Ausgabe**, nicht zwingend die fundamentale Struktur | **Conjecture / Forschungsvision** |
+
+**Epistemische Warnung (wie §21.1).** Die Messreihen-Lesart **ersetzt** die Primzahldefinition
+nicht. Sie behauptet nur: dieselben Primzahlen können **sekundäre Observablen** einer tieferen
+arithmetisch-geometrischen Dynamik sein — analog dazu, dass Spektrallinien real messbar sind,
+ohne die Quantenstruktur des Atoms zu **sein**.
+
+**Label:** Definition (Primzahl) unverändert; Messreihen-Lesart = **Conjecture / Forschungsvision**.
+
+### 22.2 Balmer-Spektroskopie (Heuristik)
+
+Vor der Quantenmechanik waren die **Balmer-Linien**
+\[
+\lambda_1,\,\lambda_2,\,\ldots
+\]
+real und präzise messbar — niemand hielt die Wellenlängenliste für die **Struktur** des
+Wasserstoffatoms. Die Linien waren eine **komprimierte Beschreibung** tieferer Geometrie
+(Elektronenorbitale, Hamiltonoperator).
+
+**Heuristik (Balmer $\to$ Primzahlen):**
+
+| Balmer (19. Jh.) | Primzahlen (EABC-Lesart) |
+|------------------|--------------------------|
+| $\lambda_k$ messbar, diskret | $p_n$ wohldefiniert, diskret |
+| Linien $\neq$ Atomstruktur | $p_n$ $\neq$ fundamentale Arithmetikgeometrie? |
+| Erfolg durch **Invarianten** (Energieniveaus) | Erfolg durch **Invarianten** ($\sigma$, $\chi$, $V_n$, …) |
+
+**Label: Heuristik** — historisches Leitbild, kein Theorem über Primzahlen.
+
+### 22.3 Transfer: Objekte oder Spektrallinien? (Conjecture / Forschungsvision)
+
+> **Forschungsfrage.** Sind Primzahlen **Objekte** der Arithmetik — oder **Spektrallinien**
+> einer noch unbekannten arithmetisch-geometrischen Dynamik?
+
+Die Folge $2,3,5,7,\ldots$ könnte bereits **Output** eines tieferen Systems sein, nicht dessen
+generierende Axiome. Das EABC-Programm sucht dann nicht primär eine Formel für $p_n$, sondern
+die **Struktur**, deren Projektion diese Messreihe erzeugt.
+
+**Label: Conjecture / Forschungsvision** — offene Umdeutung, kein Ersatz der Peano-Arithmetik.
+
+### 22.4 EABC-Programmverschiebung: Invarianten vor Primzahlen
+
+**Hierarchie (Forschungsvision):**
+
+| Rang | Gegenstand | Beispiele |
+|------|------------|-----------|
+| **fundamental** | Symmetrien und Invarianten | EABC-Chiralität ($\sigma$, $\chi$, $\iota_{\mathrm{chir}}$), Quadrupelstrukturen, Bernoulli-Signaturen $V_n$, Zeta-Spektren |
+| **sekundär** | Einzelprimzahlen und $p_n$-Folge | $2,3,5,7,\ldots$ als Messreihe |
+
+**Parallelzweige (nicht fusionieren):**
+
+| Zweig | Rolle | Querverweis |
+|-------|-------|-------------|
+| **EABC / Bernoulli** | Resonanzsensor, $V_n$, Zeta-Brücke | §2, §7–§9, dieses Dokument |
+| **Morley** | diskreter Krümmungs- und Konformitätssensor | `collatz_generalangriff_2026.md`, `collatz_morley_metrik_erweiterung.md` |
+
+Morley-ähnliche Symmetrien und EABC-Invarianten werden **parallel** verfolgt — gemeinsame
+Sprache (EABC-Klassen, mod $12$), aber **keine** vorzeitige Vereinigung zu einem einzigen
+Theorem-Träger.
+
+**Label: Forschungsvision** — Programmarchitektur, kein abgeschlossenes Resultat.
+
+### 22.5 Klein-Erlangen-Programm (Heuristik)
+
+Im 19. Jahrhundert verschob Felix Klein die Geometrie: nicht mehr Punkte und Geraden als
+Primäres, sondern **Invarianten unter Transformationsgruppen** (Erlangen-Programm).
+
+**EABC-Kernfrage (Heuristik):** Was sind die **Invarianten der Primdynamik**?
+
+| Klassische Primzahlfrage | EABC-Invarianzfrage |
+|--------------------------|---------------------|
+| „Welche Primzahl kommt als Nächstes?" | „Welche Größen bleiben über Milliarden von Primereignissen stabil?" |
+| Einzelobjekt $p$ | Funktional $\mathcal{I}(E,A,B,C)$ (§21.5) |
+| Zählung $\pi(x)$ | Struktur von $\Delta Q_4$, $V_n$, Quadrupelzeugen |
+
+**Label: Heuristik** — methodisches Leitbild (Klein), keine bewiesene arithmetische Äquivalenz.
+
+### 22.6 Klein-$V_4$-Verbindung (Definition + Heuristik)
+
+**Definition (§18, Theorem-Hintergrund).** Die Einheitengruppe $(\mathbb{Z}/12\mathbb{Z})^\times$
+hat Ordnung $4$ und ist isomorph zur Kleinschen Vierergruppe $V_4\cong C_2\times C_2$. Die
+vier EABC-Klassen $E\equiv 1$, $A\equiv 5$, $B\equiv 7$, $C\equiv 11 \pmod{12}$ sind genau
+diese Restklassen.
+
+**Heuristik (stärkere Lesart).** Das Quadrupel $(E,A,B,C)$ ist nicht bloß eine **Klassensammlung**,
+sondern **Symmetrieträger** im Sinne des Erlangen-Programms: $V_4$ als diskrete Transformations-
+struktur, auf der chirale Observablen ($\sigma$, $\chi$, $T$-Rotation, Quadrupelzeuge) definiert
+sind.
+
+> **Conjecture (Klein-$V_4$-Lesart).** Die Persistenz von EABC-Invarianten über große
+> Primfenster spiegelt die **Vierergruppen-Symmetrie** der mod-$12$-Einheiten — nicht die
+> Einzelprimzahl $p$ selbst.
+
+**Label:** $V_4$-Isomorphie = **Theorem / Definition** (§18); EABC als Symmetrieträger =
+**Heuristik / Conjecture**.
+
+### 22.7 Boxed: EABC-Invarianz-Hypothese (Conjecture, vorsichtig)
+
+$$\boxed{
+\begin{aligned}
+&\textbf{EABC-Invarianz-Hypothese (Conjecture).}\\[4pt]
+&\text{Primzahlen sind \emph{nicht} die fundamentalen Objekte der Arithmetik;}\\
+&\text{fundamental sind die \textbf{Symmetrien und Invarianten}, die Primzahlen organisieren.}\\[4pt]
+&\text{Die EABC-Klassen }(E,A,B,C)\text{ sind eine \textbf{beobachtbare Projektion}}\\
+&\text{tieferer Struktur — nicht die Struktur selbst.}\\[4pt]
+&\text{Aufgabe: Invarianten identifizieren, die unter dem Wachstum}\\
+&\text{des Primsystems \textbf{erhalten} bleiben.}\\[4pt]
+&\text{Primzahlen verhalten sich wie Spektrallinien zu einem Quantensystem}\\
+&\text{oder wie Orbits zu einem Gravitationsfeld: sie machen Struktur sichtbar,}\\
+&\text{sind aber nicht die Struktur.}
+\end{aligned}
+}$$
+
+**Vorsichtige Einordnung.** Diese Hypothese behauptet **nicht**, dass EABC bereits die
+„wahre Geometrie" der Primzahlen gefunden habe. Sie behauptet nur, dass die Suche nach
+**invarianter Geometrie** fruchtbarer sein könnte als die Jagd nach der nächsten Einzelprimzahl.
+
+**Label: Conjecture** — Forschungshypothese, explizit falsifizierbar über Instabilität von
+$\mathcal{I}(E,A,B,C)$ in Sensor- und Lean-Experimenten.
+
+### 22.8 Offene strukturelle Verbindungen (ehrlich)
+
+Wie in §21.7 — **offen**, keine Behauptung der Erfassung:
+
+| Autor / Struktur | Rolle (skizzenhaft) | EABC-Bezug (offen) |
+|------------------|---------------------|-------------------|
+| **Riemann** | Zetafunktion, Spektralprogramm | §8–§9: $V_n$, nichttriviale Nullstellen als Spektrum |
+| **Klein** | Erlangen-Programm, Invarianten unter Gruppen | §18, §22.6: $V_4$, EABC-Tetraeder |
+| **Connes** | nichtkommutative Geometrie, Spektralrealisierung | EABC als diskreter Zustandsraum (spekulativ) |
+| **EABC** (dieses Programm) | mod-$12$-Sensorik, Bernoulli-Brücke | $V_n$, $\sigma$, $\chi$, Quadrupelzeuge |
+
+**Label: Heuristik / offen.**
+
+### 22.9 Tao-Einordnung und Verknüpfung mit §1, §18, §21
+
+| Ebene | Inhalt in diesem Abschnitt |
+|-------|---------------------------|
+| **Definition** | Primzahl; $V_4\cong(\mathbb{Z}/12\mathbb{Z})^\times$; EABC-Klassen; $V_n$, $\sigma$, $\chi$ |
+| **Experiment** | Sensor-/Lean-Tests auf Persistenz der Observablen |
+| **Theorem** | $V_4$-Isomorphie (klassisch, §18) |
+| **Conjecture** | EABC-Invarianz-Hypothese (boxed); Primzahlen als Messreihe |
+| **Heuristik** | Balmer-Spektroskopie, Klein-Erlangen-Programm |
+| **Forschungsvision** | Invarianten vor Primzahlen; Morley parallel |
+
+**Synthese mit §1:** $N_{\mathrm{glatt}}$ liefert die **Skala** der Messreihe (Dichte, Wachstum);
+$N_{\mathrm{EABC}}$ liefert die **Orientierung** und chirale Struktur, in der Invarianten leben.
+
+**Synthese mit §18:** Klein-$V_4$ ist nicht nur Indexierung, sondern (Heuristik) **Symmetriegrundlage**
+der EABC-Invarianz-Hypothese.
+
+**Synthese mit §21:** §21 formuliert Knochen vs. Fossilien; §22 **ersetzt** diese Metapher
+philosophisch durch **Messreihe vs. zugrundeliegende Dynamik** — präziser und näher an der
+physikalischen Praxis (Spektroskopie, Erhaltungsgrößen).
+
+### 22.10 Epistemische Zusammenfassung
+
+| Aussage | Label |
+|---------|-------|
+| $p$ prim $\Longleftrightarrow$ zwei Teiler | **Definition** (Standard) |
+| Primzahlen als Messreihe, nicht als Struktur | **Conjecture / Forschungsvision** |
+| Balmer-Linien $\to$ Primzahlen | **Heuristik** |
+| Invarianten fundamental, $p_n$ sekundär | **Forschungsvision** |
+| EABC-Chiralität, $V_n$, Quadrupel, Zeta-Spektren | **Definition / Experiment** |
+| Morley parallel (nicht fusionieren) | **Forschungsvision** |
+| $(E,A,B,C)$ als $V_4$-Symmetrieträger | **Heuristik / Conjecture** |
+| EABC-Invarianz-Hypothese (boxed) | **Conjecture** |
+| Riemann / Klein / Connes / EABC | **offen** (Querverweise) |
+
+Dieser Abschnitt **ersetzt** weder §1–§2 noch §17–§21; er **schärft** die epistemische Lesart
+über die Fossil-Metapher hinaus. Kein Collatz-Beweis, kein Beweis der Riemann-Hypothese.
 
 ---
 
