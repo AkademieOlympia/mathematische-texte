@@ -571,6 +571,18 @@ class M2ExponentFit:
 
 
 @dataclass
+class M2GeometrySummary:
+    """M2a/b/c: Median über ε-Familie pro Konstant-Krümmungsfläche."""
+
+    geometry: str
+    kg: float
+    f_m_median: float
+    f_m_over_a_median: float
+    f_m_over_a2_median: float
+    n_epsilons: int
+
+
+@dataclass
 class M2SignTest:
     """M2a: Vorzeichen-/Nullstruktur vor Exponentenfit."""
 
@@ -595,6 +607,7 @@ class M2Report:
     variant: str = "local_chart"
     epsilons: list[float] = field(default_factory=list)
     samples: list[M2SurfaceSample] = field(default_factory=list)
+    geometry_table: list[M2GeometrySummary] = field(default_factory=list)
     sign_test: M2SignTest | None = None
     euclidean_fm_max: float = 0.0
     naive_c: float | None = None
@@ -930,6 +943,38 @@ def _median_fm(samples: Sequence[M2SurfaceSample], surface: str) -> float:
     return float(np.median(vals)) if vals else float("nan")
 
 
+def _compute_m2_geometry_table(samples: Sequence[M2SurfaceSample]) -> list[M2GeometrySummary]:
+    """M2a/b/c: F_M, F_M/A, F_M/A² — Median über ε pro Geometrie."""
+    labels = (
+        ("R2", "Ebene K=0", 0.0),
+        ("S2", "Sphäre K=+1", 1.0),
+        ("H2", "Hyperbolisch K=-1", -1.0),
+    )
+    rows: list[M2GeometrySummary] = []
+    for surf, geom_label, kg in labels:
+        pts = [s for s in samples if s.surface == surf]
+        if not pts:
+            continue
+        f_m_vals = [s.f_m for s in pts]
+        ratio_a = [s.f_m_over_a for s in pts if math.isfinite(s.f_m_over_a)]
+        ratio_a2 = [
+            s.f_m / (s.area * s.area)
+            for s in pts
+            if s.area > 1e-16 and math.isfinite(s.f_m)
+        ]
+        rows.append(
+            M2GeometrySummary(
+                geometry=geom_label,
+                kg=kg,
+                f_m_median=float(np.median(f_m_vals)),
+                f_m_over_a_median=float(np.median(ratio_a)) if ratio_a else float("nan"),
+                f_m_over_a2_median=float(np.median(ratio_a2)) if ratio_a2 else float("nan"),
+                n_epsilons=len(pts),
+            )
+        )
+    return rows
+
+
 def _compute_m2_sign_test(samples: Sequence[M2SurfaceSample]) -> M2SignTest:
     """M2a: F_M bei K_G=0, K_G>0, K_G<0; Vergleich S² vs H² bei gleichem ε."""
     plane_med = _median_fm(samples, "R2")
@@ -1035,6 +1080,7 @@ def run_m2_sensor(
                 euc_max = max(euc_max, fm)
 
     curved = [s for s in samples if s.kg != 0.0 and s.f_m > 1e-18 and s.area > 1e-18]
+    geometry_table = _compute_m2_geometry_table(samples)
     sign_test = _compute_m2_sign_test(samples)
 
     naive_c, naive_r2 = float("nan"), float("nan")
@@ -1068,6 +1114,7 @@ def run_m2_sensor(
         variant=variant,
         epsilons=list(epsilons),
         samples=samples,
+        geometry_table=geometry_table,
         sign_test=sign_test,
         euclidean_fm_max=euc_max,
         naive_c=naive_c,
@@ -1145,6 +1192,17 @@ def _print_m2_report(report: M2Report) -> None:
     print("=== Morley M2: Modellräume ===")
     print(f"Variante: {report.variant}  |  M1-Gate: {'bestanden' if report.m1_gate_passed else 'offen'}")
     print(f"Euklid max F_M (K_G=0): {report.euclidean_fm_max:.3e}")
+
+    if report.geometry_table:
+        print("\nM2a/b/c — Geometrietabelle (Median über ε-Familie):")
+        print(f"  {'Geometrie':<22} {'F_M':>12} {'F_M/A':>12} {'F_M/A²':>12}")
+        for row in report.geometry_table:
+            print(
+                f"  {row.geometry:<22} "
+                f"{row.f_m_median:12.3e} "
+                f"{row.f_m_over_a_median:12.3e} "
+                f"{row.f_m_over_a2_median:12.3e}"
+            )
 
     if report.sign_test is not None:
         st = report.sign_test

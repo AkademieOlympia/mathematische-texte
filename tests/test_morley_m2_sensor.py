@@ -88,6 +88,19 @@ def test_m2_sphere_hyperbolic_same_order_fm_over_a():
     assert 0.1 < med_h / med_s < 10.0
 
 
+def test_m2_geometry_table_present():
+    report = run_m2_sensor(epsilons=[0.06, 0.12, 0.18])
+    assert len(report.geometry_table) == 3
+    for row in report.geometry_table:
+        assert math.isfinite(row.f_m_median)
+        assert math.isfinite(row.f_m_over_a_median)
+        assert math.isfinite(row.f_m_over_a2_median)
+    plane = next(r for r in report.geometry_table if r.kg == 0.0)
+    sphere = next(r for r in report.geometry_table if r.kg == 1.0)
+    assert plane.f_m_median < 1e-20
+    assert sphere.f_m_median > 0.0
+
+
 def test_m2_json_cli(tmp_path):
     out = tmp_path / "m2_test.json"
     subprocess.run(
