@@ -1,0 +1,173 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage[hidelinks,unicode]{hyperref}
+
+\hypersetup{
+  pdftitle={Arithmetische Präzession und Informationsgehalt},
+  pdfauthor={Thomas Hoffbauer}
+}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{bemerkung}[definition]{Bemerkung}
+\theoremstyle{remark}
+\newtheorem{remark}[definition]{Bemerkung}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+
+\title{Informationsgehalt, Symmetriebruch und arithmetische Präzession\\
+  \large Modellierung (kein Beweisanspruch)}
+\author{Thomas Hoffbauer}
+\date{17.\ Juni 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Dieses Notizblatt formalisiert eine \emph{modellhafte} Kette
+Informationsgehalt $\to$ Symmetriebruch $\to$ arithmetische Perihelverschiebung
+$\Pi$ auf Primvierlingsfenstern.
+Es trennt drei Ebenen (Mathematik / Modellierung / Interpretation), verweist auf
+den bestehenden Span-Zeugen $\mathrm{span}=10+12g$
+(\texttt{Beweis\_Spanne\_EABC.tex}, \texttt{prognoseEABC.py}) und den
+Projektionsrahmen (\texttt{Projektionszeuge\_Primvierling.tex},
+\texttt{witness.py}).
+\textbf{Kein Collatz-Anspruch}, \textbf{kein numerischer Zeuge} für die
+Korrelation $\mathrm{corr}(I,\Pi)$ bis zur Auswertung von
+\texttt{collatz\_praezession\_test.py}.
+\end{abstract}
+
+%======================================================================
+\section{Drei Ebenen}
+%======================================================================
+
+\begin{description}[style=nextline,leftmargin=2.4cm]
+  \item[\textbf{Ebene~A (fest)}]
+  Markierte Startpunkte $p\equiv 5\Rightarrow\mathrm{ABCE}$,
+  $p\equiv 11\Rightarrow\mathrm{CEAB}$; Primvierlingsellipse
+  $(a,b,e)=(4,2,\sqrt{3}/2)$; ideale vierphasige Uhr mit $\Pi\equiv 0$
+  (\texttt{Projektionszeuge\_Primvierling.tex}, \texttt{witness.py}).
+  \item[\textbf{Ebene~B (Erweiterung)}]
+  Integrationsstrom-Vierlinge mit Signatur \texttt{abce}/\texttt{ceab}
+  und Spannenregel $\mathrm{span}(Q)=p_4-p_1=10+12g$, $g\geq 0$.
+  Der Parameter $g$ zählt zusammengesetzte E-ABC-Zwischenslots auf den
+  mod-$12$-Leitern (\texttt{wolfram.py}, \texttt{prognoseEABC.py}).
+  \item[\textbf{Ebene~C (Modell)}]
+  Informationsfunktion $I(Q)$, Kopplung $K(Q)$ und messbare Proxy-Präzession
+  $\Pi(Q)$; Klein-Lesart des Symmetriebruchs (Remark unten).
+\end{description}
+
+%======================================================================
+\section{Modelldefinitionen (wohldefiniert, nicht bewiesen)}
+%======================================================================
+
+Sei $Q=(p_1,p_2,p_3,p_4)$ ein Primvierlingsfenster im Integrationsstrom
+(Signatur \texttt{abce} oder \texttt{ceab}) oder ein markierter Primvierling
+$Q(p)=(p,p+2,p+6,p+8)$ mit $p\equiv 5,11\pmod{12}$.
+Definiere
+\[
+  g(Q):=\frac{\mathrm{span}(Q)-10}{12}\in\N_0,
+  \qquad \mathrm{span}(Q)=p_4-p_1,
+\]
+sofern die Spannenregel gilt (\texttt{Beweis\_Spanne\_EABC.tex}).
+
+\begin{definition}[Informationsgehalt]
+  \[
+  I(Q):=\log\bigl(1+g(Q)\bigr).
+  \]
+  Alternativ dokumentiert: $I(Q)=\log\mathrm{span}(Q)$ oder
+  $I(Q)=-\log P(Q)$ für eine Wahrscheinlichkeitsgewichtung $P$ ---
+  die Wahl $\log(1+g)$ betont die diskrete Leiter-Information.
+\end{definition}
+
+\begin{definition}[Symmetrie-Kopplung]
+  Mit reeller Konstante $\alpha>0$:
+  \[
+  K(Q):=\alpha\,I(Q)
+  \qquad\text{oder}\qquad
+  K(Q):=\alpha\log\bigl(1+I(Q)\bigr).
+  \]
+\end{definition}
+
+\begin{definition}[Arithmetische Präzession (Proxy)]
+  Für die ideale EABC-Uhr $\theta_m=\tfrac{\pi}{2}m$ gilt
+  $\Pi_{\mathrm{ideal}}=0$ (\texttt{PerihelDrift.lean}).
+  Als \emph{messbarer Proxy} auf Daten dient
+  \[
+  \Pi(Q):=\Theta_{m+4}-\Theta_m-2\pi
+  \]
+  unter einer dokumentierten Drift $\varepsilon(p)$, z.\,B.\
+  $\varepsilon(p)=1/\log p$ (\texttt{witness.py}), oder der Betrag des
+  Projektionsdefekts $|S|$ mit $S=x+z$ aus dem Heeger-Projektionszeugen.
+\end{definition}
+
+\begin{definition}[Modellgleichung]
+  Mit $\beta>0$ postuliert das Gedankenmodell
+  \[
+  \Pi(Q)=\beta\,K(Q),
+  \qquad
+  \theta_{n+4}=\theta_n+2\pi+\Pi(Q).
+  \]
+  Dies ist \textbf{keine} Behauptung relativistischer Krümmung, sondern eine
+  arithmetische Phasenkorrektur der vierphasigen Kepler-Uhr
+  (\texttt{Projektionszeuge\_Primvierling.tex}, Abschnitt~Perihelverschiebung).
+\end{definition}
+
+\begin{bemerkung}[Klein-Symmetriebruch]
+  Sei $S(Q)$ die Symmetriegruppe des markierten Vierlingsfensters
+  (Rotationen der EABC-Tetraederdarstellung, Vertauschungen kompatibler Slots).
+  In Klein-Lesart:
+  \[
+  I(Q)=\log\frac{|S_{\max}|}{|S(Q)|},
+  \]
+  wobei $S_{\max}$ die maximale symmetrische Konfiguration (ideale Ellipse,
+  $\Pi=0$) bezeichnet.
+  Der Symmetriebruch $I(Q)>0$ \emph{motiviert} eine nichttriviale Krümmung
+  $\Pi(Q)$; die quantitative Kopplung $\Pi=\beta K$ bleibt offen.
+\end{bemerkung}
+
+%======================================================================
+\section{Numerischer Test und Nichtbehauptungen}
+%======================================================================
+
+\begin{remark}[Nichtbehauptung]
+  \begin{itemize}[nosep]
+    \item Dieses Modell beweist weder die Collatz-Vermutung noch
+    $\Einf=\emptyset$.
+    \item Die Korrelation $\mathrm{corr}\bigl(I(Q),\Pi(Q)\bigr)$ auf
+    Integrationsstrom-Vierlingen bis $10^6$--$10^7$ ist ein
+    \emph{explorativer} Datentest (\texttt{collatz\_praezession\_test.py}),
+    kein Primzahltheorem und kein Lean-Theorem.
+    \item Markierte Primvierlinge $Q(p)=(p,p+2,p+6,p+8)$ haben stets
+    $\mathrm{span}=8$ und $g=0$ in der Leiter-Zählung; der Span-Zeuge
+    $\mathrm{span}=10+12g$ bezieht sich auf Integrationsstrom-Fenster
+    (\texttt{Beweis\_Spanne\_EABC.tex}).
+  \end{itemize}
+\end{remark}
+
+\begin{bemerkung}[Bestehender numerischer Zeuge]
+  Die Identität $\mathrm{span}=10+12g$ ist für Integrationsstrom-Vierlinge
+  bewiesen und in \texttt{wolfram.py}/\texttt{prognoseEABC.py} verifiziert
+  (\texttt{collatz\_kepler\_gedankenexperiment.tex}, Tabelle numerischer Zeugen).
+  Dieser Zeuge stützt die $g$-Struktur von $I(Q)$, nicht die Kopplung an $\Pi$.
+\end{bemerkung}
+
+\medskip
+\noindent
+Verwandte Texte:
+\texttt{collatz\_kepler\_gedankenexperiment.tex},
+\texttt{Projektionszeuge\_Primvierling.tex},
+\texttt{collatz\_offene\_punkte.md} (§4 heuristisch/offen).
+
+\end{document}

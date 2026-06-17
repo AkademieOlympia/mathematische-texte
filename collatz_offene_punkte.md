@@ -116,6 +116,14 @@ Konvergenz.
   (TeX §Bernoulli-Uhr). Lean-Kern: `BernoulliClock.lean`
   (`BernoulliCell`, `bernoulliTriplet`). **Kein Collatz-Beweis**, keine
   Lyapunov-Nutzung (Bernoulli-Normschale bleibt No-Go).
+- **Präzession–Information (offen):** Modell $I(Q)=\log(1+g)$,
+  $K(Q)=\alpha I(Q)$, $\Pi(Q)=\beta K(Q)$ mit $g$ aus
+  $\mathrm{span}=10+12g$ (Integrationsstrom;
+  `collatz_praezession_info.tex`). Explorativer Datentest
+  `collatz_praezession_test.py`: $\mathrm{corr}(I,\Pi)$ auf
+  Integrationsstrom-Vierlingen; Proxy $\Pi=4/\log p$. **Kein Zeuge**
+  für die Kopplung — Span-$g$-Struktur ist separat bewiesen
+  (`Beweis_Spanne_EABC.tex`).
 
 ### 4a. Epistemische Taxonomie numerischer Zeugen (EABC, nicht Collatz)
 
