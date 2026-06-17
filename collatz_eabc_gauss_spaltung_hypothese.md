@@ -114,4 +114,9 @@ $\{E,A,B,C\}^2$ erzeugt. Der kanonische Test ist `collatz_eabc_gauss_spaltung_te
 
 ---
 
+**Eisenstein-Analogon:** `collatz_eabc_eisenstein_spaltung.md` — $\mathbb{Z}[\omega]$, mod-$3$-Bipartition
+$E\cup B$ vs. $A\cup C$, Experiment `collatz_eabc_eisenstein_spaltung_test.py`.
+
+---
+
 *Epistemische Einordnung: Gauß-Spaltung = Theorem; $\Gamma$-Bias = offene Conjecture.*
