@@ -6,6 +6,7 @@
 - `collatz_eabc_Z_decomposition_test.py` → `collatz_eabc_Z_decomposition.json` (Commit `e9013a2`)
 - `collatz_eabc_shell_defekt_test.py` → `collatz_eabc_shell_defekt.json`
 - `collatz_eabc_product_tree_stub.py` → `collatz_eabc_product_tree_stub.json` (Produktbäume, H vs. O)
+- `collatz_eabc_oktonion_associator.py` → `collatz_eabc_oktonion_associator.json` ($\mathfrak{a}_E(n)$, EABC-Associator)
 
 **Tao-Labels:** Definition | Theorem | Conjecture | Heuristik | Experiment
 
@@ -105,6 +106,35 @@ O-Klammerungs-Heuristik = **Heuristik**; Stub = **Experiment** (H) / **Theorie**
 
 ---
 
+## 2.6 EABC-Associator und $\mathfrak{a}_E(n)$ (oktonion-spezifisches Observable)
+
+**Korrektur.** Die Produktabbildung $\Phi_T:\Sigma_{n_1}\times\cdots\times\Sigma_{n_k}\to\Sigma_n$ ist in $\mathbb{O}$
+**nicht** wohldefiniert ohne Angabe des Baums $T$. Zählen allein $Z(n)=|\mathcal{Z}_n|$ reicht nicht —
+es zählen **Äquivalenzklassen** $(T,\Gamma)$ mit messbarer Baum-Abhängigkeit.
+
+**Definition (Assoziator und EABC-Version).**
+$$[x,y,z]=(xy)z-x(yz),\qquad
+\Gamma_{\mathrm{assoc}}(x,y,z)=\Gamma((xy)z)-\Gamma(x(yz))$$
+auf glatt-gestrippten EABC-Koordinaten ($16$ Exponenten $(\alpha_i,\beta_i)_{i=1}^8$).
+
+**Definition.** $\mathfrak{a}_E(n):=$ Mittel von $\|\Gamma_{\mathrm{assoc}}\|$ über repräsentative Stichproben
+zu Faktorisierungen $n=abc$ ($a,b,c\ge 2$) und Klammerung $(xy)z$ vs. $x(yz)$.
+
+**Boxed Frage.**
+> $$\boxed{\;\text{Minimieren Prim-Platten } \Sigma_p \text{ den mittleren EABC-Assoziator } \mathfrak{a}_E \text{ — oder maximieren zusammengesetzte Platten ihn?}\;}$$
+
+**Experiment** (`collatz_eabc_oktonion_associator.py`, $n\le 50$):
+- Prim: $\mathfrak{a}_E(p)$ undefiniert (kein $abc$), Konvention $0$ → **minimiert trivial**.
+- Zusammengesetzt: $\mathfrak{a}_E(n)>0$ wo Tripel-Faktorisierung existiert.
+- Quaternion-Teilalgebra: Assoziator $=0$; generisches $(e_1,e_2,e_4)$: beide Normen $>0$.
+
+**Grenze:** Sampling, $\mathbb{Z}^8$-Stub, ein Klammerungspaar — keine volle Catalan-Mittelung über $\mu_n$.
+
+**Label:** $\mathfrak{a}_E$ = **Definition** + **Experiment**; Prim-Minimum = **Theorem** (trivial);
+ob Zusammengesetzte **maximieren** = **offen** (Profil variiert mit Faktorisierung).
+
+---
+
 ## 3. Boxed: EABC-Plattenübergangs-Hypothese
 
 > **Conjecture (EABC-Plattenübergangs-Hypothese).**
@@ -195,6 +225,11 @@ ist für die **geometrisch motivierte** rolling-Baseline **nicht gestützt** (ex
 > **H ($n\le 50$):** Klammerung trivial (Assoziativität); $Z_{\mathrm{EABC}}\approx Z_{\mathrm{fact}}$ unverändert.
 > **O:** offen; erste Klammerungsvielfalt ab $k\ge 3$-Faktor-Kompositionen (Catalan $\ge 2$).
 
+> **Frage 5 (EABC-Associator / $\mathfrak{a}_E$).**
+> $$\boxed{\;\mathfrak{a}_E(p)\text{ vs. }\mathfrak{a}_E(n)\text{ für zusammengesetztes }n\text{: minimieren Prim-Platten den Associator?}\;}$$
+> **Experiment ($n\le 50$):** Ja **trivial** ($\mathfrak{a}_E(p)=0$ per Definition); zusammengesetzte $n$ zeigen
+> positive $\mathfrak{a}_E$ — ob **Maximum** bei bestimmten Faktorprofilen liegt, **offen**.
+
 ---
 
 ## 7. Quaternion-Testbed vor vollem $\mathbb{O}$
@@ -227,6 +262,8 @@ Testbed für Plattenübergänge, bevor $\mu_n$ in 8D budgetiert wird:
 | H: Klammerungs-Kollaps (Assoziativität) | **Theorem** |
 | O: Klammerung als geometrische Novelty | **Heuristik** (offen) |
 | `collatz_eabc_product_tree_stub.py` | **Experiment** (H) / **Theorie** (O) |
+| `collatz_eabc_oktonion_associator.py` | **Experiment** ($\mathfrak{a}_E$, $n\le 50$) |
+| $\mathfrak{a}_E(n)$, EABC-Associator | **Definition** + **Experiment** |
 | 8D-Platten $\Sigma_n^{(8)}$ | **Forschungsprogramm** |
 
 ---

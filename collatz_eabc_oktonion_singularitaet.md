@@ -4,6 +4,7 @@
 **Branch:** `collatz/eabc-euklidische-hebung` (PR #54)  
 **Stub:** `collatz_eabc_oktonion_shell_stub.py` → `collatz_eabc_oktonion_shell_stub.json` (nur $r_8(n)$, $n\le 10$)  
 **Produktbäume:** `collatz_eabc_product_tree_stub.py` → `collatz_eabc_product_tree_stub.json` (Catalan/Klammerung, H vs. O)  
+**Associator:** `collatz_eabc_oktonion_associator.py` → `collatz_eabc_oktonion_associator.json` ($\mathfrak{a}_E(n)$, Sampling $n\le 50$)  
 **Tao-Labels:** Definition | Theorem | Conjecture | Heuristik | Experiment (Quaternion-Referenz)
 
 **Querverweise:**
@@ -132,6 +133,49 @@ für $\mathbb{O}$ nur theoretische Catalan-Budgets ohne $\mu_n$-Test.
 
 ---
 
+## 3.7 EABC-Associator-Observable (Korrektur: Äquivalenzklassen von Produktbäumen)
+
+**Warnung (mathematische Korrektur).** Die Abbildung
+$$\Sigma_{n_1}\times\cdots\times\Sigma_{n_k}\longrightarrow\Sigma_n,\qquad (x_1,\ldots,x_k)\mapsto x_1\star_T\cdots\star_T x_k$$
+ist **nicht** automatisch wohldefiniert in $\mathbb{O}$: gleiche Normfaktoren und **verschiedene Klammerungen**
+$T\neq T'$ können verschiedene Bilder liefern. Das fundamentale Objekt sind daher **Äquivalenzklassen von
+Produktbäumen** (nicht nur $Z(n)=|Z_n|$).
+
+**Definition (algebraischer Assoziator).**
+$$[x,y,z] := (xy)z - x(yz).$$
+Null in $\mathbb{R},\mathbb{C},\mathbb{H}$; typischerweise **nichtnull** in $\mathbb{O}$.
+
+**Definition (Baum-Abhängigkeit).** Für zwei binäre Produktbäume $T_1,T_2$ auf denselben Blättern:
+$$A(T_1,T_2) := \bigl\|P_{T_1}(x_1,\ldots,x_k) - P_{T_2}(x_1,\ldots,x_k)\bigr\|.$$
+Für $k=3$: $P_{(xy)z}$ vs. $P_{x(yz)}$.
+
+**Definition (glatt-EABC-Assoziator).** Mit $\Gamma(x)$ = glatt-EABC-Signatur auf allen acht Koordinatenbeinen
+(strip: $(\alpha_i,\beta_i)$ pro Leg, vgl. `kappa_glatt`):
+$$\Gamma_{\mathrm{EABC\text{-}assoc}}(x,y,z) := \Gamma\bigl((xy)z\bigr) - \Gamma\bigl(x(yz)\bigr)\in\mathbb{Z}^{16}.$$
+$$\|\Gamma_{\mathrm{EABC\text{-}assoc}}\| := \sqrt{\sum_{j=1}^{16} \Delta_j^2}.$$
+
+**Definition ($\mathfrak{a}(n)$, $\mathfrak{a}_E(n)$).**
+$$\mathfrak{a}(n) := \text{Mittel von } A(T_1,T_2) \text{ über } \Sigma_{n_1}\times\cdots\times\Sigma_{n_k}\text{ und Bäume } T_1\neq T_2.$$
+$$\mathfrak{a}_E(n) := \text{Mittel von } \|\Gamma_{\mathrm{EABC\text{-}assoc}}\| \text{ über dieselben Stichproben}$$
+(repräsentative Faktorisierungen $n=abc$, $a,b,c\ge 2$).
+
+**Boxed Frage (Primschalen vs. Associator).**
+> $$\boxed{\;\text{Minimieren oder maximieren Prim-Normschalen } \Sigma_p^{(8)} \text{ den mittleren EABC-Assoziator } \mathfrak{a}_E \text{ gegenüber zusammengesetztem } n\text{?}\;}$$
+
+**Experiment** (`collatz_eabc_oktonion_associator.py`, $n\le 50$, Sampling):
+- **Quaternion-Teilalgebra** $\{e_1,e_2,e_3\}$: $\|[e_1,e_2,e_3]\|=0$ (Assoziativität).
+- **Generisches Tripel** $(e_1,e_2,e_4)$: $\|[e_1,e_2,e_4]\|>0$, $\|\Gamma_{\mathrm{EABC\text{-}assoc}}\|>0$.
+- **Prim $p$:** $\mathfrak{a}_E(p)$ **nicht definiert** (keine nichttriviale $abc$-Zerlegung); Konvention $0$.
+- **Zusammengesetzt:** $\mathfrak{a}_E(n)>0$ für $n$ mit Tripel-Faktorisierung (z. B. $n=12$: Mittel $\approx 0.5$–$2$ je nach Sampling).
+
+**Ehrliche Grenze:** Keine volle $\Sigma_n$-Enumeration ($r_8(n)\sim n^{3/2}$); nur **repräsentative** $n=abc$,
+ein Klammerungspaar $(xy)z$ vs. $x(yz)$, $\mathbb{Z}^8$-Stub (nicht Hurwitz $\mathbb{O}_{\mathrm H}$).
+
+**Label:** Assoziator, $\mathfrak{a}_E$ = **Definition**; Prim-Minimierung = **Theorem** (trivial per Definition);
+Zusammengesetzt-Profil = **Experiment** (explorativ).
+
+---
+
 ## 4. Drei Konjekturen (Oktanionen) und Quaternion-Vergleich
 
 Analog zu `collatz_eabc_quaternion_mass_hypothese.md` §8–§12 werden drei Richtungen unterschieden:
@@ -213,6 +257,7 @@ Hopf-Heuristik ist **Forschungsrichtung**, kein implementierter Test.
 | **Volle Enumeration** | $r_8(n)$ wächst $\sim n^3$; $|\Sigma_n|$ für großes $n$ **nicht** voll enumerierbar |
 | **$\Gamma$ nicht kanonisch** | Acht Beine, $240$ Einheiten — orbit-invariante Signatur **unbekannt** |
 | **Kein $\mu_n$-Experiment** | Nur $r_8(n)$-Stub für $n\le 10$; keine $H_n$, $\chi_n$, $D(n)$ in 8D |
+| **Associator-Sampling** | $\mathfrak{a}_E(n)$ nur für $n\le 50$, repräsentative $abc$, kein volles Baum-Mittel über alle Catalan-Bäume |
 
 **Label:** Grenzen = **etabliertes Problem** / **epistemische Warnung**.
 
@@ -232,6 +277,8 @@ Hopf-Heuristik ist **Forschungsrichtung**, kein implementierter Test.
    Quaternion-Daten sprechen gegen **(2)** und **(3)**; **(1)** Irreduzibilität bleibt offen.
 7. **$\hat D^{(8)}(s)$:** Dirichlet-Reihe der 8D-Anomalie — erst nach existierendem $D(n)$ sinnvoll
    (vgl. §13 Quaternion; Bernoulli-Brücke dort **ohne** Match).
+8. **$\mathfrak{a}_E(n)$:** EABC-Associator auf glatt-$\Gamma$; volle Catalan-Mittelung und $\mu_n$-Gewichtung
+   (`collatz_eabc_oktonion_associator.py`).
 
 **Hurwitz-Kette:** `collatz_eabc_euklidische_hebung.md` §9, `collatz_eabc_normabstieg_hypothese.md` §1.
 
@@ -261,7 +308,9 @@ Hopf-Heuristik ist **Forschungsrichtung**, kein implementierter Test.
 | Quaternion: Prim-Isotropie $\mu_p\approx\mu_\infty$ | **Experiment**, **nicht gestützt** |
 | $\hat D(s)$ Bernoulli-Match | **Experiment**, **kein Match** |
 | `collatz_eabc_oktonion_shell_stub.py` | **Experiment** (nur $r_8$, kleines $n$) |
+| $\mathfrak{a}_E(n)$, EABC-Associator | **Definition** + **Experiment** (Sampling $n\le 50$) |
+| Prim minimiert $\mathfrak{a}_E$ | **Theorem** (Definitions-trivial); Zusammengesetzt-Profil **offen** |
 
 ---
 
-*Kanonsiche Notiz: In 8D ist die Frage nicht „wie viele Punkte auf $\Sigma_p$?", sondern „welche Organisation trägt $\mu_p$?" — analog §12 der Quaternionen-Maßhypothese. Quaternion-Daten ($n\le 200$) falsifizieren bisher die Richtungen maximale Isotropie und maximale Anomalie; die oktonionische Hypothese bleibt als Forschungsprogramm mit expliziten Grenzen.*
+*Kanonsiche Notiz: In 8D ist die Frage nicht „wie viele Punkte auf $\Sigma_p$?" oder bloß $Z(n)$, sondern welche **Baum-Äquivalenzklassen** und $\mathfrak{a}_E$-Profile die Schalenorganisation tragen — analog §12 der Quaternionen-Maßhypothese, aber mit Assoziator als oktanion-spezifischem Observable. Quaternion-Daten ($n\le 200$) falsifizieren bisher die Richtungen maximale Isotropie und maximale Anomalie; die oktonionische Hypothese bleibt als Forschungsprogramm mit expliziten Grenzen.*
