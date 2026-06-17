@@ -1,0 +1,540 @@
+{
+  "meta": {
+    "module": "collatz_eabc_discrete_associator.py",
+    "theory": "collatz_eabc_discrete_associator.md",
+    "phi_definition": "Φ(X,Y) = classOf(residue(X)·residue(Y) mod 12); V₄ ≅ (ℤ/12ℤ)×{1,5,7,11} unter Multiplikation; E neutral.",
+    "lean_sources": [
+      "EABC.lean (residue, classOf)",
+      "eabc_from_lean.py"
+    ]
+  },
+  "multiplication_table_V4": {
+    "E": {
+      "E": "E",
+      "A": "A",
+      "B": "B",
+      "C": "C"
+    },
+    "A": {
+      "E": "A",
+      "A": "E",
+      "B": "C",
+      "C": "B"
+    },
+    "B": {
+      "E": "B",
+      "A": "C",
+      "B": "E",
+      "C": "A"
+    },
+    "C": {
+      "E": "C",
+      "A": "B",
+      "B": "A",
+      "C": "E"
+    }
+  },
+  "associativity": {
+    "full_V4": {
+      "domain": [
+        "E",
+        "A",
+        "B",
+        "C"
+      ],
+      "triples_tested": 64,
+      "associative": true,
+      "counterexample_count": 0,
+      "counterexamples": []
+    },
+    "ABC_subtriple": {
+      "domain": [
+        "A",
+        "B",
+        "C"
+      ],
+      "triples_tested": 27,
+      "associative": true,
+      "counterexample_count": 0,
+      "counterexamples": []
+    },
+    "honest_verdict": "Φ ist auf ganz V₄ assoziativ (Klein-Vierergruppe). 𝔞 ≡ 0 für alle 4³ Tripel; auch auf {A,B,C}³."
+  },
+  "associator_tables": {
+    "full_V4_sign": {
+      "E": {
+        "E": {
+          "E": 0,
+          "A": 0,
+          "B": 0,
+          "C": 0
+        },
+        "A": {
+          "E": 0,
+          "A": 0,
+          "B": 0,
+          "C": 0
+        },
+        "B": {
+          "E": 0,
+          "A": 0,
+          "B": 0,
+          "C": 0
+        },
+        "C": {
+          "E": 0,
+          "A": 0,
+          "B": 0,
+          "C": 0
+        }
+      },
+      "A": {
+        "E": {
+          "E": 0,
+          "A": 0,
+          "B": 0,
+          "C": 0
+        },
+        "A": {
+          "E": 0,
+          "A": 0,
+          "B": 0,
+          "C": 0
+        },
+        "B": {
+          "E": 0,
+          "A": 0,
+          "B": 0,
+          "C": 0
+        },
+        "C": {
+          "E": 0,
+          "A": 0,
+          "B": 0,
+          "C": 0
+        }
+      },
+      "B": {
+        "E": {
+          "E": 0,
+          "A": 0,
+          "B": 0,
+          "C": 0
+        },
+        "A": {
+          "E": 0,
+          "A": 0,
+          "B": 0,
+          "C": 0
+        },
+        "B": {
+          "E": 0,
+          "A": 0,
+          "B": 0,
+          "C": 0
+        },
+        "C": {
+          "E": 0,
+          "A": 0,
+          "B": 0,
+          "C": 0
+        }
+      },
+      "C": {
+        "E": {
+          "E": 0,
+          "A": 0,
+          "B": 0,
+          "C": 0
+        },
+        "A": {
+          "E": 0,
+          "A": 0,
+          "B": 0,
+          "C": 0
+        },
+        "B": {
+          "E": 0,
+          "A": 0,
+          "B": 0,
+          "C": 0
+        },
+        "C": {
+          "E": 0,
+          "A": 0,
+          "B": 0,
+          "C": 0
+        }
+      }
+    },
+    "ABC_subtriple_sign": {
+      "A": {
+        "A": {
+          "A": 0,
+          "B": 0,
+          "C": 0
+        },
+        "B": {
+          "A": 0,
+          "B": 0,
+          "C": 0
+        },
+        "C": {
+          "A": 0,
+          "B": 0,
+          "C": 0
+        }
+      },
+      "B": {
+        "A": {
+          "A": 0,
+          "B": 0,
+          "C": 0
+        },
+        "B": {
+          "A": 0,
+          "B": 0,
+          "C": 0
+        },
+        "C": {
+          "A": 0,
+          "B": 0,
+          "C": 0
+        }
+      },
+      "C": {
+        "A": {
+          "A": 0,
+          "B": 0,
+          "C": 0
+        },
+        "B": {
+          "A": 0,
+          "B": 0,
+          "C": 0
+        },
+        "C": {
+          "A": 0,
+          "B": 0,
+          "C": 0
+        }
+      }
+    }
+  },
+  "chirality_quadruplets": {
+    "limit": 5000,
+    "quadruplet_count": 10,
+    "abce_count": 6,
+    "ceab_count": 4,
+    "heuristic": "ABCE → linke Klammer Φ(Φ(A,B),C); CEAB → rechte Klammer Φ(A,Φ(B,C)); auf V₄ liefern beide dasselbe Ergebnis (Assoziativität).",
+    "samples": [
+      {
+        "p": 5,
+        "word": "ABCE",
+        "chirality": "ABCE",
+        "bracket_preference": "left",
+        "triple_abc": [
+          "A",
+          "B",
+          "C"
+        ],
+        "phi_left_abc": "E",
+        "phi_right_abc": "E",
+        "associator_sign": 0,
+        "preferred_matches_result": true
+      },
+      {
+        "p": 11,
+        "word": "CEAB",
+        "chirality": "CEAB",
+        "bracket_preference": "right",
+        "triple_abc": [
+          "C",
+          "E",
+          "A"
+        ],
+        "phi_left_abc": "B",
+        "phi_right_abc": "B",
+        "associator_sign": 0,
+        "preferred_matches_result": true
+      },
+      {
+        "p": 101,
+        "word": "ABCE",
+        "chirality": "ABCE",
+        "bracket_preference": "left",
+        "triple_abc": [
+          "A",
+          "B",
+          "C"
+        ],
+        "phi_left_abc": "E",
+        "phi_right_abc": "E",
+        "associator_sign": 0,
+        "preferred_matches_result": true
+      },
+      {
+        "p": 191,
+        "word": "CEAB",
+        "chirality": "CEAB",
+        "bracket_preference": "right",
+        "triple_abc": [
+          "C",
+          "E",
+          "A"
+        ],
+        "phi_left_abc": "B",
+        "phi_right_abc": "B",
+        "associator_sign": 0,
+        "preferred_matches_result": true
+      },
+      {
+        "p": 821,
+        "word": "ABCE",
+        "chirality": "ABCE",
+        "bracket_preference": "left",
+        "triple_abc": [
+          "A",
+          "B",
+          "C"
+        ],
+        "phi_left_abc": "E",
+        "phi_right_abc": "E",
+        "associator_sign": 0,
+        "preferred_matches_result": true
+      },
+      {
+        "p": 1481,
+        "word": "ABCE",
+        "chirality": "ABCE",
+        "bracket_preference": "left",
+        "triple_abc": [
+          "A",
+          "B",
+          "C"
+        ],
+        "phi_left_abc": "E",
+        "phi_right_abc": "E",
+        "associator_sign": 0,
+        "preferred_matches_result": true
+      },
+      {
+        "p": 1871,
+        "word": "CEAB",
+        "chirality": "CEAB",
+        "bracket_preference": "right",
+        "triple_abc": [
+          "C",
+          "E",
+          "A"
+        ],
+        "phi_left_abc": "B",
+        "phi_right_abc": "B",
+        "associator_sign": 0,
+        "preferred_matches_result": true
+      },
+      {
+        "p": 2081,
+        "word": "ABCE",
+        "chirality": "ABCE",
+        "bracket_preference": "left",
+        "triple_abc": [
+          "A",
+          "B",
+          "C"
+        ],
+        "phi_left_abc": "E",
+        "phi_right_abc": "E",
+        "associator_sign": 0,
+        "preferred_matches_result": true
+      },
+      {
+        "p": 3251,
+        "word": "CEAB",
+        "chirality": "CEAB",
+        "bracket_preference": "right",
+        "triple_abc": [
+          "C",
+          "E",
+          "A"
+        ],
+        "phi_left_abc": "B",
+        "phi_right_abc": "B",
+        "associator_sign": 0,
+        "preferred_matches_result": true
+      },
+      {
+        "p": 3461,
+        "word": "ABCE",
+        "chirality": "ABCE",
+        "bracket_preference": "left",
+        "triple_abc": [
+          "A",
+          "B",
+          "C"
+        ],
+        "phi_left_abc": "E",
+        "phi_right_abc": "E",
+        "associator_sign": 0,
+        "preferred_matches_result": true
+      }
+    ],
+    "all_associator_zero": true
+  },
+  "prime_associator": {
+    "n_primes": 200,
+    "triples_count": 198,
+    "A_N": 0.0,
+    "nonzero_count": 0,
+    "stable_nonzero": false,
+    "verdict": "𝒜(N) ≡ 0 — Φ assoziativ auf V₄; kein diskreter Klammerdefekt in der Primfolge.",
+    "sample_triples": [
+      {
+        "k": 2,
+        "primes": [
+          5,
+          7,
+          11
+        ],
+        "classes": [
+          "A",
+          "B",
+          "C"
+        ],
+        "associator_sign": 0
+      },
+      {
+        "k": 3,
+        "primes": [
+          7,
+          11,
+          13
+        ],
+        "classes": [
+          "B",
+          "C",
+          "E"
+        ],
+        "associator_sign": 0
+      },
+      {
+        "k": 4,
+        "primes": [
+          11,
+          13,
+          17
+        ],
+        "classes": [
+          "C",
+          "E",
+          "A"
+        ],
+        "associator_sign": 0
+      },
+      {
+        "k": 5,
+        "primes": [
+          13,
+          17,
+          19
+        ],
+        "classes": [
+          "E",
+          "A",
+          "B"
+        ],
+        "associator_sign": 0
+      },
+      {
+        "k": 6,
+        "primes": [
+          17,
+          19,
+          23
+        ],
+        "classes": [
+          "A",
+          "B",
+          "C"
+        ],
+        "associator_sign": 0
+      },
+      {
+        "k": 7,
+        "primes": [
+          19,
+          23,
+          29
+        ],
+        "classes": [
+          "B",
+          "C",
+          "A"
+        ],
+        "associator_sign": 0
+      },
+      {
+        "k": 8,
+        "primes": [
+          23,
+          29,
+          31
+        ],
+        "classes": [
+          "C",
+          "A",
+          "B"
+        ],
+        "associator_sign": 0
+      },
+      {
+        "k": 9,
+        "primes": [
+          29,
+          31,
+          37
+        ],
+        "classes": [
+          "A",
+          "B",
+          "E"
+        ],
+        "associator_sign": 0
+      },
+      {
+        "k": 10,
+        "primes": [
+          31,
+          37,
+          41
+        ],
+        "classes": [
+          "B",
+          "E",
+          "A"
+        ],
+        "associator_sign": 0
+      },
+      {
+        "k": 11,
+        "primes": [
+          37,
+          41,
+          43
+        ],
+        "classes": [
+          "E",
+          "A",
+          "B"
+        ],
+        "associator_sign": 0
+      }
+    ]
+  },
+  "epistemic_labels": {
+    "phi_V4": "Definition",
+    "associativity_V4": "Theorem",
+    "ABCE_CEAB_bracket_link": "Heuristik",
+    "A_N_prime_sequence": "Experiment"
+  }
+}

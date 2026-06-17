@@ -9,6 +9,7 @@
 - `collatz_eabc_quaternion_mass_hypothese.md` §7 — **Chiralität** $\chi_p$ auf $\Sigma_p$ (operatives Quaternion-Programm)
 - `collatz_eabc_oktonion_assoziator_spektralhypothese.md` — **Assoziator-Spektrum** $M_n(t)$, $M_n^E(t)$, $\hat D_E(s)$
 - `collatz_eabc_oktonion_associator.py` / `collatz_eabc_oktonion_spectrum.py` — Oktanion-Experimente
+- `collatz_eabc_discrete_associator.md` / `collatz_eabc_discrete_associator.py` — **diskreter** $V_4$-Assoziator ($\Phi$ mod $12$, $\mathfrak a\equiv 0$)
 - `collatz_eabc_quaternion_commutator_stub.py` — Kommutator-Norm-Stub auf $\mathbb{H}$ ($n\le 20$)
 
 ---
@@ -140,6 +141,15 @@ $$C_n(t) := \#\bigl\{(x,y)\in\Sigma_n^2 : N([x,y])=t\bigr\},\qquad
 Stub: `collatz_eabc_quaternion_commutator_stub.py` zeigt für $n\le 20$, dass $\alpha_{\mathrm{com}}(x,y)>0$ **generisch** auf $\Sigma_n$ (nicht nur für Basiselemente $i,j$).
 
 **Label:** $\chi_p$ = **Experiment**; Kommutator-Spektrum $C_n$ = **Conjecture** / geplantes **Experiment**.
+
+### Diskretes $V_4$ — Assoziator **trivial** (PR #54)
+
+Auf der sichtbaren EABC-Ebene $\{E,A,B,C\}$ mit $\Phi(X,Y)=\mathrm{classOf}(\mathrm{residue}(X)\cdot\mathrm{residue}(Y))$
+ist $\Phi$ die Klein-Vierergruppe — **assoziativ**, $\mathfrak a\equiv 0$ für alle $4^3$ Tripel
+(`collatz_eabc_discrete_associator.md`, **Theorem**). ABCE/CEAB markieren dort nur eine
+**Heuristik** der Klammerlesart, keinen algebraischen Defekt.
+
+**Label:** $V_4$-Trivialität = **Theorem**; ABCE/CEAB-Klammer = **Heuristik**.
 
 ### Oktanionen ($\mathbb{O}$) — **beide** Defekte relevant
 
