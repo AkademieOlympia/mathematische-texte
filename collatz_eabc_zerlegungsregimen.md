@@ -89,7 +89,17 @@ repackagiert, ist **nichts Neues** gegenüber klassischer Faktorisierung gewonne
 | $Z_{\mathrm{fact}}$, $Z_{\mathrm{EABC}}$, $Z_{\mathrm{regime}}$ | **Definition** |
 | Prim = Regimengrenze in $\Delta Z$ | **Conjecture** |
 | $Z_{\mathrm{EABC}}\approx Z_{\mathrm{fact}}$ $\Rightarrow$ Falsifikation | **Methodologie** |
+| Produktbäume $T$, $Z^{\mathrm{tree}}$ auf $\mathbb{H}$ | **Theorem**: Klammerung trivial (Assoziativität) |
+| Produktbäume auf $\mathbb{O}$ | **Heuristik**: **oktonion-spezifische Novelty** — einziger Stufe der Hurwitz-Kette, an der Klammerung geometrisch zählt |
 | `collatz_eabc_Z_decomposition_test.py` | **Experiment** |
+| `collatz_eabc_product_tree_stub.py` | **Experiment** (H-Kollaps) / **Theorie** (O-Catalan) |
+
+**Epistemische Lesart (Produktbaum-Erweiterung).** Der bisherige Quaternion-Test ($Z_{\mathrm{EABC}}\approx Z_{\mathrm{fact}}$,
+$\Delta Z$ repackagiert $\omega$) bleibt **hohl**, solange nur binäre Faktorisierungen und assoziative Klammerung
+zählen. Die **Baum-Erweiterung** ist deshalb **nicht** als Rettung der 4D-Hypothese gedacht, sondern als
+Präzisierung: **echte** EABC-Zerlegungsvielfalt über klassische Faktorisierung hinaus ist auf $\mathbb{H}$
+strukturell ausgeschlossen (Assoziativität) und erst auf $\mathbb{O}$ mit $k\ge 3$ und $C_{k-1}\ge 2$ **denkbar**
+(`collatz_eabc_plattenuebergang.md` §2.5, `collatz_eabc_oktonion_singularitaet.md` §3.6).
 
 ### Verbindung zu verwandten Hypothesen
 
@@ -97,7 +107,9 @@ repackagiert, ist **nichts Neues** gegenüber klassischer Faktorisierung gewonne
 |----------|-------|
 | `collatz_eabc_plattenuebergang.md` | **Kanonsiche** Plattenhypothese ($\Sigma_n$-Folge, boxed Conjecture) |
 | `collatz_eabc_quaternion_mass_hypothese.md` §14 | Prim-Emergenz via $D(n)=I(\mu_n)-I_{\mathrm{ref}}$ — **komplementär** (Spektral-Defekt vs. Zerlegungszahl) |
-| `collatz_eabc_oktonion_singularitaet.md` §3 | $n=ab$: Faltung $\Sigma_a\star\Sigma_b$; Prim = irreduzibel in Maßstruktur — **8D-Programm** |
+| `collatz_eabc_oktonion_singularitaet.md` §3.6 | Produktbäume, Klammerung — **8D-Novelty** (Nicht-Assoziativität) |
+| `collatz_eabc_plattenuebergang.md` §2.5 | Kanonsiche Produktbaum-Definition; H-Kollaps vs. O-Heuristik |
+| `collatz_eabc_product_tree_stub.py` | Catalan $n\le 50$; H: 1 effektive Klasse/Komposition; O: theoretisch |
 | `collatz_eabc_shell_defekt_test.py` | Rolling-$D(n)$: kein Prim-Überhang; $\Delta Z$-Test ist **unabhängiger** Kanal |
 
 ---

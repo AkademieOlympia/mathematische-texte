@@ -5,6 +5,7 @@
 **Experimente:**
 - `collatz_eabc_Z_decomposition_test.py` → `collatz_eabc_Z_decomposition.json` (Commit `e9013a2`)
 - `collatz_eabc_shell_defekt_test.py` → `collatz_eabc_shell_defekt.json`
+- `collatz_eabc_product_tree_stub.py` → `collatz_eabc_product_tree_stub.json` (Produktbäume, H vs. O)
 
 **Tao-Labels:** Definition | Theorem | Conjecture | Heuristik | Experiment
 
@@ -62,6 +63,45 @@ $$p\text{ prim}\;\iff\;\Sigma_p\text{ ist produkt-irreduzibel}.$$
 
 **Label:** $N(xy)=N(x)N(y)$ = **Theorem**; $\mu_a\otimes\mu_b$-Schema = **Heuristik**;
 produkt-irreduzibel $\Leftrightarrow$ prim = **Theorem** (klassische Arithmetik, **keine neue Geometrie** allein).
+
+---
+
+## 2.5 Produktbäume und Klammerung (Mehrstufige Zerlegung)
+
+**Warnung (Nicht-Assoziativität).** Die Abbildung $\Phi_{a,b}:\Sigma_a\times\Sigma_b\to\Sigma_{ab}$ ist für die **Norm**
+multiplikativ korrekt ($N(xy)=N(x)N(y)$ auf $\mathbb{O}$). Für **Oktanionen** gilt im Allgemeinen jedoch
+$$(xy)z \neq x(yz)$$
+(`collatz_eabc_euklidische_hebung.md` §4). Norm und Geometrie der Produktabbildung entkoppeln sich:
+gleiche Faktoren, **verschiedene Klammerung** — potenziell verschiedene EABC-Kanäle.
+
+**Definition (Produktbaum).** Sei $n=f_1\cdots f_k$ mit $k\ge 2$, $f_i\ge 2$. Ein **binärer Produktbaum**
+$T$ auf den Blättern $(f_1,\ldots,f_k)$ ist eine vollständige Klammerung der Multiplikation.
+Es gibt $C_{k-1}$ solcher Bäume (Catalan-Zahl).
+
+**Definition (Erweiterte Zerlegungsmenge).**
+$$\mathcal{Z}_n^{\mathrm{tree}} := \bigl\{(f_1,\ldots,f_k,\,T,\,\Gamma)\;:\; n=f_1\cdots f_k,\; k\ge 2,\; T\text{ binärer Produktbaum}\bigr\},$$
+wobei $\Gamma$ die EABC-Signatur des induzierten Kanals bezeichnet (Schalenmaße $\mu_{f_i}$ entlang $T$).
+Setze $Z^{\mathrm{tree}}(n):=\#\mathcal{Z}_n^{\mathrm{tree}}$ (operational erst in 8D vollständig).
+
+**Theorem (Assoziative Stufen $\mathbb{R},\mathbb{C},\mathbb{H}$).** Auf $\mathbb{H}$ (und allen Teilschritten der
+Hurwitz-Kette mit Assoziativität) sind alle Klammerungen einer festen Faktorkomposition **äquivalent**:
+$$(x_1\cdots x_k)\text{ unabhängig von }T.$$
+Pro Komposition $n=f_1\cdots f_k$ kollabiert die Catalan-Vielfalt $C_{k-1}$ auf **eine effektive Klasse**.
+Für **binäre** Faktorisierungen ($k=2$) ist $C_1=1$ ohnehin — der Produktbaum-Zusatz ändert $Z(n)$ auf $\mathbb{H}$
+**nicht** gegenüber $\mathcal{Z}_{\mathrm{fact}}$.
+
+**Heuristik (Oktanionen).** Auf $\mathbb{O}$ kann dieselbe Komposition $n=abc$ **zwei** geometrisch verschiedene
+Abbildungen liefern: $(\Sigma_a\times\Sigma_b)\times\Sigma_c \to \Sigma_n$ vs.
+$\Sigma_a\times(\Sigma_b\times\Sigma_c)\to\Sigma_n$. Hier ist $Z^{\mathrm{tree}}(n)$ potenziell **größer** als
+$Z_{\mathrm{fact}}(n)$ — die **oktonion-spezifische Novelty** der Plattenhypothese.
+
+**Experiment** (`collatz_eabc_product_tree_stub.py`, $n\le 50$):
+- **H:** $Z_{\mathrm{EABC}}\approx Z_{\mathrm{fact}}$ bleibt unverändert; Catalan-Summen pro $n$ sind $\ge 1$,
+  aber assoziativ auf **1 effektive Klasse/Komposition** reduziert.
+- **O:** nur theoretische Catalan-Zählung (keine $\mu_n$-Enumeration); ab $k\ge 3$ erste echte Klammerungsvielfalt.
+
+**Label:** Produktbaum, $\mathcal{Z}_n^{\mathrm{tree}}$ = **Definition**; H-Kollaps = **Theorem**;
+O-Klammerungs-Heuristik = **Heuristik**; Stub = **Experiment** (H) / **Theorie** (O).
 
 ---
 
@@ -150,6 +190,11 @@ ist für die **geometrisch motivierte** rolling-Baseline **nicht gestützt** (ex
 > $$\boxed{\;\mathcal{Z}_n\text{ oder }\mu_n\text{ besitzen Struktur, die **nicht** vollständig durch klassische Primfaktorzerlegung bestimmt ist.}\;}$$
 > **Offen in 8D** (`collatz_eabc_oktonion_singularitaet.md`); Quaternion-Kanal bisher **nicht** positiv.
 
+> **Frage 4 (Produktbäume / EABC-Rekonstruierbarkeit).**
+> $$\boxed{\;\text{Welche Schalen } \Sigma_n \text{ verlieren EABC-Rekonstruierbarkeit aus kleineren Platten, wenn Produktbäume }(T,\Gamma)\text{ mitgezählt werden — und nur in }\mathbb{O}\text{?}\;}$$
+> **H ($n\le 50$):** Klammerung trivial (Assoziativität); $Z_{\mathrm{EABC}}\approx Z_{\mathrm{fact}}$ unverändert.
+> **O:** offen; erste Klammerungsvielfalt ab $k\ge 3$-Faktor-Kompositionen (Catalan $\ge 2$).
+
 ---
 
 ## 7. Quaternion-Testbed vor vollem $\mathbb{O}$
@@ -178,6 +223,10 @@ Testbed für Plattenübergänge, bevor $\mu_n$ in 8D budgetiert wird:
 | $\Delta Z$-Prim-Sprünge ohne $\omega$-Neuheit | **Experiment**, **falsifiziert** (Quaternion) |
 | $D(n)$, rolling-$I_{\mathrm{ref}}$ | **Definition** + **Experiment** |
 | Prim-Profil in $|D(n)|$ (rolling) | **Experiment**, **nicht gestützt** |
+| Produktbäume $T$, $Z^{\mathrm{tree}}(n)$ | **Definition** |
+| H: Klammerungs-Kollaps (Assoziativität) | **Theorem** |
+| O: Klammerung als geometrische Novelty | **Heuristik** (offen) |
+| `collatz_eabc_product_tree_stub.py` | **Experiment** (H) / **Theorie** (O) |
 | 8D-Platten $\Sigma_n^{(8)}$ | **Forschungsprogramm** |
 
 ---

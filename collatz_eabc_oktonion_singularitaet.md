@@ -3,6 +3,7 @@
 **Status:** Forschungshypothese + Forschungsprogramm (kein Experiment auf $\mu_n$ in 8D)  
 **Branch:** `collatz/eabc-euklidische-hebung` (PR #54)  
 **Stub:** `collatz_eabc_oktonion_shell_stub.py` → `collatz_eabc_oktonion_shell_stub.json` (nur $r_8(n)$, $n\le 10$)  
+**Produktbäume:** `collatz_eabc_product_tree_stub.py` → `collatz_eabc_product_tree_stub.json` (Catalan/Klammerung, H vs. O)  
 **Tao-Labels:** Definition | Theorem | Conjecture | Heuristik | Experiment (Quaternion-Referenz)
 
 **Querverweise:**
@@ -101,6 +102,33 @@ bleibt **offen**, bis $\mu_n$ in 8D existiert.
 
 **Label:** Plattenfolge = **Definition**; Plattenübergangs-Hypothese = **Conjecture**;
 Quaternion-Befund = **Experiment** (vgl. `collatz_eabc_plattenuebergang.md` §4–§6).
+
+---
+
+## 3.6 Produktbäume und Nicht-Assoziativität (8D-Novelty)
+
+**Definition (Mehrstufige Produktstruktur).** Für $n=f_1\cdots f_k$, $k\ge 2$, und binären Produktbaum $T$
+(Catalan-Zahl $C_{k-1}$) betrachte die induzierte Abbildung
+$$\Phi_T : \Sigma_{f_1}\times\cdots\times\Sigma_{f_k} \longrightarrow \Sigma_n,\qquad (x_1,\ldots,x_k)\mapsto x_1\star_T\cdots\star_T x_k,$$
+wobei $\star_T$ die Klammerung entlang $T$ bezeichnet.
+
+**Theorem (Norm bleibt; Geometrie nicht).** $N(\Phi_T(\mathbf{x}))=N(x_1)\cdots N(x_k)=n$ für alle $T$
+(Norm-Multiplikativität). Für $\mathbb{O}$ kann $\Phi_T\neq\Phi_{T'}$ bei gleicher Komposition und $T\neq T'$.
+
+**Schlüssel-Kontrast (H vs. O).**
+
+| Algebra | Assoziativität | Catalan-Bäume pro $n=f_1\cdots f_k$ | Effektive $Z^{\mathrm{tree}}$ |
+|---------|----------------|-------------------------------------|-------------------------------|
+| $\mathbb{H}$ | ja | $C_{k-1}$, kollabiert zu **1** | $\approx Z_{\mathrm{fact}}$ (binär); Klammerung **keine** neue Geometrie |
+| $\mathbb{O}$ | nein | bis zu $C_{k-1}$ **verschiedene** Kanäle | potenziell $>Z_{\mathrm{fact}}$; **oktonion-spezifisch** |
+
+**Boxed Frage (Rekonstruierbarkeit).**
+> $$\boxed{\;\text{Welche } \Sigma_n^{(8)} \text{ sind aus kleineren Platten + Produktbäumen } (T,\Gamma) \text{ nicht EABC-rekonstruierbar — und tritt das erst jenseits von } \mathbb{H} \text{ auf?}\;}$$
+
+**Stub:** `collatz_eabc_product_tree_stub.py` zählt für $\mathbb{H}$ Catalan-Summen und zeigt Assoziativitäts-Kollaps;
+für $\mathbb{O}$ nur theoretische Catalan-Budgets ohne $\mu_n$-Test.
+
+**Label:** $\Phi_T$, $Z^{\mathrm{tree}}$ = **Definition**; H-Kollaps = **Theorem**; O-Kanalvielfalt = **Heuristik** / **offen**.
 
 ---
 
