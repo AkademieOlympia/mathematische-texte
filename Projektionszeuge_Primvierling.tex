@@ -1,0 +1,770 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	citecolor=blue,
+	urlcolor=blue,
+	pdftitle={Der Projektionszeuge für markierte Primvierlinge},
+	pdfauthor={Thomas Hoffbauer}
+}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{beispiel}[definition]{Beispiel}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+\newtheorem{numerischeevidenz}[definition]{Numerische Evidenz}
+\newtheorem{vermutung}[definition]{Vermutung}
+
+\theoremstyle{plain}
+\newtheorem{satz}[definition]{Satz}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\rhoPV}{\rho_{\mathrm{PV}}}
+
+\title{Der Projektionszeuge für markierte Primvierlinge\\
+	\large Geometrische Kodierung der mod-$12$-Typen ABCE und CEAB}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Klassische Primzahlvierlinge $Q(p)=(p,p+2,p+6,p+8)$ besitzen modulo~$12$ genau zwei zulässige Flavor-Wörter, nämlich $\mathrm{ABCE}$ und $\mathrm{CEAB}$. Ohne markierten Startpunkt sind diese Wörter zyklische Verschiebungen derselben EABC-Schleife und strukturell nicht unterscheidbar. Erst die Wahl des Startpunkts $p$ bricht die zyklische Symmetrie und legt eine \emph{orientierte} Startkonfiguration auf dem Flavor-Ring fest.
+		
+		Dieser Text trennt drei Ebenen: \textbf{Ebene~A} enthält den elementaren mod-$12$-Satz $p\equiv 5\Rightarrow\mathrm{ABCE}$, $p\equiv 11\Rightarrow\mathrm{CEAB}$, der vollständig beweisbar ist. \textbf{Ebene~B} beschreibt den Projektionszeugen als geometrische Repräsentation dieser Klassifikation im EABC-Tetraederraum; das Vorzeichen des Skalarobservablen $S=x+z$ trennt die beiden Startkanten lokal, ist aber keine unabhängige arithmetische Entdeckung. \textbf{Ebene~B$'$} formalisiert die Bamberger Primvierlingsellipse als arithmetisch-geometrische Lesart desselben Quadrupels; sie liefert keine Dichteaussage. \textbf{Ebene~C} formuliert eine offene Vermutung über globale Zählasymmetrien; Siebstatistiken bis $10^8$ motivieren sie schwach, belegen aber keinen robusten arithmetischen Bias ($z\lesssim 0{,}7$). Abschnitt~\ref{sec:eabc-bamberg} verbindet diese Schichten im Rahmen der \#Energiedoku. Die Implementierung liegt in \texttt{src/susy\_fourlinge/witness.py}.
+	\end{abstract}
+	
+	\tableofcontents
+	
+	%======================================================================
+	\section{Einleitung}
+	%======================================================================
+	
+	Ein \emph{Primvierling} ist ein Quadrupel
+	\[
+	Q(p)=(p,\;p+2,\;p+6,\;p+8),
+	\]
+	dessen sämtliche Einträge prim sind. Im Bamberg-Modell ordnet man jeder ungeraden Primzahl $p>3$ eine Flavor-Klasse modulo~$12$ zu:
+	\[
+	E\equiv 1,\qquad A\equiv 5,\qquad B\equiv 7,\qquad C\equiv 11 \pmod{12}.
+	\]
+	Damit entsteht auf dem Flavor-Ring der zyklische Umlauf $E\to A\to B\to C\to E$ und jeder Primvierling trägt ein vierbuchstabiges Flavor-Wort.
+	
+	Für $p>3$ prim gilt $p\equiv 5$ oder $p\equiv 11\pmod{12}$, also genau die Wörter $\mathrm{ABCE}$ bzw.\ $\mathrm{CEAB}$. Beide sind zyklische Verschiebungen derselben Schleife. Ohne markierten Startpunkt ist nicht entscheidbar, welches Wort gemeint ist.
+	
+	Die Aufgabe dieses Textes ist nicht, eine neue arithmetische Asymmetrie zu \emph{entdecken}, sondern klar zu trennen, was bewiesen ist (Ebene~A), was geometrisch kodiert wird (Ebene~B) und was offen bleibt (Ebene~C).
+	
+	%======================================================================
+	\section{Drei-Ebenen-Architektur}
+	%======================================================================
+	
+	\begin{center}
+		\begin{tabular}{@{}lll@{}}
+			\toprule
+			Ebene & Inhalt & Status \\
+			\midrule
+			A & mod-$12$-Satz, Chiralitätswort & \textbf{bewiesen} \\
+			B & Tetraedereinbettung, Projektion $P$, Zeuge $S$ & \textbf{geometrische Kodierung} \\
+			B$'$ & Primvierlingsellipse, Schrittfolge $2$-$4$-$2$ & \textbf{geometrische Interpretation} \\
+			C & globale Zählasymmetrie $D(N)$ & \textbf{offene Vermutung} \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	
+	Jede mathematische Aussage im Folgenden ist explizit einer dieser Ebenen zugeordnet und als Definition, Satz, Lemma, Bemerkung, numerische Evidenz oder Vermutung gekennzeichnet.
+	
+	%======================================================================
+	\section{Ebene A: Elementarer mod-$12$-Satz}
+	%======================================================================
+	
+	\subsection{Markierter Primvierling und Chiralität}
+	
+	\begin{definition}[Markierter Primvierling]
+		Ein \emph{markierter Primvierling} ist ein Paar $(Q(p),p)$ mit Primvierling $Q(p)$ und ausdrücklich markiertem Startpunkt $p$.
+	\end{definition}
+	
+	\begin{definition}[Chiralität als mathematische Konvention]
+		Unter \emph{Chiralität} verstehen wir hier keine physikalische Größe, sondern die \emph{orientierte Startkonfiguration} auf dem zyklischen Flavor-Ring: Der markierte Startpunkt $p$ legt fest, an welcher Stelle der Umlauf $E\to A\to B\to C\to E$ beginnt. Zwei Primvierlinge mit derselben Primzahl-Menge können verschiedene Orientierungen tragen, weil ihr Startpunkt in verschiedenen Restklassen modulo~$12$ liegt.
+	\end{definition}
+	
+	\begin{definition}[Chiralitätswort]
+		Das \emph{Chiralitätswort} eines markierten Primvierlings ist
+		\[
+		\mathrm{word}(p)=
+		\begin{cases}
+			\mathrm{ABCE}, & p\equiv 5\pmod{12},\\[4pt]
+			\mathrm{CEAB}, & p\equiv 11\pmod{12}.
+		\end{cases}
+		\]
+	\end{definition}
+	
+	\begin{satz}[Elementare mod-$12$-Klassifikation]\label{satz:mod12}
+		Für jeden Primvierling mit Startpunkt $p>3$ gilt
+		\[
+		p\equiv 5\pmod{12}\;\Longrightarrow\;\mathrm{word}(p)=\mathrm{ABCE},\qquad
+		p\equiv 11\pmod{12}\;\Longrightarrow\;\mathrm{word}(p)=\mathrm{CEAB}.
+		\]
+		Umgekehrt sind dies die einzigen zulässigen Chiralitätswörter.
+	\end{satz}
+	
+	\begin{proof}
+		Für $p>3$ prim ist $p$ ungerade und $p\not\equiv 0\pmod 3$, also $p\equiv 1$ oder $5\pmod 6$. Modulo~$12$ bleiben für Primzahlen $p>3$ nur $p\equiv 5$ und $p\equiv 11$. Direkte Restklassenrechnung liefert
+		\[
+		(5,7,11,1)\equiv \mathrm{ABCE},\qquad (11,1,5,7)\equiv \mathrm{CEAB}\pmod{12}.
+		\]
+	\end{proof}
+	
+	\begin{beispiel}
+		$p=101\Rightarrow \mathrm{ABCE}$;\quad $p=191\Rightarrow \mathrm{CEAB}$;\quad
+		$p=821\Rightarrow \mathrm{ABCE}$;\quad $p=1871\Rightarrow \mathrm{CEAB}$.
+	\end{beispiel}
+	
+	Die Klassifikation auf Ebene~A ist vollständig, widerspruchsfrei und unabhängig von jeder Tetraedergeometrie. Sie ist der arithmetische Kern des gesamten Artikels. Die Sätze~A--C sind in Lean~4 formalisiert (\texttt{CollatzEabc.Primvierling.Mod12}, Paket \texttt{collatz\_eabc\_core}).
+	
+	%======================================================================
+	\section{Ebene B: Geometrische Repräsentation}
+	%======================================================================
+	
+	Ebene~B konstruiert eine \emph{geometrische Kodierung} der Ebene-A-Klassifikation. Der Projektionszeuge ist kein unabhängiger arithmetischer Beweisapparat, sondern eine stetige Repräsentation diskreter Restklasseninformation im EABC-Tetraederraum.
+	
+	\subsection{Winkelgeometrie und Tetraedereinbettung}
+	
+	\begin{definition}[Flavor-Winkel]
+		\[
+		\theta_E=\frac{\pi}{6},\quad
+		\theta_A=\frac{5\pi}{6},\quad
+		\theta_B=\frac{7\pi}{6},\quad
+		\theta_C=\frac{11\pi}{6}.
+		\]
+		Die Winkelmitte einer gerichteten Kante $(U,V)$ ist
+		\[
+		\varphi_{UV}:=\operatorname{atan2}\bigl(\sin\theta_U+\sin\theta_V,\;\cos\theta_U+\cos\theta_V\bigr).
+		\]
+	\end{definition}
+	
+	\begin{definition}[Heeger-Einbettung]
+		Mit $s=1/\sqrt{3}$ gilt
+		\[
+		E\mapsto (s,s,s),\quad
+		A\mapsto (s,-s,-s),\quad
+		B\mapsto (-s,s,-s),\quad
+		C\mapsto (-s,-s,s).
+		\]
+		Die vier Flavor-Klassen bilden die Eckpunkte eines regulären Tetraeders in $\R^3$.
+	\end{definition}
+	
+	\subsection{Startkanten und Kantengewichte}
+	
+	\begin{definition}[Startkanten-Zuordnung]
+		Das Chiralitätswort bestimmt die \emph{Startkante}:
+		\[
+		\mathrm{ABCE}\;\Longrightarrow\;(A,B),\qquad
+		\mathrm{CEAB}\;\Longrightarrow\;(C,E).
+		\]
+		Jeder Startkante ist ein Vorzeichen $\sigma\in\{+1,-1\}$ zugeordnet: $\sigma(\mathrm{ABCE})=+1$, $\sigma(\mathrm{CEAB})=-1$.
+	\end{definition}
+	
+	\begin{definition}[Kantengewichte]
+		Für $t\in\R$ und die Startkanten $(A,B)$ bzw.\ $(C,E)$ setzen wir
+		\[
+		W_{AB}(t)=2+\frac{\cos t-\sin t}{2},
+		\qquad
+		W_{CE}(t)=2-\frac{\cos t-\sin t}{2}.
+		\]
+		Die \emph{lokale Gewichtsdifferenz} ist $\Delta W(t):=W_{AB}(t)-W_{CE}(t)=\cos t-\sin t$.
+	\end{definition}
+	
+	\begin{bemerkung}[Lokale Projektionsasymmetrie]
+		$\Delta W(t)$ misst die lokale Projektionsasymmetrie zwischen den beiden markierten Startkonfigurationen. Sie folgt aus der Vorzeichenstruktur der Gewichte, nicht aus empirischer Anpassung. Bei $t=0$ gilt $\Delta W(0)=1$, also $W_{AB}(0)=2{,}5$ und $W_{CE}(0)=\rhoPV:=3/2$. Der Wert $\rhoPV=3/2$ ist ein \emph{projektives Kantengewicht}, keine Ellipsenexzentrizität (vgl.\ Bemerkung~\ref{bem:e-vs-rho}).
+	\end{bemerkung}
+	
+	\subsection{Projektionsvektoren}
+	
+	\begin{definition}[Projektionsvektoren $P_{AB}$ und $P_{CE}$]
+		Die Basisrichtungen sind
+		\[
+		\mathbf{b}_{AB}=(-\sqrt{3},\,1,\,-\sqrt{3}),\qquad
+		\mathbf{b}_{CE}=(\sqrt{3},\,-1,\,\sqrt{3}),
+		\]
+		beide mit $\|\mathbf{b}\|^2=7$. Der Projektionsvektor $P(t)\in\R^3$ entsteht durch Rotation der jeweiligen Basisrichtung um die Phase $t$ und Normierung mit dem Kantengewicht, sodass $\|P(t)\|\cdot W(t)=\sqrt{7}/2$. Wir schreiben $P_{AB}(t)$ bzw.\ $P_{CE}(t)$ für die zu $(A,B)$ bzw.\ $(C,E)$ gehörigen Vektoren.
+	\end{definition}
+	
+	Bei $t=0$ folgt $\|P_{CE}(0)\|/\|P_{AB}(0)\|=5/3$ aus der Gewichtsdifferenz --- eine lokale geometrische Folgerung, keine globale arithmetische Aussage.
+	
+	\subsection{Minimaler Zeuge $S=x+z$}
+	
+	\begin{definition}[Skalarer Projektionszeuge]
+		Für $P=(x,y,z)$ setzen wir $S:=x+z$.
+	\end{definition}
+	
+	\begin{lemma}[Vorzeichen des Projektionszeugen bei $t=0$]\label{lemma:S-sign}
+		Bei Standardparameter $t=0$ gilt
+		\[
+		S(P_{AB}(0))<0,\qquad S(P_{CE}(0))>0.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Explizite Berechnung aus der Definition von $P_{AB}(0)$ und $P_{CE}(0)$ mit den angegebenen Basisrichtungen und Gewichten.
+	\end{proof}
+	
+	\begin{satz}[Geometrische Kodierung der mod-$12$-Typen]\label{satz:kodierung}
+		Definiere die Abbildung $\kappa$ durch
+		\[
+		\kappa(p):=
+		\begin{cases}
+			P_{AB}(0), & \mathrm{word}(p)=\mathrm{ABCE},\\
+			P_{CE}(0), & \mathrm{word}(p)=\mathrm{CEAB}.
+		\end{cases}
+		\]
+		Dann gilt für jeden markierten Primvierling
+		\[
+		S(\kappa(p))<0\;\Longleftrightarrow\;\mathrm{word}(p)=\mathrm{ABCE},\qquad
+		S(\kappa(p))>0\;\Longleftrightarrow\;\mathrm{word}(p)=\mathrm{CEAB}.
+		\]
+		Die Klassifikation durch $S$ stimmt mit Satz~\ref{satz:mod12} überein.
+	\end{satz}
+	
+	\begin{proof}
+		Kombination von Lemma~\ref{lemma:S-sign} mit der bijektiven Zuordnung Startkante $\leftrightarrow$ Chiralitätswort aus Definition und Satz~\ref{satz:mod12}.
+	\end{proof}
+	
+	\begin{bemerkung}[Kodierung, nicht unabhängige Entdeckung]\label{bem:tautologie}
+		Satz~\ref{satz:kodierung} ist \emph{korrekt}, aber inhaltlich \emph{tautologisch}, sobald man die Startkanten-Zuordnung akzeptiert: Die Regel $S<0\Rightarrow\mathrm{ABCE}$ encodiert lediglich die bereits auf Ebene~A bekannte mod-$12$-Klassifikation in ein skalares Vorzeichen. Der Projektionszeuge liefert damit eine exakte geometrische \emph{Darstellung}, keinen unabhängigen Beweis einer neuen arithmetischen Asymmetrie. Die geometrische Konstruktion erklärt \emph{wie} man die bekannte Unterscheidung visuell und analytisch lesen kann, nicht \emph{dass} sie über die direkte Restklassenrechnung hinaus eine tieferliegende Zählgesetzlichkeit erzwingt.
+	\end{bemerkung}
+	
+	\begin{bemerkung}[Warum $S=x+z$?]
+		In der Heeger-Einbettung trägt die $x$-$z$-Ebene die chirale Kanteninformation; $S=x+z$ ist die einfachste skalare Zusammenfassung dieses Vorzeichens.
+	\end{bemerkung}
+	
+	\subsection{Monotone Übergangsfolge und Gate-Profil bei $t=\pi/4$}
+	
+	Für den vollständigen Umlauf $E\to A\to B\to C\to E$ existieren Kantengewichte $W_{UV}(t)$ und Projektionsvektoren mit phasenverschobenen Parametern $\varphi_{UV}$.
+	
+	\begin{lemma}[Symmetrisches Gate-Profil bei $t=\pi/4$]
+		An der Parameterstelle $t=\pi/4$ nimmt die monotone Vierkantenfolge $(W_{EA},W_{AB},W_{BC},W_{CE})$ ein besonders symmetrisches Gate-Profil an:
+		\[
+		(W_{EA},\,W_{AB},\,W_{BC},\,W_{CE})
+		=
+		(1{,}292893,\;2{,}000000,\;2{,}707107,\;2{,}000000).
+		\]
+		In dieser vierstelligen Folge gilt: $W_{AB}=W_{CE}$ (symmetrisches Tor), $W_{EA}$ ist das Minimum und $W_{BC}$ das Maximum der vier Gewichte. Entsprechend kehrt sich in den Projektionsnormen die Ordnung um:
+		\[
+		\|P_{EA}\|>\|P_{AB}\|=\|P_{CE}\|>\|P_{BC}\|.
+		\]
+	\end{lemma}
+	
+	\begin{proof}
+		Direkte Auswertung der Gewichtsformeln mit $t=\pi/4$, also $\cos t=\sin t=\sqrt{2}/2$.
+	\end{proof}
+	
+	\begin{bemerkung}
+		Dieses Gate-Profil beschreibt eine \emph{lokale} Projektionsasymmetrie des vollständigen Umlaufs bei festem Parameter $t=\pi/4$. Es ist unabhängig von der Startpunkt-Klassifikation bei $t=0$ und macht keine Aussage über globale Primzahldichte.
+	\end{bemerkung}
+	
+	%======================================================================
+	\section{Die eabc--Bamberg-Brücke (\#Energiedoku)}\label{sec:eabc-bamberg}
+	%======================================================================
+	
+	Das eabc-Modell des Bamberg-Projekts \#Energiedoku ordnet Primzahlen $p>3$ den vier Restklassen $E\equiv1$, $A\equiv5$, $B\equiv7$, $C\equiv11\pmod{12}$ zu und hebt diese flache Kleinsche Vierergruppe in quaternionische und spektrale Strukturen. Die vollständige Gittertheorie modulo~$12$ steht in \texttt{EABC Moddulo 12.tex}; der Projektionsrahmen der \#Energiedoku in \texttt{Tex/energiedoku\_text.tex}. Dieser Abschnitt formuliert die \emph{mathematische} Brücke zwischen der diskreten Vierlingsarithmetik (Ebene~A), dem Heeger-Projektionszeugen (Ebene~B) und der Bamberger Primvierlingsellipse (Ebene~B$'$). Es geht nicht um physikalische Kalibrierungsbehauptungen, sondern um präzise Abbildungen zwischen Repräsentationsschichten.
+	
+	\subsection{Repräsentationsschichten A, B und B$'$}
+	
+	\begin{center}
+		\begin{tabular}{@{}llp{6.8cm}@{}}
+			\toprule
+			Schicht & Objekt & Mathematischer Kern \\
+			\midrule
+			A & mod-$12$-Wort $\mathrm{word}(p)$ & Satz~\ref{satz:mod12}; vgl.\ \texttt{EABC Moddulo 12.tex} \\
+			B & Projektionszeuge $S=x+z$ & Satz~\ref{satz:kodierung}; \texttt{witness.py}, \texttt{Heeger.cpp} \\
+			B$'$ & Primvierlingsellipse $\mathcal{K}_{\mathrm{PV}}(p)$ & symmetrisches Fenster um $M=p+4$; keine Dichtetheorie \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	
+	Ebene~A klassifiziert markierte Vierlinge exakt. Ebene~B kodiert dieselbe Information stetig im Tetraederraum. Ebene~B$'$ liest das \emph{gleiche} Quadrupel $(p,p+2,p+6,p+8)$ als symmetrisches Abstandsgefüge; sie ist eine geometrische Metapher, kein unabhängiger Existenz- oder Häufigkeitssatz.
+	
+	\subsection{Vom Schwerpunktzeugen zu den Ellipsenparametern}
+	
+	Wir betrachten einen Primvierling
+	\[
+	Q(p)=(p,p+2,p+6,p+8).
+	\]
+	Sein arithmetischer Schwerpunkt ist
+	\[
+	M(Q)
+	=\frac{p+(p+2)+(p+6)+(p+8)}{4}
+	=p+4.
+	\]
+	Damit besitzt jeder Primvierling die zentrierte Normalform
+	\[
+	Q(p)-M(Q)
+	=
+	(-4,-2,2,4).
+	\]
+	Diese Normalform bestimmt eine kanonische Ellipsenparametrisierung. Die äußersten Abstände vom Zentrum sind
+	\[
+	\pm 4,
+	\]
+	die inneren Abstände sind
+	\[
+	\pm 2.
+	\]
+	Wir setzen daher
+	\[
+	a_{\mathrm{PV}}=4,
+	\qquad
+	b_{\mathrm{PV}}=2.
+	\]
+	Die zugehörige Ellipsenexzentrizität ist
+	\[
+	e_{\mathrm{PV}}
+	=
+	\sqrt{1-\frac{b_{\mathrm{PV}}^2}{a_{\mathrm{PV}}^2}}
+	=
+	\sqrt{1-\frac{2^2}{4^2}}
+	=
+	\sqrt{1-\frac14}
+	=
+	\frac{\sqrt3}{2}.
+	\]
+	
+	\begin{lemma}[Kanonische Primvierlingsellipse]\label{lemma:kanonische-ellipse}
+		Jeder Primvierling
+		\[
+		Q(p)=(p,p+2,p+6,p+8)
+		\]
+		besitzt bezüglich seines arithmetischen Schwerpunkts
+		\[
+		M=p+4
+		\]
+		dieselbe zentrierte Normalform
+		\[
+		(-4,-2,2,4).
+		\]
+		Folglich sind die Ellipsenparameter
+		\[
+		(a_{\mathrm{PV}},b_{\mathrm{PV}},e_{\mathrm{PV}})
+		=
+		\left(
+		4,2,\frac{\sqrt3}{2}
+		\right)
+		\]
+		unabhängig von $p$ kanonisch festgelegt.
+	\end{lemma}
+	
+	\begin{proof}
+		Die Schwerpunktformel liefert unmittelbar
+		\[
+		M=\frac{p+(p+2)+(p+6)+(p+8)}{4}=p+4.
+		\]
+		Subtrahiert man $M$ von den vier Komponenten des Primvierlings, erhält man
+		\[
+		p-(p+4)=-4,
+		\]
+		\[
+		(p+2)-(p+4)=-2,
+		\]
+		\[
+		(p+6)-(p+4)=2,
+		\]
+		\[
+		(p+8)-(p+4)=4.
+		\]
+		Also gilt
+		\[
+		Q(p)-M=(-4,-2,2,4).
+		\]
+		Damit sind die äußeren Halbachsenabstände $4$ und die inneren Halbachsenabstände $2$. Also
+		\[
+		a_{\mathrm{PV}}=4,
+		\qquad
+		b_{\mathrm{PV}}=2.
+		\]
+		Die Exzentrizität einer Ellipse ist
+		\[
+		e=\sqrt{1-\frac{b^2}{a^2}}.
+		\]
+		Einsetzen ergibt
+		\[
+		e_{\mathrm{PV}}
+		=
+		\sqrt{1-\frac{2^2}{4^2}}
+		=
+		\frac{\sqrt3}{2}.
+		\]
+	\end{proof}
+	
+	\begin{bemerkung}[Trennung von Exzentrizität und Projektionsgewicht]\label{bem:e-vs-rho}
+		Der Parameter
+		\[
+		e_{\mathrm{PV}}=\frac{\sqrt3}{2}
+		\]
+		ist die echte Ellipsenexzentrizität.
+		Davon zu unterscheiden ist das projektive Verhältnis
+		\[
+		\rhoPV=\frac32.
+		\]
+		Dieses ist kein Ellipsenparameter im klassischen Sinn und insbesondere keine Exzentrizität. Es beschreibt vielmehr ein projektives Kantengewicht beziehungsweise ein Verhältnis innerhalb der gewählten EABC-Projektion (vgl.\ Abschnitt~4).
+		Die Gleichheit
+		\[
+		e_{\mathrm{PV}}=\frac32
+		\]
+		wäre geometrisch falsch, da eine Ellipse stets
+		\[
+		0\leq e<1
+		\]
+		erfüllt.
+	\end{bemerkung}
+	
+	\begin{bemerkung}[Kodierung, nicht Dichteaussage]\label{bem:ellipse-nodensity}
+		Das Lemma beweist keine Aussage über die Häufigkeit von Primvierlingen. Es besagt lediglich:
+		Wenn ein Primvierling existiert, dann besitzt er nach Schwerpunktzentrierung dieselbe arithmetische Normalform
+		\[
+		(-4,-2,2,4)
+		\]
+		und damit dieselbe kanonische Ellipsenparametrisierung.
+		Die Primvierlingsellipse ist daher eine exakte Darstellung der lokalen Vierlingsgeometrie, nicht ein Beweis für das Auftreten unendlich vieler Primvierlinge.
+		Die Funktionen \texttt{prime\_quadruplet\_centroid}, \texttt{centered\_prime\_quadruplet} und \texttt{prime\_quadruplet\_ellipse\_parameters} in \texttt{witness.py} kodieren diese Normalform; \texttt{witness\_ellipse\_bridge(p)} koppelt sie mit dem Projektionszeugen aus Ebene~B.
+	\end{bemerkung}
+	
+	\subsection{Ebene B$'$: Die Bamberger Primvierlingsellipse}
+	
+	\begin{definition}[Symmetrieanker und Schrittfolge]
+		Für einen Primvierling $Q(p)=(p,p+2,p+6,p+8)$ sei der \emph{Symmetrieanker} $M:=p+4$ wie in Lemma~\ref{lemma:kanonische-ellipse}. Dann gilt $Q(p)=M+(-4,-2,+2,+4)$, und die \emph{Schrittfolge} entlang der markierten Orientierung ist $(2,4,2)$.
+	\end{definition}
+	
+	\begin{definition}[Ellipsenparameter der Primvierlingsellipse]
+		Mit $(a_{\mathrm{PV}},b_{\mathrm{PV}},e_{\mathrm{PV}})$ aus Lemma~\ref{lemma:kanonische-ellipse} setze $f_{\mathrm{PV}}:=\sqrt{a_{\mathrm{PV}}^2-b_{\mathrm{PV}}^2}=2\sqrt{3}$. Die idealisierte \emph{Bamberger Primvierlingsellipse} $\mathcal{K}_{\mathrm{PV}}(p)$ ist der Ort
+		\[
+		\mathcal{K}_{\mathrm{PV}}(p):=\bigl\{M+(-4,-2,+2,+4)\bigr\}
+		\]
+		zusammen mit der ptolemäischen Balance $P_1+P_4=P_2+P_3=2M$ und der Polarform
+		\[
+		r_{\mathrm{PV}}(\theta)=\frac{b_{\mathrm{PV}}^2/a_{\mathrm{PV}}}{1+e_{\mathrm{PV}}\cos\theta}
+		=\frac{1}{1+\frac{\sqrt{3}}{2}\cos\theta}.
+		\]
+	\end{definition}
+	
+	\begin{lemma}[Ptolemäische Schließung des Vierlingsfensters]
+		Mit $P_1=p$, $P_2=p+2$, $P_3=p+6$, $P_4=p+8$ gilt
+		\[
+		P_1+P_4=P_2+P_3
+		\qquad\text{und}\qquad
+		(p+6-p)(p+8-(p+2))=(p+2-p)(p+8-(p+6))+(p+6-(p+2))(p+8-p),
+		\]
+		also in kompakter Form $6\cdot6=2\cdot2+4\cdot8$.
+	\end{lemma}
+	
+	\begin{proof}
+		Direkte Rechnung: $p+(p+8)=(p+2)+(p+6)=2p+8=2M$. Die Ptolemäus-Gleichung folgt aus den festen Abständen $2,4,2,6,6,8$ im Vierpunktfenster.
+	\end{proof}
+	
+	\begin{beispiel}
+		Für $p=5$ ist $M=9$ und $Q(5)=(5,7,11,13)\equiv(A,B,C,E)$. Für $p=11$ ist $M=15$ und $Q(11)=(11,13,17,19)\equiv(C,E,A,B)$. Die elliptischen Parameter $(a,b,e)=(4,2,\sqrt{3}/2)$ sind identisch; nur die EABC-Orientierung wechselt.
+	\end{beispiel}
+	
+	\subsubsection{Kepler-Ellipse als phasentreue Repräsentation (Ebene B$'$/$C$)}
+	
+	\begin{definition}[Parametrische Kepler-Ellipse]
+		Mit Symmetrieanker $M=p+4$ und den Normalformparametern $a_{\mathrm{PV}}=4$, $b_{\mathrm{PV}}=2$, $e_{\mathrm{PV}}=\sqrt{3}/2$ aus Lemma~\ref{lemma:kanonische-ellipse} sei die \emph{Kepler-Ellipse}
+		\[
+		E_{\mathrm{PV}}(\theta):=M+a_{\mathrm{PV}}\cos\theta+i\,b_{\mathrm{PV}}\sin\theta
+		=p+4+4\cos\theta+2i\sin\theta.
+		\]
+		Die EABC-Phasen liegen auf dem geometrischen Ring
+		\[
+		\theta_E=0,\qquad \theta_A=\frac{\pi}{2},\qquad \theta_B=\pi,\qquad \theta_C=\frac{3\pi}{2},
+		\]
+		also $E\to A\to B\to C\to E$ als \emph{geometrische Uhr}.
+	\end{definition}
+	
+	\begin{definition}[Diskrete Phasenuhr]
+		Der Parameter $t\in\{0,1,2,3\}$ ist ein \emph{Phasentick}, keine physikalische Zeit:
+		\[
+		\theta(t)=\frac{\pi}{2}\,t,
+		\qquad
+		t=0,1,2,3 \longleftrightarrow E,A,B,C.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Chiralität als Gegenrotation]
+		Für ABCE gilt $E_+(\theta):=E_{\mathrm{PV}}(\theta)$. Für CEAB gilt die $\pi$-Verschiebung
+		\[
+		E_-(\theta):=M+4\cos(\theta+\pi)+2i\sin(\theta+\pi)=M-4\cos\theta-2i\sin\theta.
+		\]
+		Damit ist CEAB die Gegenrotation von ABCE um $\pi$; dies entspricht der in Lean bewiesenen Bijektion $p\equiv5\Leftrightarrow\mathrm{ABCE}$, $p\equiv11\Leftrightarrow\mathrm{CEAB}$ (Ebene~A, Satz~B).
+	\end{definition}
+	
+	\begin{satz}[Repräsentation, nicht Entdeckung]\label{satz:kepler-repr}
+		Die Kepler-Ellipse ist eine phasentreue geometrische Repräsentation der in Lean bewiesenen mod-$12$-Chiralität. Die Kette lautet
+		\[
+		\text{Lean-Bijektion}\;\longrightarrow\;\text{chirale EABC-Phasen}\;\longrightarrow\;\text{Kepler-Ellipse}\;\longrightarrow\;\text{diskrete Uhr},
+		\]
+		nicht umgekehrt. Die Ellipse erzeugt keine Primzahlen und beweist keine Existenz von Primvierlingen; sie kodiert die bereits in \texttt{CollatzEabc.Primvierling.Mod12} geschlossene Struktur als geometrische Bewegung. Formalisiert in \texttt{CollatzEabc.Primvierling.KeplerEllipse} (sorry-frei).
+	\end{satz}
+	
+	\begin{bemerkung}[Trennung von $e_{\mathrm{PV}}$ und $\rhoPV$; Tao/Maynard-honest]
+		Wie in Bemerkung~\ref{bem:e-vs-rho} ist $e_{\mathrm{PV}}=\sqrt{3}/2$ die echte Exzentrizität ($0\leq e<1$), während $\rhoPV=3/2$ ein projektives Kantengewicht aus Ebene~B bleibt. Satz~\ref{satz:kepler-repr} ist eine Darstellungsschicht über der Tao/Maynard-ehrlichen mod-$12$-Klassifikation markierter Primvierlinge; sie liefert keine zusätzliche Dichteaussage (vgl.\ Bemerkung~\ref{bem:ellipse-nodensity}).
+	\end{bemerkung}
+	
+	\begin{beispiel}[Numerik]
+		Für $p=101$ ($M=105$, ABCE) liefert \texttt{kepler\_ellipse\_point(p, 0)} den Punkt $E_+(0)=M+4$; für $p=191$ (CEAB) gilt $E_-(0)=M-4$. Die diskreten Phasenticks $t=0,1,2,3$ entsprechen $\theta=0,\pi/2,\pi,3\pi/2$.
+	\end{beispiel}
+	
+	\subsubsection{Arithmetische Perihelverschiebung}\label{subsec:perihel-drift}
+	
+	\begin{bemerkung}[Kepler-Analogie, kein Physikanspruch]
+		Die folgende Konstruktion nutzt die \emph{mathematische} Analogie einer Perihelverschiebung auf der Kepler-Ellipse nur als Sprache für Phasen-Drift der idealen EABC-Uhr (Ebene~B$'$/$C$). Es wird \textbf{nicht} behauptet, dass die Allgemeine Relativitätstheorie oder planetare Mechanik Primzahlen oder Primvierlinge \emph{erklärt}. Tao und Maynard liefern tiefgehende Primzahl-Sätze; der vorliegende Text beansprucht keinen solchen Rang. Die Perihel-Analogie \emph{motiviert} lediglich die Korrektur einer idealen vierphasigen Kepler-Uhr um eine feine Restphase~$\Pi$.
+	\end{bemerkung}
+	
+	\begin{definition}[Ideale EABC-Uhr]
+		Entlang des Flavor-Umlaufs $E\to A\to B\to C\to E$ sei der diskrete \emph{Uhrindex} $m\in\Z$ und die ideale Phase
+		\[
+		\theta_m := \frac{\pi}{2}\,m.
+		\]
+		Nach vier Schritten gilt $\theta_{m+4}=\theta_m+2\pi$; die Uhr schließt exakt. In der komplexen Rotationssprache entspricht ein Schritt $T$ mit $T^4=I$ (Identität).
+	\end{definition}
+	
+	\begin{definition}[Drift und uniforme Korrektur]
+		Eine \emph{Phasenkorrektur} ist eine Folge $(\delta_m)_{m\in\Z}$. Die korrigierte Uhr lautet
+		\[
+		\Theta_m := \frac{\pi}{2}\,m + \delta_m
+		\qquad\text{oder alternativ}\qquad
+		\Theta_m := m\Bigl(\frac{\pi}{2}+\varepsilon\Bigr)
+		\]
+		für eine uniforme Drift $\varepsilon\in\R$. Nach vier Schritten ist dann
+		\[
+		\Theta_{m+4}-\Theta_m = 2\pi + 4\varepsilon,
+		\]
+		und die vierfache Rotation $T^4$ schließt nicht als Identität, sondern als $R_{4\varepsilon}$.
+	\end{definition}
+	
+	\begin{definition}[Perihelverschiebung der Uhr]\label{def:perihel-shift}
+		Für eine Phasenfolge $(\Theta_m)$ und einen Wortkontext $w$ setze
+		\[
+		\boxed{\;\Pi(w;m):=\Theta(w_{m+4})-\Theta(w_m)-2\pi\;}
+		\]
+		wobei $\Theta(w_m)$ die Phase am $m$-ten Tick des markierten Wortes $w$ bezeichnet. Für die ideale Uhr ist $\Pi\equiv 0$. Bei $\Theta_m=\tfrac{\pi}{2}m+\delta_m$ gilt
+		\[
+		\Pi(m)=\delta_{m+4}-\delta_m.
+		\]
+		Die Größe $\Pi$ misst, ob die chirale Vierphasen-Uhr exakt schließt oder eine feine Reststruktur trägt.
+	\end{definition}
+	
+	\begin{vermutung}[Kandidaten für arithmetische Drift — nicht bewiesen]
+		Für markierte Primvierlinge $Q(p)$ sind folgende \emph{Optionen} für eine uniforme oder lokale Drift $\varepsilon(p)$ dokumentiert, aber weder bewiesen noch als Primzahltheorem etabliert:
+		\begin{itemize}[nosep]
+			\item $\varepsilon(p)\sim 1/\log p$,
+			\item $\varepsilon(p)\sim 1/p$,
+			\item $\varepsilon(p)\sim \alpha\cdot\Delta W(p)$ mit der Projektions-Gewichtsdifferenz aus Abschnitt~4,
+			\item $\varepsilon(p)\sim \bigl|\arg\Phi_{\mathrm{pref}}(w)-(\pi/2)|w|\bigr|$ für ein bevorzugtes Spektral- oder Projektionsfunktional $\Phi_{\mathrm{pref}}$.
+		\end{itemize}
+		Diese Liste ist eine Forschungsnotiz (Ebene~C), keine Aussage über asymptotische Primzahldichte.
+	\end{vermutung}
+	
+	\begin{definition}[Chirale Ellipsen-Drift]
+		Erlaube tickweise Korrekturen $\delta_E,\delta_A,\delta_B,\delta_C$ an den vier EABC-Positionen der Primvierlingsellipse. Die \emph{chirale Perihel-Summe} ist
+		\[
+		\Delta_{\mathrm{peri}}:=\delta_E+\delta_A+\delta_B+\delta_C.
+		\]
+		Die vierphasige Uhr schließt genau dann wieder als Identität, wenn $\Delta_{\mathrm{peri}}=0$.
+	\end{definition}
+	
+	\begin{satz}[Idealfall: exakte Schließung]
+		Für die ideale Uhr $\theta_m=\tfrac{\pi}{2}m$ gilt $\Pi(w;m)=0$ für alle $m$ und alle zulässigen Wörter $w\in\{\mathrm{ABCE},\mathrm{CEAB}\}$. Formal: $\theta_{m+4}-\theta_m=2\pi$ und $T^4=I$.
+	\end{satz}
+	
+	\begin{proof}
+		Direkte Rechnung: $\theta_{m+4}-\theta_m=2\pi$. Für uniforme Drift $\varepsilon\neq 0$ folgt $\Pi(m)=4\varepsilon\neq 0$; das ist die arithmetische Analogie einer nichtverschwindenden Perihelverschiebung, nicht ein physikalischer Satz. Formalisiert in \texttt{CollatzEabc.Primvierling.PerihelDrift} (sorry-frei für den Idealfall).
+	\end{proof}
+	
+	\begin{numerischeevidenz}[Real versus Zufall]
+		Das Modul \texttt{witness.py} enthält \texttt{test\_perihel\_real\_vs\_random}: für Primvierlinge bis einer Siebgrenze $N$ wird $\Pi$ unter dem Kandidaten $\varepsilon(p)=1/\log p$ mit Zufallswerten gleicher Stichprobengröße verglichen. Das ist \textbf{numerische Evidenz}, kein Beweis einer arithmetischen Gesetzmäßigkeit.
+	\end{numerischeevidenz}
+	
+	\subsection{Quaternionische Hebung und Orientierung}
+	
+	In \texttt{Sterling.tex} wird die EABC-Struktur quaternionisch gehoben:
+	\[
+	E=1,\qquad A=i,\qquad B=j,\qquad C=k\in\mathbb{H}.
+	\]
+	Ein Vierling vom Typ $\mathrm{ABCE}$ wird zur Folge $(i,j,k,1)$, vom Typ $\mathrm{CEAB}$ zu $(k,1,i,j)$. Der ungeordnete Zustandsvektor
+	\[
+	Q_4(p)=q(p)+q(p+2)+q(p+6)+q(p+8)=1+i+j+k
+	\]
+	hat in beiden Fällen dieselbe Norm $\|Q_4\|=2$: \emph{gleiche EABC-Masse, verschiedene Orientierung}. Der gap-gewichtete Vierlingsschwung unterscheidet die Typen dagegen gerichtet:
+	\[
+	\mathrm{ABCE}:\;Q_{\mathrm{flow}}^{\mathrm{gap}}=-4i-4k,
+	\qquad
+	\mathrm{CEAB}:\;Q_{\mathrm{flow}}^{\mathrm{gap}}=4i-4k.
+	\]
+	Damit korrespondiert die mod-$12$-Chiralität (Ebene~A) mit einer quaternionischen Pfadorientierung, während der Projektionszeuge $S$ (Ebene~B) dieselbe Unterscheidung als skalares Vorzeichen in der Heeger-Einbettung kodiert. Keine dieser Schichten ersetzt die anderen; sie sind kompatible Darstellungen derselben markierten Startinformation.
+	
+	\subsection{Parameterkopplung: Phase $t$, Gewichte und Zeuge $S$}
+	
+	Die eabc--Bamberg-Kopplung im engeren mathematischen Sinn ist die gemeinsame Parametrisierung der Startkanten durch die Phase $t\in\R$, die Kantengewichte $W_{AB}(t)$, $W_{CE}(t)$, die lokale Gewichtsdifferenz $\Delta W(t)$ und den skalaren Zeugen $S=x+z$.
+	
+	\begin{table}[htbp]
+		\centering
+		\caption{Parameterkopplung am Startkanten-Zeugen (numerisch aus \texttt{witness.py})}
+		\label{tab:kopplung}
+		\begin{tabular}{@{}rcccc@{}}
+			\toprule
+			$t$ & $\Delta W(t)$ & $W_{AB}$ & $W_{CE}$ & $S(\kappa(p))$ \\
+			\midrule
+			$0$ & $+1$ & $2{,}5$ & $\rhoPV=3/2$ & $S<0$ (ABCE), $S>0$ (CEAB) \\
+			$\pi/4$ & $0$ & $2{,}0$ & $2{,}0$ & Vorzeichen getrennt, $|S|$ symmetrisch \\
+			$\pi/2$ & $-1$ & $1{,}5$ & $2{,}5$ & $S=0$ (degeneriert) \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	\begin{bemerkung}[Ehrliche Tautologie der Kopplung]
+		Tabelle~\ref{tab:kopplung} zeigt, dass $t$ die lokale Projektionsasymmetrie stetig steuert. Die Kodierung $S<0\Leftrightarrow\mathrm{ABCE}$ bei $t=0$ ist jedoch dieselbe Tautologie wie in Bemerkung~\ref{bem:tautologie}: Sobald die Startkanten-Zuordnung feststeht, encodiert $S$ lediglich die bekannte mod-$12$-Information. Die Parameterkopplung erklärt die \emph{Darstellung}, nicht eine zusätzliche arithmetische Gesetzmäßigkeit. Bei $t=\pi/2$ degeneriert der Zeuge ($S=0$); die Klassifikation ist dort nicht definiert.
+	\end{bemerkung}
+	
+	\subsection{Eich-Mechanik im engeren Repo-Sinn}
+	
+	Im vorliegenden Repository ist unter \emph{Eich-Mechanik} ausschließlich die bereits definierte \textbf{Projektionsasymmetrie} $\Delta W(t)=\cos t-\sin t$ gemeint: das vorzeichengesteuerte Ungleichgewicht der Kantengewichte zwischen den markierten Startkonfigurationen $(A,B)$ und $(C,E)$. Diese Größe folgt aus der Konstruktion in Abschnitt~4 und ist in \texttt{witness.py} reproduzierbar.
+	
+	\begin{bemerkung}[Optionale Querverweise ohne Eich-Anspruch]
+		\texttt{Eichler.py} implementiert einen Schalenbrenner auf $V_4$-Zuständen mit einem \texttt{eichler\_variant\_score}; dieser Score ist ein numerisches Suchfunktional, kein etablierter Begriff der Eichler-Theorie und kein Beweismittel für Primzahlaussagen. \texttt{Doppel Kepler.tex} dokumentiert spektrale Vergleiche am kritischen Punkt $T_c\approx\pi$ im Bamberger-Zeitwürfel-Kontext; die dortigen Universalitätsbehauptungen sind heuristisch und unabhängig von Satz~\ref{satz:mod12}. Beide Dateien dürfen als explorative Motivation gelesen werden, nicht als Bestandteil der Ebenen~A oder~B.
+	\end{bemerkung}
+	
+	\subsection{Spektraler Kontext: Hilbert--Pólya und Bamberger Protokoll v1.0}
+	
+	\texttt{Ptol Stab Polya.tex} konstruiert einen proto-spektralen Operator auf Primzahlvierlingen im Sinne der Hilbert--Pólya-Idee: Eigenwertabstände werden mit Nullstellenabständen der Riemannschen $\zeta$-Funktion \emph{verglichen}, nicht bewiesen. \texttt{Argon.tex} führt das \emph{Bamberger Protokoll v1.0} (April 2026) als exploratives Rahmenwerk der \#Energiedoku ein.
+	
+	\begin{bemerkung}[Kein Riemann-Beweis]
+		Keiner dieser Texte behauptet einen Beweis der Riemannschen Vermutung. Sie liefern höchstens heuristische Korrelationen und Modellvorschläge. Die vorliegende Arbeit bleibt auf den Ebenen~A und~B bei exakter lokaler Kodierung; Ebene~C behandelt Zählfragen separat und ohne Spektralbezug.
+	\end{bemerkung}
+	
+	\subsection{Heegner-Kohärenz $H_{163}$ und offene Ellipsenresonanz}
+	
+	\texttt{Heeger.cpp} druckt den Ramanujan-Anker $e^{\pi\sqrt{163}}$ mit Referenzlücke $\Delta_{163}\approx7{,}5\times10^{-13}$ und definiert die \emph{Heegner-Kohärenz}
+	\[
+	H_{163}:=-\log_{10}(\Delta_{163})\approx 12{,}12.
+	\]
+	Diese Größe misst die Nähe einer transzendenten Konstante zu einer ganzen Zahl; sie ist unabhängig von der Primvierlingsellipse bewiesen. Eine \emph{offene} Verbindungshypothese lautet: Können die irrationalen Fokuslagen $M\pm2\sqrt{3}$ der Primvierlingsellipse in spektralen Kohärenzmaßen wie $H_{163}$ oder in den Phasen-Quaternionen von \texttt{Heeger.cpp} eine Rolle spielen? Diese Frage ist spekulativ und gehört weder zu Ebene~A noch zu Ebene~B$'$; sie markiert einen möglichen Forschungsübergang zur \#Energiedoku, nicht einen etablierten Satz.
+	
+	\subsection{Epistemische Einordnung: Kodierung versus Vermutung}
+	
+	In der Sprache der modernen Primzahltheorie trennt man sorgfältig zwischen \emph{Struktur, die man kodieren kann}, und \emph{Behauptungen über globale Häufigkeiten}. Tao und Maynard haben tiefe Existenz- und Verteilungssätze für Primzahlmuster bewiesen; der vorliegende Text beansprucht keinen solchen Rang. Ebene~A ist ein elementarer Kongruenzsatz. Ebene~B und B$'$ sind Darstellungsschichten. Ebene~C (Abschnitt~\ref{sec:ebene-c}) bleibt eine offene Vermutung mit schwacher numerischer Evidenz.
+	
+	\begin{bemerkung}[Was die Brücke leistet und was nicht]
+		Die eabc--Bamberg-Brücke zeigt, dass mod-$12$-Typen, Heeger-Projektionen, Primvierlingsellipsen und quaternionische Pfade \emph{dieselbe markierte Vierlingsinformation} in verschiedenen Sprachen ausdrücken. Sie beweist weder asymptotische ABCE/CEAB-Asymmetrie noch Primzahldichte noch die Riemannsche Vermutung. Das ist keine Schwäche des Modells, sondern die korrekte epistemische Grenze zwischen Kodierung und Konjektur.
+	\end{bemerkung}
+	
+	%======================================================================
+	\section{Ebene C: Arithmetische Vermutung und numerische Evidenz}\label{sec:ebene-c}
+	%======================================================================
+	
+	Ebene~C betrifft die \emph{globale Häufigkeit} der beiden Chiralitätstypen unter allen Primvierlingen bis einer Siebgrenze $N$. Diese Frage ist von der exakten lokalen Klassifikation auf den Ebenen~A und~B strikt zu trennen.
+	
+	\subsection{Zählgrößen}
+	
+	\begin{definition}[Signierte Excess und Bias]
+		Sei $\#\mathrm{ABCE}(N)$ bzw.\ $\#\mathrm{CEAB}(N)$ die Anzahl markierter Primvierlinge mit jeweiligem Chiralitätswort und Startpunkt $\le N$. Setze
+		\[
+		D(N):=\#\mathrm{ABCE}(N)-\#\mathrm{CEAB}(N),\qquad
+		Q(N):=\#\mathrm{ABCE}(N)+\#\mathrm{CEAB}(N).
+		\]
+		Der \emph{signierte Bias} ist
+		\[
+		B_{\mathrm{sgn}}(N):=\frac{D(N)}{Q(N)}=\frac{\#\mathrm{ABCE}(N)-\#\mathrm{CEAB}(N)}{\#\mathrm{ABCE}(N)+\#\mathrm{CEAB}(N)}.
+		\]
+		Positive Werte bedeuten mehr $\mathrm{ABCE}$-Vierlinge, negative mehr $\mathrm{CEAB}$-Vierlinge. Der Betrag $|B_{\mathrm{sgn}}(N)|$ misst nur die Stärke der Abweichung von einer perfekt balancierten Verteilung, nicht deren Richtung.
+	\end{definition}
+	
+	\begin{definition}[$z$-Score der Zählabweichung]
+		Als grobe Normalisierung der absoluten Differenz definieren wir
+		\[
+		z(N):=\frac{D(N)}{\sqrt{Q(N)}}.
+		\]
+		Werte $|z(N)|\ll 2$ sprechen gegen eine robuste statistische Abweichung bei der vorliegenden Stichprobengröße.
+	\end{definition}
+	
+	\subsection{Siebdaten}
+	
+	\begin{numerischeevidenz}[Verteilung bis $N=10^8$]\label{evidenz:sieve}
+		Tabelle~\ref{tab:sieve} fasst Siebstatistiken zusammen. Die Spalte $|B_{\mathrm{sgn}}|$ entspricht dem früher verwendeten unsigned Bias; da in allen drei Zeilen $D(N)>0$ gilt, stimmen Vorzeichen und Betrag hier überein.
+		
+		\begin{table}[htbp]
+			\centering
+			\caption{ABCE/CEAB-Verteilung markierter Primvierlinge (numerische Evidenz, kein Beweis)}
+			\label{tab:sieve}
+			\begin{tabular}{@{}rrrrrrr@{}}
+				\toprule
+				$N$ & $Q(N)$ & ABCE & CEAB & $D(N)$ & $B_{\mathrm{sgn}}(N)$ & $z(N)$ \\
+				\midrule
+				$10^6$  & 166  & 84  & 82  & 2  & 0.01205 & 0.16 \\
+				$10^7$  & 899  & 450 & 449 & 1  & 0.00111 & 0.03 \\
+				$10^8$  & 4768 & 2408 & 2360 & 48 & 0.01007 & 0.70 \\
+				\bottomrule
+			\end{tabular}
+		\end{table}
+	\end{numerischeevidenz}
+	
+	\begin{bemerkung}[Statistische Einordnung]
+		Die Daten zeigen, dass die beiden Klassen in endlichen Intervallen nicht exakt gleich häufig sind: $D(N)$ ist in allen drei Fällen positiv, schwankt aber stark ($1$ bei $10^7$, $48$ bei $10^8$). Die $z$-Scores $0{,}16$, $0{,}03$ und $0{,}70$ liegen weit unter üblichen Signifikanzschwellen. Es gibt damit \textbf{keine robuste statistische Evidenz} für einen arithmetischen Bias zwischen $\mathrm{ABCE}$ und $\mathrm{CEAB}$. Die Tabelle motiviert höchstens eine schwache Vermutung; sie beweist keine globale Asymmetrie.
+	\end{bemerkung}
+	
+	\begin{vermutung}[Globale Zählasymmetrie]\label{vermutung:bias}
+		Existiert ein $\beta\neq 0$, sodass
+		\[
+		\lim_{N\to\infty} B_{\mathrm{sgn}}(N)=\beta
+		\]
+		oder asymptotisch $D(N)\sim c\,N^\alpha$ mit $\alpha>0$ für ein festes Vorzeichen? Die vorliegenden Siebdaten reichen nicht aus, diese Frage zu beantworten. Ein analytischer Beweis oder Widerlegung müsste aus Siebbedingungen für $p\equiv 5$ und $p\equiv 11$ in größeren Kongruenzklassen kommen.
+	\end{vermutung}
+	
+	%======================================================================
+	\section{Implementierung und Reproduzierbarkeit}
+	%======================================================================
+	
+	Die Ebenen~A, B und B$'$ sind in \texttt{src/susy\_fourlinge/witness.py} implementiert. Relevante Funktionen: Kantengewichte, Projektionsvektoren, \texttt{classify\_by\_projection}, \texttt{prime\_quadruplet\_centroid}, \texttt{centered\_prime\_quadruplet}, \texttt{prime\_quadruplet\_ellipse\_parameters}, \texttt{canonical\_ellipse\_params}, \texttt{witness\_ellipse\_bridge}, monotone Übergangsfolge, \texttt{centroid\_statistics} und \texttt{sieve\_statistics}. Die Struktur \texttt{SieveStats} liefert neben dem unsigned Bias \texttt{bias} auch \texttt{signed\_bias}$=B_{\mathrm{sgn}}(N)$.
+	
+	Kommandozeile:
+	\begin{itemize}
+		\item \texttt{python3 -m susy\_fourlinge bridge <p> [--t T]}
+		\item \texttt{python3 -m susy\_fourlinge sieve <N>}
+	\end{itemize}
+	
+	Tests in \texttt{tests/test\_projection\_witness.py} und \texttt{tests/test\_quadruplet\_centroid.py} verifizieren Gewichte bei $t=0$, das Projektionsverhältnis $5/3$, die Kodierung $S<0\Rightarrow\mathrm{ABCE}$, kanonische Ellipsenparameter und Witness--Ellipse-Konsistenz bis $10^6$, das Gate-Profil bei $t=\pi/4$ und die Siebzahlen bis $10^8$.
+	
+	%======================================================================
+	\section{Schlussfolgerung}
+	%======================================================================
+	
+	Der Projektionszeuge liefert eine exakte geometrische Kodierung der beiden markierten mod-$12$-Typen von Primvierlingen. Er trennt $\mathrm{ABCE}$ und $\mathrm{CEAB}$ lokal durch das Vorzeichen eines skalaren Observablen $S=x+z$. Die beobachteten Zählasymmetrien bis $10^8$ motivieren, aber beweisen keinen arithmetischen Bias.
+	
+	%======================================================================
+	\section{Ausblick}
+	%======================================================================
+	
+	\begin{enumerate}[label=\arabic*.]
+		\item \textbf{Analytische Behandlung von Vermutung~\ref{vermutung:bias}.} Ein Siebmodell für $p\equiv 5$ und $p\equiv 11$ könnte klären, ob asymptotische Zählunterschiede plausibel sind.
+		\item \textbf{Heegner--Ellipsen-Resonanz.} Abschnitt~\ref{sec:eabc-bamberg} formuliert die offene Frage nach $H_{163}$ und den Fokuslagen $M\pm2\sqrt{3}$.
+		\item \textbf{Parameterabhängigkeit.} Für $t\neq 0$ ändert sich die Kodierung stetig; der degenerierte Punkt $t=\pi/2$ mit $S=0$ verlangt eine erweiterte Klassifikation.
+		\item \textbf{Feinere Kongruenzstruktur.} Modulo $210$ und höher treten feinere Familienindizes auf (vgl.\ \texttt{Polarisation.tex}). Der Zeuge ist die lokale Erststufe einer möglichen mehrschichtigen Zerlegung.
+	\end{enumerate}
+	
+\end{document}

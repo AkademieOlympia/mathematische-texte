@@ -216,6 +216,88 @@ Wo Mathlib endet, endet der formalisierte Teil — dokumentiert, nicht verschwie
 
 ---
 
+## Forschungsstrategie (Juni 2026)
+
+**Stand:** PR #35 (Präzession $I\to\Pi$, negativer Test) ist auf `main` gemerged
+(`4cb78b7`). Die folgende Gliederung ordnet alle Collatz-EABC-Ideen nach
+Evidenzstufe — nicht nach rhetorischer Attraktivität.
+
+### Ebene A — Arithmetischer Kern
+
+**Status:** Lean/Python/TeX, **bewiesen** (kein offener Collatz-Anspruch).
+
+| Objekt | Inhalt |
+|--------|--------|
+| Schwerpunkt | $M=p+4$ |
+| Normalform | $(-4,-2,2,4)$ |
+| Gap | $(2,4,2)$ |
+| mod-$12$ | $p\equiv 5\lor 11$ |
+| Chiralität | $\{5,11\}\leftrightarrow\{\mathrm{ABCE},\mathrm{CEAB}\}$ |
+
+Belege: `EABC.lean`, `Projektionszeuge.tex`, `collatz_hurwitz_polytop_eabc.tex`,
+`Miller_alt.tex` (vgl. §1a).
+
+### Ebene B — Geometrische Repräsentationen
+
+**Status:** modelliert, teils numerisch gestützt.
+
+| Objekt | Status |
+|--------|--------|
+| Projektionszeuge | gestützt |
+| Ptolemäus / ideale Ellipse | gestützt |
+| Span-Regel $10+12g$ | gestützt (`Beweis_Spanne_EABC.tex`) |
+| Witness $\to$ Ellipse | **offen** |
+| Vollständige Projektionsformalisierung | **offen** |
+
+### Ebene B′ — Primvierlingsellipse
+
+**Status:** definiert, intrinsische Bedeutung offen.
+
+- **Definiert:** $M=p+4 \to (-4,-2,2,4) \to (a,b,e)$
+  (Lean: `CollatzEabc.Primvierling.*`, Python: `susy_fourlinge/witness.py`).
+- **Offen:** intrinsische Bedeutung der Ellipsenparameter $(a,b,e)$;
+  numerische Diskriminanz (chirale Vierlinge vs. Zufall).
+
+### Ebene C — Explorative Strukturen
+
+**Status:** nicht gestützt oder formal ohne Evidenz.
+
+| Objekt | Status |
+|--------|--------|
+| Präzession $I\to\Pi$ | **negativ getestet** ($r\approx -0{,}18$ bei $N=10^6$,
+  $r\approx -0{,}14$ bei $N=10^7$; `collatz_praezession_test.py`,
+  `collatz_praezession_info.tex`, PR #35) |
+| Bernoulli-Uhr | formal, keine Evidenz (`BernoulliClock.lean`) |
+| $\Phi_{\mathrm{pref}}$ (Länge $4$) | formal, trivial (`PrefProjection.lean`) |
+| Eich-Mechanik | explorativ, keine Evidenz |
+
+Wissenschaftlicher Wert negativer Tests: Idee $\to$ Test $\to$ nicht bestätigt.
+
+### Prioritäten (Juni 2026)
+
+1. **Witness $\leftrightarrow$ Ellipse** — formal abschließen
+   ($M=p+4 \to (-4,-2,2,4) \to (a,b,e)$; PR #36).
+2. **$\Phi_{\mathrm{pref}}$-Diskriminantentest** — Integrationsstrom vs. Zufall
+   (`collatz_phi_pref_test.py`; kein Erfolg nur wegen Trivialität).
+3. **Lean** — mod-$12$-Irreduzibilität, Spektrallücke, Stufe E
+   (vgl. §5, §6, Priorisierte Lean-Roadmap).
+4. **Bernoulli-Uhr** — definitorische Geometrie, keine Lyapunov-Nutzung.
+5. **Präzession** $I\to\Pi$ — getestet, nicht gestützt; keine weitere Priorität.
+6. **Eich-Mechanik** — explorativ, erst nach Abschluss von 1–3.
+
+### Meta-Regel
+
+Jede neue Idee wird **einer Ebene zugeordnet**, bevor sie in TeX/Lean/Python
+landet:
+
+- **A** = bewiesen (arithmetischer Kern),
+- **B / B′** = modelliert (Geometrie, Ellipse),
+- **C** = explorativ (Gedankenexperiment, negative oder fehlende Evidenz).
+
+Ohne Zuordnung keine implizite Collatz-Relevanz.
+
+---
+
 ## Priorisierte Lean-Roadmap (Anhang)
 
 1. Irreduzibilität der mod-12-Matrix (`Finset`-Kombinatorik)
