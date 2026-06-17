@@ -126,9 +126,25 @@ Konvergenz.
 | $24I_3$-Zeuge | **JA** | $M_{\mathrm{eff}}\to 24I_3$ unter $R^*_{\mathrm{EABC}}$ (`EABC Intermediate.tex`) | Collatz-Attraktor; Bernoulli-Uhr als Dynamik |
 | Ikosaeder/Dodekaeder | **JA** | Anisotropy $=0$ (geometrisch) vs. $>0$ (Zufall) (`eabc_icosahedron_test.py`) | Hurwitz-Uhr; mod-12 allein |
 | Bernoulli-Uhr | **NEIN** | Definition $\to$ Geometrie $\to$ Interpretation | Numerischer Collatz-Befund |
+| $I(Q)\to\Pi(Q)$ | **negativ** | Schwach negative Korrelation auf Integrationsstrom-Vierlingen (`collatz_praezession_test.py`) | Kopplung $\Pi=\beta K$; Collatz |
 | $z_0$ dynamisch relevant | **NEIN** | Algebraischer Anker $z_0=\zeta(-1)(12+\mathrm{i})$ | $\mathrm{dist}_2(\cdot,E_\infty)$ |
 | $\Phi_{\mathrm{pref}}$ | **offen** | Wohldefiniert auf EABC-Wörtern (`PrefProjection.lean`) | Brücke $\Phi=\Phi_{\mathrm{pref}}\circ\kappa$ ohne Datentest |
 | Collatz / $E_\infty$ | **NEIN** | Äquivalenz präzise formuliert | Beweis |
+
+### 4b. Projektions-/Kepler-Taxonomie (EABC, nicht Collatz)
+
+| Objekt | Status |
+|--------|--------|
+| ABCE/CEAB | Lean-bewiesen |
+| Schwerpunkt $M=p+4$ | Lean/Python/TeX |
+| Normalform $(-4,-2,2,4)$ | Lean/Python/TeX |
+| Span $10+12g$ | numerischer Zeuge |
+| Ptolemaeus / ideale Ellipse | geometrische Darstellung |
+| $\Phi_{\mathrm{pref}}$ Länge~4 | trivial |
+| $I(Q)\to\Pi(Q)$ (Präzessionsmodell) | **negativ getestet** (`collatz_praezession_test.py`, $r\approx -0{,}18$ bei $N=10^6$, $r\approx -0{,}14$ bei $N=10^7$; TeX `collatz_praezession_info.tex`) |
+| Bernoulli-Uhr | definitorische Geometrie |
+
+Das Negativergebnis für $I(Q)\leftrightarrow\Pi(Q)$ stützt die Präzessionshypothese in der einfachen Form $\Pi=\beta K$ **nicht**; Span-Zeuge und ABCE/CEAB-Geometrie bleiben unberührt.
 
 **Offener Datentest $\Phi_{\mathrm{pref}}$:** Für Primvierlingswörter
 $w(p)$ aus $Q(p)$ und Zufallswörter gleicher Länge berechne
