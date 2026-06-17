@@ -109,6 +109,13 @@ Konvergenz.
   Zwölfer-Kreis $K_{12}$, Stirling--Bernoulli--Zeta-Anbindung und
   $\mathcal{E}_\infty\subset\mathcal{M}$ in
   `collatz_kepler_gedankenexperiment.tex` (kein Beweisanspruch).
+- **Bernoulli-Uhr (Gedankenmodell):** Auf zwei chiralen Ellipsenachsen
+  $\mathcal{E}_\pm$ (ABCE/CEAB) ordnet jede Zelle $m$ das Tripel
+  $(B_{2m-2},B_{2m},B_{2m+2})$ mit $r_m=2^{-m}$, $\theta_m=\pi m/2$ und
+  $B_{2m}=-2m\,\zeta(1-2m)$ zu; $U_\pm(m)$ ist eine chirale Gewichtsformel
+  (TeX §Bernoulli-Uhr). Lean-Kern: `BernoulliClock.lean`
+  (`BernoulliCell`, `bernoulliTriplet`). **Kein Collatz-Beweis**, keine
+  Lyapunov-Nutzung (Bernoulli-Normschale bleibt No-Go).
 
 ---
 
