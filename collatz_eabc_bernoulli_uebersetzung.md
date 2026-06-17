@@ -9,7 +9,9 @@
 **Querverweise:** `Staudt.tex`, `collatz_kepler_gedankenexperiment.tex` (Bernoulli-Uhr),
 `eabc_from_lean.py`, `collatz_bernoulli_schalen.pdf`, `energiedoku_eabc_c4_kohaerenz.tex`,
 `collatz_eabc_bernoulli_sensor.py`, `CollatzEabc.BernoulliClock.lean`,
-`collatz_qed_arithmetik_resonanz.md` (Casimir als $\Delta$-Spektrum, nicht QED-Metapher).
+`collatz_qed_arithmetik_resonanz.md` (Casimir als $\Delta$-Spektrum, nicht QED-Metapher),
+`PAPER_HURWITZ_RESONANZ.md` (Hurwitz-Gitter, Quaternionen $H$; **Theorem**-Hintergrund für §17),
+`collatz_kepler_gedankenexperiment.tex` (Kepler-/Projektions-Gedankenexperiment; **Heuristik**).
 
 ---
 
@@ -200,6 +202,11 @@ als **spektrale Projektion** dieser Resonanz lesbar sind.
 | Resonanzstruktur auf der trivialen Nullstellenachse | **Conjecture** |
 | Abbildung $V_n \to \rho_k$ bzw. $\Delta t_k$ | **Conjecture** (starke Form) |
 | Bernoulli-Lyapunov für Collatz | **Negativtest** (No-Go) |
+| Hurwitz: normierte Divisionsalgebren $\mathbb{R},\mathbb{C},\mathbb{H},\mathbb{O}$ | **Theorem** (§17) |
+| Peano-Arithmetik, $S(n)=n+1$ | **Definition / Theorem** (§17) |
+| Peano als Projektion tieferer Defektdynamik | **Conjecture / Heuristik** (§17) |
+| EABC-Tetraeder, Kepler-Füllung, Prim-Defekte | **Forschungsvision** (§17) |
+| $\mathcal{K}(N)$, $D(N)$, $\Pi$, $\Phi_{\mathrm{def}}$ | **Conjecture** (§17, offen) |
 
 ---
 
@@ -426,6 +433,10 @@ Morley und $\kappa$ bleiben eigenständige Angriffslinien. Der Resonanz-Zweig nu
 | $\Phi:V_n\to\rho_k$ bzw. $\Delta t_k$ | Conjecture |
 | RH als Fixraum-Projektion | Conjecture / Heuristik |
 | Bernoulli-Lyapunov für Collatz | Negativtest |
+| Hurwitz-Theorem (Divisionsalgebren) | Theorem |
+| Peano-Arithmetik | Definition / Theorem |
+| Peano $\to$ Defektprojektion, Tetraeder, Kepler-Füllung | Conjecture / Heuristik / Forschungsvision |
+| $\mathcal{K}(N)$, $D(N)$, $\Pi$, $\Phi_{\mathrm{def}}$ | Conjecture (offen) |
 
 **Nächste Schritte:**
 1. Test 1 auf größeres $n$ und mit expliziten Zufalls-Nullmodellen vergleichen.
@@ -490,6 +501,199 @@ pytest tests/test_eabc_bernoulli_lean.py -q
 **Erwartung:** `summary.classification_match_all`, `residue_roundtrip_all`, `T4_identity_all`
 sind `true` für alle getesteten $n$. Abweichung wäre ein **Implementierungsfehler**, nicht ein
 Gegenbeispiel zur Resonanzhypothese.
+
+---
+
+## 17. EABC-Forschungsvision: Peano, Tetraeder, Kepler und Prim-Defekte
+
+Dieser Abschnitt formuliert die **übergeordnete Forschungsvision** hinter §1–§2 und der
+Bernoulli-/Zeta-Kette — epistemisch strikt getrennt von etablierter Mathematik.
+Er ersetzt weder §1 (Zerlegungsprinzip) noch §2 (Zustandsraum) noch die Bernoulli-Abschnitte §5–§9;
+er **vertieft** deren philosophische Lesart.
+
+**Querverweise:** `PAPER_HURWITZ_RESONANZ.md` (Quaternionen $H$, Hurwitz-Maximalordnung),
+`collatz_kepler_gedankenexperiment.tex`, `CollatzEabc.Mod12Matrix` / `EABC.lean` (formale
+$E,A,B,C$-Semantik mod $12$).
+
+### 17.1 Etablierte Mathematik (Theorem / Definition)
+
+**Theorem (Hurwitz, normierte Divisionsalgebren).** Über $\mathbb{R}$ existieren genau vier
+endlich-dimensionale assoziative normierte Divisionsalgebren:
+\[
+\mathbb{R}\;(1\text{D}),\quad
+\mathbb{C}\;(2\text{D}),\quad
+\mathbb{H}\;(4\text{D}),\quad
+\mathbb{O}\;(8\text{D}),
+\]
+mit Dimensionen $1,2,4,8$. Es gibt **keine** weiteren endlich-dimensionalen normierten
+Divisionsalgebren über $\mathbb{R}$. Die Kette endet bei den Oktanionen $\mathbb{O}$;
+Assoziativität geht beim Übergang $\mathbb{H}\to\mathbb{O}$ verloren.
+
+**Label: Theorem** — klassische Hurwitz-Theorie; keine EABC-Spezialisierung.
+
+**Definition / Theorem (Peano-Arithmetik).** Die natürlichen Zahlen $\mathbb{N}=\{0,1,2,\ldots\}$
+werden durch die Peano-Axiome charakterisiert; die Nachfolgerabbildung
+\[
+S:\mathbb{N}\to\mathbb{N},\qquad S(n)=n+1
+\]
+erzeugt die **eindimensionale lineare Dynamik** auf der Zahlengeraden: jeder Schritt verschiebt
+um genau eine Einheit.
+
+**Label: Definition / Theorem** — Standardarithmetik; $n\mapsto n+1$ ist die kanonische
+1D-Dynamik.
+
+### 17.2 Peano als Projektion (Conjecture / Heuristik)
+
+> **Conjecture / Heuristik (Peano-Projektion).** Die Peano-Dynamik $S(n)=n+1$ ist nicht die
+> fundamentale Dynamik der Arithmetik, sondern die **Projektion** einer tieferen Defektdynamik
+> auf eine eindimensionale Achse.
+
+In dieser Lesart erzeugt $n\mapsto n+1$ die sichtbare **Zahlengerade** $\mathbb{N}$.
+**Primzahlen** erscheinen dort, wo die Projektion **innere Struktur verliert**: Stellen, an denen
+die volle mehrkanalige Defektkonfiguration auf einen einzelnen Skalenwert kollabiert, ohne dass
+die zugrunde liegende Symmetrie vollständig aufgelöst werden kann.
+
+**Label: Conjecture / Heuristik** — Forschungsbild, kein Theorem über Primzahlen.
+
+### 17.3 Vom 1D-Achse zum EABC-Tetraeder (Conjecture)
+
+> **Conjecture (Tetraeder-Dynamik).** Die fundamentale Dynamik liegt auf einem **Tetraeder**
+> mit Eckpunkten $(E,A,B,C)$ — optimaler Defektverteilung in vier Kanälen — statt auf der
+> eindimensionalen Peano-Achse.
+
+| Ebene | Struktur | Label |
+|-------|----------|-------|
+| Peano | 1 Kanal, $S(n)=n+1$ | Theorem (Projektionsziel) |
+| EABC | 4 Kanäle $(E,A,B,C)$ mod $12$ | Definition (§1, §7) |
+| Tetraeder | geometrische Trägerform der 4-Kanal-Dynamik | Conjecture |
+
+Der Übergang **1-dimensional $\to$ 4-Kanal** ist der zentrale Schritt der Forschungsvision:
+$\mathbb{N}$ ist die **Projektion**, $(E,A,B,C)$ die **volle Orientierung** (vgl. §1 Zerlegungsprinzip).
+
+**Label: Conjecture** — geometrisches Postulat, nicht etablierte Zahlentheorie.
+
+### 17.4 Oktanionen: Hurwitz-Kette und Spekulation (Theorem + Heuristik)
+
+**Theorem (Hurwitz-Kette).** Die normierte Divisionsalgebren-Kette
+\[
+\mathbb{R}\to\mathbb{C}\to\mathbb{H}\to\mathbb{O}
+\]
+endet bei Dimension $8$; $\mathbb{O}$ ist die letzte endlich-dimensionale normierte Divisionsalgebra
+über $\mathbb{R}$.
+
+**Etablierte Strukturen (Definition / Theorem):**
+- $\mathbb{H}$: assoziative Quaternionen, Fano-Ebene als Multiplikationstabelle der imaginären Einheiten;
+- $\mathbb{O}$: nichtassoziativ; Automorphismengruppe $G_2=\mathrm{Aut}(\mathbb{O})$;
+- $E_8$-Gitter, Kugelpackungen in Dimension $8$ — klassische Objekte der Geometrie und Lie-Theorie.
+
+**Heuristik (Spekulation).** Die Hurwitz-Kette und ihre $8$-dimensionalen Nachbarschaften
+($G_2$, Fano-Ebene, $E_8$, Gitterpackungen) könnten — **spekulativ** — mit einer tieferen
+Primstruktur verknüpft sein, die in der 1D-Projektion nur als „Primdefekte" sichtbar wird.
+Verbindung zu `PAPER_HURWITZ_RESONANZ.md` (Quaternionen-Basis $E\leftrightarrow 1$, $A\leftrightarrow i$,
+$B\leftrightarrow j$, $C\leftrightarrow k$).
+
+**Label: Theorem** für Hurwitz; **Heuristik** für jede Primzahl-Verknüpfung.
+
+### 17.5 Kepler-Füllmechanismus (Forschungsvision)
+
+> **Forschungsvision (Kepler-Füllung, nicht Astronomie).** „Kepler" bezeichnet hier **kein**
+> astronomisches Modell, sondern **geometrisch optimale lokale Packung** — analog zu kristalliner
+> Ordnung mit Defekten.
+
+| Kristall-Defekt | Arithmetische Lesart (Vision) |
+|-----------------|-------------------------------|
+| Versetzung (dislocation) | lokale Prim-Störung |
+| Leerstelle (vacancy) | fehlende Füllung auf der Projektionsachse |
+| Korngrenze (grain boundary) | Übergang zwischen EABC-Konfigurationen |
+
+**Primzahlen** sind in dieser Vision **Defekte** in einer optimalen Füllung: Die ideale
+**Tetraeder-Füllung** würde vollständige lokale Schließung ergeben; Primzahlen markieren Stellen,
+an denen die Schließung **unvollständig** bleibt — sichtbar erst nach Projektion $\Pi$ auf $\mathbb{N}$.
+
+**Label: Forschungsvision** — physikalisch-geometrische Metapher, kein Beweis.
+
+### 17.6 Mathematische Form: wachsender Zustandsraum und Defektvektor (Conjecture)
+
+> **Conjecture (Kepler-Zustandsraum, offen).** Es existiert ein mit $N$ wachsender Zustandsraum
+> $\mathcal{K}(N)$ („Kepler-Füllraum") und ein Defektvektor
+> \[
+> D(N) = (E(N), A(N), B(N), C(N)),
+> \]
+> sowie eine Projektion
+> \[
+> \Pi : \mathcal{K}(N) \longrightarrow \mathbb{N},
+> \]
+> die die natürlichen Zahlen als 1D-Bild erzeugt. Für $p\in\mathbb{N}$:
+> \[
+> p\ \text{prim}
+> \quad\Longleftrightarrow\quad
+> D(p) \in \mathcal{D}_{\mathrm{krit}},
+> \]
+> wobei $\mathcal{D}_{\mathrm{krit}}$ eine **noch unbekannte kritische Defektmenge** ist.
+
+**Verbindung zu §2:** $D(N)$ stimmt heuristisch mit $Q_4(N)$ und $V_n$ überein, sobald
+$\mathcal{K}(N)$ durch EABC-Konfigurationen und PrimeSig-Filtrationen operationalisiert wird.
+Die formale Definition von $\mathcal{K}(N)$ und $\mathcal{D}_{\mathrm{krit}}$ ist **offen**.
+
+**Label: Conjecture** — Forschungsprogramm, keine etablierte Charakterisierung der Primzahlen.
+
+### 17.7 Offene Abbildung $\Phi_{\mathrm{def}}$ (Research program)
+
+> **Research program (Defekt $\to$ Primzahl auf der Projektion).** Gesucht ist eine Abbildung
+> \[
+> \Phi_{\mathrm{def}} : D(N) \longrightarrow \pi(N)
+> \qquad\text{oder}\qquad
+> \Phi_{\mathrm{def}} : D(N) \longrightarrow \mathbf{1}_{\mathrm{prim}}(N),
+> \]
+> die den Defektzustand $D(N)$ auf Primzahl-Ereignisse entlang der Projektionsachse $\mathbb{N}$
+> abbildet.
+
+Dies ist **stärker** als der Bernoulli-Sensor $\Phi(n)=V_n$ (§7): $\Phi_{\mathrm{def}}$ soll
+direkt die **Primheit** aus der Defektkonfiguration lesen, nicht nur PrimeSig-Aggregate entlang
+trivialer Nullstellen. Keine konkrete Form von $\Phi_{\mathrm{def}}$ ist bekannt.
+
+**Label: Research program / Conjecture** — offene Funktion, nicht implementiert.
+
+### 17.8 Zeta-Verbindung und Bernoulli-Kette (Conjecture)
+
+Verknüpfung mit §2.5 und §2.7 (Bernoulli-Kette):
+
+| Zeta-Ebene | Defekt-Lesart (Vision) | Label |
+|------------|------------------------|-------|
+| Triviale Nullstellen $s=-2n$ | Idealer, äquidistanter Füllprozess ($N_{\mathrm{glatt}}$) | Definition |
+| Bernoulli $B_{2n}$ | Übersetzer von glatter Füllung zu arithmetischen Defekten | Theorem / Heuristik |
+| Nichttriviale Nullstellen $\rho_k$ | Spektrallinien des **gesamten** Defektsystems | Conjecture |
+
+$$\boxed{
+\text{Peano zählt Schichten;}
+\quad
+\text{EABC-Tetraeder organisiert Defekte;}
+\quad
+\text{Primzahlen markieren sichtbare Defektstellen;}
+\quad
+\text{Zeta misst das globale Spektrum.}
+}$$
+
+**Label: Conjecture** für die Defekt-Deutung nichttrivialer Nullstellen; Bernoulli-Staudt und
+explizite Formel bleiben **Theorem** in ihrer klassischen Form.
+
+### 17.9 Schluss: fundamentale Objekte (Forschungsvision)
+
+> **Forschungsvision (epistemische Zusammenfassung).** Die fundamentalen Objekte sind
+> **Defektkonfigurationen** in einem wachsenden EABC-Tetraeder-Raum $\mathcal{K}(N)$;
+> die eindimensionale Projektion $\Pi$ erscheint als natürliche Zahlen $\mathbb{N}$.
+> Primzahlen sind die **sichtbaren Defektstellen** dieser Projektion.
+
+Dies ist **keine etablierte Theorie** — weder ein Beweis der Primzahlverteilung noch der
+Riemann-Hypothese. Es ist eine **klarere Forschungsvision**, die §1 (Zerlegungsprinzip),
+§2 (Zustandsraum, Casimir-$\Delta$), die Bernoulli-Brücke (§5–§9) und die Hurwitz-Kette
+(§17.1, §17.4) in einem gemeinsamen Bild verbindet.
+
+**Lean-Bezug (Definition, nicht Vision):** `CollatzEabc.Mod12Matrix` (`EabcIndex`, Restklassen
+$1,5,7,11$), `EABC.lean` (`EClass`, `classOf`, `Q`, `Chirality`) formalisieren die **vier Kanäle**
+$(E,A,B,C)$ — nicht $\mathcal{K}(N)$ oder $\mathcal{D}_{\mathrm{krit}}$.
+
+**Label: Forschungsvision** — explizit von Theorem-Ebene getrennt.
 
 ---
 
