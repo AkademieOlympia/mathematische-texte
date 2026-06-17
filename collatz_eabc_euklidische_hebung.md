@@ -40,7 +40,7 @@ in solchen Ringen — ein **Theorem** der kommutativen Algebra, kein Algorithmus
 - `collatz_eabc_bernoulli_uebersetzung.md` §17 (Peano-Projektion, Tetraeder-Defekte, Hurwitz-Kette) — Branch `collatz/eabc-bernoulli-sensor`
 - `collatz_eabc_invarianzprogramm.md` (Fluktuationsfeld $\delta(x)$, EABC-Invarianten) — Branch `collatz/eabc-invarianzprogramm`
 - `PAPER_HURWITZ_RESONANZ.md` (Hurwitz-Gitter, $\Pi_\Gamma$, Primideale in $\mathbb{H}$)
-- `collatz_eabc_hurwitz_spaltung.md` / `collatz_eabc_hurwitz_orbit_test.py` — Orbit $O_p$, $\mu_p$, $H(p)$, Chiralität
+- `collatz_eabc_quaternion_mass_hypothese.md` / `collatz_eabc_hurwitz_orbit_test.py` — Normschale $\Sigma_p$, $\mu_p$, $H_p$, Chiralität (PR #54)
 - `Divisionsalgebren.md`, `Grundsatzartikel_Hurwitz_Raum.tex`
 
 ---
@@ -304,8 +304,9 @@ $$\boxed{
 | `collatz_eabc_gauss_defekt_test.py` | Experiment: split/inert in $\mathbb{Z}[i]$ vs.\ EABC-Klassen |
 | `collatz_eabc_euklid_hebung.py` | Minimal-Stub: ein euklidischer Schritt in $\mathbb{Z}$, $\mathbb{Z}[i]$; $D(q)$ für Hurwitz |
 | `Hurwitz 24.py` | 24 Hurwitz-Einheiten, Quaternionen-Arithmetik |
-| `collatz_eabc_hurwitz_orbit_test.py` | Orbit $O_p$, $\mu_p$, $H(p)$, Chiralität, Unabhängigkeitstest |
-| `collatz_eabc_hurwitz_spaltung.md` | Theorie §1–§10 (vs. Gauß/Eisenstein) |
+| `collatz_eabc_hurwitz_orbit_test.py` | Schalenmaß $\mu_p$ auf $\Sigma_p$, $U_{\mathrm H}$-Orbits, volle $\Gamma$ |
+| `collatz_eabc_quaternion_mass_hypothese.md` | **Kanonsiche** Quaternionen-EABC-Maßhypothese §1–§10 |
+| `collatz_eabc_hurwitz_spaltung.md` | Redirect → Maßhypothese |
 | `PAPER_HURWITZ_RESONANZ.md` | $\Pi_\Gamma$, Primideale, Resonanz |
 | `collatz_eabc_bernoulli_uebersetzung.md` §17 | Defekt-Tetraeder, Kepler-Füllung, $\mathcal{D}_{\mathrm{krit}}$ |
 | `collatz_eabc_invarianzprogramm.md` | Fluktuationsfeld $\delta$, $\chi_{\mathrm{fluct}}$, $H(x)$ |

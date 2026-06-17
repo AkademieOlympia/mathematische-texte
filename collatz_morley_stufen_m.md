@@ -53,6 +53,8 @@ Die beiden Forschungszweige testen **verschiedene Robustheitsbegriffe** auf sche
 
 Querverweis (minimal): `collatz_stufe3_kappa_invarianz.md`, Abschnitt „Geometrischer Nebenzweig“.
 
+**EABC-Parallel (Hurwitz, getrennte Spur):** `collatz_eabc_quaternion_mass_hypothese.md` — Schalenmaß $\mu_p$ auf $\Sigma_p$ mit Invarianten $H_p$, $\chi_p$, $K_p$; Morley-Sensoren $G_M$, $W_M$ in `collatz_morley_tm_numerik.py` nur als **heuristische Analogie**, kein gemeinsamer Beweispfad (PR #54).
+
 ---
 
 ## Theoretischer Hintergrund (Conjecture, nicht Theorem)

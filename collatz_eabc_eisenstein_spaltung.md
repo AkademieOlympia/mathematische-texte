@@ -3,7 +3,7 @@
 **Status:** Forschungshypothese + Experiment  
 **Kanonsiche Erweiterung von:** `collatz_eabc_normabstieg_hypothese.md` (§8–§9b)  
 **Gauß-Vergleich:** `collatz_eabc_gauss_spaltung_hypothese.md`  
-**Hurwitz-Vergleich:** `collatz_eabc_hurwitz_spaltung.md`  
+**Hurwitz-Vergleich:** `collatz_eabc_quaternion_mass_hypothese.md`  
 **Experiment:** `collatz_eabc_eisenstein_spaltung_test.py` → `collatz_eabc_eisenstein_spaltung.json`
 
 ---

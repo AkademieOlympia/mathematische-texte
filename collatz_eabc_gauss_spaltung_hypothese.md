@@ -3,7 +3,7 @@
 **Status:** Forschungshypothese + Experiment  
 **Kanonsiche Erweiterung von:** `collatz_eabc_normabstieg_hypothese.md` (§8–§9)  
 **Experiment:** `collatz_eabc_gauss_spaltung_test.py` → `collatz_eabc_gauss_spaltung.json`  
-**Hurwitz-Orbit (4D):** `collatz_eabc_hurwitz_spaltung.md` → `collatz_eabc_hurwitz_orbit_test.py`  
+**Hurwitz-Maßhypothese (4D):** `collatz_eabc_quaternion_mass_hypothese.md` → `collatz_eabc_hurwitz_orbit_test.py`  
 **Vorgänger (korrigiert):** `collatz_eabc_gauss_faktor_eabc_test.py` — testete rohe mod-$12$-Legs
 (höchstens eine EABC-sichtbare Leg pro Paar); **dieser Text ersetzt ihn als kanonischer Test.**
 
