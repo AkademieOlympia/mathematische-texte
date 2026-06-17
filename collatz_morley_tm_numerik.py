@@ -14,6 +14,11 @@ Epistemischer Rahmen
 Morley ist ein geometrisches Analogie-/Testmodul — kein Collatz-Beweisbaustein.
 Möglicherweise eigenständiges Projekt „Morley-Operatoren auf riemannschen Flächen“.
 
+G_M ist derzeit ein experimenteller Kandidat für einen signierten Morley-
+Krümmungssensor. G_M wird als signierter Morley-Fehler eingeführt; er ist kein
+bewiesener Krümmungssensor, sondern eine experimentelle Testgröße. M2 prüft, ob
+sign(G_M) mit sign(K_G) korreliert.
+
 Grenzen (ehrlich)
 -----------------
 - Vier Varianten sind numerische Approximationen, keine Levi-Civita-Implementierung
@@ -21,7 +26,7 @@ Grenzen (ehrlich)
 - Hyperbolische Fläche (H²): in M1/M2 nur als Platzhalter dokumentiert.
 - Paralleltransport: diskret entlang Großkreisen auf S²; lokale Karten / exp: Log-Exp
   am Dreieckschwerpunkt (nicht isotherm).
-- Kein Beweis; nur numerische Plausibilität / Definitionsvergleich.
+- Nur numerische Evidenz / Definitionsvergleich — kein bewiesener Krümmungssensor.
 """
 
 from __future__ import annotations
@@ -1335,7 +1340,7 @@ def _compute_m2_sign_test(samples: Sequence[M2SurfaceSample]) -> M2SignTest:
     elif plane_gm_near_zero and math.isfinite(sphere_gm_med) and math.isfinite(hyper_gm_med):
         if abs(sphere_gm_med - hyper_gm_med) < 1e-6 * max(abs(sphere_gm_med), abs(hyper_gm_med), 1e-18):
             gm_interpretation = (
-                "G_M≈0 auf R²; G_M(S²)≈G_M(H²) → auch signierter Sensor trennt Vorzeichen nicht."
+                "G_M≈0 auf R²; G_M(S²)≈G_M(H²) → Vorzeichen-Korrelation sign(G_M) vs sign(K_G) nicht gegeben."
             )
         else:
             gm_interpretation = (
@@ -1443,8 +1448,8 @@ def run_m2_sensor(
     )
 
     notes = [
-        "M2a: F_M — Krümmungsstärke (|K_G|-Sensor, nichtnegativ).",
-        "M2b: G_M = Σ(θ_i^M - π/3) — signierter Morley-Fehler, Vorzeichen-Sensor.",
+        "M2a: F_M — Krümmungsstärke-Testgröße (nichtnegativ, |K_G|-Proxy).",
+        "M2b: G_M = Σ(θ_i^M - π/3) — signierter Morley-Fehler; experimenteller Kandidat; M2 prüft sign(G_M) vs sign(K_G).",
         "M2c: F_M = c |K_G|^α A^β — α, β aus Daten, nicht vorausgesetzt.",
         "Kanoniche Variante: local_chart (M1: O(ε³)-Evidenz für 2.-Ordnung-Geometrie).",
         "K_G=0 nur Kontrolle (F_M≈0, G_M≈0); Exponentenfit nur K_G≠0.",
@@ -1493,9 +1498,9 @@ def run_m3_beweisversuch(
     gate = _m2_gate_from_sign(m2_sign)
 
     notes = [
-        "M3 Beweisversuch: experimentell — kein Theorem, keine Collatz-Folgerung.",
+        "M3: experimenteller dualer Exponentenfit — keine Collatz-Folgerung.",
         "F_M-Fit: |K_G|>0 gepoolt (S²+H²); Ebene separat als Kontrolle.",
-        "G_M-Fit: signiertes K_G; Vorzeichenkopplung sign(G_M)=sign(K_G) aus M2b vorausgesetzt.",
+        "G_M-Fit: signiertes K_G; G_M ist experimenteller Kandidat, kein bewiesener Krümmungssensor.",
         f"Kanoniche Variante: {variant} (M1: O(ε³)-Evidenz für 2.-Ordnung-Geometrie).",
         "α schlecht identifizierbar bei konstantem |K_G|∈{1} auf Kontrollflächen.",
         "Nächste Schritte: orientiertes G_M, Ikosaeder-20-Flächen, Definitions-Invarianz.",
@@ -1576,7 +1581,7 @@ def _print_m1_report(report: M1Report) -> None:
 
 
 def _print_m3_report(report: M3BeweisversuchReport) -> None:
-    print("=== Morley M3: Dualer Exponentenfit (Beweisversuch) ===")
+    print("=== Morley M3: Dualer Exponentenfit (experimentell) ===")
     print(f"Variante: {report.variant}  |  M2-Gate: {'bestanden' if report.m2_gate_passed else 'offen'}")
     print(f"ε-Familie: {', '.join(f'{e:.3f}' for e in report.epsilons)}")
 

@@ -44,7 +44,7 @@ Die beiden Forschungszweige testen **verschiedene Robustheitsbegriffe** auf sche
 | Beobachtetes Ergebnis | Struktur **zerfällt** (BE nicht invariant) | Struktur **bleibt** (2. Ordnung numerisch gemeinsam) |
 | Invarianz-Stärke | schwach (listenabhängig) | stark (numerisch, vier Realisierungen) |
 | Hauptrisiko | Kodierungsartefakt | numerische Überschätzung der Konsistenz |
-| Nächste offene Frage | $\mathcal{L}_{\mathrm{arith}}^*$ definieren | Misst $T_M^{(g)}$ tatsächlich Krümmung? |
+| Nächste offene Frage | $\mathcal{L}_{\mathrm{arith}}^*$ definieren | Korreliert $T_M^{(g)}$ mit lokaler Krümmung? |
 
 **Lesart:** Der κ-Zweig fragt nach **arithmetischer** Kodierungsrobustheit; der Morley-Zweig nach **geometrischer** Definitionsrobustheit. Ein Scheitern in κ schließt keinen Erfolg in Morley aus — und umgekehrt.
 
@@ -65,7 +65,7 @@ $$T_M^{(g)}(\Delta_\varepsilon) = T_{\mathrm{euclid}}(\Delta_\varepsilon) + Q(K_
 - $Q(K_G)$: noch **undefiniert** — möglicherweise von $|K_G|$, möglicherweise vorzeichenabhängig.
 - $O(\varepsilon^3)$: **numerisch beobachtet** in M1 (Variantenabstände); **nicht** als Theorem behauptet.
 
-M1 testet die **Definitionskonsistenz** der linken Seite; M2 testet die **Krümmungskopplung** von $F_M$ als Sensorgröße.
+M1 testet die **Definitionskonsistenz** der linken Seite; M2 testet die **Krümmungskopplung** von $F_M$ und $G_M$ als experimentelle Testgrößen.
 
 ---
 
@@ -104,7 +104,7 @@ $$d_{ij}(\varepsilon) = \max_k \operatorname{dist}\bigl(T_{M,i}^{(g)}(\Delta_\va
 
 M1-Ergebnis (PR #44): Szenario **D** — log-log-Steigung $\approx 3$ für alle nicht-trivialen Variantenpaare.
 
-> M1 zeigt numerisch, dass natürliche Varianten des geodätischen Morley-Operators bis zur zweiten Ordnung dieselbe lokale Struktur zu besitzen scheinen. Damit ist der Operator hinreichend stabil, um in M2 als möglicher Krümmungssensor getestet zu werden.
+> M1 zeigt numerisch, dass natürliche Varianten des geodätischen Morley-Operators bis zur zweiten Ordnung dieselbe lokale Struktur zu besitzen scheinen. Damit ist der Operator hinreichend stabil, um in M2 als experimentelle Testgröße geprüft zu werden.
 
 > **Boxed (M1-Bedeutung):**  
 > *Die zweite Ordnung scheint universell zu sein* — Abweichungen zwischen Realisierungen liegen **jenseits** der Krümmungsterme ($O(\varepsilon^3)$), während die 2.-Ordnung-Struktur gemeinsam bleibt.
@@ -120,21 +120,27 @@ M1-Ergebnis (PR #44): Szenario **D** — log-log-Steigung $\approx 3$ für alle 
 
 ## M2 — Krümmungs-Signatur (abgeschlossen, PR #46)
 
-M2 testet $F_M$ und $G_M$ auf Kontroll- und Testflächen mit bekannter $K_G \in \{0, +1, -1\}$, **dieselbe $\varepsilon$-Familie** $\{0{,}05, 0{,}08, 0{,}12, 0{,}18, 0{,}25, 0{,}35\}$.
+> **G_M ist derzeit ein experimenteller Kandidat** für einen signierten Morley-Krümmungssensor.
+
+> **M2 testet, ob sign(G_M) mit sign(K_G) korreliert.**
+
+M2 prüft $F_M$ und $G_M$ auf Kontroll- und Testflächen mit bekannter $K_G \in \{0, +1, -1\}$, **dieselbe $\varepsilon$-Familie** $\{0{,}05, 0{,}08, 0{,}12, 0{,}18, 0{,}25, 0{,}35\}$.
 
 **Definitionen:**
 $$F_M(\Delta) = \sum_i (\theta_i^M - \pi/3)^2, \qquad
 G_M(\Delta) = \sum_i (\theta_i^M - \pi/3).$$
 
-**Kernpunkt:** $F_M$ ist ein **Betragssensor** (Krümmungsstärke), **kein** natürlicher Vorzeichensensor. Da $F_M \geq 0$, kann $F_M(K{=}{+}1) \approx F_M(K{=}{-}1)$ bei gleicher Fläche gelten.
+> G_M wird als signierter Morley-Fehler eingeführt. Er ist kein bewiesener Krümmungssensor, sondern eine experimentelle Testgröße, mit der geprüft wird, ob der geodätische Morley-Operator zwischen positiver und negativer Krümmung unterscheiden kann.
+
+**Kernpunkt:** $F_M$ ist eine **nichtnegative Testgröße** (Krümmungsstärke-Proxy), **kein** natürlicher Vorzeichen-Indikator. Da $F_M \geq 0$, kann $F_M(K{=}{+}1) \approx F_M(K{=}{-}1)$ bei gleicher Fläche gelten.
 
 > **Boxed (M2-Leitfragen):**  
 > 1. Ist Morley bei $K \neq 0$ verzerrt?  
-> 2. Detektiert Morley das Vorzeichen von $K$?
+> 2. Korreliert $\operatorname{sign}(G_M)$ mit $\operatorname{sign}(K_G)$?
 
 > **Boxed (M2-Roadmap):**  
-> - **M2a:** $F_M$ als Krümmungsstärke-Sensor  
-> - **M2b:** $G_M$ als signierter Krümmungs-Sensor
+> - **M2a:** $F_M$ als Krümmungsstärke-Testgröße  
+> - **M2b:** $G_M$ als experimenteller Kandidat für Vorzeichen-Kopplung
 
 **Testmatrix** (Median über $\varepsilon$-Familie, `local_chart`, Quelle: `collatz_morley_m2_sensor.json`):
 
@@ -149,7 +155,7 @@ G_M(\Delta) = \sum_i (\theta_i^M - \pi/3).$$
 **Vorbehalt:** $G_M$ muss definitionsunabhängig genug sein; die einfache Summe ist der erste Test. Orientierte Varianten (Fläche, Umlaufzahl, geodätischer Exzess) folgen später.
 
 > **Boxed (M2-Befund):**  
-> *M2a: $F_M$ misst Krümmungsstärke ($F_M \approx 0$ bei $K{=}0$, $F_M > 0$ bei $K \neq 0$; $S^2/H^2 \approx 1{,}001$). M2b: $G_M$ trennt Vorzeichen — kombinierter Sensor $(F_M, G_M)$ empfohlen. Kein Theorem — nur numerische Evidenz.*
+> *M2a: $F_M$ korreliert mit Krümmungsstärke ($F_M \approx 0$ bei $K{=}0$, $F_M > 0$ bei $K \neq 0$; $S^2/H^2 \approx 1{,}001$). M2b: $\operatorname{sign}(G_M)$ korreliert mit $\operatorname{sign}(K_G)$ — kombinierte Testgrößen $(F_M, G_M)$ empfohlen. Nur numerische Evidenz, kein bewiesener Krümmungssensor.*
 
 ### M2a — Stärke $F_M$
 
@@ -182,7 +188,7 @@ Erste Anpassung (nur $K_G \neq 0$): $c \approx 3{,}9\times 10^{-4}$, $\alpha \ap
 **Epistemisches Label:** **Experiment** — numerische Evidenz, kein Theorem.
 
 > **Boxed (M2-Gate):**  
-> *M2a/b/c-Tabelle, $F_M$- und $G_M$-Vorzeichenstruktur dokumentiert (Juni 2026). M3 (dualer Fit) abgeschlossen — siehe Beweisversuch-Dokument.*
+> *M2a/b/c-Tabelle, $F_M$- und $G_M$-Vorzeichenstruktur dokumentiert (Juni 2026). M3 (dualer Fit) abgeschlossen — siehe `collatz_morley_gm_beweisversuch.md`.*
 
 ---
 
@@ -210,18 +216,18 @@ Beachte: bei $G_M$ steht $K_G$ **ohne** Betrag — Vorzeichenkopplung ist Teil d
 
 **Lesart:** $F_M \propto A^2$ (quadratischer Fehler); $G_M \propto A$ (linear, signiert). $\alpha$ ist auf $S^2/H^2$ mit $|K_G|\equiv 1$ nicht identifizierbar.
 
-**$G_M$-Cross-Check:** $\operatorname{sign}(G_M)=\operatorname{sign}(K_G)$ stabil über alle $\varepsilon$ und alle vier M1-Varianten.
+**$G_M$-Cross-Check:** $\operatorname{sign}(G_M)=\operatorname{sign}(K_G)$ stabil über alle $\varepsilon$ und alle vier M1-Varianten — numerische Korrelation, kein bewiesener Krümmungssensor.
 
-**Beweisversuch-Dokument:** [`collatz_morley_gm_beweisversuch.md`](collatz_morley_gm_beweisversuch.md) — Argumente für/gegen, Grenzen, nächste Schritte.
+**Dokumentation:** [`collatz_morley_gm_beweisversuch.md`](collatz_morley_gm_beweisversuch.md) — Argumente für/gegen, Grenzen, nächste Schritte.
 
 **CLI:** `collatz_morley_tm_numerik.py m3` → `collatz_morley_m3_beweisversuch.json`.
 
 **Artefakte:** `tests/test_morley_m3_beweisversuch.py`.
 
-**Epistemisches Label:** **Conjecture / Experiment** — nur Evidenz, kein Beweis.
+**Epistemisches Label:** **Conjecture / Experiment** — nur numerische Evidenz.
 
 > **Boxed (M3-Befund):**  
-> *Dualer Fit bestätigt $F_M \propto A^2$ und $G_M \propto A$ mit hohem $R^2$. Vorzeichen von $G_M$ ist über $\varepsilon$ und Varianten stabil — plausibler signierter Krümmungssensor, aber definitionsabhängig und nur numerisch.*
+> *Dualer Fit bestätigt $F_M \propto A^2$ und $G_M \propto A$ mit hohem $R^2$. Vorzeichen von $G_M$ ist über $\varepsilon$ und Varianten stabil — $G_M$ bleibt experimenteller Kandidat, definitionsabhängig und nur numerisch.*
 
 ---
 
