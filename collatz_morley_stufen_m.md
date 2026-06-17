@@ -16,7 +16,7 @@
 > *Arithmetische Symbolik mit Invarianzproblem* — Kodierungsstabilität, $\mathcal{L}_{\mathrm{arith}}^*$, Stufe 3 (`collatz_stufe3_kappa_invarianz.md`).
 
 > **Boxed (Morley-Zweig):**  
-> *Geometrischer Operator mit überraschender lokaler Stabilität* — Definitionsrobustheit von $T_M^{(g)}$, Krümmungssensor $F_M$.
+> *Geometrischer Operator mit überraschender lokaler Stabilität* — Definitionsrobustheit von $T_M^{(g)}$, experimentelle Testgröße $F_M$.
 
 > **Boxed (Roadmap):**  
 > *PR #44 mergen (M1) → M2 ($F_M$, $G_M$ auf Ebene / $S^2$ / $H^2$) → M3 (dualer Exponentenfit)*  
