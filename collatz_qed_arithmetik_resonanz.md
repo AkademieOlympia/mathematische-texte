@@ -138,9 +138,10 @@ Renormierung als Schnitt/Invarianz, Negativtests als Buchhaltung — im Sinne vo
 
 ## Operative Konsequenz für den Generalangriff
 
-1. **Zwei parallele „Schleifen“:** arithmetischer $\kappa$-Zweig (Verdünnung, $\mathcal{L}_{\mathrm{arith}}^*$)
-   und geometrischer Morley-Zweig (M1–M3, $\Phi_M$, Babylon). Scheitern in einem Zweig impliziert
-   kein Scheitern im anderen.
+1. **Drei parallele Sensoren:** arithmetischer $\kappa$-Zweig (Verdünnung, $\mathcal{L}_{\mathrm{arith}}^*$),
+   geometrischer Morley-Zweig (M1–M3, $\Phi_M$, Babylon) und **EABC-Bernoulli-Zweig**
+   ($\Phi_B$, $V(B_{2n})$, von-Staudt-PrimeSig; `collatz_eabc_bernoulli_uebersetzung.md`).
+   Scheitern in einem Zweig impliziert kein Scheitern in den anderen.
 2. **Konstanten-Ledger:** $R(k)$, $h_F$, $F_M$, $G_M$, $W_M$ sind **Buchhaltung** — wie QED-Konstanten
    in IEANTN, nicht wie fertige Theoreme.
 3. **Nächste saubere Fragen:** Ist $R(k)$ κ-robust (**Conjecture**)? Ist $\mathcal{L}_{\mathrm{arith}}^*$
@@ -158,6 +159,7 @@ Renormierung als Schnitt/Invarianz, Negativtests als Buchhaltung — im Sinne vo
 | `collatz_stufe3_kappa_invarianz.md` | $\kappa$, $R(k)$, $\mathcal{L}_{\mathrm{arith}}^*$ |
 | `collatz_morley_stufen_m.md` | M1 → M2 → M3 |
 | `collatz_morley_gm_beweisversuch.md` | $G_M$, $\Phi_M$, Babylon 3-4-5 |
+| `collatz_eabc_bernoulli_uebersetzung.md` | EABC-Bernoulli-Sensor $\Phi_B$, von Staudt--Clausen |
 
 ---
 
