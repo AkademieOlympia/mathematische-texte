@@ -41,6 +41,7 @@ in solchen Ringen — ein **Theorem** der kommutativen Algebra, kein Algorithmus
 - `collatz_eabc_invarianzprogramm.md` (Fluktuationsfeld $\delta(x)$, EABC-Invarianten) — Branch `collatz/eabc-invarianzprogramm`
 - `PAPER_HURWITZ_RESONANZ.md` (Hurwitz-Gitter, $\Pi_\Gamma$, Primideale in $\mathbb{H}$)
 - `collatz_eabc_quaternion_mass_hypothese.md` / `collatz_eabc_hurwitz_orbit_test.py` — Normschale $\Sigma_p$, $\mu_p$, $H_p$, Chiralität (PR #54)
+- `collatz_eabc_kommutator_assoziator.md` — **Kommutator vs. Assoziator** entlang $\mathbb{R}\subset\mathbb{C}\subset\mathbb{H}\subset\mathbb{O}$; $\chi_p$ (H) vs. $M_n^E$ (O) (PR #54)
 - `collatz_eabc_oktonion_singularitaet.md` / `collatz_eabc_oktonion_shell_stub.py` — Oktanionische $\Sigma_n^{(8)}$, $S^7$, Singularitätshypothese (PR #54)
 - `Divisionsalgebren.md`, `Grundsatzartikel_Hurwitz_Raum.tex`
 
@@ -307,6 +308,7 @@ $$\boxed{
 | `Hurwitz 24.py` | 24 Hurwitz-Einheiten, Quaternionen-Arithmetik |
 | `collatz_eabc_hurwitz_orbit_test.py` | Schalenmaß $\mu_p$ auf $\Sigma_p$, $U_{\mathrm H}$-Orbits, volle $\Gamma$ |
 | `collatz_eabc_quaternion_mass_hypothese.md` | **Kanonsiche** Quaternionen-EABC-Maßhypothese §1–§13 |
+| `collatz_eabc_kommutator_assoziator.md` | Kommutator (Torsion/Chiralität $\chi$) vs. Assoziator (Krümmung/$M_n^E$) |
 | `collatz_eabc_oktonion_singularitaet.md` | Oktanionische EABC-Singularitätshypothese ($\Sigma_n^{(8)}$, $S^7$) |
 | `collatz_eabc_oktonion_shell_stub.py` | Stub: $r_8(n)$ für kleines $n$ (kein $\mu_n$) |
 | `collatz_eabc_hurwitz_spaltung.md` | Redirect → Maßhypothese |

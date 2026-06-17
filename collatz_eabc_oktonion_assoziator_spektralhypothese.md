@@ -7,6 +7,7 @@
 **Tao-Labels:** Definition | Theorem | Conjecture | Heuristik | Experiment
 
 **Querverweise:**
+- `collatz_eabc_kommutator_assoziator.md` — Kommutator (Chiralität $\chi$, $\mathbb{H}$) vs. Assoziator ($M_n^E$, $\mathbb{O}$)
 - `collatz_eabc_oktonion_singularitaet.md` §3.7–§3.8 — Assoziator, Spektrum
 - `collatz_eabc_plattenuebergang.md` §2.6 — $\mathfrak{a}_E(n)$, Platten-Klammerung
 - `collatz_eabc_oktonion_associator.py` — algebraischer und EABC-Assoziator

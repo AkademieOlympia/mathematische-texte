@@ -8,7 +8,8 @@
 **Dirichlet-Erzeuger:** `collatz_eabc_dirichlet_D.py` → `collatz_eabc_dirichlet_D.json`  
 **Tao-Labels:** Definition | Theorem | Conjecture | Heuristik | Experiment
 
-**Querverweise:** `collatz_eabc_normabstieg_hypothese.md` · `collatz_eabc_euklidische_hebung.md` ·
+**Querverweise:** `collatz_eabc_kommutator_assoziator.md` (Kommutator/Chiralität $\chi_p$; Assoziator-Spektrum auf $\mathbb{O}$) ·
+`collatz_eabc_normabstieg_hypothese.md` · `collatz_eabc_euklidische_hebung.md` ·
 `collatz_eabc_plattenuebergang.md` (kanonsiche $\Sigma_n$-Plattenhypothese, PR #54) ·
 `collatz_eabc_oktonion_singularitaet.md` (8D-Forschungsprogramm, PR #54) ·
 `collatz_eabc_zerlegungsregimen.md` ($Z(n)$, $\Delta Z$, operative Regimen-Zählung) ·
