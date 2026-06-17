@@ -548,7 +548,7 @@ Dieses Dokument hält die **geometrische Brücke** offen, aber **epistemisch abg
 | 8 | Operator statt Metrik (Leitsatz) | organisatorisch | **revidiert** |
 | 9 | Sensoren $F_M,S_M,K_M$ | Definition | **definiert** |
 | 10 | Ikosaeder–Dodekaeder + $T_M$ | heuristisch / Experiment | **§ Ikosaeder–Dodekaeder-Dualität** |
-| 11 | Numerik / Lean-Formalismus | Experiment | **fehlt** |
+| 11 | Numerik M1→M2→M3 / Lean | Experiment | **M1 aktiv** (`collatz_morley_stufen_m.md`) |
 
 ---
 
