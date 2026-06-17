@@ -662,6 +662,121 @@ geometrische Lesart des Nenners $12$ bei $\zeta(-1)$, nicht ein
 Nullstellenort der Zetafunktion.
 
 %======================================================================
+\section{Numerische Zeugen und Nicht-Zeugen}
+\label{sec:numerische-zeugen}
+%======================================================================
+
+\begin{definition}[Epistemische Taxonomie numerischer Zeugen]
+Im EABC-Modell heißt ein \emph{Zeuge} eine reproduzierbare numerische
+oder geometrische Beobachtung, die \emph{nur} die EABC-Struktur
+(Restklassen mod~$12$, Primvierlingsfenster, Projektionsoperator,
+polyedrische Symmetrie) stützt --- ohne Collatz-Dynamik,
+ohne $\Einf$ und ohne Bernoulli-Lyapunov-Anspruch.
+\end{definition}
+
+\begin{bemerkung}[Abgrenzung]
+Die folgende Tabelle trennt bewusst \emph{was belegt} von
+\emph{was nicht belegt}. Ein Eintrag unter ``Zeuge JA'' ist kein
+Schritt zum Collatz-Beweis; ein Eintrag unter ``Zeuge NEIN'' kann
+wohldefiniert, aber ohne numerischen Befund oder nur Gedankenmodell sein.
+\end{bemerkung}
+
+\begin{center}
+  \small
+  \begin{tabular}{@{}p{2.6cm}p{1.4cm}p{4.8cm}p{4.8cm}@{}}
+    \toprule
+    Zeuge & Status & Was belegt & Was \emph{nicht} belegt \\
+    \midrule
+    Chiralität ABCE/CEAB &
+    JA &
+    Chirale Doppelstruktur markierter Primvierlinge; im Integrationsstrom
+    $\sim\!100$ vs.\ $\sim\!26$ gegen Permutations-Null ($p<10^{-4}$);
+    relative Signatur $\approx 47\%/53\%$ mit Null vereinbar
+    (\texttt{wolfram.py}, \texttt{SCIENTIFIC\_CLAIM}) &
+    Collatz; globale $C$-Dominanz; dynamische $\Phi$-Brücke \\
+    \addlinespace
+    Span-Zeuge &
+    JA &
+    $\mathrm{span}(Q(p))=p_4-p_1=10+12g$ für Primvierlingsfenster;
+    modulare Leiter-Geometrie (\texttt{Beweis\_Spanne\_EABC.tex},
+    \texttt{prognoseEABC.py}) &
+    Punktweise Collatz-Konvergenz; $\Einf=\emptyset$ \\
+    \addlinespace
+  $24I_3$-Zeuge &
+    JA &
+    $M_{\mathrm{eff}}\to 24I_3$ als isotroper Fixpunkt unter
+    $R^*_{\mathrm{EABC}}$ (\texttt{EABC Intermediate.tex},
+    \texttt{eabc\_icosahedron\_test.py}) &
+    Collatz-Attraktor $E$; Bernoulli-Uhr als Dynamik \\
+    \addlinespace
+    Ikosaeder/Dodekaeder &
+    JA &
+    Anisotropy $=0$ für geometrische EABC-Zuweisung vs.\ $>0$ bei
+    Zufallszuweisung (\texttt{eabc\_icosahedron\_test.py}) &
+    Hurwitz-Quaternionen-Uhr; mod-$12$-Spezialfall allein \\
+    \midrule
+    Bernoulli-Uhr &
+    NEIN &
+    Wohldefinierte Gewichtsformel $U(m)$ auf $\mathcal{E}_\pm$
+    (Abschnitt~\ref{sec:bernoulli-uhr}) &
+    Numerischer Collatz-Befund; Konjugation; $\Einf$ \\
+    \addlinespace
+    $z_0$ dynamisch &
+    NEIN &
+    Algebraische Identität $z_0=\zeta(-1)(12+\mathrm{i})$,
+    Anker auf $K_{12}$ (Abschnitt~3) &
+    Relevanz für $\dist_2(\cdot,\Einf)$ oder $\Phi$ \\
+    \addlinespace
+    $\Phpref$ &
+    offen &
+    Wohldefinierte Vorabbildung auf $\SigmaEABC^{<\omega}$
+    (Abschnitt~\ref{sec:phi}, \texttt{PrefProjection.lean}) &
+    Dynamische Brücke $\Phi=\Phpref\circ\kappa$;
+    \emph{Datentest} unten \\
+    \addlinespace
+    Collatz / $\Einf$ &
+    NEIN &
+    Präzise Äquivalenz $\Einf=\emptyset\Leftrightarrow$ Collatz
+    (\texttt{collatz\_equivalenz\_e\_infty.tex}) &
+    Beweis; Uniformitätslücke (§2 in
+    \texttt{collatz\_offene\_punkte.md}) \\
+    \bottomrule
+  \end{tabular}
+\end{center}
+
+\subsection{Offener Datentest: \texorpdfstring{$\Phpref$}{Phi\_pref}}
+
+\begin{definition}[Datentest $\Phpref$ auf Primvierlingswörtern]
+Für $w\in\SigmaEABC^{<\omega}$ mit Phasenindex $\Theta(w)$ und
+chiraler Normalisierung $u(w)$ (Abschnitt~\ref{sec:phi}) bilde
+\[
+\Phpref(w)=\bigl(z_0+\rho(w)\,u(w),\ |w|\bigr),
+\qquad
+\rho(w)=2^{-|w|},\quad z_0=-1-\mathrm{i}/12.
+\]
+Vergleiche die Verteilung in $\mathcal{M}=\C\times\R$ für
+\begin{enumerate}[nosep]
+  \item reale Primvierlings-EABC-Wörter $w(p)$ aus $Q(p)=(p,p+2,p+6,p+8)$,
+  \item Zufallswörter gleicher Längenverteilung aus $\SigmaEABC^{|w(p)|}$.
+\end{enumerate}
+\end{definition}
+
+\begin{bemerkung}[Erfolgskriterium]
+\emph{Erfolg} wäre eine sichtbare Trennung in zwei chirale Röhren
+$T_{\mathrm{ABCE}}$ und $T_{\mathrm{CEAB}}$ (Phasen $+\mathrm{i}$ bzw.\
+$-\mathrm{i}$ nach Normalisierung) gegenüber diffuser Zufallsdaten.
+\emph{Kein Erfolg} wäre Überlappung oder bloße Trivialität
+(alle Vierlinge tragen nur die Wörter $\mathrm{ABCE}$/$\mathrm{CEAB}$).
+\end{bemerkung}
+
+\begin{remark}[Nichtbehauptung]
+Der Skripttest \texttt{collatz\_phi\_pref\_test.py} ist ein
+\emph{explorativer} Datentest. Ein positives Clustering-Bild stützt
+höchstens die geometrische Lesart von $\Phpref$ auf EABC-Wörtern;
+es beweist weder $\Phi=\Phpref\circ\kappa$ noch $\Einf=\emptyset$.
+\end{remark}
+
+%======================================================================
 \section{Abgrenzung}
 %======================================================================
 

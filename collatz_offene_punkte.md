@@ -117,6 +117,29 @@ Konvergenz.
   (`BernoulliCell`, `bernoulliTriplet`). **Kein Collatz-Beweis**, keine
   Lyapunov-Nutzung (Bernoulli-Normschale bleibt No-Go).
 
+### 4a. Epistemische Taxonomie numerischer Zeugen (EABC, nicht Collatz)
+
+| Zeuge | Status | Was belegt | Was **nicht** belegt |
+|-------|--------|------------|----------------------|
+| Chiralität ABCE/CEAB | **JA** | Chirale Doppelstruktur; Integrationsstrom ~100 vs. ~26 gegen Permutations-Null ($p<10^{-4}$); Signatur ~47 %/53 % mit Null vereinbar (`wolfram.py`) | Collatz; globale $C$-Dominanz; dynamische $\Phi$ |
+| Span-Zeuge | **JA** | $\mathrm{span}=10+12g$ für Primvierlingsfenster (`Beweis_Spanne_EABC.tex`) | Punktweise Konvergenz; $E_\infty=\emptyset$ |
+| $24I_3$-Zeuge | **JA** | $M_{\mathrm{eff}}\to 24I_3$ unter $R^*_{\mathrm{EABC}}$ (`EABC Intermediate.tex`) | Collatz-Attraktor; Bernoulli-Uhr als Dynamik |
+| Ikosaeder/Dodekaeder | **JA** | Anisotropy $=0$ (geometrisch) vs. $>0$ (Zufall) (`eabc_icosahedron_test.py`) | Hurwitz-Uhr; mod-12 allein |
+| Bernoulli-Uhr | **NEIN** | Definition $\to$ Geometrie $\to$ Interpretation | Numerischer Collatz-Befund |
+| $z_0$ dynamisch relevant | **NEIN** | Algebraischer Anker $z_0=\zeta(-1)(12+\mathrm{i})$ | $\mathrm{dist}_2(\cdot,E_\infty)$ |
+| $\Phi_{\mathrm{pref}}$ | **offen** | Wohldefiniert auf EABC-Wörtern (`PrefProjection.lean`) | Brücke $\Phi=\Phi_{\mathrm{pref}}\circ\kappa$ ohne Datentest |
+| Collatz / $E_\infty$ | **NEIN** | Äquivalenz präzise formuliert | Beweis |
+
+**Offener Datentest $\Phi_{\mathrm{pref}}$:** Für Primvierlingswörter
+$w(p)$ aus $Q(p)$ und Zufallswörter gleicher Länge berechne
+$\Phi_{\mathrm{pref}}(w)=(z_0+2^{-|w|}u(w),|w|)$ mit $z_0=-1-\mathrm{i}/12$
+und chiraler Normalisierung $u(\mathrm{ABCE})=+\mathrm{i}$,
+$u(\mathrm{CEAB})=-\mathrm{i}$ (`collatz_kepler_gedankenexperiment.tex`,
+Abschnitt~Numerische Zeugen). Skript: `collatz_phi_pref_test.py`.
+Erfolg = zwei chirale Röhren $T_{\mathrm{ABCE}}$, $T_{\mathrm{CEAB}}$
+vs. diffuse Zufallsdaten; **ehrliche Auswertung** — kein Erfolg nur
+wegen Trivialität (alle Vierlinge sind nur ABCE/CEAB-Wörter der Länge~4).
+
 ---
 
 ## 5. Mathlib-Lücken (Kingman, Birkhoff, etc.)
