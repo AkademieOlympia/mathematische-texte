@@ -98,6 +98,11 @@ Konvergenz.
 - **Informationszerreibung:** Heuristik $I_n(k)\sim(0.35)^k$; rigorose Definition als
   bedingte Entropie $H(B_{k+1}\mid B_1,\ldots,B_k)$ offen.
 - **Bernoulli-Normschale:** Lyapunov-Nutzung ist No-Go (bewiesen).
+- **Geometrisches Gedankenexperiment:** Spekulative Skizze
+  $\Phi:\mathbb{Z}_2\to\mathcal{M}=\mathbb{C}\times\mathbb{R}$,
+  Zwölfer-Kreis $K_{12}$, Stirling--Bernoulli--Zeta-Anbindung und
+  $\mathcal{E}_\infty\subset\mathcal{M}$ in
+  `collatz_kepler_gedankenexperiment.tex` (kein Beweisanspruch).
 
 ---
 
@@ -177,3 +182,4 @@ Wo Mathlib endet, endet der formalisierte Teil — dokumentiert, nicht verschwie
 - `collatz_z2_attraktor.tex` — §8 Roadmap, §Offene Fragen
 - `collatz_z2_attraktor.lean` — Stufen A–E
 - `collatz_uniformity_e.lean` — Beweisversuche Stufe E
+- `collatz_kepler_gedankenexperiment.tex` — geometrisches Gedankenexperiment ($\Phi$, $K_{12}$, Stirling/Bernoulli; spekulativ)
