@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Diskreter EABC-Assoziator auf V₄ = {E,A,B,C} — Negativkontrolle.
+Diskreter V₄-Klammertest = {E,A,B,C} — Negativkontrolle (kein „EABC-Assoziator“).
 
 Kanonsiche Theorie: collatz_eabc_discrete_associator.md
-                   collatz_eabc_holonomie.md  (Korrektur: Holonomie ≠ V₄-𝔞)
+                   collatz_eabc_holonomie.md  (projektive Holonomie ℋ_E, χ_E, ω)
                    collatz_eabc_kommutator_assoziator.md
 
 Φ(X,Y) aus eabc_from_lean / EABC.lean:

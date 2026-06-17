@@ -1,6 +1,12 @@
-# Diskreter EABC-Assoziator auf $V_4$
+# Diskreter EABC-Assoziator auf $V_4$ — Negativkontrolle
 
-**Status:** Definition + Experiment (ehrliche $V_4$-Antwort)  
+> **Redirect (kanonisch, PR #54):** Der naive diskrete „EABC-Assoziator“ auf $V_4$ **verschwindet**
+> ($\mathfrak a_{\mathrm{naiv}}\equiv 0$, Klein-Vierergruppe). Für Chiralität und Klammerdefekte siehe
+> **`collatz_eabc_holonomie.md`** — **projektive EABC-Holonomie** $\mathcal H_E$, $\omega$, $\chi_E(N)$.
+> Der Begriff „EABC-Assoziator“ ist auf $V_4$-Ebene **deprecated**; der **algebraische** Assoziator
+> $[x,y,z]$ auf $\mathbb{O}$ bleibt in `collatz_eabc_oktonion_associator.py` gültig.
+
+**Status:** Theorem (Trivialität) + Negativkontrolle  
 **Branch:** `collatz/eabc-euklidische-hebung` (PR #54)  
 **Tao-Labels:** Definition | Theorem | Heuristik | Experiment
 
@@ -13,14 +19,15 @@
 
 ---
 
-## 1. Motivation
+## 1. Motivation (Negativkontrolle)
 
-Der volle Oktanion-Assoziator (`collatz_eabc_oktonion_associator.py`) ist auf $\mathbb{O}$
+Der volle **algebraische** Oktanion-Assoziator $[x,y,z]$ (`collatz_eabc_oktonion_associator.py`) ist auf $\mathbb{O}$
 **typisch $\neq 0$**. Für die **sichtbare** EABC-Ebene — vier Familien $\{E,A,B,C\}$ modulo
-$12$ — genügt ein **diskreter** Assoziator auf $V_4$, ohne $8$D-Gitter.
+$12$ — wurde ein diskreter Klammertest auf $V_4$ formuliert.
 
-**Frage:** Trägt die Klammerung $(XY)Z$ vs. $X(YZ)$ auf $V_4$ noch messbare Information,
-oder ist $\Phi$ dort schon assoziativ?
+**Ergebnis (Theorem):** $\Phi$ ist assoziativ; $\mathfrak a_{\mathrm{naiv}}\equiv 0$.
+Messbare Chiralität liegt in **projektiver Holonomie** (`collatz_eabc_holonomie.md`: $\mathcal H_E$, $\chi_E$, $\omega$),
+nicht in $V_4$-Nichtassoziativität.
 
 ---
 

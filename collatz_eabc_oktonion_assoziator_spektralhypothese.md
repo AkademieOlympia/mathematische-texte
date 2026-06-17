@@ -7,7 +7,7 @@
 **Tao-Labels:** Definition | Theorem | Conjecture | Heuristik | Experiment
 
 **Querverweise:**
-- `collatz_eabc_holonomie.md` — **Korrektur:** $\Gamma_E$-Holonomie vs. trivialem $V_4$-Assoziator
+- `collatz_eabc_holonomie.md` — **kanonisch:** projektive Holonomie $\mathcal H_E=d_E\circ\Gamma$; $V_4$-„Assoziator“ deprecated
 - `collatz_eabc_kommutator_assoziator.md` — Kommutator (Chiralität $\chi$, $\mathbb{H}$) vs. Assoziator ($M_n^E$, $\mathbb{O}$)
 - `collatz_eabc_oktonion_singularitaet.md` §3.7–§3.8 — Assoziator, Spektrum
 - `collatz_eabc_plattenuebergang.md` §2.6 — $\mathfrak{a}_E(n)$, Platten-Klammerung
@@ -90,10 +90,12 @@ $$\Gamma_E(x) := \bigl(\alpha_1,\beta_1,\ldots,\alpha_8,\beta_8\bigr)\in\mathbb{
 wobei $(\alpha_i,\beta_i)$ die glatt-gestrippte EABC-Zerlegung der $i$-ten Koordinate ist
 ($|c_i|=2^{\alpha_i}3^{\beta_i}c_i'$, $\gcd(c_i',6)=1$; $(0,0)$ bei $c_i=0$; vgl. `kappa_glatt`).
 
-**Definition (EABC-Assoziator-Vektor).**
-$$\Delta\Gamma_E(x,y,z) := \Gamma_E\bigl((xy)z\bigr) - \Gamma_E\bigl(x(yz)\bigr)\in\mathbb{Z}^{16}.$$
+**Definition (projektive EABC-Holonomie / $\Gamma_E$-Differenz).**
+$$\Delta\Gamma_E(x,y,z) := \Gamma_E\bigl((xy)z\bigr) - \Gamma_E\bigl(x(yz)\bigr)\in\mathbb{Z}^{16},\qquad
+\mathcal H_E\bigl((xy)z,x(yz)\bigr) = d_E\bigl(\Gamma_E((xy)z),\,\Gamma_E(x(yz))\bigr).$$
+*(Auf $V_4$ ist der analoge Klammertest trivial; siehe `collatz_eabc_holonomie.md`.)*
 
-**Definition (EABC-Assoziator-Norm-Stufe).**
+**Definition (EABC-Holonomie-Norm-Stufe).**
 $$\alpha_E(x,y,z) := N\bigl(\Delta\Gamma_E(x,y,z)\bigr) = \sum_{j=1}^{16} \Delta\Gamma_{E,j}^2.$$
 
 **Definition (Distanz $d_E$ auf $\Gamma$-Raum).** Für $\gamma,\eta\in\mathbb{Z}^{16}$

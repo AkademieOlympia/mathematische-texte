@@ -141,51 +141,121 @@ def chi_quad_legs(limit: int, quads: list[dict[str, Any]] | None = None) -> dict
 
 
 def holonomy_flux_phi_quad(quads: list[dict[str, Any]]) -> dict[str, Any]:
-    """Φ_quad = mittlere Orientierung ω über Vierlinge ∈ [-1,1]."""
-    if not quads:
-        return {
-            "quadruplet_count": 0,
-            "abce_count": 0,
-            "ceab_count": 0,
-            "omega_sum": 0,
-            "phi_quad": 0.0,
-        }
+    """Φ_quad = mittlere Orientierung ω über Vierlinge ∈ [-1,1] (alias χ_E)."""
+    chi = chi_E_from_quads(quads)
+    return {
+        "quadruplet_count": chi["quadruplet_count"],
+        "abce_count": chi["abce_count"],
+        "ceab_count": chi["ceab_count"],
+        "omega_sum": chi["omega_sum"],
+        "phi_quad": chi["chi_E"],
+        "chi_E": chi["chi_E"],
+    }
+
+
+def chi_E(limit: int, quads: list[dict[str, Any]] | None = None) -> dict[str, Any]:
+    """χ_E(N) = (#ABCE≤N - #CEAB≤N) / (#ABCE≤N + #CEAB≤N) — kanonisch (collatz_eabc_holonomie.md §4)."""
+    if quads is None:
+        quads = enumerate_quadruplets(limit)
+    result = chi_E_from_quads(quads)
+    result["limit"] = limit
+    return result
+
+
+def chi_E_from_quads(quads: list[dict[str, Any]]) -> dict[str, Any]:
     abce = sum(1 for r in quads if r["omega"] == 1)
     ceab = sum(1 for r in quads if r["omega"] == -1)
     omega_sum = sum(int(r["omega"]) for r in quads)
-    n = len(quads)
+    denom = abce + ceab
+    chi = omega_sum / denom if denom else 0.0
     return {
-        "quadruplet_count": n,
+        "quadruplet_count": denom,
         "abce_count": abce,
         "ceab_count": ceab,
         "omega_sum": omega_sum,
-        "phi_quad": omega_sum / n,
+        "chi_E": chi,
+        "formula": "(#ABCE - #CEAB) / (#ABCE + #CEAB)",
+    }
+
+
+def lean_quadruplet_chirality_check(limit: int, quads: list[dict[str, Any]] | None = None) -> dict[str, Any]:
+    """Vergleich Python-ω mit Lean-Chiralität (eabc_from_lean / tests/test_eabc_from_lean.py)."""
+    if quads is None:
+        quads = enumerate_quadruplets(limit)
+    mismatches: list[dict[str, Any]] = []
+    for row in quads:
+        p = row["p"]
+        lean_chi = quadruplet_chirality(p)
+        expected_omega = omega_orientation(lean_chi)
+        if row["omega"] != expected_omega or row["chirality"] != lean_chi.value:
+            mismatches.append({"p": p, "row": row, "lean": lean_chi.value})
+    return {
+        "limit": limit,
+        "quadruplet_count": len(quads),
+        "lean_consistent": len(mismatches) == 0,
+        "mismatch_count": len(mismatches),
+        "mismatches": mismatches[:5],
+    }
+
+
+def chi_equivalence_report(limit: int) -> dict[str, Any]:
+    """χ_E vs. globale χ vs. Lean — Formelmatch und ehrliche Nicht-Identität."""
+    quads = enumerate_quadruplets(limit)
+    global_chi = chi_global(limit)
+    chi_e = chi_E(limit, quads)
+    flux = holonomy_flux_phi_quad(quads)
+    lean = lean_quadruplet_chirality_check(limit, quads)
+    phi_quad_matches_chi_e = abs(flux["phi_quad"] - chi_e["chi_E"]) < 1e-15
+    return {
+        "limit": limit,
+        "chi_E": chi_e["chi_E"],
+        "chi_E_samples": {
+            "1000": chi_E(1000)["chi_E"],
+            "5000": chi_E(5000)["chi_E"],
+            "10000": chi_E(min(limit, 10_000))["chi_E"],
+        },
+        "chi_global": global_chi["chi"],
+        "phi_quad": flux["phi_quad"],
+        "phi_quad_equals_chi_E": phi_quad_matches_chi_e,
+        "lean_quadruplet_consistent": lean["lean_consistent"],
+        "formula_chi_E": chi_e["formula"],
+        "formula_chi_global": "((E+C)-(A+B)) / pi_gt3",
+        "equivalence": {
+            "chi_E_equals_phi_quad": phi_quad_matches_chi_e,
+            "chi_E_equals_chi_global": False,
+            "note": (
+                "χ_E(N) und Φ_quad sind dieselbe Vierlings-Observable; "
+                "χ(x) aus Invarianzprogramm zählt alle Primzahlen — verschiedene Räume."
+            ),
+        },
     }
 
 
 def holonomy_chi_connection(limit: int) -> dict[str, Any]:
-    """Ehrlicher Vergleich: globale χ vs. Vierlings-Holonomie vs. Bein-χ."""
+    """Ehrlicher Vergleich: globale χ vs. χ_E vs. Bein-χ vs. Lean."""
     quads = enumerate_quadruplets(limit)
     global_chi = chi_global(limit)
     quad_legs = chi_quad_legs(limit, quads)
-    flux = holonomy_flux_phi_quad(quads)
+    chi_e = chi_E(limit, quads)
+    equiv = chi_equivalence_report(limit)
     all_chi_leg_zero = all(r["chi_leg"] == 0 for r in quads)
     return {
         "limit": limit,
         "chi_global": global_chi["chi"],
+        "chi_E": chi_e["chi_E"],
         "chi_quad_legs": quad_legs["chi_legs"],
-        "phi_quad_holonomy": flux["phi_quad"],
+        "phi_quad_holonomy": chi_e["chi_E"],
         "all_quadruplet_chi_leg_zero": all_chi_leg_zero,
+        "lean_consistent": equiv["lean_quadruplet_consistent"],
+        "chi_E_equals_phi_quad": equiv["phi_quad_equals_chi_E"],
         "verdict": (
             "χ_leg(Q)=0 für alle kanonischen Vierlinge (balancierte Signaturen); "
             "ω(Q)∈{±1} misst Orientierung, nicht Bein-Asymmetrie. "
-            "Globale χ(x) und Φ_quad sind verwandte chirale Observablen in verschiedenen Räumen — "
+            "χ_E(N)=(#ABCE-#CEAB)/(#ABCE+#CEAB) = Φ_quad (Formelmatch). "
+            "Globale χ(x) und χ_E sind verwandte chirale Observablen in verschiedenen Räumen — "
             "nicht identisch."
         ),
-        "equivalence_note": (
-            "Holonomie auf Vierlingen ERWEITERT χ: χ auf Beinen trivial; "
-            "Φ_quad codiert ABCE/CEAB-Phase. Globale χ trackt Φ₁-Modus der Primzählung."
-        ),
+        "equivalence_note": equiv["equivalence"]["note"],
     }
 
 
@@ -240,8 +310,8 @@ def run(limit: int = 10_000, output: Path = DEFAULT_OUTPUT) -> dict[str, Any]:
             "module": "collatz_eabc_holonomie_test.py",
             "theory": "collatz_eabc_holonomie.md",
             "correction": (
-                "V₄ Klein → naive 𝔞≡0; echter Defekt = Γ-Holonomie auf Trägern; "
-                "ω(ABCE)=+1, ω(CEAB)=-1"
+                "V₄ Klein → naive 𝔞≡0; echter Defekt = projektive Holonomie ℋ_E; "
+                "ω(ABCE)=+1, ω(CEAB)=-1; χ_E=(#ABCE-#CEAB)/(#ABCE+#CEAB)"
             ),
         },
         "v4_associativity_proof": v4_proof,
@@ -253,11 +323,15 @@ def run(limit: int = 10_000, output: Path = DEFAULT_OUTPUT) -> dict[str, Any]:
             "chi_quad_legs": chi_quad_legs(limit, quads),
         },
         "chi_global": chi_global(limit),
+        "chi_E": chi_E(limit, quads),
+        "chi_equivalence": chi_equivalence_report(limit),
+        "lean_quadruplet_check": lean_quadruplet_chirality_check(limit, quads),
         "holonomy_chi_connection": holonomy_chi_connection(limit),
         "octonion_gamma_holonomy": octonion_gamma_holonomy_samples(),
         "epistemic_labels": {
             "v4_proof": "Theorem",
             "omega_orientation": "Definition",
+            "chi_E": "Definition",
             "phi_quad": "Experiment",
             "chi_global": "Definition",
             "holonomy_chi_verdict": "Experiment",
@@ -278,13 +352,15 @@ def main() -> None:
     proof = report["v4_associativity_proof"]
     conn = report["holonomy_chi_connection"]
     flux = report["quadruplets"]["holonomy_flux"]
+    chi_e = report["chi_E"]
     print("=== EABC-Holonomie ===")
     print(proof["verdict"])
     print(f"V₄ assoziativ: {proof['associative']}  ({proof['triples_tested']} Tripel)")
     print(f"Vierlinge bis {args.limit}: {flux['quadruplet_count']}  "
           f"(ABCE {flux['abce_count']}, CEAB {flux['ceab_count']})")
-    print(f"Φ_quad = {flux['phi_quad']:.4f}  |  χ_global = {conn['chi_global']:.6f}  |  "
-          f"χ_quad_legs = {conn['chi_quad_legs']:.6f}")
+    print(f"χ_E(N) = {chi_e['chi_E']:.4f}  |  Φ_quad = {flux['phi_quad']:.4f}  |  "
+          f"χ_global = {conn['chi_global']:.6f}  |  χ_quad_legs = {conn['chi_quad_legs']:.6f}")
+    print(f"χ_E-Formelmatch Φ_quad: {conn['chi_E_equals_phi_quad']}  |  Lean konsistent: {conn['lean_consistent']}")
     print(conn["verdict"])
     print(f"JSON: {report['output_path']}")
 

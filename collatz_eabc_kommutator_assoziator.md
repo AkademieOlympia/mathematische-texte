@@ -9,8 +9,8 @@
 - `collatz_eabc_quaternion_mass_hypothese.md` §7 — **Chiralität** $\chi_p$ auf $\Sigma_p$ (operatives Quaternion-Programm)
 - `collatz_eabc_oktonion_assoziator_spektralhypothese.md` — **Assoziator-Spektrum** $M_n(t)$, $M_n^E(t)$, $\hat D_E(s)$
 - `collatz_eabc_oktonion_associator.py` / `collatz_eabc_oktonion_spectrum.py` — Oktanion-Experimente
-- `collatz_eabc_discrete_associator.md` / `collatz_eabc_discrete_associator.py` — **diskreter** $V_4$-Assoziator ($\Phi$ mod $12$, $\mathfrak a\equiv 0$)
-- `collatz_eabc_holonomie.md` / `collatz_eabc_holonomie_test.py` — **Korrektur:** Holonomie $\Gamma((xy)z)-\Gamma(x(yz))$, $\omega(Q)\in\{\pm1\}$ vs. trivialem $V_4$-$\mathfrak a$
+- `collatz_eabc_discrete_associator.md` / `collatz_eabc_discrete_associator.py` — **Negativkontrolle:** diskreter $V_4$-Klammertest ($\mathfrak a_{\mathrm{naiv}}\equiv 0$, kein „EABC-Assoziator“)
+- `collatz_eabc_holonomie.md` / `collatz_eabc_holonomie_test.py` — **kanonisch:** projektive Holonomie $\mathcal H_E$, $\chi_E(N)$, $\omega(Q)$; $V_4$-$\mathfrak a_{\mathrm{naiv}}$ trivial
 - `collatz_eabc_quaternion_commutator_stub.py` — Kommutator-Norm-Stub auf $\mathbb{H}$ ($n\le 20$)
 
 ---
@@ -143,17 +143,19 @@ Stub: `collatz_eabc_quaternion_commutator_stub.py` zeigt für $n\le 20$, dass $\
 
 **Label:** $\chi_p$ = **Experiment**; Kommutator-Spektrum $C_n$ = **Conjecture** / geplantes **Experiment**.
 
-### Diskretes $V_4$ — Assoziator **trivial**; Holonomie **nicht** (PR #54)
+### Diskretes $V_4$ — Klammertest **trivial**; Holonomie **nicht** (PR #54)
 
 Auf der sichtbaren EABC-Ebene $\{E,A,B,C\}$ mit $\Phi(X,Y)=\mathrm{classOf}(\mathrm{residue}(X)\cdot\mathrm{residue}(Y))$
 ist $\Phi$ die Klein-Vierergruppe — **assoziativ**, $\mathfrak a_{\mathrm{naiv}}\equiv 0$ für alle $4^3$ Tripel
-(`collatz_eabc_discrete_associator.md`, **Theorem**). ABCE/CEAB sind **Orientierungen** $\omega(Q)\in\{+1,-1\}$,
-keine $V_4$-Produkte (`collatz_eabc_holonomie.md`).
+(`collatz_eabc_discrete_associator.md`, **Theorem**). Der Begriff „EABC-Assoziator“ auf $V_4$ ist **deprecated**.
+ABCE/CEAB sind **Orientierungen** $\omega(Q)\in\{+1,-1\}$, Vierlings-Chiralität $\chi_E(N)$
+(`collatz_eabc_holonomie.md`).
 
-Der **echte** EABC-Klammerdefekt ist **projektionsbasierte Holonomie**
-$\mathfrak a_E(x,y,z)=\Gamma((xy)z)-\Gamma(x(yz))$ auf Trägern ($\mathbb O$, Vierlinge) — nicht $\mathfrak a_{\mathrm{naiv}}$ auf $V_4$.
+Der **echte** EABC-Klammerdefekt ist **projektive Holonomie**
+$\mathcal H_E(\gamma_1,\gamma_2)=d_E(\Gamma(\gamma_1),\Gamma(\gamma_2))$ auf Trägern ($\mathbb O$, Vierlinge) —
+nicht $\mathfrak a_{\mathrm{naiv}}$ auf $V_4$.
 
-**Label:** $V_4$-Trivialität = **Theorem**; $\omega$-Holonomie = **Definition**; $\Gamma_E$-Holonomie = **Experiment**.
+**Label:** $V_4$-Trivialität = **Theorem**; $\omega$, $\chi_E$ = **Definition**; $\mathcal H_E$ auf $\mathbb O$ = **Experiment**.
 
 ### Oktanionen ($\mathbb{O}$) — **beide** Defekte relevant
 

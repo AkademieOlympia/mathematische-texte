@@ -10,12 +10,15 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from collatz_eabc_discrete_associator import prove_v4_klein_associativity
 from collatz_eabc_holonomie_test import (
+    chi_E,
+    chi_equivalence_report,
     chi_global,
     chi_leg_score,
     chi_quad_legs,
     enumerate_quadruplets,
     holonomy_chi_connection,
     holonomy_flux_phi_quad,
+    lean_quadruplet_chirality_check,
     octonion_gamma_holonomy_samples,
     omega_orientation,
     quadruplet_chirality,
@@ -73,6 +76,37 @@ def test_chi_quad_legs_zero():
     assert legs["chi_fluct_legs"] == 0
 
 
+def test_chi_E_formula_matches_counts():
+    quads = enumerate_quadruplets(5000)
+    report = chi_E(5000, quads)
+    abce = report["abce_count"]
+    ceab = report["ceab_count"]
+    expected = (abce - ceab) / (abce + ceab)
+    assert abs(report["chi_E"] - expected) < 1e-15
+
+
+def test_chi_E_equals_phi_quad():
+    quads = enumerate_quadruplets(5000)
+    chi = chi_E(5000, quads)
+    flux = holonomy_flux_phi_quad(quads)
+    assert abs(chi["chi_E"] - flux["phi_quad"]) < 1e-15
+    assert abs(chi["chi_E"] - flux["chi_E"]) < 1e-15
+
+
+def test_lean_quadruplet_chirality_consistent():
+    check = lean_quadruplet_chirality_check(5000)
+    assert check["lean_consistent"]
+    assert check["mismatch_count"] == 0
+
+
+def test_chi_equivalence_report():
+    equiv = chi_equivalence_report(5000)
+    assert equiv["phi_quad_equals_chi_E"]
+    assert equiv["lean_quadruplet_consistent"]
+    assert equiv["equivalence"]["chi_E_equals_phi_quad"]
+    assert not equiv["equivalence"]["chi_E_equals_chi_global"]
+
+
 def test_holonomy_flux_bounded():
     quads = enumerate_quadruplets(5000)
     flux = holonomy_flux_phi_quad(quads)
@@ -83,6 +117,8 @@ def test_holonomy_flux_bounded():
 def test_holonomy_chi_connection_honest():
     conn = holonomy_chi_connection(5000)
     assert conn["all_quadruplet_chi_leg_zero"]
+    assert conn["chi_E_equals_phi_quad"]
+    assert conn["lean_consistent"]
     assert "nicht identisch" in conn["verdict"]
 
 
