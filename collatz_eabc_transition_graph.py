@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """
-Gerichteter EABC-Übergangsgraph und Zyklus-Holonomie.
+Gerichteter EABC-Übergangsgraph, Pfadorientierung (4-Block) und Zyklus-Holonomie (5-Block).
 
 Kanonsiche Theorie:
-  collatz_eabc_zyklus_holonomie.md  — χ_E(N) auf Primfolge-Gleitfenstern, Hol_E
+  collatz_eabc_zyklus_holonomie.md  — χ_path (4-Block), χ_hol^(5) (5-Block), Hol_E
   collatz_eabc_transport.md         — G_E, Transport T_n
   collatz_eabc_holonomie.md         — χ_E^quad auf Prim-Vierlingen (Vergleich)
 
-χ_E(N) = Σ Ω(Q_n) / #{Ω≠0}  auf Gleitfenstern Q_n=(X_n,…,X_{n+3})
+χ_path(N)   = Σ χ_path(Q_n^(4)) / #{χ_path≠0}   — Pfadorientierung ABCE/CEAB
+χ_hol^(5)(N) = Σ Ω^(5)(Q_n^(5)) / #{Ω^(5)≠0}    — geschlossener Zyklus ABCEA/CEABC
 χ_E^quad(N) — arithmetische Prim-Vierlinge (collatz_eabc_holonomie_test.py)
 
 Ausführung:
@@ -36,6 +37,8 @@ LABELS = ("E", "A", "B", "C")
 IDX = {label: i for i, label in enumerate(LABELS)}
 ABCE_WORD = "ABCE"
 CEAB_WORD = "CEAB"
+ABCEA_WORD = "ABCEA"
+CEABC_WORD = "CEABC"
 T_INV = {t(c): c for c in EClass}
 
 Omega = Literal[-1, 0, 1]
@@ -71,8 +74,8 @@ def classes_from_sequence(seq: list[dict[str, Any]]) -> list[str]:
     return [row["class"] for row in seq]
 
 
-def omega_window(word: str) -> Omega:
-    """Ω(Q_n)=+1 (ABCE), -1 (CEAB), 0 sonst."""
+def omega_path(word: str) -> Omega:
+    """4-Block Pfadorientierung: ABCE=+1, CEAB=-1, 0 sonst."""
     if word == ABCE_WORD:
         return 1
     if word == CEAB_WORD:
@@ -80,37 +83,96 @@ def omega_window(word: str) -> Omega:
     return 0
 
 
-def sliding_windows(classes: list[str]) -> list[dict[str, Any]]:
-    """Alle 4-Fenster Q_n auf der Klassenfolge."""
+# Legacy alias
+omega_window = omega_path
+
+
+def omega_5(word: str) -> Omega:
+    """5-Block Zyklus-Holonomie: ABCEA=+1, CEABC=-1, 0 sonst."""
+    if word == ABCEA_WORD:
+        return 1
+    if word == CEABC_WORD:
+        return -1
+    return 0
+
+
+def sliding_windows(classes: list[str], width: int = 4) -> list[dict[str, Any]]:
+    """Gleitfenster fester Breite auf der Klassenfolge."""
+    if width < 1:
+        return []
+    omega_fn = omega_5 if width == 5 else omega_path
     rows: list[dict[str, Any]] = []
-    for i in range(len(classes) - 3):
-        word = "".join(classes[i : i + 4])
-        rows.append({"index": i, "word": word, "omega": omega_window(word)})
+    for i in range(len(classes) - width + 1):
+        word = "".join(classes[i : i + width])
+        rows.append({"index": i, "word": word, "omega": omega_fn(word)})
     return rows
 
 
-def chi_E_sliding(classes: list[str]) -> dict[str, Any]:
-    """
-    χ_E(N) = Σ Ω(Q_n) / #{Ω≠0} auf Primfolge-Gleitfenstern.
-
-    Kanonisch: collatz_eabc_zyklus_holonomie.md §4.
-    """
-    windows = sliding_windows(classes)
+def _chi_from_windows(
+    windows: list[dict[str, Any]],
+    *,
+    carrier: str,
+    formula: str,
+    positive_key: str,
+    negative_key: str,
+) -> dict[str, Any]:
     omega_sum = sum(w["omega"] for w in windows)
-    abce = sum(1 for w in windows if w["omega"] == 1)
-    ceab = sum(1 for w in windows if w["omega"] == -1)
-    nonzero = abce + ceab
+    positive = sum(1 for w in windows if w["omega"] == 1)
+    negative = sum(1 for w in windows if w["omega"] == -1)
+    nonzero = positive + negative
     chi = omega_sum / nonzero if nonzero else 0.0
     return {
         "window_count": len(windows),
-        "abce_windows": abce,
-        "ceab_windows": ceab,
+        positive_key: positive,
+        negative_key: negative,
         "omega_sum": omega_sum,
         "nonzero_windows": nonzero,
-        "chi_E": chi,
-        "formula": "sum(Omega(Q_n)) / #{Omega != 0}",
-        "carrier": "prime_sequence_sliding_windows",
+        "chi": chi,
+        "formula": formula,
+        "carrier": carrier,
     }
+
+
+def chi_path_sliding(classes: list[str]) -> dict[str, Any]:
+    """
+    χ_path(N) = Σ χ_path(Q_n^(4)) / #{χ_path≠0} auf Primfolge-Gleitfenstern.
+
+    Kanonisch: collatz_eabc_zyklus_holonomie.md §4.
+    """
+    windows = sliding_windows(classes, width=4)
+    report = _chi_from_windows(
+        windows,
+        carrier="prime_sequence_sliding_windows_4",
+        formula="sum(chi_path(Q_n^(4))) / #{chi_path != 0}",
+        positive_key="abce_windows",
+        negative_key="ceab_windows",
+    )
+    report["chi_path"] = report["chi"]
+    report["chi_E"] = report["chi"]  # legacy alias
+    return report
+
+
+def chi_hol_sliding(classes: list[str]) -> dict[str, Any]:
+    """
+    χ_hol^(5)(N) = Σ Ω^(5)(Q_n^(5)) / #{Ω^(5)≠0} auf Primfolge-Gleitfenstern.
+
+    Kanonisch: collatz_eabc_zyklus_holonomie.md §5.
+    """
+    windows = sliding_windows(classes, width=5)
+    report = _chi_from_windows(
+        windows,
+        carrier="prime_sequence_sliding_windows_5",
+        formula="sum(Omega^(5)(Q_n^(5))) / #{Omega^(5) != 0}",
+        positive_key="abcea_windows",
+        negative_key="ceabc_windows",
+    )
+    report["chi_hol"] = report["chi"]
+    report["chi_hol_5"] = report["chi"]
+    return report
+
+
+# Legacy alias
+chi_E_sliding = chi_path_sliding
 
 
 def chi_E_quadruplet_report(max_p: int) -> dict[str, Any]:
@@ -248,19 +310,20 @@ def chi_from_bias(pos: int, neg: int) -> float:
 
 
 def chi_transport(classes: list[str]) -> dict[str, Any]:
-    """Legacy-Alias: χ_trans = χ_E auf Gleitfenstern (identische Formel)."""
-    sliding = chi_E_sliding(classes)
+    """Legacy-Alias: χ_trans = χ_path auf Gleitfenstern (identische Formel)."""
+    path = chi_path_sliding(classes)
     t_fwd = count_t_cycle_windows(classes, forward=True)
     t_inv = count_t_cycle_windows(classes, forward=False)
     return {
-        "abce_windows": sliding["abce_windows"],
-        "ceab_windows": sliding["ceab_windows"],
-        "chi_E": sliding["chi_E"],
-        "chi_trans": sliding["chi_E"],
+        "abce_windows": path["abce_windows"],
+        "ceab_windows": path["ceab_windows"],
+        "chi_path": path["chi_path"],
+        "chi_E": path["chi_path"],
+        "chi_trans": path["chi_path"],
         "t_forward_windows": t_fwd,
         "t_inverse_windows": t_inv,
         "chi_t_cycle": chi_from_bias(t_fwd, t_inv),
-        "formula": sliding["formula"],
+        "formula": path["formula"],
         "formula_t_cycle": "(#t_forward_4cycles - #t_inverse_4cycles) / (#fwd + #inv)",
     }
 
@@ -285,51 +348,76 @@ def _random_label_permutation(rng: random.Random) -> dict[str, str]:
     return dict(zip(LABELS, labels))
 
 
-def shuffle_null_chi_E(
+def _null_chi(
     classes: list[str],
-    trials: int = 1000,
-    seed: int = 42,
+    chi_fn,
+    trials: int,
+    seed: int,
+    null_type: str,
+    use_isotropy: bool,
 ) -> dict[str, Any]:
-    """Marginal-Shuffle-Null: permutiere Klassenfolge, erhalte Häufigkeiten."""
     rng = random.Random(seed)
-    base = chi_E_sliding(classes)
+    base = chi_fn(classes)
+    chi_key = "chi_path" if chi_fn is chi_path_sliding else "chi_hol"
+    observed = base[chi_key]
     samples: list[float] = []
     for _ in range(trials):
-        perm = classes[:]
-        rng.shuffle(perm)
-        samples.append(chi_E_sliding(perm)["chi_E"])
+        if use_isotropy:
+            perm_classes = _apply_label_permutation(classes, _random_label_permutation(rng))
+        else:
+            perm_classes = classes[:]
+            rng.shuffle(perm_classes)
+        samples.append(chi_fn(perm_classes)[chi_key])
     return {
-        "null_type": "marginal_shuffle",
+        "null_type": null_type,
         "trials": trials,
         "seed": seed,
-        "observed_chi_E": base["chi_E"],
+        f"observed_{chi_key}": observed,
         "null_mean": statistics.mean(samples),
         "null_std": statistics.pstdev(samples) if trials > 1 else 0.0,
-        "z_score": _z_score(base["chi_E"], samples),
+        "z_score": _z_score(observed, samples),
     }
 
 
-def isotropy_null_chi_E(
+def shuffle_null_chi_path(
     classes: list[str],
     trials: int = 1000,
     seed: int = 42,
 ) -> dict[str, Any]:
-    """Isotropie-Null: zufällige Relabeling σ∈S_4 auf {E,A,B,C}."""
-    rng = random.Random(seed + 1)
-    base = chi_E_sliding(classes)
-    samples: list[float] = []
-    for _ in range(trials):
-        relabeled = _apply_label_permutation(classes, _random_label_permutation(rng))
-        samples.append(chi_E_sliding(relabeled)["chi_E"])
-    return {
-        "null_type": "isotropy_relabel",
-        "trials": trials,
-        "seed": seed + 1,
-        "observed_chi_E": base["chi_E"],
-        "null_mean": statistics.mean(samples),
-        "null_std": statistics.pstdev(samples) if trials > 1 else 0.0,
-        "z_score": _z_score(base["chi_E"], samples),
-    }
+    """Marginal-Shuffle-Null für χ_path (4-Block)."""
+    return _null_chi(classes, chi_path_sliding, trials, seed, "marginal_shuffle", False)
+
+
+def isotropy_null_chi_path(
+    classes: list[str],
+    trials: int = 1000,
+    seed: int = 42,
+) -> dict[str, Any]:
+    """Isotropie-Null für χ_path (4-Block)."""
+    return _null_chi(classes, chi_path_sliding, trials, seed + 1, "isotropy_relabel", True)
+
+
+def shuffle_null_chi_hol(
+    classes: list[str],
+    trials: int = 1000,
+    seed: int = 42,
+) -> dict[str, Any]:
+    """Marginal-Shuffle-Null für χ_hol^(5) (5-Block)."""
+    return _null_chi(classes, chi_hol_sliding, trials, seed + 2, "marginal_shuffle", False)
+
+
+def isotropy_null_chi_hol(
+    classes: list[str],
+    trials: int = 1000,
+    seed: int = 42,
+) -> dict[str, Any]:
+    """Isotropie-Null für χ_hol^(5) (5-Block)."""
+    return _null_chi(classes, chi_hol_sliding, trials, seed + 3, "isotropy_relabel", True)
+
+
+# Legacy aliases
+shuffle_null_chi_E = shuffle_null_chi_path
+isotropy_null_chi_E = isotropy_null_chi_path
 
 
 def hol_E_supported(
@@ -337,14 +425,15 @@ def hol_E_supported(
     shuffle_null: dict[str, Any],
     isotropy_null: dict[str, Any],
     tol: float = 0.01,
+    chi_key: str = "chi_hol",
 ) -> dict[str, Any]:
-    """Bewertung: Hol_E≠0 vs. stabile Fluktuationen vs. Null."""
+    """Bewertung: Hol_E≠0 vs. stabile Fluktuationen vs. Null (5-Block)."""
     if not chi_series:
         return {"supported": False, "reason": "empty series"}
-    last_chi = chi_series[-1]["chi_E"]
+    last_chi = chi_series[-1][chi_key]
     nonzero_limit = abs(last_chi) > tol
     stable = len(chi_series) >= 2 and all(
-        abs(chi_series[i]["chi_E"] - chi_series[-1]["chi_E"]) < 0.05
+        abs(chi_series[i][chi_key] - chi_series[-1][chi_key]) < 0.05
         for i in range(len(chi_series))
     )
     shuffle_sig = abs(shuffle_null.get("z_score", 0.0)) > 2.0
@@ -360,7 +449,7 @@ def hol_E_supported(
         "weak_hypothesis_supported": weak,
         "verdict": (
             f"Hol_E≠0 {'gestützt' if strong else 'nicht gestützt'} "
-            f"(χ_E={last_chi:.4f}); "
+            f"(χ_hol^(5)={last_chi:.4f}); "
             f"schwächere Lesart {'gestützt' if weak and not strong else 'nicht gestützt'}."
         ),
     }
@@ -387,47 +476,62 @@ def transition_matrix_report(max_p: int) -> dict[str, Any]:
     }
 
 
-def chi_sliding_vs_quadruplet(
+def chi_path_vs_hol(
     max_p: int,
     null_trials: int = 1000,
     seed: int = 42,
 ) -> dict[str, Any]:
     seq = prime_eabc_sequence(max_p)
     classes = classes_from_sequence(seq)
-    sliding = chi_E_sliding(classes)
+    path = chi_path_sliding(classes)
+    hol = chi_hol_sliding(classes)
     quad = chi_E_quadruplet_report(max_p)
     trans = chi_transport(classes)
-    shuffle = shuffle_null_chi_E(classes, trials=null_trials, seed=seed)
-    isotropy = isotropy_null_chi_E(classes, trials=null_trials, seed=seed)
-    same_sign = (sliding["chi_E"] >= 0) == (quad["chi_E_quad"] >= 0)
+    null_path = {
+        "shuffle": shuffle_null_chi_path(classes, trials=null_trials, seed=seed),
+        "isotropy": isotropy_null_chi_path(classes, trials=null_trials, seed=seed),
+    }
+    null_hol = {
+        "shuffle": shuffle_null_chi_hol(classes, trials=null_trials, seed=seed),
+        "isotropy": isotropy_null_chi_hol(classes, trials=null_trials, seed=seed),
+    }
+    path_stronger = abs(path["chi_path"]) > abs(hol["chi_hol"])
     return {
         "max_p": max_p,
-        "chi_E": sliding["chi_E"],
+        "chi_path": path["chi_path"],
+        "chi_hol": hol["chi_hol"],
         "chi_E_quad": quad["chi_E_quad"],
         "chi_t_cycle": trans["chi_t_cycle"],
-        "sliding_detail": sliding,
+        "path_detail": path,
+        "hol_detail": hol,
         "quadruplet_detail": quad,
         "transport_detail": trans,
         "null_models": {
-            "shuffle": shuffle,
-            "isotropy": isotropy,
+            "path": null_path,
+            "hol": null_hol,
         },
         "comparison": {
-            "same_sign": same_sign,
-            "difference": sliding["chi_E"] - quad["chi_E_quad"],
+            "same_sign_path_hol": (path["chi_path"] >= 0) == (hol["chi_hol"] >= 0),
+            "difference_path_hol": path["chi_path"] - hol["chi_hol"],
+            "abs_path_vs_abs_hol": {
+                "abs_chi_path": abs(path["chi_path"]),
+                "abs_chi_hol": abs(hol["chi_hol"]),
+                "path_stronger_signal": path_stronger,
+            },
             "verdict": (
-                "χ_E (Gleitfenster) und χ_E^quad (Vierlinge) sind verwandte chirale Observablen "
-                "in verschiedenen Trägern — nicht identisch. "
-                f"Beobachtet: χ_E={sliding['chi_E']:.4f}, "
-                f"χ_E^quad={quad['chi_E_quad']:.4f}, "
-                f"Δ={sliding['chi_E'] - quad['chi_E_quad']:.4f}."
+                "χ_path (4-Block-Pfad) und χ_hol^(5) (5-Block-Zyklus) sind verwandte Observablen "
+                "mit unterschiedlicher geometrischer Lesart — Pfad vs. geschlossene Holonomie. "
+                f"Beobachtet: χ_path={path['chi_path']:.4f}, "
+                f"χ_hol^(5)={hol['chi_hol']:.4f}, "
+                f"|χ_path|={'>' if path_stronger else '≤'} |χ_hol|."
             ),
         },
     }
 
 
-# Backward-compatible alias
-chi_transport_vs_quadruplet = chi_sliding_vs_quadruplet
+# Backward-compatible aliases
+chi_sliding_vs_quadruplet = chi_path_vs_hol
+chi_transport_vs_quadruplet = chi_path_vs_hol
 
 
 def hol_E_estimates(
@@ -438,30 +542,41 @@ def hol_E_estimates(
     rows: list[dict[str, Any]] = []
     last_cmp: dict[str, Any] | None = None
     for lim in limits:
-        cmp = chi_sliding_vs_quadruplet(lim, null_trials=null_trials, seed=seed)
+        cmp = chi_path_vs_hol(lim, null_trials=null_trials, seed=seed)
         last_cmp = cmp
         rows.append(
             {
                 "limit": lim,
-                "chi_E": cmp["chi_E"],
+                "chi_path": cmp["chi_path"],
+                "chi_hol": cmp["chi_hol"],
                 "chi_E_quad": cmp["chi_E_quad"],
                 "chi_t_cycle": cmp["chi_t_cycle"],
-                "z_shuffle": cmp["null_models"]["shuffle"]["z_score"],
-                "z_isotropy": cmp["null_models"]["isotropy"]["z_score"],
+                "z_shuffle_path": cmp["null_models"]["path"]["shuffle"]["z_score"],
+                "z_isotropy_path": cmp["null_models"]["path"]["isotropy"]["z_score"],
+                "z_shuffle_hol": cmp["null_models"]["hol"]["shuffle"]["z_score"],
+                "z_isotropy_hol": cmp["null_models"]["hol"]["isotropy"]["z_score"],
+                # legacy keys
+                "chi_E": cmp["chi_path"],
+                "z_shuffle": cmp["null_models"]["hol"]["shuffle"]["z_score"],
+                "z_isotropy": cmp["null_models"]["hol"]["isotropy"]["z_score"],
             }
         )
     support = hol_E_supported(
         rows,
-        last_cmp["null_models"]["shuffle"] if last_cmp else {},
-        last_cmp["null_models"]["isotropy"] if last_cmp else {},
+        last_cmp["null_models"]["hol"]["shuffle"] if last_cmp else {},
+        last_cmp["null_models"]["hol"]["isotropy"] if last_cmp else {},
     )
     return {
         "limits": limits,
         "series": rows,
-        "hol_E_estimate": rows[-1]["chi_E"] if rows else 0.0,
+        "hol_E_estimate": rows[-1]["chi_hol"] if rows else 0.0,
+        "chi_path_estimate": rows[-1]["chi_path"] if rows else 0.0,
         "hol_E_quad_estimate": rows[-1]["chi_E_quad"] if rows else 0.0,
         "hol_E_support": support,
-        "note": "Hol_E = lim χ_E(N); empirische Schätzung = letzter χ_E-Wert — kein Beweis des Grenzwerts.",
+        "note": (
+            "Hol_E = lim χ_hol^(5)(N); empirische Schätzung = letzter χ_hol-Wert — "
+            "kein Beweis des Grenzwerts. χ_path ist Pfadorientierung (4-Block), nicht Holonomie."
+        ),
     }
 
 
@@ -472,7 +587,7 @@ def run(
     seed: int = 42,
 ) -> dict[str, Any]:
     matrix = transition_matrix_report(max_p)
-    comparison = chi_sliding_vs_quadruplet(max_p, null_trials=null_trials, seed=seed)
+    comparison = chi_path_vs_hol(max_p, null_trials=null_trials, seed=seed)
     limits = sorted({min(max_p, x) for x in (1_000, 5_000, 10_000, 50_000, 100_000, max_p)})
     hol = hol_E_estimates(limits, null_trials=min(null_trials, 300), seed=seed)
 
@@ -484,17 +599,23 @@ def run(
             "holonomy_hierarchy": "collatz_eabc_holonomie.md",
             "max_p": max_p,
             "null_trials": null_trials,
+            "terminology": {
+                "chi_path": "4-Block Pfadorientierung ABCE/CEAB",
+                "chi_hol": "5-Block Zyklus-Holonomie ABCEA/CEABC",
+            },
         },
         "transition_matrix": matrix,
-        "cycle_holonomy": comparison,
+        "path_vs_holonomy": comparison,
+        "cycle_holonomy": comparison,  # legacy key
         "hol_E_estimates": hol,
         "epistemic_labels": {
             "transition_matrix": "Definition + Experiment",
-            "chi_E_sliding": "Definition",
+            "chi_path_sliding": "Definition (4-Block Pfad)",
+            "chi_hol_sliding": "Definition (5-Block Holonomie)",
             "chi_E_quad": "Definition (Vierlingsträger)",
             "shuffle_null": "Experiment",
             "isotropy_null": "Experiment",
-            "hol_E_limit": "Definition (Grenzwert offen)",
+            "hol_E_limit": "Definition (Grenzwert auf χ_hol^(5))",
             "hol_E_ne_zero": "Hypothese",
         },
     }
@@ -511,19 +632,19 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
     report = run(max_p=args.max_p, null_trials=args.null_trials, output=args.output, seed=args.seed)
-    cmp = report["cycle_holonomy"]
+    cmp = report["path_vs_holonomy"]
     mat = report["transition_matrix"]
     hol = report["hol_E_estimates"]
-    print("=== EABC-Zyklus-Holonomie ===")
+    print("=== EABC Pfad (4-Block) vs. Holonomie (5-Block) ===")
     print(f"Primzahlen >3 bis {args.max_p}: {mat['prime_count']}")
-    print(f"χ_E (Gleitfenster) = {cmp['chi_E']:.4f}  |  "
-          f"χ_E^quad = {cmp['chi_E_quad']:.4f}  |  "
-          f"χ_t_cycle = {cmp['chi_t_cycle']:.4f}")
-    print(f"Null z(shuffle) = {cmp['null_models']['shuffle']['z_score']:.2f}  |  "
-          f"z(isotropy) = {cmp['null_models']['isotropy']['z_score']:.2f}")
+    print(f"χ_path (4-Block) = {cmp['chi_path']:.4f}  |  "
+          f"χ_hol^(5) = {cmp['chi_hol']:.4f}  |  "
+          f"χ_E^quad = {cmp['chi_E_quad']:.4f}")
+    print(f"Null z_path(shuffle) = {cmp['null_models']['path']['shuffle']['z_score']:.2f}  |  "
+          f"z_hol(shuffle) = {cmp['null_models']['hol']['shuffle']['z_score']:.2f}")
     print(cmp["comparison"]["verdict"])
     print(hol["hol_E_support"]["verdict"])
-    print(f"Hol_E-Schätzung = {hol['hol_E_estimate']:.4f}")
+    print(f"Hol_E-Schätzung (χ_hol^(5)) = {hol['hol_E_estimate']:.4f}")
     print(f"JSON: {report['output_path']}")
 
 

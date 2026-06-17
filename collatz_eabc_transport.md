@@ -5,10 +5,10 @@
 **Tao-Labels:** Definition | Theorem | Heuristik | Experiment
 
 **Querverweise:**
-- `collatz_eabc_zyklus_holonomie.md` — **kanonisch:** $\chi_E(N)$ auf Primfolge-Gleitfenstern, $\mathrm{Hol}_E$, Hypothese
+- `collatz_eabc_zyklus_holonomie.md` — **kanonisch:** $\chi_{\mathrm{path}}$ (4-Block), $\chi_{\mathrm{hol}}^{(5)}$ (5-Block), $\mathrm{Hol}_E$
 - `collatz_eabc_holonomie.md` — Vierlings-Orientierung $\omega(Q)$, $\chi_E^{\mathrm{quad}}(N)$, projektive Holonomie $\mathcal H_E$
 - `collatz_eabc_holonomie_test.py` — Vierlings-$\chi_E^{\mathrm{quad}}$, Lean-Chiralität
-- `collatz_eabc_transition_graph.py` / `.json` — Numerik (Übergangsmatrix, $\chi_E$, Nullmodelle, $\mathrm{Hol}_E$-Schätzung)
+- `collatz_eabc_transition_graph.py` / `.json` — Numerik (Übergangsmatrix, $\chi_{\mathrm{path}}$, $\chi_{\mathrm{hol}}^{(5)}$, Nullmodelle)
 - `eabc_from_lean.py` — $\kappa=\texttt{class\_of}$, Rotation $t\colon E\!\to\!A\!\to\!B\!\to\!C\!\to\!E$
 - `collatz_eabc_invarianzprogramm.md` — globale Observable $\chi(x)$
 
@@ -35,11 +35,12 @@ Der **fundamentale Zustand** ist die **gerichtete Kante** $\tau$, nicht der isol
 | 1 | Primzahl | $p_n$ |
 | 2 | EABC-Klasse | $\kappa(p_n)$ |
 | 3 | Übergang | $\tau(p_n)=(\kappa(p_n),\kappa(p_{n+1}))$ |
-| 4 | Zyklus (4-Schritt) | Wort $W\in\{\mathrm{ABCE},\mathrm{CEAB}\}$ oder $t$-Pfad |
-| 5 | Zyklus-Holonomie | $\omega(W)\in\{+1,-1\}$ |
-| 6 | Grenzwert | $\mathcal H_E=\lim_{N\to\infty}\chi_E(N)$ bzw. Transport-Analogon |
+| 4 | 4-Block-Pfad | $Q_n^{(4)}$, Wort ABCE/CEAB — **orientierter Transportpfad** |
+| 5 | Pfad-Chiralität | $\chi_{\mathrm{path}}(N)$, $\Omega_{\mathrm{path}}\in\{+1,-1,0\}$ |
+| 6 | 5-Block-Zyklus | $Q_n^{(5)}$, ABCEA/CEABC — **geschlossene Holonomie** |
+| 7 | Zyklus-Chiralität / Grenzwert | $\chi_{\mathrm{hol}}^{(5)}(N)$, $\mathrm{Hol}_E=\lim\chi_{\mathrm{hol}}^{(5)}$ |
 
-Stufen 5–6 sind in `collatz_eabc_holonomie.md` für **Prim-Vierlinge** kanonisch; dieses Dokument hebt die **Transportebene** (Stufen 3–4) auf dieselbe Hierarchie.
+Stufen 4–5 (Pfad) und 6–7 (Holonomie) sind in `collatz_eabc_zyklus_holonomie.md` kanonisch; dieses Dokument hebt die **Transportebene** (Stufen 3–4) auf dieselbe Hierarchie.
 
 ---
 
@@ -75,72 +76,90 @@ $$t\colon E\mapsto A,\; A\mapsto B,\; B\mapsto C,\; C\mapsto E,\qquad t^4=\mathr
 
 ---
 
-## 5. Zyklus-Holonomie auf 4-Schritten
+## 5. Pfadorientierung auf 4-Schritten (kein geschlossener Zyklus)
 
-### 5.1 Wort-Zyklen (Vierlings-Chiralität)
+$$\boxed{\;\text{Viererblock} = \text{orientierter Transportpfad.}\;}$$
 
-**Definition (Wortfenster).** Für vier aufeinanderfolgende Prim-Klassen $(c_0,c_1,c_2,c_3)$:
-$$W(c_0,c_1,c_2,c_3):=c_0c_1c_2c_3\in\{E,A,B,C\}^4.$$
+### 5.1 Wort-Pfade (ABCE / CEAB)
 
-**Definition (Orientierung).**
-$$\omega(W)=+1\Leftrightarrow W=\mathrm{ABCE},\qquad
-\omega(W)=-1\Leftrightarrow W=\mathrm{CEAB}.$$
+**Definition (4-Fenster).** Für vier aufeinanderfolgende Prim-Klassen $(c_0,c_1,c_2,c_3)$:
+$$W^{(4)}(c_0,c_1,c_2,c_3):=c_0c_1c_2c_3\in\{E,A,B,C\}^4.$$
 
-### 5.2 $t$-Zyklus vs. $t^{-1}$-Zyklus
+**Definition (Pfadorientierung).**
+$$\chi_{\mathrm{path}}(W^{(4)})=+1\Leftrightarrow W^{(4)}=\mathrm{ABCE},\qquad
+\chi_{\mathrm{path}}(W^{(4)})=-1\Leftrightarrow W^{(4)}=\mathrm{CEAB}.$$
 
-**Vorwärtszyklus (ABCE-Phase):** vier $t$-alignierte Schritte:
-$$c_{k+1}=t(c_k)\quad (k=0,1,2,3),\qquad \Omega=+1.$$
+Dies ist **EABC-Pfadorientierung**, **nicht** Holonomie im strengen Sinn — der Pfad schließt nicht.
 
-**Rückwärtszyklus (CEAB-Phase):** $c_{k+1}=t^{-1}(c_k)$:
-$$\Omega=-1.$$
+### 5.2 $t$-Zyklus vs. $t^{-1}$-Zyklus (kanonische Rotation)
 
-**Label:** $\omega$, $\Omega$ = **Definition**.
+**Vorwärts-$t$-Pfad:** $c_{k+1}=t(c_k)$ für $k=0,1,2$ (drei Schritte, vier Knoten).
+
+**Rückwärts-$t^{-1}$-Pfad:** $c_{k+1}=t^{-1}(c_k)$.
+
+**Label:** $\chi_{\mathrm{path}}$, $t$-Pfade = **Definition**.
 
 ---
 
-## 6. Transport-Chiralität $\chi_E(N)$ (Gleitfenster)
+## 6. Zyklus-Holonomie auf 5-Schritten
 
-**Kanonsiche Definition:** `collatz_eabc_zyklus_holonomie.md` §4.
+$$\boxed{\;\text{Fünferblock} = \text{geschlossener Zyklus / Holonomie.}\;}$$
 
-$$\chi_E(N):=
-\frac{\displaystyle\sum_{n:\,p_{n+3}\le N}\Omega(Q_n)}
-{\displaystyle\#\{n:\,p_{n+3}\le N,\;\Omega(Q_n)\neq 0\}}
+Geschlossener Zyklus $A\!\to\!B\!\to\!C\!\to\!E\!\to\!A$:
+$$\Omega^{(5)}(W^{(5)})=+1\Leftrightarrow W^{(5)}=\mathrm{ABCEA},\qquad
+\Omega^{(5)}(W^{(5)})=-1\Leftrightarrow W^{(5)}=\mathrm{CEABC}.$$
+
+**Label:** $\Omega^{(5)}$, $\chi_{\mathrm{hol}}^{(5)}$ = **Definition** (`collatz_eabc_zyklus_holonomie.md` §5).
+
+---
+
+## 7. Pfad-Chiralität $\chi_{\mathrm{path}}(N)$ und Holonomie $\chi_{\mathrm{hol}}^{(5)}(N)$
+
+**Kanonsiche Definition:** `collatz_eabc_zyklus_holonomie.md` §4–5.
+
+$$\chi_{\mathrm{path}}(N):=
+\frac{\displaystyle\sum_{n:\,p_{n+3}\le N}\chi_{\mathrm{path}}(Q_n^{(4)})}
+{\displaystyle\#\{n:\,p_{n+3}\le N,\;\chi_{\mathrm{path}}(Q_n^{(4)})\neq 0\}}
 \in[-1,1],$$
 
-mit $Q_n=(X_n,X_{n+1},X_{n+2},X_{n+3})$ auf der Primfolge und $\Omega=+1$ (ABCE), $-1$ (CEAB), $0$ sonst.
+$$\chi_{\mathrm{hol}}^{(5)}(N):=
+\frac{\displaystyle\sum_{n:\,p_{n+4}\le N}\Omega^{(5)}(Q_n^{(5)})}
+{\displaystyle\#\{n:\,p_{n+4}\le N,\;\Omega^{(5)}(Q_n^{(5)})\neq 0\}}
+\in[-1,1].$$
 
-**Legacy-Notation:** $\chi_{\mathrm{trans}}(N):=\chi_E(N)$ (dieses Dokument, frühere Version).
+**Legacy-Notation:** $\chi_{\mathrm{trans}}(N):=\chi_{\mathrm{path}}(N)$; $\chi_E(N):=\chi_{\mathrm{path}}(N)$ (ältere Bezeichnung).
 
 **Vergleichsträger (Vierlinge):**
 $$\chi_E^{\mathrm{quad}}(N)=\frac{\#\mathrm{ABCE}-\#\mathrm{CEAB}}{\#\mathrm{ABCE}+\#\mathrm{CEAB}}$$
 
 auf **Prim-Vierlingen** $Q(p)=(p,p{+}2,p{+}6,p{+}8)$ (`collatz_eabc_holonomie.md` §4).
 
-**Experiment:** `collatz_eabc_transition_graph.py::chi_E_sliding`, `chi_sliding_vs_quadruplet`.
+**Experiment:** `collatz_eabc_transition_graph.py::chi_path_sliding`, `chi_hol_sliding`, `chi_path_vs_hol`.
 
 ---
 
-## 7. Boxed Forschungsfrage
+## 8. Boxed Forschungsfrage
 
-$$\boxed{\;\text{Besitzt der gerichtete EABC-Übergangsgraph eine nichttriviale Zyklus-Holonomie?}\;}$$
+$$\boxed{\;\text{Besitzt der gerichtete EABC-Übergangsgraph eine nichttriviale 5-Block-Zyklus-Holonomie }\mathrm{Hol}_E\neq 0\text{?}\;}$$
 
 **Präzisierung (ehrlich).**
 
-| Observable | Träger | Was zählt? |
-|------------|--------|------------|
-| $\chi_E(N)$ | Prim-Vierlinge $Q(p)$ | ABCE/CEAB auf vier **arithmetisch gekoppelten** Beinen |
-| $\chi_{\mathrm{trans}}(N)$ | aufeinanderfolgende Prim-Klassen | ABCE/CEAB auf **Primfolgen-Fenstern** |
-| $\chi_{\mathrm{t\text{-}cycle}}(N)$ | $t$-bzw. $t^{-1}$-Pfade | kanonische Rotation vs. Inversion |
+| Observable | Block | Träger | Was zählt? |
+|------------|------:|--------|------------|
+| $\chi_{\mathrm{path}}(N)$ | 4 | aufeinanderfolgende Prim-Klassen | ABCE/CEAB — **Pfadorientierung** |
+| $\chi_{\mathrm{hol}}^{(5)}(N)$ | 5 | aufeinanderfolgende Prim-Klassen | ABCEA/CEABC — **geschlossene Holonomie** |
+| $\chi_E^{\mathrm{quad}}(N)$ | 4 | Prim-Vierlinge $Q(p)$ | ABCE/CEAB auf **arithmetisch gekoppelten** Beinen |
+| $\chi_{\mathrm{t\text{-}cycle}}(N)$ | 4 | $t$-bzw. $t^{-1}$-Pfade | kanonische Rotation vs. Inversion |
 
 **Theorem ($V_4$).** Algebraische Produkte auf $V_4$ sind trivial assoziativ (`collatz_eabc_holonomie.md` §1). Holonomie ist **projektiv / transportiert**, nicht $V_4$-Klammertheorie.
 
-**Heuristik.** Signifikante Abweichung von $\chi_{\mathrm{trans}}$ gegenüber einem **Marginal-Nullmodell** (Permutation der Klassenfolge bei erhaltener Häufigkeitsverteilung) wäre ein Hinweis auf **nichttriviale Transport-Holonomie** — kein Beweis.
+**Heuristik.** Signifikante Abweichung von $\chi_{\mathrm{hol}}^{(5)}$ gegenüber einem **Marginal-Nullmodell** wäre ein Hinweis auf **nichttriviale Zyklus-Holonomie** — kein Beweis. $\chi_{\mathrm{path}}$ dient als verwandte Pfad-Observable, misst aber **keine** geschlossene Holonomie.
 
 **Experiment:** Shuffle-Null in `collatz_eabc_transition_graph.py`.
 
 ---
 
-## 8. Stationäre Verteilung und Ergodizität
+## 9. Stationäre Verteilung und Ergodizität
 
 **Definition.** Eine Verteilung $\pi$ auf $V_4$ ist **stationär**, wenn $\pi T=\pi$ (Zeilenvektor, $T$ zeilenstochastisch normalisiert).
 
@@ -152,18 +171,19 @@ $$\boxed{\;\text{Besitzt der gerichtete EABC-Übergangsgraph eine nichttriviale 
 
 ---
 
-## 9. Epistemische Tabelle
+## 10. Epistemische Tabelle
 
 | Aussage | Label |
 |---------|-------|
 | $\tau(p_n)=(\kappa(p_n),\kappa(p_{n+1}))$ | **Definition** |
 | $T_{ij}$, $f_{ij}$ | **Definition** |
 | $t$-Rotation $E\!\to\!A\!\to\!B\!\to\!C\!\to\!E$ | **Definition** |
-| $\chi_{\mathrm{trans}}$ vs. $\chi_E$ — verwandt, **nicht identisch** | **Experiment** |
-| ABCE-Dominanz auf Vierlingen = ABCE-Dominanz auf Primübergängen | **Forschungsfrage** |
-| Shuffle-Null Signifikanz | **Experiment** |
-| $\mathcal H_E=\lim\chi_E(N)$ | **Definition** / Grenzwert offen |
+| $\chi_{\mathrm{path}}$ — 4-Block-Pfad, **keine** Holonomie | **Definition** |
+| $\chi_{\mathrm{hol}}^{(5)}$, $\mathrm{Hol}_E$ — 5-Block-Zyklus | **Definition** / **Hypothese** |
+| $\chi_{\mathrm{path}}$ vs.\ $\chi_{\mathrm{hol}}^{(5)}$ vs.\ $\chi_E^{\mathrm{quad}}$ | **Experiment** |
+| ABCE-Dominanz auf Vierlingen = ABCEA-Dominanz auf Primübergängen | **Forschungsfrage** |
+| Shuffle-/Isotropie-Null Signifikanz | **Experiment** |
 
 ---
 
-*Kanonsiche Notiz: Der Übergangsgraph operationalisiert **Transport** entlang der Primzahlordnung. Vierlings-$\chi_E$ misst **lokale arithmetische Pakete** — die ehrliche Gegenüberstellung ist Kern von PR #54 Stufe 5–6.*
+*Kanonsiche Notiz: Der Übergangsgraph operationalisiert **Transport** entlang der Primzahlordnung. Viererblöcke messen **Pfade**; Fünferblöcke schließen den Zyklus. Vierlings-$\chi_E^{\mathrm{quad}}$ misst **lokale arithmetische Pakete** — die ehrliche Gegenüberstellung ist Kern von PR #54.*

@@ -10,8 +10,8 @@
 - `collatz_eabc_oktonion_assoziator_spektralhypothese.md` — $\Gamma_E$-Projektion, $M_n^E(t)$ (Oktanion-Ebene)
 - `collatz_eabc_invarianzprogramm.md` — globale Observable $\chi(x)$; Stufe 1–2 ($\kappa$, $\sigma(Q)$)
 - `collatz_eabc_holonomie_test.py` / `.json` — Numerik ($\chi_E$, $\omega$, $\mathcal H_E$-Stub, Vergleich zu $\chi$)
-- `collatz_eabc_zyklus_holonomie.md` — **kanonisch:** $\chi_E(N)$ auf Primfolge-Gleitfenstern, $\mathrm{Hol}_E$-Hypothese
-- `collatz_eabc_transport.md` / `collatz_eabc_transition_graph.py` — Transport $T_n$, $G_E$; $\chi_E$ (Gleitfenster) vs. $\chi_E^{\mathrm{quad}}$ (Vierlinge)
+- `collatz_eabc_zyklus_holonomie.md` — **kanonisch:** $\chi_{\mathrm{path}}$ (4-Block-Pfad), $\chi_{\mathrm{hol}}^{(5)}$ (5-Block-Zyklus), $\mathrm{Hol}_E$
+- `collatz_eabc_transport.md` / `collatz_eabc_transition_graph.py` — Transport $T_n$, $G_E$; Pfad vs. Holonomie vs. $\chi_E^{\mathrm{quad}}$
 - `eabc_from_lean.py` / `EABC.lean` — Chiralität ABCE / CEAB
 
 ---
@@ -51,8 +51,10 @@ Die sechs Stufen bauen aufeinander auf. Stufe 1–4 sind **definiert und impleme
 | **2** | **EABC-Signaturen** | $Q=(E,A,B,C)^4$, $\sigma(Q)\in\Sigma_4$ | **Definition** | implementiert (`collatz_eabc_invarianzprogramm.md` Def. 5) |
 | **3** | **EABC-Orientierung** | $\omega(Q)\in\{-1,+1\}$; $\omega(\mathrm{ABCE})=+1$, $\omega(\mathrm{CEAB})=-1$ | **Definition** | implementiert (`EABC.lean`) |
 | **4** | **EABC-Chiralität** | $\chi_E(N)=\dfrac{1}{N}\sum_{Q:\,p\le N}\omega(Q)$ | **Definition** | implementiert (`collatz_eabc_holonomie_test.py`) |
-| **5** | **EABC-Transport** | $T\colon\kappa(p_n)\mapsto\kappa(p_{n+1})$; Kante $\tau(p_n)$ | **Experiment** (Kandidat) | `collatz_eabc_transport.md`, `collatz_eabc_transition_graph.py` |
-| **6** | **EABC-Holonomie** | Vergleich geschlossener Transportpfade $\gamma_1,\gamma_2$ via $T$ | **Conjecture** | Zukunft — benötigt Stufe 5 |
+| **5** | **EABC-Transport** | $T\colon\kappa(p_n)\mapsto\kappa(p_{n+1})$; Kante $\tau(p_n)$; 4-Block $\chi_{\mathrm{path}}$ | **Experiment** (Kandidat) | `collatz_eabc_transport.md`, `collatz_eabc_transition_graph.py` |
+| **5b** | **Pfadorientierung (4-Block)** | ABCE/CEAB auf Gleitfenstern — **kein** geschlossener Zyklus | **Definition** | `collatz_eabc_zyklus_holonomie.md` §3–4 |
+| **6** | **Zyklus-Holonomie (5-Block)** | $\Omega^{(5)}$, $\chi_{\mathrm{hol}}^{(5)}$, $\mathrm{Hol}_E=\lim\chi_{\mathrm{hol}}^{(5)}$ | **Definition** + **Hypothese** | `collatz_eabc_zyklus_holonomie.md` §5–7 |
+| **7** | **projektive $\mathcal H_E$** | Vergleich geschlossener Transportpfade $\gamma_1,\gamma_2$ via $T$ (DG-Vision) | **Conjecture** | Zukunft — über Stufe 6 hinaus |
 
 **Verbindung ABCE/CEAB:** Das beobachtete Clustering der Vierlingssignaturen in die zyklischen Orientierungen ABCE und CEAB ist ein **Vorläufer** holonomer Struktur — es misst Orientierungsasymmetrie (Stufe 3–4), noch keinen Paralleltransport (Stufe 5–6).
 
@@ -148,13 +150,13 @@ $$\mathcal H_E\bigl((xy)z,\,x(yz)\bigr) = d_E\bigl(\Gamma_E((xy)z),\,\Gamma_E(x(
 $$\tau(p_n)=\bigl(\kappa(p_n),\,\kappa(p_{n+1})\bigr),\qquad
 T\colon \kappa(p_n)\longmapsto \kappa(p_{n+1}).$$
 
-Gerichteter Übergangsgraph auf $V_4$; Zyklus-Holonomie-Kandidat via 4-Fenster (ABCE/CEAB) und $t$-Rotation.
+Gerichteter Übergangsgraph auf $V_4$; **4-Block** $\chi_{\mathrm{path}}$ (Pfadorientierung ABCE/CEAB) vs. **5-Block** $\chi_{\mathrm{hol}}^{(5)}$ (geschlossener Zyklus ABCEA/CEABC).
 
-**Observable:** $\chi_{\mathrm{trans}}(N)$ auf Primfolge-Fenstern vs. $\chi_E(N)$ auf Vierlingen — **verwandt, nicht identisch** (`collatz_eabc_transition_graph.py`).
+**Observable:** $\chi_{\mathrm{path}}(N)$ und $\chi_{\mathrm{hol}}^{(5)}(N)$ auf Primfolge-Gleitfenstern vs. $\chi_E^{\mathrm{quad}}(N)$ auf Vierlingen — **verwandt, nicht identisch** (`collatz_eabc_transition_graph.py`).
 
-> $$\boxed{\;\textbf{Forschungsfrage:}\;\text{Besitzt der gerichtete EABC-Übergangsgraph eine nichttriviale Zyklus-Holonomie?}\;}$$
+> $$\boxed{\;\textbf{Forschungsfrage:}\;\text{Besitzt der gerichtete EABC-Übergangsgraph eine nichttriviale 5-Block-Zyklus-Holonomie }\mathrm{Hol}_E\neq 0\text{?}\;}$$
 
-**Label:** Stufe 5 = **Experiment** (Kandidat); vollständiger Transport auf Vierlingssignaturen $Q_k\to Q_{k+1}$ = **Conjecture** (offen).
+**Label:** Stufe 5 = **Experiment** (Transport); Stufe 6 = **Definition** ($\chi_{\mathrm{hol}}^{(5)}$) + **Hypothese** ($\mathrm{Hol}_E\neq 0$).
 
 ---
 
