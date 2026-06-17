@@ -36,6 +36,7 @@ in solchen Ringen — ein **Theorem** der kommutativen Algebra, kein Algorithmus
 | EABC-Primdefekte $D(x)=x-\Pi(x)$ charakterisieren Primzahlen in $\mathbb{R}$ | **Conjecture** (Verknüpfung §17) |
 
 **Querverweise:**
+- **`collatz_eabc_normabstieg_hypothese.md`** — **kanonsiche** EABC-Normabstiegs-Hypothese (§8 Gauß–EABC-Brücke, Experiment `collatz_eabc_gauss_defekt_test.py`)
 - `collatz_eabc_bernoulli_uebersetzung.md` §17 (Peano-Projektion, Tetraeder-Defekte, Hurwitz-Kette) — Branch `collatz/eabc-bernoulli-sensor`
 - `collatz_eabc_invarianzprogramm.md` (Fluktuationsfeld $\delta(x)$, EABC-Invarianten) — Branch `collatz/eabc-invarianzprogramm`
 - `PAPER_HURWITZ_RESONANZ.md` (Hurwitz-Gitter, $\Pi_\Gamma$, Primideale in $\mathbb{H}$)
@@ -298,6 +299,8 @@ $$\boxed{
 
 | Artefakt | Rolle |
 |----------|-------|
+| `collatz_eabc_normabstieg_hypothese.md` | **Kanonsiche** Normabstiegs-Hypothese; Gauß–EABC-Teilhypothese §8 |
+| `collatz_eabc_gauss_defekt_test.py` | Experiment: split/inert in $\mathbb{Z}[i]$ vs.\ EABC-Klassen |
 | `collatz_eabc_euklid_hebung.py` | Minimal-Stub: ein euklidischer Schritt in $\mathbb{Z}$, $\mathbb{Z}[i]$; $D(q)$ für Hurwitz |
 | `Hurwitz 24.py` | 24 Hurwitz-Einheiten, Quaternionen-Arithmetik |
 | `PAPER_HURWITZ_RESONANZ.md` | $\Pi_\Gamma$, Primideale, Resonanz |
