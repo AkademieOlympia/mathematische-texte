@@ -15,6 +15,7 @@ Forschungsfrage | Forschungsvision | Experiment.
 - `collatz_eabc_gauss_spaltung_test.py` — Experiment Γ(p)=(κ(a'),κ(b')) (§9b)
 - `collatz_eabc_gauss_faktor_eabc_test.py` — Vorgänger (rohe mod-12-Legs; §9 historisch)
 - `collatz_eabc_quaternion_mass_hypothese.md` — **kanonische** Quaternionen-EABC-Maßhypothese ($\Sigma_p$, $\mu_p$; PR #54)
+- `collatz_eabc_oktonion_singularitaet.md` — Oktanionische Singularitätshypothese ($\Sigma_n^{(8)}$; PR #54)
 - `collatz_eabc_hurwitz_spaltung.md` — Redirect → Maßhypothese
 - `collatz_eabc_hurwitz_orbit_test.py` — Experiment Schalen- und Orbit-Statistik, volle $\Gamma=(\alpha,\beta,\kappa)^4$
 

@@ -8,6 +8,7 @@
 **Tao-Labels:** Definition | Theorem | Conjecture | Heuristik | Experiment
 
 **Querverweise:** `collatz_eabc_normabstieg_hypothese.md` · `collatz_eabc_euklidische_hebung.md` ·
+`collatz_eabc_oktonion_singularitaet.md` (8D-Forschungsprogramm, PR #54) ·
 `collatz_eabc_invarianzprogramm.md` · `collatz_eabc_gauss_spaltung_hypothese.md` ·
 `collatz_eabc_eisenstein_spaltung.md` · `collatz_eabc_bernoulli_uebersetzung.md` (Branch `collatz/eabc-bernoulli-sensor`) ·
 `collatz_morley_tm_numerik.py` (Morley-Parallel, getrennte Spur)
@@ -537,4 +538,4 @@ mit dem Kanon analytischer Zahlentheorie ($\zeta$, Bernoulli, $L$-Funktionen).
 
 ---
 
-*Kanonsiche Quaternionen-EABC-Maßhypothese: Objekte sind $\Sigma_n$, $\mu_n$, $I(\mu_n)$, $D(n)$, $\hat D(s)$ — nicht einzelne $q$; Primzahlen emergieren als mögliche Spektralanomalien (§12); die analytische Signatur ist $\hat D(s)$ (§13).*
+*Kanonsiche Quaternionen-EABC-Maßhypothese: Objekte sind $\Sigma_n$, $\mu_n$, $I(\mu_n)$, $D(n)$, $\hat D(s)$ — nicht einzelne $q$; Primzahlen emergieren als mögliche Spektralanomalien (§12); die analytische Signatur ist $\hat D(s)$ (§13). Oktanionische Erweiterung: `collatz_eabc_oktonion_singularitaet.md`.*
