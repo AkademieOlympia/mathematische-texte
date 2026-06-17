@@ -1,6 +1,6 @@
 # Morley-Stufen M1 → M2 → M3
 
-**Branch:** `main` (M1: PR #44, Commit `c2fa37c`; M2: `collatz/morley-m2-sensor`)  
+**Branch:** `collatz/morley-m2-sensor`  
 **Stand:** Juni 2026  
 **Kein Collatz-Beweis.** Operatives Forschungsprotokoll für den geodätischen Morley-Operator $T_M^{(g)}$.
 
@@ -10,18 +10,52 @@
 
 ---
 
+## Epistemischer Rahmen (Reviewer-Vorgabe)
+
+**Kein Theorem.** Beobachtete Skalierung $O(\varepsilon^3)$ in M1 ist **numerische Evidenz**, kein bewiesener Satz. Die Formel $T_{M,1}=T_{M,2}+O(\varepsilon^3)$ wird **nicht** als Theorem behauptet.
+
+> **Boxed (korrekte Lesart nach M1):**  
+> *M1 liefert starke numerische Evidenz für eine universelle lokale Struktur von $T_M^{(g)}$ — kein Theorem.*
+
+### Vier Szenarien vor M1
+
+| Szenario | Skalierung $d_{ij}(\varepsilon)$ | Folge |
+|----------|-----------------------------------|-------|
+| **A** | $O(1)$ | Operatoren grundsätzlich verschieden → Projekt tot |
+| **B** | $O(\varepsilon)$ | Kein kanonischer Operator |
+| **C** | $O(\varepsilon^2)$ | Krümmungsebene — definitionsabhängig |
+| **D** | $O(\varepsilon^3)$ | **beobachtet** — Abweichungen jenseits der Krümmungsterme |
+
+M1-Ergebnis (PR #44): Szenario **D** — log-log-Steigung $\approx 3$ für alle nicht-trivialen Variantenpaare.
+
+> **Boxed (revidierte Conjecture):**  
+> *Alle vernünftigen Morley-Konstruktionen besitzen dieselbe universelle 2.-Ordnung-Geometrie.*
+
+### PR #44 — Reviewer-Paragraph
+
+> Die Resultate von M1 rechtfertigen die weitere Untersuchung des geodätischen Morley-Operators. Die beobachtete Skalierung $O(\varepsilon^3)$ deutet darauf hin, dass verschiedene natürliche Konstruktionen von $T_M^{(g)}$ dieselbe lokale Geometrie bis zur zweiten Ordnung teilen. Dies ist kein Beweis eines Konsistenzsatzes, aber eine starke numerische Evidenz dafür, dass der Operator nicht vollständig konstruktionsabhängig ist.
+
+### Abgrenzung κ vs. Morley
+
+| Zweig | Ergebnis |
+|-------|----------|
+| **κ** (Stufe 3) | Invarianz zerbricht unter $\kappa_2$ |
+| **Morley** (M1) | Invarianz bis Ordnung 2 (numerisch) |
+
+---
+
 ## Warum die Reihenfolge?
 
-Der frühe numerische Lauf (`collatz_morley_tm_numerik.py`, Commit auf `main`) testete direkt $F_M \sim c\,K_G A$. Das war **vorzeitig**: Auf gekrümmten Flächen ist $T_M^{(g)}$ kein Theorem, sondern ein **Definitionsproblem** mit mehreren Realisierungen. Solange die Varianten nicht konsistent sind, ist jede $F_M$-Regression **interpretationslos**.
+Der frühe numerische Lauf (`collatz_morley_tm_numerik.py`, Commit auf `main`) testete direkt $F_M \sim c\,K_G A$. Das war **vorzeitig**: Auf gekrümmten Flächen ist $T_M^{(g)}$ kein Theorem, sondern ein **Definitionsproblem** mit mehreren Realisierungen. Solange die Varianten nicht verglichen sind, ist jede $F_M$-Regression **interpretationslos**.
 
 > **Boxed (Leitregel):**  
 > *M1 (Operator) → M2 (Modellräume) → M3 (Sensor). Nicht umgekehrt.*
 
 ---
 
-## M1 — Konsistenzsatz erster Ordnung (abgeschlossen)
+## M1 — Variantenvergleich (abgeschlossen, PR #44)
 
-**Frage:** Liefern vier sinnvolle Realisierungen von $T_M^{(g)}$ auf kleinen geodätischen Dreiecken $\Delta_\varepsilon$ **dieselbe** Morley-Konfiguration bis auf höhere Ordnung?
+**Frage:** Liefern vier sinnvolle Realisierungen von $T_M^{(g)}$ auf kleinen geodätischen Dreiecken $\Delta_\varepsilon$ **dieselbe** lokale Geometrie bis zur 2. Ordnung?
 
 | Nr. | Variante | Implementierung (numerisch) |
 |-----|----------|----------------------------|
@@ -36,83 +70,66 @@ $$d_{ij}(\varepsilon) = \max_k \operatorname{dist}\bigl(T_{M,i}^{(g)}(\Delta_\va
 
 **Skalierung:** log-log-Regression $\log d_{ij} \sim \alpha \log \varepsilon$.
 
-### Boxed — Hauptergebnis M1 (numerisch)
-
-$$\boxed{d\bigl(T_{M,i}^{(g)}, T_{M,j}^{(g)}\bigr) = O(\varepsilon^3)\quad\text{— nicht }O(\varepsilon)\text{ oder }O(\varepsilon^2).}$$
-
-**Interpretation (heuristisch, numerisch gestützt):** $T_M^{(g)}$ ist **wohldefiniert bis zur zweiten Ordnung** in $\varepsilon$. Die vier Realisierungen unterscheiden sich wie Chart-, Exponential- und Normal-Koordinaten — erst in dritter Ordnung. Variante 2 und 3 sind numerisch identisch; alle übrigen Paare zeigen log-log-Steigung $\alpha \approx 3{,}01$ bei $R^2 > 0{,}999$.
-
-**Epistemisches Label:** **Experiment** — kein Theorem; „Konsistenzsatz erster Ordnung“ im **heuristischen** Sinn (Operator konsistent bis $O(\varepsilon^2)$ in den Daten).
-
-**Konsequenz für M3:** $F_M \sim c\,K_G A$ ist **plausibler** als vor M1: alle Varianten teilen denselben Hauptterm; verbleibende $O(\varepsilon^3)$-Differenzen stören die Sensorik nicht systematisch in erster Ordnung.
+| $\alpha$ | Lesart |
+|----------|--------|
+| $\approx 3$ | **beobachtet** — $O(\varepsilon^3)$-Abweichung → 2.-Ordnung-Geometrie gemeinsam |
+| $\approx 2$ | Übereinstimmung auf Krümmungsebene (Szenario C) |
+| $\approx 1$ | systematische Erstordnungs-Abweichung → Definition offen |
+| $\approx 0$ | $O(1)$ — Projekt tot (Szenario A) |
 
 **Artefakte:** `collatz_morley_tm_numerik.py m1`, `collatz_morley_m1_konsistenz.json`, `tests/test_morley_m1_konsistenz.py`.
 
-**PR #44:** *Morley M1: Operator-Konsistenz der vier $T_M^{(g)}$-Varianten* — auf `main` gemergt (`c2fa37c`).
-
-### Tao living spreadsheet (Zeile M1)
-
-| ID | Ebene | Aussage | Status | Artefakt |
-|----|-------|---------|--------|----------|
-| **M1** | Experiment | $d(T_{M,i}^{(g)}, T_{M,j}^{(g)}) = O(\varepsilon^3)$ auf $S^2$; $T_M^{(g)}$ wohldefiniert bis 2. Ordnung (heuristisch) | **numerisch gestützt** | `collatz_morley_m1_konsistenz.json` |
-
----
-
-## κ vs. Morley — methodischer Kontrast
-
-| Aspekt | κ-Zweig (Stufe 2–3) | Morley-Zweig (M1–M3) |
-|--------|---------------------|----------------------|
-| Kernproblem | Kodierungsinvarianz von $R(k)$, $h_F$ | Definition von $T_M^{(g)}$ auf gekrümmten Flächen |
-| Strukturabhängigkeit | **κ-abhängig** — verschiedene κ-Familien | **4 Definitionen**, Differenzen nur $O(\varepsilon^3)$ |
-| Gegenbeispiel / Zeuge | $w=\mathrm{BE} \notin \mathcal{L}_{\mathrm{arith}}$ | Paarweise Variantenabstände skalieren mit $\varepsilon^3$ |
-| BE-Invarianz | **nicht** invariant unter Block-Encoding | nicht relevant (geometrisch) |
-| Stabilität (Juni 2026) | κ-Invarianz offen; BE-Bruch belegt | **Morley-Zweig stabiler** — M1 bestanden |
-| Epistemik | Zeuge ≠ Theorem | Experiment → Conjecture (M3) |
+**Epistemisches Label:** **Experiment** — numerische Evidenz, kein Theorem.
 
 ---
 
 ## M2 — Modellräume (aktuell)
 
-Kontroll- und Testflächen mit bekannter $K_G$, **dieselbe** Dreiecksfamilie $\Delta_\varepsilon$:
+Kontroll- und Testflächen mit bekannter $K_G$, **dieselbe $\varepsilon$-Familie**:
 
 | Raum | $K_G$ | Rolle |
 |------|-------|-------|
-| $\mathbb{R}^2$ | $0$ | Kontrolle: Morley-Satz, $F_M=0$ exakt |
+| $\mathbb{R}^2$ | $0$ | Kontrolle: Morley-Satz, $F_M \approx 0$ |
 | $S^2$ (Einheitskugel) | $+1$ | positive Krümmung |
 | $H^2$ (Hyperboloid) | $-1$ | negative Krümmung |
 
-### M2a — $F_M/A$ vs. $K_G$
+**Kanoniche Variante:** `local_chart` (nach M1-Evidenz).
 
-Für jedes $\varepsilon$: Flächeninhalt $A(\varepsilon)$, Morley-Form $F_M(\varepsilon)$ mit kanonischer Variante `local_chart`. Vergleich der Mediane $F_M/A$ über $\varepsilon$ zwischen $S^2$ und $H^2$.
+### M2a — Vorzeichenstruktur (Priorität)
 
-**Vorläufiger Befund (Juni 2026):** $F_M/A$ auf $S^2$ und $H^2$ **gleiche Größenordnung** ($\sim 10^{-5}$ bei $\varepsilon \in [0{,}05, 0{,}35]$); euklidische Kontrolle $F_M \approx 0$.
+**Vor** jedem Exponentenfit $F_M = c\,|K_G|^\alpha A^\beta$:
 
-### M2b — Exponentenfit
+| Test | Erwartung |
+|------|-----------|
+| $K_G=0$ (Ebene) | $F_M \approx 0$ |
+| $K_G>0$ (Kugel) | $F_M > 0$ |
+| $K_G<0$ (hyperbolisch) | $F_M > 0$ |
+| **stärker:** $F_M(K{>}0) \neq F_M(K{<}0)$ | Sensor erkennt Krümmungsvorzeichen |
 
-$$\boxed{F_M \stackrel{?}{=} c\,|K_G|^{\alpha}\,A^{\beta}}\qquad\text{(}\alpha,\beta\text{ aus Daten — nicht vorausgesetzt).}$$
+Erste Daten: $F_M>0$ auf $S^2$ und $H^2$, $F_M\approx 0$ auf $\mathbb{R}^2$. Bei gleichem $\varepsilon$ gilt $F_M(S^2)\approx F_M(H^2)$ → Abhängigkeit von $|K_G|$, nicht vom Vorzeichen. **Noch nicht gezeigt:** $F_M(K{>}0) \neq F_M(K{<}0)$ (stärkerer Vorzeichentest).
 
-Log-lineare Regression auf $K_G \neq 0$-Punkte: $\log F_M \sim \log c + \alpha\log|K_G| + \beta\log A$.
+### M2b — Exponentenfit (nach M2a)
 
-**Vorläufiger Befund:** $\beta \approx 2{,}0$ ($R^2 \approx 0{,}9998$); $\alpha \approx 0$ bei festem $|K_G|=1$ (**nicht identifizierbar** ohne Krümmungs-Skalenvariation). Naives $F_M \sim c\,K_G A$ trennt $S^2$/$H^2$ bei gleichem $|F_M|$ schlecht ($R^2 \ll 1$) — Vorzeichen von $K_G$ allein reicht nicht.
+$$F_M \stackrel{?}{=} c\,|K_G|^\alpha A^\beta \qquad (\alpha,\beta \text{ aus Daten, nicht vorausgesetzt}).$$
+
+Erste Anpassung: $\alpha \approx 0$, $\beta \approx 2$ — $F_M \propto A^2$, schwache $|K_G|$-Kopplung in dieser $\varepsilon$-Bandbreite.
 
 **Artefakte:** `collatz_morley_tm_numerik.py m2`, `collatz_morley_m2_sensor.json`, `tests/test_morley_m2_sensor.py`.
 
 **Epistemisches Label:** **Experiment**.
 
-**Gate M3:** `m1_gate_passed` in M2-JSON; M3-Subcommand bleibt `m3`.
-
 ---
 
 ## M3 — Morley-Sensor (nach M1 + M2)
 
-Erst wenn $T_M^{(g)}$ feststeht und M2 die Modellräume abdeckt:
+Erst wenn M2-Vorzeichenstruktur geklärt:
 
 $$F_M(\Delta) = \sum_i (\theta_i^M - \pi/3)^2, \qquad
 \text{Test: } F_M(\Delta) \stackrel{?}{=} c\,K_G(p)\,A + O(A^2).$$
 
-Sekundär: $F_M \propto K_G^2 A^2$ bzw. $F_M \propto A^\beta$ (M2b-Hinweis $\beta \approx 2$) als Alternativ-Conjectures.
+Sekundär: $F_M \propto K_G^2 A^2$ als Alternativ-Conjecture.
 
-**CLI:** `collatz_morley_tm_numerik.py m3` (hinter Gate, nicht Default).
+**CLI:** `collatz_morley_tm_numerik.py m3` (hinter Flag, nicht Default).
 
 **Epistemisches Label:** **Conjecture** — nur Evidenz, kein Beweis.
 
@@ -130,8 +147,8 @@ Sekundär: $F_M \propto K_G^2 A^2$ bzw. $F_M \propto A^\beta$ (M2b-Hinweis $\bet
 
 ## Nächste Schritte (kurz)
 
-1. ~~M1 auswerten~~ — **erledigt** ($O(\varepsilon^3)$).
-2. ~~Kanoniche Variante~~ — `local_chart` (bzw. äquivalent `exp_euclidean`).
-3. ~~M2: $H^2$-Patch~~ — **implementiert**; M2b mit variablen Radien $R$ für $\alpha$-Identifikation.
-4. M3: $F_M$-Skalierung mit gewählter Variante und M2-Kontext ($\beta$).
+1. ~~M1 auswerten~~ — $O(\varepsilon^3)$ beobachtet (PR #44, merged).
+2. M2a: Vorzeichenstruktur dokumentieren ($F_M$ vs. $K_G$-Vorzeichen).
+3. M2b: $\alpha,\beta$ in breiterer $\varepsilon$-Bandbreite verfeinern.
+4. M3: $F_M$-Skalierung nur mit geklärter M2-Struktur.
 5. Optional: Lean-Definitionen (`MorleyOperator`) — ohne Collatz-`sorry`.

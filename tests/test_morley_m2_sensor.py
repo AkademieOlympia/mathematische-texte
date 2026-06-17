@@ -34,13 +34,32 @@ def test_m2_three_surfaces_present():
 def test_m2_euclidean_control_near_zero():
     report = run_m2_sensor(epsilons=[0.08, 0.16])
     assert report.euclidean_fm_max < 1e-20
+    assert report.sign_test is not None
+    assert report.sign_test.plane_near_zero is True
 
 
-def test_m2_curved_surfaces_positive_fm():
+def test_m2_sign_structure_positive_on_curved():
+    """M2a: F_M>0 auf S² und H², F_M≈0 auf R²."""
     report = run_m2_sensor(epsilons=[0.08, 0.14, 0.20])
-    for surf in ("S2", "H2"):
-        vals = [s.f_m for s in report.samples if s.surface == surf]
-        assert all(v > 0.0 for v in vals)
+    st = report.sign_test
+    assert st is not None
+    assert st.sphere_positive is True
+    assert st.hyperbolic_positive is True
+    assert st.plane_near_zero is True
+    assert st.sphere_fm_median > 0.0
+    assert st.hyperbolic_fm_median > 0.0
+
+
+def test_m2_sphere_hyperbolic_near_equal_fm():
+    """M2a: bei gleichem ε ist F_M(S²)≈F_M(H²) — kein Vorzeichen-Sensor."""
+    report = run_m2_sensor(epsilons=[0.06, 0.10, 0.14, 0.18])
+    st = report.sign_test
+    assert st is not None
+    assert len(st.ratio_sphere_over_hyperbolic) >= 3
+    for ratio in st.ratio_sphere_over_hyperbolic:
+        assert 0.99 < ratio < 1.01
+    assert st.curvature_sign_detected is False
+    assert 0.99 < st.median_ratio_sphere_over_hyperbolic < 1.01
 
 
 def test_m2_exponent_fit_structure():
@@ -50,6 +69,8 @@ def test_m2_exponent_fit_structure():
     assert math.isfinite(ef.alpha)
     assert math.isfinite(ef.beta)
     assert ef.n_samples >= 8
+    # erste Daten: F_M ∝ A^2, schwache |K_G|-Kopplung
+    assert ef.beta > 1.5
 
 
 def test_m2_m1_gate_passed():
@@ -64,7 +85,6 @@ def test_m2_sphere_hyperbolic_same_order_fm_over_a():
     assert len(s_ratios) == len(h_ratios) >= 3
     med_s = float(np.median(s_ratios))
     med_h = float(np.median(h_ratios))
-    # gleiche ε-Familie: F_M/A auf S² und H² sollte dieselbe Größenordnung haben
     assert 0.1 < med_h / med_s < 10.0
 
 
@@ -78,4 +98,9 @@ def test_m2_json_cli(tmp_path):
     data = json.loads(out.read_text(encoding="utf-8"))
     assert data["stage"] == "M2"
     assert len(data["samples"]) >= 9
+    assert data["sign_test"] is not None
     assert data["exponent_fit"] is not None
+    st = data["sign_test"]
+    assert st["plane_near_zero"] is True
+    assert st["sphere_positive"] is True
+    assert st["hyperbolic_positive"] is True

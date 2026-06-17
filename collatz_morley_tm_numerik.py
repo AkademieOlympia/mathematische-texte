@@ -571,11 +571,31 @@ class M2ExponentFit:
 
 
 @dataclass
+class M2SignTest:
+    """M2a: Vorzeichen-/Nullstruktur vor Exponentenfit."""
+
+    plane_fm_median: float
+    sphere_fm_median: float
+    hyperbolic_fm_median: float
+    plane_near_zero: bool
+    sphere_positive: bool
+    hyperbolic_positive: bool
+    paired_epsilons: list[float]
+    sphere_fm_at_eps: list[float]
+    hyperbolic_fm_at_eps: list[float]
+    ratio_sphere_over_hyperbolic: list[float]
+    median_ratio_sphere_over_hyperbolic: float
+    curvature_sign_detected: bool
+    interpretation: str
+
+
+@dataclass
 class M2Report:
     stage: str = "M2"
     variant: str = "local_chart"
     epsilons: list[float] = field(default_factory=list)
     samples: list[M2SurfaceSample] = field(default_factory=list)
+    sign_test: M2SignTest | None = None
     euclidean_fm_max: float = 0.0
     naive_c: float | None = None
     naive_r2: float | None = None
@@ -597,11 +617,11 @@ def _classify_order(slope: float) -> str:
     if not math.isfinite(slope):
         return "identisch (d≡0)"
     if slope >= 2.75:
-        return "O(epsilon^3) — Konsistenz bis 2. Ordnung"
+        return "O(epsilon^3) — numerische Evidenz für 2.-Ordnung-Geometrie"
     if slope >= 1.75:
-        return "O(epsilon^2) oder besser"
+        return "O(epsilon^2) — Krümmungsebene"
     if abs(slope - 1.0) < 0.35:
-        return "O(epsilon) — Definitionskonflikt"
+        return "O(epsilon) — Definitionskonflikt (Szenario B)"
     return f"Zwischenordnung (slope≈{slope:.2f})"
 
 
@@ -620,7 +640,7 @@ def run_m1_konsistenz(
     notes = [
         "M1 vor M2/M3: Definitionsvergleich, nicht F_M-Conjecture.",
         "Vier Varianten sind numerische Approximationen (s. Modul-Docstring).",
-        "log-log-Steigung ≈ 3 spricht für O(ε³)-Abweichung → Konsistenz bis 2. Ordnung.",
+        "log-log-Steigung ≈ 3: numerische Evidenz für universelle 2.-Ordnung-Geometrie (kein Theorem).",
         "H² (K_G<0) in M2 implementiert — M2a Modellraum-Vergleich.",
     ]
 
@@ -905,6 +925,68 @@ def _m1_gate_passed(m1: M1Report, min_slope: float = 2.75) -> bool:
     return True
 
 
+def _median_fm(samples: Sequence[M2SurfaceSample], surface: str) -> float:
+    vals = [s.f_m for s in samples if s.surface == surface]
+    return float(np.median(vals)) if vals else float("nan")
+
+
+def _compute_m2_sign_test(samples: Sequence[M2SurfaceSample]) -> M2SignTest:
+    """M2a: F_M bei K_G=0, K_G>0, K_G<0; Vergleich S² vs H² bei gleichem ε."""
+    plane_med = _median_fm(samples, "R2")
+    sphere_med = _median_fm(samples, "S2")
+    hyper_med = _median_fm(samples, "H2")
+
+    plane_near_zero = all(s.f_m < 1e-20 for s in samples if s.surface == "R2")
+    sphere_positive = all(s.f_m > 0.0 for s in samples if s.surface == "S2")
+    hyperbolic_positive = all(s.f_m > 0.0 for s in samples if s.surface == "H2")
+
+    eps_set = sorted({s.epsilon for s in samples})
+    paired_eps: list[float] = []
+    sphere_at_eps: list[float] = []
+    hyper_at_eps: list[float] = []
+    ratios: list[float] = []
+    for eps in eps_set:
+        s_pt = next((s for s in samples if s.surface == "S2" and s.epsilon == eps), None)
+        h_pt = next((s for s in samples if s.surface == "H2" and s.epsilon == eps), None)
+        if s_pt is None or h_pt is None or h_pt.f_m < 1e-18:
+            continue
+        paired_eps.append(float(eps))
+        sphere_at_eps.append(s_pt.f_m)
+        hyper_at_eps.append(h_pt.f_m)
+        ratios.append(s_pt.f_m / h_pt.f_m)
+
+    med_ratio = float(np.median(ratios)) if ratios else float("nan")
+    # Vorzeichen erkannt, wenn S²/H² systematisch von 1 abweicht (>5 %)
+    sign_detected = math.isfinite(med_ratio) and (med_ratio < 0.95 or med_ratio > 1.05)
+
+    if sign_detected:
+        interpretation = (
+            "F_M unterscheidet Krümmungsvorzeichen (S² vs H² bei gleichem ε)."
+        )
+    elif plane_near_zero and sphere_positive and hyperbolic_positive:
+        interpretation = (
+            "F_M≈0 bei K_G=0; F_M>0 bei K_G≠0; S²≈H² → Abhängigkeit von |K_G|, nicht Vorzeichen."
+        )
+    else:
+        interpretation = "Vorzeichenstruktur unklar — weitere Daten nötig."
+
+    return M2SignTest(
+        plane_fm_median=plane_med,
+        sphere_fm_median=sphere_med,
+        hyperbolic_fm_median=hyper_med,
+        plane_near_zero=plane_near_zero,
+        sphere_positive=sphere_positive,
+        hyperbolic_positive=hyperbolic_positive,
+        paired_epsilons=paired_eps,
+        sphere_fm_at_eps=sphere_at_eps,
+        hyperbolic_fm_at_eps=hyper_at_eps,
+        ratio_sphere_over_hyperbolic=ratios,
+        median_ratio_sphere_over_hyperbolic=med_ratio,
+        curvature_sign_detected=sign_detected,
+        interpretation=interpretation,
+    )
+
+
 def run_m2_sensor(
     epsilons: Sequence[float] | None = None,
     orientation: float = 0.37,
@@ -953,6 +1035,8 @@ def run_m2_sensor(
                 euc_max = max(euc_max, fm)
 
     curved = [s for s in samples if s.kg != 0.0 and s.f_m > 1e-18 and s.area > 1e-18]
+    sign_test = _compute_m2_sign_test(samples)
+
     naive_c, naive_r2 = float("nan"), float("nan")
     if len(curved) >= 2:
         x_naive = [s.kg * s.area for s in curved]
@@ -973,17 +1057,18 @@ def run_m2_sensor(
     )
 
     notes = [
-        "M2a: gleiche ε-Familie auf R² (K_G=0), S² (+1), H² (−1).",
-        "M2b: F_M = c |K_G|^α A^β — α, β nicht vorausgesetzt.",
-        "Kanoniche Variante: local_chart (M1: O(ε³)-Konsistenz aller Varianten).",
-        "K_G=0-Punkte nur Kontrolle (F_M≈0); Exponentenfit nur K_G≠0.",
-        "M3 erst nach bestandenem M2-Gate (m1_gate_passed).",
+        "M2a (Priorität): Vorzeichenstruktur F_M vs K_G — vor Exponentenfit.",
+        "M2b: F_M = c |K_G|^α A^β — α, β aus Daten, nicht vorausgesetzt.",
+        "Kanoniche Variante: local_chart (M1: O(ε³)-Evidenz für 2.-Ordnung-Geometrie).",
+        "K_G=0 nur Kontrolle (F_M≈0); Exponentenfit nur K_G≠0.",
+        "M3 erst nach geklärter M2-Vorzeichenstruktur.",
     ]
 
     return M2Report(
         variant=variant,
         epsilons=list(epsilons),
         samples=samples,
+        sign_test=sign_test,
         euclidean_fm_max=euc_max,
         naive_c=naive_c,
         naive_r2=naive_r2,
@@ -1057,9 +1142,31 @@ def _print_m3_report(report: M3NumerikReport) -> None:
 
 
 def _print_m2_report(report: M2Report) -> None:
-    print("=== Morley M2: Modellräume + Exponentenfit ===")
+    print("=== Morley M2: Modellräume ===")
     print(f"Variante: {report.variant}  |  M1-Gate: {'bestanden' if report.m1_gate_passed else 'offen'}")
     print(f"Euklid max F_M (K_G=0): {report.euclidean_fm_max:.3e}")
+
+    if report.sign_test is not None:
+        st = report.sign_test
+        print("\nM2a — Vorzeichenstruktur (Priorität):")
+        print(f"  R²  (K_G=0):  median F_M = {st.plane_fm_median:.3e}  near_zero={st.plane_near_zero}")
+        print(f"  S²  (K_G>0):  median F_M = {st.sphere_fm_median:.3e}  positive={st.sphere_positive}")
+        print(f"  H²  (K_G<0):  median F_M = {st.hyperbolic_fm_median:.3e}  positive={st.hyperbolic_positive}")
+        print(
+            f"  S²/H² bei gleichem ε: median ratio = {st.median_ratio_sphere_over_hyperbolic:.4f}  "
+            f"sign_detected={st.curvature_sign_detected}"
+        )
+        print("  Paarvergleich (ε, F_M(S²), F_M(H²), ratio):")
+        for eps, fs, fh, r in zip(
+            st.paired_epsilons,
+            st.sphere_fm_at_eps,
+            st.hyperbolic_fm_at_eps,
+            st.ratio_sphere_over_hyperbolic,
+            strict=True,
+        ):
+            print(f"    ε={eps:.3f}  F_M(S²)={fs:.5e}  F_M(H²)={fh:.5e}  ratio={r:.4f}")
+        print(f"  → {st.interpretation}")
+
     print("\nM2a — F_M/A nach Fläche:")
     for surf in ("R2", "S2", "H2"):
         pts = [s for s in report.samples if s.surface == surf]
@@ -1069,14 +1176,15 @@ def _print_m2_report(report: M2Report) -> None:
         kg = pts[0].kg
         med = float(np.median(ratios)) if ratios else float("nan")
         print(f"  {surf} (K_G={kg:+.0f}): median F_M/A ≈ {med:.5e}  (n={len(pts)})")
-    if report.naive_c is not None and math.isfinite(report.naive_c):
-        print(f"\nNaiv F_M ~ c·K_G·A: c ≈ {report.naive_c:.5f}, R² ≈ {report.naive_r2:.4f}")
+
     if report.exponent_fit is not None:
         ef = report.exponent_fit
         print(
             f"\nM2b — F_M ≈ c |K_G|^α A^β:  c≈{ef.c:.5f}, α≈{ef.alpha:.3f}, β≈{ef.beta:.3f}, "
             f"R²≈{ef.r2:.4f}  (n={ef.n_samples})"
         )
+    if report.naive_c is not None and math.isfinite(report.naive_c):
+        print(f"(sekundär) Naiv F_M ~ c·K_G·A: c ≈ {report.naive_c:.5f}, R² ≈ {report.naive_r2:.4f}")
     for note in report.notes:
         print(f"  • {note}")
 
