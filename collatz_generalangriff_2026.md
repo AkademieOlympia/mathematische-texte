@@ -557,3 +557,7 @@ definiert die nächste Forschungsfrage: welche Eigenschaften der Realisierbarkei
 **Leitkette:** $\kappa$-Familie $\to$ Äquivalenzklassen $\to R_\kappa(k) \to h_\kappa \to \mathcal{L}_{\mathrm{arith}}^* \to$ Dynamik.
 
 **Vollständiger Plan:** `collatz_stufe3_kappa_invarianz.md` (Branch `collatz/kappa-invarianz-stufe3`).
+
+### Morley-erweiterte Metrik (geometrischer Nebenzweig)
+
+Unabhängig von der operativen Stufe-3-Arbeit (Fragen A/B/C zu $\kappa$ und $R(k)$) formalisiert `collatz_morley_metrik_erweiterung.md` einen **zellulären Erweiterungsrahmen** für triangulierte Riemannsche Flächen: klassisches $g$ plus Morley-Datenpaket $\mathcal{G}_M$, diskreter Krümmungssensor $K_M(\Delta)=\sum(\angle_j-\pi/3)^2$ (nicht Gauß-Krümmung), erweiterte Bogenlänge $ds_M^2=ds^2+\lambda\,d\mu_M^2$, und heuristische Brücke Dreieck $(A,B,C)+\operatorname{Mor}(\Delta)\leadsto$ EABC-Zelle $(A,B,C,E)$. Bezug zu `MorleyWalter.tex`, `bamberg_ptolemy_walter_morley.tex`, `collatz_dc_morley_walter.pdf`. Eine Verbindung zur $\kappa$-Robustheit von Sprachverdünnung ist **spekulativ** — epistemisch zurückgestellt, **kein** Collatz-Beweisanspruch.
