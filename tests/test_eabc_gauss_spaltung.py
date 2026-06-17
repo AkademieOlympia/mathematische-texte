@@ -1,4 +1,4 @@
-"""Tests für Gauß–EABC-Spaltung mit glatt-EABC (collatz_eabc_gauss_spaltung_test.py)."""
+"""Tests für Gauß–EABC-Spaltung mit voller Γ-Signatur (collatz_eabc_gauss_spaltung_test.py)."""
 
 from __future__ import annotations
 
@@ -11,8 +11,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from collatz_eabc_gauss_spaltung_test import (
     GAMMA_PAIRS,
-    UNIFORM_MU,
     classify_split_prime,
+    full_gamma_label,
     gaussian_factor_pair,
     kappa_glatt,
     run,
@@ -43,31 +43,46 @@ def test_gaussian_factor_pair_known():
     assert gaussian_factor_pair(7) is None
 
 
-def test_classify_split_prime_gamma_both_legs():
+def test_classify_split_prime_full_gamma():
     row = classify_split_prime(17)
     assert row is not None
     assert row.a == 1 and row.b == 4
-    assert row.a_prime == 1 and row.b_prime == 1
+    assert row.full_gamma == (0, 0, "E", 2, 0, "E")
     assert row.gamma == ("E", "E")
+    assert full_gamma_label(row.full_gamma) == "(0,0,E,2,0,E)"
+
+
+def test_parity_exactly_one_even_up_to_10k():
+    report = spaltung_report(10_000)
+    parity = report["parity_smooth"]
+    assert parity["parity_constraint_holds"]
+    assert parity["exactly_one_even"] == report["split_count"]
 
 
 def test_all_gamma_classes_reachable_by_10k():
     report = spaltung_report(10_000)
-    observed = sum(1 for g in GAMMA_PAIRS if report["counts"][f"({g[0]},{g[1]})"] > 0)
-    assert observed >= 8, "mindestens halbe Γ-Klassen sollten bis 10k vorkommen"
+    observed = sum(
+        1 for g in GAMMA_PAIRS if report["counts_joint"][f"({g[0]},{g[1]})"] > 0
+    )
+    assert observed >= 8, "mindestens halbe κ-Paar-Klassen sollten bis 10k vorkommen"
+
+
+def test_full_signature_space_grows_with_x():
+    r10 = spaltung_report(10_000)
+    r100 = spaltung_report(100_000)
+    assert r100["full_signature_space_size"] > r10["full_signature_space_size"]
 
 
 def test_mu_sums_to_one():
     report = spaltung_report(10_000)
-    total = sum(report["mu_X"].values())
+    total = sum(report["mu_X_joint_kappa"].values())
     assert math.isclose(total, 1.0, rel_tol=1e-9)
 
 
-def test_chi2_vs_shuffle_null_not_extreme_at_100k():
-    """Hohe χ² vs 1/16 kann von Randverteilungen stammen; Shuffle-Null prüft Kopplung."""
+def test_chi2_vs_conditional_shuffle_not_extreme_at_100k():
     report = spaltung_report(100_000)
-    z = abs(report["z_score_chi2_vs_shuffle"])
-    assert z < 3.0
+    z = abs(report["z_score_chi2_vs_conditional_shuffle"])
+    assert z < 3.5
 
 
 def test_run_writes_json(tmp_path: Path):
@@ -76,7 +91,10 @@ def test_run_writes_json(tmp_path: Path):
     assert out.is_file()
     loaded = json.loads(out.read_text(encoding="utf-8"))
     assert "scales" in loaded
-    assert loaded["scales"]["500"]["split_count"] == report["scales"]["500"]["split_count"]
+    assert "full_signature_space_size" in loaded["scales"]["500"]
+    assert (
+        loaded["scales"]["500"]["split_count"] == report["scales"]["500"]["split_count"]
+    )
 
 
 def test_glatt_core_always_has_kappa():

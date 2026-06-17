@@ -14,6 +14,8 @@ Forschungsfrage | Forschungsvision | Experiment.
 - `collatz_eabc_gauss_spaltung_hypothese.md` — **kanonische** Gauß–EABC-Spaltung (glatt-EABC)
 - `collatz_eabc_gauss_spaltung_test.py` — Experiment Γ(p)=(κ(a'),κ(b')) (§9b)
 - `collatz_eabc_gauss_faktor_eabc_test.py` — Vorgänger (rohe mod-12-Legs; §9 historisch)
+- `collatz_eabc_hurwitz_spaltung.md` — **Hurwitz-Orbit** $\Gamma$ auf $O_p$ (4D; PR #54)
+- `collatz_eabc_hurwitz_orbit_test.py` — Experiment Orbit-Statistik, Chiralität, Kanal-Korrelation
 
 ---
 
@@ -290,13 +292,14 @@ direkter Primideal-Zugang.
 
 Für $p\equiv 1\pmod 4$, $p=a^2+b^2$, mit glatter Zerlegung
 $a=2^{\alpha_a}3^{\beta_a}a'$, $b=2^{\alpha_b}3^{\beta_b}b'$, $\gcd(a',6)=\gcd(b',6)=1$:
-$$\Gamma(p) = (\kappa(a'),\kappa(b')) \in \{E,A,B,C\}^2.$$
+$$\Gamma(p) = \bigl((\alpha_a,\beta_a,\kappa(a')),\,(\alpha_b,\beta_b,\kappa(b'))\bigr)
+\quad\text{kompakt }(\nu_2(a),\nu_3(a),\kappa(a'),\nu_2(b),\nu_3(b),\kappa(b')).$$
 
-**Conjecture:** $\Gamma(p)$ trägt nichttriviale EABC-Orientierung, nicht sichtbar aus
-$p\equiv 1\pmod 4$ allein.
+**Conjecture:** $\Gamma(p)$ trägt nichttriviale EABC-Orientierung (primitive Koordinaten nach
+glatt-strip), nicht sichtbar aus $p\equiv 1\pmod 4$ und Paritätsregel allein.
 
 **Experiment:** `collatz_eabc_gauss_spaltung_test.py` $\to$
-`collatz_eabc_gauss_spaltung.json` — $\mu_X(\gamma)$, $\chi^2$ vs.\ $1/16$, Shuffle-Null.
+`collatz_eabc_gauss_spaltung.json` — volle $\mu_X(\gamma)$, bedingte $\chi^2$, EABC-Marginaltest.
 
 ---
 

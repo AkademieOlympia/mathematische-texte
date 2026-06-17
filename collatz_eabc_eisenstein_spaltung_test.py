@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
 """
-Eisenstein–EABC-Spaltungstest mit glatt-EABC-Zerlegung.
+Eisenstein–EABC-Spaltungstest mit glatt-EABC-Zerlegung (volle Γ-Signatur).
 
 Kanonsiche Hypothese: collatz_eabc_eisenstein_spaltung.md
 
 Für split-Primzahlen p ≡ 1 (mod 3), p ≠ 3, p = a² − ab + b² (kanonisch 0 < a ≤ b):
-  a = 2^α_a · 3^β_a · a',  gcd(a', 6) = 1
-  b = 2^α_b · 3^β_b · b',  gcd(b', 6) = 1
-  Γ_E(p) = (κ(a'), κ(b')) ∈ {E,A,B,C}²
-
-μ_X(γ) = #{p ≤ X split : Γ_E(p)=γ} / #{p ≤ X split}
+  a = 2^{α_a} 3^{β_a} a',  gcd(a', 6) = 1
+  b = 2^{α_b} 3^{β_b} b',  gcd(b', 6) = 1
+  Γ_E(p) = ((α_a, β_a, κ(a')), (α_b, β_b, κ(b')))
 
 Ausführung:
     python3 collatz_eabc_eisenstein_spaltung_test.py
@@ -20,9 +18,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import math
-import random
-import statistics
 from collections import Counter
 from dataclasses import dataclass
 from math import isqrt
@@ -31,19 +26,23 @@ from typing import Any
 
 from collatz_eabc_gauss_spaltung_test import (
     CHI2_CRIT_15DF_005,
-    EABC_LABELS,
+    CHI2_CRIT_3DF_005,
     GAMMA_PAIRS,
-    NULL_TRIALS,
+    FullGamma,
+    UNIFORM_MARGINAL,
     UNIFORM_MU,
-    _chi_square_uniform,
+    _chi_square_uniform_pairs,
+    _eabc_marginal_bias,
+    _marginal_eabc_conditional,
     _mu_table,
     _shuffle_null_chi2,
+    _shuffle_null_conditional_chi2,
     _sieve_primes,
     _top_deviations,
-    _verdict,
+    full_gamma_label,
     gamma_label,
     kappa_glatt,
-    strip_smooth,
+    smooth_pattern_key,
 )
 
 ROOT = Path(__file__).resolve().parent
@@ -120,6 +119,7 @@ class EisensteinSplitRow:
     b_prime: int
     kappa_b: str
     gamma: tuple[str, str]
+    full_gamma: FullGamma
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -135,6 +135,7 @@ class EisensteinSplitRow:
             "b_prime": self.b_prime,
             "kappa_b": self.kappa_b,
             "gamma": list(self.gamma),
+            "full_gamma": list(self.full_gamma),
         }
 
 
@@ -147,6 +148,7 @@ def classify_eisenstein_split_prime(p: int) -> EisensteinSplitRow | None:
     a, b = pair
     alpha_a, beta_a, a_prime, ka = kappa_glatt(a)
     alpha_b, beta_b, b_prime, kb = kappa_glatt(b)
+    full = (alpha_a, beta_a, ka, alpha_b, beta_b, kb)
     return EisensteinSplitRow(
         p=p,
         a=a,
@@ -160,7 +162,50 @@ def classify_eisenstein_split_prime(p: int) -> EisensteinSplitRow | None:
         b_prime=b_prime,
         kappa_b=kb,
         gamma=(ka, kb),
+        full_gamma=full,
     )
+
+
+def _parity_smooth_summary_eisenstein(rows: list[EisensteinSplitRow]) -> dict[str, Any]:
+    a_even = sum(1 for r in rows if r.alpha_a >= 1 and r.alpha_b == 0)
+    b_even = sum(1 for r in rows if r.alpha_a == 0 and r.alpha_b >= 1)
+    both_even = sum(1 for r in rows if r.alpha_a >= 1 and r.alpha_b >= 1)
+    both_odd = sum(1 for r in rows if r.alpha_a == 0 and r.alpha_b == 0)
+    one_even = a_even + b_even
+    return {
+        "exactly_one_even": one_even,
+        "both_even": both_even,
+        "both_odd": both_odd,
+        "a_even_b_odd": a_even,
+        "a_odd_b_even": b_even,
+        "note": (
+            "Eisenstein: p≡1 mod 3 erlaubt beide ungerade Legs "
+            "(anders als Gauß p≡1 mod 4)"
+        ),
+    }
+
+
+def _smooth_pattern_counts(rows: list[EisensteinSplitRow]) -> dict[str, Any]:
+    counts: Counter[tuple[int, int, int, int]] = Counter(
+        smooth_pattern_key(r) for r in rows
+    )
+    n = len(rows)
+    top = sorted(
+        (
+            {
+                "pattern": f"(α_a={p[0]},β_a={p[1]},α_b={p[2]},β_b={p[3]})",
+                "count": c,
+                "fraction": c / n if n else 0.0,
+            }
+            for p, c in counts.items()
+        ),
+        key=lambda row: (-row["count"], row["pattern"]),
+    )
+    return {
+        "distinct_patterns": len(counts),
+        "top_patterns": top[:8],
+        "counts": {str(p): c for p, c in counts.most_common()},
+    }
 
 
 def coarse_mod3_defekt_report(max_p: int) -> dict[str, Any]:
@@ -208,11 +253,46 @@ def coarse_mod3_defekt_report(max_p: int) -> dict[str, Any]:
     }
 
 
+def _verdict_eisenstein(
+    chi2_joint: float,
+    z_shuffle: float,
+    z_conditional: float,
+    eabc_bias: dict[str, Any],
+    max_dev_joint: float,
+) -> str:
+    marginals_uniform = (
+        eabc_bias["chi2_marginal_a_vs_quarter"] < CHI2_CRIT_3DF_005
+        and eabc_bias["chi2_marginal_b_vs_quarter"] < CHI2_CRIT_3DF_005
+    )
+    joint_sig = chi2_joint > CHI2_CRIT_15DF_005 and abs(z_shuffle) > 2.0
+    conditional_sig = abs(z_conditional) > 2.0
+
+    if joint_sig and conditional_sig:
+        return (
+            "eabc_anchor: stabile (κ_a',κ_b')-Abweichung nach (α,β)-Stratifizierung "
+            "→ reale Z[ω]→EABC-Orientierung"
+        )
+    if marginals_uniform and not conditional_sig:
+        return (
+            "falsification_weak: κ(a'), κ(b') nach glatt-strip marginal ~ uniform 1/4; "
+            "keine robuste bedingte Kopplung → Konjektur nicht gestützt"
+        )
+    if chi2_joint > CHI2_CRIT_15DF_005 and not conditional_sig:
+        return (
+            "marginal_driven: erhöhte χ² vs 1/16 durch Randverteilungen, "
+            "nicht durch bedingte EABC-Kopplung"
+        )
+    if max_dev_joint < 0.01:
+        return (
+            "approximately_uniform: μ_X ≈ 1/16 → schwächt Eisenstein-Spaltungskonjektur"
+        )
+    return "inconclusive: mehr Skala oder stärkere Signale nötig"
+
+
 def spaltung_report(max_p: int) -> dict[str, Any]:
     rows: list[EisensteinSplitRow] = []
     gamma_counts: Counter[tuple[str, str]] = Counter()
-    marginal_a: Counter[str] = Counter()
-    marginal_b: Counter[str] = Counter()
+    full_counts: Counter[FullGamma] = Counter()
 
     for p in _sieve_primes(max_p):
         row = classify_eisenstein_split_prime(p)
@@ -220,35 +300,55 @@ def spaltung_report(max_p: int) -> dict[str, Any]:
             continue
         rows.append(row)
         gamma_counts[row.gamma] += 1
-        marginal_a[row.kappa_a] += 1
-        marginal_b[row.kappa_b] += 1
+        full_counts[row.full_gamma] += 1
 
     n = len(rows)
-    mu = _mu_table(gamma_counts, n)
-    chi2 = _chi_square_uniform(gamma_counts, n)
-    top_dev = _top_deviations(mu)
-    max_dev = top_dev[0]["abs_delta"] if top_dev else 0.0
+    mu_joint = _mu_table(gamma_counts, n)
+    chi2_joint = _chi_square_uniform_pairs(gamma_counts, n)
+    top_dev_joint = _top_deviations(mu_joint, UNIFORM_MU)
+    mu_full = (
+        {full_gamma_label(g): full_counts[g] / n for g in full_counts} if n else {}
+    )
+    top_dev_full = _top_deviations(mu_full, 1.0 / n if n else 0.0, k=5)
+    max_dev_joint = top_dev_joint[0]["abs_delta"] if top_dev_joint else 0.0
 
     pairs = [r.gamma for r in rows]
     null = _shuffle_null_chi2(pairs)
     z_shuffle = 0.0
     if null["std"] > 0:
-        z_shuffle = (chi2 - null["mean"]) / null["std"]
+        z_shuffle = (chi2_joint - null["mean"]) / null["std"]
+
+    null_cond = _shuffle_null_conditional_chi2(rows)  # type: ignore[arg-type]
+    z_conditional = 0.0
+    if null_cond["std"] > 0:
+        z_conditional = (chi2_joint - null_cond["mean"]) / null_cond["std"]
+
+    eabc_bias = _eabc_marginal_bias(rows)  # type: ignore[arg-type]
 
     return {
         "max_p": max_p,
         "split_count": n,
-        "mu_X": mu,
-        "counts": {gamma_label(*g): gamma_counts.get(g, 0) for g in GAMMA_PAIRS},
-        "marginal_kappa_a_prime": dict(marginal_a),
-        "marginal_kappa_b_prime": dict(marginal_b),
-        "chi2_uniform_16": chi2,
+        "full_signature_space_size": len(full_counts),
+        "smooth_pattern_space_size": _smooth_pattern_counts(rows)["distinct_patterns"],
+        "parity_smooth": _parity_smooth_summary_eisenstein(rows),
+        "smooth_patterns": _smooth_pattern_counts(rows),
+        "mu_X_joint_kappa": mu_joint,
+        "mu_X_full_gamma": mu_full,
+        "counts_joint": {gamma_label(*g): gamma_counts.get(g, 0) for g in GAMMA_PAIRS},
+        "marginal_eabc_conditional_on_smooth": _marginal_eabc_conditional(rows),  # type: ignore[arg-type]
+        "eabc_marginal_bias": eabc_bias,
+        "chi2_joint_kappa_vs_16": chi2_joint,
         "chi2_critical_15df_005": CHI2_CRIT_15DF_005,
-        "max_deviation_from_uniform": max_dev,
-        "top_deviations": top_dev,
+        "max_deviation_joint_from_16": max_dev_joint,
+        "top_deviations_joint": top_dev_joint,
+        "top_deviations_full_gamma": top_dev_full,
         "shuffle_null_chi2": null,
+        "shuffle_null_conditional_chi2": null_cond,
         "z_score_chi2_vs_shuffle": z_shuffle,
-        "verdict": _verdict(chi2, z_shuffle, max_dev),
+        "z_score_chi2_vs_conditional_shuffle": z_conditional,
+        "verdict": _verdict_eisenstein(
+            chi2_joint, z_shuffle, z_conditional, eabc_bias, max_dev_joint
+        ),
         "coarse_mod3_defekt": coarse_mod3_defekt_report(max_p),
         "sample_rows": [r.to_dict() for r in rows[:20]],
     }
@@ -256,19 +356,24 @@ def spaltung_report(max_p: int) -> dict[str, Any]:
 
 def multi_scale_report(max_ps: list[int]) -> dict[str, Any]:
     scales = {str(x): spaltung_report(x) for x in sorted(set(max_ps))}
+    largest = scales[str(max(sorted(set(max_ps))))]
     return {
         "meta": {
             "hypothesis_doc": "collatz_eabc_eisenstein_spaltung.md",
             "gaussian_reference": "collatz_eabc_gauss_spaltung_test.py",
             "ring": "Z[ω], ω=e^(2πi/3), N(a+bω)=a²−ab+b²",
             "split_condition": "p ≡ 1 (mod 3), p ≠ 3",
-            "glatt_note": (
-                "Gleiche strip_smooth wie Gauß: 2^α 3^β abziehen; "
-                "3 ramifiziert in Z[ω], aber κ bleibt mod-12-basiert"
+            "gamma_definition": (
+                "Γ_E(p)=((α_a,β_a,κ(a')),(α_b,β_b,κ(b'))) "
+                "kompakt (ν_2(a),ν_3(a),κ(a'),ν_2(b),ν_3(b),κ(b'))"
             ),
-            "uniform_null": UNIFORM_MU,
-            "gamma_space_size": len(GAMMA_PAIRS),
+            "uniform_null_joint": UNIFORM_MU,
+            "uniform_null_marginal": UNIFORM_MARGINAL,
+            "joint_kappa_space_size": len(GAMMA_PAIRS),
             "scales": sorted(set(max_ps)),
+            "largest_scale_full_signature_space_size": largest[
+                "full_signature_space_size"
+            ],
         },
         "scales": scales,
     }
@@ -276,24 +381,28 @@ def multi_scale_report(max_ps: list[int]) -> dict[str, Any]:
 
 def format_table(report: dict[str, Any]) -> str:
     lines = [
-        "Eisenstein–EABC-Spaltung (glatt-EABC)",
-        "=" * 55,
+        "Eisenstein–EABC-Spaltung (volle Γ-Signatur, glatt-EABC)",
+        "=" * 60,
     ]
     for key, scale in report["scales"].items():
         coarse = scale["coarse_mod3_defekt"]
+        parity = scale["parity_smooth"]
+        eabc = scale["eabc_marginal_bias"]
         lines.extend(
             [
                 f"\nX = {key}  (split p>3: {scale['split_count']})",
                 f"mod-3 bipartit exakt: {coarse['exact_coarse_bipartite']} "
                 f"({coarse['mismatches']} Mismatches / {coarse['prime_count']})",
-                f"χ² vs 1/16: {scale['chi2_uniform_16']:.3f}  "
-                f"(krit. {scale['chi2_critical_15df_005']:.1f})",
-                f"z vs Shuffle-Null: {scale['z_score_chi2_vs_shuffle']:.2f}",
-                f"max |μ−1/16|: {scale['max_deviation_from_uniform']:.5f}",
-                "Top-Abweichungen:",
+                f"|Γ|_beobachtet: {scale['full_signature_space_size']}  "
+                f"Parität 1 gerade: {parity['exactly_one_even']}/{scale['split_count']}",
+                f"χ² κ-Paar vs 1/16: {scale['chi2_joint_kappa_vs_16']:.3f}  "
+                f"z_cond={scale['z_score_chi2_vs_conditional_shuffle']:.2f}",
+                f"χ² κ(a') vs 1/4: {eabc['chi2_marginal_a_vs_quarter']:.3f}  "
+                f"κ(b') vs 1/4: {eabc['chi2_marginal_b_vs_quarter']:.3f}",
+                "Top-5 κ-Paar-Abweichungen:",
             ]
         )
-        for row in scale["top_deviations"]:
+        for row in scale["top_deviations_joint"][:5]:
             lines.append(
                 f"  {row['gamma']}: μ={row['mu_X']:.5f}  Δ={row['delta']:+.5f}"
             )
@@ -305,13 +414,17 @@ def run(max_ps: list[int] | None = None, output: Path | None = None) -> dict[str
     scales = max_ps or [10_000, 100_000, 1_000_000]
     report = multi_scale_report(scales)
     out = output or DEFAULT_OUTPUT
-    out.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    out.write_text(
+        json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
     report["output_path"] = str(out)
     return report
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Eisenstein–EABC-Spaltungstest (glatt-EABC)")
+    parser = argparse.ArgumentParser(
+        description="Eisenstein–EABC-Spaltungstest (volle Γ)"
+    )
     parser.add_argument(
         "--max-p",
         type=int,

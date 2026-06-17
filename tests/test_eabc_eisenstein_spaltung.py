@@ -41,10 +41,11 @@ def test_eisenstein_split_class():
     assert eisenstein_split_class(3) == "ramified"
 
 
-def test_classify_eisenstein_gamma_both_legs():
+def test_classify_eisenstein_full_gamma():
     row = classify_eisenstein_split_prime(7)
     assert row is not None
     assert row.a == 1 and row.b == 3
+    assert len(row.full_gamma) == 6
     assert row.gamma[0] in {"E", "A", "B", "C"}
     assert row.gamma[1] in {"E", "A", "B", "C"}
 
@@ -73,14 +74,21 @@ def test_inert_primes_have_ac_kappa():
 
 def test_all_gamma_classes_reachable_by_10k():
     report = spaltung_report(10_000)
-    observed = sum(1 for g in GAMMA_PAIRS if report["counts"][f"({g[0]},{g[1]})"] > 0)
+    observed = sum(
+        1 for g in GAMMA_PAIRS if report["counts_joint"][f"({g[0]},{g[1]})"] > 0
+    )
     assert observed >= 8
 
 
 def test_mu_sums_to_one():
     report = spaltung_report(10_000)
-    total = sum(report["mu_X"].values())
+    total = sum(report["mu_X_joint_kappa"].values())
     assert math.isclose(total, 1.0, rel_tol=1e-9)
+
+
+def test_full_signature_space_positive():
+    report = spaltung_report(10_000)
+    assert report["full_signature_space_size"] > 50
 
 
 def test_run_writes_json(tmp_path: Path):
@@ -89,4 +97,6 @@ def test_run_writes_json(tmp_path: Path):
     assert out.is_file()
     loaded = json.loads(out.read_text(encoding="utf-8"))
     assert "scales" in loaded
-    assert loaded["scales"]["500"]["split_count"] == report["scales"]["500"]["split_count"]
+    assert (
+        loaded["scales"]["500"]["split_count"] == report["scales"]["500"]["split_count"]
+    )

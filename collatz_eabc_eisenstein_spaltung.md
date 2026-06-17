@@ -3,6 +3,7 @@
 **Status:** Forschungshypothese + Experiment  
 **Kanonsiche Erweiterung von:** `collatz_eabc_normabstieg_hypothese.md` (§8–§9b)  
 **Gauß-Vergleich:** `collatz_eabc_gauss_spaltung_hypothese.md`  
+**Hurwitz-Vergleich:** `collatz_eabc_hurwitz_spaltung.md`  
 **Experiment:** `collatz_eabc_eisenstein_spaltung_test.py` → `collatz_eabc_eisenstein_spaltung.json`
 
 ---
@@ -96,22 +97,32 @@ Für $a',b'$ nach `strip_smooth`: stets $\gcd(a',6)=\gcd(b',6)=1$, also $\kappa$
 
 ---
 
-## 4. Definition ($\Gamma_E$-Paar)
+## 4. Definition (volle $\Gamma_E$-Signatur)
 
-Für split $p = a^2-ab+b^2$ setze
-$$\Gamma_E(p) := \bigl(\kappa(a'),\,\kappa(b')\bigr) \in \{E,A,B,C\}^2.$$
+Für split $p = a^2-ab+b^2$ mit glatter Zerlegung beider Legs:
+$$a = 2^{\alpha_a}\,3^{\beta_a}\, a',\qquad b = 2^{\alpha_b}\,3^{\beta_b}\, b',\qquad
+\gcd(a',6)=\gcd(b',6)=1,$$
+setze
+$$\Gamma_E(p) := \bigl((\alpha_a,\beta_a,\kappa(a')),\;(\alpha_b,\beta_b,\kappa(b'))\bigr),$$
+kompakt $(\nu_2(a),\nu_3(a),\kappa(a'),\nu_2(b),\nu_3(b),\kappa(b'))$.
 
-**Observablenraum:** $\Sigma := \{E,A,B,C\}^2$, $|\Sigma|=16$.
+**Hinweis Parität:** Anders als bei Gauß ($p\equiv 1\pmod 4$, genau eine Leg gerade)
+können bei Eisenstein **beide Legs ungerade** vorkommen; $\nu_2=0$ auf beiden Seiten ist erlaubt.
+
+**Marginalprojektion:** $(\kappa(a'),\kappa(b'))\in\{E,A,B,C\}^2$, $|\Sigma|=16$.
 
 ---
 
 ## 5. Forschungsfrage
 
 $$\mu_X(\gamma) := \frac{\#\{p\le X \text{ split in } \mathbb{Z}[\omega] : \Gamma_E(p)=\gamma\}}
-{\#\{p\le X \text{ split}\}}, \quad \gamma\in\Sigma.$$
+{\#\{p\le X \text{ split}\}}.$$
 
-Ist $\mu_X$ asymptotisch uniform ($1/16$), oder zeigen sich stabile Biases jenseits der
-trivialen mod-$3$-Grobzuordnung?
+Ist $\mu_X$ asymptotisch uniform auf beobachteten Signaturen, bzw. sind die **bedingten**
+$\kappa$-Marginalen nach $(\alpha,\beta)$-Stratifizierung uniform ($1/16$)?
+
+**Falsifikation:** marginale $\kappa(a'),\kappa(b')\approx 1/4$ und keine bedingte Kopplung
+→ schwache Evidenz; stabile Abweichungen → reeller $\mathbb{Z}[\omega]\to$EABC-Anker.
 
 **Conjecture (Eisenstein-Spaltungs-Orientierung):** $\Gamma_E(p)$ trägt nichttriviale
 EABC-Orientierung, nicht folgend aus $p\equiv 1\pmod 3$ allein.
@@ -120,13 +131,8 @@ EABC-Orientierung, nicht folgend aus $p\equiv 1\pmod 3$ allein.
 
 ## 6. Experiment
 
-Setup analog `collatz_eabc_gauss_spaltung_test.py`:
-
-1. $p\le X$, $p\equiv 1\pmod 3$, $p>3$.
-2. Kanonisches $(a,b)$ via $4p=(2a-b)^2+3b^2$.
-3. `strip_smooth` auf beiden Legs; zähle $\Gamma_E(p)$.
-4. $\chi^2$ vs. Uniform $1/16$; Shuffle-Null (marginal-erhaltend).
-5. **Zusatz:** mod-$3$-Defekt-Check (split/inert vs. $E\cup B$ / $A\cup C$).
+Setup analog `collatz_eabc_gauss_spaltung_test.py` (volle 6-Tupel-$\Gamma$, bedingte $\chi^2$,
+Shuffle-Nullen, EABC-Marginaltest). **Zusatz:** mod-$3$-Defekt-Check (split/inert vs. $E\cup B$ / $A\cup C$).
 
 ---
 
