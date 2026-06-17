@@ -4,16 +4,19 @@
 **Branch:** `collatz/eabc-euklidische-hebung` (PR #54)  
 **Experiment:** `collatz_eabc_hurwitz_orbit_test.py` → `collatz_eabc_hurwitz_orbit.json`  
 **Σ→p-Defekt:** `collatz_eabc_shell_defekt_test.py` → `collatz_eabc_shell_defekt.json`  
+**Zerlegungsregimen:** `collatz_eabc_Z_decomposition_test.py` → `collatz_eabc_Z_decomposition.json`  
 **Dirichlet-Erzeuger:** `collatz_eabc_dirichlet_D.py` → `collatz_eabc_dirichlet_D.json`  
 **Tao-Labels:** Definition | Theorem | Conjecture | Heuristik | Experiment
 
 **Querverweise:** `collatz_eabc_normabstieg_hypothese.md` · `collatz_eabc_euklidische_hebung.md` ·
 `collatz_eabc_oktonion_singularitaet.md` (8D-Forschungsprogramm, PR #54) ·
+`collatz_eabc_zerlegungsregimen.md` ($Z(n)$, $\Delta Z$, Prim als Regimengrenze) ·
 `collatz_eabc_invarianzprogramm.md` · `collatz_eabc_gauss_spaltung_hypothese.md` ·
 `collatz_eabc_eisenstein_spaltung.md` · `collatz_eabc_bernoulli_uebersetzung.md` (Branch `collatz/eabc-bernoulli-sensor`) ·
 `collatz_morley_tm_numerik.py` (Morley-Parallel, getrennte Spur)
 
-> **Hinweis:** `collatz_eabc_hurwitz_spaltung.md` ist ein **Redirect** auf dieses Dokument.
+> **Hinweis:** `collatz_eabc_hurwitz_spaltung.md` enthält die **kompakte** Orbit-Theorie §1–§10;
+> dieses Dokument erweitert um $\Sigma_p$, $H_p$, $K_p$ und Dirichlet-Spur.
 
 ---
 

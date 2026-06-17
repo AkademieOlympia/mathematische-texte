@@ -7,6 +7,7 @@
 
 **Querverweise:**
 - `collatz_eabc_quaternion_mass_hypothese.md` §12–§13 (Spektralgeometrie, $\hat D(s)$) — **Quaternion-Referenzdaten**
+- `collatz_eabc_zerlegungsregimen.md` / `collatz_eabc_Z_decomposition_test.py` — $Z(n)$, $\Delta Z$, Prim als Regimengrenze
 - `collatz_eabc_euklidische_hebung.md` §4, §8–§9 (Hurwitz-Kette $\mathbb{R}\subset\mathbb{C}\subset\mathbb{H}\subset\mathbb{O}$)
 - `collatz_eabc_normabstieg_hypothese.md` (Norm-Defekt-Abstieg, Gauß–EABC-Brücke)
 - `collatz_eabc_bernoulli_uebersetzung.md` §17 (Forschungsvision Defekt-Tetraeder, $\mathcal{D}_{\mathrm{krit}}$)
