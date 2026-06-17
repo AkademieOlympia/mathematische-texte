@@ -167,6 +167,7 @@ $\Rightarrow$ es existiert eine arithmetisch–spektrale Brücke — weiter zu p
 | # | Test | Status | Label |
 |---|------|--------|-------|
 | **1** | EABC-Asymmetrien in $V_n$ ($\sigma$, $\chi$, $\iota_{\mathrm{chir}}$) | **implementiert** | Experiment |
+| **1b** | Lean-Kopplung: $V_n$ vs. `class_of` (formale EABC-Schicht) | **implementiert** | Experiment |
 | **2** | $V_n$ vs. $\Delta t_k$ (Korrelation, Kreuzspektrum) | **zukünftig** | Experiment |
 | **3** | Krümmung $K_B(n)$ vs. $\pi(x)-\mathrm{Li}(x)$ | **zukünftig** | Experiment |
 
@@ -234,6 +235,65 @@ Morley und $\kappa$ bleiben eigenständige Angriffslinien. Der Resonanz-Zweig nu
 1. Test 1 auf größeres $n$ und mit expliziten Zufalls-Nullmodellen vergleichen.
 2. Test 2: $\Delta t_k$-Daten einbinden, Korrelationen und Falsifikation dokumentieren.
 3. Lean-Schnittstelle: PrimeSig als `Finset` über `Nat.Prime` (analog `BernoulliClock.lean`).
+
+---
+
+## 12. Experiment: Lean-Kopplung (Tao Experiment)
+
+> **Hinweis:** „LEA-M“ im Gespräch war eine Fehlhörung von **Lean** — gemeint ist die
+> formale EABC-Schicht (`EABC.lean` → `eabc_from_lean.py`), kein separates Modul.
+
+**Label: Experiment** — kein Theorem, sondern **Konsistenz- und Strukturcheck** zwischen dem
+analytischen Bernoulli-Sensor und der formalen EABC-Schicht in Lean.
+
+### Motivation
+
+Der Sensor `collatz_eabc_bernoulli_sensor.py` zählt $V_n=(E_n,A_n,B_n,C_n)$ über
+$\mathrm{PrimeSig}(B_{2n})$ und nutzt dabei bereits `class_of` aus `eabc_from_lean.py`.
+Dieses Experiment **verdoppelt** den Zählweg unabhängig: dieselben Primzahlen $p\in P_n$
+werden erneut nur über die Lean-Spiegelung klassifiziert; Quadrupel- und Chiralitätszeuge
+aus `EABC.lean` werden auf $P_n$ angewendet.
+
+**Epistemik:** Übereinstimmung beweist weder die Resonanzhypothese noch RH — sie zeigt nur,
+dass Python-Sensorik und Lean-Definitionen dieselbe mod-$12$-Semantik tragen.
+
+### Lean-Module (formale Quelle)
+
+| Modul | Inhalt |
+|-------|--------|
+| `EABC.lean` | `EClass`, `residue`, `classOf`, `Q`, `IsPrimeQuadruplet`, `Chirality`, `T`, `T4` |
+| `CollatzEabc.Mod12Matrix` | `EabcIndex`, Restklassen $1,5,7,11$ |
+| `CollatzEabc.PrefProjection` | `EabcLetter`, $\Phi_{\mathrm{pref}}$, Radial $\rho$ |
+| `CollatzEabc.BernoulliClock` | Bernoulli-Tripel, Dreierphase (Gedankenmodell) |
+| `eabc_from_lean.py` | Python-Spiegelung von `EABC.lean` |
+
+### Prüfpunkte
+
+Für $n=1,\ldots,N$:
+
+1. **Zählvektor:** $V_n^{\mathrm{sensor}} = V_n^{\mathrm{lean}}$ (unabhängige `class_of`-Rechnung).
+2. **Residuum:** für jedes $p\in P_n$ mit Klasse $X$: $p \equiv \mathrm{residue}(X) \pmod{12}$.
+3. **Rotation:** $T^4(X)=X$ auf allen vorkommenden Klassen (Lean-Theorem `T4_has_order_4`).
+4. **Vierlingszeuge:** $Q(p)=[p,p+2,p+6,p+8]$ in $P_n$; Chiralität ABCE bzw. CEAB falls zutreffend.
+5. **Nullmodell:** Zufällige EABC-Verteilung bei fester $|P_n\cap\mathrm{EABC}|$; $z$-Abweichung von $\sigma$, $\chi$.
+
+### Artefakte
+
+| Datei | Rolle |
+|-------|-------|
+| `collatz_eabc_bernoulli_lean_test.py` | Experiment-Runner, JSON-Report |
+| `tests/test_eabc_bernoulli_lean.py` | pytest (Konsistenz bis $n\le 500$) |
+| `collatz_eabc_bernoulli_lean.json` | Standard-Ausgabe (`--output`) |
+
+Ausführung:
+```bash
+python3 collatz_eabc_bernoulli_lean_test.py --max-n 200
+pytest tests/test_eabc_bernoulli_lean.py -q
+```
+
+**Erwartung:** `summary.classification_match_all`, `residue_roundtrip_all`, `T4_identity_all`
+sind `true` für alle getesteten $n$. Abweichung wäre ein **Implementierungsfehler**, nicht ein
+Gegenbeispiel zur Resonanzhypothese.
 
 ---
 
