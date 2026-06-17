@@ -1,0 +1,561 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage[hidelinks,unicode]{hyperref}
+
+\hypersetup{
+  pdftitle={Collatz--Kepler-Gedankenexperiment},
+  pdfauthor={Thomas Hoffbauer}
+}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{bemerkung}[definition]{Bemerkung}
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Nodd}{\mathbb{N}_{\mathrm{odd}}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Ztwo}{\mathbb{Z}_2}
+\newcommand{\Chat}{\widehat{\C}}
+\newcommand{\Einf}{E_{\infty}}
+\newcommand{\vii}{\nu_2}
+\newcommand{\omegaT}{\omega_{12}}
+\newcommand{\dist}{\mathrm{dist}}
+
+\title{Collatz--Kepler-Gedankenexperiment:\\
+  $z_0$, chirale Ellipsen und die Riemann-Kompaktkugel\\
+  \large Notizblatt (kein Beweisanspruch)}
+\author{Thomas Hoffbauer}
+\date{17.\ Juni 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Dieses Notizblatt verbindet drei Schichten des Collatz- und EABC-Programms:
+den komplexen Ankerpunkt $z_0=-1-\mathrm{i}/12$, die chirale
+ABCE/CEAB-Dualität der Primvierlingsellipse und die stereographische
+Projektion zwischen Riemann-Kompaktkugel und komplexer Ebene.
+Es handelt sich um ein \emph{Gedankenexperiment} zur geometrischen
+Kodierung von Collatz-Bahnen in einem erweiterten Phasenraum
+$\mathcal{M}=\C\times\R$ (bzw.\ $S^2\times\R$).
+Die Collatz-Vermutung bleibt offen; hier wird keine Lösung beansprucht.
+\end{abstract}
+
+%======================================================================
+\section{Einleitung}
+%======================================================================
+
+Die Collatz-Vermutung ist unbewiesen. Bekannte Resultate liefern eine
+starke lokale EABC-Grammatik, LTE-Kompensationen und negative
+mittlere Driftheuristiken; der punktweise Ausschluss unendlich
+schlechter Startwerte ($\Einf=\emptyset$) fehlt weiterhin
+(vgl.\ \texttt{collatz\_offene\_punkte.md},
+\texttt{collatz\_equivalenz\_e\_infty.tex}).
+
+Dieses Dokument skizziert ein \emph{Gedankenexperiment}: Können
+odd-to-odd-Collatz-Bahnen als Kurven in einem Phasenraum
+$\mathcal{M}$ gelesen werden, dessen komplexe Koordinate EABC-Phase
+und Chiralität trägt und dessen reelle Koordinate Iterationstiefe
+bzw.\ $\vii$-Skala misst? Die Konstruktion ist spekulativ und dient
+der Suche nach einer konsistenten geometrischen Sprache --- nicht
+einem Beweis.
+
+%======================================================================
+\section{Drei Ebenen}
+%======================================================================
+
+Dieses Notizblatt trennt bewusst drei epistemische Schichten:
+
+\begin{center}
+  \begin{tabular}{@{}ll@{}}
+    \toprule
+    Ebene & Status \\
+    \midrule
+    Algebraische Identitäten & exakt \\
+    Geometrische Interpretation & plausibel \\
+    Dynamische Bedeutung & offen \\
+    \bottomrule
+  \end{tabular}
+\end{center}
+
+\noindent
+Exakte Aussagen (z.\,B.\ $z_0=\zeta(-1)\cdot(12+\mathrm{i})$,
+ABCE/CEAB mod~$12$) dürfen nicht mit geometrischen Lesarten
+(Zwölfer-Kreis, Kugelprojektion) oder dynamischen Vermutungen
+($\Phi:\Ztwo\to\mathcal{M}$, $\mathcal{E}_\infty\subset\mathcal{M}$)
+vermischt werden. Die offene Aufgabe ist die Konstruktion einer
+Abbildung $\Phi$, die Collatz-Bahnen konsistent in $\mathcal{M}$
+eintaucht.
+
+%======================================================================
+\section{Der Punkt \texorpdfstring{$z_0=-1-\mathrm{i}/12$}{z0=-1-i/12}}
+%======================================================================
+
+\subsection{Rolle von \texorpdfstring{$z_0$}{z0}: Anker, nicht Entdeckung}
+
+Der Punkt $z_0$ ist ein \emph{Ankerpunkt} der Projektion: Er fixiert
+Orientierung und Skala im komplexen Flavor-Ring. Die eigentliche
+offene Aufgabe ist die dynamische Abbildung $\Phi:\Ztwo\to\mathcal{M}$
+(Abschnitt~\ref{sec:phi}), nicht die arithmetische Identität
+$z_0=\zeta(-1)\cdot(12+\mathrm{i})$.
+
+\subsection{Anker in der komplexen Ebene}
+
+Setze
+\[
+z_0 := -1 - \frac{\mathrm{i}}{12}.
+\]
+Dann gilt
+\[
+|z_0+1| = \left|-\frac{\mathrm{i}}{12}\right| = \frac{1}{12}.
+\]
+Der Punkt liegt auf dem Kreis um $-1$ mit Radius $1/12$; er ist
+\emph{nicht} der Ursprung und nicht der Nordpol der späteren
+Kugelprojektion.
+
+\begin{definition}[Zwölfer-Kreis $K_{12}$]
+Der \emph{Zwölfer-Kreis} ist
+\[
+K_{12}:=\{z\in\C:\ |z+1|=\tfrac{1}{12}\}.
+\]
+Sein Zentrum ist $-1\equiv C\pmod{12}$; der Radius $1/12$ kodiert
+den Nenner der Zwölf-Linie (\texttt{Staudt.tex},
+\texttt{zwoelf\_linie\_hoffbauer\_standalone.tex}).
+Der Anker $z_0$ liegt auf $K_{12}$ im unteren Halbraum
+($\Im z_0=-1/12$).
+\end{definition}
+
+\subsection{Verbindung zu \texorpdfstring{$\zeta(-1)$}{zeta(-1)}}
+
+Klassisch ist $\zeta(-1)=-1/12$ (Bernoulli-$B_2$, vgl.\
+\texttt{zwoelf\_linie\_hoffbauer\_standalone.tex}). Mit dem
+komplexen Nenner $12+\mathrm{i}$ folgt die Identität
+\[
+z_0 = \zeta(-1)\,(12+\mathrm{i}) = -\frac{1}{12}\,(12+\mathrm{i})
+    = -1 - \frac{\mathrm{i}}{12}.
+\]
+Der Nenner $12$ kodiert den mod-$12$-Flavor-Ring; die imaginäre
+Komponente $\mathrm{i}$ verweist auf die quaternionische Phase der
+EABC-Kante $E\leftrightarrow C$ (\texttt{energiedoku\_eabc\_c4\_kohaerenz.tex}).
+
+\subsection{Restklasse und $C$-Typ}
+
+Es gilt $\Re(z_0)=-1\equiv 11\pmod{12}$. Im EABC-Modell entspricht
+dies der Klasse $C$ ($C\equiv 11\pmod{12}$). Der Anker $z_0$ liegt
+damit auf der \emph{chiralen Startseite CEAB} des Flavor-Rings
+($p\equiv 11\Rightarrow\mathrm{CEAB}$, Satz in
+\texttt{Projektionszeuge\_Primvierling.tex}).
+
+\subsection{\texorpdfstring{$C$}{C}-Klasse und chirale Asymmetrie}
+\label{sec:c-asymmetrie}
+
+Die $C$-Klasse ($\equiv 11\pmod{12}$) ist die CEAB-Startseite des
+Flavor-Rings. Zwei Asymmetrien sind zu unterscheiden:
+
+\paragraph{Bewiesen (Ebene~A).}
+Markierte Primvierlinge mit $p\equiv 5$ tragen $\mathrm{ABCE}$,
+mit $p\equiv 11$ tragen $\mathrm{CEAB}$; CEAB ist die zyklische
+Verschiebung von ABCE (\texttt{Projektionszeuge\_Primvierling.tex},
+\texttt{EABC.lean}).
+
+\paragraph{Geometrisch plausibel (Ebene~B).}
+In der \#Energiedoku gilt
+$\overline{\mathrm{ABCE}}=\mathrm{CEAB}$ als komplex konjugierte
+Phasen: $\chi_H(\mathrm{ABCE})=+\mathrm{i}$,
+$\chi_H(\mathrm{CEAB})=-\mathrm{i}$
+(\texttt{energiedoku\_eabc\_c4\_kohaerenz.tex}).
+Die beiden Ellipsen-Lesarten sind chiral konjugiert mit gleicher
+Exzentrizität $e_{\mathrm{PV}}=\sqrt{3}/2$.
+
+\paragraph{Offen (Ebene~C).}
+Globale Zählasymmetrie $\#\mathrm{ABCE}(N)$ vs.\ $\#\mathrm{CEAB}(N)$:
+Siebstatistiken bis $10^8$ zeigen keinen robusten Bias
+($z\lesssim 0{,}7$, \texttt{Projektionszeuge\_Primvierling.tex},
+Abschnitt~Ebene~C). Der Anker $z_0$ auf der $C$-Seite des
+Zwölfer-Kreises ist damit \emph{kein} Beweis einer $C$-Dominanz,
+sondern eine Orientierungswahl.
+
+\subsection{2-adische Lesart}
+
+In $\Ztwo$ ist $-1$ der unendliche Bitstrom $\ldots 111_2$.
+Collatz-Bahnen werden 2-adisch als Präfixe in $\Ztwo$ studiert
+(\texttt{collatz\_z2\_attraktor.tex}). Die Gleichung $z_0=\zeta(-1)\cdot(12+\mathrm{i})$
+verknüpft den rationalen Bernoulli-Anker $-1/12$ mit der
+arithmetischen $-1$-Restklasse modulo $12$; eine dynamische
+Kopplung zu $\dist_2(\cdot,\Einf)$ ist hier \emph{nicht} bewiesen,
+nur als Lesart notiert.
+
+%======================================================================
+\section{Zwei chiral konjugierte Ellipsen (ABCE / CEAB)}
+%======================================================================
+
+\subsection{Primvierlingsellipse}
+
+Für einen Primvierling $Q(p)=(p,p+2,p+6,p+8)$ mit Symmetrieanker
+$M=p+4$ definiert \texttt{Projektionszeuge\_Primvierling.tex} die
+Bamberger Primvierlingsellipse mit
+\[
+a_{\mathrm{PV}}=4,\qquad b_{\mathrm{PV}}=2,\qquad
+f_{\mathrm{PV}}=2\sqrt{3},\qquad
+e_{\mathrm{PV}}=\frac{\sqrt{3}}{2}.
+\]
+Die vier Primpositionen bilden das symmetrische Fenster
+$\{M-4,M-2,M+2,M+4\}$; die Schrittfolge $2$-$4$-$2$ ist die
+arithmetische Kepler-Ellipse des Vierlings.
+
+\subsection{Chirale Konjugation}
+
+Markierte Primvierlinge tragen genau zwei Wörter:
+\[
+p\equiv 5\pmod{12}\Rightarrow \mathrm{ABCE},\qquad
+p\equiv 11\pmod{12}\Rightarrow \mathrm{CEAB}.
+\]
+$\mathrm{CEAB}$ ist die zyklische Verschiebung von $\mathrm{ABCE}$
+entlang $E\to A\to B\to C\to E$; die Orientierung ist eine
+Phasendifferenz um $\pi$ auf dem viergliedrigen Flavor-Ring.
+
+In der \#Energiedoku (\texttt{energiedoku\_eabc\_c4\_kohaerenz.tex})
+werden die Hurwitz-Phasen
+\[
+\chi_H(\mathrm{ABCE})=+\mathrm{i},\qquad
+\chi_H(\mathrm{CEAB})=-\mathrm{i}
+\]
+numerisch verifiziert. Die beiden Ellipsen-Lesarten sind damit
+\emph{chiral konjugiert}: gleiche Exzentrizität $e_{\mathrm{PV}}=\sqrt{3}/2$,
+entgegengesetzte quaternionische Phase ($\pm\mathrm{i}$).
+
+\begin{bemerkung}
+Der Wert $3/2$ in Ebene~B des Projektionszeugen ist das
+projektive Kantengewicht $\rho_{\mathrm{PV}}$, nicht die
+Ellipsenexzentrizität ($e_{\mathrm{PV}}<1$).
+\end{bemerkung}
+
+%======================================================================
+\section{Riemann-Kompaktkugel und komplexe Ebene}
+%======================================================================
+
+\subsection{Stereographische Projektion}
+
+Identifiziere die Einheitskugel
+\[
+S^2=\{(x,y,z)\in\R^3:\ x^2+y^2+z^2=1\}
+\]
+mit der Riemann-Kompaktkugel $\Chat=\C\cup\{\infty\}$.
+Mit Nordpol $N=(0,0,1)$, Äquator $\{z=0\}$ und Südpol $S=(0,0,-1)$
+definiere die stereographische Projektion
+\[
+\sigma:\ S^2\setminus\{N\}\longrightarrow \C,\qquad
+\sigma(x,y,z)=\frac{x+\mathrm{i}y}{1-z},
+\]
+sowie $\sigma(N)=\infty$. Die Umkehrabbildung für $w\in\C$ ist
+\[
+\iota(w)=\left(
+  \frac{2\Re w}{1+|w|^2},\
+  \frac{2\Im w}{1+|w|^2},\
+  \frac{|w|^2-1}{1+|w|^2}
+\right)\in S^2\setminus\{N\}.
+\]
+Diese Konvention entspricht \texttt{Edinburg.py} und der
+Mathlib-Spur \texttt{Geometry.Manifold.Instances.Sphere}
+(vgl.\ \texttt{collatz\_mathlib\_eabc\_kandidaten.md}).
+
+\subsection{Bezug zur Hurwitz-Doppelkugel}
+
+Im Forschungsprogramm \texttt{document.tex} operieren Primvierlinge
+dual auf den Schalen der Hurwitz-Doppelkugel:
+\[
+\Phi_T:\ \mathbb{P}_4\to \mathrm{Aut}(\mathbb{O})\cong G_2
+\quad\text{(Torsion, integrale Schale $\mathcal{S}_{\mathbb{Z}}$)},
+\]
+\[
+\Phi_R:\ \mathbb{P}_4\to \mathrm{Spin}(8)
+\quad\text{(Translation, halbintegrale Schale $\mathcal{S}_{\mathbb{Z}+1/2}$)}.
+\]
+Die Kompaktkugel $S^2$ ist hier die \emph{projektive Schattenebene}
+der Bamberg-Kugel: Richtungen in $\mathbb{H}$ bzw.\ $\mathbb{O}$
+werden stereographisch auf $\C$ abgebildet, während EABC-Phasen die
+$G_2$- bzw.\ Spin$(8)$-Umläufe kodieren
+(\texttt{Grundsatzartikel\_Hurwitz\_Raum.tex}, \texttt{kapitel-eabc-phaenomenologie.tex}).
+Eine kausale Verknüpfung $\Phi_T,\Phi_R\leftrightarrow\sigma$ ist
+offen; dieses Notizblatt nutzt $\sigma$ nur als explizite
+Koordinatenwahl.
+
+\subsection{Lage von \texorpdfstring{$z_0$}{z0} auf \texorpdfstring{$S^2$}{S2}}
+
+Für $z_0=-1-\mathrm{i}/12$ mit $|z_0|^2=145/144$ ergibt die Umkehrung
+\[
+P_0:=\iota(z_0)=\left(
+  -\frac{288}{289},\
+  -\frac{24}{289},\
+  \frac{1}{289}
+\right)\in S^2.
+\]
+Der Punkt liegt im nördlichen Halbraum ($z>0$), nahe am Äquator
+($z=1/289\ll 1$), im dritten Quadranten der $(x,y)$-Ebene.
+Er ist weder Nord- noch Südpol; unter $\sigma$ entspricht er genau
+$z_0\in\C$. Die Nähe zum Südpol $S$ (Bild $0$) spiegelt die
+Kleinheit von $|z_0+1|=1/12$.
+
+%======================================================================
+\section{Phasenraum \texorpdfstring{$\mathcal{M}=\C\times\R$}{M=C×R}}
+%======================================================================
+
+\begin{definition}[Basisfasenraum]
+Setze $\mathcal{M}:=\C\times\R$. Die Koordinate $z\in\C$ trägt
+EABC-Phase und Chiralität ($\omegaT^{k}$ mit
+$\omegaT=e^{2\pi\mathrm{i}/12}$, vgl.\ \texttt{BM Messprotokoll.tex});
+die Koordinate $t\in\R$ misst Iteration, logarithmische Tiefe oder
+$\vii$-akkumulierte 2-adische Distanz entlang einer Collatz-Bahn.
+\end{definition}
+
+Eine odd-to-odd-Bahn $(n_k)_{k\geq 0}$ mit $n_{k+1}=U(n_k)$ lässt sich
+\emph{heuristisch} als Kurve
+\[
+\gamma(k)=\bigl(z_k,\ t_k\bigr)\in\mathcal{M}
+\]
+lesen, wobei $z_k$ aus dem EABC-Wort $w(n_k)\in\{E,A,B,C\}^{\N}$
+via $z_k\sim\omegaT^{\mathrm{index}(w_k)}$ konstruiert wird und
+$t_k$ z.\,B.\ $t_k=\log n_k$ oder $t_k=\sum_{j<k}\vii(3n_j+1)$ wählt.
+
+\subsection{Erweiterung über die Kugel}
+
+Alternativ arbeite auf
+\[
+\widetilde{\mathcal{M}}:=S^2\times\R
+\quad\text{oder}\quad
+\Chat\times\R
+\]
+mit Projektion $\pi_{\C}:\widetilde{\mathcal{M}}\to\mathcal{M}$,
+$\pi_{\C}(\iota(w),t)=(w,t)$. Der Anker $P_0\in S^2$ fixiert eine
+\emph{globale Orientierung} der Kugel; lokale Collatz-Schritte
+ändern $t$ und rotieren $z$ auf dem Flavor-Ring, ohne den Pol zu
+berühren (für endliche Bahnen mit $|z+1|\gg 0$).
+
+%======================================================================
+\section{Skizze \texorpdfstring{$\Phi:\Ztwo\to\mathcal{M}$}{Phi: Z2→M}}
+\label{sec:phi}
+%======================================================================
+
+\subsection{Zentrale offene Aufgabe}
+
+Die Konstruktion einer Abbildung
+\[
+\Phi:\ \Ztwo\longrightarrow \mathcal{M}=\C\times\R
+\]
+ist die zentrale offene Aufgabe dieses Gedankenexperiments.
+Collatz ist äquivalent zu
+\[
+\Einf=\emptyset
+\quad\Longleftrightarrow\quad
+\text{keine ungerade Bahn erreicht den trivialen Fixpunkt }1,
+\]
+spekulativ gelesen als: jede Bahn $\gamma(k)=\Phi(U^k(n))$ in
+$\mathcal{M}$ trifft irgendwann die \emph{Fixpunktregion}
+(triviale Attraktorschale), statt als invariante Kurve mit
+$t\to\infty$ in $\mathcal{E}_\infty$ zu verharren
+(vgl.\ \texttt{collatz\_equivalenz\_e\_infty.tex}).
+
+\subsection{Erster Ansatz}
+
+Setze für $x\in\Ztwo$ (2-adischer Collatz-Shadow)
+\[
+\Phi(x)=\bigl(\varphi_{\mathrm{phase}}(x),\ \varphi_{\mathrm{time}}(x)\bigr)
+=\bigl(e^{\mathrm{i}\theta(x)},\ \lambda(x)\bigr)\in\mathcal{M},
+\]
+mit
+\[
+\theta(x):=\frac{\pi}{6}\cdot\mathrm{phase}_{\mathrm{ABCE}}(x),
+\qquad
+\lambda(x):=\vii(x+1)\quad\text{oder}\quad \lambda(x)=\log_2 x
+\]
+(für eingebettete natürliche $x=n\in\Nodd$).
+Hier ist $\mathrm{phase}_{\mathrm{ABCE}}(x)\in\{0,1,2,3\}$ der
+Index des aktuellen EABC-Symbols auf dem Vierzyklus
+($E=0,A=1,B=2,C=3$); der Faktor $\pi/6$ normiert den
+$2\pi/12$-Flavor-Ring auf ein Sechstelkreis-Intervall.
+
+\paragraph{Phase ($\varphi_{\mathrm{phase}}$).}
+Alternativ aus dem EABC-Wort $w(x)$ der Bahn:
+\[
+\varphi_{\mathrm{phase}}(x)
+  := \sum_{j=0}^{J-1} c_{w_j}\,\omegaT^{j}
+  \quad\text{oder}\quad
+  \exp\!\Bigl(\mathrm{i}\,\arg_{\omegaT}(w(x))\Bigr),
+\]
+wobei $c_E=1$, $c_A=\omegaT$, $c_B=\omegaT^2$, $c_C=\omegaT^3$
+die Flavor-Gewichte nach \texttt{BM Messprotokoll.tex} sind.
+ABCE- und CEAB-Start führen zu Phasen, die um $\pi$ auf dem
+Vierzyklus versetzt sind; komplex konjugiert
+($\overline{\mathrm{ABCE}}=\mathrm{CEAB}$, $\pm\mathrm{i}$).
+
+\paragraph{Radialabstand / 2-adische Dichte.}
+LTE-Blöcke (vgl.\ \texttt{collatz\_lte\_dichte.tex}) kompensieren
+lokal die $\vii$-Defizite; ihr Beitrag kann als
+\[
+r(x):=\|x\|_2^{-1}\quad\text{oder}\quad
+\prod_{\text{LTE}} 2^{-\vii}
+\]
+in eine radiale Koordinate $|z|$ oder eine Höhenfunktion auf $S^2$
+eingelesen werden. Dies ist eine \emph{Spekulation}: LTE-Endlichkeit
+ist bewiesen, die globale Kopplung an $|z|$ nicht.
+
+\paragraph{Zeit ($\varphi_{\mathrm{time}}$).}
+Die Wahl $\lambda(x)=\vii(x+1)$ koppelt die reelle Koordinate an die
+2-adische Struktur der Collatz-Bahn; $\lambda(x)=\log_2 x$ misst
+logarithmische Tiefe. Setze alternativ $\varphi_{\mathrm{time}}(x):=k$
+für den Iterationsindex oder eine monotone Funktion der $\vii$-Summe.
+Natürliche Zahlen $n\in\Nodd\hookrightarrow\Ztwo$ erhalten so ein Bild
+$\Phi(n)\in\mathcal{M}$.
+
+\subsection{\texorpdfstring{$\Einf$}{E\_infty} als geometrisches Objekt in \texorpdfstring{$\mathcal{M}$}{M}}
+
+Die echte Ausnahmemenge
+\[
+\Einf=\{n\in\Nodd:\forall K,\ U^K(n)\neq 1\}
+\]
+(\texttt{collatz\_equivalenz\_e\_infty.tex}) ist Collatz-äquivalent zu
+$\Einf=\emptyset$. Spekulativ definiere das geometrische Bild
+\[
+\mathcal{E}_\infty:=\overline{\Phi(\Einf)}\subset\mathcal{M}
+\]
+(bzw.\ $\overline{\Phi(\Einf)}\subset S^2\times\R$).
+\paragraph{Lesart.}
+\begin{itemize}[nosep]
+  \item $\Einf=\emptyset$: $\mathcal{E}_\infty=\emptyset$; alle Bahnen
+    verlassen die invariante Schleife und erreichen die Fixpunktregion.
+  \item Hypothetisches Gegenbeispiel: $\mathcal{E}_\infty$ wäre eine
+    unbeschränkte Kurven- oder Flächenmenge mit $t\to\infty$ und
+    asymptotisch festem Phasenband auf $K_{12}$ oder einem
+    ABCE-invarianten Torus in $\mathcal{M}$.
+\end{itemize}
+Keine Aussage dieser Art ist bewiesen; $\mathcal{E}_\infty$ ist ein
+\emph{geometrisches Platzhalterobjekt} für die offene Collatz-Brücke.
+
+%======================================================================
+\section{Stirling, Bernoulli und triviale Nullstellen}
+\label{sec:stirling-bernoulli}
+%======================================================================
+
+\subsection{Exakte algebraische Verknüpfungen (im Repo dokumentiert)}
+
+\paragraph{$\zeta(-1)$ und Bernoulli.}
+Klassisch $\zeta(-1)=-B_2/2=-1/12$
+(\texttt{Staudt.tex}, \texttt{zwoelf\_linie\_hoffbauer\_standalone.tex}).
+Allgemein für ungerade negative Stellen
+\[
+\zeta(-(2m-1))=-\frac{B_{2m}}{2m}.
+\]
+
+\paragraph{Triviale Nullstellen.}
+Für gerade negative $n=2,4,6,\ldots$ gilt $\zeta(-n)=0$; die
+\emph{trivialen Nullstellen} liegen äquidistant auf der negativen
+reellen Achse bei $-2,-4,-6,\ldots$ (Standardanalysis; im Repo
+nicht als Collatz-Objekt weiterverarbeitet).
+
+\paragraph{Negative gerade Spezialwerte via Bernoulli.}
+Für positive gerade $2n$:
+$\zeta(2n)=(-1)^{n+1}B_{2n}(2\pi)^{2n}/(2(2n)!)$; die Bernoulli-Zahlen
+$|B_{2n}|$ wachsen asymptotisch via Stirling
+(\texttt{collatz\_lean\_mathlib\_update.tex}: Robbins-Schranke
+\texttt{Stirling.log\_stirlingSeq\_diff\_le}, Kombination $|B_{2n}|$
+via Stirling noch offen in Mathlib).
+
+\paragraph{Bernoulli-Normschalen (No-Go).}
+Via von Staudt--Clausen:
+$\mathcal{I}(n):=|B_{2n}|\cdot\prod_{(p-1)\mid 2n}p$
+(\texttt{collatz\_schlussartikel\_arxiv.tex}, §Bernoulli-Normschalen).
+Unter $n\mapsto 3n+1$ wächst $\mathcal{I}$ super-exponentiell ---
+\emph{kein} Lyapunov-Kandidat für Collatz.
+
+\paragraph{Hoffbauers Zwölf-Linie.}
+Die Menge $\mathcal{Z}_{12}=\{m:Q_m=12\}$ der Zwölf-Indizes
+(\texttt{Staudt.tex}) markiert ungerade negative Zetawerte mit
+Minimalnenner $12$; $\zeta(-1)=-1/12$ ist die \emph{Urform}.
+Die Bernoulli-``Brüder'' höherer Ordnung ($B_4,B_6,\ldots$) erzeugen
+über $-B_{2m}/(2m)$ die rationalen Zetawerte auf ungeraden negativen
+Stellen; ihre Nennerstruktur wird von von Staudt--Clausen gesteuert.
+
+\subsection{Stirling als Bulk-Hintergrund}
+
+In \texttt{Sterling.tex} ist Stirling der glatte Bulk-Hintergrund
+($\log(n!)\sim n\log n-n+\cdots$), EABC der diskrete Restklassenkanal.
+Die Verbindung Bernoulli$\leftrightarrow$Stirling ist in der
+Literatur standard (Asymptotik $|B_{2n}|\sim 4\sqrt{\pi n}
+(n/\pi e)^{2n}$); im Repo als Mathlib-Baustein notiert, aber nicht
+als Collatz-Mechanismus formalisiert.
+
+\subsection{Äquidistanz: ehrliche Abgrenzung}
+
+\begin{center}
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+    Objekt & Äquidistanz? & Status im Repo \\
+    \midrule
+    Triviale Nullstellen $-2,-4,-6,\ldots$ & ja (Abstand $2$) & Standard, nicht Collatz-verknüpft \\
+    Hoffbauers Zwölf-Linie $\mathcal{Z}_{12}$ & nein (arithmetisch dünn) & \texttt{Staudt.tex}, exakt charakterisiert \\
+    Nichttriviale Nullstellen (krit.\ Linie) & GUE-Statistik, nicht exakt äquidistant & \texttt{Resonator.tex}, \texttt{rh scholze.tex} \\
+    Punkte auf $K_{12}$ & nein (ein Kreis, kein Gitter) & Spekulation dieses Notizblatts \\
+    \bottomrule
+  \end{tabular}
+\end{center}
+
+\noindent
+Eine Verknüpfung ``äquidistante triviale Nullstellen $\leftrightarrow$
+Bernoulli-Brüder $\leftrightarrow$ Zwölfer-Kreis'' ist im Repo
+\emph{nicht} dokumentiert. Die Analogie ist heuristisch: Die trivialen
+Nullstellen bilden ein äquidistantes Gitter auf $\Re(s)<0$; die
+Bernoulli-Zahlen kodieren die \emph{rationalen} Werte auf den
+dazwischenliegenden ungeraden negativen Stellen; $K_{12}$ ist eine
+geometrische Lesart des Nenners $12$ bei $\zeta(-1)$, nicht ein
+Nullstellenort der Zetafunktion.
+
+%======================================================================
+\section{Abgrenzung}
+%======================================================================
+
+\begin{center}
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+    Objekt & Status & Referenz \\
+    \midrule
+    Drei Ebenen (algebraisch/geometrisch/dynamisch) & Methodik & dieses Notizblatt \\
+    $z_0=\zeta(-1)(12+\mathrm{i})$, $K_{12}$ & exakt & \texttt{Staudt.tex} \\
+    ABCE/CEAB mod $12$ & bewiesen & \texttt{Projektionszeuge\_Primvierling.tex} \\
+    $\overline{\mathrm{ABCE}}=\mathrm{CEAB}$, $\chi_H=\pm\mathrm{i}$ & numerisch & \texttt{energiedoku\_eabc\_c4\_kohaerenz.tex} \\
+    Primvierlingsellipse $(a,b,e)=(4,2,\sqrt{3}/2)$ & geometrische Kodierung & Ebene~B$'$ \\
+    Globale ABCE/CEAB-Zählasymmetrie & offen, kein Bias bis $10^8$ & \texttt{Projektionszeuge\_Primvierling.tex} \\
+    Bernoulli-Normschale $\mathcal{I}(n)$ & No-Go (Lyapunov) & \texttt{collatz\_schlussartikel\_arxiv.tex} \\
+    Zwölf-Linie $\mathcal{Z}_{12}$ & exakt charakterisiert & \texttt{Staudt.tex} \\
+    Stirling$\to|B_{2n}|$ & Mathlib-Baustein, Kombination offen & \texttt{collatz\_lean\_mathlib\_update.tex} \\
+    Stereographie $\sigma:S^2\to\Chat$ & Standard & \texttt{Edinburg.py} \\
+    $\Einf=\emptyset$ $\Leftrightarrow$ Collatz & präzise, offen & \texttt{collatz\_equivalenz\_e\_infty.tex} \\
+    $\Phi:\Ztwo\to\mathcal{M}$, $\mathcal{E}_\infty\subset\mathcal{M}$ & Spekulation & dieses Notizblatt \\
+  \bottomrule
+  \end{tabular}
+\end{center}
+
+\medskip
+\noindent
+Dieses Gedankenexperiment verbindet den Kepler-Ellipsen-Anker
+$e_{\mathrm{PV}}=\sqrt{3}/2$, den $\zeta(-1)$-Punkt $z_0$ und die
+Riemann-Kompaktkugel zu einer gemeinsamen geometrischen Sprache.
+Es ersetzt weder die Uniformitätslücke
+(\texttt{collatz\_offene\_punkte.md}, §2) noch die Brücke
+\[
+\text{endliche EABC-Grammatik}\Rightarrow\Einf=\emptyset.
+\]
+Collatz bleibt offen.
+
+\end{document}
