@@ -8,6 +8,12 @@ und `collatz_z2_attraktor.tex` §8 Roadmap.
 listet die verbleibende Lücke zwischen gesicherter Strukturtheorie und punktweiser
 Konvergenz.
 
+### Forschungsstrategie
+
+Systematische Suche nach der kleinsten fehlenden Brücke **L** mit
+*(EABC-/Lean-Struktur) + L ⟹ Collatz*: siehe `collatz_generalangriff_2026.md`
+(Kandidaten L₁–L₆, Top-3: Lemma E, Realisierbarkeit, $\kappa$).
+
 ---
 
 ## 1. Kernvermutung (Collatz selbst)
