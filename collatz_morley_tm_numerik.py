@@ -550,6 +550,40 @@ class M3NumerikReport:
     notes: list[str] = field(default_factory=list)
 
 
+@dataclass
+class M2SurfaceSample:
+    surface: str
+    kg: float
+    epsilon: float
+    area: float
+    f_m: float
+    f_m_over_a: float
+
+
+@dataclass
+class M2ExponentFit:
+    log_c: float
+    c: float
+    alpha: float
+    beta: float
+    r2: float
+    n_samples: int
+
+
+@dataclass
+class M2Report:
+    stage: str = "M2"
+    variant: str = "local_chart"
+    epsilons: list[float] = field(default_factory=list)
+    samples: list[M2SurfaceSample] = field(default_factory=list)
+    euclidean_fm_max: float = 0.0
+    naive_c: float | None = None
+    naive_r2: float | None = None
+    exponent_fit: M2ExponentFit | None = None
+    m1_gate_passed: bool = False
+    notes: list[str] = field(default_factory=list)
+
+
 def _triangle_angles_sphere(vertices: Sequence[Vec3]) -> tuple[float, float, float]:
     a, b, c = vertices
     return (
@@ -562,6 +596,8 @@ def _triangle_angles_sphere(vertices: Sequence[Vec3]) -> tuple[float, float, flo
 def _classify_order(slope: float) -> str:
     if not math.isfinite(slope):
         return "identisch (d≡0)"
+    if slope >= 2.75:
+        return "O(epsilon^3) — Konsistenz bis 2. Ordnung"
     if slope >= 1.75:
         return "O(epsilon^2) oder besser"
     if abs(slope - 1.0) < 0.35:
@@ -584,8 +620,8 @@ def run_m1_konsistenz(
     notes = [
         "M1 vor M2/M3: Definitionsvergleich, nicht F_M-Conjecture.",
         "Vier Varianten sind numerische Approximationen (s. Modul-Docstring).",
-        "log-log-Steigung ≈ 2 spricht für Operator-Konsistenz im Grenzfall kleiner Δ_ε.",
-        "H² (K_G<0) noch nicht implementiert — M2-Erweiterung.",
+        "log-log-Steigung ≈ 3 spricht für O(ε³)-Abweichung → Konsistenz bis 2. Ordnung.",
+        "H² (K_G<0) in M2 implementiert — M2a Modellraum-Vergleich.",
     ]
 
     samples: list[M1EpsilonSample] = []
@@ -636,6 +672,158 @@ def run_m1_konsistenz(
 
 
 # ---------------------------------------------------------------------------
+# Hyperbolische Hilfsfunktionen (Hyperboloid-Modell, K_G = -1)
+# ---------------------------------------------------------------------------
+
+
+def _minkowski_dot(u: Array, v: Array) -> float:
+    return float(-u[0] * v[0] + u[1] * v[1] + u[2] * v[2])
+
+
+def _hyperboloid_normalize(p: Array) -> Vec3:
+    p = np.asarray(p, dtype=float)
+    norm_sq = -_minkowski_dot(p, p)
+    if norm_sq <= 0:
+        raise ValueError("kein Hyperboloid-Punkt")
+    return p / math.sqrt(norm_sq)
+
+
+def _tangent_basis_at_hyperboloid(q: Vec3) -> tuple[Vec3, Vec3]:
+    q = _hyperboloid_normalize(q)
+    ref = np.array([0.0, 0.0, 1.0], dtype=float)
+    if abs(-ref[0] * q[0] + ref[2] * q[2]) > 0.9:
+        ref = np.array([0.0, 1.0, 0.0], dtype=float)
+    e1 = _project_tangent_hyperboloid(q, ref)
+    n1 = float(np.linalg.norm(e1))
+    if n1 < 1e-12:
+        ref = np.array([0.0, 1.0, 0.0], dtype=float)
+        e1 = _project_tangent_hyperboloid(q, ref)
+        n1 = float(np.linalg.norm(e1))
+    e1 = e1 / n1
+    raw_e2 = np.cross(np.array([q[0], -q[1], -q[2]], dtype=float), e1)
+    e2 = _project_tangent_hyperboloid(q, raw_e2)
+    e2 = e2 / float(np.linalg.norm(e2))
+    return e1, e2
+
+
+def _project_tangent_hyperboloid(q: Vec3, v: Vec3) -> Vec3:
+    q = _hyperboloid_normalize(q)
+    return v + q * _minkowski_dot(v, q)
+
+
+def _tangent_at_hyperboloid(q: Vec3, p: Vec3) -> Vec3:
+    q, p = _hyperboloid_normalize(q), _hyperboloid_normalize(p)
+    e1, e2 = _tangent_basis_at_hyperboloid(q)
+    v2 = _log_map_hyperboloid(q, p, e1, e2)
+    v = v2[0] * e1 + v2[1] * e2
+    n = float(np.linalg.norm(v))
+    if n < 1e-14:
+        raise ValueError("degenerierter Tangentialvektor")
+    return v / n
+
+
+def _geodesic_distance_hyperboloid(p: Vec3, q: Vec3) -> float:
+    p, q = _hyperboloid_normalize(p), _hyperboloid_normalize(q)
+    return float(math.acosh(max(1.0, -_minkowski_dot(p, q))))
+
+
+def _hyperbolic_angle(p: Vec3, q: Vec3, r: Vec3) -> float:
+    t1 = _tangent_at_hyperboloid(q, p)
+    t2 = _tangent_at_hyperboloid(q, r)
+    m1 = math.sqrt(max(1e-16, _minkowski_dot(t1, t1)))
+    m2 = math.sqrt(max(1e-16, _minkowski_dot(t2, t2)))
+    cos_th = _minkowski_dot(t1, t2) / (m1 * m2)
+    return float(math.acos(np.clip(cos_th, -1.0, 1.0)))
+
+
+def _hyperbolic_triangle_area(angles: Iterable[float]) -> float:
+    return float(math.pi - sum(angles))
+
+
+def _triangle_centroid_hyperboloid(a: Vec3, b: Vec3, c: Vec3) -> Vec3:
+    raw = a + b + c
+    return _hyperboloid_normalize(raw)
+
+
+def _log_map_hyperboloid(p: Vec3, x: Vec3, e1: Vec3, e2: Vec3) -> Vec2:
+    p, x = _hyperboloid_normalize(p), _hyperboloid_normalize(x)
+    t = _project_tangent_hyperboloid(p, x)
+    t_norm = float(np.linalg.norm(t))
+    if t_norm < 1e-14:
+        return np.zeros(2)
+    dist = _geodesic_distance_hyperboloid(p, x)
+    t_hat = t / t_norm
+    return np.array([np.dot(t_hat, e1), np.dot(t_hat, e2)]) * dist
+
+
+def _exp_map_hyperboloid(p: Vec3, v2: Vec2, e1: Vec3, e2: Vec3) -> Vec3:
+    p = _hyperboloid_normalize(p)
+    v = v2[0] * e1 + v2[1] * e2
+    v_norm = float(np.linalg.norm(v))
+    if v_norm < 1e-14:
+        return p
+    return _hyperboloid_normalize(math.cosh(v_norm) * p + math.sinh(v_norm) * (v / v_norm))
+
+
+def hyperboloid_patch_triangle(
+    center: Vec3 | None = None,
+    side_angle: float = 0.1,
+    orientation: float = 0.0,
+) -> tuple[Vec3, Vec3, Vec3]:
+    """Kleines hyperbolisches Dreieck (Hyperboloid, K_G = -1)."""
+    c = _hyperboloid_normalize(
+        np.array([1.0, 0.0, 0.0]) if center is None else np.asarray(center, dtype=float)
+    )
+    e1, e2 = _tangent_basis_at_hyperboloid(c)
+    rot = math.cos(orientation) * e1 + math.sin(orientation) * e2
+    pts = []
+    for phi in (0.0, 2.0 * math.pi / 3.0, 4.0 * math.pi / 3.0):
+        dir3d = math.cos(phi) * rot + math.sin(phi) * (
+            math.cos(orientation) * e2 - math.sin(orientation) * e1
+        )
+        tangent = dir3d / float(np.linalg.norm(dir3d))
+        p = math.cosh(side_angle) * c + math.sinh(side_angle) * tangent
+        pts.append(_hyperboloid_normalize(p))
+    return pts[0], pts[1], pts[2]
+
+
+def morley_vertices_hyperbolic_local_chart(vertices: Sequence[Vec3]) -> tuple[Vec3, Vec3, Vec3]:
+    """Lokale Karte am Schwerpunkt — analog zu S²-Variante 2."""
+    a, b, c = [_hyperboloid_normalize(np.asarray(v, dtype=float)) for v in vertices]
+    p = _triangle_centroid_hyperboloid(a, b, c)
+    e1, e2 = _tangent_basis_at_hyperboloid(p)
+    tri2d = (
+        _log_map_hyperboloid(p, a, e1, e2),
+        _log_map_hyperboloid(p, b, e1, e2),
+        _log_map_hyperboloid(p, c, e1, e2),
+    )
+    m_ab, m_bc, m_ca = morley_vertices_euclidean(tri2d)
+    return (
+        _exp_map_hyperboloid(p, m_ab, e1, e2),
+        _exp_map_hyperboloid(p, m_bc, e1, e2),
+        _exp_map_hyperboloid(p, m_ca, e1, e2),
+    )
+
+
+def morley_form_fm_hyperbolic(vertices: Sequence[Vec3]) -> float:
+    mor = morley_vertices_hyperbolic_local_chart(vertices)
+    angles = tuple(
+        _hyperbolic_angle(mor[(i + 2) % 3], mor[i], mor[(i + 1) % 3]) for i in range(3)
+    )
+    target = math.pi / 3.0
+    return sum((ang - target) ** 2 for ang in angles)
+
+
+def _triangle_angles_hyperboloid(vertices: Sequence[Vec3]) -> tuple[float, float, float]:
+    a, b, c = vertices
+    return (
+        _hyperbolic_angle(c, a, b),
+        _hyperbolic_angle(a, b, c),
+        _hyperbolic_angle(b, c, a),
+    )
+
+
+# ---------------------------------------------------------------------------
 # M2 / M3 (hinter Flags — erst nach M1)
 # ---------------------------------------------------------------------------
 
@@ -666,6 +854,143 @@ def probe_sphere_scaling(
         fm = morley_form_fm_sphere(tri, variant=variant)
         samples.append(ScalingSample(side_angle=float(s), area=area, kg_area=area, f_m=fm))
     return samples
+
+
+def _m2_fm_for_surface(surface: str, tri: Sequence[Array], variant: str) -> float:
+    if surface == "R2":
+        return morley_form_fm(tri)
+    if surface == "S2":
+        return morley_form_fm_sphere(tri, variant=variant)
+    if surface == "H2":
+        return morley_form_fm_hyperbolic(tri)
+    raise ValueError(f"unbekannte Fläche: {surface}")
+
+
+def _m2_triangle_area(surface: str, tri: Sequence[Array]) -> float:
+    if surface == "R2":
+        return _triangle_area(tri)
+    if surface == "S2":
+        return _spherical_triangle_area(_triangle_angles_sphere(tri))
+    if surface == "H2":
+        return _hyperbolic_triangle_area(_triangle_angles_hyperboloid(tri))
+    raise ValueError(f"unbekannte Fläche: {surface}")
+
+
+def _multilinear_log_fit(
+    log_abs_kg: Sequence[float],
+    log_a: Sequence[float],
+    log_fm: Sequence[float],
+) -> tuple[float, float, float, float]:
+    """log F_M ≈ log_c + α log|K_G| + β log A."""
+    xs = np.asarray(log_abs_kg, dtype=float)
+    ys_a = np.asarray(log_a, dtype=float)
+    zs = np.asarray(log_fm, dtype=float)
+    if len(xs) < 3:
+        return float("nan"), float("nan"), float("nan"), float("nan")
+    design = np.column_stack([xs, ys_a, np.ones_like(xs)])
+    alpha, beta, log_c = np.linalg.lstsq(design, zs, rcond=None)[0]
+    pred = design @ np.array([alpha, beta, log_c])
+    ss_res = float(np.sum((zs - pred) ** 2))
+    ss_tot = float(np.sum((zs - np.mean(zs)) ** 2))
+    r2 = 1.0 - ss_res / ss_tot if ss_tot > 0 else float("nan")
+    return float(log_c), float(alpha), float(beta), float(r2)
+
+
+def _m1_gate_passed(m1: M1Report, min_slope: float = 2.75) -> bool:
+    for fit in m1.fits:
+        if fit.pair == "local_chart__exp_euclidean":
+            continue
+        if not math.isfinite(fit.slope_loglog) or fit.slope_loglog < min_slope:
+            return False
+    return True
+
+
+def run_m2_sensor(
+    epsilons: Sequence[float] | None = None,
+    orientation: float = 0.37,
+    variant: str = "local_chart",
+) -> M2Report:
+    """
+    M2a: Konstant-Krümmungsflächen (R², S², H²) — gleiche Δ_ε-Familie.
+    M2b: Exponentenfit F_M = c |K_G|^α A^β (α, β aus Daten).
+    """
+    if epsilons is None:
+        epsilons = [0.05, 0.08, 0.12, 0.18, 0.25, 0.35]
+
+    m1 = run_m1_konsistenz(epsilons=list(epsilons)[:4])
+    gate = _m1_gate_passed(m1)
+
+    surfaces = (
+        ("R2", 0.0),
+        ("S2", 1.0),
+        ("H2", -1.0),
+    )
+    samples: list[M2SurfaceSample] = []
+    euc_max = 0.0
+
+    for surf, kg in surfaces:
+        for eps in epsilons:
+            if surf == "R2":
+                tri = euclidean_patch_triangle(float(eps), orientation=orientation)
+            elif surf == "S2":
+                tri = sphere_patch_triangle(np.array([0.0, 0.0, 1.0]), float(eps), orientation=orientation)
+            else:
+                tri = hyperboloid_patch_triangle(side_angle=float(eps), orientation=orientation)
+            area = _m2_triangle_area(surf, tri)
+            fm = _m2_fm_for_surface(surf, tri, variant=variant)
+            ratio = fm / area if area > 1e-16 else float("nan")
+            samples.append(
+                M2SurfaceSample(
+                    surface=surf,
+                    kg=kg,
+                    epsilon=float(eps),
+                    area=area,
+                    f_m=fm,
+                    f_m_over_a=ratio,
+                )
+            )
+            if surf == "R2":
+                euc_max = max(euc_max, fm)
+
+    curved = [s for s in samples if s.kg != 0.0 and s.f_m > 1e-18 and s.area > 1e-18]
+    naive_c, naive_r2 = float("nan"), float("nan")
+    if len(curved) >= 2:
+        x_naive = [s.kg * s.area for s in curved]
+        y_naive = [s.f_m for s in curved]
+        naive_c, naive_r2 = linear_fit(x_naive, y_naive)
+
+    log_abs_kg = [math.log(abs(s.kg)) for s in curved]
+    log_a = [math.log(s.area) for s in curved]
+    log_fm = [math.log(s.f_m) for s in curved]
+    log_c, alpha, beta, r2_exp = _multilinear_log_fit(log_abs_kg, log_a, log_fm)
+    exp_fit = M2ExponentFit(
+        log_c=log_c,
+        c=math.exp(log_c) if math.isfinite(log_c) else float("nan"),
+        alpha=alpha,
+        beta=beta,
+        r2=r2_exp,
+        n_samples=len(curved),
+    )
+
+    notes = [
+        "M2a: gleiche ε-Familie auf R² (K_G=0), S² (+1), H² (−1).",
+        "M2b: F_M = c |K_G|^α A^β — α, β nicht vorausgesetzt.",
+        "Kanoniche Variante: local_chart (M1: O(ε³)-Konsistenz aller Varianten).",
+        "K_G=0-Punkte nur Kontrolle (F_M≈0); Exponentenfit nur K_G≠0.",
+        "M3 erst nach bestandenem M2-Gate (m1_gate_passed).",
+    ]
+
+    return M2Report(
+        variant=variant,
+        epsilons=list(epsilons),
+        samples=samples,
+        euclidean_fm_max=euc_max,
+        naive_c=naive_c,
+        naive_r2=naive_r2,
+        exponent_fit=exp_fit,
+        m1_gate_passed=gate,
+        notes=notes,
+    )
 
 
 def run_m3_sensor(
@@ -731,6 +1056,31 @@ def _print_m3_report(report: M3NumerikReport) -> None:
         print(f"Lineare Anpassung F_M ~ c * (K_G A): c ≈ {report.fit_slope:.5f}, R² ≈ {report.fit_r2:.4f}")
 
 
+def _print_m2_report(report: M2Report) -> None:
+    print("=== Morley M2: Modellräume + Exponentenfit ===")
+    print(f"Variante: {report.variant}  |  M1-Gate: {'bestanden' if report.m1_gate_passed else 'offen'}")
+    print(f"Euklid max F_M (K_G=0): {report.euclidean_fm_max:.3e}")
+    print("\nM2a — F_M/A nach Fläche:")
+    for surf in ("R2", "S2", "H2"):
+        pts = [s for s in report.samples if s.surface == surf]
+        if not pts:
+            continue
+        ratios = [s.f_m_over_a for s in pts if math.isfinite(s.f_m_over_a)]
+        kg = pts[0].kg
+        med = float(np.median(ratios)) if ratios else float("nan")
+        print(f"  {surf} (K_G={kg:+.0f}): median F_M/A ≈ {med:.5e}  (n={len(pts)})")
+    if report.naive_c is not None and math.isfinite(report.naive_c):
+        print(f"\nNaiv F_M ~ c·K_G·A: c ≈ {report.naive_c:.5f}, R² ≈ {report.naive_r2:.4f}")
+    if report.exponent_fit is not None:
+        ef = report.exponent_fit
+        print(
+            f"\nM2b — F_M ≈ c |K_G|^α A^β:  c≈{ef.c:.5f}, α≈{ef.alpha:.3f}, β≈{ef.beta:.3f}, "
+            f"R²≈{ef.r2:.4f}  (n={ef.n_samples})"
+        )
+    for note in report.notes:
+        print(f"  • {note}")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Morley T_M^(g): M1 Konsistenz (Default) → M2 Modelle → M3 Sensor"
@@ -757,14 +1107,9 @@ def main() -> None:
         _print_m1_report(report)
         payload = asdict(report)
     elif args.mode == "m2":
-        print("=== Morley M2: Modellräume ===")
-        print("R² (K_G=0): Morley-Satz — F_M=0 exakt (nicht numerisch wiederholt).")
-        m1 = run_m1_konsistenz(epsilons=[0.08, 0.12, 0.18])
-        print("S² (K_G=+1): M1-Daten oben; siehe --json für Details.")
-        print("H² (K_G<0): noch nicht implementiert.")
-        report = m1
-        payload = {"stage": "M2", "m1_sphere": asdict(m1), "euclidean": "K_G=0", "hyperbolic": "fehlt"}
-        _print_m1_report(m1)
+        report = run_m2_sensor()
+        _print_m2_report(report)
+        payload = asdict(report)
     else:
         report = run_m3_sensor(variant=args.variant)
         _print_m3_report(report)
@@ -774,9 +1119,9 @@ def main() -> None:
     if not out:
         out = {
             "m1": "collatz_morley_m1_konsistenz.json",
-            "m2": "",
+            "m2": "collatz_morley_m2_sensor.json",
             "m3": "",
-        }[args.mode if args.mode != "m2" else "m1"]
+        }[args.mode]
     if out:
         with open(out, "w", encoding="utf-8") as fh:
             json.dump(payload, fh, indent=2)
