@@ -224,6 +224,37 @@ Existieren Grenzwerte, $\limsup$- oder $\liminf$-Größen für
 
 **Label:** **Forschungsfrage**.
 
+#### Experiment: Skalierung (FF A)
+
+**Label:** **Experiment** (`collatz_eabc_fluktuation_skala_test.py` $\to$ `collatz_eabc_fluktuation_skala.json`).
+
+Exploratives Gitter $x\in\{100,500,10^3,5{\cdot}10^3,10^4,5{\cdot}10^4,10^5,5{\cdot}10^5,10^6\}$;
+ein Sieb bis $\max x$, inkrementelle Zählung an den Gitterpunkten ($\mathcal{O}(\pi(\max x))$).
+
+| $x$ | $\pi_{>3}(x)$ | $H/\pi$ | $H/\sqrt\pi$ | $\chi/\sqrt\pi$ | $c_1,c_2,c_3$ |
+|-----|---------------|---------|---------------|------------------|---------------|
+| $10^2$ | 23 | 0,033 | 0,16 | $-9{,}1\cdot10^{-3}$ | $-0{,}25,-0{,}25,-0{,}25$ |
+| $10^3$ | 166 | 0,259 | 3,34 | $-4{,}7\cdot10^{-3}$ | $-1{,}5,-1{,}5,-2{,}5$ |
+| $10^4$ | 1227 | 0,056 | 1,96 | $-3{,}0\cdot10^{-4}$ | $-1{,}3,-2{,}3,-3{,}3$ |
+| $10^5$ | 9590 | 0,088 | 8,59 | $-5{,}1\cdot10^{-5}$ | $-5{,}5,-6{,}0,-12{,}0$ |
+| $10^6$ | 78496 | 0,083 | 23,3 | $-2{,}7\cdot10^{-6}$ | $-8{,}5,-36{,}5,-15{,}0$ |
+
+**Beobachtungen (ehrlich, kein Beweis):**
+
+1. **$H(x)$:** Log-log-Fit $\log H$ vs.\ $\log\pi$ liefert Steigung $\approx 1{,}02$ ($R^2\approx 0{,}96$) —
+   führend $H\sim\pi_{>3}(x)$, also $H/\pi$ *asymptotisch* in der Größenordnung konstant ($\approx 0{,}05$–$0{,}10$ bei großem $x$).
+   Gleichzeitig schwankt $H/\pi$ auf dem Gitter stark (Minimum $0{,}033$ bei $x=100$, lokales Maximum $0{,}26$ bei $x=10^3$); ein fester Grenzwert ist **nicht** etabliert.
+
+2. **$\chi(x)/\sqrt{\pi}$:** Betrag fällt monoton von $\approx 9\cdot10^{-3}$ auf $\approx 3\cdot10^{-6}$ —
+   tendenziell gegen $0$, nicht gegen eine von Null verschiedene Konstante. $\chi_{\mathrm{fluct}}$ wächst langsamer als $\sqrt\pi$ (Steigung $\approx 0{,}53$ in $\log|\chi_{\mathrm{fluct}}|$ vs.\ $\log\pi$).
+
+3. **Moden $c_i$:** $|\!c_i\!|\sim\pi_{>3}^{\alpha}$ mit $\alpha\approx 0{,}45$–$0{,}53$; $c_i/\sqrt\pi$ bleibt klein ($\lesssim 0{,}2$) und oszilliert — keine stabile Normalisierung sichtbar.
+
+4. **Beste einfache Hypothese im Skript-Score** (kleinster Residual auf Log-Steigungen): $H/\pi\approx\mathrm{const}$ —
+   muss wegen der genannten Oszillationen als **heuristisch** gelesen werden; kein Ersatz für analytische Dirichlet-/Chebyshev-Information.
+
+**Fazit FF A:** Weder ein sauberer Grenzwert von $H/\pi$ noch von $\chi/\sqrt\pi$ ist numerisch gesichert; $\chi/\sqrt\pi\to 0$ ist die klarste Tendenz. Weitere Punkte $x>10^6$ oder glatte Mittel über $x$-Intervalle wären nötig, um Grenzwert vs.\ Oszillation zu trennen.
+
 ### Forschungsproblem B (Spektrum von $K$)
 
 Welche Eigenwerte und Eigenvektoren hat $K$? Lassen sich Eigenrichtungen mit den
@@ -267,6 +298,9 @@ bereits bewiesener Grenzwerte.
 |----------|-------|
 | `collatz_eabc_invarianzprogramm.py` | Numerik: $V$, $S$, $\chi$, $\delta$, $H$, $K$, $c_i$, $\sigma(Q)$ |
 | `collatz_eabc_invarianzprogramm.json` | JSON-Output inkl.\ `fluctuation_field` |
+| `collatz_eabc_fluktuation_skala_test.py` | FF A: Skalierungstest $H/\pi$, $\chi/\sqrt\pi$, $c_i$ |
+| `collatz_eabc_fluktuation_skala.json` | JSON-Output Skalierungsexperiment |
+| `tests/test_eabc_fluktuation_skala.py` | Unit-Tests Skalierungsskript |
 | `tests/test_eabc_invarianzprogramm.py` | Unit-Tests ($\kappa$, Simplex, Fluktuationsfeld) |
 | `eabc_from_lean.py` | Referenz-Implementierung von $\kappa$ |
 | `collatz_generalangriff_2026.md` | Strategischer Pointer |
