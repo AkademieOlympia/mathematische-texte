@@ -153,69 +153,106 @@ wobei $K_G$ die **Gauß-Krümmung** im Schwerpunkt ist (Gauß–Bonnet lokale Fo
 
 ## Geometrie zweiter Ordnung: der Morley-Operator $T_M$
 
-Dieser Abschnitt hebt den **Operator** über die **Sensoren** — und damit über jede statische Metrik-Lesart.
+Dieser Abschnitt hebt den **Operator** über die **Sensoren** — und damit über jede statische Metrik-Lesart. Der **erste Schritt** auf gekrümmten Flächen ist nicht „Morley-Fluss“, sondern die **Definition** des geodätischen Morley-Operators.
 
-### Dreieckraum und Operator
+### Formraum $\mathcal{S}$ — primäre Größe ist die Dreiecksform
 
-Sei $(M,g)$ eine orientierte Riemann-Fläche (oder eine triangulierte Fläche mit geodätischen bzw. Regge-Dreiecken). Der **Dreieckraum** sei
+Ein Dreieck hat **zwei Freiheitsgrade für die Form** (modulo Skala und Rotation). Der **Formraum** sei
+
+$$\mathcal{S} \;:=\; \{\text{Dreiecksformen}\} / \sim_{\text{Ähnlichkeit}}.$$
+
+Der euklidische Morley-Operator wirkt zuerst auf **Form**, nicht auf Kantenlängen:
+
+$$T_M : \mathcal{S} \longrightarrow \mathcal{S}, \qquad [\Delta] \longmapsto [\mathrm{Mor}(\Delta)].$$
+
+Der **gleichseitige Punkt** in $\mathcal{S}$ ist ausgezeichnet (Morley-Attraktor in der Ebene). Analogien: Renormierungsoperatoren, Newton-Iteration, diskrete Ricci-Flüsse — allesamt **Abbildungen auf einem Zustandsraum**, nicht punktuelle Metriken.
+
+**Epistemisches Label:** **Definition** (Formraum); Dynamik auf $\mathcal{S}$ **offen**.
+
+### Dreieckraum und geodätischer Operator $T_M^{(g)}$
+
+Sei $(M,g)$ eine orientierte Riemann-Fläche (oder triangulierte Fläche mit geodätischen bzw. Regge-Dreiecken). Der **Dreieckraum** sei
 
 $$\mathcal{T}(M) \;:=\; \{\text{nicht-degenerierte geodätische Dreiecke auf } M\}$$
 
-(modulo Kongruenz, falls explizit quotientiert). Der **Morley-Operator** ist die Abbildung
+(modulo Kongruenz, falls explizit quotientiert). Der **geodätische Morley-Operator** ist die zu wählende Abbildung
 
-$$T_M : \mathcal{T}(M) \longrightarrow \mathcal{T}(M), \qquad \Delta \longmapsto \mathrm{Mor}(\Delta),$$
+$$T_M^{(g)} : \mathcal{T}(M) \longrightarrow \mathcal{T}(M), \qquad \Delta \longmapsto \mathrm{Mor}^{(g)}(\Delta).$$
 
-wobei $\mathrm{Mor}(\Delta)$ das Morley-Dreieck aus den Schnittpunkten benachbarter Winkeldrittelnden bezeichnet (wo definiert; auf gekrümmten Flächen via lokaler konformer Karte oder Regge-Realisierung zu präzisieren).
+In der Ebene schreiben wir $T_M^{(g)} = T_M$ und $T_{\mathbb{R}^2}(\Delta) = \mathrm{Mor}(\Delta)$ (**klassisch / bewiesen**).
 
-**Epistemisches Label:** **Definition** (Operator); Realisierung auf $M \neq \mathbb{R}^2$ **offen**.
+### Vier Realisierungsvarianten (Definitionsproblem)
 
-### Morley-Dynamik und Morley-Fluss
+Auf $M \neq \mathbb{R}^2$ gibt es **mehrere** sinnvolle Weisen, „Winkeldrittelung“ und Morley-Schnittpunkte zu definieren. Diese müssen **nicht** dasselbe Objekt liefern:
+
+| Variante | Idee | Typische Werkzeuge |
+|----------|------|-------------------|
+| **Geodätische Winkel** | Innenwinkel aus geodätischen Kanten; Drittelung im Tangentialraum, dann Rücktransport | Winkelsumme, Gauß–Bonnet lokal |
+| **Lokale Karten** | Morley-Konstruktion in konformer/isothermer Karte, Rückabbildung auf $M$ | $z$-Koordinate, $\lambda\,|dz|^2$ |
+| **Paralleltransport** | Winkeltrisektionsrichtungen parallel zu den Kanten transportieren | Levi-Civita-Verbindung |
+| **Exponentialabbildung** | Konstruktion im tangentialeuklidischen Modell $\exp_p(T_pM)$, dann Einbettung | Normal coordinates |
+
+> **Boxed (Definitionspriorität):**  
+> *Bevor Morley-Dynamik, Fixpunkte oder $F_M \sim K_G A$ untersucht werden, muss $T_M^{(g)}$ explizit gewählt und die Variantenabweichung dokumentiert werden.*
+
+**Epistemisches Label:** **Definition / offen** (Variante muss gewählt werden).
+
+### Morley-Dynamik (nach Definition von $T_M^{(g)}$)
 
 Die **diskrete Morley-Dynamik** ist
 
-$$\Delta_{n+1} \;=\; T_M(\Delta_n), \qquad n = 0,1,2,\ldots$$
+$$\Delta_{n+1} \;=\; T_M^{(g)}(\Delta_n), \qquad n = 0,1,2,\ldots$$
 
-Der **Morley-Fluss** (heuristische Benennung) ist die Trajektorie $(\Delta_n)_{n\geq 0}$ unter Iteration von $T_M$ — ein **diskretes Analogon** zu Ricci-Fluss, aber auf $\mathcal{T}(M)$ statt auf dem Raum der Metriken:
+Auf dem Formraum $\mathcal{S}$ (Quotient nach Skala/Rotation) induziert $T_M^{(g)}$ ebenfalls eine Dynamik — die **primäre** Lesart für Invarianten und Attraktoren.
 
-| Ricci-Fluss (kontinuierlich) | Morley-Fluss (diskret) |
-|------------------------------|------------------------|
-| $\partial_t g = -2\,\mathrm{Ric}(g)$ | $\Delta_{n+1} = T_M(\Delta_n)$ |
-| evolviert Metrik | evolviert **Dreieck** |
-| glatte Mannigfaltigkeit | **Dreieckraum** $\mathcal{T}(M)$ |
+Der **Morley-Fluss** (heuristische Benennung) ist die Trajektorie $(\Delta_n)_{n\geq 0}$ — ein **diskretes Analogon** zu Ricci-Fluss, Newton-Iteration oder Renormierung, aber auf $\mathcal{T}(M)$ bzw. $\mathcal{S}$ statt auf dem Raum der Metriken:
 
-Sobald $T_M$ iteriert wird, entstehen **automatisch** die Fragen der dynamischen Systemtheorie:
+| Kontinuierlich / klassisch | Morley-Dynamik (diskret) |
+|----------------------------|--------------------------|
+| $\partial_t g = -2\,\mathrm{Ric}(g)$ (Ricci-Fluss) | $\Delta_{n+1} = T_M^{(g)}(\Delta_n)$ |
+| Newton-Iteration | $T_M^k$ als Iteration auf $\mathcal{S}$ |
+| Renormierungsoperator | $T_M^{(g)}$ als Form-Symmetrisierung |
+| evolviert Metrik | evolviert **Dreiecksform** |
 
-- Gibt es **Fixpunkte** $\Delta^*$ mit $T_M(\Delta^*) = \Delta^*$?
-- Gibt es **Attraktoren**, **periodische Zyklen** $T_M^k(\Delta) = \Delta$?
-- Welche **Invarianten** sind unter $T_M$ (oder unter $T_M^k$) erhalten?
-- Ist $T_M$ **kontraktiv** in einer geeigneten Metrik auf $\mathcal{T}(M)$?
-- **Konvergiert** jede Trajektorie zu einem universellen Objekt?
+Sobald $T_M^{(g)}$ definiert und iteriert wird, entstehen **automatisch** Fragen der dynamischen Systemtheorie:
+
+- **Fixpunkte** $\Delta^*$ mit $T_M^{(g)}(\Delta^*) = \Delta^*$
+- **Periodische Orbits** $T_M^{(g)\,k}(\Delta) = \Delta$
+- **Attraktoren** und Basins auf $\mathcal{S}$
+- **Invarianten** unter $T_M^{(g)}$ bzw. $T_M^{(g)\,k}$
+- **Entropie** und Komplexität der Orbitstruktur
+- **Kontraktivität** in einer geeigneten Metrik auf $\mathcal{S}$
 
 **Epistemisches Label:** **offen** — keine Antworten in diesem Dokument.
 
-### Morley-Satz als Symmetrisierungsoperator
+### Morley-Satz als Symmetrisierungsoperator (nur $\mathbb{R}^2$)
 
-Im euklidischen Fall (Morley-Satz, **Theorem**): Für jedes $\Delta \subset \mathbb{R}^2$ ist $\mathrm{Mor}(\Delta)$ **gleichseitig**. Damit ist $T_{\mathbb{R}^2}$ auf der Äquivalenzklasse gleichseitiger Dreiecke **konstant** — Morley wirkt bereits in der Ebene als **Symmetrisierungsoperator**: aus beliebiger Form wird (in einem Schritt) maximale Winkelsymmetrie im Kern.
+Im euklidischen Fall (Morley-Satz, **klassisch / bewiesen**): Für jedes $\Delta \subset \mathbb{R}^2$ ist $\mathrm{Mor}(\Delta)$ **gleichseitig**. Damit ist $T_{\mathbb{R}^2}$ auf der Äquivalenzklasse gleichseitiger Dreiecke **konstant** — Morley wirkt in der Ebene als **Symmetrisierungsoperator**: aus beliebiger Form wird (in einem Schritt) maximale Winkelsymmetrie im Kern.
 
-**Lesart:** In der Ebene ist der Attraktor (im winkligen Sinn) **trivial und universal** — das gleichseitige Morley-Dreieck. Auf gekrümmten Flächen bricht diese Universalität; genau dort wird $T_M$ zum **Krümmungssensor**.
+**Lesart:** In der Ebene ist der Attraktor in $\mathcal{S}$ **trivial und universal** — der gleichseitige Punkt. Auf gekrümmten Flächen (nach Wahl von $T_M^{(g)}$) bricht diese Universalität; genau dort wird $F_M$ zum **Krümmungssensor** (Conjecture oben).
 
-### Krümmungssonde: $T_M(\Delta) - T_{\mathrm{euclid}}(\Delta)$
+### Krümmungssonde: $T_M^{(g)}(\Delta)$ vs. euklidische Referenz
 
 Für ein kleines Dreieck $\Delta$ auf $(M,g)$ sei $T_{\mathrm{euclid}}(\Delta)$ die Morley-Realisierung, wenn $\Delta$ **als euklidisch** (gleiche Kantenlängen/Winkel in der Tangentialebene) konstruiert wird. Die **Abweichung**
 
-$$\delta_M(\Delta) \;:=\; T_M(\Delta) - T_{\mathrm{euclid}}(\Delta)$$
+$$\delta_M(\Delta) \;:=\; T_M^{(g)}(\Delta) - T_{\mathrm{euclid}}(\Delta)$$
 
 (mit geeigneter Norm auf Winkel- und Skalenabweichung, z. B. via $F_M$, $S_M$) misst **lokale Geometrie**: der Morley-Kern als **Krümmungssonde**. Die Sensoren $F_M$, $S_M$, $K_M$ aus § Definitionen sind **Koordinaten** dieser Abweichung, nicht der Operator selbst.
 
-**Epistemisches Label:** **heuristisch** — präzise Norm und Grenzfall $A\to 0$ **offen**; Verbindung zur Conjecture $K_M \sim c_1 K_G$ (oben).
+**Epistemisches Label:** **heuristisch** — präzise Norm und Grenzfall $A\to 0$ **offen**; Verbindung zur Conjecture $F_M = c\,K_G A + O(A^2)$ (oben).
 
-### Komplexe Ebene: diskrete konforme Transformation
+### Komplexe Geometrie: Kreuzverhältnis und konforme Invarianten
 
-Auf $\mathbb{C}$ identifiziere $\Delta = (z_1,z_2,z_3)$ mit $z_i \in \mathbb{C}$. Die Morley-Abbildung
+Auf $\mathbb{C}$ identifiziere $\Delta = (z_1,z_2,z_3)$ mit $z_i \in \mathbb{C}$. Ein nicht-degeneriertes Dreieck trägt einen **Kreuzverhältnis-Typ** (Möbius-Äquivalenzklasse). Die Morley-Abbildung
 
 $$\mathcal{M} : (z_1,z_2,z_3) \longmapsto (m_1,m_2,m_3)$$
 
-ist eine **punktweise definierte diskrete Transformation** auf Dreieckskonfigurationen — kein globales $f:\mathbb{C}\to\mathbb{C}$, aber ein **diskretes konformes Feld** auf der Triangulierung. Verbindungen (Literaturrahmen, **nicht bewiesen**):
+ist eine **punktweise diskrete Transformation** auf Dreieckskonfigurationen — kein globales $f:\mathbb{C}\to\mathbb{C}$, aber eine **abbildungsdefinierte** Evolution von Kreuzverhältnissen. Natürliche Fragen:
+
+- Welche **konformen Invarianten** (Kreuzverhältnis, Schwarzian) sind unter $\mathcal{M}$ approximativ erhalten?
+- Liegt $\mathcal{M}$ näher an **klassischer Riemannscher Flächentheorie** (konforme Struktur) als an einer neuen Metrik?
+
+Verbindungen (Literaturrahmen, **nicht bewiesen**):
 
 - Schwarzsche Ableitung (dritte invariante Ableitung unter Möbius),
 - Beltrami-Differential $\mu = \partial_{\bar z}f / \partial_z f$,
