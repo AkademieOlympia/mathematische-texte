@@ -359,7 +359,7 @@ $$\text{Delaunay-Triangulierung} \;\longleftrightarrow\; \text{Voronoi-Dualität
 
 | Struktur | Rolle im Morley-Rahmen |
 |----------|------------------------|
-| Ikosaeder-Triangulation | Träger von $\Delta \in \mathcal{T}(S^2)$; $T_M$ wirkt **pro Dreieck** |
+| Ikosaeder-Triangulation | Träger von $\Delta \in \mathcal{T}(S^2)$; $T_M^{(g)}$ wirkt **pro Dreieck** (nach Definition) |
 | Dodekaeder-Dual | Voronoi-Zellen; Morley **nicht** direkt auf Pentagone definiert |
 | Fächer-Triangulation | `triangulate_faces()` — macht Dual Morley-zugänglich ($P \to 3$ Dreiecke) |
 
@@ -408,7 +408,7 @@ In `eabc_icosahedron_test.py`:
 
 ### Sphärische Morley-Zellen (Forschungsfrage)
 
-Der klassische Morley-Satz gilt auf $S^2$ **nicht** unverändert. Dennoch:
+Der klassische Morley-Satz gilt auf $S^2$ **nicht** ohne Definition von $T_M^{(g)}$ — vgl. § Was bewiesen ist. Dennoch:
 
 - **Experiment (offen):** $F_M$, $S_M$ auf ikosaedrischen Sphärendreiecken,
 - **heuristisch:** Hierarchie Morley $\to$ Walter $\to$ Kepler/Dodekaeder (`MorleyWalter.tex`).
@@ -443,37 +443,50 @@ $$\mu_M \;:=\; \frac{m_2 - m_1}{z_2 - z_1}$$
 
 ## EABC-Perspektive (Kurzverweis)
 
-Die operatorische EABC-Lesart — $(A,B,C)\xrightarrow{T_M}(E_A,E_B,E_C)$, $E$ als Wirkung nicht als Punkt, Morley-Fluss $\Delta_{n+1}=T_M(\Delta_n)$ — ist in § **Geometrie zweiter Ordnung** ausgeführt; Ikosaeder–Dodekaeder-Dualität und $R_{\mathrm{EABC}}$ in § **Ikosaeder–Dodekaeder-Dualität**. Brücke zu Collatz/κ bleibt **spekulativ**; vgl. `collatz_dc_morley_walter.pdf`, `eabc_icosahedron_test.py`.
+Die operatorische EABC-Lesart — $(A,B,C)\xrightarrow{E=T_M}(E_A,E_B,E_C)$, $E$ als Operator nicht als Punkt, Morley-Dynamik $\Delta_{n+1}=T_M^{(g)}(\Delta_n)$ — ist in § **Geometrie zweiter Ordnung** ausgeführt; Ikosaeder–Dodekaeder-Dualität in § **Ikosaeder–Dodekaeder-Dualität**. Brücke zu Collatz/κ bleibt **spekulativ**; vgl. `collatz_dc_morley_walter.pdf`, `eabc_icosahedron_test.py`.
 
 ---
 
-## Strukturbrücke $(M, g, T_M, \mathcal{T}(M))$
+## Strukturbrücke — Forschungskette (bevorzugte Reihenfolge)
 
-Die folgende Kette ordnet die Ebenen (kein Theorem, **organisatorisches Schema**):
+> **Boxed (Forschungskette):**  
+> $$\text{Riemannsche Fläche } (M,g)
+> \;\to\;
+> \text{geodätische Triangulierung}
+> \;\to\;
+> T_M^{(g)} : \mathcal{T}(M) \to \mathcal{T}(M)
+> \;\to\;
+> \text{Fixpunkte, Invarianten, Krümmung}$$
+
+Die **Innovation** ist nicht eine Morley-Metrik, sondern eine **Theorie geodätischer Morley-Operatoren** auf gekrümmten Flächen. Sensoren und Morley-Dynamik sind **Folgeobjekte** nach expliziter Wahl von $T_M^{(g)}$.
+
+Erweitertes Schema (organisatorisch, kein Theorem):
 
 $$\boxed{
-\text{Riemann-Fläche } (M,g)
+(M,g)
 \;\to\;
-\mathcal{T}(M) \;\text{(ikosaedrisch / Delaunay)}
+\mathcal{T}(M),\ \mathcal{S}
 \;\to\;
-T_M : \mathcal{T}(M) \to \mathcal{T}(M)
+T_M^{(g)}
 \;\to\;
-\text{Polyeder-Dualität } I \leftrightarrow D
+(\Delta_n),\ \text{Dynamik auf }\mathcal{S}
 \;\to\;
-\text{Morley-Fluss } (\Delta_n)
+F_M,\ S_M,\ K_M,\ \mu_M
 \;\to\;
-\text{Sensoren } F_M, S_M, K_M, \mu_M
+I \leftrightarrow D\ \text{(Triangulierungsdualität, heuristisch)}
 }$$
 
 | Komponente | Rolle |
 |------------|-------|
-| $(M,g)$ | glatte Hintergrundgeometrie (falls vorhanden) |
-| $\mathcal{T}(M)$ | Dreieckraum — **Grundobjekt zweiter Ordnung** |
-| $T_M$ | Morley-Operator; Symmetrisierung (Ebene) / Krümmungssonde (krumm) |
-| $(\Delta_n)$ | Morley-Fluss; Fixpunkte, Zyklen, Attraktoren **offen** |
+| $(M,g)$ | glatte Hintergrundgeometrie |
+| geodätische Triangulierung | diskrete Realisierung auf $M$ |
+| $\mathcal{T}(M)$, $\mathcal{S}$ | Dreieckraum / **Formraum** (2 DOF mod Skala) |
+| $T_M^{(g)}$ | geodätischer Morley-Operator — **Definitionsproblem** |
+| $(\Delta_n)$ | diskrete Dynamik; Fixpunkte, Zyklen, Entropie **offen** |
 | $F_M, S_M, K_M, \mu_M$ | Sensoren auf Zuständen — **nicht** der Operator |
+| $I \leftrightarrow D$ | platonische Dualität; $\Delta(M)$-Experiment (s. § Ikosaeder) |
 
-**Nähe zu:** diskreter Differentialgeometrie, Regge-Kalkül, diskreter konformer Geometrie, Ricci-Fluss (als kontinuierliches Analogon) — **nicht** zu einer neuen „Morley-Metrik“ im Riemannschen Sinn.
+**Nähe zu:** diskreter Differentialgeometrie, Regge-Kalkül, diskreter konformer Geometrie, Ricci-Fluss — **nicht** zu einer neuen „Morley-Metrik“ im Riemannschen Sinn.
 
 ---
 
@@ -485,7 +498,7 @@ T_M : \mathcal{T}(M) \to \mathcal{T}(M)
 | $S_M$ | Flächenverhältnis Hülle/Kern | **metrisch** (Skala) |
 | $K_M$ | gewichtete Kombination | tunable via $\alpha,\beta,S_0$ |
 
-Die Trennung verhindert die Verwechslung „Morley = neue Metrik“. Der **Operator** $T_M$ ist der primäre Akteur; $K_M$ ist ein **abgeleiteter Sensor**. In der Praxis:
+Die Trennung verhindert die Verwechslung „Morley = neue Metrik“. Der **Operator** $T_M^{(g)}$ (nach Definition) ist der primäre Akteur; $K_M$ ist ein **abgeleiteter Sensor**. In der Praxis:
 
 - **Formdominiert:** $F_M$ groß, $S_M \approx S_0$ → stark nichtgleichseitige Morley-Realisierung bei erhaltener Skala,
 - **skalendominiert:** $S_M$ weit von $S_0$, $F_M$ klein → ähnliche Winkelstruktur, aber andere Größe,
@@ -497,40 +510,39 @@ Die Trennung verhindert die Verwechslung „Morley = neue Metrik“. Der **Opera
 
 | Aussage | Label |
 |---------|-------|
+| Morley-Satz: $T_M(\Delta)$ gleichseitig in $\mathbb{R}^2$ | **klassisch / bewiesen** |
 | Definitionen $F_M$, $S_M$, $K_M$ | **Definition** |
 | Ebenenformel für $\operatorname{Area}(\mathrm{Mor}(\Delta))$ | **Theorem** (klassisch) |
-| Morley-Operator $T_M$ auf $\mathcal{T}(M)$ | **Definition** |
-| Morley-Fluss $\Delta_{n+1}=T_M(\Delta_n)$ | **Definition** (Dynamik) |
-| Fixpunkte, Zyklen, Kontraktivität, universelle Konvergenz | **offen** |
-| Morley-Satz: $T_{\mathbb{R}^2}$ symmetrisiert zu gleichseitig | **Theorem** (klassisch) |
-| $\delta_M = T_M(\Delta)-T_{\mathrm{euclid}}(\Delta)$ als Krümmungssonde | **heuristisch** |
-| $\mathcal{M}:(z_1,z_2,z_3)\mapsto(m_1,m_2,m_3)$; Schwarz/Beltrami/Teichmüller | **heuristisch** |
-| $E = T_M$ (EABC operatorisch, nicht Punkt $E$) | **heuristisch / spekulativ** |
-| Hauptfrage: Invarianten von $T_M$ auf triangulierten Flächen | **offen** (Forschungsprogramm) |
-| $K_M \sim c_1 K_G + c_2 K_G^2 + \cdots$ asymptotisch | **Conjecture** (offen) |
-| $\mu_M$ als diskretes Konformitätsfeld | **heuristisch** |
-| Brücke $T_M \to$ Collatz / κ-Invarianz | **spekulativ** (keine Beweisansprüche) |
-| Ikosaeder–Dodekaeder-Dualität; $\Delta(M)$ dual-stabil | **Theorem** (Dualität) / **Experiment** ($\Delta(M)$) |
+| $T_M^{(g)}$ — vier Realisierungsvarianten | **Definition / offen** |
+| Formraum $\mathcal{S}$, $T_M:\mathcal{S}\to\mathcal{S}$ | **Definition** |
+| $F_M(\Delta) = c\,K_G(p)\,A + O(A^2)$ | **Conjecture** |
+| $K_M \sim c_1 K_G + \cdots$ (kombiniert) | **Conjecture** (sekundär) |
+| Dynamik auf $\mathcal{S}$: Fixpunkte, Zyklen, Entropie | **offen** |
+| $\delta_M = T_M^{(g)}(\Delta)-T_{\mathrm{euclid}}(\Delta)$ | **heuristisch** |
+| $\mathcal{M}$, Kreuzverhältnis, $\mu_M$ | **heuristisch** |
+| $E = T_M$ (EABC operatorisch) | **heuristisch** |
+| Ikosaeder–Dodekaeder-Dualität; $\Delta(M)$ dual-stabil | **Theorem** / **Experiment** |
 | 12 Ikosaeder-Ecken $\leftrightarrow$ mod 12 | **spekulativ** |
-| $T_M$ vs. $R_{\mathrm{EABC}}$ Renormierung | **heuristisch / offen** |
-| Operator statt Metrik (Leitsatz) | **organisatorisch** |
-| Sensoren $F_M,S_M,K_M$ (Nebenleitsatz) | **organisatorisch** |
+| $T_M^{(g)}$ vs. $R_{\mathrm{EABC}}$ Renormierung | **heuristisch / offen** |
+| Brücke $T_M^{(g)} \to$ Collatz / κ-Invarianz | **spekulativ** |
+| Theorie geodätischer Morley-Operatoren (nicht Metrik) | **Leitsatz** |
 
 ---
 
 ## Verhältnis zu Stufe 3 (κ-Invarianz)
 
-Stufe 3 (`collatz_stufe3_kappa_invarianz.md`) fokussiert **Kodierungsinvarianz** von $R(k)$, $h_F$, $\mathcal{L}_{\mathrm{arith}}^*$ — nicht Geometrie als Hauptangriff.
+Stufe 3 (`collatz_stufe3_kappa_invarianz.md`, PR #42) fokussiert **Kodierungsinvarianz** von $R(k)$, $h_F$, $\mathcal{L}_{\mathrm{arith}}^*$ — nicht Geometrie als Hauptangriff. Die Leitkette dort endet in **Dynamik** als offener Brückenschritt; Morley liefert hier eine **parallele geometrische** Dynamik auf $\mathcal{S}$, epistemisch getrennt.
 
 Dieses Dokument hält die **geometrische Brücke** offen, aber **epistemisch abgegrenzt**:
 
-| Stufe 3 (aktiv) | Morley-Erweiterung (Brücke) |
-|-----------------|----------------------------|
-| κ-Familien, Äquivalenzklassen | $T_M$-Iteration auf DC-Dreiecken |
+| Stufe 3 (aktiv, PR #42) | Morley-Erweiterung (PR #43) |
+|-------------------------|----------------------------|
+| κ-Familien, Äquivalenzklassen | $T_M^{(g)}$-Definition, dann Iteration |
 | $R(k)$, $h_F$ | $F_M$, $S_M$, $K_M$ auf Triangulierungen |
-| $\mathcal{L}_{\mathrm{arith}}^*$ | $\mu_M$-Felder, diskrete Konformität |
+| $\mathcal{L}_{\mathrm{arith}}^*$ | $\mu_M$-Felder, Kreuzverhältnis-Typ |
+| Dynamik (κ-Brücke, **offen**) | Morley-Dynamik auf $\mathcal{S}$ (**offen**) |
 
-**Keine Prioritätskonkurrenz:** Morley-Sensorik ist **Rang 6+** in der Forschungshierarchie (nach `collatz_generalangriff_2026.md`).
+**Keine Prioritätskonkurrenz:** Morley-Sensorik ist **Rang 6+** in der Forschungshierarchie (nach `collatz_generalangriff_2026.md`). Ein eventueller κ–Morley-Isomorphismus wäre **Conjecture**, nicht Voraussetzung für Stufe 3.
 
 ---
 
@@ -541,27 +553,39 @@ Dieses Dokument hält die **geometrische Brücke** offen, aber **epistemisch abg
 | 1 | $F_M$ (Morley-Form) | Definition | **definiert** |
 | 2 | $S_M$ (Morley-Skala) | Definition | **definiert** |
 | 3 | $K_M = \alpha F_M + \beta(S_M-S_0)^2$ | Definition | **definiert** |
-| 4 | $K_M \sim K_G$ asymptotisch | Conjecture | **offen** |
-| 5 | $\mu_M$ Konformitätsfeld | heuristisch | **skizziert** |
-| 6 | $T_M$, Morley-Fluss, Invariantenfragen | offen / heuristisch | **§ Geometrie zweiter Ordnung** |
-| 7 | $E=T_M$ (EABC operatorisch) | heuristisch | **revidiert** |
-| 8 | Operator statt Metrik (Leitsatz) | organisatorisch | **revidiert** |
-| 9 | Sensoren $F_M,S_M,K_M$ | Definition | **definiert** |
-| 10 | Ikosaeder–Dodekaeder + $T_M$ | heuristisch / Experiment | **§ Ikosaeder–Dodekaeder-Dualität** |
-| 11 | Numerik / Lean-Formalismus | Experiment | **fehlt** |
+| 4 | $T_M$ in $\mathbb{R}^2$ (Symmetrisierung) | klassisch / bewiesen | **Morley-Satz** |
+| 5 | $T_M^{(g)}$ (vier Varianten) | Definition / offen | **skizziert** |
+| 6 | Formraum $\mathcal{S}$, Dynamik | offen | **§ Geometrie zweiter Ordnung** |
+| 7 | $F_M = c\,K_G A + O(A^2)$ | Conjecture | **formuliert** |
+| 8 | $K_M \sim K_G$ (kombiniert) | Conjecture | **offen** |
+| 9 | $\mu_M$, Kreuzverhältnis-Typ | heuristisch | **skizziert** |
+| 10 | $E = T_M$, EABC-Operator | heuristisch | **revidiert** |
+| 11 | Ikosaeder–Dodekaeder + $T_M^{(g)}$ | heuristisch / Experiment | **§ Ikosaeder** |
+| 12 | Operator statt Metrik (Leitsatz) | organisatorisch | **revidiert** |
+| 13 | Numerik / Lean-Formalismus | Experiment | **fehlt** |
+
+### Offene Fragen (priorisiert)
+
+| Prio | Frage | Label |
+|------|-------|-------|
+| **1** | Explizite Definition von $T_M^{(g)}$ wählen; Varianten vergleichen | Definition / offen |
+| **2** | Numerischer Test $F_M$ vs. $K_G A$ auf Sphäre / Pseudosphäre | Conjecture → Experiment |
+| **3** | Fixpunkte und kurze Zyklen von $T_M^{(g)}$ auf $\mathcal{S}$ | offen |
+| **4** | $\mu_M$-Stabilität unter Iteration | heuristisch |
+| **5** | EABC $E=T_M$ vs. κ-Dynamik (Stufe 3, PR #42) | spekulativ |
 
 ---
 
 ## Konkrete nächste Schritte
 
-1. **$T_M$-Dynamik:** Fixpunkte, kurze Zyklen, Attraktorverhalten auf Ebene vs. Sphäre vs. Pseudosphäre (Experiment).
-2. **Numerik:** $F_M$, $S_M$, $K_M$, $\delta_M$ für DC-Dreieckskonfigurationen aus `collatz_dc_morley_walter.pdf`.
-3. **Asymptotik:** kleine Dreiecke auf Flächen konstanter $K_G$ — Test der Conjecture $K_M \sim c_1 K_G$.
-4. **$\mu_M$-Feld:** Triangulierung der mod-12-DC-Geometrie; Vergleich mit Beltrami-Norm; Stabilität unter $T_M$.
-5. **Ikosaeder-Dualität:** $F_M$, $S_M$ auf ikosaedrischen $S^2$-Dreiecken; Abgleich mit `eabc_icosahedron_test.py` ($\Delta(M)$, $R_{\mathrm{EABC}}$).
-6. **Lean:** optional `MorleyOperator`, `MorleyForm`, `MorleyScale` als Definitionen — **kein** Collatz-`sorry`-Abbau.
+1. **Definition:** $T_M^{(g)}$ in mindestens einer Variante (geodätische Winkel) vollständig ausformulieren; Abweichung zu Karten-Realisierung dokumentieren.
+2. **Numerik:** $F_M$, $S_M$, $\delta_M$ für kleine geodätische Dreiecke auf $K_G=\mathrm{const}$ — Test der Conjecture $F_M = c\,K_G A + O(A^2)$.
+3. **Dynamik:** $T_M^{(g)}$-Iteration auf $\mathcal{S}$; Fixpunkte und kurze Zyklen (Experiment).
+4. **$\mu_M$-Feld:** Triangulierung; Beltrami-Norm und Kreuzverhältnis-Typ; Stabilität unter Iteration.
+5. **Ikosaeder-Dualität:** $F_M$, $S_M$ auf ikosaedrischen $S^2$-Dreiecken; Abgleich mit `eabc_icosahedron_test.py`.
+6. **Lean:** optional `MorleyForm`, `MorleyScale` als reine Definitionen — **kein** Collatz-`sorry`-Abbau.
 
-**Bewusst nicht:** Behauptung einer neuen Riemann-Metrik oder Collatz-Beweis via Morley.
+**Bewusst nicht:** neue Riemann-Metrik, naive Übertragung des Morley-Satzes auf $M \neq \mathbb{R}^2$, Collatz-Beweis via Morley.
 
 ---
 
