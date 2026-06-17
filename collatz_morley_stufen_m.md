@@ -315,6 +315,37 @@ Epistemisch: $\rho \neq 1$ bestätigt keine Identität mit $K_G$ — nur numeris
 
 Hauptkomponentenanalyse: 2 vs. 3 effektive Freiheitsgrade? Erwartung: weniger als 3 unabhängige Richtungen.
 
+### Babylon-Kalibrierung (3-4-5) — implementiert (PR #50)
+
+**Referenz:** `Tri - Okto.tex`, § *Orthogonal calibration* — $3^2+4^2=5^2$ liefert die elementare orthogonale Referenz; $D_8^{\mathrm{orth}}$ nutzt $|a^2+b^2-c^2|$ als Orthogonalitätsdefekt.
+
+CLI: `collatz_morley_tm_numerik.py m2-babylon` → `collatz_morley_m2_babylon.json`
+
+| Babylon-Bein | Sensor | Geometrische Lesart |
+|--------------|--------|---------------------|
+| **3** | $G_M$ | Morley-Winkeldefekt (dreieckig / 3-fach) |
+| **4** | $W_M$ | Walter-Flächendefekt (hexagonal / 4-fach) |
+| **5** | $\|(3\hat u_3 + 4\hat u_4)\|$ | kombinierte Sensorlänge (nicht $F_M$ identisch) |
+
+**Gram-Schmidt** in der $(G_M, W_M)$-Ebene: $\hat u_3$ entlang Morley-Achse, $\hat u_4$ orthogonal (Walter-Achse). Babylon-Beine $3\alpha\hat u_3$, $4\beta\hat u_4$ mit Projektionen $\alpha=(G_M,W_M)\cdot\hat u_3$, $\beta=(G_M,W_M)\cdot\hat u_4$.
+
+**Warum nötig?** $\rho(G_M,W_M)\approx -1$ auf $S^2/H^2$ — die Rohdaten liegen fast auf einer Geraden (Anti-Parallelität). Babylon **erzwingt** explizite orthogonale Zerlegung statt Redundanz oder Identität $G_M\approx -k W_M$.
+
+**Numerik (Median, `local_chart`, Juni 2026):**
+
+| Kenngröße | R² (Kontrolle) | S²/H² |
+|-----------|----------------|-------|
+| Orthogonalitätsdefekt $|a^2+b^2-c^2|$ | $\approx 0$ | $\approx 0$ |
+| Hypotenuse $3\!-\!4\!-\!5$ | $\approx 0$ | $\approx 4{,}1\times 10^{-3}$ |
+| $\|\mathrm{leg}_3\|/\|\mathrm{leg}_4\|$ | — | $\approx 1{,}14$ (nicht exakt $3/4$) |
+| hypotenuse / $(5 F_M)$ | — | $\approx 2700$ (heuristisch, kein Fit) |
+
+**Test B (leicht):** PCA auf $(G_M,W_M)$ — PC1 $\approx 33°$ gegen $\hat u_3$, EVR $\approx (1{,}0,\;0{,}0)$: fast 1D in den Daten, Babylon erzwingt 2D.
+
+**Epistemisch:** heuristisch / experimentell — **kein Theorem**, Verweis `Tri - Okto.tex`, **kein** Collatz-Bezug.
+
+**Artefakte:** `babylon_orthogonalize`, `tests/test_morley_babylon.py`.
+
 ### Test C — Orientiertes $W_M^{\mathrm{or}}$ (Priorität nächste PR)
 
 **Definition (präzise, noch nicht implementiert):**
@@ -343,8 +374,9 @@ wobei $\sigma(\Delta) = \operatorname{sign}(\mathrm{Area}(\Delta))$ in der lokal
 2. ~~M2: Krümmungs-Signatur ($F_M$ + $G_M$ + $W_M$)~~ — abgeschlossen (PR #46/#48).
 3. ~~**M3:** Dualer Exponentenfit~~ — experimentell (PR #47).
 4. ~~**Test A:** Pearson-Korrelationen~~ — implementiert (PR #49).
-5. **Test B:** PCA auf $(F_M, G_M, W_M)$.
-6. **Test C:** Orientiertes $W_M^{\mathrm{or}}$ (Stub vorhanden).
+5. ~~**Babylon-Kalibrierung (3-4-5)**~~ — implementiert (`m2-babylon`, PR #50).
+6. **Test B:** Vollständige PCA auf $(F_M, G_M, W_M)$.
+7. **Test C:** Orientiertes $W_M^{\mathrm{or}}$ (Stub vorhanden).
 7. Optional: Ikosaeder-20-Flächen-Lauf (4. Stufe nach $R^2/S^2/H^2$).
 8. Optional: orientiertes $G_M$, Varianten-Invarianz von $c_G$ und $\beta$.
 9. Optional: Lean-Definitionen (`MorleyOperator`) — ohne Collatz-`sorry`.

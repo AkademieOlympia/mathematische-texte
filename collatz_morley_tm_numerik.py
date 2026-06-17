@@ -933,6 +933,55 @@ class M2CorrelationReport:
 
 
 @dataclass
+class BabylonOrthogonalResult:
+    """Babylon 3-4-5-Orthogonalisierung eines (G_M, W_M)-Paares."""
+
+    gm: float
+    wm: float
+    u3: tuple[float, float]
+    u4: tuple[float, float]
+    u3_norm: float
+    u4_norm: float
+    hypotenuse_345: float
+    orthogonality_defect: float
+    fm_babylon_ratio: float | None = None
+
+
+@dataclass
+class BabylonPcaComparison:
+    """Test B (leicht): PCA-Achsen vs. Babylon-Gram-Schmidt."""
+
+    pca_pc1: tuple[float, float]
+    pca_pc2: tuple[float, float]
+    babylon_u3: tuple[float, float]
+    babylon_u4: tuple[float, float]
+    angle_pc1_u3_deg: float
+    angle_pc2_u4_deg: float
+    explained_variance_ratio: tuple[float, float]
+
+
+@dataclass
+class M2BabylonReport:
+    """Babylon-Kalibrierung: 3²+4²=5² als orthogonale Referenz für Φ_M=(G_M,W_M)."""
+
+    stage: str = "M2-babylon"
+    variant: str = "local_chart"
+    epsilons: list[float] = field(default_factory=list)
+    n_samples: int = 0
+    plane_orthogonality_defect_median: float = 0.0
+    plane_hypotenuse_median: float = 0.0
+    curved_hypotenuse_median: float = 0.0
+    curved_fm_babylon_ratio_median: float = 0.0
+    curved_orthogonality_defect_median: float = 0.0
+    babylon_norm_ratio_median: float = 0.0
+    gram_schmidt_u3: tuple[float, float] = (1.0, 0.0)
+    gram_schmidt_u4: tuple[float, float] = (0.0, 1.0)
+    pca_comparison: BabylonPcaComparison | None = None
+    per_sample: list[BabylonOrthogonalResult] = field(default_factory=list)
+    notes: list[str] = field(default_factory=list)
+
+
+@dataclass
 class M2Report:
     stage: str = "M2"
     variant: str = "local_chart"
@@ -1531,6 +1580,211 @@ def _m2_correlation_pairs(
     return out
 
 
+def babylon_orthogonalize(
+    gm: float | Sequence[float],
+    wm: float | Sequence[float],
+    *,
+    f_m: float | Sequence[float] | None = None,
+    u3_hat: tuple[float, float] | None = None,
+    u4_hat: tuple[float, float] | None = None,
+) -> BabylonOrthogonalResult | list[BabylonOrthogonalResult]:
+    """
+    Babylon 3-4-5-Orthogonalisierung: Gram-Schmidt in der (G_M, W_M)-Ebene.
+
+    Morley/Winkel → Bein 3, Walter/Fläche → Bein 4, kombinierte Sensorlänge → 5.
+    Die orthonormalen Richtungen (û_3, û_4) werden aus G_M-first Gram-Schmidt
+    gebildet; die Babylon-Beine sind 3·α·û_3 und 4·β·û_4 mit Projektionen
+    α = (G_M,W_M)·û_3, β = (G_M,W_M)·û_4.
+
+    Orthogonalitätsdefekt (Tri-Okto D_8^orth-Stil):
+        |‖u3‖² + ‖u4‖² − hypotenuse²| mit hypotenuse = ‖3·α·û_3 + 4·β·û_4‖.
+
+    Epistemisch: heuristisch / experimentell — kein Theorem.
+    """
+    scalar = np.isscalar(gm) and np.isscalar(wm)
+    gm_arr = np.atleast_1d(np.asarray(gm, dtype=float))
+    wm_arr = np.atleast_1d(np.asarray(wm, dtype=float))
+    if gm_arr.shape != wm_arr.shape:
+        raise ValueError("gm und wm müssen gleiche Form haben")
+
+    if u3_hat is None or u4_hat is None:
+        u3_hat, u4_hat = _babylon_gram_schmidt_basis()
+
+    u3v = np.asarray(u3_hat, dtype=float)
+    u4v = np.asarray(u4_hat, dtype=float)
+    u3v = u3v / np.linalg.norm(u3v)
+    u4v = u4v / np.linalg.norm(u4v)
+
+    fm_arr: np.ndarray | None = None
+    if f_m is not None:
+        fm_arr = np.atleast_1d(np.asarray(f_m, dtype=float))
+        if fm_arr.shape != gm_arr.shape:
+            raise ValueError("f_m muss gleiche Form wie gm haben")
+
+    results: list[BabylonOrthogonalResult] = []
+    for i in range(len(gm_arr)):
+        g = float(gm_arr[i])
+        w = float(wm_arr[i])
+        vec = np.array([g, w])
+        alpha = float(np.dot(vec, u3v))
+        beta = float(np.dot(vec, u4v))
+        leg3 = 3.0 * alpha * u3v
+        leg4 = 4.0 * beta * u4v
+        hyp_vec = leg3 + leg4
+        hyp = float(np.linalg.norm(hyp_vec))
+        n3 = float(np.linalg.norm(leg3))
+        n4 = float(np.linalg.norm(leg4))
+        defect = abs(n3 * n3 + n4 * n4 - hyp * hyp)
+        fm_ratio: float | None = None
+        if fm_arr is not None:
+            denom = 5.0 * float(fm_arr[i])
+            fm_ratio = hyp / denom if abs(denom) > 1e-30 else None
+        results.append(
+            BabylonOrthogonalResult(
+                gm=g,
+                wm=w,
+                u3=(float(leg3[0]), float(leg3[1])),
+                u4=(float(leg4[0]), float(leg4[1])),
+                u3_norm=n3,
+                u4_norm=n4,
+                hypotenuse_345=hyp,
+                orthogonality_defect=defect,
+                fm_babylon_ratio=fm_ratio,
+            )
+        )
+
+    return results[0] if scalar else results
+
+
+def _babylon_gram_schmidt_basis() -> tuple[tuple[float, float], tuple[float, float]]:
+    """
+    G_M-first Gram-Schmidt in nativer Sensor-Ebene.
+
+    û_3 entlang Morley-Achse (G_M), û_4 orthogonal (Walter-Achse).
+    Erzwingt orthogonale Zerlegung statt ρ≈−1-Kollinearität.
+    """
+    u3 = np.array([1.0, 0.0])
+    u4 = np.array([0.0, 1.0])
+    u3 = u3 / np.linalg.norm(u3)
+    u4 = u4 - np.dot(u4, u3) * u3
+    u4 = u4 / np.linalg.norm(u4)
+    return (float(u3[0]), float(u3[1])), (float(u4[0]), float(u4[1]))
+
+
+def _angle_between_deg(a: tuple[float, float], b: tuple[float, float]) -> float:
+    av = np.asarray(a, dtype=float)
+    bv = np.asarray(b, dtype=float)
+    na, nb = float(np.linalg.norm(av)), float(np.linalg.norm(bv))
+    if na < 1e-18 or nb < 1e-18:
+        return float("nan")
+    cos_th = float(np.clip(np.dot(av, bv) / (na * nb), -1.0, 1.0))
+    return math.degrees(math.acos(cos_th))
+
+
+def _babylon_pca_comparison(
+    gm: Sequence[float],
+    wm: Sequence[float],
+    u3_hat: tuple[float, float],
+    u4_hat: tuple[float, float],
+) -> BabylonPcaComparison:
+    """Test B (leicht): PCA auf (F_M,G_M,W_M) reduziert auf (G_M,W_M)-Ebene."""
+    data = np.column_stack([np.asarray(gm, float), np.asarray(wm, float)])
+    data = data - np.mean(data, axis=0)
+    if data.shape[0] < 2 or float(np.std(data)) < 1e-18:
+        return BabylonPcaComparison(
+            pca_pc1=(1.0, 0.0),
+            pca_pc2=(0.0, 1.0),
+            babylon_u3=u3_hat,
+            babylon_u4=u4_hat,
+            angle_pc1_u3_deg=0.0,
+            angle_pc2_u4_deg=0.0,
+            explained_variance_ratio=(1.0, 0.0),
+        )
+    _u, s, vt = np.linalg.svd(data, full_matrices=False)
+    pc1 = (float(vt[0, 0]), float(vt[0, 1]))
+    pc2 = (float(vt[1, 0]), float(vt[1, 1])) if len(vt) > 1 else (0.0, 1.0)
+    var = s**2
+    total = float(np.sum(var)) if np.sum(var) > 0 else 1.0
+    evr = (float(var[0] / total), float(var[1] / total) if len(var) > 1 else 0.0)
+    return BabylonPcaComparison(
+        pca_pc1=pc1,
+        pca_pc2=pc2,
+        babylon_u3=u3_hat,
+        babylon_u4=u4_hat,
+        angle_pc1_u3_deg=_angle_between_deg(pc1, u3_hat),
+        angle_pc2_u4_deg=_angle_between_deg(pc2, u4_hat),
+        explained_variance_ratio=evr,
+    )
+
+
+def run_m2_babylon(
+    epsilons: Sequence[float] | None = None,
+    orientation: float = 0.37,
+    variant: str = "local_chart",
+) -> M2BabylonReport:
+    """
+    Babylon-Kalibrierung auf gepoolten S²/H²/R²-Daten.
+
+    Gram-Schmidt (G_M, W_M), 3-4-5-Normrelation, leichter PCA-Vergleich.
+    Epistemisch: heuristisch — Verweis Tri-Okto.tex § Orthogonal calibration.
+    """
+    if epsilons is None:
+        epsilons = [0.05, 0.08, 0.12, 0.18, 0.25, 0.35]
+
+    samples = _collect_m3_samples(epsilons, orientation, variant)
+    u3_hat, u4_hat = _babylon_gram_schmidt_basis()
+
+    gm = [s.g_m for s in samples]
+    wm = [s.w_m for s in samples]
+    fm = [s.f_m for s in samples]
+
+    per_sample = babylon_orthogonalize(
+        gm, wm, f_m=fm, u3_hat=u3_hat, u4_hat=u4_hat
+    )
+    assert isinstance(per_sample, list)
+
+    plane = [r for r in per_sample if abs(r.gm) < 1e-12 and abs(r.wm) < 1e-10]
+    curved = [r for r in per_sample if abs(r.gm) > 1e-12 or abs(r.wm) > 1e-12]
+
+    def _med(vals: Sequence[float]) -> float:
+        v = [x for x in vals if math.isfinite(x)]
+        return float(np.median(v)) if v else float("nan")
+
+    norm_ratios = [
+        r.u3_norm / r.u4_norm
+        for r in curved
+        if r.u4_norm > 1e-18 and r.u3_norm > 1e-18
+    ]
+    fm_ratios = [r.fm_babylon_ratio for r in curved if r.fm_babylon_ratio is not None]
+
+    pca = _babylon_pca_comparison(gm, wm, u3_hat, u4_hat)
+
+    notes = [
+        "Babylon 3²+4²=5²: orthogonale Referenz für Φ_M=(G_M,W_M) — Tri-Okto.tex.",
+        "G_M→Bein 3 (Morley/Winkel), W_M→Bein 4 (Walter/Fläche), Hypotenuse→5-Skala.",
+        "ρ(G_M,W_M)≈−1 erzwingt explizite Orthogonalisierung, keine Identität.",
+        "Orthogonalitätsdefekt |a²+b²−c²| nach D_8^orth — auf R² ≈0 (Kontrolle).",
+        "Heuristisch / experimentell — kein Theorem, kein Collatz-Bezug.",
+    ]
+
+    return M2BabylonReport(
+        variant=variant,
+        epsilons=list(epsilons),
+        n_samples=len(per_sample),
+        plane_orthogonality_defect_median=_med([r.orthogonality_defect for r in plane]),
+        plane_hypotenuse_median=_med([r.hypotenuse_345 for r in plane]),
+        curved_hypotenuse_median=_med([r.hypotenuse_345 for r in curved]),
+        curved_fm_babylon_ratio_median=_med(fm_ratios),
+        curved_orthogonality_defect_median=_med([r.orthogonality_defect for r in curved]),
+        babylon_norm_ratio_median=_med(norm_ratios),
+        gram_schmidt_u3=u3_hat,
+        gram_schmidt_u4=u4_hat,
+        pca_comparison=pca,
+        per_sample=per_sample,
+        notes=notes,
+    )
+
+
 def run_m2_correlations(
     epsilons: Sequence[float] | None = None,
     orientation: float = 0.37,
@@ -2017,6 +2271,34 @@ def _print_m3_report(report: M3BeweisversuchReport) -> None:
         print(f"  • {note}")
 
 
+def _print_m2_babylon_report(report: M2BabylonReport) -> None:
+    print("=== Morley M2: Babylon-Kalibrierung (3-4-5) ===")
+    print(f"Variante: {report.variant}  |  n={report.n_samples}")
+    print(f"ε-Familie: {', '.join(f'{e:.3f}' for e in report.epsilons)}")
+    print(
+        f"\nGram-Schmidt-Basis: û_3={report.gram_schmidt_u3}  û_4={report.gram_schmidt_u4}"
+    )
+    print(
+        f"R²-Kontrolle: median Orthogonalitätsdefekt={report.plane_orthogonality_defect_median:.3e}, "
+        f"median Hypotenuse={report.plane_hypotenuse_median:.3e}"
+    )
+    print(
+        f"S²/H²: median Hypotenuse(3-4-5)={report.curved_hypotenuse_median:.5e}, "
+        f"median ‖leg3‖/‖leg4‖={report.babylon_norm_ratio_median:.4f}, "
+        f"median hypotenuse/(5·F_M)={report.curved_fm_babylon_ratio_median:.4f}"
+    )
+    if report.pca_comparison is not None:
+        pc = report.pca_comparison
+        print(
+            f"\nTest B (leicht): PCA vs. Babylon — "
+            f"Winkel PC1↔û_3={pc.angle_pc1_u3_deg:.2f}°, "
+            f"PC2↔û_4={pc.angle_pc2_u4_deg:.2f}°, "
+            f"EVR={pc.explained_variance_ratio[0]:.3f}/{pc.explained_variance_ratio[1]:.3f}"
+        )
+    for note in report.notes:
+        print(f"  • {note}")
+
+
 def _print_m2_correlations_report(report: M2CorrelationReport) -> None:
     print("=== Morley M2: Sensor-Korrelationen (Test A) ===")
     print(f"Variante: {report.variant}")
@@ -2146,8 +2428,8 @@ def main() -> None:
         "mode",
         nargs="?",
         default="m1",
-        choices=("m1", "m2", "m2-correlations", "m3"),
-        help="m1=Varianten-Konsistenz (Default), m2=Modellräume, m2-correlations=Test A, m3=dualer Exponentenfit",
+        choices=("m1", "m2", "m2-correlations", "m2-babylon", "m3"),
+        help="m1=Varianten-Konsistenz (Default), m2=Modellräume, m2-correlations=Test A, m2-babylon=3-4-5, m3=dualer Exponentenfit",
     )
     parser.add_argument("--json", type=str, default="", help="JSON-Ausgabepfad")
     parser.add_argument(
@@ -2176,6 +2458,10 @@ def main() -> None:
         report = run_m2_correlations(variant=args.variant)
         _print_m2_correlations_report(report)
         payload = asdict(report)
+    elif args.mode == "m2-babylon":
+        report = run_m2_babylon(variant=args.variant)
+        _print_m2_babylon_report(report)
+        payload = asdict(report)
     else:
         report = run_m3_beweisversuch(
             variant=args.variant,
@@ -2190,6 +2476,7 @@ def main() -> None:
             "m1": "collatz_morley_m1_konsistenz.json",
             "m2": "collatz_morley_m2_sensor.json",
             "m2-correlations": "collatz_morley_m2_correlations.json",
+            "m2-babylon": "collatz_morley_m2_babylon.json",
             "m3": "collatz_morley_m3_beweisversuch.json",
         }[args.mode]
     if out:

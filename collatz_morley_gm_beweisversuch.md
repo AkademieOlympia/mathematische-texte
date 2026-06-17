@@ -120,6 +120,30 @@ $$W_M(\Delta) = \frac{\mathrm{Area}(H_W(\Delta))}{\mathrm{Area}(\Delta)} - \frac
 
 **Test A (Pearson-$\rho$):** `collatz_morley_tm_numerik.py m2-correlations` — $\rho(G_M,K_G)$, $\rho(W_M,K_G)$, $\rho(F_M,K_G)$ und Kreuzkorrelationen; siehe `collatz_morley_m2_correlations.json`.
 
+---
+
+## Babylon-Kalibrierung (3-4-5)
+
+**Referenz:** [`Tri - Okto.tex`](Tri%20-%20Okto.tex), Definition *Orthogonal calibration*:
+
+$$3^2 + 4^2 = 5^2$$
+
+liefert die elementare orthogonale Referenz. Der erweiterte Oktogon-Defekt $D_8^{\mathrm{orth}}$ nutzt $|a^2+b^2-c^2|$ als Orthogonalitätsdefekt — analog prüft `babylon_orthogonalize` $| \|\mathrm{leg}_3\|^2 + \|\mathrm{leg}_4\|^2 - \|\mathrm{hyp}\|^2 |$.
+
+**Zuordnung:**
+
+| Skala | Sensor | Lesart |
+|-------|--------|--------|
+| 3 | $G_M$ | Morley-Winkeldefekt |
+| 4 | $W_M$ | Walter-Flächendefekt |
+| 5 | $\|3\alpha\hat u_3 + 4\beta\hat u_4\|$ | kombinierte Babylon-Sensorlänge |
+
+$\Phi_M = (G_M, W_M)$ wird per G_M-first Gram-Schmidt in orthogonale Babylon-Achsen $(\hat u_3, \hat u_4)$ zerlegt. Da $\rho(G_M,W_M)\approx -1$ (Test A), wäre eine Identitätsannahme $G_M \propto W_M$ **falsch** — Babylon erzwingt orthogonale Beine statt Kollinearität.
+
+**CLI:** `collatz_morley_tm_numerik.py m2-babylon` → `collatz_morley_m2_babylon.json`
+
+**Epistemisch:** heuristisch / experimentell — **kein Theorem**, Link zu Tri-Okto, **nicht** Teil des Collatz-Beweisprogramms.
+
 **Test C (Stub):** Orientiertes $W_M^{\mathrm{or}} = \sigma(\Delta)\,( \mathrm{Area}(H_W)/\mathrm{Area}(\Delta) - 1/10)$ mit $\sigma(\Delta)=\operatorname{sign}(\mathrm{Area}(\Delta))$ — `walter_form_wm_oriented` (nächste PR).
 
 ---
@@ -162,8 +186,9 @@ Der κ-Zweig (arithmetische Kodierung, $\mathcal{L}_{\mathrm{arith}}^*$) testet 
 ## Nächste Schritte
 
 1. ~~**Test A:** Pearson-Korrelationen $(F_M, G_M, W_M)$ vs. $K_G$~~ — implementiert (`m2-correlations`).
-2. **Test B:** PCA auf $(F_M, G_M, W_M)$ — 2 vs. 3 Freiheitsgrade?
-3. **Test C:** Orientiertes $W_M^{\mathrm{or}}$ (`walter_form_wm_oriented`).
+2. ~~**Babylon-Kalibrierung (3-4-5)**~~ — implementiert (`m2-babylon`, `babylon_orthogonalize`).
+3. **Test B:** Vollständige PCA auf $(F_M, G_M, W_M)$ — 2 vs. 3 Freiheitsgrade?
+4. **Test C:** Orientiertes $W_M^{\mathrm{or}}$ (`walter_form_wm_oriented`).
 4. **Orientiertes $G_M$:** Testgröße mit explizitem Flächenvorzeichen / Umlaufsinn.
 5. **Ikosaeder (20 Flächen):** Systematischer M3-Lauf auf allen Dreiecksflächen.
 6. **Varianten-Invarianz von $G_M$:** $|c_G|$ und $\beta$ über alle vier Realisierungen.
