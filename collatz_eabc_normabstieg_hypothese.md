@@ -11,7 +11,9 @@ Forschungsfrage | Forschungsvision | Experiment.
 - `collatz_eabc_invarianzprogramm.md` — EABC-Fluktuationsfeld $\delta(x)$, $\kappa$-Klassifikation
 - `collatz_generalangriff_2026.md` — strategischer Pointer
 - `collatz_eabc_gauss_defekt_test.py` — Experiment zur trivialen Teilhypothese (§8)
-- `collatz_eabc_gauss_faktor_eabc_test.py` — Experiment Z[i]-Faktor → EABC (§9)
+- `collatz_eabc_gauss_spaltung_hypothese.md` — **kanonische** Gauß–EABC-Spaltung (glatt-EABC)
+- `collatz_eabc_gauss_spaltung_test.py` — Experiment Γ(p)=(κ(a'),κ(b')) (§9b)
+- `collatz_eabc_gauss_faktor_eabc_test.py` — Vorgänger (rohe mod-12-Legs; §9 historisch)
 
 ---
 
@@ -274,15 +276,27 @@ EABC-Klassen ($\kappa$ via `eabc_from_lean`, nur für Reste $\in\{1,5,7,11\}$).
 **Frage:** Ist die Verteilung $(a,b)\mapsto(E,A,B,C)$ **asymmetrisch**? Erscheinen
 Vierlings-Biases oder Chiralitäten $\Rightarrow$ erste echte Brücke $\mathbb{Z}[i]\to$EABC.
 
-**Experiment:** `collatz_eabc_gauss_faktor_eabc_test.py` $\to$
-`collatz_eabc_gauss_faktor_eabc.json`.
-
-**Strukturelle Voraussage:** Für $p\equiv 1\pmod 4$ ist genau eine Faktorleg gerade
-$\Rightarrow$ höchstens **eine** EABC-sichtbare Leg pro Paar; beide gleichzeitig unmöglich.
-Der Test prüft $\kappa(p)$ vs.\ ungerade Leg, gerade-Leg-mod-$12$-Verteilung und Shuffle-Null.
+**Experiment (Vorgänger):** `collatz_eabc_gauss_faktor_eabc_test.py` — rohe mod-$12$-Legs;
+höchstens eine EABC-sichtbare Leg. **Korrigierter kanonischer Test:** §9b.
 
 **Priorität:** $\mathbb{Z}[i]$ vor $\mathbb{O}$ — assoziatives Gitter, Gauß-Euklid etabliert,
 direkter Primideal-Zugang.
+
+---
+
+## 9b. Gauß–EABC-Spaltungshypothese (glatt-EABC, kanonisch)
+
+**Vollständige Hypothese:** `collatz_eabc_gauss_spaltung_hypothese.md`.
+
+Für $p\equiv 1\pmod 4$, $p=a^2+b^2$, mit glatter Zerlegung
+$a=2^{\alpha_a}3^{\beta_a}a'$, $b=2^{\alpha_b}3^{\beta_b}b'$, $\gcd(a',6)=\gcd(b',6)=1$:
+$$\Gamma(p) = (\kappa(a'),\kappa(b')) \in \{E,A,B,C\}^2.$$
+
+**Conjecture:** $\Gamma(p)$ trägt nichttriviale EABC-Orientierung, nicht sichtbar aus
+$p\equiv 1\pmod 4$ allein.
+
+**Experiment:** `collatz_eabc_gauss_spaltung_test.py` $\to$
+`collatz_eabc_gauss_spaltung.json` — $\mu_X(\gamma)$, $\chi^2$ vs.\ $1/16$, Shuffle-Null.
 
 ---
 
@@ -292,7 +306,7 @@ direkter Primideal-Zugang.
    $A\in\{\mathbb{R},\mathbb{C},\mathbb{H}\}$ (Python-Stub `collatz_eabc_euklid_hebung.py`;
    Lean-Ziel in `collatz_eabc_core`).
 2. **Gauß–EABC-Test (§8):** empirische Korrelation split/inert mit $\kappa$ — ehrlich als
-   trivial einstufen; **Z[i]-Faktortest (§9)** als nicht-triviale Fortsetzung.
+   trivial einstufen; **Spaltungstest glatt-EABC (§9b)** als kanonische Fortsetzung.
 3. **Hurwitz-Erweiterung:** Defektklassen in $\mathbb{H}_{\mathrm H}$ und Vergleich mit
    EABC-Primideal-Resonanz (`PAPER_HURWITZ_RESONANZ.md`).
 4. **Oktanionen / Projektion:** kanonische $\Pi_{\mathbb{O}}$, Defekt-Abstieg ohne assoziativen
@@ -316,8 +330,8 @@ $$
 Die **EABC-Normabstiegs-Hypothese** behauptet einen einheitlichen algebraischen Rahmen
 $(\Lambda_A,N,\Pi_A,E_A,D_A,\varepsilon)$ über die Hurwitz-Kette, in dem die mod-$12$-EABC-Klassen
 die sichtbare 1D-Projektion höherdimensionaler Defektstruktur sind. Die Gauß–EABC-Brücke (§8)
-ist **arithmetisch trivial**; der **Z[i]-Faktortest** (§9) ist der erste nicht-triviale
-empirische Zugang.
+ist **arithmetisch trivial**; der **glatt-EABC-Spaltungstest** (§9b) ist der kanonische
+nicht-triviale empirische Zugang ($\Gamma$ auf $16$ Klassen).
 
 ---
 

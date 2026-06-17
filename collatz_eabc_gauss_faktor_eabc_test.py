@@ -2,7 +2,11 @@
 """
 Z[i]-Faktor → EABC-Test: Gauß-Faktorpaar (a,b) mit p = a² + b² für p ≡ 1 (mod 4).
 
-Kanonsiche Hypothese: collatz_eabc_normabstieg_hypothese.md §11
+**Hinweis:** Dieser Test ist durch den korrigierten glatt-EABC-Spaltungstest ersetzt:
+`collatz_eabc_gauss_spaltung_test.py` + `collatz_eabc_gauss_spaltung_hypothese.md`
+(strip_smooth → beide Legs κ-sichtbar, voller 16-Klassen-Raum Γ).
+
+Kanonsiche Hypothese (historisch): collatz_eabc_normabstieg_hypothese.md §9
 
 Für split-Primzahlen p > 3: kanonische Darstellung 0 < a ≤ b, a² + b² = p.
 Projektion (a mod 12, b mod 12) auf EABC-Klassen via eabc_from_lean.class_of.
