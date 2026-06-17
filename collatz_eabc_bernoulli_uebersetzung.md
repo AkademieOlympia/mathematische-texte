@@ -11,7 +11,9 @@
 `collatz_eabc_bernoulli_sensor.py`, `CollatzEabc.BernoulliClock.lean`,
 `collatz_qed_arithmetik_resonanz.md` (Casimir als $\Delta$-Spektrum, nicht QED-Metapher),
 `PAPER_HURWITZ_RESONANZ.md` (Hurwitz-Gitter, Quaternionen $H$; **Theorem**-Hintergrund für §17),
-`collatz_kepler_gedankenexperiment.tex` (Kepler-/Projektions-Gedankenexperiment; **Heuristik**).
+`collatz_kepler_gedankenexperiment.tex` (Kepler-/Projektions-Gedankenexperiment; **Heuristik**),
+`document.tex` (Keplersche Kugelpackung, tetraedrische Defekte), `Beweis_Spanne_EABC.tex` / `Admissible EABC.tex`
+(mod-$12$-EABC-Semantik), `Miller.tex` (Kleinsche Vierergruppe $(\mathbb{Z}/12\mathbb{Z})^\times$).
 
 ---
 
@@ -207,6 +209,7 @@ als **spektrale Projektion** dieser Resonanz lesbar sind.
 | Peano als Projektion tieferer Defektdynamik | **Conjecture / Heuristik** (§17) |
 | EABC-Tetraeder, Kepler-Füllung, Prim-Defekte | **Forschungsvision** (§17) |
 | $\mathcal{K}(N)$, $D(N)$, $\Pi$, $\Phi_{\mathrm{def}}$ | **Conjecture** (§17, offen) |
+| $6n\pm 1$, $4n\pm 1$, EABC-Geometrie-Hypothese, Modulo $12$ | **Heuristik / Conjecture** (§18) |
 
 ---
 
@@ -437,6 +440,7 @@ Morley und $\kappa$ bleiben eigenständige Angriffslinien. Der Resonanz-Zweig nu
 | Peano-Arithmetik | Definition / Theorem |
 | Peano $\to$ Defektprojektion, Tetraeder, Kepler-Füllung | Conjecture / Heuristik / Forschungsvision |
 | $\mathcal{K}(N)$, $D(N)$, $\Pi$, $\Phi_{\mathrm{def}}$ | Conjecture (offen) |
+| EABC-Geometrie-Hypothese ($6n\pm 1$, $4n\pm 1$, Mod $12$) | Heuristik / Conjecture (§18) |
 
 **Nächste Schritte:**
 1. Test 1 auf größeres $n$ und mit expliziten Zufalls-Nullmodellen vergleichen.
@@ -694,6 +698,195 @@ $1,5,7,11$), `EABC.lean` (`EClass`, `classOf`, `Q`, `Chirality`) formalisieren d
 $(E,A,B,C)$ — nicht $\mathcal{K}(N)$ oder $\mathcal{D}_{\mathrm{krit}}$.
 
 **Label: Forschungsvision** — explizit von Theorem-Ebene getrennt.
+
+Vertiefung der geometrischen Lesart von $6n\pm 1$, $4n\pm 1$ und Modulo $12$:
+**§18 (EABC-Geometrie-Hypothese)**.
+
+---
+
+## 18. EABC-Geometrie-Hypothese: $6n\pm 1$, $4n\pm 1$ und Modulo $12$
+
+Dieser Abschnitt formuliert die **EABC-Geometrie-Hypothese** — eine geometrische Lesart
+klassischer Restklassenmuster der Primzahlen. Sie ist **keine etablierte Zahlentheorie**,
+sondern ein Forschungsbild, das etablierte Fakten von geometrischer Interpretation trennt.
+
+**Querverweise:** §1 (EABC-Zerlegungsprinzip), §7 (native EABC mod $12$), §17.5–§17.6
+(Kepler-Füllmechanismus, $\mathcal{K}(N)$, Projektion $\Pi$),
+`collatz_kepler_gedankenexperiment.tex`, `document.tex` (Keplersche Tetraeder-Kontakte),
+`Beweis_Spanne_EABC.tex`, `Admissible EABC.tex`, `Miller.tex`, `Fundamentalsatz_II.tex`.
+
+### 18.1 Etablierte Zahlentheorie (Theorem / Definition)
+
+Die folgenden Aussagen sind **klassische Arithmetik** — unabhängig von jeder geometrischen Lesart.
+
+**Theorem.** Für jede Primzahl $p>3$ gilt
+\[
+p \equiv \pm 1 \pmod{6}.
+\]
+Äquivalent: $p=6n+1$ oder $p=6n-1$ für ein $n\in\mathbb{N}$. Es gibt genau **zwei**
+Restklassen modulo $6$, in denen alle ungeraden Primzahlen $>3$ liegen.
+
+**Theorem.** Jede ungerade Primzahl $p$ erfüllt
+\[
+p \equiv 1 \pmod{4}
+\quad\text{oder}\quad
+p \equiv 3 \pmod{4}.
+\]
+Dies ist eine **binäre Spaltung** der ungeraden Restklassen modulo $4$.
+
+**Theorem / Definition.** Die Einheitengruppe
+\[
+(\mathbb{Z}/12\mathbb{Z})^\times = \{1,5,7,11\}
+\]
+hat Ordnung $4$ und ist isomorph zur **Kleinschen Vierergruppe** $V_4\cong C_2\times C_2$.
+Die vier Primrestklassen $p>3$ mit $p\bmod 12\in\{1,5,7,11\}$ sind genau diese Einheiten
+(vgl. §1, §7; formalisiert in `EABC.lean`, `Miller.tex`).
+
+**Label: Theorem / Definition** — etablierte Zahlentheorie; keine EABC-Spezialisierung.
+
+### 18.2 $6n\pm 1$ als hexagonale Ebene (Heuristik)
+
+> **Heuristik (hexagonale $6$-Gitter-Ebene).** Die beiden Restklassen $p\equiv\pm 1\pmod{6}$
+> lesen sich als zwei **Spuren** auf einem $6$-Gitter: $6n+1$ und $6n-1$ als komplementäre
+> Bahnen entlang einer hexagonalen Schicht.
+
+**Geometrische Analogie (nicht bewiesen):** In der **hexagonal dichten Kugelpackung**
+($A_2$-Gitter, Keplersche hexagonale Schicht) berühren sich drei Kugeln paarweise und bilden
+ein **gleichseitiges Dreieck** als lokale Kontaktzelle. Die zwei Richtungen $+1$ und $-1$
+modulo $6$ entsprechen in dieser Lesart zwei **chiralen Pfaden** auf der hexagonalen Ebene —
+links- bzw. rechtsorientierte Fortschritte entlang der $6$-Periodizität.
+
+| Arithmetik | Geometrische Lesart (Heuristik) |
+|------------|--------------------------------|
+| $p\equiv +1\pmod{6}$ | eine chirale Spur ($6n+1$) |
+| $p\equiv -1\equiv 5\pmod{6}$ | die komplementäre chirale Spur ($6n-1$) |
+| $6$-Periodizität | hexagonale Schichtperiodizität |
+
+**Label: Heuristik** — geometrische Analogie zu $A_2$-Packung; kein Theorem über Primzahlen.
+
+### 18.3 $4n\pm 1$-Struktur und S-O-S-Tetraeder (Heuristik)
+
+> **Heuristik (tetraedrische $4$-Struktur).** Die binäre Spaltung ungerader Primzahlen
+> $p\equiv 1$ bzw. $p\equiv 3\pmod{4}$ entspricht in der EABC-Lesart einer **vertikalen**
+> Orientierung eines lokalen Tetraeder-Kontakts.
+
+**Definition (S-O-S, geometrisches Leitbild).** Unter **S-O-S** (Sphere–Octahedron–Sphere)
+verstehen wir das Keplersche Kontaktbild: Drei berührende Kugeln (Sphären) bilden ein
+gleichseitiges Dreieck; der **Hohlraum** zwischen ihnen nimmt eine vierte Kugel auf, sodass
+ein **reguläres Tetraeder** aus vier Kontaktpunkten entsteht (vgl. `document.tex`, Keplersches
+Tetraeder). Die vier Eckrollen $(E,A,B,C)$ des EABC-Tetraeders (§1, §17.3) sind in dieser
+Lesart die vier Kontaktpositionen der S-O-S-Konfiguration.
+
+| Arithmetik | Geometrische Lesart (Heuristik) |
+|------------|--------------------------------|
+| $p\equiv 1\pmod{4}$ | eine Orientierung des S-O-S-Tetraeders ($4n+1$-Spur) |
+| $p\equiv 3\pmod{4}$ | die komplementäre Orientierung ($4n-1$-Spur) |
+| Vierte Kugel im Hohlraum | Schließung zu regulärem Tetraeder $(E,A,B,C)$ |
+
+**Label: Heuristik** — Packungsmetapher; keine Charakterisierung der Primzahlen modulo $4$.
+
+### 18.4 Verbindung beider Ebenen (Conjecture)
+
+> **Conjecture (zwei geometrische Freiheitsgrade).** Die $6n\pm 1$-Struktur (hexagonale Ebene)
+> und die $4n\pm 1$-Struktur (tetraedrische Orientierung) sind **nicht unabhängige
+> arithmetische Zufälle**, sondern zwei Projektionen derselben lokalen Packungsgeometrie:
+>
+> - **Hexagonale $6n\pm 1$-Dynamik** = Bewegung auf der lokalen Dreiecks-/Hexagon-Schicht
+>   (horizontale Freiheitsgrade im $A_2$-Gitter);
+> - **Tetraedrische $4n\pm 1$-Dynamik** = obere/untere Orientierung des S-O-S-Tetraeders
+>   (vertikale Freiheitsgrade der vierten Kugel im Hohlraum).
+
+**Label: Conjecture** — Forschungshypothese; kein Beweis der Abhängigkeit beider Muster.
+
+### 18.5 EABC-Sicht: Modulo $12$ als gemeinsame Projektion (Definition + Conjecture)
+
+**Definition (EABC-Eckpunkte mod $12$).** Die Zuordnung
+\[
+E\equiv 1,\quad A\equiv 5,\quad B\equiv 7,\quad C\equiv 11 \pmod{12}
+\]
+ist die native EABC-Semantik aus §1 und §7. Sie vereint beide Strukturen in einem Modulus:
+\[
+12 = 3\cdot 4.
+\]
+
+| Faktor | Arithmetische Lesart | Geometrische Lesart (Heuristik) |
+|--------|---------------------|--------------------------------|
+| $3$ | $6$-Gitter-Periodizität ($6=2\cdot 3$) | hexagonale Schicht ($A_2$) |
+| $4$ | $4$-Restklassen der ungeraden Primzahlen | tetraedrische $4$-Kontaktstruktur (S-O-S) |
+
+> **Conjecture (Klein-$V_4$-Tetraeder).** Die vier Primrestklassen modulo $12$ als Einheiten
+> von $\mathbb{Z}/12\mathbb{Z}$ bilden die Kleinsche Vierergruppe $V_4$; in der EABC-Geometrie-
+> Hypothese **emergiert** aus $V_4$ das EABC-Tetraeder $(E,A,B,C)$ als geometrischer Träger
+> der vier unabhängigen $C_2$-Involutionen.
+
+**Label:** Definition für $E,A,B,C$ mod $12$; **Conjecture** für die geometrische Emergenz.
+
+### 18.6 Kernhypothese (boxed Conjecture)
+
+$$\boxed{
+\begin{aligned}
+&\textbf{EABC-Geometrie-Hypothese (Kern).}\\[4pt]
+&6n\pm 1 \text{ und } 4n\pm 1 \text{ sind nicht unabhängig:}\\[2pt]
+&\text{Projektionen zweier geometrischer Freiheitsgrade derselben}\\
+&\text{tetraedrisch-hexagonalen Packung.}\\[6pt]
+&6n\pm 1 = \text{horizontale hexagonale Dynamik;}\\
+&4n\pm 1 = \text{vertikale tetraedrische Dynamik;}\\
+&\text{Vereinigung} \Longrightarrow \text{voller EABC-Raum } \{1,5,7,11\}.
+\end{aligned}
+}$$
+
+**Label: Conjecture** — zentrale Forschungshypothese dieses Abschnitts; nicht etablierte
+Zahlentheorie.
+
+### 18.7 Kepler-Verbindung (Forschungsvision, vgl. §17)
+
+Die EABC-Geometrie-Hypothese schließt an §17.5–§17.6 an:
+
+> **Forschungsvision (wachsende Packung $\to$ Zahlengerade).** Beim **Wachsen** einer
+> Kugelpackung entstehen nacheinander Dreiecksschichten, Hexagonschichten, Tetraeder und
+> Oktaeder als lokale Kontaktzellen. Die **Zahlengerade** $\mathbb{N}$ ist in dieser Lesart
+> die **eindimensionale Projektion** dieses Packungsprozesses (Peano-Achse, §17.2);
+> $6n\pm 1$ und $4n\pm 1$ sind die **Schatten** der hexagonalen bzw. tetraedrischen Dynamik
+> auf dieser Achse.
+
+| Packungsobjekt | Arithmetischer Schatten (Vision) |
+|----------------|----------------------------------|
+| Dreiecks-/Hexagonschicht | $6n\pm 1$-Muster |
+| S-O-S-Tetraeder / Oktaeder-Kontakt | $4n\pm 1$-Muster |
+| Vollständige EABC-Ecke mod $12$ | $\{1,5,7,11\}$ |
+
+**Querverweise:** §17.5 (Kepler-Füllmechanismus), §17.6 ($\mathcal{K}(N)$, $\Pi$),
+`collatz_kepler_gedankenexperiment.tex`, `document.tex`.
+
+**Label: Forschungsvision** — geometrisch-physikalische Metapher, kein Beweis.
+
+### 18.8 Warum Modulo $12$ (Heuristik)
+
+> **Heuristik (erste gemeinsame Projektion).** Modulo $12$ ist der **kleinste Modulus**, in dem
+> sowohl die $6$-Struktur ($6\mid 12$) als auch die $4$-Struktur ($4\mid 12$) **gleichzeitig**
+> sichtbar werden. In der EABC-Geometrie-Hypothese ist Modulo $12$ daher nicht bloßer
+> arithmetischer Trick, sondern die **erste Projektion** der tetraedrisch-hexagonalen Geometrie
+> auf die Zahlengerade — der kleinste Schritt, in dem horizontale ($6n\pm 1$) und vertikale
+> ($4n\pm 1$) Dynamik in vier unabhängige EABC-Kanäle zusammenfallen.
+
+**Label: Heuristik** — erklärende Lesart; kein Theorem über die „Minimality" von $12$.
+
+### 18.9 Epistemische Zusammenfassung
+
+| Aussage | Label |
+|---------|-------|
+| $p>3$: $p\equiv\pm 1\pmod{6}$; ungerade Primzahlen: $p\equiv 1,3\pmod{4}$ | **Theorem** |
+| $(\mathbb{Z}/12\mathbb{Z})^\times\cong V_4$, EABC-Klassen $\{1,5,7,11\}$ | **Theorem / Definition** |
+| $E,A,B,C$ mod $12$ | **Definition** (§1, §7) |
+| Hexagonale Lesart von $6n\pm 1$ | **Heuristik** |
+| Tetraedrische S-O-S-Lesart von $4n\pm 1$ | **Heuristik** |
+| Zwei DOF, Vereinigung $\to$ EABC-Raum | **Conjecture** (Kernhypothese) |
+| Kepler-Packung $\to$ Schatten auf Peano-Achse | **Forschungsvision** (§17) |
+| Modulo $12$ als erste gemeinsame Projektion | **Heuristik** |
+
+Dieser Abschnitt **ersetzt** weder §1 (Zerlegungsprinzip) noch §17 (Forschungsvision);
+er **spezialisiert** deren geometrische Lesart auf die $6n\pm 1$/$4n\pm 1$-Muster und
+Modulo $12$. Kein Collatz-Beweis, kein etabliertes Primzahl-Theorem.
 
 ---
 
