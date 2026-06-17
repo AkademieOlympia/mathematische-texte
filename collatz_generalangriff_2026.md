@@ -231,7 +231,7 @@ das ist die operationale Form der Brücke (vgl. L₂, `collatz_equivalenz_e_inft
 | — | κ-Robustheit / BE-Negativtest | **abgeschlossen** (PR #40) | BE nicht kodierungsunabhängig |
 | **5** | Lemma E | später | Präperiodizität — nicht Stufe-3-Kern |
 
-**Aktueller Fokus:** `collatz_stufe3_kodierungsinvarianz.md` — Fragen A/B/C, keine Collatz-Beweisansprüche.
+**Aktueller Fokus:** `collatz_stufe3_kappa_invarianz.md` (Branch `collatz/kappa-invarianz-stufe3`) — Fragen A/B/C, fünf definitorische Fragen, keine Collatz-Beweisansprüche.
 Treue $\kappa$ (Stufe 1) und Geometrie/Präzession sind **zurückgestellt** (epistemisch abgegrenzt).
 
 ### Stufe 1 — Implementierung (Juni 2026)
@@ -348,7 +348,7 @@ Collatz impliziert, ist weiterhin eine punktweise Aussage über **natürliche** 
 jede scheinbar schwächere Formulierung ist meist nur **Umformulierung** derselben Lücke.
 
 **Strategisch (Juni 2026, nach Stufe 2B):** Stufe 2/2B abgeschlossen; **Stufe 3 = Kodierungsinvarianz**.
-vgl. `collatz_stufe3_kodierungsinvarianz.md`.
+vgl. `collatz_stufe3_kappa_invarianz.md`.
 
 **Stufe 2 + 2B (PR #39/#40):** $\mathcal{L}_{\mathrm{arith}}\subsetneq\mathcal{L}$ gesichert;
 BE nicht kodierungsunabhängig; $R(10)$ klein für $\kappa_1,\kappa_2,\kappa_3$.
@@ -382,7 +382,7 @@ Collatz $\Leftrightarrow$ (keine Divergenz) $\land$ (kein nichttrivialer Zyklus)
 - `CollatzEabc.Open` / `ExceptionSetInfinity` — Lean-Äquivalenz Collatz $\Leftrightarrow$ $E_\infty=\emptyset$
 - `collatz_offene_punkte.md` — Synthese offener Punkte, Negativresultate
 - `collatz_formalisierung_tao_stil.md` — Methodik: Lean als Wahrheitsfilter (Tao/IEANTN/PNT+; ICERM Mai 2026)
-- `collatz_stufe3_kodierungsinvarianz.md` — Stufe 3: Fragen A/B/C, Kodierungsinvarianz
+- `collatz_stufe3_kappa_invarianz.md` — Stufe 3: Kodierungsinvarianz (kanonisch)
 - `collatz_stufe2b_kappa_robustheit.md` — Stufe 2B: κ-Robustheit (PR #40)
 - `collatz_forbidden_words.py` / `collatz_forbidden_words.json` — $F_n$-Katalog, $R(k)$-Tabelle
 - `collatz_kepler_gedankenexperiment.tex` — $\kappa$, $\Phi_{\mathrm{pref}}$, Diskriminantentest
@@ -444,7 +444,7 @@ fünf getrennten Ebenen (vgl. `collatz_formalisierung_tao_stil.md`, *Methodik 2*
 | Theorem: $\mathrm{BE}\notin\mathcal{L}_{\mathrm{arith}}$ für alle $n$ | **nein** (offen) |
 
 **Priorität:** PR **#39** und **#40** abgeschlossen (Stufe 2/2B). Aktuell: **Stufe 3** Kodierungsinvarianz
-(`collatz_stufe3_kodierungsinvarianz.md`). Lemma E ist Rang 5, nicht Stufe-3-Kern.
+(`collatz_stufe3_kappa_invarianz.md`). Lemma E ist Rang 5, nicht Stufe-3-Kern.
 
 ### Verbindung zu PR #38 ($\kappa$-Negativresultat)
 
@@ -523,14 +523,14 @@ $R(10)$ bleibt für alle drei Varianten klein ($\kappa_2$: $\approx 0{,}0041$, s
 **Artefakte:** `collatz_kappa_robustheit.py`, `collatz_kappa_robustheit.json`,
 `collatz_stufe2b_kappa_robustheit.md`, `tests/test_kappa_robustheit.py`.
 
-**Nächster Schritt:** Stufe 3 — Kodierungsinvarianz (`collatz_stufe3_kodierungsinvarianz.md`).
+**Nächster Schritt:** Stufe 3 — Kodierungsinvarianz (`collatz_stufe3_kappa_invarianz.md`, Branch `collatz/kappa-invarianz-stufe3`).
 
 ---
 
 ## Stufe 3 — Kodierungsinvarianz (Juni 2026)
 
 > **Boxed (Stufe 3):**  
-> *Konkrete Verbotslisten sind κ-abhängig; die Ausdünnung $R(k)$ erscheint dagegen möglicherweise robust.*
+> *Nicht BE ist robust, sondern möglicherweise die Verdünnung.*
 
 PR **#39** und **#40** sind auf `main` gemergt. Stufe 3 greift **nicht** Collatz direkt an, sondern
 definiert die nächste Forschungsfrage: welche Eigenschaften der Realisierbarkeitslücke überleben Kodierungswechsel?
@@ -554,4 +554,6 @@ definiert die nächste Forschungsfrage: welche Eigenschaften der Realisierbarkei
 4. Dynamische Konsequenzen
 5. Lemma E (späterer Endpunkt)
 
-**Vollständiger Plan:** `collatz_stufe3_kodierungsinvarianz.md`.
+**Leitkette:** $\kappa$-Familie $\to$ Äquivalenzklassen $\to R_\kappa(k) \to h_\kappa \to \mathcal{L}_{\mathrm{arith}}^* \to$ Dynamik.
+
+**Vollständiger Plan:** `collatz_stufe3_kappa_invarianz.md` (Branch `collatz/kappa-invarianz-stufe3`).
