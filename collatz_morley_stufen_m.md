@@ -1,6 +1,6 @@
 # Morley-Stufen M1 → M2 → M3
 
-**Branch:** `main` (nach Merge PR #44/#45, Commit `b2ec630`)  
+**Branch:** `main` (nach Merge PR #48, Commit `8e03cfe`)  
 **Stand:** Juni 2026  
 **Kein Collatz-Beweis.** Operatives Forschungsprotokoll für den geodätischen Morley-Operator $T_M^{(g)}$.
 
@@ -19,8 +19,8 @@
 > *Geometrischer Operator mit überraschender lokaler Stabilität* — Definitionsrobustheit von $T_M^{(g)}$, experimentelle Testgröße $F_M$.
 
 > **Boxed (Roadmap):**  
-> *PR #44 mergen (M1) → M2 ($F_M$, $G_M$ auf Ebene / $S^2$ / $H^2$) → M3 (dualer Exponentenfit)*  
-> — M1 **abgeschlossen** (PR #44); M2 **abgeschlossen** (PR #46); M3 **abgeschlossen** (PR #47, experimentell).
+> *PR #44 mergen (M1) → M2 ($F_M$, $G_M$, $W_M$ auf Ebene / $S^2$ / $H^2$) → M3 (dualer Exponentenfit)*  
+> — M1 **abgeschlossen** (PR #44); M2 **abgeschlossen** (PR #46/#48); M3 **abgeschlossen** (PR #47, experimentell).
 
 ---
 
@@ -139,9 +139,9 @@ W_M(\Delta) = \frac{\mathrm{Area}(H_W(\Delta))}{\mathrm{Area}(\Delta)} - \frac{1
 
 | Sensor | Misst | Euklidische Referenz | Gekrümmt |
 |--------|-------|----------------------|----------|
-| $F_M$ | Winkelstruktur (Betrag) | Morley-Satz ($\approx 0$) | Krümmungsstärke-Proxy |
-| $G_M$ | Winkelstruktur (Vorzeichen) | Morley-Satz ($\approx 0$) | experimenteller Vorzeichen-Kandidat |
-| $W_M$ | Flächenstruktur | Marion-Walter ($1/10$) | experimenteller Flächen-Kandidat (chart-nah) |
+| $F_M$ | Winkel-Formfehler (Betrag) | Morley-Satz ($\approx 0$) | Krümmungsstärke-Proxy |
+| $G_M$ | Winkel-Formfehler (Vorzeichen) | Morley-Satz ($\approx 0$) | experimenteller Vorzeichen-Kandidat |
+| $W_M$ | Flächenfehler | Marion-Walter ($1/10$) | experimenteller Flächen-Kandidat (chart-nah) |
 
 **Kernpunkt:** $F_M$ ist eine **nichtnegative Testgröße** (Krümmungsstärke-Proxy), **kein** natürlicher Vorzeichen-Indikator. Da $F_M \geq 0$, kann $F_M(K{=}{+}1) \approx F_M(K{=}{-}1)$ bei gleicher Fläche gelten.
 
@@ -252,6 +252,81 @@ Beachte: bei $G_M$ steht $K_G$ **ohne** Betrag — Vorzeichenkopplung ist Teil d
 
 ---
 
+## 6 — Epistemischer Rahmen und Sensorvektor $\Phi_M$ (nach PR #48)
+
+> **Boxed (Epistemik, PR #47):**  
+> $G_M$ ist ein **experimenteller Kandidat** — Korrelation mit $K_G$ ist **keine Identität**. Die Beobachtung $\operatorname{sign}(G_M)=\operatorname{sign}(K_G)$ ist eine **Hypothese**, kein Satz.
+
+Die drei Größen $F_M$, $G_M$, $W_M$ messen **verschiedene lokale Defekte**:
+
+| Größe | Typ | Euklidische Referenz |
+|-------|-----|----------------------|
+| $F_M$ | Winkel-**Form**fehler (Betrag) | Morley-Satz |
+| $G_M$ | Winkel-**Form**fehler (Vorzeichen) | Morley-Satz |
+| $W_M$ | **Flächen**fehler | Marion-Walter-Satz |
+
+> **Boxed (Sensorvektor):**  
+> Nicht $G_M \approx W_M$, sondern **$\Phi_M = (G_M, W_M)$** als zweidimensionaler lokaler Geometriezustand:  
+> — $G_M$ ~ Winkeldefekt $\Delta\theta$ (Morley-Abweichung)  
+> — $W_M$ ~ Flächendefekt $\Delta A$ (Walter-Abweichung)
+
+$(F_M, G_M, W_M)$ ist damit ein **lokales Beobachtungssystem** — nicht ein einzelner Krümmungsindikator.
+
+---
+
+## 7 — Anti-Parallelität als Merkmal; Reviewer-Status
+
+**Anti-parallel ist Feature, nicht Bug.** Auf $S^2/H^2$ (chart-nah):
+
+$$\operatorname{sign}(W_M) = -\operatorname{sign}(K_G), \qquad
+\operatorname{sign}(W_M) = -\operatorname{sign}(G_M).$$
+
+$W_M$ misst eine **andere Größe** als $G_M$: Flächenprojektionsdefekt vs. Winkelkrümmungsdefekt. Analogie in der Differentialgeometrie: Gauß-Krümmung $K$ vs. mittlere Krümmung $H$ — verschiedene lokale Invarianten, nicht redundant.
+
+**Kein Triple-Konsens** ($F_M$, $G_M$, $W_M$ zeigen nicht dieselbe Information dreifach verkleidet) spricht **für** einen echten Sensorvektor, nicht gegen ihn.
+
+| Objekt | Status |
+|--------|--------|
+| $F_M$ | experimenteller Morley-Sensor (Winkel-Formfehler, Betrag) |
+| $G_M$ | sign-korrelierter Krümmungs**kandidat** (Winkel-Formfehler, Vorzeichen) |
+| $W_M$ | unabhängiger Walter-Flächensensor |
+| Zusammenhang mit $K_G$ | **empirisch**, nicht bewiesen |
+| intrinsische Theorie | **offen** |
+| DG-Herleitung | **offen** |
+
+---
+
+## 8 — Forschungsfrage und nächste Tests (nach PR #48)
+
+**Forschungsfrage:** Bilden $(F_M, G_M, W_M)$ ein neues lokales Beobachtungssystem? Der Zusammenhang zu $K$, $H$, Holonomie und geodätischem Exzess ist **offen**.
+
+### Test A — Pearson-Korrelationen (implementiert, PR #49)
+
+CLI: `collatz_morley_tm_numerik.py m2-correlations` → `collatz_morley_m2_correlations.json`
+
+Pearson-$\rho$ über gepoolte $\varepsilon$-Daten ($R^2 + S^2 + H^2$ und nur $S^2/H^2$):
+
+- $\rho(G_M, K_G)$, $\rho(W_M, K_G)$, $\rho(F_M, K_G)$
+- Kreuzkorrelationen: $\rho(F_M, G_M)$, $\rho(F_M, W_M)$, $\rho(G_M, W_M)$
+
+Epistemisch: $\rho \neq 1$ bestätigt keine Identität mit $K_G$ — nur numerische Kopplungsstärke.
+
+### Test B — PCA auf $(F_M, G_M, W_M)$ (geplant)
+
+Hauptkomponentenanalyse: 2 vs. 3 effektive Freiheitsgrade? Erwartung: weniger als 3 unabhängige Richtungen.
+
+### Test C — Orientiertes $W_M^{\mathrm{or}}$ (Priorität nächste PR)
+
+**Definition (präzise, noch nicht implementiert):**
+
+$$W_M^{\mathrm{or}}(\Delta) = \sigma(\Delta)\,\left(\frac{\mathrm{Area}(H_W(\Delta))}{\mathrm{Area}(\Delta)} - \frac{1}{10}\right),$$
+
+wobei $\sigma(\Delta) = \operatorname{sign}(\mathrm{Area}(\Delta))$ in der lokalen Karte (Umlaufsinn, Hexagon-Orientierung, chiraler Defekt). Stub: `walter_form_wm_oriented` in `collatz_morley_tm_numerik.py`.
+
+**Artefakte Test A:** `tests/test_morley_m2_correlations.py`.
+
+---
+
 ## Abgrenzung
 
 | Thema | Status |
@@ -265,8 +340,11 @@ Beachte: bei $G_M$ steht $K_G$ **ohne** Betrag — Vorzeichenkopplung ist Teil d
 ## Nächste Schritte (kurz)
 
 1. ~~M1~~ — abgeschlossen (PR #44).
-2. ~~M2: Krümmungs-Signatur ($F_M$ + $G_M$)~~ — erweitert (PR #46).
-3. ~~**M3:** Dualer Exponentenfit $F_M \sim c_F |K|^\alpha A^\beta$, $G_M \sim c_G K^\alpha A^\beta$~~ — experimentell (PR #47).
-4. Optional: Ikosaeder-20-Flächen-Lauf (4. Stufe nach $R^2/S^2/H^2$).
-5. Optional: orientiertes $G_M$, Varianten-Invarianz von $c_G$ und $\beta$.
-6. Optional: Lean-Definitionen (`MorleyOperator`) — ohne Collatz-`sorry`.
+2. ~~M2: Krümmungs-Signatur ($F_M$ + $G_M$ + $W_M$)~~ — abgeschlossen (PR #46/#48).
+3. ~~**M3:** Dualer Exponentenfit~~ — experimentell (PR #47).
+4. ~~**Test A:** Pearson-Korrelationen~~ — implementiert (PR #49).
+5. **Test B:** PCA auf $(F_M, G_M, W_M)$.
+6. **Test C:** Orientiertes $W_M^{\mathrm{or}}$ (Stub vorhanden).
+7. Optional: Ikosaeder-20-Flächen-Lauf (4. Stufe nach $R^2/S^2/H^2$).
+8. Optional: orientiertes $G_M$, Varianten-Invarianz von $c_G$ und $\beta$.
+9. Optional: Lean-Definitionen (`MorleyOperator`) — ohne Collatz-`sorry`.

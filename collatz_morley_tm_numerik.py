@@ -342,7 +342,7 @@ def walter_form_wm(vertices: Sequence[Array], triangle_area: float | None = None
     W_M(Δ) = Area(H_W(Δ)) / Area(Δ) − 1/10.
 
     Auf R² gilt W_M ≈ 0 (Marion-Walter-Satz). Auf S²/H² ist dies ein
-    experimenteller chart-näher Walter-Krümmungssensor — kein Theorem.
+    experimenteller chart-näher Walter-Flächensensor — kein Theorem.
     """
     verts = [np.asarray(v, dtype=float) for v in vertices]
     if triangle_area is None:
@@ -361,6 +361,28 @@ def walter_form_wm(vertices: Sequence[Array], triangle_area: float | None = None
     else:
         raise ValueError("walter_form_wm: Dreieck in R² oder S² erwartet")
     return hex_area / triangle_area - WALTER_EUCLIDEAN_AREA_RATIO
+
+
+def walter_form_wm_oriented(
+    vertices: Sequence[Array],
+    triangle_area: float | None = None,
+    winding: float | None = None,
+) -> float:
+    """
+    Orientierte Walter-Variante W_M^or — Stub für nächste PR (Test C).
+
+    Definition (geplant):
+        W_M^or(Δ) = σ(Δ) · (Area(H_W(Δ)) / Area(Δ) − 1/10),
+    wobei σ(Δ) = sign(Area(Δ)) in der lokalen Karte (Umlaufsinn / chiraler
+    Defekt relativ zur Hexagon-Orientierung). Auf R²: W_M^or ≈ W_M ≈ 0.
+
+    Noch nicht implementiert — volle Orientierung (Winding, Hexagon-Reihenfolge)
+    folgt in Test C.
+    """
+    raise NotImplementedError(
+        "walter_form_wm_oriented: orientierte Walter-Variante W_M^or — "
+        "Implementierung in Test C (nächste PR). Siehe collatz_morley_stufen_m.md §8."
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -886,6 +908,28 @@ class M2SignTest:
     interpretation: str
     gm_interpretation: str
     wm_interpretation: str
+
+
+@dataclass
+class M2CorrelationEntry:
+    """Pearson-Korrelation zwischen zwei Sensor-/Referenzgrößen."""
+
+    x: str
+    y: str
+    pearson_r: float
+    n: int
+    domain: str
+
+
+@dataclass
+class M2CorrelationReport:
+    """Test A: Pearson-ρ über gepoolte ε-Daten (R², S², H²)."""
+
+    stage: str = "M2-correlations"
+    variant: str = "local_chart"
+    epsilons: list[float] = field(default_factory=list)
+    correlations: list[M2CorrelationEntry] = field(default_factory=list)
+    notes: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -1443,6 +1487,82 @@ def _median_wm(samples: Sequence[M2SurfaceSample], surface: str) -> float:
     return float(np.median(vals)) if vals else float("nan")
 
 
+def _pearson_r(x: Sequence[float], y: Sequence[float]) -> tuple[float, int]:
+    """Pearson ρ; nan wenn Varianz degeneriert."""
+    xs = np.asarray(x, dtype=float)
+    ys = np.asarray(y, dtype=float)
+    n = len(xs)
+    if n < 2 or len(ys) != n:
+        return float("nan"), n
+    if float(np.std(xs)) < 1e-18 or float(np.std(ys)) < 1e-18:
+        return float("nan"), n
+    return float(np.corrcoef(xs, ys)[0, 1]), n
+
+
+def _m2_correlation_pairs(
+    samples: Sequence[M2SurfaceSample],
+    domain: str,
+) -> list[M2CorrelationEntry]:
+    """Kern-Korrelationen: Sensoren vs. K_G und untereinander."""
+    kg = [s.kg for s in samples]
+    fm = [s.f_m for s in samples]
+    gm = [s.g_m for s in samples]
+    wm = [s.w_m for s in samples]
+    pairs = (
+        ("G_M", "K_G", gm, kg),
+        ("W_M", "K_G", wm, kg),
+        ("F_M", "K_G", fm, kg),
+        ("F_M", "G_M", fm, gm),
+        ("F_M", "W_M", fm, wm),
+        ("G_M", "W_M", gm, wm),
+    )
+    out: list[M2CorrelationEntry] = []
+    for x_name, y_name, xs, ys in pairs:
+        r, n = _pearson_r(xs, ys)
+        out.append(
+            M2CorrelationEntry(
+                x=x_name,
+                y=y_name,
+                pearson_r=r,
+                n=n,
+                domain=domain,
+            )
+        )
+    return out
+
+
+def run_m2_correlations(
+    epsilons: Sequence[float] | None = None,
+    orientation: float = 0.37,
+    variant: str = "local_chart",
+) -> M2CorrelationReport:
+    """
+    Test A: Pearson-ρ über gepoolte ε-Daten auf R², S², H².
+
+    Epistemisch: Korrelation ≠ Identität mit K_G — numerische Evidenz, kein Theorem.
+    """
+    if epsilons is None:
+        epsilons = [0.05, 0.08, 0.12, 0.18, 0.25, 0.35]
+
+    samples = _collect_m3_samples(epsilons, orientation, variant)
+    curved = [s for s in samples if abs(s.kg) > 1e-12]
+
+    correlations = _m2_correlation_pairs(samples, domain="all_pooled")
+    correlations.extend(_m2_correlation_pairs(curved, domain="curved_only"))
+
+    notes = [
+        "Test A: Pearson-ρ über gepoolte ε-Familie (R²+S²+H²) und gekrümmt (S²+H²).",
+        "Korrelation ist numerische Evidenz — kein Identitätsbeweis zu K_G.",
+        "F_M = Winkel-Formfehler, W_M = Flächenfehler — unabhängige Sensoren.",
+    ]
+    return M2CorrelationReport(
+        variant=variant,
+        epsilons=list(epsilons),
+        correlations=correlations,
+        notes=notes,
+    )
+
+
 def _compute_m2_geometry_table(samples: Sequence[M2SurfaceSample]) -> list[M2GeometrySummary]:
     """M2a/b/c: F_M, F_M/A, F_M/A² — Median über ε pro Geometrie."""
     labels = (
@@ -1897,6 +2017,22 @@ def _print_m3_report(report: M3BeweisversuchReport) -> None:
         print(f"  • {note}")
 
 
+def _print_m2_correlations_report(report: M2CorrelationReport) -> None:
+    print("=== Morley M2: Sensor-Korrelationen (Test A) ===")
+    print(f"Variante: {report.variant}")
+    print(f"ε-Familie: {', '.join(f'{e:.3f}' for e in report.epsilons)}")
+    for domain in ("all_pooled", "curved_only"):
+        rows = [c for c in report.correlations if c.domain == domain]
+        if not rows:
+            continue
+        label = "gepoolt R²+S²+H²" if domain == "all_pooled" else "nur S²+H² (K_G≠0)"
+        print(f"\nPearson ρ ({label}, n={rows[0].n}):")
+        for row in rows:
+            print(f"  ρ({row.x}, {row.y}) = {row.pearson_r:+.4f}")
+    for note in report.notes:
+        print(f"  • {note}")
+
+
 def _print_m2_report(report: M2Report) -> None:
     print("=== Morley M2: Modellräume ===")
     print(f"Variante: {report.variant}  |  M1-Gate: {'bestanden' if report.m1_gate_passed else 'offen'}")
@@ -2010,8 +2146,8 @@ def main() -> None:
         "mode",
         nargs="?",
         default="m1",
-        choices=("m1", "m2", "m3"),
-        help="m1=Varianten-Konsistenz (Default), m2=Modellräume, m3=dualer Exponentenfit",
+        choices=("m1", "m2", "m2-correlations", "m3"),
+        help="m1=Varianten-Konsistenz (Default), m2=Modellräume, m2-correlations=Test A, m3=dualer Exponentenfit",
     )
     parser.add_argument("--json", type=str, default="", help="JSON-Ausgabepfad")
     parser.add_argument(
@@ -2036,6 +2172,10 @@ def main() -> None:
         report = run_m2_sensor(variant=args.variant)
         _print_m2_report(report)
         payload = asdict(report)
+    elif args.mode == "m2-correlations":
+        report = run_m2_correlations(variant=args.variant)
+        _print_m2_correlations_report(report)
+        payload = asdict(report)
     else:
         report = run_m3_beweisversuch(
             variant=args.variant,
@@ -2049,6 +2189,7 @@ def main() -> None:
         out = {
             "m1": "collatz_morley_m1_konsistenz.json",
             "m2": "collatz_morley_m2_sensor.json",
+            "m2-correlations": "collatz_morley_m2_correlations.json",
             "m3": "collatz_morley_m3_beweisversuch.json",
         }[args.mode]
     if out:

@@ -1,8 +1,8 @@
 # G_M: experimenteller Kandidat für einen signierten Morley-Krümmungssensor
 
 **Stand:** Juni 2026  
-**Branch:** `collatz/morley-m3-gm-beweisversuch`  
-**Artefakte:** `collatz_morley_tm_numerik.py m3`, `collatz_morley_m3_beweisversuch.json`
+**Branch:** `collatz/morley-phi-sensor` (nach Merge PR #48 auf `main`)  
+**Artefakte:** `collatz_morley_tm_numerik.py m3`, `collatz_morley_m3_beweisversuch.json`, `m2-correlations` → `collatz_morley_m2_correlations.json`
 
 ---
 
@@ -94,6 +94,36 @@ $$W_M(\Delta) = \frac{\mathrm{Area}(H_W(\Delta))}{\mathrm{Area}(\Delta)} - \frac
 
 ---
 
+## Sensorvektor $\Phi_M = (G_M, W_M)$ (Reviewer-Synthese, PR #48/49)
+
+> **Boxed (Kernidee):**  
+> Nicht $G_M \approx W_M$, sondern **$\Phi_M = (G_M, W_M)$** als zweidimensionaler lokaler Geometriezustand.
+
+| Komponente | Defekt-Typ | Euklidische Nullreferenz |
+|------------|------------|--------------------------|
+| $G_M$ | Winkel-Formfehler $\Delta\theta$ | Morley-Satz |
+| $W_M$ | Flächenfehler $\Delta A$ | Marion-Walter-Satz ($1/10$) |
+| $F_M$ | Winkel-Formfehler (Betrag) | Morley-Satz — Stärke, kein Vorzeichen |
+
+**Terminologie (Korrektur):** $F_M$ ist ein **Winkel-Formfehler** (quadratische Summe), **kein** Flächensignal. $W_M$ ist der **Flächensensor**.
+
+**Anti-Parallelität auf $S^2/H^2$:** $\operatorname{sign}(W_M)=-\operatorname{sign}(G_M)=-\operatorname{sign}(K_G)$ — das ist ein **Merkmal**, kein Bug. $W_M$ misst Flächenprojektionsdefekt, $G_M$ Winkeldefekt; analog zu $K$ vs. $H$ in der DG.
+
+**Kein Triple-Konsens:** $(F_M, G_M, W_M)$ tragen nicht dieselbe Information — das spricht für einen echten Sensorvektor.
+
+| Objekt | Status |
+|--------|--------|
+| $F_M$ | experimenteller Morley-Sensor (Betrag) |
+| $G_M$ | sign-korrelierter Krümmungs**kandidat** |
+| $W_M$ | unabhängiger Walter-Flächensensor |
+| Zusammenhang mit $K_G$ | empirisch, nicht bewiesen |
+
+**Test A (Pearson-$\rho$):** `collatz_morley_tm_numerik.py m2-correlations` — $\rho(G_M,K_G)$, $\rho(W_M,K_G)$, $\rho(F_M,K_G)$ und Kreuzkorrelationen; siehe `collatz_morley_m2_correlations.json`.
+
+**Test C (Stub):** Orientiertes $W_M^{\mathrm{or}} = \sigma(\Delta)\,( \mathrm{Area}(H_W)/\mathrm{Area}(\Delta) - 1/10)$ mit $\sigma(\Delta)=\operatorname{sign}(\mathrm{Area}(\Delta))$ — `walter_form_wm_oriented` (nächste PR).
+
+---
+
 ## Argumente **für** den experimentellen Kandidaten
 
 1. **Vorzeichenkonsistenz:** $\operatorname{sign}(G_M)=\operatorname{sign}(K_G)$ auf $S^2$ und $H^2$ bei jedem $\varepsilon$ der Familie — nicht nur im Median.
@@ -131,10 +161,13 @@ Der κ-Zweig (arithmetische Kodierung, $\mathcal{L}_{\mathrm{arith}}^*$) testet 
 
 ## Nächste Schritte
 
-1. **Orientiertes $G_M$:** Testgröße mit explizitem Flächenvorzeichen / Umlaufsinn definieren und gegen die einfache Summe testen.
-2. **Ikosaeder (20 Flächen):** Systematischer M3-Lauf auf allen Dreiecksflächen des regulären Ikosaeders (`eabc_icosahedron_test.py`).
-3. **Varianten-Invarianz von $G_M$:** Nicht nur Vorzeichen, sondern $|c_G|$ und $\beta$ über alle vier Realisierungen vergleichen.
-4. **Variable Krümmung:** Modellräume mit unterschiedlichem $|K_G|$ zur Identifikation von $\alpha$.
+1. ~~**Test A:** Pearson-Korrelationen $(F_M, G_M, W_M)$ vs. $K_G$~~ — implementiert (`m2-correlations`).
+2. **Test B:** PCA auf $(F_M, G_M, W_M)$ — 2 vs. 3 Freiheitsgrade?
+3. **Test C:** Orientiertes $W_M^{\mathrm{or}}$ (`walter_form_wm_oriented`).
+4. **Orientiertes $G_M$:** Testgröße mit explizitem Flächenvorzeichen / Umlaufsinn.
+5. **Ikosaeder (20 Flächen):** Systematischer M3-Lauf auf allen Dreiecksflächen.
+6. **Varianten-Invarianz von $G_M$:** $|c_G|$ und $\beta$ über alle vier Realisierungen.
+7. **Variable Krümmung:** Modellräume mit unterschiedlichem $|K_G|$ zur Identifikation von $\alpha$.
 
 ---
 
