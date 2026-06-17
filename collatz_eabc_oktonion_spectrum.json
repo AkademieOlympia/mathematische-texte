@@ -1,1671 +1,1202 @@
 {
   "meta": {
     "hypothesis_doc": [
+      "collatz_eabc_oktonion_assoziator_spektralhypothese.md",
       "collatz_eabc_oktonion_singularitaet.md §3.8",
       "collatz_eabc_plattenuebergang.md §2.7"
     ],
     "script": "collatz_eabc_oktonion_spectrum.py",
-    "base_module": "collatz_eabc_oktonion_associator.py",
+    "associator_module": "collatz_eabc_oktonion_associator.py",
     "lattice": "Z^8 stub (nicht Hurwitz O_H)",
-    "constraint": "N(x)N(y)N(z)=n (Produktnorm, Faktoren ≥1)",
-    "histogram_bin": "α² (ganzzahlige Normquadrat des Assoziators)",
     "max_n": 30,
     "samples_per_n": 40,
     "seed": 54,
-    "computed": [
-      "M_n(t), M_n^E(t) histograms via sampling",
-      "partial S_n(1), S_n(2)",
-      "prime vs composite spectrum statistics",
-      "KL distance for paired comparison"
-    ],
+    "definitions": {
+      "alpha": "N([x,y,z])",
+      "alpha_E": "N(Γ_E((xy)z) - Γ_E(x(yz)))",
+      "M_n(t)": "#{ (x,y,z) in 𝔞_n : alpha=t }",
+      "M_n_E(t)": "#{ (x,y,z) in 𝔞_n : alpha_E=t }"
+    },
+    "dirichlet_link": "collatz_eabc_dirichlet_D.py (Quaternion D̂(s) Referenz)",
     "not_computed": [
       "full 𝔞_n enumeration",
       "Hurwitz O_H lattice",
-      "rigorous Dirichlet continuation of S_n(s)"
-    ],
-    "conjecture": "Primzahlen besitzen charakteristisches Assoziator-Spektrum M_n(t) (Form/Support), nicht bloß Maximierung von 𝔞_E.",
-    "epistemic_note": "Sampling auf 𝔞_n mit N(x)N(y)N(z)=n; Prim n hat Faktorisierungen (1,1,p) etc. Spektrumvergleich Prim vs. zusammengesetzt ist der Schlüsseloutput."
+      "D̂_E(s) partial sums (future)"
+    ]
+  },
+  "example_n6_vs_n7": {
+    "composite_n": 6,
+    "prime_n": 7,
+    "M_n_E_composite": {
+      "0": 33,
+      "1": 4,
+      "2": 2
+    },
+    "M_n_E_prime": {
+      "0": 40
+    },
+    "I_composite": {
+      "H": 0.5272482785913567,
+      "support_size": 3,
+      "mean_alpha_E": 0.20512820512820512,
+      "var_alpha_E": 0.2656147271531887
+    },
+    "I_prime": {
+      "H": 0.0,
+      "support_size": 1,
+      "mean_alpha_E": 0,
+      "var_alpha_E": 0
+    },
+    "kl_composite_vs_prime": 3.723678046936112,
+    "distinguishable": true
   },
   "rows": [
     {
       "n": 2,
       "is_prime": true,
-      "norm_triple_factorizations": 1,
-      "factorizations": [
-        [
-          1,
-          1,
-          2
-        ]
-      ],
-      "sample_count": 40,
+      "triple_factorizations": 2,
+      "sample_triples": 40,
       "M_n": {
-        "0": 28,
-        "4": 12
+        "0": 31,
+        "4": 9
       },
       "M_n_E": {
         "0": 40
       },
-      "stats_algebraic": {
+      "I_M_n": {
         "support_size": 2,
-        "mean_alpha": 0.6,
-        "var_alpha": 0.84,
-        "mean_alpha_sq": 1.2,
-        "var_alpha_sq": 3.36,
-        "total": 40
+        "total_count": 40,
+        "entropy": 0.5331638407372986,
+        "mean_level": 0.9,
+        "var_level": 2.79
       },
-      "stats_eabc": {
+      "I_M_n_E": {
+        "H": 0.0,
         "support_size": 1,
-        "mean_alpha": 0.0,
-        "var_alpha": 0.0,
-        "mean_alpha_sq": 0,
-        "var_alpha_sq": 0,
-        "total": 40
+        "mean_alpha_E": 0,
+        "var_alpha_E": 0
       },
-      "S_n_s1_algebraic": 6.0,
-      "S_n_s2_algebraic": 3.0,
-      "S_n_s1_eabc": 0.0,
-      "S_n_s2_eabc": 0.0
+      "S_n_s1": 0.05625,
+      "S_n_s2": 0.0140625,
+      "S_n_E_s1": 0,
+      "S_n_E_s2": 0
     },
     {
       "n": 3,
       "is_prime": true,
-      "norm_triple_factorizations": 1,
-      "factorizations": [
-        [
-          1,
-          1,
-          3
-        ]
-      ],
-      "sample_count": 40,
+      "triple_factorizations": 1,
+      "sample_triples": 40,
       "M_n": {
-        "0": 25,
-        "4": 12,
-        "8": 3
+        "0": 30,
+        "4": 8,
+        "8": 2
       },
       "M_n_E": {
         "0": 40
       },
-      "stats_algebraic": {
+      "I_M_n": {
         "support_size": 3,
-        "mean_alpha": 0.8121320343559643,
-        "var_alpha": 1.140441558772843,
-        "mean_alpha_sq": 1.8,
-        "var_alpha_sq": 6.36,
-        "total": 40
+        "total_count": 40,
+        "entropy": 0.6874357505033553,
+        "mean_level": 1.2,
+        "var_level": 4.96
       },
-      "stats_eabc": {
+      "I_M_n_E": {
+        "H": 0.0,
         "support_size": 1,
-        "mean_alpha": 0.0,
-        "var_alpha": 0.0,
-        "mean_alpha_sq": 0,
-        "var_alpha_sq": 0,
-        "total": 40
+        "mean_alpha_E": 0,
+        "var_alpha_E": 0
       },
-      "S_n_s1_algebraic": 7.060660171779821,
-      "S_n_s2_algebraic": 3.375,
-      "S_n_s1_eabc": 0.0,
-      "S_n_s2_eabc": 0.0
+      "S_n_s1": 0.05625,
+      "S_n_s2": 0.013281250000000001,
+      "S_n_E_s1": 0,
+      "S_n_E_s2": 0
     },
     {
       "n": 4,
       "is_prime": false,
-      "norm_triple_factorizations": 2,
-      "factorizations": [
-        [
-          1,
-          1,
-          4
-        ],
-        [
-          1,
-          2,
-          2
-        ]
-      ],
-      "sample_count": 40,
+      "triple_factorizations": 3,
+      "sample_triples": 39,
       "M_n": {
-        "0": 17,
-        "4": 15,
-        "8": 7,
-        "16": 1
+        "0": 23,
+        "4": 10,
+        "8": 6
       },
       "M_n_E": {
-        "0": 40
+        "0": 39
       },
-      "stats_algebraic": {
-        "support_size": 4,
-        "mean_alpha": 1.3449747468305833,
-        "var_alpha": 1.4910429303880086,
-        "mean_alpha_sq": 3.3,
-        "var_alpha_sq": 12.71,
-        "total": 40
+      "I_M_n": {
+        "support_size": 3,
+        "total_count": 39,
+        "entropy": 0.9483622945481277,
+        "mean_level": 2.2564102564102564,
+        "var_level": 8.85733070348455
       },
-      "stats_eabc": {
+      "I_M_n_E": {
+        "H": 0.0,
         "support_size": 1,
-        "mean_alpha": 0.0,
-        "var_alpha": 0.0,
-        "mean_alpha_sq": 0,
-        "var_alpha_sq": 0,
-        "total": 40
+        "mean_alpha_E": 0,
+        "var_alpha_E": 0
       },
-      "S_n_s1_algebraic": 10.224873734152917,
-      "S_n_s2_algebraic": 4.6875,
-      "S_n_s1_eabc": 0.0,
-      "S_n_s2_eabc": 0.0
+      "S_n_s1": 0.08333333333333333,
+      "S_n_s2": 0.018429487179487176,
+      "S_n_E_s1": 0,
+      "S_n_E_s2": 0
     },
     {
       "n": 5,
       "is_prime": true,
-      "norm_triple_factorizations": 1,
-      "factorizations": [
-        [
-          1,
-          1,
-          5
-        ]
-      ],
-      "sample_count": 40,
+      "triple_factorizations": 1,
+      "sample_triples": 40,
       "M_n": {
-        "0": 20,
-        "4": 10,
-        "8": 8,
-        "16": 1,
+        "0": 21,
+        "4": 11,
+        "8": 8
+      },
+      "M_n_E": {
+        "0": 40
+      },
+      "I_M_n": {
+        "support_size": 3,
+        "total_count": 40,
+        "entropy": 1.01519566595362,
+        "mean_level": 2.7,
+        "var_level": 9.91
+      },
+      "I_M_n_E": {
+        "H": 0.0,
+        "support_size": 1,
+        "mean_alpha_E": 0,
+        "var_alpha_E": 0
+      },
+      "S_n_s1": 0.09375,
+      "S_n_s2": 0.0203125,
+      "S_n_E_s1": 0,
+      "S_n_E_s2": 0
+    },
+    {
+      "n": 6,
+      "is_prime": false,
+      "triple_factorizations": 3,
+      "sample_triples": 39,
+      "M_n": {
+        "0": 17,
+        "4": 14,
+        "8": 5,
+        "12": 1,
+        "20": 2
+      },
+      "M_n_E": {
+        "0": 33,
+        "1": 5,
+        "2": 1
+      },
+      "I_M_n": {
+        "support_size": 5,
+        "total_count": 39,
+        "entropy": 1.2393330977486288,
+        "mean_level": 3.7948717948717947,
+        "var_level": 23.752794214332678
+      },
+      "I_M_n_E": {
+        "H": 0.4986401309869708,
+        "support_size": 3,
+        "mean_alpha_E": 0.1794871794871795,
+        "var_alpha_E": 0.1985535831689678
+      },
+      "S_n_s1": 0.11047008547008547,
+      "S_n_s2": 0.02474537037037037,
+      "S_n_E_s1": 0.14102564102564102,
+      "S_n_E_s2": 0.1346153846153846
+    },
+    {
+      "n": 7,
+      "is_prime": true,
+      "triple_factorizations": 1,
+      "sample_triples": 40,
+      "M_n": {
+        "0": 27,
+        "4": 6,
+        "8": 4,
+        "16": 2,
         "20": 1
       },
       "M_n_E": {
         "0": 40
       },
-      "stats_algebraic": {
+      "I_M_n": {
         "support_size": 5,
-        "mean_alpha": 1.2774888238242275,
-        "var_alpha": 1.868022305004192,
-        "mean_alpha_sq": 3.5,
-        "var_alpha_sq": 20.95,
-        "total": 40
+        "total_count": 40,
+        "entropy": 1.0221388540368195,
+        "mean_level": 2.7,
+        "var_level": 24.31
       },
-      "stats_eabc": {
+      "I_M_n_E": {
+        "H": 0.0,
         "support_size": 1,
-        "mean_alpha": 0.0,
-        "var_alpha": 0.0,
-        "mean_alpha_sq": 0,
-        "var_alpha_sq": 0,
-        "total": 40
+        "mean_alpha_E": 0,
+        "var_alpha_E": 0
       },
-      "S_n_s1_algebraic": 8.302033922496168,
-      "S_n_s2_algebraic": 3.6125,
-      "S_n_s1_eabc": 0.0,
-      "S_n_s2_eabc": 0.0
-    },
-    {
-      "n": 6,
-      "is_prime": false,
-      "norm_triple_factorizations": 2,
-      "factorizations": [
-        [
-          1,
-          1,
-          6
-        ],
-        [
-          1,
-          2,
-          3
-        ]
-      ],
-      "sample_count": 40,
-      "M_n": {
-        "0": 20,
-        "4": 15,
-        "8": 4,
-        "16": 1
-      },
-      "M_n_E": {
-        "0": 37,
-        "1": 3
-      },
-      "stats_algebraic": {
-        "support_size": 4,
-        "mean_alpha": 1.132842712474619,
-        "var_alpha": 1.4166673887931478,
-        "mean_alpha_sq": 2.7,
-        "var_alpha_sq": 11.51,
-        "total": 40
-      },
-      "stats_eabc": {
-        "support_size": 2,
-        "mean_alpha": 0.075,
-        "var_alpha": 0.069375,
-        "mean_alpha_sq": 0.075,
-        "var_alpha_sq": 0.069375,
-        "total": 40
-      },
-      "S_n_s1_algebraic": 9.164213562373096,
-      "S_n_s2_algebraic": 4.3125,
-      "S_n_s1_eabc": 3.0,
-      "S_n_s2_eabc": 3.0
-    },
-    {
-      "n": 7,
-      "is_prime": true,
-      "norm_triple_factorizations": 1,
-      "factorizations": [
-        [
-          1,
-          1,
-          7
-        ]
-      ],
-      "sample_count": 40,
-      "M_n": {
-        "0": 19,
-        "4": 11,
-        "8": 8,
-        "20": 2
-      },
-      "M_n_E": {
-        "0": 40
-      },
-      "stats_algebraic": {
-        "support_size": 4,
-        "mean_alpha": 1.339292222699217,
-        "var_alpha": 1.906296342217391,
-        "mean_alpha_sq": 3.7,
-        "var_alpha_sq": 23.51,
-        "total": 40
-      },
-      "stats_eabc": {
-        "support_size": 1,
-        "mean_alpha": 0.0,
-        "var_alpha": 0.0,
-        "mean_alpha_sq": 0,
-        "var_alpha_sq": 0,
-        "total": 40
-      },
-      "S_n_s1_algebraic": 8.775640720246148,
-      "S_n_s2_algebraic": 3.85,
-      "S_n_s1_eabc": 0.0,
-      "S_n_s2_eabc": 0.0
+      "S_n_s1": 0.054375,
+      "S_n_s2": 0.0111953125,
+      "S_n_E_s1": 0,
+      "S_n_E_s2": 0
     },
     {
       "n": 8,
       "is_prime": false,
-      "norm_triple_factorizations": 3,
-      "factorizations": [
-        [
-          1,
-          1,
-          8
-        ],
-        [
-          1,
-          2,
-          4
-        ],
-        [
-          2,
-          2,
-          2
-        ]
-      ],
-      "sample_count": 39,
+      "triple_factorizations": 4,
+      "sample_triples": 40,
       "M_n": {
-        "0": 20,
-        "4": 10,
-        "8": 3,
+        "0": 9,
+        "4": 18,
+        "8": 8,
         "12": 1,
-        "16": 2,
+        "16": 1,
         "20": 3
       },
       "M_n_E": {
-        "0": 29,
-        "1": 8,
-        "3": 1,
-        "4": 1
+        "0": 32,
+        "1": 7,
+        "3": 1
       },
-      "stats_algebraic": {
+      "I_M_n": {
         "support_size": 6,
-        "mean_alpha": 1.3683536116506427,
-        "var_alpha": 2.43530070117495,
-        "mean_alpha_sq": 4.3076923076923075,
-        "var_alpha_sq": 38.05917159763314,
-        "total": 39
+        "total_count": 40,
+        "entropy": 1.3955524031739375,
+        "mean_level": 5.6,
+        "var_level": 28.64
       },
-      "stats_eabc": {
-        "support_size": 4,
-        "mean_alpha": 0.30082181557868914,
-        "var_alpha": 0.2941216198873257,
-        "mean_alpha_sq": 0.38461538461538464,
-        "var_alpha_sq": 0.6982248520710059,
-        "total": 39
+      "I_M_n_E": {
+        "H": 0.5757564557894752,
+        "support_size": 3,
+        "mean_alpha_E": 0.25,
+        "var_alpha_E": 0.3375
       },
-      "S_n_s1_algebraic": 7.520155699624571,
-      "S_n_s2_algebraic": 3.2333333333333334,
-      "S_n_s1_eabc": 9.077350269189626,
-      "S_n_s2_eabc": 8.583333333333334
+      "S_n_s1": 0.14489583333333333,
+      "S_n_s2": 0.03170876736111111,
+      "S_n_E_s1": 0.18333333333333332,
+      "S_n_E_s2": 0.17777777777777776
     },
     {
       "n": 9,
       "is_prime": false,
-      "norm_triple_factorizations": 2,
-      "factorizations": [
-        [
-          1,
-          1,
-          9
-        ],
-        [
-          1,
-          3,
-          3
-        ]
-      ],
-      "sample_count": 40,
+      "triple_factorizations": 3,
+      "sample_triples": 39,
       "M_n": {
-        "0": 19,
-        "4": 3,
+        "0": 14,
+        "4": 10,
         "8": 9,
-        "12": 5,
+        "12": 1,
         "16": 3,
-        "24": 1
+        "20": 2
       },
       "M_n_E": {
-        "0": 31,
-        "1": 3,
-        "2": 6
+        "0": 28,
+        "1": 8,
+        "2": 3
       },
-      "stats_algebraic": {
+      "I_M_n": {
         "support_size": 6,
-        "mean_alpha": 1.641883292099271,
-        "var_alpha": 2.7042192551252597,
-        "mean_alpha_sq": 5.4,
-        "var_alpha_sq": 38.04,
-        "total": 40
+        "total_count": 39,
+        "entropy": 1.4986948264449216,
+        "mean_level": 5.435897435897436,
+        "var_level": 33.22024983563445
       },
-      "stats_eabc": {
+      "I_M_n_E": {
+        "H": 0.760148941402756,
         "support_size": 3,
-        "mean_alpha": 0.2871320343559643,
-        "var_alpha": 0.2925551948466054,
-        "mean_alpha_sq": 0.375,
-        "var_alpha_sq": 0.534375,
-        "total": 40
+        "mean_alpha_E": 0.358974358974359,
+        "var_alpha_E": 0.38395792241946086
       },
-      "S_n_s1_algebraic": 7.07948033354546,
-      "S_n_s2_algebraic": 2.520833333333333,
-      "S_n_s1_eabc": 7.242640687119285,
-      "S_n_s2_eabc": 6.0
+      "S_n_s1": 0.10245726495726495,
+      "S_n_s2": 0.02023815883190883,
+      "S_n_E_s1": 0.24358974358974358,
+      "S_n_E_s2": 0.22435897435897434
     },
     {
       "n": 10,
       "is_prime": false,
-      "norm_triple_factorizations": 2,
-      "factorizations": [
-        [
-          1,
-          1,
-          10
-        ],
-        [
-          1,
-          2,
-          5
-        ]
-      ],
-      "sample_count": 40,
+      "triple_factorizations": 3,
+      "sample_triples": 39,
       "M_n": {
-        "0": 14,
-        "4": 5,
-        "8": 8,
-        "12": 4,
-        "16": 6,
-        "20": 3
+        "0": 12,
+        "4": 10,
+        "8": 11,
+        "12": 1,
+        "16": 1,
+        "20": 3,
+        "32": 1
       },
       "M_n_E": {
-        "0": 29,
+        "0": 28,
         "1": 5,
-        "2": 5,
-        "3": 1
+        "2": 6
       },
-      "stats_algebraic": {
-        "support_size": 6,
-        "mean_alpha": 2.097505783087982,
-        "var_alpha": 2.8004694899124716,
-        "mean_alpha_sq": 7.2,
-        "var_alpha_sq": 45.76,
-        "total": 40
+      "I_M_n": {
+        "support_size": 7,
+        "total_count": 39,
+        "entropy": 1.5477304770480347,
+        "mean_level": 6.358974358974359,
+        "var_level": 48.999342537804075
       },
-      "stats_eabc": {
-        "support_size": 4,
-        "mean_alpha": 0.34507796548585884,
-        "var_alpha": 0.3309211977361404,
-        "mean_alpha_sq": 0.45,
-        "var_alpha_sq": 0.6475,
-        "total": 40
+      "I_M_n_E": {
+        "H": 0.7892161932464531,
+        "support_size": 3,
+        "mean_alpha_E": 0.4358974358974359,
+        "var_alpha_E": 0.5535831689677844
       },
-      "S_n_s1_algebraic": 8.653948056375379,
-      "S_n_s2_algebraic": 3.1083333333333334,
-      "S_n_s1_eabc": 9.112884175122364,
-      "S_n_s2_eabc": 7.833333333333333
+      "S_n_s1": 0.10774572649572649,
+      "S_n_s2": 0.020928262998575496,
+      "S_n_E_s1": 0.20512820512820512,
+      "S_n_E_s2": 0.16666666666666666
     },
     {
       "n": 11,
       "is_prime": true,
-      "norm_triple_factorizations": 1,
-      "factorizations": [
-        [
-          1,
-          1,
-          11
-        ]
-      ],
-      "sample_count": 40,
+      "triple_factorizations": 1,
+      "sample_triples": 40,
       "M_n": {
-        "0": 21,
-        "4": 3,
+        "0": 19,
+        "4": 6,
         "8": 5,
-        "16": 4,
-        "20": 6,
-        "32": 1
+        "20": 10
       },
       "M_n_E": {
         "0": 40
       },
-      "stats_algebraic": {
-        "support_size": 6,
-        "mean_alpha": 1.7157951400805203,
-        "var_alpha": 3.7560470372760686,
-        "mean_alpha_sq": 6.7,
-        "var_alpha_sq": 75.51,
-        "total": 40
+      "I_M_n": {
+        "support_size": 4,
+        "total_count": 40,
+        "entropy": 1.2446810063228948,
+        "mean_level": 6.6,
+        "var_level": 66.84
       },
-      "stats_eabc": {
+      "I_M_n_E": {
+        "H": 0.0,
         "support_size": 1,
-        "mean_alpha": 0.0,
-        "var_alpha": 0.0,
-        "mean_alpha_sq": 0,
-        "var_alpha_sq": 0,
-        "total": 40
+        "mean_alpha_E": 0,
+        "var_alpha_E": 0
       },
-      "S_n_s1_algebraic": 5.7861844347628795,
-      "S_n_s2_algebraic": 1.9562499999999998,
-      "S_n_s1_eabc": 0.0,
-      "S_n_s2_eabc": 0.0
+      "S_n_s1": 0.065625,
+      "S_n_s2": 0.011953125,
+      "S_n_E_s1": 0,
+      "S_n_E_s2": 0
     },
     {
       "n": 12,
       "is_prime": false,
-      "norm_triple_factorizations": 4,
-      "factorizations": [
-        [
-          1,
-          1,
-          12
-        ],
-        [
-          1,
-          2,
-          6
-        ],
-        [
-          1,
-          3,
-          4
-        ],
-        [
-          2,
-          2,
-          3
-        ]
-      ],
-      "sample_count": 40,
+      "triple_factorizations": 7,
+      "sample_triples": 35,
       "M_n": {
-        "0": 16,
-        "4": 10,
-        "8": 5,
-        "12": 3,
-        "16": 2,
+        "0": 8,
+        "4": 8,
+        "8": 11,
+        "12": 1,
+        "16": 3,
         "20": 2,
-        "32": 2
+        "24": 2
       },
       "M_n_E": {
-        "0": 24,
-        "1": 8,
-        "2": 7,
-        "3": 1
+        "0": 21,
+        "1": 10,
+        "2": 4
       },
-      "stats_algebraic": {
+      "I_M_n": {
         "support_size": 7,
-        "mean_alpha": 1.8198105219532035,
-        "var_alpha": 2.98828966418841,
-        "mean_alpha_sq": 6.3,
-        "var_alpha_sq": 67.11,
-        "total": 40
+        "total_count": 35,
+        "entropy": 1.6777383970350261,
+        "mean_level": 7.6571428571428575,
+        "var_level": 46.968163265306124
       },
-      "stats_eabc": {
-        "support_size": 4,
-        "mean_alpha": 0.4907886436045136,
-        "var_alpha": 0.3841265073088418,
-        "mean_alpha_sq": 0.625,
-        "var_alpha_sq": 0.734375,
-        "total": 40
+      "I_M_n_E": {
+        "H": 0.9123195024433594,
+        "support_size": 3,
+        "mean_alpha_E": 0.5142857142857142,
+        "var_alpha_E": 0.47836734693877553
       },
-      "S_n_s1_algebraic": 8.934559342844038,
-      "S_n_s2_algebraic": 3.6625,
-      "S_n_s1_eabc": 13.52709773749546,
-      "S_n_s2_eabc": 11.833333333333334
+      "S_n_s1": 0.10940476190476191,
+      "S_n_s2": 0.01997172619047619,
+      "S_n_E_s1": 0.34285714285714286,
+      "S_n_E_s2": 0.3142857142857143
     },
     {
       "n": 13,
       "is_prime": true,
-      "norm_triple_factorizations": 1,
-      "factorizations": [
-        [
-          1,
-          1,
-          13
-        ]
-      ],
-      "sample_count": 40,
+      "triple_factorizations": 1,
+      "sample_triples": 40,
       "M_n": {
-        "0": 13,
-        "4": 9,
-        "8": 4,
+        "0": 16,
+        "4": 4,
+        "8": 9,
         "16": 4,
         "20": 6,
-        "32": 2,
+        "40": 1
+      },
+      "M_n_E": {
+        "0": 40
+      },
+      "I_M_n": {
+        "support_size": 6,
+        "total_count": 40,
+        "entropy": 1.539445642709188,
+        "mean_level": 7.8,
+        "var_level": 80.76
+      },
+      "I_M_n_E": {
+        "H": 0.0,
+        "support_size": 1,
+        "mean_alpha_E": 0,
+        "var_alpha_E": 0
+      },
+      "S_n_s1": 0.0675,
+      "S_n_s2": 0.010546875,
+      "S_n_E_s1": 0,
+      "S_n_E_s2": 0
+    },
+    {
+      "n": 14,
+      "is_prime": false,
+      "triple_factorizations": 3,
+      "sample_triples": 39,
+      "M_n": {
+        "0": 14,
+        "4": 10,
+        "8": 4,
+        "12": 1,
+        "16": 5,
+        "20": 2,
+        "32": 1,
+        "36": 1,
+        "44": 1
+      },
+      "M_n_E": {
+        "0": 31,
+        "1": 2,
+        "2": 6
+      },
+      "I_M_n": {
+        "support_size": 9,
+        "total_count": 39,
+        "entropy": 1.7417330586341586,
+        "mean_level": 8.102564102564102,
+        "var_level": 111.1689677843524
+      },
+      "I_M_n_E": {
+        "H": 0.6227807611161144,
+        "support_size": 3,
+        "mean_alpha_E": 0.358974358974359,
+        "var_alpha_E": 0.5378040762656148
+      },
+      "S_n_s1": 0.09173303548303548,
+      "S_n_s2": 0.01849334335405989,
+      "S_n_E_s1": 0.1282051282051282,
+      "S_n_E_s2": 0.08974358974358974
+    },
+    {
+      "n": 15,
+      "is_prime": false,
+      "triple_factorizations": 3,
+      "sample_triples": 39,
+      "M_n": {
+        "0": 13,
+        "4": 14,
+        "8": 8,
+        "16": 3,
+        "24": 1
+      },
+      "M_n_E": {
+        "0": 24,
+        "1": 10,
+        "2": 4,
+        "3": 1
+      },
+      "I_M_n": {
+        "support_size": 5,
+        "total_count": 39,
+        "entropy": 1.3501638650769128,
+        "mean_level": 4.923076923076923,
+        "var_level": 29.09664694280079
+      },
+      "I_M_n_E": {
+        "H": 0.9752457409303974,
+        "support_size": 4,
+        "mean_alpha_E": 0.5384615384615384,
+        "var_alpha_E": 0.6074950690335306
+      },
+      "S_n_s1": 0.12126068376068376,
+      "S_n_s2": 0.02598602207977208,
+      "S_n_E_s1": 0.3162393162393162,
+      "S_n_E_s2": 0.28490028490028485
+    },
+    {
+      "n": 16,
+      "is_prime": false,
+      "triple_factorizations": 5,
+      "sample_triples": 40,
+      "M_n": {
+        "0": 13,
+        "4": 7,
+        "8": 10,
+        "12": 2,
+        "16": 3,
+        "20": 2,
+        "24": 1,
+        "32": 1,
+        "36": 1
+      },
+      "M_n_E": {
+        "0": 25,
+        "1": 7,
+        "2": 5,
+        "4": 2,
+        "6": 1
+      },
+      "I_M_n": {
+        "support_size": 9,
+        "total_count": 40,
+        "entropy": 1.7873797238996427,
+        "mean_level": 7.8,
+        "var_level": 76.76
+      },
+      "I_M_n_E": {
+        "H": 1.1007106894043712,
+        "support_size": 5,
+        "mean_alpha_E": 0.775,
+        "var_alpha_E": 1.774375
+      },
+      "S_n_s1": 0.08887152777777778,
+      "S_n_s2": 0.01569604793595679,
+      "S_n_E_s1": 0.25416666666666665,
+      "S_n_E_s2": 0.21006944444444442
+    },
+    {
+      "n": 17,
+      "is_prime": true,
+      "triple_factorizations": 1,
+      "sample_triples": 40,
+      "M_n": {
+        "0": 20,
+        "4": 8,
+        "8": 5,
+        "16": 1,
+        "20": 3,
+        "32": 1,
         "40": 2
       },
       "M_n_E": {
         "0": 40
       },
-      "stats_algebraic": {
+      "I_M_n": {
         "support_size": 7,
-        "mean_alpha": 2.402733584216013,
-        "var_alpha": 4.126871323280473,
-        "mean_alpha_sq": 9.9,
-        "var_alpha_sq": 128.79,
-        "total": 40
+        "total_count": 40,
+        "entropy": 1.4568919892686054,
+        "mean_level": 6.5,
+        "var_level": 110.95
       },
-      "stats_eabc": {
+      "I_M_n_E": {
+        "H": 0.0,
         "support_size": 1,
-        "mean_alpha": 0.0,
-        "var_alpha": 0.0,
-        "mean_alpha_sq": 0,
-        "var_alpha_sq": 0,
-        "total": 40
+        "mean_alpha_E": 0,
+        "var_alpha_E": 0
       },
-      "S_n_s1_algebraic": 8.92563550548308,
-      "S_n_s2_algebraic": 3.4124999999999996,
-      "S_n_s1_eabc": 0.0,
-      "S_n_s2_eabc": 0.0
-    },
-    {
-      "n": 14,
-      "is_prime": false,
-      "norm_triple_factorizations": 2,
-      "factorizations": [
-        [
-          1,
-          1,
-          14
-        ],
-        [
-          1,
-          2,
-          7
-        ]
-      ],
-      "sample_count": 40,
-      "M_n": {
-        "0": 16,
-        "4": 10,
-        "8": 2,
-        "12": 1,
-        "16": 6,
-        "20": 3,
-        "24": 1,
-        "32": 1
-      },
-      "M_n_E": {
-        "0": 31,
-        "1": 7,
-        "2": 1,
-        "4": 1
-      },
-      "stats_algebraic": {
-        "support_size": 8,
-        "mean_alpha": 1.9273299366171903,
-        "var_alpha": 3.2853993154191774,
-        "mean_alpha_sq": 7,
-        "var_alpha_sq": 70.2,
-        "total": 40
-      },
-      "stats_eabc": {
-        "support_size": 4,
-        "mean_alpha": 0.2603553390593274,
-        "var_alpha": 0.2572150974233027,
-        "mean_alpha_sq": 0.325,
-        "var_alpha_sq": 0.569375,
-        "total": 40
-      },
-      "S_n_s1_algebraic": 8.547503149559866,
-      "S_n_s2_algebraic": 3.43125,
-      "S_n_s1_eabc": 8.207106781186548,
-      "S_n_s2_eabc": 7.75
-    },
-    {
-      "n": 15,
-      "is_prime": false,
-      "norm_triple_factorizations": 2,
-      "factorizations": [
-        [
-          1,
-          1,
-          15
-        ],
-        [
-          1,
-          3,
-          5
-        ]
-      ],
-      "sample_count": 40,
-      "M_n": {
-        "0": 13,
-        "4": 5,
-        "8": 11,
-        "16": 6,
-        "20": 3,
-        "32": 1,
-        "36": 1
-      },
-      "M_n_E": {
-        "0": 24,
-        "1": 6,
-        "2": 8,
-        "3": 1,
-        "4": 1
-      },
-      "stats_algebraic": {
-        "support_size": 7,
-        "mean_alpha": 2.2546490121674805,
-        "var_alpha": 3.2165578319322057,
-        "mean_alpha_sq": 8.3,
-        "var_alpha_sq": 77.11,
-        "total": 40
-      },
-      "stats_eabc": {
-        "support_size": 5,
-        "mean_alpha": 0.526143982663841,
-        "var_alpha": 0.44817250950663184,
-        "mean_alpha_sq": 0.725,
-        "var_alpha_sq": 1.049375,
-        "total": 40
-      },
-      "S_n_s1_algebraic": 8.90335105173925,
-      "S_n_s2_algebraic": 3.2090277777777776,
-      "S_n_s1_eabc": 12.734204518682006,
-      "S_n_s2_eabc": 10.583333333333334
-    },
-    {
-      "n": 16,
-      "is_prime": false,
-      "norm_triple_factorizations": 4,
-      "factorizations": [
-        [
-          1,
-          1,
-          16
-        ],
-        [
-          1,
-          2,
-          8
-        ],
-        [
-          1,
-          4,
-          4
-        ],
-        [
-          2,
-          2,
-          4
-        ]
-      ],
-      "sample_count": 40,
-      "M_n": {
-        "0": 12,
-        "4": 9,
-        "8": 9,
-        "12": 3,
-        "16": 2,
-        "20": 4,
-        "24": 1
-      },
-      "M_n_E": {
-        "0": 23,
-        "1": 8,
-        "2": 5,
-        "3": 2,
-        "4": 1,
-        "6": 1
-      },
-      "stats_algebraic": {
-        "support_size": 7,
-        "mean_alpha": 2.1158918068423413,
-        "var_alpha": 2.5230018617374528,
-        "mean_alpha_sq": 7,
-        "var_alpha_sq": 47,
-        "total": 40
-      },
-      "stats_eabc": {
-        "support_size": 6,
-        "mean_alpha": 0.5746164792446602,
-        "var_alpha": 0.519815901780471,
-        "mean_alpha_sq": 0.85,
-        "var_alpha_sq": 1.7275,
-        "total": 40
-      },
-      "S_n_s1_algebraic": 10.14655725535575,
-      "S_n_s2_algebraic": 3.9916666666666667,
-      "S_n_s1_eabc": 13.598482734775853,
-      "S_n_s2_eabc": 11.583333333333332
-    },
-    {
-      "n": 17,
-      "is_prime": true,
-      "norm_triple_factorizations": 1,
-      "factorizations": [
-        [
-          1,
-          1,
-          17
-        ]
-      ],
-      "sample_count": 40,
-      "M_n": {
-        "0": 16,
-        "4": 4,
-        "8": 3,
-        "16": 1,
-        "20": 4,
-        "32": 3,
-        "36": 1,
-        "40": 6,
-        "52": 2
-      },
-      "M_n_E": {
-        "0": 40
-      },
-      "stats_algebraic": {
-        "support_size": 9,
-        "mean_alpha": 2.8428481241647634,
-        "var_alpha": 7.218214542932886,
-        "mean_alpha_sq": 15.3,
-        "var_alpha_sq": 303.11,
-        "total": 40
-      },
-      "stats_eabc": {
-        "support_size": 1,
-        "mean_alpha": 0.0,
-        "var_alpha": 0.0,
-        "mean_alpha_sq": 0,
-        "var_alpha_sq": 0,
-        "total": 40
-      },
-      "S_n_s1_algebraic": 6.128117511499442,
-      "S_n_s2_algebraic": 1.947489316239316,
-      "S_n_s1_eabc": 0.0,
-      "S_n_s2_eabc": 0.0
+      "S_n_s1": 0.07296875,
+      "S_n_s2": 0.014793945312500001,
+      "S_n_E_s1": 0,
+      "S_n_E_s2": 0
     },
     {
       "n": 18,
       "is_prime": false,
-      "norm_triple_factorizations": 4,
-      "factorizations": [
-        [
-          1,
-          1,
-          18
-        ],
-        [
-          1,
-          2,
-          9
-        ],
-        [
-          1,
-          3,
-          6
-        ],
-        [
-          2,
-          3,
-          3
-        ]
-      ],
-      "sample_count": 40,
+      "triple_factorizations": 7,
+      "sample_triples": 35,
       "M_n": {
-        "0": 10,
-        "4": 6,
-        "8": 8,
+        "0": 5,
+        "4": 7,
+        "8": 10,
         "12": 3,
-        "16": 1,
+        "16": 6,
         "20": 2,
-        "24": 3,
-        "32": 3,
-        "40": 3,
-        "44": 1
+        "24": 2
       },
       "M_n_E": {
-        "0": 25,
-        "1": 4,
-        "2": 6,
-        "3": 2,
-        "4": 2,
-        "5": 1
+        "0": 14,
+        "1": 9,
+        "2": 10,
+        "3": 2
       },
-      "stats_algebraic": {
-        "support_size": 10,
-        "mean_alpha": 2.8809602625069806,
-        "var_alpha": 4.500067965855709,
-        "mean_alpha_sq": 12.8,
-        "var_alpha_sq": 176.96,
-        "total": 40
+      "I_M_n": {
+        "support_size": 7,
+        "total_count": 35,
+        "entropy": 1.7978225203719682,
+        "mean_level": 9.371428571428572,
+        "var_level": 45.66204081632653
       },
-      "stats_eabc": {
-        "support_size": 6,
-        "mean_alpha": 0.5546362741719029,
-        "var_alpha": 0.5673786033727098,
-        "mean_alpha_sq": 0.875,
-        "var_alpha_sq": 1.809375,
-        "total": 40
+      "I_M_n_E": {
+        "H": 1.2372346585837009,
+        "support_size": 4,
+        "mean_alpha_E": 1,
+        "var_alpha_E": 0.9142857142857143
       },
-      "S_n_s1_algebraic": 9.159465966930432,
-      "S_n_s2_algebraic": 3.228977272727273,
-      "S_n_s1_eabc": 10.844554820998495,
-      "S_n_s2_eabc": 8.366666666666667
+      "S_n_s1": 0.10880952380952381,
+      "S_n_s2": 0.01847123015873016,
+      "S_n_E_s1": 0.419047619047619,
+      "S_n_E_s2": 0.3349206349206349
     },
     {
       "n": 19,
       "is_prime": true,
-      "norm_triple_factorizations": 1,
-      "factorizations": [
-        [
-          1,
-          1,
-          19
-        ]
-      ],
-      "sample_count": 40,
+      "triple_factorizations": 1,
+      "sample_triples": 40,
       "M_n": {
-        "0": 20,
-        "4": 4,
+        "0": 14,
+        "4": 7,
         "8": 4,
         "16": 3,
-        "20": 5,
-        "36": 1,
-        "52": 2,
-        "68": 1
+        "20": 4,
+        "32": 2,
+        "36": 2,
+        "40": 3,
+        "52": 1
       },
       "M_n_E": {
         "0": 40
       },
-      "stats_algebraic": {
-        "support_size": 8,
-        "mean_alpha": 2.0585701156768486,
-        "var_alpha": 5.862289078842207,
-        "mean_alpha_sq": 10.1,
-        "var_alpha_sq": 258.39,
-        "total": 40
+      "I_M_n": {
+        "support_size": 9,
+        "total_count": 40,
+        "entropy": 1.9133096790837267,
+        "mean_level": 12.4,
+        "var_level": 218.24
       },
-      "stats_eabc": {
+      "I_M_n_E": {
+        "H": 0.0,
         "support_size": 1,
-        "mean_alpha": 0.0,
-        "var_alpha": 0.0,
-        "mean_alpha_sq": 0,
-        "var_alpha_sq": 0,
-        "total": 40
+        "mean_alpha_E": 0,
+        "var_alpha_E": 0
       },
-      "S_n_s1_algebraic": 5.847532128420437,
-      "S_n_s2_algebraic": 2.018445198592257,
-      "S_n_s1_eabc": 0.0,
-      "S_n_s2_eabc": 0.0
+      "S_n_s1": 0.07124465811965812,
+      "S_n_s2": 0.013186497684043758,
+      "S_n_E_s1": 0,
+      "S_n_E_s2": 0
     },
     {
       "n": 20,
       "is_prime": false,
-      "norm_triple_factorizations": 4,
-      "factorizations": [
-        [
-          1,
-          1,
-          20
-        ],
-        [
-          1,
-          2,
-          10
-        ],
-        [
-          1,
-          4,
-          5
-        ],
-        [
-          2,
-          2,
-          5
-        ]
-      ],
-      "sample_count": 40,
+      "triple_factorizations": 5,
+      "sample_triples": 40,
       "M_n": {
-        "0": 13,
+        "0": 10,
         "4": 5,
-        "8": 5,
+        "8": 8,
         "12": 2,
-        "16": 6,
-        "20": 4,
-        "24": 2,
-        "32": 1,
-        "36": 1,
-        "48": 1
+        "16": 4,
+        "20": 9,
+        "24": 1,
+        "36": 1
       },
       "M_n_E": {
-        "0": 20,
-        "1": 6,
+        "0": 16,
+        "1": 8,
         "2": 12,
-        "3": 2
+        "3": 2,
+        "4": 1,
+        "5": 1
       },
-      "stats_algebraic": {
-        "support_size": 10,
-        "mean_alpha": 2.5335474781226344,
-        "var_alpha": 4.181137176098439,
-        "mean_alpha_sq": 10.6,
-        "var_alpha_sq": 127.64,
-        "total": 40
+      "I_M_n": {
+        "support_size": 8,
+        "total_count": 40,
+        "entropy": 1.8285028084345591,
+        "mean_level": 10.3,
+        "var_level": 78.31
       },
-      "stats_eabc": {
-        "support_size": 4,
-        "mean_alpha": 0.6608666090903724,
-        "var_alpha": 0.463255324989393,
-        "mean_alpha_sq": 0.9,
-        "var_alpha_sq": 0.99,
-        "total": 40
+      "I_M_n_E": {
+        "H": 1.3838263029176592,
+        "support_size": 6,
+        "mean_alpha_E": 1.175,
+        "var_alpha_E": 1.494375
       },
-      "S_n_s1_algebraic": 8.135573632880483,
-      "S_n_s2_algebraic": 2.779861111111111,
-      "S_n_s1_eabc": 15.639981912617822,
-      "S_n_s2_eabc": 12.666666666666666
+      "S_n_s1": 0.07965277777777778,
+      "S_n_s2": 0.01230054012345679,
+      "S_n_E_s1": 0.3779166666666667,
+      "S_n_E_s2": 0.2831180555555556
     },
     {
       "n": 21,
       "is_prime": false,
-      "norm_triple_factorizations": 2,
-      "factorizations": [
-        [
-          1,
-          1,
-          21
-        ],
-        [
-          1,
-          3,
-          7
-        ]
-      ],
-      "sample_count": 40,
+      "triple_factorizations": 3,
+      "sample_triples": 39,
       "M_n": {
-        "0": 7,
+        "0": 12,
         "4": 8,
-        "8": 8,
+        "8": 5,
         "12": 1,
-        "16": 2,
+        "16": 3,
         "20": 3,
-        "24": 2,
-        "32": 6,
+        "32": 1,
+        "36": 2,
         "40": 2,
+        "44": 1,
         "52": 1
       },
       "M_n_E": {
-        "0": 24,
-        "1": 7,
-        "2": 5,
-        "3": 4
+        "0": 28,
+        "1": 8,
+        "2": 3
       },
-      "stats_algebraic": {
-        "support_size": 10,
-        "mean_alpha": 3.1776806034448626,
-        "var_alpha": 4.202345982490295,
-        "mean_alpha_sq": 14.3,
-        "var_alpha_sq": 187.91,
-        "total": 40
+      "I_M_n": {
+        "support_size": 11,
+        "total_count": 39,
+        "entropy": 2.0259753859421177,
+        "mean_level": 12.102564102564102,
+        "var_level": 212.91255752794214
       },
-      "stats_eabc": {
-        "support_size": 4,
-        "mean_alpha": 0.5249817760535246,
-        "var_alpha": 0.44939413481168694,
-        "mean_alpha_sq": 0.725,
-        "var_alpha_sq": 1.049375,
-        "total": 40
+      "I_M_n_E": {
+        "H": 0.760148941402756,
+        "support_size": 3,
+        "mean_alpha_E": 0.358974358974359,
+        "var_alpha_E": 0.38395792241946086
       },
-      "S_n_s1_algebraic": 10.211733929907767,
-      "S_n_s2_algebraic": 3.698397435897436,
-      "S_n_s1_eabc": 12.84493498269124,
-      "S_n_s2_eabc": 10.833333333333334
+      "S_n_s1": 0.08268197258581873,
+      "S_n_s2": 0.015613956877738835,
+      "S_n_E_s1": 0.24358974358974358,
+      "S_n_E_s2": 0.22435897435897434
     },
     {
       "n": 22,
       "is_prime": false,
-      "norm_triple_factorizations": 2,
-      "factorizations": [
-        [
-          1,
-          1,
-          22
-        ],
-        [
-          1,
-          2,
-          11
-        ]
-      ],
-      "sample_count": 40,
+      "triple_factorizations": 3,
+      "sample_triples": 39,
       "M_n": {
-        "0": 14,
-        "4": 2,
-        "8": 8,
-        "16": 7,
-        "20": 2,
-        "28": 1,
-        "32": 1,
-        "36": 1,
-        "40": 2,
-        "52": 1,
-        "64": 1
-      },
-      "M_n_E": {
-        "0": 29,
-        "1": 6,
-        "2": 4,
-        "4": 1
-      },
-      "stats_algebraic": {
-        "support_size": 11,
-        "mean_alpha": 2.7095064742797934,
-        "var_alpha": 5.558574665835883,
-        "mean_alpha_sq": 12.9,
-        "var_alpha_sq": 239.59,
-        "total": 40
-      },
-      "stats_eabc": {
-        "support_size": 4,
-        "mean_alpha": 0.3414213562373095,
-        "var_alpha": 0.33343145750507625,
-        "mean_alpha_sq": 0.45,
-        "var_alpha_sq": 0.7475,
-        "total": 40
-      },
-      "S_n_s1_algebraic": 7.137969133787211,
-      "S_n_s2_algebraic": 2.217097832722832,
-      "S_n_s1_eabc": 9.32842712474619,
-      "S_n_s2_eabc": 8.25
-    },
-    {
-      "n": 23,
-      "is_prime": true,
-      "norm_triple_factorizations": 1,
-      "factorizations": [
-        [
-          1,
-          1,
-          23
-        ]
-      ],
-      "sample_count": 40,
-      "M_n": {
-        "0": 20,
-        "4": 7,
-        "8": 4,
-        "20": 4,
-        "32": 2,
-        "36": 1,
-        "40": 1,
-        "72": 1
-      },
-      "M_n_E": {
-        "0": 40
-      },
-      "stats_algebraic": {
-        "support_size": 8,
-        "mean_alpha": 1.8831449378135792,
-        "var_alpha": 5.253765143187091,
-        "mean_alpha_sq": 8.8,
-        "var_alpha_sq": 224.96,
-        "total": 40
-      },
-      "stats_eabc": {
-        "support_size": 1,
-        "mean_alpha": 0.0,
-        "var_alpha": 0.0,
-        "mean_alpha_sq": 0,
-        "var_alpha_sq": 0,
-        "total": 40
-      },
-      "S_n_s1_algebraic": 6.604825823839128,
-      "S_n_s2_algebraic": 2.5791666666666666,
-      "S_n_s1_eabc": 0.0,
-      "S_n_s2_eabc": 0.0
-    },
-    {
-      "n": 24,
-      "is_prime": false,
-      "norm_triple_factorizations": 6,
-      "factorizations": [
-        [
-          1,
-          1,
-          24
-        ],
-        [
-          1,
-          2,
-          12
-        ],
-        [
-          1,
-          3,
-          8
-        ],
-        [
-          1,
-          4,
-          6
-        ],
-        [
-          2,
-          2,
-          6
-        ],
-        [
-          2,
-          3,
-          4
-        ]
-      ],
-      "sample_count": 36,
-      "M_n": {
-        "0": 6,
+        "0": 13,
         "4": 6,
-        "8": 7,
-        "12": 6,
-        "16": 4,
-        "20": 4,
-        "32": 1,
-        "40": 1,
-        "80": 1
-      },
-      "M_n_E": {
-        "0": 15,
-        "1": 6,
-        "2": 11,
-        "3": 3,
-        "4": 1
-      },
-      "stats_algebraic": {
-        "support_size": 9,
-        "mean_alpha": 2.983272912885458,
-        "var_alpha": 3.5445271716883617,
-        "mean_alpha_sq": 12.444444444444445,
-        "var_alpha_sq": 207.80246913580248,
-        "total": 36
-      },
-      "stats_eabc": {
-        "support_size": 5,
-        "mean_alpha": 0.7986806002447411,
-        "var_alpha": 0.5009981876815891,
-        "mean_alpha_sq": 1.1388888888888888,
-        "var_alpha_sq": 1.2862654320987654,
-        "total": 36
-      },
-      "S_n_s1_algebraic": 9.548045709901755,
-      "S_n_s2_algebraic": 3.3937500000000003,
-      "S_n_s1_eabc": 16.010225400620897,
-      "S_n_s2_eabc": 12.75
-    },
-    {
-      "n": 25,
-      "is_prime": false,
-      "norm_triple_factorizations": 2,
-      "factorizations": [
-        [
-          1,
-          1,
-          25
-        ],
-        [
-          1,
-          5,
-          5
-        ]
-      ],
-      "sample_count": 40,
-      "M_n": {
-        "0": 16,
-        "4": 6,
-        "8": 4,
-        "12": 3,
-        "20": 3,
-        "24": 2,
-        "32": 1,
-        "36": 1,
-        "40": 2,
-        "48": 1,
-        "64": 1
-      },
-      "M_n_E": {
-        "0": 28,
-        "1": 7,
-        "2": 3,
-        "3": 1,
-        "5": 1
-      },
-      "stats_algebraic": {
-        "support_size": 11,
-        "mean_alpha": 2.403863707524272,
-        "var_alpha": 5.721439275647661,
-        "mean_alpha_sq": 11.5,
-        "var_alpha_sq": 244.15,
-        "total": 40
-      },
-      "stats_eabc": {
-        "support_size": 5,
-        "mean_alpha": 0.3802689868046988,
-        "var_alpha": 0.38039549767452785,
-        "mean_alpha_sq": 0.525,
-        "var_alpha_sq": 1.049375,
-        "total": 40
-      },
-      "S_n_s1_algebraic": 7.288316345148881,
-      "S_n_s2_algebraic": 2.6288194444444444,
-      "S_n_s1_eabc": 10.145884208249226,
-      "S_n_s2_eabc": 9.033333333333333
-    },
-    {
-      "n": 26,
-      "is_prime": false,
-      "norm_triple_factorizations": 2,
-      "factorizations": [
-        [
-          1,
-          1,
-          26
-        ],
-        [
-          1,
-          2,
-          13
-        ]
-      ],
-      "sample_count": 40,
-      "M_n": {
-        "0": 20,
-        "4": 4,
         "8": 3,
-        "12": 1,
-        "16": 2,
-        "20": 1,
-        "32": 1,
+        "16": 5,
+        "20": 6,
+        "32": 2,
         "36": 2,
-        "40": 3,
-        "52": 1,
-        "68": 1,
-        "80": 1
+        "40": 2
       },
       "M_n_E": {
         "0": 31,
         "1": 4,
-        "2": 3,
-        "3": 1,
-        "4": 1
+        "2": 2,
+        "5": 1,
+        "8": 1
       },
-      "stats_algebraic": {
-        "support_size": 12,
-        "mean_alpha": 2.3363406216760256,
-        "var_alpha": 7.7415124995064835,
-        "mean_alpha_sq": 13.2,
-        "var_alpha_sq": 412.16,
-        "total": 40
-      },
-      "stats_eabc": {
-        "support_size": 5,
-        "mean_alpha": 0.2993672873672041,
-        "var_alpha": 0.3353792272544019,
-        "mean_alpha_sq": 0.425,
-        "var_alpha_sq": 0.844375,
-        "total": 40
-      },
-      "S_n_s1_algebraic": 5.429140042229302,
-      "S_n_s2_algebraic": 1.841575540472599,
-      "S_n_s1_eabc": 7.198670612749268,
-      "S_n_s2_eabc": 6.083333333333333
-    },
-    {
-      "n": 27,
-      "is_prime": false,
-      "norm_triple_factorizations": 3,
-      "factorizations": [
-        [
-          1,
-          1,
-          27
-        ],
-        [
-          1,
-          3,
-          9
-        ],
-        [
-          3,
-          3,
-          3
-        ]
-      ],
-      "sample_count": 39,
-      "M_n": {
-        "0": 8,
-        "4": 4,
-        "8": 8,
-        "12": 3,
-        "16": 8,
-        "20": 4,
-        "24": 1,
-        "32": 3
-      },
-      "M_n_E": {
-        "0": 18,
-        "1": 3,
-        "2": 11,
-        "3": 3,
-        "4": 2,
-        "5": 2
-      },
-      "stats_algebraic": {
+      "I_M_n": {
         "support_size": 8,
-        "mean_alpha": 2.891738664036528,
-        "var_alpha": 3.02246288353162,
-        "mean_alpha_sq": 11.384615384615385,
-        "var_alpha_sq": 83.31360946745562,
-        "total": 39
+        "total_count": 39,
+        "entropy": 1.8597830617893607,
+        "mean_level": 11.897435897435898,
+        "var_level": 161.22024983563446
       },
-      "stats_eabc": {
-        "support_size": 6,
-        "mean_alpha": 0.8262727580464169,
-        "var_alpha": 0.6506066626437008,
-        "mean_alpha_sq": 1.3333333333333333,
-        "var_alpha_sq": 2.2222222222222223,
-        "total": 39
-      },
-      "S_n_s1_algebraic": 9.323333950652387,
-      "S_n_s2_algebraic": 3.0854166666666667,
-      "S_n_s1_eabc": 14.404652591620815,
-      "S_n_s2_eabc": 10.4
-    },
-    {
-      "n": 28,
-      "is_prime": false,
-      "norm_triple_factorizations": 4,
-      "factorizations": [
-        [
-          1,
-          1,
-          28
-        ],
-        [
-          1,
-          2,
-          14
-        ],
-        [
-          1,
-          4,
-          7
-        ],
-        [
-          2,
-          2,
-          7
-        ]
-      ],
-      "sample_count": 40,
-      "M_n": {
-        "0": 11,
-        "4": 5,
-        "8": 5,
-        "12": 1,
-        "16": 5,
-        "20": 6,
-        "24": 2,
-        "32": 1,
-        "36": 1,
-        "52": 2,
-        "72": 1
-      },
-      "M_n_E": {
-        "0": 20,
-        "1": 4,
-        "2": 10,
-        "4": 5,
-        "5": 1
-      },
-      "stats_algebraic": {
-        "support_size": 11,
-        "mean_alpha": 2.970033816639645,
-        "var_alpha": 5.278899128016943,
-        "mean_alpha_sq": 14.1,
-        "var_alpha_sq": 258.39,
-        "total": 40
-      },
-      "stats_eabc": {
+      "I_M_n_E": {
+        "H": 0.7562520270363391,
         "support_size": 5,
-        "mean_alpha": 0.7594550900307685,
-        "var_alpha": 0.6482279662263574,
-        "mean_alpha_sq": 1.225,
-        "var_alpha_sq": 2.224375,
-        "total": 40
+        "mean_alpha_E": 0.5384615384615384,
+        "var_alpha_E": 2.299802761341223
       },
-      "S_n_s1_algebraic": 8.294975754798596,
-      "S_n_s2_algebraic": 2.765544871794871,
-      "S_n_s1_eabc": 14.018281407365434,
-      "S_n_s2_eabc": 10.45
+      "S_n_s1": 0.0680911680911681,
+      "S_n_s2": 0.011824425253244699,
+      "S_n_E_s1": 0.13653846153846153,
+      "S_n_E_s2": 0.11681089743589743
     },
     {
-      "n": 29,
+      "n": 23,
       "is_prime": true,
-      "norm_triple_factorizations": 1,
-      "factorizations": [
-        [
-          1,
-          1,
-          29
-        ]
-      ],
-      "sample_count": 40,
+      "triple_factorizations": 1,
+      "sample_triples": 40,
       "M_n": {
         "0": 21,
-        "4": 3,
+        "4": 1,
         "8": 2,
         "16": 1,
-        "20": 6,
-        "40": 1,
-        "52": 5,
+        "20": 8,
+        "32": 3,
+        "36": 1,
+        "40": 2,
         "68": 1
       },
       "M_n_E": {
         "0": 40
       },
-      "stats_algebraic": {
-        "support_size": 8,
-        "mean_alpha": 2.3278987326425455,
-        "var_alpha": 7.880887490561229,
-        "mean_alpha_sq": 13.3,
-        "var_alpha_sq": 387.51,
-        "total": 40
+      "I_M_n": {
+        "support_size": 9,
+        "total_count": 40,
+        "entropy": 1.5229062262670692,
+        "mean_level": 11.9,
+        "var_level": 253.19
       },
-      "stats_eabc": {
+      "I_M_n_E": {
+        "H": 0.0,
         "support_size": 1,
-        "mean_alpha": 0.0,
-        "var_alpha": 0.0,
-        "mean_alpha_sq": 0,
-        "var_alpha_sq": 0,
-        "total": 40
+        "mean_alpha_E": 0,
+        "var_alpha_E": 0
       },
-      "S_n_s1_algebraic": 4.771504508494543,
-      "S_n_s2_algebraic": 1.4983597285067871,
-      "S_n_s1_eabc": 0.0,
-      "S_n_s2_eabc": 0.0
+      "S_n_s1": 0.028718341503267974,
+      "S_n_s2": 0.003070595135351254,
+      "S_n_E_s1": 0,
+      "S_n_E_s2": 0
+    },
+    {
+      "n": 24,
+      "is_prime": false,
+      "triple_factorizations": 9,
+      "sample_triples": 36,
+      "M_n": {
+        "0": 6,
+        "4": 7,
+        "8": 8,
+        "12": 3,
+        "16": 2,
+        "20": 2,
+        "24": 3,
+        "32": 2,
+        "36": 1,
+        "40": 2
+      },
+      "M_n_E": {
+        "0": 14,
+        "1": 11,
+        "2": 3,
+        "3": 5,
+        "4": 1,
+        "5": 1,
+        "8": 1
+      },
+      "I_M_n": {
+        "support_size": 10,
+        "total_count": 36,
+        "entropy": 2.10728806710382,
+        "mean_level": 12.555555555555555,
+        "var_level": 137.91358024691357
+      },
+      "I_M_n_E": {
+        "H": 1.5094445761347062,
+        "support_size": 7,
+        "mean_alpha_E": 1.3611111111111112,
+        "var_alpha_E": 2.952932098765432
+      },
+      "S_n_s1": 0.09695216049382716,
+      "S_n_s2": 0.016814691572359396,
+      "S_n_E_s1": 0.40949074074074077,
+      "S_n_E_s2": 0.345102237654321
+    },
+    {
+      "n": 25,
+      "is_prime": false,
+      "triple_factorizations": 2,
+      "sample_triples": 40,
+      "M_n": {
+        "0": 18,
+        "4": 2,
+        "8": 4,
+        "16": 5,
+        "20": 3,
+        "24": 2,
+        "32": 4,
+        "36": 2
+      },
+      "M_n_E": {
+        "0": 28,
+        "1": 1,
+        "2": 4,
+        "3": 2,
+        "4": 4,
+        "6": 1
+      },
+      "I_M_n": {
+        "support_size": 8,
+        "total_count": 40,
+        "entropy": 1.7234055530483214,
+        "mean_level": 10.7,
+        "var_level": 150.71
+      },
+      "I_M_n_E": {
+        "H": 1.0444200657393181,
+        "support_size": 6,
+        "mean_alpha_E": 0.925,
+        "var_alpha_E": 2.519375
+      },
+      "S_n_s1": 0.043159722222222224,
+      "S_n_s2": 0.005586323302469136,
+      "S_n_E_s1": 0.12083333333333333,
+      "S_n_E_s2": 0.0625
+    },
+    {
+      "n": 26,
+      "is_prime": false,
+      "triple_factorizations": 3,
+      "sample_triples": 39,
+      "M_n": {
+        "0": 13,
+        "4": 3,
+        "8": 9,
+        "12": 2,
+        "16": 4,
+        "20": 2,
+        "24": 1,
+        "32": 1,
+        "40": 1,
+        "48": 2,
+        "72": 1
+      },
+      "M_n_E": {
+        "0": 25,
+        "1": 3,
+        "2": 8,
+        "3": 1,
+        "4": 2
+      },
+      "I_M_n": {
+        "support_size": 11,
+        "total_count": 39,
+        "entropy": 1.968195999030428,
+        "mean_level": 12.205128205128204,
+        "var_level": 254.31689677843525
+      },
+      "I_M_n_E": {
+        "H": 1.0535729491484176,
+        "support_size": 5,
+        "mean_alpha_E": 0.7692307692307693,
+        "var_alpha_E": 1.3570019723865878
+      },
+      "S_n_s1": 0.06525997150997151,
+      "S_n_s2": 0.0094112184433365,
+      "S_n_E_s1": 0.20085470085470086,
+      "S_n_E_s2": 0.13425925925925927
+    },
+    {
+      "n": 27,
+      "is_prime": false,
+      "triple_factorizations": 4,
+      "sample_triples": 40,
+      "M_n": {
+        "0": 6,
+        "4": 6,
+        "8": 4,
+        "12": 3,
+        "16": 5,
+        "20": 6,
+        "24": 1,
+        "28": 2,
+        "32": 2,
+        "36": 1,
+        "40": 2,
+        "52": 2
+      },
+      "M_n_E": {
+        "0": 17,
+        "1": 7,
+        "2": 6,
+        "3": 4,
+        "4": 4,
+        "5": 1,
+        "6": 1
+      },
+      "I_M_n": {
+        "support_size": 12,
+        "total_count": 40,
+        "entropy": 2.3217531600329626,
+        "mean_level": 16.4,
+        "var_level": 195.04
+      },
+      "I_M_n_E": {
+        "H": 1.598206714197178,
+        "support_size": 7,
+        "mean_alpha_E": 1.45,
+        "var_alpha_E": 2.6975
+      },
+      "S_n_s1": 0.07885836385836385,
+      "S_n_s2": 0.012546652244032338,
+      "S_n_E_s1": 0.3175,
+      "S_n_E_s2": 0.23155555555555554
+    },
+    {
+      "n": 28,
+      "is_prime": false,
+      "triple_factorizations": 6,
+      "sample_triples": 36,
+      "M_n": {
+        "0": 6,
+        "4": 4,
+        "8": 5,
+        "12": 1,
+        "16": 6,
+        "20": 5,
+        "24": 3,
+        "28": 1,
+        "40": 1,
+        "52": 1,
+        "60": 1,
+        "68": 2
+      },
+      "M_n_E": {
+        "0": 17,
+        "1": 1,
+        "2": 7,
+        "3": 2,
+        "4": 7,
+        "6": 2
+      },
+      "I_M_n": {
+        "support_size": 12,
+        "total_count": 36,
+        "entropy": 2.255107787714959,
+        "mean_level": 18.11111111111111,
+        "var_level": 331.0987654320988
+      },
+      "I_M_n_E": {
+        "H": 1.4118534479569476,
+        "support_size": 6,
+        "mean_alpha_E": 1.6944444444444444,
+        "var_alpha_E": 3.5455246913580245
+      },
+      "S_n_s1": 0.07178768943474825,
+      "S_n_s2": 0.010533219838788927,
+      "S_n_E_s1": 0.2013888888888889,
+      "S_n_E_s2": 0.09625771604938271
+    },
+    {
+      "n": 29,
+      "is_prime": true,
+      "triple_factorizations": 1,
+      "sample_triples": 40,
+      "M_n": {
+        "0": 23,
+        "4": 3,
+        "8": 3,
+        "16": 2,
+        "36": 5,
+        "40": 3,
+        "64": 1
+      },
+      "M_n_E": {
+        "0": 40
+      },
+      "I_M_n": {
+        "support_size": 7,
+        "total_count": 40,
+        "entropy": 1.4029454169220905,
+        "mean_level": 10.8,
+        "var_level": 286.56
+      },
+      "I_M_n_E": {
+        "H": 0.0,
+        "support_size": 1,
+        "mean_alpha_E": 0,
+        "var_alpha_E": 0
+      },
+      "S_n_s1": 0.036987847222222224,
+      "S_n_s2": 0.00620411663290895,
+      "S_n_E_s1": 0,
+      "S_n_E_s2": 0
     },
     {
       "n": 30,
       "is_prime": false,
-      "norm_triple_factorizations": 5,
-      "factorizations": [
-        [
-          1,
-          1,
-          30
-        ],
-        [
-          1,
-          2,
-          15
-        ],
-        [
-          1,
-          3,
-          10
-        ],
-        [
-          1,
-          5,
-          6
-        ],
-        [
-          2,
-          3,
-          5
-        ]
-      ],
-      "sample_count": 40,
+      "triple_factorizations": 8,
+      "sample_triples": 40,
       "M_n": {
-        "0": 9,
-        "4": 2,
-        "8": 3,
-        "12": 4,
-        "16": 7,
-        "20": 3,
-        "24": 4,
-        "32": 4,
-        "40": 1,
-        "44": 1,
+        "0": 10,
+        "4": 4,
+        "8": 4,
+        "16": 6,
+        "20": 2,
+        "24": 2,
+        "32": 3,
+        "36": 1,
+        "40": 2,
         "48": 1,
-        "80": 1
+        "52": 2,
+        "56": 1,
+        "60": 1,
+        "64": 1
       },
       "M_n_E": {
-        "0": 19,
-        "1": 3,
-        "2": 7,
-        "3": 4,
-        "4": 3,
-        "5": 2,
-        "6": 1,
-        "8": 1
+        "0": 16,
+        "1": 10,
+        "2": 6,
+        "3": 5,
+        "4": 3
       },
-      "stats_algebraic": {
-        "support_size": 12,
-        "mean_alpha": 3.4702927670336376,
-        "var_alpha": 5.15706811107402,
-        "mean_alpha_sq": 17.2,
-        "var_alpha_sq": 264.96,
-        "total": 40
+      "I_M_n": {
+        "support_size": 14,
+        "total_count": 40,
+        "entropy": 2.3461850304951417,
+        "mean_level": 19.4,
+        "var_level": 371.64
       },
-      "stats_eabc": {
-        "support_size": 8,
-        "mean_alpha": 0.889443774735403,
-        "var_alpha": 0.8338897715844376,
-        "mean_alpha_sq": 1.625,
-        "var_alpha_sq": 3.984375,
-        "total": 40
+      "I_M_n_E": {
+        "H": 1.4518581108809332,
+        "support_size": 5,
+        "mean_alpha_E": 1.225,
+        "var_alpha_E": 1.674375
       },
-      "S_n_s1_algebraic": 7.724794986992978,
-      "S_n_s2_algebraic": 2.1685606060606064,
-      "S_n_s1_eabc": 13.41537741712139,
-      "S_n_s2_eabc": 9.274999999999999
+      "S_n_s1": 0.05848261981074481,
+      "S_n_s2": 0.0087843870840621,
+      "S_n_E_s1": 0.3854166666666667,
+      "S_n_E_s2": 0.3060763888888889
     }
   ],
-  "pair_comparison_6_7": {
-    "pair": "n=6(composite) vs n=7(prime)",
-    "n_a": 6,
-    "n_b": 7,
-    "is_prime_a": false,
-    "is_prime_b": true,
-    "algebraic": {
-      "kl_symmetric": 0.9659652634550802,
-      "stats_a": {
-        "support_size": 4,
-        "mean_alpha": 1.132842712474619,
-        "var_alpha": 1.4166673887931478,
-        "mean_alpha_sq": 2.7,
-        "var_alpha_sq": 11.51,
-        "total": 40
+  "prime_vs_composite_kl": {
+    "composite_reference_support": 8,
+    "composite_reference_M_n_support": 19,
+    "prime_count_with_spectrum": 10,
+    "composite_count_with_spectrum": 19,
+    "mean_kl_prime_vs_composite_ref": 0.4508164442177541,
+    "mean_kl_composite_vs_composite_ref": 0.17628218597362202,
+    "ratio_mean_kl_prime_over_composite": 2.557356784112105,
+    "prime_kl_details": [
+      {
+        "n": 2,
+        "kl_M_n_E_vs_composite_ref": 0.4508164442177541
       },
-      "stats_b": {
-        "support_size": 4,
-        "mean_alpha": 1.339292222699217,
-        "var_alpha": 1.906296342217391,
-        "mean_alpha_sq": 3.7,
-        "var_alpha_sq": 23.51,
-        "total": 40
-      }
-    },
-    "eabc": {
-      "kl_symmetric": 0.9419518309482161,
-      "stats_a": {
-        "support_size": 2,
-        "mean_alpha": 0.075,
-        "var_alpha": 0.069375,
-        "mean_alpha_sq": 0.075,
-        "var_alpha_sq": 0.069375,
-        "total": 40
+      {
+        "n": 3,
+        "kl_M_n_E_vs_composite_ref": 0.4508164442177541
       },
-      "stats_b": {
-        "support_size": 1,
-        "mean_alpha": 0.0,
-        "var_alpha": 0.0,
-        "mean_alpha_sq": 0,
-        "var_alpha_sq": 0,
-        "total": 40
+      {
+        "n": 5,
+        "kl_M_n_E_vs_composite_ref": 0.4508164442177541
+      },
+      {
+        "n": 7,
+        "kl_M_n_E_vs_composite_ref": 0.4508164442177541
+      },
+      {
+        "n": 11,
+        "kl_M_n_E_vs_composite_ref": 0.4508164442177541
+      },
+      {
+        "n": 13,
+        "kl_M_n_E_vs_composite_ref": 0.4508164442177541
+      },
+      {
+        "n": 17,
+        "kl_M_n_E_vs_composite_ref": 0.4508164442177541
+      },
+      {
+        "n": 19,
+        "kl_M_n_E_vs_composite_ref": 0.4508164442177541
+      },
+      {
+        "n": 23,
+        "kl_M_n_E_vs_composite_ref": 0.4508164442177541
+      },
+      {
+        "n": 29,
+        "kl_M_n_E_vs_composite_ref": 0.4508164442177541
       }
-    },
-    "distinguishable_heuristic": true
+    ],
+    "distinguishable_prime_spectrum": true,
+    "verdict": "mögliche Prim-Spektral-Separation (explorativ)"
   },
-  "prime_vs_composite": {
-    "prime_count": 10,
-    "composite_count": 19,
-    "algebraic": {
-      "mean_support_prime": 6.0,
-      "mean_support_composite": 8.368421052631579,
-      "mean_alpha_prime": 1.725990371547368,
-      "mean_alpha_composite": 2.318972564835429
-    },
-    "eabc": {
-      "mean_support_prime": 1.0,
-      "mean_support_composite": 4.473684210526316,
-      "mean_alpha_prime": 0.0,
-      "mean_alpha_composite": 0.4681753038302735
-    },
-    "epistemic_note": "Prim-Spektren können kleineren Support oder niedrigere mittlere α_E zeigen (Stabilität), nicht zwingend Maximierung bei zusammengesetzt. Vergleich ist sampling-basiert, nicht volle 𝔞_n."
+  "falsification": {
+    "trivial_symmetries_detected": false,
+    "substance_reproducible_prime_anomalies": true,
+    "overall": "substanz (explorativ): reproduzierbare Prim-Spektral-Anomalie",
+    "epistemic_note": "Nichtassoziativität allein ≠ Prim; Test prüft M_n^E mit Normniveau-Bindung. Sampling auf Z^8, nicht Hurwitz O_H."
   }
 }

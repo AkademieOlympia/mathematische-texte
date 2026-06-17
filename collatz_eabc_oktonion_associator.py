@@ -2,7 +2,8 @@
 """
 EABC-Associator-Observable für Oktanionen (Γ-Differenz bei Klammerung).
 
-Kanonsiche Theorie: collatz_eabc_oktonion_singularitaet.md §3.7–§3.8
+Kanonsiche Theorie: collatz_eabc_oktonion_assoziator_spektralhypothese.md (§1–§8)
+                   collatz_eabc_oktonion_singularitaet.md §3.7–§3.8
                    collatz_eabc_plattenuebergang.md §2.6–§2.7
 
 Fundamentale Größen:

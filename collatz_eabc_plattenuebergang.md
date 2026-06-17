@@ -7,6 +7,8 @@
 - `collatz_eabc_shell_defekt_test.py` → `collatz_eabc_shell_defekt.json`
 - `collatz_eabc_product_tree_stub.py` → `collatz_eabc_product_tree_stub.json` (Produktbäume, H vs. O)
 - `collatz_eabc_oktonion_associator.py` → `collatz_eabc_oktonion_associator.json` ($\mathfrak{a}_E(n)$, EABC-Associator)
+- `collatz_eabc_oktonion_spectrum.py` → `collatz_eabc_oktonion_spectrum.json` ($M_n^E(t)$, KL Prim vs. Composite)
+- `collatz_eabc_oktonion_assoziator_spektralhypothese.md` — **kanonsiche** Spektralhypothese (§1–§8)
 - `collatz_eabc_oktonion_spectrum.py` → `collatz_eabc_oktonion_spectrum.json` ($M_n(t)$, Assoziator-Spektrum)
 
 **Tao-Labels:** Definition | Theorem | Conjecture | Heuristik | Experiment
@@ -137,6 +139,8 @@ ob Zusammengesetzte **maximieren** = **offen** (Profil variiert mit Faktorisieru
 ---
 
 ## 2.7 Assoziator-Spektrum $M_n(t)$ und $S_n(s)$
+
+**Kanonsiche Hypothese:** `collatz_eabc_oktonion_assoziator_spektralhypothese.md` (§3–§8).
 
 **Korrektur.** Assoziator-Observables allein auf $\Sigma_a\times\Sigma_b\times\Sigma_c$ ohne
 $N(x)N(y)N(z)=n$ sind **O-Eigenschaft**, nicht Schalen-Spektrum. Die kanonische Menge ist

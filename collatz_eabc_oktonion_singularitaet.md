@@ -5,7 +5,8 @@
 **Stub:** `collatz_eabc_oktonion_shell_stub.py` → `collatz_eabc_oktonion_shell_stub.json` (nur $r_8(n)$, $n\le 10$)  
 **Produktbäume:** `collatz_eabc_product_tree_stub.py` → `collatz_eabc_product_tree_stub.json` (Catalan/Klammerung, H vs. O)  
 **Associator:** `collatz_eabc_oktonion_associator.py` → `collatz_eabc_oktonion_associator.json` ($\mathfrak{a}_E(n)$, Sampling $n\le 50$)  
-**Associator-Spektrum:** `collatz_eabc_oktonion_spectrum.py` → `collatz_eabc_oktonion_spectrum.json` ($M_n(t)$, $N(x)N(y)N(z)=n$, $n\le 30$–$50$)  
+**Associator-Spektrum:** `collatz_eabc_oktonion_spectrum.py` → `collatz_eabc_oktonion_spectrum.json` ($M_n(t)$, $M_n^E(t)$, KL-Test)  
+**Kanonsiche Spektralhypothese:** `collatz_eabc_oktonion_assoziator_spektralhypothese.md` (§1–§8)  
 **Tao-Labels:** Definition | Theorem | Conjecture | Heuristik | Experiment (Quaternion-Referenz)
 
 **Querverweise:**
@@ -178,6 +179,9 @@ Zusammengesetzt-Profil = **Experiment** (explorativ).
 ---
 
 ## 3.8 Assoziator-Spektrum $M_n(t)$ (Produktnorm-Constraint)
+
+**Kanonsiche Formulierung:** `collatz_eabc_oktonion_assoziator_spektralhypothese.md` (§1–§8).
+Kurzfassung:
 
 **Korrektur (Kritik).** Der bloße Assoziator auf $\Sigma_a\times\Sigma_b\times\Sigma_c$ ohne
 Produktnorm-Bedingung ist **zu universell** — er misst eine Eigenschaft von $\mathbb{O}$, nicht der

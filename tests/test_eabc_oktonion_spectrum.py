@@ -35,8 +35,9 @@ def test_triple_factorizations_6():
 def test_kl_self_zero():
     h = {"0": 5, "4": 3}
     p = normalize_hist(h)
-    assert kl_divergence(p, p) is not None
-    assert abs(kl_divergence(p, p) or 1.0) < 1e-9
+    kl = kl_divergence(p, p)
+    assert kl is not None
+    assert abs(kl) < 1e-9
 
 
 def test_spectrum_for_n_structure():
