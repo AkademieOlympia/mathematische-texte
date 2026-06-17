@@ -293,6 +293,123 @@ Prim-Überhang gegenüber $\omega(n)$-stratifizierten Baselines → naive Singul
 
 ---
 
+## 12. EABC-Spektralgeometrische Hauptvermutung (kanonisch)
+
+### 12.1 Perspektivinversion: $\mathcal H = \bigsqcup_n \Sigma_n$ fundamental
+
+**Heuristik (geometrisch präzise).** Das eigentliche Objekt ist nicht die Primzahl $p$, sondern die
+**disjunkte Vereinigung aller Normschalen**
+$$\mathcal H^{\mathrm{shell}} := \bigsqcup_{n\ge 1} \Sigma_n,\qquad
+\Sigma_n = \{q\in\mathbb{H}_{\mathrm H} : N(q)=n\}.$$
+Die Zahl $n$ ist **kein Ursprung** der Schale, sondern ihr **Label** (Normniveau).
+Die fundamentale Abbildung ist
+$$\boxed{\; n \longmapsto \Sigma_n \longmapsto \mu_n \;}.$$
+Primzahlen sind **nicht** die primären Objekte der Theorie.
+
+**Label:** Perspektivinversion = **Heuristik** (präzisiert §11.1).
+
+### 12.2 Spektral-Analogie: Eigenwerte vs. Geometrie
+
+Auf einer Riemannschen Mannigfaltigkeit $(M,g)$ ist die **Metrik** $g$ fundamental;
+$\mathrm{Spec}(\Delta)=\{\lambda_1,\lambda_2,\ldots\}$ ist **abgeleitet** — Projektion der Geometrie,
+nicht die Geometrie selbst.
+
+**Analogie (explizit nicht bewiesen):**
+- **Geometrie:** $\mathcal H^{\mathrm{shell}}=\bigsqcup_n\Sigma_n$ und die Maße $\mu_n$.
+- **Spektrum:** die Folge $(I(\mu_n))_{n\ge 1}$ für ein Invariantenfunktional $I$.
+- **Primzahlen:** erscheinen wie **spektrale Anomalien** — nicht als Grundobjekt, sondern als $n$,
+  an denen $I(\mu_n)$ vom typischen Verhalten **zusammengesetzter** Schalen abweicht.
+
+**Label:** Spektral-Analogie = **Heuristik**.
+
+### 12.3 Pipeline und Observable
+
+**Definition (Invariantenfunktional).** Für jedes $n$ mit $\Sigma_n\neq\emptyset$ und kanonischem
+EABC-Maß $\mu_n$ (§5):
+$$I(\mu_n) := \bigl(H_n,\,\chi_n,\,K_n,\,\ldots\bigr),$$
+mit $H_n$, $\chi_n$, $K_n$ wie in §7.
+
+Die Folge $I(2), I(3), I(4), \ldots$ bildet das **Spektrum der EABC-Geometrie** der Normschalen.
+
+**Label:** $I(\mu_n)$ = **Definition**.
+
+### 12.4 Anomaliefunktion $D(n)$ und Referenz $I_{\mathrm{ref}}$
+
+**Definition (Referenzmodell).** $I_{\mathrm{ref}}(n)$ ist ein Referenzniveau für die Observable
+$I(\mu_n)$. Kandidaten (Experiment `collatz_eabc_shell_defekt_test.py`):
+
+| Symbol | $I_{\mathrm{ref}}(n)$ | Interpretation |
+|--------|----------------------|----------------|
+| **rolling** | Mittel über Nachbarn $m\in[n-w,n+w]\setminus\{n\}$ | lokale Glättung |
+| **cumulative** | $\displaystyle\frac{1}{n-1}\sum_{m<n} I(\mu_m)$ | Präfix-Mittel der Spektralfolge |
+| **$\omega$-Stratum** | Mittel über $\{m : \omega(m)=\omega(n),\, m\neq n\}$ | arithmetische Schichtung |
+| **$\tau$-Stratum** | Mittel über $\{m : \tau(m)=\tau(n),\, m\neq n\}$ | Teileranzahl-Baseline |
+| **$\mu_\infty$-Proxy** | globales Mittel $\bar I$ über untersuchtes $n$-Intervall | endliches Grenzmaß |
+
+**Definition (Anomalie / Schalen-Defekt).**
+$$D(n) := I(\mu_n) - I_{\mathrm{ref}}(n).$$
+
+**Epistemische Warnung:** Die Wahl von $I_{\mathrm{ref}}$ entscheidet, ob beobachtete Anomalien
+**neue Geometrie** oder **repackagierte Arithmetik** sind (z.\,B. $\omega(p)=1$, $\tau(p)=2$ für alle
+Primzahlen $p$). Das Experiment muss Baselines **ehrlich vergleichen**.
+
+**Label:** $D(n)$, $I_{\mathrm{ref}}$-Varianten = **Definition** + **Experiment**.
+
+### 12.5 Emergenz statt Voraussetzung
+
+**Klassisch:** $\text{Primzahl} \Rightarrow \text{arithmetische Eigenschaft}$.
+
+**Spektralgeometrische Lesart (Conjecture):**
+$$\text{geometrische Eigenschaft von } \Sigma_n \;\Rightarrow\; \text{Primzahlstruktur emergiert}.$$
+
+Primzahligkeit wird **nicht vorausgesetzt**, sondern soll aus der Struktur der Anomalien $D(n)$
+**charakterisierbar** sein — falls die Vermutung zutrifft.
+
+**Label:** Emergenz-Aussage = **Conjecture**.
+
+### 12.6 Bernoulli-Brücke (Heuristik)
+
+Bernoulli-Zahlen messen die Differenz zwischen diskreter Summe und kontinuierlichem Integral.
+**Heuristik:** $\mu_n$ beschreibt die **diskrete** Schale; $\mu_\infty$ (§8–§9) die ideale
+**kontinuierliche** Grenzgeometrie. Der Defekt $\mu_n - \mu_\infty$ ist ein Kandidat für
+Bernoulli-artige Endlich-Korrekturen.
+
+Explorativ im Experiment: $V_n := \|I(\mu_n) - I_\infty\|$ als Proxy; Korrelation mit $|D(n)|$
+(vgl. `collatz_eabc_bernoulli_uebersetzung.md`, Branch `collatz/eabc-bernoulli-sensor`).
+
+**Label:** Bernoulli-Brücke = **Heuristik**.
+
+### 12.7 Boxed Hauptvermutung
+
+> **Conjecture (EABC-Spektralgeometrische Hauptvermutung).**
+> Sei $\Sigma_n = \{q\in\mathbb{H}_{\mathrm H} : N(q)=n\}$ die Hurwitz-Normschale der Norm $n$.
+> Auf jeder Normschale sei ein kanonisches EABC-Maß $\mu_n$ definiert (§5).
+> Zu jedem Maß existiere eine Familie von Invarianten $I(\mu_n)$.
+> Die Folge $(I(\mu_n))_{n\ge 1}$ bildet das **Spektrum der EABC-Geometrie**.
+>
+> **Primzahlen sind nicht die fundamentalen Objekte der Theorie.**
+> Vielmehr sind Primzahlen diejenigen Normniveaus $n$, auf denen die zugehörigen EABC-Invarianten
+> **signifikant** vom typischen Verhalten der Normschalen zusammengesetzter Zahlen abweichen.
+>
+> Formal existiert eine Anomaliefunktion
+> $$D(n) = I(\mu_n) - I_{\mathrm{ref}}(n),$$
+> wobei $I_{\mathrm{ref}}$ ein geeignetes Referenzmodell beschreibt.
+> Die Vermutung lautet, dass die Primzahlen durch die Struktur der Anomalien $D(n)$
+> **charakterisiert werden können** — sofern $I_{\mathrm{ref}}$ geometrisch und nicht rein
+> arithmetisch trivial gewählt ist.
+>
+> Die Frage „Was ist eine Primzahl?" wird ersetzt durch:
+> **„Welche Normschalen tragen außergewöhnliche EABC-Invarianten?"**
+
+**Falsifikation (Experiment):** Kein $I_{\mathrm{ref}}$ zeigt auf wachsenden $n$-Intervallen
+stabile Prim-vs.-Composite-Separation in $|D(n)|$, nach Kontrolle für $\omega(n)$, $\tau(n)$ und
+Schalengröße $|\Sigma_n|$.
+
+**Label:** EABC-Spektralgeometrische Hauptvermutung = **Conjecture**;
+`collatz_eabc_shell_defekt_test.py` = **Experiment**.
+
+---
+
 ## Vergleich Gauß / Eisenstein / Hurwitz
 
 | Aspekt | Gauß $\mathbb{Z}[i]$ | Eisenstein $\mathbb{Z}[\omega]$ | Hurwitz $\mathbb{H}_{\mathrm H}$ |
@@ -316,10 +433,13 @@ Prim-Überhang gegenüber $\omega(n)$-stratifizierten Baselines → naive Singul
 | $H_p$-Bias nach $p\bmod 12$ | **Experiment** |
 | $\chi_p$-Drift | **Experiment** |
 | Σ→p-Perspektive, Spektral-Analogie | **Heuristik** |
-| $D(n)=I(\mu_n)-I_{\mathrm{avg}}(n)$ | **Definition** |
-| Primzahlen als $|D(n)|$-Singularitäten | **Conjecture** |
+| EABC-Spektralgeometrische Hauptvermutung (§12) | **Conjecture** |
+| $D(n)=I(\mu_n)-I_{\mathrm{ref}}(n)$ | **Definition** |
+| $I_{\mathrm{ref}}$-Varianten (rolling, $\omega$, $\tau$, $\mu_\infty$) | **Definition** + **Experiment** |
+| Primzahlen als $|D(n)|$-Singularitäten / Emergenz | **Conjecture** |
+| Bernoulli $V_n$-Korrelation mit $|D(n)|$ | **Heuristik** + **Experiment** |
 | `collatz_eabc_shell_defekt_test.py` | **Experiment** |
 
 ---
 
-*Kanonsiche Quaternionen-EABC-Maßhypothese: Objekte sind $\Sigma_n$, $\mu_n$, $I(\mu_n)$, $D(n)$ — nicht einzelne $q$; Primzahlen selektieren Schalenparameter.*
+*Kanonsiche Quaternionen-EABC-Maßhypothese: Objekte sind $\Sigma_n$, $\mu_n$, $I(\mu_n)$, $D(n)$ — nicht einzelne $q$; Primzahlen emergieren als mögliche Spektralanomalien (§12).*
