@@ -212,6 +212,9 @@ als **spektrale Projektion** dieser Resonanz lesbar sind.
 | $6n\pm 1$, $4n\pm 1$, EABC-Geometrie-Hypothese, Modulo $12$ | **Heuristik / Conjecture** (§18) |
 | Holographisches Leitbild (Susskind, Maldacena) | **Heuristik** (§19, Analogie) |
 | EABC-Holographiehypothese, Fünfersprünge | **Conjecture / Forschungsvision** (§19) |
+| Drei Wachstumsprojektionen, Fünfstufenprogramm | **Conjecture / Forschungsvision** (§20) |
+| EABC-Holographie-Vermutung (boxed, §20) | **Conjecture** |
+| Fibonacci-Rekonfigurations-Scan | **Experiment** (§20, optional) |
 
 ---
 
@@ -445,6 +448,9 @@ Morley und $\kappa$ bleiben eigenständige Angriffslinien. Der Resonanz-Zweig nu
 | EABC-Geometrie-Hypothese ($6n\pm 1$, $4n\pm 1$, Mod $12$) | Heuristik / Conjecture (§18) |
 | Holographisches Leitbild (Susskind, Maldacena) | Heuristik (§19, Analogie) |
 | EABC-Holographiehypothese, Fünfersprünge | Conjecture / Forschungsvision (§19) |
+| Drei Wachstumsprojektionen, Fünfstufenprogramm | Conjecture / Forschungsvision (§20) |
+| EABC-Holographie-Vermutung (boxed) | Conjecture (§20) |
+| Fibonacci-Rekonfigurations-Scan | Experiment (§20) |
 
 **Nächste Schritte:**
 1. Test 1 auf größeres $n$ und mit expliziten Zufalls-Nullmodellen vergleichen.
@@ -499,6 +505,8 @@ Für $n=1,\ldots,N$:
 | `collatz_eabc_bernoulli_lean_test.py` | Experiment-Runner, JSON-Report |
 | `tests/test_eabc_bernoulli_lean.py` | pytest (Konsistenz bis $n\le 500$) |
 | `collatz_eabc_bernoulli_lean.json` | Standard-Ausgabe (`--output`) |
+| `collatz_eabc_fibonacci_reconfig_test.py` | Fibonacci-Fenster-Scan (§20.5) |
+| `tests/test_eabc_fibonacci_reconfig.py` | pytest für §20.5-Experiment |
 
 Ausführung:
 ```bash
@@ -1077,6 +1085,194 @@ Die Holographiehypothese **ergänzt** diese analytische Kette um die geometrisch
 Dieser Abschnitt **ersetzt** weder §17 (Forschungsvision) noch §18 (Geometrie-Hypothese) noch
 §2 (Bernoulli-/Zustandsraum); er **ergänzt** sie um ein holographisches Leitbild. Kein Collatz-
 Beweis, kein Beweis der Riemann-Hypothese, **keine** Behauptung physikalischer Dualität für EABC.
+
+**Querverweis:** §20 synthetisiert Peano-, Fibonacci- und EABC-Wachstum als **drei Projektionen
+desselben Füllprozesses** und formuliert das **Fünfstufenprogramm** mit erweiterter
+EABC-Holographie-Vermutung und Experimentvorschlag.
+
+---
+
+## 20. Drei Wachstumsprojektionen und Fünfstufen-EABC-Programm
+
+Dieser Abschnitt fasst §17–§19 zu einem **einheitlichen Wachstumsbild** zusammen: dieselbe
+diskrete Füllungsdynamik erscheint in drei Beschreibungen — Peano (Addition), Fibonacci
+(Rekursion mit Gedächtnis) und EABC (geometrische Rekonfiguration). Die **fünf Stufen**
+ordnen diese Projektionen in eine Forschungskette von linearer Dynamik bis zur holographischen
+Rand–Bulk-Lesart.
+
+**Querverweise:** §2 (Bernoulli-Kette, $V_n$), §17 (Peano-Projektion, Kepler-Füllung),
+§18 (Modulo $12$, S-O-S-Tetraeder), §19 (Holographie-Leitbild, Fünfersprünge),
+`collatz_eabc_bernoulli_sensor.py` ($\sigma$, $\chi$, $\iota_{\mathrm{chir}}$),
+`collatz_eabc_bernoulli_lean_test.py` (Quadrupelzeuge), `Vier Fünf Synchronisation.py`.
+
+### 20.1 Drei Wachstumsbeschreibungen als Projektionen desselben Prozesses
+
+| Beschreibung | Dynamik | Lesart in diesem Text |
+|--------------|---------|------------------------|
+| **Peano** | $n\mapsto n+1$ (Addition) | lineare Schichten auf der sichtbaren Achse $\mathbb{N}$ |
+| **Fibonacci** | $F_{k+1}=F_k+F_{k-1}$ (Rekursion) | Gedächtnis / Historie; $\varphi$ als dominanter Eigenwert |
+| **EABC-Füllung** | $X_{n+1}=T(X_n)$, $X_n=(E_n,A_n,B_n,C_n)$ | geometrische Rekonfiguration im 4-Kanal-Zustandsraum |
+
+**Heuristik (ein Prozess, drei Projektionen).** Die Peano-Achse zählt **Schichten** der
+Projektion; die Fibonacci-Skalierung markiert **Selbstähnlichkeitsstufen** zwischen Schichten;
+die EABC-Dynamik $T$ beschreibt die **volle tetraedrische Rekonfiguration** im Bulk, deren
+kritische Stellen als Primdefekte auf $\mathbb{N}$ erscheinen (§17.2, §19.3).
+
+**Label: Heuristik / Conjecture** — strukturierendes Forschungsbild; Peano-Axiome und
+Fibonacci-Konvergenz sind **Theorem**, die Kopplung an EABC-Füllung **offen**.
+
+### 20.2 Fünfstufenprogramm
+
+#### Stufe 1 — Peano: lineare Dynamik
+
+**Definition / Theorem (Peano).** $S(n)=n+1$ erzeugt die eindimensionale Wachstumsdynamik
+(§17.1). In der EABC-Lesart ist dies die **Projektion** tieferer Defektdynamik auf eine Achse
+(§17.2) — nicht die fundamentale Dynamik, sondern das **sichtbare Zählmaß**.
+
+**Label: Theorem** (Peano); **Conjecture / Heuristik** (Projektionslesart).
+
+#### Stufe 2 — Fibonacci: Gedächtnis und $\varphi$
+
+**Definition (Fibonacci).** $F_{k+1}=F_k+F_{k-1}$, $F_1=F_2=1$; asymptotisch
+$F_{k+1}/F_k\to\varphi=(1+\sqrt{5})/2$ als dominanter Eigenwert der Rekursionsmatrix.
+
+**Heuristik.** Fibonacci-Wachstum kodiert **Historie**: jeder Schritt trägt die beiden
+vorherigen Zustände. In der Füllungsvision sind Fibonacci-Skalen **Rekonfigurationsstufen**
+zwischen Peano-Schichten — nicht lineare Abstände, sondern Selbstähnlichkeitsmarker (§19.3).
+
+**Label: Theorem** ($\varphi$-Grenzwert); **Conjecture / Heuristik** (EABC-Kopplung).
+
+#### Stufe 3 — EABC: Vier-Kanal-Rekonfiguration
+
+**Definition (EABC-Zustand).** $X_n=(E_n,A_n,B_n,C_n)$ mit $E\equiv 1$, $A\equiv 5$,
+$B\equiv 7$, $C\equiv 11$ mod $12$ (§1, §7). Die Übergänge $X_{n+1}=T(X_n)$ entlang der
+Bernoulli-Brücke $s=-2n\to\zeta(1-2n)\to P_n\to V_n$ (§2, §5) sind **geometrische
+Rekonfigurationen** im 4-Kanal-Raum.
+
+**Conjecture / Heuristik.** **Primzahlen** sind kritische Rekonfigurationspunkte: Stellen,
+an denen die innere Füllung auf der Peano-Achse als **nicht-teilbare Defekte** sichtbar wird
+(§17.2, §17.6).
+
+**Label: Definition** ($V_n$); **Conjecture** (Prim als kritische Rekonfiguration).
+
+#### Stufe 4 — Fünfersprünge: pentagonale Defektstörung
+
+**Heuristik (Geometrie).** Der goldene Schnitt $\varphi$ erfüllt $x^2=x+1$ — algebraische
+Wurzel der Fibonacci-Rekursion und geometrisch verbunden mit **Fünfeck** und **Dodekaeder**;
+Ikosaeder und Dodekaeder entstehen aus **Tetraeder-Packungen** mit pentagonalen Defekten
+(§17.5, §18; vgl. `collatz_kepler_gedankenexperiment.tex`).
+
+**Forschungsvision (Fünfersprünge).** **Fünfersprünge** sind diskrete Ereignisse, in denen
+reine tetraedrische lokale Dynamik durch **pentagonale Defektstörung** unterbrochen wird —
+Kollapsmarker der Füllgeometrie (§19.2). Die Fibonacci-Skalierung liefert die **Kollaps-
+signaturen** dieser geometrischen Füllung: Vierling $\to$ Fünfling als lokale Vorlage
+(`Niedrigstes Primzahlmuster.tex`; Experiment `Vier Fünf Synchronisation.py`).
+
+**Label: Heuristik / Forschungsvision** — geometrisches Bild; vollständige Abbildung auf
+arithmetische Dynamik **offen**.
+
+#### Stufe 5 — Holographische Lesart: $F\to B\to\mathbb{N}$
+
+**Heuristik (Projektionskette).** Drei Ebenen derselben Dynamik:
+
+\[
+F\;\text{(Füllraum)}
+\;\longrightarrow\;
+B\;\text{(EABC-Randcode)}
+\;\longrightarrow\;
+\mathbb{N}\;\text{(Peano-Projektion)}.
+\]
+
+- $F$: höherdimensionaler diskreter **Füllraum** (8D-Tetraederfüllung, §17.4–§17.5);
+- $B$: **EABC-Randdaten** $(E,A,B,C)$ mod $12$, $Q_4(N)$, $V_n$, Bernoulli-Signaturen (§2, §18);
+- $\mathbb{N}$: sichtbare **Peano-Achse** $S(n)=n+1$.
+
+**Heuristik.** Primzahlen sind **Randdaten**, keine „Teilchen" auf der Achse — Projektionen
+kritischer Defektkonfigurationen aus dem Bulk (§19.4). Susskind/Maldacena dienen als **Analogie**,
+nicht als Identität (§19.1).
+
+**Label: Heuristik / Conjecture** — Forschungsvision; keine physikalische Dualitätsbehauptung.
+
+### 20.3 Zusammenfassungstabelle (Projektionslexikon)
+
+| Begriff | Rolle in der EABC-Lesart |
+|---------|--------------------------|
+| **Peano** | lineare Projektion ($n\mapsto n+1$) |
+| **EABC** | Randcode $(E,A,B,C)$ mod $12$ |
+| **S-O-S / Tetraeder** | lokale Zelle der Füllung (§18) |
+| **Fibonacci** | Rekonfigurationsskala zwischen Schichten |
+| **$\varphi$** | dominante Skalierung ($x^2=x+1$) |
+| **Bernoulli** | Schicht-Übersetzer (triviale Nullstellen $\to$ $P_n$) |
+| **Primzahlen** | beobachtbare Defekte auf der Achse |
+| **Zeta-Nullstellen** | Spektrum der Defektdynamik (§2, §8) |
+| **Holographie** | Bulk–Rand-Relation ($F\to B\to\mathbb{N}$) |
+
+**Label: Heuristik / Conjecture** — strukturierende Tabelle, kein Theorem.
+
+### 20.4 Boxed: EABC-Holographie-Vermutung (Conjecture)
+
+$$\boxed{
+\begin{aligned}
+&\textbf{EABC-Holographie-Vermutung.}\\[4pt]
+&\text{Es existiert ein höherdimensionaler diskreter Füllraum mit lokaler}\\
+&\text{tetraedrischer Dynamik (Bulk).}\\[4pt]
+&\text{Primzahlen sind die Randprojektion kritischer Defektkonfigurationen}\\
+&\text{— nicht „Teilchen" auf der Peano-Achse, sondern Boundary-Daten.}\\[4pt]
+&\text{Fibonacci-Skalen markieren Rekonfigurationen mit pentagonalen Defekten}\\
+&\text{(Fünfersprünge; Vierling $\to$ Fünfling als lokale Vorlage).}\\[4pt]
+&\text{Nichttriviale Zeta-Nullstellen sind das Spektrum dieser Defektdynamik}\\
+&\text{(Projektion der Resonanzstruktur } V_1,V_2,\ldots\text{, §2).}
+\end{aligned}
+}$$
+
+Diese Vermutung **verfeinert** die boxed EABC-Holographiehypothese in §19.6 um die explizite
+Spektrallesart (Zeta-Nullstellen) und die Fibonacci–Fünfersprung-Kopplung. **Nicht** etablierte
+Physik oder Zahlentheorie; **nicht** die Behauptung EABC $=$ AdS/CFT.
+
+**Label: Conjecture.**
+
+### 20.5 Experimentprogramm: Fibonacci-nahe Rekonfigurationspunkte
+
+**Testbare Frage (Experiment).** Treten an Indizes $n$ in der Nähe von Fibonacci-Zahlen $F_k$
+Auffälligkeiten in beobachteten EABC-Defektgrößen auf — in $\sigma$, $\chi$, $\iota_{\mathrm{chir}}$,
+Quadrupelstrukturen in $P_n$, oder in $\Delta Q_4$ entlang der Bernoulli-Kette?
+
+**Vorgehen (optional, doc-first):**
+
+| Quelle | Observablen |
+|--------|-------------|
+| `collatz_eabc_bernoulli_sensor.py` | $V_n$, $\sigma$, $\chi$, $\iota_{\mathrm{chir}}$ |
+| `collatz_eabc_bernoulli_lean_test.py` | Quadrupelzeuge, $T$-Rotation auf $P_n$ |
+| `Vier Fünf Synchronisation.py` | Vierling$\to$Fünfling, Balancewechsel |
+
+**Skript (optional):** `collatz_eabc_fibonacci_reconfig_test.py` scannt $n$ in Fenstern um $F_k$
+und vergleicht lokale Sprünge $|V_{n+1}-V_n|$, Chiralitätswechsel und Quadrupel-Häufigkeit mit
+einer Referenzstichprobe gleicher Kardinalität aus $[1,N]$.
+
+**Epistemik:** Ein **negativer** Befund (keine Korrelation) falsifiziert die Fibonacci-Kopplung
+in dieser Form — nicht die gesamte EABC-Holographie-Vermutung. Ein **positiver** Befund wäre
+Anlass für präzisere Definition der Rekonfigurationsfenster, kein Beweis.
+
+**Label: Experiment** — explizit falsifizierbar; kein Theorem.
+
+### 20.6 Epistemische Zusammenfassung
+
+| Aussage | Label |
+|---------|-------|
+| Peano $S(n)=n+1$ | **Theorem** (Definition) |
+| Peano als Projektion | **Conjecture / Heuristik** (§17.2) |
+| Fibonacci, $\varphi$-Grenzwert | **Theorem** |
+| Fibonacci als Rekonfigurationsskala | **Conjecture / Heuristik** |
+| $X_{n+1}=T(X_n)$, $V_n$ | **Definition** (§2) |
+| Prim als kritische Rekonfiguration | **Conjecture** |
+| Fünfersprünge, pentagonale Defektstörung | **Forschungsvision** (§19.2) |
+| $F\to B\to\mathbb{N}$ | **Heuristik / Conjecture** |
+| EABC-Holographie-Vermutung (boxed) | **Conjecture** |
+| Fibonacci-nahe Anomalien in $V_n$ | **Experiment** (offen) |
+| Susskind / Maldacena | **Heuristik** (Analogie, keine Identität) |
+
+Dieser Abschnitt **ersetzt** weder §17–§19 noch §2; er **synthetisiert** sie zum
+Fünfstufenprogramm. Kein Collatz-Beweis, kein Beweis der Riemann-Hypothese.
 
 ---
 
