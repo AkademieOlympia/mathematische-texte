@@ -223,7 +223,7 @@ Ersetzt die frühere Priorität (Attraktor, Geometrie, Präzession, κ als Haupt
 
 Parallel zur arithmetischen Stufe-3-Pipeline existiert ein **definitorischer** geometrischer Rahmen in `collatz_morley_metrik_erweiterung.md` (§ **Geometrie zweiter Ordnung**): Grundobjekt ist das Dreieck $(A,B,C)$ statt $(p,v)$; zentraler Akteur $T_M : \mathcal{T}(M)\to\mathcal{T}(M)$ mit Morley-Fluss $\Delta_{n+1}=T_M(\Delta_n)$. Sensoren $F_M$, $S_M$, $K_M$, $\mu_M$ messen Zustände; EABC: $E=T_M$, nicht Punkt $E$. Offene Hauptfrage: Invarianten von $T_M$ auf triangulierten Flächen. Ikosaeder–Dodekaeder-Dualität (`eabc_icosahedron_test.py`) koppelt Triangulierung und Renormierung. Verzahnung mit $\kappa$-Robustheit **spekulativ** — Rang 6+, kein Stufe-3-Kern.
 
-**κ–Morley-Asymmetrie (Querverweis):** Der κ-Zweig testet **arithmetische** Kodierungsinvarianz (Stresstest $\kappa_2$: BE-Verbot bricht); der Morley-Zweig testet **geometrische** Definitionsrobustheit (vier Operatorvarianten: 2. Ordnung bleibt numerisch gemeinsam, M1–M2 in `collatz_morley_stufen_m.md`). Ein Scheitern in κ impliziert kein Scheitern in Morley — und umgekehrt.
+**κ–Morley-Asymmetrie (Querverweis):** Der κ-Zweig testet **arithmetische** Kodierungsinvarianz (Stresstest $\kappa_2$: BE-Verbot bricht); der Morley-Zweig testet **geometrische** Definitionsrobustheit (vier Operatorvarianten: 2. Ordnung bleibt numerisch gemeinsam, M1–M2 in `collatz_morley_stufen_m.md`). Ein Scheitern in κ impliziert kein Scheitern in Morley — und umgekehrt. Die beiden Zweige bleiben bewusst parallel; eine künstliche Vereinheitlichung zu einer Theorie ist nicht Ziel.
 
 ---
 
