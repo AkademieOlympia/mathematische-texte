@@ -10,6 +10,7 @@
 - `collatz_eabc_oktonion_assoziator_spektralhypothese.md` — $\Gamma_E$-Projektion, $M_n^E(t)$ (Oktanion-Ebene)
 - `collatz_eabc_invarianzprogramm.md` — globale Observable $\chi(x)$; Stufe 1–2 ($\kappa$, $\sigma(Q)$)
 - `collatz_eabc_holonomie_test.py` / `.json` — Numerik ($\chi_E$, $\omega$, $\mathcal H_E$-Stub, Vergleich zu $\chi$)
+- `collatz_eabc_transport.md` / `collatz_eabc_transition_graph.py` — **Stufe-5-Kandidat** $T\colon\kappa(p_n)\mapsto\kappa(p_{n+1})$, $\chi_{\mathrm{trans}}$ vs. $\chi_E$
 - `eabc_from_lean.py` / `EABC.lean` — Chiralität ABCE / CEAB
 
 ---
@@ -49,7 +50,7 @@ Die sechs Stufen bauen aufeinander auf. Stufe 1–4 sind **definiert und impleme
 | **2** | **EABC-Signaturen** | $Q=(E,A,B,C)^4$, $\sigma(Q)\in\Sigma_4$ | **Definition** | implementiert (`collatz_eabc_invarianzprogramm.md` Def. 5) |
 | **3** | **EABC-Orientierung** | $\omega(Q)\in\{-1,+1\}$; $\omega(\mathrm{ABCE})=+1$, $\omega(\mathrm{CEAB})=-1$ | **Definition** | implementiert (`EABC.lean`) |
 | **4** | **EABC-Chiralität** | $\chi_E(N)=\dfrac{1}{N}\sum_{Q:\,p\le N}\omega(Q)$ | **Definition** | implementiert (`collatz_eabc_holonomie_test.py`) |
-| **5** | **EABC-Transport** | $T:\,Q_k\mapsto Q_{k+1}$ | **Conjecture** | **NICHT DEFINIERT** — Forschungsfrage |
+| **5** | **EABC-Transport** | $T\colon\kappa(p_n)\mapsto\kappa(p_{n+1})$; Kante $\tau(p_n)$ | **Experiment** (Kandidat) | `collatz_eabc_transport.md`, `collatz_eabc_transition_graph.py` |
 | **6** | **EABC-Holonomie** | Vergleich geschlossener Transportpfade $\gamma_1,\gamma_2$ via $T$ | **Conjecture** | Zukunft — benötigt Stufe 5 |
 
 **Verbindung ABCE/CEAB:** Das beobachtete Clustering der Vierlingssignaturen in die zyklischen Orientierungen ABCE und CEAB ist ein **Vorläufer** holonomer Struktur — es misst Orientierungsasymmetrie (Stufe 3–4), noch keinen Paralleltransport (Stufe 5–6).
@@ -140,15 +141,19 @@ $$\mathcal H_E\bigl((xy)z,\,x(yz)\bigr) = d_E\bigl(\Gamma_E((xy)z),\,\Gamma_E(x(
 
 **Label:** $\mathcal H_E$, $d_E$ = **Definition** (Zielrahmen); vollständige Holonomie = **Conjecture** (Stufe 6, benötigt Transportoperator Stufe 5).
 
-### Stufe 5 — EABC-Transport (offen)
+### Stufe 5 — EABC-Transport (Kandidat, Experiment)
 
-**Conjecture / Forschungsfrage:** Existiert ein natürlicher Operator
-$$T:\,Q_k \longrightarrow Q_{k+1}$$
-der aufeinanderfolgende EABC-Signaturen entlang einer Collatz- oder Vierlingskette verbindet, sodass geschlossene Pfade $\gamma$ sinnvoll definierbar sind?
+**Kandidat-Transport** entlang der Primzahlfolge (`collatz_eabc_transport.md`):
+$$\tau(p_n)=\bigl(\kappa(p_n),\,\kappa(p_{n+1})\bigr),\qquad
+T\colon \kappa(p_n)\longmapsto \kappa(p_{n+1}).$$
 
-> $$\boxed{\;\textbf{Forschungsfrage:}\;\text{Welcher natürliche Transportoperator verbindet zwei EABC-Signaturen?}\;}$$
+Gerichteter Übergangsgraph auf $V_4$; Zyklus-Holonomie-Kandidat via 4-Fenster (ABCE/CEAB) und $t$-Rotation.
 
-**Label:** Stufe 5 = **Conjecture**; Stufe 6 = **Conjecture** (Zielobjekt).
+**Observable:** $\chi_{\mathrm{trans}}(N)$ auf Primfolge-Fenstern vs. $\chi_E(N)$ auf Vierlingen — **verwandt, nicht identisch** (`collatz_eabc_transition_graph.py`).
+
+> $$\boxed{\;\textbf{Forschungsfrage:}\;\text{Besitzt der gerichtete EABC-Übergangsgraph eine nichttriviale Zyklus-Holonomie?}\;}$$
+
+**Label:** Stufe 5 = **Experiment** (Kandidat); vollständiger Transport auf Vierlingssignaturen $Q_k\to Q_{k+1}$ = **Conjecture** (offen).
 
 ---
 
@@ -199,7 +204,8 @@ Der **algebraische** Oktanion-Assoziator $[x,y,z]$ und die **projektive** Holono
 | $\sigma(Q)\in\Sigma_4$ | 2 | **Definition** |
 | $\omega(\mathrm{ABCE})=+1$, $\omega(\mathrm{CEAB})=-1$ | 3 | **Definition** |
 | $\chi_E(N)$ Vierlings-Chiralität | 4 | **Definition** |
-| $T:\,Q_k\to Q_{k+1}$ | 5 | **Conjecture** (offen) |
+| $T\colon\kappa(p_n)\mapsto\kappa(p_{n+1})$ (Primfolge) | 5 | **Experiment** (Kandidat, `collatz_eabc_transport.md`) |
+| $T\colon Q_k\to Q_{k+1}$ (Vierlingskette) | 5 | **Conjecture** (offen) |
 | $\mathcal H_E(\gamma_1,\gamma_2)$ geschlossene Transportpfade | 6 | **Conjecture** (Zielobjekt) |
 | Welcher natürliche Transportoperator? | 5 | **Forschungsfrage** |
 | $V_4$ Klein-Gruppe, $\Phi$ assoziativ | — | **Theorem** |
