@@ -29,8 +29,8 @@ TeX `collatz_kappa_encoding.tex` — naive $\kappa_K$ dynamiktreu, aber **nicht*
   $F_n$-Katalog ($\mathrm{BE}$ Hero in $F_2$); Vollliste $F_n$ für $n\leq 8$.
 - **Stufe 2B abgeschlossen (PR #40, gemergt):** BE **nicht** kodierungsunabhängig;
   $R(10)$ klein für $\kappa_1,\kappa_2,\kappa_3$; `collatz_stufe2b_kappa_robustheit.md`.
-- **Stufe 3 aktiv:** Kodierungsinvarianz — `collatz_stufe3_kodierungsinvarianz.md`
-  (Fragen A/B/C; keine Collatz-Beweisansprüche).
+- **Stufe 3 aktiv:** Kodierungsinvarianz — `collatz_stufe3_kappa_invarianz.md`
+  (Branch `collatz/kappa-invarianz-stufe3`; Fragen A/B/C; keine Collatz-Beweisansprüche).
 - **IEANTN-Parallele (Tao, ICERM Mai 2026):** PNT+-Formalisierung mit living spreadsheet
   und Sicherheitsmargen — methodisches Vorbild für EABC-Zeugenbuchhaltung, kein Collatz-Transfer.
 
@@ -42,7 +42,7 @@ Attraktor, Geometrie, Präzession sind **zurückgestellt**.
 
 | # | Frage | Status | Artefakt |
 |---|-------|--------|----------|
-| **1** | Kodierungsfreie $\mathcal{L}_{\mathrm{arith}}$ / $\mathcal{L}_{\mathrm{arith}}^*$ | **zentral offen** | `collatz_stufe3_kodierungsinvarianz.md` |
+| **1** | Kodierungsfreie $\mathcal{L}_{\mathrm{arith}}$ / $\mathcal{L}_{\mathrm{arith}}^*$ | **zentral offen** | `collatz_stufe3_kappa_invarianz.md` |
 | **2** | $R(k)\to 0$ (Dünnheits-Conjecture) | **Experiment** | $R(10)$: $\kappa_1$ 0,0087; $\kappa_2$ 0,0041; $\kappa_3$ 0,0088 |
 | **3** | Entropie $h_F$ κ-robust? | **heuristisch** | $h_F \approx 1{,}19$ ($n\leq 8$, Schätzer) |
 | **4** | Dynamische Konsequenzen ($F_n \to$ Trajektorien) | **Brücke fehlt** | Pipeline |
@@ -182,7 +182,7 @@ Methodischer Rahmen: `collatz_formalisierung_tao_stil.md` (*Methodik 2*).
 | Treue $\kappa$ (Stufe 1) | **begonnen** | Naive $\kappa_K$ + `FaithfulKappa`-Schnittstelle (`Kappa.lean`); Dynamik sorry-frei | Injektivität / Vollständigkeit der naiven mod-12-$\kappa$ **verneint** (`collatz_kappa_test.json`, PR #38) |
 | $L_{\mathrm{arith}}$ (Stufe 2) | **abgeschlossen** | $F_n$-Katalog; $R(10)\approx 0{,}87\,\%$ ($\kappa_1$); $\mathrm{BE}\in F_2$ bei $\kappa_1$ | Vollständige Charakterisierung; $\lim_{k\to\infty}R(k)$ |
 | $\kappa$-Robustheit (Stufe 2B) | **abgeschlossen** | BE **nicht** kodierungsunabhängig ($\kappa_2$ realisiert BE); $R(10)$ klein für alle drei $\kappa$ | kodierungsfreie $\mathcal{L}_{\mathrm{arith}}$ |
-| Kodierungsinvarianz (Stufe 3) | **aktiv** | Fragen A/B/C; $\mathcal{L}_{\mathrm{arith}}^*$ offen | κ-Äquivalenzklassen; asymptotisches $R(k)$ |
+| Kodierungsinvarianz (Stufe 3) | **aktiv** | Fragen A/B/C; $\mathcal{L}_{\mathrm{arith}}^*$ definiert, nicht berechnet | κ-Äquivalenzklassen; asymptotisches $R(k)$ |
 | Collatz / $E_\infty$ | **NEIN** | Äquivalenz präzise formuliert | Beweis |
 
 ### 4b. Projektions-/Kepler-Taxonomie (EABC, nicht Collatz)
@@ -285,7 +285,7 @@ Wo Mathlib endet, endet der formalisierte Teil — dokumentiert, nicht verschwie
 - `EABC.lean`, `Projektionszeuge.tex`, `collatz_hurwitz_polytop_eabc.tex`, `Miller_alt.tex` — ABCE/CEAB (bewiesen)
 - `collatz_equivalenz_e_infty.tex` — $E_\infty$ vs. $E_{\mathrm{diag}}$, offene Brücke
 - `collatz_schlussartikel_arxiv.tex` — §Uniformität, Epilog, Anhang Lean §9.2
-- `collatz_stufe3_kodierungsinvarianz.md` — Stufe 3: Kodierungsinvarianz, Fragen A/B/C
+- `collatz_stufe3_kappa_invarianz.md` — Stufe 3: Kodierungsinvarianz (kanonisch)
 - `collatz_stufe2b_kappa_robustheit.md` — Stufe 2B: κ-Robustheit (PR #40)
 - `collatz_generalangriff_2026.md` — Forschungsreport, revidierte Prioritäten
 - `collatz_z2_attraktor.lean` — Stufen A–E
