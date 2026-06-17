@@ -42,6 +42,7 @@ in solchen Ringen — ein **Theorem** der kommutativen Algebra, kein Algorithmus
 - `PAPER_HURWITZ_RESONANZ.md` (Hurwitz-Gitter, $\Pi_\Gamma$, Primideale in $\mathbb{H}$)
 - `collatz_eabc_quaternion_mass_hypothese.md` / `collatz_eabc_hurwitz_orbit_test.py` — Normschale $\Sigma_p$, $\mu_p$, $H_p$, Chiralität (PR #54)
 - `collatz_eabc_kommutator_assoziator.md` — **Kommutator vs. Assoziator** entlang $\mathbb{R}\subset\mathbb{C}\subset\mathbb{H}\subset\mathbb{O}$; $\chi_p$ (H) vs. $M_n^E$ (O) (PR #54)
+- `collatz_eabc_holonomie.md` — **Holonomie-Korrektur:** $V_4$-$\mathfrak a\equiv 0$, $\Gamma$-Holonomie, $\omega(Q)$ (PR #54)
 - `collatz_eabc_oktonion_singularitaet.md` / `collatz_eabc_oktonion_shell_stub.py` — Oktanionische $\Sigma_n^{(8)}$, $S^7$, Singularitätshypothese (PR #54)
 - `Divisionsalgebren.md`, `Grundsatzartikel_Hurwitz_Raum.tex`
 

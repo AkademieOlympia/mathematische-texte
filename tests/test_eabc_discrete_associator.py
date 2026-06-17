@@ -18,6 +18,7 @@ from collatz_eabc_discrete_associator import (
     phi_left,
     phi_right,
     prime_associator_mean,
+    prove_v4_klein_associativity,
     quadruplet_chirality,
     run,
 )
@@ -70,6 +71,18 @@ def test_lean_quadruplet_q5_abce():
   assert quadruplet_chirality(5) is Chirality.ABCE
   word = "".join(class_of(n).value for n in q(5))
   assert word == "ABCE"
+
+
+def test_v4_klein_proof():
+  proof = prove_v4_klein_associativity()
+  assert proof["associative"]
+  assert proof["isomorphism_to_Z2_squared"]
+
+
+def test_v4_klein_proof_in_run(tmp_path: Path):
+  out = tmp_path / "disc.json"
+  report = run(prime_limit=200, n_primes=20, output=out)
+  assert report["v4_klein_proof"]["associative"]
 
 
 def test_prime_associator_mean_zero():

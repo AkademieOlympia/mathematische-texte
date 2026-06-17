@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
 """
-Diskreter EABC-Assoziator auf V₄ = {E,A,B,C}.
+Diskreter EABC-Assoziator auf V₄ = {E,A,B,C} — Negativkontrolle.
 
 Kanonsiche Theorie: collatz_eabc_discrete_associator.md
+                   collatz_eabc_holonomie.md  (Korrektur: Holonomie ≠ V₄-𝔞)
                    collatz_eabc_kommutator_assoziator.md
 
 Φ(X,Y) aus eabc_from_lean / EABC.lean:
   Restklassen {1,5,7,11} mod 12, Φ(X,Y) = classOf(residue(X)·residue(Y)).
+  V₄ ≅ Klein-Vierergruppe → Φ assoziativ → naive 𝔞 ≡ 0 (Theorem).
 
-𝔞(X,Y,Z) = sgn( Φ(Φ(X,Y),Z) vs Φ(X,Φ(Y,Z)) ) ∈ {-1,0,+1}  (0 bei Gleichheit).
+Echter EABC-Defekt: Γ((xy)z) - Γ(x(yz)) auf Trägern (Oktanion, Vierlinge ω) —
+siehe collatz_eabc_holonomie_test.py.
+
+𝔞_naiv(X,Y,Z) = sgn( Φ(Φ(X,Y),Z) vs Φ(X,Φ(Y,Z)) ) ∈ {-1,0,+1}  (stets 0 auf V₄).
 
 Ausführung:
     python3 collatz_eabc_discrete_associator.py
@@ -86,6 +91,58 @@ def associator_table(classes: tuple[EClass, ...]) -> dict[str, dict[str, dict[st
             for y in classes
         }
         for x in classes
+    }
+
+
+def prove_v4_klein_associativity() -> dict[str, Any]:
+    """
+    Expliziter V₄-Beweis: {1,5,7,11} mod 12 ist Klein-Vierergruppe, daher assoziativ.
+
+    Schritte:
+      1. Abschluss unter Multiplikation mod 12
+      2. E=1 neutral
+      3. Jedes Nicht-E-Element ist selbstinvers (a·a=E)
+      4. Assoziativität: alle 4³ Tripel (oder Gruppentheorem)
+    """
+    residues = {c: residue(c) for c in ALL_CLASSES}
+    closure_ok = True
+    for x in ALL_CLASSES:
+        for y in ALL_CLASSES:
+            prod = (residues[x] * residues[y]) % 12
+            if class_of(prod) is None:
+                closure_ok = False
+
+    identity_ok = all(phi(EClass.E, c) is c and phi(c, EClass.E) is c for c in ALL_CLASSES)
+    inv_ok = all(phi(c, c) is EClass.E for c in ABC_CLASSES)
+
+    # Klein-Isomorphie: A↦(1,0), B↦(0,1), C↦(1,1) in (Z/2)²
+    z2_map = {EClass.E: (0, 0), EClass.A: (1, 0), EClass.B: (0, 1), EClass.C: (1, 1)}
+
+    def z2_add(u: tuple[int, int], v: tuple[int, int]) -> tuple[int, int]:
+        return ((u[0] + v[0]) % 2, (u[1] + v[1]) % 2)
+
+    iso_ok = True
+    for x in ALL_CLASSES:
+        for y in ALL_CLASSES:
+            xy = phi(x, y)
+            if z2_add(z2_map[x], z2_map[y]) != z2_map[xy]:
+                iso_ok = False
+
+    assoc = check_associativity(ALL_CLASSES)
+    return {
+        "group": "Klein four-group V4 ≅ (Z/2)²",
+        "closure_mod12": closure_ok,
+        "identity_E": identity_ok,
+        "self_inverse_nonE": inv_ok,
+        "isomorphism_to_Z2_squared": iso_ok,
+        "associative": assoc["associative"],
+        "triples_tested": assoc["triples_tested"],
+        "counterexample_count": assoc["counterexample_count"],
+        "naive_associator_all_zero": assoc["associative"],
+        "verdict": (
+            "V₄ ist Klein-Gruppe; Φ assoziativ; naive 𝔞(X,Y,Z)≡0 für alle Tripel. "
+            "Echter EABC-Defekt = projektionsbasierte Holonomie (collatz_eabc_holonomie.md)."
+        ),
     }
 
 
@@ -257,18 +314,21 @@ def prime_associator_mean(n_primes: int) -> dict[str, Any]:
 
 
 def run(prime_limit: int = 10_000, n_primes: int = 200, output: Path = DEFAULT_OUTPUT) -> dict[str, Any]:
+    v4_proof = prove_v4_klein_associativity()
     assoc_full = check_associativity(ALL_CLASSES)
     assoc_abc = check_associativity(ABC_CLASSES)
     report: dict[str, Any] = {
         "meta": {
             "module": "collatz_eabc_discrete_associator.py",
             "theory": "collatz_eabc_discrete_associator.md",
+            "holonomy_correction": "collatz_eabc_holonomie.md",
             "phi_definition": (
                 "Φ(X,Y) = classOf(residue(X)·residue(Y) mod 12); "
                 "V₄ ≅ (ℤ/12ℤ)×{1,5,7,11} unter Multiplikation; E neutral."
             ),
             "lean_sources": ["EABC.lean (residue, classOf)", "eabc_from_lean.py"],
         },
+        "v4_klein_proof": v4_proof,
         "multiplication_table_V4": multiplication_table(),
         "associativity": {
             "full_V4": assoc_full,

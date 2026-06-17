@@ -6,6 +6,7 @@
 
 **Querverweise:**
 - `EABC.lean` / `eabc_from_lean.py` — Restklassen, Chiralität, Vierling $Q(p)$
+- `collatz_eabc_holonomie.md` — **Korrektur:** echter Defekt = $\Gamma$-Holonomie, nicht $V_4$-$\mathfrak a$
 - `collatz_eabc_kommutator_assoziator.md` — Kommutator ($\mathbb{H}$) vs. Assoziator ($\mathbb{O}$)
 - `collatz_eabc_discrete_associator.py` / `.json` — Rechnung und Tabellen
 - `Global Lokal.py` — explizite $V_4$-Multiplikationstabelle (Referenz)
@@ -108,4 +109,4 @@ $$\mathcal A(N) := \frac{1}{N-2}\sum_{k=2}^{N-1} \mathfrak a(X_{k-1},X_k,X_{k+1}
 
 *Kanonsiche Notiz: Der diskrete EABC-Assoziator ist der ehrliche $V_4$-Schatten des
 Oktanion-Programms — er bestätigt Assoziativität auf der sichtbaren mod-$12$-Ebene und
-reserviert Klammerdefekte für $\mathbb{O}$.*
+reserviert Klammerdefekte für **projektionsbasierte Holonomie** (`collatz_eabc_holonomie.md`).*
