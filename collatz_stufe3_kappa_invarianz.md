@@ -219,6 +219,10 @@ Ersetzt die frühere Priorität (Attraktor, Geometrie, Präzession, κ als Haupt
 
 **Bewusst zurückgestellt:** Attraktor $E$, Geometrie ($\Phi_{\mathrm{pref}}$, Präzession), treue $\kappa$ als **Hauptangriff** — epistemisch abgegrenzt oder in Stufe 1/2B bearbeitet.
 
+### Geometrischer Nebenzweig: Morley-erweiterte Metrik
+
+Parallel zur arithmetischen Stufe-3-Pipeline existiert ein **definitorischer** geometrischer Rahmen: Morley-Kern pro Dreieck, zelluläres Datenpaket $\mathcal{G}_M = (g,\mathcal{T},\operatorname{Mor}(\mathcal{T}),K_M,\Omega_M)$ und EABC-Brücke $(A,B,C)\mapsto(A,B,C,E)$ auf triangulierten Riemannschen Flächen. Eine mögliche Verzahnung mit $\kappa$-Robustheit von $R(k)$ ist **spekulativ und offen** — kein Collatz-Beweisanspruch. Vollständige Definitionen: `collatz_morley_metrik_erweiterung.md`.
+
 ---
 
 ## Living spreadsheet (Stufe 3)
@@ -274,5 +278,6 @@ Ersetzt die frühere Priorität (Attraktor, Geometrie, Präzession, κ als Haupt
 | `collatz_kappa_robustheit.py` / `.json` | Drei-κ-Experimente |
 | `collatz_forbidden_words.py` / `.json` | $F_n$-Katalog ($\kappa_1$) |
 | `collatz_generalangriff_2026.md` | Forschungsreport, Stufe-3-Verweis |
+| `collatz_morley_metrik_erweiterung.md` | Morley-erweiterte Metrik, EABC-Brücke (heuristisch) |
 | `collatz_offene_punkte.md` | Synthese, revidierte Prioritäten |
 | `CollatzEabc.Kappa.lean` | `FaithfulKappa`, `kappaConjecture` |
