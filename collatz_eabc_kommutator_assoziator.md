@@ -10,7 +10,7 @@
 - `collatz_eabc_oktonion_assoziator_spektralhypothese.md` — **Assoziator-Spektrum** $M_n(t)$, $M_n^E(t)$, $\hat D_E(s)$
 - `collatz_eabc_oktonion_associator.py` / `collatz_eabc_oktonion_spectrum.py` — Oktanion-Experimente
 - `collatz_eabc_discrete_associator.md` / `collatz_eabc_discrete_associator.py` — **Negativkontrolle:** diskreter $V_4$-Klammertest ($\mathfrak a_{\mathrm{naiv}}\equiv 0$, kein „EABC-Assoziator“)
-- `collatz_eabc_holonomie.md` / `collatz_eabc_holonomie_test.py` — **kanonisch:** projektive Holonomie $\mathcal H_E$, $\chi_E(N)$, $\omega(Q)$; $V_4$-$\mathfrak a_{\mathrm{naiv}}$ trivial
+- `collatz_eabc_holonomie.md` / `collatz_eabc_holonomie_test.py` — **kanonisch:** Begriffshierarchie Stufe 1–6; $\omega(Q)$, $\chi_E(N)$ (Stufe 3–4); $\mathcal H_E$ Zielobjekt (Stufe 6); $V_4$-$\mathfrak a_{\mathrm{naiv}}$ trivial
 - `collatz_eabc_quaternion_commutator_stub.py` — Kommutator-Norm-Stub auf $\mathbb{H}$ ($n\le 20$)
 
 ---
@@ -143,19 +143,19 @@ Stub: `collatz_eabc_quaternion_commutator_stub.py` zeigt für $n\le 20$, dass $\
 
 **Label:** $\chi_p$ = **Experiment**; Kommutator-Spektrum $C_n$ = **Conjecture** / geplantes **Experiment**.
 
-### Diskretes $V_4$ — Klammertest **trivial**; Holonomie **nicht** (PR #54)
+### Diskretes $V_4$ — Klammertest **trivial**; Holonomie **noch nicht** (PR #54)
 
 Auf der sichtbaren EABC-Ebene $\{E,A,B,C\}$ mit $\Phi(X,Y)=\mathrm{classOf}(\mathrm{residue}(X)\cdot\mathrm{residue}(Y))$
 ist $\Phi$ die Klein-Vierergruppe — **assoziativ**, $\mathfrak a_{\mathrm{naiv}}\equiv 0$ für alle $4^3$ Tripel
 (`collatz_eabc_discrete_associator.md`, **Theorem**). Der Begriff „EABC-Assoziator“ auf $V_4$ ist **deprecated**.
-ABCE/CEAB sind **Orientierungen** $\omega(Q)\in\{+1,-1\}$, Vierlings-Chiralität $\chi_E(N)$
-(`collatz_eabc_holonomie.md`).
+ABCE/CEAB sind **Orientierungen** $\omega(Q)\in\{+1,-1\}$ (Stufe 3), Vierlings-Chiralität $\chi_E(N)$ (Stufe 4)
+(`collatz_eabc_holonomie.md` §1). Das ist **noch keine** wahre Holonomie im DG-Sinn.
 
-Der **echte** EABC-Klammerdefekt ist **projektive Holonomie**
+**Zielobjekt (Stufe 6):** projektive EABC-Holonomie
 $\mathcal H_E(\gamma_1,\gamma_2)=d_E(\Gamma(\gamma_1),\Gamma(\gamma_2))$ auf Trägern ($\mathbb O$, Vierlinge) —
-nicht $\mathfrak a_{\mathrm{naiv}}$ auf $V_4$.
+benötigt Transportoperator $T$ (Stufe 5, offen). Nicht $\mathfrak a_{\mathrm{naiv}}$ auf $V_4$.
 
-**Label:** $V_4$-Trivialität = **Theorem**; $\omega$, $\chi_E$ = **Definition**; $\mathcal H_E$ auf $\mathbb O$ = **Experiment**.
+**Label:** $V_4$-Trivialität = **Theorem**; $\omega$, $\chi_E$ = **Definition** (Stufe 3–4); $\mathcal H_E$ = **Conjecture** (Zielobjekt); Oktanion-Stub = **Experiment**.
 
 ### Oktanionen ($\mathbb{O}$) — **beide** Defekte relevant
 

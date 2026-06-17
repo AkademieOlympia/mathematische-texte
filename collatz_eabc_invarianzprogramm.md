@@ -303,6 +303,7 @@ bereits bewiesener Grenzwerte.
 | `tests/test_eabc_fluktuation_skala.py` | Unit-Tests Skalierungsskript |
 | `tests/test_eabc_invarianzprogramm.py` | Unit-Tests ($\kappa$, Simplex, Fluktuationsfeld) |
 | `eabc_from_lean.py` | Referenz-Implementierung von $\kappa$ |
+| `collatz_eabc_holonomie.md` | Begriffshierarchie Stufe 1–6: $\kappa$, $\sigma(Q)$ (hier Def. 1, 5), $\omega$, $\chi_E$; Holonomie = Zielobjekt |
 | `collatz_generalangriff_2026.md` | Strategischer Pointer |
 | `collatz_eabc_quaternion_mass_hypothese.md` §12 | **EABC-Spektralgeometrische Hauptvermutung** ($D(n)=I(\mu_n)-I_{\mathrm{ref}}(n)$, Emergenz) |
 | `collatz_eabc_quaternion_mass_hypothese.md` §13 | **EABC-Spektralgeometrische Erzeugerhypothese** ($\hat D(s)=\sum D(n)/n^s$, Bernoulli-Brücke) |

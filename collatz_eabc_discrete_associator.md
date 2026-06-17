@@ -1,8 +1,9 @@
 # Diskreter EABC-Assoziator auf $V_4$ — Negativkontrolle
 
 > **Redirect (kanonisch, PR #54):** Der naive diskrete „EABC-Assoziator“ auf $V_4$ **verschwindet**
-> ($\mathfrak a_{\mathrm{naiv}}\equiv 0$, Klein-Vierergruppe). Für Chiralität und Klammerdefekte siehe
-> **`collatz_eabc_holonomie.md`** — **projektive EABC-Holonomie** $\mathcal H_E$, $\omega$, $\chi_E(N)$.
+> ($\mathfrak a_{\mathrm{naiv}}\equiv 0$, Klein-Vierergruppe). Für Orientierung, Chiralität und die
+> sechsstufige Begriffshierarchie siehe **`collatz_eabc_holonomie.md`** — $\omega$ (Stufe 3),
+> $\chi_E(N)$ (Stufe 4); projektive EABC-Holonomie $\mathcal H_E$ = Zielobjekt (Stufe 6).
 > Der Begriff „EABC-Assoziator“ ist auf $V_4$-Ebene **deprecated**; der **algebraische** Assoziator
 > $[x,y,z]$ auf $\mathbb{O}$ bleibt in `collatz_eabc_oktonion_associator.py` gültig.
 
@@ -12,7 +13,7 @@
 
 **Querverweise:**
 - `EABC.lean` / `eabc_from_lean.py` — Restklassen, Chiralität, Vierling $Q(p)$
-- `collatz_eabc_holonomie.md` — **Korrektur:** echter Defekt = $\Gamma$-Holonomie, nicht $V_4$-$\mathfrak a$
+- `collatz_eabc_holonomie.md` — Begriffshierarchie Stufe 1–6; $\omega$, $\chi_E$ (implementiert); $\mathcal H_E$ (Zielobjekt)
 - `collatz_eabc_kommutator_assoziator.md` — Kommutator ($\mathbb{H}$) vs. Assoziator ($\mathbb{O}$)
 - `collatz_eabc_discrete_associator.py` / `.json` — Rechnung und Tabellen
 - `Global Lokal.py` — explizite $V_4$-Multiplikationstabelle (Referenz)
@@ -26,8 +27,8 @@ Der volle **algebraische** Oktanion-Assoziator $[x,y,z]$ (`collatz_eabc_oktonion
 $12$ — wurde ein diskreter Klammertest auf $V_4$ formuliert.
 
 **Ergebnis (Theorem):** $\Phi$ ist assoziativ; $\mathfrak a_{\mathrm{naiv}}\equiv 0$.
-Messbare Chiralität liegt in **projektiver Holonomie** (`collatz_eabc_holonomie.md`: $\mathcal H_E$, $\chi_E$, $\omega$),
-nicht in $V_4$-Nichtassoziativität.
+Messbare Orientierung und Chiralität liegen in Stufe 3–4 (`collatz_eabc_holonomie.md`: $\omega$, $\chi_E$),
+nicht in $V_4$-Nichtassoziativität. Wahre Holonomie (Stufe 6) ist Zielobjekt, noch nicht erreicht.
 
 ---
 
@@ -116,4 +117,4 @@ $$\mathcal A(N) := \frac{1}{N-2}\sum_{k=2}^{N-1} \mathfrak a(X_{k-1},X_k,X_{k+1}
 
 *Kanonsiche Notiz: Der diskrete EABC-Assoziator ist der ehrliche $V_4$-Schatten des
 Oktanion-Programms — er bestätigt Assoziativität auf der sichtbaren mod-$12$-Ebene und
-reserviert Klammerdefekte für **projektionsbasierte Holonomie** (`collatz_eabc_holonomie.md`).*
+reserviert Klammerdefekte für das **Holonomie-Zielobjekt** Stufe 6 (`collatz_eabc_holonomie.md`).*
