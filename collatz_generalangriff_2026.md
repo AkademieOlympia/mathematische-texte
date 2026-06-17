@@ -501,6 +501,34 @@ treuer $\kappa$; unendliche Wörter vs. endliche Präfixe.
 
 ## Stufe 2B — κ-Robustheit (PR #40, Juni 2026)
 
+> **Boxed (Stufe 2B — Verfeinerung von PR #39):**  
+> *Die Verbotsstruktur ist κ-sensitiv, die Sprachverdünnung aber möglicherweise robust.*
+
+PR #39 schloss: $\mathcal{L}_{\mathrm{arith}} \subsetneq \mathcal{L}$ sieht stark aus (BE, $R(10)$, $F_n$-Katalog).
+PR #40 testet die kritische Schwachstelle: Hängt der Befund an der **naiven** $\kappa$?
+
+**Kernbefund (experimentell, kein Beweis):** BE ist **kein** kodierungsunabhängiger Zeuge.
+Unter $\kappa_2$ ($\nu_2$-Rotation) wird BE realisiert; minimales Gegenbeispiel wird EAEAA (L=5).
+$\kappa_1 \approx \kappa_3$ (Successor-Shift) beweist **keine** Robustigkeit — nur Kanaläquivalenz.
+$R(10)$ bleibt für alle drei Varianten klein ($\kappa_2$: $\approx 0{,}0041$, sogar unter $\kappa_1$).
+
+| Aussage | Status nach 2B |
+|---------|----------------|
+| BE verboten bei $\kappa_1$ | experimentell stabil bis $10^7$ |
+| BE kodierungsunabhängig verboten | **widerlegt** |
+| $R(k)$ klein | experimentell gestützt |
+| konkrete $F_n$-Listen | κ-abhängig |
+| kodierungsfreie $\mathcal{L}_{\mathrm{arith}}$ | **zentral offen** |
+
+**Artefakte:** `collatz_kappa_robustheit.py`, `collatz_kappa_robustheit.json`,
+`collatz_stufe2b_kappa_robustheit.md`, `tests/test_kappa_robustheit.py`.
+
+**Nächster Schritt:** κ-Klassifikation (dynamiktreu, injektiv, shiftäquivalent, …) — nicht $10^8$-Bootstrap.
+
+---
+
+## Stufe 2B — κ-Robustheit (PR #40, Juni 2026)
+
 > **PR #39 geschlossen:** $\mathcal{L}_{\mathrm{arith}}\subsetneq\mathcal{L}$ experimentell beantwortet
 > (BE, $F_n$-Katalog, $R(k)$). **Nicht** weiter erweitern — kritische Schwachstelle ist κ-Abhängigkeit.
 

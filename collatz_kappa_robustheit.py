@@ -301,9 +301,12 @@ def compare_variants(
             "F_n_sizes_by_variant": fn_matrix,
             "interpretation": (
                 "Robustheit: BE und minimales Gegenbeispiel stabil über κ₁–κ₃ "
-                "→ eher Fall A (Struktur). Abweichung → Fall B (κ-Artefakt)."
+                "→ eher Fall A (Struktur)."
                 if be_stable
-                else "Mindestens eine κ-Variante realisiert BE — κ-abhängig, Fall B möglich."
+                else (
+                    "BE κ-abhängig (κ₂ realisiert BE) — Verbotsstruktur κ-sensitiv; "
+                    "R(10) bleibt klein → Dünnheits-Hypothese statt BE-Invariante."
+                )
             ),
         },
         "kappa_specs": {k.value: asdict(v) for k, v in KAPPA_SPECS.items()},
