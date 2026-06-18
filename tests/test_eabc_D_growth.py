@@ -10,9 +10,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from collatz_eabc_D_growth import (
     THEORY_EVOLUTION,
+    THEORY_HOLONOMY_STAGES,
     THEORY_ZIRKULATION,
     c4_laplacian_spectrum,
     classify_growth,
+    classify_holonomy_growth,
     d_e_at_x,
     d_e_series,
     default_x_grid,
@@ -59,6 +61,26 @@ def test_growth_at_1e6_not_O1_or_sqrt():
     assert gc["preferred_scenario"] != "O(sqrt X)"
 
 
+def test_holonomy_growth_fall_at_1e6():
+    """Bei N~491: Fall A ausgeschlossen; bevorzugt B oder C."""
+    series = d_e_series(default_x_grid(1_000_000))
+    hg = classify_holonomy_growth(series)
+    assert hg["preferred_fall"] in ("B", "C")
+    assert hg["best_fit_fall"] in ("A", "B", "C")
+    assert hg["theory"] == THEORY_HOLONOMY_STAGES
+    diag = hg["diagnostics_at_max_N"]
+    assert diag["N_at_max"] > 400
+    assert diag["S_E_at_max"] > 0.05
+
+
+def test_holonomy_growth_structure():
+    series = d_e_series((10_000, 100_000, 1_000_000))
+    hg = classify_holonomy_growth(series)
+    assert set(hg["models"]) == {"A", "B", "C"}
+    assert "Hol_E_reading" in hg
+    assert "diagnostics_at_max_N" in hg
+
+
 def test_c4_spectrum():
     spec = c4_laplacian_spectrum()
     assert spec["eigenvalues_symmetrized"] == [0.0, 2.0, 2.0, 4.0]
@@ -77,7 +99,9 @@ def test_growth_report_meta():
     report = growth_report(max_x=50_000, grid=(1_000, 10_000, 50_000))
     assert report["meta"]["theory_evolution"] == THEORY_EVOLUTION
     assert report["meta"]["theory_zirkulation"] == THEORY_ZIRKULATION
+    assert report["meta"]["theory_holonomy_stages"] == THEORY_HOLONOMY_STAGES
     assert len(report["D_E_series"]) == 3
+    assert "holonomy_growth" in report
     assert report["boxed_conclusion"]["evolution"].startswith("Bell")
 
 

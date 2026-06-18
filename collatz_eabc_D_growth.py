@@ -28,6 +28,7 @@ ROOT = Path(__file__).resolve().parent
 DEFAULT_OUTPUT = ROOT / "collatz_eabc_D_growth.json"
 THEORY_EVOLUTION = "collatz_eabc_evolution_analytik.md"
 THEORY_ZIRKULATION = "collatz_eabc_zirkulationshypothese.md"
+THEORY_HOLONOMY_STAGES = "collatz_eabc_holonomie_stufen.md"
 
 DEFAULT_GRID = (
     1_000,
@@ -43,6 +44,7 @@ DEFAULT_GRID = (
 )
 
 GROWTH_SCENARIOS = ("O(1)", "O(log X)", "O(sqrt X)", "power_law")
+HOLONOMY_FALLS = ("A", "B", "C")
 
 
 def default_x_grid(max_x: int = 1_000_000) -> tuple[int, ...]:
@@ -190,6 +192,103 @@ def classify_growth(series: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def classify_holonomy_growth(series: list[dict[str, Any]]) -> dict[str, Any]:
+    """
+    Holonomie-Wachstum in N = N_+ + N_- (Fall A/B/C).
+
+    Fall A: D_E = O(1)           -> Hol_E = 0
+    Fall B: D_E = O(sqrt N)      -> Hol_E -> 0  (Nullhypothese)
+    Fall C: D_E ~ alpha N        -> Hol_E = alpha != 0
+    """
+    ns = [float(r["N_total"]) for r in series]
+    ys = [float(r["D_E"]) for r in series]
+    n = len(series)
+
+    mean_y = sum(ys) / n if n else 0.0
+    rss_o1 = _rss(ys, [mean_y] * n)
+
+    _, b_sqrt, rss_sqrt = _fit_affine(ns, ys, math.sqrt)
+    _, alpha_lin, rss_linear = _fit_affine(ns, ys, lambda t: t)
+
+    models = {
+        "A": {
+            "label": "O(1)",
+            "rss": rss_o1,
+            "params": {"mean_D_E": mean_y},
+            "Hol_E_limit": 0.0,
+        },
+        "B": {
+            "label": "O(sqrt N)",
+            "rss": rss_sqrt,
+            "params": {"b": b_sqrt},
+            "Hol_E_limit": 0.0,
+        },
+        "C": {
+            "label": "alpha N",
+            "rss": rss_linear,
+            "params": {"alpha": alpha_lin},
+            "Hol_E_limit": alpha_lin,
+        },
+    }
+    ranked = sorted(models.items(), key=lambda kv: kv[1]["rss"])
+    best = ranked[0][0]
+
+    last = series[-1] if series else {}
+    n_max = float(last.get("N_total", 0))
+    d_max = float(last.get("D_E", 0))
+    s_max = float(last.get("S_E", 0))
+    d_tilde_max = float(last.get("D_tilde_E", 0))
+
+    diagnostics = {
+        "N_at_max": n_max,
+        "D_E_at_max": d_max,
+        "S_E_at_max": s_max,
+        "D_tilde_E_at_max": d_tilde_max,
+        "D_over_sqrtN": d_max / math.sqrt(n_max) if n_max > 0 else 0.0,
+        "alpha_hat": d_max / n_max if n_max > 0 else 0.0,
+    }
+
+    reject_a = d_max > 5 and (series[-2]["D_E"] if len(series) > 1 else 0) < d_max
+    reject_b = s_max > 0.08 and d_tilde_max > 1.5
+    reject_c = s_max < 0.02 and n_max > 50
+
+    notes: list[str] = []
+    if reject_a:
+        notes.append("Fall A (D_E=O(1)) ausgeschlossen: |D_E| wächst mit N.")
+    if reject_b:
+        notes.append(
+            "Fall B schwach: S_E bleibt deutlich > 0 und D̃_E nicht O(1)-stabil."
+        )
+    if reject_c:
+        notes.append("Fall C ausgeschlossen: S_E nahe 0 bei großem N.")
+
+    preferred = best
+    if reject_a and preferred == "A":
+        preferred = ranked[1][0]
+    if reject_b and preferred == "B":
+        preferred = next((fall for fall, _ in ranked if fall != "B"), best)
+    if reject_c and preferred == "C":
+        preferred = next((fall for fall, _ in ranked if fall != "C"), best)
+
+    hol_e_reading = {
+        "A": "Hol_E = 0 (absoluter Effekt stirbt)",
+        "B": "Hol_E -> 0 (Nullhypothese, Random Walk)",
+        "C": f"Hol_E = alpha ~ {alpha_lin:.4f} (stabile Chiralitaet)",
+    }
+
+    return {
+        "theory": THEORY_HOLONOMY_STAGES,
+        "models": models,
+        "ranked_by_rss": [fall for fall, _ in ranked],
+        "best_fit_fall": best,
+        "preferred_fall": preferred,
+        "Hol_E_reading": hol_e_reading.get(preferred, "?"),
+        "diagnostics_at_max_N": diagnostics,
+        "heuristic_notes": notes,
+        "epistemic": "Experiment (heuristische Modellwahl in N, kein Theorem)",
+    }
+
+
 def _chi_mod12_characters() -> dict[str, Any]:
     """
       Nichttriviale Charaktere auf (Z/12Z)^x = {1,5,7,11} ≅ C2 x C2.
@@ -297,16 +396,19 @@ def growth_report(
     series = d_e_series(grid)
     classification = classify_growth(series)
     last_x = series[-1]["X"] if series else max_x
+    holonomy = classify_holonomy_growth(series)
     return {
         "meta": {
             "module": "collatz_eabc_D_growth.py",
             "theory_evolution": THEORY_EVOLUTION,
             "theory_zirkulation": THEORY_ZIRKULATION,
+            "theory_holonomy_stages": THEORY_HOLONOMY_STAGES,
             "max_x": max_x,
             "grid": list(grid),
         },
         "D_E_series": series,
         "growth_classification": classification,
+        "holonomy_growth": holonomy,
         "dirichlet_stub": dirichlet_decomposition_stub(last_x),
         "c4_spectrum": c4_laplacian_spectrum(),
         "boxed_conclusion": {
@@ -317,6 +419,13 @@ def growth_report(
                 "D_E": series[-1]["D_E"] if series else 0,
                 "scenario": classification["preferred_scenario"],
                 "scenario_letter": classification["scenario_letter"],
+            },
+            "holonomy_at_max_N": {
+                "N": series[-1]["N_total"] if series else 0,
+                "D_E": series[-1]["D_E"] if series else 0,
+                "S_E": series[-1]["S_E"] if series else 0,
+                "fall": holonomy["preferred_fall"],
+                "Hol_E_reading": holonomy["Hol_E_reading"],
             },
         },
     }
@@ -359,6 +468,16 @@ def main() -> None:
         f"D/log X={diag['D_over_logX']:.2f}, D/sqrt X={diag['D_over_sqrtX']:.4f}"
     )
     for note in gc["heuristic_notes"]:
+        print(f"  • {note}")
+    hg = report["holonomy_growth"]
+    print()
+    print(f"Holonomie-Fall (in N): {hg['preferred_fall']} — {hg['Hol_E_reading']}")
+    diag_n = hg["diagnostics_at_max_N"]
+    print(
+        f"@ N={diag_n['N_at_max']:.0f}: S_E={diag_n['S_E_at_max']:.4f}, "
+        f"alpha_hat={diag_n['alpha_hat']:.4f}, D/sqrt N={diag_n['D_over_sqrtN']:.3f}"
+    )
+    for note in hg["heuristic_notes"]:
         print(f"  • {note}")
     stub = report["dirichlet_stub"]
     print()

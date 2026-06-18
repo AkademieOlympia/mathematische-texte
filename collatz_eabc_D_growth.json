@@ -3,6 +3,7 @@
     "module": "collatz_eabc_D_growth.py",
     "theory_evolution": "collatz_eabc_evolution_analytik.md",
     "theory_zirkulation": "collatz_eabc_zirkulationshypothese.md",
+    "theory_holonomy_stages": "collatz_eabc_holonomie_stufen.md",
     "max_x": 1000000,
     "grid": [
       1000,
@@ -171,6 +172,56 @@
     ],
     "epistemic": "Experiment (heuristische Modellwahl, kein Theorem)"
   },
+  "holonomy_growth": {
+    "theory": "collatz_eabc_holonomie_stufen.md",
+    "models": {
+      "A": {
+        "label": "O(1)",
+        "rss": 4180.900000000001,
+        "params": {
+          "mean_D_E": 14.9
+        },
+        "Hol_E_limit": 0.0
+      },
+      "B": {
+        "label": "O(sqrt N)",
+        "rss": 176.1843708141633,
+        "params": {
+          "b": 3.227562975657929
+        },
+        "Hol_E_limit": 0.0
+      },
+      "C": {
+        "label": "alpha N",
+        "rss": 190.19725355820592,
+        "params": {
+          "alpha": 0.13238049693461404
+        },
+        "Hol_E_limit": 0.13238049693461404
+      }
+    },
+    "ranked_by_rss": [
+      "B",
+      "C",
+      "A"
+    ],
+    "best_fit_fall": "B",
+    "preferred_fall": "C",
+    "Hol_E_reading": "Hol_E = alpha ~ 0.1324 (stabile Chiralitaet)",
+    "diagnostics_at_max_N": {
+      "N_at_max": 491.0,
+      "D_E_at_max": 59.0,
+      "S_E_at_max": 0.12016293279022404,
+      "D_tilde_E_at_max": 2.662632726198493,
+      "D_over_sqrtN": 2.662632726198493,
+      "alpha_hat": 0.12016293279022404
+    },
+    "heuristic_notes": [
+      "Fall A (D_E=O(1)) ausgeschlossen: |D_E| wächst mit N.",
+      "Fall B schwach: S_E bleibt deutlich > 0 und D̃_E nicht O(1)-stabil."
+    ],
+    "epistemic": "Experiment (heuristische Modellwahl in N, kein Theorem)"
+  },
   "dirichlet_stub": {
     "X": 1000000,
     "D_E": 59,
@@ -209,6 +260,13 @@
       "D_E": 59,
       "scenario": "power_law",
       "scenario_letter": "D"
+    },
+    "holonomy_at_max_N": {
+      "N": 491,
+      "D_E": 59,
+      "S_E": 0.12016293279022404,
+      "fall": "C",
+      "Hol_E_reading": "Hol_E = alpha ~ 0.1324 (stabile Chiralitaet)"
     }
   }
 }
