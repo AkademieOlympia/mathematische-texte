@@ -121,6 +121,27 @@ $$\boxed{\;C_E(X) = N_+(X) - N_-(X) = D_E(X).\;}$$
 
 ## 4. Einleitung: Paradigmenwechsel und orientierter Zirkulationsfehler
 
+$$\boxed{\;\text{Der größte Fortschritt ist nicht die Einführung neuer Größen, sondern die Entkopplung des Programms von }\Phi_E.\;}$$
+
+Ein negatives $\Phi_E$-Ergebnis ist **Antwort auf eine von mehreren Fragen**, nicht Projekt-Zusammenbruch.
+
+### Forschungsprogramm vs. Theorie
+
+**Gegenwärtiger Status:** EABC ist wissenschaftstheoretisch eher **Forschungsprogramm** als bereits **Theorie**.
+
+| Begriff | Inhalt |
+|---------|--------|
+| **Theorie** | erklärt einen zusammenhängenden Phänomenbereich durch einen stabilen Prinzipiensatz |
+| **Forschungsprogramm** | definiert Gegenstandsbereich, Observablen, Invarianten, Hierarchie offener Fragen |
+
+Genau das ist hier passiert — explizit in diesem Abschnitt (neben/ergänzend zur Lakatos-Einordnung unten). Das Programm legt fest, **was** untersucht wird ($G_E$, $D_E$, Skalierungsobservablen), **welche** Fragen in welcher Reihenfolge sinnvoll sind, und **welche** Aussagen den harten Kern nicht berühren dürfen.
+
+### Konservative Paper-Einleitung
+
+> Wir betrachten einen gerichteten Restklassengraphen $G_E$, der aus den vier nichttrivialen Restklassen modulo $12$ besteht. Aus der durch die Primzahlfolge induzierten Orientierung ergeben sich Zykluszählfunktionen $N_+(X)$ und $N_-(X)$ sowie die orientierte Zyklusdifferenz $D_E(X)=N_+(X)-N_-(X)$. Ziel der vorliegenden Untersuchung ist die Analyse der Größenordnung und Skalierung dieser Differenz. Hierzu werden normierte Observablen $R_\beta(X)$, lokale Skalierungsgrößen $\alpha_{\mathrm{eff}}(X)$ sowie die normierte Orientierung $W_E(X)$ betrachtet. Die Frage nach der Existenz eines asymptotischen Orientierungsparameters $\Phi_E=\lim W_E(X)$ wird als mögliche Endstufe einer allgemeineren Untersuchung der Skalierungsstruktur von $D_E(X)$ verstanden und **nicht** als Ausgangsannahme vorausgesetzt.
+
+**Referee-Perspektive:** „Ich glaube noch nicht $\Phi_E\neq 0$ — aber $D_E(X)$ ist definiert und ihre Größenordnung untersuchbar." Die methodische Verschiebung geht von „Ist die Vermutung wahr?" zu „Welche Eigenschaften besitzt die Observable?"
+
 $$\boxed{\;\text{Das EABC-Programm untersucht primär die Wachstumsordnung der orientierten Zyklusdifferenz }D_E(X)\text{, während die Holonomie }\Phi_E\text{ als mögliche Endstufe dieser Skalierungstheorie erscheint.}\;}$$
 
 **Programm (primär):** Fehlertermtheorie des **orientierten Zirkulationsfehlers** $D_E(X)=A(X)-C(X)$ auf dem EABC-Kreisgraphen — Prime-Race-/Fehlertermstruktur zwischen den gegenläufigen Zyklusorientierungen $\gamma^+$ (ABCEA) und $\gamma^-$ (CEABC). Die Holonomiefrage ($\Phi_E\neq 0$) ist **Ebene 4** (§4.2), nicht Eingangsthese.
@@ -132,7 +153,7 @@ $$\boxed{\;\text{Das EABC-Programm untersucht primär die Wachstumsordnung der o
 | **Grenzwerttheorie** $W_E\to\Phi_E\neq 0$ (Ergodentheorie / Dichtetheorie) | **Fehlertermtheorie** $D_E(X)=N_+(X)-N_-(X)$ (analytische Zahlentheorie) |
 | Eingangsfrage: existiert nichttrivialer Grenzwert? | Eingangsfrage: welche Wachstumsordnung hat $|D_E|$ relativ zu $Q$? |
 
-Die Verschiebung $\Phi_E \to D_E$ ändert das **mathematische Objekt** der Theorie: nicht der normierte Quotient steht im Zentrum, sondern die absolute orientierte Zyklusdifferenz als primäre arithmetische Observable.
+Die Verschiebung $\Phi_E \to D_E$ ändert das **mathematische Objekt** des Programms: nicht der normierte Quotient steht im Zentrum, sondern die absolute orientierte Zyklusdifferenz als primäre arithmetische Observable. Der Forschungsgegenstand ist von einer einzelnen Vermutung entkoppelt.
 
 ### Lakatos-Einordnung und Programmversionen
 
@@ -140,11 +161,13 @@ Im Sinne eines **Lakatos'schen Forschungsprogramms** (harter Kern, Schutzmantel,
 
 | Rolle | Objekt | Ebene |
 |-------|--------|-------|
-| **Harter Kern** | $G_E=(V,E)$, $\gamma^+$ (ABCEA), $\gamma^-$ (CEABC), $C_4\cong S^1$ | 0 |
+| **Harter Kern** | gerichteter EABC-Kreisgraph $G_E$; orientierte Zyklusdifferenz $D_E(X)=N_+(X)-N_-(X)$; daraus induzierte Skalierungsobservablen | 0–1 |
 | **Primäre Theorie** | $D_E(X)$, $Q(X)=N_+(X)+N_-(X)$ | 1 |
 | **Sekundäre Schutzmantel** | $R_\beta$, $\alpha_{\mathrm{loc}}$, $\alpha_{\mathrm{eff}}$, $\alpha_E$ | 2 |
 | **Orientierung** | $W_E(X)=D_E(X)/Q(X)$ | 3 |
-| **Endhypothese** | $\Phi_E=\lim_{X\to\infty} W_E(X)$ | 4 |
+| **Endfrage** | $\Phi_E=\lim_{X\to\infty} W_E(X)$ | 4 |
+
+Der **harte Kern** ist nicht mehr „Holonomie", sondern: (1) der gerichtete EABC-Kreisgraph $G_E$, (2) die orientierte Zyklusdifferenz $D_E(X)$, (3) die daraus induzierte Familie von Skalierungsobservablen. Erst darauf bauen alle weiteren Fragen.
 
 $$\boxed{\;\text{Das Programm hängt nicht mehr an einer Vermutung.}\;}$$
 
@@ -154,11 +177,11 @@ $$\boxed{\;\text{Das Programm hängt nicht mehr an einer Vermutung.}\;}$$
 |---|-----------------|----------------|
 | Eingang | $\Phi_E\neq 0$ als Leitvermutung (Grenzwerttheorie) | $D_E(X)$, $|D_E|$ relativ zu $Q$ als Leitfrage (Fehlertermtheorie) |
 | Hilfsgrößen | $W_E$, Skalierung nachträglich zur Stützung von $\Phi_E$ | $R_\beta$, $\alpha_{\mathrm{loc}}$, $\alpha_E$ dienen der $D_E$-Theorie |
-| $\Phi_E$ | Zielobjekt / Eingangsfrage | **Konsequenz** der $D_E$-Skalierungstheorie (falls $\alpha_E=1$ und der Grenzwert existiert) |
+| $\Phi_E$ | Zielobjekt / Eingangsfrage | **Endfrage** der $D_E$-Skalierungstheorie (falls $\alpha_E=1$ und der Grenzwert existiert) |
 
-**Pyramide** (Vorwärtskette, keine Umkehrungen):
+**Stabilisierungskette** (Vorwärtsführung; $\Rightarrow$ für bewiesene Implikationen, $\leadsto$ für offene Fragen):
 
-$$G_E \;\longrightarrow\; D_E \;\longrightarrow\; \alpha_E \;\longrightarrow\; W_E \;\longrightarrow\; \Phi_E.$$
+$$G_E \;\leadsto\; (D_E,\,Q_E) \;\leadsto\; (R_\beta,\,\alpha_{\mathrm{eff}},\,\alpha_{\mathrm{loc}}) \;\leadsto\; (\alpha_E,\,W_E) \;\leadsto\; \Phi_E.$$
 
 Selbst $\Phi_E=0$ bleibt **wissenschaftlich interessant**: offen bleiben $\alpha_E=\tfrac{1}{2}$?, $\alpha_E>\tfrac{1}{2}$?, $\alpha_{\mathrm{loc}}$-Plateaus?, kritische $R_\beta$ — als eigenständige Prime-Race-/Fehlertermstruktur auf dem EABC-Zyklus (vgl. §4.2).
 
@@ -214,8 +237,9 @@ $$W_E(X) = \frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)}$$
 
 $$\boxed{\;\text{Nicht }\Phi_E\text{ ist der Anfang, sondern }D_E(X).\;}$$
 
-**Vorwärtskette** (keine Umkehrungen behauptet):
-$$D_E(X) \;\Longrightarrow\; \alpha_E \;\Longrightarrow\; W_E(X) \;\Longrightarrow\; \Phi_E.$$
+**Vorwärtskette** (bewiesene Implikationen: $\Rightarrow$; offene Forschungsfragen: $\leadsto$):
+$$G_E \;\leadsto\; D_E(X) \;\leadsto\; \alpha_E \;\leadsto\; W_E(X) \;\leadsto\; \Phi_E.$$
+$$\Phi_E \neq 0 \;\Longrightarrow\; D_E(X)\sim\Phi_E\,Q(X) \;\Longrightarrow\; \alpha_E=1 \quad\text{(nur diese Richtung; keine Äquivalenz).}$$
 
 $$\boxed{\;\begin{array}{c}\textbf{Ebene 0 — Geometrie:}\; G_E=(E,A,B,C),\;\gamma^+=\mathrm{ABCEA},\;\gamma^-=\mathrm{CEABC}\\[4pt]\textbf{Ebene 1 — Zirkulationsfehler:}\; D_E(X)=N_+(X)-N_-(X)\;\text{(primäre arithmetische Observable)}\\[4pt]\textbf{Ebene 2 — Skalierung:}\; R_\beta(X)=D_E(X)/Q(X)^\beta,\;\alpha_{\mathrm{loc}}(X)=\Delta\log|D_E|/\Delta\log Q,\;\alpha_E=\lim\alpha_{\mathrm{loc}}(X)?\\[4pt]\textbf{Ebene 3 — Orientierung:}\; W_E(X)=D_E(X)/Q(X)\\[4pt]\textbf{Ebene 4 — Holonomie:}\; \Phi_E=\lim_{X\to\infty} W_E(X)\end{array}\;}$$
 

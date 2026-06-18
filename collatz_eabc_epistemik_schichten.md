@@ -25,7 +25,29 @@ $$\boxed{\;\textbf{Theorem} \;\neq\; \textbf{Struktur} \;\neq\; \textbf{Brücke}
 
 ---
 
-## 0. Leitprinzip: zwei parallele Spuren
+## 0. Forschungsprogramm vs. Theorie
+
+**Gegenwärtiger Status:** Das EABC-Programm ist wissenschaftstheoretisch eher **Forschungsprogramm** als bereits **Theorie**.
+
+| Begriff | Inhalt |
+|---------|--------|
+| **Theorie** | erklärt einen zusammenhängenden Phänomenbereich durch einen stabilen Prinzipiensatz |
+| **Forschungsprogramm** | definiert Gegenstandsbereich, Observablen, Invarianten, Hierarchie offener Fragen |
+
+EABC erfüllt die zweite Beschreibung: Es legt $G_E$, $D_E(X)$, Skalierungsobservablen ($R_\beta$, $\alpha_{\mathrm{loc}}$, $\alpha_E$) und eine **Hierarchie offener Fragen** fest — von der Größenordnung von $|D_E|$ bis zur möglichen Endfrage $\Phi_E$. Die Lakatos-Einordnung (§2, vgl. `collatz_eabc_zirkulationshypothese.md` §4) ergänzt diese Lesart; sie widerspricht ihr nicht.
+
+$$\boxed{\;\text{Der größte Fortschritt ist nicht die Einführung neuer Größen, sondern die Entkopplung des Programms von }\Phi_E.\;}$$
+
+**Harter Kern** (nicht Holonomie): (1) gerichteter EABC-Kreisgraph $G_E$, (2) orientierte Zyklusdifferenz $D_E(X)=N_+(X)-N_-(X)$, (3) daraus induzierte Skalierungsobservablen. Erst darauf bauen alle weiteren Fragen.
+
+**Stabilisierungskette** ($\leadsto$ = führt zu Fragen; $\Rightarrow$ = bewiesene Implikation):
+$$G_E \;\leadsto\; (D_E,\,Q_E) \;\leadsto\; (R_\beta,\,\alpha_{\mathrm{eff}},\,\alpha_{\mathrm{loc}}) \;\leadsto\; (\alpha_E,\,W_E) \;\leadsto\; \Phi_E.$$
+
+**Referee-Perspektive:** „Ich glaube noch nicht $\Phi_E\neq 0$ — aber $D_E(X)$ ist definiert und ihre Größenordnung untersuchbar." Verschiebung: von „Ist die Vermutung wahr?" zu „Welche Eigenschaften besitzt die Observable?"
+
+---
+
+## 0.1 Leitprinzip: zwei parallele Spuren
 
 $$\boxed{\;\textbf{Beweis-Spur} \;\|\; \textbf{Ikone-Spur}\;}$$
 
@@ -87,19 +109,19 @@ $$\boxed{\;\text{Ob die Wachstumsordnung von }D_E\text{ bis zur linearen Skala r
 
 $$\boxed{\;\text{Das Programm hängt nicht mehr an einer Vermutung.}\;}$$
 
-**Lakatos-Einordnung** (vgl. `collatz_eabc_zirkulationshypothese.md` §4):
+**Lakatos-Einordnung** (vgl. `collatz_eabc_zirkulationshypothese.md` §4; ergänzt §0 Forschungsprogramm vs. Theorie):
 
 | Rolle | Objekt | Ebene |
 |-------|--------|-------|
-| **Harter Kern** | $G_E$, $\gamma^\pm$, $C_4\cong S^1$ | 0 |
+| **Harter Kern** | $G_E$; $D_E(X)=N_+-N_-$; induzierte Skalierungsobservablen | 0–1 |
 | **Primäre Theorie** | $D_E$, $Q$ | 1 |
-| **Sekundäre Schutzmantel** | $R_\beta$, $\alpha_{\mathrm{loc}}$, $\alpha_{\mathrm{eff}}$, $\alpha_E$ | 2 |
+| **Sekundäre Schutzmantel** | $R_\beta$, $\alpha_{\mathrm{loc}}$ (Numerik primär), $\alpha_{\mathrm{eff}}$, $\alpha_E$ | 2 |
 | **Orientierung** | $W_E$ | 3 |
-| **Endhypothese** | $\Phi_E$ | 4 |
+| **Endfrage** | $\Phi_E$ | 4 |
 
-**V1 → V2:** V1 startete mit $\Phi_E\neq 0$ und nutzte Hilfsgrößen zur Stützung; V2 macht $\Phi_E$ zur **Konsequenz** der $D_E$-Skalierungstheorie. Pyramide: $G_E\to D_E\to\alpha_E\to W_E\to\Phi_E$. Selbst $\Phi_E=0$ bleibt interessant ($\alpha_E$, $R_\beta$, $\alpha_{\mathrm{loc}}$).
+**V1 → V2:** V1 startete mit $\Phi_E\neq 0$ und nutzte Hilfsgrößen zur Stützung; V2 macht $\Phi_E$ zur **Endfrage** der $D_E$-Skalierungstheorie. Stabilisierungskette: $G_E \leadsto (D_E,Q_E) \leadsto (R_\beta,\alpha_{\mathrm{eff}},\alpha_{\mathrm{loc}}) \leadsto (\alpha_E,W_E) \leadsto \Phi_E$. Selbst $\Phi_E=0$ bleibt interessant ($\alpha_E$, $R_\beta$, $\alpha_{\mathrm{loc}}$).
 
-**Vorwärtskette** (keine Umkehrungen): $D_E(X) \Rightarrow \alpha_E \Rightarrow W_E(X) \Rightarrow \Phi_E$.
+**Vorwärtskette** ($\leadsto$ offene Fragen; $\Rightarrow$ bewiesene Implikationen): $G_E \leadsto D_E(X) \leadsto \alpha_E \leadsto W_E(X) \leadsto \Phi_E$.
 
 **Fünf Ebenen** (vgl. `collatz_eabc_zirkulationshypothese.md` §4.2):
 
@@ -109,7 +131,7 @@ $$\boxed{\;\text{Das Programm hängt nicht mehr an einer Vermutung.}\;}$$
 | **1** | Zirkulationsfehler: $D_E(X)=N_+-N_-$ (primäre Observable) |
 | **2** | Skalierung: $R_\beta$, $\alpha_{\mathrm{loc}}$ (Numerik primär), $\alpha_E$ |
 | **3** | Orientierung: $W_E(X)=D_E/Q$ |
-| **4** | Holonomie: $\Phi_E=\lim W_E$ |
+| **4** | Holonomie (Endfrage): $\Phi_E=\lim W_E$ |
 
 $$W_E(X) = \frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)},\qquad
 R_\beta(X) = \frac{D_E(X)}{Q(X)^\beta},\qquad
