@@ -1,0 +1,146 @@
+{
+  "meta": {
+    "module": "collatz_eabc_brachistochrone.py",
+    "theory": "collatz_eabc_brachistochrone.md",
+    "theory_kritische_abbildung": "collatz_eabc_kritische_abbildung.md",
+    "theory_holonomie_stufen": "collatz_eabc_holonomie_stufen.md",
+    "theory_epistemik": "collatz_eabc_epistemik_physik.md",
+    "theory_generalangriff": "collatz_generalangriff_2026.md",
+    "epistemic": "Variationsprinzip / Modell — kein Physikanspruch, kein SRT",
+    "max_p": 50000,
+    "gamma_ref": 14.134725141734693,
+    "n_zeta_zeros": 20,
+    "perturbation_scale": 0.15
+  },
+  "fermat_setup": {
+    "formula": "T = sum_j Delta_s_j / v(x_j, gamma_j)",
+    "velocity": "v = f(V) — siehe velocity_from_potential",
+    "potentials": {
+      "log": "V(x) = ln(x), v ~ ln(x) oder 1/ln(x)",
+      "zeta": "V(gamma) = sum_n 1/((gamma-gamma_n)^2 + eps)",
+      "chirality": "V_E = D_E, v = v0 + alpha D_E",
+      "curvature": "V ~ |gamma|/gamma_1 (Winkeldefekt-Proxy)",
+      "information": "V = -log P(x) aus Übergangszählern"
+    }
+  },
+  "abcea_trajectory": {
+    "points_xy": [
+      {
+        "x": 0.5,
+        "gamma": 0.0
+      },
+      {
+        "x": 2.5,
+        "gamma": 14.134725141734693
+      },
+      {
+        "x": 6.5,
+        "gamma": 28.269450283469386
+      },
+      {
+        "x": 8.5,
+        "gamma": 42.40417542520408
+      },
+      {
+        "x": 12.5,
+        "gamma": 56.53890056693877
+      }
+    ],
+    "gaps": [
+      2,
+      4,
+      2,
+      4
+    ],
+    "x_endpoint": 12.5
+  },
+  "d_e_context": {
+    "D_E_global": 5,
+    "N_plus": 24,
+    "N_minus": 19,
+    "prime_count": 5131,
+    "max_p": 50000
+  },
+  "pattern_context": {
+    "total_transitions": 5130,
+    "ABCEA_word": "ABCEA"
+  },
+  "comparisons": [
+    {
+      "potential": "log",
+      "T_straight": 58.306711910728325,
+      "T_gradient_perturbed": 39.36331565555279,
+      "T_semicircle": 337856816.8856142,
+      "rel_gradient_vs_straight": -0.32489220596385554,
+      "rel_semicircle_vs_straight": 5794474.555454006,
+      "gradient_faster_than_straight": true,
+      "semicircle_faster_than_straight": false,
+      "path_bends_significantly": true,
+      "n_straight_segments": 4,
+      "n_gradient_points": 9
+    },
+    {
+      "potential": "zeta",
+      "T_straight": 32.87966687716722,
+      "T_gradient_perturbed": 36.18983827483737,
+      "T_semicircle": 506.52174931328386,
+      "rel_gradient_vs_straight": 0.1006753325706244,
+      "rel_semicircle_vs_straight": 14.405318770581285,
+      "gradient_faster_than_straight": false,
+      "semicircle_faster_than_straight": false,
+      "path_bends_significantly": true,
+      "n_straight_segments": 4,
+      "n_gradient_points": 9
+    },
+    {
+      "potential": "chirality",
+      "T_straight": 56.63844182630548,
+      "T_gradient_perturbed": 58.78064764659955,
+      "T_semicircle": 618.4312856974179,
+      "rel_gradient_vs_straight": 0.037822470944091684,
+      "rel_semicircle_vs_straight": 9.918931837743287,
+      "gradient_faster_than_straight": false,
+      "semicircle_faster_than_straight": false,
+      "path_bends_significantly": true,
+      "n_straight_segments": 4,
+      "n_gradient_points": 9
+    },
+    {
+      "potential": "curvature",
+      "T_straight": 174.20625211000242,
+      "T_gradient_perturbed": 174.88108375611753,
+      "T_semicircle": 1721.989243936135,
+      "rel_gradient_vs_straight": 0.0038737510160599007,
+      "rel_semicircle_vs_straight": 8.884772923355161,
+      "gradient_faster_than_straight": false,
+      "semicircle_faster_than_straight": false,
+      "path_bends_significantly": true,
+      "n_straight_segments": 4,
+      "n_gradient_points": 9
+    },
+    {
+      "potential": "information",
+      "T_straight": 231.7226182383083,
+      "T_gradient_perturbed": 231.7226182383083,
+      "T_semicircle": 2519.6016174043166,
+      "rel_gradient_vs_straight": 0.0,
+      "rel_semicircle_vs_straight": 9.873352098987189,
+      "gradient_faster_than_straight": false,
+      "semicircle_faster_than_straight": false,
+      "path_bends_significantly": true,
+      "n_straight_segments": 4,
+      "n_gradient_points": 5
+    }
+  ],
+  "summary": {
+    "any_path_bends_significantly": true,
+    "any_gradient_perturbation_faster": true,
+    "verdict": "Mindestens ein Potenzial zeigt merkliche Abweichung gerade vs. gestört.",
+    "research_question": "Bleibt der optimale Pfad zwischen 1/2 und X gerade oder biegt er zu hoher Primdichte / Holonomie?"
+  },
+  "boxed": {
+    "principle": "Fermat: T = integral ds/v(x) — Modellabbildung",
+    "hierarchy": "1. ln(x), 2. zeta-Summe, 3. D_E",
+    "not_physics": "Kein SRT-Anspruch — collatz_eabc_epistemik_physik.md"
+  }
+}

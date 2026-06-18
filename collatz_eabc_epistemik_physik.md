@@ -7,6 +7,8 @@
 **Querverweise:**
 - `collatz_eabc_holonomie_stufen.md` — **drei mathematische Stufen** (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_kritische_abbildung.md` — §7 Halbkreis vs. gerade; Holonomie-Sensor $v_j=\gamma_{\mathrm{ref}}/\ell_j$
+- `collatz_eabc_chirale_polarisation.md` — **Photon-Helizität**, $\phi_R/\phi_L$, Stufe-2-Upgrade
+- `collatz_eabc_brachistochrone.md` — $T_R$, $T_L$, Birefringenz-Analogie
 - `collatz_eabc_sagnac.md` — Sagnac-Intuition (didaktisch); gegenläufige Zyklen $\gamma^\pm$
 - `collatz_eabc_fehlerterm_hypothese.md` — Fehlerterm $D_E$, Prime Race $N_\pm$
 - `collatz_eabc_evolution_analytik.md` — Evolution Bell$\to$Sagnac$\to C_E\to\mathrm{Spec}(L_E)$
@@ -91,6 +93,29 @@ $$\boxed{\;\text{Sagnac-Frage in EABC: nicht „wer altert langsamer?“, sonder
 - Analytischer Beweisversuch $\mathrm{Hol}_E=0$: `collatz_eabc_holonomie_beweisversuch.md`
 - Evolutionspfad und Wachstumsszenarien: `collatz_eabc_evolution_analytik.md`
 - Wegparadoxon (euklidisch): `collatz_eabc_kritische_abbildung.md` §7
+
+---
+
+## 5. Chirale Polarisation (Stufe-2-Upgrade)
+
+**Didaktische Physik-Korrektur (kein Behauptungsanspruch):** Photon-Spin $s=1$, Helizität $\lambda=\pm 1$ — nicht spinlos.
+
+**EABC-Lesart:** $\omega(\gamma)=\pm 1$ als **diskrete Helizität**:
+- ABCEA $\leftrightarrow$ $\lambda=+1$ ($R$)
+- CEABC $\leftrightarrow$ $\lambda=-1$ ($L$)
+
+$$C_E = \sum \omega(\gamma) = N_R - N_L = D_E.$$
+
+**Stufe-2-Transportobjekt** (`collatz_eabc_holonomie_stufen.md` §2):
+$$\Psi = (R,L)^\top,\qquad U_E = \mathrm{diag}(e^{i\phi_R}, e^{i\phi_L}),\qquad \text{Observable: }\phi_R - \phi_L.$$
+
+**Brachistochrone-Doppelkanal:** $T_R = \int \mathrm{d}s/v_R$, $T_L = \int \mathrm{d}s/v_L$ — Birefringenz-Analogie (optisch aktive Medien), **nicht** relativistische Eigenzeit.
+
+$$\boxed{\;\text{Chiraler Polarisationsraum — kein Zwillingsparadoxon, kein } \tau = \int\sqrt{1-v^2/c^2}\,\mathrm{d}t.\;}$$
+
+**Artefakte:** `collatz_eabc_chirale_polarisation.md`, `collatz_eabc_chirale_transport.py`, `collatz_eabc_brachistochrone.py`.
+
+**Label:** Helizität/Polarisation = **Modellabbildung**; Photon-Tabelle = **Analogie** (didaktisch).
 
 ---
 

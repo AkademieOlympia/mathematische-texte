@@ -6,6 +6,7 @@
 
 **Querverweise:**
 - `collatz_eabc_epistemik_physik.md` — Physik vs. EABC; $\mathrm{Hol}_E$ als arithmetische Kernfrage
+- `collatz_eabc_chirale_polarisation.md` — **Stufe-2-Upgrade:** $\Psi=(R,L)^\top$, $U_E$, Helizität $\lambda=\pm 1$
 - `collatz_eabc_zirkulationshypothese.md` — kanonisch: $N_\pm$, $C_E$, $D_E$, $S_E$
 - `collatz_eabc_fehlerterm_hypothese.md` — Fehlerterm $D_E$, $\widetilde{D}_E$
 - `collatz_eabc_evolution_analytik.md` — Evolution Bell$\to$Sagnac$\to C_E\to\mathrm{Spec}(L_E)$; Wachstum in $X$
@@ -59,11 +60,13 @@ $$\mathrm{Hol}(\gamma) = \mathcal{P}\exp\oint_\gamma A.$$
 | Raum / Bundel | $G_E=(V,E)$, $H_1(C_4)\cong\mathbb{Z}$ | **Definition** |
 | Zusammenhang | diskrete 1-Form $\alpha$, Kantenphase $\omega(e)$ | `collatz_eabc_zirkulation_spektral.md` |
 | Paralleltransport | Pfadprodukt entlang $\tau_n$ | `collatz_eabc_transport.md` |
-| Transportobjekt | Chiralität? Signatur? Defekt? Quaternion-Phase? EABC-Zustandsvektor? | **Forschungsfrage** |
+| Transportobjekt | Chiralität? Signatur? Defekt? Quaternion-Phase? **Chirale Polarisation $(R,L)$?** | **Forschungsfrage** → Upgrade: `collatz_eabc_chirale_polarisation.md` |
 
-**Kernabgrenzung:** $N_+-N_-$ misst heute **Zirkulationsstatistik** (Stufe 1/3), nicht $\mathcal{P}\exp\oint A$ auf einem definierten Bundelwert.
+**Upgrade-Pfad (PR #59):** Transportobjekt $\Psi = (R,L)^\top$ auf Faserbündel; nach Schleife $U_E = \mathrm{diag}(e^{i\phi_R}, e^{i\phi_L})$; Observable $\phi_R - \phi_L$ (Berry-Phase-/Wilson-Analog). Diskrete Phase: $\phi \mathrel{+}= \omega(\gamma)\cdot\theta_{\mathrm{edge}}$. Implementierung: `collatz_eabc_chirale_transport.py`.
 
-**Label:** Stufe 2 = **Forschungsprogramm**; Transportobjekt = **offene Frage**.
+**Kernabgrenzung:** $N_+-N_-$ misst heute **Zirkulationsstatistik** (Stufe 1/3), nicht $\mathcal{P}\exp\oint A$ auf einem definierten Bundelwert — Stufe 2 schließt diese Lücke **modellhaft** über chirale Phasenkanäle.
+
+**Label:** Stufe 2 = **Forschungsprogramm** mit konkretem Kandidat (chirale Polarisation); vollständiger Beweis = **offen**.
 
 ---
 
@@ -165,6 +168,9 @@ $$\boxed{\;D_E \;\leftrightarrow\; \text{diskrete Wilson-Schleife} \;\leftrighta
 | $\widetilde{D}_E$ | `D_tilde_E` | `collatz_eabc_holonomie_fehlerterm` |
 | Fall A/B/C | `holonomy_fall` | `collatz_eabc_D_growth` |
 | Legacy $X$-Szenario | `preferred_scenario` | `collatz_eabc_D_growth` |
+| $\phi_R$, $\phi_L$, $U_E$ | `phi_R`, `phi_L`, `holonomy_unitary_phases` | `collatz_eabc_chirale_transport` |
+| Helizität ABCEA$\to R$ | `helicity_channel` | `collatz_eabc_chirale_transport` |
+| $T_R$, $T_L$ | `travel_time_birefringent` | `collatz_eabc_brachistochrone` |
 
 ---
 
