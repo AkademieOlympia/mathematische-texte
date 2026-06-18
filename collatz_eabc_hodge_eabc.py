@@ -2,14 +2,16 @@
 """
 EABC Übergangsraum-Geometrie: C4=S^1, Hodge-Zerlegung, magnetischer Laplace, Flussdichte.
 
-Theorie: collatz_eabc_uebergangsraum.md, collatz_eabc_signierte_massstruktur.md
+Theorie: collatz_eabc_diskrete_geometrie.md (kanonisch), collatz_eabc_uebergangsraum.md
 
-  Kantenfundament: EA, AB, BC, CE auf Zyklus E→A→B→C→E
+  G_E = (V,E), V={E,A,B,C}
+  E^+ = {EA, AB, BC, CE}  — Vorwärtskanten (C4_EDGE_POSITIVE)
+  E^- = {EC, CB, BA, AE}  — Rückwärtskanten (C4_EDGE_NEGATIVE)
   h ∈ H^1(S^1) kanonischer harmonischer Generator
   ⟨ω_E, h⟩ — priminduzierter Fluss entlang harmonischer Klasse
   L = D - W (reell); L_mag = D - U, U_ij = A_ij e^{iθ_ij}
-  Φ_E = C_E = N_+ - N_- (diskreter AB-Fluss)
-  flux_density = C_E / N_cycles = S_E
+  Φ_E = lim W_E(X) = lim C_E/S_E = flux_density  (nicht C_E!)
+  Phi_E(X) = flux_density_limit(X)  — endliche-X-Schätzung
 
 Ausführung:
     python3 collatz_eabc_hodge_eabc.py
@@ -53,8 +55,10 @@ DEFAULT_SYNTHESIS_OUTPUT = ROOT / "collatz_eabc_diskrete_geometrie_synthesis.jso
 
 NEAR_ZERO_TOL = 1e-6
 
-# Kanonischer C4-Zyklus E→A→B→C→E; fundamentale Kanten (nicht Knoten)
+# Kanonischer C4-Zyklus E→A→B→C→E ≅ S^1
 C4_EDGE_LABELS: tuple[str, ...] = ("EA", "AB", "BC", "CE")
+C4_EDGE_POSITIVE: frozenset[str] = frozenset(C4_EDGE_LABELS)
+C4_EDGE_NEGATIVE: frozenset[str] = frozenset(("EC", "CB", "BA", "AE"))
 C4_EDGE_ARROWS: tuple[tuple[str, str], ...] = (
     ("E", "A"),
     ("A", "B"),
@@ -303,9 +307,10 @@ def signed_measure_graph(w_matrix: np.ndarray) -> dict[str, Any]:
 
 def flux_density_limit(max_p: int) -> dict[str, Any]:
     """
-    Flussdichte Φ_E / N_cycles = C_E(X) / #{erkannte Zyklen} = S_E(X).
+    Endliche-X-Schätzung von Φ_E = W_E(X) = C_E(X)/S_E(X).
 
-    Zentral für Orientierungsklassen-Vermutung: lim ≠ 0 ⇔ bevorzugte Orientierung.
+    Φ_E = lim_{X→∞} (N_+ - N_-)/(N_+ + N_-) = lim C_E/S_E = lim W_E(X).
+    Zentral für EABC-Vermutung: lim Φ_E ≠ 0 ⇔ bevorzugte Orientierung.
     """
     hol = holonomy_counts(max_p)
     n_cycles = hol["N_plus"] + hol["N_minus"]
@@ -314,14 +319,24 @@ def flux_density_limit(max_p: int) -> dict[str, Any]:
     return {
         "max_p": max_p,
         "C_E": c_e,
+        "S_E": n_cycles,
         "N_cycles": n_cycles,
         "N_plus": hol["N_plus"],
         "N_minus": hol["N_minus"],
+        "W_E": density,
         "flux_density": density,
-        "S_E": hol["S_E"],
-        "formula": "flux_density = C_E / (N_+ + N_-) = S_E",
-        "conjecture": "lim_{X→∞} flux_density ≠ 0 ⟺ arithmetische Orientierungsklasse",
+        "Phi_E": density,
+        "S_E_normalized": hol["S_E"],
+        "formula": "Phi_E = W_E(X) = C_E / (N_+ + N_-) = flux_density",
+        "conjecture": "lim_{X→∞} Phi_E ≠ 0 ⟺ arithmetische Orientierungsklasse",
+        "E_plus": sorted(C4_EDGE_POSITIVE),
+        "E_minus": sorted(C4_EDGE_NEGATIVE),
     }
+
+
+def Phi_E(max_p: int) -> dict[str, Any]:
+    """Alias für flux_density_limit — kanonisches Symbol Φ_E (collatz_eabc_diskrete_geometrie.md §2)."""
+    return flux_density_limit(max_p)
 
 
 def flux_density_series(limits: list[int] | None = None) -> dict[str, Any]:
@@ -424,10 +439,13 @@ def synthesis_report(
         "observables": {
             "C_E": flux["C_E"],
             "S_E": flux["S_E"],
+            "W_E": flux["W_E"],
+            "Phi_E": flux["Phi_E"],
             "flux_density": flux["flux_density"],
             "N_plus": flux["N_plus"],
             "N_minus": flux["N_minus"],
             "N_cycles": flux["N_cycles"],
+            "S_E_normalized": flux["S_E_normalized"],
         },
         "harmonic": {
             "inner_product_omega_h": report["inner_product_omega_h"],
@@ -493,6 +511,7 @@ def hodge_report(max_p: int = 100_000) -> dict[str, Any]:
         "topology": {
             "cycle": "E→A→B→C→E ≅ S^1",
             "H1": "Z",
+            "G_E": {"vertices": list(LABELS), "E_plus": sorted(C4_EDGE_POSITIVE), "E_minus": sorted(C4_EDGE_NEGATIVE)},
             "fundamental_edges": list(C4_EDGE_LABELS),
             "incidence_matrix": b.tolist(),
         },
@@ -514,10 +533,11 @@ def hodge_report(max_p: int = 100_000) -> dict[str, Any]:
         "orientation_information_test": orient,
         "boxed": {
             "central_conjecture": (
-                "lim_{X→∞} C_E(X)/N_cycles(X) ≠ 0 ⟺ nontrivial arithmetic orientation class"
+                "lim_{X→∞} Phi_E = lim W_E(X) ≠ 0 ⟺ nontrivial arithmetic orientation class"
             ),
-            "flux_not_geometry": "C_E = discrete AB flux Φ_E, not local edge geometry",
-            "W_E_reinterpretation": "S_W = normalized flux density ≈ tanh(Θ_E), Wilson loop not quasi-probability",
+            "Phi_E": "lim (N_+ - N_-)/(N_+ + N_-) = lim C_E/S_E = flux_density",
+            "flux_not_geometry": "Phi_E is normalized flux, not raw circulation C_E",
+            "E_plus_E_minus": "E^+={EA,AB,BC,CE}, E^-={EC,CB,BA,AE}",
         },
     }
 
@@ -542,7 +562,7 @@ def main() -> None:
     print("=== EABC Übergangsraum (Hodge/Fluss) ===")
     print(f"Spec(L) = {[f'{v:.4f}' for v in lap['eigenvalues']]}")
     print(f"⟨ω_E, h⟩ = {report['inner_product_omega_h']:+.4f}")
-    print(f"C_E = {flux['C_E']:+d}, flux_density = {flux['flux_density']:+.8f}")
+    print(f"C_E = {flux['C_E']:+d}, Phi_E = W_E = {flux['Phi_E']:+.8f}")
     print(f"Harmonic norm = {report['harmonic_holonomy']['harmonic_norm']:.4f}")
     print(f"JSON: {report['output_path']}")
 

@@ -11,6 +11,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from collatz_eabc_hodge_eabc import (
     C4_EDGE_LABELS,
+    C4_EDGE_NEGATIVE,
+    C4_EDGE_POSITIVE,
+    Phi_E,
     discrete_hodge_decomposition,
     edge_incidence_matrix_c4,
     flux_density_limit,
@@ -67,7 +70,21 @@ def test_flux_density_equals_S_E():
     flux = flux_density_limit(max_p)
     hol = holonomy_counts(max_p)
     assert flux["flux_density"] == hol["S_E"]
+    assert flux["Phi_E"] == hol["S_E"]
+    assert flux["W_E"] == hol["S_E"]
     assert flux["C_E"] == hol["D_E"]
+    assert flux["S_E"] == hol["N_plus"] + hol["N_minus"]
+
+
+def test_Phi_E_alias():
+    max_p = 20_000
+    assert Phi_E(max_p) == flux_density_limit(max_p)
+
+
+def test_E_plus_E_minus_edges():
+    assert C4_EDGE_POSITIVE == frozenset(("EA", "AB", "BC", "CE"))
+    assert C4_EDGE_NEGATIVE == frozenset(("EC", "CB", "BA", "AE"))
+    assert C4_EDGE_POSITIVE.isdisjoint(C4_EDGE_NEGATIVE)
 
 
 def test_orientation_information_recoverable_with_S():
@@ -99,7 +116,16 @@ def test_hodge_report_at_100k():
     report = hodge_report(100_000)
     assert len(report["laplacian_from_W"]["eigenvalues"]) == 4
     assert "inner_product_omega_h" in report
-    assert report["flux_density"]["flux_density"] == report["flux_density"]["S_E"]
+    assert report["flux_density"]["flux_density"] == report["flux_density"]["Phi_E"]
+    assert "E_plus" in report["topology"]["G_E"]
+
+
+def test_synthesis_report_writes_json(tmp_path):
+    out = tmp_path / "synthesis.json"
+    syn = synthesis_report(10_000, output=out)
+    assert out.exists()
+    assert syn["observables"]["Phi_E"] == syn["observables"]["W_E"]
+    assert "harmonic" in syn
 
 
 def test_flux_density_series_monotone_limits():
@@ -136,7 +162,8 @@ def test_synthesis_report_structure(tmp_path):
     report = synthesis_report(25_000, output=out)
     assert report["meta"]["theory"] == "collatz_eabc_diskrete_geometrie.md"
     assert "flux_density" in report["observables"]
-    assert report["observables"]["flux_density"] == report["observables"]["S_E"]
+    assert report["observables"]["flux_density"] == report["observables"]["Phi_E"]
+    assert report["observables"]["W_E"] == report["observables"]["Phi_E"]
     assert len(report["spectra"]["laplacian_from_W"]["eigenvalues"]) == 4
     assert len(report["spectra"]["magnetic_laplacian"]["eigenvalues"]) == 4
     assert "inner_product_omega_h" in report["harmonic"]

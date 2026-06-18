@@ -5,6 +5,7 @@
 **Tao-Labels:** Definition | Modellabbildung | Analogie | Forschungsfrage
 
 **Querverweise:**
+- `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^\pm$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — **drei mathematische Stufen** (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_kritische_abbildung.md` — §7 Halbkreis vs. gerade; Holonomie-Sensor $v_j=\gamma_{\mathrm{ref}}/\ell_j$
 - `collatz_eabc_chirale_polarisation.md` — **Photon-Helizität**, $\phi_R/\phi_L$, Stufe-2-Upgrade
@@ -12,7 +13,7 @@
 - `collatz_eabc_sagnac.md` — Sagnac-Intuition (didaktisch); gegenläufige Zyklen $\gamma^\pm$
 - `collatz_eabc_fehlerterm_hypothese.md` — Fehlerterm $D_E$, Prime Race $N_\pm$
 - `collatz_eabc_evolution_analytik.md` — Evolution Bell$\to$Sagnac$\to C_E\to\mathrm{Spec}(L_E)$
-- `collatz_eabc_zirkulationshypothese.md` — kanonische Zirkulation, $C_E$, $\mathrm{Hol}_E$
+- `collatz_eabc_zirkulationshypothese.md` — Detail: Zirkulation, $C_E$, Fehlerterm; kanonisch: `collatz_eabc_diskrete_geometrie.md`
 - `collatz_eabc_kritische_abbildung.py` — `path_time_T`, `compare_path_times`
 - `collatz_generalangriff_2026.md` — Gesamtarchitektur PR #54 / PR #59
 - `collatz_eabc_potential_geometrie.md` — Bohm/AB/Berry, $v=f(V)$, $\neq c$
@@ -75,9 +76,9 @@ Sagnac in der Physik: Interferenz zweier gegenläufiger Lichtwege in rotierendem
 
 ## 4. Offene Frage (zentral)
 
-Die **arithmetische Holonomie** (asymptotischer Grenzwert des Prime Race):
+Die **arithmetische Holonomie** (asymptotischer Grenzwert des Prime Race), kanonisch $\Phi_E$ (`collatz_eabc_diskrete_geometrie.md` §2):
 
-$$\mathrm{Hol}_E = \lim_{X\to\infty} \frac{N_+(X) - N_-(X)}{N_+(X) + N_-(X)}.$$
+$$\Phi_E = \mathrm{Hol}_E = \lim_{X\to\infty} W_E(X) = \lim_{X\to\infty} \frac{N_+(X) - N_-(X)}{N_+(X) + N_-(X)}.$$
 
 | Grenzfall | Interpretation |
 |-----------|----------------|

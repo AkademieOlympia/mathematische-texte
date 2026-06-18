@@ -1,10 +1,13 @@
-# EABC-Zirkulationshypothese (kanonisch)
+# EABC-Zirkulationshypothese
 
-**Status:** Kanonische Hypothese — Definition + Hauptvermutung + Fehlerterm-Hypothese  
+**Status:** Detailhypothese (Zählgrößen, Fehlerterm, Prime Race) — **primäre kanonische Formulierung:** `collatz_eabc_diskrete_geometrie.md`  
 **Branch:** `collatz/eabc-05-holonomie-fehlerterm` (PR #59)  
 **Tao-Labels:** Definition | Vermutung | Hypothese | Experiment | Analogie
 
+$$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.md} \text{ — } \Phi_E,\; E^\pm,\; \langle\omega_E,h\rangle.\;}$$
+
 **Querverweise:**
+- `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
@@ -23,20 +26,21 @@
 - `collatz_eabc_chirale_polarisation.md` — **Helizität** $\lambda=\pm 1$, $N_R/N_L$, $\phi_R/\phi_L$, Stufe-2-Upgrade
 - `collatz_eabc_brachistochrone.md` — $T_R$, $T_L$, Birefringenz-Analogie
 - `collatz_eabc_wigner_analog.md` — Wigner-Analogie: $W_E$ (4-Pfad) vs. $D_E$ (5-Zyklus), $W_{ab}$
-- `collatz_eabc_diskrete_geometrie.md` — **kanonische Geometrie-Synthese** (Programmshift, Zentralvermutung, Roadmap)
-- `collatz_eabc_uebergangsraum.md` — **Detail:** $C_4\cong S^1$, $\langle\omega_E,h\rangle$, $L_{\mathrm{mag}}$, Flussdichte
+- `collatz_eabc_uebergangsraum.md` — **Detail:** $C_4\cong S^1$, $\langle\omega_E,h\rangle$, $L_{\mathrm{mag}}$
 - `collatz_eabc_signierte_massstruktur.md` — signierte Maßstruktur auf $G_E$, arithmetische Wigner-Negativität
-- `collatz_eabc_hodge_eabc.py` — `flux_density_limit`, `harmonic_holonomy_component`, `magnetic_laplacian`
+- `collatz_eabc_hodge_eabc.py` — `Phi_E`, `flux_density_limit`, `harmonic_holonomy_component`, `magnetic_laplacian`
 - `collatz_eabc_kritische_abbildung.py` — Numerik $x_{n,v}$, Schaltkreis-Trajektorien, `edge_velocities_from_gaps`, `holonomy_sensor_trajectory`
 - `collatz_generalangriff_2026.md` — Gesamtarchitektur PR #54 / PR #59
 
 ---
 
-## 0. Boxed These
+## 0. Boxed These (verweist auf kanonisches Dokument)
 
-$$\boxed{\;\text{EABC nicht als Korrelationstheorie, sondern als Zirkulationstheorie.}\;}$$
+$$\boxed{\;\text{EABC = Theorie des priminduzierten Flusses auf } C_4\cong S^1 \text{ — nicht Zählstatistik ABCE/CEAB.}\;}$$
 
-$$\boxed{\;\text{Shift: } E(a,b) \;\to\; \oint_\gamma \alpha \quad\text{(pair statistics } \to \text{ cycle statistics).}\;}$$
+Vollständige paper-ready Definitionen ($G_E$, $E^\pm$, $\Phi_E$, Vermutungen): **`collatz_eabc_diskrete_geometrie.md`**.
+
+$$\boxed{\;\text{Shift: } E(a,b) \;\to\; \oint_\gamma \alpha \quad\text{(Paarstatistik } \to \text{ Zyklusgeometrie).}\;}$$
 
 **Epistemische Abgrenzung:** Das EABC-Programm ist **keine** Bell-Korrelationstheorie und **kein** quantenphysikalischer Effekt. Es ist **diskrete Zirkulation** auf einem gerichteten Restklassengraphen.
 
@@ -118,8 +122,8 @@ $$N_+(X) \sim N_-(X)\qquad (X\to\infty),$$
 und damit
 $$S_E(X) \to 0.$$
 
-**Zentralvermutung (arithmetische Orientierungsklasse).** Priminduzierter orientierter Fluss auf $C_4\cong S^1$ (`collatz_eabc_uebergangsraum.md` §9):
-$$\boxed{\;\lim_{X\to\infty}\frac{C_E(X)}{N_+(X)+N_-(X)} = \lim_{X\to\infty} S_E(X) \;\stackrel{?}{\neq}\; 0.\;}$$
+**Zentralvermutung (arithmetische Orientierungsklasse).** Normalisierter Magnetfluss (`collatz_eabc_diskrete_geometrie.md` §2):
+$$\boxed{\;\Phi_E = \lim_{X\to\infty} W_E(X) = \lim_{X\to\infty}\frac{C_E(X)}{N_+(X)+N_-(X)} \;\stackrel{?}{\neq}\; 0.\;}$$
 
 | Grenzfall | Folgerung |
 |-----------|-----------|
@@ -220,7 +224,8 @@ $$\boxed{\;\text{Welche Spektralinvarianten der EABC-Zirkulation unterscheiden P
 | $N_\pm(X)$ | `N_plus`, `N_minus` | `collatz_eabc_holonomie_fehlerterm` |
 | $\omega(e)$, $\alpha$ | `edge_omega`, `discrete_one_form` | `collatz_eabc_sagnac_circulation` |
 | $\mathrm{Spec}(L_E)$ | `eigenvalues_symmetrized` | `collatz_eabc_graph_laplacian` |
-| $\langle\omega_E,h\rangle$, Flussdichte | `inner_product_omega_h`, `flux_density_limit` | `collatz_eabc_hodge_eabc` |
+| $\Phi_E$, $W_E(X)$, Flussdichte | `Phi_E`, `flux_density_limit` | `collatz_eabc_hodge_eabc` |
+| $\langle\omega_E,h\rangle$ | `inner_product_omega_h` | `collatz_eabc_hodge_eabc` |
 | $L_{\mathrm{mag}}$ | `magnetic_laplacian` | `collatz_eabc_hodge_eabc` |
 | $N_R$, $N_L$, $\phi_R$, $\phi_L$ | `N_R`, `N_L`, `phi_R`, `phi_L` | `collatz_eabc_chirale_transport` |
 | $T_R$, $T_L$ | `T_R`, `T_L` | `collatz_eabc_brachistochrone` |

@@ -1,16 +1,16 @@
 # EABC: Übergangsraum-Geometrie ($C_4 \cong S^1$, Hodge, magnetischer Laplace)
 
-**Status:** Kanonische Geometrie + Hypothese + Experiment  
+**Status:** Hodge-Detail — **primäre kanonische Formulierung:** `collatz_eabc_diskrete_geometrie.md`  
 **Branch:** `collatz/eabc-05-holonomie-fehlerterm` (PR #59), `collatz/eabc-euklidische-hebung`  
 **Tao-Labels:** Definition | Analogie | Hypothese | Modellabbildung | Vermutung | Forschungsfrage
 
 **Querverweise:**
-- `collatz_eabc_diskrete_geometrie.md` — **kanonische Synthese** (Geometrie-Layer vor nächster Konjektur)
-- `collatz_eabc_zirkulationshypothese.md` — kanonisch: $N_\pm$, $C_E$, $D_E$, $S_E$, **Zentralvermutung Flussdichte**
+- `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^\pm$, $\Phi_E$, EABC-Vermutung
+- `collatz_eabc_zirkulationshypothese.md` — Detail: $N_\pm$, Fehlerterm $D_E$, Prime Race
 - `collatz_eabc_signierte_massstruktur.md` — signierte Maßstruktur, Wigner-Negativität
 - `collatz_eabc_wigner_analog.md` — historische Wigner-Lesart (sekundär zu Fluss/Wilson)
 - `collatz_eabc_zirkulation_spektral.md` — $\mathrm{Spec}(L_E)$, diskrete 1-Form $\alpha$
-- `collatz_eabc_hodge_eabc.py` — Numerik: $h$, $\langle\omega_E,h\rangle$, $L_{\mathrm{mag}}$, `flux_density_limit`
+- `collatz_eabc_hodge_eabc.py` — Numerik: $h$, $\langle\omega_E,h\rangle$, $L_{\mathrm{mag}}$, `Phi_E`, `flux_density_limit`
 - `collatz_generalangriff_2026.md` — Gesamtarchitektur PR #54 / PR #59
 
 ---
@@ -52,19 +52,22 @@ $$\boxed{\;\text{Schlüssel: nicht } h\neq 0,\text{ sondern priminduziertes } \l
 
 ---
 
-## 3. AB-Fluss: $C_E = N_+ - N_- = \Phi_E$
+## 3. AB-Fluss: $C_E = N_+ - N_-$, $\Phi_E = \lim W_E(X)$
 
-$$C_E(X) = N_+(X) - N_-(X) = \oint_{\gamma} \omega_E = \Phi_E$$
+$$C_E(X) = N_+(X) - N_-(X) = \oint_{\gamma} \omega_E$$
+
+$$\Phi_E = \lim_{X\to\infty} W_E(X) = \lim_{X\to\infty}\frac{C_E(X)}{N_+(X)+N_-(X)} \quad\text{(kanonisch: `collatz_eabc_diskrete_geometrie.md` §2).}$$
 
 **Analogie (didaktisch):** diskreter Aharonov–Bohm-Fluss — globale Orientierungsbilanz, **keine** lokale Krümmung der Kantenlängen.
 
 | Objekt | Formel | Bedeutung |
 |--------|--------|-----------|
-| $C_E$ | $N_+-N_-$ | Gesamtfluss |
-| $S_E$ | $C_E/(N_++N_-)$ | normierte Flussdichte |
-| $\widetilde{D}_E$ | $C_E/\sqrt{N_++N_-}$ | skaliertes Rauschen |
+| $C_E$ | $N_+-N_-$ | Gesamtfluss (Zirkulation) |
+| $S_E$ | $N_++N_-$ | Zyklusanzahl (Nenner) |
+| $W_E(X)$ | $C_E/S_E$ | normierte Flussdichte = $\Phi_E$ bei $X\to\infty$ |
+| $\widetilde{D}_E$ | $C_E/\sqrt{S_E}$ | skaliertes Rauschen |
 
-**Label:** $\Phi_E$ = **Definition**; AB-Analogie = **Analogie**.
+**Label:** $C_E$, $W_E$, $\Phi_E$ = **Definition**; AB-Analogie = **Analogie**.
 
 ---
 
@@ -132,7 +135,7 @@ dieselbe Struktur wie orientiertes Linienintegral auf geschlossenem $C_4$-Loop �
 
 $$\boxed{\;\omega_E = \text{priminduzierter orientierter Fluss auf } C_4\cong S^1.\;}$$
 
-$$\boxed{\;\lim_{X\to\infty}\frac{C_E(X)}{\#\{\text{erkannte Zyklen}\le X\}} = \lim_{X\to\infty} S_E(X) \;\stackrel{?}{\neq}\; 0.\;}$$
+$$\boxed{\;\lim_{X\to\infty} W_E(X) = \lim_{X\to\infty}\Phi_E \;\stackrel{?}{\neq}\; 0.\;}$$
 
 | Grenzfall | Folgerung |
 |-----------|-----------|

@@ -1,214 +1,172 @@
-# EABC: Diskrete Geometrie — kanonische Synthese
+# EABC: Diskrete Geometrie — kanonische Formulierung
 
-**Status:** Kanonischer Geometrie-Layer **vor** der nächsten konjekturellen Schicht  
+**Status:** Kanonischer Geometrie-Layer (paper-ready Definitionen)  
 **Branch:** `collatz/eabc-05-holonomie-fehlerterm` (PR #59), `collatz/eabc-euklidische-hebung`  
 **Tao-Labels:** Definition | Theorem | Analogie | Modellabbildung | Hypothese | Vermutung | Forschungsfrage
 
-**Rolle:** Dieses Dokument **bündelt** alle geometrischen Fäden in **eine** kanonische Lesart. Detaildokumente bleiben Quellen; hier steht die **Programmarchitektur** der diskreten Geometrie auf dem EABC-Übergangsraum.
+**Rolle:** **Primäres** EABC-Dokument. Alle Detailhypothesen (Zirkulation, Übergangsraum, Wigner-Legacy) verweisen hierher. Numerik: `collatz_eabc_hodge_eabc.py` (`Phi_E`, `flux_density_limit`, `synthesis_report`).
 
-**Querverweise (integriert, nicht dupliziert):**
+**Querverweise (Detail, nicht duplizieren):**
 | Thema | Detaildokument | Code |
 |-------|----------------|------|
-| Zirkulation, $N_\pm$, $C_E$ | `collatz_eabc_zirkulationshypothese.md` | `collatz_eabc_holonomie_fehlerterm.py` |
-| Signierte Maßstruktur | `collatz_eabc_signierte_massstruktur.md` | `collatz_eabc_hodge_eabc.py` |
-| Übergangsraum / Hodge / $L_{\mathrm{mag}}$ | `collatz_eabc_uebergangsraum.md` | `collatz_eabc_hodge_eabc.py` |
-| Holonomie-Stufen A/B/C | `collatz_eabc_holonomie_stufen.md` | `collatz_eabc_D_growth.py` |
+| Zählgrößen $N_\pm$, Fehlerterm | `collatz_eabc_zirkulationshypothese.md` | `collatz_eabc_holonomie_fehlerterm.py` |
+| Hodge, $L_{\mathrm{mag}}$ | `collatz_eabc_uebergangsraum.md` | `collatz_eabc_hodge_eabc.py` |
+| Signierte Maßstruktur | `collatz_eabc_signierte_massstruktur.md` | `collatz_eabc_wigner_field.py` |
 | Epistemik Physik vs. Modell | `collatz_eabc_epistemik_physik.md` | — |
-| Wigner / Wilson-Neulesung | `collatz_eabc_wigner_analog.md` | `collatz_eabc_wigner_field.py` |
-| Chirale Polarisation | `collatz_eabc_chirale_polarisation.md` | `collatz_eabc_chirale_transport.py` |
-| Potentialgeometrie Bohm/AB/Berry | `collatz_eabc_potential_geometrie.md` | `collatz_eabc_potential_phase.py` |
-| Brachistochrone / Fermat | `collatz_eabc_brachistochrone.md` | `collatz_eabc_brachistochrone.py` |
-| Kritische Abbildung | `collatz_eabc_kritische_abbildung.md` | `collatz_eabc_kritische_abbildung.py` |
-| Spektralgeometrie | `collatz_eabc_zirkulation_spektral.md` | `collatz_eabc_graph_laplacian.py` |
+| Wigner-Legacy (4-Pfad) | `collatz_eabc_wigner_analog.md` | `collatz_eabc_wigner_field.py` |
 | Algebraischer Nebenzweig | `collatz_eabc_euklidische_hebung.md` | `collatz_eabc_euklid_hebung.py` |
 
-**Numerik (Synthese):** `synthesis_report(X)` in `collatz_eabc_hodge_eabc.py` → `collatz_eabc_diskrete_geometrie_synthesis.json`
+---
+
+## 0. These (boxed)
+
+$$\boxed{\;\text{EABC = Theorie des priminduzierten Flusses auf dem Kreisgraphen } C_4\cong S^1.\;}$$
+
+**Nicht** primär: „wie oft tritt ABCE vs. CEAB auf?" (Zählstatistik).  
+**Sondern:** ob die Primstruktur einen **bevorzugten Windungssinn** auf dem elementaren Zyklus induziert.
 
 ---
 
-## 1. Programmshift: Zählung → Geometrie auf gerichtetem $C_4 \cong S^1$
+## 1. Zentrale Frage
 
-**Alt:** Primfolge $p_n$ als Punktstatistik; Korrelationen $E(a,b)$; Zählungen $\#(\cdots)$.
-
-**Neu:** Geometrie der **gerichteten Übergänge** auf dem elementaren Zyklus
-$$E \xrightarrow{EA} A \xrightarrow{AB} B \xrightarrow{BC} C \xrightarrow{CE} E \;\cong\; S^1.$$
-
-Topologie: $H^1(S^1) \cong \mathbb{Z}$. Es existiert **immer** ein nichttrivialer harmonischer 1-Formen-Generator $h$.
-
-$$\boxed{\;\text{Shift: } E(a,b) \;\to\; \oint_\gamma \omega_E \quad\text{(Paarstatistik } \to \text{ Zyklusgeometrie).}\;}$$
-
-**Label:** $C_4 \cong S^1$, $H^1 \cong \mathbb{Z}$ = **Definition** / **Theorem** (Topologie); Priminduktion von $\omega_E$ = **Experiment**.
+$$\boxed{\;\text{Erzeugt die Primstruktur eine bevorzugte Windungsrichtung auf } C_4\cong S^1\text{?}\;}$$
 
 ---
 
-## 2. Fundamentalraum: Kanten $\{EA, AB, BC, CE\}$, nicht Knoten
+## 2. Paper-Definitionen (boxed)
 
-$$\boxed{\;\text{Fundamentale Objekte sind Kanten auf } C_4,\text{ nicht Knoten }\{E,A,B,C\}\text{ allein.}\;}$$
+**Kreisgraph:**
+$$G_E = (V, E), \qquad V = \{E, A, B, C\}.$$
 
-| Ebene | Objekt | Rolle |
-|-------|--------|-------|
-| 0-Formen | $\phi$ auf $V=\{E,A,B,C\}$ | Knotenpotentiale (sekundär) |
-| **1-Formen** | $\omega_E = w_{EA}\,EA + w_{AB}\,AB + w_{BC}\,BC + w_{CE}\,CE$ | **primäre Observable** |
-| 2-Formen | $C_4$ als einzige Zelle | geschlossene Orientierung |
+**Orientierte Kantenmengen** (Vorwärts- bzw. Rückwärtsorientierung auf $C_4$):
+$$E^+ = \{EA, AB, BC, CE\}, \qquad E^- = \{EC, CB, BA, AE\}.$$
 
-Der **Übergangsraum** (`collatz_eabc_uebergangsraum.md` §1) ist der Kantenraum des $C_4$-Komplexes. Der gerichtete Zustandsgraph $G_E=(V,E,w)$ aus der $W$-Matrix (`collatz_eabc_signierte_massstruktur.md` §2) lebt auf denselben Übergängen — Netzwerktheorie, nicht klassische Zahlentheorie.
+**Elementarer Vorwärtszyklus:**
+$$E \xrightarrow{EA} A \xrightarrow{AB} B \xrightarrow{BC} C \xrightarrow{CE} E.$$
 
-**Numerik:** `edge_incidence_matrix_c4`, `omega_edge_from_holonomy`.
+**5-Fenster-Zählgrößen** (Prim-Obergrenze $X$):
+$$N_+(X) := \#\{n : p_{n+4}\le X,\; C_n^{(5)} = \mathrm{ABCEA}\},$$
+$$N_-(X) := \#\{n : p_{n+4}\le X,\; C_n^{(5)} = \mathrm{CEABC}\},$$
+mit $C_n^{(5)} := (X_n, X_{n+1}, X_{n+2}, X_{n+3}, X_{n+4})$ und $X_k := \kappa(p_k)$.
+
+**Zirkulation und normierte Observable:**
+$$C_E(X) := N_+(X) - N_-(X), \qquad S_E(X) := N_+(X) + N_-(X),$$
+$$W_E(X) := \frac{C_E(X)}{S_E(X)} = \frac{N_+(X) - N_-(X)}{N_+(X) + N_-(X)}.$$
+
+**Normalisierter arithmetischer Magnetfluss:**
+$$\Phi_E := \lim_{X\to\infty} \frac{N_+(X) - N_-(X)}{N_+(X) + N_-(X)} = \lim_{X\to\infty} \frac{C_E(X)}{S_E(X)} = \lim_{X\to\infty} W_E(X).$$
+
+| $\Phi_E$ | Lesart |
+|----------|--------|
+| $\Phi_E = 0$ | keine bevorzugte Orientierung (asymptotische Symmetrie) |
+| $\Phi_E \neq 0$ | stabile **arithmetische Orientierungsklasse** |
+
+$$\boxed{\;\Phi_E \;\stackrel{?}{\neq}\; 0.\;}$$
+
+**Label:** $G_E$, $E^\pm$, $N_\pm$, $C_E$, $S_E$, $W_E(X)$, $\Phi_E$ = **Definition**; $\Phi_E \neq 0$ = **Vermutung**.
+
+**Legacy-Aliase:** $D_E := C_E$; $\mathrm{Hol}_E := \Phi_E$; `flux_density` = $W_E(X)$ = $S_E^{-1}C_E$ in Python.
+
+**Numerik:** `Phi_E(X)` / `flux_density_limit(X)` in `collatz_eabc_hodge_eabc.py`.
 
 ---
 
-## 3. Observablen-Hierarchie: $D_E$, $C_E$, $S_E$, $W_E$ — Flussdichte, keine Wahrscheinlichkeit
+## 3. Drei Ebenen
 
-| Symbol | Träger | Formel | Lesart |
-|--------|--------|--------|--------|
-| $D_E$ | 5-Zyklus | $N_+ - N_-$ | Zirkulationsdefekt = $C_E$ |
-| $C_E$ | 5-Zyklus | $\oint_\gamma \omega_E = \Phi_E$ | diskreter AB-Fluss |
-| $S_E$ | 5-Zyklus | $C_E/(N_++N_-)$ | normierte Flussdichte |
-| $W_E$ | 4-Pfad | $\#\mathrm{ABCE}-\#\mathrm{CEAB}$ | Pfadorientierung |
-| $S_W$ | 4-Pfad | $W_E/(N_+^{(4)}+N_-^{(4)})$ | normierte Pfad-Flussdichte |
+$$\boxed{\;\text{Zählung} \;\to\; \text{orientierter Fluss} \;\to\; \text{harmonische Kohomologieklasse.}\;}$$
 
-**Neulesung (kanonisch):**
-$$S_W,\; S_E \;\approx\; \tanh\Theta_E \quad\text{(Wilson-Schleifenwerte / normierte Flussdichten — \textbf{nicht} Quasi-Wahrscheinlichkeiten).}$$
+| Stufe | Objekt | Lesart |
+|-------|--------|--------|
+| 1 — Zählung | $N_\pm(X)$ | wie oft welche Orientierung im Primfenster |
+| 2 — orientierter Fluss | $\omega_E$ auf $E^+ \cup E^-$, $C_E = \oint_\gamma \omega_E$ | priminduzierte 1-Form auf Kanten |
+| 3 — harmonische Klasse | $h \in H^1(C_4,\mathbb{Z})$, $\langle\omega_E, h\rangle$ | Kohomologie-Anteil des Flusses |
 
-4-Block ($W_E$, $S_W$) und 5-Block ($D_E=C_E$, $S_E$) strikt trennen (`collatz_eabc_wigner_analog.md` §0). Die historische Wigner-Analogie bleibt didaktisch; die **geometrische** Lesart ist Wilson-Fluss auf $S^1$.
-
-**Label:** $C_E$, $S_E$, $S_W$ = **Definition**; $\tanh\Theta_E$-Analogie = **Analogie**; Wigner-Quasi-Wahrscheinlichkeit = **sekundäre Analogie**.
+Topologie: $C_4 \cong S^1$, $H^1(S^1) \cong \mathbb{Z}$. Der Generator $h$ **existiert trivial**; die Frage ist, ob die Primfolge ihn **asymmetrisch** besetzt.
 
 ---
 
-## 4. Harmonische Klasse $h$; Schlüssel: $\langle\omega_E, h\rangle \neq 0$ priminduziert
+## 4. Vermutungen (boxed)
 
-Auf $C_4 \cong S^1$ existiert der kanonische harmonische Generator $h \in H^1(S^1)$ (alle Vorwärtskanten $+1$, normiert).
+$$\boxed{\;\text{EABC-Vermutung: Der priminduzierte EABC-Fluss trägt eine nichttriviale harmonische Komponente.}\;}$$
 
-$$\boxed{\;\text{Nicht } h \neq 0 \text{ (trivial), sondern priminduziertes } \langle\omega_E, h\rangle \neq 0 \text{ asymptotisch.}\;}$$
+$$\boxed{\;\langle\omega_E,\, h\rangle \neq 0,\quad h \text{ kanonische harmonische 1-Form auf dem Kreisgraphen.}\;}$$
 
-Die Primfolge induziert $\omega_E$ als Kanten-1-Form; die Paarung misst den **Fluss entlang der harmonischen Klasse** — bevorzugte Orientierung von ABCEA vs. CEABC.
+- Existenz von $h$: **trivial** ($H^1 \cong \mathbb{Z}$).
+- Nichttrivialität: Primfolge besetzt die Klasse **asymptotisch asymmetrisch** — nicht lokale Kantengeometrie allein.
+
+Äquivalent zur Flussdichte-Vermutung:
+$$\Phi_E = \lim_{X\to\infty} W_E(X) \;\stackrel{?}{\neq}\; 0 \quad\Longleftrightarrow\quad \lim_{X\to\infty} \langle\omega_E, h\rangle / \|\omega_E\| \;\stackrel{?}{\neq}\; 0.$$
+
+**Numerik:** `harmonic_holonomy_component`, `inner_product_omega_h`.
+
+---
+
+## 5. Physikalische Analogie (nicht Wigner-primär)
+
+**Primäre Analogien** (didaktisch, kein Physikanspruch):
+
+| Analogie | EABC-Objekt | Eigenschaft |
+|----------|-------------|-------------|
+| Aharonov–Bohm | $\Phi_E$, $C_E = \oint \omega_E$ | lokal unsichtbar, global messbar |
+| Sagnac | $\gamma^+$ vs. $\gamma^-$ auf $C_4$ | gegenläufige Umläufe, Schleifendefekt |
+| magnetischer Laplace | $L_{\mathrm{mag}} = D - U$, $U_{ij} = A_{ij} e^{i\theta_{ij}}$ | chirale Phasen aus Orientierung |
+
+$$\boxed{\;\text{Lokal unsichtbar, global messbarer Schleifendefekt — nicht „wer altert langsamer?".}\;}$$
+
+**Sekundär (Legacy):** Wigner-Quasi-Wahrscheinlichkeit, 4-Pfad-Zählung $\#\mathrm{ABCE}-\#\mathrm{CEAB}$ — `collatz_eabc_wigner_analog.md`.
+
+**Label:** AB / Sagnac / $L_{\mathrm{mag}}$ = **Analogie** / **Modellabbildung**; kein SRT, kein $c$ — `collatz_eabc_epistemik_physik.md`.
+
+---
+
+## 6. Harmonische Klasse und Hodge
+
+Kanonischer Generator $h \in H^1(S^1)$: alle Vorwärtskanten $E^+$ tragen $+1$, normiert.
+
+Priminduzierte Kanten-1-Form:
+$$\omega_E = \sum_{e \in E^+ \cup E^-} w_e \cdot e, \qquad C_E = \sum_{e \in E^+} w_e - \sum_{e \in E^-} w_e.$$
 
 **Hodge-Zerlegung** (Stub auf $C_4$):
 $$\omega_E = d\phi + \delta\psi + h_{\mathrm{harm}}.$$
 
-**Numerik:** `harmonic_form_c4`, `inner_product_omega_h`, `harmonic_holonomy_component`, `discrete_hodge_decomposition`.
-
-**Label:** $h$ = **Definition**; $\langle\omega_E,h\rangle \neq 0$ bei endlichem $X$ = **Experiment**; asymptotisches $\neq 0$ = **Vermutung** (§7).
-
----
-
-## 5. AB-Fluss und Sagnac: $C_E = \Phi_E$; $\oint \omega_E$
-
-$$C_E(X) = N_+(X) - N_-(X) = \oint_{\gamma} \omega_E = \Phi_E.$$
-
-**Analogie (didaktisch):** diskreter Aharonov–Bohm-Fluss — globale Orientierungsbilanz, **keine** lokale Kantenkrümmung (`collatz_eabc_potential_geometrie.md` §2).
-
-**Sagnac-Struktur:**
-$$\Delta_E \propto \oint_{\gamma} \omega_E$$
-dieselbe Struktur wie orientiertes Linienintegral auf geschlossenem $C_4$-Loop (`collatz_eabc_sagnac.md` — Intuition only; Kern = Zirkulationshypothese).
-
-Gegenläufige Orientierungen $\gamma^+$ (ABCEA) und $\gamma^-$ (CEABC) auf demselben $C_4$-Kreis; Chiralität als diskrete Helizität $\lambda=\pm 1$ (`collatz_eabc_chirale_polarisation.md`).
-
-**Label:** $\Phi_E = C_E$ = **Definition**; AB-/Sagnac-Bild = **Analogie**.
-
----
-
-## 6. Magnetischer Laplace $L_{\mathrm{mag}} = D - U$
-
-Reeller Graph-Laplace (Knotenraum):
-$$L = D - W, \qquad \lambda_1 \le \cdots \le \lambda_4.$$
-
-Near-zero $\lambda_2 \approx 0$: fast erhaltene chirale Struktur (Dirac-/Index-/Hodge-Analog, `collatz_eabc_uebergangsraum.md` §5).
-
-**Magnetischer Laplace** (besser für chirales Programm):
+**Magnetischer Laplace:**
 $$L_{\mathrm{mag}} = D - U, \qquad U_{ij} = A_{ij}\, e^{i\theta_{ij}},$$
-mit $\theta_{ij}$ aus ABCEA/CEABC-Orientierungen bzw. $W_E(i,j;N)$.
+$\theta_{ij}$ aus ABCEA/CEABC-Orientierungen.
 
-**Numerik:** `laplacian_from_W`, `magnetic_laplacian`, `magnetic_laplacian_eigenvalues`.
-
-**Label:** $L=D-W$ = **Definition**; $L_{\mathrm{mag}}$ = **Modellabbildung**; physikalisches Magnetfeld = **nicht behauptet**.
+**Numerik:** `harmonic_form_c4`, `discrete_hodge_decomposition`, `magnetic_laplacian`.
 
 ---
 
-## 7. ZENTRALE VERMUTUNG (boxed)
+## 7. Epistemische Karte
 
-$$\boxed{\;\omega_E = \text{priminduzierter orientierter Fluss auf } C_4 \cong S^1.\;}$$
-
-$$\boxed{\;\lim_{X\to\infty} \frac{C_E(X)}{\#\{\text{erkannte Zyklen} \le X\}} = \lim_{X\to\infty} S_E(X) \;\stackrel{?}{\neq}\; 0.\;}$$
-
-| Grenzfall | Folgerung |
-|-----------|-----------|
-| $\lim S_E = 0$ | keine bevorzugte globale Orientierung (Hauptterm-Symmetrie) |
-| $\lim S_E \neq 0$ | nichttriviale **arithmetische Orientierungsklasse** |
-
-**Konkurrenz:** Hauptterm-Vermutung $N_+ \sim N_-$ ⇒ $S_E \to 0$ (`collatz_eabc_zirkulationshypothese.md` §4). Die Orientierungsklassen-Vermutung ist die **geometrische** Umformulierung: trägt die Primfolge einen stabilen Fluss entlang $h$?
-
-**Numerik:** `flux_density_limit`, `flux_density_series`, `synthesis_report`.
-
-**Label:** Orientierungsklassen-Vermutung = **Vermutung** / **Forschungsfrage**.
+| Inhalt | Label |
+|--------|-------|
+| $G_E$, $E^\pm$, $N_\pm$, $C_E$, $W_E(X)$, $\Phi_E$ | **Definition** |
+| $C_4 \cong S^1$, $H^1 \cong \mathbb{Z}$, Existenz von $h$ | **Theorem** |
+| Priminduktion von $\omega_E$ | **Experiment** |
+| $\Phi_E \neq 0$, $\langle\omega_E,h\rangle \neq 0$ | **Vermutung** |
+| AB / Sagnac / $L_{\mathrm{mag}}$ | **Analogie** / **Modellabbildung** |
+| Wigner-4-Pfad-Legacy | **Analogie** (sekundär) |
+| $\zeta$-Eigenmoden | **Forschungsfrage** (spekulativ) |
 
 ---
 
-## 8. Korkenzieher-Metapher (Modellabbildung)
+## 8. Roadmap: Code vs. offen
 
-Ein **Korkenzieher** ist ein orientierter Umlauf mit **aufgewickelter Phase**: jede Umdrehung akkumuliert einen festen Winkel, bevor ein neuer konzeptioneller Zustand (Herausziehen des Pfropfens) möglich wird. Auf $C_4 \cong S^1$ entspricht das der **Phasenakkumulation entlang des Zyklus** — $\oint \omega_E$, $\langle\omega_E, h\rangle$, $S_E \approx \tanh\Theta_E$ — **bevor** die nächste Schicht (arithmetische Orientierungsklasse, Lean-Beweis, $\zeta$-Eigenmoden) formal wird. Die Metapher bündelt: gerichteter Umlauf (ABCEA vs. CEABC), harmonische Klasse $h \in H^1(S^1)$, und den diskreten Fluss $\Phi_E$ als **gespeicherte Windung**, nicht als lokale Knotenstatistik.
-
-**Label:** Korkenzieher = **Modellabbildung** (didaktisch); keine Physikbehauptung.
-
----
-
-## 9. Epistemische Karte
-
-| Inhalt | Label | Wo |
-|--------|-------|-----|
-| $C_4 \cong S^1$, $H^1 \cong \mathbb{Z}$ | Theorem / Definition | §1, `collatz_eabc_uebergangsraum.md` |
-| Kantenfundament $\{EA,AB,BC,CE\}$ | Definition | §2 |
-| $C_E = N_+ - N_-$, $S_E = C_E/N_{\mathrm{cycles}}$ | Definition | `collatz_eabc_zirkulationshypothese.md` |
-| $S_W, S_E \approx \tanh\Theta_E$ (Wilson) | Analogie | §3, `collatz_eabc_signierte_massstruktur.md` |
-| Wigner-Quasi-Wahrscheinlichkeit | Analogie (sekundär) | `collatz_eabc_wigner_analog.md` |
-| $\langle\omega_E, h\rangle$ priminduziert | Experiment / Hypothese | §4 |
-| AB-Fluss, Sagnac $\oint\omega$ | Analogie | §5, `collatz_eabc_potential_geometrie.md` |
-| $L_{\mathrm{mag}} = D - U$ | Modellabbildung | §6 |
-| **Zentralvermutung** $\lim S_E \neq 0$ | Vermutung | §7 |
-| Korkenzieher | Modellabbildung | §8 |
-| Bohm/AB/Berry, Brachistochrone | Analogie / Modell | `collatz_eabc_potential_geometrie.md`, `collatz_eabc_brachistochrone.md` |
-| Kritische Abbildung $s_v(x)$ | Modellabbildung | `collatz_eabc_kritische_abbildung.md` |
-| Chirale Helizität $\lambda=\pm 1$ | Modellabbildung | `collatz_eabc_chirale_polarisation.md` |
-| Arithmetische Wigner-Negativität | Hypothese / offen | `collatz_eabc_signierte_massstruktur.md` §7 |
-| Kein SRT, kein $c$, kein Zwillingsparadoxon | Abgrenzung | `collatz_eabc_epistemik_physik.md` |
-| $\zeta$-Nullstellen als Eigenmoden | Forschungsfrage (spekulativ) | `collatz_eabc_uebergangsraum.md` §10 |
-
----
-
-## 10. Roadmap: Lean/Code vs. offen
-
-### Implementiert (Python)
+### Implementiert
 
 | Funktion | Modul |
 |----------|-------|
-| $N_\pm$, $C_E$, $S_E$, $\widetilde{D}_E$ | `collatz_eabc_holonomie_fehlerterm.py` |
-| $W_E(i,j;N)$, Informationsüberschuss | `collatz_eabc_wigner_field.py` |
-| $h$, $\langle\omega_E,h\rangle$, Hodge-Stub | `collatz_eabc_hodge_eabc.py` |
-| `flux_density_limit`, `synthesis_report` | `collatz_eabc_hodge_eabc.py` |
-| $L_{\mathrm{mag}}$, `magnetic_laplacian_eigenvalues` | `collatz_eabc_hodge_eabc.py` |
-| $\mathrm{Spec}(L_E)$ | `collatz_eabc_graph_laplacian.py` |
-| $\phi_R/\phi_L$, chiraler Transport | `collatz_eabc_chirale_transport.py` |
-| Bohm/AB/Berry-Stubs | `collatz_eabc_potential_phase.py` |
-| Brachistochrone $T_R/T_L$ | `collatz_eabc_brachistochrone.py` |
-| Kritische Abbildung, Holonomie-Sensor | `collatz_eabc_kritische_abbildung.py` |
-| Wachstum Fall A/B/C | `collatz_eabc_D_growth.py` |
-
-### Lean (PR #54 Kern)
-
-| Datei | Inhalt |
-|-------|--------|
-| `CollatzEabc/HolonomieFehlerterm.lean` | Holonomie-Fehlerterm-Stub |
-| `CollatzEabc/Core.lean`, `Kappa.lean`, `Mod12Matrix.lean` | $\kappa$, mod-$12$-Struktur |
-| `CollatzEabc/Open.lean` | offene Ziele |
+| $N_\pm$, $C_E$, $S_E$, $W_E(X)$ | `collatz_eabc_holonomie_fehlerterm.py` |
+| `Phi_E`, `flux_density_limit`, `synthesis_report` | `collatz_eabc_hodge_eabc.py` |
+| $E^+$, $E^-$ (`C4_EDGE_POSITIVE`, `C4_EDGE_NEGATIVE`) | `collatz_eabc_hodge_eabc.py` |
+| $\langle\omega_E,h\rangle$, $L_{\mathrm{mag}}$ | `collatz_eabc_hodge_eabc.py` |
 
 ### Offen
 
-- Asymptotischer Beweis $\lim S_E = 0$ oder $\neq 0$ (`collatz_eabc_holonomie_beweisversuch.md`)
-- Vollständige diskrete Hodge-Theorie auf erweitertem Übergangsraum (nicht nur $C_4$-Stub)
-- Lean: $\langle\omega_E,h\rangle$, Flussdichte, $L_{\mathrm{mag}}$
-- Arithmetische Wigner-Negativität: Kantenfeld aus Marginalen rekonstruierbar?
-- $\zeta$-Eigenmoden-Hypothese (spekulativ)
+- Asymptotischer Beweis $\Phi_E = 0$ oder $\neq 0$
+- Lean: $\Phi_E$, harmonische Paarung, $L_{\mathrm{mag}}$
+- Vollständige diskrete Hodge-Theorie auf erweitertem Übergangsraum
 
 ---
 
@@ -216,7 +174,7 @@ Ein **Korkenzieher** ist ein orientierter Umlauf mit **aufgewickelter Phase**: j
 
 ```bash
 python3 collatz_eabc_hodge_eabc.py --max-p 1000000
-python3 -c "from collatz_eabc_hodge_eabc import synthesis_report; import json; print(json.dumps(synthesis_report(10**6), indent=2))"
+python3 -c "from collatz_eabc_hodge_eabc import Phi_E; import json; print(json.dumps(Phi_E(10**6), indent=2))"
 pytest tests/test_eabc_hodge_eabc.py -q
 ```
 
