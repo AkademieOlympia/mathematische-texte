@@ -207,7 +207,53 @@ Gesamtschritt auf $x$-Achse: $\sum \ell = 12$; Gesamt-$\gamma$-Anstieg: $12$ bei
 
 ---
 
-## 7. Python-Symbolzuordnung
+## 7. Zwei Wege: Halbkreis vs. gerade
+
+**Epistemische Abgrenzung:** Dieser Abschnitt vergleicht **reine euklidische Weglängen** in der komplexen Ebene — **kein** Einstein-Zwillingsparadoxon, **keine** SRT-Zeitdilatation. Einheitsgeschwindigkeit $|dz/dt| = 1$ ⇒ **Rückkehrzeit = Gesamtweglänge**.
+
+**Quelle:** $P = (\tfrac12, 0)$. Besuchspunkte entlang ABCEA (bzw. CEABC) via Holonomie-Sensor $s_v(x_j)$ mit $v_j = \gamma_{\mathrm{ref}}/\ell_j$.
+
+### 7.1 Gerader Polygonzug („Soldaten“-Photon)
+
+Zwischen aufeinanderfolgenden Besuchspunkten $z_k$ geradlinige Segmente, am Ende Rückkehr $z_n \to P$:
+
+$$L_{\mathrm{lin}} = \sum_{k=0}^{n-1} |z_{k+1} - z_k| + |z_0 - z_n|,
+\qquad T_{\mathrm{lin}} = L_{\mathrm{lin}}.$$
+
+### 7.2 Verkettete Halbkreisbögen
+
+Zwischen $z_k$ und $z_{k+1}$: Halbkreis in der **oberen Halbebene** mit Durchmesser = Sehne $z_k z_{k+1}$:
+
+$$L_{\mathrm{semi}}(z_k, z_{k+1}) = \frac{\pi}{2}\,|z_{k+1} - z_k|,
+\qquad
+T_{\mathrm{semi}} = \sum_{k} L_{\mathrm{semi}}(z_k, z_{k+1}) + L_{\mathrm{semi}}(z_n, z_0).$$
+
+$$\boxed{\;T_{\mathrm{semi}} / T_{\mathrm{lin}} = \pi/2 \quad\text{(wenn alle Segmente dieselbe Sehnenlänge haben).}\;}$$
+
+### 7.3 Beispiel ABCEA, $\gamma_{\mathrm{ref}} = \gamma_1$, Lücken $(2,4,2,4)$
+
+Holonomie-Sensor: konstante Höhenschritte $\Delta\gamma_j = \gamma_1$. Besuchspunkte
+$z_k = \tfrac12 + \mathrm{i}\,k\,\gamma_1$ für $k = 0,1,2,3,4$.
+
+| Segment | Sehne $|z_{k+1}-z_k|$ |
+|---------|----------------------|
+| $P \to$ 1. Knoten | $\gamma_1$ |
+| 1. $\to$ 2. | $\gamma_1$ |
+| 2. $\to$ 3. | $\gamma_1$ |
+| 3. $\to$ 4. | $\gamma_1$ |
+| 4. $\to P$ | $4\gamma_1$ |
+
+$$T_{\mathrm{lin}} = 8\,\gamma_1 \approx 113{,}078,\qquad
+T_{\mathrm{semi}} = 4\pi\,\gamma_1 \approx 177{,}646,\qquad
+\frac{T_{\mathrm{semi}}}{T_{\mathrm{lin}}} = \frac{\pi}{2} \approx 1{,}570796.$$
+
+**ABCEA vs. CEABC:** Bei gleichem Lückenmuster $(2,4,2,4)$ und gleichen $v_j$ sind die **Gesamtweglängen** für beide Orientierungen identisch — es gibt **keine** geometrische Asymmetrie analog zum Zwillingsparadoxon; der Holonomie-Kontrast $\pm 1$ betrifft Orientierung/Zirkulation, nicht die euklidische Pfadlänge.
+
+**Label:** Weglängenvergleich = **Modellabbildung** / **Geometrie** (kein Physikanspruch).
+
+---
+
+## 8. Python-Symbolzuordnung
 
 | LaTeX | Python | Modul |
 |-------|--------|-------|
@@ -220,6 +266,9 @@ Gesamtschritt auf $x$-Achse: $\sum \ell = 12$; Gesamt-$\gamma$-Anstieg: $12$ bei
 | Holonomie-Sensor | `holonomy_sensor_trajectory(orientation, gaps, gamma_ref=...)` | `collatz_eabc_kritische_abbildung` |
 | ABCEA vs CEABC | `compare_holonomy_sensor_trajectories(...)` | `collatz_eabc_kritische_abbildung` |
 | Prim-Fenster | `prime_window_gap_samples(max_p, limit)` | `collatz_eabc_kritische_abbildung` |
+| Gerader Rundweg | `linear_round_trip_time(trajectory_points)` | `collatz_eabc_kritische_abbildung` |
+| Halbkreis-Kette | `semicircle_chain_time(trajectory_points)` | `collatz_eabc_kritische_abbildung` |
+| Weglängenvergleich | `compare_path_times(orientation, gamma_ref=...)` | `collatz_eabc_kritische_abbildung` |
 
 ---
 
