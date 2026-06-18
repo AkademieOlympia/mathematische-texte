@@ -5,7 +5,8 @@
 **Tao-Labels:** Definition | Vermutung | Hypothese | Experiment
 
 **Querverweise:**
-- `collatz_eabc_sagnac.md` — **kanonische primäre Metapher:** $\gamma^\pm$, $\Delta_E$, $S_E$ (Sagnac-Observable)
+- `collatz_eabc_zirkulation_spektral.md` — **kanonische reine Mathematik:** Korrelation → Zirkulation $C_E$, $D_E$, $\mathrm{Spec}(L_E)$
+- `collatz_eabc_sagnac.md` — **didaktischer Einstieg:** $\gamma^\pm$, $\Delta_E$, $S_E$ (verweist auf zirkulation_spektral)
 - `collatz_eabc_holonomie_beweisversuch.md` — analytischer Beweisversuch (Lemma-Skizzen, HL-Argument, Satzskizze)
 - `collatz_eabc_zyklus_holonomie.md` — Hierarchie Klasse→Kante→Pfad→Zyklus→Holonomie
 - `collatz_eabc_bell_holonomie.md` — **sekundäre** Analogie Bell/CHSH; $P_{\mathrm{same}}$, CHSH auf $G_E$ (nicht primäre Metapher)
@@ -14,6 +15,7 @@
 - `collatz_eabc_transport.md` — Übergangsgraph $G_E$, Transport $T_n$
 - `collatz_eabc_holonomie_fehlerterm.py` / `.json` — Numerik $N_\pm$, $D_E$, $\widetilde{D}_E$
 - `collatz_eabc_sagnac_circulation.py` / `.json` — Zirkulation $C_E(X)$, $\omega(e)$, diskrete 1-Form
+- `collatz_eabc_graph_laplacian.py` — $\mathrm{Spec}(L_E)$, Spektrallücke, Bezug zu $C_E$, $D_E$
 - `collatz_generalangriff_2026.md` — Gesamtarchitektur PR #54 / PR #59
 
 ---
@@ -113,6 +115,12 @@ $$\boxed{\;\mathrm{Hol}_E = 0\;\text{im Hauptterm, aber}\;D_E(X)\;\text{kann nic
 
 $$\boxed{\;\text{ABCE/CEAB-Asymmetrie} \;\Rightarrow\; \text{Fehlerterm/Bias, nicht Hauptterm-Holonomie.}\;}$$
 
+$$\boxed{\;\text{Besitzt die durch die Primzahlfolge induzierte EABC-Zirkulation einen nichttrivialen Fehlerterm?}\;}$$
+
+$$\boxed{\;\text{Welche Spektralinvarianten der EABC-Zirkulation unterscheiden Prim- von Nichtprim-Normschalen?}\;}$$
+
+(Vollständige Formulierung: `collatz_eabc_zirkulation_spektral.md` §8.)
+
 ---
 
 ## 8. Epistemische Tabelle
@@ -127,11 +135,13 @@ $$\boxed{\;\text{ABCE/CEAB-Asymmetrie} \;\Rightarrow\; \text{Fehlerterm/Bias, ni
 
 ---
 
-## 9. Primäre Metapher: Sagnac; sekundär: Bell/CHSH
+## 9. Mathematischer Kern und sekundäre Analogien
 
-**Kanonische Metapher (Sagnac):** ABCEA vs. CEABC sind gegenläufige geschlossene Wege $\gamma^\pm$; $\Delta_E=N_+-N_-$ ist die Sagnac-Differenz, $S_E=\Delta_E/(N_++N_-)$ die normalisierte Observable (analog $\Delta T/T$). Details: `collatz_eabc_sagnac.md`.
+**Kanonischer Kern (reine Mathematik):** Korrelation $E(a,b)$ auf Kanten → Zirkulation $C_E=D_E$ auf $H_1(C_4,\mathbb{Z})$ → Fehlerterm → $\mathrm{Spec}(L_E)$. Details: `collatz_eabc_zirkulation_spektral.md`.
 
-$$\boxed{\;\text{ABCEA gegen CEABC ist eine Sagnac-Observable.}\;}$$
+$$\boxed{\;\text{Korrelation } E(a,b) \;\to\; \text{Zirkulation } C_E = D_E \;\to\; \mathrm{Spec}(L_E).\;}$$
+
+**Didaktischer Einstieg (Sagnac):** ABCEA vs. CEABC als $\gamma^\pm$ — `collatz_eabc_sagnac.md` (verweist auf Kern).
 
 **Sekundäre Analogie (Bell/CHSH, kein Theorem):** Persistenter Fehlerterm $\Delta_E(X)\neq 0$ bei $S_E\to 0$ entspricht **nicht-faktorisierbaren** Holonomie-Resten auf $G_E$ — parallel zu $|S_{\mathrm{EABC}}|>2$ als arithmetisches Korrelationssignal (`collatz_eabc_bell_holonomie.md` §12).
 
@@ -148,4 +158,4 @@ $$\boxed{\;\text{ABCEA gegen CEABC ist eine Sagnac-Observable.}\;}$$
 
 ---
 
-*Kanonsiche Endform: Dieses Dokument fixiert die **operative Lesart** für PR #54. Primäre Metapher: `collatz_eabc_sagnac.md`. Details und Beweisskizzen: `collatz_eabc_holonomie_beweisversuch.md`. Sekundäre Bell-Brücke: `collatz_eabc_bell_holonomie.md` §12.*
+*Kanonsiche Endform: Dieses Dokument fixiert die **operative Lesart** für PR #54/PR #59. Mathematischer Kern: `collatz_eabc_zirkulation_spektral.md`. Didaktik: `collatz_eabc_sagnac.md`. Beweisskizzen: `collatz_eabc_holonomie_beweisversuch.md`. Sekundäre Bell-Brücke: `collatz_eabc_bell_holonomie.md` §12.*
