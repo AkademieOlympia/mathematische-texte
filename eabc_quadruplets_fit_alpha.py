@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Log-log-Steigung aus eabc_quadruplets.csv; H0a/H0b–H3-Einordnung und Diagnose-Plot.
 
-alpha_eff und alpha_loc: numerisches Signal (Ebene 2–3), kein asymptotischer Satz.
+Ebene III: alpha_eff, alpha_loc, R_beta-Plateaus — numerische Diagnostik, nicht Theorie.
 alpha_E_hat: heuristische Skalierungsschaetzung aus R_beta-Plateaus (Experiment).
-Reihenfolge: Asymptotik (W_E) → Skalierung (R_beta, alpha_E) → numerische Exponenten.
+Reihenfolge Ausgabe: Skalierung (R_beta, alpha_E) → Orientierung (W_E) → numerische Exponenten.
 """
 
 import argparse
@@ -136,6 +136,47 @@ def diagnose_hypothesis(alpha_E_hat: float, alpha_polyfit: float) -> str:
     )
 
 
+def diagnose_orientation(df: pd.DataFrame) -> str:
+    w_e = df["W_E"].to_numpy(dtype=np.float64)
+    if w_e.size < 2:
+        return "zu wenige Checkpoints"
+    w_last, w_first = abs(w_e[-1]), abs(w_e[0])
+    if w_last < w_first * 0.5:
+        trend = "W_E tendiert gegen 0 → H0b-Kandidat"
+    elif w_last > w_first * 1.5:
+        trend = "W_E waechst → H3-Kandidat (Orientierung)"
+    else:
+        trend = "W_E ohne klaren Trend"
+    return f"W_E: {w_e[0]:+.4e} → {w_e[-1]:+.4e}; {trend}"
+
+
+def diagnose_scaling(
+    alpha_E_hat: float, alpha_polyfit: float, slopes: dict[float, float], df: pd.DataFrame
+) -> str:
+    parts: list[str] = [diagnose_hypothesis(alpha_E_hat, alpha_polyfit)]
+    if slopes.get(0.5, 0.0) > 0.1:
+        parts.append(f"R_{{1/2}} waechst (Steigung={slopes[0.5]:.3f}) → alpha_E > 1/2")
+    z = df["R_1_2"].to_numpy(dtype=np.float64)
+    r23 = df["R_2_3"].to_numpy(dtype=np.float64)
+    if coefficient_of_variation(z) < coefficient_of_variation(r23):
+        parts.append("R_{1/2} stabiler als R_{2/3} → eher H0a")
+    elif coefficient_of_variation(r23) < coefficient_of_variation(df["R_1"]):
+        parts.append("R_{2/3} relativ stabil → alpha_E≈2/3 (H2, nicht H3)")
+    w_stable = coefficient_of_variation(df["R_1"].to_numpy(dtype=np.float64))
+    if w_stable < 0.25 and alpha_E_hat >= 0.85:
+        parts.append("R_1 stabil → Holonomie-Hinweis (H3-Kandidat)")
+    return "; ".join(parts)
+
+
+def diagnose_alpha_eff(alpha: float, alpha_loc_max: float | None) -> str:
+    parts: list[str] = [f"polyfit alpha={alpha:.4f} (Experiment, kein Satz)"]
+    if alpha_loc_max is not None:
+        parts.append(f"alpha_loc max={alpha_loc_max:.4f}")
+        if alpha_loc_max > 0.5:
+            parts.append("alpha_loc > 1/2 → numerisches Signal, kein asymptotischer Satz")
+    return "; ".join(parts)
+
+
 def interpret(
     alpha: float,
     alpha_E_hat: float,
@@ -143,47 +184,12 @@ def interpret(
     df: pd.DataFrame,
     slopes: dict[float, float],
 ) -> str:
-    hints: list[str] = [
-        "alpha_eff/alpha_loc = numerisches Signal, kein asymptotischer Satz",
-    ]
-
-    hints.append(diagnose_hypothesis(alpha_E_hat, alpha))
-
-    if alpha_loc_max is not None and alpha_loc_max > 0.5:
-        hints.append(f"alpha_loc max={alpha_loc_max:.4f} → H1-Hinweis (empirisch, kein Theorem)")
-
-    if alpha_E_hat <= 0.55:
-        hints.append("alpha_E_hat ≤ 1/2 → H0a-Kandidat (R_{1/2} beschränkt)")
-    elif alpha_E_hat < 0.85:
-        hints.append(f"alpha_E_hat={alpha_E_hat:.3f} → H2-Kandidat (sublinearer Bias, W_E→0)")
-    elif alpha_E_hat >= 0.85:
-        hints.append(f"alpha_E_hat≈1 → H3-Kandidat (Holonomie-Grenzfall)")
-
-    if abs(alpha - 0.5) < 0.15 and alpha_E_hat <= 0.55:
-        hints.append("polyfit alpha≈1/2 konsistent mit H0a")
-    elif 0.5 < alpha < 1.0:
-        hints.append(f"polyfit alpha={alpha:.4f} → numerischer Bias-Hinweis (kein asymptotischer Satz)")
-
-    w_e = df["W_E"].to_numpy(dtype=np.float64)
-    if w_e.size >= 2 and abs(w_e[-1]) < abs(w_e[0]) * 0.5:
-        hints.append("W_E tendiert gegen 0 → konsistent mit H0b (analytische Nullhypothese)")
-
-    hints.append("H0b ⇏ alpha_E≤1/2 — analytische und Skalierungsfrage getrennt halten")
-
-    z = df["R_1_2"].to_numpy(dtype=np.float64)
-    r23 = df["R_2_3"].to_numpy(dtype=np.float64)
-    if slopes.get(0.5, 0.0) > 0.1:
-        hints.append(f"R_{{1/2}} waechst (Steigung={slopes[0.5]:.3f}) → alpha_E > 1/2")
-    if coefficient_of_variation(z) < coefficient_of_variation(r23):
-        hints.append("R_{1/2} stabiler als R_{2/3} → eher H0a als alpha_E≈2/3")
-    elif coefficient_of_variation(r23) < coefficient_of_variation(df["R_1"]):
-        hints.append("R_{2/3} relativ stabil → alpha_E≈2/3 (H2, nicht H3)")
-
-    w_stable = coefficient_of_variation(df["R_1"].to_numpy(dtype=np.float64))
-    if w_stable < 0.25 and alpha_E_hat >= 0.85:
-        hints.append("R_1 stabil → Holonomie-Hinweis (H3-Kandidat)")
-
-    return "; ".join(hints)
+    return (
+        f"{diagnose_orientation(df)} | "
+        f"{diagnose_scaling(alpha_E_hat, alpha, slopes, df)} | "
+        f"{diagnose_alpha_eff(alpha, alpha_loc_max)} | "
+        "H0b ⇏ alpha_E≤1/2 — Orientierung und Skalierung getrennt"
+    )
 
 
 def make_diagnose_plot(df: pd.DataFrame, loc: pd.Series, out_path: Path) -> None:
@@ -197,15 +203,15 @@ def make_diagnose_plot(df: pd.DataFrame, loc: pd.Series, out_path: Path) -> None
     ax.plot(x, df["W_E"], "o-", color="C0", label=r"$W_E = R_1 = D/Q$")
     ax.axhline(0.0, color="gray", linewidth=0.8, linestyle="--")
     ax.set_ylabel(r"$W_E(X)$")
-    ax.set_title("Panel 1: analytische Orientierung (H0b / H3)")
+    ax.set_title("Panel 1: Orientierung (H0b / H3)")
     ax.legend(loc="best", fontsize=8)
     ax.grid(True, alpha=0.3)
 
     ax = axes[0, 1]
-    ax.plot(x, df["R_1_2"], "s-", color="C1", label=r"$Z_E = R_{1/2} = D/\sqrt{Q}$")
+    ax.plot(x, df["R_1_2"], "s-", color="C1", label=r"$R_{1/2}$ (Heuristik/Diagnose)")
     ax.axhline(0.0, color="gray", linewidth=0.8, linestyle="--")
-    ax.set_ylabel(r"$Z_E(X) = R_{1/2}(X)$")
-    ax.set_title("Panel 2: Skalierungsdiagnostik (H0a / H1)")
+    ax.set_ylabel(r"$R_{1/2}(X)$")
+    ax.set_title("Panel 2: Wurzelrauschen-Heuristik (H0a / H1)")
     ax.legend(loc="best", fontsize=8)
     ax.grid(True, alpha=0.3)
 
@@ -215,7 +221,7 @@ def make_diagnose_plot(df: pd.DataFrame, loc: pd.Series, out_path: Path) -> None
     ax.axhline(0.5, color="gray", linewidth=0.8, linestyle="--", label=r"$\alpha=1/2$")
     ax.set_ylabel(r"$\alpha_{\mathrm{loc}}$")
     ax.set_xlabel(r"$X$")
-    ax.set_title("Panel 3: lokaler Bias (H1 / H2)")
+    ax.set_title("Panel 3: alpha_eff-Diagnose (kein Satz)")
     ax.legend(loc="best", fontsize=8)
     ax.grid(True, alpha=0.3)
 
@@ -266,7 +272,7 @@ def main():
     eff = alpha_eff_series(valid)
     loc = alpha_loc_series(valid)
 
-    print("alpha_eff pro Checkpoint (numerisches Signal, kein asymptotischer Satz):")
+    print("=== Ebene III: alpha_eff-Diagnose (numerisches Signal, kein Satz) ===")
     for idx, row in valid.iterrows():
         x = int(row["X"])
         ae = eff.loc[idx]
@@ -294,15 +300,25 @@ def main():
     alpha, beta = fit_alpha(valid)
     alpha_E_hat, best_beta, slopes = estimate_alpha_E(valid)
 
-    print("\nR_beta-Steigungen (log|R_beta| vs log Q; ≈ alpha_E - beta):")
+    print("\n=== Ebene III: Skalierung (R_beta, alpha_E-Plateau) ===")
+    print("R_beta-Steigungen (log|R_beta| vs log Q; ≈ alpha_E - beta):")
     for b in sorted(slopes):
         col = next(k for k, v in R_BETA_COLUMNS.items() if v == b)
         print(f"  beta={b:.2f} ({col}): Steigung={slopes[b]:+.4f}")
 
-    print(f"\nalpha_E_hat (heuristisch, Experiment) = {alpha_E_hat:.4f}")
+    print(f"\nalpha_E_hat (Ebene III, heuristisch, Experiment) = {alpha_E_hat:.4f}")
     print(f"  (Plateau bei beta={best_beta:.2f}, kein Theorem)")
-    print(f"global alpha (polyfit, numerisches Signal) = {alpha:.4f}")
-    print(f"beta (Intercept)                    = {beta:.4f}")
+    print(f"→ {diagnose_scaling(alpha_E_hat, alpha, slopes, valid)}")
+
+    print("\n=== Ebene II: Orientierung (W_E; H0b / H3) ===")
+    print(f"→ {diagnose_orientation(valid)}")
+
+    print("\n=== alpha_eff-Diagnose (polyfit; kein Satz) ===")
+    print(f"global alpha (polyfit) = {alpha:.4f}")
+    print(f"beta (Intercept)       = {beta:.4f}")
+    print(f"→ {diagnose_alpha_eff(alpha, alpha_loc_max)}")
+
+    print(f"\n=== Gesamt ===")
     print(f"→ {interpret(alpha, alpha_E_hat, alpha_loc_max, valid, slopes)}")
 
     if args.plot:
