@@ -170,6 +170,30 @@ $\theta_{ij}$ aus ABCEA/CEABC-Orientierungen.
 
 ---
 
+## 9. Experimente: Oktaeder-Umgebung
+
+**Design:** `collatz_eabc_oktaeder_test.md` (**Modellabbildung**)
+
+Regulärer Oktaeder $O_6 \subset \mathbb{R}^3$: C4-Äquator ($E,A,B,C$ auf $\pm e_1,\pm e_2$), polare Lift-Achse
+$P^+$ (ABCEA) / $P^-$ (CEABC), Oktonion-Schalen-Gewicht $r_8(p)$ via $\theta_3^8$.
+
+| Test | Observable | Erwartung |
+|------|------------|-----------|
+| Sanity | $\Phi_{\mathrm{oct,eq}}$ vs. $\Phi_E$ | exakte Übereinstimmung |
+| Schale | $\Phi_{\mathrm{oct,shell}} = \sum \omega\, r_8(p) / \sum r_8(p)$ | gleiches Vorzeichen wie $\Phi_E$ |
+| Harmonisch | $\langle\omega,h\rangle$ auf Äquator | $\neq 0$ bei endlichem $X$ |
+| Pol | $P^+$ vs. $P^-$ Fluss | ABCEA-Präferenz |
+| Spektral | $\mathrm{Spec}(L_{\mathrm{mag}})$ auf $O_6$ | near-zero-Moden |
+
+```bash
+python3 collatz_eabc_oktaeder_flux_test.py --max-p 1000000
+pytest tests/test_eabc_oktaeder_flux.py -q
+```
+
+**JSON:** `collatz_eabc_oktaeder_flux_test.json`
+
+---
+
 ## Artefakte
 
 ```bash
