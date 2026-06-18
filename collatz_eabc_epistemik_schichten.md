@@ -40,6 +40,8 @@ $$\boxed{\;\text{Der größte Fortschritt ist nicht die Einführung neuer Größ
 
 **Harter Kern** (nicht Holonomie): (1) gerichteter EABC-Kreisgraph $G_E$, (2) orientierte Zyklusdifferenz $D_E(X)=N_+(X)-N_-(X)$, (3) daraus induzierte Skalierungsobservablen. Erst darauf bauen alle weiteren Fragen.
 
+**Erster numerischer Belastungstest** (vgl. `collatz_eabc_zirkulationshypothese.md` §4.3): prüft nur $(G_E,N_\pm,D_E)$ und $R_{1/2}=D_E/\sqrt{Q}$ bis $X\approx 10^{10}$ — **kein** $\Phi_E$, **keine** Holonomie. Holonomie bleibt Endfrage (Ebene 4); der Belastungstest validiert den harten Kern unabhängig von H₃.
+
 **Stabilisierungskette** ($\leadsto$ = führt zu Fragen; $\Rightarrow$ = bewiesene Implikation):
 $$G_E \;\leadsto\; (D_E,\,Q_E) \;\leadsto\; (R_\beta,\,\alpha_{\mathrm{eff}},\,\alpha_{\mathrm{loc}}) \;\leadsto\; (\alpha_E,\,W_E) \;\leadsto\; \Phi_E.$$
 
@@ -146,7 +148,7 @@ $$\boxed{\;\Phi_E \neq 0 \;\Rightarrow\; D_E(X)\sim\Phi_E Q(X) \;\Rightarrow\; \
 | **GREEN** | $-1 \le W_E(X) \le 1$ (bewiesen: `W_E_bounds`) |
 | **RED** | $\lim_{X\to\infty} W_E(X) = \Phi_E \neq 0$ — **H₃** (Holonomie; Ebene 4; Vermutung: `HasNonzeroHolonomyLimit`, `EABC_holonomy_limit_conjecture`) |
 
-Lean: `phi_E_conjecture` (**B**, `Prop`) vs. `phi_E_conjecture_statement` (**R**, `sorry`). Methodische Lesart — $W_E(X)$ stabilisiert sich asymptotisch gegen einen Grenzwert; keine „statistische Ruhe im Unendlichen“, keine „unumkehrbare Tendenz“: `collatz_eabc_zirkulationshypothese.md` §4.1. **Fünf Ebenen in §4.2** (0–4): (0) harter Kern $G_E$; (1) primär $D_E$, $Q$; (2) sekundär $R_\beta$, $\alpha_{\mathrm{loc}}$, $\alpha_{\mathrm{eff}}$, $\alpha_E$; (3) Orientierung $W_E$; (4) Endhypothese $\Phi_E$. Prime-Race-Analogie $\pi(x)$–$\mathrm{Li}(x)$: Größenordnung von $|D_E|$ vor Grenzwert von $W_E$. H₀b ($W_E\to 0$) ist analytisch und **nicht** mit H₀a identisch; $\alpha_E>\tfrac{1}{2} \nRightarrow \Phi_E\neq 0$ (vgl. §4.2). Numerik (#73): `eabc_quadruplets_1e10.py`, `eabc_quadruplets_fit_alpha.py`, `eabc_quadruplets_plot.py`.
+Lean: `phi_E_conjecture` (**B**, `Prop`) vs. `phi_E_conjecture_statement` (**R**, `sorry`). Methodische Lesart — $W_E(X)$ stabilisiert sich asymptotisch gegen einen Grenzwert; keine „statistische Ruhe im Unendlichen“, keine „unumkehrbare Tendenz“: `collatz_eabc_zirkulationshypothese.md` §4.1. **Fünf Ebenen in §4.2** (0–4): (0) harter Kern $G_E$; (1) primär $D_E$, $Q$; (2) sekundär $R_\beta$, $\alpha_{\mathrm{loc}}$, $\alpha_{\mathrm{eff}}$, $\alpha_E$; (3) Orientierung $W_E$; (4) Endhypothese $\Phi_E$. **Erster Belastungstest** (§4.3): nur harter Kern, nicht Holonomie. Prime-Race-Analogie $\pi(x)$–$\mathrm{Li}(x)$: Größenordnung von $|D_E|$ vor Grenzwert von $W_E$. H₀b ($W_E\to 0$) ist analytisch und **nicht** mit H₀a identisch; $\alpha_E>\tfrac{1}{2} \nRightarrow \Phi_E\neq 0$ (vgl. §4.2). Numerik (#73): `eabc_quadruplets_1e10.py`, `eabc_quadruplets_fit_alpha.py`, `eabc_quadruplets_plot.py`.
 
 **Abgrenzung zu Schicht C:** Sagnac, AB-Phase, magnetischer Laplace sind **Analogien** auf $G_E$ — geometrisch sauber in B, physikalisch ikonisch erst in C. Priminduzierte Zählung $N_\pm(X)$ ist **B**, nicht „laufende“ Primzahlen (**C**-Ikone).
 
