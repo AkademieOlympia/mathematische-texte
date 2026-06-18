@@ -1,0 +1,489 @@
+{
+  "meta": {
+    "hypothesis_doc": "collatz_eabc_quaternion_mass_hypothese.md §13",
+    "D_definition": "|D(n)| = ||I(μ_n) − I_ref(n)|| (euklidische Norm, K-skaliert)",
+    "I_ref_preferred": [
+      "rolling",
+      "mu_infinity"
+    ],
+    "I_ref_all_variants": {
+      "rolling": "Nachbar-Mittel über n±w (lokale Glättung; Primzahlen oft zwischen dichten zusammengesetzten n)",
+      "cumulative": "Präfix-Mittel Ī(n)=mean_{m<n}I(μ_m) (spektralgeometrische Referenz aus der Folge selbst)",
+      "omega": "ω(n)-Stratum: Mittel über gleiche Anzahl verschiedener Primfaktoren",
+      "tau": "τ(n)-Stratum: Mittel über gleiche Teileranzahl (divisor-count baseline)",
+      "mu_infinity": "Globales Mittel als μ_∞-Proxy über alle untersuchten Schalen"
+    },
+    "max_n": 200,
+    "rolling_window": 5,
+    "s_values": [
+      2.0,
+      1.0,
+      0.0,
+      -1.0,
+      -2.0,
+      -4.0,
+      -6.0,
+      -8.0,
+      -10.0
+    ],
+    "partial_sum_note": "D̂_N(s) sind endliche Partialsummen; Konvergenz bei s≤1 nicht behauptet. Bernoulli-Vergleich bei s=−2,−4 ist explorativ (ζ trivial null dort).",
+    "bernoulli_bridge": "ζ(1−2m) = −B_{2m}/(2m); vgl. collatz_eabc_bernoulli_uebersetzung.md",
+    "shell_defekt_crosscheck_n50": {
+      "rolling_ratio_prime_composite": 0.896107
+    }
+  },
+  "by_I_ref": {
+    "rolling": {
+      "I_ref_note": "Nachbar-Mittel über n±w (lokale Glättung; Primzahlen oft zwischen dichten zusammengesetzten n)",
+      "term_count": 199,
+      "first_terms": [
+        {
+          "n": 2,
+          "D": 1.415668,
+          "D_over_n2": 0.35391707,
+          "is_prime": true,
+          "omega": 1,
+          "tau": 2
+        },
+        {
+          "n": 3,
+          "D": 0.951273,
+          "D_over_n2": 0.10569704,
+          "is_prime": true,
+          "omega": 1,
+          "tau": 2
+        },
+        {
+          "n": 4,
+          "D": 0.457696,
+          "D_over_n2": 0.02860602,
+          "is_prime": false,
+          "omega": 1,
+          "tau": 3
+        },
+        {
+          "n": 5,
+          "D": 0.548002,
+          "D_over_n2": 0.02192009,
+          "is_prime": true,
+          "omega": 1,
+          "tau": 2
+        },
+        {
+          "n": 6,
+          "D": 0.218539,
+          "D_over_n2": 0.00607053,
+          "is_prime": false,
+          "omega": 2,
+          "tau": 4
+        },
+        {
+          "n": 7,
+          "D": 0.628762,
+          "D_over_n2": 0.01283188,
+          "is_prime": true,
+          "omega": 1,
+          "tau": 2
+        },
+        {
+          "n": 8,
+          "D": 1.023864,
+          "D_over_n2": 0.01599788,
+          "is_prime": false,
+          "omega": 1,
+          "tau": 4
+        },
+        {
+          "n": 9,
+          "D": 0.862156,
+          "D_over_n2": 0.0106439,
+          "is_prime": false,
+          "omega": 1,
+          "tau": 3
+        },
+        {
+          "n": 10,
+          "D": 0.82297,
+          "D_over_n2": 0.0082297,
+          "is_prime": false,
+          "omega": 2,
+          "tau": 4
+        },
+        {
+          "n": 11,
+          "D": 0.57246,
+          "D_over_n2": 0.00473107,
+          "is_prime": true,
+          "omega": 1,
+          "tau": 2
+        },
+        {
+          "n": 12,
+          "D": 1.430019,
+          "D_over_n2": 0.00993069,
+          "is_prime": false,
+          "omega": 2,
+          "tau": 6
+        },
+        {
+          "n": 13,
+          "D": 1.481007,
+          "D_over_n2": 0.00876336,
+          "is_prime": true,
+          "omega": 1,
+          "tau": 2
+        }
+      ],
+      "growth_by_s": [
+        {
+          "s": 2.0,
+          "D_hat_N": 0.672214,
+          "zeta_partial_N": 0.639947,
+          "omega_dirichlet_partial": 0.732982,
+          "tau_dirichlet_partial": 1.668724,
+          "D_hat_over_zeta_partial": 1.050422
+        },
+        {
+          "s": 1.0,
+          "D_hat_N": 5.314567,
+          "zeta_partial_N": 4.878031,
+          "omega_dirichlet_partial": 7.369039,
+          "tau_dirichlet_partial": 19.667388,
+          "D_hat_over_zeta_partial": 1.08949
+        },
+        {
+          "s": 0.0,
+          "D_hat_N": 245.024133,
+          "zeta_partial_N": 199.0,
+          "omega_dirichlet_partial": 369.0,
+          "tau_dirichlet_partial": 1097.0,
+          "D_hat_over_zeta_partial": 1.231277
+        },
+        {
+          "s": -1.0,
+          "D_hat_N": 25467.67974,
+          "zeta_partial_N": 20099.0,
+          "omega_dirichlet_partial": 39118.0,
+          "tau_dirichlet_partial": 120496.0,
+          "D_hat_over_zeta_partial": 1.267112
+        },
+        {
+          "s": -2.0,
+          "D_hat_N": 3438960.092946,
+          "zeta_partial_N": 2686699.0,
+          "omega_dirichlet_partial": 5302424.0,
+          "tau_dirichlet_partial": 16607228.0,
+          "D_hat_over_zeta_partial": 1.279995
+        },
+        {
+          "s": -4.0,
+          "D_hat_N": 84198257730.12292,
+          "zeta_partial_N": 64802666659.0,
+          "omega_dirichlet_partial": 128943129332.0,
+          "tau_dirichlet_partial": 411757094996.0,
+          "D_hat_over_zeta_partial": 1.299302
+        },
+        {
+          "s": -6.0,
+          "D_hat_N": 2452133717927433.5,
+          "zeta_partial_N": 1860731427238099.0,
+          "omega_dirichlet_partial": 3706644505698524.0,
+          "tau_dirichlet_partial": 1.2002464985167748e+16,
+          "D_hat_over_zeta_partial": 1.317833
+        },
+        {
+          "s": -8.0,
+          "D_hat_N": 7.76979276817111e+19,
+          "zeta_partial_N": 5.817742207289066e+19,
+          "omega_dirichlet_partial": 1.1574851711291195e+20,
+          "tau_dirichlet_partial": 3.793868921749821e+20,
+          "D_hat_over_zeta_partial": 1.335534
+        },
+        {
+          "s": -10.0,
+          "D_hat_N": 2.586852518821949e+24,
+          "zeta_partial_N": 1.9134448356851686e+24,
+          "omega_dirichlet_partial": 3.7981001054670586e+24,
+          "tau_dirichlet_partial": 1.259095675755509e+25,
+          "D_hat_over_zeta_partial": 1.351935
+        }
+      ],
+      "bernoulli_exploration": {
+        "-2": {
+          "D_hat_N": 3438960.092946,
+          "note": "explorativ; Partialsumme divergiert typischerweise bei s ≤ 0",
+          "B_2m": {
+            "2m": 2,
+            "value": 0.16666666666666666,
+            "fraction": "1/6"
+          },
+          "D_hat_over_B_2m": 20633760.557674,
+          "zeta_at_s_plus_1": {
+            "s_bernoulli": -1,
+            "value": -0.08333333333333333,
+            "note": "ζ(-1) = −B_2/2"
+          },
+          "D_hat_over_zeta_bernoulli": -41267521.115348
+        },
+        "-4": {
+          "D_hat_N": 84198257730.12292,
+          "note": "explorativ; Partialsumme divergiert typischerweise bei s ≤ 0",
+          "B_2m": {
+            "2m": 4,
+            "value": -0.03333333333333333,
+            "fraction": "-1/30"
+          },
+          "D_hat_over_B_2m": -2525947731903.688,
+          "zeta_trivial_zero": {
+            "s": -4.0,
+            "value": 0.0,
+            "note": "ζ(s)=0 an geraden negativen s — Bernoulli-Brücke liegt bei ungeraden s"
+          }
+        },
+        "-1": {
+          "D_hat_N": 25467.67974,
+          "note": "explorativ; Partialsumme divergiert typischerweise bei s ≤ 0"
+        },
+        "-3": {
+          "D_hat_N": 521133071.931347,
+          "note": "explorativ; Partialsumme divergiert typischerweise bei s ≤ 0"
+        }
+      },
+      "repackaging": {
+        "pearson_D_vs_omega": -0.035126,
+        "pearson_D_vs_tau": 0.298742,
+        "pearson_D_vs_log_n": 0.114862,
+        "D_hat_sum_D_at_s0": 245.024133,
+        "zeta_ratio_stable_across_s": false,
+        "verdict": "Kein klares ζ- oder divisor-sum-Repackaging in den ersten N — weiterer Skalenvergleich und größeres N nötig; kein Bernoulli-Match behauptet."
+      }
+    },
+    "mu_infinity": {
+      "I_ref_note": "Globales Mittel als μ_∞-Proxy über alle untersuchten Schalen",
+      "term_count": 199,
+      "first_terms": [
+        {
+          "n": 2,
+          "D": 1.420083,
+          "D_over_n2": 0.35502087,
+          "is_prime": true,
+          "omega": 1,
+          "tau": 2
+        },
+        {
+          "n": 3,
+          "D": 2.851042,
+          "D_over_n2": 0.31678245,
+          "is_prime": true,
+          "omega": 1,
+          "tau": 2
+        },
+        {
+          "n": 4,
+          "D": 2.407403,
+          "D_over_n2": 0.15046271,
+          "is_prime": false,
+          "omega": 1,
+          "tau": 3
+        },
+        {
+          "n": 5,
+          "D": 2.514037,
+          "D_over_n2": 0.10056148,
+          "is_prime": true,
+          "omega": 1,
+          "tau": 2
+        },
+        {
+          "n": 6,
+          "D": 2.181545,
+          "D_over_n2": 0.06059846,
+          "is_prime": false,
+          "omega": 2,
+          "tau": 4
+        },
+        {
+          "n": 7,
+          "D": 2.642418,
+          "D_over_n2": 0.05392689,
+          "is_prime": true,
+          "omega": 1,
+          "tau": 2
+        },
+        {
+          "n": 8,
+          "D": 1.420083,
+          "D_over_n2": 0.0221888,
+          "is_prime": false,
+          "omega": 1,
+          "tau": 4
+        },
+        {
+          "n": 9,
+          "D": 1.202307,
+          "D_over_n2": 0.01484329,
+          "is_prime": false,
+          "omega": 1,
+          "tau": 3
+        },
+        {
+          "n": 10,
+          "D": 2.514037,
+          "D_over_n2": 0.02514037,
+          "is_prime": false,
+          "omega": 2,
+          "tau": 4
+        },
+        {
+          "n": 11,
+          "D": 1.327261,
+          "D_over_n2": 0.0109691,
+          "is_prime": true,
+          "omega": 1,
+          "tau": 2
+        },
+        {
+          "n": 12,
+          "D": 2.851042,
+          "D_over_n2": 0.0197989,
+          "is_prime": false,
+          "omega": 2,
+          "tau": 6
+        },
+        {
+          "n": 13,
+          "D": 0.436731,
+          "D_over_n2": 0.00258421,
+          "is_prime": true,
+          "omega": 1,
+          "tau": 2
+        }
+      ],
+      "growth_by_s": [
+        {
+          "s": 2.0,
+          "D_hat_N": 1.229949,
+          "zeta_partial_N": 0.639947,
+          "omega_dirichlet_partial": 0.732982,
+          "tau_dirichlet_partial": 1.668724,
+          "D_hat_over_zeta_partial": 1.921956
+        },
+        {
+          "s": 1.0,
+          "D_hat_N": 7.899413,
+          "zeta_partial_N": 4.878031,
+          "omega_dirichlet_partial": 7.369039,
+          "tau_dirichlet_partial": 19.667388,
+          "D_hat_over_zeta_partial": 1.619386
+        },
+        {
+          "s": 0.0,
+          "D_hat_N": 252.900593,
+          "zeta_partial_N": 199.0,
+          "omega_dirichlet_partial": 369.0,
+          "tau_dirichlet_partial": 1097.0,
+          "D_hat_over_zeta_partial": 1.270857
+        },
+        {
+          "s": -1.0,
+          "D_hat_N": 25142.665499,
+          "zeta_partial_N": 20099.0,
+          "omega_dirichlet_partial": 39118.0,
+          "tau_dirichlet_partial": 120496.0,
+          "D_hat_over_zeta_partial": 1.250941
+        },
+        {
+          "s": -2.0,
+          "D_hat_N": 3448153.199684,
+          "zeta_partial_N": 2686699.0,
+          "omega_dirichlet_partial": 5302424.0,
+          "tau_dirichlet_partial": 16607228.0,
+          "D_hat_over_zeta_partial": 1.283416
+        },
+        {
+          "s": -4.0,
+          "D_hat_N": 86272485465.94708,
+          "zeta_partial_N": 64802666659.0,
+          "omega_dirichlet_partial": 128943129332.0,
+          "tau_dirichlet_partial": 411757094996.0,
+          "D_hat_over_zeta_partial": 1.331311
+        },
+        {
+          "s": -6.0,
+          "D_hat_N": 2525566697736649.0,
+          "zeta_partial_N": 1860731427238099.0,
+          "omega_dirichlet_partial": 3706644505698524.0,
+          "tau_dirichlet_partial": 1.2002464985167748e+16,
+          "D_hat_over_zeta_partial": 1.357298
+        },
+        {
+          "s": -8.0,
+          "D_hat_N": 7.986460774821598e+19,
+          "zeta_partial_N": 5.817742207289066e+19,
+          "omega_dirichlet_partial": 1.1574851711291195e+20,
+          "tau_dirichlet_partial": 3.793868921749821e+20,
+          "D_hat_over_zeta_partial": 1.372777
+        },
+        {
+          "s": -10.0,
+          "D_hat_N": 2.6461686324875306e+24,
+          "zeta_partial_N": 1.9134448356851686e+24,
+          "omega_dirichlet_partial": 3.7981001054670586e+24,
+          "tau_dirichlet_partial": 1.259095675755509e+25,
+          "D_hat_over_zeta_partial": 1.382934
+        }
+      ],
+      "bernoulli_exploration": {
+        "-2": {
+          "D_hat_N": 3448153.199684,
+          "note": "explorativ; Partialsumme divergiert typischerweise bei s ≤ 0",
+          "B_2m": {
+            "2m": 2,
+            "value": 0.16666666666666666,
+            "fraction": "1/6"
+          },
+          "D_hat_over_B_2m": 20688919.198106,
+          "zeta_at_s_plus_1": {
+            "s_bernoulli": -1,
+            "value": -0.08333333333333333,
+            "note": "ζ(-1) = −B_2/2"
+          },
+          "D_hat_over_zeta_bernoulli": -41377838.396213
+        },
+        "-4": {
+          "D_hat_N": 86272485465.94708,
+          "note": "explorativ; Partialsumme divergiert typischerweise bei s ≤ 0",
+          "B_2m": {
+            "2m": 4,
+            "value": -0.03333333333333333,
+            "fraction": "-1/30"
+          },
+          "D_hat_over_B_2m": -2588174563978.4126,
+          "zeta_trivial_zero": {
+            "s": -4.0,
+            "value": 0.0,
+            "note": "ζ(s)=0 an geraden negativen s — Bernoulli-Brücke liegt bei ungeraden s"
+          }
+        },
+        "-1": {
+          "D_hat_N": 25142.665499,
+          "note": "explorativ; Partialsumme divergiert typischerweise bei s ≤ 0"
+        },
+        "-3": {
+          "D_hat_N": 529700591.687403,
+          "note": "explorativ; Partialsumme divergiert typischerweise bei s ≤ 0"
+        }
+      },
+      "repackaging": {
+        "pearson_D_vs_omega": -0.187227,
+        "pearson_D_vs_tau": 0.014001,
+        "pearson_D_vs_log_n": -0.185148,
+        "D_hat_sum_D_at_s0": 252.900593,
+        "zeta_ratio_stable_across_s": false,
+        "verdict": "Kein klares ζ- oder divisor-sum-Repackaging in den ersten N — weiterer Skalenvergleich und größeres N nötig; kein Bernoulli-Match behauptet."
+      }
+    }
+  },
+  "epistemic_status": "Experiment — testet EABC-Spektralgeometrische Erzeugerhypothese (§13). Keine Gleichheit D̂(−2m) = B_{2m} behauptet.",
+  "output_path": "/Users/thomashoffbauer/Desktop/Mathematische Texte/collatz_eabc_dirichlet_D.json"
+}
