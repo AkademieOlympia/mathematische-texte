@@ -1,97 +1,63 @@
-# EABC-Holonomie und Fehlerterm-Hypothese (Endform)
+# EABC-Fehlerterm-Hypothese (Teilhypothese)
 
-**Status:** Kanonische Endform (Definition + Hauptvermutung + Fehlerterm-Hypothese)  
+**Status:** Teilhypothese — eingebettet in `collatz_eabc_zirkulationshypothese.md` §5  
 **Branch:** `collatz/eabc-05-holonomie-fehlerterm` (PR #59)  
 **Tao-Labels:** Definition | Vermutung | Hypothese | Experiment
 
+**Primäre Hypothese:** `collatz_eabc_zirkulationshypothese.md` — kanonische EABC-Zirkulationshypothese. Dieses Dokument vertieft den **Fehlerterm** $D_E(X)$ und die normalisierte Observable $\widetilde{D}_E(X)$.
+
 **Querverweise:**
-- `collatz_eabc_zirkulation_spektral.md` — **kanonische reine Mathematik:** Korrelation → Zirkulation $C_E$, $D_E$, $\mathrm{Spec}(L_E)$
-- `collatz_eabc_sagnac.md` — **didaktischer Einstieg:** $\gamma^\pm$, $\Delta_E$, $S_E$ (verweist auf zirkulation_spektral)
-- `collatz_eabc_holonomie_beweisversuch.md` — analytischer Beweisversuch (Lemma-Skizzen, HL-Argument, Satzskizze)
-- `collatz_eabc_zyklus_holonomie.md` — Hierarchie Klasse→Kante→Pfad→Zyklus→Holonomie
-- `collatz_eabc_bell_holonomie.md` — **sekundäre** Analogie Bell/CHSH; $P_{\mathrm{same}}$, CHSH auf $G_E$ (nicht primäre Metapher)
-- `collatz_eabc_bell_inequality_test.py` / `.json` — Numerik $P_{\mathrm{same}}^{\mathrm{win}}$, $\mathcal{B}_{\mathrm{marg}}$, $S_{\mathrm{EABC}}$, **`de_bell_combined_report`**
-- `collatz_eabc_core/CollatzEabc/HolonomieFehlerterm.lean` — Lean: Lückenmuster, `N_\pm`/`D_E` auf Listen; Prime/CHSH-Skeleton
-- `collatz_eabc_transport.md` — Übergangsgraph $G_E$, Transport $T_n$
+- `collatz_eabc_zirkulationshypothese.md` — **kanonische Hypothese:** $N_\pm$, $C_E$, $D_E$, $S_E$, Hauptvermutung, Prime-Race-Box
+- `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
+- `collatz_eabc_sagnac.md` — **Intuition only:** Sagnac-Bild für $\gamma^\pm$
+- `collatz_eabc_holonomie_beweisversuch.md` — analytischer Beweisversuch
 - `collatz_eabc_holonomie_fehlerterm.py` / `.json` — Numerik $N_\pm$, $D_E$, $\widetilde{D}_E$
-- `collatz_eabc_sagnac_circulation.py` / `.json` — Zirkulation $C_E(X)$, $\omega(e)$, diskrete 1-Form
-- `collatz_eabc_graph_laplacian.py` — $\mathrm{Spec}(L_E)$, Spektrallücke, Bezug zu $C_E$, $D_E$
+- `collatz_eabc_sagnac_circulation.py` — $C_E(X)$, $\omega(e)$, $\alpha$
+- `collatz_eabc_bell_holonomie.md` — **sekundäre** Analogie Bell/CHSH
 - `collatz_generalangriff_2026.md` — Gesamtarchitektur PR #54 / PR #59
 
 ---
 
-## 0. Setup
+## 0. Einbettung in die Zirkulationshypothese
 
-**Restklassen modulo $12$:**
-$$E\equiv 1,\quad A\equiv 5,\quad B\equiv 7,\quad C\equiv 11\pmod{12}.$$
+Die Fehlerterm-Hypothese ist **Teil** der kanonischen EABC-Zirkulationshypothese (`collatz_eabc_zirkulationshypothese.md`):
 
-**Primfolge-Labels:**
-$$X_n := \kappa(p_n),\qquad C_n^{(5)} := (X_n,X_{n+1},X_{n+2},X_{n+3},X_{n+4}).$$
+$$\boxed{\;D_E(X)\;\text{ist ein Prime Race zwischen zwei Orientierungen desselben EABC-Zyklus.}\;}$$
 
-(Wir schreiben kurz $C_n$ für das geschlossene 5-Fenster.)
+Setup, $N_\pm$, $C_E$, $S_E$ und Hauptvermutung: dort §1–4. Hier: Vertiefung von $D_E$, $\widetilde{D}_E$ und experimentelle Fragen.
+
+---
+
+## 1. Definitionen (Fehlerterm)
 
 **Zählgrößen** (für Prim-Obergrenze $X$):
 $$N_+(X) := \#\{n:\,p_{n+4}\le X,\; C_n=\mathrm{ABCEA}\},$$
 $$N_-(X) := \#\{n:\,p_{n+4}\le X,\; C_n=\mathrm{CEABC}\}.$$
 
-**Legacy-Aliase:** $N_{\mathrm{ABCEA}}:=N_+$, $N_{\mathrm{CEABC}}:=N_-$.
+**Fehlerterm / Zirkulations-Differenz:**
+$$D_E(X) := N_+(X) - N_-(X) = C_E(X) = \Delta_E(X).$$
 
-**Sagnac-Lesart** (`collatz_eabc_sagnac.md`):
-$$\Delta_E(X) := N_+(X) - N_-(X) = D_E(X),\qquad
-S_E(X) := \frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)}.$$
-ABCEA = $\gamma^+$ ($A\!\to\!B\!\to\!C\!\to\!E\!\to\!A$); CEABC = $\gamma^-$ ($C\!\to\!E\!\to\!A\!\to\!B\!\to\!C$). $S_E\to 0$: rotationsfrei; $S_E\neq 0$: bevorzugte Orientierung auf endlichem $X$.
+**Normalisierte Observable:**
+$$S_E(X) := \frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)}.$$
 
----
+**Normalisierter Fehlerterm:**
+$$\widetilde{D}_E(X) := \frac{N_+(X)-N_-(X)}{\sqrt{N_+(X)+N_-(X)}} = \frac{D_E(X)}{\sqrt{N_+(X)+N_-(X)}}.$$
 
-## 1. Hauptvermutung (Hauptterm)
-
-**Hauptvermutung.** Asymptotische Symmetrie der gegenläufigen Zyklusorientierungen:
-$$N_+(X) \sim N_-(X)\qquad (X\to\infty),$$
-und damit
-$$\mathrm{Hol}_E := \lim_{X\to\infty}\frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)} = 0.$$
-
-**Label:** Hauptvermutung = **Vermutung** (unter HL-Äquidistribution / mod-$12$-Symmetrie; siehe Beweisversuch).
+**Label:** $D_E$, $\widetilde{D}_E$ = **Definition**.
 
 ---
 
-## 2. Fehlerterm (EABC-Sagnac-Fehlerterm)
-
-**Definition (Fehlerterm / Sagnac-Differenz).**
-$$\Delta_E(X) := N_+(X) - N_-(X),\qquad D_E(X):=\Delta_E(X).$$
-
-**Zirkulations-Identität** (`collatz_eabc_sagnac.md` §8):
-$$C_E(X) := \sum_{\gamma\ \mathrm{erkannt}} \omega(\gamma) = \Delta_E(X) = D_E(X).$$
-
-Für endliche $X$ gilt typischerweise $\Delta_E(X)\neq 0$, auch wenn $\mathrm{Hol}_E=0$. Interessant sind die **Fluktuationen** $\Delta_E$, $\widetilde{D}_E$, nicht der Hauptterm $\lim \Delta_E/(N_++N_-)=0$.
-
-$$\boxed{\;\Delta_E(X) = D_E(X)\;\text{ist der EABC-Sagnac-Fehlerterm.}\;}$$
-
-**Label:** $\Delta_E$, $D_E$ = **Definition**.
-
----
-
-## 3. Fehlerterm-Hypothese (stärker)
+## 2. Fehlerterm-Hypothese (stärker)
 
 **Fehlerterm-Hypothese (stärker).** $D_E$ trägt einen **nichttrivialen Chebyshev-artigen Bias**, gesteuert durch die **Nullstellen der Dirichlet-$L$-Funktionen modulo $12$** (bzw. der zugehörigen Charaktere auf $(\mathbb{Z}/12\mathbb{Z})^\times$).
 
-Qualitativ: wie beim klassischen Chebyshev-Bias mod $4$ kann die **absolute Differenz** vorzeichenbehaftet und strukturiert oszillieren, während der **normierte Hauptterm** $\mathrm{Hol}_E$ verschwindet.
+Qualitativ: wie beim klassischen Chebyshev-Bias mod $4$ kann die **absolute Differenz** vorzeichenbehaftet und strukturiert oszillieren, während der **normierte Hauptterm** $S_E(X)\to 0$.
 
 **Label:** Fehlerterm-Hypothese = **Hypothese** (stärker als Hauptvermutung allein).
 
 ---
 
-## 4. Normalisierte Observable
-
-**Definition (normalisierter Fehlerterm).**
-$$\widetilde{D}_E(X) := \frac{N_+(X)-N_-(X)}{\sqrt{N_+(X)+N_-(X)}} = \frac{D_E(X)}{\sqrt{N_+(X)+N_-(X)}}.$$
-
-Äquivalent: $\chi_{\mathrm{Hol}}(X) = D_E(X)/(N_+(X)+N_-(X))$ und $\widetilde{D}_E(X) = \chi_{\mathrm{Hol}}(X)\sqrt{N_+(X)+N_-(X)}$.
-
-**Label:** $\widetilde{D}_E$ = **Definition**.
-
----
-
-## 5. Zentrale Frage
+## 3. Zentrale Frage
 
 **Zentrale Frage.** Verhält sich $\widetilde{D}_E(X)$ wie **reines Rauschen** (z. B. $|\widetilde{D}_E|=O(1)$ ohne stabile Vorzeichenstruktur), oder zeigt sie **stabile Vorzeichenasymmetrie / Oszillationsstruktur** gegenüber Isotropie- und Shuffle-Nullmodellen?
 
@@ -101,61 +67,33 @@ $$\widetilde{D}_E(X) := \frac{N_+(X)-N_-(X)}{\sqrt{N_+(X)+N_-(X)}} = \frac{D_E(X
 
 ---
 
-## 6. Interpretation
+## 4. Interpretation
 
-**Interpretation.** EABC-Holonomie ist **sekundärer Bias** im „Prime Race“ zwischen den **gegenläufigen Orientierungen** desselben geschlossenen 4-Zyklus $A\!\to\!B\!\to\!C\!\to\!E\!\to\!A$ — **nicht** ein permanenter Hauptterm.
-
-Die empirische ABCEA/CEABC-Asymmetrie wird damit als **Fehlerterm-/Bias-Phänomen** reklassifiziert, nicht als $\mathrm{Hol}_E\neq 0$.
-
----
-
-## 7. Boxed Schluss
+**Interpretation.** Die empirische ABCEA/CEABC-Asymmetrie wird als **Fehlerterm-/Bias-Phänomen** reklassifiziert, nicht als permanente Hauptterm-Holonomie ($S_E\to 0$).
 
 $$\boxed{\;\mathrm{Hol}_E = 0\;\text{im Hauptterm, aber}\;D_E(X)\;\text{kann nichttrivial sein.}\;}$$
 
-$$\boxed{\;\text{ABCE/CEAB-Asymmetrie} \;\Rightarrow\; \text{Fehlerterm/Bias, nicht Hauptterm-Holonomie.}\;}$$
-
-$$\boxed{\;\text{Besitzt die durch die Primzahlfolge induzierte EABC-Zirkulation einen nichttrivialen Fehlerterm?}\;}$$
-
-$$\boxed{\;\text{Welche Spektralinvarianten der EABC-Zirkulation unterscheiden Prim- von Nichtprim-Normschalen?}\;}$$
-
-(Vollständige Formulierung: `collatz_eabc_zirkulation_spektral.md` §8.)
-
 ---
 
-## 8. Epistemische Tabelle
+## 5. Sekundäre Analogien
 
-| Aussage | Label |
-|---------|-------|
-| $N_\pm$, $D_E$, $\widetilde{D}_E$, $C_E$ | **Definition** |
-| $N_+\sim N_-$ $\Rightarrow$ $\mathrm{Hol}_E=0$ | **Vermutung** (Hauptvermutung) |
-| $D_E$ mit $L$-Funktions-Nullstellen mod $12$ | **Hypothese** (Fehlerterm-Hypothese) |
-| Verhalten von $\widetilde{D}_E$ | **Experiment** |
-| $\mathrm{Hol}_E\neq 0$ (stark, legacy) | **Hypothese** (`collatz_eabc_zyklus_holonomie.md` §7) |
+**Bell/CHSH** (`collatz_eabc_bell_holonomie.md`): Persistenter Fehlerterm $\Delta_E(X)\neq 0$ bei $S_E\to 0$ entspricht **nicht-faktorisierbaren** Holonomie-Resten auf $G_E$ — **sekundäre** Analogie, kein primärer Kern.
 
----
-
-## 9. Mathematischer Kern und sekundäre Analogien
-
-**Kanonischer Kern (reine Mathematik):** Korrelation $E(a,b)$ auf Kanten → Zirkulation $C_E=D_E$ auf $H_1(C_4,\mathbb{Z})$ → Fehlerterm → $\mathrm{Spec}(L_E)$. Details: `collatz_eabc_zirkulation_spektral.md`.
-
-$$\boxed{\;\text{Korrelation } E(a,b) \;\to\; \text{Zirkulation } C_E = D_E \;\to\; \mathrm{Spec}(L_E).\;}$$
-
-**Didaktischer Einstieg (Sagnac):** ABCEA vs. CEABC als $\gamma^\pm$ — `collatz_eabc_sagnac.md` (verweist auf Kern).
-
-**Sekundäre Analogie (Bell/CHSH, kein Theorem):** Persistenter Fehlerterm $\Delta_E(X)\neq 0$ bei $S_E\to 0$ entspricht **nicht-faktorisierbaren** Holonomie-Resten auf $G_E$ — parallel zu $|S_{\mathrm{EABC}}|>2$ als arithmetisches Korrelationssignal (`collatz_eabc_bell_holonomie.md` §12).
-
-| Größe | Rolle | Label |
-|-------|-------|-------|
-| $\chi_{\mathrm{Hol}}(X)=D_E/(N_++N_-)$ | normierter Hauptterm → $0$ | **Vermutung** |
-| $\widetilde{D}_E(X)$ | skaleninvariantes Bias-Signal | **Definition** / **Experiment** |
-| $S_{\mathrm{EABC}}$ | CHSH-Analog auf gemeinsamem ABCE-Träger | **Definition** / **Experiment** |
-| $P_{\mathrm{same}}^{\mathrm{hol}}$ | Pfad↔Holonomie-Kohärenz | **Definition** / **Hypothese** |
-
-**Numerik:** `de_bell_combined_report(X)` in `collatz_eabc_bell_inequality_test.py` und `collatz_eabc_holonomie_fehlerterm.py` — $D_E$, $\widetilde{D}_E$, $S_{\mathrm{EABC}}$ am selben $X$.
+**Numerik:** `de_bell_combined_report(X)` in `collatz_eabc_bell_inequality_test.py` und `collatz_eabc_holonomie_fehlerterm.py`.
 
 **Lean:** `CollatzEabc/HolonomieFehlerterm.lean` — kombinatorische $N_\pm$/`D_E` auf endlichen Listen (**bewiesen**); Primzählung und CHSH-LHV-Bound (**`sorry`**).
 
 ---
 
-*Kanonsiche Endform: Dieses Dokument fixiert die **operative Lesart** für PR #54/PR #59. Mathematischer Kern: `collatz_eabc_zirkulation_spektral.md`. Didaktik: `collatz_eabc_sagnac.md`. Beweisskizzen: `collatz_eabc_holonomie_beweisversuch.md`. Sekundäre Bell-Brücke: `collatz_eabc_bell_holonomie.md` §12.*
+## 6. Epistemische Tabelle
+
+| Aussage | Label |
+|---------|-------|
+| $D_E$, $\widetilde{D}_E$ | **Definition** |
+| $D_E$ mit $L$-Funktions-Nullstellen mod $12$ | **Hypothese** |
+| Verhalten von $\widetilde{D}_E$ | **Experiment** |
+| Bell/CHSH | **Analogie** (sekundär) |
+
+---
+
+*Teilhypothese: Fehlerterm $D_E$ innerhalb der kanonischen Zirkulationshypothese `collatz_eabc_zirkulationshypothese.md`. Spektralgeometrie: `collatz_eabc_zirkulation_spektral.md`.*

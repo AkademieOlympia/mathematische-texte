@@ -11,6 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from collatz_eabc_holonomie_fehlerterm import holonomy_counts
 from collatz_eabc_sagnac_circulation import (
     CANONICAL_GAP_PATTERN,
+    THEORY_ZIRKULATION,
     circulation_C_E,
     circulation_report,
     cycle_omega_graph,
@@ -71,7 +72,8 @@ def test_circulation_equals_D_E():
 
 def test_circulation_report_structure():
     report = circulation_report(30_000)
-    assert report["theory"] == "collatz_eabc_sagnac.md"
+    assert report["theory"] == THEORY_ZIRKULATION
+    assert report["theory_intuition"] == "collatz_eabc_sagnac.md"
     assert "circulation" in report
     assert "graph_orientation" in report
     assert report["circulation"]["C_E_equals_D_E"] is True

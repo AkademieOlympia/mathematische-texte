@@ -12,6 +12,7 @@ from collatz_eabc_holonomie_fehlerterm import (
     CANONICAL_GAP_PATTERN,
     THEORY_ENDFORM,
     THEORY_SAGNAC,
+    THEORY_ZIRKULATION,
     chebyshev_bias_comparison,
     d_tilde_e_series,
     gap_pattern_mod12,
@@ -47,6 +48,7 @@ def test_holonomy_counts_formula():
     assert row["N_CEABC"] == n_minus
     assert row["Delta_E"] == n_plus - n_minus
     assert row["D_E"] == row["Delta_E"]
+    assert row["C_E"] == row["D_E"]
     if total > 0:
         assert abs(row["S_E"] - row["Delta_E"] / total) < 1e-12
         assert abs(row["chi_Hol"] - row["S_E"]) < 1e-12
@@ -103,6 +105,7 @@ def test_run_writes_json(tmp_path: Path):
     report = run(max_p=10_000, output=out)
     assert out.is_file()
     loaded = json.loads(out.read_text(encoding="utf-8"))
+    assert loaded["meta"]["theory_zirkulation"] == THEORY_ZIRKULATION
     assert loaded["meta"]["theory_endform"] == THEORY_ENDFORM
     assert loaded["meta"]["theory_sagnac"] == THEORY_SAGNAC
     assert loaded["gap_patterns"]["words"][ABCEA_WORD]["matches_canonical"]
