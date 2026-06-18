@@ -1,13 +1,44 @@
 # EABC Φ_E — analytischer Lean-Beweisversuch
 
 **Status:** Skeleton (PR #63; Branch `collatz/eabc-05-holonomie-fehlerterm`)  
+**Lean (Kern Zählung):** `collatz_eabc_core/CollatzEabc/PatternCount.lean` — **D_E, Q_E, N_±**  
 **Lean (Fehlerterm):** `collatz_eabc_core/CollatzEabc/HolonomieFehlerterm.lean`  
-**Lean (Pattern-Zählung):** `collatz_eabc_core/CollatzEabc/PatternCount.lean`  
-**Lean (Hodge-Layer):** `collatz_eabc_core/CollatzEabc/FlussPhiE.lean`  
+**Lean (Hodge-Layer):** `collatz_eabc_core/CollatzEabc/FlussPhiE.lean` — **Φ_E Conjecture-Schicht**  
 **Lean (minimaler Kern):** `collatz_eabc_core/CollatzEabc/HolonomyCore.lean` (`EABC`-Namespace)  
 **Epistemik:** `collatz_eabc_epistemik_schichten.md` — **A / B / R / C**; Lakatos §4 (#72)  
 **Kanonische Geometrie:** `collatz_eabc_diskrete_geometrie.md`  
 **Numerik:** `eabc_quadruplets_1e10.py`, `eabc_quadruplets_fit_alpha.py` (#73); `collatz_eabc_hodge_eabc.py` (`Phi_E`, `flux_density_limit`, `inner_product_omega_h`)
+
+---
+
+## Architektur-Diagramm (Stand 18. Juni 2026)
+
+**Zentrum:** diskrete Zählgrößen `D_E`, `Q_E`, `N_±` in `PatternCount.lean` — nicht `Φ_E` / `α_E`.
+
+```mermaid
+flowchart TD
+  R[Residue / EabcLetter] --> W5[windows5]
+  W5 --> P[isABCEA / isCEABC]
+  K[kappaPrimeStreamUpTo Black Box] --> Npm[N_plus_up_to / N_minus_up_to]
+  P --> Npm
+  Npm --> DE[D_E / Q_E Kern]
+  DE --> WE[W_E]
+  WE --> Phi[Phi_E Conjecture sorry]
+  QV[N_plus_quadruplet_up_to sekundär] -.->|Python 84/82| DE
+```
+
+| Ebene | Modul | Inhalt |
+|-------|-------|--------|
+| A | `PatternCount` | `windows5`, γ⁺/γ⁻, **GREEN** `Q_E_eq`, `abs_D_E_le_Q_E`, `W_E_bounds` |
+| B | `PatternCount` | `kappaPrimeStreamUpTo`, `N_±`, `D_E`, `Q_E`, `W_E`, `W_E_of_pos` |
+| B | `HolonomieFehlerterm` | Listen-`N_±`, Lücken $(2,4,2,4)$, Bell-Skeleton |
+| B→R | `FlussPhiE` | C₄, harmonisches $h$, `HasPhi_E` (**Φ_E oben, nicht Zentrum**) |
+| R | `PatternCount` | `kappaPrimeStream_mod12_correct` (`sorry`) |
+| R | `HolonomieFehlerterm` | `Hol_E_zero` (`sorry`) |
+| R | `FlussPhiE` | 5× `sorry` (Asymptotik, EABC-Vermutung) |
+| R | `HolonomyCore` | `EABC_holonomy_limit_conjecture` (`sorry`) |
+
+**Zwei Träger:** Primär = Gleitfenster auf κ-Primfolge (`N_±_up_to`, bei $10^6$: 275/216); Sekundär = Primvierlinge (`N_±_quadruplet_up_to`, bei $10^6$: **84/82**).
 
 ---
 
