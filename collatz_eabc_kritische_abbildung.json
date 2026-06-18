@@ -1,0 +1,625 @@
+{
+  "meta": {
+    "module": "collatz_eabc_kritische_abbildung.py",
+    "theory": "collatz_eabc_kritische_abbildung.md",
+    "theory_zirkulation": "collatz_eabc_zirkulationshypothese.md",
+    "theory_zyklus": "collatz_eabc_zyklus_holonomie.md",
+    "theory_generalangriff": "collatz_generalangriff_2026.md",
+    "epistemic": "Modellabbildung — kein Physikanspruch"
+  },
+  "formulas": {
+    "source_P": "(0.5, 0)",
+    "gamma_v": "v * (x - 1/2)",
+    "s_v": "1/2 + i * v * (x - 1/2)",
+    "inverse": "x = 1/2 + gamma / v",
+    "x_n_v": "1/2 + gamma_n / v"
+  },
+  "example_gamma_1": {
+    "v=1": 14.634725141734693,
+    "v=2": 7.567362570867346,
+    "v=10": 1.9134725141734692
+  },
+  "zeta_zero_mappings": [
+    {
+      "n": 1,
+      "gamma_n": 14.134725141734695,
+      "rho_n": "1/2 + i*14.134725141734695",
+      "x_n_v_1": 14.634725141734695,
+      "s_v_1": {
+        "re": 0.5,
+        "im": 14.134725141734695
+      },
+      "x_n_v_2": 7.567362570867347,
+      "s_v_2": {
+        "re": 0.5,
+        "im": 14.134725141734695
+      },
+      "x_n_v_10": 1.9134725141734694,
+      "s_v_10": {
+        "re": 0.5,
+        "im": 14.134725141734695
+      }
+    },
+    {
+      "n": 2,
+      "gamma_n": 21.022039638771556,
+      "rho_n": "1/2 + i*21.022039638771556",
+      "x_n_v_1": 21.522039638771556,
+      "s_v_1": {
+        "re": 0.5,
+        "im": 21.022039638771556
+      },
+      "x_n_v_2": 11.011019819385778,
+      "s_v_2": {
+        "re": 0.5,
+        "im": 21.022039638771556
+      },
+      "x_n_v_10": 2.6022039638771557,
+      "s_v_10": {
+        "re": 0.5,
+        "im": 21.022039638771556
+      }
+    },
+    {
+      "n": 3,
+      "gamma_n": 25.01085758014569,
+      "rho_n": "1/2 + i*25.01085758014569",
+      "x_n_v_1": 25.51085758014569,
+      "s_v_1": {
+        "re": 0.5,
+        "im": 25.01085758014569
+      },
+      "x_n_v_2": 13.005428790072845,
+      "s_v_2": {
+        "re": 0.5,
+        "im": 25.01085758014569
+      },
+      "x_n_v_10": 3.001085758014569,
+      "s_v_10": {
+        "re": 0.5,
+        "im": 25.01085758014569
+      }
+    },
+    {
+      "n": 4,
+      "gamma_n": 30.424876125859512,
+      "rho_n": "1/2 + i*30.424876125859512",
+      "x_n_v_1": 30.924876125859512,
+      "s_v_1": {
+        "re": 0.5,
+        "im": 30.424876125859512
+      },
+      "x_n_v_2": 15.712438062929756,
+      "s_v_2": {
+        "re": 0.5,
+        "im": 30.424876125859512
+      },
+      "x_n_v_10": 3.5424876125859512,
+      "s_v_10": {
+        "re": 0.5,
+        "im": 30.424876125859512
+      }
+    },
+    {
+      "n": 5,
+      "gamma_n": 32.93506158773919,
+      "rho_n": "1/2 + i*32.93506158773919",
+      "x_n_v_1": 33.43506158773919,
+      "s_v_1": {
+        "re": 0.5,
+        "im": 32.93506158773919
+      },
+      "x_n_v_2": 16.967530793869596,
+      "s_v_2": {
+        "re": 0.5,
+        "im": 32.93506158773919
+      },
+      "x_n_v_10": 3.793506158773919,
+      "s_v_10": {
+        "re": 0.5,
+        "im": 32.93506158773919
+      }
+    }
+  ],
+  "eabc_circuits": {
+    "v": 1.0,
+    "length_model": "canonical",
+    "ABCEA": {
+      "orientation": "ABCEA",
+      "holonomy_sign": 1,
+      "length_model": "canonical",
+      "gap_pattern": [
+        2,
+        4,
+        2,
+        4
+      ],
+      "edge_velocities": {
+        "v_E": 1.0,
+        "v_A": 1.0,
+        "v_B": 1.0,
+        "v_C": 1.0
+      },
+      "source_P": {
+        "x": 0.5,
+        "s_v": {
+          "re": 0.5,
+          "im": 0.0
+        }
+      },
+      "segments": [
+        {
+          "step": 0,
+          "vertex": "A",
+          "x": 0.5,
+          "gamma_cumulative": 0.0,
+          "s_v": {
+            "re": 0.5,
+            "im": 0.0
+          }
+        },
+        {
+          "step": 1,
+          "edge": "A->B",
+          "src": "A",
+          "dst": "B",
+          "length": 2,
+          "velocity": 1.0,
+          "x_prev": 0.5,
+          "x": 2.5,
+          "delta_gamma": 2.0,
+          "gamma_cumulative": 2.0,
+          "s_v": {
+            "re": 0.5,
+            "im": 2.0
+          }
+        },
+        {
+          "step": 2,
+          "edge": "B->C",
+          "src": "B",
+          "dst": "C",
+          "length": 4,
+          "velocity": 1.0,
+          "x_prev": 2.5,
+          "x": 6.5,
+          "delta_gamma": 4.0,
+          "gamma_cumulative": 6.0,
+          "s_v": {
+            "re": 0.5,
+            "im": 6.0
+          }
+        },
+        {
+          "step": 3,
+          "edge": "C->E",
+          "src": "C",
+          "dst": "E",
+          "length": 2,
+          "velocity": 1.0,
+          "x_prev": 6.5,
+          "x": 8.5,
+          "delta_gamma": 2.0,
+          "gamma_cumulative": 8.0,
+          "s_v": {
+            "re": 0.5,
+            "im": 8.0
+          }
+        },
+        {
+          "step": 4,
+          "edge": "E->A",
+          "src": "E",
+          "dst": "A",
+          "length": 4,
+          "velocity": 1.0,
+          "x_prev": 8.5,
+          "x": 12.5,
+          "delta_gamma": 4.0,
+          "gamma_cumulative": 12.0,
+          "s_v": {
+            "re": 0.5,
+            "im": 12.0
+          }
+        }
+      ],
+      "total_x_span": 12.0,
+      "total_length": 12,
+      "total_gamma": 12.0,
+      "endpoint": {
+        "step": 4,
+        "edge": "E->A",
+        "src": "E",
+        "dst": "A",
+        "length": 4,
+        "velocity": 1.0,
+        "x_prev": 8.5,
+        "x": 12.5,
+        "delta_gamma": 4.0,
+        "gamma_cumulative": 12.0,
+        "s_v": {
+          "re": 0.5,
+          "im": 12.0
+        }
+      }
+    },
+    "CEABC": {
+      "orientation": "CEABC",
+      "holonomy_sign": -1,
+      "length_model": "canonical",
+      "gap_pattern": [
+        2,
+        4,
+        2,
+        4
+      ],
+      "edge_velocities": {
+        "v_E": 1.0,
+        "v_A": 1.0,
+        "v_B": 1.0,
+        "v_C": 1.0
+      },
+      "source_P": {
+        "x": 0.5,
+        "s_v": {
+          "re": 0.5,
+          "im": 0.0
+        }
+      },
+      "segments": [
+        {
+          "step": 0,
+          "vertex": "C",
+          "x": 0.5,
+          "gamma_cumulative": 0.0,
+          "s_v": {
+            "re": 0.5,
+            "im": 0.0
+          }
+        },
+        {
+          "step": 1,
+          "edge": "C->E",
+          "src": "C",
+          "dst": "E",
+          "length": 2,
+          "velocity": 1.0,
+          "x_prev": 0.5,
+          "x": 2.5,
+          "delta_gamma": 2.0,
+          "gamma_cumulative": 2.0,
+          "s_v": {
+            "re": 0.5,
+            "im": 2.0
+          }
+        },
+        {
+          "step": 2,
+          "edge": "E->A",
+          "src": "E",
+          "dst": "A",
+          "length": 4,
+          "velocity": 1.0,
+          "x_prev": 2.5,
+          "x": 6.5,
+          "delta_gamma": 4.0,
+          "gamma_cumulative": 6.0,
+          "s_v": {
+            "re": 0.5,
+            "im": 6.0
+          }
+        },
+        {
+          "step": 3,
+          "edge": "A->B",
+          "src": "A",
+          "dst": "B",
+          "length": 2,
+          "velocity": 1.0,
+          "x_prev": 6.5,
+          "x": 8.5,
+          "delta_gamma": 2.0,
+          "gamma_cumulative": 8.0,
+          "s_v": {
+            "re": 0.5,
+            "im": 8.0
+          }
+        },
+        {
+          "step": 4,
+          "edge": "B->C",
+          "src": "B",
+          "dst": "C",
+          "length": 4,
+          "velocity": 1.0,
+          "x_prev": 8.5,
+          "x": 12.5,
+          "delta_gamma": 4.0,
+          "gamma_cumulative": 12.0,
+          "s_v": {
+            "re": 0.5,
+            "im": 12.0
+          }
+        }
+      ],
+      "total_x_span": 12.0,
+      "total_length": 12,
+      "total_gamma": 12.0,
+      "endpoint": {
+        "step": 4,
+        "edge": "B->C",
+        "src": "B",
+        "dst": "C",
+        "length": 4,
+        "velocity": 1.0,
+        "x_prev": 8.5,
+        "x": 12.5,
+        "delta_gamma": 4.0,
+        "gamma_cumulative": 12.0,
+        "s_v": {
+          "re": 0.5,
+          "im": 12.0
+        }
+      }
+    },
+    "holonomy_contrast": {
+      "sign_ABCEA": 1,
+      "sign_CEABC": -1,
+      "same_total_length": true,
+      "same_total_gamma_magnitude": true
+    }
+  },
+  "eabc_circuits_unit": {
+    "v": 1.0,
+    "length_model": "unit",
+    "ABCEA": {
+      "orientation": "ABCEA",
+      "holonomy_sign": 1,
+      "length_model": "unit",
+      "gap_pattern": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "edge_velocities": {
+        "v_E": 1.0,
+        "v_A": 1.0,
+        "v_B": 1.0,
+        "v_C": 1.0
+      },
+      "source_P": {
+        "x": 0.5,
+        "s_v": {
+          "re": 0.5,
+          "im": 0.0
+        }
+      },
+      "segments": [
+        {
+          "step": 0,
+          "vertex": "A",
+          "x": 0.5,
+          "gamma_cumulative": 0.0,
+          "s_v": {
+            "re": 0.5,
+            "im": 0.0
+          }
+        },
+        {
+          "step": 1,
+          "edge": "A->B",
+          "src": "A",
+          "dst": "B",
+          "length": 1,
+          "velocity": 1.0,
+          "x_prev": 0.5,
+          "x": 1.5,
+          "delta_gamma": 1.0,
+          "gamma_cumulative": 1.0,
+          "s_v": {
+            "re": 0.5,
+            "im": 1.0
+          }
+        },
+        {
+          "step": 2,
+          "edge": "B->C",
+          "src": "B",
+          "dst": "C",
+          "length": 1,
+          "velocity": 1.0,
+          "x_prev": 1.5,
+          "x": 2.5,
+          "delta_gamma": 1.0,
+          "gamma_cumulative": 2.0,
+          "s_v": {
+            "re": 0.5,
+            "im": 2.0
+          }
+        },
+        {
+          "step": 3,
+          "edge": "C->E",
+          "src": "C",
+          "dst": "E",
+          "length": 1,
+          "velocity": 1.0,
+          "x_prev": 2.5,
+          "x": 3.5,
+          "delta_gamma": 1.0,
+          "gamma_cumulative": 3.0,
+          "s_v": {
+            "re": 0.5,
+            "im": 3.0
+          }
+        },
+        {
+          "step": 4,
+          "edge": "E->A",
+          "src": "E",
+          "dst": "A",
+          "length": 1,
+          "velocity": 1.0,
+          "x_prev": 3.5,
+          "x": 4.5,
+          "delta_gamma": 1.0,
+          "gamma_cumulative": 4.0,
+          "s_v": {
+            "re": 0.5,
+            "im": 4.0
+          }
+        }
+      ],
+      "total_x_span": 4.0,
+      "total_length": 4,
+      "total_gamma": 4.0,
+      "endpoint": {
+        "step": 4,
+        "edge": "E->A",
+        "src": "E",
+        "dst": "A",
+        "length": 1,
+        "velocity": 1.0,
+        "x_prev": 3.5,
+        "x": 4.5,
+        "delta_gamma": 1.0,
+        "gamma_cumulative": 4.0,
+        "s_v": {
+          "re": 0.5,
+          "im": 4.0
+        }
+      }
+    },
+    "CEABC": {
+      "orientation": "CEABC",
+      "holonomy_sign": -1,
+      "length_model": "unit",
+      "gap_pattern": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "edge_velocities": {
+        "v_E": 1.0,
+        "v_A": 1.0,
+        "v_B": 1.0,
+        "v_C": 1.0
+      },
+      "source_P": {
+        "x": 0.5,
+        "s_v": {
+          "re": 0.5,
+          "im": 0.0
+        }
+      },
+      "segments": [
+        {
+          "step": 0,
+          "vertex": "C",
+          "x": 0.5,
+          "gamma_cumulative": 0.0,
+          "s_v": {
+            "re": 0.5,
+            "im": 0.0
+          }
+        },
+        {
+          "step": 1,
+          "edge": "C->E",
+          "src": "C",
+          "dst": "E",
+          "length": 1,
+          "velocity": 1.0,
+          "x_prev": 0.5,
+          "x": 1.5,
+          "delta_gamma": 1.0,
+          "gamma_cumulative": 1.0,
+          "s_v": {
+            "re": 0.5,
+            "im": 1.0
+          }
+        },
+        {
+          "step": 2,
+          "edge": "E->A",
+          "src": "E",
+          "dst": "A",
+          "length": 1,
+          "velocity": 1.0,
+          "x_prev": 1.5,
+          "x": 2.5,
+          "delta_gamma": 1.0,
+          "gamma_cumulative": 2.0,
+          "s_v": {
+            "re": 0.5,
+            "im": 2.0
+          }
+        },
+        {
+          "step": 3,
+          "edge": "A->B",
+          "src": "A",
+          "dst": "B",
+          "length": 1,
+          "velocity": 1.0,
+          "x_prev": 2.5,
+          "x": 3.5,
+          "delta_gamma": 1.0,
+          "gamma_cumulative": 3.0,
+          "s_v": {
+            "re": 0.5,
+            "im": 3.0
+          }
+        },
+        {
+          "step": 4,
+          "edge": "B->C",
+          "src": "B",
+          "dst": "C",
+          "length": 1,
+          "velocity": 1.0,
+          "x_prev": 3.5,
+          "x": 4.5,
+          "delta_gamma": 1.0,
+          "gamma_cumulative": 4.0,
+          "s_v": {
+            "re": 0.5,
+            "im": 4.0
+          }
+        }
+      ],
+      "total_x_span": 4.0,
+      "total_length": 4,
+      "total_gamma": 4.0,
+      "endpoint": {
+        "step": 4,
+        "edge": "B->C",
+        "src": "B",
+        "dst": "C",
+        "length": 1,
+        "velocity": 1.0,
+        "x_prev": 3.5,
+        "x": 4.5,
+        "delta_gamma": 1.0,
+        "gamma_cumulative": 4.0,
+        "s_v": {
+          "re": 0.5,
+          "im": 4.0
+        }
+      }
+    },
+    "holonomy_contrast": {
+      "sign_ABCEA": 1,
+      "sign_CEABC": -1,
+      "same_total_length": true,
+      "same_total_gamma_magnitude": true
+    }
+  },
+  "boxed": {
+    "mapping": "x ↦ 1/2 + i v (x - 1/2)",
+    "holonomy_link": "ABCEA (+1) vs CEABC (-1) auf C4 mit Lücken (2,4,2,4)",
+    "zirkulation": "D_E = N_plus - N_minus (collatz_eabc_zirkulationshypothese.md)"
+  }
+}

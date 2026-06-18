@@ -17,6 +17,8 @@
 - `collatz_eabc_graph_laplacian.py` — $\mathrm{Spec}(L_E)$
 - `collatz_eabc_evolution_analytik.md` — **Evolutionspfad** Bell→Sagnac→$C_E$→$\mathrm{Spec}(L_E)$, Wachstumsszenarien, Dirichlet-Stub
 - `collatz_eabc_D_growth.py` — Wachstumsdiagnostik $D_E(X)$, Charakter-Koeffizienten $a_\chi$
+- `collatz_eabc_kritische_abbildung.md` — **Modellabbildung:** Geschwindigkeitsmodell $s_v(x)$, ABCEA/CEABC in der komplexen Ebene
+- `collatz_eabc_kritische_abbildung.py` — Numerik $x_{n,v}$, Schaltkreis-Trajektorien
 - `collatz_generalangriff_2026.md` — Gesamtarchitektur PR #54 / PR #59
 
 ---
@@ -152,6 +154,7 @@ Die EABC-Zirkulationshypothese verbindet:
 | Graph-Zirkulation | $C_E$, $\alpha$, $\omega(e)$ | `collatz_eabc_zirkulation_spektral.md` §4 |
 | Graph-Spektrum | $\mathrm{Spec}(L_E)$ | `collatz_eabc_zirkulation_spektral.md` §6; `collatz_eabc_graph_laplacian.py` |
 | Wachstum / Dirichlet | $D_E(X)$-Szenarien A–D, $a_\chi$ | `collatz_eabc_evolution_analytik.md` §3–4; `collatz_eabc_D_growth.py` |
+| Kritische Abbildung | $s_v(x)$, $x_{n,v}$, Holonomie-Schaltkreis | `collatz_eabc_kritische_abbildung.md`; `collatz_eabc_kritische_abbildung.py` |
 
 $$\boxed{\;\text{Fehlerterm } D_E \;\leftrightarrow\; L\text{-Funktionen mod } 12 \;\leftrightarrow\; \text{Zirkulation } C_E \;\leftrightarrow\; \mathrm{Spec}(L_E).\;}$$
 
