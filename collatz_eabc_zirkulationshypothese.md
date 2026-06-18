@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; asymptotische Chiralität in §4.1
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
 - `collatz_eabc_sagnac.md` — **Intuition only:** Sagnac-Bild für $\gamma^\pm$ (kein physikalischer Kern)
@@ -407,6 +407,47 @@ Wie bei $\pi(x)-\mathrm{Li}(x)$ und bei $\Delta(x)=\pi(x;a,q)-\pi(x;b,q)$ fragt 
 | 4 | $W_E(X)=R_1(X)$ | Ebene 3/4: H₀b / H₃ (Orientierung / Holonomie) |
 
 **Label:** Ebene 0/1 = **Definition**; Ebene 2 / H₂ = **Hypothese**; $\alpha_{\mathrm{loc}}$-Diagnose = **Experiment**; Ebene 4 / H₃ = **Vermutung** (Lean-RED); H₀a = **Heuristik**; H₀b = **Nullhypothese**.
+
+### 4.3 Numerischer Stand und erster Belastungstest
+
+$$\boxed{\;\text{Zeigt }D_E(X)\text{ überhaupt ein reproduzierbares, nichttriviales Wachstum?}\;}$$
+
+**Scope des ersten Tests:** nur $(G_E,\,N_+,\,N_-,\,D_E)$ — **kein** $\Phi_E$, **keine** Holonomie. Der Belastungstest prüft die Skalierung des harten Kerns (Ebene 0–1), nicht die Endfrage Ebene 4.
+
+**Methodische Leitlinie (Tao-Stil):** Alle folgenden Befunde sind **Experimente** an endlichem $X$, keine Theoreme. Die **Nullhypothese** lautet $|D_E(X)|=O(\sqrt{Q(X)})$, d. h. $\alpha_E=\tfrac{1}{2}$ und $R_{1/2}(X)=D_E(X)/\sqrt{Q(X)}$ bleibt beschränkt — sie ist weder widerlegt noch positiv gestützt.
+
+#### Aktueller Datenstand (Checkpoints, Experiment)
+
+| $X$ | $A$ | $C$ | $Q$ | $D$ | $W_E$ | $R_{1/2}$ |
+|-----|-----|-----|-----|-----|-------|-----------|
+| $10^6$ | 84 | 82 | 166 | $+2$ | 0,0120 | 0,155 |
+| $2\times 10^6$ | 152 | 143 | 295 | $+9$ | 0,0305 | 0,523 |
+| $10^7$ | 450 | 449 | 899 | $+1$ | 0,0011 | 0,033 |
+
+**Schlussfolgerungen** (als **Experiment**, nicht Theorem):
+
+1. **$W_E$ völlig instabil** über die drei Checkpoints (0,012 → 0,031 → 0,001). $$\boxed{\;\text{Es gibt derzeit keinerlei numerischen Hinweis auf }\Phi_E\neq 0.\;}$$
+2. **$R_{1/2}$ kompatibel mit $O(1)$** — kein empirischer Hinweis auf $\alpha_E>\tfrac{1}{2}$ in diesem Fenster.
+3. **Nullhypothese** $D_E(X)=O(\sqrt{Q(X)})$, $\alpha_E=\tfrac{1}{2}$: **noch nicht widerlegt**, **nicht positiv gestützt** — zu wenige, zu weit gespreizte Checkpoints.
+4. **mod-$420$-Diagnostik** bei $X\approx 10^8$: Spannweite der regulären Klassen $\approx 66$, $W_{420}\approx 0{,}083$ — **stärkeres Signal** als die ABCEA/CEABC-Orientierung ($|W_E|\ll 1$), aber ebenfalls nur Experiment.
+
+#### Erster Belastungstest (Forschungsprogramm)
+
+$$\boxed{\;\text{Bleibt }R_{1/2}(X)=D_E(X)/\sqrt{Q(X)}\text{ bis }10^{10}\text{ beschränkt?}\;}$$
+
+**Checkpoint-Strategie** (`eabc_quadruplets_1e10.py`): geometrische Serie $10^e$, $2\times 10^e$, $5\times 10^e$ für $e\ge 6$, optional `--checkpoints` für feinere Rasterung. Ziel: genügend Punkte für $\alpha_{\mathrm{loc}}$ und Log-log-Fit $|D_E|\sim Q^{\alpha_E}$.
+
+**Pipeline:**
+
+```bash
+python3 eabc_quadruplets_1e10.py --X 10000000000
+python3 eabc_quadruplets_fit_alpha.py eabc_quadruplets.csv --plot --plot-loglog
+python3 eabc_quadruplets_plot.py eabc_quadruplets.csv --plot-loglog
+```
+
+**Verknüpfung mit Forschungsprogramm:** Dies ist der **erste numerische Belastungstest** des harten Kerns — Prime-Race-/Fehlertermstruktur auf dem EABC-Zyklus —, **nicht** ein Holonomie-Test. $\Phi_E$ und $W_E\to\Phi_E\neq 0$ bleiben **Ebene 4** und werden erst nach geklärter Skalierung von $D_E$ relevant (vgl. `collatz_eabc_epistemik_schichten.md` §2).
+
+**Label:** Belastungstest = **Experiment**; Nullhypothese $\alpha_E=\tfrac{1}{2}$ = **Heuristik** (H₀a); $W_E$-Instabilität = **Experiment** (kein Hinweis auf H₃).
 
 ---
 

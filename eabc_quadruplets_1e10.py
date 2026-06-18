@@ -63,12 +63,30 @@ def odd_segment_prime_flags(L: int, R: int, base_primes):
 
 
 def default_checkpoints(X: int):
+    """Geometrische Serie: 10^e, 2×10^e, 5×10^e für e ≥ 6, plus --X."""
     cps = []
     for e in range(6, int(math.log10(X)) + 1):
-        for m in [1, 2, 3, 5]:
+        for m in (1, 2, 5):
             v = m * 10**e
             if v <= X:
                 cps.append(v)
+    if X not in cps:
+        cps.append(X)
+    return sorted(set(cps))
+
+
+def parse_checkpoints(spec: str, X: int) -> list[int]:
+    """Kommagetrennte Checkpoint-Liste; Werte > X werden verworfen."""
+    cps = []
+    for part in spec.split(","):
+        part = part.strip()
+        if not part:
+            continue
+        v = int(float(part))
+        if v <= X:
+            cps.append(v)
+    if not cps:
+        raise SystemExit("Keine gültigen Checkpoints in --checkpoints.")
     if X not in cps:
         cps.append(X)
     return sorted(set(cps))
@@ -144,6 +162,12 @@ def main():
         help="integer width per block; increase if RAM allows",
     )
     parser.add_argument("--out", type=str, default="eabc_quadruplets.csv")
+    parser.add_argument(
+        "--checkpoints",
+        type=str,
+        default=None,
+        help="kommagetrennte X-Werte (Standard: 10^e, 2×10^e, 5×10^e, e≥6)",
+    )
     args = parser.parse_args()
 
     X = args.X
@@ -152,7 +176,10 @@ def main():
     root = int(math.isqrt(X + 8)) + 1
     base_primes = small_primes_upto(root)
 
-    checkpoints = default_checkpoints(X)
+    if args.checkpoints:
+        checkpoints = parse_checkpoints(args.checkpoints, X)
+    else:
+        checkpoints = default_checkpoints(X)
     cp_idx = 0
 
     total = 0
