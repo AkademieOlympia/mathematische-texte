@@ -5,6 +5,7 @@
 **Tao-Labels:** Definition | Vermutung | Hypothese | Experiment | Analogie
 
 **Querverweise:**
+- `collatz_eabc_holonomie_stufen.md` — **drei mathematische Stufen** + Fall A/B/C in $N$ (holonomierelevant)
 - `collatz_eabc_epistemik_physik.md` — Physik-vs.-EABC-Tabelle; Evolution endet in arithmetischer Holonomie, nicht in SRT
 - `collatz_eabc_zirkulationshypothese.md` — **kanonische Hypothese:** $N_\pm$, $C_E$, $D_E$, $S_E$
 - `collatz_eabc_zirkulation_spektral.md` — diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
@@ -73,6 +74,20 @@ Unter Symmetrie-Hypothese mod $12$: $\mathbb{E}[D_E(X)]=0$ im Hauptterm; der **i
 ## 3. Offene Frage: Wachstum von $D_E(X)$ für $X\to\infty$
 
 **Zentrale Wachstumsfrage:** Wie schnell wächst $|D_E(X)|$ relativ zu $X$ und zur Fensterzahl $N_+(X)+N_-(X)$?
+
+### 3.1 Holonomie-Fälle A/B/C (in $N$, kanonisch)
+
+Mit $N(X):=N_+(X)+N_-(X)$ und $\mathrm{Hol}_E=\lim S_E(X)=\lim D_E/N$:
+
+| Fall | Asymptotik $D_E$ | $\mathrm{Hol}_E$ | Lesart |
+|:----:|------------------|------------------|--------|
+| **A** | $O(1)$ | $0$ | absoluter Effekt stirbt |
+| **B** | $O(\sqrt{N})$ | $\to 0$ | Random-Walk-Nullhypothese |
+| **C** | $\sim \alpha N$, $\alpha\neq 0$ | $\alpha$ | stabile asymptotische Orientierung |
+
+Details: `collatz_eabc_holonomie_stufen.md` §4. Numerik: `collatz_eabc_D_growth.py::classify_holonomy_growth`.
+
+### 3.2 Legacy-Szenarien in $X$ (ergänzend)
 
 | Szenario | Asymptotik | Bedeutung |
 |:--------:|------------|-----------|
@@ -235,7 +250,8 @@ $$\boxed{\;\text{Kann } D_E \text{ dieselbe Mechanik (}L\text{-Nullstellen mod }
 |-------|--------|-------|
 | $D_E(X)$ | `D_E` | `collatz_eabc_D_growth`, `collatz_eabc_holonomie_fehlerterm` |
 | $\widetilde{D}_E(X)$ | `D_tilde_E` | `collatz_eabc_D_growth` |
-| Wachstumsszenario | `growth_scenario` | `collatz_eabc_D_growth` |
+| Wachstumsszenario ($X$) | `growth_scenario` | `collatz_eabc_D_growth` |
+| Holonomie-Fall A/B/C ($N$) | `holonomy_fall` | `collatz_eabc_D_growth` |
 | $a_\chi$ (Stub) | `dirichlet_coefficients` | `collatz_eabc_D_growth` |
 | $\mathrm{Spec}(L_E)$ | `eigenvalues_symmetrized` | `collatz_eabc_graph_laplacian` |
 

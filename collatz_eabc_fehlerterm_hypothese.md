@@ -7,6 +7,7 @@
 **Primäre Hypothese:** `collatz_eabc_zirkulationshypothese.md` — kanonische EABC-Zirkulationshypothese. Dieses Dokument vertieft den **Fehlerterm** $D_E(X)$ und die normalisierte Observable $\widetilde{D}_E(X)$.
 
 **Querverweise:**
+- `collatz_eabc_holonomie_stufen.md` — drei Stufen + Fall A/B/C; Wilson-Loop-Analogie für $C_E$
 - `collatz_eabc_epistemik_physik.md` — epistemische Drei Ebenen; zentrale Frage $\mathrm{Hol}_E$ und Prime-Race-Chiralität
 - `collatz_eabc_zirkulationshypothese.md` — **kanonische Hypothese:** $N_\pm$, $C_E$, $D_E$, $S_E$, Hauptvermutung, Prime-Race-Box
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$

@@ -5,6 +5,7 @@
 **Tao-Labels:** Definition | Modellabbildung | Analogie | Forschungsfrage
 
 **Querverweise:**
+- `collatz_eabc_holonomie_stufen.md` — **drei mathematische Stufen** (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_kritische_abbildung.md` — §7 Halbkreis vs. gerade; Holonomie-Sensor $v_j=\gamma_{\mathrm{ref}}/\ell_j$
 - `collatz_eabc_sagnac.md` — Sagnac-Intuition (didaktisch); gegenläufige Zyklen $\gamma^\pm$
 - `collatz_eabc_fehlerterm_hypothese.md` — Fehlerterm $D_E$, Prime Race $N_\pm$
@@ -86,6 +87,7 @@ $$\boxed{\;\text{Sagnac-Frage in EABC: nicht „wer altert langsamer?“, sonder
 
 **Verknüpfungen:**
 - Fehlerterm und Prime Race: `collatz_eabc_fehlerterm_hypothese.md`, `collatz_eabc_zirkulationshypothese.md` §5
+- Drei Stufen + Wachstumsfälle A/B/C in $N$: `collatz_eabc_holonomie_stufen.md`
 - Analytischer Beweisversuch $\mathrm{Hol}_E=0$: `collatz_eabc_holonomie_beweisversuch.md`
 - Evolutionspfad und Wachstumsszenarien: `collatz_eabc_evolution_analytik.md`
 - Wegparadoxon (euklidisch): `collatz_eabc_kritische_abbildung.md` §7
