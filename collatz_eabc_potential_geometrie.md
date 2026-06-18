@@ -10,7 +10,7 @@
 - `collatz_eabc_chirale_transport.py` — Phasenakkumulation, `holonomy_phase_difference`
 - `collatz_eabc_holonomie_stufen.md` — **§2–3** Stufe-2-Holonomie, Wilson-Loop-Analogie
 - `collatz_eabc_epistemik_physik.md` — effektive Geschwindigkeiten $\neq c$, kein SRT
-- `collatz_eabc_wigner_analog.md` — signiertes Informationsfeld $W_{ab}$
+- `collatz_eabc_wigner_analog.md` — $W_{ij}$ Übergangsgeometrie, $W_E(i,j;N)$, arithmetische Wigner-Negativität (§6–7)
 - `collatz_eabc_wigner_field.py` — $W_E$, Vorzeichendomänen, Spektral-Stub
 - `collatz_eabc_potential_phase.py` — Bohm-/AB-/Berry-Stubs
 

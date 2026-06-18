@@ -11,7 +11,7 @@
 - `collatz_eabc_brachistochrone.md` — $T_R$, $T_L$, Doppelbrechung
 - `collatz_eabc_chirale_transport.py` — Numerik $\phi_R$, $\phi_L$, $\mathrm{Hol}$-Phasendifferenz
 - `collatz_eabc_kritische_abbildung.md` — Holonomie-Sensor, Kantenlängen $\ell_j$
-- `collatz_eabc_wigner_analog.md` — signiertes Informationsfeld $W_{ab}$, $W_E$ (4-Block)
+- `collatz_eabc_wigner_analog.md` — $W_E(i,j;N)$ chirales Kantenfeld (4-Block), Informationsüberschuss-Test
 - `collatz_eabc_potential_geometrie.md` — Berry $\phi_R-\phi_L$, AB-Phasenintegral
 
 ---
