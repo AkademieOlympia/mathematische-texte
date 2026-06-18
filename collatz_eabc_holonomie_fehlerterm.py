@@ -235,10 +235,17 @@ def run_series(
     gap = verify_gap_patterns()
     cheb = chebyshev_bias_comparison(max_p)
     de_bell = None
+    circulation = None
     try:
         from collatz_eabc_bell_inequality_test import de_bell_combined_report
 
         de_bell = de_bell_combined_report(max_p)
+    except ImportError:
+        pass
+    try:
+        from collatz_eabc_sagnac_circulation import circulation_report
+
+        circulation = circulation_report(max_p)
     except ImportError:
         pass
     return {
@@ -257,6 +264,7 @@ def run_series(
         "D_tilde_E_series": d_tilde_e_series(limits),
         "chebyshev_comparison": cheb,
         "de_bell_combined": de_bell,
+        "circulation_report": circulation,
         "boxed_conclusions": {
             "Sagnac_primary": "ABCEA vs CEABC = Sagnac-Observable (gamma+, gamma-)",
             "Hol_E_main_term": "Hol_E = 0 unter mod-12-Symmetrie + HL-Äquidistribution (Hauptvermutung)",
