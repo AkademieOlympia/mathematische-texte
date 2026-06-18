@@ -48,6 +48,8 @@ DEFAULT_OUTPUT = ROOT / "collatz_eabc_hodge_eabc.json"
 THEORY_UEBERGANGSRAUM = "collatz_eabc_uebergangsraum.md"
 THEORY_SIGNIERTE_MASS = "collatz_eabc_signierte_massstruktur.md"
 THEORY_ZIRKULATION = "collatz_eabc_zirkulationshypothese.md"
+THEORY_DISKRETE_GEOMETRIE = "collatz_eabc_diskrete_geometrie.md"
+DEFAULT_SYNTHESIS_OUTPUT = ROOT / "collatz_eabc_diskrete_geometrie_synthesis.json"
 
 NEAR_ZERO_TOL = 1e-6
 
@@ -384,6 +386,85 @@ def orientation_information_test(max_p: int) -> dict[str, Any]:
     }
 
 
+def magnetic_laplacian_eigenvalues(
+    adj: np.ndarray,
+    phases: np.ndarray,
+    *,
+    hermitian: bool = True,
+) -> list[float]:
+    """Eigenwerte von L_mag = D - U (Alias für magnetic_laplacian)."""
+    return magnetic_laplacian(adj, phases, hermitian=hermitian)["eigenvalues"]
+
+
+def synthesis_report(
+    max_p: int,
+    *,
+    output: Path | None = DEFAULT_SYNTHESIS_OUTPUT,
+) -> dict[str, Any]:
+    """
+    Kanonischer Synthese-Bericht für diskrete EABC-Geometrie.
+
+    Bündelt Flussdichte, ⟨ω_E,h⟩, Spec(L), Spec(L_mag), Orientierungstest.
+    Theorie: collatz_eabc_diskrete_geometrie.md
+    """
+    report = hodge_report(max_p=max_p)
+    flux = report["flux_density"]
+    lap = report["laplacian_from_W"]
+    mag = report["magnetic_laplacian"]
+    harm = report["harmonic_holonomy"]
+
+    synthesis: dict[str, Any] = {
+        "meta": {
+            "module": "collatz_eabc_hodge_eabc.py",
+            "theory": THEORY_DISKRETE_GEOMETRIE,
+            "max_p": max_p,
+            "epistemic": "Geometrie-Synthese — Definition/Experiment/Vermutung",
+        },
+        "topology": report["topology"],
+        "observables": {
+            "C_E": flux["C_E"],
+            "S_E": flux["S_E"],
+            "flux_density": flux["flux_density"],
+            "N_plus": flux["N_plus"],
+            "N_minus": flux["N_minus"],
+            "N_cycles": flux["N_cycles"],
+        },
+        "harmonic": {
+            "inner_product_omega_h": report["inner_product_omega_h"],
+            "harmonic_norm": harm["harmonic_norm"],
+            "omega_E": harm["omega_E"],
+            "ratio_harmonic_norm_to_C_E": harm["ratio_harmonic_norm_to_C_E"],
+        },
+        "spectra": {
+            "laplacian_from_W": {
+                "eigenvalues": lap["eigenvalues"],
+                "smallest_lambda": lap["smallest_lambda"],
+                "lambda_2": lap["lambda_2"],
+            },
+            "magnetic_laplacian": {
+                "eigenvalues": mag["eigenvalues"],
+                "smallest_lambda": mag["smallest_lambda"],
+            },
+        },
+        "flux_density_series": report["flux_density_series"],
+        "orientation_information_test": report["orientation_information_test"],
+        "boxed": report["boxed"],
+        "cross_refs": {
+            "zirkulationshypothese": THEORY_ZIRKULATION,
+            "uebergangsraum": THEORY_UEBERGANGSRAUM,
+            "signierte_massstruktur": THEORY_SIGNIERTE_MASS,
+        },
+    }
+
+    if output is not None:
+        output.write_text(
+            json.dumps(synthesis, indent=2, ensure_ascii=False), encoding="utf-8"
+        )
+        synthesis["output_path"] = str(output)
+
+    return synthesis
+
+
 def hodge_report(max_p: int = 100_000) -> dict[str, Any]:
     """Vollständiger Übergangsraum-/Hodge-/Fluss-Bericht."""
     seq = prime_eabc_sequence(max_p)
@@ -402,6 +483,7 @@ def hodge_report(max_p: int = 100_000) -> dict[str, Any]:
     return {
         "meta": {
             "module": "collatz_eabc_hodge_eabc.py",
+            "theory_diskrete_geometrie": THEORY_DISKRETE_GEOMETRIE,
             "theory_uebergangsraum": THEORY_UEBERGANGSRAUM,
             "theory_signierte_mass": THEORY_SIGNIERTE_MASS,
             "theory_zirkulation": THEORY_ZIRKULATION,

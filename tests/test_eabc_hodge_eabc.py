@@ -21,9 +21,11 @@ from collatz_eabc_hodge_eabc import (
     inner_product_omega_h,
     laplacian_from_W,
     magnetic_laplacian,
+    magnetic_laplacian_eigenvalues,
     magnetic_phase_matrix,
     orientation_information_test,
     signed_measure_graph,
+    synthesis_report,
 )
 from collatz_eabc_holonomie_fehlerterm import holonomy_counts
 from collatz_eabc_transition_graph import (
@@ -117,3 +119,25 @@ def test_discrete_hodge_decomposition_dims():
 
 def test_c4_edge_labels_canonical():
     assert C4_EDGE_LABELS == ("EA", "AB", "BC", "CE")
+
+
+def test_magnetic_laplacian_eigenvalues_alias():
+    classes = classes_from_sequence(prime_eabc_sequence(10_000))
+    counts = np.array(transition_counts(classes), dtype=float)
+    phases = magnetic_phase_matrix(classes)
+    alias = magnetic_laplacian_eigenvalues(counts, phases)
+    full = magnetic_laplacian(counts, phases)["eigenvalues"]
+    assert alias == full
+    assert len(alias) == 4
+
+
+def test_synthesis_report_structure(tmp_path):
+    out = tmp_path / "synthesis.json"
+    report = synthesis_report(25_000, output=out)
+    assert report["meta"]["theory"] == "collatz_eabc_diskrete_geometrie.md"
+    assert "flux_density" in report["observables"]
+    assert report["observables"]["flux_density"] == report["observables"]["S_E"]
+    assert len(report["spectra"]["laplacian_from_W"]["eigenvalues"]) == 4
+    assert len(report["spectra"]["magnetic_laplacian"]["eigenvalues"]) == 4
+    assert "inner_product_omega_h" in report["harmonic"]
+    assert out.exists()
