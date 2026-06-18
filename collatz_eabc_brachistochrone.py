@@ -47,6 +47,7 @@ THEORY = "collatz_eabc_brachistochrone.md"
 THEORY_KRITISCHE = "collatz_eabc_kritische_abbildung.md"
 THEORY_HOLONOMIE_STUFEN = "collatz_eabc_holonomie_stufen.md"
 THEORY_EPISTEMIK = "collatz_eabc_epistemik_physik.md"
+THEORY_CHIRAL = "collatz_eabc_chirale_polarisation.md"
 THEORY_GENERALANGRIFF = "collatz_generalangriff_2026.md"
 
 V_MIN = 1e-6
@@ -57,7 +58,9 @@ Point2D = tuple[float, float]
 VelocityFunc = Callable[[float, float], float]
 
 
-def velocity_from_potential(V: float, model: str, *, v0: float = 1.0, alpha: float = 0.01) -> float:
+def velocity_from_potential(
+    V: float, model: str, *, v0: float = 1.0, alpha: float = 0.01
+) -> float:
     """
     v = f(V) für die fünf Potenzialfamilien (Modellwahl).
 
@@ -86,6 +89,62 @@ def velocity_from_potential(V: float, model: str, *, v0: float = 1.0, alpha: flo
 
 def segment_length(p0: Point2D, p1: Point2D) -> float:
     return math.hypot(p1[0] - p0[0], p1[1] - p0[1])
+
+
+def birefringent_velocity_pair(
+    v_base: float,
+    *,
+    d_e_proxy: float = 0.0,
+    v0: float = 1.0,
+    alpha: float = 0.01,
+) -> tuple[float, float]:
+    """Zwei Polarisationskanäle: v_R = v0 + α·V_E, v_L = v0 - α·V_E."""
+    v_r = max(v0 + alpha * d_e_proxy, V_MIN)
+    v_l = max(v0 - alpha * d_e_proxy, V_MIN)
+    if v_base > 0:
+        scale = v_base / max(v0, V_MIN)
+        v_r = max(v_r * scale, V_MIN)
+        v_l = max(v_l * scale, V_MIN)
+    return v_r, v_l
+
+
+def travel_time_birefringent(
+    path_points: list[Point2D] | tuple[Point2D, ...],
+    v_func: VelocityFunc,
+    *,
+    d_e_global: float = 0.0,
+    alpha: float = 0.01,
+    v0: float = 1.0,
+) -> dict[str, float]:
+    """T_R = Σ Δs/v_R, T_L = Σ Δs/v_L — Birefringenz-Analogie."""
+    pts = list(path_points)
+    if len(pts) < 2:
+        return {
+            "T_R": 0.0,
+            "T_L": 0.0,
+            "delta_T": 0.0,
+            "ratio_T_R_over_T_L": float("nan"),
+        }
+    x_end = pts[-1][0]
+    x_start = pts[0][0]
+    span = max(x_end - x_start, 1e-9)
+    t_r = 0.0
+    t_l = 0.0
+    for i in range(len(pts) - 1):
+        ds = segment_length(pts[i], pts[i + 1])
+        xm = 0.5 * (pts[i][0] + pts[i + 1][0])
+        gm = 0.5 * (pts[i][1] + pts[i + 1][1])
+        frac = (xm - x_start) / span
+        d_e_local = d_e_global * frac
+        v_base = max(v_func(xm, gm), V_MIN)
+        v_r, v_l = birefringent_velocity_pair(
+            v_base, d_e_proxy=d_e_local, v0=v0, alpha=alpha
+        )
+        t_r += ds / v_r
+        t_l += ds / v_l
+    delta = t_r - t_l
+    ratio = t_r / t_l if t_l > 0 else float("nan")
+    return {"T_R": t_r, "T_L": t_l, "delta_T": delta, "ratio_T_R_over_T_L": ratio}
 
 
 def travel_time_integral(
@@ -203,7 +262,9 @@ def potential_log_log(x: float, _gamma: float) -> float:
     return math.log(max(lx, 1e-9))
 
 
-def potential_zeta_sum(gamma: float, gammas: list[float], epsilon: float = 0.5) -> float:
+def potential_zeta_sum(
+    gamma: float, gammas: list[float], epsilon: float = 0.5
+) -> float:
     """V(γ) = Σ_n 1/((γ - γ_n)² + ε) auf der kritischen Linie."""
     return sum(1.0 / ((gamma - gn) ** 2 + epsilon) for gn in gammas)
 
@@ -290,14 +351,17 @@ def make_velocity_func(
             return -math.log(max(p, 1e-12))
         raise ValueError(f"unknown potential: {potential_name}")
 
-    v_model = velocity_model or {
-        "log": "log",
-        "log_log": "inverse_log",
-        "zeta": "zeta",
-        "chirality": "chirality",
-        "curvature": "curvature",
-        "information": "information",
-    }[potential_name]
+    v_model = (
+        velocity_model
+        or {
+            "log": "log",
+            "log_log": "inverse_log",
+            "zeta": "zeta",
+            "chirality": "chirality",
+            "curvature": "curvature",
+            "information": "information",
+        }[potential_name]
+    )
 
     def v_func(x: float, gamma: float) -> float:
         return velocity_from_potential(V_at(x, gamma), v_model)
@@ -333,6 +397,8 @@ def compare_paths_for_potential(
     t_straight = travel_time_integral(straight, v_func)
     t_bent = travel_time_integral(bent, v_func)
     t_semi = travel_time_integral(semi_poly, v_func)
+    biref_straight = travel_time_birefringent(straight, v_func, d_e_global=d_e_global)
+    biref_bent = travel_time_birefringent(bent, v_func, d_e_global=d_e_global)
 
     rel_bent = (t_bent - t_straight) / t_straight if t_straight > 0 else float("nan")
     rel_semi = (t_semi - t_straight) / t_straight if t_straight > 0 else float("nan")
@@ -350,6 +416,8 @@ def compare_paths_for_potential(
         "gradient_faster_than_straight": bent_faster,
         "semicircle_faster_than_straight": semi_faster,
         "path_bends_significantly": significant_bend,
+        "birefringence_straight": biref_straight,
+        "birefringence_gradient": biref_bent,
         "n_straight_segments": len(straight) - 1,
         "n_gradient_points": len(bent),
     }
@@ -389,6 +457,7 @@ def run_comparison(
             "theory_kritische_abbildung": THEORY_KRITISCHE,
             "theory_holonomie_stufen": THEORY_HOLONOMIE_STUFEN,
             "theory_epistemik": THEORY_EPISTEMIK,
+            "theory_chiral": THEORY_CHIRAL,
             "theory_generalangriff": THEORY_GENERALANGRIFF,
             "epistemic": "Variationsprinzip / Modell — kein Physikanspruch, kein SRT",
             "max_p": max_p,
@@ -399,6 +468,7 @@ def run_comparison(
         "fermat_setup": {
             "formula": "T = sum_j Delta_s_j / v(x_j, gamma_j)",
             "velocity": "v = f(V) — siehe velocity_from_potential",
+            "birefringence": "T_R = sum ds/v_R, T_L = sum ds/v_L — collatz_eabc_chirale_polarisation.md",
             "potentials": {
                 "log": "V(x) = ln(x), v ~ ln(x) oder 1/ln(x)",
                 "zeta": "V(gamma) = sum_n 1/((gamma-gamma_n)^2 + eps)",
@@ -445,13 +515,17 @@ def run(
     gamma_ref: float = GAMMA_1_APPROX,
 ) -> dict[str, Any]:
     report = run_comparison(max_p=max_p, gamma_ref=gamma_ref)
-    output.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
+    output.write_text(
+        json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
     report["output_path"] = str(output)
     return report
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="EABC Brachistochrone / Fermat-Prinzip")
+    parser = argparse.ArgumentParser(
+        description="EABC Brachistochrone / Fermat-Prinzip"
+    )
     parser.add_argument("--max-p", type=int, default=100_000)
     parser.add_argument("--gamma-ref", type=float, default=GAMMA_1_APPROX)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
