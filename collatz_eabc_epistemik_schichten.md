@@ -72,7 +72,7 @@ $$\boxed{\;\textbf{Beweis-Spur} \;\|\; \textbf{Ikone-Spur}\;}$$
 | Holonomien | $\mathrm{Hol}_E$, $\mathcal{P}\exp\oint A$ (Programm) | `collatz_eabc_holonomie_stufen.md` |
 | Kreisgraphen | $G_E=(V,E)$, $C_4\cong S^1$, $E^+/E^-$ | `collatz_eabc_diskrete_geometrie.md`, `FlussPhiE.lean` |
 | Harmonische Formen | $h\in H^1(C_4,\mathbb{Z})$, $\langle\omega_E,h\rangle$ | `collatz_eabc_uebergangsraum.md`, `collatz_eabc_hodge_eabc.py` |
-| Fluss | $\omega_E$, $C_E=\oint_\gamma\omega_E$, $W_E(X)$, $\alpha_E$, Ebenen 0–3, H₀a/H₀b–H₃ | `collatz_eabc_zirkulationshypothese.md` §4.1–4.2 |
+| Fluss | $\omega_E$, $C_E=\oint_\gamma\omega_E$, $W_E(X)$, $\alpha_E$, Ebenen I–III, H₀a/H₀b–H₃ | `collatz_eabc_zirkulationshypothese.md` §4.1–4.2 |
 | Orientierungsklassen | $\Phi_E=\lim W_E$, chirale 1-Form | `collatz_eabc_chirale_polarisation.md` |
 
 **Kernfrage (Schicht B als Struktur, Schicht R als Brücke):**
@@ -87,14 +87,12 @@ R_\beta(X) = \frac{D(X)}{Q(X)^\beta},\qquad
 
 $$\boxed{\;\Phi_E = \lim_{X\to\infty} W_E(X) \stackrel{?}{\neq} 0\;\Leftrightarrow\;D(X)\sim\Phi_E Q(X)\;\text{(Spezialfall }\alpha_E=1\text{; H}_3\text{).}\;}$$
 
-$$\boxed{\;\text{Die EABC-Holonomie-Vermutung behauptet eine asymptotisch stabile, nichtverschwindende Richtungspräferenz der priminduzierten Zyklen auf dem EABC-Kreisgraphen.}\;}$$
-
 | Status | Aussage |
 |--------|---------|
 | **GREEN** | $-1 \le W_E(X) \le 1$ (bewiesen: `W_E_bounds`) |
 | **RED** | $\lim_{X\to\infty} W_E(X) = \Phi_E \neq 0$ — **H₃** (Holonomie; Vermutung: `HasNonzeroHolonomyLimit`, `EABC_holonomy_limit_conjecture`) |
 
-Lean: `phi_E_conjecture` (**B**, `Prop`) vs. `phi_E_conjecture_statement` (**R**, `sorry`). Methodische Lesart — $W_E(X)$ stabilisiert sich asymptotisch gegen einen Grenzwert; keine „statistische Ruhe im Unendlichen“, keine „unumkehrbare Tendenz“: `collatz_eabc_zirkulationshypothese.md` §4.1. **Dreiteilung in §4.2** (Leitprinzip: *Asymptotik zuerst, Skalierung danach, numerische Exponenten zuletzt*): (1) asymptotische Orientierung $W_E\to 0$ vs. $\Phi_E\neq 0$ (H₀b/H₃), (2) Skalierungsdiagnostik $R_\beta$, $\alpha_E$ (H₀a/H₁/H₂), (3) numerische Exponenten $\alpha_{\mathrm{eff}}$, $\alpha_{\mathrm{loc}}$ — mit Vorbehalt: $\alpha_{\mathrm{eff}}>\tfrac{1}{2}$ ist nur numerisches Signal. H₀b ($W_E\to 0$) ist analytisch und **nicht** mit H₀a identisch; $\alpha_E>\tfrac{1}{2} \nRightarrow \Phi_E\neq 0$ (vgl. §4.2). Numerik: `eabc_quadruplets_1e10.py`, `eabc_quadruplets_fit_alpha.py`, `eabc_quadruplets_plot.py`.
+Lean: `phi_E_conjecture` (**B**, `Prop`) vs. `phi_E_conjecture_statement` (**R**, `sorry`). Methodische Lesart — $W_E(X)$ stabilisiert sich asymptotisch gegen einen Grenzwert; keine „statistische Ruhe im Unendlichen“, keine „unumkehrbare Tendenz“: `collatz_eabc_zirkulationshypothese.md` §4.1. **Dreiteilung in §4.2** (Ebenen I–III): (I) deterministische Definitionen $A,C,D,Q,W_E,R_\beta$; (II) asymptotische Skalierungs- und Orientierungsfragen (H₀a/H₀b–H₃), logisch unabhängig; (III) numerische Diagnostik $\alpha_{\mathrm{eff}}$, $\alpha_{\mathrm{loc}}$, $R_\beta$-Plots — kein Theorem. Gegenbeispiel: $D=Q\sin(\log\log Q)$ hat $\alpha_E=1$, aber $W_E$ ohne Grenzwert. H₀b ($W_E\to 0$) ist analytisch und **nicht** mit H₀a identisch; $\alpha_E>\tfrac{1}{2} \nRightarrow \Phi_E\neq 0$ (vgl. §4.2). Numerik: `eabc_quadruplets_1e10.py`, `eabc_quadruplets_fit_alpha.py`, `eabc_quadruplets_plot.py`.
 
 **Abgrenzung zu Schicht C:** Sagnac, AB-Phase, magnetischer Laplace sind **Analogien** auf $G_E$ — geometrisch sauber in B, physikalisch ikonisch erst in C. Priminduzierte Zählung $N_\pm(X)$ ist **B**, nicht „laufende“ Primzahlen (**C**-Ikone).
 
