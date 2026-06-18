@@ -5,6 +5,7 @@
 **Tao-Labels:** Definition | Vermutung | Hypothese | Experiment | Analogie
 
 **Querverweise:**
+- `collatz_eabc_epistemik_physik.md` — Physik-vs.-EABC-Tabelle; Evolution endet in arithmetischer Holonomie, nicht in SRT
 - `collatz_eabc_zirkulationshypothese.md` — **kanonische Hypothese:** $N_\pm$, $C_E$, $D_E$, $S_E$
 - `collatz_eabc_zirkulation_spektral.md` — diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — Teilhypothese Fehlerterm $D_E$, $\widetilde{D}_E$

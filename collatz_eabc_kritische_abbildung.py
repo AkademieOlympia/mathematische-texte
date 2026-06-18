@@ -3,6 +3,7 @@
 EABC kritische Abbildung: Geschwindigkeitsmodell s_v(x) entlang der kritischen Linie.
 
 Theorie: collatz_eabc_kritische_abbildung.md (Modellabbildung, kein Physikanspruch)
+Epistemik: collatz_eabc_epistemik_physik.md (Wegfunktion T, Nicht-SRT, Physik-vs.-EABC)
 Verknüpfung: collatz_eabc_zirkulationshypothese.md (Holonomie ±1, ABCEA/CEABC)
 
   s_v(x) = 1/2 + i v (x - 1/2)
@@ -223,6 +224,30 @@ def edge_velocities_from_gaps(
         result[f"v_{src}"] = v_edge
     result["gaps_abcea"] = list(gaps_ab)
     return result
+
+
+def path_time_T(
+    gaps: tuple[int, ...] | list[int],
+    gamma_ref: float,
+    *,
+    gap_order: str = "ABCEA",
+) -> float:
+    """
+    Wegfunktion T = Σ_j ℓ_j / v_j mit v_j = γ_ref / ℓ_j  ⇒  T = Σ_j ℓ_j² / γ_ref.
+
+    Rein euklidisch — keine Zeitdilatation (collatz_eabc_epistemik_physik.md §1).
+    Verschiedene Pfadgeometrien auf denselben Knoten (gerade vs. Halbkreis) ändern
+    die komplexe Weglänge via compare_path_times, nicht diese Kanten-Wegfunktion.
+
+    Siehe collatz_eabc_kritische_abbildung.md §7.
+    """
+    if gamma_ref <= 0:
+        raise ValueError("gamma_ref must be positive")
+    gaps_norm = normalize_gaps(gaps, gap_order)
+    for ell in gaps_norm:
+        if ell <= 0:
+            raise ValueError(f"edge length must be positive, got {ell}")
+    return sum(ell * ell for ell in gaps_norm) / gamma_ref
 
 
 def holonomy_sensor_trajectory(

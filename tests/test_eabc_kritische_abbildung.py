@@ -27,6 +27,7 @@ from collatz_eabc_kritische_abbildung import (
     gamma_v,
     holonomy_sign,
     linear_round_trip_time,
+    path_time_T,
     prime_window_gap_samples,
     run,
     semicircle_chain_time,
@@ -177,6 +178,13 @@ def test_semicircle_chain_pi_over_two_factor():
     lin = linear_round_trip_time(points)
     semi = semicircle_chain_time(points)
     assert math.isclose(semi / lin, math.pi / 2, rel_tol=0, abs_tol=1e-12)
+
+
+def test_path_time_T_canonical_gaps():
+    """T = Σ ℓ_j² / γ_ref für (2,4,2,4)."""
+    t = path_time_T(CANONICAL_GAP_PATTERN, GAMMA_1_APPROX)
+    expected = (4 + 16 + 4 + 16) / GAMMA_1_APPROX
+    assert math.isclose(t, expected, rel_tol=0, abs_tol=1e-12)
 
 
 def test_compare_path_times_abcea_gamma_1():

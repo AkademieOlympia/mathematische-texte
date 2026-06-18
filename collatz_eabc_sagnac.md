@@ -7,6 +7,7 @@
 **Intuition only:** Das Sagnac-Bild (gegenläufige Wege $\gamma^+$ vs. $\gamma^-$ auf demselben $C_4$-Kreis) dient **ausschließlich** als didaktische Intuition für die Zirkulationshypothese. Es behauptet **keine** physikalische Rotation, Relativitätstheorie oder Quanteneffekte. Der mathematische Kern steht in `collatz_eabc_zirkulationshypothese.md`; Spektralgeometrie in `collatz_eabc_zirkulation_spektral.md`.
 
 **Querverweise:**
+- `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Sagnac didaktisch ja; Zwillingsparadoxon/Eigenzeit nein; zentrale Frage: bevorzugter Umlaufsinn
 - `collatz_eabc_zirkulationshypothese.md` — **kanonische Hypothese:** $N_\pm$, $C_E$, $D_E$, $S_E$
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — Teilhypothese: Fehlerterm $D_E$, $\widetilde{D}_E$
