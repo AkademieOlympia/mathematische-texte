@@ -6,6 +6,8 @@
 
 **Querverweise:**
 - `collatz_eabc_fehlerterm_hypothese.md` — **kanonische Endform:** $N_\pm$, Hauptvermutung, Fehlerterm-Hypothese, $\widetilde{D}_E$
+- `collatz_eabc_bell_holonomie.md` — Bell-Ungleichung als Holonomie-/Zykluskonsistenz; $P_{\mathrm{same}}$, CHSH-Analog (kein QM)
+- `collatz_eabc_bell_inequality_test.py` / `.json` — Numerik Bell-Summen, $G_E$-Vergleich
 - `collatz_eabc_transport.md` — gerichteter Übergangsgraph $G_E$, Transport $T_n$, Übergangsmatrix
 - `collatz_eabc_holonomie.md` — Vierlings-Orientierung $\omega(Q)$, $\chi_E^{\mathrm{quad}}(N)$ (arithmetische Vierlinge)
 - `collatz_eabc_holonomie_beweisversuch.md` — analytischer Beweisversuch: mod-$12$-Symmetrie, $\mathrm{Hol}_E=0$, Fehlerterm $D_E$

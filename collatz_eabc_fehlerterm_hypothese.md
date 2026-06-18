@@ -7,6 +7,8 @@
 **Querverweise:**
 - `collatz_eabc_holonomie_beweisversuch.md` — analytischer Beweisversuch (Lemma-Skizzen, HL-Argument, Satzskizze)
 - `collatz_eabc_zyklus_holonomie.md` — Hierarchie Klasse→Kante→Pfad→Zyklus→Holonomie
+- `collatz_eabc_bell_holonomie.md` — Bell-Tripel als Zykluskonsistenz auf $G_E$; $P_{\mathrm{same}}$, CHSH-Analog
+- `collatz_eabc_bell_inequality_test.py` / `.json` — Numerik $P_{\mathrm{same}}^{\mathrm{win}}$, $\mathcal{B}_{\mathrm{marg}}$, $S_{\mathrm{EABC}}$
 - `collatz_eabc_transport.md` — Übergangsgraph $G_E$, Transport $T_n$
 - `collatz_eabc_holonomie_fehlerterm.py` / `.json` — Numerik $N_\pm$, $D_E$, $\widetilde{D}_E$
 - `collatz_generalangriff_2026.md` — Gesamtarchitektur PR #54
