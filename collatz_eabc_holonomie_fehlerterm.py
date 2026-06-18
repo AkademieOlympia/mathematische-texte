@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-EABC-Holonomie: Fehlerterm D_E, normalisiertes D̃_E, Lückenmuster, Chebyshev-Vergleich.
+EABC-Holonomie: Fehlerterm D_E / Delta_E, Sagnac-Observable S_E, normalisiertes D̃_E.
 
-Theorie: collatz_eabc_fehlerterm_hypothese.md (Endform), collatz_eabc_holonomie_beweisversuch.md
+Theorie: collatz_eabc_sagnac.md (primäre Metapher), collatz_eabc_fehlerterm_hypothese.md (Endform)
 
   N_plus(X), N_minus(X)  — Zählung geschlossener 5-Zyklen (ABCEA / CEABC)
-  χ_Hol(X) = (N_plus - N_minus) / (N_plus + N_minus)
-  D_E(X) = N_plus - N_minus
-  D̃_E(X) = D_E / sqrt(N_plus + N_minus)
+  Delta_E(X) = D_E(X) = N_plus - N_minus   (EABC-Sagnac-Fehlerterm)
+  S_E(X) = (N_plus - N_minus) / (N_plus + N_minus)  (analog ΔT/T)
+  D̃_E(X) = Delta_E / sqrt(N_plus + N_minus)
 
 Ausführung:
     python3 collatz_eabc_holonomie_fehlerterm.py
@@ -33,6 +33,7 @@ from eabc_from_lean import EClass, residue
 
 ROOT = Path(__file__).resolve().parent
 DEFAULT_OUTPUT = ROOT / "collatz_eabc_holonomie_fehlerterm.json"
+THEORY_SAGNAC = "collatz_eabc_sagnac.md"
 THEORY_ENDFORM = "collatz_eabc_fehlerterm_hypothese.md"
 THEORY_BWEISVERSUCH = "collatz_eabc_holonomie_beweisversuch.md"
 
@@ -81,15 +82,16 @@ def verify_gap_patterns() -> dict[str, Any]:
 
 
 def holonomy_counts(max_p: int) -> dict[str, Any]:
-    """N_plus, N_minus, χ_Hol, D_E, D̃_E für Primfolge bis max_p."""
+    """N_plus, N_minus, S_E, Delta_E, D_E, D̃_E für Primfolge bis max_p."""
     seq = prime_eabc_sequence(max_p)
     classes = classes_from_sequence(seq)
     hol = chi_hol_sliding(classes)
     n_plus = hol["abcea_windows"]
     n_minus = hol["ceabc_windows"]
     total = n_plus + n_minus
-    d_e = n_plus - n_minus
-    d_tilde = d_e / math.sqrt(total) if total > 0 else 0.0
+    delta_e = n_plus - n_minus
+    s_e = delta_e / total if total > 0 else 0.0
+    d_tilde = delta_e / math.sqrt(total) if total > 0 else 0.0
     return {
         "max_p": max_p,
         "X": max_p,
@@ -98,11 +100,38 @@ def holonomy_counts(max_p: int) -> dict[str, Any]:
         "N_minus": n_minus,
         "N_ABCEA": n_plus,
         "N_CEABC": n_minus,
+        "Delta_E": delta_e,
+        "D_E": delta_e,
+        "S_E": s_e,
         "chi_Hol": hol["chi_hol"],
-        "D_E": d_e,
         "D_tilde_E": d_tilde,
         "nonzero_windows": hol["nonzero_windows"],
         "omega_sum": hol["omega_sum"],
+    }
+
+
+def sagnac_report(max_p: int) -> dict[str, Any]:
+    """Sagnac-Observable am Prim-Obergrenze X=max_p (collatz_eabc_sagnac.md)."""
+    row = holonomy_counts(max_p)
+    total = row["N_plus"] + row["N_minus"]
+    return {
+        "X": max_p,
+        "gamma_plus": ABCEA_WORD,
+        "gamma_minus": CEABC_WORD,
+        "N_plus": row["N_plus"],
+        "N_minus": row["N_minus"],
+        "Delta_E": row["Delta_E"],
+        "D_E": row["D_E"],
+        "S_E": row["S_E"],
+        "D_tilde_E": row["D_tilde_E"],
+        "N_total": total,
+        "rotationsfrei": abs(row["S_E"]) < 1e-15 if total > 0 else True,
+        "theory": THEORY_SAGNAC,
+        "epistemic": {
+            "Delta_E": "Definition (EABC-Sagnac-Fehlerterm)",
+            "S_E": "Definition (normalisierte Sagnac-Observable)",
+            "S_E_to_zero": "Vermutung (Hauptterm Hol_E=0)",
+        },
     }
 
 
@@ -113,7 +142,9 @@ def d_tilde_e_series(limits: list[int]) -> list[dict[str, Any]]:
             "X": row["X"],
             "N_plus": row["N_plus"],
             "N_minus": row["N_minus"],
+            "Delta_E": row["Delta_E"],
             "D_E": row["D_E"],
+            "S_E": row["S_E"],
             "D_tilde_E": row["D_tilde_E"],
             "chi_Hol": row["chi_Hol"],
         }
@@ -213,29 +244,35 @@ def run_series(
     return {
         "meta": {
             "module": "collatz_eabc_holonomie_fehlerterm.py",
+            "theory_sagnac": THEORY_SAGNAC,
             "theory_endform": THEORY_ENDFORM,
             "theory": THEORY_BWEISVERSUCH,
-            "theory_bell_bridge": "collatz_eabc_bell_holonomie.md §12",
+            "theory_bell_bridge": "collatz_eabc_bell_holonomie.md §12 (sekundäre Analogie)",
             "max_p": max_p,
             "limits": limits,
         },
         "gap_patterns": gap,
+        "sagnac_report": sagnac_report(max_p),
         "holonomy_series": series,
         "D_tilde_E_series": d_tilde_e_series(limits),
         "chebyshev_comparison": cheb,
         "de_bell_combined": de_bell,
         "boxed_conclusions": {
+            "Sagnac_primary": "ABCEA vs CEABC = Sagnac-Observable (gamma+, gamma-)",
             "Hol_E_main_term": "Hol_E = 0 unter mod-12-Symmetrie + HL-Äquidistribution (Hauptvermutung)",
-            "interesting_question": "Bias und Oszillation in D_E(X), Chebyshev-Analogie / L-Funktionen mod 12",
+            "interesting_question": "Bias und Oszillation in Delta_E(X), Chebyshev-Analogie / L-Funktionen mod 12",
         },
         "epistemic_labels": {
             "gap_pattern": "Lemma-Skizze",
             "Hol_E_zero": "Vermutung",
-            "D_E": "Definition",
+            "Delta_E": "Definition",
+            "S_E": "Definition",
+            "D_E": "Definition (Alias Delta_E)",
             "D_tilde_E": "Definition",
             "fehlerterm_hypothese": "Hypothese",
             "numerics": "Experiment",
             "chebyshev_analogy": "Heuristik",
+            "bell_chsh": "Analogie (sekundär)",
         },
     }
 
@@ -265,8 +302,14 @@ def main() -> None:
     for row in report["holonomy_series"]:
         print(
             f"X={row['max_p']:>7}: N_plus={row['N_plus']:4}, N_minus={row['N_minus']:4}, "
-            f"χ_Hol={row['chi_Hol']:+.4f}, D_E={row['D_E']:+4}, D̃_E={row['D_tilde_E']:+.3f}"
+            f"S_E={row['S_E']:+.4f}, Delta_E={row['Delta_E']:+4}, D̃_E={row['D_tilde_E']:+.3f}"
         )
+    print()
+    sag = report["sagnac_report"]
+    print(
+        f"Sagnac @ X={sag['X']}: gamma+={sag['gamma_plus']}  gamma-={sag['gamma_minus']}  "
+        f"S_E={sag['S_E']:+.4f}  Delta_E={sag['Delta_E']:+d}"
+    )
     print()
     print("D̃_E Zeitreihe:")
     for pt in report["D_tilde_E_series"]:

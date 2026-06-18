@@ -1,12 +1,15 @@
 # EABC-Bell-Ungleichung als Holonomie- und Zykluskonsistenz
 
-**Status:** Analogie + Definition + Hypothese + Experiment  
+**Status:** Sekundäre Analogie + Definition + Hypothese + Experiment  
 **Branch:** `collatz/eabc-euklidische-hebung` (PR #54)  
 **Tao-Labels:** Analogie | Definition | Hypothese | Theorem | Experiment
 
-**Epistemische Abgrenzung:** Dieses Dokument ist **keine** Quantenphysik-Behauptung. Es überträgt die **kombinatorische Taubenloch-Logik** der Bell-Tripel-Ungleichung auf den **diskreten EABC-Transportgraphen** $G_E$ und die Holonomie-Hierarchie. Verletzungen sind **arithmetische Korrelationsphänomene** (Bias, Fehlerterm $D_E$), nicht „nichtlokalität“ im QM-Sinn.
+> **Hinweis (kanonische Metapher):** Die **primäre** EABC-Metapher für gegenläufige geschlossene Orientierungen ist **Sagnac** ($\gamma^\pm$, $\Delta_E$, $S_E$) — siehe `collatz_eabc_sagnac.md`. Dieses Dokument behandelt Bell/CHSH als **sekundäre** kombinatorische Analogie (Achsenkorrelationen, Taubenloch), nicht als Hauptbild für ABCEA vs. CEABC.
+
+**Epistemische Abgrenzung:** Dieses Dokument ist **keine** Quantenphysik-Behauptung. Es überträgt die **kombinatorische Taubenloch-Logik** der Bell-Tripel-Ungleichung auf den **diskreten EABC-Transportgraphen** $G_E$ und die Holonomie-Hierarchie. Verletzungen sind **arithmetische Korrelationsphänomene** (Bias, Fehlerterm $\Delta_E$), nicht „nichtlokalität“ im QM-Sinn.
 
 **Querverweise:**
+- `collatz_eabc_sagnac.md` — **primäre Metapher:** Sagnac-Observable $\gamma^\pm$, $\Delta_E$, $S_E$
 - `collatz_eabc_zyklus_holonomie.md` — Klasse→Kante→Pfad→Zyklus→Holonomie; $\Omega_{\mathrm{Pfad}}$, $\Omega_{\mathrm{Hol}}$
 - `collatz_eabc_fehlerterm_hypothese.md` — $N_\pm$, $D_E$, $\widetilde{D}_E$, Hauptvermutung $\mathrm{Hol}_E=0$
 - `collatz_eabc_transport.md` — $G_E$, $T_{ij}$, $t$-Rotation
@@ -370,4 +373,4 @@ collatz_eabc_bell_holonomie.md ◄──── §12 Brücke Bell↔D_E
 
 ---
 
-*Kanonsiche Lesart: Die Bell-Ungleichung liefert auf EABC ein **Konsistenzkriterium für drei binäre Lesarten auf demselben Transportfenster** (Taubenloch, immer erfüllt). „Verletzungen'' entstehen nur bei **marginalisierten oder kontextvermischten** Observablen und werden mit **Holonomie-Fehlerterm** $D_E$ / $\chi_{\mathrm{Hol}}$ in Verbindung gebracht — kombinatorisch-statistisch, nicht quantenphysikalisch.*
+*Sekundäre Lesart: Die Bell-Ungleichung liefert auf EABC ein **Konsistenzkriterium für drei binäre Lesarten auf demselben Transportfenster** (Taubenloch, immer erfüllt). Für gegenläufige geschlossene Zyklen ABCEA/CEABC ist **`collatz_eabc_sagnac.md`** die kanonische Metapher. „Verletzungen'' bei Bell/CHSH entstehen nur bei **marginalisierten oder kontextvermischten** Observablen und werden mit **Sagnac-Fehlerterm** $\Delta_E$ / $S_E$ in Verbindung gebracht — kombinatorisch-statistisch, nicht quantenphysikalisch.*
