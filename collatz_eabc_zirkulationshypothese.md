@@ -119,24 +119,26 @@ $$\boxed{\;C_E(X) = N_+(X) - N_-(X) = D_E(X).\;}$$
 
 ---
 
-## 4. Hauptterm-Vermutung und Zentralvermutung (Flussdichte)
+## 4. Orientierter Zirkulationsfehler und Flussdichte
+
+**Programm (primär):** Theorie des **orientierten Zirkulationsfehlers** $D_E(X)$ auf dem EABC-Kreisgraphen — Prime-Race-/Fehlertermstruktur zwischen den gegenläufigen Zyklusorientierungen ABCEA und CEABC. Die Holonomiefrage ($\Phi_E\neq 0$) ist **Endstufe** (§4.2, Stufe 3), nicht Eingangsthese.
 
 **Hauptterm-Vermutung.** Asymptotische Symmetrie der gegenläufigen Zyklusorientierungen:
 $$N_+(X) \sim N_-(X)\qquad (X\to\infty),$$
 und damit
 $$S_E(X) \to 0.$$
 
-**Zentralvermutung (arithmetische Orientierungsklasse).** Normalisierter Magnetfluss (`collatz_eabc_diskrete_geometrie.md` §2):
-$$\boxed{\;\Phi_E = \lim_{X\to\infty} W_E(X) = \lim_{X\to\infty}\frac{C_E(X)}{N_+(X)+N_-(X)} \;\stackrel{?}{\neq}\; 0.\;}$$
+**Sekundäre Frage (Stufe 3).** Normalisierter Magnetfluss / arithmetische Orientierungsklasse (`collatz_eabc_diskrete_geometrie.md` §2):
+$$\Phi_E := \lim_{X\to\infty} W_E(X) = \lim_{X\to\infty}\frac{C_E(X)}{N_+(X)+N_-(X)} \;\stackrel{?}{\neq}\; 0.$$
 
 | Grenzfall | Folgerung |
 |-----------|-----------|
 | $\lim S_E = 0$ | keine bevorzugte globale Orientierung (Hauptterm) |
-| $\lim S_E \neq 0$ | nichttriviale **arithmetische Orientierungsklasse** |
+| $\lim S_E \neq 0$ | nichttriviale **arithmetische Orientierungsklasse** (H₃) |
 
 **Numerik:** `flux_density_limit` in `collatz_eabc_hodge_eabc.py`.
 
-**Label:** Hauptterm-Vermutung = **Vermutung**; Orientierungsklassen-Vermutung = **Vermutung** / **Forschungsfrage**.
+**Label:** Hauptterm-Vermutung = **Vermutung**; Orientierungsfrage (H₃) = **Vermutung** / **Forschungsfrage** (Stufe 3).
 
 ### 4.1 Asymptotische Chiralität (methodische Lesart)
 
@@ -169,9 +171,18 @@ $$W_E(X) = \frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)}$$
 
 ### 4.2 Fehlerterm-Skalierung und Hypothesenhierarchie (H₀a/H₀b–H₃)
 
-$$\boxed{\;\text{Das EABC-Programm untersucht zunächst die Größenordnung der chiralen Differenz }D(X)=A(X)-C(X)\text{, und erst in einem zweiten Schritt die Existenz einer asymptotischen Orientierung }W_E(X)=D(X)/Q(X).\;}$$
+$$\boxed{\;\text{Nicht }\Phi_E\text{ ist der Anfang, sondern }D_E(X).\;}$$
 
-**Methodische Leitlinie (Tao-Stil):** Vier **Stufen** — Definition → numerisches Signal → Vermutung → Orientierung. Keine Exponentenannahme vor Stufe 2; Holonomie (Stufe 3) **am Ende**, nicht am Anfang. Die Hypothesen H₀a–H₃ referenzieren jeweils eine Stufe; sie ersetzen sie nicht.
+$$\boxed{\;\text{Das EABC-Programm bestimmt zunächst die Wachstumsordnung der orientierten Zyklusdifferenz }D_E(X).\;}$$
+
+$$\boxed{\;\text{Ob diese Wachstumsordnung bis zur linearen Skala reicht und damit eine nichtverschwindende Holonomie }\Phi_E\text{ erzeugt — sekundäre Frage (Stufe 3).}\;}$$
+
+**Vorwärtskette** (keine Umkehrungen behauptet):
+$$D_E(X) \;\Longrightarrow\; \alpha_E \;\Longrightarrow\; W_E(X) \;\Longrightarrow\; \Phi_E.$$
+
+**Referee-sicher:** Scheitern von $\Phi_E\neq 0$ zerstört das Programm nicht — es bleibt eine eigenständige Theorie von $D_E$, $R_\beta$, $\alpha_{\mathrm{loc}}$, $\alpha_E$ als Prime-Race-/Fehlertermstruktur auf dem EABC-Zyklus.
+
+**Methodische Leitlinie (Tao-Stil):** Vier **Stufen** — Definition → Diagnose → Vermutung → Orientierung. Keine Exponentenannahme vor Stufe 2; Holonomie-Hypothese (Stufe 3) **am Ende**, nicht am Anfang. Die Hypothesen H₀a–H₃ referenzieren jeweils eine Stufe; sie ersetzen sie nicht.
 
 #### Stufe 0 — Größenordnung (keine Exponentenannahme)
 
@@ -192,7 +203,8 @@ $W_E(X)=D(X)/Q(X)$ ist **Definition** — kein Grenzwert, kein Exponent. Man unt
 | **$W_E$** | normierte Differenz (Definition) | $D/Q$ |
 | **$\Phi_E$** | asymptotische Orientierung (Stufe 3) | $\lim W_E$ (falls existent) |
 | **$\alpha_E$** | Skalierungsexponent (Stufe 2) | $\inf\{\beta : R_\beta\text{ beschränkt}\}$ |
-| **$\alpha_{\mathrm{eff}}(X)$** | numerisches Signal (Stufe 1) | $d\log|D|/d\log Q$ |
+| **$\alpha_{\mathrm{eff}}(X)$** | grobe Gesamtindikation (Stufe 1) | $\log|D|/\log Q$ |
+| **$\alpha_{\mathrm{loc}}(X_i)$** | lokale Skalierung (Stufe 1) | $\Delta\log|D|/\Delta\log Q$ zwischen Checkpoints |
 
 **Label:** **Definition** (Stufe 0).
 
@@ -204,13 +216,15 @@ $W_E(X)=D(X)/Q(X)$ ist **Definition** — kein Grenzwert, kein Exponent. Man unt
 - $\alpha_E=\tfrac{1}{2}$ entspräche einem **naiven Zufallsmodell** ($|D|\approx\sqrt{Q}$) — **Heuristik**, keine bewiesene Referenz.
 - Bei Primzahlrennen können Differenzen **deutlich größer** als $\sqrt{Q}$ werden, ohne nichttrivialen normierten Grenzwert.
 
-#### Stufe 1 — Effektive Skalierung (numerisch)
+#### Stufe 1 — Diagnose: $\alpha_{\mathrm{eff}}$ und $\alpha_{\mathrm{loc}}$ (numerisch)
 
 $$\alpha_{\mathrm{eff}}(X) := \frac{\log|D(X)|}{\log Q(X)}\quad (D\neq 0,\; Q>1),$$
 
-$$\alpha_{\mathrm{loc}}(X_i,X_{i+1}) := \frac{\Delta\log|D|}{\Delta\log Q}\quad\text{zwischen aufeinanderfolgenden Checkpoints.}$$
+$$\alpha_{\mathrm{loc}}(X_i) := \frac{\log|D(X_{i+1})| - \log|D(X_i)|}{\log Q(X_{i+1}) - \log Q(X_i)}\quad\text{zwischen aufeinanderfolgenden Checkpoints }X_i, X_{i+1}.$$
 
-**Frage (Stufe 1):** Stabilisiert sich $\alpha_{\mathrm{eff}}(X)$? — kann oszillieren, driften oder extrem langsam konvergieren. **Nur numerisches Signal**, kein asymptotischer Satz.
+**$\alpha_{\mathrm{loc}}$ ist für die Numerik wichtiger:** Drift, Übergangsbereiche und transiente Plateaus werden sichtbar, die $\alpha_{\mathrm{eff}}(X)$ als punktuelle Gesamtindikation überdeckt.
+
+**Frage (Stufe 1):** Driftet oder stabilisiert sich $\alpha_{\mathrm{loc}}$? — beide Größen können oszillieren oder extrem langsam konvergieren. **Nur numerisches Signal**, kein asymptotischer Satz.
 
 **Wichtiger Vorbehalt:** $\alpha_{\mathrm{loc}}$ **muss nicht konvergieren** — in der analytischen Zahlentheorie kann ein Exponent über lange Bereiche stabil erscheinen und später driften oder oszillieren (vgl. explizite Formeln, $L$-Funktionen).
 
@@ -281,9 +295,9 @@ Weitere Vorwärtsimplikationen (H₀a/H₀b–H₃):
 
 #### Boxed Kernfragen (entschärft)
 
-1. **Stufe 0/1:** Bleibt $R_{1/2}$ beschränkt? Stabilisiert sich $\alpha_{\mathrm{eff}}$? — **Größenordnung zuerst.**
+1. **Stufe 0/1:** Welche Wachstumsordnung hat $D_E(X)$? Bleibt $R_{1/2}$ beschränkt? Was zeigt $\alpha_{\mathrm{loc}}$? — **$D_E$ zuerst.**
 2. **Stufe 2:** Existiert $\alpha_E$ mit $|D(X)|=Q(X)^{\alpha_E+o(1)}$? — **nur wenn Daten es nahelegen.**
-3. **Stufe 3:** $W_E(X)\to\Phi_E\neq 0$? — **Orientierung danach.**
+3. **Stufe 3:** Reicht die Wachstumsordnung bis zur linearen Skala und folgt $W_E(X)\to\Phi_E\neq 0$? — **Holonomie danach.**
 
 #### Hypothesen (H₀a/H₀b–H₃)
 
@@ -306,7 +320,7 @@ Wie bei $\Delta(x)=\pi(x;a,q)-\pi(x;b,q)$ fragt man zuerst nach der **Größenor
 | Panel | Kurve | Stufe / Lesart |
 |-------|-------|----------------|
 | 1 | $R_{1/2}(X)$ ($Z_E$ Alias) | Stufe 0/1: Größenordnung (H₀a / H₁) |
-| 2 | $\alpha_{\mathrm{loc}}(X)$ | Stufe 1: $\alpha_{\mathrm{eff}}$-Diagnose, kein Satz |
+| 2 | $\alpha_{\mathrm{loc}}(X)$ | Stufe 1: $\alpha_{\mathrm{loc}}$-Diagnose (wichtiger als $\alpha_{\mathrm{eff}}$), kein Satz |
 | 3 | $R_\beta$ für $\beta\in\{\tfrac{1}{2},\tfrac{2}{3},\tfrac{3}{4},0{,}9,1\}$ | Stufe 2: Skalierungsdiagnostik |
 | 4 | $W_E(X)=R_1(X)$ | Stufe 3: H₀b / H₃ (Orientierung) |
 
