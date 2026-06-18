@@ -5,9 +5,10 @@
 **Tao-Labels:** Definition | Theorem | Heuristik | Experiment
 
 **Querverweise:**
+- `collatz_eabc_sagnac.md` — **kanonische primäre Metapher:** $\gamma^\pm$, $\Delta_E$, $S_E$
 - `collatz_eabc_fehlerterm_hypothese.md` — **kanonische Endform:** $N_\pm$, Hauptvermutung, Fehlerterm-Hypothese
 - `collatz_eabc_zyklus_holonomie.md` — **kanonisch:** Klasse→Kante→Pfad→Zyklus→Holonomie; $\chi_{\mathrm{Pfad}}$, $\chi_{\mathrm{Hol}}$, $\mathrm{Hol}_E$
-- `collatz_eabc_bell_holonomie.md` — Bell-Tripel als Zykluskonsistenz; $P_{\mathrm{same}}$, CHSH-Analog
+- `collatz_eabc_bell_holonomie.md` — **sekundäre** Analogie Bell/CHSH (nicht primäre Metapher)
 - `collatz_eabc_bell_inequality_test.py` / `.json` — Numerik Bell-Summen auf Primfolge
 - `collatz_eabc_holonomie.md` — Vierlings-Orientierung $\omega(Q)$, $\chi_E^{\mathrm{quad}}(N)$, projektive Holonomie $\mathcal H_E$
 - `collatz_eabc_holonomie_beweisversuch.md` — analytischer Beweisversuch: $\mathrm{Hol}_E=0$, Fehlerterm $D_E$
@@ -35,6 +36,8 @@ Der **fundamentale Zustand** ist die **gerichtete Kante** $\tau_n$, nicht der is
 ---
 
 ## 2. Hierarchie
+
+$$\boxed{\;\text{Primzahlen} \;\to\; \text{EABC-Klassen} \;\to\; \text{Transport} \;\to\; \text{Zyklen} \;\to\; \text{Sagnac-Observable} \;\to\; \Delta_E(X)\;}$$
 
 $$\boxed{\;\text{Klasse} \;\to\; \text{Kante} \;\to\; \text{Pfad} \;\to\; \text{Zyklus} \;\to\; \text{Holonomie}\;}$$
 

@@ -5,8 +5,9 @@
 **Tao-Labels:** Definition | Hypothese | Experiment | Theorem
 
 **Querverweise:**
+- `collatz_eabc_sagnac.md` — **kanonische primäre Metapher:** $\gamma^\pm$, $\Delta_E$, $S_E$
 - `collatz_eabc_fehlerterm_hypothese.md` — **kanonische Endform:** $N_\pm$, Hauptvermutung, Fehlerterm-Hypothese, $\widetilde{D}_E$
-- `collatz_eabc_bell_holonomie.md` — Bell-Ungleichung als Holonomie-/Zykluskonsistenz; $P_{\mathrm{same}}$, CHSH-Analog (kein QM)
+- `collatz_eabc_bell_holonomie.md` — **sekundäre** Analogie Bell/CHSH (nicht primäre Metapher)
 - `collatz_eabc_bell_inequality_test.py` / `.json` — Numerik Bell-Summen, $G_E$-Vergleich
 - `collatz_eabc_transport.md` — gerichteter Übergangsgraph $G_E$, Transport $T_n$, Übergangsmatrix
 - `collatz_eabc_holonomie.md` — Vierlings-Orientierung $\omega(Q)$, $\chi_E^{\mathrm{quad}}(N)$ (arithmetische Vierlinge)
@@ -19,6 +20,8 @@
 ---
 
 ## 0. Boxed Hierarchie
+
+$$\boxed{\;\text{Primzahlen} \;\to\; \text{EABC-Klassen} \;\to\; \text{Transport} \;\to\; \text{Zyklen} \;\to\; \text{Sagnac-Observable} \;\to\; \Delta_E(X)\;}$$
 
 $$\boxed{\;\text{Klasse} \;\to\; \text{Kante} \;\to\; \text{Pfad} \;\to\; \text{Zyklus} \;\to\; \text{Holonomie}\;}$$
 
@@ -146,9 +149,10 @@ mit $\chi_{\mathrm{Hol}}(N)=0$, falls der Nenner $0$ ist.
 $$N_+(X) := \#\{n:\,p_{n+4}\le X,\; C_n^{(5)}=\mathrm{ABCEA}\},$$
 $$N_-(X) := \#\{n:\,p_{n+4}\le X,\; C_n^{(5)}=\mathrm{CEABC}\}.$$
 
-**Definition (Fehlerterm und Normalisierung).**
-$$D_E(X) := N_+(X)-N_-(X),\qquad
-\widetilde{D}_E(X) := \frac{D_E(X)}{\sqrt{N_+(X)+N_-(X)}}.$$
+**Definition (Fehlerterm / Sagnac-Differenz).**
+$$\Delta_E(X) := N_+(X)-N_-(X),\qquad D_E(X):=\Delta_E(X),\qquad
+S_E(X):=\frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)},\qquad
+\widetilde{D}_E(X) := \frac{\Delta_E(X)}{\sqrt{N_+(X)+N_-(X)}}.$$
 
 **Definition (Grenzwert / Hauptterm).**
 $$\chi_{\mathrm{Hol}}(X)=\frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)},\qquad
@@ -251,7 +255,7 @@ collatz_eabc_zyklus_holonomie.md   Klasse→Kante→Pfad→Zyklus→Holonomie
 | $\chi_{\mathrm{Pfad}}(N)$ | `chi_pfad_sliding` | `chi_path_sliding`, `chi_E_sliding` |
 | $\chi_{\mathrm{Hol}}(N)$ | `chi_hol_sliding` | — |
 | $N_+(X)$, $N_-(X)$ | `N_plus`, `N_minus` | `N_ABCEA`, `N_CEABC` |
-| $D_E$, $\widetilde{D}_E$ | `D_E`, `D_tilde_E` | — |
+| $\Delta_E$, $D_E$, $S_E$, $\widetilde{D}_E$ | `Delta_E`, `D_E`, `S_E`, `D_tilde_E` | `chi_Hol` für $S_E$ |
 | Vergleich Pfad vs. Holonomie | `chi_pfad_vs_hol` | `chi_path_vs_hol` |
 
 ---

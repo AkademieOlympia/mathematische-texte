@@ -5,9 +5,10 @@
 **Tao-Labels:** Definition | Vermutung | Hypothese | Experiment
 
 **Querverweise:**
+- `collatz_eabc_sagnac.md` — **kanonische primäre Metapher:** $\gamma^\pm$, $\Delta_E$, $S_E$ (Sagnac-Observable)
 - `collatz_eabc_holonomie_beweisversuch.md` — analytischer Beweisversuch (Lemma-Skizzen, HL-Argument, Satzskizze)
 - `collatz_eabc_zyklus_holonomie.md` — Hierarchie Klasse→Kante→Pfad→Zyklus→Holonomie
-- `collatz_eabc_bell_holonomie.md` — Bell-Tripel als Zykluskonsistenz auf $G_E$; $P_{\mathrm{same}}$, CHSH-Analog; **§12 Brücke $D_E\leftrightarrow$ Bell/CHSH**
+- `collatz_eabc_bell_holonomie.md` — **sekundäre** Analogie Bell/CHSH; $P_{\mathrm{same}}$, CHSH auf $G_E$ (nicht primäre Metapher)
 - `collatz_eabc_bell_inequality_test.py` / `.json` — Numerik $P_{\mathrm{same}}^{\mathrm{win}}$, $\mathcal{B}_{\mathrm{marg}}$, $S_{\mathrm{EABC}}$, **`de_bell_combined_report`**
 - `collatz_eabc_core/CollatzEabc/HolonomieFehlerterm.lean` — Lean: Lückenmuster, `N_\pm`/`D_E` auf Listen; Prime/CHSH-Skeleton
 - `collatz_eabc_transport.md` — Übergangsgraph $G_E$, Transport $T_n$
@@ -32,6 +33,11 @@ $$N_-(X) := \#\{n:\,p_{n+4}\le X,\; C_n=\mathrm{CEABC}\}.$$
 
 **Legacy-Aliase:** $N_{\mathrm{ABCEA}}:=N_+$, $N_{\mathrm{CEABC}}:=N_-$.
 
+**Sagnac-Lesart** (`collatz_eabc_sagnac.md`):
+$$\Delta_E(X) := N_+(X) - N_-(X) = D_E(X),\qquad
+S_E(X) := \frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)}.$$
+ABCEA = $\gamma^+$ ($A\!\to\!B\!\to\!C\!\to\!E\!\to\!A$); CEABC = $\gamma^-$ ($C\!\to\!E\!\to\!A\!\to\!B\!\to\!C$). $S_E\to 0$: rotationsfrei; $S_E\neq 0$: bevorzugte Orientierung auf endlichem $X$.
+
 ---
 
 ## 1. Hauptvermutung (Hauptterm)
@@ -45,14 +51,16 @@ $$\mathrm{Hol}_E := \lim_{X\to\infty}\frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)} = 0.$$
 
 ---
 
-## 2. Fehlerterm
+## 2. Fehlerterm (EABC-Sagnac-Fehlerterm)
 
-**Definition (Fehlerterm).**
-$$D_E(X) := N_+(X) - N_-(X).$$
+**Definition (Fehlerterm / Sagnac-Differenz).**
+$$\Delta_E(X) := N_+(X) - N_-(X),\qquad D_E(X):=\Delta_E(X).$$
 
-Für endliche $X$ gilt typischerweise $D_E(X)\neq 0$, auch wenn $\mathrm{Hol}_E=0$.
+Für endliche $X$ gilt typischerweise $\Delta_E(X)\neq 0$, auch wenn $\mathrm{Hol}_E=0$. Interessant sind die **Fluktuationen** $\Delta_E$, $\widetilde{D}_E$, nicht der Hauptterm $\lim \Delta_E/(N_++N_-)=0$.
 
-**Label:** $D_E$ = **Definition**.
+$$\boxed{\;\Delta_E(X) = D_E(X)\;\text{ist der EABC-Sagnac-Fehlerterm.}\;}$$
+
+**Label:** $\Delta_E$, $D_E$ = **Definition**.
 
 ---
 
@@ -115,9 +123,13 @@ $$\boxed{\;\text{ABCE/CEAB-Asymmetrie} \;\Rightarrow\; \text{Fehlerterm/Bias, ni
 
 ---
 
-## 9. Brücke zu Bell/CHSH-Holonomie
+## 9. Primäre Metapher: Sagnac; sekundär: Bell/CHSH
 
-**Analogie (kein Theorem):** Persistenter Fehlerterm $D_E(X)\neq 0$ bei $\mathrm{Hol}_E\to 0$ entspricht **nicht-faktorisierbaren** Holonomie-Resten auf $G_E$ — parallel zu $|S_{\mathrm{EABC}}|>2$ als arithmetisches Korrelationssignal (`collatz_eabc_bell_holonomie.md` §12).
+**Kanonische Metapher (Sagnac):** ABCEA vs. CEABC sind gegenläufige geschlossene Wege $\gamma^\pm$; $\Delta_E=N_+-N_-$ ist die Sagnac-Differenz, $S_E=\Delta_E/(N_++N_-)$ die normalisierte Observable (analog $\Delta T/T$). Details: `collatz_eabc_sagnac.md`.
+
+$$\boxed{\;\text{ABCEA gegen CEABC ist eine Sagnac-Observable.}\;}$$
+
+**Sekundäre Analogie (Bell/CHSH, kein Theorem):** Persistenter Fehlerterm $\Delta_E(X)\neq 0$ bei $S_E\to 0$ entspricht **nicht-faktorisierbaren** Holonomie-Resten auf $G_E$ — parallel zu $|S_{\mathrm{EABC}}|>2$ als arithmetisches Korrelationssignal (`collatz_eabc_bell_holonomie.md` §12).
 
 | Größe | Rolle | Label |
 |-------|-------|-------|
@@ -132,4 +144,4 @@ $$\boxed{\;\text{ABCE/CEAB-Asymmetrie} \;\Rightarrow\; \text{Fehlerterm/Bias, ni
 
 ---
 
-*Kanonsiche Endform: Dieses Dokument fixiert die **operative Lesart** für PR #54. Details und Beweisskizzen: `collatz_eabc_holonomie_beweisversuch.md`. Bell-Brücke: `collatz_eabc_bell_holonomie.md` §12.*
+*Kanonsiche Endform: Dieses Dokument fixiert die **operative Lesart** für PR #54. Primäre Metapher: `collatz_eabc_sagnac.md`. Details und Beweisskizzen: `collatz_eabc_holonomie_beweisversuch.md`. Sekundäre Bell-Brücke: `collatz_eabc_bell_holonomie.md` §12.*
