@@ -87,6 +87,8 @@ $$\boxed{\;\text{Lückenmuster auf } C_4\text{: } (2,4,2,4).\;}$$
 
 ## 4. Geschwindigkeiten pro Kante
 
+### 4.1 Freier Parameter (Legacy)
+
 Pro **Startknoten** der Kante kann eine Kantengeschwindigkeit gesetzt werden:
 
 | Kante | Geschwindigkeit | $\Delta\gamma$ auf Segment |
@@ -97,6 +99,38 @@ Pro **Startknoten** der Kante kann eine Kantengeschwindigkeit gesetzt werden:
 | $E \to A$ | $v_E$ | $v_E \cdot \ell_{EA}$ |
 
 **Ein-Parameter-Modell:** $v_A = v_B = v_C = v_E = v$.
+
+### 4.2 Abgeleitete Kantengeschwindigkeiten (Holonomie-Sensor)
+
+**Keine freien $v_j$:** Die Geschwindigkeiten werden aus Primlücken mod $12$ und einer Referenzskala $\gamma_{\mathrm{ref}}$ abgeleitet:
+
+$$\boxed{\;v_j = \frac{\gamma_{\mathrm{ref}}}{\ell_j}\;}$$
+
+**Wahl der Referenz:** $\gamma_{\mathrm{ref}} = \gamma_n$ (typisch $n=1$, $\gamma_1 \approx 14{,}134725$) oder ein Skalenparameter `v_base` mit derselben Rolle. Pro Kante gilt dann
+
+$$\Delta\gamma_j = v_j \cdot \ell_j = \gamma_{\mathrm{ref}},$$
+
+d. h. **konstante Höheninkremente** entlang des Schaltkreises — das Ray-Mapping wird zum **EABC-Holonomie-Sensor** (Modellabbildung, kein Physikanspruch).
+
+**Zwei äquivalente Lückenlistungen** (dieselben vier Kanten):
+
+| Listung | Reihenfolge | Kanonisches Muster |
+|---------|-------------|-------------------|
+| ABCEA-Traversierung | $(\ell_{AB}, \ell_{BC}, \ell_{CE}, \ell_{EA})$ | $(2, 4, 2, 4)$ |
+| EAABC-zyklisch | $(\ell_{EA}, \ell_{AB}, \ell_{BC}, \ell_{CE})$ | $(4, 2, 4, 2)$ |
+
+**Beispiel** $\gamma_{\mathrm{ref}} = \gamma_1$, Muster $(2,4,2,4)$:
+
+| Kante | $\ell_j$ | $v_j = \gamma_1 / \ell_j$ |
+|-------|---------|---------------------------|
+| $E \to A$ | $4$ | $\approx 3{,}533681$ |
+| $A \to B$ | $2$ | $\approx 7{,}067363$ |
+| $B \to C$ | $4$ | $\approx 3{,}533681$ |
+| $C \to E$ | $2$ | $\approx 7{,}067363$ |
+
+Gesamt-$\gamma$ nach einem Umlauf: $4\,\gamma_{\mathrm{ref}} \approx 56{,}539$.
+
+**Label:** Holonomie-Sensor = **Modellabbildung** / **Sensor** (analog zu $C_E$, $\omega(e)$ in `collatz_eabc_sagnac_circulation.py`).
 
 **Kumulative $x$-Koordinate** entlang ABCEA mit Start $x^{(0)} = \tfrac12 = P$:
 $$x^{(k)} = x^{(k-1)} + \ell_k,\qquad
@@ -122,7 +156,21 @@ $$\boxed{\;\text{Holonomie } \pm 1 \;\leftrightarrow\; Orientierung } \gamma^\pm
 
 ---
 
-## 6. Beispiel $v = 1$, ABCEA (kanonische Lücken)
+## 6. Beispiel ABCEA — Holonomie-Sensor ($\gamma_{\mathrm{ref}}=\gamma_1$)
+
+Abgeleitete Geschwindigkeiten, Lücken $(2,4,2,4)$:
+
+| Stufe | Kante | $\ell$ | $v_j$ | $\Delta\gamma$ | $x$ | $s_v(x)$ |
+|------:|-------|-------|-------|----------------|-----|----------|
+| 0 | — | — | — | — | $0{,}5$ | $\tfrac12$ |
+| 1 | $A\to B$ | $2$ | $\gamma_1/2$ | $\gamma_1$ | $2{,}5$ | $\tfrac12 + \gamma_1\,\mathrm{i}$ |
+| 2 | $B\to C$ | $4$ | $\gamma_1/4$ | $\gamma_1$ | $6{,}5$ | $\tfrac12 + 2\gamma_1\,\mathrm{i}$ |
+| 3 | $C\to E$ | $2$ | $\gamma_1/2$ | $\gamma_1$ | $8{,}5$ | $\tfrac12 + 3\gamma_1\,\mathrm{i}$ |
+| 4 | $E\to A$ | $4$ | $\gamma_1/4$ | $\gamma_1$ | $12{,}5$ | $\tfrac12 + 4\gamma_1\,\mathrm{i}$ |
+
+Gesamtschritt auf $x$-Achse: $\sum \ell = 12$; Gesamt-$\gamma$-Anstieg: $4\,\gamma_1$.
+
+### 6.1 Legacy: einheitliches $v=1$
 
 Start $x^{(0)} = \tfrac12$, alle $v_k = 1$:
 
@@ -147,6 +195,10 @@ Gesamtschritt auf $x$-Achse: $\sum \ell = 12$; Gesamt-$\gamma$-Anstieg: $12$ bei
 | $x_{n,v}$ | `x_n_v` | `collatz_eabc_kritische_abbildung` |
 | ABCEA-Schaltkreis | `eabc_circuit_report(..., orientation="ABCEA")` | `collatz_eabc_kritische_abbildung` |
 | CEABC-Schaltkreis | `eabc_circuit_report(..., orientation="CEABC")` | `collatz_eabc_kritische_abbildung` |
+| $v_j$ aus Lücken | `edge_velocities_from_gaps(gaps, gamma_ref)` | `collatz_eabc_kritische_abbildung` |
+| Holonomie-Sensor | `holonomy_sensor_trajectory(orientation, gaps, gamma_ref=...)` | `collatz_eabc_kritische_abbildung` |
+| ABCEA vs CEABC | `compare_holonomy_sensor_trajectories(...)` | `collatz_eabc_kritische_abbildung` |
+| Prim-Fenster | `prime_window_gap_samples(max_p, limit)` | `collatz_eabc_kritische_abbildung` |
 
 ---
 

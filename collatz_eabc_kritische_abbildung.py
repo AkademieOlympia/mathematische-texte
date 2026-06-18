@@ -45,6 +45,10 @@ EDGE_EA = ("E", "A", 4)
 ABCEA_EDGES: tuple[tuple[str, str, int], ...] = (EDGE_AB, EDGE_BC, EDGE_CE, EDGE_EA)
 CEABC_EDGES: tuple[tuple[str, str, int], ...] = (EDGE_CE, EDGE_EA, EDGE_AB, EDGE_BC)
 
+# Gerichtete Kanten in zyklischer EAABC-Reihenfolge (E→A, A→B, B→C, C→E)
+EAABC_EDGE_KEYS: tuple[str, ...] = ("EA", "AB", "BC", "CE")
+ABCEA_EDGE_KEYS: tuple[str, ...] = ("AB", "BC", "CE", "EA")
+
 # Erste 20 Imaginärteile nicht-trivialer ζ-Nullstellen (mpmath-kompatibel, Fallback)
 ZETA_GAMMA_HARDCODED: tuple[float, ...] = (
     14.134725141734693,
@@ -148,6 +152,210 @@ def edge_velocities_uniform(v: float) -> dict[str, float]:
     return {"v_E": v, "v_A": v, "v_B": v, "v_C": v}
 
 
+def gaps_eaabc_to_abcea(gaps: tuple[int, ...] | list[int]) -> tuple[int, ...]:
+    """(ℓ_EA, ℓ_AB, ℓ_BC, ℓ_CE) → Traversierungsreihenfolge ABCEA (ℓ_AB, ℓ_BC, ℓ_CE, ℓ_EA)."""
+    g = tuple(gaps)
+    if len(g) != 4:
+        raise ValueError(f"expected 4 gaps, got {len(g)}")
+    ell_ea, ell_ab, ell_bc, ell_ce = g
+    return (ell_ab, ell_bc, ell_ce, ell_ea)
+
+
+def gaps_abcea_to_eaabc(gaps: tuple[int, ...] | list[int]) -> tuple[int, ...]:
+    """(ℓ_AB, ℓ_BC, ℓ_CE, ℓ_EA) → zyklische EAABC-Liste (ℓ_EA, ℓ_AB, ℓ_BC, ℓ_CE)."""
+    g = tuple(gaps)
+    if len(g) != 4:
+        raise ValueError(f"expected 4 gaps, got {len(g)}")
+    ell_ab, ell_bc, ell_ce, ell_ea = g
+    return (ell_ea, ell_ab, ell_bc, ell_ce)
+
+
+def normalize_gaps(
+    gaps: tuple[int, ...] | list[int],
+    gap_order: str = "ABCEA",
+) -> tuple[int, ...]:
+    """Normalisiere Lücken auf ABCEA-Traversierungsreihenfolge."""
+    g = tuple(gaps)
+    if gap_order == "ABCEA":
+        return g
+    if gap_order == "EAABC":
+        return gaps_eaabc_to_abcea(g)
+    raise ValueError(f"unknown gap_order: {gap_order}")
+
+
+def edges_for_orientation(
+    orientation: str,
+    gaps_abcea: tuple[int, ...],
+) -> tuple[tuple[str, str, int], ...]:
+    """Gerichtete Kanten mit Längen ℓ_j für ABCEA oder CEABC."""
+    length_by_edge = {
+        f"{src}{dst}": ell for (src, dst, _), ell in zip(ABCEA_EDGES, gaps_abcea)
+    }
+    template = ABCEA_EDGES if orientation == "ABCEA" else CEABC_EDGES
+    return tuple((src, dst, length_by_edge[f"{src}{dst}"]) for src, dst, _ in template)
+
+
+def edge_velocities_from_gaps(
+    gaps: tuple[int, ...] | list[int],
+    gamma_ref: float,
+    *,
+    gap_order: str = "ABCEA",
+) -> dict[str, Any]:
+    """
+    Kantengeschwindigkeiten aus Primlücken mod 12: v_j = γ_ref / ℓ_j.
+
+    Liefert Schlüssel v_EA, v_AB, v_BC, v_CE sowie v_E, v_A, v_B, v_C
+    (Geschwindigkeit am Startknoten jeder Kante für traverse_circuit).
+
+    gap_order:
+      'ABCEA' — (ℓ_AB, ℓ_BC, ℓ_CE, ℓ_EA), kanonisch (2,4,2,4)
+      'EAABC' — (ℓ_EA, ℓ_AB, ℓ_BC, ℓ_CE), zyklisch (4,2,4,2)
+    """
+    if gamma_ref <= 0:
+        raise ValueError("gamma_ref must be positive")
+    gaps_ab = normalize_gaps(gaps, gap_order)
+    result: dict[str, Any] = {"gamma_ref": gamma_ref}
+    for (src, dst, _), ell in zip(ABCEA_EDGES, gaps_ab):
+        if ell <= 0:
+            raise ValueError(f"edge length must be positive, got {ell}")
+        v_edge = gamma_ref / ell
+        result[f"v_{src}{dst}"] = v_edge
+        result[f"v_{src}"] = v_edge
+    result["gaps_abcea"] = list(gaps_ab)
+    return result
+
+
+def holonomy_sensor_trajectory(
+    orientation: str = "ABCEA",
+    gaps: tuple[int, ...] | list[int] | None = None,
+    *,
+    gamma_ref: float | None = None,
+    v_base: float | None = None,
+    gamma_n_index: int = 1,
+    gap_order: str = "ABCEA",
+) -> dict[str, Any]:
+    """
+    EABC-Holonomie-Sensor: Ray-Mapping mit aus Lücken abgeleiteten v_j.
+
+    Pro Kante: Δγ_j = v_j · ℓ_j = γ_ref (konstante Höheninkremente).
+    gamma_ref: Referenzskala (typisch γ_n); falls None: v_base oder γ_1.
+    """
+    gaps_in = tuple(gaps) if gaps is not None else CANONICAL_GAP_PATTERN
+    if gamma_ref is None:
+        if v_base is not None:
+            gamma_ref = v_base
+        else:
+            gamma_ref = zeta_imaginary_parts(gamma_n_index)[gamma_n_index - 1]
+    gaps_ab = normalize_gaps(gaps_in, gap_order)
+    edge_v = edge_velocities_from_gaps(gaps_ab, gamma_ref, gap_order="ABCEA")
+    edges = edges_for_orientation(orientation, gaps_ab)
+    segments = traverse_circuit(edges, edge_v, x0=SOURCE_X, length_model="explicit")
+    total_length = sum(s.get("length", 0) for s in segments if "length" in s)
+    total_gamma = segments[-1]["gamma_cumulative"] if segments else 0.0
+    return {
+        "sensor": "EABC_holonomy",
+        "epistemic": "Modellabbildung — kein Physikanspruch",
+        "orientation": orientation,
+        "holonomy_sign": holonomy_sign(orientation),
+        "gamma_ref": gamma_ref,
+        "gap_order_input": gap_order,
+        "gaps_abcea": list(gaps_ab),
+        "gaps_eaabc": list(gaps_abcea_to_eaabc(gaps_ab)),
+        "edge_velocities": {k: edge_v[k] for k in ("v_EA", "v_AB", "v_BC", "v_CE")},
+        "edge_velocities_vertex": {k: edge_v[k] for k in ("v_E", "v_A", "v_B", "v_C")},
+        "segments": segments,
+        "total_length": total_length,
+        "total_gamma": total_gamma,
+        "delta_gamma_per_edge": gamma_ref,
+        "endpoint": segments[-1] if segments else None,
+    }
+
+
+def compare_holonomy_sensor_trajectories(
+    gaps: tuple[int, ...] | list[int] | None = None,
+    *,
+    gamma_ref: float | None = None,
+    v_base: float | None = None,
+    gamma_n_index: int = 1,
+    gap_order: str = "ABCEA",
+) -> dict[str, Any]:
+    """Vergleich ABCEA (+1) vs. CEABC (-1) mit gleichen abgeleiteten Kantengeschwindigkeiten."""
+    kwargs: dict[str, Any] = {
+        "gaps": gaps,
+        "gamma_ref": gamma_ref,
+        "v_base": v_base,
+        "gamma_n_index": gamma_n_index,
+        "gap_order": gap_order,
+    }
+    abcea = holonomy_sensor_trajectory("ABCEA", **kwargs)
+    ceabc = holonomy_sensor_trajectory("CEABC", **kwargs)
+    gref = abcea["gamma_ref"]
+    return {
+        "sensor": "EABC_holonomy_compare",
+        "gamma_ref": gref,
+        "gaps_abcea": abcea["gaps_abcea"],
+        "gaps_eaabc": abcea["gaps_eaabc"],
+        "edge_velocities": abcea["edge_velocities"],
+        "ABCEA": abcea,
+        "CEABC": ceabc,
+        "holonomy_contrast": {
+            "sign_ABCEA": abcea["holonomy_sign"],
+            "sign_CEABC": ceabc["holonomy_sign"],
+            "same_total_length": abcea["total_length"] == ceabc["total_length"],
+            "same_total_gamma": math.isclose(
+                abcea["total_gamma"], ceabc["total_gamma"], rel_tol=0, abs_tol=1e-12
+            ),
+            "same_edge_velocities": abcea["edge_velocities"] == ceabc["edge_velocities"],
+        },
+    }
+
+
+def prime_window_gap_samples(
+    max_p: int = 10_000,
+    limit: int = 5,
+) -> list[dict[str, Any]]:
+    """
+    Beispiel-Fenster aus der Primfolge: ABCEA/CEABC mit mod-12-Lücken und abgeleiteten v_j.
+    """
+    from collatz_eabc_holonomie_fehlerterm import EABC_RESIDUES, gap_pattern_mod12
+    from collatz_eabc_transition_graph import ABCEA_WORD, CEABC_WORD, prime_eabc_sequence
+    from eabc_from_lean import EClass
+
+    seq = prime_eabc_sequence(max_p)
+    classes = [row["class"] for row in seq]
+    samples: list[dict[str, Any]] = []
+    for word in (ABCEA_WORD, CEABC_WORD):
+        count = 0
+        orientation = "ABCEA" if word == ABCEA_WORD else "CEABC"
+        for i in range(len(classes) - 4):
+            window = "".join(classes[i : i + 5])
+            if window != word:
+                continue
+            residues = tuple(EABC_RESIDUES[EClass(c)] for c in window)
+            gaps = gap_pattern_mod12(residues)
+            traj = holonomy_sensor_trajectory(
+                orientation,
+                gaps=gaps,
+                gamma_ref=GAMMA_1_APPROX,
+            )
+            samples.append(
+                {
+                    "word": word,
+                    "orientation": orientation,
+                    "prime_index_start": i,
+                    "primes": [seq[j]["p"] for j in range(i, i + 5)],
+                    "residues_mod12": list(residues),
+                    "gaps_abcea": list(gaps),
+                    "edge_velocities": traj["edge_velocities"],
+                    "total_gamma": traj["total_gamma"],
+                }
+            )
+            count += 1
+            if count >= limit:
+                break
+    return samples
+
+
 def traverse_circuit(
     edges: tuple[tuple[str, str, int], ...],
     edge_velocities: dict[str, float],
@@ -158,7 +366,9 @@ def traverse_circuit(
     Traversiere gerichtete Kanten; kumulative x und s_v an jedem Knoten.
 
     edge_velocities keys: v_A, v_B, v_C, v_E (Geschwindigkeit am Startknoten der Kante).
-    length_model: 'canonical' → mod-12-Lücken; 'unit' → alle ℓ=1.
+    length_model: 'canonical' → mod-12-Lücken aus Kantendefinition;
+                  'explicit' → ℓ aus Kantentupel;
+                  'unit' → alle ℓ=1.
     """
     segments: list[dict[str, Any]] = []
     x = x0
@@ -173,7 +383,12 @@ def traverse_circuit(
         }
     )
     for step, (src, dst, ell_canonical) in enumerate(edges, start=1):
-        ell = 1 if length_model == "unit" else ell_canonical
+        if length_model == "unit":
+            ell = 1
+        elif length_model == "explicit":
+            ell = ell_canonical
+        else:
+            ell = ell_canonical
         v_key = f"v_{src}"
         v_seg = edge_velocities.get(v_key, edge_velocities.get("v", 1.0))
         x_prev = x
@@ -287,9 +502,13 @@ def run(
         "zeta_zero_mappings": zero_mapping_table(n_zeros, velocities, gammas),
         "eabc_circuits": dual_circuit_report(v=v_circuit, length_model="canonical"),
         "eabc_circuits_unit": dual_circuit_report(v=v_circuit, length_model="unit"),
+        "holonomy_sensor": compare_holonomy_sensor_trajectories(
+            gaps=CANONICAL_GAP_PATTERN, gamma_ref=GAMMA_1_APPROX
+        ),
         "boxed": {
             "mapping": "x ↦ 1/2 + i v (x - 1/2)",
             "holonomy_link": "ABCEA (+1) vs CEABC (-1) auf C4 mit Lücken (2,4,2,4)",
+            "holonomy_sensor": "v_j = γ_ref / ℓ_j — Ray-Mapping als EABC-Holonomie-Sensor",
             "zirkulation": "D_E = N_plus - N_minus (collatz_eabc_zirkulationshypothese.md)",
         },
     }
@@ -325,6 +544,12 @@ def main() -> None:
     print()
     print(f"Holonomie: ABCEA={report['eabc_circuits']['ABCEA']['holonomy_sign']}, "
           f"CEABC={report['eabc_circuits']['CEABC']['holonomy_sign']}")
+    sensor = report["holonomy_sensor"]
+    print()
+    print(f"Holonomie-Sensor (γ_ref=γ_1, Lücken {sensor['gaps_abcea']}):")
+    for ek, val in sensor["edge_velocities"].items():
+        print(f"  {ek} = {val:.7f}")
+    print(f"  Σγ = {sensor['ABCEA']['total_gamma']:.7f} (4·γ_ref)")
     print(f"JSON: {report['output_path']}")
 
 
