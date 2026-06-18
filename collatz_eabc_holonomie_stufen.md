@@ -14,6 +14,7 @@
 - `collatz_eabc_holonomie_beweisversuch.md` — analytischer Beweisversuch $\mathrm{Hol}_E=0$
 - `collatz_eabc_D_growth.py` — Wachstumsdiagnostik: Fall A/B/C in $N$, Legacy-Szenarien in $X$
 - `collatz_generalangriff_2026.md` — Gesamtarchitektur PR #54 / PR #59
+- `collatz_eabc_wigner_analog.md` — signiertes Korrelationsfeld $W_{ab}$, Near-zero-Moden-Stub
 
 ---
 
