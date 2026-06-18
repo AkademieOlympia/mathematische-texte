@@ -40,7 +40,7 @@ $$\boxed{\;\text{Der größte Fortschritt ist nicht die Einführung neuer Größ
 
 **Harter Kern** (nicht Holonomie): (1) gerichteter EABC-Kreisgraph $G_E$, (2) orientierte Zyklusdifferenz $D_E(X)=N_+(X)-N_-(X)$, (3) daraus induzierte Skalierungsobservablen. Erst darauf bauen alle weiteren Fragen.
 
-**Erster numerischer Belastungstest** (vgl. `collatz_eabc_zirkulationshypothese.md` §4.3): prüft nur $(G_E,N_\pm,D_E)$ und $R_{1/2}=D_E/\sqrt{Q}$ bis $X\approx 10^{10}$ — **kein** $\Phi_E$, **keine** Holonomie. Holonomie bleibt Endfrage (Ebene 4); der Belastungstest validiert den harten Kern unabhängig von H₃.
+**Erster numerischer Belastungstest** (vgl. `collatz_eabc_zirkulationshypothese.md` §4.3): Vollauf bis $X=10^{10}$ (13 Checkpoints) — prüft nur $(G_E,N_\pm,D_E)$, $R_{1/2}=D_E/\sqrt{Q}$ und Skalierungsobservablen; **kein** $\Phi_E$, **keine** Holonomie. **Ergebnis (Experiment):** bis $10^{10}$ kein numerischer Hinweis auf Holonomie ($\Phi_E\neq 0$) oder sublinearen Bias ($\alpha_E>\tfrac{1}{2}$); $D_E$ kompatibel mit Wurzelfehlerterm ($|D_E|=O(\sqrt{Q})$). H₀a/H₀b numerisch bevorzugt gegenüber H₂/H₃. Holonomie bleibt Endfrage (Ebene 4).
 
 **Stabilisierungskette** ($\leadsto$ = führt zu Fragen; $\Rightarrow$ = bewiesene Implikation):
 $$G_E \;\leadsto\; (D_E,\,Q_E) \;\leadsto\; (R_\beta,\,\alpha_{\mathrm{eff}},\,\alpha_{\mathrm{loc}}) \;\leadsto\; (\alpha_E,\,W_E) \;\leadsto\; \Phi_E.$$
