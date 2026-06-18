@@ -5,11 +5,18 @@
 **Tao-Labels:** Definition | Lemma-Skizze | Vermutung | Experiment
 
 **Querverweise:**
+- `collatz_eabc_fehlerterm_hypothese.md` — **kanonische Endform:** $N_\pm$, Hauptvermutung, Fehlerterm-Hypothese, $\widetilde{D}_E$
 - `collatz_eabc_zyklus_holonomie.md` — kanonische Hierarchie, $\chi_{\mathrm{Hol}}$, $\mathrm{Hol}_E$
 - `collatz_eabc_transport.md` — Übergangsgraph $G_E$, Transport $T_n$
 - `collatz_eabc_transition_graph.py` — $\chi_{\mathrm{Pfad}}$, $\chi_{\mathrm{Hol}}$, Nullmodelle
 - `collatz_eabc_holonomie_fehlerterm.py` / `.json` — $D_E$, $\widetilde{D}_E$, Lückenmuster, Chebyshev-Vergleich
 - `collatz_generalangriff_2026.md` — Gesamtarchitektur PR #54
+
+---
+
+## 0. Endform (Verweis)
+
+Die **kanonische Kurzform** (Setup, $N_\pm$, Hauptvermutung vs. Fehlerterm-Hypothese, $\widetilde{D}_E$, zentrale Frage) steht in `collatz_eabc_fehlerterm_hypothese.md`. Dieses Dokument liefert die **analytische Ausarbeitung** (Lemma-Skizzen, HL-Argument, Numerik).
 
 ---
 
@@ -75,21 +82,22 @@ Unter der $t$-Rotation sind $A$ und $C$ **Antipoden** auf dem 4-Zyklus (Abstand 
 
 ## 5. Hardy–Littlewood-Äquidistribution und $\mathrm{Hol}_E=0$
 
-**Definition (Zählgrößen).** Für $X>0$:
-$$N_{\mathrm{ABCEA}}(X) := \#\{n:\,p_{n+4}\le X,\; X_nX_{n+1}X_{n+2}X_{n+3}X_{n+4}=\mathrm{ABCEA}\},$$
-$$N_{\mathrm{CEABC}}(X) := \#\{n:\,p_{n+4}\le X,\; X_nX_{n+1}X_{n+2}X_{n+3}X_{n+4}=\mathrm{CEABC}\}.$$
+**Definition (Zählgrößen).** Für $X>0$ (Endform: `collatz_eabc_fehlerterm_hypothese.md`):
+$$N_+(X) := \#\{n:\,p_{n+4}\le X,\; C_n=\mathrm{ABCEA}\},$$
+$$N_-(X) := \#\{n:\,p_{n+4}\le X,\; C_n=\mathrm{CEABC}\}.$$
+Legacy: $N_{\mathrm{ABCEA}}:=N_+$, $N_{\mathrm{CEABC}}:=N_-$.
 
 **Definition (normierte Holonomie-Observable).**
-$$\chi_{\mathrm{Hol}}(X)=\frac{N_{\mathrm{ABCEA}}(X)-N_{\mathrm{CEABC}}(X)}{N_{\mathrm{ABCEA}}(X)+N_{\mathrm{CEABC}}(X)}
-=\frac{D_E(X)}{N_{\mathrm{ABCEA}}(X)+N_{\mathrm{CEABC}}(X)},$$
-wobei $D_E(X):=N_{\mathrm{ABCEA}}(X)-N_{\mathrm{CEABC}}(X)$.
+$$\chi_{\mathrm{Hol}}(X)=\frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)}
+=\frac{D_E(X)}{N_+(X)+N_-(X)},$$
+wobei $D_E(X):=N_+(X)-N_-(X)$.
 
 **Definition (Grenzwert).**
 $$\mathrm{Hol}_E := \lim_{X\to\infty}\chi_{\mathrm{Hol}}(X),$$
 sofern der Grenzwert existiert (`collatz_eabc_zyklus_holonomie.md` §6).
 
-**Vermutung (konservativ, Hauptterm).** Unter der **Hardy–Littlewood-Heuristik** für die Verteilung aufeinanderfolgender Prim-Restklassen modulo $12$ (bzw. äquivalent: Gleichverteilung der $4$-Schritt-Fenster mit festem Lückenmuster $(2,4,2,4)$ auf dem $4$-Zyklus) gilt asymptotisch
-$$N_{\mathrm{ABCEA}}(X)\sim N_{\mathrm{CEABC}}(X),$$
+**Hauptvermutung (konservativ).** Unter der **Hardy–Littlewood-Heuristik** für die Verteilung aufeinanderfolgender Prim-Restklassen modulo $12$ (bzw. äquivalent: Gleichverteilung der $4$-Schritt-Fenster mit festem Lückenmuster $(2,4,2,4)$ auf dem $4$-Zyklus) gilt asymptotisch
+$$N_+(X)\sim N_-(X),$$
 und damit
 $$\mathrm{Hol}_E = 0.$$
 
@@ -102,8 +110,10 @@ $$\mathrm{Hol}_E = 0.$$
 ## 6. Bias nur im Fehlerterm — Chebyshev-Analogie
 
 **Lemma-Skizze (Fehlerterm).** Selbst wenn $\mathrm{Hol}_E=0$, bleibt
-$$D_E(X)=N_{\mathrm{ABCEA}}(X)-N_{\mathrm{CEABC}}(X)$$
-nicht-trivial. Für endliche $X$ ist $\chi_{\mathrm{Hol}}(X)=D_E(X)/(N_{\mathrm{ABCEA}}+N_{\mathrm{CEABC}})$ typischerweise $\neq 0$.
+$$D_E(X)=N_+(X)-N_-(X)$$
+nicht-trivial. Für endliche $X$ ist $\chi_{\mathrm{Hol}}(X)=D_E(X)/(N_++N_-)$ typischerweise $\neq 0$.
+
+**Fehlerterm-Hypothese (stärker).** $D_E$ trägt nichttrivialen Chebyshev-artigen Bias, gesteuert durch Nullstellen der Dirichlet-$L$-Funktionen modulo $12$ (`collatz_eabc_fehlerterm_hypothese.md` §3).
 
 **Heuristik (Chebyshev-Bias-Analogie).** Bei Chebyshev-Bias überwiegen oft Primzahlen $p\equiv 3\pmod 4$ gegenüber $p\equiv 1\pmod 4$ in endlichen Fenstern, obwohl die asymptotische Dichte gleich ist. Analog: $D_E(X)$ kann **oszillierende, vorzeichenbehaftete endliche Abweichungen** tragen, ohne dass $\mathrm{Hol}_E\neq 0$ folgt.
 
@@ -123,7 +133,7 @@ nicht-trivial. Für endliche $X$ ist $\chi_{\mathrm{Hol}}(X)=D_E(X)/(N_{\mathrm{
 | 2 | $\mathrm{ABCEA}$ und $\mathrm{CEABC}$ sind zyklische Realisierungen desselben 4-Zyklus $A\!\to\!B\!\to\!C\!\to\!E\!\to\!A$. |
 | 3 | Beide tragen dasselbe Lückenmuster $(2,4,2,4)$ in $\mathbb{Z}/12\mathbb{Z}$. |
 | 4 | Der einzige Unterschied ist die Startklasse $A\equiv 5$ vs. $C\equiv 11$ (Antipoden auf dem 4-Zyklus). |
-| 5 | HL-Äquidistribution / symmetrische Zählung der Phasen $\Rightarrow$ $N_{\mathrm{ABCEA}}(X)\sim N_{\mathrm{CEABC}}(X)$ $\Rightarrow$ $\chi_{\mathrm{Hol}}(X)\to 0$. |
+| 5 | HL-Äquidistribution / symmetrische Zählung der Phasen $\Rightarrow$ $N_+(X)\sim N_-(X)$ $\Rightarrow$ $\chi_{\mathrm{Hol}}(X)\to 0$. |
 
 **Offene Lücke:** Schritt 5 benötigt einen **beweisbaren** Äquidistributionssatz für $5$-Fenster auf der Primfolge — derzeit **Vermutung**, nicht Theorem.
 
@@ -134,12 +144,15 @@ nicht-trivial. Für endliche $X$ ist $\chi_{\mathrm{Hol}}(X)=D_E(X)/(N_{\mathrm{
 ## 8. Interessante Größen: $D_E$ und $\widetilde{D}_E$
 
 **Definition (Differenz und normalisierter Fehlerterm).**
-$$D_E(X) := N_{\mathrm{ABCEA}}(X) - N_{\mathrm{CEABC}}(X),$$
-$$\widetilde{D}_E(X) := \frac{D_E(X)}{\sqrt{N_{\mathrm{ABCEA}}(X)+N_{\mathrm{CEABC}}(X)}}.$$
+$$D_E(X) := N_+(X) - N_-(X),$$
+$$\widetilde{D}_E(X) := \frac{D_E(X)}{\sqrt{N_+(X)+N_-(X)}}.$$
+
+**Zentrale Frage.** Verhält sich $\widetilde{D}_E$ wie reines Rauschen, oder zeigt stabile Vorzeichenasymmetrie / Oszillationsstruktur?
 
 **Interpretation.**
 - $D_E(X)$: absoluter Vorzeichen-Überschuss ABCEA gegenüber CEABC (Chebyshev-artig).
 - $\widetilde{D}_E(X)$: $\sqrt{N}$-normalisierte Abweichung; bei $\mathrm{Hol}_E=0$ und „zufälligen" Phasenfluktuationen erwartet man $|\widetilde{D}_E(X)|=O(1)$, nicht lineares Wachstum in $X$.
+- EABC-Holonomie als **sekundärer Bias** im Prime Race gegenläufiger Zyklusorientierungen — **nicht** permanenter Hauptterm.
 
 **Label:** $D_E$, $\widetilde{D}_E$ = **Definition**; Grenzverhalten = **Vermutung** / **Experiment**.
 
@@ -160,7 +173,7 @@ $$\boxed{\;\text{Interessante Forschungsfrage:}\;D_E(X)\;\text{— Bias und Oszi
 | **Stark** | $\mathrm{Hol}_E\neq 0$ | **Hypothese** (empirisch: $\chi_{\mathrm{Hol}}(10^6)\approx 0{,}12$) |
 | **Konservativ (hier)** | $\mathrm{Hol}_E=0$, Struktur in $D_E$ | **Vermutung** + **Experiment** |
 
-Die empirische Beobachtung $N_{\mathrm{ABCEA}}>N_{\mathrm{CEABC}}$ bei endlichen $X$ widerspricht **nicht** der konservativen Lesart: sie betrifft den **Fehlerterm** $D_E$, nicht den Grenzwert $\mathrm{Hol}_E$.
+Die empirische Beobachtung $N_+>N_-$ bei endlichen $X$ widerspricht **nicht** der konservativen Lesart: sie betrifft den **Fehlerterm** $D_E$, nicht den Grenzwert $\mathrm{Hol}_E$. ABCE/CEAB-Asymmetrie = Fehlerterm-/Bias-Phänomen.
 
 ---
 
@@ -172,7 +185,8 @@ Die empirische Beobachtung $N_{\mathrm{ABCEA}}>N_{\mathrm{CEABC}}$ bei endlichen
 | ABCEA/CEABC als zyklische Verschiebungen desselben 4-Zyklus | **Lemma-Skizze** |
 | Gemeinsames Lückenmuster $(2,4,2,4)$ | **Lemma-Skizze** |
 | Startklassen-Dualität $5$ vs. $11$ | **Lemma-Skizze** |
-| HL-Äquidistribution $\Rightarrow$ $\mathrm{Hol}_E=0$ | **Vermutung** |
+| $N_+\sim N_-$ $\Rightarrow$ $\mathrm{Hol}_E=0$ (Hauptvermutung) | **Vermutung** |
+| $D_E$-Bias, $L$-Funktionen mod $12$ (Fehlerterm-Hypothese) | **Hypothese** |
 | $D_E$-Bias als Chebyshev-Analogie | **Heuristik** |
 | Satzskizze (5 Schritte) | **Lemma-Skizze** |
 | $D_E$, $\widetilde{D}_E$ | **Definition** |

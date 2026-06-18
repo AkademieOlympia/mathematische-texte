@@ -5,11 +5,12 @@
 **Tao-Labels:** Definition | Hypothese | Experiment | Theorem
 
 **Querverweise:**
+- `collatz_eabc_fehlerterm_hypothese.md` — **kanonische Endform:** $N_\pm$, Hauptvermutung, Fehlerterm-Hypothese, $\widetilde{D}_E$
 - `collatz_eabc_transport.md` — gerichteter Übergangsgraph $G_E$, Transport $T_n$, Übergangsmatrix
 - `collatz_eabc_holonomie.md` — Vierlings-Orientierung $\omega(Q)$, $\chi_E^{\mathrm{quad}}(N)$ (arithmetische Vierlinge)
 - `collatz_eabc_holonomie_beweisversuch.md` — analytischer Beweisversuch: mod-$12$-Symmetrie, $\mathrm{Hol}_E=0$, Fehlerterm $D_E$
 - `collatz_eabc_transition_graph.py` / `.json` — Numerik: $\chi_{\mathrm{Pfad}}$, $\chi_{\mathrm{Hol}}$, Nullmodelle
-- `collatz_eabc_holonomie_fehlerterm.py` / `.json` — $D_E$, $\widetilde{D}_E$, Lückenmuster $(2,4,2,4)$
+- `collatz_eabc_holonomie_fehlerterm.py` / `.json` — $N_\pm$, $D_E$, $\widetilde{D}_E$, Lückenmuster $(2,4,2,4)$
 - `collatz_eabc_holonomie_test.py` — $\chi_E^{\mathrm{quad}}(N)$ auf Prim-Vierlingen (Vergleichsträger)
 - `eabc_from_lean.py` — $\kappa=\texttt{class\_of}$, Rotation $t$
 
@@ -137,32 +138,54 @@ mit $\chi_{\mathrm{Hol}}(N)=0$, falls der Nenner $0$ ist.
 
 ---
 
-## 6. Projektive Zyklus-Holonomie $\mathrm{Hol}_E$
+## 6. Zählgrößen $N_\pm$ und projektive Holonomie $\mathrm{Hol}_E$
 
-**Definition (Grenzwert).**
-$$\boxed{\;\mathrm{Hol}_E := \lim_{N\to\infty}\chi_{\mathrm{Hol}}(N)\;}$$
-sofern der Grenzwert existiert und $\neq 0$ ist — dann als **projektive Zyklus-Holonomie** des geschlossenen 5-Schritt-Zyklus interpretiert.
+**Definition ($N_+$, $N_-$).** Für Prim-Obergrenze $X$:
+$$N_+(X) := \#\{n:\,p_{n+4}\le X,\; C_n^{(5)}=\mathrm{ABCEA}\},$$
+$$N_-(X) := \#\{n:\,p_{n+4}\le X,\; C_n^{(5)}=\mathrm{CEABC}\}.$$
+
+**Definition (Fehlerterm und Normalisierung).**
+$$D_E(X) := N_+(X)-N_-(X),\qquad
+\widetilde{D}_E(X) := \frac{D_E(X)}{\sqrt{N_+(X)+N_-(X)}}.$$
+
+**Definition (Grenzwert / Hauptterm).**
+$$\chi_{\mathrm{Hol}}(X)=\frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)},\qquad
+\boxed{\;\mathrm{Hol}_E := \lim_{X\to\infty}\chi_{\mathrm{Hol}}(X)\;}$$
+sofern der Grenzwert existiert.
 
 **Nicht** $\lim\chi_{\mathrm{Pfad}}(N)$: der 4-Pfad misst Pfadorientierung, keine geschlossene Holonomie.
 
-Falls $\mathrm{Hol}_E=0$, bleibt die Frage offen, ob $\chi_{\mathrm{Hol}}(N)$ **stabile, nicht-zufällige Fluktuationen** trägt (schwächere Lesart).
+### 6.1 Hauptvermutung (konservativ)
 
-**Analytischer Beweisversuch (konservativ):** `collatz_eabc_holonomie_beweisversuch.md` — mod-$12$-Symmetrie und HL-Äquidistribution legen $\mathrm{Hol}_E=0$ als Hauptterm nahe; interessante Struktur im Fehlerterm $D_E(X)=N_{\mathrm{ABCEA}}-N_{\mathrm{CEABC}}$ (Chebyshev-Analogie).
+$$\boxed{\;N_+(X)\sim N_-(X)\;\Rightarrow\;\mathrm{Hol}_E=0\;}$$
 
-**Experiment:** `collatz_eabc_transition_graph.py::hol_E_estimates` (Stichproben bei $N=10^5$, $10^6$); `collatz_eabc_holonomie_fehlerterm.py` ($D_E$, $\widetilde{D}_E$).
+**Begründung (Skizze):** `collatz_eabc_holonomie_beweisversuch.md` — mod-$12$-Symmetrie, gemeinsames Lückenmuster $(2,4,2,4)$, HL-Äquidistribution.
 
-**Label:** $\mathrm{Hol}_E$ = **Definition** (Grenzwert auf $\chi_{\mathrm{Hol}}$); Existenz und $\neq 0$ = **Hypothese**.
+**Label:** Hauptvermutung = **Vermutung**.
+
+### 6.2 Fehlerterm-Hypothese (stärker)
+
+Selbst bei $\mathrm{Hol}_E=0$ bleibt $D_E(X)$ nichttrivial. **Fehlerterm-Hypothese:** Chebyshev-artiger Bias in $D_E$, gesteuert durch Nullstellen der Dirichlet-$L$-Funktionen mod $12$.
+
+**Zentrale Frage:** Verhält sich $\widetilde{D}_E$ wie reines Rauschen oder zeigt stabile Vorzeichenasymmetrie / Oszillation?
+
+**Analytischer Beweisversuch:** `collatz_eabc_holonomie_beweisversuch.md`; **Endform:** `collatz_eabc_fehlerterm_hypothese.md`.
+
+**Experiment:** `collatz_eabc_transition_graph.py::hol_E_estimates`; `collatz_eabc_holonomie_fehlerterm.py` ($N_\pm$, $D_E$, $\widetilde{D}_E$-Zeitreihe).
+
+**Label:** Fehlerterm-Hypothese = **Hypothese**; $\mathrm{Hol}_E$ als Grenzwert = **Definition**.
 
 ---
 
-## 7. Boxed Hypothese (stark)
+## 7. Boxed Hypothese (stark, legacy)
 
 $$\boxed{\;\mathrm{Hol}_E\neq 0\;}$$
 
 **Präzisierung.** Eine nichttriviale asymptotische Orientierungsasymmetrie der geschlossenen ABCEA/CEABC-Zyklen entlang der Primzahl-Transportkette — Hinweis auf **projektive Holonomie** des gerichteten EABC-Übergangsgraphen, kein Beweis im DG-Sinn.
 
-**Schwächere Lesart (falls $\mathrm{Hol}_E=0$):**
-$$\boxed{\;\chi_{\mathrm{Hol}}(N)\text{ zeigt stabile, nicht-zufällige Fluktuationen gegenüber Isotropie- und Shuffle-Nullmodellen.}\;}$$
+**Schwächere Lesart (falls $\mathrm{Hol}_E=0$, operative Endform):**
+$$\boxed{\;\widetilde{D}_E(X)\text{ zeigt strukturierte Fluktuationen (Bias/Oszillation), nicht permanente Hauptterm-Holonomie.}\;}$$
+Siehe `collatz_eabc_fehlerterm_hypothese.md` §5–7.
 
 **Nullmodelle (Experiment):**
 - **Marginal-Shuffle** und **Isotropie-Null** jeweils für $\chi_{\mathrm{Pfad}}$ und $\chi_{\mathrm{Hol}}$ (`shuffle_null_chi_pfad`, `isotropy_null_chi_hol`).
@@ -212,7 +235,7 @@ collatz_eabc_zyklus_holonomie.md   Klasse→Kante→Pfad→Zyklus→Holonomie
 | 3 | $P_n^{(4)}$, $\Omega_{\mathrm{Pfad}}$ — **Pfad** | hier §3 |
 | 4 | $\chi_{\mathrm{Pfad}}(N)$ | hier §4 |
 | 5 | $C_n^{(5)}$, $\Omega_{\mathrm{Hol}}$, $\chi_{\mathrm{Hol}}(N)$ — **Zyklus / Holonomie** | hier §5 |
-| 6 | $\mathrm{Hol}_E=\lim\chi_{\mathrm{Hol}}$ | hier §6–7 |
+| 6 | $N_\pm$, $D_E$, $\widetilde{D}_E$, $\mathrm{Hol}_E$ | hier §6; `collatz_eabc_fehlerterm_hypothese.md` |
 | — | $\chi_E^{\mathrm{quad}}(N)$ | `collatz_eabc_holonomie.md` §4 |
 
 ---
@@ -225,6 +248,8 @@ collatz_eabc_zyklus_holonomie.md   Klasse→Kante→Pfad→Zyklus→Holonomie
 | $\Omega_{\mathrm{Hol}}(C_n^{(5)})$ | `omega_hol` | `omega_5` |
 | $\chi_{\mathrm{Pfad}}(N)$ | `chi_pfad_sliding` | `chi_path_sliding`, `chi_E_sliding` |
 | $\chi_{\mathrm{Hol}}(N)$ | `chi_hol_sliding` | — |
+| $N_+(X)$, $N_-(X)$ | `N_plus`, `N_minus` | `N_ABCEA`, `N_CEABC` |
+| $D_E$, $\widetilde{D}_E$ | `D_E`, `D_tilde_E` | — |
 | Vergleich Pfad vs. Holonomie | `chi_pfad_vs_hol` | `chi_path_vs_hol` |
 
 ---
@@ -239,6 +264,9 @@ collatz_eabc_zyklus_holonomie.md   Klasse→Kante→Pfad→Zyklus→Holonomie
 | $\chi_{\mathrm{Pfad}}(N)$ auf Gleitfenstern | **Definition** |
 | $C_n^{(5)}$, $\Omega_{\mathrm{Hol}}$ — geschlossener Zyklus | **Definition** |
 | $\chi_{\mathrm{Hol}}(N)$ | **Definition** |
+| $N_\pm$, $D_E$, $\widetilde{D}_E$ | **Definition** |
+| $N_+\sim N_-$ $\Rightarrow$ $\mathrm{Hol}_E=0$ | **Vermutung** (Hauptvermutung) |
+| Fehlerterm-Hypothese ($L$-Funktionen mod $12$) | **Hypothese** |
 | $\mathrm{Hol}_E=\lim\chi_{\mathrm{Hol}}(N)$ | **Definition** |
 | $\mathrm{Hol}_E\neq 0$ | **Hypothese** |
 | $\chi_{\mathrm{Pfad}}$ vs.\ $\chi_{\mathrm{Hol}}$ vs.\ $\chi_E^{\mathrm{quad}}$ | **Experiment** |

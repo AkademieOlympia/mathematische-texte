@@ -10,7 +10,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from collatz_eabc_holonomie_fehlerterm import (
     CANONICAL_GAP_PATTERN,
+    THEORY_ENDFORM,
     chebyshev_bias_comparison,
+    d_tilde_e_series,
     gap_pattern_mod12,
     holonomy_counts,
     run,
@@ -36,10 +38,12 @@ def test_gap_pattern_closed_loop():
 
 def test_holonomy_counts_formula():
     row = holonomy_counts(50_000)
-    n_ab = row["N_ABCEA"]
-    n_ce = row["N_CEABC"]
-    total = n_ab + n_ce
-    assert row["D_E"] == n_ab - n_ce
+    n_plus = row["N_plus"]
+    n_minus = row["N_minus"]
+    total = n_plus + n_minus
+    assert row["N_ABCEA"] == n_plus
+    assert row["N_CEABC"] == n_minus
+    assert row["D_E"] == n_plus - n_minus
     if total > 0:
         assert abs(row["chi_Hol"] - row["D_E"] / total) < 1e-12
         assert abs(row["D_tilde_E"] - row["D_E"] / (total**0.5)) < 1e-12
@@ -51,17 +55,30 @@ def test_holonomy_counts_matches_chi_hol_sliding():
     classes = classes_from_sequence(seq)
     hol = chi_hol_sliding(classes)
     row = holonomy_counts(max_p)
-    assert row["N_ABCEA"] == hol["abcea_windows"]
-    assert row["N_CEABC"] == hol["ceabc_windows"]
+    assert row["N_plus"] == hol["abcea_windows"]
+    assert row["N_minus"] == hol["ceabc_windows"]
     assert row["chi_Hol"] == hol["chi_hol"]
+
+
+def test_d_tilde_e_series():
+    limits = [1000, 10_000, 50_000]
+    series = d_tilde_e_series(limits)
+    assert len(series) == 3
+    for pt, lim in zip(series, limits):
+        assert pt["X"] == lim
+        row = holonomy_counts(lim)
+        assert pt["D_tilde_E"] == row["D_tilde_E"]
+        assert pt["N_plus"] == row["N_plus"]
 
 
 def test_chebyshev_comparison_structure():
     cmp = chebyshev_bias_comparison(30_000)
     assert "holonomy_series" in cmp
+    assert "D_tilde_E_series" in cmp
     assert "chebyshev_mod4_series" in cmp
     assert "qualitative" in cmp
     assert len(cmp["holonomy_series"]) >= 3
+    assert len(cmp["D_tilde_E_series"]) == len(cmp["holonomy_series"])
     assert cmp["qualitative"]["supports_oscillating_D_E"] is True
 
 
@@ -70,7 +87,8 @@ def test_run_writes_json(tmp_path: Path):
     report = run(max_p=10_000, output=out)
     assert out.is_file()
     loaded = json.loads(out.read_text(encoding="utf-8"))
-    assert loaded["meta"]["theory"] == "collatz_eabc_holonomie_beweisversuch.md"
+    assert loaded["meta"]["theory_endform"] == THEORY_ENDFORM
     assert loaded["gap_patterns"]["words"][ABCEA_WORD]["matches_canonical"]
+    assert "D_tilde_E_series" in loaded
     assert "boxed_conclusions" in loaded
     assert report["output_path"] == str(out)

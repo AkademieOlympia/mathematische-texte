@@ -2,12 +2,12 @@
 """
 EABC-Holonomie: Fehlerterm D_E, normalisiertes D̃_E, Lückenmuster, Chebyshev-Vergleich.
 
-Theorie: collatz_eabc_holonomie_beweisversuch.md
+Theorie: collatz_eabc_fehlerterm_hypothese.md (Endform), collatz_eabc_holonomie_beweisversuch.md
 
-  N_ABCEA(X), N_CEABC(X)  — Zählung geschlossener 5-Zyklen
-  χ_Hol(X) = (N_ABCEA - N_CEABC) / (N_ABCEA + N_CEABC)
-  D_E(X) = N_ABCEA - N_CEABC
-  D̃_E(X) = D_E / sqrt(N_ABCEA + N_CEABC)
+  N_plus(X), N_minus(X)  — Zählung geschlossener 5-Zyklen (ABCEA / CEABC)
+  χ_Hol(X) = (N_plus - N_minus) / (N_plus + N_minus)
+  D_E(X) = N_plus - N_minus
+  D̃_E(X) = D_E / sqrt(N_plus + N_minus)
 
 Ausführung:
     python3 collatz_eabc_holonomie_fehlerterm.py
@@ -33,6 +33,8 @@ from eabc_from_lean import EClass, residue
 
 ROOT = Path(__file__).resolve().parent
 DEFAULT_OUTPUT = ROOT / "collatz_eabc_holonomie_fehlerterm.json"
+THEORY_ENDFORM = "collatz_eabc_fehlerterm_hypothese.md"
+THEORY_BWEISVERSUCH = "collatz_eabc_holonomie_beweisversuch.md"
 
 CANONICAL_GAP_PATTERN = (2, 4, 2, 4)
 EABC_RESIDUES = {EClass.E: 1, EClass.A: 5, EClass.B: 7, EClass.C: 11}
@@ -79,26 +81,44 @@ def verify_gap_patterns() -> dict[str, Any]:
 
 
 def holonomy_counts(max_p: int) -> dict[str, Any]:
-    """N_ABCEA, N_CEABC, χ_Hol, D_E, D̃_E für Primfolge bis max_p."""
+    """N_plus, N_minus, χ_Hol, D_E, D̃_E für Primfolge bis max_p."""
     seq = prime_eabc_sequence(max_p)
     classes = classes_from_sequence(seq)
     hol = chi_hol_sliding(classes)
-    n_ab = hol["abcea_windows"]
-    n_ce = hol["ceabc_windows"]
-    total = n_ab + n_ce
-    d_e = n_ab - n_ce
+    n_plus = hol["abcea_windows"]
+    n_minus = hol["ceabc_windows"]
+    total = n_plus + n_minus
+    d_e = n_plus - n_minus
     d_tilde = d_e / math.sqrt(total) if total > 0 else 0.0
     return {
         "max_p": max_p,
+        "X": max_p,
         "prime_count": len(seq),
-        "N_ABCEA": n_ab,
-        "N_CEABC": n_ce,
+        "N_plus": n_plus,
+        "N_minus": n_minus,
+        "N_ABCEA": n_plus,
+        "N_CEABC": n_minus,
         "chi_Hol": hol["chi_hol"],
         "D_E": d_e,
         "D_tilde_E": d_tilde,
         "nonzero_windows": hol["nonzero_windows"],
         "omega_sum": hol["omega_sum"],
     }
+
+
+def d_tilde_e_series(limits: list[int]) -> list[dict[str, Any]]:
+    """Zeitreihe von D̃_E(X) über die angegebenen Prim-Obergrenzen."""
+    return [
+        {
+            "X": row["X"],
+            "N_plus": row["N_plus"],
+            "N_minus": row["N_minus"],
+            "D_E": row["D_E"],
+            "D_tilde_E": row["D_tilde_E"],
+            "chi_Hol": row["chi_Hol"],
+        }
+        for row in (holonomy_counts(lim) for lim in limits)
+    ]
 
 
 def chebyshev_bias_comparison(max_p: int) -> dict[str, Any]:
@@ -117,10 +137,12 @@ def chebyshev_bias_comparison(max_p: int) -> dict[str, Any]:
         hol_series.append(
             {
                 "X": lim,
+                "N_plus": row["N_plus"],
+                "N_minus": row["N_minus"],
                 "D_E": row["D_E"],
                 "D_tilde_E": row["D_tilde_E"],
                 "chi_Hol": row["chi_Hol"],
-                "N_total": row["N_ABCEA"] + row["N_CEABC"],
+                "N_total": row["N_plus"] + row["N_minus"],
             }
         )
 
@@ -137,7 +159,6 @@ def chebyshev_bias_comparison(max_p: int) -> dict[str, Any]:
             }
         )
 
-    # Oszillations-Heuristik: Vorzeichenwechsel in D_E-Serie
     d_signs = [1 if r["D_E"] > 0 else (-1 if r["D_E"] < 0 else 0) for r in hol_series]
     sign_changes = sum(
         1 for i in range(1, len(d_signs)) if d_signs[i] != 0 and d_signs[i - 1] != 0 and d_signs[i] != d_signs[i - 1]
@@ -150,6 +171,7 @@ def chebyshev_bias_comparison(max_p: int) -> dict[str, Any]:
 
     return {
         "holonomy_series": hol_series,
+        "D_tilde_E_series": [{"X": r["X"], "D_tilde_E": r["D_tilde_E"]} for r in hol_series],
         "chebyshev_mod4_series": cheb_series,
         "qualitative": {
             "D_E_positive_at_max": last.get("D_E", 0) > 0,
@@ -159,7 +181,7 @@ def chebyshev_bias_comparison(max_p: int) -> dict[str, Any]:
             "chebyshev_D_at_max": cheb_series[-1]["chebyshev_D"] if cheb_series else 0,
             "analogy": (
                 "D_E bleibt vorzeichenbehaftet und wächst mit X (wie Chebyshev-Differenz), "
-                "während χ_Hol = D_E/(N_ABCEA+N_CEABC) durch wachsenden Nenner gedämpft wird — "
+                "während χ_Hol = D_E/(N_plus+N_minus) durch wachsenden Nenner gedämpft wird — "
                 "konsistent mit Hol_E=0 als Hauptterm und strukturiertem Fehlerterm."
             ),
             "supports_Hol_E_to_zero": (
@@ -184,22 +206,25 @@ def run_series(
     return {
         "meta": {
             "module": "collatz_eabc_holonomie_fehlerterm.py",
-            "theory": "collatz_eabc_holonomie_beweisversuch.md",
+            "theory_endform": THEORY_ENDFORM,
+            "theory": THEORY_BWEISVERSUCH,
             "max_p": max_p,
             "limits": limits,
         },
         "gap_patterns": gap,
         "holonomy_series": series,
+        "D_tilde_E_series": d_tilde_e_series(limits),
         "chebyshev_comparison": cheb,
         "boxed_conclusions": {
-            "Hol_E_main_term": "Hol_E = 0 unter mod-12-Symmetrie + HL-Äquidistribution (Vermutung)",
-            "interesting_question": "Bias und Oszillation in D_E(X), Chebyshev-Analogie",
+            "Hol_E_main_term": "Hol_E = 0 unter mod-12-Symmetrie + HL-Äquidistribution (Hauptvermutung)",
+            "interesting_question": "Bias und Oszillation in D_E(X), Chebyshev-Analogie / L-Funktionen mod 12",
         },
         "epistemic_labels": {
             "gap_pattern": "Lemma-Skizze",
             "Hol_E_zero": "Vermutung",
             "D_E": "Definition",
             "D_tilde_E": "Definition",
+            "fehlerterm_hypothese": "Hypothese",
             "numerics": "Experiment",
             "chebyshev_analogy": "Heuristik",
         },
@@ -230,9 +255,13 @@ def main() -> None:
     print()
     for row in report["holonomy_series"]:
         print(
-            f"X={row['max_p']:>7}: N_ABCEA={row['N_ABCEA']:4}, N_CEABC={row['N_CEABC']:4}, "
+            f"X={row['max_p']:>7}: N_plus={row['N_plus']:4}, N_minus={row['N_minus']:4}, "
             f"χ_Hol={row['chi_Hol']:+.4f}, D_E={row['D_E']:+4}, D̃_E={row['D_tilde_E']:+.3f}"
         )
+    print()
+    print("D̃_E Zeitreihe:")
+    for pt in report["D_tilde_E_series"]:
+        print(f"  X={pt['X']:>7}: D̃_E={pt['D_tilde_E']:+.3f}")
     qual = report["chebyshev_comparison"]["qualitative"]
     print()
     print(qual["analogy"])
