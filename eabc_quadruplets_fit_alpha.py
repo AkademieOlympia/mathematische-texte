@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Log-log-Steigung alpha aus eabc_quadruplets.csv; H0a/H0b–H3-Einordnung und Diagnose-Plot."""
+"""Log-log-Steigung alpha_E aus eabc_quadruplets.csv; H0a/H0b–H3-Einordnung und Diagnose-Plot."""
 
 import argparse
 from pathlib import Path
@@ -89,36 +89,91 @@ def coefficient_of_variation(values: np.ndarray) -> float:
     return float(np.std(values) / abs(mean))
 
 
-def interpret(alpha: float, alpha_loc_max: float | None, df: pd.DataFrame) -> str:
+def r_beta_log_slope(df: pd.DataFrame, col: str) -> float:
+    """Steigung von log|R_beta| vs log Q (≈ alpha_E - beta)."""
+    if len(df) < 2:
+        return float("nan")
+    q = df["Q_total"].to_numpy(dtype=np.float64)
+    r = np.abs(df[col].to_numpy(dtype=np.float64))
+    r = np.maximum(r, 1e-15)
+    slope, _ = np.polyfit(np.log(q), np.log(r), 1)
+    return float(slope)
+
+
+def estimate_alpha_E(df: pd.DataFrame) -> tuple[float, float, dict[float, float]]:
+    """Heuristische alpha_E-Schaetzung aus R_beta-Plateaus (Experiment, kein Theorem).
+
+    Fuer jedes beta: alpha_E-Kandidat = beta + Steigung(log|R_beta| vs log Q).
+    Waehlt den Kandidaten bei minimalem |Steigung| (Plateau-Lesart).
+    """
+    slopes: dict[float, float] = {}
+    candidates: dict[float, float] = {}
+    for col, beta in R_BETA_COLUMNS.items():
+        slope = r_beta_log_slope(df, col)
+        slopes[beta] = slope
+        candidates[beta] = beta + slope
+
+    best_beta = min(slopes, key=lambda b: abs(slopes[b]))
+    alpha_E_hat = candidates[best_beta]
+    return alpha_E_hat, best_beta, slopes
+
+
+def diagnose_hypothesis(alpha_E_hat: float, alpha_polyfit: float) -> str:
+    if alpha_E_hat <= 0.55:
+        band = "H0a (alpha_E <= 1/2, Wurzelrauschen)"
+    elif alpha_E_hat < 0.85:
+        band = f"H1/H2 (1/2 < alpha_E < 1, sublinearer Bias)"
+    else:
+        band = "H3-Kandidat (alpha_E ≈ 1, Holonomie-Grenzfall)"
+    return (
+        f"alpha_E_hat={alpha_E_hat:.3f} (heuristisch, Experiment) → {band}; "
+        f"polyfit alpha={alpha_polyfit:.3f}"
+    )
+
+
+def interpret(
+    alpha: float,
+    alpha_E_hat: float,
+    alpha_loc_max: float | None,
+    df: pd.DataFrame,
+    slopes: dict[float, float],
+) -> str:
     hints: list[str] = []
+
+    hints.append(diagnose_hypothesis(alpha_E_hat, alpha))
 
     if alpha_loc_max is not None and alpha_loc_max > 0.5:
         hints.append(f"alpha_loc max={alpha_loc_max:.4f} → H1 (persistenter Bias, empirisch)")
 
-    if abs(alpha - 0.5) < 0.15:
-        hints.append(f"global alpha≈1/2 → H0a-Kandidat (symmetrische Heuristik, kein Beweis)")
+    if alpha_E_hat <= 0.55:
+        hints.append("alpha_E_hat ≤ 1/2 → H0a-Kandidat (R_{1/2} beschränkt)")
+    elif alpha_E_hat < 0.85:
+        hints.append(f"alpha_E_hat={alpha_E_hat:.3f} → H2-Kandidat (sublinearer Bias, W_E→0)")
+    elif alpha_E_hat >= 0.85:
+        hints.append(f"alpha_E_hat≈1 → H3-Kandidat (Holonomie-Grenzfall)")
+
+    if abs(alpha - 0.5) < 0.15 and alpha_E_hat <= 0.55:
+        hints.append("polyfit alpha≈1/2 konsistent mit H0a")
     elif 0.5 < alpha < 1.0:
-        hints.append(f"global alpha={alpha:.4f} → H2-Kandidat (asymptotischer Bias, W_E→0)")
-    elif alpha >= 0.85:
-        hints.append(f"global alpha≈1 → H3-Kandidat (Holonomie, W_E→Φ_E≠0)")
-    else:
-        hints.append("Zwischenbereich — genauere Grenze bei größerem X")
+        hints.append(f"polyfit alpha={alpha:.4f} → asymptotischer Bias")
 
     w_e = df["W_E"].to_numpy(dtype=np.float64)
     if w_e.size >= 2 and abs(w_e[-1]) < abs(w_e[0]) * 0.5:
         hints.append("W_E tendiert gegen 0 → konsistent mit H0b (analytische Nullhypothese)")
 
-    hints.append("H0b ⇏ alpha=1/2 — analytische und probabilistische Frage getrennt halten")
+    hints.append("H0b ⇏ alpha_E≤1/2 — analytische und Skalierungsfrage getrennt halten")
 
     z = df["R_1_2"].to_numpy(dtype=np.float64)
     r23 = df["R_2_3"].to_numpy(dtype=np.float64)
+    if slopes.get(0.5, 0.0) > 0.1:
+        hints.append(f"R_{{1/2}} waechst (Steigung={slopes[0.5]:.3f}) → alpha_E > 1/2")
     if coefficient_of_variation(z) < coefficient_of_variation(r23):
-        hints.append("R_{1/2} stabiler als R_{2/3} → eher H0a als α≈2/3")
+        hints.append("R_{1/2} stabiler als R_{2/3} → eher H0a als alpha_E≈2/3")
     elif coefficient_of_variation(r23) < coefficient_of_variation(df["R_1"]):
-        hints.append("R_{2/3} relativ stabil → α≈2/3 (H2, nicht H3)")
+        hints.append("R_{2/3} relativ stabil → alpha_E≈2/3 (H2, nicht H3)")
 
     w_stable = coefficient_of_variation(df["R_1"].to_numpy(dtype=np.float64))
-    if w_stable < 0.25 and abs(alpha) >= 0.85:
+    if w_stable < 0.25 and alpha_E_hat >= 0.85:
         hints.append("R_1 stabil → Holonomie-Hinweis (H3-Kandidat)")
 
     return "; ".join(hints)
@@ -129,7 +184,7 @@ def make_diagnose_plot(df: pd.DataFrame, loc: pd.Series, out_path: Path) -> None
 
     x = df["X"].to_numpy(dtype=np.float64)
     fig, axes = plt.subplots(2, 2, figsize=(11, 8), sharex=True)
-    fig.suptitle("EABC-Quadruplets: Hypothesen-Diagnose (H0a/H0b–H3)")
+    fig.suptitle("EABC-Quadruplets: alpha_E-Diagnose (H0a/H0b–H3)")
 
     ax = axes[0, 0]
     ax.plot(x, df["W_E"], "o-", color="C0", label=r"$W_E = R_1 = D/Q$")
