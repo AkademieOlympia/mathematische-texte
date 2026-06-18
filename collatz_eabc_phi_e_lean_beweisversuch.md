@@ -140,6 +140,8 @@ lake build CollatzEabc.PatternCount
 lake build CollatzEabc.HolonomieFehlerterm   # 1 sorry (Hol_E_zero)
 ```
 
+**Zwei Träger:** Gleitfenster (`N_plus_up_to` via `windows5`) vs. Primvierlinge (`N_plus_quadruplet_up_to`).
+
 ---
 
 ## Lean-Modul `FlussPhiE.lean`

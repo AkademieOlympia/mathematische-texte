@@ -1,7 +1,10 @@
 /-
-  CollatzEabc.FlussPhiE — Φ_E, W_E, harmonische 1-Form auf C₄ ≅ S¹.
+  CollatzEabc.FlussPhiE — Φ_E als Conjecture-Schicht (Ebene 4) über D_E/Q_E/W_E.
 
-  **Nicht sorry-frei.** Epistemische Schichten (vgl. `collatz_eabc_epistemik_schichten.md`):
+  **Zentrum liegt in `PatternCount`:** D_E, Q_E, N_± → W_E; dieses Modul ergänzt C₄-Geometrie
+  und Grenzwert-`Prop`s (Φ_E, α_E). **Nicht sorry-frei.**
+
+  Epistemische Schichten (vgl. `collatz_eabc_epistemik_schichten.md`):
 
   | Schicht | Label            | Inhalt in diesem Modul                          |
   |---------|------------------|-------------------------------------------------|
@@ -23,6 +26,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Order.Filter.AtTopBot.Defs
 import Mathlib.Order.Filter.AtTopBot.Tendsto
 import Mathlib.Topology.Basic
+import CollatzEabc.PatternCount
 import CollatzEabc.HolonomieFehlerterm
 
 namespace CollatzEabc

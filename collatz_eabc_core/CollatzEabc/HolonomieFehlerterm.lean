@@ -42,14 +42,6 @@ def eabcResidueNat : EabcLetter → ℕ
 /-- Kanonisches Lückenmuster (2,4,2,4) entlang geschlossener 5-Zyklen. -/
 def canonicalGapPattern : List ℕ := [2, 4, 2, 4]
 
-/-- Geschlossenes Holonomie-Wort ABCEA (Start A). -/
-def wordABCEA : List EabcLetter := [⟨1, by decide⟩, ⟨2, by decide⟩, ⟨3, by decide⟩,
-  ⟨0, by decide⟩, ⟨1, by decide⟩]
-
-/-- Geschlossenes Holonomie-Wort CEABC (Start C). -/
-def wordCEABC : List EabcLetter := [⟨3, by decide⟩, ⟨0, by decide⟩, ⟨1, by decide⟩,
-  ⟨2, by decide⟩, ⟨3, by decide⟩]
-
 /-- Offenes 4-Fenster ABCE (Bell-Taubenloch-Träger). -/
 def wordABCE : List EabcLetter := [⟨0, by decide⟩, ⟨1, by decide⟩, ⟨2, by decide⟩,
   ⟨3, by decide⟩]
@@ -86,29 +78,29 @@ def N_plus (classes : List EabcLetter) : ℕ :=
 def N_minus (classes : List EabcLetter) : ℕ :=
   countSlidingWord classes wordCEABC
 
-/-- Fehlerterm D_E(W) = N₊ − N₋ auf endlicher Folge (Prim-Analogon: W = κ-Folge bis X). -/
-def D_E (classes : List EabcLetter) : ℤ :=
+/-- Fehlerterm D_E(W) = N₊ − N₋ auf endlicher Folge. -/
+def D_E_on (classes : List EabcLetter) : ℤ :=
   (N_plus classes : ℤ) - N_minus classes
 
 /-- Paar (D_E, N₊+N₋) für normalisierte Auswertung in Python (`D̃_E = D_E/√total`). -/
 def D_E_pair (classes : List EabcLetter) : ℤ × ℕ :=
-  (D_E classes, N_plus classes + N_minus classes)
+  (D_E_on classes, N_plus classes + N_minus classes)
 
 /-- Q_E(W) = N₊ + N₋ (Gesamtzählung orientierter 5-Zyklen). -/
-def Q_E (classes : List EabcLetter) : ℕ :=
+def Q_E_on (classes : List EabcLetter) : ℕ :=
   N_plus classes + N_minus classes
 
 /-- χ_Hol(W) = D_E / Q_E = W_E auf endlicher Folge. -/
 def chi_Hol (classes : List EabcLetter) : ℚ :=
-  let total := Q_E classes
+  let total := Q_E_on classes
   if _h : total = 0 then 0
-  else (D_E classes : ℚ) / total
+  else (D_E_on classes : ℚ) / total
 
 /-- R_β(W) = D_E / Q_E^β auf endlicher Folge (β ∈ ℝ; β = 1/2 ⇒ D̃_E). -/
 noncomputable def R_beta (classes : List EabcLetter) (β : ℝ) : ℝ :=
-  let q := Q_E classes
+  let q := Q_E_on classes
   if _h : q = 0 then 0
-  else (D_E classes : ℝ) / (q : ℝ) ^ β
+  else (D_E_on classes : ℝ) / (q : ℝ) ^ β
 
 /-- D̃_E(W) = D_E / √Q_E — Belastungstest-Observable R_{1/2}. -/
 noncomputable def D_tilde_E (classes : List EabcLetter) : ℝ :=
@@ -121,7 +113,7 @@ noncomputable def D_tilde_E (classes : List EabcLetter) : ℝ :=
 /-- **[Schicht A]** −1 ≤ χ_Hol ≤ 1 auf jeder endlichen Folge. -/
 theorem chi_Hol_bounds (classes : List EabcLetter) :
     -1 ≤ chi_Hol classes ∧ chi_Hol classes ≤ 1 := by
-  unfold chi_Hol Q_E D_E
+  unfold chi_Hol Q_E_on D_E_on
   by_cases h : N_plus classes + N_minus classes = 0
   · rw [dif_pos h]
     norm_num
@@ -169,16 +161,16 @@ theorem chi_Hol_bounds (classes : List EabcLetter) :
 /-- **[Schicht A]** N₊ = N₋ ⇒ χ_Hol = 0. -/
 theorem chi_Hol_zero_of_balance (classes : List EabcLetter)
     (h : N_plus classes = N_minus classes) : chi_Hol classes = 0 := by
-  unfold chi_Hol Q_E D_E
+  unfold chi_Hol Q_E_on D_E_on
   simp [h]
 
-/-- **[Schicht A]** Q_E = N₊ + N₋ (definitorisch). -/
-theorem Q_E_eq_sum (classes : List EabcLetter) :
-    Q_E classes = N_plus classes + N_minus classes := rfl
+/-- **[Schicht A]** Q_E_on = N₊ + N₋ (definitorisch). -/
+theorem Q_E_on_eq_sum (classes : List EabcLetter) :
+    Q_E_on classes = N_plus classes + N_minus classes := rfl
 
-/-- **[Schicht A]** D_E = N₊ − N₋ (definitorisch). -/
-theorem D_E_eq_diff (classes : List EabcLetter) :
-    D_E classes = (N_plus classes : ℤ) - N_minus classes := rfl
+/-- **[Schicht A]** D_E_on = N₊ − N₋ (definitorisch). -/
+theorem D_E_on_eq_diff (classes : List EabcLetter) :
+    D_E_on classes = (N_plus classes : ℤ) - N_minus classes := rfl
 
 theorem abcea_residues : residuesOf wordABCEA = [5, 7, 11, 1, 5] := rfl
 
@@ -232,126 +224,37 @@ theorem test_manual_counts :
     N_plus testClassesManual = 1 ∧ N_minus testClassesManual = 1 :=
   ⟨test_manual_N_plus, test_manual_N_minus⟩
 
-theorem test_manual_D_E_zero : D_E testClassesManual = 0 := by
-  simp [D_E, test_manual_N_plus, test_manual_N_minus]
+theorem test_manual_D_E_zero : D_E_on testClassesManual = 0 := by
+  simp [D_E_on, test_manual_N_plus, test_manual_N_minus]
 
 /-!
-### Prime-basierte Zählung (Schicht B — computabel)
+### Prime-basierte Zählung (Schicht B — aus `PatternCount`)
 
-**Primärträger (Ebene 1):** `N_plus_up_to` / `N_minus_up_to` aus `PatternCount` =
-Primvierlinge Q(p) mit p ≡ 5 / 11 (mod 12) — vgl. `eabc_quadruplets_1e10.py`
-(bei 10^6: N₊ = 84, N₋ = 82).
+**Primärträger:** `windows5` auf `kappaPrimeStreamUpTo X` — `N_plus_up_to`, `N_minus_up_to`,
+`D_E`, `Q_E`, `W_E`, `R_half` (vgl. `collatz_eabc_holonomie_fehlerterm.py`).
 
-**Sekundärträger:** Gleitfenster ABCEA / CEABC auf der κ-Primfolge
-`primeEabcClassesUpTo X` — `N_plus_sliding_up_to` / `N_minus_sliding_up_to`
-(vgl. `collatz_eabc_holonomie_fehlerterm.holonomy_counts`, bei 10^3: 4 / 4).
-
-`D_E_up_to`, `Q_E_up_to`, `W_E_up_to`, `R_beta_up_to` koppeln an die Vierling-Zählung.
+**Sekundärträger:** Primvierlinge — `N_plus_quadruplet_up_to` (vgl. `eabc_quadruplets_1e10.py`).
 
 Asymptotik `Hol_E_zero`, Primdichte und R_{1/2} = O(1) bleiben Schicht R (`sorry`).
 -/
 
-/-- Gleitfenster #{ABCEA} auf der κ-Primfolge bis X. -/
-def N_plus_sliding_up_to (X : ℕ) : ℕ :=
-  N_plus (primeEabcClassesUpTo X)
+/-- Alias: Gleitfenster-Zählung = `PatternCount.N_plus_up_to`. -/
+abbrev N_plus_sliding_up_to := N_plus_up_to
 
-/-- Gleitfenster #{CEABC} auf der κ-Primfolge bis X. -/
-def N_minus_sliding_up_to (X : ℕ) : ℕ :=
-  N_minus (primeEabcClassesUpTo X)
-
-theorem N_plus_sliding_up_to_eq (X : ℕ) :
-    N_plus_sliding_up_to X = N_plus (primeEabcClassesUpTo X) := rfl
-
-theorem N_minus_sliding_up_to_eq (X : ℕ) :
-    N_minus_sliding_up_to X = N_minus (primeEabcClassesUpTo X) := rfl
-
-theorem D_E_sliding_up_to_eq (X : ℕ) :
-    (N_plus_sliding_up_to X : ℤ) - N_minus_sliding_up_to X =
-      D_E (primeEabcClassesUpTo X) := by
-  unfold D_E N_plus_sliding_up_to N_minus_sliding_up_to
-  rfl
-
-theorem Q_E_sliding_up_to_eq (X : ℕ) :
-    N_plus_sliding_up_to X + N_minus_sliding_up_to X =
-      Q_E (primeEabcClassesUpTo X) := by
-  unfold Q_E N_plus_sliding_up_to N_minus_sliding_up_to
-  rfl
-
-theorem D_E_up_to_eq_quadruplet (X : ℕ) :
-    D_E_up_to X = (N_plus_up_to X : ℤ) - N_minus_up_to X := rfl
-
-theorem Q_E_up_to_eq_quadruplet (X : ℕ) :
-    Q_E_up_to X = N_plus_up_to X + N_minus_up_to X := rfl
-
-/-- W_E(X) = D_E(X)/Q_E(X) bis Primgrenze X (identisch zu `FlussPhiE.W_E_up_to`). -/
-def W_E_up_to (X : ℕ) : ℚ :=
-  let total := Q_E_up_to X
-  if _h : total = 0 then 0
-  else (D_E_up_to X : ℚ) / total
+/-- Alias: Gleitfenster-Zählung = `PatternCount.N_minus_up_to`. -/
+abbrev N_minus_sliding_up_to := N_minus_up_to
 
 /-- R_β(X) = D_E(X) / Q_E(X)^β (Skalierungsobservable, Ebene 2). -/
 noncomputable def R_beta_up_to (β : ℝ) (X : ℕ) : ℝ :=
-  let q := Q_E_up_to X
+  let q := Q_E X
   if _h : q = 0 then 0
-  else (D_E_up_to X : ℝ) / (q : ℝ) ^ β
+  else (D_E X : ℝ) / (q : ℝ) ^ β
 
-/-- D̃_E(X) = D_E(X)/√Q_E(X) — numerischer Belastungstest R_{1/2}. -/
-noncomputable def D_tilde_E_up_to (X : ℕ) : ℝ :=
-  R_beta_up_to (1 / 2) X
+/-- Legacy-Alias zu `PatternCount.W_E_zero_of_balance`. -/
+abbrev W_E_up_to_zero_of_balance := W_E_zero_of_balance
 
-/-- **[Schicht A]** N₊(X) = N₋(X) ⇒ W_E(X) = 0. -/
-theorem W_E_up_to_zero_of_balance (X : ℕ) (h : N_plus_up_to X = N_minus_up_to X) :
-    W_E_up_to X = 0 := by
-  unfold W_E_up_to Q_E_up_to D_E_up_to
-  simp [h]
-
-/-- **[Schicht A]** −1 ≤ W_E(X) ≤ 1 für alle Primgrenzen X. -/
-theorem W_E_up_to_bounds (X : ℕ) :
-    -1 ≤ W_E_up_to X ∧ W_E_up_to X ≤ 1 := by
-  unfold W_E_up_to Q_E_up_to D_E_up_to
-  by_cases h : N_plus_up_to X + N_minus_up_to X = 0
-  · rw [dif_pos h]
-    norm_num
-  ·
-    have hpos_nat : 0 < N_plus_up_to X + N_minus_up_to X := Nat.pos_of_ne_zero h
-    have hpos_rat : (0 : ℚ) < ((N_plus_up_to X + N_minus_up_to X : ℕ) : ℚ) := by
-      exact_mod_cast hpos_nat
-    rw [dif_neg h]
-    constructor
-    ·
-      have hineq_int :
-          -((N_plus_up_to X + N_minus_up_to X : ℕ) : Int)
-            ≤ (N_plus_up_to X : Int) - (N_minus_up_to X : Int) := by omega
-      have hineq_rat :
-          (-(((N_plus_up_to X + N_minus_up_to X : ℕ) : Int) : ℚ))
-            ≤ (((N_plus_up_to X : Int) - (N_minus_up_to X : Int) : Int) : ℚ) := by
-        exact_mod_cast hineq_int
-      have hdiv := div_le_div_of_nonneg_right hineq_rat (le_of_lt hpos_rat)
-      have hneg :
-          (-(((N_plus_up_to X + N_minus_up_to X : ℕ) : Int) : ℚ)) /
-              ((N_plus_up_to X + N_minus_up_to X : ℕ) : ℚ) = -1 := by
-        rw [show (-(((N_plus_up_to X + N_minus_up_to X : ℕ) : Int) : ℚ))
-              = -((N_plus_up_to X + N_minus_up_to X : ℕ) : ℚ) from by push_cast; rfl]
-        field_simp [ne_of_gt hpos_rat]
-      rw [← hneg]
-      exact hdiv
-    ·
-      have hineq_int :
-          (N_plus_up_to X : Int) - (N_minus_up_to X : Int)
-            ≤ ((N_plus_up_to X + N_minus_up_to X : ℕ) : Int) := by omega
-      have hineq_rat :
-          (((N_plus_up_to X : Int) - (N_minus_up_to X : Int) : Int) : ℚ)
-            ≤ (((N_plus_up_to X + N_minus_up_to X : ℕ) : Int) : ℚ) := by
-        exact_mod_cast hineq_int
-      have hdiv := div_le_div_of_nonneg_right hineq_rat (le_of_lt hpos_rat)
-      have hone :
-          (((N_plus_up_to X + N_minus_up_to X : ℕ) : Int) : ℚ) /
-              ((N_plus_up_to X + N_minus_up_to X : ℕ) : ℚ) = 1 := by
-        rw [show (((N_plus_up_to X + N_minus_up_to X : ℕ) : Int) : ℚ)
-              = ((N_plus_up_to X + N_minus_up_to X : ℕ) : ℚ) from by push_cast; rfl]
-        field_simp [ne_of_gt hpos_rat]
-      rw [← hone]
-      exact hdiv
+/-- Legacy-Alias zu `PatternCount.W_E_bounds`. -/
+abbrev W_E_up_to_bounds := W_E_bounds
 
 /-- Hauptvermutung Hol_E = 0 (asymptotisch; Schicht R — Experiment, kein Theorem). -/
 def Hol_E_zero : Prop :=
@@ -360,23 +263,23 @@ def Hol_E_zero : Prop :=
 /-!
 ### Referenzwerte (computabel)
 
-Primvierlinge (`eabc_quadruplets_1e10.py`): X=1000 ⇒ N₊=3, N₋=2, D_E=1.
-Gleitfenster (`holonomy_counts`): X=1000 ⇒ N₊=N₋=4.
+Gleitfenster (`holonomy_counts`): X=1000 ⇒ N₊=N₋=4, D_E=0.
+Primvierlinge (`eabc_quadruplets_1e10.py`): X=1000 ⇒ N₊^quad=3, N₋^quad=2.
 -/
 
-example : N_plus_up_to 1000 = 3 := by native_decide
+example : N_plus_up_to 1000 = 4 := by native_decide
 
-example : N_minus_up_to 1000 = 2 := by native_decide
+example : N_minus_up_to 1000 = 4 := by native_decide
 
-example : D_E_up_to 1000 = 1 := by native_decide
-
-example : N_plus_sliding_up_to 1000 = 4 := by native_decide
-
-example : N_minus_sliding_up_to 1000 = 4 := by native_decide
+example : D_E 1000 = 0 := by native_decide
 
 #eval N_plus_up_to 1000000
 
 #eval N_minus_up_to 1000000
+
+#eval N_plus_quadruplet_up_to 1000000
+
+#eval N_minus_quadruplet_up_to 1000000
 
 /-!
 ### Bell / CHSH auf G_E (Skeleton)

@@ -2,10 +2,13 @@
 EABC Holonomy Core
 
 Status:
-- Kreisgraph / Orientierung / Zirkulation: formal scaffold
-- bewiesen: `-1 ≤ W_E(X) ≤ 1` für alle `X`
+- Kreisgraph / Orientierung / Zirkulation: formal scaffold (abstrakter `CycleCounts`-Kern)
+- bewiesen: `-1 ≤ W_E(X) ≤ 1` auf endlichen Stichproben (`phiApprox_bounds`, `W_E_bounds`)
+- Primgrenze X: dieselbe Schranke in `CollatzEabc.PatternCount.W_E_bounds`
 - Vermutung: `lim_{X→∞} W_E(X) = Φ_E ≠ 0` (asymptotisch, nicht exakte Konstante)
 - keine physikalische Aussage
+
+Hierarchie: D_E, Q_E (`PatternCount`) → W_E → Φ_E (hier: Schicht R).
 
 GREEN LAYER:
   Node, next, prev, CycleCounts, circulation, size, phiApprox,
@@ -16,6 +19,7 @@ RED LAYER:
 -/
 
 import Mathlib
+import CollatzEabc.PatternCount
 import Mathlib.Order.Filter.AtTopBot.Tendsto
 import Mathlib.Topology.Basic
 
@@ -117,6 +121,9 @@ theorem W_E_bounds (F : EABCFlow) (X : Nat) :
     -1 ≤ W_E F X ∧ W_E F X ≤ 1 := by
   unfold W_E
   exact phiApprox_bounds (F.counts X)
+
+/-- Primgrenze: `PatternCount.W_E_bounds` (Gleitfenster-Träger auf κ-Primfolge). -/
+abbrev W_E_prime_bounds := CollatzEabc.W_E_bounds
 
 /-- **Schicht R:** `W_E(X)` konvergiert gegen ein von Null verschiedenes `Φ ∈ ℝ`. -/
 def HasNonzeroHolonomyLimit (F : EABCFlow) : Prop :=
