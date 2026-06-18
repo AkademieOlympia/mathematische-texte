@@ -28,14 +28,19 @@ EABC = priminduzierter Fluss auf $C_4 \cong S^1$ mit
 
 - $G_E = (V,E)$, $V=\{E,A,B,C\}$
 - $E^+ = \{EA, AB, BC, CE\}$, $E^- = \{EC, CB, BA, AE\}$
-- $C_E(X) = N_+(X) - N_-(X)$, $S_E(X) = N_+(X) + N_-(X)$
-- $W_E(X) = C_E(X)/S_E(X)$, $\Phi_E = \lim_{X\to\infty} W_E(X)$
+- orientierte Zyklen $\gamma^+ = \mathrm{ABCEA}$, $\gamma^- = \mathrm{CEABC}$
+- $D_E(X) = N_+(X) - N_-(X)$ (Ebene 1: primäre Observable)
+- $W_E(X) = D_E(X)/Q(X)$ (Ebene 3), $\Phi_E = \lim_{X\to\infty} W_E(X)$ (Ebene 4)
+
+$$\boxed{\;\text{Das EABC-Programm untersucht primär die Wachstumsordnung der orientierten Zyklusdifferenz }D_E(X)\text{, während die Holonomie }\Phi_E\text{ als mögliche Endstufe dieser Skalierungstheorie erscheint.}\;}$$
 
 $$\boxed{\;\text{Nicht }\Phi_E\text{ ist der Anfang, sondern }D_E(X).\;}$$
 
+**Paradigmenwechsel:** Früher Grenzwerttheorie $W_E\to\Phi_E\neq 0$; jetzt Fehlertermtheorie $D_E(X)=A(X)-C(X)$ (analytische Zahlentheorie).
+
 **Vorwärtskette** (keine Umkehrungen): $D_E(X) \Rightarrow \alpha_E \Rightarrow W_E(X) \Rightarrow \Phi_E$.
 
-**Vermutung (Schicht R):** $\Phi_E \neq 0$ bzw. $\langle\omega_E, h\rangle \neq 0$ für kanonisches harmonisches $h$. Dies ist **H₃** (starke Holonomie: $W_E(X)\to\Phi_E\neq 0$) — **Endstufe** des Programms (Stufe 3), nach Definition (Stufe 0), Diagnose $\alpha_{\mathrm{eff}}/\alpha_{\mathrm{loc}}$ (Stufe 1) und Skalierung $\alpha_E$ (Stufe 2). Entspricht Lean-**RED** `HasNonzeroHolonomyLimit`. Vorgelagert (`collatz_eabc_zirkulationshypothese.md` §4.2): zuerst $D_E$ und $R_\beta$, dann $\alpha_{\mathrm{loc}}$, dann $\alpha_E$, dann Orientierung (H₀b vs. H₃). $\alpha_E>\tfrac{1}{2} \nRightarrow \Phi_E\neq 0$. Scheitern von H₃ zerstört das Programm nicht.
+**Vermutung (Schicht R):** $\Phi_E \neq 0$ bzw. $\langle\omega_E, h\rangle \neq 0$ für kanonisches harmonisches $h$. Dies ist **H₃** (starke Holonomie: $W_E(X)\to\Phi_E\neq 0$) — **Ebene 4** des Programms, nach Geometrie (Ebene 0), Zirkulationsfehler $D_E$ (Ebene 1), Skalierung $\alpha_{\mathrm{loc}}/\alpha_E$ (Ebene 2) und Orientierung $W_E$ (Ebene 3). Entspricht Lean-**RED** `HasNonzeroHolonomyLimit`. Vorgelagert (`collatz_eabc_zirkulationshypothese.md` §4.2): zuerst $D_E$ und $R_\beta$, dann $\alpha_{\mathrm{loc}}$, dann $\alpha_E$, dann Orientierung (H₀b vs. H₃). $\alpha_E>\tfrac{1}{2} \nRightarrow \Phi_E\neq 0$. Scheitern von H₃ zerstört das Programm nicht; selbst bei $\Phi_E=0$ bleiben Fragen zu $\alpha_E$, $\alpha_{\mathrm{loc}}$-Plateaus und kritischen $R_\beta$ offen.
 
 $$\boxed{\;\Phi_E \neq 0 \;\Rightarrow\; D(X)\sim\Phi_E Q(X) \;\Rightarrow\; \alpha_E = 1.\;}$$
 
@@ -45,7 +50,7 @@ $$\boxed{\;\Phi_E \neq 0 \;\Rightarrow\; D(X)\sim\Phi_E Q(X) \;\Rightarrow\; \al
 
 ## Lean-Modul `HolonomyCore.lean` (sauberer Split)
 
-**GREEN/RED im Modul:** GREEN = `Node` … `W_E_bounds` (bewiesen); RED = `HasNonzeroHolonomyLimit`, `EABC_holonomy_limit_conjecture` (`sorry`) — formal **H₃** ($\alpha_E=1$, Holonomie-Grenzfall).
+**GREEN/RED im Modul:** GREEN = `Node` … `W_E_bounds` (bewiesen); RED = `HasNonzeroHolonomyLimit`, `EABC_holonomy_limit_conjecture` (`sorry`) — formal **H₃** (Ebene 4: Holonomie-Grenzfall, $\alpha_E=1$).
 
 Minimale Architektur im Namespace `EABC` — ohne Prim-Enumeration, ohne Hodge-Layer:
 
@@ -56,7 +61,7 @@ Minimale Architektur im Namespace `EABC` — ohne Prim-Enumeration, ohne Hodge-L
 | $W_E$ auf endlicher Stichprobe | `phiApprox`, `W_E` | **Definition** |
 | $-1 \le W_E \le 1$ | `phiApprox_bounds`, `W_E_bounds` | **Theorem** (bewiesen) |
 | Fluss bis Schranke $X$ | `EABCFlow`, `C_E`, `S_E` | **Definition** |
-| $\Phi_E \neq 0$ (asymptotisch) | `HasNonzeroHolonomyLimit`, `EABC_holonomy_limit_conjecture` | **Vermutung** (`sorry`; **H₃**, $\alpha_E=1$) |
+| $\Phi_E \neq 0$ (asymptotisch) | `HasNonzeroHolonomyLimit`, `EABC_holonomy_limit_conjecture` | **Vermutung** (`sorry`; **H₃**, Ebene 4, $\alpha_E=1$) |
 
 **Grenze Beweis vs. Vermutung:** `W_E(X)=\frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)}$ liegt formal in $[-1,1]$;
 die asymptotische Aussage $\lim_{X\to\infty} W_E(X)=\Phi_E\neq 0$ steht in `EABC_holonomy_limit_conjecture` (`Tendsto` in $\mathbb{R}$), nicht als exakte rationale Endkonstante.
@@ -106,7 +111,7 @@ lake build CollatzEabc.HolonomyCore
 | Asymptotische Symmetrie $\Rightarrow \Phi_E=0$ | `Phi_E_zero_of_symmetry` | **Brücke** (`sorry`) |
 | Prim-$\omega_E$ $\leftrightarrow$ asymptotische Paarung | `Phi_E_eq_inner_product` | **Brücke** (`sorry`) |
 | HL-Symmetrie $\Rightarrow \mathrm{Hol}_E=0 \Rightarrow \Phi_E=0$ | `hol_E_zero_of_HL` | **Brücke** (`sorry`) |
-| **EABC-Vermutung** $\Phi_E \neq 0$ | `phi_E_conjecture_statement` | **Brücke** (`sorry`; **H₃**, $\alpha_E=1$) |
+| **EABC-Vermutung** $\Phi_E \neq 0$ | `phi_E_conjecture_statement` | **Brücke** (`sorry`; **H₃**, Ebene 4, $\alpha_E=1$) |
 
 ### Abhängigkeit `HolonomieFehlerterm.lean` (Schicht R)
 
@@ -133,7 +138,7 @@ lake build CollatzEabc.HolonomyCore
 2. `Phi_E_zero_of_symmetry` — Filter-Grenzwert bei asymptotisch gleichen $N_\pm$.
 3. `Phi_E_eq_inner_product` — Prim-induzierte $\omega_E$ und asymptotische Paarung.
 4. `hol_E_zero_of_HL` — Hardy–Littlewood-artige Symmetriehypothese $\Rightarrow \Phi_E=0$.
-5. `phi_E_conjecture_statement` — **EABC-Vermutung** $\Phi_E \neq 0$ (**H₃**, Grenzfall $\alpha_E=1$).
+5. `phi_E_conjecture_statement` — **EABC-Vermutung** $\Phi_E \neq 0$ (**H₃**, Ebene 4, Grenzfall $\alpha_E=1$).
 
 ---
 
