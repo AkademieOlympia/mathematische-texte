@@ -191,15 +191,34 @@ lake build CollatzEabc.HolonomieFehlerterm   # 3 sorry (Prim-Enumeration)
 2. Geschlossener Vorwärtszyklus (`forward_cycle_closed`).
 3. Existenz und Nicht-Korand-Eigenschaft des harmonischen Generators $h$ (`harmonic_form_exists`, `h_canonical_not_coboundary`).
 4. Diskrete Identität $\langle\omega_E, h\rangle = \sum_{E^+}\omega - \sum_{E^-}\omega$ (`Phi_E_eq_inner_product_discrete`).
-5. Endliche Symmetrie $N_+=N_- \Rightarrow W_E=0$ (`chi_Hol_zero_of_balance`, `W_E_up_to_zero_of_balance`; Testfall in `HolonomieFehlerterm.test_manual_D_E_zero`).
+5. Endliche Symmetrie $N_+=N_- \Rightarrow W_E=0$ (`chi_Hol_zero_of_balance`, `W_E_up_to_zero_of_balance`; Testfall `test_manual_D_E_zero`).
+6. Schranken $-1 \le W_E(X) \le 1$ für alle $X$ (`W_E_up_to_bounds`) — rein kombinatorisch, unabhängig von Prim-Asymptotik.
+7. $D_E$, $Q_E$, $R_\beta$, $\tilde D_E$ formal definiert (Listen + Prim-Skeleton).
 
 ### Schicht R — `sorry` (analytisch / Prim-Enumeration)
 
-1. `N_plus_up_to`, `N_minus_up_to`, `Hol_E_zero` — in `HolonomieFehlerterm.lean`.
+1. `N_plus_up_to`, `N_minus_up_to`, `Hol_E_zero` — κ-Folge-Enumeration (kein Mathlib-Standard).
 2. `Phi_E_zero_of_symmetry` — Filter-Grenzwert bei asymptotisch gleichen $N_\pm$.
 3. `Phi_E_eq_inner_product` — Prim-induzierte $\omega_E$ und asymptotische Paarung.
 4. `hol_E_zero_of_HL` — Hardy–Littlewood-artige Symmetriehypothese $\Rightarrow \Phi_E=0$.
-5. `phi_E_conjecture_statement` — **EABC-Vermutung** $\Phi_E \neq 0$ (**H₃**, Ebene 4, Grenzfall $\alpha_E=1$).
+5. `phi_E_ne_zero_implies_alpha_E_one` — $\Phi_E \neq 0 \Rightarrow |D_E| \sim c \cdot Q$ (eine Richtung, keine Äquivalenz).
+6. `phi_E_conjecture_statement` — **EABC-Vermutung** $\Phi_E \neq 0$ (**H₃**, Ebene 4).
+7. `EABC_holonomy_limit_conjecture` in `HolonomyCore` — minimaler Kern.
+
+---
+
+## Ehrliche Einschätzung: analytisch erreichbar (Fokus $10^{10}$, Fehlerterm)
+
+**Was Lean heute leisten kann (Schicht A):** Alle kombinatorischen Identitäten auf endlichen Folgen und Fenstern — Schranken, Symmetrie $\Rightarrow$ Null, Lückenmuster, Taubenloch, diskrete Hodge-Paarung. Das ist vollständig und unabhängig von Primzahltheorie.
+
+**Was numerisch bis $10^{10}$ sinnvoll ist (Ebene 1–2):** $D_E(X)$, $Q_E(X)$, $R_\beta(X)$, $\tilde D_E(X)$, Fits von $\alpha_{\mathrm{loc}}$, $\alpha_E$ aus `eabc_quadruplets_fit_alpha.py`. Hier liegt der empirische Kern — Wachstumsordnung und Skalierungsexponenten, nicht der Holonomie-Grenzwert.
+
+**Was analytisch offen und schwer ist (Schicht R):**
+- Explizite $\kappa$-Folge $\to$ Gleitfenster-Zählung in Lean (braucht projektspezifische Prim-Transport-Formalisation, nicht nur `PrimeCounting`).
+- Asymptotik $D_E(X) = o(Q_E(X))$ oder $D_E(X) \sim c \cdot Q_E(X)^\alpha$ — entspricht HL-artigen Primverteilungsaussagen über mod-12-Klassen; derzeit **Hypothese**, nicht Theorem.
+- $\Phi_E \neq 0$ (**H₃**) ist die schwächste empirische Stütze bei großen $X$ (Fluktuationen um 0); ein Lean-Beweis wäre ein Collatz-äquivalentes Analyseproblem.
+
+**Programm-Fokus $10^{10}$:** Primär $D_E$-Skalierung und $R_\beta$-Plateaus dokumentieren; $\Phi_E$ als Endfrage (Ebene 4) zurückstellen. Lean-Roadmap: zuerst `N_plus_up_to`/`N_minus_up_to` als **computable** `#eval`-fähige Definition (ohne Beweis der Asymptotik), dann numerische Verifikation gegen Python; Asymptotik bleibt `sorry` mit klarer Epistemik.
 
 ---
 
