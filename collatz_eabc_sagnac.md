@@ -1,45 +1,40 @@
-# EABC-Sagnac-Observable (kanonische Metapher)
+# EABC-Sagnac-Observable (didaktischer Einstieg)
 
-**Status:** Definition + Vermutung + Hypothese + Experiment  
+**Status:** Definition + Analogie + Verweis auf mathematischen Kern  
 **Branch:** `collatz/eabc-05-holonomie-fehlerterm` (PR #59)  
 **Tao-Labels:** Definition | Vermutung | Hypothese | Experiment | Analogie
 
-**Epistemische Abgrenzung:** Dieses Dokument ist **keine** Relativitätstheorie-Behauptung. Es überträgt die **kombinatorische Sagnac-Logik** (gegenläufige geschlossene Wege, Laufzeitdifferenz) auf den **diskreten EABC-Transport** entlang der Primfolge. Die Observable misst **arithmetische Orientierungsasymmetrie** zwischen ABCEA und CEABC — nicht Rotation im physikalischen Sinn.
+**Mathematischer Kern:** `collatz_eabc_zirkulation_spektral.md` — **Korrelation → Zirkulation** (reine Mathematik: diskrete 1-Form, $H_1(C_4,\mathbb{Z})$, $\mathrm{Spec}(L_E)$). Dieses Dokument ist ein **didaktischer Einstieg** über gegenläufige geschlossene Wege; es behauptet **keine** physikalische Rotation oder Relativitätstheorie.
 
 **Querverweise:**
+- `collatz_eabc_zirkulation_spektral.md` — **kanonische reine Mathematik:** $E(a,b)$, $D_E$, $C_E$, $L_E$, Normschalen
 - `collatz_eabc_fehlerterm_hypothese.md` — **kanonische Endform:** $N_\pm$, $\Delta_E=D_E$, $S_E$, Hauptvermutung, Fehlerterm-Hypothese
 - `collatz_eabc_zyklus_holonomie.md` — Hierarchie Klasse→Kante→Pfad→Zyklus→Holonomie
 - `collatz_eabc_transport.md` — $G_E$, Transport $T_n$, Übergangsmatrix
-- `collatz_eabc_bell_holonomie.md` — **sekundäre** Analogie Bell/CHSH (nicht primäre Metapher)
-- `collatz_eabc_holonomie_fehlerterm.py` / `.json` — Numerik $N_\pm$, $\Delta_E$, $S_E$, $\widetilde{D}_E$; `sagnac_report()`
-- `collatz_eabc_sagnac_circulation.py` / `.json` — Zirkulation $C_E(X)$, Kantenorientierung $\omega$, diskrete 1-Form $A$
+- `collatz_eabc_bell_holonomie.md` — **sekundäre** Analogie Bell/CHSH (Kantenkorrelation $E(a,b)$)
+- `collatz_eabc_holonomie_fehlerterm.py` / `.json` — Numerik $N_\pm$, $\Delta_E$, $S_E$, $\widetilde{D}_E$
+- `collatz_eabc_sagnac_circulation.py` / `.json` — Zirkulation $C_E(X)$, Kantenorientierung $\omega$, diskrete 1-Form $\alpha$
+- `collatz_eabc_graph_laplacian.py` — $\mathrm{Spec}(L_E)$, Spektrallücke
 - `collatz_eabc_holonomie_beweisversuch.md` — analytischer Beweisversuch: $\mathrm{Hol}_E=0$, Fehlerterm $\Delta_E$
 - `collatz_generalangriff_2026.md` — Gesamtarchitektur PR #54 / PR #59
 
 ---
 
-## 0. Sagnac vs. Bell
+## 0. Didaktik: gegenläufige Zyklen
 
-| Metapher | Objekt | Eignung für EABC |
-|----------|--------|------------------|
-| **Bell/CHSH** | $E(a,b)$-Korrelationen zwischen **Messachsen** $(a,b)$, $(a,b')$, … | **nicht** natürlich — erzwingt **verschiedene Messkontexte**; für EABC künstlich |
-| **Holonomie** | Paralleltransport entlang geschlossenem Pfad | **teilweise** — korrekte Stufe, aber ohne explizite Orientierungsgegenüberstellung |
-| **Sagnac** | $\gamma^+$ vs. $\gamma^-$ auf **demselben geometrischen Kreis**, $\Delta T = T(\gamma^+)-T(\gamma^-)$ | **natürlich** — ABCEA vs. CEABC als $\gamma^\pm$ auf demselben 4-Zyklus $A\!\to\!B\!\to\!C\!\to\!E\!\to\!A$ |
+Auf demselben $C_4$-Gerüst $E\!\to\!A\!\to\!B\!\to\!C\!\to\!E$ betrachten wir zwei Orientierungen:
+- **$\gamma^+$ (ABCEA):** eine Lesart des geschlossenen 5-Fensters
+- **$\gamma^-$ (CEABC):** die zyklisch verschobene Gegenorientierung
 
-**Warum Sagnac $>$ Bell für EABC:**
-- Bell braucht verschiedene Messkontexte $(a,b)$, $(a,b')$, … — für EABC **erzwungen**, nicht intrinsisch.
-- EABC: **dieselbe** Primfolge, **dieselben** Restklassen — kein Kontextwechsel.
-- Sagnac: $\gamma^+$ vs. $\gamma^-$ auf **demselben** geometrischen Kreis — passt exakt zu ABCEA vs. CEABC.
+Die **Sagnac-Lesart** benennt diese Gegenüberstellung bildhaft (gegenläufige Wege auf demselben Kreis). Mathematisch ist sie identisch mit der **Zirkulation** $C_E(X)$ in `collatz_eabc_zirkulation_spektral.md` §4.
 
-$$\boxed{\;\text{Primäre Metapher: Sagnac (gegenläufige Zyklen), nicht Bell (Achsenkorrelationen).}\;}$$
+$$\boxed{\;\text{Didaktik: Sagnac = gegenläufige } \gamma^\pm \text{; Kern: } C_E = D_E = \sum_\gamma \mathrm{sgn}(\gamma).\;}$$
 
-**Sekundär:** Bell/CHSH bleibt als kombinatorische Konsistenzprüfung auf $G_E$ dokumentiert (`collatz_eabc_bell_holonomie.md`).
-
-### 0.1 Forschungsprogression
-
-$$\kappa(p) \;\to\; Q\text{-Signatur} \;\to\; \chi_E \;\to\; D_E(X)=N_+-N_- \;\to\; C_E(X)$$
-
-$D_E(X)=N_+(X)-N_-(X)$ ist die **erste geometrische Flussgröße** auf dem EABC-Transportgraphen; $C_E(X)$ formalisiert dieselbe Größe als **diskrete Zirkulation** (§8).
+| Lesart | Objekt | Dokument |
+|--------|--------|----------|
+| **Kern (rein mathematisch)** | Korrelation $E(a,b)$ → Zirkulation $C_E$ → $\mathrm{Spec}(L_E)$ | `collatz_eabc_zirkulation_spektral.md` |
+| **Didaktik (dieses Dokument)** | $\gamma^+$ vs. $\gamma^-$, $\Delta_E$ | hier |
+| **Sekundär** | Bell/CHSH auf $G_E$ | `collatz_eabc_bell_holonomie.md` |
 
 ---
 
@@ -55,23 +50,19 @@ $$X_n := \kappa(p_n),\qquad C_n^{(5)} := (X_n,X_{n+1},X_{n+2},X_{n+3},X_{n+4}).$
 $$N_+(X) := N_{\mathrm{ABCEA}}(X) := \#\{n:\,p_{n+4}\le X,\; C_n^{(5)}=\mathrm{ABCEA}\},$$
 $$N_-(X) := N_{\mathrm{CEABC}}(X) := \#\{n:\,p_{n+4}\le X,\; C_n^{(5)}=\mathrm{CEABC}\}.$$
 
-**Orientierte Wege (Sagnac-Pfade):**
-- **$\gamma^+$ (positiv):** ABCEA = $A\!\to\!B\!\to\!C\!\to\!E\!\to\!A$
-- **$\gamma^-$ (negativ):** CEABC = $C\!\to\!E\!\to\!A\!\to\!B\!\to\!C$
+**Orientierte Wege:**
+- **$\gamma^+$:** ABCEA
+- **$\gamma^-$:** CEABC
 
-**Sagnac-Differenz (EABC-Sagnac-Fehlerterm):**
-$$\Delta_E(X) := N_+(X) - N_-(X) = D_E(X).$$
+**Zirkulations-Differenz (Fehlerterm):**
+$$\Delta_E(X) := N_+(X) - N_-(X) = D_E(X) = C_E(X).$$
 
-**Normalisierte Sagnac-Observable** (analog $\Delta T/T$):
+**Normalisierte Observable:**
 $$S_E(X) := \frac{N_+(X) - N_-(X)}{N_+(X) + N_-(X)} = \frac{\Delta_E(X)}{N_+(X)+N_-(X)}.$$
 
 **Legacy-Aliase:** $\chi_{\mathrm{Hol}}(X):=S_E(X)$; $\mathrm{Hol}_E:=\lim_{X\to\infty} S_E(X)$.
 
-**Interpretation:**
-- $S_E(X)\to 0$: **rotationsfrei** (asymptotische Symmetrie der gegenläufigen Orientierungen)
-- $S_E(X)\neq 0$: **bevorzugte Orientierung** auf endlichem $X$ (Fehlerterm, nicht Hauptterm)
-
-**Normalisierter Fehlerterm (Fluktuationen):**
+**Normalisierter Fehlerterm:**
 $$\widetilde{D}_E(X) := \frac{\Delta_E(X)}{\sqrt{N_+(X)+N_-(X)}}.$$
 
 **Label:** $N_\pm$, $\Delta_E$, $S_E$, $\widetilde{D}_E$ = **Definition**.
@@ -82,177 +73,82 @@ $$\widetilde{D}_E(X) := \frac{\Delta_E(X)}{\sqrt{N_+(X)+N_-(X)}}.$$
 
 **Hauptvermutung (Hauptterm).**
 $$N_+(X) \sim N_-(X)\qquad (X\to\infty),$$
-und damit
-$$\lim_{X\to\infty}\frac{\Delta_E(X)}{N_+(X)+N_-(X)} = \lim_{X\to\infty} S_E(X) = \mathrm{Hol}_E = 0.$$
+und damit $\mathrm{Hol}_E = \lim_{X\to\infty} S_E(X) = 0$.
 
-**Label:** Hauptvermutung = **Vermutung**.
+**Fehlerterm-Hypothese (stärker).** $\Delta_E$ trägt Chebyshev-artigen Bias (Nullstellen der Dirichlet-$L$-Funktionen mod $12$). Details: `collatz_eabc_fehlerterm_hypothese.md`.
 
-**Fehlerterm-Hypothese (stärker).** $\Delta_E$ trägt einen **nichttrivialen Chebyshev-artigen Bias**, gesteuert durch Nullstellen der Dirichlet-$L$-Funktionen modulo $12$. Für endliche $X$ gilt typischerweise $\Delta_E(X)\neq 0$, auch wenn $\mathrm{Hol}_E=0$.
-
-**Interessant:** nicht der Hauptterm $\lim \Delta_E/(N_++N_-)=0$, sondern die **Fluktuationen** $\Delta_E$, $\widetilde{D}_E$.
-
-**Label:** Fehlerterm-Hypothese = **Hypothese**.
+**Label:** Hauptvermutung = **Vermutung**; Fehlerterm-Hypothese = **Hypothese**.
 
 ---
 
-## 3. Boxed Hierarchie
+## 3. Hierarchie (Verweis auf Kern)
 
-$$\boxed{\;\text{Primzahlen} \;\to\; \text{EABC-Klassen} \;\to\; \text{Transport} \;\to\; \text{Zyklen} \;\to\; \text{Sagnac-Observable} \;\to\; \Delta_E(X)\;}$$
+$$\boxed{\;\text{Primzahlen} \;\to\; \text{EABC-Klassen} \;\to\; \text{Transport} \;\to\; \text{Zirkulation } C_E \;\to\; D_E(X) \;\to\; \mathrm{Spec}(L_E).\;}$$
 
-| Stufe | Objekt | Symbol |
-|------:|--------|--------|
-| 1 | Primzahlen $p_n>3$ | $p_n$ |
-| 2 | EABC-Klasse | $X_n=\kappa(p_n)$ |
-| 3 | Transport / Kante | $\tau_n=(X_n,X_{n+1})$, $G_E$ |
-| 4 | Geschlossener Zyklus | $C_n^{(5)}$, ABCEA / CEABC |
-| 5 | Sagnac-Observable | $S_E(X)$, $\gamma^\pm$ |
-| 6 | Fehlerterm | $\Delta_E(X)=D_E(X)$ |
+Vollständige Tabelle und Spektralgeometrie: `collatz_eabc_zirkulation_spektral.md` §9.
 
 ---
 
-## 4. Boxed Schluss
+## 4. Graphformulierung $\Omega(C)$
 
-$$\boxed{\;\text{ABCEA gegen CEABC ist eine Sagnac-Observable.}\;}$$
+**Gerichteter Transportgraph:** $G_E=(V,E)$, $V=\{E,A,B,C\}$.
 
-$$\boxed{\;\Delta_E(X) = D_E(X)\;\text{ist der EABC-Sagnac-Fehlerterm.}\;}$$
+**Kantenorientierung** auf dem kanonischen 4-Zyklus:
+$$\omega(A\!\to\!B)=\omega(B\!\to\!C)=\omega(C\!\to\!E)=\omega(E\!\to\!A)=+1,$$
+entgegengesetzte Kanten $-1$, sonst $0$. Lückenmuster mod $12$: $(2,4,2,4)$.
 
-$$\boxed{\;\mathrm{Hol}_E = 0\;\text{im Hauptterm, aber}\;\Delta_E(X)\;\text{kann nichttrivial sein.}\;}$$
-
----
-
-## 5. Graphformulierung $\Omega(C)$
-
-**Gerichteter Transportgraph:**
-$$G_E=(V,E),\qquad V=\{E,A,B,C\}.$$
-
-**Kantenorientierung** auf kanonischen Zykluskanten des 4-Zyklus $A\!\to\!B\!\to\!C\!\to\!E\!\to\!A$:
-$$\omega(e)\in\{+1,-1,0\},\qquad
-\omega(A\!\to\!B)=\omega(B\!\to\!C)=\omega(C\!\to\!E)=\omega(E\!\to\!A)=+1,$$
-$$\omega(B\!\to\!A)=\omega(C\!\to\!B)=\omega(E\!\to\!C)=\omega(A\!\to\!E)=-1,$$
-sonst $\omega=0$. Lückenmuster mod $12$: $(2,4,2,4)$.
-
-**Geschlossener Zyklus** $C=(v_1,v_2,v_3,v_4,v_1)$:
-$$\Omega(C) := \prod_{i=1}^{4}\omega(v_i,v_{i+1})\qquad (v_5:=v_1).$$
-
-**Sagnac-Paare auf demselben 4-Zyklus** $(A,B,C,E)$:
-- **ABCEA** ($\gamma^+$): $\omega(\gamma)=+1$
-- **CEABC** ($\gamma^-$): $\omega(\gamma)=-1$
-
-Beide Wörter tragen dasselbe Lückenmuster $(2,4,2,4)$; die Orientierung ist **zyklisch verschoben**, nicht nur rotiert im Kantenprodukt.
+**Zyklus-Produkt:** $\Omega(C) := \prod_i \omega(v_i,v_{i+1})$.
 
 **Label:** $G_E$, $\omega(e)$, $\Omega(C)$ = **Definition**.
 
 ---
 
-## 6. Diskrete 1-Form
+## 5. Diskrete 1-Form und Zirkulation
 
-**1-Form** auf den vier Zykluskanten:
-$$A(E,A),\; A(A,B),\; A(B,C),\; A(C,E).$$
+$$\alpha(i\!\to\!j) := \frac{\omega(i,j)}{4},\qquad
+C_E(X) := \sum_{\gamma\ \mathrm{erkannt}} \oint_\gamma \alpha = D_E(X).$$
 
-**Normierung** (diskrete Zirkulation mit Sagnac-Orientierung $\omega(\gamma)$):
-$$A(i\!\to\!j) := \frac{\omega(i,j)}{4}\quad\text{auf Zykluskanten},\qquad
-\oint_{\gamma} A := \omega(\gamma)\sum_{e\in\gamma}|A(e)|.$$
+**Experiment:** `collatz_eabc_sagnac_circulation.py` — `circulation_C_E(X)`.
 
-Dann:
-$$\oint_{\mathrm{ABCEA}} A = +1,\qquad
-\oint_{\mathrm{CEABC}} A = -\oint_{\mathrm{ABCEA}} A.$$
-
-**Label:** $A$ = **Definition**.
+**Label:** $\alpha$, $C_E$ = **Definition**.
 
 ---
 
-## 7. Analytische Lesart
+## 6. Boxed Schluss (didaktisch)
 
-Unter **HL-Äquidistribution** und mod-$12$-Symmetrie:
-$$N_+(X)\sim N_-(X)\quad\Rightarrow\quad S_E(X)\to 0$$
-— **nichtrotierendes Interferometer** (asymptotische Symmetrie der gegenläufigen Orientierungen).
+$$\boxed{\;\text{ABCEA gegen CEABC: zwei Orientierungen in } H_1(C_4,\mathbb{Z}).\;}$$
 
-Die **Information** liegt in den **Fluktuationen** $\Delta_E$, $\widetilde{D}_E$ (Prime-Race-Fehlerterm), nicht im Hauptterm $\mathrm{Hol}_E=0$.
+$$\boxed{\;\Delta_E(X) = D_E(X) = C_E(X)\;\text{ist der EABC-Fehlerterm.}\;}$$
 
-**Label:** $S_E\to 0$ = **Vermutung**; Fluktuationsstruktur = **Hypothese** / **Experiment**.
+$$\boxed{\;\mathrm{Hol}_E = 0\;\text{im Hauptterm, aber}\;\Delta_E(X)\;\text{kann nichttrivial sein.}\;}$$
 
----
-
-## 8. Zirkulation $C_E(X)$
-
-**Definition (diskrete EABC-Zirkulation).**
-$$C_E(X) := \sum_{\gamma\ \mathrm{erkannt}} \omega(\gamma),$$
-wobei die Summe über alle erkannten 5-Fenster $C_n^{(5)}$ mit $\omega(\gamma)=+1$ (ABCEA) bzw. $\omega(\gamma)=-1$ (CEABC) läuft und $p_{n+4}\le X$.
-
-**Identität:**
-$$C_E(X) = N_+(X) - N_-(X) = \Delta_E(X) = D_E(X).$$
-
-**Normalisierung:**
-$$S_E(X) = \frac{C_E(X)}{N_+(X)+N_-(X)}.$$
-
-**Nächster Schritt (Forschungsvorschlag):** Untersuchen, ob der Fehlerterm $C_E(X)$ eine **Chebyshev- / mod-$q$- / Dirichlet-$L$-Bias-Struktur** trägt (analog Prime Race mod $4$).
-
-**Label:** $C_E$ = **Definition**; Bias-Struktur = **Hypothese**.
-
-**Experiment:** `collatz_eabc_sagnac_circulation.py` — `circulation_C_E(X)`, `circulation_report(X)`.
+Forschungsfragen (Spektralgeometrie): `collatz_eabc_zirkulation_spektral.md` §8.
 
 ---
 
-## 9. Normschalen-Brücke
+## 7. Python-Symbolzuordnung
 
-**Spektralgeometrische Kette** (`collatz_eabc_quaternion_mass_hypothese.md`):
-$$\Sigma_n \;\to\; \mu_n \;\to\; G_n$$
-mit EABC-Transport auf der Schale $\Sigma_n$.
-
-**Brücke:** $D_E(n)$ bzw. $C_E(X)$ als **diskrete Zirkulation auf der Normschale** — die Sagnac-Differenz misst Orientierungsasymmetrie des EABC-Transports entlang der Primfolge, analog zu einem Defekt $D(n)=I(\mu_n)-I_{\mathrm{ref}}(n)$ auf $\Sigma_n$.
-
-**Label:** Schalen-Brücke = **Analogie** / **Forschungsfrage** (kein Theorem).
+| LaTeX | Python | Modul |
+|-------|--------|-------|
+| $C_E(X)$, $D_E(X)$ | `C_E`, `D_E` | `collatz_eabc_sagnac_circulation` |
+| $\omega(e)$, $\alpha$ | `edge_omega`, `discrete_one_form` | `collatz_eabc_sagnac_circulation` |
+| $\mathrm{Spec}(L_E)$ | `eigenvalues_symmetrized` | `collatz_eabc_graph_laplacian` |
 
 ---
 
-## 10. Drei Analogien
-
-| Analogie | Physik/Mathematik | EABC-Objekt | Eignung |
-|----------|-------------------|-------------|---------|
-| **Bell** | Korrelationen $E(a,b)$ zwischen Messachsen | $P_{\mathrm{same}}$, CHSH auf $G_E$ | sekundär — erzwingt Kontextwechsel |
-| **Holonomie** | Paralleltransport, $\Omega_{\mathrm{Hol}}$ | $\chi_{\mathrm{Hol}}$, $\mathrm{Hol}_E$ | korrekte Stufe, ohne explizite $\gamma^\pm$-Gegenüberstellung |
-| **Sagnac** | $\gamma^+$ vs. $\gamma^-$, $\Delta T$ | ABCEA vs. CEABC, $\Delta_E$, $C_E$ | **beste Passung** — gleicher Kreis, entgegengesetzte Orientierung |
-
-$$\boxed{\;\text{Sagnac ist die beste Metapher: gleicher Zyklus, entgegengesetzte Orientierung, Fehlerterm in } \Delta_E.\;}$$
-
-**Label:** Analogietabelle = **Analogie**.
-
----
-
-## 11. Python-Symbolzuordnung
-
-| LaTeX | Python (kanonisch) | Legacy-Alias |
-|-------|-------------------|--------------|
-| $N_+(X)$ | `N_plus` | `N_ABCEA` |
-| $N_-(X)$ | `N_minus` | `N_CEABC` |
-| $\Delta_E(X)$ | `Delta_E` | `D_E` |
-| $S_E(X)$ | `S_E` | `chi_Hol` |
-| $\widetilde{D}_E(X)$ | `D_tilde_E` | — |
-| $C_E(X)$ | `C_E` | — |
-| $\omega(e)$ | `edge_omega` | — |
-| $A(i\!\to\!j)$ | `discrete_one_form` | — |
-| $\Omega(C)$ | `cycle_omega_graph` | — |
-| Sagnac-Report | `sagnac_report()` | — |
-| Zirkulations-Report | `circulation_report()` | — |
-
-**Experiment:** `collatz_eabc_holonomie_fehlerterm.py` — `sagnac_report(X)`; `collatz_eabc_sagnac_circulation.py` — `circulation_C_E(X)`.
-
----
-
-## 12. Epistemische Tabelle
+## 8. Epistemische Tabelle
 
 | Aussage | Label |
 |---------|-------|
 | $N_\pm$, $\Delta_E$, $S_E$, $\widetilde{D}_E$, $C_E$ | **Definition** |
-| $G_E$, $\omega(e)$, $\Omega(C)$, diskrete 1-Form $A$ | **Definition** |
-| ABCEA vs. CEABC als $\gamma^\pm$ | **Definition** (Sagnac-Analogie) |
-| $N_+\sim N_-$ $\Rightarrow$ $S_E\to 0$ | **Vermutung** (Hauptvermutung) |
-| $\Delta_E$, $C_E$ mit $L$-Funktions-Nullstellen mod $12$ | **Hypothese** (Fehlerterm-Hypothese) |
-| Verhalten von $\widetilde{D}_E$ | **Experiment** |
-| Bell / Holonomie / Sagnac | **Analogie** (Sagnac primär) |
-| Normschalen-Brücke $\Sigma_n\to\mu_n\to G_n$ | **Analogie** / **Forschungsfrage** |
-| Physikalische Sagnac-Rotation | **nicht behauptet** |
+| $G_E$, $\omega(e)$, diskrete 1-Form $\alpha$ | **Definition** |
+| $\gamma^\pm$ als $H_1(C_4,\mathbb{Z})$-Orientierungen | **Definition** |
+| $N_+\sim N_-$ $\Rightarrow$ $S_E\to 0$ | **Vermutung** |
+| Fehlerterm mit $L$-Funktionen mod $12$ | **Hypothese** |
+| Sagnac-Bild (gegenläufige Wege) | **Analogie** (didaktisch) |
+| Mathematischer Kern | `collatz_eabc_zirkulation_spektral.md` |
+| Physikalische Rotation | **nicht behauptet** |
 
 ---
 
-*Kanonsiche Lesart: Der EABC-Transport liefert zwei gegenläufige geschlossene Wege $\gamma^\pm$ auf demselben 4-Zyklus. Ihre Zähl-Differenz $\Delta_E$ ist der **Sagnac-Fehlerterm**; die normalisierte Observable $S_E$ misst Orientierungsasymmetrie analog $\Delta T/T$. Bell/CHSH bleibt als sekundäre Konsistenz-Metapher dokumentiert.*
+*Didaktischer Einstieg: Gegenläufige Zyklen $\gamma^\pm$ motivieren $C_E=D_E$. Der mathematische Kern — Korrelation, Zirkulation, Fehlerterm, Spektralgeometrie — steht in `collatz_eabc_zirkulation_spektral.md`.*
