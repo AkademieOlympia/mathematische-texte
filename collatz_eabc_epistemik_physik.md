@@ -15,6 +15,7 @@
 - `collatz_eabc_zirkulationshypothese.md` — kanonische Zirkulation, $C_E$, $\mathrm{Hol}_E$
 - `collatz_eabc_kritische_abbildung.py` — `path_time_T`, `compare_path_times`
 - `collatz_generalangriff_2026.md` — Gesamtarchitektur PR #54 / PR #59
+- `collatz_eabc_potential_geometrie.md` — Bohm/AB/Berry, $v=f(V)$, $\neq c$
 
 ---
 

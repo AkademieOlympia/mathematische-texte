@@ -12,6 +12,7 @@
 - `collatz_eabc_wigner_field.py` — $W_{ab}$, $W_E$, Vorzeichendomänen, Spektral-Stub
 - `collatz_eabc_transition_graph.py` — $\Omega_{\mathrm{Pfad}}$, $\Omega_{\mathrm{Hol}}$, Gleitfenster
 - `collatz_eabc_graph_laplacian.py` — $\mathrm{Spec}(L_E)$, Near-zero-Moden-Stub
+- `collatz_eabc_potential_geometrie.md` — Bohm/AB/Berry, reine Potentialverbindungen
 
 ---
 

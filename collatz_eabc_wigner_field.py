@@ -3,6 +3,7 @@
 EABC Wigner-Feld-Analogie: signiertes Informationsfeld auf {E,A,B,C}.
 
 Theorie: collatz_eabc_wigner_analog.md
+Potential/Berry: collatz_eabc_potential_geometrie.md
 
   W_E(N) = #ABCE - #CEAB          (4-Pfad-Orientierung, Pfad ≠ Holonomie)
   D_E(N) = #ABCEA - #CEABC        (5-Zyklus, Zirkulationshypothese)
@@ -305,9 +306,12 @@ def wigner_field_report(max_p: int = 100_000) -> dict[str, Any]:
     classes = classes_from_sequence(seq)
     windows4 = sliding_windows(classes, width=4)
     w_sliding = build_w_matrix_from_windows(windows4, carrier="prime_sequence_sliding_4")
+    w_transition = build_w_transition_matrix(classes)
     w_quad = build_w_matrix_from_quadruplets(max_p)
     w_e = w_e_counts(max_p)
     hol = holonomy_counts(max_p)
+    edge_field = w_e_edge_pair_field(classes)
+    info_excess = information_excess_test(classes, w_e["S_W"])
     profile = w_e_profile(classes)
     cum_series = [p["W_E_cumulative"] for p in profile]
     domains = sign_domain_analysis(cum_series)
@@ -329,14 +333,17 @@ def wigner_field_report(max_p: int = 100_000) -> dict[str, Any]:
             "theory_chirale_polarisation": THEORY_CHIRAL,
             "theory_zirkulation": THEORY_ZIRKULATION,
             "theory_holonomie_stufen": THEORY_HOLONOMIE_STUFEN,
+            "theory_potential_geometrie": THEORY_POTENTIAL_GEOMETRIE,
             "theory_generalangriff": THEORY_GENERALANGRIFF,
-            "epistemic": "Analogie/Modell — keine Quantenphysik-Behauptung",
+            "epistemic": "Analogie/Hypothese/Modell — keine Quantenphysik-Behauptung",
             "max_p": max_p,
         },
         "definitions": {
             "W_E_4block": "count(ABCE) - count(CEAB) on 4-path windows",
             "D_E_5block": "count(ABCEA) - count(CEABC) on 5-cycle holonomy",
-            "W_matrix": "W(a,b) = sum_n chi_a(n) chi_b(n) Q(n)",
+            "W_transition_ij": "W_ij = sum_n chi_i(n) chi_j(n+1)",
+            "W_matrix_signed": "W(a,b) = sum_n chi_a(n) chi_b(n) Q(n)",
+            "W_E_edge": "W_E(i,j;N) = (N_ij^(+) - N_ij^(-)) / (N_ij^(+) + N_ij^(-))",
             "Q": "Omega_Pfad in {+1,-1,0}",
         },
         "W_E": w_e,
@@ -354,8 +361,12 @@ def wigner_field_report(max_p: int = 100_000) -> dict[str, Any]:
             "difference": w_e["W_E"] - hol["D_E"],
             "note": "4-block Pfadorientierung (CEAB) vs. 5-block Holonomie (CEABC)",
         },
+        "W_transition_matrix": w_transition,
         "W_matrix_sliding": w_sliding,
         "W_matrix_quadruplets": w_quad,
+        "W_E_edge_field": edge_field,
+        "information_excess_test": info_excess["marginal_reconstruction"],
+        "information_excess_hypothesis": info_excess["hypothesis"],
         "sign_structure": sign_structure,
         "sign_domains": domains,
         "W_E_profile_tail": profile[-5:] if len(profile) >= 5 else profile,
@@ -386,15 +397,24 @@ def main() -> None:
     report = run(max_p=args.max_p, output=args.output)
     w_e = report["W_E"]
     d_e = report["D_E"]
-    w_mat = report["W_matrix_sliding"]["matrix_labeled"]
+    w_trans = report["W_transition_matrix"]["matrix_labeled"]
+    w_edge = report["W_E_edge_field"]["W_E_edge_field"]
+    excess = report["information_excess_test"]
     print("=== EABC Wigner-Feld-Analogie ===")
-    print(f"W_E (4-block) = {w_e['W_E']:+d}  |  D_E (5-block) = {d_e['D_E']:+d}")
+    print(f"W_E (4-block) = {w_e['W_E']:+d}  S_W = {w_e['S_W']:+.6f}")
+    print(f"D_E (5-block) = {d_e['D_E']:+d}  S_E = {d_e['S_E']:+.6f}")
     print(f"ABCE={w_e['N_ABCE']}, CEAB={w_e['N_CEAB']}")
-    print("W-Matrix (sliding 4):")
+    print("W_ij (transition geometry):")
     for row_label in LABELS:
-        row = w_mat[row_label]
-        vals = " ".join(f"{row[c]:8.1f}" for c in LABELS)
+        row = w_trans[row_label]
+        vals = " ".join(f"{row[c]:8.0f}" for c in LABELS)
         print(f"  {row_label}: {vals}")
+    w_ab = w_edge["A"]["B"]
+    print(f"W_E(A,B;N) = {w_ab:+.6f}" if w_ab is not None else "W_E(A,B;N) = n/a")
+    print(
+        f"Information excess (marginals only): {excess['information_excess']} "
+        f"(rmse={excess['rmse_vs_marginals']:.6f})"
+    )
     nz = report["near_zero_modes"]["near_zero_mode_count"]
     print(f"Near-zero modes (L_E^sym): {nz}")
     print(f"Sign changes (W_E cumulative): {report['sign_domains']['sign_changes']}")
