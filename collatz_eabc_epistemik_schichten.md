@@ -77,22 +77,24 @@ $$\boxed{\;\textbf{Beweis-Spur} \;\|\; \textbf{Ikone-Spur}\;}$$
 
 **Kernfrage (Schicht B als Struktur, Schicht R als Brücke):**
 
-$$\boxed{\;\text{Nicht }\Phi_E\text{ ist zuerst das Hauptobjekt, sondern der kritische Skalenexponent }\alpha_E.\;}$$
+$$\boxed{\;\text{Orientierung zuerst: }W_E(X)\to 0\quad\text{oder}\quad W_E(X)\to\Phi_E\neq 0\text{?}\;}$$
+
+$$\boxed{\;\text{Skalierung danach: Existiert }\alpha_E\text{ mit }|D(X)|=Q(X)^{\alpha_E+o(1)}\text{?}\;}$$
 
 $$W_E(X) = \frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)},\qquad
 R_\beta(X) = \frac{D(X)}{Q(X)^\beta},\qquad
 \alpha_E := \inf\{\beta : R_\beta\text{ bleibt beschränkt}\}$$
 
-$$\boxed{\;\Phi_E = \lim_{X\to\infty} W_E(X) \stackrel{?}{\neq} 0\;\text{ ist der Grenzfall }\alpha_E = 1.\;}$$
+$$\boxed{\;\Phi_E = \lim_{X\to\infty} W_E(X) \stackrel{?}{\neq} 0\;\Leftrightarrow\;D(X)\sim\Phi_E Q(X)\;\text{(Spezialfall }\alpha_E=1\text{; H}_3\text{).}\;}$$
 
 $$\boxed{\;\text{Die EABC-Holonomie-Vermutung behauptet eine asymptotisch stabile, nichtverschwindende Richtungspräferenz der priminduzierten Zyklen auf dem EABC-Kreisgraphen.}\;}$$
 
 | Status | Aussage |
 |--------|---------|
 | **GREEN** | $-1 \le W_E(X) \le 1$ (bewiesen: `W_E_bounds`) |
-| **RED** | $\alpha_E = 1$, $\lim_{X\to\infty} W_E(X) = \Phi_E \neq 0$ — **H₃** (Holonomie; Vermutung: `HasNonzeroHolonomyLimit`, `EABC_holonomy_limit_conjecture`) |
+| **RED** | $\lim_{X\to\infty} W_E(X) = \Phi_E \neq 0$ — **H₃** (Holonomie; Vermutung: `HasNonzeroHolonomyLimit`, `EABC_holonomy_limit_conjecture`) |
 
-Lean: `phi_E_conjecture` (**B**, `Prop`) vs. `phi_E_conjecture_statement` (**R**, `sorry`). Methodische Lesart — $W_E(X)$ stabilisiert sich asymptotisch gegen einen Grenzwert; keine „statistische Ruhe im Unendlichen“, keine „unumkehrbare Tendenz“: `collatz_eabc_zirkulationshypothese.md` §4.1. Die **konservative Kernfrage** (Ebene 1, §4.2): $\alpha_E > \tfrac{1}{2}$? — bleibt $R_{1/2}(X)=D(X)/\sqrt{Q(X)}$ beschränkt (H₀a) oder wächst es (H₁)? Erst danach folgen asymptotische Exponenten (Ebene 3, H₂) und die Holonomiefrage H₃ ($\alpha_E=1$, $W_E\to\Phi_E\neq 0$, Lean-**RED**). H₀b ($W_E\to 0$) ist analytisch und **nicht** mit H₀a identisch; auch $\Phi_E=0$ ist mit $\alpha_E>\tfrac{1}{2}$ vereinbar (vgl. §4.2). Numerik: `eabc_quadruplets_1e10.py`, `eabc_quadruplets_fit_alpha.py`, `eabc_quadruplets_plot.py`.
+Lean: `phi_E_conjecture` (**B**, `Prop`) vs. `phi_E_conjecture_statement` (**R**, `sorry`). Methodische Lesart — $W_E(X)$ stabilisiert sich asymptotisch gegen einen Grenzwert; keine „statistische Ruhe im Unendlichen“, keine „unumkehrbare Tendenz“: `collatz_eabc_zirkulationshypothese.md` §4.1. **Dreiteilung in §4.2** (Leitprinzip: *Asymptotik zuerst, Skalierung danach, numerische Exponenten zuletzt*): (1) asymptotische Orientierung $W_E\to 0$ vs. $\Phi_E\neq 0$ (H₀b/H₃), (2) Skalierungsdiagnostik $R_\beta$, $\alpha_E$ (H₀a/H₁/H₂), (3) numerische Exponenten $\alpha_{\mathrm{eff}}$, $\alpha_{\mathrm{loc}}$ — mit Vorbehalt: $\alpha_{\mathrm{eff}}>\tfrac{1}{2}$ ist nur numerisches Signal. H₀b ($W_E\to 0$) ist analytisch und **nicht** mit H₀a identisch; $\alpha_E>\tfrac{1}{2} \nRightarrow \Phi_E\neq 0$ (vgl. §4.2). Numerik: `eabc_quadruplets_1e10.py`, `eabc_quadruplets_fit_alpha.py`, `eabc_quadruplets_plot.py`.
 
 **Abgrenzung zu Schicht C:** Sagnac, AB-Phase, magnetischer Laplace sind **Analogien** auf $G_E$ — geometrisch sauber in B, physikalisch ikonisch erst in C. Priminduzierte Zählung $N_\pm(X)$ ist **B**, nicht „laufende“ Primzahlen (**C**-Ikone).
 
