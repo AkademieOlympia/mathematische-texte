@@ -27,7 +27,7 @@ import CollatzEabc.HolonomieFehlerterm
 
 namespace CollatzEabc
 
-open Filter List
+open Filter List Topology
 
 /-!
 ## Schicht B — Struktur: G_E = C₄, orientierte Kanten E⁺ / E⁻
@@ -130,23 +130,24 @@ theorem h_canonical_not_coboundary :
 def C_E_up_to (X : ℕ) : ℤ :=
   D_E_up_to X
 
-/-- S_E(X) = N₊(X) + N₋(X). -/
+/-- S_E(X) = N₊(X) + N₋(X) = Q_E(X). -/
 def S_E_up_to (X : ℕ) : ℕ :=
-  N_plus_up_to X + N_minus_up_to X
+  Q_E_up_to X
 
-/-- W_E(X) = C_E(X) / S_E(X) (normierte Flussdichte). -/
-def W_E_up_to (X : ℕ) : ℚ :=
-  let total := S_E_up_to X
-  if _h : total = 0 then 0
-  else (C_E_up_to X : ℚ) / total
+-- W_E, R_beta, D_tilde_E bis X: siehe `HolonomieFehlerterm`.
 
 /-- Φ_E existiert als Grenzwert von W_E(X) für X → ∞. -/
 def HasPhi_E (φ : ℝ) : Prop :=
   Tendsto (fun X : ℕ => (W_E_up_to X : ℝ)) atTop (nhds φ)
 
-/-- **[Schicht B]** Φ_E = 0 (asymptotische Symmetrie / Holonomie-Fehlerterm-Hypothese). -/
+/-- **[Schicht B]** Nullhypothese: asymptotische Symmetrie / Φ_E = 0. -/
 def Phi_E_eq_zero : Prop :=
   HasPhi_E 0
+
+/-- **[Schicht B]** α_E = 1: |D_E(X)| wächst asymptotisch linear in Q_E(X). -/
+def HasAlpha_E_one : Prop :=
+  ∃ C : ℝ, C ≠ 0 ∧
+    Tendsto (fun X : ℕ => |((D_E_up_to X : ℤ) : ℝ)| / (Q_E_up_to X : ℝ)) atTop (nhds C)
 
 /-- **[Schicht B]** EABC-Vermutung: Φ_E ≠ 0 — stabile arithmetische Orientierungsklasse. -/
 def phi_E_conjecture : Prop :=
@@ -156,22 +157,10 @@ def phi_E_conjecture : Prop :=
 ## Schicht A — Theorem: endliche Symmetrie ⇒ W_E = 0
 -/
 
-/-- **[Schicht A]** Auf endlicher Folge: N₊ = N₋ ⇒ χ_Hol = W_E = 0. -/
-theorem chi_Hol_zero_of_balance (classes : List EabcLetter)
-    (h : N_plus classes = N_minus classes) : chi_Hol classes = 0 := by
-  unfold chi_Hol D_E
-  simp [h]
-
-/-- **[Schicht A]** Alias: W_E auf Listen = `chi_Hol`. -/
+/-- **[Schicht A]** Auf endlicher Folge: N₊ = N₋ impliziert χ_Hol = 0. -/
 theorem W_E_list_zero_of_balance (classes : List EabcLetter)
     (h : N_plus classes = N_minus classes) : chi_Hol classes = 0 :=
   chi_Hol_zero_of_balance classes h
-
-/-- **[Schicht A]** W_E(X)=0 sobald N₊(X)=N₋(X). -/
-theorem W_E_up_to_zero_of_balance (X : ℕ) (h : N_plus_up_to X = N_minus_up_to X) :
-    W_E_up_to X = 0 := by
-  unfold W_E_up_to C_E_up_to S_E_up_to D_E_up_to
-  simp [h]
 
 /-!
 ## Schicht B — Struktur: diskrete 1-Form ω_E und Paarung ⟨ω_E, h⟩
@@ -234,8 +223,13 @@ theorem Phi_E_eq_inner_product :
   intro φ hφ
   sorry
 
-/-- **[Schicht R]** Unter HL-Symmetrie (N₊ ≈ N₋) folgt Hol_E = Φ_E = 0. -/
+/-- **[Schicht R]** HL-Symmetrie (N₊ ≈ N₋) folgt Hol_E = Φ_E = 0. -/
 theorem hol_E_zero_of_HL (hHL : Hol_E_zero) : Phi_E_eq_zero := by
+  sorry
+
+/-- **[Schicht R]** Φ_E ≠ 0 ⇒ |D_E| ∼ c·Q asymptotisch ⇒ α_E = 1 (keine Äquivalenz). -/
+theorem phi_E_ne_zero_implies_alpha_E_one
+    {φ : ℝ} (hφ : HasPhi_E φ) (hne : φ ≠ 0) : HasAlpha_E_one := by
   sorry
 
 /-- **[Schicht R]** EABC-Vermutung Φ_E ≠ 0 — stabile Orientierungsklasse (unbewiesen). -/

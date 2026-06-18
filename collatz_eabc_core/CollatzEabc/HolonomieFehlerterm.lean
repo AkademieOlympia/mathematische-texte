@@ -16,9 +16,9 @@ import Mathlib.Data.List.Basic
 import Mathlib.Data.Int.Basic
 import Mathlib.Data.Rat.Defs
 import Mathlib.Topology.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic
 import CollatzEabc.Mod12Matrix
-import CollatzEabc.PrefProjection
 import CollatzEabc.PrefProjection
 
 namespace CollatzEabc
@@ -93,15 +93,91 @@ def D_E (classes : List EabcLetter) : ℤ :=
 def D_E_pair (classes : List EabcLetter) : ℤ × ℕ :=
   (D_E classes, N_plus classes + N_minus classes)
 
-/-- χ_Hol(W) = D_E / (N₊ + N₋) auf endlicher Folge. -/
+/-- Q_E(W) = N₊ + N₋ (Gesamtzählung orientierter 5-Zyklen). -/
+def Q_E (classes : List EabcLetter) : ℕ :=
+  N_plus classes + N_minus classes
+
+/-- χ_Hol(W) = D_E / Q_E = W_E auf endlicher Folge. -/
 def chi_Hol (classes : List EabcLetter) : ℚ :=
-  let total := N_plus classes + N_minus classes
+  let total := Q_E classes
   if _h : total = 0 then 0
   else (D_E classes : ℚ) / total
+
+/-- R_β(W) = D_E / Q_E^β auf endlicher Folge (β ∈ ℝ; β = 1/2 ⇒ D̃_E). -/
+noncomputable def R_beta (classes : List EabcLetter) (β : ℝ) : ℝ :=
+  let q := Q_E classes
+  if _h : q = 0 then 0
+  else (D_E classes : ℝ) / (q : ℝ) ^ β
+
+/-- D̃_E(W) = D_E / √Q_E — Belastungstest-Observable R_{1/2}. -/
+noncomputable def D_tilde_E (classes : List EabcLetter) : ℝ :=
+  R_beta classes (1 / 2)
 
 /-!
 ### Bewiesene kombinatorische Lemmata
 -/
+
+/-- **[Schicht A]** −1 ≤ χ_Hol ≤ 1 auf jeder endlichen Folge. -/
+theorem chi_Hol_bounds (classes : List EabcLetter) :
+    -1 ≤ chi_Hol classes ∧ chi_Hol classes ≤ 1 := by
+  unfold chi_Hol Q_E D_E
+  by_cases h : N_plus classes + N_minus classes = 0
+  · rw [dif_pos h]
+    norm_num
+  ·
+    have hpos_nat : 0 < N_plus classes + N_minus classes := Nat.pos_of_ne_zero h
+    have hpos_rat : (0 : ℚ) < ((N_plus classes + N_minus classes : ℕ) : ℚ) := by
+      exact_mod_cast hpos_nat
+    rw [dif_neg h]
+    constructor
+    ·
+      have hineq_int :
+          -((N_plus classes + N_minus classes : ℕ) : Int)
+            ≤ (N_plus classes : Int) - (N_minus classes : Int) := by omega
+      have hineq_rat :
+          (-(((N_plus classes + N_minus classes : ℕ) : Int) : ℚ))
+            ≤ (((N_plus classes : Int) - (N_minus classes : Int) : Int) : ℚ) := by
+        exact_mod_cast hineq_int
+      have hdiv := div_le_div_of_nonneg_right hineq_rat (le_of_lt hpos_rat)
+      have hneg :
+          (-(((N_plus classes + N_minus classes : ℕ) : Int) : ℚ)) /
+              ((N_plus classes + N_minus classes : ℕ) : ℚ) = -1 := by
+        rw [show (-(((N_plus classes + N_minus classes : ℕ) : Int) : ℚ))
+              = -((N_plus classes + N_minus classes : ℕ) : ℚ) from by push_cast; rfl]
+        field_simp [ne_of_gt hpos_rat]
+      rw [← hneg]
+      exact hdiv
+    ·
+      have hineq_int :
+          (N_plus classes : Int) - (N_minus classes : Int)
+            ≤ ((N_plus classes + N_minus classes : ℕ) : Int) := by omega
+      have hineq_rat :
+          (((N_plus classes : Int) - (N_minus classes : Int) : Int) : ℚ)
+            ≤ (((N_plus classes + N_minus classes : ℕ) : Int) : ℚ) := by
+        exact_mod_cast hineq_int
+      have hdiv := div_le_div_of_nonneg_right hineq_rat (le_of_lt hpos_rat)
+      have hone :
+          (((N_plus classes + N_minus classes : ℕ) : Int) : ℚ) /
+              ((N_plus classes + N_minus classes : ℕ) : ℚ) = 1 := by
+        rw [show (((N_plus classes + N_minus classes : ℕ) : Int) : ℚ)
+              = ((N_plus classes + N_minus classes : ℕ) : ℚ) from by push_cast; rfl]
+        field_simp [ne_of_gt hpos_rat]
+      rw [← hone]
+      exact hdiv
+
+/-- **[Schicht A]** N₊ = N₋ ⇒ χ_Hol = 0. -/
+theorem chi_Hol_zero_of_balance (classes : List EabcLetter)
+    (h : N_plus classes = N_minus classes) : chi_Hol classes = 0 := by
+  unfold chi_Hol Q_E D_E
+  simp [h]
+
+/-- **[Schicht A]** Q_E = N₊ + N₋ (definitorisch). -/
+theorem Q_E_eq_sum (classes : List EabcLetter) :
+    Q_E classes = N_plus classes + N_minus classes := rfl
+
+/-- **[Schicht A]** D_E = N₊ − N₋ (definitorisch). -/
+theorem D_E_eq_diff (classes : List EabcLetter) :
+    D_E classes = (N_plus classes : ℤ) - N_minus classes := rfl
 
 theorem abcea_residues : residuesOf wordABCEA = [5, 7, 11, 1, 5] := rfl
 
@@ -174,6 +250,80 @@ def N_minus_up_to (_X : ℕ) : ℕ :=
 
 def D_E_up_to (X : ℕ) : ℤ :=
   (N_plus_up_to X : ℤ) - N_minus_up_to X
+
+/-- Q_E(X) = N₊(X) + N₋(X) bis Primgrenze X. -/
+def Q_E_up_to (X : ℕ) : ℕ :=
+  N_plus_up_to X + N_minus_up_to X
+
+/-- W_E(X) = D_E(X)/Q_E(X) bis Primgrenze X (identisch zu `FlussPhiE.W_E_up_to`). -/
+def W_E_up_to (X : ℕ) : ℚ :=
+  let total := Q_E_up_to X
+  if _h : total = 0 then 0
+  else (D_E_up_to X : ℚ) / total
+
+/-- R_β(X) = D_E(X) / Q_E(X)^β (Skalierungsobservable, Ebene 2). -/
+noncomputable def R_beta_up_to (β : ℝ) (X : ℕ) : ℝ :=
+  let q := Q_E_up_to X
+  if _h : q = 0 then 0
+  else (D_E_up_to X : ℝ) / (q : ℝ) ^ β
+
+/-- D̃_E(X) = D_E(X)/√Q_E(X) — numerischer Belastungstest R_{1/2}. -/
+noncomputable def D_tilde_E_up_to (X : ℕ) : ℝ :=
+  R_beta_up_to (1 / 2) X
+
+/-- **[Schicht A]** N₊(X) = N₋(X) ⇒ W_E(X) = 0. -/
+theorem W_E_up_to_zero_of_balance (X : ℕ) (h : N_plus_up_to X = N_minus_up_to X) :
+    W_E_up_to X = 0 := by
+  unfold W_E_up_to Q_E_up_to D_E_up_to
+  simp [h]
+
+/-- **[Schicht A]** −1 ≤ W_E(X) ≤ 1 für alle Primgrenzen X. -/
+theorem W_E_up_to_bounds (X : ℕ) :
+    -1 ≤ W_E_up_to X ∧ W_E_up_to X ≤ 1 := by
+  unfold W_E_up_to Q_E_up_to D_E_up_to
+  by_cases h : N_plus_up_to X + N_minus_up_to X = 0
+  · rw [dif_pos h]
+    norm_num
+  ·
+    have hpos_nat : 0 < N_plus_up_to X + N_minus_up_to X := Nat.pos_of_ne_zero h
+    have hpos_rat : (0 : ℚ) < ((N_plus_up_to X + N_minus_up_to X : ℕ) : ℚ) := by
+      exact_mod_cast hpos_nat
+    rw [dif_neg h]
+    constructor
+    ·
+      have hineq_int :
+          -((N_plus_up_to X + N_minus_up_to X : ℕ) : Int)
+            ≤ (N_plus_up_to X : Int) - (N_minus_up_to X : Int) := by omega
+      have hineq_rat :
+          (-(((N_plus_up_to X + N_minus_up_to X : ℕ) : Int) : ℚ))
+            ≤ (((N_plus_up_to X : Int) - (N_minus_up_to X : Int) : Int) : ℚ) := by
+        exact_mod_cast hineq_int
+      have hdiv := div_le_div_of_nonneg_right hineq_rat (le_of_lt hpos_rat)
+      have hneg :
+          (-(((N_plus_up_to X + N_minus_up_to X : ℕ) : Int) : ℚ)) /
+              ((N_plus_up_to X + N_minus_up_to X : ℕ) : ℚ) = -1 := by
+        rw [show (-(((N_plus_up_to X + N_minus_up_to X : ℕ) : Int) : ℚ))
+              = -((N_plus_up_to X + N_minus_up_to X : ℕ) : ℚ) from by push_cast; rfl]
+        field_simp [ne_of_gt hpos_rat]
+      rw [← hneg]
+      exact hdiv
+    ·
+      have hineq_int :
+          (N_plus_up_to X : Int) - (N_minus_up_to X : Int)
+            ≤ ((N_plus_up_to X + N_minus_up_to X : ℕ) : Int) := by omega
+      have hineq_rat :
+          (((N_plus_up_to X : Int) - (N_minus_up_to X : Int) : Int) : ℚ)
+            ≤ (((N_plus_up_to X + N_minus_up_to X : ℕ) : Int) : ℚ) := by
+        exact_mod_cast hineq_int
+      have hdiv := div_le_div_of_nonneg_right hineq_rat (le_of_lt hpos_rat)
+      have hone :
+          (((N_plus_up_to X + N_minus_up_to X : ℕ) : Int) : ℚ) /
+              ((N_plus_up_to X + N_minus_up_to X : ℕ) : ℚ) = 1 := by
+        rw [show (((N_plus_up_to X + N_minus_up_to X : ℕ) : Int) : ℚ)
+              = ((N_plus_up_to X + N_minus_up_to X : ℕ) : ℚ) from by push_cast; rfl]
+        field_simp [ne_of_gt hpos_rat]
+      rw [← hone]
+      exact hdiv
 
 /-- Hauptvermutung Hol_E = 0 (asymptotisch; offen). -/
 def Hol_E_zero : Prop :=

@@ -1,6 +1,7 @@
 # EABC Φ_E — analytischer Lean-Beweisversuch
 
-**Status:** Skeleton (PR #63, `collatz/eabc-h03-diskrete-geometrie-fluss`; Basis PR #59)  
+**Status:** Skeleton (PR #63; Branch `collatz/eabc-05-holonomie-fehlerterm`)  
+**Lean (Fehlerterm):** `collatz_eabc_core/CollatzEabc/HolonomieFehlerterm.lean`  
 **Lean (Hodge-Layer):** `collatz_eabc_core/CollatzEabc/FlussPhiE.lean`  
 **Lean (minimaler Kern):** `collatz_eabc_core/CollatzEabc/HolonomyCore.lean` (`EABC`-Namespace)  
 **Epistemik:** `collatz_eabc_epistemik_schichten.md` — **A / B / R / C**; Lakatos §4 (#72)  
@@ -77,11 +78,57 @@ Minimale Architektur im Namespace `EABC` — ohne Prim-Enumeration, ohne Hodge-L
 die asymptotische Aussage $\lim_{X\to\infty} W_E(X)=\Phi_E\neq 0$ steht in `EABC_holonomy_limit_conjecture` (`Tendsto` in $\mathbb{R}$), nicht als exakte rationale Endkonstante.
 Die zu starke Variante (eventuell konstantes rationales $\Phi$) ist nur als auskommentiertes Scaffold erhalten.
 
-`FlussPhiE.lean` ergänzt denselben Fluss um C₄-Kanten, harmonisches $h$, Prim-Brücken (`HolonomieFehlerterm`).
+`FlussPhiE.lean` ergänzt denselben Fluss um C₄-Kanten, harmonisches $h$, Prim-Brücken (`HolonomieFehlerterm`).  
+**Zentrale Observablen** $D_E$, $Q_E$, $W_E$, $R_\beta$, $\tilde D_E$ liegen in `HolonomieFehlerterm`; `FlussPhiE` aliasiert $C_E$, $S_E$ und die Grenzwert-`Prop`s.
 
 ```bash
 cd collatz_eabc_core
 lake build CollatzEabc.HolonomyCore
+lake build CollatzEabc.HolonomieFehlerterm
+lake build CollatzEabc.FlussPhiE
+```
+
+---
+
+## Lean-Modul `HolonomieFehlerterm.lean` (Fehlerterm-Schicht)
+
+**Fokus:** Ebene 0–2 ($D_E$, $Q_E$, $R_\beta$, $\tilde D_E$) — nicht Holonomie-Beweis (Ebene 4).
+
+### Schicht A — Theorem (bewiesen, endliche Folge / Fenster)
+
+| Aussage | Lean-Name | Status |
+|---------|-----------|--------|
+| $D_E = N_+ - N_-$ | `D_E`, `D_E_eq_diff` | **Theorem** |
+| $Q_E = N_+ + N_-$ | `Q_E`, `Q_E_eq_sum` | **Theorem** |
+| $-1 \le \chi_{\mathrm{Hol}} \le 1$ | `chi_Hol_bounds` | **Theorem** |
+| $N_+=N_- \Rightarrow \chi_{\mathrm{Hol}}=0$ | `chi_Hol_zero_of_balance` | **Theorem** |
+| Lückenmuster $(2,4,2,4)$ | `abcea_gap_pattern`, `ceabc_gap_pattern` | **Theorem** |
+| Taubenloch auf ABCE-Fenstern | `pigeonhole_three_bits`, `bell_triple_sum_ge_one` | **Theorem** |
+| Testfall $D_E=0$ | `test_manual_D_E_zero` | **Theorem** |
+| $N_+(X)=N_-(X) \Rightarrow W_E(X)=0$ | `W_E_up_to_zero_of_balance` | **Theorem** |
+| $-1 \le W_E(X) \le 1$ | `W_E_up_to_bounds` | **Theorem** |
+
+### Schicht B — Struktur (Definitionen)
+
+| Objekt | Lean-Name | Status |
+|--------|-----------|--------|
+| Gleitfenster-Zählung | `N_plus`, `N_minus`, `countSlidingWord` | **Struktur** |
+| $D_E$, $Q_E$, $\chi_{\mathrm{Hol}}$ auf Listen | `D_E`, `Q_E`, `chi_Hol` | **Struktur** |
+| $R_\beta$, $\tilde D_E$ auf Listen | `R_beta`, `D_tilde_E` | **Struktur** (`noncomputable`) |
+| Prim-Zählung bis $X$ | `N_plus_up_to`, `N_minus_up_to`, `D_E_up_to`, `Q_E_up_to` | **Struktur** (Zähler `sorry`) |
+| $W_E(X)$, $R_\beta(X)$, $\tilde D_E(X)$ | `W_E_up_to`, `R_beta_up_to`, `D_tilde_E_up_to` | **Struktur** |
+| Bell/CHSH-Skeleton | `EabcWindowObservables`, `LocalRealismOnGE`, `chshSum` | **Struktur** |
+
+### Schicht R — Forschungsbrücken (`sorry`)
+
+| Brücke | Lean-Name | Status |
+|--------|-----------|--------|
+| $\kappa$-Folge $\to$ $N_\pm(X)$ | `N_plus_up_to`, `N_minus_up_to` | **Brücke** (`sorry`) |
+| $\mathrm{Hol}_E = 0$ (asymptotisch) | `Hol_E_zero` | **Brücke** (`sorry`) |
+
+```bash
+cd collatz_eabc_core
+lake build CollatzEabc.HolonomieFehlerterm   # 3 sorry (Prim-Enumeration)
 ```
 
 ---
@@ -96,9 +143,11 @@ lake build CollatzEabc.HolonomyCore
 | Kantenquelle/-ziel | `edgeSrc`, `edgeTgt` | **Struktur** |
 | Vorwärtszyklus (Liste) | `forwardCycleVertices` | **Struktur** |
 | Kanonisches $h$ | `h_canonical`, `C4HarmonicForm` | **Struktur** |
-| $C_E$, $S_E$, $W_E$ bis $X$ | `C_E_up_to`, `S_E_up_to`, `W_E_up_to` | **Struktur** (Primteil `sorry` in `HolonomieFehlerterm`) |
+| $C_E$, $S_E$ bis $X$ | `C_E_up_to`, `S_E_up_to` | **Struktur** (Alias zu `D_E_up_to`, `Q_E_up_to`) |
+| $W_E$, $R_\beta$, $\tilde D_E$ bis $X$ | `W_E_up_to`, `R_beta_up_to`, `D_tilde_E_up_to` | **Struktur** (in `HolonomieFehlerterm`) |
 | $\Phi_E$ als Grenzwert | `HasPhi_E` | **Struktur** |
-| $\Phi_E = 0$ (Hypothese) | `Phi_E_eq_zero` | **Struktur** |
+| $\Phi_E = 0$ (Nullhypothese) | `Phi_E_eq_zero` | **Struktur** |
+| $\alpha_E = 1$ (Skalenparameter) | `HasAlpha_E_one` | **Struktur** |
 | $\Phi_E \neq 0$ (Vermutung) | `phi_E_conjecture` | **Struktur** (`Prop`) |
 | Diskrete Paarung | `innerProductOmegaH`, `circulationOmega`, `OmegaE` | **Struktur** |
 
@@ -110,8 +159,9 @@ lake build CollatzEabc.HolonomyCore
 | Zyklus geschlossen | `forward_cycle_closed` | **Theorem** |
 | Harmonisches $h$ existiert | `harmonic_form_exists` | **Theorem** |
 | $h \notin \mathrm{im}\,\delta$ | `h_canonical_not_coboundary` | **Theorem** |
-| $N_+=N_-$ auf Liste $\Rightarrow$ $\chi_{\mathrm{Hol}}=0$ | `chi_Hol_zero_of_balance` | **Theorem** |
-| $N_+(X)=N_-(X) \Rightarrow W_E(X)=0$ | `W_E_up_to_zero_of_balance` | **Theorem** |
+| $N_+=N_-$ auf Liste $\Rightarrow$ $\chi_{\mathrm{Hol}}=0$ | `chi_Hol_zero_of_balance` (in `HolonomieFehlerterm`) | **Theorem** |
+| $N_+(X)=N_-(X) \Rightarrow W_E(X)=0$ | `W_E_up_to_zero_of_balance` (in `HolonomieFehlerterm`) | **Theorem** |
+| $-1 \le W_E(X) \le 1$ | `W_E_up_to_bounds` (in `HolonomieFehlerterm`) | **Theorem** |
 | $\langle\omega,h\rangle = C_E$ (diskret) | `Phi_E_eq_inner_product_discrete` | **Theorem** |
 
 ### Schicht R — Forschungsbrücken (`sorry`)
@@ -121,7 +171,8 @@ lake build CollatzEabc.HolonomyCore
 | Asymptotische Symmetrie $\Rightarrow \Phi_E=0$ | `Phi_E_zero_of_symmetry` | **Brücke** (`sorry`) |
 | Prim-$\omega_E$ $\leftrightarrow$ asymptotische Paarung | `Phi_E_eq_inner_product` | **Brücke** (`sorry`) |
 | HL-Symmetrie $\Rightarrow \mathrm{Hol}_E=0 \Rightarrow \Phi_E=0$ | `hol_E_zero_of_HL` | **Brücke** (`sorry`) |
-| **EABC-Vermutung** $\Phi_E \neq 0$ | `phi_E_conjecture_statement` | **Brücke** (`sorry`; **H₃**, Ebene 4, $\alpha_E=1$) |
+| $\Phi_E\neq 0 \Rightarrow \alpha_E=1$ | `phi_E_ne_zero_implies_alpha_E_one` | **Brücke** (`sorry`) |
+| **EABC-Vermutung** $\Phi_E \neq 0$ | `phi_E_conjecture_statement` | **Brücke** (`sorry`; **H₃**, Ebene 4) |
 
 ### Abhängigkeit `HolonomieFehlerterm.lean` (Schicht R)
 
@@ -157,10 +208,84 @@ lake build CollatzEabc.HolonomyCore
 ```bash
 cd collatz_eabc_core
 lake build CollatzEabc.HolonomyCore   # minimaler Kern (1 sorry)
-lake build CollatzEabc.FlussPhiE      # Hodge-Layer (4 sorry)
+lake build CollatzEabc.HolonomieFehlerterm  # Fehlerterm (3 sorry)
+lake build CollatzEabc.FlussPhiE      # Hodge-Layer (5 sorry)
 ```
 
 Sorries in Schicht R sind erlaubt; Ziel ist ein kompilierender Beweisrahmen mit klarer A/B/R-Trennung.
+
+---
+
+## Analytischer Roadmap (Stand 18. Juni 2026)
+
+**Numerischer Kontext ($10^{10}$):** $R_{1/2}=O(1)$, $W_E\to 0$, kein Hinweis auf $\Phi_E\neq 0$ (H₃).
+Der analytische Fokus liegt daher auf **Fehlerterm-Struktur** (Ebene 1–2), nicht auf `HasNonzeroHolonomyLimit`.
+
+### Was „analytisch lösen" hier bedeutet
+
+| Lesart | Inhalt | Lean-Status |
+|--------|--------|-------------|
+| **Kombinatorisch** | $G_E$, $E^\pm$, $h$, Gleitfenster, $-1\le W_E\le 1$, Symmetrie $\Rightarrow W_E=0$ | **Schicht A — bewiesen** |
+| **Strukturell** | $D_E$, $Q_E$, $R_\beta$, $D̃_E$, $\Phi_E$, $\alpha_E$ als Definitionen/`Prop` | **Schicht B — formalisiert** |
+| **Prim-Asymptotik** | $N_\pm(X)$ aus κ-Folge, HL-Symmetrie, $\Phi_E=0$ | **Schicht R — `sorry`** |
+| **Holonomie H₃** | $\lim W_E=\Phi_E\neq 0$ | **Schicht R — `sorry`** (Ebene 4, Endfrage) |
+
+**Ehrliche Einschätzung:** „Analytisch lösen" im Collatz-/EABC-Kontext heißt primär:
+(1) die **arithmetische Zählung** $N_\pm(X)$ über Primzahlen mod 12 formalisieren,
+(2) **Fehlerterm-Wachstum** $|D_E|$ vs. $Q^\beta$ mit zahlentheoretischen Werkzeugen angehen,
+(3) erst danach Grenzwerte $W_E\to\Phi_E$. Schritt (3) ist numerisch derzeit **nicht** gestützt.
+
+### Ziel-Tabelle
+
+| Ziel | Lean-Status | Nächster Schritt |
+|------|-------------|------------------|
+| Kreisgraph $G_E$, $E^\pm$, harmonisches $h$ | **GREEN** (`FlussPhiE`) | — |
+| $D_E$, $Q_E$, $\chi_{\mathrm{Hol}}$ auf Listen | **GREEN** (`HolonomieFehlerterm`) | — |
+| $-1\le\chi_{\mathrm{Hol}}\le 1$ | **GREEN** `chi_Hol_bounds` | — |
+| $N_+=N_-\Rightarrow\chi_{\mathrm{Hol}}=0$ | **GREEN** `chi_Hol_zero_of_balance` | — |
+| $W_E$, $Q_E$, $R_\beta$, $D̃_E$ bis Primgrenze $X$ | **B** (`HolonomieFehlerterm`) | `N_\pm_up_to` aus `PrimeCounting` |
+| $-1\le W_E(X)\le 1$ | **GREEN** `W_E_up_to_bounds` | — |
+| $N_+(X)=N_-(X)\Rightarrow W_E(X)=0$ | **GREEN** `W_E_up_to_zero_of_balance` | — |
+| $\Phi_E=0$ (Nullhypothese) | **B** `Phi_E_eq_zero` | `Phi_E_zero_of_symmetry` (Filter) |
+| $\Phi_E\neq 0$ (H₃) | **R** `phi_E_conjecture_statement` | nicht priorisieren bei $10^{10}$-Daten |
+| $\Phi_E\neq 0\Rightarrow\alpha_E=1$ | **R** `phi_E_ne_zero_implies_alpha_E_one` | aus `Tendsto` + $|D_E|/Q\to|\Phi_E|$ |
+| $N_+(X)$, $N_-(X)$ Prim-Zählung | **R** `sorry` | `Mathlib.NumberTheory.PrimeCounting` + κ-Folge |
+| $\mathrm{Hol}_E=0$ | **R** `Hol_E_zero` | HL-artige Prim-Symmetrie |
+| Lückenmuster $(2,4,2,4)$, Taubenloch | **GREEN** | — |
+| `HasNonzeroHolonomyLimit` (minimaler Kern) | **R** `HolonomyCore` | getrennt halten von Fehlerterm |
+
+### Implementiert in dieser Session (vs. Roadmap)
+
+**Lean (`HolonomieFehlerterm.lean`):**
+- `Q_E`, `R_beta`, `D_tilde_E` (Listen); `Q_E_up_to`, `W_E_up_to`, `R_beta_up_to`, `D_tilde_E_up_to` (Primgrenze)
+- **Theorem:** `chi_Hol_bounds`, `chi_Hol_zero_of_balance`, `W_E_up_to_bounds`, `W_E_up_to_zero_of_balance`
+
+**Lean (`FlussPhiE.lean`):**
+- **Struktur:** `HasAlpha_E_one` ($|D_E|/Q\to c\neq 0$)
+- **Brücke (R):** `phi_E_ne_zero_implies_alpha_E_one` — explizit `sorry`, keine Holonomie-Behauptung
+
+**Nicht implementiert (bewusst):**
+- Beweis von H₃ / `HasNonzeroHolonomyLimit`
+- Konkrete `N_plus_up_to`/`N_minus_up_to` aus Mathlib-Primzählung
+- Analytische Abschätzung $R_{1/2}=O(1)$
+
+### Mathlib-Brücken (priorisiert)
+
+| Brücke | Mathlib-Kandidat | Ziel |
+|--------|------------------|------|
+| $\pi(x)$, Primzählung | `Mathlib.NumberTheory.PrimeCounting` | `N_\pm_up_to` |
+| Dirichlet-Charaktere mod 12 | `Mathlib.NumberTheory.DirichletCharacter.*` | HL-Symmetrie / $D_E$-Fehlerterm |
+| Filter / `Tendsto` | `Mathlib.Order.Filter.AtTopBot.Tendsto` | `Phi_E_zero_of_symmetry` |
+| Potenzen / $Q^\beta$ | `Mathlib.Analysis.SpecialFunctions.Pow.Real` | `R_beta_up_to` (genutzt) |
+| Nat.density | — | **fehlt** in Mathlib; nur `Finset`-Zählungen |
+
+### Empfohlene Reihenfolge (analytisch)
+
+1. **`N_plus_up_to` / `N_minus_up_to`** — operative κ-Folge + Gleitfenster auf Primrestklassen mod 12.
+2. **`Phi_E_zero_of_symmetry`** — aus `W_E_up_to_zero_of_balance` + `Filter.Eventually` + `Tendsto_const`.
+3. **Fehlerterm-Schranken** — $|D_E|\ll Q$ oder $R_{1/2}=O(1)$ als `Prop`-Ziel (Schicht R).
+4. **`phi_E_ne_zero_implies_alpha_E_one`** — nur wenn H₃ relevant wird.
+5. **H₃ / `HasNonzeroHolonomyLimit`** — Ebene 4, nach geklärter $D_E$-Skalierung.
 
 ---
 
