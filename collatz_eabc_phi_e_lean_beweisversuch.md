@@ -174,13 +174,6 @@ lake build CollatzEabc.HolonomieFehlerterm   # 3 sorry (Prim-Enumeration)
 | $\Phi_E\neq 0 \Rightarrow \alpha_E=1$ | `phi_E_ne_zero_implies_alpha_E_one` | **Brücke** (`sorry`) |
 | **EABC-Vermutung** $\Phi_E \neq 0$ | `phi_E_conjecture_statement` | **Brücke** (`sorry`; **H₃**, Ebene 4) |
 
-### Abhängigkeit `HolonomieFehlerterm.lean` (Schicht R)
-
-| Objekt | Lean-Name | Status |
-|--------|-----------|--------|
-| $N_+(X)$, $N_-(X)$ auf κ-Folge | `N_plus_up_to`, `N_minus_up_to` | **Brücke** (`sorry`) |
-| $\mathrm{Hol}_E = 0$ | `Hol_E_zero` | **Brücke** (`sorry`) |
-
 ---
 
 ## Bewiesen vs. offen
@@ -226,9 +219,10 @@ lake build CollatzEabc.HolonomieFehlerterm   # 3 sorry (Prim-Enumeration)
 
 ```bash
 cd collatz_eabc_core
-lake build CollatzEabc.HolonomyCore   # minimaler Kern (1 sorry)
-lake build CollatzEabc.HolonomieFehlerterm  # Fehlerterm (3 sorry)
-lake build CollatzEabc.FlussPhiE      # Hodge-Layer (5 sorry)
+lake build                              # gesamtes Paket grün
+lake build CollatzEabc.HolonomyCore     # 1 sorry (H₃)
+lake build CollatzEabc.HolonomieFehlerterm  # 3 sorry (Prim-Enumeration)
+lake build CollatzEabc.FlussPhiE        # 5 sorry (Schicht R)
 ```
 
 Sorries in Schicht R sind erlaubt; Ziel ist ein kompilierender Beweisrahmen mit klarer A/B/R-Trennung.
@@ -310,7 +304,8 @@ Der analytische Fokus liegt daher auf **Fehlerterm-Struktur** (Ebene 1–2), nic
 
 ## Nächste Schritte
 
-1. `N_plus_up_to` / `N_minus_up_to` aus κ-Folge + `PrimeCounting` definieren (Schicht R).
-2. `Phi_E_zero_of_symmetry` aus `W_E_up_to_zero_of_balance` + Filter-`Eventually` (Schicht R).
-3. Prim-$\omega_E$ aus Gleitfenster-Zählung; `Phi_E_eq_inner_product` als Grenzwertbrücke (Schicht R).
-4. Optional: `Mathlib.Combinatorics.SimpleGraph` für $G_E$; magnetischer Laplace $L_{\mathrm{mag}}$ (vgl. `collatz_mathlib_eabc_kandidaten.md`).
+1. `N_plus_up_to` / `N_minus_up_to` als **computable** Definition aus κ-Folge (`#eval`, Beweis später).
+2. `Hol_E_zero` als explizite `Prop` (`Tendsto (fun X => W_E_up_to X) atTop (nhds 0)`).
+3. `Phi_E_zero_of_symmetry` aus `W_E_up_to_zero_of_balance` + Filter-`Eventually`.
+4. Numerische Brücke Lean↔Python für $D_E$, $Q_E$, $R_{1/2}$ bis $10^{10}$.
+5. Optional: `Mathlib.Combinatorics.SimpleGraph` für $G_E$; magnetischer Laplace $L_{\mathrm{mag}}$.
