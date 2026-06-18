@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-"""EABC-Vierlinge bis X: W_E, Z_E, R_beta und mod-420-Diagnostik.
+"""EABC-Vierlinge bis X: W_E, R_beta und mod-420-Diagnostik.
 
-Testkette: D = A − C, Q = A + C, R_beta = D / Q^beta.
+Kern (Definition): D = A − C, Q = A + C, W_E = D/Q, R_beta = D / Q^beta.
+Kein Z_E = D/sqrt(Q) auf Definitionsebene — R_1_2 ist Heuristik/Diagnose-Alias.
+
 CSV-Spalten R_beta:
-  R_1_2  = R_{1/2}(X) = D(X)/sqrt(Q(X)) = Z_E(X)  (erste Testobservable)
+  R_1_2  = R_{1/2}(X) = D(X)/sqrt(Q(X))  (Heuristik/Diagnose; Alias Z_E)
   R_2_3, R_3_4, R_9_10 -> Zwischennormierungen (beta = 2/3, 3/4, 0.9)
   R_1    = R_1(X) = D(X)/Q(X) = W_E(X)  (starke Holonomie)
 """

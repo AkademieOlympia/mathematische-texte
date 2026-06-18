@@ -31,7 +31,7 @@ EABC = priminduzierter Fluss auf $C_4 \cong S^1$ mit
 - $C_E(X) = N_+(X) - N_-(X)$, $S_E(X) = N_+(X) + N_-(X)$
 - $W_E(X) = C_E(X)/S_E(X)$, $\Phi_E = \lim_{X\to\infty} W_E(X)$
 
-**Vermutung (Schicht R):** $\Phi_E \neq 0$ bzw. $\langle\omega_E, h\rangle \neq 0$ für kanonisches harmonisches $h$. Dies ist **H₃** — der Grenzfall $\alpha_E = 1$ der Skalierungsfrage (starke Holonomie: $W_E\to\Phi_E\neq 0$, äquivalent $D\sim\Phi_E Q$) — und entspricht der Lean-**RED**-Vermutung `HasNonzeroHolonomyLimit`. Vorgelagert (Ebenen 0–3, `collatz_eabc_zirkulationshypothese.md` §4.2): H₀a ($\alpha_E\le\tfrac{1}{2}$, $R_{1/2}$ beschränkt), H₀b ($W_E\to 0$), H₁ ($\alpha_E>\tfrac{1}{2}$ empirisch, $R_{1/2}\to\infty$), H₂ ($|D|\asymp Q^{\alpha_E}$, $\alpha_E>\tfrac{1}{2}$, asymptotisch). **Wichtig:** Auch $\Phi_E=0$ kann mit $\alpha_E>\tfrac{1}{2}$ vereinbar sein.
+**Vermutung (Schicht R):** $\Phi_E \neq 0$ bzw. $\langle\omega_E, h\rangle \neq 0$ für kanonisches harmonisches $h$. Dies ist **H₃** — starke Holonomie: $W_E\to\Phi_E\neq 0$, äquivalent $D(X)\sim\Phi_E Q(X)$ (Spezialfall $\alpha_E=1$; Lean-**RED**: `HasNonzeroHolonomyLimit`). Vorgelagert (§4.2): **Orientierung** H₀b ($W_E\to 0$), **Skalierung** H₀a/H₁/H₂ ($\alpha_E$ via $R_\beta$; $R_{1/2}=D/\sqrt{Q}$ nur Heuristik/Diagnose), **Diagnose** $\alpha_{\mathrm{eff}}$ (kein Satz). $\alpha_E>\tfrac{1}{2} \nRightarrow \Phi_E\neq 0$.
 
 ---
 
