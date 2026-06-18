@@ -1,15 +1,51 @@
 #!/usr/bin/env python3
-"""Log-log-Steigung alpha aus eabc_quadruplets.csv: |D(X)| ~ Q(X)^alpha."""
+"""Log-log-Steigung alpha_E aus eabc_quadruplets.csv; H0a/H0b–H3-Einordnung und Diagnose-Plot."""
 
 import argparse
-import sys
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
+R_BETA_COLUMNS = {
+    "R_1_2": 0.5,
+    "R_2_3": 2 / 3,
+    "R_3_4": 0.75,
+    "R_9_10": 0.9,
+    "R_1": 1.0,
+}
+
+LEGACY_BETA_COLUMNS = {
+    "D_over_Q_half": 0.5,
+    "D_over_Q_two_thirds": 2 / 3,
+    "D_over_Q_three_fourths": 3 / 4,
+    "D_over_Q_one": 1.0,
+}
+
 
 def load_valid(df: pd.DataFrame) -> pd.DataFrame:
     return df[(df["diff"] != 0) & (df["Q_total"] > 1)].copy()
+
+
+def ensure_beta_columns(df: pd.DataFrame) -> pd.DataFrame:
+    out = df.copy()
+    diff = out["diff"].to_numpy(dtype=np.float64)
+    q = out["Q_total"].to_numpy(dtype=np.float64)
+    for name, beta in R_BETA_COLUMNS.items():
+        if name not in out.columns:
+            legacy = next(
+                (old for old, b in LEGACY_BETA_COLUMNS.items() if b == beta and old in out.columns),
+                None,
+            )
+            if legacy is not None:
+                out[name] = out[legacy]
+            else:
+                out[name] = diff / np.power(q, beta)
+    if "Z_E" not in out.columns:
+        out["Z_E"] = out["R_1_2"]
+    if "W_E" not in out.columns:
+        out["W_E"] = out["R_1"]
+    return out
 
 
 def alpha_eff_series(df: pd.DataFrame) -> pd.Series:
@@ -22,7 +58,7 @@ def alpha_eff_series(df: pd.DataFrame) -> pd.Series:
 
 def alpha_loc_series(df: pd.DataFrame) -> pd.Series:
     if len(df) < 2:
-        return pd.Series(dtype=np.float64)
+        return pd.Series(np.nan, index=df.index, dtype=np.float64)
 
     x = np.log(df["Q_total"].to_numpy(dtype=np.float64))
     y = np.log(np.abs(df["diff"].to_numpy(dtype=np.float64)))
@@ -44,27 +80,178 @@ def fit_alpha(df: pd.DataFrame) -> tuple[float, float]:
     return float(alpha), float(beta)
 
 
-def interpret(alpha: float, alpha_loc_max: float | None = None) -> str:
-    hints = []
-    if alpha_loc_max is not None and alpha_loc_max > 0.5:
-        hints.append(f"alpha_loc max={alpha_loc_max:.4f} → H1 (empirischer Bias)")
-    if abs(alpha - 0.5) < 0.15:
-        hints.append(f"global alpha≈1/2 → H0 (Rausch)")
-    elif 0.5 < alpha < 1.0:
-        hints.append(f"global alpha={alpha:.4f} → H2-Kandidat (asymptotischer Bias, W_E→0)")
-    elif alpha >= 0.85:
-        hints.append(f"global alpha≈1 → H3-Kandidat (Holonomie, W_E→Φ_E≠0)")
+def coefficient_of_variation(values: np.ndarray) -> float:
+    if values.size < 2:
+        return float("inf")
+    mean = float(np.mean(values))
+    if abs(mean) < 1e-15:
+        return float(np.std(values))
+    return float(np.std(values) / abs(mean))
+
+
+def r_beta_log_slope(df: pd.DataFrame, col: str) -> float:
+    """Steigung von log|R_beta| vs log Q (≈ alpha_E - beta)."""
+    if len(df) < 2:
+        return float("nan")
+    q = df["Q_total"].to_numpy(dtype=np.float64)
+    r = np.abs(df[col].to_numpy(dtype=np.float64))
+    r = np.maximum(r, 1e-15)
+    slope, _ = np.polyfit(np.log(q), np.log(r), 1)
+    return float(slope)
+
+
+def estimate_alpha_E(df: pd.DataFrame) -> tuple[float, float, dict[float, float]]:
+    """Heuristische alpha_E-Schaetzung aus R_beta-Plateaus (Experiment, kein Theorem).
+
+    Fuer jedes beta: alpha_E-Kandidat = beta + Steigung(log|R_beta| vs log Q).
+    Waehlt den Kandidaten bei minimalem |Steigung| (Plateau-Lesart).
+    """
+    slopes: dict[float, float] = {}
+    candidates: dict[float, float] = {}
+    for col, beta in R_BETA_COLUMNS.items():
+        slope = r_beta_log_slope(df, col)
+        slopes[beta] = slope
+        candidates[beta] = beta + slope
+
+    best_beta = min(slopes, key=lambda b: abs(slopes[b]))
+    alpha_E_hat = candidates[best_beta]
+    return alpha_E_hat, best_beta, slopes
+
+
+def diagnose_hypothesis(alpha_E_hat: float, alpha_polyfit: float) -> str:
+    if alpha_E_hat <= 0.55:
+        band = "H0a (alpha_E <= 1/2, Wurzelrauschen)"
+    elif alpha_E_hat < 0.85:
+        band = f"H1/H2 (1/2 < alpha_E < 1, sublinearer Bias)"
     else:
-        hints.append("Zwischenbereich — genauere Grenze bei größerem X")
+        band = "H3-Kandidat (alpha_E ≈ 1, Holonomie-Grenzfall)"
+    return (
+        f"alpha_E_hat={alpha_E_hat:.3f} (heuristisch, Experiment) → {band}; "
+        f"polyfit alpha={alpha_polyfit:.3f}"
+    )
+
+
+def interpret(
+    alpha: float,
+    alpha_E_hat: float,
+    alpha_loc_max: float | None,
+    df: pd.DataFrame,
+    slopes: dict[float, float],
+) -> str:
+    hints: list[str] = []
+
+    hints.append(diagnose_hypothesis(alpha_E_hat, alpha))
+
+    if alpha_loc_max is not None and alpha_loc_max > 0.5:
+        hints.append(f"alpha_loc max={alpha_loc_max:.4f} → H1 (persistenter Bias, empirisch)")
+
+    if alpha_E_hat <= 0.55:
+        hints.append("alpha_E_hat ≤ 1/2 → H0a-Kandidat (R_{1/2} beschränkt)")
+    elif alpha_E_hat < 0.85:
+        hints.append(f"alpha_E_hat={alpha_E_hat:.3f} → H2-Kandidat (sublinearer Bias, W_E→0)")
+    elif alpha_E_hat >= 0.85:
+        hints.append(f"alpha_E_hat≈1 → H3-Kandidat (Holonomie-Grenzfall)")
+
+    if abs(alpha - 0.5) < 0.15 and alpha_E_hat <= 0.55:
+        hints.append("polyfit alpha≈1/2 konsistent mit H0a")
+    elif 0.5 < alpha < 1.0:
+        hints.append(f"polyfit alpha={alpha:.4f} → asymptotischer Bias")
+
+    w_e = df["W_E"].to_numpy(dtype=np.float64)
+    if w_e.size >= 2 and abs(w_e[-1]) < abs(w_e[0]) * 0.5:
+        hints.append("W_E tendiert gegen 0 → konsistent mit H0b (analytische Nullhypothese)")
+
+    hints.append("H0b ⇏ alpha_E≤1/2 — analytische und Skalierungsfrage getrennt halten")
+
+    z = df["R_1_2"].to_numpy(dtype=np.float64)
+    r23 = df["R_2_3"].to_numpy(dtype=np.float64)
+    if slopes.get(0.5, 0.0) > 0.1:
+        hints.append(f"R_{{1/2}} waechst (Steigung={slopes[0.5]:.3f}) → alpha_E > 1/2")
+    if coefficient_of_variation(z) < coefficient_of_variation(r23):
+        hints.append("R_{1/2} stabiler als R_{2/3} → eher H0a als alpha_E≈2/3")
+    elif coefficient_of_variation(r23) < coefficient_of_variation(df["R_1"]):
+        hints.append("R_{2/3} relativ stabil → alpha_E≈2/3 (H2, nicht H3)")
+
+    w_stable = coefficient_of_variation(df["R_1"].to_numpy(dtype=np.float64))
+    if w_stable < 0.25 and alpha_E_hat >= 0.85:
+        hints.append("R_1 stabil → Holonomie-Hinweis (H3-Kandidat)")
+
     return "; ".join(hints)
+
+
+def make_diagnose_plot(df: pd.DataFrame, loc: pd.Series, out_path: Path) -> None:
+    import matplotlib.pyplot as plt
+
+    x = df["X"].to_numpy(dtype=np.float64)
+    fig, axes = plt.subplots(2, 2, figsize=(11, 8), sharex=True)
+    fig.suptitle("EABC-Quadruplets: alpha_E-Diagnose (H0a/H0b–H3)")
+
+    ax = axes[0, 0]
+    ax.plot(x, df["W_E"], "o-", color="C0", label=r"$W_E = R_1 = D/Q$")
+    ax.axhline(0.0, color="gray", linewidth=0.8, linestyle="--")
+    ax.set_ylabel(r"$W_E(X)$")
+    ax.set_title("Panel 1: analytische Orientierung (H0b / H3)")
+    ax.legend(loc="best", fontsize=8)
+    ax.grid(True, alpha=0.3)
+
+    ax = axes[0, 1]
+    ax.plot(x, df["R_1_2"], "s-", color="C1", label=r"$Z_E = R_{1/2} = D/\sqrt{Q}$")
+    ax.axhline(0.0, color="gray", linewidth=0.8, linestyle="--")
+    ax.set_ylabel(r"$Z_E(X) = R_{1/2}(X)$")
+    ax.set_title("Panel 2: erste Testobservable (H0a / H1)")
+    ax.legend(loc="best", fontsize=8)
+    ax.grid(True, alpha=0.3)
+
+    ax = axes[1, 0]
+    loc_vals = loc.to_numpy(dtype=np.float64)
+    ax.plot(x, loc_vals, "^-", color="C2", label=r"$\alpha_{\mathrm{loc}}$")
+    ax.axhline(0.5, color="gray", linewidth=0.8, linestyle="--", label=r"$\alpha=1/2$")
+    ax.set_ylabel(r"$\alpha_{\mathrm{loc}}$")
+    ax.set_xlabel(r"$X$")
+    ax.set_title("Panel 3: lokaler Bias (H1 / H2)")
+    ax.legend(loc="best", fontsize=8)
+    ax.grid(True, alpha=0.3)
+
+    ax = axes[1, 1]
+    labels = {
+        "R_1_2": r"$R_{1/2}$",
+        "R_2_3": r"$R_{2/3}$",
+        "R_3_4": r"$R_{3/4}$",
+        "R_9_10": r"$R_{0.9}$",
+        "R_1": r"$R_1$",
+    }
+    for i, (col, label) in enumerate(labels.items()):
+        ax.plot(x, df[col], "o-", markersize=4, label=label, color=f"C{i + 3}")
+    ax.axhline(0.0, color="gray", linewidth=0.8, linestyle="--")
+    ax.set_ylabel(r"$R_\beta(X)$")
+    ax.set_xlabel(r"$X$")
+    ax.set_title("Panel 4: Skalierungsdiagnostik R_beta")
+    ax.legend(loc="best", fontsize=7)
+    ax.grid(True, alpha=0.3)
+
+    fig.tight_layout()
+    fig.savefig(out_path, dpi=150)
+    plt.close(fig)
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("csv", nargs="?", default="eabc_quadruplets.csv")
+    parser.add_argument(
+        "--plot",
+        action="store_true",
+        help="Vierfeld-Diagnose-Plot als PNG erzeugen",
+    )
+    parser.add_argument(
+        "--plot-out",
+        type=str,
+        default="eabc_quadruplets_diagnose.png",
+        help="Ausgabepfad für --plot (Standard: eabc_quadruplets_diagnose.png)",
+    )
     args = parser.parse_args()
 
     df = pd.read_csv(args.csv)
+    df = ensure_beta_columns(df)
     valid = load_valid(df)
     if valid.empty:
         raise SystemExit("Keine gültigen Zeilen (diff≠0, Q>1).")
@@ -73,26 +260,39 @@ def main():
     loc = alpha_loc_series(valid)
 
     print("alpha_eff pro Checkpoint:")
-    for _, row in valid.iterrows():
+    for idx, row in valid.iterrows():
         x = int(row["X"])
-        ae = eff.loc[row.name]
-        al = loc.loc[row.name]
-        al_str = f"{al:.4f}" if not np.isnan(al) else "—"
+        ae = eff.loc[idx]
+        al_str = "—"
+        if idx in loc.index and not np.isnan(loc.loc[idx]):
+            al_str = f"{loc.loc[idx]:.4f}"
         print(f"  X={x:>12}  alpha_eff={ae:.4f}  alpha_loc={al_str}")
 
     alpha_loc_vals = loc.dropna()
     alpha_loc_max = float(alpha_loc_vals.max()) if not alpha_loc_vals.empty else None
     if not alpha_loc_vals.empty:
         print("\nalpha_loc (lokale Steigung zwischen Checkpoints):")
-        for _, row in valid.iloc[1:].iterrows():
-            al = loc.loc[row.name]
-            if not np.isnan(al):
-                print(f"  bis X={int(row['X']):>12}: {al:.4f}")
+        for idx, row in valid.iloc[1:].iterrows():
+            if idx in loc.index and not np.isnan(loc.loc[idx]):
+                print(f"  bis X={int(row['X']):>12}: {loc.loc[idx]:.4f}")
+
+    if len(valid) < 2:
+        print("\nZu wenige Checkpoints für globalen Log-log-Fit (mind. 2).")
+        if args.plot and len(valid) >= 1:
+            out_path = Path(args.plot_out)
+            make_diagnose_plot(valid, loc.reindex(valid.index), out_path)
+            print(f"\nDiagnose-Plot gespeichert: {out_path.resolve()}")
+        return
 
     alpha, beta = fit_alpha(valid)
     print(f"\nglobal alpha (polyfit) = {alpha:.4f}")
     print(f"beta                   = {beta:.4f}")
-    print(f"→ {interpret(alpha, alpha_loc_max)}")
+    print(f"→ {interpret(alpha, alpha_loc_max, valid)}")
+
+    if args.plot:
+        out_path = Path(args.plot_out)
+        make_diagnose_plot(valid, loc, out_path)
+        print(f"\nDiagnose-Plot gespeichert: {out_path.resolve()}")
 
 
 if __name__ == "__main__":
