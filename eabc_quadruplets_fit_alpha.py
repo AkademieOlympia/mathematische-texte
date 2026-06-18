@@ -198,6 +198,38 @@ def interpret(
     )
 
 
+def make_loglog_plot(df: pd.DataFrame, alpha: float, beta: float, out_path: Path) -> None:
+    import matplotlib.pyplot as plt
+
+    q = df["Q_total"].to_numpy(dtype=np.float64)
+    d = np.abs(df["diff"].to_numpy(dtype=np.float64))
+    log_q = np.log(q)
+    log_d = np.log(d)
+
+    fig, ax = plt.subplots(figsize=(7, 5))
+    ax.scatter(log_q, log_d, s=40, color="C0", zorder=3, label=r"$\log|D_E|$ vs $\log Q$")
+
+    if len(df) >= 2:
+        x_fit = np.linspace(log_q.min(), log_q.max(), 100)
+        y_fit = alpha * x_fit + beta
+        ax.plot(
+            x_fit,
+            y_fit,
+            "--",
+            color="C1",
+            label=rf"polyfit: $\alpha={alpha:.3f}$",
+        )
+
+    ax.set_xlabel(r"$\log Q(X)$")
+    ax.set_ylabel(r"$\log|D_E(X)|$")
+    ax.set_title("Ebene 1/2: Log-log-Skalierung (Experiment, kein Satz)")
+    ax.legend(loc="best")
+    ax.grid(True, alpha=0.3)
+    fig.tight_layout()
+    fig.savefig(out_path, dpi=150)
+    plt.close(fig)
+
+
 def make_diagnose_plot(df: pd.DataFrame, loc: pd.Series, out_path: Path) -> None:
     import matplotlib.pyplot as plt
 
@@ -267,6 +299,17 @@ def main():
         default="eabc_quadruplets_diagnose.png",
         help="Ausgabepfad für --plot (Standard: eabc_quadruplets_diagnose.png)",
     )
+    parser.add_argument(
+        "--plot-loglog",
+        action="store_true",
+        help="Log-log-Plot log|D_E| vs log Q als PNG erzeugen",
+    )
+    parser.add_argument(
+        "--plot-loglog-out",
+        type=str,
+        default="eabc_quadruplets_loglog.png",
+        help="Ausgabepfad für --plot-loglog",
+    )
     args = parser.parse_args()
 
     df = pd.read_csv(args.csv)
@@ -307,6 +350,8 @@ def main():
             out_path = Path(args.plot_out)
             make_diagnose_plot(valid, loc.reindex(valid.index), out_path)
             print(f"\nDiagnose-Plot gespeichert: {out_path.resolve()}")
+        if args.plot_loglog:
+            print("Log-log-Plot übersprungen (mind. 2 Checkpoints nötig).")
         return
 
     alpha, beta = fit_alpha(valid)
@@ -340,6 +385,15 @@ def main():
         out_path = Path(args.plot_out)
         make_diagnose_plot(valid, loc, out_path)
         print(f"\nDiagnose-Plot gespeichert: {out_path.resolve()}")
+
+    if args.plot_loglog:
+        if len(valid) < 2:
+            print("\nZu wenige Checkpoints für Log-log-Plot (mind. 2).")
+        else:
+            alpha_ll, beta_ll = fit_alpha(valid)
+            out_path = Path(args.plot_loglog_out)
+            make_loglog_plot(valid, alpha_ll, beta_ll, out_path)
+            print(f"Log-log-Plot gespeichert: {out_path.resolve()}")
 
 
 if __name__ == "__main__":
