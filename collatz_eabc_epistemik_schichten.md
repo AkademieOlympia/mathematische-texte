@@ -1,8 +1,19 @@
 # EABC Epistemik: Schichten A / B / C und rote RadiationSpace-Schicht
 
 **Status:** Kanonisches Schichten-Framework — **kein** Physikanspruch  
-**Branch:** `collatz/eabc-05-holonomie-fehlerterm` (PR #59), `collatz/eabc-euklidische-hebung`  
+**Branch:** `collatz/eabc-05-holonomie-fehlerterm` (PR #59), `collatz/eabc-h03-diskrete-geometrie-fluss` (PR #63)  
 **Tao-Labels:** Definition | Theorem | Modellabbildung | Analogie | Ikone | Forschungsfrage | Scaffold
+
+**Vier Wahrheitstypen (Lean `FlussPhiE.lean`):**
+
+$$\boxed{\;\textbf{Theorem} \;\neq\; \textbf{Struktur} \;\neq\; \textbf{Brücke} \;\neq\; \textbf{Ikone}\;}$$
+
+| Schicht | Label | Lean | Beispiel |
+|---------|-------|------|----------|
+| **A** | Theorem | bewiesen, kein `sorry` | `E_plus_union_E_minus`, `Phi_E_eq_inner_product_discrete` |
+| **B** | Struktur | Definition / `Prop` | `W_E_up_to`, `phi_E_conjecture`, `HasPhi_E` |
+| **R** | Forschungsbrücke | `sorry`, asymptotisch | `phi_E_conjecture_statement`, `Phi_E_zero_of_symmetry` |
+| **C** | Ikone | nur Markdown | Thomson, Sagnac, RadiationSpace-Lesart |
 
 **Querverweise:**
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^\pm$, $\Phi_E$, EABC-Vermutung (Schicht **B**)
@@ -44,7 +55,7 @@ $$\boxed{\;\textbf{Beweis-Spur} \;\|\; \textbf{Ikone-Spur}\;}$$
 | Fraktalskalen | Skalenhierarchie $\Sigma_n$, Normniveaus | `collatz_eabc_plattenuebergang.md`, `collatz_eabc_quaternion_mass_hypothese.md` |
 | Holonomie / Zirkulation | $D_E=N_+-N_-$, Lücken $(2,4,2,4)$, Taubenloch | `CollatzEabc/HolonomieFehlerterm.lean`, `collatz_eabc_fehlerterm_hypothese.md` |
 
-**Lean-Anker:** `CollatzEabc.Core`, `HolonomieFehlerterm`, `Kappa`, `ArithLanguage`, `FlussPhiE` (kombinatorischer Teil).
+**Lean-Anker:** `CollatzEabc.Core`, `HolonomieFehlerterm`, `Kappa`, `ArithLanguage`, `FlussPhiE` (**Schicht A** — kombinatorischer Teil).
 
 **Epistemische Grenze:** Alles in Schicht A ist **arithmetisch oder kombinatorisch** — keine Thomson-Schale, kein Strahlungsraum, keine Quaternionenrotation als „physikalisch“.
 
@@ -64,10 +75,12 @@ $$\boxed{\;\textbf{Beweis-Spur} \;\|\; \textbf{Ikone-Spur}\;}$$
 | Fluss | $\omega_E$, $C_E=\oint_\gamma\omega_E$, $W_E(X)$ | `collatz_eabc_zirkulationshypothese.md` |
 | Orientierungsklassen | $\Phi_E=\lim W_E$, chirale 1-Form | `collatz_eabc_chirale_polarisation.md` |
 
-**Kernfrage (Schicht B):**
+**Kernfrage (Schicht B als Struktur, Schicht R als Brücke):**
 $$\boxed{\;\Phi_E = \lim_{X\to\infty} W_E(X) \stackrel{?}{\neq} 0\;}$$
 
-**Abgrenzung zu Schicht C:** Sagnac, AB-Phase, magnetischer Laplace sind **Analogien** auf $G_E$ — geometrisch sauber in B, physikalisch ikonisch erst in C.
+Lean: `phi_E_conjecture` (**B**, `Prop`) vs. `phi_E_conjecture_statement` (**R**, `sorry`); Grenzwert-Schranke **GREEN** `W_E_bounds`, asymptotische Chiralität **RED** `HasNonzeroHolonomyLimit` / `EABC_holonomy_limit_conjecture` in `HolonomyCore.lean`. Methodische Lesart (Definition / starke Vermutung / Hauptterm-Null / Experiment): `collatz_eabc_zirkulationshypothese.md` §4.1.
+
+**Abgrenzung zu Schicht C:** Sagnac, AB-Phase, magnetischer Laplace sind **Analogien** auf $G_E$ — geometrisch sauber in B, physikalisch ikonisch erst in C. Priminduzierte Zählung $N_\pm(X)$ ist **B**, nicht „laufende“ Primzahlen (**C**-Ikone).
 
 ---
 
@@ -144,8 +157,9 @@ class RadiationSpace where
 | `collatz_eabc_brachistochrone.md` | **C** | Fermat-Modell |
 | `collatz_eabc_sagnac.md` | **C** | Didaktische Intuition |
 | `CollatzEabc/RadiationSpace.lean` | **rot** | Scaffold only |
-| `CollatzEabc/FlussPhiE.lean` | **B** | $C_4$, $h$, $W_E$ |
-| `CollatzEabc/HolonomieFehlerterm.lean` | **A**–**B** | Lücken bewiesen; Prime `sorry` |
+| `CollatzEabc/FlussPhiE.lean` | **A**–**B**–**R** | $C_4$, $h$ bewiesen (**A**); $W_E$, $\Phi_E$ (**B**); EABC-Vermutung (**R**) |
+| `CollatzEabc/HolonomyCore.lean` | **B**–**R** | **GREEN** `W_E_bounds`; **RED** `HasNonzeroHolonomyLimit` |
+| `CollatzEabc/HolonomieFehlerterm.lean` | **A**–**B**–**R** | Lücken bewiesen (**A**); Zähldefinitionen (**B**); Prime `sorry` (**R**) |
 
 ---
 
@@ -178,7 +192,9 @@ Diese Parallelen dienen der **Orientierung** in der Ikone-Spur. Sie begründen *
 
 $$\boxed{\;\text{A = hart (24I}_3\text{, Defekte, Fenster, Holonomie kombinatorisch).}\;}$$
 
-$$\boxed{\;\text{B = geometrisch (Kreisgraph, Fluss, Harmonik, Orientierung).}\;}$$
+$$\boxed{\;\text{B = Struktur (Kreisgraph, Fluss, Harmonik, Grenzwert-`Prop`).}\;}$$
+
+$$\boxed{\;\text{R = Forschungsbrücke (Prim-Enumeration, asymptotik, } \Phi_E \neq 0 \text{ — `sorry` erlaubt).}\;}$$
 
 $$\boxed{\;\text{C = ikonische Physik (Thomson, Schalen, Quaternionen) — Interpretation, kein Export.}\;}$$
 

@@ -10,6 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; asymptotische Chiralität methodisch in §4.1
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
 - `collatz_eabc_sagnac.md` — **Intuition only:** Sagnac-Bild für $\gamma^\pm$ (kein physikalischer Kern)
@@ -133,6 +134,31 @@ $$\boxed{\;\Phi_E = \lim_{X\to\infty} W_E(X) = \lim_{X\to\infty}\frac{C_E(X)}{N_
 **Numerik:** `flux_density_limit` in `collatz_eabc_hodge_eabc.py`.
 
 **Label:** Hauptterm-Vermutung = **Vermutung**; Orientierungsklassen-Vermutung = **Vermutung** / **Forschungsfrage**.
+
+### 4.1 Asymptotische Chiralität (methodische Lesart)
+
+$$\lim_{X\to\infty} W_E(X) = \Phi_E \neq 0$$
+heißt **asymptotische Chiralität**: der normierte Fluss $W_E(X)=C_E(X)/(N_+(X)+N_-(X))$ tendiert gegen eine **von Null verschiedene Orientierungsklasse** auf $C_4$ — nicht gegen „Ruhe“ der Primzahlen.
+
+| Lesart | Inhalt | Label |
+|--------|--------|-------|
+| **Definition** | $N_\pm(X)$ zählt ABCEA- bzw. CEABC-Fenster unter der Bedingung $p_{n+4}\le X$; $W_E(X)$ ist der Quotient $C_E/(N_++N_-)$. Primzahlen **laufen** nicht — es gibt nur eine **priminduzierte EABC-Zählung** auf $G_E$. | **Definition** (Schicht **B**) |
+| **Vermutung (stark)** | $\exists\,\Phi\neq 0:\; W_E(X)\to\Phi$ — nichttriviale globale Orientierungsklasse / asymptotische Chiralität. | **Vermutung** (Schicht **R**) |
+| **Vermutung (konservativ, Hauptterm)** | $N_+(X)\sim N_-(X)\;\Rightarrow\;\Phi_E=0$ — Symmetrie der gegenläufigen Zyklusorientierungen. | **Vermutung** (Schicht **B**/**R**) |
+| **Experiment** | Numerik bei endlichem $X$ (z. B. $X\approx 10^6$, $W_E\approx 0{,}12$) ist **Stichprobe**, kein Beweis des Grenzwerts. | **Experiment** |
+
+**Methodische Präzisionen:**
+
+1. **Kein Lauf-Bild.** Metaphern wie „Primzahlen laufen im Kreis“ gehören zur Ikone-Spur (Schicht **C**). Mathematisch fixiert ist nur $N_\pm(X)$ und der daraus gebildete Quotient $W_E(X)$ auf Schicht **B**.
+2. **Konvergenz $\neq$ Ruhe.** Selbst wenn $W_E(X)\to\Phi_E\neq 0$, bleibt die Primfolge lokal chaotisch; stabilisiert wird nur der **normierte Quotient**, nicht die Einzelereignisse $C_n^{(5)}$.
+3. **Zwei konkurrierende asymptotische Lesarten.** Die **starke EABC-Vermutung** ($\Phi_E\neq 0$) und die **konservative Nullhypothese** ($N_+\sim N_-\Rightarrow\Phi_E=0$, vgl. Hauptterm oben) sind bewusst getrennt zu halten — Experimente entscheiden nicht zwischen ihnen.
+
+**Lean (`CollatzEabc/HolonomyCore.lean`):**
+
+| Schicht | Symbol | Status |
+|---------|--------|--------|
+| **GREEN** | `W_E_bounds` | bewiesen: $-1\le W_E(X)\le 1$ für alle $X$ |
+| **RED** | `HasNonzeroHolonomyLimit`, `EABC_holonomy_limit_conjecture` | explizite Forschungsbrücke (`sorry`): $\exists\,\Phi\neq 0,\; W_E(X)\to\Phi$ |
 
 ---
 

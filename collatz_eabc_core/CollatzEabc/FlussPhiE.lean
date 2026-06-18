@@ -1,9 +1,16 @@
 /-
   CollatzEabc.FlussPhiE — Φ_E, W_E, harmonische 1-Form auf C₄ ≅ S¹.
 
-  **Nicht sorry-frei.** Kombinatorische Teile (C₄-Kanten, kanonisches h, endliche
-  Symmetrie ⇒ W_E=0) sind bewiesen; Prim-Enumeration, asymptotische Grenzwerte und
-  die EABC-Vermutung bleiben `sorry`.
+  **Nicht sorry-frei.** Epistemische Schichten (vgl. `collatz_eabc_epistemik_schichten.md`):
+
+  | Schicht | Label            | Inhalt in diesem Modul                          |
+  |---------|------------------|-------------------------------------------------|
+  | **A**   | Theorem          | Kombinatorisch bewiesen (kein `sorry`)          |
+  | **B**   | Struktur         | Definitionen, `Prop`-Skelette ohne Beweisanspruch |
+  | **R**   | Forschungsbrücke | Asymptotik, Prim-Enumeration, EABC-Vermutung (`sorry`) |
+  | **C**   | Ikone            | Nur Markdown — nicht formalisiert               |
+
+  **Theorem ≠ Struktur ≠ Brücke ≠ Ikone**
 
   Referenz:
     collatz_eabc_diskrete_geometrie.md
@@ -23,7 +30,7 @@ namespace CollatzEabc
 open Filter List
 
 /-!
-### G_E = C₄: orientierte Kanten E⁺ / E⁻
+## Schicht B — Struktur: G_E = C₄, orientierte Kanten E⁺ / E⁻
 
 Vertices V = {E,A,B,C} = `EabcLetter` (E=0, A=1, B=2, C=3).
 Forward cycle: E → A → B → C → E.
@@ -40,11 +47,6 @@ def E_plus : Finset C4DirectedEdge :=
 /-- Rückwärtsorientierte Kantenmenge E⁻ = {EC, CB, BA, AE}. -/
 def E_minus : Finset C4DirectedEdge :=
   {C4DirectedEdge.EC, C4DirectedEdge.CB, C4DirectedEdge.BA, C4DirectedEdge.AE}
-
-/-- E⁺ und E⁻ partitionieren die acht gerichteten Kanten. -/
-theorem E_plus_union_E_minus :
-    E_plus ∪ E_minus = Finset.univ ∧ Disjoint E_plus E_minus := by
-  constructor <;> decide
 
 /-- Quelle einer gerichteten Kante. -/
 def edgeSrc : C4DirectedEdge → EabcLetter
@@ -72,10 +74,6 @@ def edgeTgt : C4DirectedEdge → EabcLetter
 def forwardCycleVertices : List EabcLetter :=
   [⟨0, by decide⟩, ⟨1, by decide⟩, ⟨2, by decide⟩, ⟨3, by decide⟩, ⟨0, by decide⟩]
 
-/-- Vorwärtszyklus ist geschlossen. -/
-theorem forward_cycle_closed :
-    forwardCycleVertices.getLast? = forwardCycleVertices.head? := rfl
-
 /-- Diskrete 1-Kozykel (Koeffizienten in ℤ). -/
 abbrev C4Cochain := C4DirectedEdge → ℤ
 
@@ -94,14 +92,23 @@ structure C4HarmonicForm where
   is_canonical : coeff = h_canonical
 
 /-!
-### Bewiesen: Existenz von h (H¹(C₄) ≅ ℤ, trivial)
+## Schicht A — Theorem: kombinatorische Kernidentitäten (bewiesen)
 -/
 
-/-- **Theorem (bewiesen):** kanonische harmonische 1-Form auf C₄ existiert. -/
+/-- **[Schicht A]** E⁺ ⊔ E⁻ partitionieren die acht gerichteten Kanten. -/
+theorem E_plus_union_E_minus :
+    E_plus ∪ E_minus = Finset.univ ∧ Disjoint E_plus E_minus := by
+  constructor <;> decide
+
+/-- **[Schicht A]** Vorwärtszyklus E→A→B→C→E ist geschlossen. -/
+theorem forward_cycle_closed :
+    forwardCycleVertices.getLast? = forwardCycleVertices.head? := rfl
+
+/-- **[Schicht A]** Kanonische harmonische 1-Form auf C₄ existiert (H¹(C₄) ≅ ℤ). -/
 theorem harmonic_form_exists : Nonempty C4HarmonicForm :=
   ⟨⟨h_canonical, rfl⟩⟩
 
-/-- h ist kein Korand einer 0-Kette (nichttrivial in H¹). -/
+/-- **[Schicht A]** h ist kein Korand einer 0-Kette (nichttrivial in H¹). -/
 theorem h_canonical_not_coboundary :
     ¬ ∃ f : EabcLetter → ℤ, ∀ e, h_canonical e = coboundary f e := by
   intro ⟨f, hf⟩
@@ -116,7 +123,7 @@ theorem h_canonical_not_coboundary :
   linarith
 
 /-!
-### Endliche Zählgrößen: C_E, S_E, W_E (Prim-Skeleton via HolonomieFehlerterm)
+## Schicht B — Struktur: C_E, S_E, W_E, Φ_E (Prim-Skeleton via HolonomieFehlerterm)
 -/
 
 /-- C_E(X) = N₊(X) − N₋(X) auf der κ-Folge bis Primgrenze X. -/
@@ -137,31 +144,37 @@ def W_E_up_to (X : ℕ) : ℚ :=
 def HasPhi_E (φ : ℝ) : Prop :=
   Tendsto (fun X : ℕ => (W_E_up_to X : ℝ)) atTop (nhds φ)
 
-/-- Φ_E = 0 (asymptotische Symmetrie / Holonomie-Fehlerterm-Hypothese). -/
+/-- **[Schicht B]** Φ_E = 0 (asymptotische Symmetrie / Holonomie-Fehlerterm-Hypothese). -/
 def Phi_E_eq_zero : Prop :=
   HasPhi_E 0
 
-/-- **Definition (Vermutung):** Φ_E ≠ 0 — stabile arithmetische Orientierungsklasse. -/
+/-- **[Schicht B]** EABC-Vermutung: Φ_E ≠ 0 — stabile arithmetische Orientierungsklasse. -/
 def phi_E_conjecture : Prop :=
   ∃ φ : ℝ, HasPhi_E φ ∧ φ ≠ 0
 
 /-!
-### Bewiesen auf endlichen Listen (kombinatorisch)
+## Schicht A — Theorem: endliche Symmetrie ⇒ W_E = 0
 -/
 
-/-- Auf endlicher Folge: N₊ = N₋ ⇒ χ_Hol = W_E = 0. -/
+/-- **[Schicht A]** Auf endlicher Folge: N₊ = N₋ ⇒ χ_Hol = W_E = 0. -/
 theorem chi_Hol_zero_of_balance (classes : List EabcLetter)
     (h : N_plus classes = N_minus classes) : chi_Hol classes = 0 := by
   unfold chi_Hol D_E
   simp [h]
 
-/-- Alias: W_E auf Listen = `chi_Hol`. -/
+/-- **[Schicht A]** Alias: W_E auf Listen = `chi_Hol`. -/
 theorem W_E_list_zero_of_balance (classes : List EabcLetter)
     (h : N_plus classes = N_minus classes) : chi_Hol classes = 0 :=
   chi_Hol_zero_of_balance classes h
 
+/-- **[Schicht A]** W_E(X)=0 sobald N₊(X)=N₋(X). -/
+theorem W_E_up_to_zero_of_balance (X : ℕ) (h : N_plus_up_to X = N_minus_up_to X) :
+    W_E_up_to X = 0 := by
+  unfold W_E_up_to C_E_up_to S_E_up_to D_E_up_to
+  simp [h]
+
 /-!
-### Diskrete 1-Form ω_E und Paarung ⟨ω_E, h⟩
+## Schicht B — Struktur: diskrete 1-Form ω_E und Paarung ⟨ω_E, h⟩
 -/
 
 /-- Gewichte einer diskreten 1-Form ω_E auf Kanten (endliche Stichprobe). -/
@@ -182,7 +195,11 @@ lemma h_coeff_E_plus (e : C4DirectedEdge) (he : e ∈ E_plus) : h_canonical e = 
 lemma h_coeff_E_minus (e : C4DirectedEdge) (he : e ∈ E_minus) : h_canonical e = -1 := by
   rcases e <;> simp [E_minus, h_canonical] at he ⊢
 
-/-- **Theorem (bewiesen):** diskrete Paarung ⟨ω,h⟩ = Zirkulation C_E bei ω auf E⁺∪E⁻. -/
+/-!
+## Schicht A — Theorem: diskrete Paarung ⟨ω_E, h⟩ = C_E
+-/
+
+/-- **[Schicht A]** Diskrete Paarung ⟨ω,h⟩ = Zirkulation C_E bei ω auf E⁺∪E⁻. -/
 theorem Phi_E_eq_inner_product_discrete (ω : OmegaE) :
     innerProductOmegaH ω = circulationOmega ω := by
   unfold innerProductOmegaH circulationOmega
@@ -197,22 +214,19 @@ theorem Phi_E_eq_inner_product_discrete (ω : OmegaE) :
   simp [sub_eq_add_neg]
 
 /-!
-### Asymptotik (Skeleton — sorry für Prim-Enumeration)
+## Schicht R — Forschungsbrücken (`sorry`): Asymptotik, Prim-Enumeration, EABC-Vermutung
+
+Diese Sektion verbindet Schicht-A-Endlichkeit mit Schicht-B-Grenzwerten.
+Prim-Zählung (`N_plus_up_to`, `N_minus_up_to`, `Hol_E_zero`) in `HolonomieFehlerterm`.
 -/
 
-/-- W_E(X)=0 sobald N₊(X)=N₋(X). -/
-theorem W_E_up_to_zero_of_balance (X : ℕ) (h : N_plus_up_to X = N_minus_up_to X) :
-    W_E_up_to X = 0 := by
-  unfold W_E_up_to C_E_up_to S_E_up_to D_E_up_to
-  simp [h]
-
-/-- **Skeleton:** asymptotische Symmetrie N₊∼N₋ ⇒ Φ_E=0 (Grenzwertarithmetik; Primteil sorry). -/
+/-- **[Schicht R]** Asymptotische Symmetrie N₊∼N₋ ⇒ Φ_E=0 (Primteil `sorry`). -/
 theorem Phi_E_zero_of_symmetry
     (h : ∀ᶠ X in atTop, N_plus_up_to X = N_minus_up_to X) : Phi_E_eq_zero := by
   unfold Phi_E_eq_zero HasPhi_E
   sorry
 
-/-- Brücke endliche Folge → Prim-Obergrenze (offen). -/
+/-- **[Schicht R]** Brücke Folge → Prim-Obergrenze: asymptotische Paarung Φ_E ↔ ⟨ω_E,h⟩ (offen). -/
 theorem Phi_E_eq_inner_product :
     ∀ φ : ℝ, HasPhi_E φ →
       ∃ ω : ℕ → OmegaE,
@@ -220,11 +234,11 @@ theorem Phi_E_eq_inner_product :
   intro φ hφ
   sorry
 
-/-- **Skeleton:** unter HL-Symmetrie (N₊ asymptotisch ≈ N₋) folgt Hol_E = Φ_E = 0. -/
+/-- **[Schicht R]** Unter HL-Symmetrie (N₊ ≈ N₋) folgt Hol_E = Φ_E = 0. -/
 theorem hol_E_zero_of_HL (hHL : Hol_E_zero) : Phi_E_eq_zero := by
   sorry
 
-/-- EABC-Vermutung als Lean-`Prop` (unbewiesen). -/
+/-- **[Schicht R]** EABC-Vermutung Φ_E ≠ 0 — stabile Orientierungsklasse (unbewiesen). -/
 theorem phi_E_conjecture_statement : phi_E_conjecture := by
   sorry
 
