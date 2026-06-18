@@ -15,6 +15,7 @@
 | Epistemik Physik vs. Modell | `collatz_eabc_epistemik_physik.md` | — |
 | Wigner-Legacy (4-Pfad) | `collatz_eabc_wigner_analog.md` | `collatz_eabc_wigner_field.py` |
 | Algebraischer Nebenzweig | `collatz_eabc_euklidische_hebung.md` | `collatz_eabc_euklid_hebung.py` |
+| Lean $\Phi_E$ / $h$ auf $C_4$ | `collatz_eabc_phi_e_lean_beweisversuch.md` | `collatz_eabc_core/CollatzEabc/FlussPhiE.lean` |
 
 ---
 
@@ -165,7 +166,7 @@ $\theta_{ij}$ aus ABCEA/CEABC-Orientierungen.
 ### Offen
 
 - Asymptotischer Beweis $\Phi_E = 0$ oder $\neq 0$
-- Lean: $\Phi_E$, harmonische Paarung, $L_{\mathrm{mag}}$
+- Lean: Prim-Grenzwert $\Phi_E$, asymptotische Paarung $\langle\omega_E,h\rangle$, $L_{\mathrm{mag}}$ (Skeleton: `FlussPhiE.lean`; diskretes $h$ **bewiesen**)
 - Vollständige diskrete Hodge-Theorie auf erweitertem Übergangsraum
 
 ---
