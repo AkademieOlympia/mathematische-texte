@@ -224,7 +224,7 @@ $$\boxed{\;\text{Kann } D_E \text{ dieselbe Mechanik (}L\text{-Nullstellen mod }
 | Gemeinsame Mechanik über Charaktere mod $12$? | **Bedingt** | Beweis: $D_E=\sum a_\chi E_\chi(X)$ mit expliziten $a_\chi$; Äquidistribution von $5$-Fenstern |
 | Numerische Evidenz für Identität mit mod-$4$-Bias? | **Nein** | Kein stabiles Verhältnis; mod-$12$-$(5,11)$-Race bei $10^6$ contra |
 
-**Hinweis:** `collatz_eabc_D_growth.py` (in §3 referenziert) ist noch **nicht implementiert**; Wachstumsdiagnostik und Charakter-Stub stehen aus.
+**Hinweis:** `collatz_eabc_D_growth.py` liefert Wachstumsdiagnostik und einen **experimentellen** Charakter-Stub ($a_\chi$ per lineare Projektion); die Zerlegung ist **kein Theorem** und ersetzt nicht die $5$-Fenster-Korrelationsstruktur.
 
 ---
 
