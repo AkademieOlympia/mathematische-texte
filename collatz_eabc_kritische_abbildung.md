@@ -5,6 +5,7 @@
 **Tao-Labels:** Definition | Modellabbildung | Analogie
 
 **Querverweise:**
+- `collatz_eabc_epistemik_physik.md` — **kanonische drei Ebenen:** Wegfunktion, Nicht-Zwillingsparadoxon, Physik-vs.-EABC-Tabelle, zentrale Holonomie-Frage
 - `collatz_eabc_zirkulationshypothese.md` — kanonische Zirkulation, $N_\pm$, $D_E$, Holonomie-Vorzeichen $\pm 1$
 - `collatz_eabc_zyklus_holonomie.md` — Hierarchie Klasse→Kante→Zyklus→Holonomie
 - `collatz_eabc_sagnac_circulation.py` — Kanten $\omega(e)$, Lückenmuster $(2,4,2,4)$
@@ -209,7 +210,7 @@ Gesamtschritt auf $x$-Achse: $\sum \ell = 12$; Gesamt-$\gamma$-Anstieg: $12$ bei
 
 ## 7. Zwei Wege: Halbkreis vs. gerade
 
-**Epistemische Abgrenzung:** Dieser Abschnitt vergleicht **reine euklidische Weglängen** in der komplexen Ebene — **kein** Einstein-Zwillingsparadoxon, **keine** SRT-Zeitdilatation. Einheitsgeschwindigkeit $|dz/dt| = 1$ ⇒ **Rückkehrzeit = Gesamtweglänge**.
+**Epistemische Abgrenzung:** Dieser Abschnitt vergleicht **reine euklidische Weglängen** in der komplexen Ebene — **kein** Einstein-Zwillingsparadoxon, **keine** SRT-Zeitdilatation. Einheitsgeschwindigkeit $|dz/dt| = 1$ ⇒ **Rückkehrzeit = Gesamtweglänge**. Kanonische Drei-Ebenen-Lesart: `collatz_eabc_epistemik_physik.md` §1–2 (Wegparadoxon, Fahrrad-Analogie).
 
 **Quelle:** $P = (\tfrac12, 0)$. Besuchspunkte entlang ABCEA (bzw. CEABC) via Holonomie-Sensor $s_v(x_j)$ mit $v_j = \gamma_{\mathrm{ref}}/\ell_j$.
 
@@ -269,6 +270,7 @@ T_{\mathrm{semi}} = 4\pi\,\gamma_1 \approx 177{,}646,\qquad
 | Gerader Rundweg | `linear_round_trip_time(trajectory_points)` | `collatz_eabc_kritische_abbildung` |
 | Halbkreis-Kette | `semicircle_chain_time(trajectory_points)` | `collatz_eabc_kritische_abbildung` |
 | Weglängenvergleich | `compare_path_times(orientation, gamma_ref=...)` | `collatz_eabc_kritische_abbildung` |
+| Wegfunktion $T=\sum\ell_j^2/\gamma_{\mathrm{ref}}$ | `path_time_T(gaps, gamma_ref)` | `collatz_eabc_kritische_abbildung` |
 
 ---
 
