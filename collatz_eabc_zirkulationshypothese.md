@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; asymptotische Chiralität methodisch in §4.1
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; asymptotische Chiralität methodisch in §4.1; H₀/H₁/H₂-Skalierung in §4.2
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
 - `collatz_eabc_sagnac.md` — **Intuition only:** Sagnac-Bild für $\gamma^\pm$ (kein physikalischer Kern)
@@ -20,6 +20,8 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_holonomie_beweisversuch.md` — analytischer Beweisversuch
 - `collatz_eabc_sagnac_circulation.py` — $C_E(X)$, $\omega(e)$, $\alpha$
 - `collatz_eabc_holonomie_fehlerterm.py` — $N_\pm$, $D_E$, $S_E$, $\widetilde{D}_E$
+- `eabc_quadruplets_1e10.py` — Vierlings-Zählung bis $X$, $W_E$, $Z_E$, mod-$420$-Diagnostik
+- `eabc_quadruplets_fit_alpha.py` — Log-log-Fit $|D(X)|\sim Q(X)^\alpha$, H₀/H₁/H₂-Einordnung
 - `collatz_eabc_graph_laplacian.py` — $\mathrm{Spec}(L_E)$
 - `collatz_eabc_evolution_analytik.md` — **Evolutionspfad** Bell→Sagnac→$C_E$→$\mathrm{Spec}(L_E)$, Wachstumsszenarien, Dirichlet-Stub
 - `collatz_eabc_D_growth.py` — Wachstumsdiagnostik $D_E(X)$, Charakter-Koeffizienten $a_\chi$
@@ -164,6 +166,45 @@ $$W_E(X) = \frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)}$$
 3. **Keine unumkehrbare Tendenz.** Eine nichttriviale Grenzpräferenz $\Phi_E\neq 0$ ist eine **asymptotisch nichtverschwindende Orientierungspräferenz** — keine behauptete „unumkehrbare“ physikalische Tendenz.
 4. **Zwei konkurrierende asymptotische Lesarten.** Die **starke EABC-Vermutung** ($\Phi_E\neq 0$) und die **konservative Nullhypothese** ($N_+\sim N_-\Rightarrow\Phi_E=0$, vgl. Hauptterm oben) sind bewusst getrennt zu halten — Experimente entscheiden nicht zwischen ihnen.
 
+### 4.2 Fehlerterm-Skalierung und Hypothesenhierarchie (H₀/H₁/H₂)
+
+**Definitionen** (Schicht **B**; Vierlings-/Fensterzählung, Tao-Labels):
+
+$$A(X) := N_+(X)\quad(\mathrm{ABCEA}),\qquad C(X) := N_-(X)\quad(\mathrm{CEABC}),$$
+$$D(X) := A(X)-C(X) = D_E(X),\qquad Q(X) := A(X)+C(X).$$
+
+$$W_E(X) := \frac{D(X)}{Q(X)},\qquad Z_E(X) := \frac{D(X)}{\sqrt{Q(X)}} = \widetilde{D}_E(X).$$
+
+**Skalierungshypothese** (asymptotisch, $|D|\gg 1$):
+
+$$|D(X)| \sim Q(X)^\alpha \qquad (\alpha\in\mathbb{R}_+).$$
+
+Daraus folgen die Normalisierungen
+
+$$W_E(X) \sim Q(X)^{\alpha-1},\qquad Z_E(X) \sim Q(X)^{\alpha-1/2}.$$
+
+| Hypothese | Aussage | Label |
+|-----------|---------|-------|
+| **H₀** | $\alpha = \tfrac{1}{2}$ — reines Wurzelrauschen ($|D|\sim\sqrt{Q}$) | **Nullhypothese** |
+| **H₁** | $\alpha > \tfrac{1}{2}$ — strukturierter (sublinearer) Bias / chiraler Fehlerterm | **Hypothese** |
+| **H₂** | $\alpha = 1$ und $\Phi_E \neq 0$ — starke Holonomie ($|D|\sim Q$, $W_E\to\Phi_E$) | **Vermutung** (Spezialfall) |
+
+**Implikationen:** H₂ $\Rightarrow$ H₁; **H₁ $\not\Rightarrow$ H₂** (jeder $\alpha\in(\tfrac{1}{2},1)$ erfüllt H₁, lässt aber $W_E\to 0$).
+
+| $\alpha$ | $W_E$ | $Z_E$ | Lesart |
+|----------|-------|-------|--------|
+| $\tfrac{1}{2}$ | $\to 0$ | $O(1)$ | Zufallsniveau (H₀) |
+| $\tfrac{1}{2} < \alpha < 1$ | $\to 0$ | $\to\infty$ | schwacher / chiraler Bias (H₁, nicht H₂) |
+| $1$ | $\to \Phi_E \neq 0$ | $\sim\sqrt{Q}$ | starke Holonomie (H₂) |
+
+$$\boxed{\;\text{Primäre EABC-Frage: nicht zuerst }\Phi_E\neq 0\text{, sondern ob }\alpha>\tfrac{1}{2}\text{ (H}_1\text{).}\;}$$
+
+$$\boxed{\;\text{Starke Holonomie }\Phi_E\neq 0\text{ ist der Spezialfall }\alpha=1\text{ (H}_2\text{), nicht die erste Arbeitshypothese.}\;}$$
+
+**Numerik:** `eabc_quadruplets_1e10.py` erzeugt Checkpoints mit $Q$, $D$, $W_E$, $Z_E$ (Standardausgabe `eabc_quadruplets.csv`); `eabc_quadruplets_fit_alpha.py` schätzt $\alpha$ per Log-log-Regression und ordnet H₀/H₁/H₂ zu.
+
+**Label:** $A$, $C$, $Q$, $Z_E$, $\alpha$ = **Definition** / **Hypothese**; Fit von $\alpha$ = **Experiment**.
+
 ---
 
 ## 5. EABC-Hypothese (Fehlerterm)
@@ -178,7 +219,7 @@ Qualitativ: wie beim klassischen Chebyshev-Bias mod $4$ kann die **absolute Diff
 
 **Label:** EABC-Fehlerterm-Hypothese = **Hypothese** (stärker als Hauptvermutung allein).
 
-**Details und Numerik:** `collatz_eabc_fehlerterm_hypothese.md` §3–5; `collatz_eabc_holonomie_fehlerterm.py`.
+**Details und Numerik:** `collatz_eabc_fehlerterm_hypothese.md` §3–5; `collatz_eabc_holonomie_fehlerterm.py`; Skalierungsexponent $\alpha$ und H₀/H₁/H₂: §4.2; `eabc_quadruplets_1e10.py`, `eabc_quadruplets_fit_alpha.py`.
 
 ---
 
@@ -255,6 +296,8 @@ $$\boxed{\;\text{Welche Spektralinvarianten der EABC-Zirkulation unterscheiden P
 | $\omega(e)$, $\alpha$ | `edge_omega`, `discrete_one_form` | `collatz_eabc_sagnac_circulation` |
 | $\mathrm{Spec}(L_E)$ | `eigenvalues_symmetrized` | `collatz_eabc_graph_laplacian` |
 | $\Phi_E$, $W_E(X)$, Flussdichte | `Phi_E`, `flux_density_limit` | `collatz_eabc_hodge_eabc` |
+| $Q$, $D$, $W_E$, $Z_E$ (Vierlinge) | `Q_total`, `diff`, `W_E`, `Z_E` | `eabc_quadruplets_1e10` |
+| Skalierungsexponent $\alpha$ | `fit_alpha` | `eabc_quadruplets_fit_alpha` |
 | $\langle\omega_E,h\rangle$ | `inner_product_omega_h` | `collatz_eabc_hodge_eabc` |
 | $L_{\mathrm{mag}}$ | `magnetic_laplacian` | `collatz_eabc_hodge_eabc` |
 | $N_R$, $N_L$, $\phi_R$, $\phi_L$ | `N_R`, `N_L`, `phi_R`, `phi_L` | `collatz_eabc_chirale_transport` |

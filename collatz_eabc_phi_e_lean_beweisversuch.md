@@ -31,7 +31,7 @@ EABC = priminduzierter Fluss auf $C_4 \cong S^1$ mit
 - $C_E(X) = N_+(X) - N_-(X)$, $S_E(X) = N_+(X) + N_-(X)$
 - $W_E(X) = C_E(X)/S_E(X)$, $\Phi_E = \lim_{X\to\infty} W_E(X)$
 
-**Vermutung (Schicht R):** $\Phi_E \neq 0$ bzw. $\langle\omega_E, h\rangle \neq 0$ für kanonisches harmonisches $h$.
+**Vermutung (Schicht R):** $\Phi_E \neq 0$ bzw. $\langle\omega_E, h\rangle \neq 0$ für kanonisches harmonisches $h$. Methodisch ist dies **H₂** ($\alpha=1$) in der Skalierungshierarchie; die vorgelagerte Frage ist H₁ ($\alpha>\tfrac{1}{2}$) — `collatz_eabc_zirkulationshypothese.md` §4.2.
 
 ---
 
