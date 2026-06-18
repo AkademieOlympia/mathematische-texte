@@ -1,7 +1,7 @@
 # EABC-Zyklus-Holonomie-Hypothese (kanonisch)
 
 **Status:** Definition (Stufen 1–6) + Hypothese (Stufe 7) + Experiment  
-**Branch:** `collatz/eabc-euklidische-hebung` (PR #54)  
+**Branch:** `collatz/eabc-05-holonomie-fehlerterm` (PR #59)  
 **Tao-Labels:** Definition | Hypothese | Experiment | Theorem
 
 **Querverweise:**
@@ -14,6 +14,7 @@
 - `collatz_eabc_holonomie_beweisversuch.md` — analytischer Beweisversuch: mod-$12$-Symmetrie, $\mathrm{Hol}_E=0$, Fehlerterm $D_E$
 - `collatz_eabc_transition_graph.py` / `.json` — Numerik: $\chi_{\mathrm{Pfad}}$, $\chi_{\mathrm{Hol}}$, Nullmodelle
 - `collatz_eabc_holonomie_fehlerterm.py` / `.json` — $N_\pm$, $D_E$, $\widetilde{D}_E$, Lückenmuster $(2,4,2,4)$
+- `collatz_eabc_sagnac_circulation.py` / `.json` — $C_E(X)$, Kantenorientierung $\omega$, diskrete 1-Form
 - `collatz_eabc_holonomie_test.py` — $\chi_E^{\mathrm{quad}}(N)$ auf Prim-Vierlingen (Vergleichsträger)
 - `eabc_from_lean.py` — $\kappa=\texttt{class\_of}$, Rotation $t$
 
@@ -149,9 +150,10 @@ mit $\chi_{\mathrm{Hol}}(N)=0$, falls der Nenner $0$ ist.
 $$N_+(X) := \#\{n:\,p_{n+4}\le X,\; C_n^{(5)}=\mathrm{ABCEA}\},$$
 $$N_-(X) := \#\{n:\,p_{n+4}\le X,\; C_n^{(5)}=\mathrm{CEABC}\}.$$
 
-**Definition (Fehlerterm / Sagnac-Differenz).**
+**Definition (Fehlerterm / Sagnac-Differenz / Zirkulation).**
 $$\Delta_E(X) := N_+(X)-N_-(X),\qquad D_E(X):=\Delta_E(X),\qquad
-S_E(X):=\frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)},\qquad
+C_E(X):=\sum_{\gamma}\omega(\gamma)=D_E(X),$$
+$$S_E(X):=\frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)},\qquad
 \widetilde{D}_E(X) := \frac{\Delta_E(X)}{\sqrt{N_+(X)+N_-(X)}}.$$
 
 **Definition (Grenzwert / Hauptterm).**
@@ -255,7 +257,8 @@ collatz_eabc_zyklus_holonomie.md   Klasse→Kante→Pfad→Zyklus→Holonomie
 | $\chi_{\mathrm{Pfad}}(N)$ | `chi_pfad_sliding` | `chi_path_sliding`, `chi_E_sliding` |
 | $\chi_{\mathrm{Hol}}(N)$ | `chi_hol_sliding` | — |
 | $N_+(X)$, $N_-(X)$ | `N_plus`, `N_minus` | `N_ABCEA`, `N_CEABC` |
-| $\Delta_E$, $D_E$, $S_E$, $\widetilde{D}_E$ | `Delta_E`, `D_E`, `S_E`, `D_tilde_E` | `chi_Hol` für $S_E$ |
+| $\Delta_E$, $D_E$, $S_E$, $\widetilde{D}_E$, $C_E$ | `Delta_E`, `D_E`, `S_E`, `D_tilde_E`, `C_E` | `chi_Hol` für $S_E$ |
+| Zirkulation / Kanten-$\omega$ | `circulation_C_E`, `edge_omega` | — |
 | Vergleich Pfad vs. Holonomie | `chi_pfad_vs_hol` | `chi_path_vs_hol` |
 
 ---
@@ -270,7 +273,7 @@ collatz_eabc_zyklus_holonomie.md   Klasse→Kante→Pfad→Zyklus→Holonomie
 | $\chi_{\mathrm{Pfad}}(N)$ auf Gleitfenstern | **Definition** |
 | $C_n^{(5)}$, $\Omega_{\mathrm{Hol}}$ — geschlossener Zyklus | **Definition** |
 | $\chi_{\mathrm{Hol}}(N)$ | **Definition** |
-| $N_\pm$, $D_E$, $\widetilde{D}_E$ | **Definition** |
+| $N_\pm$, $D_E$, $\widetilde{D}_E$, $C_E$ | **Definition** |
 | $N_+\sim N_-$ $\Rightarrow$ $\mathrm{Hol}_E=0$ | **Vermutung** (Hauptvermutung) |
 | Fehlerterm-Hypothese ($L$-Funktionen mod $12$) | **Hypothese** |
 | $\mathrm{Hol}_E=\lim\chi_{\mathrm{Hol}}(N)$ | **Definition** |

@@ -39,8 +39,6 @@ from math import isqrt
 from pathlib import Path
 from typing import Any, Literal
 
-from collatz_eabc_holonomie_test import chi_E as chi_E_quadruplet
-from collatz_eabc_holonomie_test import enumerate_quadruplets
 from eabc_from_lean import EClass, class_of, t
 
 ROOT = Path(__file__).resolve().parent
@@ -200,6 +198,9 @@ def chi_hol_sliding(classes: list[str]) -> dict[str, Any]:
 
 def chi_E_quadruplet_report(max_p: int) -> dict[str, Any]:
     """χ_E^quad(N) auf arithmetischen Prim-Vierlingen (holonomie_test)."""
+    from collatz_eabc_holonomie_test import chi_E as chi_E_quadruplet
+    from collatz_eabc_holonomie_test import enumerate_quadruplets
+
     quads = enumerate_quadruplets(max_p)
     chi = chi_E_quadruplet(max_p, quads)
     return {

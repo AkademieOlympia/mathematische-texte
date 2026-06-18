@@ -1,7 +1,7 @@
 # EABC-Holonomie und Fehlerterm-Hypothese (Endform)
 
 **Status:** Kanonische Endform (Definition + Hauptvermutung + Fehlerterm-Hypothese)  
-**Branch:** `collatz/eabc-euklidische-hebung` (PR #54)  
+**Branch:** `collatz/eabc-05-holonomie-fehlerterm` (PR #59)  
 **Tao-Labels:** Definition | Vermutung | Hypothese | Experiment
 
 **Querverweise:**
@@ -13,7 +13,8 @@
 - `collatz_eabc_core/CollatzEabc/HolonomieFehlerterm.lean` — Lean: Lückenmuster, `N_\pm`/`D_E` auf Listen; Prime/CHSH-Skeleton
 - `collatz_eabc_transport.md` — Übergangsgraph $G_E$, Transport $T_n$
 - `collatz_eabc_holonomie_fehlerterm.py` / `.json` — Numerik $N_\pm$, $D_E$, $\widetilde{D}_E$
-- `collatz_generalangriff_2026.md` — Gesamtarchitektur PR #54
+- `collatz_eabc_sagnac_circulation.py` / `.json` — Zirkulation $C_E(X)$, $\omega(e)$, diskrete 1-Form
+- `collatz_generalangriff_2026.md` — Gesamtarchitektur PR #54 / PR #59
 
 ---
 
@@ -55,6 +56,9 @@ $$\mathrm{Hol}_E := \lim_{X\to\infty}\frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)} = 0.$$
 
 **Definition (Fehlerterm / Sagnac-Differenz).**
 $$\Delta_E(X) := N_+(X) - N_-(X),\qquad D_E(X):=\Delta_E(X).$$
+
+**Zirkulations-Identität** (`collatz_eabc_sagnac.md` §8):
+$$C_E(X) := \sum_{\gamma\ \mathrm{erkannt}} \omega(\gamma) = \Delta_E(X) = D_E(X).$$
 
 Für endliche $X$ gilt typischerweise $\Delta_E(X)\neq 0$, auch wenn $\mathrm{Hol}_E=0$. Interessant sind die **Fluktuationen** $\Delta_E$, $\widetilde{D}_E$, nicht der Hauptterm $\lim \Delta_E/(N_++N_-)=0$.
 
@@ -115,7 +119,7 @@ $$\boxed{\;\text{ABCE/CEAB-Asymmetrie} \;\Rightarrow\; \text{Fehlerterm/Bias, ni
 
 | Aussage | Label |
 |---------|-------|
-| $N_\pm$, $D_E$, $\widetilde{D}_E$ | **Definition** |
+| $N_\pm$, $D_E$, $\widetilde{D}_E$, $C_E$ | **Definition** |
 | $N_+\sim N_-$ $\Rightarrow$ $\mathrm{Hol}_E=0$ | **Vermutung** (Hauptvermutung) |
 | $D_E$ mit $L$-Funktions-Nullstellen mod $12$ | **Hypothese** (Fehlerterm-Hypothese) |
 | Verhalten von $\widetilde{D}_E$ | **Experiment** |
