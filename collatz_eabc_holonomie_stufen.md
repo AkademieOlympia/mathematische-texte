@@ -15,6 +15,8 @@
 - `collatz_eabc_D_growth.py` — Wachstumsdiagnostik: Fall A/B/C in $N$, Legacy-Szenarien in $X$
 - `collatz_generalangriff_2026.md` — Gesamtarchitektur PR #54 / PR #59
 - `collatz_eabc_wigner_analog.md` — 7 Abschnitte epistemisch: $W_{ij}$, $W_E(i,j;N)$, arithmetische Wigner-Negativität
+- `collatz_eabc_uebergangsraum.md` — $C_4\cong S^1$, Hodge, magnetischer Laplace, Flussdichte-Vermutung
+- `collatz_eabc_signierte_massstruktur.md` — signierte Maßstruktur auf $G_E$
 - `collatz_eabc_potential_geometrie.md` — Bohm/AB/Berry-Analogien, reine Potentialverbindungen (§2–3)
 
 ---
