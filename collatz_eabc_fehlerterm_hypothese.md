@@ -7,8 +7,9 @@
 **Querverweise:**
 - `collatz_eabc_holonomie_beweisversuch.md` — analytischer Beweisversuch (Lemma-Skizzen, HL-Argument, Satzskizze)
 - `collatz_eabc_zyklus_holonomie.md` — Hierarchie Klasse→Kante→Pfad→Zyklus→Holonomie
-- `collatz_eabc_bell_holonomie.md` — Bell-Tripel als Zykluskonsistenz auf $G_E$; $P_{\mathrm{same}}$, CHSH-Analog
-- `collatz_eabc_bell_inequality_test.py` / `.json` — Numerik $P_{\mathrm{same}}^{\mathrm{win}}$, $\mathcal{B}_{\mathrm{marg}}$, $S_{\mathrm{EABC}}$
+- `collatz_eabc_bell_holonomie.md` — Bell-Tripel als Zykluskonsistenz auf $G_E$; $P_{\mathrm{same}}$, CHSH-Analog; **§12 Brücke $D_E\leftrightarrow$ Bell/CHSH**
+- `collatz_eabc_bell_inequality_test.py` / `.json` — Numerik $P_{\mathrm{same}}^{\mathrm{win}}$, $\mathcal{B}_{\mathrm{marg}}$, $S_{\mathrm{EABC}}$, **`de_bell_combined_report`**
+- `collatz_eabc_core/CollatzEabc/HolonomieFehlerterm.lean` — Lean: Lückenmuster, `N_\pm`/`D_E` auf Listen; Prime/CHSH-Skeleton
 - `collatz_eabc_transport.md` — Übergangsgraph $G_E$, Transport $T_n$
 - `collatz_eabc_holonomie_fehlerterm.py` / `.json` — Numerik $N_\pm$, $D_E$, $\widetilde{D}_E$
 - `collatz_generalangriff_2026.md` — Gesamtarchitektur PR #54
@@ -114,4 +115,21 @@ $$\boxed{\;\text{ABCE/CEAB-Asymmetrie} \;\Rightarrow\; \text{Fehlerterm/Bias, ni
 
 ---
 
-*Kanonsiche Endform: Dieses Dokument fixiert die **operative Lesart** für PR #54. Details und Beweisskizzen: `collatz_eabc_holonomie_beweisversuch.md`.*
+## 9. Brücke zu Bell/CHSH-Holonomie
+
+**Analogie (kein Theorem):** Persistenter Fehlerterm $D_E(X)\neq 0$ bei $\mathrm{Hol}_E\to 0$ entspricht **nicht-faktorisierbaren** Holonomie-Resten auf $G_E$ — parallel zu $|S_{\mathrm{EABC}}|>2$ als arithmetisches Korrelationssignal (`collatz_eabc_bell_holonomie.md` §12).
+
+| Größe | Rolle | Label |
+|-------|-------|-------|
+| $\chi_{\mathrm{Hol}}(X)=D_E/(N_++N_-)$ | normierter Hauptterm → $0$ | **Vermutung** |
+| $\widetilde{D}_E(X)$ | skaleninvariantes Bias-Signal | **Definition** / **Experiment** |
+| $S_{\mathrm{EABC}}$ | CHSH-Analog auf gemeinsamem ABCE-Träger | **Definition** / **Experiment** |
+| $P_{\mathrm{same}}^{\mathrm{hol}}$ | Pfad↔Holonomie-Kohärenz | **Definition** / **Hypothese** |
+
+**Numerik:** `de_bell_combined_report(X)` in `collatz_eabc_bell_inequality_test.py` und `collatz_eabc_holonomie_fehlerterm.py` — $D_E$, $\widetilde{D}_E$, $S_{\mathrm{EABC}}$ am selben $X$.
+
+**Lean:** `CollatzEabc/HolonomieFehlerterm.lean` — kombinatorische $N_\pm$/`D_E` auf endlichen Listen (**bewiesen**); Primzählung und CHSH-LHV-Bound (**`sorry`**).
+
+---
+
+*Kanonsiche Endform: Dieses Dokument fixiert die **operative Lesart** für PR #54. Details und Beweisskizzen: `collatz_eabc_holonomie_beweisversuch.md`. Bell-Brücke: `collatz_eabc_bell_holonomie.md` §12.*

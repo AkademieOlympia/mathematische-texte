@@ -31,6 +31,11 @@ from collatz_eabc_transition_graph import (
     transition_counts,
     transition_probabilities,
 )
+
+try:
+    from collatz_eabc_holonomie_fehlerterm import holonomy_counts
+except ImportError:  # pragma: no cover
+    holonomy_counts = None  # type: ignore[assignment,misc]
 from eabc_from_lean import EClass, t
 
 ROOT = Path(__file__).resolve().parent
@@ -369,6 +374,43 @@ def chsh_eabc_marginal_report(classes: list[str]) -> dict[str, Any]:
 chsh_eabc_report = chsh_eabc_cycle_report
 
 
+def de_bell_combined_report(max_p: int) -> dict[str, Any]:
+    """
+    Gemeinsamer Report: D_E, widetilde{D}_E, chi_Hol und S_EABC am selben X=max_p.
+
+    Theorie: collatz_eabc_bell_holonomie.md §12, collatz_eabc_fehlerterm_hypothese.md §9.
+    """
+    if holonomy_counts is None:
+        raise ImportError("collatz_eabc_holonomie_fehlerterm required for D_E bridge")
+
+    seq = prime_eabc_sequence(max_p)
+    classes = classes_from_sequence(seq)
+    hol = holonomy_counts(max_p)
+    chsh = chsh_eabc_cycle_report(classes)
+    hol_path = p_same_hol_path(classes)
+
+    return {
+        "X": max_p,
+        "N_plus": hol["N_plus"],
+        "N_minus": hol["N_minus"],
+        "D_E": hol["D_E"],
+        "D_tilde_E": hol["D_tilde_E"],
+        "chi_Hol": hol["chi_Hol"],
+        "S_EABC": chsh["S_EABC"],
+        "abs_S_EABC": chsh["abs_S_EABC"],
+        "P_same_hol": hol_path["P_same_hol"],
+        "chsh_sample_size": chsh["sample_size"],
+        "exceeds_classical_CHSH": chsh.get("exceeds_classical_CHSH"),
+        "classical_CHSH_bound": CLASSICAL_CHSH_MAX,
+        "epistemic": {
+            "D_E": "Definition",
+            "D_tilde_E": "Definition",
+            "S_EABC": "Definition / Experiment",
+            "D_E_vs_CHSH": "Analogie / Hypothese (not theorem)",
+        },
+    }
+
+
 def transition_graph_comparison(classes: list[str]) -> dict[str, Any]:
     """Compare t-alignment rates with row-stochastic G_E."""
     align = t_alignment(classes)
@@ -410,6 +452,7 @@ def run(max_p: int) -> dict[str, Any]:
     chsh_cycle = chsh_eabc_cycle_report(classes)
     chsh_marg = chsh_eabc_marginal_report(classes)
     ge = transition_graph_comparison(classes)
+    de_bell = de_bell_combined_report(max_p)
 
     return {
         "meta": {
@@ -432,6 +475,7 @@ def run(max_p: int) -> dict[str, Any]:
         "chsh_eabc_marginal": chsh_marg,
         "chsh_eabc": chsh_cycle,
         "transition_graph": ge,
+        "de_bell_combined": de_bell,
         "summary": {
             "B_win": win["B_win"],
             "B_win_satisfies_bound": win["theorem_B_win_ge_1"],
@@ -440,6 +484,9 @@ def run(max_p: int) -> dict[str, Any]:
             "P_same_hol": hol["P_same_hol"],
             "S_EABC": chsh_cycle["S_EABC"],
             "abs_S_EABC": chsh_cycle["abs_S_EABC"],
+            "D_E": de_bell["D_E"],
+            "D_tilde_E": de_bell["D_tilde_E"],
+            "chi_Hol": de_bell["chi_Hol"],
             "S_exceeds_2": chsh_cycle.get("exceeds_classical_CHSH"),
             "S_reaches_2sqrt2": chsh_cycle.get("reaches_qm_reference"),
             "abs_S_EABC_marginal": chsh_marg.get("abs_S_EABC_marginal"),
@@ -465,6 +512,12 @@ def main() -> None:
     print(
         f"CHSH cycle: S={s['S_EABC']:.4f}  |S|={s['abs_S_EABC']:.4f}  "
         f"n={ch['sample_size']}  exceeds 2: {s['S_exceeds_2']}"
+    )
+    db = report["de_bell_combined"]
+    print(
+        f"D_E bridge @ X={db['X']}: D_E={db['D_E']:+d}  "
+        f"D̃_E={db['D_tilde_E']:+.3f}  χ_Hol={db['chi_Hol']:+.4f}  "
+        f"S_EABC={db['S_EABC']:.4f}"
     )
     print(f"  E(a,b)={ch['E_a_b']:.4f}  E(a,b')={ch['E_a_bp']:.4f}  "
           f"E(a',b)={ch['E_ap_b']:.4f}  E(a',b')={ch['E_ap_bp']:.4f}")

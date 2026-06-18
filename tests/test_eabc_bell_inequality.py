@@ -14,6 +14,7 @@ from collatz_eabc_bell_inequality_test import (
     THEORY,
     _chsh_sum,
     chsh_eabc_cycle_report,
+    de_bell_combined_report,
     p_same_marginal,
     p_same_win_report,
     run,
@@ -103,3 +104,23 @@ def test_prime_sequence_chsh_cycle_bounded():
     assert ch["sample_size"] > 0
     assert ch["abs_S_EABC"] is not None
     assert ch["qm_reference_2sqrt2"] == math.sqrt(2) * 2
+
+
+def test_de_bell_combined_report():
+    row = de_bell_combined_report(20_000)
+    assert row["X"] == 20_000
+    assert row["D_E"] == row["N_plus"] - row["N_minus"]
+    total = row["N_plus"] + row["N_minus"]
+    if total > 0:
+        assert abs(row["chi_Hol"] - row["D_E"] / total) < 1e-12
+        assert abs(row["D_tilde_E"] - row["D_E"] / (total**0.5)) < 1e-12
+    assert row["S_EABC"] is not None
+    assert row["abs_S_EABC"] is not None
+    assert row["epistemic"]["D_E_vs_CHSH"] == "Analogie / Hypothese (not theorem)"
+
+
+def test_run_includes_de_bell_combined():
+    report = run(8_000)
+    assert "de_bell_combined" in report
+    assert report["summary"]["D_E"] == report["de_bell_combined"]["D_E"]
+    assert report["summary"]["D_tilde_E"] == report["de_bell_combined"]["D_tilde_E"]

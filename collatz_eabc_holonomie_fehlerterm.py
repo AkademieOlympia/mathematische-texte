@@ -203,11 +203,19 @@ def run_series(
     series = [holonomy_counts(lim) for lim in limits]
     gap = verify_gap_patterns()
     cheb = chebyshev_bias_comparison(max_p)
+    de_bell = None
+    try:
+        from collatz_eabc_bell_inequality_test import de_bell_combined_report
+
+        de_bell = de_bell_combined_report(max_p)
+    except ImportError:
+        pass
     return {
         "meta": {
             "module": "collatz_eabc_holonomie_fehlerterm.py",
             "theory_endform": THEORY_ENDFORM,
             "theory": THEORY_BWEISVERSUCH,
+            "theory_bell_bridge": "collatz_eabc_bell_holonomie.md §12",
             "max_p": max_p,
             "limits": limits,
         },
@@ -215,6 +223,7 @@ def run_series(
         "holonomy_series": series,
         "D_tilde_E_series": d_tilde_e_series(limits),
         "chebyshev_comparison": cheb,
+        "de_bell_combined": de_bell,
         "boxed_conclusions": {
             "Hol_E_main_term": "Hol_E = 0 unter mod-12-Symmetrie + HL-Äquidistribution (Hauptvermutung)",
             "interesting_question": "Bias und Oszillation in D_E(X), Chebyshev-Analogie / L-Funktionen mod 12",
@@ -265,6 +274,13 @@ def main() -> None:
     qual = report["chebyshev_comparison"]["qualitative"]
     print()
     print(qual["analogy"])
+    if report.get("de_bell_combined"):
+        db = report["de_bell_combined"]
+        print(
+            f"Bell bridge @ X={db['X']}: D_E={db['D_E']:+d}  "
+            f"D̃_E={db['D_tilde_E']:+.3f}  S_EABC={db['S_EABC']:.4f}  "
+            f"|S|={db['abs_S_EABC']:.4f}"
+        )
     print(f"supports Hol_E→0 (χ bounded <0.25): {qual['supports_Hol_E_to_zero']}")
     print(f"supports oscillating D_E≠0: {qual['supports_oscillating_D_E']}")
     print(f"JSON: {report['output_path']}")

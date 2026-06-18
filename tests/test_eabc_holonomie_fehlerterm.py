@@ -91,4 +91,9 @@ def test_run_writes_json(tmp_path: Path):
     assert loaded["gap_patterns"]["words"][ABCEA_WORD]["matches_canonical"]
     assert "D_tilde_E_series" in loaded
     assert "boxed_conclusions" in loaded
+    assert "de_bell_combined" in loaded
+    if loaded["de_bell_combined"]:
+        db = loaded["de_bell_combined"]
+        assert db["D_E"] == db["N_plus"] - db["N_minus"]
+        assert db["S_EABC"] is not None
     assert report["output_path"] == str(out)

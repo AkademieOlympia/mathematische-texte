@@ -10,7 +10,10 @@
 - `collatz_eabc_zyklus_holonomie.md` — Klasse→Kante→Pfad→Zyklus→Holonomie; $\Omega_{\mathrm{Pfad}}$, $\Omega_{\mathrm{Hol}}$
 - `collatz_eabc_fehlerterm_hypothese.md` — $N_\pm$, $D_E$, $\widetilde{D}_E$, Hauptvermutung $\mathrm{Hol}_E=0$
 - `collatz_eabc_transport.md` — $G_E$, $T_{ij}$, $t$-Rotation
-- `collatz_eabc_bell_inequality_test.py` / `.json` — Numerik $P_{\mathrm{same}}$, CHSH-Analog, Vergleich $G_E$
+- `collatz_eabc_bell_inequality_test.py` / `.json` — Numerik $P_{\mathrm{same}}$, CHSH-Analog, Vergleich $G_E$, **gemeinsamer Report mit $D_E$**
+- `collatz_eabc_holonomie_fehlerterm.py` — $D_E$, $\widetilde{D}_E$, Chebyshev-Vergleich, **$S_{\mathrm{EABC}}$-Brücke**
+- `collatz_eabc_core/CollatzEabc/HolonomieFehlerterm.lean` — Lean Phase 1–2 (Lückenmuster bewiesen; Prime/CHSH-Skeleton)
+- `collatz_mathlib_eabc_kandidaten.md` — Mathlib `PrimeCounting` / `DirichletCharacter` (noch nicht für Bell/$D_E$)
 - `collatz_generalangriff_2026.md` — Gesamtarchitektur PR #54
 
 ---
@@ -273,24 +276,78 @@ $$\boxed{\;\text{Dreieck (4-Pfad): Bell-Taubenloch exakt} \;\neq\; \text{Viereck
 
 ---
 
-## 10. Dokumentenverknüpfung
+## 12. Bell/CHSH-Verletzungsanalog ↔ $D_E$-Bias (Brücke)
+
+**Epistemische Abgrenzung:** Dieser Abschnitt ist eine **strukturierte Analogie** zwischen kombinatorischer Bell/CHSH-Logik auf $G_E$ und dem Holonomie-Fehlerterm $D_E$. Es wird **keine** physikalische Nichtlokalität und **kein** Theorem $D_E \Leftrightarrow |S_{\mathrm{EABC}}|$ behauptet.
+
+### 12.1 Faktorisierbarkeit auf $G_E$
+
+**Definition (lokaler Transport, faktorisierbar).** Auf einem gemeinsamen Fenster $W_n^{(4)}$ seien Observablen Funktionen **eines** versteckten Zustands $\lambda_n$ (das Fenster selbst). Dann gilt:
+- Bell-Taubenloch: $\mathcal{B}_{\mathrm{win}}\ge 1$ (**Theorem**, §4.1);
+- CHSH auf gemeinsamem Träger §7.2: $|S_{\mathrm{EABC}}|\le 2$ unter **LHV-Faktorisierung** (**Analogie** / Skizze §7.5).
+
+**Interpretation.** Wenn die klassische Bell-/CHSH-Schranke auf **gemeinsamem** Träger erfüllt ist, ist der Transport auf $G_E$ in diesem Fenster **faktorisierbar** — alle binären Lesarten stammen aus derselben lokalen Realität $\lambda_n$.
+
+**Label:** Faktorisierbarkeit = **Definition**; Schranken auf gemeinsamem Träger = **Theorem** (Taubenloch) bzw. **Analogie** (CHSH).
+
+### 12.2 Persistenter $D_E$-Bias = nicht-faktorisierbare Holonomie-Reste
+
+**Definition.** $D_E(X)=N_+(X)-N_-(X)$ misst die **absolute** Asymmetrie der geschlossenen Orientierungen ABCEA vs. CEABC (`collatz_eabc_fehlerterm_hypothese.md`).
+
+**Hauptvermutung.** $\mathrm{Hol}_E=\lim_{X\to\infty} D_E/(N_++N_-)=0$ — der **normierte** Hauptterm verschwindet.
+
+**Analogie zu $|S|>2$.** Endliches $D_E(X)\neq 0$ bei kleinem $|\chi_{\mathrm{Hol}}(X)|$ ist ein **arithmetisches Korrelations-Restsignal**: wie eine CHSH-„Verletzung'' entsteht es nicht aus punktweiser Taubenloch-Verletzung, sondern aus **nicht-faktorisierbarer** Mischung von Pfad-, Kanten- und Zyklus-Lesarten über die Primfolge — ein **Holonomie-Fehlerterm**, kein Beweis für $\mathrm{Hol}_E\neq 0$.
+
+$$\boxed{\;D_E(X)\neq 0\;\text{ persistent}\;\leadsto\;\text{„non-factorizable'' Holonomie-Residuum (Analog zu }|S|>2\text{), nicht QM.}\;}$$
+
+**Label:** $D_E\neq 0$ als Restsignal = **Hypothese** / **Experiment**; Gleichsetzung mit CHSH-Verletzung = **Analogie**.
+
+### 12.3 Explizite Zuordnungstabelle
+
+| Bell/CHSH-Größe | $D_E$-Seite | Verhalten (empirisch / theoretisch) | Label |
+|-----------------|-------------|-------------------------------------|-------|
+| $\mathcal{B}_{\mathrm{win}}\ge 1$ auf ABCE | Taubenloch unabhängig von $D_E$ | immer erfüllt | **Theorem** |
+| $\mathcal{B}_{\mathrm{marg}}<1$ | marginale Ränder vs. Fenster-Holonomie | Kontextvermischung | **Experiment** |
+| $P_{\mathrm{same}}^{\mathrm{hol}}$ drift | $\chi_{\mathrm{Hol}}(X)=D_E/(N_++N_-)$ **beschränkt** | Hauptterm $\to 0$ | **Hypothese** |
+| $|S_{\mathrm{EABC}}|$ vs. $2$ | $|\widetilde{D}_E(X)|=|D_E|/\sqrt{N_++N_-}$ | Oszillation / Bias-Struktur | **Experiment** |
+| $|S_{\mathrm{EABC}}|>2$ auf gemeinsamem Träger | Pfad↔Holonomie nicht faktorisierbar | strukturierter Bias | **Hypothese** |
+| $|S|>2\sqrt2$ (QM) | — | **nicht** EABC-These | **nicht behauptet** |
+
+**Lesart der Normalisierung.** $\widetilde{D}_E$ und $|S_{\mathrm{EABC}}|$ sind beides **skaleninvariante** Korrelationssignale auf wachsendem $X$: $\chi_{\mathrm{Hol}}$ bleibt klein (Hauptterm), während $D_E$ wachsen kann (Chebyshev-artiger Fehlerterm) — parallel zu $|S|>2$ bei erfülltem Taubenloch auf Einzelfenstern.
+
+### 12.4 Lean- und Python-Schnittstelle
+
+| Artefakt | Inhalt | Status |
+|----------|--------|--------|
+| `HolonomieFehlerterm.lean` | `wordABCEA`/`wordCEABC`, Lücken $(2,4,2,4)$, `N_plus`/`N_minus`/`D_E` auf Listen, Taubenloch | kombinatorisch **bewiesen** |
+| `HolonomieFehlerterm.lean` | `N_plus_up_to`, `Hol_E_zero`, `chsh_lhv_bound_skel` | **`sorry`** / Skeleton |
+| `collatz_eabc_bell_inequality_test.py` | `de_bell_combined_report(X)` — $S_{\mathrm{EABC}}$, $D_E$, $\widetilde{D}_E$ am selben $X$ | **Experiment** |
+| `collatz_eabc_holonomie_fehlerterm.py` | gleiche kombinierte Zeile in `run_series` | **Experiment** |
+
+**Label:** Lean/Python-Schnittstelle = **Definition** (operativ) + **Experiment** (Numerik).
+
+---
+
+## 13. Dokumentenverknüpfung (aktualisiert)
 
 ```
 collatz_eabc_transport.md
         │
         ▼
 collatz_eabc_zyklus_holonomie.md ──► collatz_eabc_fehlerterm_hypothese.md
+        │                                      │
+        │                                      │ D_E, widetilde{D}_E
+        ▼                                      ▼
+collatz_eabc_bell_holonomie.md ◄──── §12 Brücke Bell↔D_E
         │
-        ▼
-collatz_eabc_bell_holonomie.md  (dieses Dokument)
-        │
-        ▼
-collatz_eabc_bell_inequality_test.py
+        ├── collatz_eabc_bell_inequality_test.py  (S_EABC + D_E combined)
+        ├── collatz_eabc_holonomie_fehlerterm.py
+        └── CollatzEabc/HolonomieFehlerterm.lean
 ```
 
 ---
 
-## 11. Epistemische Tabelle
+## 14. Epistemische Tabelle (erweitert)
 
 | Aussage | Label |
 |---------|-------|
@@ -303,8 +360,13 @@ collatz_eabc_bell_inequality_test.py
 | CHSH-Analog $S_{\mathrm{EABC}}$, $E^{\mathrm{EABC}}$ | **Definition** / **Analogie** |
 | $|S_{\mathrm{EABC}}|>2$ auf gemeinsamem ABCE-Träger | **Experiment** / **Hypothese** |
 | $|S|=2\sqrt2$ (QM) | **Referenz**, nicht EABC-These |
+| $D_E$-Bias ↔ nicht-faktorisierbare Holonomie | **Analogie** / **Hypothese** |
+| $\widetilde{D}_E$ ↔ $|S_{\mathrm{EABC}}|$ Skala | **Experiment** |
+| $\chi_{\mathrm{Hol}}$ beschränkt bei wachsendem $D_E$ | **Hypothese** / **Experiment** |
 | QM-Verschränkung / Nichtlokalität | **nicht behauptet** |
 | Bezug $D_E$, $\chi_{\mathrm{Hol}}$ | **Hypothese** |
+| `HolonomieFehlerterm.lean` Lückenmuster | **Theorem** |
+| `HolonomieFehlerterm.lean` Prime/CHSH | **Skeleton** (`sorry`) |
 
 ---
 
