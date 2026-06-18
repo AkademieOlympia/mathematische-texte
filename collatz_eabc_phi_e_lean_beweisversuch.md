@@ -24,29 +24,33 @@
 
 ## Programm
 
+**Status:** EABC ist wissenschaftstheoretisch eher **Forschungsprogramm** als bereits **Theorie** — es definiert Gegenstandsbereich, Observablen, Invarianten und eine Hierarchie offener Fragen (vgl. `collatz_eabc_epistemik_schichten.md` §0, `collatz_eabc_zirkulationshypothese.md` §4).
+
 EABC = priminduzierter Fluss auf $C_4 \cong S^1$ mit
 
-- $G_E = (V,E)$, $V=\{E,A,B,C\}$
+- $G_E = (V,E)$, $V=\{E,A,B,C\}$ — **harter Kern** (Ebene 0)
 - $E^+ = \{EA, AB, BC, CE\}$, $E^- = \{EC, CB, BA, AE\}$
 - orientierte Zyklen $\gamma^+ = \mathrm{ABCEA}$, $\gamma^- = \mathrm{CEABC}$
-- $D_E(X) = N_+(X) - N_-(X)$ (Ebene 1: primäre Observable)
-- $W_E(X) = D_E(X)/Q(X)$ (Ebene 3), $\Phi_E = \lim_{X\to\infty} W_E(X)$ (Ebene 4)
+- $D_E(X) = N_+(X) - N_-(X)$ (Ebene 1: primäre Observable; **harter Kern**)
+- Skalierungsobservablen $R_\beta$, $\alpha_{\mathrm{loc}}$, $\alpha_E$ (Ebene 2; aus $D_E$ induziert)
+- $W_E(X) = D_E(X)/Q(X)$ (Ebene 3)
+- $\Phi_E = \lim_{X\to\infty} W_E(X)$ (Ebene 4: **Endfrage**, nicht Ausgangsannahme)
+
+$$\boxed{\;\text{Der größte Fortschritt ist nicht die Einführung neuer Größen, sondern die Entkopplung des Programms von }\Phi_E.\;}$$
 
 $$\boxed{\;\text{Das EABC-Programm untersucht primär die Wachstumsordnung der orientierten Zyklusdifferenz }D_E(X)\text{, während die Holonomie }\Phi_E\text{ als mögliche Endstufe dieser Skalierungstheorie erscheint.}\;}$$
 
 $$\boxed{\;\text{Nicht }\Phi_E\text{ ist der Anfang, sondern }D_E(X).\;}$$
 
-$$\boxed{\;\text{Das Programm hängt nicht mehr an einer Vermutung.}\;}$$
+**Lakatos-Einordnung** (`collatz_eabc_zirkulationshypothese.md` §4): harter Kern $G_E$, $D_E$, induzierte Skalierungsobservablen (Ebene 0–1); primär $D_E$, $Q$ (Ebene 1); sekundär $R_\beta$, $\alpha_{\mathrm{loc}}$ (Numerik primär), $\alpha_{\mathrm{eff}}$, $\alpha_E$ (Ebene 2); Orientierung $W_E$ (Ebene 3); **Endfrage** $\Phi_E$ (Ebene 4).
 
-**Lakatos-Einordnung** (`collatz_eabc_zirkulationshypothese.md` §4): harter Kern $G_E$ (Ebene 0); primär $D_E$, $Q$ (Ebene 1); sekundär $R_\beta$, $\alpha_{\mathrm{loc}}$, $\alpha_{\mathrm{eff}}$, $\alpha_E$ (Ebene 2); Orientierung $W_E$ (Ebene 3); Endhypothese $\Phi_E$ (Ebene 4).
+**V1 → V2:** V1 startete mit $\Phi_E\neq 0$ und Hilfsgrößen zur Stützung; V2 macht $\Phi_E$ zur **Endfrage** der $D_E$-Skalierungstheorie. Stabilisierungskette: $G_E \leadsto (D_E,Q_E) \leadsto (R_\beta,\alpha_{\mathrm{eff}},\alpha_{\mathrm{loc}}) \leadsto (\alpha_E,W_E) \leadsto \Phi_E$.
 
-**V1 → V2:** V1 startete mit $\Phi_E\neq 0$ und Hilfsgrößen zur Stützung; V2 macht $\Phi_E$ zur **Konsequenz** der $D_E$-Theorie. Pyramide: $G_E\to D_E\to\alpha_E\to W_E\to\Phi_E$.
+**Paradigmenwechsel:** Früher Grenzwerttheorie $W_E\to\Phi_E\neq 0$; jetzt Fehlertermtheorie $D_E(X)=A(X)-C(X)$ (analytische Zahlentheorie). Referee-Perspektive: $D_E(X)$ ist definiert und ihre Größenordnung untersuchbar — unabhängig davon, ob $\Phi_E\neq 0$ je bestätigt wird.
 
-**Paradigmenwechsel:** Früher Grenzwerttheorie $W_E\to\Phi_E\neq 0$; jetzt Fehlertermtheorie $D_E(X)=A(X)-C(X)$ (analytische Zahlentheorie).
+**Vorwärtskette** ($\leadsto$ offene Fragen; $\Rightarrow$ bewiesene Implikationen): $G_E \leadsto D_E(X) \leadsto \alpha_E \leadsto W_E(X) \leadsto \Phi_E$.
 
-**Vorwärtskette** (keine Umkehrungen): $D_E(X) \Rightarrow \alpha_E \Rightarrow W_E(X) \Rightarrow \Phi_E$.
-
-**Vermutung (Schicht R):** $\Phi_E \neq 0$ bzw. $\langle\omega_E, h\rangle \neq 0$ für kanonisches harmonisches $h$. Dies ist **H₃** (starke Holonomie: $W_E(X)\to\Phi_E\neq 0$) — **Ebene 4** des Programms, nach Geometrie (Ebene 0), Zirkulationsfehler $D_E$ (Ebene 1), Skalierung $\alpha_{\mathrm{loc}}/\alpha_E$ (Ebene 2) und Orientierung $W_E$ (Ebene 3). Entspricht Lean-**RED** `HasNonzeroHolonomyLimit`. Vorgelagert (`collatz_eabc_zirkulationshypothese.md` §4.2): zuerst $D_E$ und $R_\beta$, dann $\alpha_{\mathrm{loc}}$, dann $\alpha_E$, dann Orientierung (H₀b vs. H₃). $\alpha_E>\tfrac{1}{2} \nRightarrow \Phi_E\neq 0$. Scheitern von H₃ zerstört das Programm nicht; selbst bei $\Phi_E=0$ bleiben Fragen zu $\alpha_E$, $\alpha_{\mathrm{loc}}$-Plateaus und kritischen $R_\beta$ offen.
+**Endfrage (Schicht R):** $\Phi_E \neq 0$ bzw. $\langle\omega_E, h\rangle \neq 0$ für kanonisches harmonisches $h$. Dies ist **H₃** (starke Holonomie: $W_E(X)\to\Phi_E\neq 0$) — **Ebene 4** des Programms, nach Geometrie (Ebene 0), Zirkulationsfehler $D_E$ (Ebene 1), Skalierung $\alpha_{\mathrm{loc}}/\alpha_E$ (Ebene 2) und Orientierung $W_E$ (Ebene 3). Entspricht Lean-**RED** `HasNonzeroHolonomyLimit`. Vorgelagert (`collatz_eabc_zirkulationshypothese.md` §4.2): zuerst $D_E$ und $R_\beta$, dann $\alpha_{\mathrm{loc}}$, dann $\alpha_E$, dann Orientierung (H₀b vs. H₃). $\alpha_E>\tfrac{1}{2} \nRightarrow \Phi_E\neq 0$. Scheitern von H₃ zerstört das Programm nicht; selbst bei $\Phi_E=0$ bleiben Fragen zu $\alpha_E$, $\alpha_{\mathrm{loc}}$-Plateaus und kritischen $R_\beta$ offen.
 
 $$\boxed{\;\Phi_E \neq 0 \;\Rightarrow\; D_E(X)\sim\Phi_E Q(X) \;\Rightarrow\; \alpha_E = 1.\;}$$
 
