@@ -23,6 +23,9 @@
 - `collatz_eabc_chirale_polarisation.md` — **Helizität** $\lambda=\pm 1$, $N_R/N_L$, $\phi_R/\phi_L$, Stufe-2-Upgrade
 - `collatz_eabc_brachistochrone.md` — $T_R$, $T_L$, Birefringenz-Analogie
 - `collatz_eabc_wigner_analog.md` — Wigner-Analogie: $W_E$ (4-Pfad) vs. $D_E$ (5-Zyklus), $W_{ab}$
+- `collatz_eabc_uebergangsraum.md` — **kanonische Geometrie:** $C_4\cong S^1$, $\langle\omega_E,h\rangle$, $L_{\mathrm{mag}}$, Flussdichte
+- `collatz_eabc_signierte_massstruktur.md` — signierte Maßstruktur auf $G_E$, arithmetische Wigner-Negativität
+- `collatz_eabc_hodge_eabc.py` — `flux_density_limit`, `harmonic_holonomy_component`, `magnetic_laplacian`
 - `collatz_eabc_kritische_abbildung.py` — Numerik $x_{n,v}$, Schaltkreis-Trajektorien, `edge_velocities_from_gaps`, `holonomy_sensor_trajectory`
 - `collatz_generalangriff_2026.md` — Gesamtarchitektur PR #54 / PR #59
 
@@ -107,14 +110,24 @@ $$\boxed{\;C_E(X) = N_+(X) - N_-(X) = D_E(X).\;}$$
 
 ---
 
-## 4. Hauptterm-Vermutung
+## 4. Hauptterm-Vermutung und Zentralvermutung (Flussdichte)
 
 **Hauptterm-Vermutung.** Asymptotische Symmetrie der gegenläufigen Zyklusorientierungen:
 $$N_+(X) \sim N_-(X)\qquad (X\to\infty),$$
 und damit
 $$S_E(X) \to 0.$$
 
-**Label:** Hauptterm-Vermutung = **Vermutung** (unter HL-Äquidistribution / mod-$12$-Symmetrie).
+**Zentralvermutung (arithmetische Orientierungsklasse).** Priminduzierter orientierter Fluss auf $C_4\cong S^1$ (`collatz_eabc_uebergangsraum.md` §9):
+$$\boxed{\;\lim_{X\to\infty}\frac{C_E(X)}{N_+(X)+N_-(X)} = \lim_{X\to\infty} S_E(X) \;\stackrel{?}{\neq}\; 0.\;}$$
+
+| Grenzfall | Folgerung |
+|-----------|-----------|
+| $\lim S_E = 0$ | keine bevorzugte globale Orientierung (Hauptterm) |
+| $\lim S_E \neq 0$ | nichttriviale **arithmetische Orientierungsklasse** |
+
+**Numerik:** `flux_density_limit` in `collatz_eabc_hodge_eabc.py`.
+
+**Label:** Hauptterm-Vermutung = **Vermutung**; Orientierungsklassen-Vermutung = **Vermutung** / **Forschungsfrage**.
 
 ---
 
@@ -206,6 +219,8 @@ $$\boxed{\;\text{Welche Spektralinvarianten der EABC-Zirkulation unterscheiden P
 | $N_\pm(X)$ | `N_plus`, `N_minus` | `collatz_eabc_holonomie_fehlerterm` |
 | $\omega(e)$, $\alpha$ | `edge_omega`, `discrete_one_form` | `collatz_eabc_sagnac_circulation` |
 | $\mathrm{Spec}(L_E)$ | `eigenvalues_symmetrized` | `collatz_eabc_graph_laplacian` |
+| $\langle\omega_E,h\rangle$, Flussdichte | `inner_product_omega_h`, `flux_density_limit` | `collatz_eabc_hodge_eabc` |
+| $L_{\mathrm{mag}}$ | `magnetic_laplacian` | `collatz_eabc_hodge_eabc` |
 | $N_R$, $N_L$, $\phi_R$, $\phi_L$ | `N_R`, `N_L`, `phi_R`, `phi_L` | `collatz_eabc_chirale_transport` |
 | $T_R$, $T_L$ | `T_R`, `T_L` | `collatz_eabc_brachistochrone` |
 
