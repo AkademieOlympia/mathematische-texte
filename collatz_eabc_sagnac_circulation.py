@@ -40,6 +40,7 @@ ROOT = Path(__file__).resolve().parent
 DEFAULT_OUTPUT = ROOT / "collatz_eabc_sagnac_circulation.json"
 THEORY_ZIRKULATION = "collatz_eabc_zirkulationshypothese.md"
 THEORY_SAGNAC = "collatz_eabc_sagnac.md"
+THEORY_KRITISCHE_ABBILDUNG = "collatz_eabc_kritische_abbildung.md"
 
 # Kanonischer 4-Zyklus A→B→C→E→A; Lücken mod 12 = (2,4,2,4)
 CANONICAL_FORWARD_EDGES: tuple[tuple[str, str], ...] = (

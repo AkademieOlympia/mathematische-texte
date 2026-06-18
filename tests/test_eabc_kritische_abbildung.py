@@ -15,11 +15,17 @@ from collatz_eabc_kritische_abbildung import (
     CEABC_EDGES,
     GAMMA_1_APPROX,
     SOURCE_X,
+    compare_holonomy_sensor_trajectories,
     dual_circuit_report,
     eabc_circuit_report,
+    edge_velocities_from_gaps,
     example_gamma_1,
+    gaps_abcea_to_eaabc,
+    gaps_eaabc_to_abcea,
+    holonomy_sensor_trajectory,
     gamma_v,
     holonomy_sign,
+    prime_window_gap_samples,
     run,
     s_v,
     x_from_gamma,
@@ -110,4 +116,48 @@ def test_run_writes_json(tmp_path: Path):
     assert "eabc_circuits" in loaded
     assert loaded["eabc_circuits"]["ABCEA"]["holonomy_sign"] == 1
     assert loaded["eabc_circuits"]["CEABC"]["holonomy_sign"] == -1
+    assert "holonomy_sensor" in loaded
+    assert loaded["holonomy_sensor"]["edge_velocities"]["v_EA"] > 0
     assert report["output_path"] == str(out)
+
+
+def test_gap_order_eaabc_abcea_roundtrip():
+    eaabc = (4, 2, 4, 2)
+    abcea = gaps_eaabc_to_abcea(eaabc)
+    assert abcea == CANONICAL_GAP_PATTERN
+    assert gaps_abcea_to_eaabc(abcea) == eaabc
+
+
+def test_edge_velocities_from_gaps_gamma_1():
+    ev = edge_velocities_from_gaps(CANONICAL_GAP_PATTERN, GAMMA_1_APPROX)
+    assert math.isclose(ev["v_EA"], GAMMA_1_APPROX / 4, rel_tol=0, abs_tol=1e-9)
+    assert math.isclose(ev["v_AB"], GAMMA_1_APPROX / 2, rel_tol=0, abs_tol=1e-9)
+    assert math.isclose(ev["v_BC"], GAMMA_1_APPROX / 4, rel_tol=0, abs_tol=1e-9)
+    assert math.isclose(ev["v_CE"], GAMMA_1_APPROX / 2, rel_tol=0, abs_tol=1e-9)
+    ev_ea = edge_velocities_from_gaps((4, 2, 4, 2), GAMMA_1_APPROX, gap_order="EAABC")
+    assert ev_ea["v_EA"] == ev["v_EA"]
+
+
+def test_holonomy_sensor_constant_delta_gamma():
+    traj = holonomy_sensor_trajectory("ABCEA", gamma_ref=GAMMA_1_APPROX)
+    deltas = [seg["delta_gamma"] for seg in traj["segments"] if "delta_gamma" in seg]
+    assert len(deltas) == 4
+    assert all(math.isclose(d, GAMMA_1_APPROX, rel_tol=0, abs_tol=1e-9) for d in deltas)
+    assert math.isclose(traj["total_gamma"], 4 * GAMMA_1_APPROX, rel_tol=0, abs_tol=1e-9)
+
+
+def test_compare_holonomy_sensor_abcea_ceabc():
+    cmp = compare_holonomy_sensor_trajectories(gamma_ref=GAMMA_1_APPROX)
+    assert cmp["holonomy_contrast"]["sign_ABCEA"] == 1
+    assert cmp["holonomy_contrast"]["sign_CEABC"] == -1
+    assert cmp["holonomy_contrast"]["same_total_length"]
+    assert cmp["holonomy_contrast"]["same_total_gamma"]
+    assert cmp["holonomy_contrast"]["same_edge_velocities"]
+
+
+def test_prime_window_gap_samples():
+    samples = prime_window_gap_samples(max_p=5000, limit=1)
+    assert len(samples) >= 1
+    for row in samples:
+        assert row["gaps_abcea"] == [2, 4, 2, 4]
+        assert "edge_velocities" in row

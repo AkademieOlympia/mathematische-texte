@@ -15,6 +15,7 @@
 - `collatz_eabc_bell_holonomie.md` — **sekundäre** Analogie Bell/CHSH (Kantenkorrelation $E(a,b)$)
 - `collatz_eabc_holonomie_fehlerterm.py` / `.json` — Numerik $N_\pm$, $\Delta_E$, $S_E$, $\widetilde{D}_E$
 - `collatz_eabc_sagnac_circulation.py` / `.json` — Zirkulation $C_E(X)$, Kantenorientierung $\omega$, diskrete 1-Form $\alpha$
+- `collatz_eabc_kritische_abbildung.md` / `.py` — **Modellabbildung:** Holonomie-Sensor $v_j=\gamma_{\mathrm{ref}}/\ell_j$ aus Lücken $(2,4,2,4)$
 - `collatz_eabc_graph_laplacian.py` — $\mathrm{Spec}(L_E)$, Spektrallücke
 - `collatz_eabc_holonomie_beweisversuch.md` — analytischer Beweisversuch: $\mathrm{Hol}_E=0$, Fehlerterm $\Delta_E$
 - `collatz_generalangriff_2026.md` — Gesamtarchitektur PR #54 / PR #59
