@@ -31,13 +31,13 @@ EABC = priminduzierter Fluss auf $C_4 \cong S^1$ mit
 - $C_E(X) = N_+(X) - N_-(X)$, $S_E(X) = N_+(X) + N_-(X)$
 - $W_E(X) = C_E(X)/S_E(X)$, $\Phi_E = \lim_{X\to\infty} W_E(X)$
 
-**Vermutung (Schicht R):** $\Phi_E \neq 0$ bzw. $\langle\omega_E, h\rangle \neq 0$ für kanonisches harmonisches $h$. Methodisch ist dies **H₂** ($\alpha=1$) in der Skalierungshierarchie; die vorgelagerte Frage ist H₁ ($\alpha>\tfrac{1}{2}$) — `collatz_eabc_zirkulationshypothese.md` §4.2.
+**Vermutung (Schicht R):** $\Phi_E \neq 0$ bzw. $\langle\omega_E, h\rangle \neq 0$ für kanonisches harmonisches $h$. Dies ist **H₃** (Holonomie: $\alpha=1$, $W_E\to\Phi_E\neq 0$) in der Skalierungshierarchie und entspricht der Lean-RED-Vermutung `HasNonzeroHolonomyLimit`. Vorgelagert: H₁ (empirischer Bias, $\alpha_{\mathrm{loc}}>\tfrac{1}{2}$) und H₂ (asymptotischer Bias, $|D|\asymp Q^\alpha$, $\alpha>\tfrac{1}{2}$) — `collatz_eabc_zirkulationshypothese.md` §4.2.
 
 ---
 
 ## Lean-Modul `HolonomyCore.lean` (sauberer Split)
 
-**GREEN/RED im Modul:** GREEN = `Node` … `W_E_bounds` (bewiesen); RED = `HasNonzeroHolonomyLimit`, `EABC_holonomy_limit_conjecture` (`sorry`).
+**GREEN/RED im Modul:** GREEN = `Node` … `W_E_bounds` (bewiesen); RED = `HasNonzeroHolonomyLimit`, `EABC_holonomy_limit_conjecture` (`sorry`) — formal **H₃** (Holonomie).
 
 Minimale Architektur im Namespace `EABC` — ohne Prim-Enumeration, ohne Hodge-Layer:
 
@@ -48,7 +48,7 @@ Minimale Architektur im Namespace `EABC` — ohne Prim-Enumeration, ohne Hodge-L
 | $W_E$ auf endlicher Stichprobe | `phiApprox`, `W_E` | **Definition** |
 | $-1 \le W_E \le 1$ | `phiApprox_bounds`, `W_E_bounds` | **Theorem** (bewiesen) |
 | Fluss bis Schranke $X$ | `EABCFlow`, `C_E`, `S_E` | **Definition** |
-| $\Phi_E \neq 0$ (asymptotisch) | `HasNonzeroHolonomyLimit`, `EABC_holonomy_limit_conjecture` | **Vermutung** (`sorry`) |
+| $\Phi_E \neq 0$ (asymptotisch) | `HasNonzeroHolonomyLimit`, `EABC_holonomy_limit_conjecture` | **Vermutung** (`sorry`; **H₃**) |
 
 **Grenze Beweis vs. Vermutung:** `W_E(X)=\frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)}$ liegt formal in $[-1,1]$;
 die asymptotische Aussage $\lim_{X\to\infty} W_E(X)=\Phi_E\neq 0$ steht in `EABC_holonomy_limit_conjecture` (`Tendsto` in $\mathbb{R}$), nicht als exakte rationale Endkonstante.
@@ -98,7 +98,7 @@ lake build CollatzEabc.HolonomyCore
 | Asymptotische Symmetrie $\Rightarrow \Phi_E=0$ | `Phi_E_zero_of_symmetry` | **Brücke** (`sorry`) |
 | Prim-$\omega_E$ $\leftrightarrow$ asymptotische Paarung | `Phi_E_eq_inner_product` | **Brücke** (`sorry`) |
 | HL-Symmetrie $\Rightarrow \mathrm{Hol}_E=0 \Rightarrow \Phi_E=0$ | `hol_E_zero_of_HL` | **Brücke** (`sorry`) |
-| **EABC-Vermutung** $\Phi_E \neq 0$ | `phi_E_conjecture_statement` | **Brücke** (`sorry`) |
+| **EABC-Vermutung** $\Phi_E \neq 0$ | `phi_E_conjecture_statement` | **Brücke** (`sorry`; **H₃**) |
 
 ### Abhängigkeit `HolonomieFehlerterm.lean` (Schicht R)
 
@@ -125,7 +125,7 @@ lake build CollatzEabc.HolonomyCore
 2. `Phi_E_zero_of_symmetry` — Filter-Grenzwert bei asymptotisch gleichen $N_\pm$.
 3. `Phi_E_eq_inner_product` — Prim-induzierte $\omega_E$ und asymptotische Paarung.
 4. `hol_E_zero_of_HL` — Hardy–Littlewood-artige Symmetriehypothese $\Rightarrow \Phi_E=0$.
-5. `phi_E_conjecture_statement` — **EABC-Vermutung** $\Phi_E \neq 0$.
+5. `phi_E_conjecture_statement` — **EABC-Vermutung** $\Phi_E \neq 0$ (**H₃**).
 
 ---
 
