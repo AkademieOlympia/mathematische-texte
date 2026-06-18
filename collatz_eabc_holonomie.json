@@ -1,0 +1,413 @@
+{
+  "meta": {
+    "module": "collatz_eabc_holonomie_test.py",
+    "theory": "collatz_eabc_holonomie.md",
+    "correction": "V₄ Klein → naive 𝔞≡0; Stufe 3–4: ω, χ_E (Orientierung/Chiralität); Stufe 5–6 offen (Transport T, Holonomie); ω(ABCE)=+1, ω(CEAB)=-1",
+    "research_stage": {
+      "1_klassifikation": "implemented",
+      "2_signaturen": "implemented",
+      "3_orientierung": "implemented",
+      "4_chiralitaet": "implemented",
+      "5_transport": "open",
+      "6_holonomie": "open"
+    }
+  },
+  "v4_associativity_proof": {
+    "group": "Klein four-group V4 ≅ (Z/2)²",
+    "closure_mod12": true,
+    "identity_E": true,
+    "self_inverse_nonE": true,
+    "isomorphism_to_Z2_squared": true,
+    "associative": true,
+    "triples_tested": 64,
+    "counterexample_count": 0,
+    "naive_associator_all_zero": true,
+    "verdict": "V₄ ist Klein-Gruppe; Φ assoziativ; naive 𝔞(X,Y,Z)≡0 für alle Tripel. Echter EABC-Defekt = projektionsbasierte Holonomie (collatz_eabc_holonomie.md)."
+  },
+  "quadruplets": {
+    "limit": 10000,
+    "count": 12,
+    "samples": [
+      {
+        "p": 5,
+        "word": "ABCE",
+        "chirality": "ABCE",
+        "omega": 1,
+        "chi_leg": 0,
+        "signature": [
+          "A",
+          "B",
+          "C",
+          "E"
+        ]
+      },
+      {
+        "p": 11,
+        "word": "CEAB",
+        "chirality": "CEAB",
+        "omega": -1,
+        "chi_leg": 0,
+        "signature": [
+          "C",
+          "E",
+          "A",
+          "B"
+        ]
+      },
+      {
+        "p": 101,
+        "word": "ABCE",
+        "chirality": "ABCE",
+        "omega": 1,
+        "chi_leg": 0,
+        "signature": [
+          "A",
+          "B",
+          "C",
+          "E"
+        ]
+      },
+      {
+        "p": 191,
+        "word": "CEAB",
+        "chirality": "CEAB",
+        "omega": -1,
+        "chi_leg": 0,
+        "signature": [
+          "C",
+          "E",
+          "A",
+          "B"
+        ]
+      },
+      {
+        "p": 821,
+        "word": "ABCE",
+        "chirality": "ABCE",
+        "omega": 1,
+        "chi_leg": 0,
+        "signature": [
+          "A",
+          "B",
+          "C",
+          "E"
+        ]
+      },
+      {
+        "p": 1481,
+        "word": "ABCE",
+        "chirality": "ABCE",
+        "omega": 1,
+        "chi_leg": 0,
+        "signature": [
+          "A",
+          "B",
+          "C",
+          "E"
+        ]
+      },
+      {
+        "p": 1871,
+        "word": "CEAB",
+        "chirality": "CEAB",
+        "omega": -1,
+        "chi_leg": 0,
+        "signature": [
+          "C",
+          "E",
+          "A",
+          "B"
+        ]
+      },
+      {
+        "p": 2081,
+        "word": "ABCE",
+        "chirality": "ABCE",
+        "omega": 1,
+        "chi_leg": 0,
+        "signature": [
+          "A",
+          "B",
+          "C",
+          "E"
+        ]
+      },
+      {
+        "p": 3251,
+        "word": "CEAB",
+        "chirality": "CEAB",
+        "omega": -1,
+        "chi_leg": 0,
+        "signature": [
+          "C",
+          "E",
+          "A",
+          "B"
+        ]
+      },
+      {
+        "p": 3461,
+        "word": "ABCE",
+        "chirality": "ABCE",
+        "omega": 1,
+        "chi_leg": 0,
+        "signature": [
+          "A",
+          "B",
+          "C",
+          "E"
+        ]
+      }
+    ],
+    "holonomy_flux": {
+      "quadruplet_count": 12,
+      "abce_count": 6,
+      "ceab_count": 6,
+      "omega_sum": 0,
+      "phi_quad": 0.0,
+      "chi_E": 0.0
+    },
+    "chi_quad_legs": {
+      "limit": 10000,
+      "quadruplet_count": 12,
+      "leg_counts": {
+        "E": 12,
+        "A": 12,
+        "B": 12,
+        "C": 12
+      },
+      "total_legs": 48,
+      "chi_fluct_legs": 0,
+      "chi_legs": 0.0
+    }
+  },
+  "chi_global": {
+    "limit": 10000,
+    "counts": {
+      "E": 300,
+      "A": 309,
+      "B": 311,
+      "C": 307
+    },
+    "pi_gt3": 1227,
+    "chi_fluct": -13,
+    "chi": -0.010594947025264874
+  },
+  "chi_E": {
+    "quadruplet_count": 12,
+    "abce_count": 6,
+    "ceab_count": 6,
+    "omega_sum": 0,
+    "chi_E": 0.0,
+    "formula": "(#ABCE - #CEAB) / (#ABCE + #CEAB)",
+    "limit": 10000
+  },
+  "chi_equivalence": {
+    "limit": 10000,
+    "chi_E": 0.0,
+    "chi_E_samples": {
+      "1000": 0.2,
+      "5000": 0.2,
+      "10000": 0.0
+    },
+    "chi_global": -0.010594947025264874,
+    "phi_quad": 0.0,
+    "phi_quad_equals_chi_E": true,
+    "lean_quadruplet_consistent": true,
+    "formula_chi_E": "(#ABCE - #CEAB) / (#ABCE + #CEAB)",
+    "formula_chi_global": "((E+C)-(A+B)) / pi_gt3",
+    "equivalence": {
+      "chi_E_equals_phi_quad": true,
+      "chi_E_equals_chi_global": false,
+      "note": "χ_E(N) und Φ_quad sind dieselbe Vierlings-Observable; χ(x) aus Invarianzprogramm zählt alle Primzahlen — verschiedene Räume."
+    }
+  },
+  "lean_quadruplet_check": {
+    "limit": 10000,
+    "quadruplet_count": 12,
+    "lean_consistent": true,
+    "mismatch_count": 0,
+    "mismatches": []
+  },
+  "holonomy_chi_connection": {
+    "limit": 10000,
+    "chi_global": -0.010594947025264874,
+    "chi_E": 0.0,
+    "chi_quad_legs": 0.0,
+    "phi_quad_holonomy": 0.0,
+    "all_quadruplet_chi_leg_zero": true,
+    "lean_consistent": true,
+    "chi_E_equals_phi_quad": true,
+    "verdict": "χ_leg(Q)=0 für alle kanonischen Vierlinge (balancierte Signaturen); ω(Q)∈{±1} misst Orientierung, nicht Bein-Asymmetrie. χ_E(N)=(#ABCE-#CEAB)/(#ABCE+#CEAB) = Φ_quad (Formelmatch). Globale χ(x) und χ_E sind verwandte chirale Observablen in verschiedenen Räumen — nicht identisch.",
+    "equivalence_note": "χ_E(N) und Φ_quad sind dieselbe Vierlings-Observable; χ(x) aus Invarianzprogramm zählt alle Primzahlen — verschiedene Räume."
+  },
+  "octonion_gamma_holonomy": {
+    "canonical_summary": {
+      "quaternion_subalgebra_e1_e2_e3": {
+        "algebraic_associator_norm": 0.0,
+        "eabc_associator_norm": 0.0,
+        "tree_product_norm_diff": 0.0
+      },
+      "generic_o_e1_e2_e4": {
+        "algebraic_associator_norm": 2.0,
+        "eabc_associator_norm": 0.0,
+        "tree_product_norm_diff": 2.0
+      },
+      "shell_sample_sigma2_sigma2_sigma3": {
+        "algebraic_associator_norm": 2.0,
+        "eabc_associator_norm": 1.0,
+        "tree_product_norm_diff": 2.0
+      },
+      "quaternion_associator_zero": true,
+      "generic_associator_nonzero": true,
+      "shell_eabc_associator_nonzero": true
+    },
+    "holonomy_samples": [
+      {
+        "label": "quaternion_subalgebra_e1_e2_e3",
+        "gamma_left": [
+          -1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "gamma_right": [
+          -1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "gamma_e_diff": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "gamma_e_norm": 0.0,
+        "algebraic_associator_norm": 0.0,
+        "paths_differ_in_O": false,
+        "gamma_e_holonomy_nonzero": false
+      },
+      {
+        "label": "generic_o_e1_e2_e4",
+        "gamma_left": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "gamma_right": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          -1
+        ],
+        "gamma_e_diff": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "gamma_e_norm": 0.0,
+        "algebraic_associator_norm": 2.0,
+        "paths_differ_in_O": true,
+        "gamma_e_holonomy_nonzero": false
+      },
+      {
+        "label": "shell_sample_sigma2_sigma2_sigma3",
+        "gamma_left": [
+          -1,
+          -1,
+          0,
+          -2,
+          -1,
+          -1,
+          2,
+          2
+        ],
+        "gamma_right": [
+          -1,
+          -1,
+          0,
+          -2,
+          -1,
+          -1,
+          2,
+          0
+        ],
+        "gamma_e_diff": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        "gamma_e_norm": 1.0,
+        "algebraic_associator_norm": 2.0,
+        "paths_differ_in_O": true,
+        "gamma_e_holonomy_nonzero": true
+      }
+    ],
+    "note": "Γ_E-Holonomie = glatt-EABC-Differenz der Projektionen entlang zweier Klammerwege; unabhängig vom trivialen V₄-Assoziator."
+  },
+  "epistemic_labels": {
+    "v4_proof": "Theorem",
+    "omega_orientation": "Definition",
+    "chi_E": "Definition",
+    "phi_quad": "Experiment",
+    "chi_global": "Definition",
+    "holonomy_chi_verdict": "Experiment",
+    "octonion_gamma": "Experiment"
+  }
+}

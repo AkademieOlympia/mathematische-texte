@@ -1,0 +1,737 @@
+{
+  "meta": {
+    "module": "collatz_eabc_transition_graph.py",
+    "theory": "collatz_eabc_zyklus_holonomie.md",
+    "transport": "collatz_eabc_transport.md",
+    "holonomy_hierarchy": "collatz_eabc_holonomie.md",
+    "max_p": 1000000,
+    "null_trials": 300,
+    "hierarchy": "Klasse → Kante → Pfad → Zyklus → Holonomie",
+    "terminology": {
+      "X_n": "Klasse κ(p_n)",
+      "tau_n": "Kante (X_n, X_{n+1})",
+      "P_n_4": "Pfad (X_n, X_{n+1}, X_{n+2}, X_{n+3})",
+      "C_n_5": "Zyklus (X_n, …, X_{n+4})",
+      "Omega_Pfad": "Pfadorientierung ABCE/CEAB",
+      "Omega_Hol": "Zyklus-Holonomie ABCEA/CEABC",
+      "chi_pfad": "Observable gerichtete 4-Pfade",
+      "chi_hol": "Observable echte geschlossene 5-Zyklen"
+    },
+    "legacy_aliases": {
+      "chi_path": "chi_pfad",
+      "omega_path": "omega_pfad",
+      "omega_5": "omega_hol",
+      "Q_n_4": "P_n_4",
+      "Q_n_5": "C_n_5"
+    }
+  },
+  "transition_matrix": {
+    "max_p": 1000000,
+    "prime_count": 78496,
+    "transition_counts": {
+      "E": {
+        "E": 2944,
+        "A": 6333,
+        "B": 5261,
+        "C": 5026
+      },
+      "A": {
+        "E": 4365,
+        "A": 2961,
+        "B": 7058,
+        "C": 5227
+      },
+      "B": {
+        "E": 5268,
+        "A": 5018,
+        "B": 2921,
+        "C": 6460
+      },
+      "C": {
+        "E": 6987,
+        "A": 5298,
+        "B": 4427,
+        "C": 2941
+      }
+    },
+    "transition_probabilities": {
+      "E": {
+        "E": 0.15048,
+        "A": 0.323707,
+        "B": 0.268912,
+        "C": 0.2569
+      },
+      "A": {
+        "E": 0.222579,
+        "A": 0.150987,
+        "B": 0.3599,
+        "C": 0.266534
+      },
+      "B": {
+        "E": 0.26786,
+        "A": 0.255148,
+        "B": 0.148523,
+        "C": 0.328469
+      },
+      "C": {
+        "E": 0.355518,
+        "A": 0.269577,
+        "B": 0.225258,
+        "C": 0.149646
+      }
+    },
+    "joint_frequencies": [
+      [
+        0.03750557360341423,
+        0.08068029810815976,
+        0.0670233772851774,
+        0.0640295560226766
+      ],
+      [
+        0.055608637492833936,
+        0.03772214790751003,
+        0.08991655519459839,
+        0.0665902286769858
+      ],
+      [
+        0.06711255493980509,
+        0.06392763870310211,
+        0.03721256130963756,
+        0.08229823555640486
+      ],
+      [
+        0.08901203898337473,
+        0.06749474488820945,
+        0.05639849671953628,
+        0.0374673546085738
+      ]
+    ],
+    "edge_summary": {
+      "total_transitions": 78495,
+      "edge_frequencies": {
+        "E->E": 0.03750557360341423,
+        "E->A": 0.08068029810815976,
+        "E->B": 0.0670233772851774,
+        "E->C": 0.0640295560226766,
+        "A->E": 0.055608637492833936,
+        "A->A": 0.03772214790751003,
+        "A->B": 0.08991655519459839,
+        "A->C": 0.0665902286769858,
+        "B->E": 0.06711255493980509,
+        "B->A": 0.06392763870310211,
+        "B->B": 0.03721256130963756,
+        "B->C": 0.08229823555640486,
+        "C->E": 0.08901203898337473,
+        "C->A": 0.06749474488820945,
+        "C->B": 0.05639849671953628,
+        "C->C": 0.0374673546085738
+      },
+      "t_forward_fraction": 0.34190712784253774,
+      "t_inverse_fraction": 0.23996432893814892,
+      "t_bias": 0.10194279890438881
+    },
+    "stationary": {
+      "pi": {
+        "E": 0.24924015120596393,
+        "A": 0.24982626291415969,
+        "B": 0.25054963126857926,
+        "C": 0.25038395461129753
+      },
+      "pi_vector": [
+        0.24924015120596393,
+        0.24982626291415969,
+        0.25054963126857926,
+        0.25038395461129753
+      ]
+    },
+    "irreducible": true
+  },
+  "pfad_vs_holonomy": {
+    "max_p": 1000000,
+    "chi_pfad": 0.021618282890673256,
+    "chi_hol": 0.12016293279022404,
+    "chi_path": 0.021618282890673256,
+    "chi_E_quad": 0.012048192771084338,
+    "chi_t_cycle": 0.46291922531884744,
+    "pfad_detail": {
+      "window_count": 78493,
+      "abce_windows": 827,
+      "ceab_windows": 792,
+      "omega_sum": 35,
+      "nonzero_windows": 1619,
+      "chi": 0.021618282890673256,
+      "formula": "sum(Omega_Pfad(P_n^(4))) / #{Omega_Pfad != 0}",
+      "carrier": "prime_sequence_sliding_windows_4",
+      "chi_pfad": 0.021618282890673256,
+      "chi_path": 0.021618282890673256,
+      "chi_E": 0.021618282890673256
+    },
+    "path_detail": {
+      "window_count": 78493,
+      "abce_windows": 827,
+      "ceab_windows": 792,
+      "omega_sum": 35,
+      "nonzero_windows": 1619,
+      "chi": 0.021618282890673256,
+      "formula": "sum(Omega_Pfad(P_n^(4))) / #{Omega_Pfad != 0}",
+      "carrier": "prime_sequence_sliding_windows_4",
+      "chi_pfad": 0.021618282890673256,
+      "chi_path": 0.021618282890673256,
+      "chi_E": 0.021618282890673256
+    },
+    "hol_detail": {
+      "window_count": 78492,
+      "abcea_windows": 275,
+      "ceabc_windows": 216,
+      "omega_sum": 59,
+      "nonzero_windows": 491,
+      "chi": 0.12016293279022404,
+      "formula": "sum(Omega_Hol(C_n^(5))) / #{Omega_Hol != 0}",
+      "carrier": "prime_sequence_sliding_windows_5",
+      "chi_hol": 0.12016293279022404,
+      "chi_hol_5": 0.12016293279022404
+    },
+    "quadruplet_detail": {
+      "quadruplet_count": 166,
+      "abce_count": 84,
+      "ceab_count": 82,
+      "chi_E_quad": 0.012048192771084338,
+      "formula": "(#ABCE - #CEAB) / (#ABCE + #CEAB)",
+      "carrier": "prime_quadruplets"
+    },
+    "transport_detail": {
+      "abce_windows": 827,
+      "ceab_windows": 792,
+      "chi_pfad": 0.021618282890673256,
+      "chi_path": 0.021618282890673256,
+      "chi_E": 0.021618282890673256,
+      "chi_trans": 0.021618282890673256,
+      "t_forward_windows": 3097,
+      "t_inverse_windows": 1137,
+      "chi_t_cycle": 0.46291922531884744,
+      "formula": "sum(Omega_Pfad(P_n^(4))) / #{Omega_Pfad != 0}",
+      "formula_t_cycle": "(#t_forward_4cycles - #t_inverse_4cycles) / (#fwd + #inv)"
+    },
+    "null_models": {
+      "pfad": {
+        "shuffle": {
+          "null_type": "marginal_shuffle",
+          "trials": 300,
+          "seed": 42,
+          "observed_chi_pfad": 0.021618282890673256,
+          "null_mean": 0.001236702987607217,
+          "null_std": 0.035574306037715206,
+          "z_score": 0.5729297960572407,
+          "observed_chi_path": 0.021618282890673256
+        },
+        "isotropy": {
+          "null_type": "isotropy_relabel",
+          "trials": 300,
+          "seed": 43,
+          "observed_chi_pfad": 0.021618282890673256,
+          "null_mean": -0.014175412247704385,
+          "null_std": 0.1448835803838648,
+          "z_score": 0.24705142600385285,
+          "observed_chi_path": 0.021618282890673256
+        }
+      },
+      "path": {
+        "shuffle": {
+          "null_type": "marginal_shuffle",
+          "trials": 300,
+          "seed": 42,
+          "observed_chi_pfad": 0.021618282890673256,
+          "null_mean": 0.001236702987607217,
+          "null_std": 0.035574306037715206,
+          "z_score": 0.5729297960572407,
+          "observed_chi_path": 0.021618282890673256
+        },
+        "isotropy": {
+          "null_type": "isotropy_relabel",
+          "trials": 300,
+          "seed": 43,
+          "observed_chi_pfad": 0.021618282890673256,
+          "null_mean": -0.014175412247704385,
+          "null_std": 0.1448835803838648,
+          "z_score": 0.24705142600385285,
+          "observed_chi_path": 0.021618282890673256
+        }
+      },
+      "hol": {
+        "shuffle": {
+          "null_type": "marginal_shuffle",
+          "trials": 300,
+          "seed": 44,
+          "observed_chi_hol": 0.12016293279022404,
+          "null_mean": 0.00035210489380363804,
+          "null_std": 0.0775288557442201,
+          "z_score": 1.5453707751304262
+        },
+        "isotropy": {
+          "null_type": "isotropy_relabel",
+          "trials": 300,
+          "seed": 45,
+          "observed_chi_hol": 0.12016293279022404,
+          "null_mean": -0.0047994208394084095,
+          "null_std": 0.07521669554239101,
+          "z_score": 1.661364577751299
+        }
+      }
+    },
+    "comparison": {
+      "same_sign_pfad_hol": true,
+      "same_sign_path_hol": true,
+      "difference_pfad_hol": -0.09854464989955078,
+      "difference_path_hol": -0.09854464989955078,
+      "abs_pfad_vs_abs_hol": {
+        "abs_chi_pfad": 0.021618282890673256,
+        "abs_chi_hol": 0.12016293279022404,
+        "pfad_stronger_signal": false
+      },
+      "abs_path_vs_abs_hol": {
+        "abs_chi_path": 0.021618282890673256,
+        "abs_chi_hol": 0.12016293279022404,
+        "path_stronger_signal": false
+      },
+      "verdict": "χ_Pfad (4-Pfad) und χ_Hol (5-Zyklus) sind verwandte Observablen mit unterschiedlicher geometrischer Lesart — Pfad vs. geschlossene Holonomie. Beobachtet: χ_Pfad=0.0216, χ_Hol=0.1202, |χ_Pfad|=≤ |χ_Hol|."
+    }
+  },
+  "path_vs_holonomy": {
+    "max_p": 1000000,
+    "chi_pfad": 0.021618282890673256,
+    "chi_hol": 0.12016293279022404,
+    "chi_path": 0.021618282890673256,
+    "chi_E_quad": 0.012048192771084338,
+    "chi_t_cycle": 0.46291922531884744,
+    "pfad_detail": {
+      "window_count": 78493,
+      "abce_windows": 827,
+      "ceab_windows": 792,
+      "omega_sum": 35,
+      "nonzero_windows": 1619,
+      "chi": 0.021618282890673256,
+      "formula": "sum(Omega_Pfad(P_n^(4))) / #{Omega_Pfad != 0}",
+      "carrier": "prime_sequence_sliding_windows_4",
+      "chi_pfad": 0.021618282890673256,
+      "chi_path": 0.021618282890673256,
+      "chi_E": 0.021618282890673256
+    },
+    "path_detail": {
+      "window_count": 78493,
+      "abce_windows": 827,
+      "ceab_windows": 792,
+      "omega_sum": 35,
+      "nonzero_windows": 1619,
+      "chi": 0.021618282890673256,
+      "formula": "sum(Omega_Pfad(P_n^(4))) / #{Omega_Pfad != 0}",
+      "carrier": "prime_sequence_sliding_windows_4",
+      "chi_pfad": 0.021618282890673256,
+      "chi_path": 0.021618282890673256,
+      "chi_E": 0.021618282890673256
+    },
+    "hol_detail": {
+      "window_count": 78492,
+      "abcea_windows": 275,
+      "ceabc_windows": 216,
+      "omega_sum": 59,
+      "nonzero_windows": 491,
+      "chi": 0.12016293279022404,
+      "formula": "sum(Omega_Hol(C_n^(5))) / #{Omega_Hol != 0}",
+      "carrier": "prime_sequence_sliding_windows_5",
+      "chi_hol": 0.12016293279022404,
+      "chi_hol_5": 0.12016293279022404
+    },
+    "quadruplet_detail": {
+      "quadruplet_count": 166,
+      "abce_count": 84,
+      "ceab_count": 82,
+      "chi_E_quad": 0.012048192771084338,
+      "formula": "(#ABCE - #CEAB) / (#ABCE + #CEAB)",
+      "carrier": "prime_quadruplets"
+    },
+    "transport_detail": {
+      "abce_windows": 827,
+      "ceab_windows": 792,
+      "chi_pfad": 0.021618282890673256,
+      "chi_path": 0.021618282890673256,
+      "chi_E": 0.021618282890673256,
+      "chi_trans": 0.021618282890673256,
+      "t_forward_windows": 3097,
+      "t_inverse_windows": 1137,
+      "chi_t_cycle": 0.46291922531884744,
+      "formula": "sum(Omega_Pfad(P_n^(4))) / #{Omega_Pfad != 0}",
+      "formula_t_cycle": "(#t_forward_4cycles - #t_inverse_4cycles) / (#fwd + #inv)"
+    },
+    "null_models": {
+      "pfad": {
+        "shuffle": {
+          "null_type": "marginal_shuffle",
+          "trials": 300,
+          "seed": 42,
+          "observed_chi_pfad": 0.021618282890673256,
+          "null_mean": 0.001236702987607217,
+          "null_std": 0.035574306037715206,
+          "z_score": 0.5729297960572407,
+          "observed_chi_path": 0.021618282890673256
+        },
+        "isotropy": {
+          "null_type": "isotropy_relabel",
+          "trials": 300,
+          "seed": 43,
+          "observed_chi_pfad": 0.021618282890673256,
+          "null_mean": -0.014175412247704385,
+          "null_std": 0.1448835803838648,
+          "z_score": 0.24705142600385285,
+          "observed_chi_path": 0.021618282890673256
+        }
+      },
+      "path": {
+        "shuffle": {
+          "null_type": "marginal_shuffle",
+          "trials": 300,
+          "seed": 42,
+          "observed_chi_pfad": 0.021618282890673256,
+          "null_mean": 0.001236702987607217,
+          "null_std": 0.035574306037715206,
+          "z_score": 0.5729297960572407,
+          "observed_chi_path": 0.021618282890673256
+        },
+        "isotropy": {
+          "null_type": "isotropy_relabel",
+          "trials": 300,
+          "seed": 43,
+          "observed_chi_pfad": 0.021618282890673256,
+          "null_mean": -0.014175412247704385,
+          "null_std": 0.1448835803838648,
+          "z_score": 0.24705142600385285,
+          "observed_chi_path": 0.021618282890673256
+        }
+      },
+      "hol": {
+        "shuffle": {
+          "null_type": "marginal_shuffle",
+          "trials": 300,
+          "seed": 44,
+          "observed_chi_hol": 0.12016293279022404,
+          "null_mean": 0.00035210489380363804,
+          "null_std": 0.0775288557442201,
+          "z_score": 1.5453707751304262
+        },
+        "isotropy": {
+          "null_type": "isotropy_relabel",
+          "trials": 300,
+          "seed": 45,
+          "observed_chi_hol": 0.12016293279022404,
+          "null_mean": -0.0047994208394084095,
+          "null_std": 0.07521669554239101,
+          "z_score": 1.661364577751299
+        }
+      }
+    },
+    "comparison": {
+      "same_sign_pfad_hol": true,
+      "same_sign_path_hol": true,
+      "difference_pfad_hol": -0.09854464989955078,
+      "difference_path_hol": -0.09854464989955078,
+      "abs_pfad_vs_abs_hol": {
+        "abs_chi_pfad": 0.021618282890673256,
+        "abs_chi_hol": 0.12016293279022404,
+        "pfad_stronger_signal": false
+      },
+      "abs_path_vs_abs_hol": {
+        "abs_chi_path": 0.021618282890673256,
+        "abs_chi_hol": 0.12016293279022404,
+        "path_stronger_signal": false
+      },
+      "verdict": "χ_Pfad (4-Pfad) und χ_Hol (5-Zyklus) sind verwandte Observablen mit unterschiedlicher geometrischer Lesart — Pfad vs. geschlossene Holonomie. Beobachtet: χ_Pfad=0.0216, χ_Hol=0.1202, |χ_Pfad|=≤ |χ_Hol|."
+    }
+  },
+  "cycle_holonomy": {
+    "max_p": 1000000,
+    "chi_pfad": 0.021618282890673256,
+    "chi_hol": 0.12016293279022404,
+    "chi_path": 0.021618282890673256,
+    "chi_E_quad": 0.012048192771084338,
+    "chi_t_cycle": 0.46291922531884744,
+    "pfad_detail": {
+      "window_count": 78493,
+      "abce_windows": 827,
+      "ceab_windows": 792,
+      "omega_sum": 35,
+      "nonzero_windows": 1619,
+      "chi": 0.021618282890673256,
+      "formula": "sum(Omega_Pfad(P_n^(4))) / #{Omega_Pfad != 0}",
+      "carrier": "prime_sequence_sliding_windows_4",
+      "chi_pfad": 0.021618282890673256,
+      "chi_path": 0.021618282890673256,
+      "chi_E": 0.021618282890673256
+    },
+    "path_detail": {
+      "window_count": 78493,
+      "abce_windows": 827,
+      "ceab_windows": 792,
+      "omega_sum": 35,
+      "nonzero_windows": 1619,
+      "chi": 0.021618282890673256,
+      "formula": "sum(Omega_Pfad(P_n^(4))) / #{Omega_Pfad != 0}",
+      "carrier": "prime_sequence_sliding_windows_4",
+      "chi_pfad": 0.021618282890673256,
+      "chi_path": 0.021618282890673256,
+      "chi_E": 0.021618282890673256
+    },
+    "hol_detail": {
+      "window_count": 78492,
+      "abcea_windows": 275,
+      "ceabc_windows": 216,
+      "omega_sum": 59,
+      "nonzero_windows": 491,
+      "chi": 0.12016293279022404,
+      "formula": "sum(Omega_Hol(C_n^(5))) / #{Omega_Hol != 0}",
+      "carrier": "prime_sequence_sliding_windows_5",
+      "chi_hol": 0.12016293279022404,
+      "chi_hol_5": 0.12016293279022404
+    },
+    "quadruplet_detail": {
+      "quadruplet_count": 166,
+      "abce_count": 84,
+      "ceab_count": 82,
+      "chi_E_quad": 0.012048192771084338,
+      "formula": "(#ABCE - #CEAB) / (#ABCE + #CEAB)",
+      "carrier": "prime_quadruplets"
+    },
+    "transport_detail": {
+      "abce_windows": 827,
+      "ceab_windows": 792,
+      "chi_pfad": 0.021618282890673256,
+      "chi_path": 0.021618282890673256,
+      "chi_E": 0.021618282890673256,
+      "chi_trans": 0.021618282890673256,
+      "t_forward_windows": 3097,
+      "t_inverse_windows": 1137,
+      "chi_t_cycle": 0.46291922531884744,
+      "formula": "sum(Omega_Pfad(P_n^(4))) / #{Omega_Pfad != 0}",
+      "formula_t_cycle": "(#t_forward_4cycles - #t_inverse_4cycles) / (#fwd + #inv)"
+    },
+    "null_models": {
+      "pfad": {
+        "shuffle": {
+          "null_type": "marginal_shuffle",
+          "trials": 300,
+          "seed": 42,
+          "observed_chi_pfad": 0.021618282890673256,
+          "null_mean": 0.001236702987607217,
+          "null_std": 0.035574306037715206,
+          "z_score": 0.5729297960572407,
+          "observed_chi_path": 0.021618282890673256
+        },
+        "isotropy": {
+          "null_type": "isotropy_relabel",
+          "trials": 300,
+          "seed": 43,
+          "observed_chi_pfad": 0.021618282890673256,
+          "null_mean": -0.014175412247704385,
+          "null_std": 0.1448835803838648,
+          "z_score": 0.24705142600385285,
+          "observed_chi_path": 0.021618282890673256
+        }
+      },
+      "path": {
+        "shuffle": {
+          "null_type": "marginal_shuffle",
+          "trials": 300,
+          "seed": 42,
+          "observed_chi_pfad": 0.021618282890673256,
+          "null_mean": 0.001236702987607217,
+          "null_std": 0.035574306037715206,
+          "z_score": 0.5729297960572407,
+          "observed_chi_path": 0.021618282890673256
+        },
+        "isotropy": {
+          "null_type": "isotropy_relabel",
+          "trials": 300,
+          "seed": 43,
+          "observed_chi_pfad": 0.021618282890673256,
+          "null_mean": -0.014175412247704385,
+          "null_std": 0.1448835803838648,
+          "z_score": 0.24705142600385285,
+          "observed_chi_path": 0.021618282890673256
+        }
+      },
+      "hol": {
+        "shuffle": {
+          "null_type": "marginal_shuffle",
+          "trials": 300,
+          "seed": 44,
+          "observed_chi_hol": 0.12016293279022404,
+          "null_mean": 0.00035210489380363804,
+          "null_std": 0.0775288557442201,
+          "z_score": 1.5453707751304262
+        },
+        "isotropy": {
+          "null_type": "isotropy_relabel",
+          "trials": 300,
+          "seed": 45,
+          "observed_chi_hol": 0.12016293279022404,
+          "null_mean": -0.0047994208394084095,
+          "null_std": 0.07521669554239101,
+          "z_score": 1.661364577751299
+        }
+      }
+    },
+    "comparison": {
+      "same_sign_pfad_hol": true,
+      "same_sign_path_hol": true,
+      "difference_pfad_hol": -0.09854464989955078,
+      "difference_path_hol": -0.09854464989955078,
+      "abs_pfad_vs_abs_hol": {
+        "abs_chi_pfad": 0.021618282890673256,
+        "abs_chi_hol": 0.12016293279022404,
+        "pfad_stronger_signal": false
+      },
+      "abs_path_vs_abs_hol": {
+        "abs_chi_path": 0.021618282890673256,
+        "abs_chi_hol": 0.12016293279022404,
+        "path_stronger_signal": false
+      },
+      "verdict": "χ_Pfad (4-Pfad) und χ_Hol (5-Zyklus) sind verwandte Observablen mit unterschiedlicher geometrischer Lesart — Pfad vs. geschlossene Holonomie. Beobachtet: χ_Pfad=0.0216, χ_Hol=0.1202, |χ_Pfad|=≤ |χ_Hol|."
+    }
+  },
+  "hol_E_estimates": {
+    "limits": [
+      1000,
+      5000,
+      10000,
+      50000,
+      100000,
+      1000000
+    ],
+    "series": [
+      {
+        "limit": 1000,
+        "chi_pfad": -0.09090909090909091,
+        "chi_hol": 0.0,
+        "chi_E_quad": 0.2,
+        "chi_t_cycle": 0.7037037037037037,
+        "z_shuffle_pfad": -0.19780445287702925,
+        "z_isotropy_pfad": -0.0735942866776256,
+        "z_shuffle_hol": -0.0044087099865885255,
+        "z_isotropy_hol": -0.028952080535072162,
+        "chi_path": -0.09090909090909091,
+        "chi_E": -0.09090909090909091,
+        "z_shuffle_path": -0.19780445287702925,
+        "z_isotropy_path": -0.0735942866776256,
+        "z_shuffle": -0.0044087099865885255,
+        "z_isotropy": -0.028952080535072162
+      },
+      {
+        "limit": 5000,
+        "chi_pfad": -0.07142857142857142,
+        "chi_hol": 0.07692307692307693,
+        "chi_E_quad": 0.2,
+        "chi_t_cycle": 0.8181818181818182,
+        "z_shuffle_pfad": -0.1833604594377171,
+        "z_isotropy_pfad": -0.11447705665559385,
+        "z_shuffle_hol": 0.10134972709021318,
+        "z_isotropy_hol": 0.0676864605044051,
+        "chi_path": -0.07142857142857142,
+        "chi_E": -0.07142857142857142,
+        "z_shuffle_path": -0.1833604594377171,
+        "z_isotropy_path": -0.11447705665559385,
+        "z_shuffle": 0.10134972709021318,
+        "z_isotropy": 0.0676864605044051
+      },
+      {
+        "limit": 10000,
+        "chi_pfad": -0.05263157894736842,
+        "chi_hol": 0.14285714285714285,
+        "chi_E_quad": 0.0,
+        "chi_t_cycle": 0.7528089887640449,
+        "z_shuffle_pfad": -0.09531380682887923,
+        "z_isotropy_pfad": -0.08621887130454887,
+        "z_shuffle_hol": 0.14352857836848157,
+        "z_isotropy_hol": 0.2589965016671303,
+        "chi_path": -0.05263157894736842,
+        "chi_E": -0.05263157894736842,
+        "z_shuffle_path": -0.09531380682887923,
+        "z_isotropy_path": -0.08621887130454887,
+        "z_shuffle": 0.14352857836848157,
+        "z_isotropy": 0.2589965016671303
+      },
+      {
+        "limit": 50000,
+        "chi_pfad": 0.0,
+        "chi_hol": 0.11627906976744186,
+        "chi_E_quad": 0.2,
+        "chi_t_cycle": 0.5864197530864198,
+        "z_shuffle_pfad": 0.12484060877083042,
+        "z_isotropy_pfad": 0.10296499702810304,
+        "z_shuffle_hol": 0.36023678014792254,
+        "z_isotropy_hol": 0.938432610424481,
+        "chi_path": 0.0,
+        "chi_E": 0.0,
+        "z_shuffle_path": 0.12484060877083042,
+        "z_isotropy_path": 0.10296499702810304,
+        "z_shuffle": 0.36023678014792254,
+        "z_isotropy": 0.938432610424481
+      },
+      {
+        "limit": 100000,
+        "chi_pfad": 0.009009009009009009,
+        "chi_hol": 0.13043478260869565,
+        "chi_E_quad": 0.15789473684210525,
+        "chi_t_cycle": 0.547945205479452,
+        "z_shuffle_pfad": 0.09124364185721995,
+        "z_isotropy_pfad": 0.16263176303383187,
+        "z_shuffle_hol": 0.6020857857389865,
+        "z_isotropy_hol": 1.3902022727780763,
+        "chi_path": 0.009009009009009009,
+        "chi_E": 0.009009009009009009,
+        "z_shuffle_path": 0.09124364185721995,
+        "z_isotropy_path": 0.16263176303383187,
+        "z_shuffle": 0.6020857857389865,
+        "z_isotropy": 1.3902022727780763
+      },
+      {
+        "limit": 1000000,
+        "chi_pfad": 0.021618282890673256,
+        "chi_hol": 0.12016293279022404,
+        "chi_E_quad": 0.012048192771084338,
+        "chi_t_cycle": 0.46291922531884744,
+        "z_shuffle_pfad": 0.5729297960572407,
+        "z_isotropy_pfad": 0.24705142600385285,
+        "z_shuffle_hol": 1.5453707751304262,
+        "z_isotropy_hol": 1.661364577751299,
+        "chi_path": 0.021618282890673256,
+        "chi_E": 0.021618282890673256,
+        "z_shuffle_path": 0.5729297960572407,
+        "z_isotropy_path": 0.24705142600385285,
+        "z_shuffle": 1.5453707751304262,
+        "z_isotropy": 1.661364577751299
+      }
+    ],
+    "hol_E_estimate": 0.12016293279022404,
+    "chi_pfad_estimate": 0.021618282890673256,
+    "chi_path_estimate": 0.021618282890673256,
+    "hol_E_quad_estimate": 0.012048192771084338,
+    "hol_E_support": {
+      "hol_E_nonzero_at_limit": true,
+      "stable_fluctuations": false,
+      "shuffle_significant": false,
+      "isotropy_significant": false,
+      "hol_E_ne_zero_supported": false,
+      "weak_hypothesis_supported": false,
+      "verdict": "Hol_E≠0 nicht gestützt (χ_Hol=0.1202); schwächere Lesart nicht gestützt."
+    },
+    "note": "Hol_E = lim χ_Hol(N); empirische Schätzung = letzter χ_Hol-Wert — kein Beweis des Grenzwerts. χ_Pfad ist Pfadorientierung (4-Pfad), nicht Holonomie."
+  },
+  "epistemic_labels": {
+    "transition_matrix": "Definition + Experiment",
+    "chi_pfad_sliding": "Definition (4-Pfad)",
+    "chi_hol_sliding": "Definition (5-Zyklus Holonomie)",
+    "chi_E_quad": "Definition (Vierlingsträger)",
+    "shuffle_null": "Experiment",
+    "isotropy_null": "Experiment",
+    "hol_E_limit": "Definition (Grenzwert auf χ_Hol)",
+    "hol_E_ne_zero": "Hypothese"
+  }
+}

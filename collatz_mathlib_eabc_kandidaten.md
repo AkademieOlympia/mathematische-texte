@@ -14,6 +14,8 @@
 |-------|-------------------------|
 | mod-12 EABC, Transfer-Operator | `collatz_schlussartikel_arxiv.tex`, `collatz_eabc_spektrum.tex`, `collatz_mixing_test.py` |
 | Lean (ℤ₂, Uniformität) | `collatz_z2_attraktor.lean`, `collatz_uniformity.lean`, `collatz_density_appendix.lean` |
+| Lean Holonomie / Bell / $D_E$ (PR #54) | `collatz_eabc_core/CollatzEabc/HolonomieFehlerterm.lean` — Lücken $(2,4,2,4)$ bewiesen; Prime/CHSH `sorry` |
+| Bell / $D_E$ Theorie + Numerik | `collatz_eabc_bell_holonomie.md`, `collatz_eabc_fehlerterm_hypothese.md`, `collatz_eabc_bell_inequality_test.py` |
 | Hurwitz-Polytop / 24 Einheiten | `collatz_hurwitz_polytop_eabc.tex`, `Rechtsorbit.py`, `Quantencomputer.py` |
 | Riemann-Kugel / SL(2) / Möbius | `Edinburg.py`, `collatz_sinh_hyperbel.tex`, `Arithmetik zu Topologie.tex` |
 | Mathlib-Update (Vorgänger) | `collatz_lean_mathlib_update.tex`, `collatz_offene_punkte.md` |
@@ -67,6 +69,16 @@ Numerische Kernwerte (heuristisch, nicht formalisiert): $|\lambda_2|\approx 0{,}
 2. `Matrix.IsIrreducible M` via `toQuiver` + Pfadexistenz (reine `Finset`-Kombinatorik).
 3. `Gershgorin` / `Charpoly.Eigs` für $|\lambda_2|<1$.
 4. Optional: `Probability.Kernel` für stochastische Lesart.
+
+### Holonomie-Fehlerterm / Bell (PR #54, Phase 1–2)
+
+| Ziel | Mathlib-Kandidat | Status im Projekt |
+|------|------------------|-------------------|
+| Primzählung bis $X$ | `Mathlib.NumberTheory.PrimeCounting` | **offen** — `N_plus_up_to` in `HolonomieFehlerterm.lean` = `sorry` |
+| Dirichlet-Charaktere mod $12$ | `Mathlib.NumberTheory.DirichletCharacter.*` | **Hypothese** in `collatz_eabc_fehlerterm_hypothese.md`, nicht formalisiert |
+| Bell/CHSH / Chebyshev-Bias | — | **nicht in Mathlib**; kombinatorisches Taubenloch in `HolonomieFehlerterm.lean` (**Theorem**) |
+
+Siehe `collatz_eabc_bell_holonomie.md` §12 und `collatz_generalangriff_2026.md` (Bell–Holonomie-Brücke).
 
 ---
 

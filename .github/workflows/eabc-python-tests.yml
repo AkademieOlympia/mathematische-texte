@@ -4,12 +4,30 @@ on:
   push:
     paths:
       - "eabc_from_lean.py"
+      - "collatz_eabc_holonomie_test.py"
+      - "collatz_eabc_transition_graph.py"
+      - "collatz_eabc_holonomie_fehlerterm.py"
+      - "collatz_eabc_bell_inequality_test.py"
       - "tests/test_eabc_from_lean.py"
+      - "tests/test_eabc_holonomie.py"
+      - "tests/test_eabc_transition_graph.py"
+      - "tests/test_eabc_holonomie_fehlerterm.py"
+      - "tests/test_eabc_bell_inequality.py"
+      - "collatz_eabc_core/CollatzEabc/HolonomieFehlerterm.lean"
       - ".github/workflows/eabc-python-tests.yml"
   pull_request:
     paths:
       - "eabc_from_lean.py"
+      - "collatz_eabc_holonomie_test.py"
+      - "collatz_eabc_transition_graph.py"
+      - "collatz_eabc_holonomie_fehlerterm.py"
+      - "collatz_eabc_bell_inequality_test.py"
       - "tests/test_eabc_from_lean.py"
+      - "tests/test_eabc_holonomie.py"
+      - "tests/test_eabc_transition_graph.py"
+      - "tests/test_eabc_holonomie_fehlerterm.py"
+      - "tests/test_eabc_bell_inequality.py"
+      - "collatz_eabc_core/CollatzEabc/HolonomieFehlerterm.lean"
       - ".github/workflows/eabc-python-tests.yml"
   workflow_dispatch:
 
@@ -31,10 +49,10 @@ jobs:
           python -m pip install ruff black
 
       - name: Run ruff
-        run: ruff check eabc_from_lean.py tests/test_eabc_from_lean.py
+        run: ruff check eabc_from_lean.py collatz_eabc_holonomie_test.py collatz_eabc_transition_graph.py collatz_eabc_holonomie_fehlerterm.py collatz_eabc_bell_inequality_test.py tests/
 
       - name: Run black check
-        run: black --check eabc_from_lean.py tests/test_eabc_from_lean.py
+        run: black --check eabc_from_lean.py collatz_eabc_holonomie_test.py collatz_eabc_transition_graph.py collatz_eabc_holonomie_fehlerterm.py collatz_eabc_bell_inequality_test.py tests/
 
   test:
     needs: lint
@@ -54,4 +72,4 @@ jobs:
           python -m pip install pytest
 
       - name: Run EABC tests
-        run: pytest tests/test_eabc_from_lean.py -q
+        run: pytest tests/test_eabc_from_lean.py tests/test_eabc_holonomie.py tests/test_eabc_transition_graph.py tests/test_eabc_holonomie_fehlerterm.py tests/test_eabc_bell_inequality.py -q
