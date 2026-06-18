@@ -23,7 +23,8 @@
 - `collatz_eabc_chirale_polarisation.md` — **Helizität** $\lambda=\pm 1$, $N_R/N_L$, $\phi_R/\phi_L$, Stufe-2-Upgrade
 - `collatz_eabc_brachistochrone.md` — $T_R$, $T_L$, Birefringenz-Analogie
 - `collatz_eabc_wigner_analog.md` — Wigner-Analogie: $W_E$ (4-Pfad) vs. $D_E$ (5-Zyklus), $W_{ab}$
-- `collatz_eabc_uebergangsraum.md` — **kanonische Geometrie:** $C_4\cong S^1$, $\langle\omega_E,h\rangle$, $L_{\mathrm{mag}}$, Flussdichte
+- `collatz_eabc_diskrete_geometrie.md` — **kanonische Geometrie-Synthese** (Programmshift, Zentralvermutung, Roadmap)
+- `collatz_eabc_uebergangsraum.md` — **Detail:** $C_4\cong S^1$, $\langle\omega_E,h\rangle$, $L_{\mathrm{mag}}$, Flussdichte
 - `collatz_eabc_signierte_massstruktur.md` — signierte Maßstruktur auf $G_E$, arithmetische Wigner-Negativität
 - `collatz_eabc_hodge_eabc.py` — `flux_density_limit`, `harmonic_holonomy_component`, `magnetic_laplacian`
 - `collatz_eabc_kritische_abbildung.py` — Numerik $x_{n,v}$, Schaltkreis-Trajektorien, `edge_velocities_from_gaps`, `holonomy_sensor_trajectory`

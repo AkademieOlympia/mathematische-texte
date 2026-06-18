@@ -5,6 +5,7 @@
 **Tao-Labels:** Definition | Analogie | Hypothese | Modellabbildung | Vermutung | Forschungsfrage
 
 **Querverweise:**
+- `collatz_eabc_diskrete_geometrie.md` — **kanonische Synthese** (Geometrie-Layer vor nächster Konjektur)
 - `collatz_eabc_zirkulationshypothese.md` — kanonisch: $N_\pm$, $C_E$, $D_E$, $S_E$, **Zentralvermutung Flussdichte**
 - `collatz_eabc_signierte_massstruktur.md` — signierte Maßstruktur, Wigner-Negativität
 - `collatz_eabc_wigner_analog.md` — historische Wigner-Lesart (sekundär zu Fluss/Wilson)
