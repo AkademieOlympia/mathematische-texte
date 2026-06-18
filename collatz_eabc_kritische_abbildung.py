@@ -423,6 +423,129 @@ def holonomy_sign(orientation: str) -> int:
     raise ValueError(f"unknown orientation: {orientation}")
 
 
+def chord_length(z1: complex, z2: complex) -> float:
+    """Euklidische Sehnenlänge |z2 - z1|."""
+    return abs(z2 - z1)
+
+
+def semicircle_arc_length(z1: complex, z2: complex) -> float:
+    """Halbkreis in der oberen Halbebene (Durchmesser = Sehne z1–z2)."""
+    return math.pi * abs(z2 - z1) / 2
+
+
+def linear_round_trip_time(trajectory_points: list[complex] | tuple[complex, ...]) -> float:
+    """
+    „Soldaten“-Photon: geradlinige Segmente P → s_v(x_1) → … → zurück zu P.
+
+    Einheitsgeschwindigkeit |dz/dt| = 1 ⇒ Rückkehrzeit = Gesamtlänge.
+  """
+    points = list(trajectory_points)
+    if len(points) < 2:
+        return 0.0
+    total = sum(chord_length(points[i], points[i + 1]) for i in range(len(points) - 1))
+    total += chord_length(points[-1], points[0])
+    return total
+
+
+def semicircle_chain_time(trajectory_points: list[complex] | tuple[complex, ...]) -> float:
+    """
+    Verkettete Halbkreisbögen in der oberen Halbebene zwischen aufeinanderfolgenden Besuchspunkten.
+    """
+    points = list(trajectory_points)
+    if len(points) < 2:
+        return 0.0
+    total = sum(
+        semicircle_arc_length(points[i], points[i + 1]) for i in range(len(points) - 1)
+    )
+    total += semicircle_arc_length(points[-1], points[0])
+    return total
+
+
+def sensor_trajectory_points(
+    orientation: str = "ABCEA",
+    gaps: tuple[int, ...] | list[int] | None = None,
+    *,
+    gamma_ref: float | None = None,
+    v_base: float | None = None,
+    gamma_n_index: int = 1,
+    gap_order: str = "ABCEA",
+) -> list[complex]:
+    """Besuchspunkte des Holonomie-Sensors als komplexe Zahlen (inkl. Start P)."""
+    traj = holonomy_sensor_trajectory(
+        orientation,
+        gaps=gaps,
+        gamma_ref=gamma_ref,
+        v_base=v_base,
+        gamma_n_index=gamma_n_index,
+        gap_order=gap_order,
+    )
+    return [
+        complex(seg["s_v"]["re"], seg["s_v"]["im"]) for seg in traj["segments"]
+    ]
+
+
+def compare_path_times(
+    orientation: str = "ABCEA",
+    gaps: tuple[int, ...] | list[int] | None = None,
+    *,
+    gamma_ref: float | None = None,
+    v_base: float | None = None,
+    gamma_n_index: int = 1,
+    gap_order: str = "ABCEA",
+) -> dict[str, Any]:
+    """
+    Vergleich Halbkreis-Kette vs. gerader Polygonzug auf dem Holonomie-Sensor.
+
+    Kein Einstein-Zwillingsparadoxon — nur euklidische Weglängenvergleich (Modellabbildung).
+    """
+    if gamma_ref is None:
+        if v_base is not None:
+            gamma_ref = v_base
+        else:
+            gamma_ref = zeta_imaginary_parts(gamma_n_index)[gamma_n_index - 1]
+    gaps_in = tuple(gaps) if gaps is not None else CANONICAL_GAP_PATTERN
+    points = sensor_trajectory_points(
+        orientation,
+        gaps=gaps_in,
+        gamma_ref=gamma_ref,
+        gap_order=gap_order,
+    )
+    t_linear = linear_round_trip_time(points)
+    t_semi = semicircle_chain_time(points)
+    ratio = t_semi / t_linear if t_linear > 0 else float("nan")
+
+    other = "CEABC" if orientation == "ABCEA" else "ABCEA"
+    points_other = sensor_trajectory_points(
+        other,
+        gaps=gaps_in,
+        gamma_ref=gamma_ref,
+        gap_order=gap_order,
+    )
+    t_linear_other = linear_round_trip_time(points_other)
+    t_semi_other = semicircle_chain_time(points_other)
+
+    return {
+        "epistemic": "Geometrischer Weglängenvergleich — kein SRT-Zwillingsparadoxon",
+        "orientation": orientation,
+        "holonomy_sign": holonomy_sign(orientation),
+        "gamma_ref": gamma_ref,
+        "gaps_abcea": list(normalize_gaps(gaps_in, gap_order)),
+        "trajectory_points": [{"re": z.real, "im": z.imag} for z in points],
+        "T_linear": t_linear,
+        "T_semicircle": t_semi,
+        "ratio_semi_over_linear": ratio,
+        "other_orientation": other,
+        "other_T_linear": t_linear_other,
+        "other_T_semicircle": t_semi_other,
+        "same_linear_time_both_orientations": math.isclose(
+            t_linear, t_linear_other, rel_tol=0, abs_tol=1e-12
+        ),
+        "same_semicircle_time_both_orientations": math.isclose(
+            t_semi, t_semi_other, rel_tol=0, abs_tol=1e-12
+        ),
+    }
+
+
 def eabc_circuit_report(
     v: float = 1.0,
     orientation: str = "ABCEA",
@@ -505,10 +628,14 @@ def run(
         "holonomy_sensor": compare_holonomy_sensor_trajectories(
             gaps=CANONICAL_GAP_PATTERN, gamma_ref=GAMMA_1_APPROX
         ),
+        "path_time_compare": compare_path_times(
+            orientation="ABCEA", gaps=CANONICAL_GAP_PATTERN, gamma_ref=GAMMA_1_APPROX
+        ),
         "boxed": {
             "mapping": "x ↦ 1/2 + i v (x - 1/2)",
             "holonomy_link": "ABCEA (+1) vs CEABC (-1) auf C4 mit Lücken (2,4,2,4)",
             "holonomy_sensor": "v_j = γ_ref / ℓ_j — Ray-Mapping als EABC-Holonomie-Sensor",
+            "path_compare": "T_semi/T_linear = π/2 bei vertikalen Segmenten — kein Zwillingsparadoxon",
             "zirkulation": "D_E = N_plus - N_minus (collatz_eabc_zirkulationshypothese.md)",
         },
     }
@@ -550,6 +677,12 @@ def main() -> None:
     for ek, val in sensor["edge_velocities"].items():
         print(f"  {ek} = {val:.7f}")
     print(f"  Σγ = {sensor['ABCEA']['total_gamma']:.7f} (4·γ_ref)")
+    paths = report["path_time_compare"]
+    print()
+    print(f"Weglängenvergleich ABCEA (γ_ref=γ_1, Lücken {paths['gaps_abcea']}):")
+    print(f"  T_linear     = {paths['T_linear']:.7f}")
+    print(f"  T_semicircle = {paths['T_semicircle']:.7f}")
+    print(f"  T_semi/T_lin = {paths['ratio_semi_over_linear']:.7f}")
     print(f"JSON: {report['output_path']}")
 
 

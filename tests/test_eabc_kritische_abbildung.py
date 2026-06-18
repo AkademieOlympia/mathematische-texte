@@ -16,6 +16,7 @@ from collatz_eabc_kritische_abbildung import (
     GAMMA_1_APPROX,
     SOURCE_X,
     compare_holonomy_sensor_trajectories,
+    compare_path_times,
     dual_circuit_report,
     eabc_circuit_report,
     edge_velocities_from_gaps,
@@ -25,8 +26,11 @@ from collatz_eabc_kritische_abbildung import (
     holonomy_sensor_trajectory,
     gamma_v,
     holonomy_sign,
+    linear_round_trip_time,
     prime_window_gap_samples,
     run,
+    semicircle_chain_time,
+    sensor_trajectory_points,
     s_v,
     x_from_gamma,
     x_n_v,
@@ -161,3 +165,33 @@ def test_prime_window_gap_samples():
     for row in samples:
         assert row["gaps_abcea"] == [2, 4, 2, 4]
         assert "edge_velocities" in row
+
+
+def test_linear_round_trip_vertical_chain():
+    points = [complex(0.5, 0.0), complex(0.5, 1.0), complex(0.5, 3.0)]
+    assert math.isclose(linear_round_trip_time(points), 1.0 + 2.0 + 3.0, rel_tol=0, abs_tol=1e-12)
+
+
+def test_semicircle_chain_pi_over_two_factor():
+    points = [complex(0.5, 0.0), complex(0.5, 2.0)]
+    lin = linear_round_trip_time(points)
+    semi = semicircle_chain_time(points)
+    assert math.isclose(semi / lin, math.pi / 2, rel_tol=0, abs_tol=1e-12)
+
+
+def test_compare_path_times_abcea_gamma_1():
+    cmp = compare_path_times("ABCEA", gamma_ref=GAMMA_1_APPROX)
+    expected_linear = 8 * GAMMA_1_APPROX
+    expected_semi = 4 * math.pi * GAMMA_1_APPROX
+    assert math.isclose(cmp["T_linear"], expected_linear, rel_tol=0, abs_tol=1e-9)
+    assert math.isclose(cmp["T_semicircle"], expected_semi, rel_tol=0, abs_tol=1e-9)
+    assert math.isclose(cmp["ratio_semi_over_linear"], math.pi / 2, rel_tol=0, abs_tol=1e-12)
+    assert cmp["same_linear_time_both_orientations"]
+    assert cmp["same_semicircle_time_both_orientations"]
+
+
+def test_sensor_trajectory_points_start_at_p():
+    points = sensor_trajectory_points("ABCEA", gamma_ref=GAMMA_1_APPROX)
+    assert len(points) == 5
+    assert math.isclose(points[0].real, SOURCE_X, rel_tol=0, abs_tol=1e-12)
+    assert math.isclose(points[0].imag, 0.0, rel_tol=0, abs_tol=1e-12)
