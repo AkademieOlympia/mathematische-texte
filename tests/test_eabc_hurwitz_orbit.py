@@ -10,7 +10,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from collatz_eabc_hurwitz_orbit_test import (
-    aggregate_orbit_report,
     aggregate_shell_report,
     chirality_score,
     enum_integer_solutions,

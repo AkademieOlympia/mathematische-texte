@@ -2,7 +2,7 @@
 """
 Hurwitz–EABC-Schalen- und Orbit-Experiment (Γ-Signatur auf Σ_p und O_i).
 
-Kanonsiche Theorie: collatz_eabc_quaternion_mass_hypothese.md
+Kanonsiche Theorie: collatz_eabc_hurwitz_spaltung.md
 
 Drei Ebenen:
   p  ↦  Σ_p = {q ∈ H_H : N(q)=p}   (Normschale, nicht „Orbit“)
@@ -922,8 +922,8 @@ def multi_scale_report(max_ps: list[int]) -> dict[str, Any]:
     largest = scales[str(max(sorted(set(max_ps))))]
     return {
         "meta": {
-            "hypothesis_doc": "collatz_eabc_quaternion_mass_hypothese.md",
-            "legacy_redirect": "collatz_eabc_hurwitz_spaltung.md",
+            "hypothesis_doc": "collatz_eabc_hurwitz_spaltung.md",
+            "extended_mass_hypothesis": "collatz_eabc_quaternion_mass_hypothese.md",
             "gaussian_reference": "collatz_eabc_gauss_spaltung_test.py",
             "eisenstein_reference": "collatz_eabc_eisenstein_spaltung_test.py",
             "normabstieg": "collatz_eabc_normabstieg_hypothese.md",
