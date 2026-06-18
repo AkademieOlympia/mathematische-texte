@@ -14,8 +14,9 @@
 |-------|-------------------------|
 | mod-12 EABC, Transfer-Operator | `collatz_schlussartikel_arxiv.tex`, `collatz_eabc_spektrum.tex`, `collatz_mixing_test.py` |
 | Lean (ℤ₂, Uniformität) | `collatz_z2_attraktor.lean`, `collatz_uniformity.lean`, `collatz_density_appendix.lean` |
-| Lean Holonomie / Bell / $D_E$ (PR #54) | `collatz_eabc_core/CollatzEabc/HolonomieFehlerterm.lean` — Lücken $(2,4,2,4)$ bewiesen; Prime/CHSH `sorry` |
-| Lean $\Phi_E$, harmonisches $h$, $W_E$ (PR #59) | `collatz_eabc_core/CollatzEabc/FlussPhiE.lean` — $C_4$, $E^\pm$, $h$ bewiesen; Prim-Grenzwert `sorry` |
+| Lean Holonomie / Bell / $D_E$ (PR #54) | `collatz_eabc_core/CollatzEabc/HolonomieFehlerterm.lean` — Schicht **A**–**B**; Lücken $(2,4,2,4)$ bewiesen; Prime/CHSH `sorry` |
+| Lean $\Phi_E$, harmonisches $h$, $W_E$ (PR #59) | `collatz_eabc_core/CollatzEabc/FlussPhiE.lean` — Schicht **B**; $C_4$, $E^\pm$, $h$ bewiesen; Prim-Grenzwert `sorry` |
+| Lean `RadiationSpace` (rote Schicht) | `collatz_eabc_core/CollatzEabc/RadiationSpace.lean` — interpretativer Scaffold; **kein** Physik-Theorem; vgl. `collatz_eabc_epistemik_schichten.md` |
 | Bell / $D_E$ Theorie + Numerik | `collatz_eabc_bell_holonomie.md`, `collatz_eabc_fehlerterm_hypothese.md`, `collatz_eabc_bell_inequality_test.py` |
 | Hurwitz-Polytop / 24 Einheiten | `collatz_hurwitz_polytop_eabc.tex`, `Rechtsorbit.py`, `Quantencomputer.py` |
 | Riemann-Kugel / SL(2) / Möbius | `Edinburg.py`, `collatz_sinh_hyperbel.tex`, `Arithmetik zu Topologie.tex` |

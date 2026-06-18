@@ -7,15 +7,16 @@
 **Rolle:** **Primäres** EABC-Dokument. Alle Detailhypothesen (Zirkulation, Übergangsraum, Wigner-Legacy) verweisen hierher. Numerik: `collatz_eabc_hodge_eabc.py` (`Phi_E`, `flux_density_limit`, `synthesis_report`).
 
 **Querverweise (Detail, nicht duplizieren):**
-| Thema | Detaildokument | Code |
-|-------|----------------|------|
-| Zählgrößen $N_\pm$, Fehlerterm | `collatz_eabc_zirkulationshypothese.md` | `collatz_eabc_holonomie_fehlerterm.py` |
-| Hodge, $L_{\mathrm{mag}}$ | `collatz_eabc_uebergangsraum.md` | `collatz_eabc_hodge_eabc.py` |
-| Signierte Maßstruktur | `collatz_eabc_signierte_massstruktur.md` | `collatz_eabc_wigner_field.py` |
-| Epistemik Physik vs. Modell | `collatz_eabc_epistemik_physik.md` | — |
-| Wigner-Legacy (4-Pfad) | `collatz_eabc_wigner_analog.md` | `collatz_eabc_wigner_field.py` |
-| Algebraischer Nebenzweig | `collatz_eabc_euklidische_hebung.md` | `collatz_eabc_euklid_hebung.py` |
-| Lean $\Phi_E$ / $h$ auf $C_4$ | `collatz_eabc_phi_e_lean_beweisversuch.md` | `collatz_eabc_core/CollatzEabc/FlussPhiE.lean` |
+| Thema | Schicht | Detaildokument | Code |
+|-------|---------|----------------|------|
+| Zählgrößen $N_\pm$, Fehlerterm | **B** | `collatz_eabc_zirkulationshypothese.md` | `collatz_eabc_holonomie_fehlerterm.py` |
+| Hodge, $L_{\mathrm{mag}}$ | **B** | `collatz_eabc_uebergangsraum.md` | `collatz_eabc_hodge_eabc.py` |
+| Signierte Maßstruktur | **B** | `collatz_eabc_signierte_massstruktur.md` | `collatz_eabc_wigner_field.py` |
+| Epistemik Schichten A/B/C/rot | **Meta** | `collatz_eabc_epistemik_schichten.md` | `CollatzEabc/RadiationSpace.lean` |
+| Epistemik Physik vs. Modell | **C** | `collatz_eabc_epistemik_physik.md` | — |
+| Wigner-Legacy (4-Pfad) | **C** | `collatz_eabc_wigner_analog.md` | `collatz_eabc_wigner_field.py` |
+| Algebraischer Nebenzweig | **A** | `collatz_eabc_euklidische_hebung.md` | `collatz_eabc_euklid_hebung.py` |
+| Lean $\Phi_E$ / $h$ auf $C_4$ | **B** | `collatz_eabc_phi_e_lean_beweisversuch.md` | `collatz_eabc_core/CollatzEabc/FlussPhiE.lean` |
 
 ---
 

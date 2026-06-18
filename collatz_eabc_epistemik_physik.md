@@ -5,7 +5,8 @@
 **Tao-Labels:** Definition | Modellabbildung | Analogie | Forschungsfrage
 
 **Querverweise:**
-- `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^\pm$, $\Phi_E$, EABC-Vermutung, drei Ebenen
+- `collatz_eabc_epistemik_schichten.md` — **kanonisch:** Schichten **A** (hart) / **B** (geometrisch) / **C** (ikonische Physik) / **rot** (`RadiationSpace`); Beweis $\|$ Ikone
+- `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^\pm$, $\Phi_E$, EABC-Vermutung (Schicht **B**)
 - `collatz_eabc_holonomie_stufen.md` — **drei mathematische Stufen** (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_kritische_abbildung.md` — §7 Halbkreis vs. gerade; Holonomie-Sensor $v_j=\gamma_{\mathrm{ref}}/\ell_j$
 - `collatz_eabc_chirale_polarisation.md` — **Photon-Helizität**, $\phi_R/\phi_L$, Stufe-2-Upgrade
