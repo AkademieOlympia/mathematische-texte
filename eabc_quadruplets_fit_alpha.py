@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Log-log-Steigung alpha_E aus eabc_quadruplets.csv; H0a/H0b–H3-Einordnung und Diagnose-Plot."""
+"""Log-log-Steigung aus eabc_quadruplets.csv; H0a/H0b–H3-Einordnung und Diagnose-Plot.
+
+alpha_eff und alpha_loc: numerisches Signal (Ebene 2–3), kein asymptotischer Satz.
+alpha_E_hat: heuristische Skalierungsschaetzung aus R_beta-Plateaus (Experiment).
+Reihenfolge: Asymptotik (W_E) → Skalierung (R_beta, alpha_E) → numerische Exponenten.
+"""
 
 import argparse
 from pathlib import Path
@@ -138,12 +143,14 @@ def interpret(
     df: pd.DataFrame,
     slopes: dict[float, float],
 ) -> str:
-    hints: list[str] = []
+    hints: list[str] = [
+        "alpha_eff/alpha_loc = numerisches Signal, kein asymptotischer Satz",
+    ]
 
     hints.append(diagnose_hypothesis(alpha_E_hat, alpha))
 
     if alpha_loc_max is not None and alpha_loc_max > 0.5:
-        hints.append(f"alpha_loc max={alpha_loc_max:.4f} → H1 (persistenter Bias, empirisch)")
+        hints.append(f"alpha_loc max={alpha_loc_max:.4f} → H1-Hinweis (empirisch, kein Theorem)")
 
     if alpha_E_hat <= 0.55:
         hints.append("alpha_E_hat ≤ 1/2 → H0a-Kandidat (R_{1/2} beschränkt)")
@@ -155,7 +162,7 @@ def interpret(
     if abs(alpha - 0.5) < 0.15 and alpha_E_hat <= 0.55:
         hints.append("polyfit alpha≈1/2 konsistent mit H0a")
     elif 0.5 < alpha < 1.0:
-        hints.append(f"polyfit alpha={alpha:.4f} → asymptotischer Bias")
+        hints.append(f"polyfit alpha={alpha:.4f} → numerischer Bias-Hinweis (kein asymptotischer Satz)")
 
     w_e = df["W_E"].to_numpy(dtype=np.float64)
     if w_e.size >= 2 and abs(w_e[-1]) < abs(w_e[0]) * 0.5:
@@ -198,7 +205,7 @@ def make_diagnose_plot(df: pd.DataFrame, loc: pd.Series, out_path: Path) -> None
     ax.plot(x, df["R_1_2"], "s-", color="C1", label=r"$Z_E = R_{1/2} = D/\sqrt{Q}$")
     ax.axhline(0.0, color="gray", linewidth=0.8, linestyle="--")
     ax.set_ylabel(r"$Z_E(X) = R_{1/2}(X)$")
-    ax.set_title("Panel 2: erste Testobservable (H0a / H1)")
+    ax.set_title("Panel 2: Skalierungsdiagnostik (H0a / H1)")
     ax.legend(loc="best", fontsize=8)
     ax.grid(True, alpha=0.3)
 
@@ -259,7 +266,7 @@ def main():
     eff = alpha_eff_series(valid)
     loc = alpha_loc_series(valid)
 
-    print("alpha_eff pro Checkpoint:")
+    print("alpha_eff pro Checkpoint (numerisches Signal, kein asymptotischer Satz):")
     for idx, row in valid.iterrows():
         x = int(row["X"])
         ae = eff.loc[idx]
@@ -285,9 +292,18 @@ def main():
         return
 
     alpha, beta = fit_alpha(valid)
-    print(f"\nglobal alpha (polyfit) = {alpha:.4f}")
-    print(f"beta                   = {beta:.4f}")
-    print(f"→ {interpret(alpha, alpha_loc_max, valid)}")
+    alpha_E_hat, best_beta, slopes = estimate_alpha_E(valid)
+
+    print("\nR_beta-Steigungen (log|R_beta| vs log Q; ≈ alpha_E - beta):")
+    for b in sorted(slopes):
+        col = next(k for k, v in R_BETA_COLUMNS.items() if v == b)
+        print(f"  beta={b:.2f} ({col}): Steigung={slopes[b]:+.4f}")
+
+    print(f"\nalpha_E_hat (heuristisch, Experiment) = {alpha_E_hat:.4f}")
+    print(f"  (Plateau bei beta={best_beta:.2f}, kein Theorem)")
+    print(f"global alpha (polyfit, numerisches Signal) = {alpha:.4f}")
+    print(f"beta (Intercept)                    = {beta:.4f}")
+    print(f"→ {interpret(alpha, alpha_E_hat, alpha_loc_max, valid, slopes)}")
 
     if args.plot:
         out_path = Path(args.plot_out)
