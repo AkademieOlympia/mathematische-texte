@@ -19,6 +19,7 @@ import Mathlib.Topology.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic
 import CollatzEabc.Mod12Matrix
+import CollatzEabc.PatternCount
 import CollatzEabc.PrefProjection
 
 namespace CollatzEabc
@@ -235,18 +236,35 @@ theorem test_manual_D_E_zero : D_E testClassesManual = 0 := by
   simp [D_E, test_manual_N_plus, test_manual_N_minus]
 
 /-!
-### Prime-basierte Zählung (Skeleton — sorry)
+### Prime-basierte Zählung (Schicht B — computabel)
 
-Mathlib hat `PrimeCounting` / `DirichletCharacter`, aber keine projektspezifische
-κ-Folge bis Primgrenze X. Die operative Definition folgt `collatz_eabc_holonomie_fehlerterm.py`.
+`primeEabcClassesUpTo X` = κ-Folge der EABC-Klassen aller Primzahlen 3 < p ≤ X
+(vgl. `collatz_eabc_transition_graph.prime_eabc_sequence`).
+
+`N_plus_up_to` / `N_minus_up_to` = Gleitfenster-Zählung ABCEA / CEABC auf dieser Folge
+(vgl. `collatz_eabc_holonomie_fehlerterm.holonomy_counts`).
+
+**Experiment vs. Theorem:** Die Definitionen sind **computabel** (Schicht B).
+Asymptotik `Hol_E_zero`, Primdichte und R_{1/2} = O(1) bleiben Schicht R (`sorry`).
+
+Alternativ: Primvierling-Zählung in `PatternCount` (`N_plus_quadruplet_up_to`, …;
+vgl. `eabc_quadruplets_1e10.py`, bei 10^6: 84 / 82).
 -/
 
-/-- Prim-Obergrenze X: Zählung geschlossener 5-Zyklen auf der κ-Folge (offen). -/
-def N_plus_up_to (_X : ℕ) : ℕ :=
-  sorry
+/-- Prim-Obergrenze X: #{ABCEA-Fenster} auf der κ-Primfolge bis X. -/
+def N_plus_up_to (X : ℕ) : ℕ :=
+  N_plus (primeEabcClassesUpTo X)
 
-def N_minus_up_to (_X : ℕ) : ℕ :=
-  sorry
+/-- Prim-Obergrenze X: #{CEABC-Fenster} auf der κ-Primfolge bis X. -/
+def N_minus_up_to (X : ℕ) : ℕ :=
+  N_minus (primeEabcClassesUpTo X)
+
+/-- Gleitfenster-Zählung koppelt direkt an `N_plus` / `primeEabcClassesUpTo`. -/
+theorem N_plus_up_to_eq_sliding (X : ℕ) :
+    N_plus_up_to X = N_plus (primeEabcClassesUpTo X) := rfl
+
+theorem N_minus_up_to_eq_sliding (X : ℕ) :
+    N_minus_up_to X = N_minus (primeEabcClassesUpTo X) := rfl
 
 def D_E_up_to (X : ℕ) : ℤ :=
   (N_plus_up_to X : ℤ) - N_minus_up_to X
@@ -254,6 +272,16 @@ def D_E_up_to (X : ℕ) : ℤ :=
 /-- Q_E(X) = N₊(X) + N₋(X) bis Primgrenze X. -/
 def Q_E_up_to (X : ℕ) : ℕ :=
   N_plus_up_to X + N_minus_up_to X
+
+theorem D_E_up_to_eq_sliding (X : ℕ) :
+    D_E_up_to X = D_E (primeEabcClassesUpTo X) := by
+  unfold D_E_up_to D_E N_plus_up_to N_minus_up_to
+  rfl
+
+theorem Q_E_up_to_eq_sliding (X : ℕ) :
+    Q_E_up_to X = Q_E (primeEabcClassesUpTo X) := by
+  unfold Q_E_up_to Q_E N_plus_up_to N_minus_up_to
+  rfl
 
 /-- W_E(X) = D_E(X)/Q_E(X) bis Primgrenze X (identisch zu `FlussPhiE.W_E_up_to`). -/
 def W_E_up_to (X : ℕ) : ℚ :=
@@ -325,9 +353,21 @@ theorem W_E_up_to_bounds (X : ℕ) :
       rw [← hone]
       exact hdiv
 
-/-- Hauptvermutung Hol_E = 0 (asymptotisch; offen). -/
+/-- Hauptvermutung Hol_E = 0 (asymptotisch; Schicht R — Experiment, kein Theorem). -/
 def Hol_E_zero : Prop :=
   sorry
+
+/-!
+### Referenzwerte Gleitfenster (computabel, `native_decide`)
+
+Abgleich `collatz_eabc_holonomie_fehlerterm.holonomy_counts`: X=1000 ⇒ N₊=N₋=4.
+-/
+
+example : N_plus_up_to 1000 = 4 := by native_decide
+
+example : N_minus_up_to 1000 = 4 := by native_decide
+
+example : D_E_up_to 1000 = 0 := by native_decide
 
 /-!
 ### Bell / CHSH auf G_E (Skeleton)

@@ -2,6 +2,7 @@
 
 **Status:** Skeleton (PR #63; Branch `collatz/eabc-05-holonomie-fehlerterm`)  
 **Lean (Fehlerterm):** `collatz_eabc_core/CollatzEabc/HolonomieFehlerterm.lean`  
+**Lean (Pattern-Zählung):** `collatz_eabc_core/CollatzEabc/PatternCount.lean`  
 **Lean (Hodge-Layer):** `collatz_eabc_core/CollatzEabc/FlussPhiE.lean`  
 **Lean (minimaler Kern):** `collatz_eabc_core/CollatzEabc/HolonomyCore.lean` (`EABC`-Namespace)  
 **Epistemik:** `collatz_eabc_epistemik_schichten.md` — **A / B / R / C**; Lakatos §4 (#72)  
@@ -107,6 +108,10 @@ lake build CollatzEabc.FlussPhiE
 | Testfall $D_E=0$ | `test_manual_D_E_zero` | **Theorem** |
 | $N_+(X)=N_-(X) \Rightarrow W_E(X)=0$ | `W_E_up_to_zero_of_balance` | **Theorem** |
 | $-1 \le W_E(X) \le 1$ | `W_E_up_to_bounds` | **Theorem** |
+| $N_\pm(X)$ = Gleitfenster auf κ-Primfolge | `N_plus_up_to_eq_sliding`, `N_minus_up_to_eq_sliding` | **Theorem** |
+| $D_E(X)$, $Q_E(X)$ koppeln an κ-Folge | `D_E_up_to_eq_sliding`, `Q_E_up_to_eq_sliding` | **Theorem** |
+| Referenz X=1000 (Gleitfenster) | `example` (`native_decide`) | **Theorem** |
+| Referenz X=1000 (Vierlinge) | `PatternCount` (`native_decide`) | **Theorem** |
 
 ### Schicht B — Struktur (Definitionen)
 
@@ -115,7 +120,9 @@ lake build CollatzEabc.FlussPhiE
 | Gleitfenster-Zählung | `N_plus`, `N_minus`, `countSlidingWord` | **Struktur** |
 | $D_E$, $Q_E$, $\chi_{\mathrm{Hol}}$ auf Listen | `D_E`, `Q_E`, `chi_Hol` | **Struktur** |
 | $R_\beta$, $\tilde D_E$ auf Listen | `R_beta`, `D_tilde_E` | **Struktur** (`noncomputable`) |
-| Prim-Zählung bis $X$ | `N_plus_up_to`, `N_minus_up_to`, `D_E_up_to`, `Q_E_up_to` | **Struktur** (Zähler `sorry`) |
+| κ-Primfolge bis $X$ | `primeEabcClassesUpTo` (`PatternCount`) | **Struktur** (computabel) |
+| Prim-Zählung bis $X$ (Gleitfenster) | `N_plus_up_to`, `N_minus_up_to`, `D_E_up_to`, `Q_E_up_to` | **Struktur** (computabel) |
+| Vierling-Zählung bis $X$ | `N_plus_quadruplet_up_to`, `N_minus_quadruplet_up_to` | **Struktur** (computabel) |
 | $W_E(X)$, $R_\beta(X)$, $\tilde D_E(X)$ | `W_E_up_to`, `R_beta_up_to`, `D_tilde_E_up_to` | **Struktur** |
 | Bell/CHSH-Skeleton | `EabcWindowObservables`, `LocalRealismOnGE`, `chshSum` | **Struktur** |
 
@@ -123,12 +130,13 @@ lake build CollatzEabc.FlussPhiE
 
 | Brücke | Lean-Name | Status |
 |--------|-----------|--------|
-| $\kappa$-Folge $\to$ $N_\pm(X)$ | `N_plus_up_to`, `N_minus_up_to` | **Brücke** (`sorry`) |
 | $\mathrm{Hol}_E = 0$ (asymptotisch) | `Hol_E_zero` | **Brücke** (`sorry`) |
+| $R_{1/2}(X) = O(1)$, Primdichte | (noch nicht formalisiert) | **Brücke** (offen) |
 
 ```bash
 cd collatz_eabc_core
-lake build CollatzEabc.HolonomieFehlerterm   # 3 sorry (Prim-Enumeration)
+lake build CollatzEabc.PatternCount
+lake build CollatzEabc.HolonomieFehlerterm   # 1 sorry (Hol_E_zero)
 ```
 
 ---
