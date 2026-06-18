@@ -21,7 +21,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_sagnac_circulation.py` — $C_E(X)$, $\omega(e)$, $\alpha$
 - `collatz_eabc_holonomie_fehlerterm.py` — $N_\pm$, $D_E$, $S_E$, $\widetilde{D}_E$
 - `eabc_quadruplets_1e10.py` — Vierlings-Zählung bis $X$, $W_E$, $Z_E$, $R_\beta$, mod-$420$-Diagnostik
-- `eabc_quadruplets_fit_alpha.py` — Ebenen 0–3, $\alpha_{\mathrm{eff}}$, $\alpha_{\mathrm{loc}}$, H₀a/H₀b–H₃-Diagnose
+- `eabc_quadruplets_fit_alpha.py` — Ebenen 0–3, $\alpha_E$-Schätzung aus $R_\beta$-Plateaus, $\alpha_{\mathrm{eff}}$, $\alpha_{\mathrm{loc}}$, H₀a/H₀b–H₃-Diagnose
 - `eabc_quadruplets_plot.py` — Vierfeld-Diagnose-Plot ($W_E$, $Z_E$, $\alpha_{\mathrm{loc}}$, $R_\beta$)
 - `collatz_eabc_graph_laplacian.py` — $\mathrm{Spec}(L_E)$
 - `collatz_eabc_evolution_analytik.md` — **Evolutionspfad** Bell→Sagnac→$C_E$→$\mathrm{Spec}(L_E)$, Wachstumsszenarien, Dirichlet-Stub
@@ -169,13 +169,7 @@ $$W_E(X) = \frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)}$$
 
 ### 4.2 Fehlerterm-Skalierung und Hypothesenhierarchie (H₀a/H₀b–H₃)
 
-$$\boxed{\;\text{Nicht }\Phi_E\text{ ist zuerst das Hauptobjekt, sondern der kritische Skalenexponent }\alpha_E.\;}$$
-
-$$\boxed{\;\text{Die EABC-Skalierungsfrage besteht darin, den kritischen Exponenten }\alpha_E\text{ der Differenz }D(X)=A(X)-C(X)\text{ zu bestimmen.}\;}$$
-
-$$\boxed{\;\text{Die Holonomie-Hypothese ist der Grenzfall }\alpha_E = 1.\;}$$
-
-**Methodische Leitlinie:** Vor jeder Hypothese werden **vier diagnostische Ebenen** strikt getrennt (Tao-Stil: Definition → Diagnostik → abgeleitete Größe → Vermutung). Das **Hauptobjekt** ist der kritische Skalenexponent $\alpha_E$ — nicht $\Phi_E$. Starke Holonomie $W_E(X)\to\Phi_E\neq 0$ ist nur der Spezialfall $\alpha_E=1$. Die Hypothesen H₀a–H₃ referenzieren jeweils eine Ebene; sie ersetzen sie nicht.
+**Methodische Leitlinie:** Vor jeder Hypothese werden **vier diagnostische Ebenen** strikt getrennt (Tao-Stil: Definition → Diagnostik → abgeleitete Größe → Vermutung). Die **erste eigentliche Testobservable** ist $Z_E(X)=R_{1/2}(X)=D(X)/\sqrt{Q(X)}$ (Ebene 1) — nicht nur Hilfsgröße. Die Frage, ob $D(X)/\sqrt{Q(X)}$ auf Zufallsniveau bleibt oder systematisch wächst, wird direkt an $R_{1/2}$ geprüft; erst danach folgen lokale Exponenten (Ebene 2), asymptotisches $\alpha$ (Ebene 3) und Holonomie $R_1=W_E\to\Phi_E$ (H₃). Die Hypothesen H₀a–H₃ referenzieren jeweils eine Ebene; sie ersetzen sie nicht.
 
 #### Ebene 0 — Beobachtbare Größen (direkt messbar)
 
@@ -188,35 +182,35 @@ $$W_E(X) := \frac{D(X)}{Q(X)},\qquad Z_E(X) := \frac{D(X)}{\sqrt{Q(X)}} = \widet
 
 Alle vier Größen sind **punktuell aus der Zählung** ablesbar — ohne Exponentenannahme. **Label:** **Definition**.
 
-#### Ebene 1 — Skalierungsdiagnostik und $\alpha_E$ (keine Exponentenannahme)
+#### Ebene 1 — Skalierungsdiagnostik (keine Exponentenannahme)
 
-Für festes $\beta\in\mathbb{R}_+$:
+**Saubere Testkette:** $D(X)=A(X)-C(X)$, $Q(X)=A(X)+C(X)$, dann für festes $\beta\in\mathbb{R}_+$:
 
 $$R_\beta(X) := \frac{D(X)}{Q(X)^\beta}.$$
 
-**Kritischer Exponent** (Definition über Renormierungsobservablen):
+Speziell $R_{1/2}(X)=Z_E(X)$ testet **Wurzelrauschen** (H₀a/H₁); $R_1(X)=W_E(X)$ testet **starke Holonomie** (H₀b/H₃). Dazwischen: $R_{2/3}$, $R_{3/4}$, $R_{0.9}$ — Zwischennormierungen für sublinearen Bias.
+
+**Kritischer Exponent** (abgeleitete Größe, Ebene 3-Vorbereitung):
 
 $$\alpha_E := \inf\{\beta\in\mathbb{R}_+ : R_\beta(X)\text{ bleibt beschränkt für }X\to\infty\}.$$
 
-Numerisch: man vergleicht, bei welchem $\beta$ die Kurve $R_\beta(X)$ im beobachteten Fenster noch **stabil** vs. **wächst**; Zwischenwerte $R_{2/3}$, $R_{3/4}$, $R_{0.9}$ zeigen die **Skala des Bias**.
+Numerisch: man vergleicht, bei welchem $\beta$ die Kurve $R_\beta(X)$ im beobachteten Fenster noch **stabil** vs. **wächst**; Zwischenwerte zeigen die **Skala des Bias**.
 
 **Testarchitektur:**
 
 | Observable | $\beta$ | Lesart |
 |------------|---------|--------|
-| $R_{1/2}=Z_E$ | $\tfrac{1}{2}$ | Zufallsniveau ($\beta<\alpha_E$) |
-| $R_{2/3}$, $R_{3/4}$, $R_{0.9}$ | Zwischenwerte | wo der Bias lebt |
-| $R_1=W_E$ | $1$ | starke Holonomie ($\alpha_E=1$) |
+| $R_{1/2}=Z_E$ | $\tfrac{1}{2}$ | erste Testobservable — Wurzelrauschen (H₀a/H₁) |
+| $R_{2/3}$, $R_{3/4}$, $R_{0.9}$ | Zwischenwerte | sublinearer Bias (H₂-Diagnostik) |
+| $R_1=W_E$ | $1$ | starke Holonomie (H₀b/H₃) |
 
-Speziell $R_{1/2}(X)=D(X)/\sqrt{Q(X)}=Z_E(X)$ — **mit Vorzeichen**; $|R_{1/2}|$ misst die Wurzelnormierung der Differenz.
-
-**Robuste Kernfrage:** $\alpha_E > \tfrac{1}{2}$? — wächst $D(X)$ schneller als Wurzelrauschen?
+$Z_E(X)=R_{1/2}(X)$ ist die **erste eigentliche Testobservable** — mit Vorzeichen; die Kernfrage lautet: bleibt $D(X)/\sqrt{Q(X)}$ beschränkt oder wächst es systematisch?
 
 **Diagnostische Fragen** (rein empirisch, kein Limittheorem):
 
-- Wächst $R_\beta(X)$ mit $X$?
-- Fällt $R_\beta(X)$?
-- Plateau / beschränkt?
+- Bleibt $R_{1/2}(X)$ beschränkt (Wurzelrauschen) oder wächst es?
+- Welche $\beta$-Normierung stabilisiert die Kurve?
+- Fällt $R_1(X)=W_E(X)$ gegen $0$ oder gegen $\Phi_E\neq 0$?
 
 Diese Fragen sind **numerisch robuster** als eine unmittelbare Schätzung eines globalen Exponenten. Man vergleicht mehrere $\beta$ parallel ($\tfrac{1}{2},\tfrac{2}{3},\tfrac{3}{4},0{,}9,1$): welche Normierung stabilisiert die Kurve?
 
@@ -236,47 +230,46 @@ $\alpha_{\mathrm{eff}}$ ist der punktweise Effektivexponent; $\alpha_{\mathrm{lo
 
 #### Ebene 3 — Asymptotische Exponenten (Vermutung)
 
-$$\alpha := \lim_{X\to\infty} \alpha_{\mathrm{loc}}(X)\quad\text{(falls der Grenzwert existiert).}$$
+$$\alpha_E := \lim_{X\to\infty} \alpha_{\mathrm{loc}}(X)\quad\text{(falls der Grenzwert existiert).}$$
 
-Erst wenn Ebene 3 plausibel ist, hat $|D(X)| \asymp Q(X)^\alpha$ als asymptotisches Modell Sinn. Daraus folgen formal
+Erst wenn Ebene 3 plausibel ist, hat $|D(X)| \asymp Q(X)^{\alpha_E}$ als asymptotisches Modell Sinn. Daraus folgen formal
 
-$$W_E(X) \sim Q(X)^{\alpha-1},\qquad Z_E(X) \sim Q(X)^{\alpha-1/2},\qquad R_\beta(X) \sim Q(X)^{\alpha-\beta}.$$
+$$W_E(X) \sim Q(X)^{\alpha_E-1},\qquad Z_E(X) \sim Q(X)^{\alpha_E-1/2},\qquad R_\beta(X) \sim Q(X)^{\alpha_E-\beta}.$$
 
-| $\alpha$ | $W_E=R_1$ | $R_{1/2}=Z_E$ | Lesart |
-|----------|-----------|---------------|--------|
-| $\tfrac{1}{2}$ | $\to 0$ | $O(1)$ | Wurzelrauschen (H₀a) |
-| $\tfrac{1}{2} < \alpha < 1$ | $\to 0$ | $\to\infty$ | sublinearer Bias (H₁–H₂, nicht H₃) |
-| $1$ | $\to \Phi_E \neq 0$ | $\sim\sqrt{Q}$ | starke Holonomie (H₃) |
+**Drei numerische Fälle** (an $\alpha_E$ gebunden):
 
-**Drei numerisch unterscheidbare Fälle** (Ebenen 0–1):
+| Fall | $\alpha_E$ | $R_{1/2}=Z_E$ | $W_E$ | Lesart |
+|------|------------|---------------|-------|--------|
+| 1. Rauschen | $\le \tfrac{1}{2}$ | $O(1)$ | $\to 0$ | Wurzelrauschen (H₀a) |
+| 2. Sublinearer Bias | $\tfrac{1}{2} < \alpha_E < 1$ | $\to\infty$ | $\to 0$ | arithmetischer Bias (H₁–H₂, nicht H₃) |
+| 3. Starke Holonomie | $= 1$ | $\sim\sqrt{Q}$ | $\to \Phi_E \neq 0$ | Holonomie-Grenzfall (H₃) |
 
-1. **Rauschen:** $R_{1/2}=O(1)$, $W_E\to 0$ — H₀a/H₀b-kompatibel.
-2. **Sublinearer Bias:** $R_{1/2}\to\infty$, $W_E\to 0$ — H₁/H₂, nicht H₃.
-3. **Starke Holonomie:** $W_E\to\Phi_E\neq 0$ — H₃ (Lean-**RED**).
+**Wichtig:** Auch bei $\Phi_E=0$ kann $\alpha_E>\tfrac{1}{2}$ gelten — ein **eigenständiges arithmetisches Phänomen**, nicht äquivalent zur Holonomiefrage.
 
-**Wichtiger Vorbehalt (Ebene 3):** $\alpha_{\mathrm{loc}}$ **muss nicht konvergieren** — in der analytischen Zahlentheorie kann ein Exponent über lange Bereiche stabil erscheinen und später driften oder oszillieren (vgl. explizite Formeln, $L$-Funktionen). Ein globaler Log-log-Fit in `eabc_quadruplets_fit_alpha.py` schätzt ein Gesamt-$\alpha$ über alle Checkpoints; das ist **Experiment**, keine Bestätigung von Ebene 3.
+**Wichtiger Vorbehalt (Ebene 3):** $\alpha_{\mathrm{loc}}$ **muss nicht konvergieren** — in der analytischen Zahlentheorie kann ein Exponent über lange Bereiche stabil erscheinen und später driften oder oszillieren (vgl. explizite Formeln, $L$-Funktionen). Ein globaler Log-log-Fit in `eabc_quadruplets_fit_alpha.py` schätzt ein Gesamt-$\alpha_E$ über alle Checkpoints; die heuristische $\alpha_E$-Schätzung aus $R_\beta$-Plateaus ist **Experiment**, kein Theorem.
 
-**Label:** $\alpha$ = **Vermutung** / **Hypothese** (asymptotisch).
+**Label:** $\alpha_E$ = **Vermutung** / **Hypothese** (asymptotisch).
 
 #### Hypothesen (H₀a/H₀b–H₃)
 
-Schrittweise Eskalation: **zuerst** $R_{1/2}$, **dann** $\alpha$, **dann** Holonomie.
+Schrittweise Eskalation an $\alpha_E$ gebunden: **zuerst** $R_{1/2}$ ($\alpha_E\le\tfrac{1}{2}$?), **dann** $\alpha_E$, **dann** Holonomie ($\alpha_E=1$).
 
 | Stufe | Aussage | Ebene | Label |
 |-------|---------|-------|-------|
-| **H₀a** (Wurzelrauschen) | $R_{1/2}(X)=D(X)/\sqrt{Q(X)}$ **bleibt beschränkt** | 1 | **Heuristik** (Referenzmodell, kein Beweis) |
-| **H₀b** (keine Orientierung) | $W_E(X)\to 0$ — analytische Nullhypothese; **schwächer** als $\alpha=\tfrac{1}{2}$; **H₀b $\nRightarrow$ $\alpha=\tfrac{1}{2}$** | 0 | **Nullhypothese** (analytisch) |
-| **H₁** (mehr als Wurzelrauschen) | $R_{1/2}(X)\to\infty$ — rein **empirisch**, Skalenbereiche | 1 | **Experiment** |
-| **H₂** (asymptotischer Bias) | $\exists\,\alpha>\tfrac{1}{2}$: $|D(X)|\asymp Q(X)^\alpha$ — erst wenn Ebene 3 plausibel | 3 | **Hypothese** (arithmetisch stark) |
-| **H₃** (starke Holonomie) | $R_1(X)=W_E(X)\to\Phi_E\neq 0$, äquivalent $D(X)\sim\Phi_E\,Q(X)$ | 0/3 | **Vermutung** (Lean-**RED**: `HasNonzeroHolonomyLimit`) |
+| **H₀a** (Wurzelrauschen) | $\alpha_E \le \tfrac{1}{2}$ — äquivalent: $R_{1/2}(X)$ **bleibt beschränkt** auf dem beobachteten Bereich | 1 | **Heuristik** (Referenzmodell, kein Beweis) |
+| **H₀b** (keine Orientierung) | $W_E(X)\to 0$ — analytische Nullhypothese; **schwächer** als $\alpha_E=\tfrac{1}{2}$; **H₀b $\nRightarrow$ $\alpha_E\le\tfrac{1}{2}$** | 0 | **Nullhypothese** (analytisch) |
+| **H₁** (mehr als Wurzelrauschen) | $\alpha_E > \tfrac{1}{2}$ empirisch — $R_{1/2}(X)\to\infty$ | 1 | **Experiment** |
+| **H₂** (asymptotischer Bias) | $|D(X)| \asymp Q(X)^{\alpha_E}$ mit $\alpha_E > \tfrac{1}{2}$ asymptotisch | 3 | **Hypothese** (arithmetisch stark) |
+| **H₃** (starke Holonomie) | $\alpha_E = 1$, $W_E(X)\to\Phi_E\neq 0$ — Grenzfall der Skalierungsfrage | 0/3 | **Vermutung** (Lean-**RED**: `HasNonzeroHolonomyLimit`) |
 
 **Vorbehalt zu H₀a:** $|D|\approx Q^{1/2}$ ist **Heuristik**, keine bewiesene Referenz. Bei Primzahlrennen können Differenzen **deutlich größer** als $\sqrt{Q}$ werden, ohne nichttrivialen normierten Grenzwert — Oszillationen und logarithmische Korrekturen sind typisch.
 
 **Implikationskette** (nur Vorwärtsimplikationen):
 
-- **H₃ $\Rightarrow$ H₂** (mit $\alpha=1$), aber **H₂ $\nRightarrow$ H₃** (jedes $\alpha\in(\tfrac{1}{2},1)$ lässt $W_E\to 0$).
+- **H₃ $\Rightarrow$ H₂** (mit $\alpha_E=1$), aber **H₂ $\nRightarrow$ H₃** (jedes $\alpha_E\in(\tfrac{1}{2},1)$ lässt $W_E\to 0$).
 - **H₂ $\Rightarrow$ H₁** auf hinreichend großen Skalen ($R_{1/2}\to\infty$), aber **H₁ $\nRightarrow$ H₂** (transienter Bias reicht nicht).
 - **H₀b $\nRightarrow$ H₀a** und **H₀a $\nRightarrow$ H₀b** — analytische Orientierung und Wurzelnormierung sind **getrennte** Fragen.
+- **H₂ mit $\alpha_E>\tfrac{1}{2}$ $\nRightarrow$ H₃** — auch $\Phi_E=0$ ist mit $\alpha_E>\tfrac{1}{2}$ vereinbar.
 
 $$\boxed{\;\text{Die erste numerische EABC-Frage ist, ob }R_{1/2}(X)=\frac{D(X)}{\sqrt{Q(X)}}\text{ beschränkt bleibt.}\;}$$
 
@@ -385,7 +378,7 @@ $$\boxed{\;\text{Welche Spektralinvarianten der EABC-Zirkulation unterscheiden P
 | $\mathrm{Spec}(L_E)$ | `eigenvalues_symmetrized` | `collatz_eabc_graph_laplacian` |
 | $\Phi_E$, $W_E(X)$, Flussdichte | `Phi_E`, `flux_density_limit` | `collatz_eabc_hodge_eabc` |
 | $Q$, $D$, $W_E$, $Z_E$ (Vierlinge) | `Q_total`, `diff`, `W_E`, `Z_E` | `eabc_quadruplets_1e10` |
-| Skalierungsexponent $\alpha$ | `fit_alpha` | `eabc_quadruplets_fit_alpha` |
+| Skalierungsexponent $\alpha_E$ | `fit_alpha`, `estimate_alpha_E` | `eabc_quadruplets_fit_alpha` |
 | $\langle\omega_E,h\rangle$ | `inner_product_omega_h` | `collatz_eabc_hodge_eabc` |
 | $L_{\mathrm{mag}}$ | `magnetic_laplacian` | `collatz_eabc_hodge_eabc` |
 | $N_R$, $N_L$, $\phi_R$, $\phi_L$ | `N_R`, `N_L`, `phi_R`, `phi_L` | `collatz_eabc_chirale_transport` |
