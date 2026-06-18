@@ -238,50 +238,50 @@ theorem test_manual_D_E_zero : D_E testClassesManual = 0 := by
 /-!
 ### Prime-basierte Zählung (Schicht B — computabel)
 
-`primeEabcClassesUpTo X` = κ-Folge der EABC-Klassen aller Primzahlen 3 < p ≤ X
-(vgl. `collatz_eabc_transition_graph.prime_eabc_sequence`).
+**Primärträger (Ebene 1):** `N_plus_up_to` / `N_minus_up_to` aus `PatternCount` =
+Primvierlinge Q(p) mit p ≡ 5 / 11 (mod 12) — vgl. `eabc_quadruplets_1e10.py`
+(bei 10^6: N₊ = 84, N₋ = 82).
 
-`N_plus_up_to` / `N_minus_up_to` = Gleitfenster-Zählung ABCEA / CEABC auf dieser Folge
-(vgl. `collatz_eabc_holonomie_fehlerterm.holonomy_counts`).
+**Sekundärträger:** Gleitfenster ABCEA / CEABC auf der κ-Primfolge
+`primeEabcClassesUpTo X` — `N_plus_sliding_up_to` / `N_minus_sliding_up_to`
+(vgl. `collatz_eabc_holonomie_fehlerterm.holonomy_counts`, bei 10^3: 4 / 4).
 
-**Experiment vs. Theorem:** Die Definitionen sind **computabel** (Schicht B).
+`D_E_up_to`, `Q_E_up_to`, `W_E_up_to`, `R_beta_up_to` koppeln an die Vierling-Zählung.
+
 Asymptotik `Hol_E_zero`, Primdichte und R_{1/2} = O(1) bleiben Schicht R (`sorry`).
-
-Alternativ: Primvierling-Zählung in `PatternCount` (`N_plus_quadruplet_up_to`, …;
-vgl. `eabc_quadruplets_1e10.py`, bei 10^6: 84 / 82).
 -/
 
-/-- Prim-Obergrenze X: #{ABCEA-Fenster} auf der κ-Primfolge bis X. -/
-def N_plus_up_to (X : ℕ) : ℕ :=
+/-- Gleitfenster #{ABCEA} auf der κ-Primfolge bis X. -/
+def N_plus_sliding_up_to (X : ℕ) : ℕ :=
   N_plus (primeEabcClassesUpTo X)
 
-/-- Prim-Obergrenze X: #{CEABC-Fenster} auf der κ-Primfolge bis X. -/
-def N_minus_up_to (X : ℕ) : ℕ :=
+/-- Gleitfenster #{CEABC} auf der κ-Primfolge bis X. -/
+def N_minus_sliding_up_to (X : ℕ) : ℕ :=
   N_minus (primeEabcClassesUpTo X)
 
-/-- Gleitfenster-Zählung koppelt direkt an `N_plus` / `primeEabcClassesUpTo`. -/
-theorem N_plus_up_to_eq_sliding (X : ℕ) :
-    N_plus_up_to X = N_plus (primeEabcClassesUpTo X) := rfl
+theorem N_plus_sliding_up_to_eq (X : ℕ) :
+    N_plus_sliding_up_to X = N_plus (primeEabcClassesUpTo X) := rfl
 
-theorem N_minus_up_to_eq_sliding (X : ℕ) :
-    N_minus_up_to X = N_minus (primeEabcClassesUpTo X) := rfl
+theorem N_minus_sliding_up_to_eq (X : ℕ) :
+    N_minus_sliding_up_to X = N_minus (primeEabcClassesUpTo X) := rfl
 
-def D_E_up_to (X : ℕ) : ℤ :=
-  (N_plus_up_to X : ℤ) - N_minus_up_to X
-
-/-- Q_E(X) = N₊(X) + N₋(X) bis Primgrenze X. -/
-def Q_E_up_to (X : ℕ) : ℕ :=
-  N_plus_up_to X + N_minus_up_to X
-
-theorem D_E_up_to_eq_sliding (X : ℕ) :
-    D_E_up_to X = D_E (primeEabcClassesUpTo X) := by
-  unfold D_E_up_to D_E N_plus_up_to N_minus_up_to
+theorem D_E_sliding_up_to_eq (X : ℕ) :
+    (N_plus_sliding_up_to X : ℤ) - N_minus_sliding_up_to X =
+      D_E (primeEabcClassesUpTo X) := by
+  unfold D_E N_plus_sliding_up_to N_minus_sliding_up_to
   rfl
 
-theorem Q_E_up_to_eq_sliding (X : ℕ) :
-    Q_E_up_to X = Q_E (primeEabcClassesUpTo X) := by
-  unfold Q_E_up_to Q_E N_plus_up_to N_minus_up_to
+theorem Q_E_sliding_up_to_eq (X : ℕ) :
+    N_plus_sliding_up_to X + N_minus_sliding_up_to X =
+      Q_E (primeEabcClassesUpTo X) := by
+  unfold Q_E N_plus_sliding_up_to N_minus_sliding_up_to
   rfl
+
+theorem D_E_up_to_eq_quadruplet (X : ℕ) :
+    D_E_up_to X = (N_plus_up_to X : ℤ) - N_minus_up_to X := rfl
+
+theorem Q_E_up_to_eq_quadruplet (X : ℕ) :
+    Q_E_up_to X = N_plus_up_to X + N_minus_up_to X := rfl
 
 /-- W_E(X) = D_E(X)/Q_E(X) bis Primgrenze X (identisch zu `FlussPhiE.W_E_up_to`). -/
 def W_E_up_to (X : ℕ) : ℚ :=
@@ -358,16 +358,25 @@ def Hol_E_zero : Prop :=
   sorry
 
 /-!
-### Referenzwerte Gleitfenster (computabel, `native_decide`)
+### Referenzwerte (computabel)
 
-Abgleich `collatz_eabc_holonomie_fehlerterm.holonomy_counts`: X=1000 ⇒ N₊=N₋=4.
+Primvierlinge (`eabc_quadruplets_1e10.py`): X=1000 ⇒ N₊=3, N₋=2, D_E=1.
+Gleitfenster (`holonomy_counts`): X=1000 ⇒ N₊=N₋=4.
 -/
 
-example : N_plus_up_to 1000 = 4 := by native_decide
+example : N_plus_up_to 1000 = 3 := by native_decide
 
-example : N_minus_up_to 1000 = 4 := by native_decide
+example : N_minus_up_to 1000 = 2 := by native_decide
 
-example : D_E_up_to 1000 = 0 := by native_decide
+example : D_E_up_to 1000 = 1 := by native_decide
+
+example : N_plus_sliding_up_to 1000 = 4 := by native_decide
+
+example : N_minus_sliding_up_to 1000 = 4 := by native_decide
+
+#eval N_plus_up_to 1000000
+
+#eval N_minus_up_to 1000000
 
 /-!
 ### Bell / CHSH auf G_E (Skeleton)

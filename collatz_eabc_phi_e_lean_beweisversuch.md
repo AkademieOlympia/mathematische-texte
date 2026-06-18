@@ -85,6 +85,7 @@ Die zu starke Variante (eventuell konstantes rationales $\Phi$) ist nur als ausk
 ```bash
 cd collatz_eabc_core
 lake build CollatzEabc.HolonomyCore
+lake build CollatzEabc.PatternCount
 lake build CollatzEabc.HolonomieFehlerterm
 lake build CollatzEabc.FlussPhiE
 ```
@@ -108,10 +109,10 @@ lake build CollatzEabc.FlussPhiE
 | Testfall $D_E=0$ | `test_manual_D_E_zero` | **Theorem** |
 | $N_+(X)=N_-(X) \Rightarrow W_E(X)=0$ | `W_E_up_to_zero_of_balance` | **Theorem** |
 | $-1 \le W_E(X) \le 1$ | `W_E_up_to_bounds` | **Theorem** |
-| $N_\pm(X)$ = Gleitfenster auf κ-Primfolge | `N_plus_up_to_eq_sliding`, `N_minus_up_to_eq_sliding` | **Theorem** |
-| $D_E(X)$, $Q_E(X)$ koppeln an κ-Folge | `D_E_up_to_eq_sliding`, `Q_E_up_to_eq_sliding` | **Theorem** |
-| Referenz X=1000 (Gleitfenster) | `example` (`native_decide`) | **Theorem** |
-| Referenz X=1000 (Vierlinge) | `PatternCount` (`native_decide`) | **Theorem** |
+| $N_\pm(X)$ Gleitfenster auf κ-Primfolge | `N_plus_sliding_up_to`, `N_minus_sliding_up_to` | **Theorem** |
+| $D_E(X)$, $Q_E(X)$ Primvierlinge | `D_E_up_to_eq_quadruplet`, `Q_E_up_to_eq_quadruplet` | **Theorem** |
+| Referenz X=1000 (Gleitfenster) | `example` (`native_decide`, 4/4) | **Theorem** |
+| Referenz X=10^6 (Vierlinge) | `#eval` 84 / 82 (`PatternCount`) | **computabel** |
 
 ### Schicht B — Struktur (Definitionen)
 
@@ -121,8 +122,8 @@ lake build CollatzEabc.FlussPhiE
 | $D_E$, $Q_E$, $\chi_{\mathrm{Hol}}$ auf Listen | `D_E`, `Q_E`, `chi_Hol` | **Struktur** |
 | $R_\beta$, $\tilde D_E$ auf Listen | `R_beta`, `D_tilde_E` | **Struktur** (`noncomputable`) |
 | κ-Primfolge bis $X$ | `primeEabcClassesUpTo` (`PatternCount`) | **Struktur** (computabel) |
-| Prim-Zählung bis $X$ (Gleitfenster) | `N_plus_up_to`, `N_minus_up_to`, `D_E_up_to`, `Q_E_up_to` | **Struktur** (computabel) |
-| Vierling-Zählung bis $X$ | `N_plus_quadruplet_up_to`, `N_minus_quadruplet_up_to` | **Struktur** (computabel) |
+| Primvierling-Zählung bis $X$ | `N_plus_up_to`, `N_minus_up_to`, `D_E_up_to`, `Q_E_up_to` | **Struktur** (computabel) |
+| Gleitfenster κ-Folge bis $X$ | `N_plus_sliding_up_to`, `N_minus_sliding_up_to` | **Struktur** (computabel) |
 | $W_E(X)$, $R_\beta(X)$, $\tilde D_E(X)$ | `W_E_up_to`, `R_beta_up_to`, `D_tilde_E_up_to` | **Struktur** |
 | Bell/CHSH-Skeleton | `EabcWindowObservables`, `LocalRealismOnGE`, `chshSum` | **Struktur** |
 
@@ -198,7 +199,7 @@ lake build CollatzEabc.HolonomieFehlerterm   # 1 sorry (Hol_E_zero)
 
 ### Schicht R — `sorry` (analytisch / Prim-Enumeration)
 
-1. `N_plus_up_to`, `N_minus_up_to`, `Hol_E_zero` — κ-Folge-Enumeration (kein Mathlib-Standard).
+1. `N_plus_up_to`, `N_minus_up_to`, `Hol_E_zero` — Primvierling-Zählung **computabel** (`PatternCount`); Asymptotik `Hol_E_zero` offen.
 2. `Phi_E_zero_of_symmetry` — Filter-Grenzwert bei asymptotisch gleichen $N_\pm$.
 3. `Phi_E_eq_inner_product` — Prim-induzierte $\omega_E$ und asymptotische Paarung.
 4. `hol_E_zero_of_HL` — Hardy–Littlewood-artige Symmetriehypothese $\Rightarrow \Phi_E=0$.
@@ -219,7 +220,7 @@ lake build CollatzEabc.HolonomieFehlerterm   # 1 sorry (Hol_E_zero)
 - Asymptotik $D_E(X) = o(Q_E(X))$ oder $D_E(X) \sim c \cdot Q_E(X)^\alpha$ — entspricht HL-artigen Primverteilungsaussagen über mod-12-Klassen; derzeit **Hypothese**, nicht Theorem.
 - $\Phi_E \neq 0$ (**H₃**) ist die schwächste empirische Stütze bei großen $X$ (Fluktuationen um 0); ein Lean-Beweis wäre ein Collatz-äquivalentes Analyseproblem.
 
-**Programm-Fokus $10^{10}$:** Primär $D_E$-Skalierung und $R_\beta$-Plateaus dokumentieren; $\Phi_E$ als Endfrage (Ebene 4) zurückstellen. Lean-Roadmap: zuerst `N_plus_up_to`/`N_minus_up_to` als **computable** `#eval`-fähige Definition (ohne Beweis der Asymptotik), dann numerische Verifikation gegen Python; Asymptotik bleibt `sorry` mit klarer Epistemik.
+**Programm-Fokus $10^{10}$:** Primär $D_E$-Skalierung und $R_\beta$-Plateaus dokumentieren; $\Phi_E$ als Endfrage (Ebene 4) zurückstellen. Lean-Roadmap: `N_plus_up_to`/`N_minus_up_to` als **computable** `#eval`-fähige Primvierling-Zählung (`PatternCount`, Abgleich Python: $10^6 \Rightarrow 84/82$); Asymptotik bleibt `sorry` mit klarer Epistemik.
 
 ---
 
@@ -229,7 +230,7 @@ lake build CollatzEabc.HolonomieFehlerterm   # 1 sorry (Hol_E_zero)
 cd collatz_eabc_core
 lake build                              # gesamtes Paket grün
 lake build CollatzEabc.HolonomyCore     # 1 sorry (H₃)
-lake build CollatzEabc.HolonomieFehlerterm  # 3 sorry (Prim-Enumeration)
+lake build CollatzEabc.HolonomieFehlerterm  # 1 sorry (Hol_E_zero)
 lake build CollatzEabc.FlussPhiE        # 5 sorry (Schicht R)
 ```
 
@@ -264,21 +265,26 @@ Der analytische Fokus liegt daher auf **Fehlerterm-Struktur** (Ebene 1–2), nic
 | $D_E$, $Q_E$, $\chi_{\mathrm{Hol}}$ auf Listen | **GREEN** (`HolonomieFehlerterm`) | — |
 | $-1\le\chi_{\mathrm{Hol}}\le 1$ | **GREEN** `chi_Hol_bounds` | — |
 | $N_+=N_-\Rightarrow\chi_{\mathrm{Hol}}=0$ | **GREEN** `chi_Hol_zero_of_balance` | — |
-| $W_E$, $Q_E$, $R_\beta$, $D̃_E$ bis Primgrenze $X$ | **B** (`HolonomieFehlerterm`) | `N_\pm_up_to` aus `PrimeCounting` |
+| $W_E$, $Q_E$, $R_\beta$, $D̃_E$ bis Primgrenze $X$ | **B** (`HolonomieFehlerterm` + `PatternCount`) | — |
 | $-1\le W_E(X)\le 1$ | **GREEN** `W_E_up_to_bounds` | — |
 | $N_+(X)=N_-(X)\Rightarrow W_E(X)=0$ | **GREEN** `W_E_up_to_zero_of_balance` | — |
 | $\Phi_E=0$ (Nullhypothese) | **B** `Phi_E_eq_zero` | `Phi_E_zero_of_symmetry` (Filter) |
 | $\Phi_E\neq 0$ (H₃) | **R** `phi_E_conjecture_statement` | nicht priorisieren bei $10^{10}$-Daten |
 | $\Phi_E\neq 0\Rightarrow\alpha_E=1$ | **R** `phi_E_ne_zero_implies_alpha_E_one` | aus `Tendsto` + $|D_E|/Q\to|\Phi_E|$ |
-| $N_+(X)$, $N_-(X)$ Prim-Zählung | **R** `sorry` | `Mathlib.NumberTheory.PrimeCounting` + κ-Folge |
+| $N_+(X)$, $N_-(X)$ Primvierling-Zählung | **B** `PatternCount` (`#eval` 84/82 bei $10^6$) | Gleitfenster-Variante `N_\pm_sliding_up_to` |
 | $\mathrm{Hol}_E=0$ | **R** `Hol_E_zero` | HL-artige Prim-Symmetrie |
 | Lückenmuster $(2,4,2,4)$, Taubenloch | **GREEN** | — |
 | `HasNonzeroHolonomyLimit` (minimaler Kern) | **R** `HolonomyCore` | getrennt halten von Fehlerterm |
 
 ### Implementiert in dieser Session (vs. Roadmap)
 
+**Lean (`PatternCount.lean`, neu):**
+- Primvierling-Zählung `N_plus_up_to`, `N_minus_up_to`, `D_E_up_to`, `Q_E_up_to` (computabel)
+- `#eval` bei $10^6$: N₊=84, N₋=82 (Abgleich `eabc_quadruplets_1e10.py`)
+
 **Lean (`HolonomieFehlerterm.lean`):**
-- `Q_E`, `R_beta`, `D_tilde_E` (Listen); `Q_E_up_to`, `W_E_up_to`, `R_beta_up_to`, `D_tilde_E_up_to` (Primgrenze)
+- `Q_E`, `R_beta`, `D_tilde_E` (Listen); `W_E_up_to`, `R_beta_up_to`, `D_tilde_E_up_to` (Primgrenze)
+- Gleitfenster-Variante `N_plus_sliding_up_to`, `N_minus_sliding_up_to`
 - **Theorem:** `chi_Hol_bounds`, `chi_Hol_zero_of_balance`, `W_E_up_to_bounds`, `W_E_up_to_zero_of_balance`
 
 **Lean (`FlussPhiE.lean`):**
@@ -287,14 +293,13 @@ Der analytische Fokus liegt daher auf **Fehlerterm-Struktur** (Ebene 1–2), nic
 
 **Nicht implementiert (bewusst):**
 - Beweis von H₃ / `HasNonzeroHolonomyLimit`
-- Konkrete `N_plus_up_to`/`N_minus_up_to` aus Mathlib-Primzählung
-- Analytische Abschätzung $R_{1/2}=O(1)$
+- Analytische Abschätzung $R_{1/2}=O(1)$ (`Hol_E_zero` bleibt `sorry`)
 
 ### Mathlib-Brücken (priorisiert)
 
 | Brücke | Mathlib-Kandidat | Ziel |
 |--------|------------------|------|
-| $\pi(x)$, Primzählung | `Mathlib.NumberTheory.PrimeCounting` | `N_\pm_up_to` |
+| $\pi(x)$, Primzählung | `Mathlib.NumberTheory.PrimeCounting` | effizientere Enumeration (optional) |
 | Dirichlet-Charaktere mod 12 | `Mathlib.NumberTheory.DirichletCharacter.*` | HL-Symmetrie / $D_E$-Fehlerterm |
 | Filter / `Tendsto` | `Mathlib.Order.Filter.AtTopBot.Tendsto` | `Phi_E_zero_of_symmetry` |
 | Potenzen / $Q^\beta$ | `Mathlib.Analysis.SpecialFunctions.Pow.Real` | `R_beta_up_to` (genutzt) |
@@ -302,7 +307,7 @@ Der analytische Fokus liegt daher auf **Fehlerterm-Struktur** (Ebene 1–2), nic
 
 ### Empfohlene Reihenfolge (analytisch)
 
-1. **`N_plus_up_to` / `N_minus_up_to`** — operative κ-Folge + Gleitfenster auf Primrestklassen mod 12.
+1. **`Hol_E_zero`** — als `Prop` (`Tendsto (fun X => W_E_up_to X) atTop (nhds 0)`).
 2. **`Phi_E_zero_of_symmetry`** — aus `W_E_up_to_zero_of_balance` + `Filter.Eventually` + `Tendsto_const`.
 3. **Fehlerterm-Schranken** — $|D_E|\ll Q$ oder $R_{1/2}=O(1)$ als `Prop`-Ziel (Schicht R).
 4. **`phi_E_ne_zero_implies_alpha_E_one`** — nur wenn H₃ relevant wird.
@@ -312,8 +317,8 @@ Der analytische Fokus liegt daher auf **Fehlerterm-Struktur** (Ebene 1–2), nic
 
 ## Nächste Schritte
 
-1. `N_plus_up_to` / `N_minus_up_to` als **computable** Definition aus κ-Folge (`#eval`, Beweis später).
-2. `Hol_E_zero` als explizite `Prop` (`Tendsto (fun X => W_E_up_to X) atTop (nhds 0)`).
-3. `Phi_E_zero_of_symmetry` aus `W_E_up_to_zero_of_balance` + Filter-`Eventually`.
-4. Numerische Brücke Lean↔Python für $D_E$, $Q_E$, $R_{1/2}$ bis $10^{10}$.
+1. `Hol_E_zero` als explizite `Prop` (`Tendsto (fun X => W_E_up_to X) atTop (nhds 0)`).
+2. `Phi_E_zero_of_symmetry` aus `W_E_up_to_zero_of_balance` + Filter-`Eventually`.
+3. Numerische Brücke Lean↔Python für $D_E$, $Q_E$, $R_{1/2}$ bis $10^{10}$ (CSV-Checkpoint-Vergleich).
+4. Optional: effizientere Primvierling-Enumeration (Sieb, wie Python).
 5. Optional: `Mathlib.Combinatorics.SimpleGraph` für $G_E$; magnetischer Laplace $L_{\mathrm{mag}}$.
