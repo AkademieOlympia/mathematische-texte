@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; asymptotische Chiralität methodisch in §4.1; Dreiteilung Asymptotik/Skalierung/numerische Exponenten in §4.2
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; asymptotische Chiralität methodisch in §4.1; Ebenen I–III in §4.2
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
 - `collatz_eabc_sagnac.md` — **Intuition only:** Sagnac-Bild für $\gamma^\pm$ (kein physikalischer Kern)
@@ -21,7 +21,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_sagnac_circulation.py` — $C_E(X)$, $\omega(e)$, $\alpha$
 - `collatz_eabc_holonomie_fehlerterm.py` — $N_\pm$, $D_E$, $S_E$, $\widetilde{D}_E$
 - `eabc_quadruplets_1e10.py` — Vierlings-Zählung bis $X$, $W_E$, $R_\beta$ (`Z_E` nur Diagnose-Alias), mod-$420$-Diagnostik
-- `eabc_quadruplets_fit_alpha.py` — Orientierung / Skalierung / $\alpha_{\mathrm{eff}}$ getrennt; $\alpha_E$-Plateau, H₀a/H₀b–H₃
+- `eabc_quadruplets_fit_alpha.py` — Ebene III: Diagnostik (nicht Theorie); $\alpha_E$-Plateau, H₀a/H₀b–H₃
 - `eabc_quadruplets_plot.py` — Vierfeld-Diagnose-Plot ($W_E$, $R_{1/2}$, $\alpha_{\mathrm{loc}}$, $R_\beta$)
 - `collatz_eabc_graph_laplacian.py` — $\mathrm{Spec}(L_E)$
 - `collatz_eabc_evolution_analytik.md` — **Evolutionspfad** Bell→Sagnac→$C_E$→$\mathrm{Spec}(L_E)$, Wachstumsszenarien, Dirichlet-Stub
@@ -186,17 +186,11 @@ $$W_E(X) := \frac{D(X)}{Q(X)},\qquad R_\beta(X) := \frac{D(X)}{Q(X)^\beta}\quad(
 
 **Drei sauber getrennte Begriffe:**
 
-| Begriff | Bedeutung | Observable |
-|---------|-----------|------------|
+| Begriff | Rolle | Observable |
+|---------|-------|------------|
 | **$\Phi_E$** | asymptotische Orientierung | $W_E(X)=D/Q$ |
-| **$\alpha_E$** | möglicher asymptotischer Skalierungsexponent | via $R_\beta$, $\alpha_E=\inf\{\beta : R_\beta\text{ beschränkt}\}$ |
-| **$\alpha_{\mathrm{eff}}(X)$** | numerisch beobachteter lokaler Exponent | $d\log|D|/d\log Q$ |
-
-**Logische Kette** (Reihenfolge der Untersuchung):
-
-1. **Primäre Frage (Asymptotik):** $W_E(X)\to 0$ **oder** $W_E(X)\to\Phi_E\neq 0$?
-2. **Dann** Skalierungsdiagnostik: $R_\beta(X)=D(X)/Q(X)^\beta$
-3. **Zuletzt** numerische Exponenten: $\alpha_{\mathrm{eff}}(X)$, $\alpha_{\mathrm{loc}}(X)$
+| **$\alpha_E$** | asymptotischer Skalierungsexponent | $\alpha_E=\inf\{\beta : R_\beta\text{ beschränkt}\}$ |
+| **$\alpha_{\mathrm{eff}}(X)$** | **nur Diagnoseobservable**, kein Satz | $d\log|D|/d\log Q$ |
 
 **Implikationen:**
 
@@ -204,15 +198,11 @@ $$W_E(X) := \frac{D(X)}{Q(X)},\qquad R_\beta(X) := \frac{D(X)}{Q(X)^\beta}\quad(
 - $\alpha_E>\tfrac{1}{2} \nRightarrow \Phi_E\neq 0$
 - $\alpha_{\mathrm{eff}}(X)>\tfrac{1}{2}$ ist **nur numerisches Signal**, kein asymptotischer Satz
 
-$$\boxed{\;\text{Die EABC-Untersuchung fragt primär, ob die normierte Orientierungsgröße }W_E(X)\text{ asymptotisch verschwindet.}\;}$$
-
-$$\boxed{\;\text{Unabhängig davon untersucht die Skalierungsdiagnostik, ob der Fehlerterm }D(X)\text{ über Wurzelrauschen hinauswächst.}\;}$$
-
-$$\boxed{\;\text{Schutz vor Überdehnung: Auch wenn }W_E\to 0\text{, kann }D(X)\text{ nichttriviale arithmetische Struktur haben.}\;}$$
-
 **Label:** **Definition** (Ebene 0).
 
-#### Asymptotische Orientierung ($W_E$, $\Phi_E$; H₀b, H₃)
+#### Orientierungsfrage (H₀b, H₃)
+
+$$\boxed{\;\text{Orientierung: }W_E(X)\to 0\quad\text{oder}\quad W_E(X)\to\Phi_E\neq 0\text{?}\;}$$
 
 $$\Phi_E := \lim_{X\to\infty} W_E(X)\quad\text{(falls der Grenzwert existiert).}$$
 
@@ -223,7 +213,11 @@ $W_E(X)$ und $\Phi_E$ messen die **normierte Orientierung** — unabhängig von 
 
 Äquivalent auf Ebene 0: $R_1(X)=W_E(X)$ fällt gegen $0$ oder gegen $\Phi_E\neq 0$.
 
-#### Skalierungsdiagnostik ($R_\beta$, $\alpha_E$; H₀a, H₁, H₂; Ebenen 0–1)
+$$\boxed{\;\text{Starke Holonomie: }W_E(X)\to\Phi_E\neq 0\;\Leftrightarrow\;D(X)\sim\Phi_E\,Q(X)\;\text{(Spezialfall }\alpha_E=1\text{; Lean-RED = H}_3\text{).}\;}$$
+
+#### Skalierungsfrage (H₀a, H₁, H₂)
+
+$$\boxed{\;\text{Skalierung: Existiert }\alpha_E\text{ mit }|D(X)|=Q(X)^{\alpha_E+o(1)}\text{?}\;}$$
 
 **Kritischer Exponent** (Definition über Renormierungsobservablen):
 
@@ -231,7 +225,7 @@ $$\alpha_E := \inf\{\beta\in\mathbb{R}_+ : R_\beta(X)\text{ bleibt beschränkt f
 
 Numerisch: man vergleicht, bei welchem $\beta$ die Kurve $R_\beta(X)$ im beobachteten Fenster noch **stabil** vs. **wächst**; Zwischenwerte zeigen die **Skala des Bias**.
 
-**Testarchitektur:**
+**Testarchitektur** (Ebene 1):
 
 | Observable | $\beta$ | Lesart |
 |------------|---------|--------|
@@ -259,7 +253,7 @@ $$\alpha_{\mathrm{eff}}(X) := \frac{\log|D(X)|}{\log Q(X)}\quad (D\neq 0,\; Q>1)
 
 $\alpha_{\mathrm{eff}}$ ist der punktweise Effektivexponent; $\alpha_{\mathrm{loc}}$ misst **lokale Drift** zwischen zwei Skalen. Beide sind **abgeleitet und verrauscht** — geeignet zur Erkennung transienter Bias-Segmente, **nicht** als alleiniger Beweis asymptotischer Skalierung.
 
-**Wichtiger Vorbehalt:** $\alpha_{\mathrm{loc}}$ **muss nicht konvergieren** — in der analytischen Zahlentheorie kann ein Exponent über lange Bereiche stabil erscheinen und später driften oder oszillieren (vgl. explizite Formeln, $L$-Funktionen). $\alpha_{\mathrm{eff}}(X)>\tfrac{1}{2}$ ist **nur numerisches Signal**, kein asymptotischer Satz.
+**Wichtiger Vorbehalt:** $\alpha_{\mathrm{loc}}$ **muss nicht konvergieren** — in der analytischen Zahlentheorie kann ein Exponent über lange Bereiche stabil erscheinen und später driften oder oszillieren (vgl. explizite Formeln, $L$-Funktionen).
 
 **Label:** **Experiment** (numerische Ableitung).
 
@@ -294,7 +288,7 @@ Schrittweise Eskalation: **zuerst** Orientierung (H₀b/H₃), **dann** Skalieru
 - **H₃ $\Rightarrow$ H₂** (mit $\alpha_E=1$), aber **H₂ $\nRightarrow$ H₃** (jedes $\alpha_E\in(\tfrac{1}{2},1)$ lässt $W_E\to 0$).
 - **H₂ $\Rightarrow$ H₁** auf hinreichend großen Skalen ($R_{1/2}\to\infty$), aber **H₁ $\nRightarrow$ H₂** (transienter Bias reicht nicht).
 - **H₀b $\nRightarrow$ H₀a** und **H₀a $\nRightarrow$ H₀b** — analytische Orientierung und Wurzelnormierung sind **getrennte** Fragen.
-- **$\Phi_E\neq 0 \Rightarrow \alpha_E=1$**, aber **$\alpha_E>\tfrac{1}{2} \nRightarrow \Phi_E\neq 0$**.
+- **H₂ mit $\alpha_E>\tfrac{1}{2}$ $\nRightarrow$ H₃** — auch $\Phi_E=0$ ist mit $\alpha_E>\tfrac{1}{2}$ vereinbar.
 
 #### Prime-Race-Analogie
 
@@ -325,7 +319,7 @@ Qualitativ: wie beim klassischen Chebyshev-Bias mod $4$ kann die **absolute Diff
 
 **Label:** EABC-Fehlerterm-Hypothese = **Hypothese** (stärker als Hauptvermutung allein).
 
-**Details und Numerik:** `collatz_eabc_fehlerterm_hypothese.md` §3–5; `collatz_eabc_holonomie_fehlerterm.py`; Ebenen 0–3 und H₀a/H₀b–H₃: §4.2; `eabc_quadruplets_1e10.py`, `eabc_quadruplets_fit_alpha.py`, `eabc_quadruplets_plot.py`.
+**Details und Numerik:** `collatz_eabc_fehlerterm_hypothese.md` §3–5; `collatz_eabc_holonomie_fehlerterm.py`; Ebenen I–III und H₀a/H₀b–H₃: §4.2; `eabc_quadruplets_1e10.py`, `eabc_quadruplets_fit_alpha.py`, `eabc_quadruplets_plot.py`.
 
 ---
 

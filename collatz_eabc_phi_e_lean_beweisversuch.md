@@ -31,7 +31,11 @@ EABC = priminduzierter Fluss auf $C_4 \cong S^1$ mit
 - $C_E(X) = N_+(X) - N_-(X)$, $S_E(X) = N_+(X) + N_-(X)$
 - $W_E(X) = C_E(X)/S_E(X)$, $\Phi_E = \lim_{X\to\infty} W_E(X)$
 
-**Vermutung (Schicht R):** $\Phi_E \neq 0$ bzw. $\langle\omega_E, h\rangle \neq 0$ für kanonisches harmonisches $h$. Dies ist **H₃** — starke Holonomie: $W_E\to\Phi_E\neq 0$, äquivalent $D(X)\sim\Phi_E Q(X)$ (Spezialfall $\alpha_E=1$; Lean-**RED**: `HasNonzeroHolonomyLimit`). Vorgelagert (§4.2): **Orientierung** H₀b ($W_E\to 0$), **Skalierung** H₀a/H₁/H₂ ($\alpha_E$ via $R_\beta$; $R_{1/2}=D/\sqrt{Q}$ nur Heuristik/Diagnose), **Diagnose** $\alpha_{\mathrm{eff}}$ (kein Satz). $\alpha_E>\tfrac{1}{2} \nRightarrow \Phi_E\neq 0$.
+**Vermutung (Schicht R):** $\Phi_E \neq 0$ bzw. $\langle\omega_E, h\rangle \neq 0$ für kanonisches harmonisches $h$. Dies ist **H₃** (starke Holonomie: $W_E(X)\to\Phi_E\neq 0$) — **am Ende** des Programms, nach Skalierungsfragen (H₀a/H₁/H₂). Entspricht Lean-**RED** `HasNonzeroHolonomyLimit`. Vorgelagert (`collatz_eabc_zirkulationshypothese.md` §4.2, Ebenen I–III): zuerst Skalierung, dann Orientierung (H₀b vs. H₃). $\alpha_E>\tfrac{1}{2} \nRightarrow \Phi_E\neq 0$.
+
+$$\boxed{\;\Phi_E \neq 0 \;\Rightarrow\; \alpha_E = 1.\;}$$
+
+**Nicht äquivalent:** $\alpha_E=1$ allein garantiert weder $\Phi_E\neq 0$ noch $\lim W_E$. Gegenbeispiel: $D(X)=Q(X)\sin(\log\log Q(X))$ — $\alpha_E=1$, aber $W_E$ ohne Grenzwert.
 
 ---
 
