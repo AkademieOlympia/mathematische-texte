@@ -41,7 +41,7 @@ $D_E$ fungiert als **Zirkulations-/Holonomie-Sensor** auf dem $C_4$-Gerüst:
 
 **Epistemisches Label:** Stufe 1 = **Analogie** + **Definition** (Zirkulationsstatistik). $N_+-N_-$ ist **Zirkulationsstatistik**, noch **keine** echte Holonomie im differentialgeometrischen Sinn.
 
-**Artefakte:** `collatz_eabc_zirkulationshypothese.md`, `collatz_eabc_sagnac.md`, `collatz_eabc_kritische_abbildung.md`, `collatz_eabc_holonomie_fehlerterm.py`.
+**Artefakte:** `collatz_eabc_zirkulationshypothese.md`, `collatz_eabc_sagnac.md`, `collatz_eabc_kritische_abbildung.md`, `collatz_eabc_holonomie_fehlerterm.py`, `collatz_eabc_brachistochrone.md` (Fermat-Modell $D_E$ als Potenzial).
 
 ---
 
@@ -151,6 +151,7 @@ $$\text{Primzahlen} \;\to\; \text{gerichtete Zyklen} \;\to\; \text{Zirkulation }
 | Wachstum $N$ | Fall A/B/C | hier §4; `collatz_eabc_D_growth.py` |
 | Wachstum $X$ | Legacy A–D | `collatz_eabc_evolution_analytik.md` §3 |
 | Beweisversuch | $\mathrm{Hol}_E=0$ | `collatz_eabc_holonomie_beweisversuch.md` |
+| Brachistochrone | $T=\sum \Delta s/v$, $V\in\{\ln x,\zeta,D_E,K,-\log P\}$ | `collatz_eabc_brachistochrone.md` |
 
 $$\boxed{\;D_E \;\leftrightarrow\; \text{diskrete Wilson-Schleife} \;\leftrightarrow\; \text{Fehlerterm} \;\leftrightarrow\; \mathrm{Hol}_E.\;}$$
 

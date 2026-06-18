@@ -91,6 +91,7 @@ $$\boxed{\;\text{Sagnac-Frage in EABC: nicht „wer altert langsamer?“, sonder
 - Analytischer Beweisversuch $\mathrm{Hol}_E=0$: `collatz_eabc_holonomie_beweisversuch.md`
 - Evolutionspfad und Wachstumsszenarien: `collatz_eabc_evolution_analytik.md`
 - Wegparadoxon (euklidisch): `collatz_eabc_kritische_abbildung.md` §7
+- Brachistochrone / Fermat (fünf Potenziale $V$, $v=f(V)$): `collatz_eabc_brachistochrone.md` — Variationsprinzip als Modell, kein SRT
 
 ---
 
