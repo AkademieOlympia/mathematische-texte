@@ -408,36 +408,15 @@ Wie bei $\pi(x)-\mathrm{Li}(x)$ und bei $\Delta(x)=\pi(x;a,q)-\pi(x;b,q)$ fragt 
 
 **Label:** Ebene 0/1 = **Definition**; Ebene 2 / H₂ = **Hypothese**; $\alpha_{\mathrm{loc}}$-Diagnose = **Experiment**; Ebene 4 / H₃ = **Vermutung** (Lean-RED); H₀a = **Heuristik**; H₀b = **Nullhypothese**.
 
-### 4.3 Numerischer Stand und erster Belastungstest
+### 4.3 Numerischer Stand und erster Belastungstest (bis $10^{10}$)
 
 $$\boxed{\;\text{Zeigt }D_E(X)\text{ überhaupt ein reproduzierbares, nichttriviales Wachstum?}\;}$$
 
-**Scope des ersten Tests:** nur $(G_E,\,N_+,\,N_-,\,D_E)$ — **kein** $\Phi_E$, **keine** Holonomie. Der Belastungstest prüft die Skalierung des harten Kerns (Ebene 0–1), nicht die Endfrage Ebene 4.
+**Scope des Tests:** nur $(G_E,\,N_+,\,N_-,\,D_E)$ und die daraus abgeleiteten Skalierungsobservablen — **kein** $\Phi_E$, **keine** Holonomie. Der Belastungstest prüft den harten Kern (Ebene 0–2), nicht die Endfrage Ebene 4.
 
-**Methodische Leitlinie (Tao-Stil):** Alle folgenden Befunde sind **Experimente** an endlichem $X$, keine Theoreme. Die **Nullhypothese** lautet $|D_E(X)|=O(\sqrt{Q(X)})$, d. h. $\alpha_E=\tfrac{1}{2}$ und $R_{1/2}(X)=D_E(X)/\sqrt{Q(X)}$ bleibt beschränkt — sie ist weder widerlegt noch positiv gestützt.
+**Methodische Leitlinie (Tao-Stil):** Alle folgenden Befunde sind **Experimente** an endlichem $X$, keine Theoreme und keine Vermutungsbestätigungen. Die **Nullhypothese H₀a** lautet $|D_E(X)|=O(\sqrt{Q(X)})$, d. h. $R_{1/2}(X)=D_E(X)/\sqrt{Q(X)}$ bleibt beschränkt.
 
-#### Aktueller Datenstand (Checkpoints, Experiment)
-
-| $X$ | $A$ | $C$ | $Q$ | $D$ | $W_E$ | $R_{1/2}$ |
-|-----|-----|-----|-----|-----|-------|-----------|
-| $10^6$ | 84 | 82 | 166 | $+2$ | 0,0120 | 0,155 |
-| $2\times 10^6$ | 152 | 143 | 295 | $+9$ | 0,0305 | 0,523 |
-| $10^7$ | 450 | 449 | 899 | $+1$ | 0,0011 | 0,033 |
-
-**Schlussfolgerungen** (als **Experiment**, nicht Theorem):
-
-1. **$W_E$ völlig instabil** über die drei Checkpoints (0,012 → 0,031 → 0,001). $$\boxed{\;\text{Es gibt derzeit keinerlei numerischen Hinweis auf }\Phi_E\neq 0.\;}$$
-2. **$R_{1/2}$ kompatibel mit $O(1)$** — kein empirischer Hinweis auf $\alpha_E>\tfrac{1}{2}$ in diesem Fenster.
-3. **Nullhypothese** $D_E(X)=O(\sqrt{Q(X)})$, $\alpha_E=\tfrac{1}{2}$: **noch nicht widerlegt**, **nicht positiv gestützt** — zu wenige, zu weit gespreizte Checkpoints.
-4. **mod-$420$-Diagnostik** bei $X\approx 10^8$: Spannweite der regulären Klassen $\approx 66$, $W_{420}\approx 0{,}083$ — **stärkeres Signal** als die ABCEA/CEABC-Orientierung ($|W_E|\ll 1$), aber ebenfalls nur Experiment.
-
-#### Erster Belastungstest (Forschungsprogramm)
-
-$$\boxed{\;\text{Bleibt }R_{1/2}(X)=D_E(X)/\sqrt{Q(X)}\text{ bis }10^{10}\text{ beschränkt?}\;}$$
-
-**Checkpoint-Strategie** (`eabc_quadruplets_1e10.py`): geometrische Serie $10^e$, $2\times 10^e$, $5\times 10^e$ für $e\ge 6$, optional `--checkpoints` für feinere Rasterung. Ziel: genügend Punkte für $\alpha_{\mathrm{loc}}$ und Log-log-Fit $|D_E|\sim Q^{\alpha_E}$.
-
-**Pipeline:**
+**Pipeline** (Vollauf bis $X=10^{10}$):
 
 ```bash
 python3 eabc_quadruplets_1e10.py --X 10000000000
@@ -445,9 +424,64 @@ python3 eabc_quadruplets_fit_alpha.py eabc_quadruplets.csv --plot --plot-loglog
 python3 eabc_quadruplets_plot.py eabc_quadruplets.csv --plot-loglog
 ```
 
-**Verknüpfung mit Forschungsprogramm:** Dies ist der **erste numerische Belastungstest** des harten Kerns — Prime-Race-/Fehlertermstruktur auf dem EABC-Zyklus —, **nicht** ein Holonomie-Test. $\Phi_E$ und $W_E\to\Phi_E\neq 0$ bleiben **Ebene 4** und werden erst nach geklärter Skalierung von $D_E$ relevant (vgl. `collatz_eabc_epistemik_schichten.md` §2).
+**Checkpoint-Strategie:** geometrische Serie $10^e$, $2\times 10^e$, $5\times 10^e$ für $e=6,\ldots,10$ — **13 Checkpoints** in `eabc_quadruplets.csv`.
 
-**Label:** Belastungstest = **Experiment**; Nullhypothese $\alpha_E=\tfrac{1}{2}$ = **Heuristik** (H₀a); $W_E$-Instabilität = **Experiment** (kein Hinweis auf H₃).
+#### Boxed Hauptaussagen (Belastungstest $10^{10}$, Experiment)
+
+$$\boxed{\;\text{Bis }10^{10}\text{ gibt es keinen numerischen Hinweis auf Holonomie }(\Phi_E\neq 0).\;}$$
+
+$$\boxed{\;\text{Bis }10^{10}\text{ gibt es auch keinen klaren Hinweis auf einen sublinearen Bias }(\alpha_E>\tfrac{1}{2}).\;}$$
+
+$$\boxed{\;\text{Bis }10^{10}\text{ verhält sich }D_E(X)\text{ vollständig kompatibel mit einem Fehlerterm auf Wurzelskala }(|D_E|=O(\sqrt{Q})).\;}$$
+
+#### Datenstand (13 Checkpoints, Experiment)
+
+**Kompakte Referenztabelle** (Schlüsselgrößen; vollständige Spalten in `eabc_quadruplets.csv`):
+
+| $X$ | $Q$ | $D_E$ | $W_E$ | $R_{1/2}$ | $W_{420}$ |
+|-----|-----|-------|-------|-----------|-----------|
+| $10^6$ | 166 | $+2$ | 0,0120 | 0,15 | 0,218 |
+| $2\times 10^6$ | 295 | $+9$ | 0,0305 | 0,52 | 0,184 |
+| $5\times 10^6$ | 546 | $+24$ | 0,0440 | 1,03 | 0,220 |
+| $10^7$ | 899 | $+1$ | 0,0011 | 0,03 | 0,140 |
+| $2\times 10^7$ | 1468 | $-26$ | $-0,0177$ | $-0,68$ | 0,196 |
+| $5\times 10^7$ | 2847 | $+27$ | 0,0095 | 0,51 | 0,129 |
+| $10^8$ | 4768 | $+48$ | 0,0101 | 0,70 | 0,083 |
+| $2\times 10^8$ | 8097 | $+63$ | 0,0078 | 0,70 | 0,048 |
+| $5\times 10^8$ | 16331 | $+137$ | 0,0084 | 1,07 | 0,043 |
+| $10^9$ | 28388 | $+52$ | 0,0018 | 0,31 | 0,026 |
+| $2\times 10^9$ | 49262 | $-16$ | $-0,0003$ | $-0,07$ | 0,017 |
+| $5\times 10^9$ | 102950 | $-58$ | $-0,0006$ | $-0,18$ | 0,008 |
+| $10^{10}$ | 180529 | $+25$ | 0,00014 | 0,06 | 0,0065 |
+
+**$D_E$:** schwaches Wachstum der absoluten Differenz; bei $X=10^{10}$ ist $D_E=25$ bei $Q=180529$ — nichttrivial ($D_E\neq 0$), aber weit unter linearer Skala ($|D_E|\ll Q$).
+
+**$W_E$-Verlauf** (Orientierung, Ebene 3): $|W_E(10^6)|\approx 1{,}20\times 10^{-2}$, $|W_E(10^8)|\approx 1{,}01\times 10^{-2}$, $|W_E(10^{10})|\approx 1{,}38\times 10^{-4}$ — **Vorzeichenwechsel** ($D_E$ wechselt das Vorzeichen bei $2\times 10^7$, $2\times 10^9$, $5\times 10^9$), kein Stabilisierungstrend. Das spricht für **H₀b** ($W_E\to 0$), nicht für H₃.
+
+**$R_{1/2}$-Folge** (13 Werte, gerundet):
+$$0{,}15,\;0{,}52,\;1{,}03,\;0{,}03,\;-0{,}68,\;0{,}51,\;0{,}70,\;0{,}70,\;1{,}07,\;0{,}31,\;-0{,}07,\;-0{,}18,\;0{,}06.$$
+Keine monotone Drift — Schwankungen der Größenordnung $O(1)$, kompatibel mit **H₀a** (Wurzelrauschen). Die erste große Überraschung wäre **nicht** $\Phi_E\neq 0$, sondern ein **reproduzierbarer Drift** von $R_{1/2}$ weg von $O(1)$; bis $10^{10}$ nicht erkennbar.
+
+**$\widehat{\alpha}_E\approx 0{,}3645$** (Log-log-Fit über alle Checkpoints): **trügerisch** — dominiert von $\log|D_E|$-Sprüngen bei kleinen $|D_E|$ (insbesondere $D_E=+1$ bei $10^7$). Die $\alpha_{\mathrm{loc}}$-Liste zeigt Rauschen ohne stabilisierenden Exponenten; kein empirischer Beleg für $\alpha_E>\tfrac{1}{2}$.
+
+**$W_{420}$ (Nebenkanal):** Spannweite der sechs regulären mod-$420$-Klassen, normiert — fast **monoton fallend** ($0{,}218\to 0{,}0065$). Systematischer als $W_E$, aber **separate Diagnostik** (mod-$420$-Prime-Race, nicht ABCEA/CEABC-Zyklus); nur **Experiment**, kein Theorem.
+
+#### Referee-Diagnose (6 Punkte, Experiment)
+
+| # | Befund | Label |
+|---|--------|-------|
+| 1 | **Gesichert:** $D_E(X)=N_+(X)-N_-(X)$ ist wohldefiniert und auf endlichen Skalen berechenbar | **Definition** |
+| 2 | **Numerisch:** $D_E\neq 0$ auf allen 13 Checkpoints (Vorzeichenwechsel inklusive) | **Experiment** |
+| 3 | **Nicht sichtbar:** $\alpha_E>\tfrac{1}{2}$ — $R_{1/2}$ bleibt $O(1)$, kein Drift | **Experiment** (H₀a kompatibel) |
+| 4 | **Nicht sichtbar:** $\Phi_E\neq 0$ — $W_E$ instabil, $|W_E|\to 0$ auf großen Skalen | **Experiment** (H₀b kompatibel) |
+| 5 | **Hypothesen-Ranking:** H₀a und H₀b haben **stärkere numerische Unterstützung** als H₂ (sublinearer Bias) und H₃ (Holonomie) | **Experiment** |
+| 6 | **Offen:** ob $|D_E|=O(\sqrt{Q})$ asymptotisch gilt — bis $10^{10}$ weder widerlegt noch bewiesen | **Forschungsfrage** |
+
+**Schluss (Experiment, nicht Theorem):** Der Belastungstest bis $10^{10}$ bestätigt den harten Kern ($D_E$ definiert, nichttrivial, berechenbar) und liefert **keinen** numerischen Anlass, H₂ oder H₃ gegen H₀a/H₀b zu bevorzugen. Holonomie ($\Phi_E\neq 0$) bleibt **Ebene 4** und wird erst relevant, wenn $R_{1/2}$ oder $W_E$ ein klares asymptotisches Signal zeigen — bis $10^{10}$ nicht der Fall.
+
+**Verknüpfung:** vgl. `collatz_eabc_epistemik_schichten.md` §0 (10$^{10}$-Referenzpunkt); Diagnose-Plot: `eabc_quadruplets_diagnose.png`.
+
+**Label:** Belastungstest = **Experiment**; H₀a/H₀b = **Heuristik/Nullhypothese**; H₂/H₃ = **Hypothese/Vermutung** (numerisch nicht gestützt bis $10^{10}$).
 
 ---
 
