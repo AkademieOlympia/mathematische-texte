@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
-"""EABC-Vierlinge bis X: W_E, Z_E und mod-420-Diagnostik."""
+"""EABC-Vierlinge bis X: W_E, Z_E, R_beta und mod-420-Diagnostik.
+
+Testkette: D = A − C, Q = A + C, R_beta = D / Q^beta.
+CSV-Spalten R_beta:
+  R_1_2  = R_{1/2}(X) = D(X)/sqrt(Q(X)) = Z_E(X)  (erste Testobservable)
+  R_2_3, R_3_4, R_9_10 -> Zwischennormierungen (beta = 2/3, 3/4, 0.9)
+  R_1    = R_1(X) = D(X)/Q(X) = W_E(X)  (starke Holonomie)
+"""
 
 import argparse
 import csv
@@ -10,6 +17,7 @@ from pathlib import Path
 import numpy as np
 
 REGULAR_420 = [11, 101, 191, 221, 311, 401]
+R_BETA_COLUMNS = ("R_1_2", "R_2_3", "R_3_4", "R_9_10", "R_1")
 
 
 def small_primes_upto(n: int):
@@ -60,9 +68,14 @@ def default_checkpoints(X: int):
 def emit_row(writer, X, total, abce, ceab, counts420, elapsed):
     denom = abce + ceab
     diff = abce - ceab
-    W_E = diff / denom if denom else 0.0
+    R_1_2 = diff / (denom ** 0.5) if denom else 0.0
+    R_2_3 = diff / (denom ** (2 / 3)) if denom else 0.0
+    R_3_4 = diff / (denom ** 0.75) if denom else 0.0
+    R_9_10 = diff / (denom ** 0.9) if denom else 0.0
+    R_1 = diff / denom if denom else 0.0
+    W_E = R_1
+    Z_E = R_1_2
     sqrt_Q = math.sqrt(denom) if denom else 0.0
-    Z_E = diff / sqrt_Q if sqrt_Q else 0.0
     absZ_E = abs(Z_E)
     log_Q = math.log(denom) if denom > 0 else ""
     log_absdiff = math.log(abs(diff)) if diff != 0 else ""
@@ -88,6 +101,11 @@ def emit_row(writer, X, total, abce, ceab, counts420, elapsed):
         "log_Q": log_Q,
         "log_absdiff": log_absdiff,
         "alpha_eff": alpha_eff,
+        "R_1_2": R_1_2,
+        "R_2_3": R_2_3,
+        "R_3_4": R_3_4,
+        "R_9_10": R_9_10,
+        "R_1": R_1,
         "W420_range": W420,
         "chi2_420_df5": chi420,
         "mod420_5": counts420[5],
@@ -149,6 +167,7 @@ def main():
         "log_Q",
         "log_absdiff",
         "alpha_eff",
+        *R_BETA_COLUMNS,
         "W420_range",
         "chi2_420_df5",
         "mod420_5",

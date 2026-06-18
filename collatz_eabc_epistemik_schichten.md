@@ -72,7 +72,7 @@ $$\boxed{\;\textbf{Beweis-Spur} \;\|\; \textbf{Ikone-Spur}\;}$$
 | Holonomien | $\mathrm{Hol}_E$, $\mathcal{P}\exp\oint A$ (Programm) | `collatz_eabc_holonomie_stufen.md` |
 | Kreisgraphen | $G_E=(V,E)$, $C_4\cong S^1$, $E^+/E^-$ | `collatz_eabc_diskrete_geometrie.md`, `FlussPhiE.lean` |
 | Harmonische Formen | $h\in H^1(C_4,\mathbb{Z})$, $\langle\omega_E,h\rangle$ | `collatz_eabc_uebergangsraum.md`, `collatz_eabc_hodge_eabc.py` |
-| Fluss | $\omega_E$, $C_E=\oint_\gamma\omega_E$, $W_E(X)$, Skalierung $\alpha$ (H₀–H₃) | `collatz_eabc_zirkulationshypothese.md` §4.1–4.2 |
+| Fluss | $\omega_E$, $C_E=\oint_\gamma\omega_E$, $W_E(X)$, Ebenen 0–3, H₀a/H₀b–H₃ | `collatz_eabc_zirkulationshypothese.md` §4.1–4.2 |
 | Orientierungsklassen | $\Phi_E=\lim W_E$, chirale 1-Form | `collatz_eabc_chirale_polarisation.md` |
 
 **Kernfrage (Schicht B als Struktur, Schicht R als Brücke):**
@@ -88,7 +88,7 @@ $$\boxed{\;\text{Die EABC-Holonomie-Vermutung behauptet eine asymptotisch stabil
 | **GREEN** | $-1 \le W_E(X) \le 1$ (bewiesen: `W_E_bounds`) |
 | **RED** | $\lim_{X\to\infty} W_E(X) = \Phi_E \neq 0$ — **H₃** (Holonomie; Vermutung: `HasNonzeroHolonomyLimit`, `EABC_holonomy_limit_conjecture`) |
 
-Lean: `phi_E_conjecture` (**B**, `Prop`) vs. `phi_E_conjecture_statement` (**R**, `sorry`). Methodische Lesart — $W_E(X)$ stabilisiert sich asymptotisch gegen einen Grenzwert; keine „statistische Ruhe im Unendlichen“, keine „unumkehrbare Tendenz“: `collatz_eabc_zirkulationshypothese.md` §4.1. Die **konservative Primärfrage** ist, ob $|D(X)|$ schneller als $Q^{1/2}$ wächst (H₁ empirisch / H₂ asymptotisch); die **stärkere Holonomiefrage** H₃ ($\alpha=1$, $\Phi_E\neq 0$) entspricht der Lean-RED-Vermutung — dort §4.2; Numerik: `eabc_quadruplets_fit_alpha.py` ($\alpha_{\mathrm{eff}}$, $\alpha_{\mathrm{loc}}$).
+Lean: `phi_E_conjecture` (**B**, `Prop`) vs. `phi_E_conjecture_statement` (**R**, `sorry`). Methodische Lesart — $W_E(X)$ stabilisiert sich asymptotisch gegen einen Grenzwert; keine „statistische Ruhe im Unendlichen“, keine „unumkehrbare Tendenz“: `collatz_eabc_zirkulationshypothese.md` §4.1. Die **erste numerische EABC-Frage** (Ebene 1, §4.2): bleibt $R_{1/2}(X)=Z_E(X)=D(X)/\sqrt{Q(X)}$ beschränkt (H₀a) oder wächst es (H₁)? Erst danach folgen asymptotische Exponenten (Ebene 3, H₂) und die Holonomiefrage H₃ ($R_1=W_E\to\Phi_E\neq 0$, Lean-**RED**). H₀b ($W_E\to 0$) ist analytisch und **nicht** mit H₀a identisch (vgl. §4.2 Vorbehalt). Numerik: `eabc_quadruplets_1e10.py`, `eabc_quadruplets_fit_alpha.py`, `eabc_quadruplets_plot.py`.
 
 **Abgrenzung zu Schicht C:** Sagnac, AB-Phase, magnetischer Laplace sind **Analogien** auf $G_E$ — geometrisch sauber in B, physikalisch ikonisch erst in C. Priminduzierte Zählung $N_\pm(X)$ ist **B**, nicht „laufende“ Primzahlen (**C**-Ikone).
 

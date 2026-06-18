@@ -31,7 +31,7 @@ EABC = priminduzierter Fluss auf $C_4 \cong S^1$ mit
 - $C_E(X) = N_+(X) - N_-(X)$, $S_E(X) = N_+(X) + N_-(X)$
 - $W_E(X) = C_E(X)/S_E(X)$, $\Phi_E = \lim_{X\to\infty} W_E(X)$
 
-**Vermutung (Schicht R):** $\Phi_E \neq 0$ bzw. $\langle\omega_E, h\rangle \neq 0$ für kanonisches harmonisches $h$. Dies ist **H₃** (Holonomie: $\alpha=1$, $W_E\to\Phi_E\neq 0$) in der Skalierungshierarchie und entspricht der Lean-RED-Vermutung `HasNonzeroHolonomyLimit`. Vorgelagert: H₁ (empirischer Bias, $\alpha_{\mathrm{loc}}>\tfrac{1}{2}$) und H₂ (asymptotischer Bias, $|D|\asymp Q^\alpha$, $\alpha>\tfrac{1}{2}$) — `collatz_eabc_zirkulationshypothese.md` §4.2.
+**Vermutung (Schicht R):** $\Phi_E \neq 0$ bzw. $\langle\omega_E, h\rangle \neq 0$ für kanonisches harmonisches $h$. Dies ist **H₃** (starke Holonomie: $W_E\to\Phi_E\neq 0$, äquivalent $D\sim\Phi_E Q$) und entspricht der Lean-**RED**-Vermutung `HasNonzeroHolonomyLimit`. Vorgelagert (Ebenen 0–3, `collatz_eabc_zirkulationshypothese.md` §4.2): H₀a ($R_{1/2}$ beschränkt), H₀b ($W_E\to 0$), H₁ ($R_{1/2}\to\infty$, empirisch), H₂ ($|D|\asymp Q^\alpha$, $\alpha>\tfrac{1}{2}$, asymptotisch).
 
 ---
 
