@@ -17,6 +17,8 @@
 - `collatz_eabc_sagnac_circulation.py` — $C_E(X)$, $\omega(e)$, diskrete 1-Form $\alpha$
 - `collatz_eabc_graph_laplacian.py` — $\mathrm{Spec}(L_E)$, Spektrallücke, Normschalen
 - `collatz_eabc_holonomie_fehlerterm.py` — Numerik $N_\pm$, $D_E$, $\widetilde{D}_E$
+- `collatz_eabc_evolution_analytik.md` — Evolutionspfad, $H_1(C_4)$, Wachstumsszenarien, Dirichlet-Zerlegung
+- `collatz_eabc_D_growth.py` — Wachstumsdiagnostik $D_E(X)$, Spektralfragen §5
 - `collatz_generalangriff_2026.md` — Gesamtarchitektur PR #54 / PR #59
 
 ---
@@ -186,6 +188,7 @@ $$\boxed{\;\text{Welche Spektralinvarianten der EABC-Zirkulation unterscheiden P
 - Verhält sich $\widetilde{D}_E(X)$ wie reines Rauschen oder zeigt stabile Vorzeichenasymmetrie (Chebyshev-artig)?
 - Korreliert die Spektrallücke $\lambda_1-\lambda_0$ von $L_E(X)$ mit $|D_E(X)|$ oder $S_E(X)$?
 - Welche $L$-Funktions-Nullstellen mod $12$ erklären Oszillationen in $D_E$?
+- Welches Wachstumsszenario (A–D) stützt die Numerik bei $X\le 10^6$? → `collatz_eabc_evolution_analytik.md` §3; `collatz_eabc_D_growth.py`
 
 ---
 
