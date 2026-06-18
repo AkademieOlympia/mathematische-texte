@@ -77,15 +77,15 @@ $$\boxed{\;\textbf{Beweis-Spur} \;\|\; \textbf{Ikone-Spur}\;}$$
 
 **Kernfrage (Schicht B als Struktur, Schicht R als Brücke):**
 
-$$\boxed{\;\text{Orientierung zuerst: }W_E(X)\to 0\quad\text{oder}\quad W_E(X)\to\Phi_E\neq 0\text{?}\;}$$
+$$\boxed{\;\text{Skalierung zuerst: Besitzt }D(X)=A(X)-C(X)\text{ eine nichttriviale asymptotische Skalierung?}\;}$$
 
-$$\boxed{\;\text{Skalierung danach: Existiert }\alpha_E\text{ mit }|D(X)|=Q(X)^{\alpha_E+o(1)}\text{?}\;}$$
+$$\boxed{\;\text{Orientierung danach: Besitzt }W_E(X)\text{ einen nichtverschwindenden Grenzwert?}\;}$$
 
 $$W_E(X) = \frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)},\qquad
 R_\beta(X) = \frac{D(X)}{Q(X)^\beta},\qquad
 \alpha_E := \inf\{\beta : R_\beta\text{ bleibt beschränkt}\}$$
 
-$$\boxed{\;\Phi_E = \lim_{X\to\infty} W_E(X) \stackrel{?}{\neq} 0\;\Leftrightarrow\;D(X)\sim\Phi_E Q(X)\;\text{(Spezialfall }\alpha_E=1\text{; H}_3\text{).}\;}$$
+$$\boxed{\;\Phi_E \neq 0 \;\Rightarrow\; \alpha_E = 1\;\text{ (einseitig; nicht äquivalent).}\;}$$
 
 | Status | Aussage |
 |--------|---------|
