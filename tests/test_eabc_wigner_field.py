@@ -18,12 +18,17 @@ from collatz_eabc_transition_graph import (
     classes_from_sequence,
     prime_eabc_sequence,
     sliding_windows,
+    transition_counts,
 )
 from collatz_eabc_wigner_field import (
     build_w_matrix_from_windows,
+    build_w_transition_matrix,
+    information_excess_test,
+    marginal_reconstruction_w_e_edge,
     quadruplet_indicator,
     sign_domain_analysis,
     w_e_counts,
+    w_e_edge_pair_field,
     w_e_profile,
     wigner_correlation_entry,
     wigner_field_report,
@@ -69,6 +74,52 @@ def test_build_w_matrix_shape_and_labels():
     assert set(w["matrix_labeled"].keys()) == set(LABELS)
 
 
+def test_w_transition_matrix_matches_transition_counts():
+    max_p = 8_000
+    classes = classes_from_sequence(prime_eabc_sequence(max_p))
+    w_t = build_w_transition_matrix(classes)
+    counts = transition_counts(classes)
+    mat = np.array(w_t["matrix"])
+    counts_arr = np.array(counts, dtype=float)
+    assert mat.shape == (4, 4)
+    np.testing.assert_array_equal(mat, counts_arr)
+
+
+def test_w_e_edge_field_bounds():
+    classes = classes_from_sequence(prime_eabc_sequence(12_000))
+    edge = w_e_edge_pair_field(classes)
+    field = edge["W_E_edge_field"]
+    for a in LABELS:
+        for b in LABELS:
+            val = field[a][b]
+            if val is not None:
+                assert -1.0 <= val <= 1.0
+
+
+def test_information_excess_not_recoverable_from_marginals():
+    max_p = 25_000
+    classes = classes_from_sequence(prime_eabc_sequence(max_p))
+    w = w_e_counts(max_p)
+    result = information_excess_test(classes, w["S_W"])
+    marginal = result["marginal_reconstruction"]
+    assert marginal["compared_edge_pairs"] > 0
+    assert marginal["information_excess"] is True
+    assert marginal["recoverable_from_marginals_only"] is False
+    assert marginal["rmse_vs_marginals"] > 0.0
+
+
+def test_marginal_reconstruction_uses_global_s_w():
+    classes = classes_from_sequence(prime_eabc_sequence(6_000))
+    edge = w_e_edge_pair_field(classes)
+    transition = transition_counts(classes)
+    s_w = w_e_counts(6_000)["S_W"]
+    rec = marginal_reconstruction_w_e_edge(edge, transition, s_w)
+    for a in LABELS:
+        for b in LABELS:
+            if transition[LABELS.index(a)][LABELS.index(b)] > 0:
+                assert rec["reconstructed_from_marginals"][a][b] == s_w
+
+
 def test_sign_domain_analysis():
     domains = sign_domain_analysis([1, 1, -1, -1, 0, 2])
     assert domains["sign_changes"] >= 2
@@ -83,6 +134,9 @@ def test_four_vs_five_block_in_report():
     hol = holonomy_counts(20_000)
     assert report["D_E"]["D_E"] == hol["D_E"]
     assert "four_vs_five_block" in report
+    assert "W_transition_matrix" in report
+    assert "W_E_edge_field" in report
+    assert "information_excess_test" in report
 
 
 def test_near_zero_modes_stub():
@@ -95,6 +149,10 @@ def test_near_zero_modes_stub():
 
 def test_wigner_report_at_100k():
     report = wigner_field_report(100_000)
-    w_mat = report["W_matrix_sliding"]["matrix_labeled"]
-    assert all(row_label in w_mat for row_label in LABELS)
+    w_trans = report["W_transition_matrix"]["matrix_labeled"]
+    assert all(row_label in w_trans for row_label in LABELS)
+    w_ab = report["W_E_edge_field"]["W_E_edge_field"]["A"]["B"]
+    assert w_ab is not None
+    assert -1.0 <= w_ab <= 1.0
     assert report["sign_structure"]["E"]["A"] in ("+", "-", "0")
+    assert report["information_excess_test"]["information_excess"] is True

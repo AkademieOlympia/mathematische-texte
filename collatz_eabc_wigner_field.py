@@ -41,6 +41,7 @@ from collatz_eabc_transition_graph import (
     omega_pfad,
     prime_eabc_sequence,
     sliding_windows,
+    transition_counts,
 )
 from eabc_from_lean import Chirality, class_of, is_prime_quadruplet, q
 
@@ -50,6 +51,7 @@ THEORY = "collatz_eabc_wigner_analog.md"
 THEORY_CHIRAL = "collatz_eabc_chirale_polarisation.md"
 THEORY_ZIRKULATION = "collatz_eabc_zirkulationshypothese.md"
 THEORY_HOLONOMIE_STUFEN = "collatz_eabc_holonomie_stufen.md"
+THEORY_POTENTIAL_GEOMETRIE = "collatz_eabc_potential_geometrie.md"
 THEORY_GENERALANGRIFF = "collatz_generalangriff_2026.md"
 
 NEAR_ZERO_TOL = 1e-6
@@ -97,6 +99,135 @@ def wigner_correlation_entry(
 ) -> int:
     """Einzelbeitrag χ_a · χ_b · Q — diskrete Korrelation."""
     return q * sum(x * y for x, y in zip(chi_a, chi_b))
+
+
+def build_w_transition_matrix(classes: list[str]) -> dict[str, Any]:
+    """
+    Übergangsgeometrie W_ij = Σ_n χ_i(n) χ_j(n+1).
+
+    Korrelations-/Übergangsgeometrie — nicht literale Wigner-Matrix.
+    """
+    mat = np.zeros((4, 4), dtype=float)
+    for n in range(len(classes) - 1):
+        i = IDX[classes[n]]
+        j = IDX[classes[n + 1]]
+        mat[i, j] += 1.0
+    return {
+        "matrix": mat.tolist(),
+        "matrix_labeled": {
+            LABELS[i]: {LABELS[j]: float(mat[i, j]) for j in range(4)} for i in range(4)
+        },
+        "transition_count": int(mat.sum()),
+        "carrier": "consecutive_class_transitions",
+        "formula": "W_ij = sum_n chi_i(n) chi_j(n+1)",
+    }
+
+
+def w_e_edge_pair_field(classes: list[str]) -> dict[str, Any]:
+    """
+    W_E(i,j;N) = (N_ij^(+) - N_ij^(-)) / (N_ij^(+) + N_ij^(-))
+
+    Chirale Quasi-Wahrscheinlichkeit pro Kantenpaar i→j aus 4-Fenstern ABCE/CEAB.
+    """
+    n_plus: dict[tuple[str, str], int] = {(a, b): 0 for a in LABELS for b in LABELS}
+    n_minus: dict[tuple[str, str], int] = {(a, b): 0 for a in LABELS for b in LABELS}
+    windows = sliding_windows(classes, width=4)
+    for w in windows:
+        omega = int(w["omega"])
+        if omega == 0:
+            continue
+        word = w["word"]
+        bucket = n_plus if omega == 1 else n_minus
+        for k in range(len(word) - 1):
+            bucket[(word[k], word[k + 1])] += 1
+
+    field: dict[str, dict[str, float | None]] = {}
+    counts_labeled: dict[str, dict[str, dict[str, int]]] = {}
+    for a in LABELS:
+        field[a] = {}
+        counts_labeled[a] = {}
+        for b in LABELS:
+            np_ = n_plus[(a, b)]
+            nm_ = n_minus[(a, b)]
+            total = np_ + nm_
+            counts_labeled[a][b] = {"N_plus": np_, "N_minus": nm_, "total": total}
+            field[a][b] = (np_ - nm_) / total if total > 0 else None
+
+    return {
+        "W_E_edge_field": field,
+        "edge_counts": counts_labeled,
+        "formula": "W_E(i,j;N) = (N_ij^(+) - N_ij^(-)) / (N_ij^(+) + N_ij^(-))",
+        "oriented_words": {"positive": ABCE_WORD, "negative": CEAB_WORD},
+    }
+
+
+def marginal_reconstruction_w_e_edge(
+    edge_field: dict[str, Any],
+    transition: list[list[int]],
+    global_s_w: float,
+) -> dict[str, Any]:
+    """
+    Rekonstruiere W_E(i,j) nur aus Marginalen: globales S_W + T_ij.
+
+    Naive Hypothese: alle Kanten tragen dieselbe globale Chiralität S_W.
+    """
+    total_trans = sum(sum(row) for row in transition)
+    reconstructed: dict[str, dict[str, float | None]] = {}
+    for ia, a in enumerate(LABELS):
+        reconstructed[a] = {}
+        for ib, b in enumerate(LABELS):
+            t_ij = transition[ia][ib]
+            reconstructed[a][b] = global_s_w if t_ij > 0 else None
+
+    actual = edge_field["W_E_edge_field"]
+    sq_err = 0.0
+    compared = 0
+    max_abs_err = 0.0
+    for a in LABELS:
+        for b in LABELS:
+            act = actual[a][b]
+            rec = reconstructed[a][b]
+            if act is None or rec is None:
+                continue
+            err = act - rec
+            sq_err += err * err
+            max_abs_err = max(max_abs_err, abs(err))
+            compared += 1
+
+    rmse = (sq_err / compared) ** 0.5 if compared > 0 else 0.0
+    recoverable = compared > 0 and rmse < 1e-12 and max_abs_err < 1e-12
+
+    return {
+        "reconstructed_from_marginals": reconstructed,
+        "marginal_inputs": {
+            "global_S_W": global_s_w,
+            "total_transitions": total_trans,
+            "note": "prediction: W_E(i,j) ≈ S_W wherever T_ij > 0",
+        },
+        "compared_edge_pairs": compared,
+        "rmse_vs_marginals": rmse,
+        "max_abs_error": max_abs_err,
+        "recoverable_from_marginals_only": recoverable,
+        "information_excess": not recoverable,
+        "interpretation": (
+            "arithmetische Wigner-Negativität: sign structure not in marginals alone"
+            if not recoverable
+            else "degenerate: all edges share global chirality"
+        ),
+    }
+
+
+def information_excess_test(classes: list[str], global_s_w: float) -> dict[str, Any]:
+    """Test: kann W_E(i,j) allein aus Marginalen rekonstruiert werden?"""
+    edge = w_e_edge_pair_field(classes)
+    transition = transition_counts(classes)
+    marginal = marginal_reconstruction_w_e_edge(edge, transition, global_s_w)
+    return {
+        "edge_field": edge,
+        "marginal_reconstruction": marginal,
+        "hypothesis": "arithmetische Wigner-Negativität",
+        "epistemic_label": "Hypothese + Experiment",
+    }
 
 
 def build_w_matrix_from_windows(
