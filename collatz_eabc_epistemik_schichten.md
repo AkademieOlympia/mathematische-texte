@@ -76,9 +76,19 @@ $$\boxed{\;\textbf{Beweis-Spur} \;\|\; \textbf{Ikone-Spur}\;}$$
 | Orientierungsklassen | $\Phi_E=\lim W_E$, chirale 1-Form | `collatz_eabc_chirale_polarisation.md` |
 
 **Kernfrage (Schicht B als Struktur, Schicht R als Brücke):**
+
+$$W_E(X) = \frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)}$$
+
 $$\boxed{\;\Phi_E = \lim_{X\to\infty} W_E(X) \stackrel{?}{\neq} 0\;}$$
 
-Lean: `phi_E_conjecture` (**B**, `Prop`) vs. `phi_E_conjecture_statement` (**R**, `sorry`); Grenzwert-Schranke **GREEN** `W_E_bounds`, asymptotische Chiralität **RED** `HasNonzeroHolonomyLimit` / `EABC_holonomy_limit_conjecture` in `HolonomyCore.lean`. Methodische Lesart (Definition / starke Vermutung / Hauptterm-Null / Experiment): `collatz_eabc_zirkulationshypothese.md` §4.1.
+$$\boxed{\;\text{Die EABC-Holonomie-Vermutung behauptet eine asymptotisch stabile, nichtverschwindende Richtungspräferenz der priminduzierten Zyklen auf dem EABC-Kreisgraphen.}\;}$$
+
+| Status | Aussage |
+|--------|---------|
+| **GREEN** | $-1 \le W_E(X) \le 1$ (bewiesen: `W_E_bounds`) |
+| **RED** | $\lim_{X\to\infty} W_E(X) = \Phi_E \neq 0$ (Vermutung: `HasNonzeroHolonomyLimit`, `EABC_holonomy_limit_conjecture`) |
+
+Lean: `phi_E_conjecture` (**B**, `Prop`) vs. `phi_E_conjecture_statement` (**R**, `sorry`). Methodische Lesart — $W_E(X)$ stabilisiert sich asymptotisch gegen einen Grenzwert; keine „statistische Ruhe im Unendlichen“, keine „unumkehrbare Tendenz“: `collatz_eabc_zirkulationshypothese.md` §4.1.
 
 **Abgrenzung zu Schicht C:** Sagnac, AB-Phase, magnetischer Laplace sind **Analogien** auf $G_E$ — geometrisch sauber in B, physikalisch ikonisch erst in C. Priminduzierte Zählung $N_\pm(X)$ ist **B**, nicht „laufende“ Primzahlen (**C**-Ikone).
 

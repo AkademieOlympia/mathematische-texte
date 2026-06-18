@@ -137,28 +137,32 @@ $$\boxed{\;\Phi_E = \lim_{X\to\infty} W_E(X) = \lim_{X\to\infty}\frac{C_E(X)}{N_
 
 ### 4.1 Asymptotische Chiralität (methodische Lesart)
 
-$$\lim_{X\to\infty} W_E(X) = \Phi_E \neq 0$$
-heißt **asymptotische Chiralität**: der normierte Fluss $W_E(X)=C_E(X)/(N_+(X)+N_-(X))$ tendiert gegen eine **von Null verschiedene Orientierungsklasse** auf $C_4$ — nicht gegen „Ruhe“ der Primzahlen.
+$$\boxed{\;\text{Die EABC-Holonomie-Vermutung behauptet eine asymptotisch stabile, nichtverschwindende Richtungspräferenz der priminduzierten Zyklen auf dem EABC-Kreisgraphen.}\;}$$
+
+**Kerngröße** (Schicht **B**, Definition):
+
+$$W_E(X) = \frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)}$$
+
+| Status | Aussage | Lean (`HolonomyCore.lean`) |
+|--------|---------|---------------------------|
+| **GREEN** | $-1 \le W_E(X) \le 1$ für alle $X$ | `W_E_bounds` (bewiesen) |
+| **RED** | $\displaystyle\lim_{X\to\infty} W_E(X) = \Phi_E \neq 0$ | `HasNonzeroHolonomyLimit`, `EABC_holonomy_limit_conjecture` (`sorry`) |
+
+**Asymptotische Chiralität** heißt: $W_E(X)$ **stabilisiert sich asymptotisch gegen einen Grenzwert** $\Phi_E$ — eine **asymptotisch nichtverschwindende Orientierungspräferenz** auf $C_4$. Das ist weder „Ruhe“ der Einzelprimzahlen noch eine metaphorische „statistische Ruhe im Unendlichen“; lokal bleibt die Primfolge chaotisch.
 
 | Lesart | Inhalt | Label |
 |--------|--------|-------|
-| **Definition** | $N_\pm(X)$ zählt ABCEA- bzw. CEABC-Fenster unter der Bedingung $p_{n+4}\le X$; $W_E(X)$ ist der Quotient $C_E/(N_++N_-)$. Primzahlen **laufen** nicht — es gibt nur eine **priminduzierte EABC-Zählung** auf $G_E$. | **Definition** (Schicht **B**) |
-| **Vermutung (stark)** | $\exists\,\Phi\neq 0:\; W_E(X)\to\Phi$ — nichttriviale globale Orientierungsklasse / asymptotische Chiralität. | **Vermutung** (Schicht **R**) |
+| **Definition** | $N_\pm(X)$ zählt ABCEA- bzw. CEABC-Fenster unter der Bedingung $p_{n+4}\le X$; $W_E(X)$ ist der Quotient oben. Primzahlen **laufen** nicht — es gibt nur eine **priminduzierte EABC-Zählung** auf $G_E$. | **Definition** (Schicht **B**) |
+| **Vermutung (stark)** | $\exists\,\Phi\neq 0:\; W_E(X)\to\Phi$ — asymptotisch nichtverschwindende Orientierungspräferenz / asymptotische Chiralität. | **Vermutung** (Schicht **R**) |
 | **Vermutung (konservativ, Hauptterm)** | $N_+(X)\sim N_-(X)\;\Rightarrow\;\Phi_E=0$ — Symmetrie der gegenläufigen Zyklusorientierungen. | **Vermutung** (Schicht **B**/**R**) |
 | **Experiment** | Numerik bei endlichem $X$ (z. B. $X\approx 10^6$, $W_E\approx 0{,}12$) ist **Stichprobe**, kein Beweis des Grenzwerts. | **Experiment** |
 
-**Methodische Präzisionen:**
+**Methodische Präzisionen (populärwissenschaftliche Lesart vermeiden):**
 
 1. **Kein Lauf-Bild.** Metaphern wie „Primzahlen laufen im Kreis“ gehören zur Ikone-Spur (Schicht **C**). Mathematisch fixiert ist nur $N_\pm(X)$ und der daraus gebildete Quotient $W_E(X)$ auf Schicht **B**.
-2. **Konvergenz $\neq$ Ruhe.** Selbst wenn $W_E(X)\to\Phi_E\neq 0$, bleibt die Primfolge lokal chaotisch; stabilisiert wird nur der **normierte Quotient**, nicht die Einzelereignisse $C_n^{(5)}$.
-3. **Zwei konkurrierende asymptotische Lesarten.** Die **starke EABC-Vermutung** ($\Phi_E\neq 0$) und die **konservative Nullhypothese** ($N_+\sim N_-\Rightarrow\Phi_E=0$, vgl. Hauptterm oben) sind bewusst getrennt zu halten — Experimente entscheiden nicht zwischen ihnen.
-
-**Lean (`CollatzEabc/HolonomyCore.lean`):**
-
-| Schicht | Symbol | Status |
-|---------|--------|--------|
-| **GREEN** | `W_E_bounds` | bewiesen: $-1\le W_E(X)\le 1$ für alle $X$ |
-| **RED** | `HasNonzeroHolonomyLimit`, `EABC_holonomy_limit_conjecture` | explizite Forschungsbrücke (`sorry`): $\exists\,\Phi\neq 0,\; W_E(X)\to\Phi$ |
+2. **Stabilisierung des Quotienten.** Selbst wenn $W_E(X)\to\Phi_E\neq 0$, bleibt die Primfolge lokal chaotisch; **$W_E(X)$ stabilisiert sich asymptotisch gegen einen Grenzwert**, nicht die Einzelereignisse $C_n^{(5)}$.
+3. **Keine unumkehrbare Tendenz.** Eine nichttriviale Grenzpräferenz $\Phi_E\neq 0$ ist eine **asymptotisch nichtverschwindende Orientierungspräferenz** — keine behauptete „unumkehrbare“ physikalische Tendenz.
+4. **Zwei konkurrierende asymptotische Lesarten.** Die **starke EABC-Vermutung** ($\Phi_E\neq 0$) und die **konservative Nullhypothese** ($N_+\sim N_-\Rightarrow\Phi_E=0$, vgl. Hauptterm oben) sind bewusst getrennt zu halten — Experimente entscheiden nicht zwischen ihnen.
 
 ---
 
