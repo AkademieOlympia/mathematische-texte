@@ -21,6 +21,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_sagnac_circulation.py` — $C_E(X)$, $\omega(e)$, $\alpha$
 - `collatz_eabc_holonomie_fehlerterm.py` — $N_\pm$, $D_E$, $S_E$, $\widetilde{D}_E$
 - `eabc_quadruplets_1e10.py` — Vierlings-Zählung bis $X$, $W_E$, $R_\beta$ (`Z_E` nur Diagnose-Alias), mod-$420$-Diagnostik
+- `eabc_witness_54044321_verify.py` — Verifikation Zeuge $p=54\,044\,321$ (§4.4, mod-$60060$-Kanal)
 - `eabc_quadruplets_fit_alpha.py` — Stufen 0–3: Diagnostik (nicht Theorie); $\alpha_E$-Plateau, H₀a/H₀b–H₃
 - `eabc_quadruplets_plot.py` — Vierfeld-Diagnose-Plot ($W_E$, $R_{1/2}$, $\alpha_{\mathrm{loc}}$, $R_\beta$)
 - `collatz_eabc_graph_laplacian.py` — $\mathrm{Spec}(L_E)$
@@ -482,6 +483,55 @@ Keine monotone Drift — Schwankungen der Größenordnung $O(1)$, kompatibel mit
 **Verknüpfung:** vgl. `collatz_eabc_epistemik_schichten.md` §0 (10$^{10}$-Referenzpunkt); Diagnose-Plot: `eabc_quadruplets_diagnose.png`.
 
 **Label:** Belastungstest = **Experiment**; H₀a/H₀b = **Heuristik/Nullhypothese**; H₂/H₃ = **Hypothese/Vermutung** (numerisch nicht gestützt bis $10^{10}$).
+
+### 4.4 mod-$60060$-Zeuge: Primvierling $p=54\,044\,321$ (13-verfeinerte Schale)
+
+$$\boxed{\;p=54\,044\,321,\quad p\bmod 60060=50\,381,\quad \text{Orientierung ABCE.}\;}$$
+
+**Label:** **Beispiel/Zeuge** — struktureller Beleg für A-Startklasse und späten mod-$60060$-Kanal; **kein** Holonomie-Theorem, **kein** Beleg für $\Phi_E\neq 0$.
+
+#### Setup
+
+| Größe | Wert | Lesart |
+|-------|------|--------|
+| Primvierling | $(54\,044\,321,\;54\,044\,323,\;54\,044\,327,\;54\,044\,329)$ | alle vier Positionen prim |
+| $p\bmod 12$ | $5$ | **A-Startklasse** → 4-Fenster **ABCE** ($\gamma^+$-Vierling) |
+| $p\bmod 60060$ | $50\,381$ | **13-verfeinerte Schale** $60060=2\cdot3\cdot5\cdot7\cdot11\cdot13$ |
+| Orientierung | ABCE | **nicht** CEAB ($p\bmod 12=11$ wäre $\gamma^-$-Vierling) |
+
+Die mod-$420$-Diagnostik in §4.3 und `eabc_quadruplets_1e10.py` nutzt sechs reguläre HL-Kanäle. Die **13-verfeinerte Schale** mod $60060$ zerlegt jeden mod-$420$-Kanal weiter; es gibt $378$ HL-zulässige Startrestklassen mod $60060$ (Hardy–Littlewood: alle vier Positionen $p,p{+}2,p{+}6,p{+}8$ sind $\not\equiv 0$ mod jedes $q\in\{2,3,5,7,11,13\}$; vgl. `eabc_hl_coefficient_hypotheses.py`, `admissible_mod`).
+
+#### CERN-Motiv (didaktisch, **Analogie**)
+
+Wie eine theoretisch zugelassene, lange leere Detektorkammer, die schließlich ein Ereignis registriert: Der Kanal $r=50\,381$ ist **arithmetisch zulässig** (HL-Sieb), aber unter den **spätesten** mod-$60060$-Kanälen, die bis $X=10^8$ erstmals einen Primvierling tragen. Erst bei $p=54\,044\,321$ erscheint dort ein Vierling — der **letzte** der zehn spätesten HL-Kanäle in dieser Reichweite.
+
+**Späteste zehn HL-Kanäle mod $60060$ bis $10^8$** (Erstauftreten $p_1(r)$ absteigend; **Experiment**, reproduzierbar):
+
+| Rang | Kanal $r$ | Orient. | erstes $p$ |
+|------|-----------|---------|------------|
+| 1 | $50\,381$ | ABCE | $54\,044\,321$ |
+| 2 | $34\,211$ | CEAB | $33\,067\,211$ |
+| 3 | $54\,911$ | CEAB | $31\,706\,531$ |
+| 4 | $46\,301$ | ABCE | $26\,953\,181$ |
+| 5 | $18\,281$ | ABCE | $26\,684\,921$ |
+| 6 | $36\,011$ | CEAB | $26\,282\,231$ |
+| 7 | $39\,041$ | ABCE | $21\,720\,701$ |
+| 8 | $18\,371$ | CEAB | $20\,799\,131$ |
+| 9 | $11\,651$ | CEAB | $20\,612\,231$ |
+| 10 | $2\,411$ | CEAB | $20\,062\,451$ |
+
+Unter diesen zehn ist **nur** Kanal $50\,381$ ein **ABCE**-Start ($p\bmod 12=5$); die übrigen neun sind **CEAB** ($p\bmod 12=11$). Der Zeuge füllt damit den spätesten **A-Start**-HL-Kanal in dieser Liste — konsistent mit §2 ($\gamma^+$ vs. $\gamma^-$), ohne eine Holonomie-Aussage.
+
+#### Verifikation
+
+```bash
+python3 eabc_witness_54044321_verify.py
+python3 eabc_witness_54044321_verify.py --scan   # optional: 10-späteste-Kanäle bis 10^8
+```
+
+Lean (`PatternCount.lean`): Kommentar-Zeuge $p=54\,044\,321$ — ABCE-Vierling, mod-$60060$-Kanal $50\,381$ (**Beispiel**).
+
+**Abgrenzung:** Dieser Abschnitt dokumentiert **Geometrie und Restklassenstruktur** (Ebene 0), nicht $D_E$-Skalierung (Ebene 1–2) und nicht $\Phi_E$ (Ebene 4). Ein spät gefüllter HL-Kanal ist **kein** Widerspruch zu H₀a/H₀b aus §4.3.
 
 ---
 
