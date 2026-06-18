@@ -2,12 +2,14 @@
 """EABC-Vierlinge bis X: W_E, R_beta und mod-420-Diagnostik.
 
 Stufen 0–3 (vgl. collatz_eabc_zirkulationshypothese.md §4.2):
-  Stufe 0 — D=A−C, Q=A+C, W_E=D/Q, R_beta=D/Q^beta (Definition, keine Exponentenannahme)
-  Stufe 1 — alpha_eff = d log|D|/d log Q (numerisches Signal, kein Satz)
-  Stufe 2 — alpha_E = inf{beta : R_beta beschränkt} (Vermutung, erst wenn Daten es nahelegen)
-  Stufe 3 — W_E Grenzwert ≠0? (Orientierung/Holonomie am Ende)
+  Stufe 0 — D_E=A−C, Q=A+C, W_E=D/Q, R_beta=D/Q^beta (Definition)
+  Stufe 1 — alpha_eff = log|D|/log Q (punktuell); alpha_loc zwischen Checkpoints
+             (berechnet in eabc_quadruplets_fit_alpha.py; wichtiger für Numerik)
+  Stufe 2 — alpha_E = inf{beta : R_beta beschränkt} (Vermutung)
+  Stufe 3 — W_E Grenzwert ≠0? (Holonomie-Hypothese am Ende)
 
-Kein Z_E = D/sqrt(Q) auf Definitionsebene — R_1_2 ist Heuristik/Diagnose-Alias.
+Vorwärtskette: D_E → alpha_E → W_E → Phi_E. Kein Z_E = D/sqrt(Q) auf Definitionsebene.
+R_1_2 ist Heuristik/Diagnose-Alias.
 
 CSV-Spalten R_beta:
   R_1_2  = R_{1/2}(X) = D(X)/sqrt(Q(X))  (Heuristik/Diagnose; Alias Z_E)

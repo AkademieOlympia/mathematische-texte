@@ -2,12 +2,14 @@
 """Log-log-Steigung aus eabc_quadruplets.csv; H0a/H0b–H3-Einordnung und Diagnose-Plot.
 
 Stufen 0–3 (vgl. collatz_eabc_zirkulationshypothese.md §4.2):
-  Stufe 0 — R_beta, Größenordnung (keine Exponentenannahme)
-  Stufe 1 — alpha_eff, alpha_loc (numerisches Signal, kein Satz)
+  Stufe 0 — D_E, Q, W_E, R_beta (Definition, keine Exponentenannahme)
+  Stufe 1 — alpha_eff (punktuell: log|D|/log Q), alpha_loc (zwischen Checkpoints;
+             wichtiger für Numerik: Drift, Übergänge, transiente Plateaus)
   Stufe 2 — alpha_E_hat aus R_beta-Plateaus (Vermutung/Diagnostik, kein Theorem)
-  Stufe 3 — W_E, Orientierung (Holonomie am Ende)
+  Stufe 3 — W_E, Orientierung (Holonomie-Hypothese am Ende)
 
 Reihenfolge Ausgabe: Stufe 0 → 1 → 2 → 3.
+Vorwärtskette: D_E → alpha_E → W_E → Phi_E (keine Umkehrungen).
 """
 
 import argparse
@@ -225,7 +227,7 @@ def make_diagnose_plot(df: pd.DataFrame, loc: pd.Series, out_path: Path) -> None
     ax.axhline(0.5, color="gray", linewidth=0.8, linestyle="--", label=r"$\alpha=1/2$")
     ax.set_ylabel(r"$\alpha_{\mathrm{loc}}$")
     ax.set_xlabel(r"$X$")
-    ax.set_title("Stufe 1: alpha_eff-Diagnose (kein Satz)")
+    ax.set_title("Stufe 1: alpha_loc-Diagnose (wichtiger; kein Satz)")
     ax.legend(loc="best", fontsize=8)
     ax.grid(True, alpha=0.3)
 
@@ -284,14 +286,14 @@ def main():
             f"R_1_2={row['R_1_2']:+.4e}  R_1={row['R_1']:+.4e}"
         )
 
-    print("\n=== Stufe 1: Effektive Skalierung (alpha_eff; numerisches Signal, kein Satz) ===")
+    print("\n=== Stufe 1: Diagnose alpha_loc (wichtiger) und alpha_eff (Gesamtindikator) ===")
     for idx, row in valid.iterrows():
         x = int(row["X"])
         ae = eff.loc[idx]
         al_str = "—"
         if idx in loc.index and not np.isnan(loc.loc[idx]):
             al_str = f"{loc.loc[idx]:.4f}"
-        print(f"  X={x:>12}  alpha_eff={ae:.4f}  alpha_loc={al_str}")
+        print(f"  X={x:>12}  alpha_loc={al_str}  alpha_eff={ae:.4f}")
 
     alpha_loc_vals = loc.dropna()
     alpha_loc_max = float(alpha_loc_vals.max()) if not alpha_loc_vals.empty else None
