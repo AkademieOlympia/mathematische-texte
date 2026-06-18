@@ -169,125 +169,148 @@ $$W_E(X) = \frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)}$$
 
 ### 4.2 Fehlerterm-Skalierung und Hypothesenhierarchie (H₀a/H₀b–H₃)
 
-$$\boxed{\;\text{Definition zuerst (Ebene I), Skalierungsfrage vor Orientierung (Ebene II), numerische Diagnostik zuletzt (Ebene III). Holonomie am Ende.}\;}$$
+$$\boxed{\;\text{Das EABC-Programm untersucht zunächst die Größenordnung der chiralen Differenz }D(X)=A(X)-C(X)\text{, und erst in einem zweiten Schritt die Existenz einer asymptotischen Orientierung }W_E(X)=D(X)/Q(X).\;}$$
 
-**Methodische Leitlinie:** Drei Ebenen (I–III) strikt getrennt (Tao-Stil: Definition → Vermutung → Diagnostik). Kein Zufallsmodell, keine Physik, keine Vermutung auf Ebene I. Die Hypothesen H₀a–H₃ referenzieren Ebene II; $\alpha_{\mathrm{eff}}$, $\alpha_{\mathrm{loc}}$ und $R_\beta$-Plots gehören zu Ebene III.
+**Methodische Leitlinie (Tao-Stil):** Vier **Stufen** — Definition → numerisches Signal → Vermutung → Orientierung. Keine Exponentenannahme vor Stufe 2; Holonomie (Stufe 3) **am Ende**, nicht am Anfang. Die Hypothesen H₀a–H₃ referenzieren jeweils eine Stufe; sie ersetzen sie nicht.
 
-#### Ebene I — Deterministische Definitionen (keine Heuristik)
+#### Stufe 0 — Größenordnung (keine Exponentenannahme)
 
-**Definition** (Schicht **B**; Vierlings-/Fensterzählung — direkt gezählt):
+**Definition** (Schicht **B**; Vierlings-/Fensterzählung):
 
 $$A(X) := N_+(X)\quad(\mathrm{ABCEA}),\qquad C(X) := N_-(X)\quad(\mathrm{CEABC}),$$
 $$D(X) := A(X)-C(X) = D_E(X),\qquad Q(X) := A(X)+C(X).$$
 
 $$W_E(X) := \frac{D(X)}{Q(X)},\qquad R_\beta(X) := \frac{D(X)}{Q(X)^\beta}\quad(\beta\in\mathbb{R}_+).$$
 
-Vollständig wohldefiniert. Spezialfall $R_1(X)=W_E(X)$.
+$W_E(X)=D(X)/Q(X)$ ist **Definition** — kein Grenzwert, kein Exponent. Man untersucht $R_\beta(X)$ **ohne** die Existenz eines Exponenten vorauszusetzen: bleibt $R_{1/2}$ beschränkt? wächst $R_{2/3}$? Kein Zufallsmodell, keine Vermutung auf dieser Stufe.
 
-**Kein** $\sqrt{Q}$, **kein** $Z_E$ auf Ebene I — nur $A$, $C$, $D$, $Q$, $W_E$, $R_\beta$.
+**Kein** $Z_E=D/\sqrt{Q}$ auf der Definitionsebene — nur $D$, $Q$, $W_E$, $R_\beta$. Spezialfälle: $R_1(X)=W_E(X)$; $R_{1/2}$, $R_{2/3}$, $R_{3/4}$, $R_{0.9}$ sind **diagnostische** Normierungen (Stufe 0), keine Kerngrößen.
 
-**Label:** **Definition** (Ebene I).
+| Begriff | Rolle | Observable |
+|---------|-------|------------|
+| **$D$, $Q$, $R_\beta$** | Größenordnung | $R_\beta=D/Q^\beta$ |
+| **$W_E$** | normierte Differenz (Definition) | $D/Q$ |
+| **$\Phi_E$** | asymptotische Orientierung (Stufe 3) | $\lim W_E$ (falls existent) |
+| **$\alpha_E$** | Skalierungsexponent (Stufe 2) | $\inf\{\beta : R_\beta\text{ beschränkt}\}$ |
+| **$\alpha_{\mathrm{eff}}(X)$** | numerisches Signal (Stufe 1) | $d\log|D|/d\log Q$ |
 
-#### Ebene II — Asymptotische Fragen (Vermutungen)
+**Label:** **Definition** (Stufe 0).
 
-Zwei **logisch unabhängige** Fragen (methodischer Fortschritt: sie sind nicht äquivalent und nicht voneinander ableitbar):
+#### Heuristik: $Z_E=R_{1/2}$, $\alpha_E=\tfrac{1}{2}$ (Diskussion, nach Stufe 0)
 
-**Skalierungsfrage:** Existiert $\alpha_E\in\mathbb{R}_+$ mit
-$$|D(X)| = Q(X)^{\alpha_E + o(1)} \quad\text{für }X\to\infty\text{?}$$
-Kritischer Exponent:
-$$\alpha_E := \inf\{\beta\in\mathbb{R}_+ : R_\beta(X)\text{ bleibt beschränkt für }X\to\infty\}.$$
+**Nur Diskussion** — kein Theorem, keine Definition:
 
-**Orientierungsfrage:** $W_E(X)\to 0$ **oder** $W_E(X)\to\Phi_E\neq 0$?
-$$\Phi_E := \lim_{X\to\infty} W_E(X)\quad\text{(falls der Grenzwert existiert).}$$
-
-**Drei sauber getrennte Begriffe:**
-
-| Begriff | Rolle | Ebene |
-|---------|-------|-------|
-| **$\alpha_E$** | asymptotischer Skalierungsexponent | II (Skalierung) |
-| **$\Phi_E$** | asymptotische Orientierung | II (Orientierung) |
-| **$\alpha_{\mathrm{eff}}(X)$** | numerisch beobachteter lokaler Exponent | III (Diagnostik) |
-
-**Wichtig — keine Äquivalenz zwischen $\Phi_E$ und $\alpha_E=1$:**
-
-$$\boxed{\;\Phi_E \neq 0 \;\Rightarrow\; \alpha_E = 1.\;}$$
-
-Diese Implikation ist **einseitig** — **nicht** äquivalent. Gegenbeispiel (Referee-relevant): $D(X)=Q(X)\sin(\log\log Q(X))$ liefert $|D(X)|\asymp Q(X)$, also $\alpha_E=1$, aber $W_E(X)=\sin(\log\log Q(X))$ hat **keinen** Grenzwert. Umgekehrt: $\alpha_E>\tfrac{1}{2}$ impliziert **nicht** $\Phi_E\neq 0$ (sublinearer Bias mit $W_E\to 0$).
-
-**Hypothesen an Ebene II gebunden:**
-
-| Stufe | Aussage | Teilfrage | Label |
-|-------|---------|-----------|-------|
-| **H₀a** (Wurzelrauschen) | $\alpha_E \le \tfrac{1}{2}$ | Skalierung | **Heuristik** (naives Zufallsmodell) |
-| **H₁** (mehr als Wurzelrauschen) | $\alpha_E > \tfrac{1}{2}$ empirisch | Skalierung | **Experiment** |
-| **H₂** (asymptotischer Bias) | $|D(X)| \asymp Q(X)^{\alpha_E}$, $\alpha_E > \tfrac{1}{2}$ | Skalierung | **Hypothese** (arithmetisch stark) |
-| **H₀b** (keine Orientierung) | $W_E(X)\to 0$; **H₀b $\nRightarrow$ $\alpha_E\le\tfrac{1}{2}$** | Orientierung | **Nullhypothese** (analytisch) |
-| **H₃** (starke Holonomie) | $W_E(X)\to\Phi_E\neq 0$ — äquivalent $D(X)\sim\Phi_E Q(X)$; Spezialfall $\alpha_E=1$ | Orientierung | **Vermutung** (Lean-**RED**: `HasNonzeroHolonomyLimit`) |
-
-**Implikationskette** (nur Vorwärtsimplikationen):
-
-- **H₃ $\Rightarrow$ H₂** (mit $\alpha_E=1$), aber **H₂ $\nRightarrow$ H₃** (jedes $\alpha_E\in(\tfrac{1}{2},1)$ lässt $W_E\to 0$).
-- **H₂ $\Rightarrow$ H₁** auf hinreichend großen Skalen, aber **H₁ $\nRightarrow$ H₂** (transienter Bias reicht nicht).
-- **H₀b $\nRightarrow$ H₀a** und **H₀a $\nRightarrow$ H₀b** — Orientierung und Skalierung sind **getrennte** Fragen.
-- **$\Phi_E\neq 0 \Rightarrow \alpha_E=1$**, aber **$\alpha_E=1 \nRightarrow \Phi_E\neq 0$** (Gegenbeispiel oben) und **$\alpha_E>\tfrac{1}{2} \nRightarrow \Phi_E\neq 0$**.
-
-**Drei Skalierungsfälle:**
-
-| Fall | $\alpha_E$ | $W_E$ | Lesart |
-|------|------------|-------|--------|
-| 1. Rauschen | $\le \tfrac{1}{2}$ | $\to 0$ | Wurzelrauschen (H₀a) |
-| 2. Sublinearer Bias | $\tfrac{1}{2} < \alpha_E < 1$ | $\to 0$ | arithmetischer Bias (H₁–H₂, nicht H₃) |
-| 3. Starke Holonomie | $= 1$ | $\to \Phi_E \neq 0$ (falls Grenzwert existiert) | Holonomie-Grenzfall (H₃) |
-
-**Label:** Ebene II = **Vermutung** / **Hypothese** / **Nullhypothese**.
-
-#### Ebene III — Numerische Diagnostik (Werkzeuge, nicht Theorie)
-
-$$\alpha_{\mathrm{eff}}(X) := \frac{d\log|D|}{d\log Q}\bigg|_X \approx \frac{\log|D(X)|}{\log Q(X)}\quad (D\neq 0,\; Q>1),$$
-
-$$\alpha_{\mathrm{loc}}(X_i,X_{i+1}) := \frac{\Delta\log|D|}{\Delta\log Q}\quad\text{zwischen Checkpoints.}$$
-
-Verschiedene $R_\beta(X)$ ($\beta\in\{\tfrac{1}{2},\tfrac{2}{3},\tfrac{3}{4},0{,}9,1\}$) dienen als **Beobachtungsinstrumente** — Kurvenvergleich, Plateau-Lesart, $\alpha_E$-Schätzung. **Nicht** Teil der Theorie oder Vermutung.
-
-**Vorbehalt:** $\alpha_{\mathrm{loc}}$ **muss nicht konvergieren**; $\alpha_{\mathrm{eff}}(X)>\tfrac{1}{2}$ ist **nur numerisches Signal**, kein asymptotischer Satz.
-
-**Label:** **Experiment** (Ebene III).
-
-#### Heuristik (Diskussion, nach Ebene III)
-
-**Nur Diskussion** — kein Theorem, keine Kerngröße auf Ebene I:
-
-- $Z_E := R_{1/2} = D/\sqrt{Q}$ und $\alpha_E=\tfrac{1}{2}$ als **naives Zufallsmodell** ($|D|\approx\sqrt{Q}$) — **Heuristik**, keine bewiesene Referenz.
-- In CSV/Plot: Spalte `R_1_2`, Alias $Z_E$ (**Diagnose**, nicht Definition).
+- $Z_E := R_{1/2}(X)=D(X)/\sqrt{Q(X)}$ — in CSV/Plot als Spalte `R_1_2` bzw. Alias $Z_E$ (**Heuristik/Diagnose**).
+- $\alpha_E=\tfrac{1}{2}$ entspräche einem **naiven Zufallsmodell** ($|D|\approx\sqrt{Q}$) — **Heuristik**, keine bewiesene Referenz.
 - Bei Primzahlrennen können Differenzen **deutlich größer** als $\sqrt{Q}$ werden, ohne nichttrivialen normierten Grenzwert.
 
-Unter H₂ folgen formal:
-$$W_E(X) \sim Q(X)^{\alpha_E-1},\qquad R_{1/2}(X) \sim Q(X)^{\alpha_E-1/2},\qquad R_\beta(X) \sim Q(X)^{\alpha_E-\beta}.$$
+#### Stufe 1 — Effektive Skalierung (numerisch)
+
+$$\alpha_{\mathrm{eff}}(X) := \frac{\log|D(X)|}{\log Q(X)}\quad (D\neq 0,\; Q>1),$$
+
+$$\alpha_{\mathrm{loc}}(X_i,X_{i+1}) := \frac{\Delta\log|D|}{\Delta\log Q}\quad\text{zwischen aufeinanderfolgenden Checkpoints.}$$
+
+**Frage (Stufe 1):** Stabilisiert sich $\alpha_{\mathrm{eff}}(X)$? — kann oszillieren, driften oder extrem langsam konvergieren. **Nur numerisches Signal**, kein asymptotischer Satz.
+
+**Wichtiger Vorbehalt:** $\alpha_{\mathrm{loc}}$ **muss nicht konvergieren** — in der analytischen Zahlentheorie kann ein Exponent über lange Bereiche stabil erscheinen und später driften oder oszillieren (vgl. explizite Formeln, $L$-Funktionen).
+
+**Label:** **Experiment** (numerische Ableitung).
+
+#### Stufe 2 — Asymptotischer Exponent (Vermutung, erst wenn Daten es nahelegen)
+
+$$\boxed{\;\text{Existiert }\alpha_E\text{ mit }|D(X)|=Q(X)^{\alpha_E+o(1)}\text{?}\;}$$
+
+**Kritischer Exponent** (mathematisches Objekt über Renormierungsobservablen):
+
+$$\alpha_E := \inf\{\beta\in\mathbb{R}_+ : R_\beta(X)\text{ bleibt beschränkt für }X\to\infty\}.$$
+
+Erst hier „nichttriviale asymptotische Skalierung" formulieren — **entschärft** gegenüber einer sofortigen Exponentenannahme. Numerisch: man vergleicht, bei welchem $\beta$ die Kurve $R_\beta(X)$ im beobachteten Fenster noch **stabil** vs. **wächst**; Zwischenwerte zeigen die **Skala des Bias**.
+
+**Testarchitektur** (Stufe 0/2):
+
+| Observable | $\beta$ | Lesart |
+|------------|---------|--------|
+| $R_{1/2}$ | $\tfrac{1}{2}$ | Wurzelrauschen-Heuristik (H₀a/H₁) |
+| $R_{2/3}$, $R_{3/4}$, $R_{0.9}$ | Zwischenwerte | sublinearer Bias (H₂-Diagnostik) |
+| $R_1=W_E$ | $1$ | Orientierung (Stufe 3; H₀b/H₃) |
+
+**Drei Skalierungsfälle** (an $\alpha_E$ gebunden, **unter H₂**):
+
+| Fall | $\alpha_E$ | $R_{1/2}$ | $W_E$ | Lesart |
+|------|------------|-----------|-------|--------|
+| 1. Rauschen | $\le \tfrac{1}{2}$ | $O(1)$ | $\to 0$ | Wurzelrauschen (H₀a) |
+| 2. Sublinearer Bias | $\tfrac{1}{2} < \alpha_E < 1$ | $\to\infty$ | $\to 0$ | arithmetischer Bias (H₁–H₂, nicht H₃) |
+| 3. Starke Holonomie | $= 1$ | $\to\infty$ (langsamer als Fall 2) | $\to \Phi_E \neq 0$ | Holonomie-Grenzfall (H₃) |
+
+Unter H₂ folgen formal: $W_E(X) \sim Q(X)^{\alpha_E-1}$, $R_{1/2}(X) \sim Q(X)^{\alpha_E-1/2}$, $R_\beta(X) \sim Q(X)^{\alpha_E-\beta}$.
 
 **Wichtig:** Auch bei $\Phi_E=0$ kann $\alpha_E>\tfrac{1}{2}$ gelten — ein **eigenständiges arithmetisches Phänomen**, nicht äquivalent zur Holonomiefrage.
 
-#### Konservative Endfassung — zwei boxed Kernfragen
+**Label:** $\alpha_E$ = **Definition** (Stufe 2); H₂ = **Hypothese**; Kurvenvergleich / $\alpha_E$-Schätzung = **Experiment**.
 
-$$\boxed{\;\text{Besitzt die Differenz }D(X)=A(X)-C(X)\text{ eine nichttriviale asymptotische Skalierung?}\;}$$
+#### Stufe 3 — Orientierung (zweiter Schritt des Programms)
 
-$$\boxed{\;\text{Besitzt die normierte Orientierung }W_E(X)\text{ einen nichtverschwindenden Grenzwert?}\;}$$
+$$\boxed{\;\text{Orientierung: }W_E(X)\to 0\quad\text{oder}\quad W_E(X)\to\Phi_E\neq 0\text{?}\;}$$
 
-Die **Holonomie-Hypothese** (H₃, $W_E\to\Phi_E\neq 0$) steht **am Ende** des Programms — nicht am Anfang. Erst Skalierung (H₀a/H₁/H₂), dann Orientierung (H₀b/H₃).
+$$\Phi_E := \lim_{X\to\infty} W_E(X)\quad\text{(falls der Grenzwert existiert).}$$
+
+$W_E(X)$ und $\Phi_E$ messen die **normierte Orientierung** — unabhängig von jeder Skalierungsexponentenannahme. Holonomie **am Ende**, nicht am Anfang.
+
+- **H₀b** (keine Orientierung): $W_E(X)\to 0$ — analytische Nullhypothese.
+- **H₃** (starke Holonomie): $W_E(X)\to\Phi_E\neq 0$ — Vermutung (Lean-**RED**: `HasNonzeroHolonomyLimit`).
+
+#### Implikationskette (Referee-präzise)
+
+$$\boxed{\;\Phi_E\neq 0 \;\Rightarrow\; D(X)\sim\Phi_E\,Q(X) \;\Rightarrow\; \alpha_E=1.\;}$$
+
+**Nicht umgekehrt:** $\alpha_E=1$ impliziert **keinen** Grenzwert von $W_E$.
+
+**Gegenbeispiel:** $D(X)=Q(X)\sin(\log\log Q(X))$ — $\alpha_E=1$, aber $W_E(X)$ **ohne** Grenzwert.
+
+| Parameter | Stärke | Bedeutung |
+|-----------|--------|-----------|
+| **$\Phi_E$** | Orientierungsparameter (stärker) | normierter Grenzwert $W_E$ |
+| **$\alpha_E$** | Skalenparameter (schwächer) | Größenordnung von $|D|$ relativ zu $Q$ |
+
+Weitere Vorwärtsimplikationen (H₀a/H₀b–H₃):
+
+- **H₃ $\Rightarrow$ H₂** (mit $\alpha_E=1$), aber **H₂ $\nRightarrow$ H₃** (jedes $\alpha_E\in(\tfrac{1}{2},1)$ lässt $W_E\to 0$).
+- **H₂ $\Rightarrow$ H₁** auf hinreichend großen Skalen ($R_{1/2}\to\infty$), aber **H₁ $\nRightarrow$ H₂** (transienter Bias reicht nicht).
+- **H₀b $\nRightarrow$ H₀a** und **H₀a $\nRightarrow$ H₀b** — analytische Orientierung und Wurzelnormierung sind **getrennte** Fragen.
+- **H₂ mit $\alpha_E>\tfrac{1}{2}$ $\nRightarrow$ H₃** — auch $\Phi_E=0$ ist mit $\alpha_E>\tfrac{1}{2}$ vereinbar.
+
+#### Boxed Kernfragen (entschärft)
+
+1. **Stufe 0/1:** Bleibt $R_{1/2}$ beschränkt? Stabilisiert sich $\alpha_{\mathrm{eff}}$? — **Größenordnung zuerst.**
+2. **Stufe 2:** Existiert $\alpha_E$ mit $|D(X)|=Q(X)^{\alpha_E+o(1)}$? — **nur wenn Daten es nahelegen.**
+3. **Stufe 3:** $W_E(X)\to\Phi_E\neq 0$? — **Orientierung danach.**
+
+#### Hypothesen (H₀a/H₀b–H₃)
+
+Schrittweise Eskalation entlang der Stufen: **0/1** Größenordnung → **2** Skalierung → **3** Orientierung.
+
+| Hypothese | Aussage | Stufe | Label |
+|-----------|---------|-------|-------|
+| **H₀a** (Wurzelrauschen) | $\alpha_E \le \tfrac{1}{2}$ — $R_{1/2}(X)$ **bleibt beschränkt** | 0/2 | **Heuristik** (naives Zufallsmodell) |
+| **H₁** (mehr als Wurzelrauschen) | $\alpha_E > \tfrac{1}{2}$ empirisch — $R_{1/2}(X)\to\infty$ | 0/1 | **Experiment** |
+| **H₂** (asymptotischer Bias) | $|D(X)| \asymp Q(X)^{\alpha_E}$ mit $\alpha_E > \tfrac{1}{2}$ asymptotisch | 2 | **Hypothese** (arithmetisch stark) |
+| **H₀b** (keine Orientierung) | $W_E(X)\to 0$ — analytische Nullhypothese; **H₀b $\nRightarrow$ $\alpha_E\le\tfrac{1}{2}$** | 3 | **Nullhypothese** (analytisch) |
+| **H₃** (starke Holonomie) | $W_E(X)\to\Phi_E\neq 0$ — impliziert $D(X)\sim\Phi_E Q(X)$, $\alpha_E=1$ | 3 | **Vermutung** (Lean-**RED**: `HasNonzeroHolonomyLimit`) |
 
 #### Prime-Race-Analogie
 
-Wie bei $\Delta(x)=\pi(x;a,q)-\pi(x;b,q)$ fragt man zuerst nach der **Größenordnung** der Differenz relativ zu einer Normierung — nicht nach einem Grenzwert des Quotienten. $D(X)=N_+(X)-N_-(X)$ ist ein orientierter Prime Race auf demselben EABC-Zyklus. Skalierungsfrage ($\alpha_E$) und Orientierungsfrage ($\Phi_E$) sind **methodisch getrennt**.
+Wie bei $\Delta(x)=\pi(x;a,q)-\pi(x;b,q)$ fragt man zuerst nach der **Größenordnung** der Differenz relativ zu einer Normierung — nicht nach einem Grenzwert des Quotienten. $D(X)=N_+(X)-N_-(X)$ ist ein orientierter Prime Race auf demselben EABC-Zyklus. Die asymptotische Orientierungsfrage (Stufe 3: $W_E\to 0$ oder $\Phi_E\neq 0$) ist von der Skalierungsfrage (Stufe 2: $\alpha_E$ via $R_\beta$) **methodisch getrennt**.
 
-**Numerik und Diagnose-Plot.** `eabc_quadruplets_1e10.py` (Ebene I: $Q$, $D$, $W_E$, $R_\beta$; Ebene III: $\alpha_{\mathrm{eff}}$) erzeugt Checkpoints (`eabc_quadruplets.csv`). `eabc_quadruplets_fit_alpha.py` gibt **Ebene-III-Diagnostik** aus (nicht Theorie); schätzt $\alpha_E$ heuristisch aus $R_\beta$-Plateaus. `eabc_quadruplets_plot.py` (oder `fit_alpha --plot`) erzeugt Vierfeld-Diagramm (`eabc_quadruplets_diagnose.png`):
+**Numerik und Diagnose-Plot.** `eabc_quadruplets_1e10.py` erzeugt Checkpoints mit $Q$, $D$, $W_E$, $R_\beta$ für $\beta\in\{\tfrac{1}{2},\tfrac{2}{3},\tfrac{3}{4},0{,}9,1\}$ (CSV-Spalten `R_1_2`, `R_2_3`, `R_3_4`, `R_9_10`, `R_1`; Alias `Z_E`=`R_1_2` nur Diagnose), $\alpha_{\mathrm{eff}}$ (`eabc_quadruplets.csv`). `eabc_quadruplets_fit_alpha.py` strukturiert die Ausgabe nach **Stufen 0–3**; schätzt $\alpha_E$ heuristisch aus $R_\beta$-Plateaus (**Experiment**, kein Theorem). `eabc_quadruplets_plot.py` (oder `fit_alpha --plot`) erzeugt ein Vierfeld-Diagramm (`eabc_quadruplets_diagnose.png`):
 
-| Panel | Kurve | Ebene | Lesart |
-|-------|-------|-------|--------|
-| 1 | $W_E(X)=R_1(X)$ | II | H₀b / H₃ (Orientierung) |
-| 2 | $R_{1/2}(X)$ ($Z_E$ Alias) | III | H₀a / H₁ (Heuristik/Diagnose) |
-| 3 | $\alpha_{\mathrm{loc}}(X)$ | III | $\alpha_{\mathrm{eff}}$-Diagnostik |
-| 4 | $R_\beta$ | III | Skalierungsdiagnostik |
+| Panel | Kurve | Stufe / Lesart |
+|-------|-------|----------------|
+| 1 | $R_{1/2}(X)$ ($Z_E$ Alias) | Stufe 0/1: Größenordnung (H₀a / H₁) |
+| 2 | $\alpha_{\mathrm{loc}}(X)$ | Stufe 1: $\alpha_{\mathrm{eff}}$-Diagnose, kein Satz |
+| 3 | $R_\beta$ für $\beta\in\{\tfrac{1}{2},\tfrac{2}{3},\tfrac{3}{4},0{,}9,1\}$ | Stufe 2: Skalierungsdiagnostik |
+| 4 | $W_E(X)=R_1(X)$ | Stufe 3: H₀b / H₃ (Orientierung) |
 
-**Label:** Ebene I = **Definition**; Ebene II = **Vermutung**; Ebene III = **Experiment**; H₀a = **Heuristik**; H₀b = **Nullhypothese**; H₃ = **Vermutung** (Lean-RED).
+**Label:** Stufe 0 = **Definition**; Stufe 1 = **Experiment**; Stufe 2 / H₂ = **Hypothese**; Stufe 3 / H₃ = **Vermutung** (Lean-RED); H₀a = **Heuristik**; H₀b = **Nullhypothese**.
 
 ---
 
@@ -303,7 +326,7 @@ Qualitativ: wie beim klassischen Chebyshev-Bias mod $4$ kann die **absolute Diff
 
 **Label:** EABC-Fehlerterm-Hypothese = **Hypothese** (stärker als Hauptvermutung allein).
 
-**Details und Numerik:** `collatz_eabc_fehlerterm_hypothese.md` §3–5; `collatz_eabc_holonomie_fehlerterm.py`; Ebenen I–III und H₀a/H₀b–H₃: §4.2; `eabc_quadruplets_1e10.py`, `eabc_quadruplets_fit_alpha.py`, `eabc_quadruplets_plot.py`.
+**Details und Numerik:** `collatz_eabc_fehlerterm_hypothese.md` §3–5; `collatz_eabc_holonomie_fehlerterm.py`; Stufen 0–3 und H₀a/H₀b–H₃: §4.2; `eabc_quadruplets_1e10.py`, `eabc_quadruplets_fit_alpha.py`, `eabc_quadruplets_plot.py`.
 
 ---
 

@@ -31,11 +31,11 @@ EABC = priminduzierter Fluss auf $C_4 \cong S^1$ mit
 - $C_E(X) = N_+(X) - N_-(X)$, $S_E(X) = N_+(X) + N_-(X)$
 - $W_E(X) = C_E(X)/S_E(X)$, $\Phi_E = \lim_{X\to\infty} W_E(X)$
 
-**Vermutung (Schicht R):** $\Phi_E \neq 0$ bzw. $\langle\omega_E, h\rangle \neq 0$ für kanonisches harmonisches $h$. Dies ist **H₃** (starke Holonomie: $W_E(X)\to\Phi_E\neq 0$) — **am Ende** des Programms, nach Skalierungsfragen (H₀a/H₁/H₂). Entspricht Lean-**RED** `HasNonzeroHolonomyLimit`. Vorgelagert (`collatz_eabc_zirkulationshypothese.md` §4.2, Ebenen I–III): zuerst Skalierung, dann Orientierung (H₀b vs. H₃). $\alpha_E>\tfrac{1}{2} \nRightarrow \Phi_E\neq 0$.
+**Vermutung (Schicht R):** $\Phi_E \neq 0$ bzw. $\langle\omega_E, h\rangle \neq 0$ für kanonisches harmonisches $h$. Dies ist **H₃** (starke Holonomie: $W_E(X)\to\Phi_E\neq 0$) — **am Ende** des Programms (Stufe 3), nach Größenordnung (Stufe 0/1) und Skalierung (Stufe 2). Entspricht Lean-**RED** `HasNonzeroHolonomyLimit`. Vorgelagert (`collatz_eabc_zirkulationshypothese.md` §4.2, Stufen 0–3): zuerst $R_\beta$ und $\alpha_{\mathrm{eff}}$, dann $\alpha_E$, dann Orientierung (H₀b vs. H₃). $\alpha_E>\tfrac{1}{2} \nRightarrow \Phi_E\neq 0$.
 
-$$\boxed{\;\Phi_E \neq 0 \;\Rightarrow\; \alpha_E = 1.\;}$$
+$$\boxed{\;\Phi_E \neq 0 \;\Rightarrow\; D(X)\sim\Phi_E Q(X) \;\Rightarrow\; \alpha_E = 1.\;}$$
 
-**Nicht äquivalent:** $\alpha_E=1$ allein garantiert weder $\Phi_E\neq 0$ noch $\lim W_E$. Gegenbeispiel: $D(X)=Q(X)\sin(\log\log Q(X))$ — $\alpha_E=1$, aber $W_E$ ohne Grenzwert.
+**Nicht äquivalent:** $\alpha_E=1$ allein garantiert weder $\Phi_E\neq 0$ noch $\lim W_E$. Gegenbeispiel: $D(X)=Q(X)\sin(\log\log Q(X))$ — $\alpha_E=1$, aber $W_E$ ohne Grenzwert. $\Phi_E$ (Orientierungsparameter) ist **stärker** als $\alpha_E$ (Skalenparameter).
 
 ---
 
