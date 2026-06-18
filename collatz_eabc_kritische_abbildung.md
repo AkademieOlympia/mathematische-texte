@@ -20,6 +20,27 @@ $$\boxed{\;\text{Modellabbildung — keine Behauptung über physikalische Geschw
 
 Die folgende Konstruktion ordnet **EABC-Holonomie-Schaltkreise** (ABCEA / CEABC) einer **analytischen Abbildung** entlang der kritischen Linie $\Re s = \tfrac12$ zu. Sie dient als **Lesartshilfe** für Kantenlängen, Orientierung und Zeta-Nullstellen — analog zur Sagnac-Intuition in `collatz_eabc_sagnac.md`, aber mit expliziter komplexer Parametrisierung.
 
+### 0.1 Abgrenzung SRT
+
+Die Notation **„Geschwindigkeit“** / $v$ ist **rein analytisch** — ein **Skalierungsparameter** für die Abbildung $x \mapsto \tfrac12 + \mathrm{i}\,v(x-\tfrac12)$, **keine** physikalische Geschwindigkeit.
+
+$$\boxed{\;\text{Modellabbildung — keine Physikbehauptung (keine SRT).}\;}$$
+
+| Aspekt | SRT (Spezielle Relativitätstheorie) | EABC (dieses Dokument) |
+|--------|-------------------------------------|-------------------------|
+| Raumzeit | Minkowski-Metrik, Lorentz-Invarianz | Komplexe Ebene $\Re s=\tfrac12$, euklidische $x$-Achse |
+| $v$, $c$ | Relativgeschwindigkeit, Lichtgeschwindigkeit | Skalierungsparameter $v>0$; **kein** $c$ |
+| Transformation | Lorentz-Transformationen | Lineare Abbildung $s_v(x)=\tfrac12+\mathrm{i}v(x-\tfrac12)$ |
+| Kantengrößen $v_j$ | — | $v_j=\gamma_{\mathrm{ref}}/\ell_j$ aus EABC-Primlücken — **Holonomie-Sensor**, keine relativistischen Geschwindigkeiten |
+| Sagnac | Interferometrie, Rotation | **Zirkulationstheorie** (`collatz_eabc_zirkulationshypothese.md`); Sagnac nur didaktische Intuition (`collatz_eabc_sagnac.md`) |
+
+**Kernpunkte:**
+- Es gibt **keinen** Minkowski-Raum, **keine** Lorentz-Transformationen und **kein** $c$.
+- Die abgeleiteten $v_j=\gamma_{\mathrm{ref}}/\ell_j$ messen **Höheninkremente pro EABC-Lücke** (Holonomie-Sensor), nicht Relativgeschwindigkeiten.
+- Das frühere Sagnac-Bild ist der **Zirkulationshypothese** untergeordnet (Prime Race $N_\pm$, $D_E$) — kein Relativitäts- oder Quantenmodell.
+
+**Notation (optional):** Eine Umbenennung $v \to \sigma$ oder $\lambda$ als **Skalierungsparameter** wäre terminologisch klarer; im Code und in älteren Abschnitten bleibt vorerst $v$ (Legacy-Label). Eine triviale Alias-Schicht in Python wäre möglich, ein Massen-Rename ist nicht vorgesehen.
+
 ---
 
 ## 1. Geschwindigkeitsmodell (Benutzerformeln)

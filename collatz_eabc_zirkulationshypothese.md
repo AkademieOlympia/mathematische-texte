@@ -137,7 +137,7 @@ $$\boxed{\;D_E(X)\;\text{ist ein Prime Race zwischen zwei Orientierungen desselb
 
 **Sekundäre Analogien** (didaktisch, nicht primär):
 - Bell/CHSH auf $G_E$: `collatz_eabc_bell_holonomie.md`
-- Sagnac-Bild ($\gamma^\pm$): `collatz_eabc_sagnac.md` — **Intuition only**
+- Sagnac-Bild ($\gamma^\pm$): `collatz_eabc_sagnac.md` — **Intuition only** (Zirkulationstheorie, **keine** SRT; Skalierungsparameter $v$: `collatz_eabc_kritische_abbildung.md` §0.1)
 
 **Label:** Zirkulation auf $G_E$ = **Definition**; Bell/Sagnac = **Analogie** (sekundär).
 
