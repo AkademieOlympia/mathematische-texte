@@ -1,7 +1,7 @@
 # EABC Epistemik: Schichten A / B / C und rote RadiationSpace-Schicht
 
 **Status:** Kanonisches Schichten-Framework — **kein** Physikanspruch  
-**Branch:** `collatz/eabc-05-holonomie-fehlerterm` (PR #59), `collatz/eabc-h03-diskrete-geometrie-fluss` (PR #63)  
+**Branch:** `collatz/eabc-05-holonomie-fehlerterm` (PR #59), `collatz/eabc-h12-epistemik-chiralitaet-doku` (PR #72), `collatz/eabc-h13-quadruplets-alpha` (PR #73)  
 **Tao-Labels:** Definition | Theorem | Modellabbildung | Analogie | Ikone | Forschungsfrage | Scaffold
 
 **Vier Wahrheitstypen (Lean `FlussPhiE.lean`):**
@@ -85,6 +85,20 @@ $$\boxed{\;\text{Ob die Wachstumsordnung von }D_E\text{ bis zur linearen Skala r
 
 **Paradigmenwechsel:** Früher Grenzwerttheorie $W_E\to\Phi_E\neq 0$ (Ergodentheorie/Dichtetheorie); jetzt Fehlertermtheorie $D_E(X)=A(X)-C(X)$ (analytische Zahlentheorie). Die Verschiebung ändert das **mathematische Objekt**, nicht nur die Methode.
 
+$$\boxed{\;\text{Das Programm hängt nicht mehr an einer Vermutung.}\;}$$
+
+**Lakatos-Einordnung** (vgl. `collatz_eabc_zirkulationshypothese.md` §4):
+
+| Rolle | Objekt | Ebene |
+|-------|--------|-------|
+| **Harter Kern** | $G_E$, $\gamma^\pm$, $C_4\cong S^1$ | 0 |
+| **Primäre Theorie** | $D_E$, $Q$ | 1 |
+| **Sekundäre Schutzmantel** | $R_\beta$, $\alpha_{\mathrm{loc}}$, $\alpha_{\mathrm{eff}}$, $\alpha_E$ | 2 |
+| **Orientierung** | $W_E$ | 3 |
+| **Endhypothese** | $\Phi_E$ | 4 |
+
+**V1 → V2:** V1 startete mit $\Phi_E\neq 0$ und nutzte Hilfsgrößen zur Stützung; V2 macht $\Phi_E$ zur **Konsequenz** der $D_E$-Skalierungstheorie. Pyramide: $G_E\to D_E\to\alpha_E\to W_E\to\Phi_E$. Selbst $\Phi_E=0$ bleibt interessant ($\alpha_E$, $R_\beta$, $\alpha_{\mathrm{loc}}$).
+
 **Vorwärtskette** (keine Umkehrungen): $D_E(X) \Rightarrow \alpha_E \Rightarrow W_E(X) \Rightarrow \Phi_E$.
 
 **Fünf Ebenen** (vgl. `collatz_eabc_zirkulationshypothese.md` §4.2):
@@ -98,10 +112,10 @@ $$\boxed{\;\text{Ob die Wachstumsordnung von }D_E\text{ bis zur linearen Skala r
 | **4** | Holonomie: $\Phi_E=\lim W_E$ |
 
 $$W_E(X) = \frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)},\qquad
-R_\beta(X) = \frac{D(X)}{Q(X)^\beta},\qquad
+R_\beta(X) = \frac{D_E(X)}{Q(X)^\beta},\qquad
 \alpha_E := \inf\{\beta : R_\beta\text{ bleibt beschränkt}\}$$
 
-$$\boxed{\;\Phi_E \neq 0 \;\Rightarrow\; D(X)\sim\Phi_E Q(X) \;\Rightarrow\; \alpha_E=1.\;}$$
+$$\boxed{\;\Phi_E \neq 0 \;\Rightarrow\; D_E(X)\sim\Phi_E Q(X) \;\Rightarrow\; \alpha_E=1.\;}$$
 
 **Nicht äquivalent:** $\alpha_E=1$ impliziert keinen Grenzwert von $W_E$. Gegenbeispiel: $D_E(X)=Q(X)\sin(\log\log Q(X))$. $\Phi_E$ (Orientierung) ist **stärker** als $\alpha_E$ (Skala). Scheitern von $\Phi_E\neq 0$ zerstört das Programm nicht — eigenständige Theorie von $D_E$, $R_\beta$, $\alpha_{\mathrm{loc}}$, $\alpha_E$. Selbst bei $\Phi_E=0$: Fragen zu $\alpha_E=\tfrac{1}{2}$?, $\alpha_E>\tfrac{1}{2}$?, $\alpha_{\mathrm{loc}}$-Plateaus?, kritische $R_\beta$ bleiben offen.
 
@@ -110,7 +124,7 @@ $$\boxed{\;\Phi_E \neq 0 \;\Rightarrow\; D(X)\sim\Phi_E Q(X) \;\Rightarrow\; \al
 | **GREEN** | $-1 \le W_E(X) \le 1$ (bewiesen: `W_E_bounds`) |
 | **RED** | $\lim_{X\to\infty} W_E(X) = \Phi_E \neq 0$ — **H₃** (Holonomie; Ebene 4; Vermutung: `HasNonzeroHolonomyLimit`, `EABC_holonomy_limit_conjecture`) |
 
-Lean: `phi_E_conjecture` (**B**, `Prop`) vs. `phi_E_conjecture_statement` (**R**, `sorry`). Methodische Lesart — $W_E(X)$ stabilisiert sich asymptotisch gegen einen Grenzwert; keine „statistische Ruhe im Unendlichen“, keine „unumkehrbare Tendenz“: `collatz_eabc_zirkulationshypothese.md` §4.1. **Fünf Ebenen in §4.2** (0–4): (0) Geometrie $G_E$, $\gamma^\pm$; (1) Zirkulationsfehler $D_E$; (2) Skalierung $R_\beta$, $\alpha_{\mathrm{loc}}$ ($\alpha_{\mathrm{loc}}$ primär für Numerik), $\alpha_E$; (3) Orientierung $W_E$; (4) Holonomie $\Phi_E$ — Holonomie-Hypothese am Ende. H₀b ($W_E\to 0$) ist analytisch und **nicht** mit H₀a identisch; $\alpha_E>\tfrac{1}{2} \nRightarrow \Phi_E\neq 0$ (vgl. §4.2). Numerik: `eabc_quadruplets_1e10.py`, `eabc_quadruplets_fit_alpha.py`, `eabc_quadruplets_plot.py`.
+Lean: `phi_E_conjecture` (**B**, `Prop`) vs. `phi_E_conjecture_statement` (**R**, `sorry`). Methodische Lesart — $W_E(X)$ stabilisiert sich asymptotisch gegen einen Grenzwert; keine „statistische Ruhe im Unendlichen“, keine „unumkehrbare Tendenz“: `collatz_eabc_zirkulationshypothese.md` §4.1. **Fünf Ebenen in §4.2** (0–4): (0) harter Kern $G_E$; (1) primär $D_E$, $Q$; (2) sekundär $R_\beta$, $\alpha_{\mathrm{loc}}$, $\alpha_{\mathrm{eff}}$, $\alpha_E$; (3) Orientierung $W_E$; (4) Endhypothese $\Phi_E$. Prime-Race-Analogie $\pi(x)$–$\mathrm{Li}(x)$: Größenordnung von $|D_E|$ vor Grenzwert von $W_E$. H₀b ($W_E\to 0$) ist analytisch und **nicht** mit H₀a identisch; $\alpha_E>\tfrac{1}{2} \nRightarrow \Phi_E\neq 0$ (vgl. §4.2). Numerik (#73): `eabc_quadruplets_1e10.py`, `eabc_quadruplets_fit_alpha.py`, `eabc_quadruplets_plot.py`.
 
 **Abgrenzung zu Schicht C:** Sagnac, AB-Phase, magnetischer Laplace sind **Analogien** auf $G_E$ — geometrisch sauber in B, physikalisch ikonisch erst in C. Priminduzierte Zählung $N_\pm(X)$ ist **B**, nicht „laufende“ Primzahlen (**C**-Ikone).
 

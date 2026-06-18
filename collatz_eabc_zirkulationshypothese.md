@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; asymptotische Chiralität methodisch in §4.1; Stufen 0–3 in §4.2
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; asymptotische Chiralität in §4.1
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
 - `collatz_eabc_sagnac.md` — **Intuition only:** Sagnac-Bild für $\gamma^\pm$ (kein physikalischer Kern)
@@ -133,6 +133,34 @@ $$\boxed{\;\text{Das EABC-Programm untersucht primär die Wachstumsordnung der o
 | Eingangsfrage: existiert nichttrivialer Grenzwert? | Eingangsfrage: welche Wachstumsordnung hat $|D_E|$ relativ zu $Q$? |
 
 Die Verschiebung $\Phi_E \to D_E$ ändert das **mathematische Objekt** der Theorie: nicht der normierte Quotient steht im Zentrum, sondern die absolute orientierte Zyklusdifferenz als primäre arithmetische Observable.
+
+### Lakatos-Einordnung und Programmversionen
+
+Im Sinne eines **Lakatos'schen Forschungsprogramms** (harter Kern, Schutzmantel, progressive vs. degenerative Verschiebungen):
+
+| Rolle | Objekt | Ebene |
+|-------|--------|-------|
+| **Harter Kern** | $G_E=(V,E)$, $\gamma^+$ (ABCEA), $\gamma^-$ (CEABC), $C_4\cong S^1$ | 0 |
+| **Primäre Theorie** | $D_E(X)$, $Q(X)=N_+(X)+N_-(X)$ | 1 |
+| **Sekundäre Schutzmantel** | $R_\beta$, $\alpha_{\mathrm{loc}}$, $\alpha_{\mathrm{eff}}$, $\alpha_E$ | 2 |
+| **Orientierung** | $W_E(X)=D_E(X)/Q(X)$ | 3 |
+| **Endhypothese** | $\Phi_E=\lim_{X\to\infty} W_E(X)$ | 4 |
+
+$$\boxed{\;\text{Das Programm hängt nicht mehr an einer Vermutung.}\;}$$
+
+**Programmversionen** (Paradigmenwechsel in epistemischer Lesart):
+
+| | **V1** (früher) | **V2** (jetzt) |
+|---|-----------------|----------------|
+| Eingang | $\Phi_E\neq 0$ als Leitvermutung (Grenzwerttheorie) | $D_E(X)$, $|D_E|$ relativ zu $Q$ als Leitfrage (Fehlertermtheorie) |
+| Hilfsgrößen | $W_E$, Skalierung nachträglich zur Stützung von $\Phi_E$ | $R_\beta$, $\alpha_{\mathrm{loc}}$, $\alpha_E$ dienen der $D_E$-Theorie |
+| $\Phi_E$ | Zielobjekt / Eingangsfrage | **Konsequenz** der $D_E$-Skalierungstheorie (falls $\alpha_E=1$ und der Grenzwert existiert) |
+
+**Pyramide** (Vorwärtskette, keine Umkehrungen):
+
+$$G_E \;\longrightarrow\; D_E \;\longrightarrow\; \alpha_E \;\longrightarrow\; W_E \;\longrightarrow\; \Phi_E.$$
+
+Selbst $\Phi_E=0$ bleibt **wissenschaftlich interessant**: offen bleiben $\alpha_E=\tfrac{1}{2}$?, $\alpha_E>\tfrac{1}{2}$?, $\alpha_{\mathrm{loc}}$-Plateaus?, kritische $R_\beta$ — als eigenständige Prime-Race-/Fehlertermstruktur auf dem EABC-Zyklus (vgl. §4.2).
 
 **Hauptterm-Vermutung.** Asymptotische Symmetrie der gegenläufigen Zyklusorientierungen:
 $$N_+(X) \sim N_-(X)\qquad (X\to\infty),$$
@@ -332,9 +360,18 @@ Schrittweise Eskalation entlang der Ebenen: **1/2** Fehlerterm/Skalierung → **
 | **H₀b** (keine Orientierung) | $W_E(X)\to 0$ — analytische Nullhypothese; **H₀b $\nRightarrow$ $\alpha_E\le\tfrac{1}{2}$** | 3 | **Nullhypothese** (analytisch) |
 | **H₃** (starke Holonomie) | $W_E(X)\to\Phi_E\neq 0$ — impliziert $D_E(X)\sim\Phi_E Q(X)$, $\alpha_E=1$ | 4 | **Vermutung** (Lean-**RED**: `HasNonzeroHolonomyLimit`) |
 
-#### Prime-Race-Analogie
+#### Prime-Race-Analogie ($\pi(x)$–$\mathrm{Li}(x)$)
 
-Wie bei $\Delta(x)=\pi(x;a,q)-\pi(x;b,q)$ fragt man zuerst nach der **Größenordnung** der Differenz relativ zu einer Normierung — nicht nach einem Grenzwert des Quotienten. $D_E(X)=N_+(X)-N_-(X)$ ist ein orientierter Prime Race auf demselben EABC-Zyklus. Die asymptotische Orientierungsfrage (Ebene 4: $W_E\to 0$ oder $\Phi_E\neq 0$) ist von der Skalierungsfrage (Ebene 2: $\alpha_E$ via $R_\beta$) **methodisch getrennt**.
+Klassisch trennt man beim Primzahlgesetz **Hauptterm** und **Fehlerterm**:
+
+| Klassisch | EABC-Analog |
+|-----------|-------------|
+| Hauptterm $\mathrm{Li}(x)\sim x/\log x$ | Symmetrie $N_+(X)\sim N_-(X)$, $Q(X)\to\infty$ |
+| Fehlerterm $\pi(x)-\mathrm{Li}(x)$ (Größenordnung zuerst) | $D_E(X)=N_+(X)-N_-(X)$ (absolute Zyklusdifferenz) |
+| Prime Race $\Delta(x)=\pi(x;a,q)-\pi(x;b,q)$ | orientierter Race $\gamma^+$ vs. $\gamma^-$ auf demselben $C_4$-Zyklus |
+| Quotient $\Delta(x)/(\pi(x;a,q)+\pi(x;b,q))$ (Grenzwert sekundär) | $W_E(X)=D_E/Q$, $\Phi_E=\lim W_E$ (Ebene 3/4) |
+
+Wie bei $\pi(x)-\mathrm{Li}(x)$ und bei $\Delta(x)=\pi(x;a,q)-\pi(x;b,q)$ fragt man zuerst nach der **Größenordnung** von $|D_E|$ relativ zu $Q$ — nicht nach einem Grenzwert des Quotienten. $D_E(X)$ ist ein orientierter Prime Race auf demselben EABC-Zyklus. Die asymptotische Orientierungsfrage (Ebene 4: $W_E\to 0$ oder $\Phi_E\neq 0$) ist von der Skalierungsfrage (Ebene 2: $\alpha_E$ via $R_\beta$) **methodisch getrennt** — analog zur Trennung von $\pi(x)-\mathrm{Li}(x)$ und mod-$q$-Races.
 
 **Numerik und Diagnose-Plot.** `eabc_quadruplets_1e10.py` erzeugt Checkpoints mit $Q$, $D_E$, $W_E$, $R_\beta$ für $\beta\in\{\tfrac{1}{2},\tfrac{2}{3},\tfrac{3}{4},0{,}9,1\}$ (CSV-Spalten `R_1_2`, `R_2_3`, `R_3_4`, `R_9_10`, `R_1`; Alias `Z_E`=`R_1_2` nur Diagnose), $\alpha_{\mathrm{eff}}$ (`eabc_quadruplets.csv`). `eabc_quadruplets_fit_alpha.py` strukturiert die Ausgabe nach **Ebenen 0–4**; schätzt $\alpha_E$ heuristisch aus $R_\beta$-Plateaus (**Experiment**, kein Theorem). `eabc_quadruplets_plot.py` (oder `fit_alpha --plot`) erzeugt ein Vierfeld-Diagramm (`eabc_quadruplets_diagnose.png`):
 

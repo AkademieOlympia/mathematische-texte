@@ -3,9 +3,9 @@
 **Status:** Skeleton (PR #63, `collatz/eabc-h03-diskrete-geometrie-fluss`; Basis PR #59)  
 **Lean (Hodge-Layer):** `collatz_eabc_core/CollatzEabc/FlussPhiE.lean`  
 **Lean (minimaler Kern):** `collatz_eabc_core/CollatzEabc/HolonomyCore.lean` (`EABC`-Namespace)  
-**Epistemik:** `collatz_eabc_epistemik_schichten.md` — **A / B / R / C**  
+**Epistemik:** `collatz_eabc_epistemik_schichten.md` — **A / B / R / C**; Lakatos §4 (#72)  
 **Kanonische Geometrie:** `collatz_eabc_diskrete_geometrie.md`  
-**Numerik:** `collatz_eabc_hodge_eabc.py` (`Phi_E`, `flux_density_limit`, `inner_product_omega_h`)
+**Numerik:** `eabc_quadruplets_1e10.py`, `eabc_quadruplets_fit_alpha.py` (#73); `collatz_eabc_hodge_eabc.py` (`Phi_E`, `flux_density_limit`, `inner_product_omega_h`)
 
 ---
 
@@ -36,15 +36,21 @@ $$\boxed{\;\text{Das EABC-Programm untersucht primär die Wachstumsordnung der o
 
 $$\boxed{\;\text{Nicht }\Phi_E\text{ ist der Anfang, sondern }D_E(X).\;}$$
 
+$$\boxed{\;\text{Das Programm hängt nicht mehr an einer Vermutung.}\;}$$
+
+**Lakatos-Einordnung** (`collatz_eabc_zirkulationshypothese.md` §4): harter Kern $G_E$ (Ebene 0); primär $D_E$, $Q$ (Ebene 1); sekundär $R_\beta$, $\alpha_{\mathrm{loc}}$, $\alpha_{\mathrm{eff}}$, $\alpha_E$ (Ebene 2); Orientierung $W_E$ (Ebene 3); Endhypothese $\Phi_E$ (Ebene 4).
+
+**V1 → V2:** V1 startete mit $\Phi_E\neq 0$ und Hilfsgrößen zur Stützung; V2 macht $\Phi_E$ zur **Konsequenz** der $D_E$-Theorie. Pyramide: $G_E\to D_E\to\alpha_E\to W_E\to\Phi_E$.
+
 **Paradigmenwechsel:** Früher Grenzwerttheorie $W_E\to\Phi_E\neq 0$; jetzt Fehlertermtheorie $D_E(X)=A(X)-C(X)$ (analytische Zahlentheorie).
 
 **Vorwärtskette** (keine Umkehrungen): $D_E(X) \Rightarrow \alpha_E \Rightarrow W_E(X) \Rightarrow \Phi_E$.
 
 **Vermutung (Schicht R):** $\Phi_E \neq 0$ bzw. $\langle\omega_E, h\rangle \neq 0$ für kanonisches harmonisches $h$. Dies ist **H₃** (starke Holonomie: $W_E(X)\to\Phi_E\neq 0$) — **Ebene 4** des Programms, nach Geometrie (Ebene 0), Zirkulationsfehler $D_E$ (Ebene 1), Skalierung $\alpha_{\mathrm{loc}}/\alpha_E$ (Ebene 2) und Orientierung $W_E$ (Ebene 3). Entspricht Lean-**RED** `HasNonzeroHolonomyLimit`. Vorgelagert (`collatz_eabc_zirkulationshypothese.md` §4.2): zuerst $D_E$ und $R_\beta$, dann $\alpha_{\mathrm{loc}}$, dann $\alpha_E$, dann Orientierung (H₀b vs. H₃). $\alpha_E>\tfrac{1}{2} \nRightarrow \Phi_E\neq 0$. Scheitern von H₃ zerstört das Programm nicht; selbst bei $\Phi_E=0$ bleiben Fragen zu $\alpha_E$, $\alpha_{\mathrm{loc}}$-Plateaus und kritischen $R_\beta$ offen.
 
-$$\boxed{\;\Phi_E \neq 0 \;\Rightarrow\; D(X)\sim\Phi_E Q(X) \;\Rightarrow\; \alpha_E = 1.\;}$$
+$$\boxed{\;\Phi_E \neq 0 \;\Rightarrow\; D_E(X)\sim\Phi_E Q(X) \;\Rightarrow\; \alpha_E = 1.\;}$$
 
-**Nicht äquivalent:** $\alpha_E=1$ allein garantiert weder $\Phi_E\neq 0$ noch $\lim W_E$. Gegenbeispiel: $D(X)=Q(X)\sin(\log\log Q(X))$ — $\alpha_E=1$, aber $W_E$ ohne Grenzwert. $\Phi_E$ (Orientierungsparameter) ist **stärker** als $\alpha_E$ (Skalenparameter).
+**Nicht äquivalent:** $\alpha_E=1$ allein garantiert weder $\Phi_E\neq 0$ noch $\lim W_E$. Gegenbeispiel: $D_E(X)=Q(X)\sin(\log\log Q(X))$ — $\alpha_E=1$, aber $W_E$ ohne Grenzwert. $\Phi_E$ (Orientierungsparameter) ist **stärker** als $\alpha_E$ (Skalenparameter).
 
 ---
 
