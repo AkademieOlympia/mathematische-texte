@@ -2,7 +2,7 @@
 """
 EABC-Holonomie: Fehlerterm D_E / Delta_E, Sagnac-Observable S_E, normalisiertes D̃_E.
 
-Theorie: collatz_eabc_sagnac.md (primäre Metapher), collatz_eabc_fehlerterm_hypothese.md (Endform)
+Theorie: collatz_eabc_zirkulationshypothese.md (kanonisch), collatz_eabc_fehlerterm_hypothese.md (Teilhypothese)
 
   N_plus(X), N_minus(X)  — Zählung geschlossener 5-Zyklen (ABCEA / CEABC)
   Delta_E(X) = D_E(X) = N_plus - N_minus   (EABC-Sagnac-Fehlerterm)
@@ -33,6 +33,7 @@ from eabc_from_lean import EClass, residue
 
 ROOT = Path(__file__).resolve().parent
 DEFAULT_OUTPUT = ROOT / "collatz_eabc_holonomie_fehlerterm.json"
+THEORY_ZIRKULATION = "collatz_eabc_zirkulationshypothese.md"
 THEORY_SAGNAC = "collatz_eabc_sagnac.md"
 THEORY_ENDFORM = "collatz_eabc_fehlerterm_hypothese.md"
 THEORY_BWEISVERSUCH = "collatz_eabc_holonomie_beweisversuch.md"
@@ -102,6 +103,7 @@ def holonomy_counts(max_p: int) -> dict[str, Any]:
         "N_CEABC": n_minus,
         "Delta_E": delta_e,
         "D_E": delta_e,
+        "C_E": delta_e,
         "S_E": s_e,
         "chi_Hol": hol["chi_hol"],
         "D_tilde_E": d_tilde,
@@ -251,6 +253,7 @@ def run_series(
     return {
         "meta": {
             "module": "collatz_eabc_holonomie_fehlerterm.py",
+            "theory_zirkulation": THEORY_ZIRKULATION,
             "theory_sagnac": THEORY_SAGNAC,
             "theory_endform": THEORY_ENDFORM,
             "theory": THEORY_BWEISVERSUCH,
@@ -266,9 +269,9 @@ def run_series(
         "de_bell_combined": de_bell,
         "circulation_report": circulation,
         "boxed_conclusions": {
-            "Sagnac_primary": "ABCEA vs CEABC = Sagnac-Observable (gamma+, gamma-)",
-            "Hol_E_main_term": "Hol_E = 0 unter mod-12-Symmetrie + HL-Äquidistribution (Hauptvermutung)",
-            "interesting_question": "Bias und Oszillation in Delta_E(X), Chebyshev-Analogie / L-Funktionen mod 12",
+            "zirkulation_hypothesis": "EABC als Zirkulationstheorie (collatz_eabc_zirkulationshypothese.md)",
+            "Hol_E_main_term": "S_E -> 0 unter mod-12-Symmetrie + HL-Äquidistribution (Hauptvermutung)",
+            "interesting_question": "D_E(X) als Prime Race; Chebyshev-Analogie / L-Funktionen mod 12",
         },
         "epistemic_labels": {
             "gap_pattern": "Lemma-Skizze",

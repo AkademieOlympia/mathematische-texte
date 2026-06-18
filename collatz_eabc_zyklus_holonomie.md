@@ -5,8 +5,9 @@
 **Tao-Labels:** Definition | Hypothese | Experiment | Theorem
 
 **Querverweise:**
-- `collatz_eabc_sagnac.md` — **kanonische primäre Metapher:** $\gamma^\pm$, $\Delta_E$, $S_E$
-- `collatz_eabc_fehlerterm_hypothese.md` — **kanonische Endform:** $N_\pm$, Hauptvermutung, Fehlerterm-Hypothese, $\widetilde{D}_E$
+- `collatz_eabc_zirkulationshypothese.md` — **kanonische Hypothese:** $N_\pm$, $C_E$, $D_E$, $S_E$, Prime-Race
+- `collatz_eabc_sagnac.md` — **Intuition only:** $\gamma^\pm$, Sagnac-Bild
+- `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$
 - `collatz_eabc_bell_holonomie.md` — **sekundäre** Analogie Bell/CHSH (nicht primäre Metapher)
 - `collatz_eabc_bell_inequality_test.py` / `.json` — Numerik Bell-Summen, $G_E$-Vergleich
 - `collatz_eabc_transport.md` — gerichteter Übergangsgraph $G_E$, Transport $T_n$, Übergangsmatrix
@@ -177,7 +178,7 @@ Selbst bei $\mathrm{Hol}_E=0$ bleibt $D_E(X)$ nichttrivial. **Fehlerterm-Hypothe
 
 **Zentrale Frage:** Verhält sich $\widetilde{D}_E$ wie reines Rauschen oder zeigt stabile Vorzeichenasymmetrie / Oszillation?
 
-**Analytischer Beweisversuch:** `collatz_eabc_holonomie_beweisversuch.md`; **Endform:** `collatz_eabc_fehlerterm_hypothese.md`.
+**Analytischer Beweisversuch:** `collatz_eabc_holonomie_beweisversuch.md`; **kanonische Hypothese:** `collatz_eabc_zirkulationshypothese.md` §4–5; **Fehlerterm-Vertiefung:** `collatz_eabc_fehlerterm_hypothese.md`.
 
 **Experiment:** `collatz_eabc_transition_graph.py::hol_E_estimates`; `collatz_eabc_holonomie_fehlerterm.py` ($N_\pm$, $D_E$, $\widetilde{D}_E$-Zeitreihe).
 
@@ -193,7 +194,7 @@ $$\boxed{\;\mathrm{Hol}_E\neq 0\;}$$
 
 **Schwächere Lesart (falls $\mathrm{Hol}_E=0$, operative Endform):**
 $$\boxed{\;\widetilde{D}_E(X)\text{ zeigt strukturierte Fluktuationen (Bias/Oszillation), nicht permanente Hauptterm-Holonomie.}\;}$$
-Siehe `collatz_eabc_fehlerterm_hypothese.md` §5–7.
+Siehe `collatz_eabc_zirkulationshypothese.md` §5; `collatz_eabc_fehlerterm_hypothese.md` §3.
 
 **Nullmodelle (Experiment):**
 - **Marginal-Shuffle** und **Isotropie-Null** jeweils für $\chi_{\mathrm{Pfad}}$ und $\chi_{\mathrm{Hol}}$ (`shuffle_null_chi_pfad`, `isotropy_null_chi_hol`).
@@ -243,7 +244,7 @@ collatz_eabc_zyklus_holonomie.md   Klasse→Kante→Pfad→Zyklus→Holonomie
 | 3 | $P_n^{(4)}$, $\Omega_{\mathrm{Pfad}}$ — **Pfad** | hier §3 |
 | 4 | $\chi_{\mathrm{Pfad}}(N)$ | hier §4 |
 | 5 | $C_n^{(5)}$, $\Omega_{\mathrm{Hol}}$, $\chi_{\mathrm{Hol}}(N)$ — **Zyklus / Holonomie** | hier §5 |
-| 6 | $N_\pm$, $D_E$, $\widetilde{D}_E$, $\mathrm{Hol}_E$ | hier §6; `collatz_eabc_fehlerterm_hypothese.md` |
+| 6 | $N_\pm$, $D_E$, $\widetilde{D}_E$, $\mathrm{Hol}_E$ | hier §6; `collatz_eabc_zirkulationshypothese.md` |
 | — | $\chi_E^{\mathrm{quad}}(N)$ | `collatz_eabc_holonomie.md` §4 |
 
 ---

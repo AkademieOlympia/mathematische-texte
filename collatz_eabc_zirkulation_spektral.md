@@ -6,8 +6,11 @@
 
 **Epistemische Abgrenzung:** Dieses Dokument formuliert das EABC-Programm **ohne Physik-Metaphern**. Die fundamentale Verschiebung ist **Korrelation → Zirkulation** (diskrete Differentialgeometrie und algebraische Topologie auf einem endlichen Graphen), nicht Bell→Sagnac-Physik. Bell-Korrelationen und Sagnac-Analogien bleiben als **sekundäre** didaktische Einträge dokumentiert (`collatz_eabc_bell_holonomie.md`, `collatz_eabc_sagnac.md`).
 
+**Primäre Hypothese:** `collatz_eabc_zirkulationshypothese.md` — kanonische EABC-Zirkulationshypothese ($N_\pm$, $C_E$, $D_E$, $S_E$, Hauptvermutung, Fehlerterm-Hypothese). Dieses Dokument ergänzt die Hypothese um Spektralgeometrie und diskrete 1-Form.
+
 **Querverweise:**
-- `collatz_eabc_fehlerterm_hypothese.md` — **kanonische Endform:** $N_\pm$, $D_E$, Hauptvermutung, Fehlerterm-Hypothese
+- `collatz_eabc_zirkulationshypothese.md` — **kanonische Hypothese:** EABC als Zirkulationstheorie, $N_\pm$, $C_E$, $D_E$, $S_E$
+- `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in Zirkulationshypothese §5)
 - `collatz_eabc_sagnac.md` — **didaktischer Einstieg** (gegenläufige Zyklen; verweist hierher als mathematischer Kern)
 - `collatz_eabc_transport.md` — $G_E$, Transport $T_n$, Übergangsmatrix
 - `collatz_eabc_zyklus_holonomie.md` — Hierarchie Klasse→Kante→Pfad→Zyklus→Holonomie
@@ -230,4 +233,4 @@ $$\boxed{\;\text{Korrelation } E(a,b) \;\to\; \text{Zirkulation } C_E \;\to\; \t
 
 ---
 
-*Kanonsiche Lesart: Das EABC-Programm ruht auf **Korrelation → Zirkulation** — Paarstatistik auf Kanten, Zyklusstatistik $D_E$ in $H_1(C_4,\mathbb{Z})$, diskrete 1-Form $\alpha$, Fehlerterm-Struktur wie bei Prime Races, und Spektralgeometrie via $\mathrm{Spec}(L_E)$. Didaktische Physik-Metaphern (Sagnac, Bell) verweisen hierher.*
+*Spektralgeometrie und diskrete 1-Form ergänzen die kanonische Hypothese `collatz_eabc_zirkulationshypothese.md`. Didaktische Physik-Metaphern (Sagnac, Bell) verweisen hierher.*

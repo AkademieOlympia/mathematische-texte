@@ -1,14 +1,15 @@
-# EABC-Sagnac-Observable (didaktischer Einstieg)
+# EABC-Sagnac-Observable (Intuition only)
 
-**Status:** Definition + Analogie + Verweis auf mathematischen Kern  
+**Status:** Didaktische Intuition — **kein** mathematischer Kern  
 **Branch:** `collatz/eabc-05-holonomie-fehlerterm` (PR #59)  
-**Tao-Labels:** Definition | Vermutung | Hypothese | Experiment | Analogie
+**Tao-Labels:** Analogie (didaktisch)
 
-**Mathematischer Kern:** `collatz_eabc_zirkulation_spektral.md` — **Korrelation → Zirkulation** (reine Mathematik: diskrete 1-Form, $H_1(C_4,\mathbb{Z})$, $\mathrm{Spec}(L_E)$). Dieses Dokument ist ein **didaktischer Einstieg** über gegenläufige geschlossene Wege; es behauptet **keine** physikalische Rotation oder Relativitätstheorie.
+**Intuition only:** Das Sagnac-Bild (gegenläufige Wege $\gamma^+$ vs. $\gamma^-$ auf demselben $C_4$-Kreis) dient **ausschließlich** als didaktische Intuition für die Zirkulationshypothese. Es behauptet **keine** physikalische Rotation, Relativitätstheorie oder Quanteneffekte. Der mathematische Kern steht in `collatz_eabc_zirkulationshypothese.md`; Spektralgeometrie in `collatz_eabc_zirkulation_spektral.md`.
 
 **Querverweise:**
-- `collatz_eabc_zirkulation_spektral.md` — **kanonische reine Mathematik:** $E(a,b)$, $D_E$, $C_E$, $L_E$, Normschalen
-- `collatz_eabc_fehlerterm_hypothese.md` — **kanonische Endform:** $N_\pm$, $\Delta_E=D_E$, $S_E$, Hauptvermutung, Fehlerterm-Hypothese
+- `collatz_eabc_zirkulationshypothese.md` — **kanonische Hypothese:** $N_\pm$, $C_E$, $D_E$, $S_E$
+- `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form, $\mathrm{Spec}(L_E)$
+- `collatz_eabc_fehlerterm_hypothese.md` — Teilhypothese: Fehlerterm $D_E$, $\widetilde{D}_E$
 - `collatz_eabc_zyklus_holonomie.md` — Hierarchie Klasse→Kante→Pfad→Zyklus→Holonomie
 - `collatz_eabc_transport.md` — $G_E$, Transport $T_n$, Übergangsmatrix
 - `collatz_eabc_bell_holonomie.md` — **sekundäre** Analogie Bell/CHSH (Kantenkorrelation $E(a,b)$)
@@ -20,21 +21,11 @@
 
 ---
 
-## 0. Didaktik: gegenläufige Zyklen
+## 0. Intuition: gegenläufige Zyklen
 
-Auf demselben $C_4$-Gerüst $E\!\to\!A\!\to\!B\!\to\!C\!\to\!E$ betrachten wir zwei Orientierungen:
-- **$\gamma^+$ (ABCEA):** eine Lesart des geschlossenen 5-Fensters
-- **$\gamma^-$ (CEABC):** die zyklisch verschobene Gegenorientierung
+Auf demselben $C_4$-Gerüst $A\!\to\!B\!\to\!C\!\to\!E\!\to\!A$ betrachten wir zwei Orientierungen: **$\gamma^+$ (ABCEA)** und **$\gamma^-$ (CEABC)**. Das Sagnac-Bild benennt diese Gegenüberstellung bildhaft als „gegenläufige Wege auf demselben Kreis“ — **nur als Intuition**, nicht als physikalisches Modell. Mathematisch entspricht dies der Zirkulation $C_E(X)=D_E(X)$ in `collatz_eabc_zirkulationshypothese.md` §3. ABCEA vs. CEABC ist ein **orientierter Zyklus-Race** (Prime Race), kein Quanteneffekt.
 
-Die **Sagnac-Lesart** benennt diese Gegenüberstellung bildhaft (gegenläufige Wege auf demselben Kreis). Mathematisch ist sie identisch mit der **Zirkulation** $C_E(X)$ in `collatz_eabc_zirkulation_spektral.md` §4.
-
-$$\boxed{\;\text{Didaktik: Sagnac = gegenläufige } \gamma^\pm \text{; Kern: } C_E = D_E = \sum_\gamma \mathrm{sgn}(\gamma).\;}$$
-
-| Lesart | Objekt | Dokument |
-|--------|--------|----------|
-| **Kern (rein mathematisch)** | Korrelation $E(a,b)$ → Zirkulation $C_E$ → $\mathrm{Spec}(L_E)$ | `collatz_eabc_zirkulation_spektral.md` |
-| **Didaktik (dieses Dokument)** | $\gamma^+$ vs. $\gamma^-$, $\Delta_E$ | hier |
-| **Sekundär** | Bell/CHSH auf $G_E$ | `collatz_eabc_bell_holonomie.md` |
+$$\boxed{\;\text{Sagnac = Intuition only; Kern: } \texttt{collatz\_eabc\_zirkulationshypothese.md}.\;}$$
 
 ---
 
@@ -151,4 +142,4 @@ Forschungsfragen (Spektralgeometrie): `collatz_eabc_zirkulation_spektral.md` §8
 
 ---
 
-*Didaktischer Einstieg: Gegenläufige Zyklen $\gamma^\pm$ motivieren $C_E=D_E$. Der mathematische Kern — Korrelation, Zirkulation, Fehlerterm, Spektralgeometrie — steht in `collatz_eabc_zirkulation_spektral.md`.*
+*Intuition only: Sagnac-Bild für $\gamma^\pm$. Kanonische Hypothese: `collatz_eabc_zirkulationshypothese.md`. Spektralgeometrie: `collatz_eabc_zirkulation_spektral.md`.*

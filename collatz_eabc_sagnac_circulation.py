@@ -2,7 +2,7 @@
 """
 EABC-Sagnac-Zirkulation C_E(X): diskrete 1-Form, Kantenorientierung ω, Zyklus-Ω(C).
 
-Theorie: collatz_eabc_sagnac.md §7–§11
+Theorie: collatz_eabc_zirkulationshypothese.md (kanonisch), collatz_eabc_sagnac.md (Intuition)
 
   G_E = (V, E), V = {E, A, B, C}
   ω(e) ∈ {+1, -1, 0} auf kanonischen Zykluskanten (Lückenmuster (2,4,2,4))
@@ -38,6 +38,7 @@ from eabc_from_lean import EClass
 
 ROOT = Path(__file__).resolve().parent
 DEFAULT_OUTPUT = ROOT / "collatz_eabc_sagnac_circulation.json"
+THEORY_ZIRKULATION = "collatz_eabc_zirkulationshypothese.md"
 THEORY_SAGNAC = "collatz_eabc_sagnac.md"
 
 # Kanonischer 4-Zyklus A→B→C→E→A; Lücken mod 12 = (2,4,2,4)
@@ -223,7 +224,8 @@ def circulation_report(max_p: int) -> dict[str, Any]:
     circ = circulation_C_E(max_p)
     orient = edge_orientation_table()
     return {
-        "theory": THEORY_SAGNAC,
+        "theory": THEORY_ZIRKULATION,
+        "theory_intuition": THEORY_SAGNAC,
         "X": max_p,
         "circulation": circ,
         "graph_orientation": orient,
