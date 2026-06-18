@@ -7,7 +7,9 @@
 **Querverweise:**
 - `collatz_eabc_transport.md` — gerichteter Übergangsgraph $G_E$, Transport $T_n$, Übergangsmatrix
 - `collatz_eabc_holonomie.md` — Vierlings-Orientierung $\omega(Q)$, $\chi_E^{\mathrm{quad}}(N)$ (arithmetische Vierlinge)
+- `collatz_eabc_holonomie_beweisversuch.md` — analytischer Beweisversuch: mod-$12$-Symmetrie, $\mathrm{Hol}_E=0$, Fehlerterm $D_E$
 - `collatz_eabc_transition_graph.py` / `.json` — Numerik: $\chi_{\mathrm{Pfad}}$, $\chi_{\mathrm{Hol}}$, Nullmodelle
+- `collatz_eabc_holonomie_fehlerterm.py` / `.json` — $D_E$, $\widetilde{D}_E$, Lückenmuster $(2,4,2,4)$
 - `collatz_eabc_holonomie_test.py` — $\chi_E^{\mathrm{quad}}(N)$ auf Prim-Vierlingen (Vergleichsträger)
 - `eabc_from_lean.py` — $\kappa=\texttt{class\_of}$, Rotation $t$
 
@@ -145,7 +147,9 @@ sofern der Grenzwert existiert und $\neq 0$ ist — dann als **projektive Zyklus
 
 Falls $\mathrm{Hol}_E=0$, bleibt die Frage offen, ob $\chi_{\mathrm{Hol}}(N)$ **stabile, nicht-zufällige Fluktuationen** trägt (schwächere Lesart).
 
-**Experiment:** `collatz_eabc_transition_graph.py::hol_E_estimates` (Stichproben bei $N=10^5$, $10^6$).
+**Analytischer Beweisversuch (konservativ):** `collatz_eabc_holonomie_beweisversuch.md` — mod-$12$-Symmetrie und HL-Äquidistribution legen $\mathrm{Hol}_E=0$ als Hauptterm nahe; interessante Struktur im Fehlerterm $D_E(X)=N_{\mathrm{ABCEA}}-N_{\mathrm{CEABC}}$ (Chebyshev-Analogie).
+
+**Experiment:** `collatz_eabc_transition_graph.py::hol_E_estimates` (Stichproben bei $N=10^5$, $10^6$); `collatz_eabc_holonomie_fehlerterm.py` ($D_E$, $\widetilde{D}_E$).
 
 **Label:** $\mathrm{Hol}_E$ = **Definition** (Grenzwert auf $\chi_{\mathrm{Hol}}$); Existenz und $\neq 0$ = **Hypothese**.
 

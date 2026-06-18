@@ -7,6 +7,8 @@
 **Querverweise:**
 - `collatz_eabc_zyklus_holonomie.md` — **kanonisch:** Klasse→Kante→Pfad→Zyklus→Holonomie; $\chi_{\mathrm{Pfad}}$, $\chi_{\mathrm{Hol}}$, $\mathrm{Hol}_E$
 - `collatz_eabc_holonomie.md` — Vierlings-Orientierung $\omega(Q)$, $\chi_E^{\mathrm{quad}}(N)$, projektive Holonomie $\mathcal H_E$
+- `collatz_eabc_holonomie_beweisversuch.md` — analytischer Beweisversuch: $\mathrm{Hol}_E=0$, Fehlerterm $D_E$
+- `collatz_eabc_holonomie_fehlerterm.py` / `.json` — Numerik $D_E$, $\widetilde{D}_E$, Chebyshev-Vergleich
 - `collatz_eabc_holonomie_test.py` — Vierlings-$\chi_E^{\mathrm{quad}}$, Lean-Chiralität
 - `collatz_eabc_transition_graph.py` / `.json` — Numerik (Übergangsmatrix, $\chi_{\mathrm{Pfad}}$, $\chi_{\mathrm{Hol}}$, Nullmodelle)
 - `eabc_from_lean.py` — $\kappa=\texttt{class\_of}$, Rotation $t\colon E\!\to\!A\!\to\!B\!\to\!C\!\to\!E$
