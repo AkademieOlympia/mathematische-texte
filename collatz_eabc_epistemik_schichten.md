@@ -77,7 +77,13 @@ $$\boxed{\;\textbf{Beweis-Spur} \;\|\; \textbf{Ikone-Spur}\;}$$
 
 **Kernfrage (Schicht B als Struktur, Schicht R als Brücke):**
 
-$$\boxed{\;\text{Das EABC-Programm untersucht zunächst die Größenordnung von }D(X)=A(X)-C(X)\text{, und erst in einem zweiten Schritt die asymptotische Orientierung }W_E(X)=D(X)/Q(X).\;}$$
+$$\boxed{\;\text{Nicht }\Phi_E\text{ ist der Anfang, sondern }D_E(X).\;}$$
+
+$$\boxed{\;\text{Das EABC-Programm bestimmt zunächst die Wachstumsordnung der orientierten Zyklusdifferenz }D_E(X).\;}$$
+
+$$\boxed{\;\text{Ob diese Wachstumsordnung bis zur linearen Skala reicht und damit eine nichtverschwindende Holonomie }\Phi_E\text{ erzeugt — sekundäre Frage (Stufe 3).}\;}$$
+
+**Vorwärtskette** (keine Umkehrungen): $D_E(X) \Rightarrow \alpha_E \Rightarrow W_E(X) \Rightarrow \Phi_E$.
 
 $$W_E(X) = \frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)},\qquad
 R_\beta(X) = \frac{D(X)}{Q(X)^\beta},\qquad
@@ -85,14 +91,14 @@ R_\beta(X) = \frac{D(X)}{Q(X)^\beta},\qquad
 
 $$\boxed{\;\Phi_E \neq 0 \;\Rightarrow\; D(X)\sim\Phi_E Q(X) \;\Rightarrow\; \alpha_E=1.\;}$$
 
-**Nicht äquivalent:** $\alpha_E=1$ impliziert keinen Grenzwert von $W_E$. Gegenbeispiel: $D(X)=Q(X)\sin(\log\log Q(X))$. $\Phi_E$ (Orientierung) ist **stärker** als $\alpha_E$ (Skala).
+**Nicht äquivalent:** $\alpha_E=1$ impliziert keinen Grenzwert von $W_E$. Gegenbeispiel: $D(X)=Q(X)\sin(\log\log Q(X))$. $\Phi_E$ (Orientierung) ist **stärker** als $\alpha_E$ (Skala). Scheitern von $\Phi_E\neq 0$ zerstört das Programm nicht — eigenständige Theorie von $D_E$, $R_\beta$, $\alpha_{\mathrm{loc}}$, $\alpha_E$.
 
 | Status | Aussage |
 |--------|---------|
 | **GREEN** | $-1 \le W_E(X) \le 1$ (bewiesen: `W_E_bounds`) |
 | **RED** | $\lim_{X\to\infty} W_E(X) = \Phi_E \neq 0$ — **H₃** (Holonomie; Vermutung: `HasNonzeroHolonomyLimit`, `EABC_holonomy_limit_conjecture`) |
 
-Lean: `phi_E_conjecture` (**B**, `Prop`) vs. `phi_E_conjecture_statement` (**R**, `sorry`). Methodische Lesart — $W_E(X)$ stabilisiert sich asymptotisch gegen einen Grenzwert; keine „statistische Ruhe im Unendlichen“, keine „unumkehrbare Tendenz“: `collatz_eabc_zirkulationshypothese.md` §4.1. **Vier Stufen in §4.2** (0–3): (0) Größenordnung $D,Q,W_E,R_\beta$ ohne Exponentenannahme; (1) numerisches Signal $\alpha_{\mathrm{eff}}$, $\alpha_{\mathrm{loc}}$; (2) asymptotischer Exponent $\alpha_E$ (Vermutung, erst wenn Daten es nahelegen); (3) Orientierung $W_E\to 0$ oder $\Phi_E\neq 0$ — Holonomie am Ende. H₀b ($W_E\to 0$) ist analytisch und **nicht** mit H₀a identisch; $\alpha_E>\tfrac{1}{2} \nRightarrow \Phi_E\neq 0$ (vgl. §4.2). Numerik: `eabc_quadruplets_1e10.py`, `eabc_quadruplets_fit_alpha.py`, `eabc_quadruplets_plot.py`.
+Lean: `phi_E_conjecture` (**B**, `Prop`) vs. `phi_E_conjecture_statement` (**R**, `sorry`). Methodische Lesart — $W_E(X)$ stabilisiert sich asymptotisch gegen einen Grenzwert; keine „statistische Ruhe im Unendlichen“, keine „unumkehrbare Tendenz“: `collatz_eabc_zirkulationshypothese.md` §4.1. **Vier Stufen in §4.2** (0–3): (0) Definition $D_E,Q,W_E,R_\beta$; (1) Diagnose $\alpha_{\mathrm{eff}}$, $\alpha_{\mathrm{loc}}$ ($\alpha_{\mathrm{loc}}$ wichtiger für Numerik); (2) asymptotischer Exponent $\alpha_E$ (Vermutung); (3) Orientierung $W_E\to 0$ oder $\Phi_E\neq 0$ — Holonomie-Hypothese am Ende. H₀b ($W_E\to 0$) ist analytisch und **nicht** mit H₀a identisch; $\alpha_E>\tfrac{1}{2} \nRightarrow \Phi_E\neq 0$ (vgl. §4.2). Numerik: `eabc_quadruplets_1e10.py`, `eabc_quadruplets_fit_alpha.py`, `eabc_quadruplets_plot.py`.
 
 **Abgrenzung zu Schicht C:** Sagnac, AB-Phase, magnetischer Laplace sind **Analogien** auf $G_E$ — geometrisch sauber in B, physikalisch ikonisch erst in C. Priminduzierte Zählung $N_\pm(X)$ ist **B**, nicht „laufende“ Primzahlen (**C**-Ikone).
 
