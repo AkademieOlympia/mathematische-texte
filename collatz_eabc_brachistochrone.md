@@ -10,6 +10,7 @@
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen, kein SRT
 - `collatz_eabc_kritische_abbildung.md` — ABCEA-Trajektorie, Holonomie-Sensor
 - `collatz_eabc_brachistochrone.py` — Numerik
+- `collatz_eabc_potential_geometrie.md` — Bohm/AB/Berry-Analogien, $v=f(V)$
 
 ---
 

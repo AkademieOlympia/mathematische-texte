@@ -3,6 +3,7 @@
 EABC Wigner-Feld-Analogie: signiertes Informationsfeld auf {E,A,B,C}.
 
 Theorie: collatz_eabc_wigner_analog.md
+Potential/Berry: collatz_eabc_potential_geometrie.md
 
   W_E(N) = #ABCE - #CEAB          (4-Pfad-Orientierung, Pfad ≠ Holonomie)
   D_E(N) = #ABCEA - #CEABC        (5-Zyklus, Zirkulationshypothese)

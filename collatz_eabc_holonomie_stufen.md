@@ -15,6 +15,7 @@
 - `collatz_eabc_D_growth.py` — Wachstumsdiagnostik: Fall A/B/C in $N$, Legacy-Szenarien in $X$
 - `collatz_generalangriff_2026.md` — Gesamtarchitektur PR #54 / PR #59
 - `collatz_eabc_wigner_analog.md` — signiertes Korrelationsfeld $W_{ab}$, Near-zero-Moden-Stub
+- `collatz_eabc_potential_geometrie.md` — Bohm/AB/Berry-Analogien, reine Potentialverbindungen (§2–3)
 
 ---
 
@@ -63,7 +64,7 @@ $$\mathrm{Hol}(\gamma) = \mathcal{P}\exp\oint_\gamma A.$$
 | Paralleltransport | Pfadprodukt entlang $\tau_n$ | `collatz_eabc_transport.md` |
 | Transportobjekt | Chiralität? Signatur? Defekt? Quaternion-Phase? **Chirale Polarisation $(R,L)$?** | **Forschungsfrage** → Upgrade: `collatz_eabc_chirale_polarisation.md` |
 
-**Upgrade-Pfad (PR #59):** Transportobjekt $\Psi = (R,L)^\top$ auf Faserbündel; nach Schleife $U_E = \mathrm{diag}(e^{i\phi_R}, e^{i\phi_L})$; Observable $\phi_R - \phi_L$ (Berry-Phase-/Wilson-Analog). Diskrete Phase: $\phi \mathrel{+}= \omega(\gamma)\cdot\theta_{\mathrm{edge}}$. Implementierung: `collatz_eabc_chirale_transport.py`.
+**Upgrade-Pfad (PR #59):** Transportobjekt $\Psi = (R,L)^\top$ auf Faserbündel; nach Schleife $U_E = \mathrm{diag}(e^{i\phi_R}, e^{i\phi_L})$; Observable $\phi_R - \phi_L$ (Berry-Phase-/Wilson-Analog). Diskrete Phase: $\phi \mathrel{+}= \omega(\gamma)\cdot\theta_{\mathrm{edge}}$. Implementierung: `collatz_eabc_chirale_transport.py`, Stubs: `collatz_eabc_potential_phase.py` (`aharonov_bohm_phase`, `berry_phase_difference`).
 
 **Kernabgrenzung:** $N_+-N_-$ misst heute **Zirkulationsstatistik** (Stufe 1/3), nicht $\mathcal{P}\exp\oint A$ auf einem definierten Bundelwert — Stufe 2 schließt diese Lücke **modellhaft** über chirale Phasenkanäle.
 
@@ -170,6 +171,7 @@ $$\boxed{\;D_E \;\leftrightarrow\; \text{diskrete Wilson-Schleife} \;\leftrighta
 | Fall A/B/C | `holonomy_fall` | `collatz_eabc_D_growth` |
 | Legacy $X$-Szenario | `preferred_scenario` | `collatz_eabc_D_growth` |
 | $\phi_R$, $\phi_L$, $U_E$ | `phi_R`, `phi_L`, `holonomy_unitary_phases` | `collatz_eabc_chirale_transport` |
+| AB/Berry-Stubs | `aharonov_bohm_phase`, `berry_phase_difference` | `collatz_eabc_potential_phase` |
 | Helizität ABCEA$\to R$ | `helicity_channel` | `collatz_eabc_chirale_transport` |
 | $T_R$, $T_L$ | `travel_time_birefringent` | `collatz_eabc_brachistochrone` |
 
