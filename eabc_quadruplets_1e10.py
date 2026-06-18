@@ -1,13 +1,18 @@
 #!/usr/bin/env python3
 """EABC-Vierlinge bis X: W_E, R_beta und mod-420-Diagnostik.
 
-Ebene I (Definition): D = A − C, Q = A + C, W_E = D/Q, R_beta = D / Q^beta.
-Kein Z_E = D/sqrt(Q) auf Ebene I — R_1_2 ist Heuristik/Diagnose-Alias (Ebene III).
+Stufen 0–3 (vgl. collatz_eabc_zirkulationshypothese.md §4.2):
+  Stufe 0 — D=A−C, Q=A+C, W_E=D/Q, R_beta=D/Q^beta (Definition, keine Exponentenannahme)
+  Stufe 1 — alpha_eff = d log|D|/d log Q (numerisches Signal, kein Satz)
+  Stufe 2 — alpha_E = inf{beta : R_beta beschränkt} (Vermutung, erst wenn Daten es nahelegen)
+  Stufe 3 — W_E Grenzwert ≠0? (Orientierung/Holonomie am Ende)
+
+Kein Z_E = D/sqrt(Q) auf Definitionsebene — R_1_2 ist Heuristik/Diagnose-Alias.
 
 CSV-Spalten R_beta:
   R_1_2  = R_{1/2}(X) = D(X)/sqrt(Q(X))  (Heuristik/Diagnose; Alias Z_E)
   R_2_3, R_3_4, R_9_10 -> Zwischennormierungen (beta = 2/3, 3/4, 0.9)
-  R_1    = R_1(X) = D(X)/Q(X) = W_E(X)
+  R_1    = R_1(X) = D(X)/Q(X) = W_E(X)  (Stufe 3: Orientierung)
 """
 
 import argparse

@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """Log-log-Steigung aus eabc_quadruplets.csv; H0a/H0b–H3-Einordnung und Diagnose-Plot.
 
-Ebene III: alpha_eff, alpha_loc, R_beta-Plateaus — numerische Diagnostik, nicht Theorie.
-alpha_E_hat: heuristische Skalierungsschaetzung aus R_beta-Plateaus (Experiment).
-Reihenfolge Ausgabe: Skalierung (R_beta, alpha_E) → Orientierung (W_E) → numerische Exponenten.
+Stufen 0–3 (vgl. collatz_eabc_zirkulationshypothese.md §4.2):
+  Stufe 0 — R_beta, Größenordnung (keine Exponentenannahme)
+  Stufe 1 — alpha_eff, alpha_loc (numerisches Signal, kein Satz)
+  Stufe 2 — alpha_E_hat aus R_beta-Plateaus (Vermutung/Diagnostik, kein Theorem)
+  Stufe 3 — W_E, Orientierung (Holonomie am Ende)
+
+Reihenfolge Ausgabe: Stufe 0 → 1 → 2 → 3.
 """
 
 import argparse
@@ -197,13 +201,13 @@ def make_diagnose_plot(df: pd.DataFrame, loc: pd.Series, out_path: Path) -> None
 
     x = df["X"].to_numpy(dtype=np.float64)
     fig, axes = plt.subplots(2, 2, figsize=(11, 8), sharex=True)
-    fig.suptitle("EABC-Quadruplets: alpha_E-Diagnose (H0a/H0b–H3)")
+    fig.suptitle("EABC-Quadruplets: Diagnose Stufen 0–3 (H0a/H0b–H3)")
 
     ax = axes[0, 0]
     ax.plot(x, df["W_E"], "o-", color="C0", label=r"$W_E = R_1 = D/Q$")
     ax.axhline(0.0, color="gray", linewidth=0.8, linestyle="--")
     ax.set_ylabel(r"$W_E(X)$")
-    ax.set_title("Panel 1: Orientierung (H0b / H3)")
+    ax.set_title("Stufe 3: Orientierung (H0b / H3)")
     ax.legend(loc="best", fontsize=8)
     ax.grid(True, alpha=0.3)
 
@@ -211,7 +215,7 @@ def make_diagnose_plot(df: pd.DataFrame, loc: pd.Series, out_path: Path) -> None
     ax.plot(x, df["R_1_2"], "s-", color="C1", label=r"$R_{1/2}$ (Heuristik/Diagnose)")
     ax.axhline(0.0, color="gray", linewidth=0.8, linestyle="--")
     ax.set_ylabel(r"$R_{1/2}(X)$")
-    ax.set_title("Panel 2: Wurzelrauschen-Heuristik (H0a / H1)")
+    ax.set_title("Stufe 0/1: R_{1/2} (H0a / H1)")
     ax.legend(loc="best", fontsize=8)
     ax.grid(True, alpha=0.3)
 
@@ -221,7 +225,7 @@ def make_diagnose_plot(df: pd.DataFrame, loc: pd.Series, out_path: Path) -> None
     ax.axhline(0.5, color="gray", linewidth=0.8, linestyle="--", label=r"$\alpha=1/2$")
     ax.set_ylabel(r"$\alpha_{\mathrm{loc}}$")
     ax.set_xlabel(r"$X$")
-    ax.set_title("Panel 3: alpha_eff-Diagnose (kein Satz)")
+    ax.set_title("Stufe 1: alpha_eff-Diagnose (kein Satz)")
     ax.legend(loc="best", fontsize=8)
     ax.grid(True, alpha=0.3)
 
@@ -238,7 +242,7 @@ def make_diagnose_plot(df: pd.DataFrame, loc: pd.Series, out_path: Path) -> None
     ax.axhline(0.0, color="gray", linewidth=0.8, linestyle="--")
     ax.set_ylabel(r"$R_\beta(X)$")
     ax.set_xlabel(r"$X$")
-    ax.set_title("Panel 4: Skalierungsdiagnostik R_beta")
+    ax.set_title("Stufe 2: Skalierungsdiagnostik R_beta")
     ax.legend(loc="best", fontsize=7)
     ax.grid(True, alpha=0.3)
 
@@ -272,7 +276,15 @@ def main():
     eff = alpha_eff_series(valid)
     loc = alpha_loc_series(valid)
 
-    print("=== Ebene III: alpha_eff-Diagnose (numerisches Signal, kein Satz) ===")
+    print("=== Stufe 0: Größenordnung (R_beta; keine Exponentenannahme) ===")
+    for idx, row in valid.iterrows():
+        x = int(row["X"])
+        print(
+            f"  X={x:>12}  D={row['diff']:+.0f}  Q={row['Q_total']:.0f}  "
+            f"R_1_2={row['R_1_2']:+.4e}  R_1={row['R_1']:+.4e}"
+        )
+
+    print("\n=== Stufe 1: Effektive Skalierung (alpha_eff; numerisches Signal, kein Satz) ===")
     for idx, row in valid.iterrows():
         x = int(row["X"])
         ae = eff.loc[idx]
@@ -283,11 +295,6 @@ def main():
 
     alpha_loc_vals = loc.dropna()
     alpha_loc_max = float(alpha_loc_vals.max()) if not alpha_loc_vals.empty else None
-    if not alpha_loc_vals.empty:
-        print("\nalpha_loc (lokale Steigung zwischen Checkpoints):")
-        for idx, row in valid.iloc[1:].iterrows():
-            if idx in loc.index and not np.isnan(loc.loc[idx]):
-                print(f"  bis X={int(row['X']):>12}: {loc.loc[idx]:.4f}")
 
     if len(valid) < 2:
         print("\nZu wenige Checkpoints für globalen Log-log-Fit (mind. 2).")
@@ -300,23 +307,20 @@ def main():
     alpha, beta = fit_alpha(valid)
     alpha_E_hat, best_beta, slopes = estimate_alpha_E(valid)
 
-    print("\n=== Ebene III: Skalierung (R_beta, alpha_E-Plateau) ===")
+    print("\n=== Stufe 2: Asymptotischer Exponent (alpha_E_hat; Vermutung/Diagnostik) ===")
     print("R_beta-Steigungen (log|R_beta| vs log Q; ≈ alpha_E - beta):")
     for b in sorted(slopes):
         col = next(k for k, v in R_BETA_COLUMNS.items() if v == b)
         print(f"  beta={b:.2f} ({col}): Steigung={slopes[b]:+.4f}")
 
-    print(f"\nalpha_E_hat (Ebene III, heuristisch, Experiment) = {alpha_E_hat:.4f}")
+    print(f"\nalpha_E_hat (heuristisch, Experiment) = {alpha_E_hat:.4f}")
     print(f"  (Plateau bei beta={best_beta:.2f}, kein Theorem)")
-    print(f"→ {diagnose_scaling(alpha_E_hat, alpha, slopes, valid)}")
-
-    print("\n=== Ebene II: Orientierung (W_E; H0b / H3) ===")
-    print(f"→ {diagnose_orientation(valid)}")
-
-    print("\n=== alpha_eff-Diagnose (polyfit; kein Satz) ===")
     print(f"global alpha (polyfit) = {alpha:.4f}")
-    print(f"beta (Intercept)       = {beta:.4f}")
+    print(f"→ {diagnose_scaling(alpha_E_hat, alpha, slopes, valid)}")
     print(f"→ {diagnose_alpha_eff(alpha, alpha_loc_max)}")
+
+    print("\n=== Stufe 3: Orientierung (W_E; H0b / H3) ===")
+    print(f"→ {diagnose_orientation(valid)}")
 
     print(f"\n=== Gesamt ===")
     print(f"→ {interpret(alpha, alpha_E_hat, alpha_loc_max, valid, slopes)}")
