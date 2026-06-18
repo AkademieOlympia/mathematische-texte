@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; asymptotische Chiralität methodisch in §4.1; H₀/H₁/H₂-Skalierung in §4.2
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; asymptotische Chiralität methodisch in §4.1; H₀–H₃-Skalierung in §4.2
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
 - `collatz_eabc_sagnac.md` — **Intuition only:** Sagnac-Bild für $\gamma^\pm$ (kein physikalischer Kern)
@@ -21,7 +21,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_sagnac_circulation.py` — $C_E(X)$, $\omega(e)$, $\alpha$
 - `collatz_eabc_holonomie_fehlerterm.py` — $N_\pm$, $D_E$, $S_E$, $\widetilde{D}_E$
 - `eabc_quadruplets_1e10.py` — Vierlings-Zählung bis $X$, $W_E$, $Z_E$, mod-$420$-Diagnostik
-- `eabc_quadruplets_fit_alpha.py` — Log-log-Fit $|D(X)|\sim Q(X)^\alpha$, H₀/H₁/H₂-Einordnung
+- `eabc_quadruplets_fit_alpha.py` — $\alpha_{\mathrm{eff}}$, $\alpha_{\mathrm{loc}}$, globaler Log-log-Fit, H₀–H₃-Einordnung
 - `collatz_eabc_graph_laplacian.py` — $\mathrm{Spec}(L_E)$
 - `collatz_eabc_evolution_analytik.md` — **Evolutionspfad** Bell→Sagnac→$C_E$→$\mathrm{Spec}(L_E)$, Wachstumsszenarien, Dirichlet-Stub
 - `collatz_eabc_D_growth.py` — Wachstumsdiagnostik $D_E(X)$, Charakter-Koeffizienten $a_\chi$
@@ -166,7 +166,7 @@ $$W_E(X) = \frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)}$$
 3. **Keine unumkehrbare Tendenz.** Eine nichttriviale Grenzpräferenz $\Phi_E\neq 0$ ist eine **asymptotisch nichtverschwindende Orientierungspräferenz** — keine behauptete „unumkehrbare“ physikalische Tendenz.
 4. **Zwei konkurrierende asymptotische Lesarten.** Die **starke EABC-Vermutung** ($\Phi_E\neq 0$) und die **konservative Nullhypothese** ($N_+\sim N_-\Rightarrow\Phi_E=0$, vgl. Hauptterm oben) sind bewusst getrennt zu halten — Experimente entscheiden nicht zwischen ihnen.
 
-### 4.2 Fehlerterm-Skalierung und Hypothesenhierarchie (H₀/H₁/H₂)
+### 4.2 Fehlerterm-Skalierung und Hypothesenhierarchie (H₀–H₃)
 
 **Definitionen** (Schicht **B**; Vierlings-/Fensterzählung, Tao-Labels):
 
@@ -175,35 +175,48 @@ $$D(X) := A(X)-C(X) = D_E(X),\qquad Q(X) := A(X)+C(X).$$
 
 $$W_E(X) := \frac{D(X)}{Q(X)},\qquad Z_E(X) := \frac{D(X)}{\sqrt{Q(X)}} = \widetilde{D}_E(X).$$
 
-**Skalierungshypothese** (asymptotisch, $|D|\gg 1$):
+**Asymptotisches Modell** (Schicht **B**/**Hypothese**; $|D|\gg 1$):
 
 $$|D(X)| \sim Q(X)^\alpha \qquad (\alpha\in\mathbb{R}_+).$$
 
-Daraus folgen die Normalisierungen
+Dies ist eine **Modellannahme** für die Langzeit-Skalierung — kein bewiesenes Limittheorem. Daraus folgen die Normalisierungen
 
 $$W_E(X) \sim Q(X)^{\alpha-1},\qquad Z_E(X) \sim Q(X)^{\alpha-1/2}.$$
-
-| Hypothese | Aussage | Label |
-|-----------|---------|-------|
-| **H₀** | $\alpha = \tfrac{1}{2}$ — reines Wurzelrauschen ($|D|\sim\sqrt{Q}$) | **Nullhypothese** |
-| **H₁** | $\alpha > \tfrac{1}{2}$ — strukturierter (sublinearer) Bias / chiraler Fehlerterm | **Hypothese** |
-| **H₂** | $\alpha = 1$ und $\Phi_E \neq 0$ — starke Holonomie ($|D|\sim Q$, $W_E\to\Phi_E$) | **Vermutung** (Spezialfall) |
-
-**Implikationen:** H₂ $\Rightarrow$ H₁; **H₁ $\not\Rightarrow$ H₂** (jeder $\alpha\in(\tfrac{1}{2},1)$ erfüllt H₁, lässt aber $W_E\to 0$).
 
 | $\alpha$ | $W_E$ | $Z_E$ | Lesart |
 |----------|-------|-------|--------|
 | $\tfrac{1}{2}$ | $\to 0$ | $O(1)$ | Zufallsniveau (H₀) |
-| $\tfrac{1}{2} < \alpha < 1$ | $\to 0$ | $\to\infty$ | schwacher / chiraler Bias (H₁, nicht H₂) |
-| $1$ | $\to \Phi_E \neq 0$ | $\sim\sqrt{Q}$ | starke Holonomie (H₂) |
+| $\tfrac{1}{2} < \alpha < 1$ | $\to 0$ | $\to\infty$ | sublinearer Bias (H₁–H₂, nicht H₃) |
+| $1$ | $\to \Phi_E \neq 0$ | $\sim\sqrt{Q}$ | starke Holonomie (H₃) |
 
-$$\boxed{\;\text{Primäre EABC-Frage: nicht zuerst }\Phi_E\neq 0\text{, sondern ob }\alpha>\tfrac{1}{2}\text{ (H}_1\text{).}\;}$$
+**Numerische Exponenten** (Schicht **Experiment**; aus Checkpoint-CSV):
 
-$$\boxed{\;\text{Starke Holonomie }\Phi_E\neq 0\text{ ist der Spezialfall }\alpha=1\text{ (H}_2\text{), nicht die erste Arbeitshypothese.}\;}$$
+$$\alpha_{\mathrm{eff}}(X) := \frac{\log|D(X)|}{\log Q(X)}\quad (D\neq 0,\; Q>1),$$
 
-**Numerik:** `eabc_quadruplets_1e10.py` erzeugt Checkpoints mit $Q$, $D$, $W_E$, $Z_E$ (Standardausgabe `eabc_quadruplets.csv`); `eabc_quadruplets_fit_alpha.py` schätzt $\alpha$ per Log-log-Regression und ordnet H₀/H₁/H₂ zu.
+$$\alpha_{\mathrm{loc}}(X_i,X_{i+1}) := \frac{\Delta\log|D|}{\Delta\log Q}\quad\text{zwischen aufeinanderfolgenden Checkpoints.}$$
 
-**Label:** $A$, $C$, $Q$, $Z_E$, $\alpha$ = **Definition** / **Hypothese**; Fit von $\alpha$ = **Experiment**.
+$\alpha_{\mathrm{eff}}$ ist der punktweise Effektivexponent; $\alpha_{\mathrm{loc}}$ misst lokale Drift und eignet sich besser zur Erkennung transienter Bias-Segmente. Der globale Log-log-Fit in `eabc_quadruplets_fit_alpha.py` schätzt zusätzlich ein Gesamt-$\alpha$ über alle Checkpoints.
+
+**Vier Hypothesenstufen** (streng getrennt; nur Vorwärtsimplikationen):
+
+| Stufe | Aussage | Label |
+|-------|---------|-------|
+| **H₀** (Rausch) | $D(X) = O\!\bigl(Q(X)^{1/2+\varepsilon}\bigr)$ für jedes $\varepsilon>0$; heuristisch $\alpha=\tfrac{1}{2}$ | **Nullhypothese** |
+| **H₁** (Bias empirisch) | Es existiert ein $X$-Intervall mit $\alpha_{\mathrm{loc}}(X)>\tfrac{1}{2}$ — rein **empirisch**, kein Limittheorem | **Experiment** |
+| **H₂** (asymptotischer Bias) | Es existiert $\alpha>\tfrac{1}{2}$ mit $|D(X)| \asymp Q(X)^\alpha$ für $X\to\infty$ | **Hypothese** (arithmetisch stark) |
+| **H₃** (Holonomie) | $\alpha=1$ und $W_E(X)\to\Phi_E\neq 0$ | **Vermutung** (Lean-RED: `HasNonzeroHolonomyLimit`) |
+
+**Implikationslogik:** H₃ $\Rightarrow$ H₂ $\Rightarrow$ H₁; **keine Umkehrungen**. Numerik deutet typischerweise zuerst auf H₁ hin; H₂ und H₃ sind analytisch schärfer und später zu prüfen. H₁ allein impliziert weder H₂ noch H₃ (jeder $\alpha\in(\tfrac{1}{2},1)$ lässt $W_E\to 0$).
+
+**Prime-Race-Analogie.** Wie beim klassischen Chebyshev-Bias $\pi(x;a,q)-\pi(x;b,q)$ ist $D(X)=N_+(X)-N_-(X)$ ein **orientierter Prime Race** zwischen zwei Zählfunktionen auf demselben EABC-Zyklus: die absolute Differenz kann strukturiert oszillieren, während der normierte Quotient $W_E$ einen asymptotischen Grenzwert trägt (vgl. §6). Die Skalierung $|D|\sim Q^\alpha$ paraphiert, ob der Race-Fehlerterm schneller als $\sqrt{Q}$ wächst.
+
+$$\boxed{\;\text{Konservative Primärfrage: Wächst }|D(X)|\text{ schneller als }Q(X)^{1/2}\text{? (H}_0\text{ vs.\ H}_1\text{–H}_2\text{)}\;}$$
+
+$$\boxed{\;\text{Spätere, stärkere Frage: Hat }W_E(X)\text{ einen nichttrivialen Grenzwert }\Phi_E\neq 0\text{? (H}_3\text{)}\;}$$
+
+**Numerik:** `eabc_quadruplets_1e10.py` erzeugt Checkpoints mit $Q$, $D$, $W_E$, $Z_E$, $\alpha_{\mathrm{eff}}$ (Standardausgabe `eabc_quadruplets.csv`); `eabc_quadruplets_fit_alpha.py` berechnet $\alpha_{\mathrm{eff}}$, $\alpha_{\mathrm{loc}}$ und einen globalen Log-log-Fit, ordnet H₀–H₃ zu.
+
+**Label:** $A$, $C$, $Q$, $Z_E$, $\alpha$, $\alpha_{\mathrm{eff}}$, $\alpha_{\mathrm{loc}}$ = **Definition** / **Hypothese**; Fits = **Experiment**.
 
 ---
 
@@ -219,7 +232,7 @@ Qualitativ: wie beim klassischen Chebyshev-Bias mod $4$ kann die **absolute Diff
 
 **Label:** EABC-Fehlerterm-Hypothese = **Hypothese** (stärker als Hauptvermutung allein).
 
-**Details und Numerik:** `collatz_eabc_fehlerterm_hypothese.md` §3–5; `collatz_eabc_holonomie_fehlerterm.py`; Skalierungsexponent $\alpha$ und H₀/H₁/H₂: §4.2; `eabc_quadruplets_1e10.py`, `eabc_quadruplets_fit_alpha.py`.
+**Details und Numerik:** `collatz_eabc_fehlerterm_hypothese.md` §3–5; `collatz_eabc_holonomie_fehlerterm.py`; Skalierungsexponent $\alpha$ und H₀–H₃: §4.2; `eabc_quadruplets_1e10.py`, `eabc_quadruplets_fit_alpha.py`.
 
 ---
 
