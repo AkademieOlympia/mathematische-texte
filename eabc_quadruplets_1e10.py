@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
 """EABC-Vierlinge bis X: W_E, R_beta und mod-420-Diagnostik.
 
-Stufen 0–3 (vgl. collatz_eabc_zirkulationshypothese.md §4.2):
-  Stufe 0 — D_E=A−C, Q=A+C, W_E=D/Q, R_beta=D/Q^beta (Definition)
-  Stufe 1 — alpha_eff = log|D|/log Q (punktuell); alpha_loc zwischen Checkpoints
-             (berechnet in eabc_quadruplets_fit_alpha.py; wichtiger für Numerik)
-  Stufe 2 — alpha_E = inf{beta : R_beta beschränkt} (Vermutung)
-  Stufe 3 — W_E Grenzwert ≠0? (Holonomie-Hypothese am Ende)
+Fünf Ebenen (vgl. collatz_eabc_zirkulationshypothese.md §4.2):
+  Ebene 0 — Geometrie: G_E, gamma^+=ABCEA, gamma^-=CEABC
+  Ebene 1 — D_E=A−C, Q=A+C (primäre Observable)
+  Ebene 2 — R_beta=D_E/Q^beta; alpha_loc in eabc_quadruplets_fit_alpha.py (Numerik primär)
+  Ebene 3 — W_E=D_E/Q (Orientierung)
+  Ebene 4 — Phi_E=lim W_E (Holonomie-Hypothese am Ende)
 
 Vorwärtskette: D_E → alpha_E → W_E → Phi_E. Kein Z_E = D/sqrt(Q) auf Definitionsebene.
 R_1_2 ist Heuristik/Diagnose-Alias.
 
 CSV-Spalten R_beta:
-  R_1_2  = R_{1/2}(X) = D(X)/sqrt(Q(X))  (Heuristik/Diagnose; Alias Z_E)
+  R_1_2  = R_{1/2}(X) = D_E(X)/sqrt(Q(X))  (Heuristik/Diagnose; Alias Z_E)
   R_2_3, R_3_4, R_9_10 -> Zwischennormierungen (beta = 2/3, 3/4, 0.9)
-  R_1    = R_1(X) = D(X)/Q(X) = W_E(X)  (Stufe 3: Orientierung)
+  R_1    = R_1(X) = D_E(X)/Q(X) = W_E(X)  (Ebene 3: Orientierung)
 """
 
 import argparse
