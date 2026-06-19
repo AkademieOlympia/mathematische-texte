@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beschreibungs- und effektive Pixelung, erkenntnistheoretischer Kern, Kompressionsoperator** in §4.8.8; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
 - `collatz_eabc_zeta_exponential_gedankenexperiment.md` — **Gedankenexperiment / Analogie:** $\zeta$ als Exponentialsumme auf Log-Prim-Geometrie; Euler-Streifen $(1\pm p^{-s})$; $\xi$-Spiegelung; Brücke zu Log-Koordinaten, $\gamma^\pm$-Paarung, Level-2; §6–§10: Ganzzahl/Halbzahl-Exponenten, Oktanionen (Schicht C), Bernoulli-Subtraktion, Fibonacci-Zeta (kein RH-/EABC-Theorem)
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
@@ -1435,253 +1435,128 @@ $$\boxed{\;\textbf{Aktueller Gesamtstatus:}\; algebraisch wohldefiniert \checkma
 
 **Label:** §4.8.7 = **Meta** / **Hypothese** / **Experiment** (Schicht **C**); **kein Theorem**.
 
-**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, rotierender Kegel, Fibonacci-Interferenz und Quotienten-Hypothese in §4.8.8.
+**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9.
 
-#### 4.8.8 Beschreibungs- und effektive Pixelung
+#### 4.8.8 Beobachtungsgeometrie als Kompressionsoperator
 
-**Status:** philosophisch-methodische Klärung — ergänzt §4.8.6–4.8.7; **kein Theorem**, **kein** zusätzlicher Physikanspruch.
+**Status:** paper-ready methodische Klärung — schließt §4.8.6–4.8.7 ab; **kein Theorem**, **kein** zusätzlicher Physikanspruch.
 
-**Querverweise:** Zwei-Rotor-Kopplung $(\Theta,\Phi)$ und $R_N$ §4.8.7; EABC–Fibonacci-Gesamtbaustein §4.8.6; Kegel-Analogie und $R_N$-Diagnostik §9.13 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §3.1.
+**Querverweise:** Zwei-Rotor-Kopplung $(\Theta,\Phi)$ und $R_N$ §4.8.7; EABC–Fibonacci-Gesamtbaustein §4.8.6; Kegel-Analogie §9.13 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §3.1; numerischer Stub §4.8.9.
 
-##### Beschreibungspixelung (Schicht A / B)
+##### Beobachtungsgeometrie als Kompressionsoperator
 
-Die EABC-Phasenkoordinate
-$$\Theta(n)=\frac{\pi}{2}\,\sigma(n),$$
-mit $\sigma=\sigma_1$ Divisorfunktion, ist **reine Beschreibungspixelung**: Sie kodiert dieselbe Information wie die Restklassenstruktur $n\bmod 12$ auf dem EABC-Gerüst — eine **diskrete Kodierung**, keine neue Physik und keine zusätzliche Ontologie der natürlichen Zahlen.
-
-Formal ist $\Theta$ eine Abbildung $\mathbb{N}\to S^1_{\mathrm{EABC}}$ (Schicht **A**/**B**): wohldefiniert, endlich-wertig in der $C_4$-Realisierung, unabhängig von jeder kinematischen Kegel-Metapher. Die Pixel entstehen **in der Beschreibung**, nicht als ontologische „Atome“ der Arithmetik.
-
-$$\boxed{\;\Theta(n)=\tfrac{\pi}{2}\sigma(n)\;\text{= Beschreibungspixel — Kodierung, \textbf{keine} neue Physik.}\;}$$
-
-##### Effektive Pixelung (Schicht B / R)
-
-Unabhängig von der Beschreibung kann die **Primdynamik selbst** auf die vier EABC-Labels $\{E,A,B,C\}$ reagieren — dann entsteht **effektive Pixelung**: ein **Informationsfilter**, der feinere Struktur grobkörnig sichtbar macht.
-
-| Begriff | Ursprung | Rolle |
-|---------|----------|-------|
-| **Beschreibungspixelung** | Wahl der Kodierung $\Theta$ | feste Gitterzellen auf $S^1_{\mathrm{EABC}}$ |
-| **Effektive Pixelung** | Reaktion der Primstruktur auf $G_E$ | dynamischer Filter; $N_\pm$, $D_E$, $\Sigma_A$ als Auswertungen |
-
-Die effektive Pixelung ist **empirisch testbar** (Level-1/Level-2, §4.3, §4.8): Sie behauptet nicht, dass Primzahlen „wirklich“ in EABC-Zellen sitzen, sondern dass die Observable auf dem gewählten Gitter **nicht-triviale** Struktur zeigt oder nicht.
-
-##### Rotierender Kegel und Gitter $(\Theta,h)$ (Schicht **C**, Analogie)
-
-Zur **Visualisierung** (nicht als kinematisches Modell im Ereignisraum) dient das Bild eines **rotierenden Kegels** der natürlichen Zahlen (vgl. §4.8.6, §9.13):
-
-- **Azimuth:** $\Theta(n)$ — diskrete Phasenpixel auf $S^1_{\mathrm{EABC}}$;
-- **Höhe $h$:** axiale Koordinate — **kontinuierlich** ($h(n)=n$, $h(n)=\log n$, Primindex, Streaming-Zeit) oder **diskret** ($h\in\mathbb{Z}$).
-
-Die Wahl von $h$ bestimmt, ob man eine **Helix** (kontinuierliche Höhe) oder ein **Gitter** $(\Theta,h)$ (diskrete Höhenstufen) sieht. Kontinuierliches $h$ glättet die Pixelung visuell; diskretes $h\in\mathbb{Z}$ macht die Zellstruktur explizit.
-
-$$\boxed{\;\text{Rotierender Kegel = \textbf{Beobachtungsgeometrie} (Schicht C) — \textbf{nicht} ontologisches Raummodell.}\;}$$
-
-##### Fibonacci-Kopplung: Pixel vs. Wellen (Schicht **C**)
-
-Die Kopplung aus §4.8.7 — EABC-Rotor $\Theta$ auf $S^1_{\mathrm{EABC}}$ (diskret, $\mathbb{Z}_4$-Realisierung) und Fibonacci-Rotor $\Phi(t)=t\log\varphi$ auf $S^1_\varphi$ (kontinuierlich) — lässt sich epistemisch so lesen:
-
-| Kanal | Objekt | Lesart |
-|-------|--------|--------|
-| **EABC** | $\Theta(n)$, $N_\pm$, $\Sigma_A$ | **Pixel** — diskrete Zellprojektion |
-| **Fibonacci-Kamm** | $K_F$, $\zeta_F$, $A_n$, $P_F(\omega)$ | **Wellen** — kontinuierliche Phasenüberlagerung |
-
-Die **Interferenzfrage** (konstruktiv/destruktiv) betrifft primär den Kamm: $A_n=|\zeta_F(\tfrac12+i\gamma_n)|$ misst Restamplitude nach Überlagerung (§4.8.7). Die Phasen-Korrelation $R_N$ testet, ob Pixel und Wellen **gemeinsam schwingen** — derzeit **nicht gestützt** (explorativ).
-
-$$\boxed{\;\text{EABC liefert Pixel; der Fibonacci-Kamm liefert Wellen — Kopplung = \textbf{Hypothese}, nicht Identität.}\;}$$
-
-##### Physik-Analogien (Schicht **C**, methodisch, nicht ontologisch)
-
-Zur **Orientierung** (vollständig in Schicht **C**; **kein** Export als Theorem):
-
-| Analogie | EABC-Lesart | Warnung |
-|----------|-------------|---------|
-| **Kristallgitter** | Beschreibungspixel $\Theta$; effektive Zellen $\{E,A,B,C\}$ | Gitter = Kodierung, nicht „kristalline“ Primzahlen |
-| **Doppelspalt** | Zwei Rotoren $(\Theta,\Phi)$; Interferenz in $A_n$, $P_F$ | **kein** Quantenexperiment an Primzahlen |
-| **QM-Projektion** | Level-2-Struktur in $\Sigma_A$ bei $\langle\cdot\rangle\approx 0$ (§4.8.1) | Spin-Liquid-Parallele **methodisch** |
-
-Diese Analogien strukturieren **Beobachtungsgeometrie** und Testdesign — sie begründen **keine** neue Physik der natürlichen Zahlen.
-
-##### Hypothese: Quotientenstruktur und sichtbare Resonanzen (Schicht **B** / **R**)
-
-**Arbeits-Hypothese:** Es existiert (mindestens heuristisch) eine **Quotientenstruktur**
-$$\mathbb{N} \longrightarrow \mathbb{N}/{\sim},$$
-deren Äquivalenzklassen durch die EABC-Beschreibung und die Fibonacci-Projektion **zusammengeführt** werden. Resonanzen können dann
-
-- **intrinsisch vorhanden** sein (Struktur in $\mathbb{N}/{\sim}$ oder in Spektraldaten), oder
-- **erst durch Projektion sichtbar** werden ($C_i$, $C_F$, $A_n$, $R_N$ als Detektoren).
-
-Diese Hypothese ist **offen** und **falsifizierbar** über die Hypothesenleiter H$_0$–H$_4$ (§4.8.7): H$_0$ = keine bevorzugte Kopplung; H$_1$–H$_3$ = schwache bis starke Resonanzsignale; H$_4$ = strukturelle Identität — **explizit nicht behauptet**.
-
-$$\boxed{\;\text{Resonanz kann \textbf{vorhanden} sein oder \textbf{erst projiziert} — beides testbar, keines bewiesen.}\;}$$
-
-##### Philosophischer Kern
-
-Die Unterscheidung **Beschreibungs- vs. effektive Pixelung** trennt drei Ebenen:
-
-1. **Kodierung** — $\Theta(n)$, mod-$12$-Gerüst (Schicht **A**/**B**);
-2. **Dynamik / Observable** — wie Primstruktur auf $G_E$ reagiert (Schicht **B**/**R**, Experiment);
-3. **Interpretation** — Kegel, Kristall, Doppelspalt, Pixel/Welle (Schicht **C**).
-
-Das EABC–Fibonacci-Programm **führt keine neue Ontologie** der natürlichen Zahlen ein. Es liefert eine **Beobachtungsgeometrie**: welche Gitter, Projektionen und externen Detektoren man wählt, um Struktur sichtbar zu machen — und welche Tests diese Sichtbarkeit von Zufall trennen.
-
-$$\boxed{\;\textbf{Keine neue Ontologie — nur Beobachtungsgeometrie.}\;}$$
-
-$$\boxed{\;\text{Pixel = Beschreibung oder effektiver Filter; Wellen = externer Kamm; Physik-Bilder = Schicht C — \textbf{methodisch}, \textbf{nicht} ontologisch.}\;}$$
-
-##### Erkenntnistheoretischer Kern (methodische Sicherung)
-
-§4.8.8 schließt die Kette §4.8.6–4.8.7 ab und dient als **methodische Sicherung** des gesamten EABC–Fibonacci-Programms: Sie fixiert, **was** beobachtet wird, **wie** es projiziert wird und **unter welchen Bedingungen** ein Resonanzsignal Evidenz erhält — unabhängig von ontologischen Lesarten. Vollständiger Schichten-Rahmen: `collatz_eabc_epistemik_schichten.md` §0–3.1.
-
-###### Drei Ebenen (A / B / C)
-
-| Ebene | Objekt | Rolle | Beispiel |
-|-------|--------|-------|----------|
-| **A** | Rohdaten | gegeben, nicht gewählt | $\mathbb{N}$, Primmenge $\mathbb{P}$, Primstrom $P$ |
-| **B** | Beobachtungsgeometrie | gewählte Kodierung / Projektion | $\Theta(n)=(\pi/2)\sigma(n)$, Abbildung $\mathbb{N}\to\mathbb{Z}_4$ auf $G_E$, $N_\pm$, $D_E$, $\Sigma_A$ |
-| **C** | Resonanzdetektoren (extern) | unabhängige Testinstrumente | Fibonacci-Kamm $K_F$, $\zeta_F$, $A_n$, $P_F(\omega)$, $R_N$ |
-
-Schicht **A** ist **datenseitig** (was existiert). Schicht **B** ist **instrumentell** (wie man misst). Schicht **C** ist **interpretativ-diagnostisch** (welche externen Detektoren ein Signal von Artefakt trennen). Keine Ebene darf ohne Kennzeichnung in die nächsthöhere aufsteigen: $\Theta$ bleibt **B**, der rotierende Kegel bleibt **C**.
-
-$$\boxed{\;\text{A = Rohdaten; B = Beobachtungsgeometrie; C = externe Resonanzdetektoren — strikt getrennt.}\;}$$
-
-###### Zwei Extreme: realistische vs. instrumentalistische Lesart
-
-Der **EABC-Kegel** (Azimuth $\Theta$, Höhe $h$, Gitter $(\Theta,h)$) lässt sich epistemisch an zwei Polen lesen:
-
-| Pol | Lesart | Konsequenz |
-|-----|--------|------------|
-| **Realistisch** | Der Kegel „ist“ die Struktur der Primzahlen | Gefahr von Reifikation; Kegel-Bild wird zur Ontologie |
-| **Instrumentalistisch** | Der Kegel ist ein **Beobachtungsinstrument** | Struktur ist nur **relativ zur gewählten Projektion** sichtbar |
-
-Das Programm verpflichtet sich zur **instrumentalistischen Lesart**: Der Kegel strukturiert **Beobachtungsgeometrie**, nicht die Ontologie von $\mathbb{N}$. Analogien aus der Signalverarbeitung — **Fourier-**, **Wavelet-** oder **PCA-Projektion** — gehören ebenfalls zu Schicht **C**: Sie erklären **warum** man projiziert, nicht **was** Primzahlen „sind“. Ein Resonanzüberschuss im Kamm ist erst dann interessant, wenn er **nicht** allein aus der Wahl der EABC-Pixelung folgt (vgl. Kodierungsinvarianz-Test unten).
-
-$$\boxed{\;\text{EABC-Kegel = Beobachtungsgeometrie, \textbf{nicht} physikalische Ontologie.}\;}$$
-
-###### Drei Fälle bei künftigem Resonanzüberschuss
-
-Sollte künftig ein **statistisch signifikanter Resonanzüberschuss** auftreten ($C_F^{\mathrm{prime}}/C_F^{\mathrm{golden}}>1$, $A_n$ über Schwellenwert, $R_N$ stabil), sind **drei Fälle** zu unterscheiden — bevor man Ontologie oder neue Physik behauptet:
-
-| Fall | Deutung | Kriterium | Konsequenz |
-|------|---------|-----------|------------|
-| **(1)** | Resonanz **in den Primzahlen selbst** | Signal überlebt **alle** Kodierungen (mod $8$, $10$, $30$, $210$, …) und externe Detektoren | echte arithmetische Struktur; Programm-Upgrade Schicht **A**/**B** |
-| **(2)** | Resonanz **durch EABC-Projektion** | Signal nur bei EABC-Kodierung / $\mathbb{Z}_4$-Gerüst, nicht bei alternativen Restklassen | spezifisch für gewählte Beobachtungsgeometrie; kein allgemeiner Primzahl-Satz |
-| **(3)** | **Artefakt** | Signal verschwindet unter Permutation, Markov-Null, HL-Null oder Kodierungswechsel | zurück zur Nullmodell-Leiter §4.8.2; keine Resonanz-Behauptung |
-
-Fall (1) wäre der stärkste Befund; Fall (2) wäre **methodisch wertvoll**, aber epistemisch **begrenzt**; Fall (3) ist der **Default** solange H$_0$ nicht verworfen ist (§4.8.7).
-
-$$\boxed{\;\text{Resonanz hat Evidenz nur, wenn sie stabil gegenüber alternativen Projektionen ist.}\;}$$
-
-###### Kodierungsinvarianz-Test
-
-Zur Abgrenzung der Fälle (1)–(3) dient ein **Kodierungsinvarianz-Test**: dieselbe Observable (z. B. $D_E$, $R_N$, $C_F^{\mathrm{prime}}/C_F^{\mathrm{golden}}$) wird unter **alternativen Restklassen-Kodierungen** ausgewertet — mindestens mod $8$, mod $10$, mod $30$, mod $210$ (kanonische Stufen der arithmetischen Gitterhierarchie).
-
-| Befund | Lesart |
-|--------|--------|
-| Resonanz **nur** unter EABC (mod $12$ / $\mathbb{Z}_4$) | **spezifisch** — Fall (2); Beobachtungsgeometrie, nicht Ontologie |
-| Resonanz **überall** (alle Kodierungen) | **allgemein** — Fall (1); Kandidat für arithmetische Struktur |
-| Resonanz **nirgends** (auch nicht EABC) | **Artefakt** oder Rauschen — Fall (3) |
-
-Dieser Test ist programmatisch verwandt mit **Stufe 3 — Kodierungsinvarianz** (`collatz_stufe3_kappa_invarianz.md`, Branch `collatz/kappa-invarianz-stufe3`): Dort wird $\kappa$-Invariante von $R(k)$, $h_F$, $\mathcal{L}_{\mathrm{arith}}^*$ systematisch geprüft; hier ist die gleiche Logik auf die **EABC–Fibonacci-Resonanzdiagnostik** übertragen — **Stub**, noch nicht numerisch durchgeführt.
-
-$$\boxed{\;\text{Kodierungsinvarianz: EABC-spezifisch $\Rightarrow$ Fall (2); kodierungsunabhängig $\Rightarrow$ Fall (1); kein Signal $\Rightarrow$ Fall (3).}\;}$$
-
-###### Beobachtungsgeometrie als Kompressionsoperator
-
-Die bisherige Lesart (Beschreibungs- vs. effektive Pixelung, Kodierungsinvarianz) lässt sich **informationstheoretisch** verschärfen: Beobachtungsgeometrie ist nicht nur Bildsprache, sondern ein **Kompressionsoperator** auf $\mathbb{N}$.
+Beobachtungsgeometrie ist nicht nur Bildsprache, sondern ein **Kompressionsoperator** auf $\mathbb{N}$: Sie legt fest, welche Freiheitsgrade behalten und welche verworfen werden. **Keine physikalische Ontologie** — nur informationsreduzierende Projektion (Schicht **B**).
 
 **Kompressionsabbildung.** Die EABC-Zuordnung
 $$C_E:\mathbb{N}\longrightarrow\{E,A,B,C\},\qquad C_E(n)=\text{Einheitenklasse von }n\bmod 12,$$
-ist eine **massive Kompression**: unendlich viele natürliche Zahlen werden auf vier Labels projiziert. Formal ist $C_E$ die Quotientenabbildung $\mathbb{N}\twoheadrightarrow\mathbb{N}/\!\sim_{12}$ gefolgt von der Isomorphie auf das EABC-Gerüst $G_E$ — dieselbe Information wie $\Theta(n)=(\pi/2)\sigma(n)$, aber als **Verlustkanal** gelesen: alles, was nicht in der Restklassenstruktur mod $12$ liegt, wird verworfen.
+ist eine **massive Kompression**: unendlich viele natürliche Zahlen werden auf vier Labels projiziert. Formal ist $C_E$ die Quotientenabbildung $\mathbb{N}\twoheadrightarrow\mathbb{N}/\!\sim_{12}$ gefolgt von der Isomorphie auf das EABC-Gerüst $G_E$ — dieselbe Information wie $\Theta(n)=(\pi/2)\sigma(n)$, aber als **Verlustkanal**: alles, was nicht in der Restklassenstruktur mod $12$ liegt, wird tilgt.
 
-| Abbildung | Definitionsbereich | Bild | Kompressionsgrad (heuristisch) |
-|-----------|-------------------|------|--------------------------------|
-| $C_E$ | $\mathbb{N}$ | $\{E,A,B,C\}$ | $\infty\to 4$ |
-| $C_8$ | $\mathbb{N}$ | $\mathbb{Z}/8\mathbb{Z}$ | $\infty\to 8$ |
-| $C_{10}$ | $\mathbb{N}$ | $\mathbb{Z}/10\mathbb{Z}$ | $\infty\to 10$ |
-| $C_{30}$ | $\mathbb{N}$ | $\mathbb{Z}/30\mathbb{Z}$ | $\infty\to 30$ |
-| $C_{210}$ | $\mathbb{N}$ | $\mathbb{Z}/210\mathbb{Z}$ | $\infty\to 210$ |
+| Abbildung | Bild | Kompressionsgrad |
+|-----------|------|------------------|
+| $C_E$ | $\{E,A,B,C\}$ | $\infty\to 4$ |
+| $C_8$ | $\mathbb{Z}/8\mathbb{Z}$ | $\infty\to 8$ |
+| $C_{10}$ | $\mathbb{Z}/10\mathbb{Z}$ | $\infty\to 10$ |
+| $C_{30}$ | $\mathbb{Z}/30\mathbb{Z}$ | $\infty\to 30$ |
+| $C_{210}$ | $\mathbb{Z}/210\mathbb{Z}$ | $\infty\to 210$ |
 
-**Kegel als Kompressionsschema.** Der rotierende Kegel (Azimuth $\Theta$, Höhe $h$, Gitter $(\Theta,h)$) ist in dieser Lesart **kein** ontologisches Raummodell, sondern ein **Kompressionsschema**: Er legt fest, **welche** Koordinaten man behält und **welche** Freiheitsgrade man tilgt. Die Wahl $h(n)=n$ vs. $h(n)=\log n$ vs. diskretes $h\in\mathbb{Z}$ entscheidet, ob die Kompression nur phasenseitig ($\Theta$) oder auch axiale Struktur mitführt — analog zu unterschiedlichen Downsampling-Stufen in der Signalverarbeitung (Schicht **C**).
+**Kegel als Kompressionsschema.** Der rotierende Kegel (Azimuth $\Theta$, Höhe $h$, Gitter $(\Theta,h)$) ist **kein** ontologisches Raummodell, sondern legt fest, **welche** Koordinaten man behält — analog zu Downsampling-Stufen (Schicht **C**; vgl. Kontext unten).
 
-**Pixelung = Informationsverlust.** Beschreibungspixelung ist **bewusster Informationsverlust**: Zahlen, die in derselben EABC-Zelle landen, sind für den Beobachter **identisch**. Beispiel: $13$, $37$, $61$, $\ldots$ werden alle auf $E$ komprimiert — ihre individuelle Primfaktorisierung, Divisorenstruktur und Höhenposition auf dem Kegel sind in $C_E$ nicht mehr rekonstruierbar. Die zentrale Frage lautet daher nicht „Ist der Kegel real?“, sondern:
+**Pixelung = Informationsverlust.** Beschreibungspixelung ist **bewusster Informationsverlust**: Zahlen in derselben EABC-Zelle sind für den Beobachter identisch. Beispiel: $13$, $37$, $61$, $\ldots$ werden alle auf $E$ komprimiert — Faktorisierung und Höhenposition sind in $C_E$ nicht rekonstruierbar.
 
-> **Welche Primzahlstruktur überlebt extreme Kompression?**
-
-Effektive Pixelung (§ oben) behauptet, dass **Primstruktur** trotz dieses Verlusts noch **nicht-triviale** Signale in den vier Zellen erzeugt ($N_\pm$, $D_E$, $\Sigma_A$) — ein Befund, der nur dann Evidenz hat, wenn er unter Kompression **robust** bleibt.
-
-**Entropie endlicher Stichprobe.** Für das endliche Fenster $\mathbb{N}_N=\{1,\ldots,N\}$ und die Gleichverteilung auf $\mathbb{N}_N$ (jede Zahl gleich wahrscheinlich) gilt
+**Entropie endlicher Stichprobe.** Für $\mathbb{N}_N=\{1,\ldots,N\}$ und Gleichverteilung auf $\mathbb{N}_N$:
 $$H(\mathbb{N}_N)=\log_2 N.$$
-Die **Bild-Entropie** nach Kompression durch $C_E$ ist
+Die **Bild-Entropie** nach $C_E$ ist
 $$H(\mathrm{EABC}_N)=-\sum_{c\in\{E,A,B,C\}} p_N(c)\,\log_2 p_N(c),\qquad p_N(c)=\frac{\#\{n\le N:C_E(n)=c\}}{N}.$$
-(Wir schreiben $H(\mathrm{EABC}_N)$ und meinen stets die Shannon-Entropie in **Bits**.) Asymptotisch gilt $H(\mathrm{EABC}_N)\to\log_2 4=2$, weil die EABC-Besetzung im Limes gleichverteilt ist. Das **Entropiedefizit**
+Asymptotisch gilt $H(\mathrm{EABC}_N)\to\log_2 4=2$. Das **Entropiedefizit**
 $$I_E(N):=H(\mathbb{N}_N)-H(\mathrm{EABC}_N)=\log_2 N-H(\mathrm{EABC}_N)$$
-wächst daher wie $I_E(N)\approx\log_2 N-2$: EABC **verwirft asymptotisch fast alle Information** — von $\log_2 N$ Bits bleiben nur noch zwei. Resonanzsignale, die **nur** in der feingliedrigen Beschreibung existieren und unter $C_E$ verschwinden, tragen **keine** strukturelle Evidenz; Signale, die **nach** Kompression noch messbar sind, sind Kandidaten für **kompressionsinvariante** Arithmetik.
+wächst wie $I_E(N)\approx\log_2 N-2$: EABC **verwirft asymptotisch fast alle Information** — von $\log_2 N$ Bits bleiben zwei.
 
-**Ausreichende Statistik.** $C_E$ ist **nicht** verlustfrei: aus $C_E(n)$ lässt sich $n$ nicht rekonstruieren. Dennoch ist die Frage offen, ob $C_E$ für die **Primstruktur** eine überraschend gute Kompression darstellt — ob also Primdynamik $\to$ EABC-Struktur eine **informationsrelevante** Abbildung ist, obwohl sie massiv reduziert. Das wäre der Fall, wenn die für Primzahlen charakteristischen Observablen ($N_\pm$, $D_E$, $\Sigma_A$, Level-2 in $\Sigma_A$) in den vier Zellen **nicht-trivial** bleiben, während individuelle Höhen- und Faktorisierungsinformation tilgt wird.
+**Ausreichende Statistik.** $C_E$ ist **nicht** verlustfrei: aus $C_E(n)$ lässt sich $n$ nicht rekonstruieren. Offen bleibt, ob Primdynamik $\to$ EABC-Struktur trotzdem eine **informationsrelevante** Abbildung ist — ob Primstruktur unter $C_E$ **überlebensfähige** Signale trägt ($N_\pm$, $D_E$, $\Sigma_A$, Level-2 in $\Sigma_A$).
 
-**Strukturstabile Kompression.** Wir führen einen präzisen Prüfbegriff ein:
+**Strukturstabile Kompression (Prüfbegriff).**
 
 > **Definition (informell).** Ein Kompressionsoperator $C:\mathbb{N}\to\mathcal{L}$ heißt **strukturstabil** bezüglich eines Signals $S$, wenn $S(\mathbb{N})$ und $S(C(\mathbb{N}))$ dieselbe **qualitative Struktur** tragen — d. h. wenn die für $S$ charakteristischen Muster (Peaks, Korrelationen, Level-2-Abweichungen) unter $C$ **überlebensfähig** bleiben und nicht bloß Projektionsartefakte sind.
 
-Die zentrale EABC-Frage lautet damit präzise: **Ist die EABC-Projektion eine strukturstabile Kompression der Primdynamik?** Positiv $\Rightarrow$ Fall (1) oder (2) mit Evidenz; negativ $\Rightarrow$ Fall (3) oder reine Beobachtungsgeometrie ohne arithmetischen Gehalt.
+$$\boxed{\;\text{Ist EABC strukturstabile Kompression der Primdynamik?}\;}$$
 
-$$\boxed{\;\text{Strukturstabile Kompression: } S(\mathbb{N})\text{ und } S(C_E(\mathbb{N}))\text{ tragen dieselbe qualitative Struktur — Prüfbegriff für EABC-Evidenz.}\;}$$
+Positiv $\Rightarrow$ Fall (1) oder (2) mit Evidenz (vgl. erkenntnistheoretischer Kern); negativ $\Rightarrow$ Fall (3) oder reine Beobachtungsgeometrie ohne arithmetischen Gehalt.
 
-**Landauer-Lesart (vorsichtig).** EABC ist **informationsreduzierend im Shannon-Sinn** — das ist präzise und unabhängig von Physik. Die Analogie zu Landauers Prinzip (irreversible Löschung $\Leftrightarrow$ thermodynamische Kosten) ist **nur konzeptuell**: sie strukturiert die Lesart „Projektion tilgt Freiheitsgrade“, **ohne** physikalische Identität zu behaupten. Ein expliziter Landauer-Transportbezug (`ABC Pfade.py`) betrifft Leitwert, nicht die hier gemeinte Kompressionsentropie.
+**Evidenzbedingungen.** Jede behauptete Resonanz muss
 
-$$\boxed{\;\text{EABC ist informationsreduzierend (Shannon) — Landauer-Analogie nur konzeptuell, keine physikalische Identität.}\;}$$
-
-**Repo-Verweise (explorativ, kein Theorem):** Shannon-Entropie der EABC-Besetzung in `Quantentests.py` (`eabc_occupation_entropy`); familienbasierte Entropie $C_{\mathrm{fam}}$ in `arithmetische_signaturgeometrie.tex`; Entropie der verbotenen Sprache $h_F$ und κ-Robustheit in `collatz_stufe3_kappa_invarianz.md` / `collatz_stufe2b_kappa_robustheit.md`.
-
-**Konkreter Test (Verknüpfung mit Kodierungsinvarianz).** Der Kodierungsinvarianz-Test oben wird in der Kompressionslesart präzisiert:
-
-1. **Überlebensbedingung:** Jede behauptete Resonanz (z. B. $D_E$, $R_N$, $C_F^{\mathrm{prime}}/C_F^{\mathrm{golden}}$, Level-2 in $\Sigma_A$) muss **nach** Anwendung von $C_E$ noch von den Nullmodellen (§4.8.2) getrennt werden können — nicht nur in der vollen Primliste.
-2. **Robustheitsbedingung:** Dieselbe Observable wird unter den Kompressionsoperatoren $C_E$, $C_8$, $C_{10}$, $C_{30}$, $C_{210}$ ausgewertet (kanonische Stufen der arithmetischen Gitterhierarchie; vgl. Kodierungsinvarianz-Tabelle oben).
+1. **Kompression überleben** — nach Anwendung von $C_E$ noch von Nullmodellen (§4.8.2) getrennt werden, nicht nur in der vollen Primliste;
+2. **Robustheit** — dieselbe Observable unter $C_E$, $C_8$, $C_{10}$, $C_{30}$, $C_{210}$ auswerten (kanonische Stufen der arithmetischen Gitterhierarchie).
 
 | Befund unter $\{C_E,C_8,C_{10},C_{30},C_{210}\}$ | Lesart |
 |---------------------------------------------------|--------|
 | Signal **nur** unter $C_E$ | Fall (2) — spezifisch für EABC-Beobachtungsgeometrie |
-| Signal **überall** (alle Kompressionsstufen) | Fall (1) — strukturell relevant jenseits der Pixelung |
+| Signal **überall** | Fall (1) — strukturell relevant jenseits der Pixelung |
 | Signal **nirgends** | Fall (3) — Artefakt oder Rauschen |
 
-Damit verschiebt sich die Leitfrage des EABC–Fibonacci-Programms: nicht „Existiert der Kegel?“, sondern **„Welche Primzahlstruktur überlebt extreme Kompression?“** — und damit kompatibel mit Stufe 3 (κ-Kodierungsinvarianz): dort werden $R(k)$, $h_F$, $\mathcal{L}_{\mathrm{arith}}^*$ unter $\kappa$-Wechsel geprüft; hier dieselbe Logik auf **EABC–Fibonacci-Resonanz** und **Kompressionsoperatoren** übertragen (**Stub**, numerisch offen).
+$$\boxed{\;\text{Welche Primzahlstrukturen überleben extreme Kompression?}\;}$$
 
-$$\boxed{\;\text{EABC-Kegel = starke Kompression: } I_E(N)\approx\log_2 N-2\text{ — fast alle Bits gehen verloren.}\;}$$
-
-$$\boxed{\;\text{Zentrale Frage: Welche Strukturen überleben trotz Verlust? EABC als arithmetischer Informationsfilter.}\;}$$
+**Falsifikation.** Verschwinden Signale unter alternativen Kompressionsoperatoren $C_k$, spricht das **gegen** eine EABC-Sonderrolle und für Fall (2) oder (3). Landauer-Lesart nur **konzeptuell** (Shannon-Reduktion präzise; keine physikalische Identität).
 
 $$\boxed{\;\text{Beobachtungsgeometrie = informationsreduzierender Kompressionsoperator — \textbf{nicht} ontologisches Kegelmodell.}\;}$$
 
-$$\boxed{\;\text{Strukturelle Relevanz nur bei Robustheit unter } C_E,\,C_8,\,C_{10},\,C_{30},\,C_{210}\text{ — sonst Fall (2) oder (3).}\;}$$
+$$\boxed{\;\text{Strukturelle Relevanz nur bei strukturstabiler Kompression und Robustheit unter } C_E,\,C_8,\,C_{10},\,C_{30},\,C_{210}.}\;}$$
 
-###### §4.8.8 als methodische Sicherung des Programms
+**Repo-Verweise (explorativ):** Shannon-Entropie der EABC-Besetzung in `Quantentests.py` (`eabc_occupation_entropy`); familienbasierte Entropie $C_{\mathrm{fam}}$ in `arithmetische_signaturgeometrie.tex`; κ-Robustheit in `collatz_stufe3_kappa_invarianz.md`. Geplanter numerischer Test: §4.8.9.
 
-Zusammenfassend sichert §4.8.8 das gesamte Programm ab:
+##### Kontext: Pixelung, Kegel und Zwei Rotoren
 
-1. **Schichtentrennung** — A (Rohdaten) / B (Beobachtungsgeometrie) / C (externe Detektoren) bleiben disjunkt.
-2. **Instrumentalismus** — Kegel, Pixel/Welle, Physik-Analogien sind **Werkzeuge**, keine Ontologie.
-3. **Resonanz-Disjunktion** — künftiger Überschuss wird in drei Fälle zerlegt, bevor er exportiert wird.
-4. **Projektionsstabilität** — Evidenz nur bei Überleben alternativer Kodierungen.
-5. **Kompressionsoperator** — $C_E:\mathbb{N}\to\{E,A,B,C\}$; $I_E(N)=\log_2 N-H(\mathrm{EABC}_N)\approx\log_2 N-2$; strukturstabile Kompression; Robustheit unter $C_E,C_8,C_{10},C_{30},C_{210}$.
-6. **Verknüpfung** — Hypothesenleiter H$_0$–H$_4$ (§4.8.7), Nullmodell-Leiter (§4.8.2), κ-Stufe 3 (Stub).
+Die Kompressionslesart präzisiert die folgenden Bausteine aus §4.8.6–4.8.7 — **ohne** sie ontologisch zu überhöhen:
 
-Ohne diese Sicherung wäre jedes numerische Flackern im Fibonacci-Kamm leicht als „Entdeckung“ zu lesen; mit ihr bleibt das Programm **falsifizierbar** und **schichtenkonform**.
+| Begriff | Schicht | Kurzform |
+|---------|---------|----------|
+| **Beschreibungspixelung** | **A**/**B** | $\Theta(n)=(\pi/2)\sigma(n)$ kodiert $n\bmod 12$ — Pixel **in der Beschreibung** |
+| **Effektive Pixelung** | **B**/**R** | Primstruktur reagiert auf $G_E$; $N_\pm$, $D_E$, $\Sigma_A$ als testbare Observablen (§4.3, §4.8) |
+| **Rotierender Kegel** $(\Theta,h)$ | **C** | Visualisierung / Kompressionsschema — **nicht** Raummodell |
+| **Zwei Rotoren** $(\Theta,\Phi)$ | **C** | EABC = **Pixel** (diskret); Fibonacci-Kamm = **Wellen** (kontinuierlich); $R_N$ derzeit nicht gestützt (§4.8.7) |
+| **Physik-Analogien** (Kristall, Doppelspalt, QM) | **C** | Testdesign und Orientierung — **kein** Export als Theorem |
 
-$$\boxed{\;\S4.8.8 = \textbf{methodische Sicherung}: Beobachtungsgeometrie ja — Ontologie nein — Evidenz nur bei Kodierungsstabilität.}\;}$$
+**Quotienten-Hypothese** (Schicht **B**/**R**, offen): Resonanz kann in $\mathbb{N}/{\sim}$ **vorhanden** sein oder **erst durch Projektion** sichtbar werden — falsifizierbar über H$_0$–H$_4$ (§4.8.7).
+
+##### Erkenntnistheoretischer Kern (methodische Sicherung)
+
+§4.8.8 fixiert **was** beobachtet wird, **wie** projiziert wird und **wann** Resonanz Evidenz hat. Schichten-Rahmen: `collatz_eabc_epistemik_schichten.md` §0–3.1.
+
+| Ebene | Rolle | Beispiel |
+|-------|-------|----------|
+| **A** | Rohdaten | $\mathbb{N}$, $\mathbb{P}$, Primstrom |
+| **B** | Beobachtungsgeometrie | $\Theta$, $C_E$, $N_\pm$, $D_E$, $\Sigma_A$ |
+| **C** | Externe Detektoren | $K_F$, $\zeta_F$, $A_n$, $R_N$ |
+
+**Instrumentalistische Lesart:** Kegel, Fourier/Wavelet/PCA = Schicht **C** — erklären **warum** man projiziert, nicht **was** Primzahlen „sind“.
+
+**Drei Fälle** bei künftigem Resonanzüberschuss: **(1)** in Primzahlen (Signal überlebt alle $C_k$); **(2)** durch EABC-Projektion (nur $C_E$); **(3)** Artefakt (verschwindet unter Null/Kodierungswechsel). Default: (3) solange H$_0$ nicht verworfen (§4.8.7).
+
+**Kodierungsinvarianz** = derselbe Test wie Robustheit unter $C_E,C_8,C_{10},C_{30},C_{210}$ oben; programmatisch verwandt mit Stufe 3 (`collatz_stufe3_kappa_invarianz.md`).
+
+$$\boxed{\;\S4.8.8 = \textbf{methodische Sicherung}: Beobachtungsgeometrie ja — Ontologie nein — Evidenz nur bei strukturstabiler Kompression.}\;}$$
 
 | Baustein | Tao-Label | Schicht |
 |----------|-----------|---------|
-| $\Theta(n)=(\pi/2)\sigma(n)$ | **Definition** | **A**/**B** |
-| Beschreibungs- vs. effektive Pixelung | **Definition** / **Hypothese** | **B**/**R** |
-| Gitter $(\Theta,h)$, rotierender Kegel | **Analogie** | **C** |
-| Pixel/Welle, Fibonacci-Interferenz | **Analogie** / **Hypothese** | **C** |
-| Kristall, Doppelspalt, QM-Projektion | **Analogie** | **C** |
-| $\mathbb{N}\to\mathbb{N}/{\sim}$, Resonanz-Hypothese | **Hypothese** | **B**/**R** |
-| Drei Ebenen A/B/C, Zwei Extreme, Drei Fälle | **Meta** | **Meta** |
-| Kodierungsinvarianz-Test (mod $8,10,30,210$) | **Experiment** (Stub) | **B**/**R** |
-| Kompressionsoperator $C_E$, Entropie $I_E(N)$, strukturstabile Kompression | **Definition** / **Meta** | **B** |
+| $C_E$, $I_E(N)$, strukturstabile Kompression | **Definition** / **Meta** | **B** |
 | Robustheit unter $C_E,C_8,C_{10},C_{30},C_{210}$ | **Experiment** (Stub) | **B**/**R** |
+| Beschreibungs- vs. effektive Pixelung, $\Theta$ | **Definition** / **Hypothese** | **B**/**R** |
+| Kegel, Zwei Rotoren, Physik-Analogien | **Analogie** | **C** |
+| Drei Ebenen A/B/C, Drei Fälle | **Meta** | **Meta** |
 
-**Label:** §4.8.8 = **Meta** / **Hypothese** / **Analogie** (Schicht **C** für Bilder; **A**/**B** für $\Theta$ und Quotient); **kein Theorem**.
+**Label:** §4.8.8 = **Meta** / **Hypothese** / **Analogie** (Schicht **C** für Bilder; **A**/**B** für $C_E$ und $\Theta$); **kein Theorem**.
+
+#### 4.8.9 Offener numerischer Test (Stub)
+
+**Status:** **Experiment** (Stub) — noch nicht implementiert.
+
+**Ziel:** Prüfbarkeit der Forschungsfrage aus §4.8.8 — überleben Observablen ($D_E$, $\Delta_F$, $R_N$, $C_F^{\mathrm{prime}}/C_F^{\mathrm{golden}}$) die Kompression $C_E$ und bleiben sie robust unter $C_8,C_{10},C_{30},C_{210}$?
+
+**Geplantes Skript:** `eabc_compression_robustness.py` — Reuse von Primstrom- und Level-2-Infrastruktur aus `eabc_level2_fluctuation.py` (Fenster-Kovarianz $\Sigma_A$, $\Delta_F$); analog zur κ-Invarianz-Methodik in `collatz_stufe3_kappa_invarianz.md`.
+
+**Erwartete Ausgabe:** Tabelle der Signale unter $\{C_E,C_8,C_{10},C_{30},C_{210}\}$ mit Lesart Fall (1)–(3); JSON für Reproduzierbarkeit.
+
+$$\boxed{\;\text{Numerischer Kompressions-Robustheitstest = Stub — Verknüpfung §4.8.8 mit Stufe 3.}\;}$$
+
+**Label:** §4.8.9 = **Experiment** (Stub); **kein Theorem**.
 
 ### 4.9 Zeta-Exponential-Gedankenexperiment (Schicht **C**)
 

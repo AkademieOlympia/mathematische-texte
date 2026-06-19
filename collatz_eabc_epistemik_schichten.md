@@ -23,8 +23,8 @@ $$\boxed{\;\textbf{Theorem} \;\neq\; \textbf{Struktur} \;\neq\; \textbf{Brücke}
 - `collatz_eabc_euklidische_hebung.md` — algebraischer Nebenzweig $\mathbb{R}\subset\mathbb{C}\subset\mathbb{H}\subset\mathbb{O}$ (Schicht **A**)
 - `collatz_eabc_core/CollatzEabc/RadiationSpace.lean` — interpretativer Lean-Scaffold (rot)
 - `collatz_eabc_core/CollatzEabc/OccupancyMonoid.lean` — Streaming-Monoid $(Z,\oplus,Z_0)$, `blockScan_append` (Schicht **A**, §4.6–4.7)
-- `collatz_eabc_zirkulationshypothese.md` — Monoid §4.6; state-centric Hierarchie §4.7; Level-2 §4.8; Spin-Liquid-Analogie (methodisch, nicht ontologisch) §4.8.1; **Fibonacci-Kamm als externer Resonanzdetektor, Hypothesenleiter H$_0$–H$_4$** §4.8.7; **Beschreibungs- vs. effektive Pixelung, Beobachtungsgeometrie, erkenntnistheoretischer Kern, Kompressionsoperator** §4.8.8
-- `collatz_stufe3_kappa_invarianz.md` — Stufe 3: Kodierungsinvarianz (κ-Test; Stub-Verknüpfung zu §4.8.8)
+- `collatz_eabc_zirkulationshypothese.md` — Monoid §4.6; state-centric Hierarchie §4.7; Level-2 §4.8; Spin-Liquid-Analogie (methodisch, nicht ontologisch) §4.8.1; **Fibonacci-Kamm als externer Resonanzdetektor, Hypothesenleiter H$_0$–H$_4$** §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** §4.8.8; numerischer Robustheitstest (Stub) §4.8.9
+- `collatz_stufe3_kappa_invarianz.md` — Stufe 3: Kodierungsinvarianz (κ-Test; Stub-Verknüpfung zu §4.8.8/§4.8.9)
 
 ---
 
@@ -117,7 +117,7 @@ $$\boxed{\;\textbf{Beweis-Spur} \;\|\; \textbf{Ikone-Spur}\;}$$
 | Holonomien | $\mathrm{Hol}_E$, $\mathcal{P}\exp\oint A$ (Programm) | `collatz_eabc_holonomie_stufen.md` |
 | Kreisgraphen | $G_E=(V,E)$, $C_4\cong S^1$, $E^+/E^-$ | `collatz_eabc_diskrete_geometrie.md`, `FlussPhiE.lean` |
 | Harmonische Formen | $h\in H^1(C_4,\mathbb{Z})$, $\langle\omega_E,h\rangle$ | `collatz_eabc_uebergangsraum.md`, `collatz_eabc_hodge_eabc.py` |
-| Fluss | $\omega_E$, $C_E=\oint_\gamma\omega_E$, $W_E(X)$, $\alpha_E$, Ebenen 0–4, H₀a/H₀b–H₃, Literaturpositionierung §4.5, Level-2 §4.8, Spin-Liquid §4.8.1, Fibonacci-Kamm §4.8.7, Pixelung §4.8.8 | `collatz_eabc_zirkulationshypothese.md` §4.1–4.5, §4.8–4.8.8 |
+| Fluss | $\omega_E$, $C_E=\oint_\gamma\omega_E$, $W_E(X)$, $\alpha_E$, Ebenen 0–4, H₀a/H₀b–H₃, Literaturpositionierung §4.5, Level-2 §4.8, Spin-Liquid §4.8.1, Fibonacci-Kamm §4.8.7, Kompressionsoperator §4.8.8, Robustheitstest (Stub) §4.8.9 | `collatz_eabc_zirkulationshypothese.md` §4.1–4.5, §4.8–4.8.9 |
 | Orientierungsklassen | $\Phi_E=\lim W_E$, chirale 1-Form | `collatz_eabc_chirale_polarisation.md` |
 
 **Kernfrage (Schicht B als Struktur, Schicht R als Brücke):**
@@ -227,15 +227,9 @@ $$\boxed{\;\text{Gegner ist falsches Nullmodell — nicht der verschwindende Mit
 
 **Label:** gesamter Abschnitt §3.1 = **Analogie** (Schicht **C**); verknüpft mit **Experiment** (Level 1–2) und **Beispiel** (Witness).
 
-**Beobachtungsgeometrie vs. Ontologie** (vollständig: `collatz_eabc_zirkulationshypothese.md` §4.8.8): Die EABC-Phasenkoordinate $\Theta(n)=(\pi/2)\sigma(n)$ ist **Beschreibungspixelung** (Schicht **A**/**B**) — Kodierung wie $n\bmod 12$, keine neue Physik. **Effektive Pixelung** entsteht, wenn die Primdynamik auf $\{E,A,B,C\}$ reagiert (Observable, Schicht **B**/**R**). Kegel-Bild, Kristall-, Doppelspalt- und QM-Analogien sowie die Lesart „EABC = Pixel, Kamm = Wellen“ sind **Schicht C** — sie strukturieren **Beobachtungsgeometrie**, nicht die Ontologie von $\mathbb{N}$.
+**Prüfbare Forschungsfrage — strukturstabile Kompression** (vollständig: `collatz_eabc_zirkulationshypothese.md` §4.8.8–§4.8.9): Beobachtungsgeometrie ist ein **informationsreduzierender Kompressionsoperator** $C_E:\mathbb{N}\to\{E,A,B,C\}$ (via $n\bmod 12$), **keine physikalische Ontologie**. Für endliche Stichproben gilt $H(\mathbb{N}_N)=\log_2 N$, $H(\mathrm{EABC}_N)\to 2$ Bits, $I_E(N)\approx\log_2 N-2$ — EABC tilgt asymptotisch fast alle Information. Die **prüfbare Forschungsfrage** lautet: *Ist EABC strukturstabile Kompression der Primdynamik?* — d. h. tragen Signale $S(\mathbb{N})$ und $S(C_E(\mathbb{N}))$ dieselbe qualitative Struktur (Peaks, Level-2-Abweichungen)? **Evidenz** nur, wenn Resonanz die Kompression **überlebt** und unter $C_E,C_8,C_{10},C_{30},C_{210}$ **robust** bleibt; **Falsifikation**, wenn Signale unter alternativen $C_k$ verschwinden (Fall (2)/(3)). Leitfrage: *Welche Primzahlstrukturen überleben extreme Kompression?* Kontext (Pixelung, Kegel, Zwei Rotoren, Schichten A/B/C): §4.8.8; numerischer Test (Stub): §4.8.9 / `eabc_compression_robustness.py`; κ-Analogie: `collatz_stufe3_kappa_invarianz.md`.
 
-**Erkenntnistheoretischer Kern** (§4.8.8, methodische Sicherung): Drei Ebenen — **A** Rohdaten ($\mathbb{N}$, $\mathbb{P}$), **B** Beobachtungsgeometrie ($\Theta$, $\mathbb{N}\to\mathbb{Z}_4$), **C** externe Resonanzdetektoren ($K_F$). Zwei Extreme: realistische vs. instrumentalistische Kegel-Lesart (Fourier/Wavelet/PCA = Schicht **C**). Drei Fälle bei Resonanzüberschuss: (1) in Primzahlen, (2) durch EABC-Projektion, (3) Artefakt. **Kodierungsinvarianz-Test** (mod $8$, $10$, $30$, $210$): nur EABC $\Rightarrow$ spezifisch; überall $\Rightarrow$ allgemein; nirgends $\Rightarrow$ Artefakt. Stub: `collatz_stufe3_kappa_invarianz.md`.
-
-**Kompressionsoperator** (§4.8.8): $C_E:\mathbb{N}\to\{E,A,B,C\}$ via $n\bmod 12$ — massive Kompression; Kegel = Kompressionsschema; Pixelung = Informationsverlust ($13,37,61,\ldots\to E$). Endliche Stichprobe: $H(\mathbb{N}_N)=\log_2 N$, $H(\mathrm{EABC}_N)\to 2$ Bits, $I_E(N)=\log_2 N-H(\mathrm{EABC}_N)\approx\log_2 N-2$ — EABC verwirft asymptotisch fast alle Information. $C_E$ ist **nicht** verlustfrei; offen bleibt, ob Primstruktur $\to$ EABC-Struktur **strukturstabile Kompression** ist (Signal $S$ behält qualitative Muster unter $C_E$). Landauer nur konzeptuell (Shannon-Reduktion präzise). Resonanz muss Kompression **überleben** und unter $C_E,C_8,C_{10},C_{30},C_{210}$ **robust** sein — sonst Fall (2)/(3). Leitfrage: *Welche Primzahlstruktur überlebt extreme Kompression?* Verweise: `Quantentests.py` (`eabc_occupation_entropy`), `arithmetische_signaturgeometrie.tex` ($C_{\mathrm{fam}}$), Stufe-3-Entropie $h_F$.
-
-$$\boxed{\;\text{EABC = arithmetischer Informationsfilter — strukturelle Relevanz nur bei strukturstabiler Kompression und Robustheit unter alternativen $C_k$.}\;}$$
-
-$$\boxed{\;\text{Resonanz hat Evidenz nur bei Stabilität gegenüber alternativen Projektionen (§4.8.8).}\;}$$
+$$\boxed{\;\text{EABC = arithmetischer Informationsfilter — Evidenz nur bei strukturstabiler Kompression und Robustheit unter alternativen $C_k$ (§4.8.8).}\;}$$
 
 ---
 
