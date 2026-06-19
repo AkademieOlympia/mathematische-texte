@@ -612,6 +612,8 @@ $$\boxed{\;\text{Fibonacci-Zeta = geordneter Resonator; Riemann-Zeta = arithmeti
 
 ### 9.12 $\zeta_F$ an Riemann-Nullstellen-Ordinaten $\gamma_n$ (Experiment)
 
+**Gesamtbaustein:** `collatz_eabc_zirkulationshypothese.md` §4.8.6 (EABC–Fibonacci-Kamm-Kopplung).
+
 **Status:** numerischer Resonanztest (Schicht **C**) — **kein** Beweis, **kein** RH-Anspruch.  
 **Skript:** `eabc_zeta_f_riemann_zeros.py` — **Daten:** `zeros6.npz` (bzw. `zeros6.npy`, $n\approx 2{,}001{,}052$ Ordinaten, Odlyzko-`zeros6`-Pipeline).
 
@@ -686,6 +688,8 @@ $$\boxed{\;\text{Epistemik: Resonanztest-Ansatz — Experiment (Schicht C), kein
 
 ### 9.13 $\varphi$-Phasenapparat, rotierender Kegel und EABC-$C_4$-Gerüst (Analogie)
 
+**Gesamtbaustein:** `collatz_eabc_zirkulationshypothese.md` §4.8.6 (EABC–Fibonacci-Kamm-Kopplung).
+
 **Status:** methodischer Baustein (Schicht **C**) — **keine** Nullstellenidentität, **kein** RH-Anspruch, **kein** EABC-Theorem.
 
 $$\boxed{\;\text{Riemann-Nullstellen sind \textbf{keine} }\zeta_F\text{-Nullstellen, können aber nahe }\varphi\text{-Resonanzen liegen — nur Beinahe-Auslöschungen, keine Identität.}\;}$$
@@ -748,7 +752,7 @@ $$\boxed{\;\text{Kegel-Verbindung = \textbf{Analogie} (Schicht C): }\varphi\text
 | Identität Riemann-Nullstelle = $\zeta_F$-Nullstelle | — | **nicht behauptet** |
 | RH / EABC aus $\zeta_F$ | — | **nicht behauptet** |
 
-**Skript:** `eabc_zeta_f_riemann_zeros.py` (§9.12–9.13); **Verweis:** `collatz_eabc_zirkulationshypothese.md` §4.8.5.
+**Skript:** `eabc_zeta_f_riemann_zeros.py` (§9.12–9.13); **Verweis:** `collatz_eabc_zirkulationshypothese.md` §4.8.5–4.8.6 (Gesamtbaustein EABC–Fibonacci-Kamm-Kopplung).
 
 ---
 
@@ -774,4 +778,4 @@ $$\boxed{\;\zeta_F(s)=\sum_{n\ge1}F_n^{-s}\;\Leftrightarrow\;\text{goldener Log-
 
 ---
 
-*Verknüpft mit `collatz_eabc_zirkulationshypothese.md` §4.8.2 (Stufe 0: $\zeta_F$), §4.8.5 (Fibonacci-Kamm-Hypothese), §4.9; epistemischer Rahmen: `collatz_eabc_epistemik_schichten.md`; Bernoulli: `collatz_bernoulli_schalen.pdf`, `BernoulliClock.lean`; Oktanionen: `divisionsalgebren.tex`, `collatz_oktonionen_beweis.pdf`; Fibonacci-Numerik: `collatz_eabc_zeta_fibonacci_check.py`, `eabc_zeta_fibonacci_witnesses.py` (§9.7–9.10), `eabc_zeta_f_riemann_zeros.py` (§9.12–9.13, `zeros6.npz`); Wigner-Zellen: `eabc_wigner_zellen.py`, `eabc_quadruplets.csv`.*
+*Verknüpft mit `collatz_eabc_zirkulationshypothese.md` §4.8.2 (Stufe 0: $\zeta_F$), §4.8.5 (Fibonacci-Kamm-Hypothese), §4.8.6 (Gesamtbaustein EABC–Fibonacci-Kamm-Kopplung), §4.9; epistemischer Rahmen: `collatz_eabc_epistemik_schichten.md`; Bernoulli: `collatz_bernoulli_schalen.pdf`, `BernoulliClock.lean`; Oktanionen: `divisionsalgebren.tex`, `collatz_oktonionen_beweis.pdf`; Fibonacci-Numerik: `collatz_eabc_zeta_fibonacci_check.py`, `eabc_zeta_fibonacci_witnesses.py` (§9.7–9.10), `eabc_zeta_f_riemann_zeros.py` (§9.12–9.13, `zeros6.npz`); Wigner-Zellen: `eabc_wigner_zellen.py`, `eabc_quadruplets.csv`.*

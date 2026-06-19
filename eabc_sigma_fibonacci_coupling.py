@@ -18,7 +18,7 @@ P_F(ω_j) = Σ_i λ_i |⟨v̂_i(ω_j), k_F(ω_j)⟩|²
 Nullvergleich: Σ_A^prime vs. golden / perm / Markov (wie Level-2).
 Nullhypothese: C_F^prime ≁ C_F^null (bzw. P_F^prime ≁ P_F^null), nicht „= 0“.
 
-Referenz: collatz_eabc_zirkulationshypothese.md §4.8.3–4.8.4
+Referenz: collatz_eabc_zirkulationshypothese.md §4.8.3–4.8.6 (Gesamtbaustein)
 """
 
 from __future__ import annotations

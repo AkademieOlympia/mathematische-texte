@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
 - `collatz_eabc_zeta_exponential_gedankenexperiment.md` — **Gedankenexperiment / Analogie:** $\zeta$ als Exponentialsumme auf Log-Prim-Geometrie; Euler-Streifen $(1\pm p^{-s})$; $\xi$-Spiegelung; Brücke zu Log-Koordinaten, $\gamma^\pm$-Paarung, Level-2; §6–§10: Ganzzahl/Halbzahl-Exponenten, Oktanionen (Schicht C), Bernoulli-Subtraktion, Fibonacci-Zeta (kein RH-/EABC-Theorem)
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
@@ -1178,6 +1178,151 @@ Die Fibonacci-Kamm-Hypothese verknüpft ein **externes Objekt** ($K_F$, $\varphi
 **$\zeta_F$-Resonanzdetektor an Riemann-$\gamma_n$ (Kurzverweis):** Unabhängig von $C_F$/$P_F$ testet `eabc_zeta_f_riemann_zeros.py` die Phasensumme $A_n=|\zeta_F(\tfrac12+i\gamma_n)|$ als **externen** $\varphi$-Kamm-Detektor. Methodische Parallele: vorhersagbare $\varphi$-Geometrie (goldener Kamm) trifft auf **eingesetzte** äußere Frequenzen $\gamma_n$ — analog zur vorhersagbaren Drehrichtung auf dem $C_4$-Gerüst ($\gamma^\pm$), aber im **Phasenraum** (§9.13 Gedankenexperiment; **Analogie**, kein Theorem). Nullhypothese: $\#\{A_n<\varepsilon\}$ bei Riemann-$\gamma$ vs. Zufalls-$\gamma$ gleicher Dichte; bei $N=10^5$ **kein** robuster Überschuss.
 
 **Label:** §4.8.5 = **Hypothese** / **Experiment** (Schicht **C**); **kein Theorem**.
+
+**Gesamtbaustein:** §4.8.6 fasst EABC-Kegel, Fibonacci-Kamm, $A_n$-Test und $C_F$-Kopplung in einem paper-ready Abschnitt zusammen.
+
+#### 4.8.6 EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)
+
+**Status:** methodischer Forschungsbaustein (Schicht **C**) — **kein Theorem**, **kein** EABC$\Rightarrow$Fibonacci, **kein** Riemann$\Rightarrow$Fibonacci.
+
+**Querverweise:** algebraische $\zeta_F$-Struktur und Stufe-0-Nullensemble §4.8.2–4.8.3; $C_F$/$P_F$-Definitionen und Minimal-Prototyp §4.8.5; Riemann-$\gamma_n$-Resonanztest §9.12 und Kegel-Analogie §9.13 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`; Skripte `eabc_sigma_fibonacci_coupling.py`, `eabc_zeta_f_riemann_zeros.py`.
+
+##### Ausgangspunkt
+
+Im EABC-Programm entstehen aus den natürlichen Zahlen die vier Restklassen
+
+$$E=1,\qquad A=5,\qquad B=7,\qquad C=11 \pmod{12},$$
+
+welche auf dem EABC-Kreis
+
+$$E\to A\to B\to C\to E$$
+
+eine diskrete Chiralität tragen (`collatz_eabc_diskrete_geometrie.md` §1–2; $C_4\cong S^1$, $\gamma^\pm$).
+
+**Analogie (Schicht C, kein Theorem):** Die natürliche Dynamik wird als **rotierender Kegel** interpretiert:
+
+$$n \longmapsto (\theta_n,h_n),$$
+
+wobei
+
+$$\theta_n = \frac{\pi}{2}\,\sigma(n)$$
+
+die EABC-Phase beschreibt ($\sigma=\sigma_1$ Divisorfunktion) und $h_n$ die axiale Höhe (z.\,B. Primindex, Logarithmus oder Streaming-Zeit). Dadurch entsteht eine **Helix** bzw. ein rotierender Kegel der natürlichen Zahlen — **Bildsprache**, nicht kinematischer Kegel im Ereignisraum (vgl. §9.13; `ViererRahmen.tex`).
+
+$$\boxed{\;\text{EABC-Kegel / Helix = \textbf{Analogie} (Schicht C): vorhersagbare chirale Orientierung auf }C_4\text{ — kein Overclaim.}\;}$$
+
+##### Externer Fibonacci-Kamm
+
+Unabhängig davon existiert die Fibonacci-Zeta-Funktion
+
+$$\zeta_F(s) = \sum_{k\ge1}F_k^{-s}.$$
+
+Auf der kritischen Geraden $s=\tfrac12+it$ wird daraus
+
+$$\zeta_F\!\left(\tfrac12+it\right) = \sum_{k\ge1} F_k^{-1/2}\,e^{-it\log F_k}.$$
+
+Jeder Fibonacci-Term ist ein **rotierender Zeiger**. Damit entsteht ein Phasenkamm
+
+$$K_F(t) = \sum_{k\ge1} F_k^{-1/2}\,e^{-it\log F_k}.$$
+
+Für große $k$ gilt
+
+$$\log F_k = k\log\varphi - \tfrac12\log 5 + o(1).$$
+
+Somit besitzt der Kamm eine fundamentale Frequenz
+
+$$\omega_\varphi = \log\varphi.$$
+
+Die meromorphe Resonatorform und das goldene Log-Gitter $\Omega_\varphi=\{2\pi k/\log\varphi\}$ sind in §4.8.3 und §9.8–9.10 in `collatz_eabc_zeta_exponential_gedankenexperiment.md` definiert; $K_F$ ist **extern vorgegeben**, nicht aus Primdaten gelernt.
+
+##### Numerischer Test ($A_n$ an Riemann-$\gamma_n$)
+
+Für jede nichttriviale Riemann-Nullstelle $\rho_n=\tfrac12+i\gamma_n$ definiert man
+
+$$A_n = \left|K_F(\gamma_n)\right| = \left|\zeta_F\!\left(\tfrac12+i\gamma_n\right)\right|.$$
+
+Die numerischen Rechnungen zeigen: $A_n\neq 0$ im Allgemeinen; es treten jedoch seltene starke Auslöschungen auf.
+
+**Beispiel** (§9.12, `eabc_zeta_f_riemann_zeros.py`, $N=10^5$):
+
+$$\gamma_{74631} \approx 57710.120793 \quad\Rightarrow\quad A_{74631} \approx 0.0049567.$$
+
+Dies ist eine nahezu vollständige **destruktive Interferenz** des Fibonacci-Kamms — **keine** Nullstellenidentität ($A_n=0$ wird nicht behauptet).
+
+**Schwellentest (Kurzverweis):** Bei $N=10^5$ und Zufalls-$\gamma$ gleicher Dichte: $\#\{A_n<0.05\}=15$ vs. $10$ — **vorsichtig interessant**, ohne Mehrfachtest-Korrektur **nicht** signifikant. Vollständige Tabellen und $R_n$-Diagnostik: §9.12–9.13 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`.
+
+##### Geometrische Interpretation: $\Theta$ (EABC) vs. $\Phi$ (Fibonacci)
+
+Der EABC-Kegel erzeugt eine diskrete Rotationsstruktur
+
+$$\Theta(n) = \frac{\pi}{2}\,\sigma(n) \qquad\text{(Schicht C, Analogie)}.$$
+
+Der Fibonacci-Kamm erzeugt eine kontinuierliche Rotationsstruktur
+
+$$\Phi(t) = t\log\varphi \qquad\text{(Definition auf dem goldenen Log-Gitter)}.$$
+
+Man erhält damit zwei **unabhängige** Winkelgrößen:
+
+$$\Theta \quad\text{(EABC)} \qquad\text{und}\qquad \Phi \quad\text{(Fibonacci)}.$$
+
+Die Frage lautet nun: Treffen bestimmte EABC-Eigenmoden bevorzugt auf Fibonacci-Resonanzen?
+
+##### Kovarianzformulierung
+
+Sei $v_i$ ein Eigenvektor der EABC-Kovarianzmatrix $\Sigma_A$ ($\Sigma_A v_i=\lambda_i v_i$). Dann definiert man die Projektion auf den Fibonacci-Kamm:
+
+$$C_i = \left|\langle v_i, k_F\rangle\right|^2,$$
+
+oder global (wie §4.8.3–4.8.5)
+
+$$C_F = \sum_i \lambda_i\,C_i = \sum_i \lambda_i\,\left|\langle v_i, k_F\rangle\right|^2,$$
+
+mit $k_F\in\mathbb{R}^6$ am goldenen Resonanzgitter (§4.8.3). Frequenzaufgelöste Variante: $P_F(\omega)$ in §4.8.4.
+
+**Erster $C_F$-Befund (Kurzverweis):** $N=10^5$: $C_F^{\mathrm{prime}}/C_F^{\mathrm{golden}}<1$; Minimal-Prototyp $N=2\cdot10^5$, $L=16$, $B=30$: $Z_F\approx0{,}88$, Primwert innerhalb des Nullbereichs — **kein signifikanter Kamm-Befund** (Details §4.8.5). Implementierung: `eabc_sigma_fibonacci_coupling.py`.
+
+##### Nullhypothese und Resonanzhypothese
+
+$$H_0:\;\text{Die EABC-Eigenmoden sind unabhängig vom Fibonacci-Kamm.}$$
+
+Dann sollten die beobachteten Projektionen statistisch **nicht** von geeigneten Nullmodellen abweichen. Präzise Operationalisierung (§4.8.3): nicht $C_F=0$, sondern
+
+$$C_F^{\mathrm{prime}} \not> C_F^{\mathrm{null}},\qquad \mathrm{null}\in\{\mathrm{golden},\mathrm{perm},\mathrm{Markov},\ldots\}.$$
+
+$$H_1:\;\text{Die EABC-Eigenmoden besitzen eine nichttriviale Projektion auf den Fibonacci-Kamm.}$$
+
+Dann erwartet man $C_F^{\mathrm{prime}} > C_F^{\mathrm{rand}}$ gegen die Nullhierarchie §4.8.2 — **derzeit nicht gestützt** ($C_F^{\mathrm{prime}}/C_F^{\mathrm{golden}}<1$).
+
+Analog für den Riemann-$\gamma$-Schwellentest (§9.13): $H_0$ = Zufalls-$\gamma$ gleicher Dichte; $H_1$ = systematischer Überschuss bei $\#\{A_n<\varepsilon\}$ — **schwach interessant**, nicht bestätigt bei $N=10^5$.
+
+##### Methodischer Status
+
+Aktuell ist nur Folgendes numerisch belegt:
+
+1. Der Fibonacci-Kamm ist wohldefiniert (§4.8.3; §9.8–9.10).
+2. Riemann-Ordinaten erzeugen gelegentlich starke Auslöschungen ($A_n\ll1$; §9.12).
+3. Die stärksten Minima scheinen **etwas häufiger** aufzutreten als bei einfachen Zufallsmodellen ($\#\{A_n<0.05\}$: 15 vs. 10) — **ohne** Signifikanzgarantie.
+
+**Nicht** belegt ist derzeit:
+
+$$\text{Riemann} \Longrightarrow \text{Fibonacci} \qquad\text{oder}\qquad \text{EABC} \Longrightarrow \text{Fibonacci}.$$
+
+Der Fibonacci-Kamm ist daher momentan am besten als **externer Resonanzdetektor** für die Phasenstruktur des rotierenden EABC-Kegels zu verstehen.
+
+$$\boxed{\;\text{EABC-Kegel}\;\xrightarrow{\;\text{Projektion}\;}\;\text{Fibonacci-Kamm}\;\xrightarrow{\;\text{Test}\;}\;\text{Resonanzmaß }C_F\;}$$
+
+Das ist eine mathematisch saubere Formulierung, die ohne starke physikalische Interpretationen auskommt und direkt numerisch überprüfbar ist.
+
+| Aussage | Schicht | Tao-Label |
+|---------|---------|-----------|
+| EABC-Restklassen, $C_4$-Kreis, $\gamma^\pm$ | **B** | **Definition** |
+| Rotierender Kegel, Helix, $\Theta(n)$ | **C** | **Analogie** |
+| $\zeta_F$, $K_F$, $\omega_\varphi=\log\varphi$ | — / **C** | **Definition** / **Modell** |
+| $A_n=|\zeta_F(\tfrac12+i\gamma_n)|$ | **C** | **Experiment** |
+| $C_F$, $P_F$, $H_0$/$H_1$ gegen Nullhierarchie | **C** | **Hypothese** / **Experiment** |
+| EABC$\Rightarrow$Fibonacci oder Riemann$\Rightarrow$Fibonacci | — | **nicht behauptet** |
+
+**Label:** §4.8.6 = **Hypothese** / **Experiment** / **Analogie** (Schicht **C**); **kein Theorem**.
 
 ### 4.9 Zeta-Exponential-Gedankenexperiment (Schicht **C**)
 

@@ -12,7 +12,8 @@ Reihe (stabil, ohne Resonatorformel):
 
 Optional: R_n = min_{t ∈ K_φ} |γ_n − t|,  K_φ = {2πk / log φ : k ∈ ℤ}.
 
-Referenz: collatz_eabc_zeta_exponential_gedankenexperiment.md §9.12–9.13
+Referenz: collatz_eabc_zeta_exponential_gedankenexperiment.md §9.12–9.13;
+         collatz_eabc_zirkulationshypothese.md §4.8.6 (Gesamtbaustein)
 Label: Experiment (Schicht C) — kein RH-Anspruch, kein Beweis.
 
 CLI:
