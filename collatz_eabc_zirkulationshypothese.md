@@ -1039,14 +1039,16 @@ mit $(\lambda_i,v_i)=\mathrm{Spec}(\Sigma_A^{\mathrm{prime}})$.
 |--|--|
 | **Definition** | $K_F(s)$, $k_F$ am goldenen Log-Gitter $t_j=2\pi j/\log\varphi$ |
 | **Fragestellung** | Zeigt $\mathrm{Spec}(\Sigma_A^{\mathrm{prime}})$ messbare Kommensurabilität mit dem $\varphi$-Resonatorkamm — stärker als gegen die Nullmodell-Hierarchie? |
-| **$C_F$** | **implementiert** (`eabc_sigma_fibonacci_coupling.py --mode cf`) + erste Diagnostik |
+| **$C_F$** | **implementiert** (`eabc_sigma_fibonacci_coupling.py --mode cf`) + Minimal-Prototyp §4.8.5 |
 | **$P_F(\omega)$** | **implementiert** (`--mode pf`, default) — frequenzaufgelöste Variante, §4.8.4 |
-| **Erster $C_F$-Befund** | $C_F^{\mathrm{prime}}/C_F^{\mathrm{golden}}\approx0{,}58$–$0{,}83$ ($N=10^5$): Prim-Kopplung **unter** goldenem Null — kein starker Resonanzbefund |
+| **Erster $C_F$-Befund** | $N=10^5$: prim/gold $<1$; Minimal-Prototyp $N=2\cdot10^5$, $L=16$: kein signifikanter Kamm-Befund (§4.8.5) |
 | **Paper-Abschnitt** | Kompakte Kurzfassung §4.8.5 |
 
 ```bash
 python3 eabc_sigma_fibonacci_coupling.py --mode pf --limit 100000 --B-rand 20
 python3 eabc_sigma_fibonacci_coupling.py --mode cf --limit 100000 --B-rand 20
+# Minimal-Prototyp (§4.8.5):
+python3 eabc_sigma_fibonacci_coupling.py --mode cf --limit 200000 --checkpoints 16 --B-rand 30 --seed 42
 ```
 
 **Querverweis:** meromorphe Normalform und Resonatoren §9.8–9.10 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`; Stufe-0-Nullensemble §4.8.2 (`eabc_level2_fluctuation.py`).
@@ -1105,14 +1107,70 @@ $$\frac{2\pi}{\log\varphi}.$$
 
 Diese Hypothese ist ausdrücklich **explorativ**. Sie behauptet **keine** Erklärung der Primstrom-Kovarianz durch die Fibonacci-Zeta-Funktion, sondern formuliert lediglich einen Test auf **spektrale Kommensurabilität** zwischen einer unabhängig definierten $\varphi$-Geometrie und der Level-2-Fluktuationsstruktur des EABC-Programms.
 
+##### Minimal-Prototyp ($C_F$, Permutations-Null)
+
+Getestet als Minimal-Prototyp mit
+
+$$N=200\,000,\qquad L=16,\qquad 30\ \text{Permutations-Nullmodelle}$$
+
+(Fensterlänge $L=m$ in disjunkten EABC-Fenstern; Nullensemble: $B=30$ unabhängige Surrogate; Seed $42$).
+
+**Ergebnis (Nutzer-Lauf, Prototyp-Operationalisierung):**
+
+$$C_F^{\mathrm{prime}}=0{,}06384$$
+
+Nullmodell:
+
+$$\mathbb{E}[C_F^{\mathrm{null}}]=0{,}06209,\qquad \sigma=0{,}00199$$
+
+Standardisierte Abweichung:
+
+$$Z_F\approx 0{,}88$$
+
+$95\,\%$-Nullbereich:
+
+$$[0{,}05823,\;0{,}06499]$$
+
+Der Primwert liegt innerhalb des Nullbereichs.
+
+$$\boxed{\text{Kein signifikanter Fibonacci-Kamm-Befund im Minimaltest.}}$$
+
+**Skript-Reproduktion** (`eabc_sigma_fibonacci_coupling.py --mode cf --limit 200000 --checkpoints 16 --B-rand 30 --seed 42`): Rohwerte $C_F^{\mathrm{prime}}=0{,}2703$, gepooltes Perm-Null $C_F^{\mathrm{perm}}=0{,}3525$ (prim/perm $\approx0{,}77$). Bootstrap-Null über Fenster-$a$-Vektoren: $\mathbb{E}[C_F]=0{,}2699$, $\sigma=0{,}0034$, $Z_F\approx0{,}11$, $95\,\%$-Bereich $[0{,}2625,\;0{,}2755]$ — Primwert **innerhalb**; kein signifikanter Überschuss. Die Nutzer-Prototypzahlen ($\approx0{,}064$) liegen auf derselben Größenordnung wie $C_F/\varphi^3$; die leichte Abweichung bei $\sigma$ und $Z_F$ deutet auf eine noch nicht vollständig identische Null-Operationalisierung hin — **qualitativ** bleibt die Lesart: kein robuster Kamm-Befund.
+
+**Nächster Test:** $N\ge10^6$, mehrere Fensterlängen $L$, Permutations-/Markov-/mod-$12$-Surrogate **getrennt** ausgewiesen.
+
+##### Falsifikationskriterium
+
+Die Hypothese gilt in dieser Operationalisierung als **nicht bestätigt**, wenn
+
+- die Projektionen der Prim-Eigenmoden auf den $\varphi$-Kamm **innerhalb der Streuung** der Referenzensembles liegen;
+- $C_F^{\mathrm{prime}}(X)-C_F^{\mathrm{null}}(X)\to 0$ für wachsendes $X$;
+- $Z_F(X)$ **keine stabile Signifikanz** zeigt;
+- $P_F(\omega)$ **keine reproduzierbaren Peaks** an den Kamm-Skalen liefert.
+
+Die Konstruktion ist **vollständig falsifizierbar**; es gibt **keine freie Anpassung** des Kammes an die Daten — $K_F$ und $k_F$ sind extern vorgegeben.
+
+##### $\Omega_\varphi$ als Kandidaten-Skala (nicht als erwartete Skala)
+
+Unabhängig von der algebraischen $\zeta_F$-Normalform stellt sich methodisch die Frage, **in welchem Raum** die Eigenmoden von $\Sigma_A$ überhaupt leben (Paarindex, Frequenz, Fensterposition, Stream-Index). Als **Kandidaten-Referenzgitter** — nicht als vorab erwartete Resonanzskala — definieren wir
+
+$$\Omega_\varphi:=\left\{\frac{2\pi k}{\log\varphi}:k\in\mathbb{Z}\right\}.$$
+
+Die Testfrage lautet dann: Liegt **überdurchschnittlich viel spektrale Energie** (in $C_F$ oder $P_F(\omega)$) nahe $\Omega_\varphi$, verglichen mit den Nullmodellen §4.8.2? Dieser Absatz trennt explizit **Kandidaten-Skala** von **Befund** und ist für mathematische Referees als methodischer Rahmen gedacht, solange der Moden-Raum nicht kanonisch feststeht.
+
+##### Epistemische Lesart
+
+Die Fibonacci-Kamm-Hypothese verknüpft ein **externes Objekt** ($K_F$, $\varphi$-Geometrie) mit einem **Datenobjekt** ($\Sigma_A^{\mathrm{prime}}$) über einen **statistischen Test** ($C_F$, $P_F$, $Z_F$ gegen Nullhierarchie). Sie ist weder reine Datenauswertung noch freie Interpretation — sondern ein falsifizierbarer Kopplungstest auf Schicht **C**.
+
 **Status:**
 
 | | |
 |--|--|
-| **formal definiert** | $K_F$, $k_F$, $C_F$, $P_F(\omega)$; Drei-Ebenen-Trennung §4.8.3 |
-| **methodisch sauber** | algebraisch / Daten / Kopplung getrennt; $H_0$: Prim **nicht** über Null |
-| **Implementierung** | $C_F$ und $P_F$ in `eabc_sigma_fibonacci_coupling.py` (`--mode cf` / `--mode pf`) |
-| **Erste Diagnostik** | $N=10^5$: prim/gold $<1$ für $C_F$ und $P_F$ — **kein Resonanzsignal** gegen goldenes Null |
+| **formal definiert** | $K_F$, $k_F$, $C_F$, $P_F(\omega)$, $\Omega_\varphi$; Drei-Ebenen-Trennung §4.8.3 |
+| **methodisch sauber** | algebraisch / Daten / Kopplung getrennt; $H_0$: Prim **nicht** über Null; Falsifikationskriterium fix |
+| **Implementierung** | $C_F$ und $P_F$ in `eabc_sigma_fibonacci_coupling.py` (`--mode cf` / `--mode pf`); Bootstrap-$Z_F$ im CF-Modus |
+| **Minimal-Prototyp** | $N=2\cdot10^5$, $L=16$, $B=30$: **kein signifikanter Kamm-Befund** (Nutzer + Skript-Reproduktion) |
+| **Erweiterter Lauf** | $N\ge10^6$, mehrere $L$, getrennte Nulltypen — **ausstehend** / in Arbeit |
 | **theoretisch** | **nicht begründet** |
 
 **Numerik und Details:** §4.8.3–4.8.4; algebraische $\zeta_F$-Struktur §9.8–9.10 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`.

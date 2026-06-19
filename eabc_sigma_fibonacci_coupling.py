@@ -42,6 +42,7 @@ from eabc_level2_fluctuation import (
     collect_markov_null_vectors,
     collect_perm_null_vectors,
     collect_window_vectors,
+    compute_a_vector,
     empirical_covariance,
 )
 
@@ -251,6 +252,81 @@ def _ratio(a: float, b: float) -> float | None:
     return float(a / b)
 
 
+def collect_perm_surrogate_sigmas(
+    word: np.ndarray,
+    m: int,
+    n_draws: int,
+    rng: np.random.Generator,
+) -> list[np.ndarray]:
+    """
+    B unabhängige Permutations-Surrogate: je Fenster genau eine Zufallspermutation.
+    """
+    n = len(word)
+    buf = np.empty(m, dtype=np.int8)
+    sigmas: list[np.ndarray] = []
+    for _ in range(n_draws):
+        rows: list[np.ndarray] = []
+        for start in range(0, n - m + 1, m):
+            win = word[start : start + m].copy()
+            buf[:] = win
+            rng.shuffle(buf)
+            a = compute_a_vector(buf)
+            if not np.any(np.isnan(a)):
+                rows.append(a)
+        if rows:
+            _, sigma = empirical_covariance(np.array(rows, dtype=np.float64))
+            sigmas.append(sigma)
+    return sigmas
+
+
+def bootstrap_window_sigmas(
+    vectors: np.ndarray,
+    n_draws: int,
+    rng: np.random.Generator,
+) -> list[np.ndarray]:
+    """Bootstrap-Null: Zeilen der Fenster-a-Vektoren mit Zurücklegen."""
+    sigmas: list[np.ndarray] = []
+    n = len(vectors)
+    for _ in range(n_draws):
+        idx = rng.integers(0, n, size=n)
+        _, sigma = empirical_covariance(vectors[idx])
+        sigmas.append(sigma)
+    return sigmas
+
+
+def coupling_null_ensemble(
+    sigmas: list[np.ndarray],
+    k_F: np.ndarray,
+) -> dict:
+    """C_F-Verteilung über eine Liste von Kovarianzmatrizen."""
+    if not sigmas:
+        return {
+            "mean": float("nan"),
+            "std": float("nan"),
+            "n_draws": 0,
+            "values": [],
+            "percentile_2_5": float("nan"),
+            "percentile_97_5": float("nan"),
+        }
+    values = [coupling_C_F(sigma, k_F)["C_F"] for sigma in sigmas]
+    arr = np.array(values, dtype=np.float64)
+    return {
+        "mean": float(np.mean(arr)),
+        "std": float(np.std(arr)),
+        "n_draws": len(values),
+        "values": [float(v) for v in values],
+        "percentile_2_5": float(np.percentile(arr, 2.5)),
+        "percentile_97_5": float(np.percentile(arr, 97.5)),
+    }
+
+
+def standardized_Z_F(c_prime: float, null_stats: dict) -> float | None:
+    std = null_stats.get("std")
+    if std is None or std == 0.0 or math.isnan(std):
+        return None
+    return float((c_prime - null_stats["mean"]) / std)
+
+
 def _checkpoint_header(
     m: int,
     K_prime: int,
@@ -295,6 +371,11 @@ def analyze_coupling_checkpoint(
     baseline = random_k_F_baseline(
         sigmas["sigma_prime"], random_baseline_draws, rng
     )
+    eabc_vecs = collect_window_vectors(word, m)
+    perm_surrogates = collect_perm_surrogate_sigmas(word, m, B_rand, rng)
+    bootstrap_sigmas = bootstrap_window_sigmas(eabc_vecs, B_rand, rng)
+    perm_ensemble = coupling_null_ensemble(perm_surrogates, k_F)
+    bootstrap_ensemble = coupling_null_ensemble(bootstrap_sigmas, k_F)
 
     row = _checkpoint_header(m, sigmas["K_prime"], k_F, omegas)
     row.update(
@@ -305,6 +386,10 @@ def analyze_coupling_checkpoint(
             "C_F_markov": c_markov["C_F"],
             "C_F_shuffled_k": c_shuffled["C_F"],
             "C_F_random_baseline": baseline,
+            "C_F_perm_ensemble": perm_ensemble,
+            "C_F_bootstrap_ensemble": bootstrap_ensemble,
+            "Z_F_perm": standardized_Z_F(c_prime["C_F"], perm_ensemble),
+            "Z_F_bootstrap": standardized_Z_F(c_prime["C_F"], bootstrap_ensemble),
             "ratio_prime_over_golden": _ratio(c_prime["C_F"], c_golden["C_F"]),
             "ratio_prime_over_perm": _ratio(c_prime["C_F"], c_perm["C_F"]),
             "ratio_prime_over_markov": _ratio(c_prime["C_F"], c_markov["C_F"]),
@@ -487,6 +572,28 @@ def print_summary(report: dict) -> None:
                 f"{r_pg if r_pg is not None else float('nan'):>9.3f}  "
                 f"{r_pr if r_pr is not None else float('nan'):>9.3f}"
             )
+        print()
+        for row in report["results"]:
+            boot = row.get("C_F_bootstrap_ensemble") or {}
+            perm = row.get("C_F_perm_ensemble") or {}
+            z_boot = row.get("Z_F_bootstrap")
+            z_perm = row.get("Z_F_perm")
+            if boot:
+                print(
+                    f"  m={row['m']:,}: Bootstrap-Null "
+                    f"E[C_F]={boot.get('mean', float('nan')):.5f}, "
+                    f"σ={boot.get('std', float('nan')):.5f}, "
+                    f"Z_F={z_boot if z_boot is not None else float('nan'):.2f}, "
+                    f"95%=[{boot.get('percentile_2_5', float('nan')):.5f}, "
+                    f"{boot.get('percentile_97_5', float('nan')):.5f}]"
+                )
+            if perm:
+                print(
+                    f"  m={row['m']:,}: Perm-Surrogat-Ensemble "
+                    f"E[C_F]={perm.get('mean', float('nan')):.5f}, "
+                    f"σ={perm.get('std', float('nan')):.5f}, "
+                    f"Z_F={z_perm if z_perm is not None else float('nan'):.2f}"
+                )
         print()
         print("  Lesart: C_F misst gewichtete Überlappung Spec(Σ_A) mit φ-Kamm — diagnostisch")
     print("=" * 88)
