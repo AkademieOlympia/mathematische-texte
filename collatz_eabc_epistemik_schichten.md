@@ -278,6 +278,8 @@ $$\boxed{\;\text{Stärkster Satz (A): }\mathcal{C}_E\ \text{extrem verlustreich 
 
 **Achsenschalen $\kappa_F$** (Kurzverweis, vollständig: `collatz_eabc_zirkulationshypothese.md` §4.8.25): Mehrgliedrige Schalen $R^2=\sum_{j=1}^k q_j^{\alpha_j}$ mit Primachsen (**A**/**B**); Fibonacci-Kompressibilität $s_F(R)$, $\kappa_F(R)=k/s_F$ als **definierte innere Kompressibilität** — keine Physikbehauptung; Observable $C_F=\kappa_F(|D_{AB}|+|D_{AC}|+|D_{BC}|)$ im $\varepsilon$-Band um $R$; Hypothese $H_\kappa$: große $\kappa_F$ korreliert mit EABC-Asymmetrie (**B**/**R**); $k=3,4,5$ als „natürliche Zone“ nur **Hypothese** (**C**); Skript `eabc_axis_shell_fibonacci.py`.
 
+**A-Absorption / A-Transfer** (Kurzverweis, vollständig: `collatz_eabc_zirkulationshypothese.md` §4.8.26): Mehrschichtschale $R^2=2^n+3^m+\sum A_j$, $A_j\equiv5\bmod12$; Operator $\mathcal{A}_{\mathrm{comp}}:S_{\mathrm{mehr}}\to S_{\mathrm{einfach}}$; **additive Brücke** $5=2+3$ (≠ $2\cdot3$, Schicht **C**) vs. multiplikative FTA (**A**); Metriken $\Delta_{\mathrm{abs}}=|R^2-\tilde R^2|$, $\gamma_{\mathrm{comp}}=k/2$; Hypothese $H_A$: Absorptionsgrad vs. $\delta(p)$, $D_{AB}$, $\kappa_F$; Skript `eabc_a_absorption.py` (**B**/**R**).
+
 ---
 
 ## 4. Rote Schicht — interpretativer Scaffold (keine Theoreme)

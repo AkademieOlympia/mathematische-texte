@@ -3732,6 +3732,81 @@ $$\boxed{\;\textbf{Nicht behauptet:}\;\text{Dass }\kappa_F\text{ eine neue Primz
 
 **Label:** §4.8.25 = **Definition** / **Analogie** / **Experiment** (Schicht **B** für Observablen, **C** für natürliche Zone); **kein Theorem**.
 
+#### 4.8.26 A-Absorption und A-Transfer
+
+**Status:** paper-ready Forschungsbaustein — **kein Theorem**; erweitert §4.8.20–25 um **Mehrschichtschalen mit A-Termen** ($q\equiv5\bmod12$) und den **definierten Kompressionsoperator** $\mathcal{A}_{\mathrm{comp}}$ (A-Absorption / A-Transfer).
+
+**Querverweise:** Pythagoräische $(2,3)$-Schalen §4.8.20; $k$-Achsenschalen §4.8.25; EABC-Klassifikation mod $12$, $5\mapsto A$ (`V4Characters.lean`, `eabc_shell_prime_distribution.py`); Skript **`eabc_a_absorption.py`**.
+
+##### Epistemische Dreiteilung
+
+| Baustein | (1) Mathematisch definiert | (2) Fruchtbare Analogie | (3) Neue testbare Aussage |
+|----------|---------------------------|-------------------------|---------------------------|
+| Mehrschichtschale $S_k$ | $R^2=2^n+3^m+\sum_j A_j$, $A_j=q_j^{\alpha_j}$, $q_j\equiv5\bmod12$ | **Additive Brücke** $5=2+3$ (nicht $5=2\cdot3$) — Fibonacci-Kette $2{+}3{=}5$, $3{+}5{=}8$, … | A-Terme stets EABC-Klasse **A**; kein freier $A$-Freiheitsgrad außerhalb mod-$12$-Achse |
+| Absorptionsregel | $A_j\leadsto 2^{\alpha_j}3^{\beta_j}$: **Exponenten-Umverteilung** im Log-Raum oder exakte Suche $\min|R^2-\tilde R^2|$ | „A als Brücke zwischen $2$- und $3$-Schicht“ — **benannte Lesart**, keine FTA-Zerlegung von $5$ | Isolierter Term $q^\alpha$: minimales $(\alpha',\beta')$ mit kleinstem Defekt |
+| Operator $\mathcal{A}_{\mathrm{comp}}$ | $\mathcal{A}_{\mathrm{comp}}:S_{\mathrm{mehr}}\to S_{\mathrm{einfach}}$, $2^n+3^m+\sum A_j\mapsto 2^{n'}+3^{m'}$ | Kompression $(E,A,B,C)$-Mehrschicht $\to$ $(2,3)$-Einfachschale — Analogie zu $\mathcal{C}_E$ (§4.8.8) | $H_A$: Absorptionsdefekt / Kompressionsgrad korreliert mit $\delta(p)$, $D_{AB}$ im Prim-Umfeld |
+| Metriken | $\Delta_{\mathrm{abs}}=|R^2-\tilde R^2|$, $\gamma_{\mathrm{comp}}=k/2$ ($k$ Mehrschicht-Terme) | Innere „Absorptionsenergie“ — **definierte Größe**, keine Thermodynamik | Nach $\mathcal{A}_{\mathrm{comp}}$: Verschiebung von $\langle\delta\rangle$, $D_{AB}$ im $\varepsilon$-Band (explorativ) |
+
+$$\boxed{\;\textbf{Abgrenzung multiplikativ vs. additiv:}\;5=2\cdot3\;\text{(FTA, Schicht A)}\;\neq\;5=2+3\;\text{(additive Brücke, Schicht C — Analogie).}\;}$$
+
+$$\boxed{\;\textbf{Dreiteilung:}\;(1)=\text{Definition},\;(2)=\text{Analogie (explizit benannt)},\;(3)=\text{Hypothese/Experiment — kein Theorem.}\;}$$
+
+##### Definitionen
+
+**Mehrschichtschale** $S_k$ (Basis $(2,3)$ plus $A$-Terme):
+
+$$\boxed{\;R^2=2^n+3^m+\sum_{j=1}^{r} q_j^{\alpha_j},\qquad q_j\equiv5\bmod12,\;\alpha_j\ge1,\qquad R=\sqrt{R^2}.\;}$$
+
+Spezialfall: $R^2=2^n+3^m+5^\ell$ ($r=1$, $q_1=5$). Allgemeine $A$-Achsen: $q\in\{5,17,29,41,\ldots\}$ (Primzahlen $\equiv5\bmod12$, EABC-Klasse **A**).
+
+**Absorptionsregel (zwei Modi, epistemisch getrennt):**
+
+1. **Exakte Suche** $\mathcal{A}_{\mathrm{abs}}^{\mathrm{ex}}$: Für gegebenes $R^2$ finde $(n',m')$ mit
+   $$\Delta_{\mathrm{abs}}(R)=\min_{n',m'\ge0}\big|R^2-(2^{n'}+3^{m'})\big|.$$
+   Für isoliertes $A_j=q_j^{\alpha_j}$: $\mathcal{A}_{\mathrm{abs}}^{\mathrm{ex}}(q_j^{\alpha_j})=(\alpha'_j,\beta'_j)$ analog.
+
+2. **Greedy/Log-Umverteilung** $\mathcal{A}_{\mathrm{abs}}^{\mathrm{log}}$ (**Analogie** $5=2+3$): Log-Beitrag $\alpha_j\log q_j$ wird mit Gewichten $w_2=\log2/(\log2+\log3)$, $w_3=\log3/(\log2+\log3)$ auf Exponenten $n',m'$ verteilt (gerundet). **Keine** Behauptung, dass $q_j^{\alpha_j}=2^{\alpha'_j}3^{\beta'_j}$ multiplikativ.
+
+**Komprimierte Einfachschale:** $\tilde R^2=2^{n'}+3^{m'}$, $\tilde R=\sqrt{\tilde R^2}$.
+
+**Operator A-Transfer / A-Absorption:**
+
+$$\boxed{\;\mathcal{A}_{\mathrm{comp}}:\;S_{\mathrm{mehr}}\longrightarrow S_{\mathrm{einfach}},\qquad 2^n+3^m+\sum_j A_j\;\longmapsto\;2^{n'}+3^{m'}.\;}$$
+
+**Metriken:**
+
+$$\Delta_{\mathrm{abs}}=|R^2-\tilde R^2|,\qquad \gamma_{\mathrm{comp}}=\frac{k}{2},$$
+
+wobei $k$ die Anzahl aktiver Mehrschicht-Terme ist ($2$-,$3$- und $A$-Summanden mit positivem Exponenten).
+
+**Testhypothese $H_A$ (explorativ):** Schalen mit großem $\gamma_{\mathrm{comp}}$ oder kleinem $\Delta_{\mathrm{abs}}$ zeigen stärkere Korrelation zwischen Absorptionsgrad und EABC-Asymmetrie ($D_{AB}$, $\kappa_F$ aus §4.8.25) bzw. $\delta(p)$-Verschiebung im $\varepsilon$-Band — Permutations-Null vertauscht Labels.
+
+##### Numerischer Stub
+
+```bash
+python3 eabc_a_absorption.py --smoke
+pytest tests/test_eabc_a_absorption.py -q
+```
+
+**Smoke** (begrenztes Gitter $n,m,\ell\le3$, Primlimit $5000$, $\varepsilon=2$): erzeugt $R^2=2^n+3^m+5^\ell$ (+ optional $17^\ell$); wendet $\mathcal{A}_{\mathrm{comp}}^{\mathrm{ex}}$ an; vergleicht $\delta(p)$, $D_{AB}$ vor/nach Absorption im Radiusband. **Lesart:** definierter Operator + exploratives Korrelationsprogramm — **kein** Nachweis, dass $5=2+3$ multiplikativ gilt.
+
+##### Epistemische Kernboxen
+
+$$\boxed{\;\textbf{Box 1 (Schicht A/B):}\;R^2=2^n+3^m+\sum A_j,\;q_j\equiv5\bmod12,\;\mathcal{A}_{\mathrm{comp}},\;\Delta_{\mathrm{abs}},\;\gamma_{\mathrm{comp}}=k/2.\;}$$
+
+$$\boxed{\;\textbf{Box 2 (Schicht C):}\;5=2+3\;\text{additive Brücke / Fibonacci-Analogie — \textbf{nicht} FTA-Zerlegung; Log-Umverteilung nur als benannte Heuristik.}\;}$$
+
+$$\boxed{\;\textbf{Nicht behauptet:}\;\text{Dass }\mathcal{A}_{\mathrm{comp}}\text{ eine neue Primzahlgesetzmäßigkeit beweist oder dass }5=2\cdot3\text{ multiplikativ aus }2,3\text{ folgt.}\;}$$
+
+| Baustein | Tao-Label | Schicht |
+|----------|-----------|---------|
+| $S_k$, $q\equiv5\bmod12$, $\mathcal{A}_{\mathrm{comp}}$, $\Delta_{\mathrm{abs}}$, $\gamma_{\mathrm{comp}}$ | **Definition** | **A**/**B** |
+| $5=2+3$, Fibonacci-Kette | **Analogie** | **C** |
+| $H_A$ ($\delta$, $D_{AB}$, $\kappa_F$) | **Hypothese** / **Experiment** | **B**/**R** |
+| `eabc_a_absorption.py` | **Experiment** | **B** |
+
+**Label:** §4.8.26 = **Definition** / **Analogie** / **Experiment** (Schicht **B** für Operator und Observablen, **C** für additive Brücke); **kein Theorem**.
+
 ### 4.9 Zeta-Exponential-Gedankenexperiment (Schicht **C**)
 
 $$\boxed{\;\text{Zeta ist die Exponentialfunktion auf der logarithmischen Primzahl-Geometrie — \textbf{Gedankenexperiment}, kein EABC-Theorem.}\;}$$
