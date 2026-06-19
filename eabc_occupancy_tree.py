@@ -62,7 +62,11 @@ eabc_fiber = eabc_class  # Alias (bestehende Tests/Skripte)
 
 
 def identity_state() -> OccupancyState:
-    """Neutrales Element Z_0 = (∅, ∅, 0) des Besetzungs-Monoids."""
+    """Neutrales Element Z_0 = (∅, ⊤, 0) des Besetzungs-Monoids.
+
+    ⊤ wird spärlich als leeres Trigger-Dict kodiert: auf dem Support besetzter
+    Kanäle wirkt merge_state wie punktweises min (Meet).
+    """
     return set(), {}, Counter()
 
 
