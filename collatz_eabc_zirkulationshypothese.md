@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
 - `collatz_eabc_zeta_exponential_gedankenexperiment.md` — **Gedankenexperiment / Analogie:** $\zeta$ als Exponentialsumme auf Log-Prim-Geometrie; Euler-Streifen $(1\pm p^{-s})$; $\xi$-Spiegelung; Brücke zu Log-Koordinaten, $\gamma^\pm$-Paarung, Level-2; §6–§10: Ganzzahl/Halbzahl-Exponenten, Oktanionen (Schicht C), Bernoulli-Subtraktion, Fibonacci-Zeta (kein RH-/EABC-Theorem)
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
@@ -1249,7 +1249,7 @@ $$\gamma_{74631} \approx 57710.120793 \quad\Rightarrow\quad A_{74631} \approx 0.
 
 Dies ist eine nahezu vollständige **destruktive Interferenz** des Fibonacci-Kamms — **keine** Nullstellenidentität ($A_n=0$ wird nicht behauptet).
 
-**Schwellentest (Kurzverweis):** Bei $N=10^5$ und Zufalls-$\gamma$ gleicher Dichte: $\#\{A_n<0.05\}=15$ vs. $10$ — **vorsichtig interessant**, ohne Mehrfachtest-Korrektur **nicht** signifikant. Vollständige Tabellen und $R_n$-Diagnostik: §9.12–9.13 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`.
+**Schwellentest (Kurzverweis):** Bei $N=10^5$, Seed 42, und Zufalls-$\gamma$ gleicher Dichte: $\#\{A_n<0.05\}=15$ vs. $10$; bei $\varepsilon=0{,}02$: 7 vs. 2 — **explorativ**, ohne Mehrfachtest-Korrektur **nicht** signifikant (vgl. §4.8.7 H$_2$). Vollständige Tabellen und $R_N$-Diagnostik: §9.12–9.13 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`.
 
 ##### Geometrische Interpretation: $\Theta$ (EABC) vs. $\Phi$ (Fibonacci)
 
@@ -1293,7 +1293,7 @@ $$H_1:\;\text{Die EABC-Eigenmoden besitzen eine nichttriviale Projektion auf den
 
 Dann erwartet man $C_F^{\mathrm{prime}} > C_F^{\mathrm{rand}}$ gegen die Nullhierarchie §4.8.2 — **derzeit nicht gestützt** ($C_F^{\mathrm{prime}}/C_F^{\mathrm{golden}}<1$).
 
-Analog für den Riemann-$\gamma$-Schwellentest (§9.13): $H_0$ = Zufalls-$\gamma$ gleicher Dichte; $H_1$ = systematischer Überschuss bei $\#\{A_n<\varepsilon\}$ — **schwach interessant**, nicht bestätigt bei $N=10^5$.
+Analog für den Riemann-$\gamma$-Schwellentest (§9.13): $H_0$ = Zufalls-$\gamma$ gleicher Dichte; $H_1$ = systematischer Überschuss bei $\#\{A_n<\varepsilon\}$ — **explorativ** ($\varepsilon=0{,}02$: 7 vs. 2; $\varepsilon=0{,}05$: 15 vs. 10; Seed 42), **nicht** bestätigt bei $N=10^5$ (vollständige Hypothesenleiter §4.8.7).
 
 ##### Methodischer Status
 
@@ -1301,7 +1301,7 @@ Aktuell ist nur Folgendes numerisch belegt:
 
 1. Der Fibonacci-Kamm ist wohldefiniert (§4.8.3; §9.8–9.10).
 2. Riemann-Ordinaten erzeugen gelegentlich starke Auslöschungen ($A_n\ll1$; §9.12).
-3. Die stärksten Minima scheinen **etwas häufiger** aufzutreten als bei einfachen Zufallsmodellen ($\#\{A_n<0.05\}$: 15 vs. 10) — **ohne** Signifikanzgarantie.
+3. Die stärksten Minima treten **etwas häufiger** auf als bei einfachen Zufallsmodellen auf — **explorativ** ($\varepsilon=0{,}02$: 7 vs. 2; $\varepsilon=0{,}05$: 15 vs. 10; Seed 42), **ohne** Signifikanzgarantie (§4.8.7 H$_2$).
 
 **Nicht** belegt ist derzeit:
 
@@ -1323,6 +1323,117 @@ Das ist eine mathematisch saubere Formulierung, die ohne starke physikalische In
 | EABC$\Rightarrow$Fibonacci oder Riemann$\Rightarrow$Fibonacci | — | **nicht behauptet** |
 
 **Label:** §4.8.6 = **Hypothese** / **Experiment** / **Analogie** (Schicht **C**); **kein Theorem**.
+
+**Wissenschaftstheorie und Hypothesenleiter:** vollständige epistemische Einordnung, Zwei-Rotor-Bild, $R_N$-Korrelation und Status H$_0$–H$_4$ in §4.8.7.
+
+#### 4.8.7 Wissenschaftstheoretische Einordnung und Hypothesenleiter
+
+**Status:** methodische Meta-Ebene (Schicht **C**) — ergänzt §4.8.5–4.8.6; **kein Theorem**, **kein** zusätzlicher Physikanspruch.
+
+**Querverweise:** Gesamtbaustein §4.8.6; algebraische $\zeta_F$-Struktur §4.8.2–4.8.3; Riemann-$\gamma_n$-Experiment §9.12–9.13 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §3.1; Skripte `eabc_sigma_fibonacci_coupling.py`, `eabc_zeta_f_riemann_zeros.py`.
+
+##### Wissenschaftstheoretische Position des Fibonacci-Kamms
+
+Im EABC-Programm sind $D_E$, $Q_E$, $W_E$ und $\Phi_E$ **interne** Observablen: Sie werden aus dem Primstrom bzw. dem Streaming-Zustand $Z$ abgeleitet und auf dieselbe Datenquelle zurückprojiziert. Jeder Test mit diesen Größen allein trägt daher das Risiko einer **Selbstbestätigung** — das Nullmodell und die Hypothese teilen dieselbe Konstruktionsbasis.
+
+Der Fibonacci-Kamm $K_F$ bzw. $\zeta_F$ ist **epistemisch stärker**, weil er **extern** definiert ist:
+
+| Eigenschaft | Interne EABC-Observablen | Fibonacci-Kamm |
+|-------------|--------------------------|----------------|
+| Definition | aus Primstrom / $Z$ | aus $\varphi$-Geometrie / $F_k^{-s}$ |
+| Lernbar aus Daten? | ja (implizit) | **nein** — $K_F$, $k_F$ vorgegeben |
+| Selbstbestätigungsrisiko | erhöht | **reduziert** |
+| Rolle im Programm | Theoriekern / Observablen | **unabhängiger Resonanzdetektor** |
+
+$$\boxed{\;\text{Fibonacci-Kamm = \textbf{externer Resonanzdetektor} — \textbf{nicht} Bestandteil der EABC-Theorie.}\;}$$
+
+Die Konstruktion ist damit ein **Belastungstest von außen**: Trifft eine unabhängig motivierte $\varphi$-Phasengeometrie auf Struktur in EABC-Daten oder in Riemann-Ordinaten — ohne den Kamm an die Daten anzupassen?
+
+##### Zwei Rotoren und ihre Kopplung
+
+Man kann die Situation als Kopplung zweier Kreisgrößen lesen:
+
+**Rotor 1 — EABC auf $S^1_{\mathrm{EABC}}$ (Schicht C, Analogie):**
+$$\Theta(n) = \frac{\pi}{2}\,\sigma(n),$$
+wobei $\sigma=\sigma_1$ die Divisorfunktion ist. Dies ist die diskrete Phasenstruktur des EABC-Kegels / der Helix (§4.8.6).
+
+**Rotor 2 — Fibonacci auf $S^1_\varphi$ (Definition):**
+$$\Phi(t) = t\log\varphi.$$
+Dies ist die kontinuierliche Phasenkoordinate des goldenen Log-Gitters $\Omega_\varphi=\{2\pi k/\log\varphi\}$.
+
+Die **Kopplungsfrage** lautet nicht, ob beide Rotoren „dieselbe Physik“ beschreiben, sondern ob ihre Phasen $(\Theta,\Phi)$ an vergleichbaren Indizes **korreliert** sind — etwa wenn EABC-Eigenmoden $v_i$ von $\Sigma_A$ Projektionen auf $k_F$ zeigen ($C_i$, $C_F$), oder wenn Riemann-Ordinaten $\gamma_n$ fast vollständige Auslöschungen $A_n=|\zeta_F(\tfrac12+i\gamma_n)|$ erzeugen.
+
+##### Korrelationsgröße $R_N$
+
+Als kompakte Phasen-Korrelationsgröße definieren wir (für Index $n=1,\ldots,N$):
+
+$$R_N = \frac{1}{N}\sum_{n\le N} e^{i(\Theta(n)-\Phi(\gamma_n))}, \qquad \Phi(\gamma_n)=\gamma_n\log\varphi.$$
+
+**Wahl von $\Theta$:** Standard-Operationalisierung $\Theta(n)=(\pi/2)\sigma(n)$ (Divisorfunktion am **Nullstellen-Index** $n$). Alternative Modi (Primindex-Label, reiner Index) sind in `eabc_zeta_f_riemann_zeros.py` dokumentiert (`--theta-mode`); sie dienen der **Robustheitsprüfung**, nicht der freien Modellanpassung.
+
+**Test:** Vergleich $|R_N|$ mit $|R_N^{\mathrm{rand}}|$, wobei $R_N^{\mathrm{rand}}$ dieselbe Formel mit **Zufalls-$\gamma$** gleicher Dichte im Intervall $[\gamma_1,\gamma_N]$ verwendet (Seed-fixiert). $H_0$: $|R_N|\approx|R_N^{\mathrm{rand}}|$; $H_1^{\mathrm{phase}}$: systematische Phasenkohärenz zwischen EABC- und $\varphi$-Rotor — **derzeit nicht gestützt** (explorativ).
+
+##### Minima-Interpretation: $A_n$ als Restamplitude
+
+Die Größe
+
+$$A_n = \left|\zeta_F\!\left(\tfrac12+i\gamma_n\right)\right| = |K_F(\gamma_n)|$$
+
+misst die **Resultante** der Fibonacci-Zeigerfamilie am Punkt $\gamma_n$. In Fourier-Sprache:
+
+$$\zeta_F\!\left(\tfrac12+i\gamma_n\right) = \sum_{k\ge1} F_k^{-1/2}\,e^{-i\gamma_n\log F_k}$$
+
+ist eine **gewichtete Exponentialsumme**; $A_n$ ist die **Restamplitude** nach konstruktiver/destruktiver Überlagerung aller Terme.
+
+**Lesart:** $A_n\ll 1$ bedeutet nahezu vollständige **destruktive Interferenz** auf dem externen $\varphi$-Kamm — **keine** Behauptung $A_n=0$ oder $\zeta_F(\rho_n)=0$. Die seltenen starken Minima (z.\,B. $A_{74631}\approx0{,}005$ bei $N=10^5$) sind **Einzelereignisse** in einer großen Stichprobe; ihr **Häufigkeitsüberschuss** gegenüber Zufalls-$\gamma$ ist der eigentliche Testgegenstand (Schwellentest), nicht das einzelne Minimum.
+
+##### Hierarchie der Bausteine (Ebene 0–4)
+
+Der Fibonacci-EABC-Baustein gliedert sich in fünf **methodisch getrennte** Ebenen:
+
+| Ebene | Objekt | Rolle |
+|-------|--------|-------|
+| **0** | $K_F$, $\zeta_F$, $\omega_\varphi=\log\varphi$ | externe $\varphi$-Geometrie (algebraisch + Definition) |
+| **1** | $A_n=|\zeta_F(\tfrac12+i\gamma_n)|$ | Resonanzdetektor an Riemann-Ordinaten (Experiment) |
+| **2** | $\Sigma_A$, $\mathrm{Spec}(\Sigma_A)$ | EABC-Level-2-Fluktuationsgeometrie (Datenobjekt) |
+| **3** | $C_i=|\langle v_i,k_F\rangle|^2$, $P_F(\omega)$ | lokale / frequenzaufgelöste Kamm-Projektion |
+| **4** | $C_F=\sum_i\lambda_i C_i$ | globale Kopplungsgröße gegen Nullhierarchie |
+
+$$\boxed{\;K_F \;\xrightarrow{\;\text{Einsetzung}\;}\; A_n \;\|\; \Sigma_A \;\xrightarrow{\;\text{Projektion}\;}\; C_i \;\xrightarrow{\;\text{Aggregation}\;}\; C_F\;}$$
+
+Ebene 0 ist **unabhängig** von EABC; Ebenen 1 und 2–4 sind **parallele Testkanäle** (Riemann-Ordinaten vs. Primstrom-Kovarianz).
+
+##### Hypothesenleiter H$_0$–H$_4$
+
+| Stufe | Hypothese | Operationalisierung | Aktueller Status |
+|-------|-----------|---------------------|------------------|
+| **H$_0$** | Keine bevorzugte Kopplung EABC↔$\varphi$-Kamm | $C_F^{\mathrm{prime}}\approx C_F^{\mathrm{null}}$; $\#\{A_n<\varepsilon\}_{\mathrm{Riem}}\approx_{\mathrm{rand}}$; $\|R_N\|\approx\|R_N^{\mathrm{rand}}\|$ | **nicht widerlegt** — Default |
+| **H$_1$** | Schwache spektrale Kommensurabilität ($C_F$ oder $P_F$) | $C_F^{\mathrm{prime}}>C_F^{\mathrm{golden}}$; Peaks in $P_F$ nahe $\Omega_\varphi$ | **nicht gestützt:** $C_F^{\mathrm{prime}}/C_F^{\mathrm{golden}}<1$ ($N=10^5$); Minimal-Prototyp $Z_F\approx0{,}88$ innerhalb Null — **keine starke Resonanz** |
+| **H$_2$** | Häufigere tiefe $A_n$-Minima bei Riemann-$\gamma$ | $\#\{A_n<\varepsilon\}$ Riemann vs. Zufalls-$\gamma$ | **explorativ, schwach:** bei $\varepsilon=0{,}05$: 15 vs. 10 ($N=10^5$, Seed 42); bei $\varepsilon=0{,}02$: 7 vs. 2 — **ohne** Mehrfachtest-Korrektur **nicht** als gestützte H$_1$/H$_2$ lesbar |
+| **H$_3$** | Phasenkohärenz EABC–$\varphi$ ($R_N$) | $\|R_N\|>\|R_N^{\mathrm{rand}}\|$ stabil über $N$ | **offen** — erste $R_N$-Diagnostik in `eabc_zeta_f_riemann_zeros.py` |
+| **H$_4$** | Riemann $\Longrightarrow$ Fibonacci / strukturelle Identität | $A_n\to0$ systematisch; $\zeta_F(\rho_n)=0$; EABC$\Rightarrow$Fibonacci | **kein Beleg** — **explizit nicht behauptet** |
+
+$$\boxed{\;\text{Epistemisch ehrlich: H$_4$ ausgeschlossen; H$_1$ derzeit eher durch schwache/negative Befunde belastet; H$_2$ höchstens \textbf{explorativer} Hinweis — kein Resonanztheorem.}\;}$$
+
+**Korrektur zur Lesart „erste Hinweise“:** Frühere Formulierungen, die H$_1$ als „erste Hinweise“ werteten, sind **zurückgenommen**. Der $C_F$-Kanal zeigt Prim **unter** goldenem Null; der $A_n$-Schwellentest liefert höchstens einen **schwachen, nicht signifikanten** Überschuss bei strengen Schwellen — das rechtfertigt **weitere Tests** ($N\ge10^6$, mehrere Seeds, $R_N$-Stabilität), aber **keine** Hypothesenstützung.
+
+##### Status-Boxen (Zusammenfassung)
+
+$$\boxed{\;\textbf{Fibonacci-Kamm}\;=\;\text{unabhängiger Resonanzdetektor (extern, falsifizierbar, nicht gelernt).}\;}$$
+
+$$\boxed{\;\textbf{Nicht Teil der Theorie:}\; K_F,\,\zeta_F,\,A_n\text{-Test},\,C_F,\,R_N \;\text{sind methodische Erweiterungen auf Schicht C — kein EABC-Axiom.}\;}$$
+
+$$\boxed{\;\textbf{Aktueller Gesamtstatus:}\; algebraisch wohldefiniert \checkmark\;;\; numerisch getestet \checkmark\;;\; Resonanz \textbf{nicht} bestätigt \;(C_F<1,\; A_n\text{-Schwelle schwach/explorativ}).\;}$$
+
+| Baustein | Tao-Label | Schicht |
+|----------|-----------|---------|
+| $K_F$, $\zeta_F$, $\Omega_\varphi$ | **Definition** / **Modell** | — / **C** |
+| $\Theta(n)$, Zwei-Rotor-Bild | **Analogie** | **C** |
+| $A_n$, $R_N$, Schwellentest | **Experiment** | **C** |
+| $C_F$, $P_F$, H$_0$–H$_3$ | **Hypothese** / **Experiment** | **C** |
+| H$_4$, Riemann$\Rightarrow$Fibonacci | — | **nicht behauptet** |
+
+**Label:** §4.8.7 = **Meta** / **Hypothese** / **Experiment** (Schicht **C**); **kein Theorem**.
 
 ### 4.9 Zeta-Exponential-Gedankenexperiment (Schicht **C**)
 

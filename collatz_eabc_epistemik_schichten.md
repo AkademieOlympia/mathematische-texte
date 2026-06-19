@@ -23,7 +23,7 @@ $$\boxed{\;\textbf{Theorem} \;\neq\; \textbf{Struktur} \;\neq\; \textbf{Brücke}
 - `collatz_eabc_euklidische_hebung.md` — algebraischer Nebenzweig $\mathbb{R}\subset\mathbb{C}\subset\mathbb{H}\subset\mathbb{O}$ (Schicht **A**)
 - `collatz_eabc_core/CollatzEabc/RadiationSpace.lean` — interpretativer Lean-Scaffold (rot)
 - `collatz_eabc_core/CollatzEabc/OccupancyMonoid.lean` — Streaming-Monoid $(Z,\oplus,Z_0)$, `blockScan_append` (Schicht **A**, §4.6–4.7)
-- `collatz_eabc_zirkulationshypothese.md` — Monoid §4.6; state-centric Hierarchie §4.7; Level-2 §4.8; Spin-Liquid-Analogie (methodisch, nicht ontologisch) §4.8.1
+- `collatz_eabc_zirkulationshypothese.md` — Monoid §4.6; state-centric Hierarchie §4.7; Level-2 §4.8; Spin-Liquid-Analogie (methodisch, nicht ontologisch) §4.8.1; **Fibonacci-Kamm als externer Resonanzdetektor, Hypothesenleiter H$_0$–H$_4$** §4.8.7
 
 ---
 
@@ -116,7 +116,7 @@ $$\boxed{\;\textbf{Beweis-Spur} \;\|\; \textbf{Ikone-Spur}\;}$$
 | Holonomien | $\mathrm{Hol}_E$, $\mathcal{P}\exp\oint A$ (Programm) | `collatz_eabc_holonomie_stufen.md` |
 | Kreisgraphen | $G_E=(V,E)$, $C_4\cong S^1$, $E^+/E^-$ | `collatz_eabc_diskrete_geometrie.md`, `FlussPhiE.lean` |
 | Harmonische Formen | $h\in H^1(C_4,\mathbb{Z})$, $\langle\omega_E,h\rangle$ | `collatz_eabc_uebergangsraum.md`, `collatz_eabc_hodge_eabc.py` |
-| Fluss | $\omega_E$, $C_E=\oint_\gamma\omega_E$, $W_E(X)$, $\alpha_E$, Ebenen 0–4, H₀a/H₀b–H₃, Literaturpositionierung §4.5, Level-2 §4.8, Spin-Liquid §4.8.1 | `collatz_eabc_zirkulationshypothese.md` §4.1–4.5, §4.8–4.8.1 |
+| Fluss | $\omega_E$, $C_E=\oint_\gamma\omega_E$, $W_E(X)$, $\alpha_E$, Ebenen 0–4, H₀a/H₀b–H₃, Literaturpositionierung §4.5, Level-2 §4.8, Spin-Liquid §4.8.1, Fibonacci-Kamm §4.8.7 | `collatz_eabc_zirkulationshypothese.md` §4.1–4.5, §4.8–4.8.7 |
 | Orientierungsklassen | $\Phi_E=\lim W_E$, chirale 1-Form | `collatz_eabc_chirale_polarisation.md` |
 
 **Kernfrage (Schicht B als Struktur, Schicht R als Brücke):**
@@ -212,6 +212,8 @@ Ergänzend zu den **fünf Ebenen** 0–4 in Schicht **B** (Geometrie → Fehlert
 $$\boxed{\;\text{Kein Anspruch: }\Sigma_A\text{ sind Spinons oder Primzahlen bilden ein Spin Liquid. Nur methodische Parallele: Struktur in Fluktuationsgeometrie, nicht im Mittelwert.}\;}$$
 
 **Nullmodell-Leiter** (vollständig: `collatz_eabc_zirkulationshypothese.md` §4.8.2): Level-2 testet $\Sigma_A^{\mathrm{prime}}$ gegen eine **Hierarchie** realistischerer Ensembles — nicht gegen $\mu_A\approx 0$:
+
+**Fibonacci-Kamm (externer Detektor):** Der $\varphi$-Kamm $K_F$ ist **nicht** aus dem Primstrom gelernt und damit epistemisch unabhängiger als $D_E$, $Q_E$, $W_E$, $\Phi_E$ (Selbstbestätigungsrisiko). Hypothesenleiter H$_0$–H$_4$, Zwei-Rotor-Kopplung $(\Theta,\Phi)$ und $R_N$-Korrelation: `collatz_eabc_zirkulationshypothese.md` §4.8.7. **Aktueller Befund:** $C_F^{\mathrm{prime}}/C_F^{\mathrm{golden}}<1$ — keine gestützte Resonanz; $A_n$-Schwellentest höchstens explorativ.
 
 | Stufe | Null | Frage |
 |-------|------|-------|

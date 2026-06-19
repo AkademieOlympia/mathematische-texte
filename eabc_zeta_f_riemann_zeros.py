@@ -11,9 +11,11 @@ Reihe (stabil, ohne Resonatorformel):
   ζ_F(s) = Σ_{k≥1} F_k^{-s}
 
 Optional: R_n = min_{t ∈ K_φ} |γ_n − t|,  K_φ = {2πk / log φ : k ∈ ℤ}.
+Phasen-Korrelation: R_N = (1/N) Σ e^{i(Θ(n)−Φ(γ_n))}, Φ(t)=t log φ;
+  Θ-Modi (--theta-mode): sigma (default), prim_sigma, index.
 
 Referenz: collatz_eabc_zeta_exponential_gedankenexperiment.md §9.12–9.13;
-         collatz_eabc_zirkulationshypothese.md §4.8.6 (Gesamtbaustein)
+         collatz_eabc_zirkulationshypothese.md §4.8.6–4.8.7
 Label: Experiment (Schicht C) — kein RH-Anspruch, kein Beweis.
 
 CLI:
@@ -164,6 +166,129 @@ def phi_comb_distances(gamma: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
 
 
 # ---------------------------------------------------------------------------
+# EABC–φ Phasen-Korrelation R_N (§4.8.7)
+# ---------------------------------------------------------------------------
+
+def divisor_sigma1(n: int) -> int:
+    """σ(n) = Σ_{d|n} d (kleine n, Index bis ~10^6)."""
+    if n < 1:
+        raise ValueError("n < 1")
+    total = 0
+    d = 1
+    while d * d <= n:
+        if n % d == 0:
+            total += d
+            if d != n // d:
+                total += n // d
+        d += 1
+    return total
+
+
+def _is_prime_small(p: int) -> bool:
+    if p < 2:
+        return False
+    if p < 4:
+        return True
+    if p % 2 == 0:
+        return False
+    d = 3
+    while d * d <= p:
+        if p % d == 0:
+            return False
+        d += 2
+    return True
+
+
+def nth_prime(n: int) -> int:
+    """n-te Primzahl (n ≥ 1); für n≲10^5 ausreichend schnell."""
+    if n < 1:
+        raise ValueError("n < 1")
+    count = 0
+    candidate = 2
+    while True:
+        if _is_prime_small(candidate):
+            count += 1
+            if count == n:
+                return candidate
+        candidate += 1
+
+
+def theta_eabc(n: int, mode: str = "sigma") -> float:
+    """
+    Θ(n) für Kopplung mit Φ(γ_n)=γ_n log φ.
+
+    Modi (§4.8.7, dokumentierte Wahl — keine freie Anpassung):
+      sigma:     (π/2) σ(n)           — Default, Divisorfunktion am Nullstellen-Index
+      prim_sigma:(π/2) σ(p_n)          — EABC-Label über n-te Primzahl
+      index:     (π/2) n              — reiner Index (Robustheits-Kontrolle)
+    """
+    if mode == "sigma":
+        return 0.5 * math.pi * divisor_sigma1(n)
+    if mode == "prim_sigma":
+        return 0.5 * math.pi * divisor_sigma1(nth_prime(n))
+    if mode == "index":
+        return 0.5 * math.pi * n
+    raise ValueError(f"unbekannter theta-mode: {mode!r}")
+
+
+def phi_phase(gamma: np.ndarray) -> np.ndarray:
+    """Φ(γ)=γ log φ."""
+    return gamma * LOG_PHI
+
+
+def phase_correlation_R_N(
+    gamma: np.ndarray,
+    *,
+    theta_mode: str = "sigma",
+) -> complex:
+    """R_N = (1/N) Σ_n exp(i(Θ(n) − Φ(γ_n)))."""
+    n = gamma.size
+    if n == 0:
+        return 0.0 + 0.0j
+    phi = phi_phase(gamma)
+    total = 0.0 + 0.0j
+    for i in range(n):
+        delta = theta_eabc(i + 1, theta_mode) - float(phi[i])
+        total += complex(math.cos(delta), math.sin(delta))
+    return total / n
+
+
+def phase_correlation_summary(
+    gamma: np.ndarray,
+    *,
+    theta_mode: str = "sigma",
+    seed: int = 42,
+    random_n: int | None = None,
+) -> dict[str, Any]:
+    """|R_N| vs. |R_N^rand| bei Zufalls-γ gleicher Dichte."""
+    n = gamma.size
+    r_riemann = phase_correlation_R_N(gamma, theta_mode=theta_mode)
+    n_rand = random_n if random_n is not None else n
+    rng = np.random.default_rng(seed)
+    gamma_rand = rng.uniform(float(gamma[0]), float(gamma[-1]), size=n_rand)
+    r_rand = phase_correlation_R_N(gamma_rand, theta_mode=theta_mode)
+    return {
+        "description": "R_N = (1/N) sum exp(i(Theta(n) - Phi(gamma_n))); Phi(t)=t log phi",
+        "theta_mode": theta_mode,
+        "theta_definition": {
+            "sigma": "Theta(n) = (pi/2) sigma(n)",
+            "prim_sigma": "Theta(n) = (pi/2) sigma(p_n)",
+            "index": "Theta(n) = (pi/2) n",
+        }.get(theta_mode, theta_mode),
+        "N": n,
+        "R_N": {"re": r_riemann.real, "im": r_riemann.imag, "abs": abs(r_riemann)},
+        "R_N_rand": {
+            "re": r_rand.real,
+            "im": r_rand.imag,
+            "abs": abs(r_rand),
+            "n_random": n_rand,
+            "seed": seed,
+        },
+        "abs_excess_riemann_minus_rand": abs(r_riemann) - abs(r_rand),
+    }
+
+
+# ---------------------------------------------------------------------------
 # Statistik
 # ---------------------------------------------------------------------------
 
@@ -246,6 +371,8 @@ def run_analysis(
     rtol: float = 1e-14,
     max_terms: int = 300,
     compute_phi_comb: bool = True,
+    compute_R_N: bool = True,
+    theta_mode: str = "sigma",
     random_baseline_n: int | None = None,
     detail_limit: int = 20,
 ) -> dict[str, Any]:
@@ -258,7 +385,7 @@ def run_analysis(
     abs_crit, terms_crit = zeta_f_batch_critical(gamma, **kw)
 
     min_idx = int(np.argmin(abs_crit))
-    thresholds = (0.005, 0.01, 0.05, 0.1, 1.0)
+    thresholds = (0.005, 0.01, 0.02, 0.05, 0.1, 1.0)
 
     detail_rows: list[dict[str, Any]] = []
     for i in range(min(detail_limit, n)):
@@ -332,6 +459,14 @@ def run_analysis(
         thresholds,
     )
 
+    if compute_R_N:
+        result["phase_correlation"] = phase_correlation_summary(
+            gamma,
+            theta_mode=theta_mode,
+            seed=seed,
+            random_n=n_rand,
+        )
+
     return result
 
 
@@ -397,6 +532,17 @@ def main() -> int:
         help="R_n zum goldenen Kamm weglassen",
     )
     parser.add_argument(
+        "--no-R-N",
+        action="store_true",
+        help="Phasen-Korrelation R_N weglassen",
+    )
+    parser.add_argument(
+        "--theta-mode",
+        choices=("sigma", "prim_sigma", "index"),
+        default="sigma",
+        help="Theta(n) fuer R_N: sigma=(pi/2)sigma(n) [default], prim_sigma, index",
+    )
+    parser.add_argument(
         "--random-n",
         type=int,
         default=None,
@@ -426,6 +572,8 @@ def main() -> int:
         rtol=args.rtol,
         max_terms=args.max_terms,
         compute_phi_comb=not args.no_phi_comb,
+        compute_R_N=not args.no_R_N,
+        theta_mode=args.theta_mode,
         random_baseline_n=args.random_n,
         detail_limit=args.detail_limit,
     )
@@ -460,6 +608,15 @@ def main() -> int:
                 f"{row['count_riemann']} vs {row['count_random']} "
                 f"(Δ={row['excess_riemann_minus_random']:+d})"
             )
+    pc = result.get("phase_correlation")
+    if pc:
+        r = pc["R_N"]
+        rr = pc["R_N_rand"]
+        print(
+            f"  R_N ({pc['theta_mode']}): |R|={r['abs']:.6g} "
+            f"vs |R_rand|={rr['abs']:.6g} "
+            f"(Δ={pc['abs_excess_riemann_minus_rand']:+.6g})"
+        )
     print(f"  → {out}")
     return 0
 
