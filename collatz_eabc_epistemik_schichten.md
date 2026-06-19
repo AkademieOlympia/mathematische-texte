@@ -23,7 +23,7 @@ $$\boxed{\;\textbf{Theorem} \;\neq\; \textbf{Struktur} \;\neq\; \textbf{Brücke}
 - `collatz_eabc_euklidische_hebung.md` — algebraischer Nebenzweig $\mathbb{R}\subset\mathbb{C}\subset\mathbb{H}\subset\mathbb{O}$ (Schicht **A**)
 - `collatz_eabc_core/CollatzEabc/RadiationSpace.lean` — interpretativer Lean-Scaffold (rot)
 - `collatz_eabc_core/CollatzEabc/OccupancyMonoid.lean` — Streaming-Monoid $(Z,\oplus,Z_0)$, `blockScan_append` (Schicht **A**, §4.6–4.7)
-- `collatz_eabc_zirkulationshypothese.md` — Monoid §4.6; state-centric Hierarchie §4.7; Level-2 §4.8; Spin-Liquid-Analogie (methodisch, nicht ontologisch) §4.8.1; **Fibonacci-Kamm als externer Resonanzdetektor, Hypothesenleiter H$_0$–H$_4$** §4.8.7
+- `collatz_eabc_zirkulationshypothese.md` — Monoid §4.6; state-centric Hierarchie §4.7; Level-2 §4.8; Spin-Liquid-Analogie (methodisch, nicht ontologisch) §4.8.1; **Fibonacci-Kamm als externer Resonanzdetektor, Hypothesenleiter H$_0$–H$_4$** §4.8.7; **Beschreibungs- vs. effektive Pixelung, Beobachtungsgeometrie** §4.8.8
 
 ---
 
@@ -116,7 +116,7 @@ $$\boxed{\;\textbf{Beweis-Spur} \;\|\; \textbf{Ikone-Spur}\;}$$
 | Holonomien | $\mathrm{Hol}_E$, $\mathcal{P}\exp\oint A$ (Programm) | `collatz_eabc_holonomie_stufen.md` |
 | Kreisgraphen | $G_E=(V,E)$, $C_4\cong S^1$, $E^+/E^-$ | `collatz_eabc_diskrete_geometrie.md`, `FlussPhiE.lean` |
 | Harmonische Formen | $h\in H^1(C_4,\mathbb{Z})$, $\langle\omega_E,h\rangle$ | `collatz_eabc_uebergangsraum.md`, `collatz_eabc_hodge_eabc.py` |
-| Fluss | $\omega_E$, $C_E=\oint_\gamma\omega_E$, $W_E(X)$, $\alpha_E$, Ebenen 0–4, H₀a/H₀b–H₃, Literaturpositionierung §4.5, Level-2 §4.8, Spin-Liquid §4.8.1, Fibonacci-Kamm §4.8.7 | `collatz_eabc_zirkulationshypothese.md` §4.1–4.5, §4.8–4.8.7 |
+| Fluss | $\omega_E$, $C_E=\oint_\gamma\omega_E$, $W_E(X)$, $\alpha_E$, Ebenen 0–4, H₀a/H₀b–H₃, Literaturpositionierung §4.5, Level-2 §4.8, Spin-Liquid §4.8.1, Fibonacci-Kamm §4.8.7, Pixelung §4.8.8 | `collatz_eabc_zirkulationshypothese.md` §4.1–4.5, §4.8–4.8.8 |
 | Orientierungsklassen | $\Phi_E=\lim W_E$, chirale 1-Form | `collatz_eabc_chirale_polarisation.md` |
 
 **Kernfrage (Schicht B als Struktur, Schicht R als Brücke):**
@@ -225,6 +225,10 @@ $$\boxed{\;\text{Kein Anspruch: }\Sigma_A\text{ sind Spinons oder Primzahlen bil
 $$\boxed{\;\text{Gegner ist falsches Nullmodell — nicht der verschwindende Mittelwert.}\;}$$
 
 **Label:** gesamter Abschnitt §3.1 = **Analogie** (Schicht **C**); verknüpft mit **Experiment** (Level 1–2) und **Beispiel** (Witness).
+
+**Beobachtungsgeometrie vs. Ontologie** (vollständig: `collatz_eabc_zirkulationshypothese.md` §4.8.8): Die EABC-Phasenkoordinate $\Theta(n)=(\pi/2)\sigma(n)$ ist **Beschreibungspixelung** (Schicht **A**/**B**) — Kodierung wie $n\bmod 12$, keine neue Physik. **Effektive Pixelung** entsteht, wenn die Primdynamik auf $\{E,A,B,C\}$ reagiert (Observable, Schicht **B**/**R**). Kegel-Bild, Kristall-, Doppelspalt- und QM-Analogien sowie die Lesart „EABC = Pixel, Kamm = Wellen“ sind **Schicht C** — sie strukturieren **Beobachtungsgeometrie**, nicht die Ontologie von $\mathbb{N}$.
+
+$$\boxed{\;\text{Keine neue Ontologie der natürlichen Zahlen — nur Wahl von Gitter, Projektion und externem Detektor.}\;}$$
 
 ---
 

@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beschreibungs- und effektive Pixelung** in §4.8.8; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
 - `collatz_eabc_zeta_exponential_gedankenexperiment.md` — **Gedankenexperiment / Analogie:** $\zeta$ als Exponentialsumme auf Log-Prim-Geometrie; Euler-Streifen $(1\pm p^{-s})$; $\xi$-Spiegelung; Brücke zu Log-Koordinaten, $\gamma^\pm$-Paarung, Level-2; §6–§10: Ganzzahl/Halbzahl-Exponenten, Oktanionen (Schicht C), Bernoulli-Subtraktion, Fibonacci-Zeta (kein RH-/EABC-Theorem)
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
@@ -1434,6 +1434,109 @@ $$\boxed{\;\textbf{Aktueller Gesamtstatus:}\; algebraisch wohldefiniert \checkma
 | H$_4$, Riemann$\Rightarrow$Fibonacci | — | **nicht behauptet** |
 
 **Label:** §4.8.7 = **Meta** / **Hypothese** / **Experiment** (Schicht **C**); **kein Theorem**.
+
+**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, rotierender Kegel, Fibonacci-Interferenz und Quotienten-Hypothese in §4.8.8.
+
+#### 4.8.8 Beschreibungs- und effektive Pixelung
+
+**Status:** philosophisch-methodische Klärung — ergänzt §4.8.6–4.8.7; **kein Theorem**, **kein** zusätzlicher Physikanspruch.
+
+**Querverweise:** Zwei-Rotor-Kopplung $(\Theta,\Phi)$ und $R_N$ §4.8.7; EABC–Fibonacci-Gesamtbaustein §4.8.6; Kegel-Analogie und $R_N$-Diagnostik §9.13 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §3.1.
+
+##### Beschreibungspixelung (Schicht A / B)
+
+Die EABC-Phasenkoordinate
+$$\Theta(n)=\frac{\pi}{2}\,\sigma(n),$$
+mit $\sigma=\sigma_1$ Divisorfunktion, ist **reine Beschreibungspixelung**: Sie kodiert dieselbe Information wie die Restklassenstruktur $n\bmod 12$ auf dem EABC-Gerüst — eine **diskrete Kodierung**, keine neue Physik und keine zusätzliche Ontologie der natürlichen Zahlen.
+
+Formal ist $\Theta$ eine Abbildung $\mathbb{N}\to S^1_{\mathrm{EABC}}$ (Schicht **A**/**B**): wohldefiniert, endlich-wertig in der $C_4$-Realisierung, unabhängig von jeder kinematischen Kegel-Metapher. Die Pixel entstehen **in der Beschreibung**, nicht als ontologische „Atome“ der Arithmetik.
+
+$$\boxed{\;\Theta(n)=\tfrac{\pi}{2}\sigma(n)\;\text{= Beschreibungspixel — Kodierung, \textbf{keine} neue Physik.}\;}$$
+
+##### Effektive Pixelung (Schicht B / R)
+
+Unabhängig von der Beschreibung kann die **Primdynamik selbst** auf die vier EABC-Labels $\{E,A,B,C\}$ reagieren — dann entsteht **effektive Pixelung**: ein **Informationsfilter**, der feinere Struktur grobkörnig sichtbar macht.
+
+| Begriff | Ursprung | Rolle |
+|---------|----------|-------|
+| **Beschreibungspixelung** | Wahl der Kodierung $\Theta$ | feste Gitterzellen auf $S^1_{\mathrm{EABC}}$ |
+| **Effektive Pixelung** | Reaktion der Primstruktur auf $G_E$ | dynamischer Filter; $N_\pm$, $D_E$, $\Sigma_A$ als Auswertungen |
+
+Die effektive Pixelung ist **empirisch testbar** (Level-1/Level-2, §4.3, §4.8): Sie behauptet nicht, dass Primzahlen „wirklich“ in EABC-Zellen sitzen, sondern dass die Observable auf dem gewählten Gitter **nicht-triviale** Struktur zeigt oder nicht.
+
+##### Rotierender Kegel und Gitter $(\Theta,h)$ (Schicht **C**, Analogie)
+
+Zur **Visualisierung** (nicht als kinematisches Modell im Ereignisraum) dient das Bild eines **rotierenden Kegels** der natürlichen Zahlen (vgl. §4.8.6, §9.13):
+
+- **Azimuth:** $\Theta(n)$ — diskrete Phasenpixel auf $S^1_{\mathrm{EABC}}$;
+- **Höhe $h$:** axiale Koordinate — **kontinuierlich** ($h(n)=n$, $h(n)=\log n$, Primindex, Streaming-Zeit) oder **diskret** ($h\in\mathbb{Z}$).
+
+Die Wahl von $h$ bestimmt, ob man eine **Helix** (kontinuierliche Höhe) oder ein **Gitter** $(\Theta,h)$ (diskrete Höhenstufen) sieht. Kontinuierliches $h$ glättet die Pixelung visuell; diskretes $h\in\mathbb{Z}$ macht die Zellstruktur explizit.
+
+$$\boxed{\;\text{Rotierender Kegel = \textbf{Beobachtungsgeometrie} (Schicht C) — \textbf{nicht} ontologisches Raummodell.}\;}$$
+
+##### Fibonacci-Kopplung: Pixel vs. Wellen (Schicht **C**)
+
+Die Kopplung aus §4.8.7 — EABC-Rotor $\Theta$ auf $S^1_{\mathrm{EABC}}$ (diskret, $\mathbb{Z}_4$-Realisierung) und Fibonacci-Rotor $\Phi(t)=t\log\varphi$ auf $S^1_\varphi$ (kontinuierlich) — lässt sich epistemisch so lesen:
+
+| Kanal | Objekt | Lesart |
+|-------|--------|--------|
+| **EABC** | $\Theta(n)$, $N_\pm$, $\Sigma_A$ | **Pixel** — diskrete Zellprojektion |
+| **Fibonacci-Kamm** | $K_F$, $\zeta_F$, $A_n$, $P_F(\omega)$ | **Wellen** — kontinuierliche Phasenüberlagerung |
+
+Die **Interferenzfrage** (konstruktiv/destruktiv) betrifft primär den Kamm: $A_n=|\zeta_F(\tfrac12+i\gamma_n)|$ misst Restamplitude nach Überlagerung (§4.8.7). Die Phasen-Korrelation $R_N$ testet, ob Pixel und Wellen **gemeinsam schwingen** — derzeit **nicht gestützt** (explorativ).
+
+$$\boxed{\;\text{EABC liefert Pixel; der Fibonacci-Kamm liefert Wellen — Kopplung = \textbf{Hypothese}, nicht Identität.}\;}$$
+
+##### Physik-Analogien (Schicht **C**, methodisch, nicht ontologisch)
+
+Zur **Orientierung** (vollständig in Schicht **C**; **kein** Export als Theorem):
+
+| Analogie | EABC-Lesart | Warnung |
+|----------|-------------|---------|
+| **Kristallgitter** | Beschreibungspixel $\Theta$; effektive Zellen $\{E,A,B,C\}$ | Gitter = Kodierung, nicht „kristalline“ Primzahlen |
+| **Doppelspalt** | Zwei Rotoren $(\Theta,\Phi)$; Interferenz in $A_n$, $P_F$ | **kein** Quantenexperiment an Primzahlen |
+| **QM-Projektion** | Level-2-Struktur in $\Sigma_A$ bei $\langle\cdot\rangle\approx 0$ (§4.8.1) | Spin-Liquid-Parallele **methodisch** |
+
+Diese Analogien strukturieren **Beobachtungsgeometrie** und Testdesign — sie begründen **keine** neue Physik der natürlichen Zahlen.
+
+##### Hypothese: Quotientenstruktur und sichtbare Resonanzen (Schicht **B** / **R**)
+
+**Arbeits-Hypothese:** Es existiert (mindestens heuristisch) eine **Quotientenstruktur**
+$$\mathbb{N} \longrightarrow \mathbb{N}/{\sim},$$
+deren Äquivalenzklassen durch die EABC-Beschreibung und die Fibonacci-Projektion **zusammengeführt** werden. Resonanzen können dann
+
+- **intrinsisch vorhanden** sein (Struktur in $\mathbb{N}/{\sim}$ oder in Spektraldaten), oder
+- **erst durch Projektion sichtbar** werden ($C_i$, $C_F$, $A_n$, $R_N$ als Detektoren).
+
+Diese Hypothese ist **offen** und **falsifizierbar** über die Hypothesenleiter H$_0$–H$_4$ (§4.8.7): H$_0$ = keine bevorzugte Kopplung; H$_1$–H$_3$ = schwache bis starke Resonanzsignale; H$_4$ = strukturelle Identität — **explizit nicht behauptet**.
+
+$$\boxed{\;\text{Resonanz kann \textbf{vorhanden} sein oder \textbf{erst projiziert} — beides testbar, keines bewiesen.}\;}$$
+
+##### Philosophischer Kern
+
+Die Unterscheidung **Beschreibungs- vs. effektive Pixelung** trennt drei Ebenen:
+
+1. **Kodierung** — $\Theta(n)$, mod-$12$-Gerüst (Schicht **A**/**B**);
+2. **Dynamik / Observable** — wie Primstruktur auf $G_E$ reagiert (Schicht **B**/**R**, Experiment);
+3. **Interpretation** — Kegel, Kristall, Doppelspalt, Pixel/Welle (Schicht **C**).
+
+Das EABC–Fibonacci-Programm **führt keine neue Ontologie** der natürlichen Zahlen ein. Es liefert eine **Beobachtungsgeometrie**: welche Gitter, Projektionen und externen Detektoren man wählt, um Struktur sichtbar zu machen — und welche Tests diese Sichtbarkeit von Zufall trennen.
+
+$$\boxed{\;\textbf{Keine neue Ontologie — nur Beobachtungsgeometrie.}\;}$$
+
+$$\boxed{\;\text{Pixel = Beschreibung oder effektiver Filter; Wellen = externer Kamm; Physik-Bilder = Schicht C — \textbf{methodisch}, \textbf{nicht} ontologisch.}\;}$$
+
+| Baustein | Tao-Label | Schicht |
+|----------|-----------|---------|
+| $\Theta(n)=(\pi/2)\sigma(n)$ | **Definition** | **A**/**B** |
+| Beschreibungs- vs. effektive Pixelung | **Definition** / **Hypothese** | **B**/**R** |
+| Gitter $(\Theta,h)$, rotierender Kegel | **Analogie** | **C** |
+| Pixel/Welle, Fibonacci-Interferenz | **Analogie** / **Hypothese** | **C** |
+| Kristall, Doppelspalt, QM-Projektion | **Analogie** | **C** |
+| $\mathbb{N}\to\mathbb{N}/{\sim}$, Resonanz-Hypothese | **Hypothese** | **B**/**R** |
+
+**Label:** §4.8.8 = **Meta** / **Hypothese** / **Analogie** (Schicht **C** für Bilder; **A**/**B** für $\Theta$ und Quotient); **kein Theorem**.
 
 ### 4.9 Zeta-Exponential-Gedankenexperiment (Schicht **C**)
 
