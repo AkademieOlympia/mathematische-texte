@@ -1435,7 +1435,7 @@ $$\boxed{\;\textbf{Aktueller Gesamtstatus:}\; algebraisch wohldefiniert \checkma
 
 **Label:** §4.8.7 = **Meta** / **Hypothese** / **Experiment** (Schicht **C**); **kein Theorem**.
 
-**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12; Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13.
+**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12; Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13; Prägeometrie der Wirkung $(\hbar,\sigma)$ §4.8.14.
 
 #### 4.8.8 Beobachtungsgeometrie als Kompressionsoperator
 
@@ -2162,7 +2162,152 @@ $$\boxed{\;\textbf{Behauptet (Gedankenexperiment):}\; \text{Wirkungsquantisierun
 | $V\Rightarrow\mathfrak{su}(2)$, Emergenz | **Forschungsfrage** | **R** |
 | „EABC erklärt $\hbar$ oder QM" | — | **nicht behauptet** |
 
-**Label:** §4.8.13 = **Meta** / **Gedankenexperiment** / **Analogie** (Schicht **C** für Physik/Prägeometrie; **A**/**B** für Kompressionskette; **R** für SU(2)-Emergenzfrage); **kein Theorem**.
+**Label:** §4.8.13 = **Meta** / **Gedankenexperiment** / **Analogie** (Schicht **C** für Physik/Prägeometrie; **A**/**B** für Kompressionskette; **R** für SU(2)-Emergenzfrage); **kein Theorem**. Vertiefung der $(h,u)$-Lesart zu $(\hbar,\sigma)$: §4.8.14.
+
+#### 4.8.14 Prägeometrie der Wirkung: $(\hbar,\sigma)$
+
+**Status:** paper-ready Prägeometrie-Gedankenexperiment — **kein Theorem**, **kein** Anspruch, EABC erkläre $\hbar$ oder die Quantenmechanik; präzisiert §4.8.13 durch die EABC-Lesart $(\hbar,\sigma)$ statt der pauschalen Formulierung „EABC erklärt Richtungsquantisierung". Schicht **C** für Physik-/Prägeometrie-Bilder; Schicht **A**/**B** für Kompressionskette $\mathcal{C}_E$; Schicht **R** für Emergenzfragen.
+
+**Querverweise:** Kompressionsoperator $\mathcal{C}_E:\mathbb{N}\to\{E,A,B,C\}\cong\mathbb{Z}_4$ und strukturstabile Kompression §4.8.8; Orientierungsvektor $u(n)\in S^2$, Resonanzfaktor $R_{ij}$ §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM §4.8.11; SU(2)-Prüfstein, Orientierungshebung und Kompressionskette $\mathbb{N}\to\mathbb{Z}_4\to V\to\Pi$ §4.8.12; Trennung Wirkungs- vs. Richtungsquantisierung, Paar $(h,u)$ §4.8.13; quaternionische Hebung und Bahndrehimpuls-Bild in `Bahndrehimpuls.tex`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §0–3.1, §3.1 (Prägeometrie $(\hbar,\sigma)$).
+
+§4.8.13 trennte skalare Wirkungsquantisierung ($h$) von vektorieller Richtungsquantisierung ($(l,m)$ via SU(2)). Der folgende Abschnitt vertieft die **Prägeometrie** der Wirkungseinheit: $\hbar$ als Brücke zwischen Dynamik und Geometrie — und als **elementares Orientierungsereignis**, das in der EABC-Lesart durch ein diskretes Label $\sigma\in\{E,A,B,C\}$ mitgetragen wird.
+
+##### 1. $\hbar$ verbindet Dynamik und Geometrie: konjugierte Paare
+
+In der etablierten Quantenmechanik (Schicht **C**, extern) tritt $\hbar$ nicht nur als Skala auf, sondern als **Einheit konjugierter Paare**:
+
+$$E\cdot t \;\sim\; p\cdot x \;\sim\; \hbar, \qquad \hbar = \frac{h}{2\pi}.$$
+
+| Paar | Lesart | Rolle von $\hbar$ |
+|------|--------|-------------------|
+| $(E,\,t)$ | Energie–Zeit | Wirkung $S=E\cdot t$ quantisiert in Stufen $nh$ |
+| $(p,\,x)$ | Impuls–Ort | Phasenraum-Fläche; Heisenberg-Unschärfe |
+| $(L_i,\,L_j)$ | Drehimpuls | Kommutator $[L_i,L_j]=i\hbar\varepsilon_{ijk}L_k$ (§4.8.11, §4.8.13) |
+
+**Lesart (Schicht C):** $\hbar$ ist die **gemeinsame Skala**, in der zeitliche Dynamik ($E\cdot t$) und räumliche Geometrie ($p\cdot x$) **gekoppelt** erscheinen — nicht zwei unabhängige Konstanten, sondern ein **einziges Wirkungsquantum** mit konjugierter Doppelstruktur.
+
+##### 2. $\hbar$ als elementares Orientierungsereignis — nicht als Vektor
+
+Die Standardphysik behandelt $\hbar$ als **skalare** Konstante. Die Prägeometrie-Lesart (Schicht **C**, Analogie) fragt präziser:
+
+$$\boxed{\;\textbf{Prägeometrie-Bild:}\; \hbar\text{ ist kein Orientierungsvektor, sondern ein \textbf{elementares Orientierungsereignis} — ein gekoppeltes Raum-Zeit-Impuls-Ereignis minimaler Wirkung, nicht reduzierbar auf }E\cdot t\text{ allein oder auf }u\in S^2\text{ allein.}\;}$$
+
+| Aspekt | Standardphysik | Prägeometrie-Bild (Schicht **C**) |
+|--------|----------------|-----------------------------------|
+| Typ von $\hbar$ | Skalare Konstante | **Ereignis** minimaler Wirkung |
+| Orientierung | Folgt aus SU(2)/Drehimpuls | **Intrinsisch gekoppelt** an Wirkungseinheit |
+| Raum vs. Zeit | Getrennte Freiheitsgrade | **Gekoppeltes** Ereignis $(E,t)\leftrightarrow(p,x)$ |
+
+**Epistemische Sicherung:** „Orientierungsereignis" ist ein **Bild** (Schicht **C**) — keine ontologische Behauptung über die Natur der Quantenmechanik und **kein** Ersatz der etablierten SU(2)-Algebra.
+
+##### 3. Minimale Phasenraum-Fläche: $\Delta x\,\Delta p \gtrsim \hbar$
+
+Aus der Konjugiertheit von $p$ und $x$ folgt die **Heisenberg-Unschärfe** (Schicht **C**, extern):
+
+$$\Delta x\,\Delta p \;\gtrsim\; \hbar.$$
+
+Geometrisch: $\hbar$ setzt eine **untere Grenze der Phasenraum-Fläche** — kein Zustand kann gleichzeitig beliebig scharf in $x$ und $p$ lokalisiert werden. Die Fläche im $(x,p)$-Raum ist **quantisiert** in Einheiten $\hbar$.
+
+$$\boxed{\;\Delta x\,\Delta p \gtrsim \hbar \;\;\Longleftrightarrow\;\; \text{minimale Phasenraum-Fläche} = \text{elementares Wirkungs-/Orientierungsereignis.}\;}$$
+
+**Verknüpfung EABC (Schicht A/B):** Die Kompressionspixelung §4.8.8 liefert **diskrete** Beobachtungsklassen $\sigma\in\{E,A,B,C\}$ — eine arithmetische Analogie zur **diskreten** Untergrenze der Phasenraum-Fläche: Beobachtung **pixeliert** sowohl Wirkung als auch Orientierung.
+
+##### 4. EABC-Baustein: $(\hbar,\,\sigma)$ statt nur $\hbar$
+
+§4.8.13 formulierte das Paar $(h,u)$. Die präzisere EABC-Lesart ersetzt die unscharfe Behauptung „EABC erklärt Richtungsquantisierung" durch einen **methodischen Baustein**:
+
+$$\boxed{\;\hbar \;\longrightarrow\; (\hbar,\,\sigma), \qquad \sigma\in\{E,A,B,C\}\cong\mathbb{Z}_4.\;}$$
+
+| Komponente | Bedeutung | Schicht |
+|------------|-----------|---------|
+| $\hbar$ | Skala der Wirkung / Phasenraum-Fläche | **C** (extern) |
+| $\sigma$ | EABC-Klasse nach $\mathcal{C}_E$ | **A**/**B** (Definition) |
+| $(\hbar,\sigma)$ | **Elementarer Baustein** der Beobachtungskompression | **B** (Modell) |
+
+Die Zuordnung ist **nicht** $\hbar = \sigma$ (keine Identifikation der physikalischen Konstante mit einer Primrestklasse), sondern: **Beobachtung** liefert nach Kompression ein **gepaartes** Output — skalare Wirkungseinheit **plus** diskretes Orientierungslabel.
+
+Kompressionskette (Erweiterung von §4.8.8, §4.8.12):
+
+$$\mathbb{N} \;\xrightarrow{\;\mathcal{C}_E\;}\; \sigma\in\{E,A,B,C\} \;\xrightarrow{\;\text{Hebung}\;}\; u(\sigma)\in V\subset S^2.$$
+
+**Lesart:** $\sigma$ ist der **arithmetische** Orientierungsfreiheitsgrad; $u\in V$ die **geometrische** Hebung auf ein endliches Orientierungsgitter (Ikosaeder $V_{12}$, Dodekaeder $V_{20}$ — §4.8.10–4.8.11).
+
+##### 5. Spin $\pm\tfrac12$ als Schicht-C-Analogie
+
+Der Spin $\pm\tfrac12$ (Schicht **C**, extern) illustriert die Kopplung von **Wirkungseinheit** und **Orientierung**:
+
+| Spin-Eigenschaft | Prägeometrie-Analogie | EABC-Bezug |
+|------------------|----------------------|------------|
+| $s=\tfrac12$ (nicht ganzzahlig) | Halbe Wirkungseinheit pro Umdrehung ($4\pi$-Symmetrie) | $\mathbb{Z}_4$-Struktur: vier Klassen, nicht zwei |
+| Zwei Zustände ($m=\pm\tfrac12$) | Binäre Orientierungswahl | $\sigma\in\{E,A,B,C\}$: **vier** Klassen (§4.8.8) |
+| SU(2)-Doppelüberlagerung | Orientierung primär, SU(2) emergent | Umgekehrte Kausalität §4.8.12, §4.8.13 Abschnitt 5 |
+
+$$\boxed{\;\textbf{Analogie (Schicht C):}\; \text{Spin }\pm\tfrac12\text{ zeigt, dass Wirkung und Orientierung untrennbar gekoppelt sind — EABC liefert ein \textbf{diskretes} Analogon via }(\hbar,\sigma)\text{, nicht eine Herleitung von Spin aus Primzahlen.}\;}$$
+
+**Epistemische Sicherung:** Spin-$\tfrac12$-Physik ist **Referenz** (Schicht **C**); $(\hbar,\sigma)$ ist **Kompressionsmodell** (Schicht **A**/**B**). Keine Behauptung, dass EABC den Spin erklärt.
+
+##### 6. Warum ist die Wirkungseinheit mit Orientierung gekoppelt?
+
+Die etablierte Antwort (Schicht **C**): Rotationsinvarianz des Raumes erzwingt SU(2)-Struktur; $\hbar$ tritt im Kommutator $[L_i,L_j]=i\hbar\varepsilon_{ijk}L_k$ auf — Wirkung und Drehimpuls sind **algebraisch verknüpft**.
+
+Die Prägeometrie-Frage (Schicht **R**): Reicht diese Antwort, oder deutet die **Kopplung** von $E\cdot t$ und $p\cdot x$ auf ein **tieferes** gemeinsames Ereignis?
+
+| Perspektive | Antwort | Status |
+|-------------|---------|--------|
+| Standard-QM | SU(2)-Symmetrie $\Rightarrow$ $(l,m)$-Quantisierung | **Referenz** (Schicht **C**) |
+| Prägeometrie | $\hbar$ = minimales gekoppeltes Raum-Zeit-Impuls-Ereignis | **Bild** (Schicht **C**) |
+| EABC | Beobachtung liefert $(\hbar,\sigma)$ — Wirkung **und** Orientierung als Kompressionsoutput | **Hypothese** (Schicht **A**/**B**) |
+| Emergenz | Aus $(\hbar,\sigma)$ und $V\subset S^2$ folgt SU(2)-Algebra? | **Forschungsfrage** (Schicht **R**, §4.8.12) |
+
+$$\boxed{\;\textbf{Offene Frage (Schicht R):}\; \text{Warum ist die kleinste Wirkungseinheit gleichzeitig die Einheit minimaler Orientierung — ist das Zufall der Symmetrie oder Hinweis auf ein elementares Prägeometrie-Ereignis?}\;}$$
+
+##### 7. $u\in S^2$ oder $u\in V$ (Ikosaeder)?
+
+§4.8.10–4.8.12 unterscheiden **kontinuierliche** Orientierung ($S^2$) von **diskreter** Orientierungsgeometrie ($V\subset S^2$):
+
+| Raum | $|V|$ | Eigenschaft | EABC-Rolle |
+|------|-------|-------------|------------|
+| $S^2$ | $\infty$ | Kontinuierliche Drehgruppe SO(3)/SU(2) | **Referenz** (etablierte QM, Schicht **C**) |
+| $V_{12}$ (Ikosaeder) | 12 | Endliche $A_5$-Symmetrie | Hebung $\sigma\mapsto u(\sigma)$ (§4.8.10) |
+| $V_{20}$ (Dodekaeder) | 20 | Dual zu Ikosaeder | Vergleichs-Nullmodell (§4.8.11) |
+
+$$\boxed{\;\textbf{EABC-Lesart:}\; u\in V\subset S^2\text{ — nicht }u\in S^2\text{ beliebig. Beobachtungskompression liefert \textbf{diskrete} Orientierungslabels auf endlichem Gitter, nicht kontinuierliche Richtungen.}\;}$$
+
+Die Ikosaeder-Ecken $V_{12}$ sind der **bevorzugte** Hebungsraum in der EABC-Orientierungsprogrammatik (§4.8.11, `eabc_icosahedron_test.py`); der SU(2)-Prüfstein (§4.8.12) testet, ob aus $V_{12}$ unter strukturierter Hebung SU(2)-Signaturen **emergieren** können.
+
+##### 8. Epistemische Kernboxen
+
+$$\boxed{\;\textbf{Frage 1:}\; \text{Ist }\hbar\text{ nur eine Konstante — oder ein orientiertes Ereignis?}\;}$$
+
+| Antwort | Perspektive | Schicht |
+|---------|-------------|---------|
+| Nur Konstante | Standardphysik: $\hbar$ skalar; Orientierung via SU(2) | **C** (extern) |
+| Orientiertes Ereignis | Prägeometrie: minimales gekoppeltes $(E,t)\leftrightarrow(p,x)$-Ereignis | **C** (Analogie) |
+| Beobachtungspixel | EABC: $(\hbar,\sigma)$ als Kompressionsoutput | **A**/**B** |
+
+$$\boxed{\;\textbf{Frage 2:}\; \hbar \;\longrightarrow\; (\hbar,\,\sigma)\text{ — präziser als „EABC erklärt Richtungsquantisierung".}\;}$$
+
+| Formulierung | Präzision | Status |
+|--------------|-----------|--------|
+| „EABC erklärt Richtungsquantisierung" | **Unpräzise** — suggeriert physikalische Herleitung | **nicht behauptet** |
+| EABC liefert $(\hbar,\sigma)$ als Beobachtungsbaustein | **Präzise** — methodische Kompressionslesart | **Hypothese** (Schicht **A**/**B**) |
+| Aus $(\hbar,\sigma)$ und $V$ emergiert SU(2) | **Prüfstein** — operational testbar | **Forschungsfrage** (Schicht **R**, §4.8.12) |
+
+$$\boxed{\;\textbf{Nicht behauptet:}\; \text{EABC erklärt }\hbar\text{, Heisenberg-Unschärfe, Spin oder die Herleitung von SU(2).}\;}$$
+
+$$\boxed{\;\textbf{Behauptet (Gedankenexperiment):}\; \hbar\text{ verbindet Dynamik }(E\cdot t)\text{ und Geometrie }(p\cdot x)\text{; die EABC-Lesart }(\hbar,\sigma)\text{ präzisiert die Kompressionskette §4.8.8–4.8.12 — skalare Wirkungseinheit plus diskretes Orientierungslabel als elementarer Beobachtungsbaustein, testbar über }\mathcal{C}_E\text{ und Hebung }u\in V.}\;}$$
+
+| Baustein | Tao-Label | Schicht |
+|----------|-----------|---------|
+| $E\cdot t \sim p\cdot x \sim \hbar$, $\Delta x\,\Delta p\gtrsim\hbar$ | **Referenz** (etablierte Physik) | **C** (extern) |
+| Spin $\pm\tfrac12$, SU(2)-Doppelüberlagerung | **Referenz** / **Analogie** | **C** |
+| $(\hbar,\sigma)$, $\mathcal{C}_E:\mathbb{N}\to\mathbb{Z}_4$ | **Definition** / **Modell** | **A**/**B** |
+| $u\in V\subset S^2$, Ikosaeder-Hebung | **Modell** / **Experiment** | **A**/**B** |
+| Prägeometrie, Orientierungsereignis | **Analogie** | **C** |
+| $(\hbar,\sigma)\Rightarrow\mathfrak{su}(2)$ | **Forschungsfrage** | **R** |
+| „EABC erklärt $\hbar$ oder QM" | — | **nicht behauptet** |
+
+**Label:** §4.8.14 = **Meta** / **Gedankenexperiment** / **Prägeometrie-Analogie** (Schicht **C** für Physik-Bilder; **A**/**B** für $(\hbar,\sigma)$-Kompressionskette; **R** für Emergenzfrage); **kein Theorem**.
 
 ### 4.9 Zeta-Exponential-Gedankenexperiment (Schicht **C**)
 
