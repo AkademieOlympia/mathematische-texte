@@ -340,11 +340,18 @@ In der **Bernoulli-Uhr** (`collatz_offene_punkte.md`, `BernoulliClock.lean`) wer
 
 ---
 
-## 9. Fibonacci-Zeta: goldene Zwischenwelt
+## 9. Fibonacci-Zeta: kontrolliertes Gegenmodell
 
-$$\boxed{\;\text{Fibonacci als diskrete hyperbolische Brücke zwischen }e^x\text{ und }\zeta(s)\text{ — goldener Testmodell für Zeta-Strukturen (Schicht C).}\;}$$
+$$\boxed{\;\text{Fibonacci-Zeta = geordneter Resonator; Riemann-Zeta = arithmetisch gestörter Resonator — \textbf{kontrolliertes Gegenmodell / Testfeld}, nicht „näher an Riemann“.}\;}$$
 
-Dieser Abschnitt fügt eine **dritte Skala** zum Dreieck aus §2–3 hinzu: neben der **kontinuierlichen** Exponentialfunktion $e^x$ und der **arithmetischen** Log-Exponentialsumme $\zeta(s)=\sum e^{-s\log n}$ die **goldene diskrete** Expansion/Kontraktion der Fibonacci-Zahlen $F_n$.
+**Schlüsselunterscheidung (Schicht C):**
+
+| Objekt | Spektrum | Lesart |
+|--------|----------|--------|
+| $\zeta(s)=\sum_{n\ge1} e^{-s\log n}$ | **arithmetisch irregulär** ($\log n$, Prim-Marken $\log p$) | gestörter Resonator |
+| $\zeta_F(s)\approx 5^{s/2}\sum_{n\ge1} e^{-sn\log\varphi}$ | **goldener regulärer Frequenzkamm** ($n\log\varphi$ äquidistant) | kontrolliertes Gegenmodell |
+
+Dieser Abschnitt fügt eine **dritte Skala** zum Dreieck aus §2–3 hinzu: neben $e^x$ (kontinuierlich) und $\zeta(s)$ (arithmetisch) die **goldene diskrete** Expansion/Kontraktion der Fibonacci-Zahlen $F_n$ — als **Testfeld**, in dem Resonanzstruktur explizit kontrollierbar ist.
 
 ### 9.1 Dreieck: kontinuierlich — arithmetisch — golden-diskret
 
@@ -377,7 +384,7 @@ mit Eigenwerten $\lambda_\pm=\varphi,\psi$ — dieselbe **Differenz zweier Expon
 
 **Numerik (optional):** `collatz_eabc_zeta_fibonacci_check.py` verifiziert $F_n$ (Binet vs. $M^n$) für $n\le 20$.
 
-### 9.3 Fibonacci-Zeta $\zeta_F(s)$
+### 9.3 Fibonacci-Zeta $\zeta_F(s)$ — fast geometrisch, parity-gestört
 
 **Definition** (formal, Konvergenz für $\Re(s)$ hinreichend groß):
 
@@ -385,42 +392,56 @@ $$\boxed{\;\zeta_F(s):=\sum_{n\ge1} F_n^{-s}.\;}$$
 
 Mit Binet und $F_n\sim \varphi^n/\sqrt5$ folgt asymptotisch
 
-$$\zeta_F(s)\sim 5^{s/2}\sum_{n\ge1}\varphi^{-ns},$$
+$$\boxed{\;\zeta_F(s)\approx 5^{s/2}\sum_{n\ge1} e^{-sn\log\varphi}\;=\;5^{s/2}\,\frac{\varphi^{-s}}{1-\varphi^{-s}}\;}$$
 
-wobei die **Korrektur** durch den Kontraktionsterm lautet:
+— eine **geometrische Zeta** auf dem **regulären** Gitter $n\mapsto n\log\varphi$. Resonanzen (Polstellen der Hauptreihe) liegen auf der **imaginären Achse** bei
+
+$$\boxed{\;s_k=\frac{2\pi i k}{\log\varphi},\qquad k\in\mathbb{Z}\setminus\{0\}\;}$$
+
+(vertikales Resonanzgitter, goldener Fourier-Kamm $\omega_\varphi=\log\varphi$).
+
+**Binet-Korrektur** — parity-gestörte geometrische Zeta:
 
 $$\boxed{\;F_n^{-s}=5^{s/2}\,\varphi^{-ns}\,\bigl(1-(-1)^n\varphi^{-2n}\bigr)^{-s}.\;}$$
+
+Der Faktor spiegelt den **Kontraktionsterm** $\psi^n=(-\varphi^{-1})^n=(-1)^n\varphi^{-n}$: Parität $(-1)^n$, Spiegel $\varphi^{-2n}$, komplexe Gewichtung $s$.
 
 **Geboxte Struktur** (goldene Version von $e^x\pm e^{-x}$):
 
 $$\boxed{\;\underbrace{\varphi^{-ns}}_{\text{Hauptterm (Expansion)}}\;+\;\underbrace{(-1)^n\varphi^{-2n}}_{\text{Spiegelterm (Kontraktion mit Parität)}}\;}$$
 
-— formal parallel zu $(e^x+e^{-x})$ und $(e^x-e^{-x})$ in Box 2, jetzt auf dem **regulären** Gitter $n\mapsto n\log\varphi$ statt $n\mapsto\log n$.
+— formal parallel zu $(e^x+e^{-x})$ und $(e^x-e^{-x})$ in Box 2; $\zeta_F$ ist damit ein **diskretes golden-paritäts-geladenes Modell** für Zeta-artige Exponentialsummen.
 
-**Label:** $\zeta_F$-Definition = **Definition**; asymptotische Entwicklung = **Theorem** (klassisch, Standard); Streifen-Parallele = **Analogie** (Schicht **C**).
+**Label:** $\zeta_F$-Definition = **Definition**; asymptotische Entwicklung, Resonanzgitter = **Theorem** (klassisch); Gegenmodell-Lesart = **Hypothese/Modell** (Schicht **C**).
 
-### 9.4 Vergleich zu Riemann-$\zeta$: goldener Fourier-Kamm
+### 9.4 Vergleich auf der kritischen Linie — Gegenmodell, nicht Annäherung
+
+$$\boxed{\;\text{Fibonacci-Zeta = geordneter Resonator}\;\|\;\text{Riemann-Zeta = arithmetisch gestörter Resonator.}\;}$$
 
 | Aspekt | Riemann $\zeta(s)$ | Fibonacci-$\zeta_F(s)$ |
 |--------|-------------------|------------------------|
 | Gitter | $n\mapsto\log n$ (**irregulär**, Prim-Lücken) | $n\mapsto n\log\varphi$ (**regulär**, äquidistant) |
 | „Frequenzkamm“ | $\omega_p=\log p$ (Prim-Fourier-Kamm) | $\omega_\varphi=\log\varphi$ (goldener Kamm) |
-| Lokale Faktoren | Euler $(1-p^{-s})(1+p^{-s})$ | Binet-Haupt- + Spiegelterm |
-| Nullmodell-Lesart | — | **reguläres** Vergleichsensemble für arithmetische Irregularität |
+| Lokale Faktoren | Euler $(1-p^{-s})(1+p^{-s})$ | Binet-Haupt- + Spiegelterm (Paritätsstörung) |
+| Epistemische Rolle | **Zielobjekt** (arithmetisch) | **kontrolliertes Gegenmodell / Testfeld** |
 
-**Hypothese/Modell (nicht Theorem):** $\zeta_F$ als **regulärer** Log-Kamm dient als **Nullmodell** für die **irreguläre** Prim-Log-Geometrie hinter $\zeta(s)$ — methodische Parallele zur Level-2-Nullmodell-Hierarchie (`collatz_eabc_zirkulationshypothese.md` §4.8.2): dort werden zunehmend realistische Ensembles ($\Sigma_A^{\mathrm{perm}}\to\Sigma_A^{\mathrm{Markov}}\to\Sigma_A^{\mathrm{HL}}$) getestet; hier wäre $\zeta_F$ das **regelmäßigste** Referenzgitter auf der Log-Achse, **ohne** Behauptung einer Identität mit Prim-Korrelationen.
+**Kritische Linie** ($s=\tfrac12+it$): Vergleich $\zeta(\tfrac12+it)$ vs. $\zeta_F(\tfrac12+it)$ — gedämpfter goldener Fourier-Kamm ($\varphi^{-n/2}$, Phase $e^{-itn\log\varphi}$) gegen **arithmetisch gestörten** Prim-Kamm ($p^{-1/2}$, Phase $e^{-it\log p}$). Die Frage ist **nicht** „liegt $\zeta_F$ näher an Riemann?“, sondern: **welche Observable unterscheidet regulären von gestörtem Kamm?**
 
-**Label:** goldener Kamm als Prim-Nullmodell = **Hypothese** / **Modell** (Schicht **C**).
+**Nullmodell-Hierarchie** (`collatz_eabc_zirkulationshypothese.md` §4.8.2): $\zeta_F$ ist **Stufe 0** — das **regulärste** Referenzgitter ($\Sigma_A^{\mathrm{comb}}$ bzw. goldener Log-Kamm), **vor** Stufe 1 (Permutation). Prim-Log-Geometrie ist die **Störung** darüber; HL-Konsistenz (Stufe 3) testet arithmetische Realität. **Kein Theorem** über Identität mit Prim-Korrelationen.
 
-### 9.5 Kritische Linie auf der goldenen Achse
+**Label:** Gegenmodell / Stufe-0-Baseline = **Hypothese** / **Modell** (Schicht **C**).
 
-Analog zu $s=\tfrac12+it$ in §6.3 setze auf dem Fibonacci-Gitter
+### 9.5 Kritische Linie und Resonanzgitter
+
+Auf dem Fibonacci-Gitter ($s=\tfrac12+it$):
 
 $$\varphi^{-n(\tfrac12+it)}=\varphi^{-n/2}\,e^{-it\,n\log\varphi}.$$
 
-Der **reelle Halbzahl-Anteil** $\varphi^{-n/2}$ und die **Phase** $e^{-it n\log\varphi}$ faktorisieren wie $p^{-1/2}\cdot p^{-it}$ auf der Prim-Achse — **Bildsprache** für eine „goldene kritische Linie“, **kein** RH-Anspruch für $\zeta_F$ oder $\zeta$.
+Der **reelle Halbzahl-Anteil** $\varphi^{-n/2}$ und die **Phase** $e^{-it n\log\varphi}$ faktorisieren wie $p^{-1/2}\cdot p^{-it}$ auf der Prim-Achse — **Bildsprache** für eine „goldene kritische Linie“, **kein** RH-Anspruch.
 
-**Label:** **Analogie** (Schicht **C**).
+**Resonanzgitter** (imaginäre Achse): $t_k=2\pi k/\log\varphi$ markiert die **vertikalen Resonanzlinien** der Hauptgeometrie $\varphi^{-s}/(1-\varphi^{-s})$. Auf $\Re(s)=\tfrac12$ liegen diese Punkte **diagnostisch** — sie strukturieren den Vergleich $\zeta$ vs. $\zeta_F$, beweisen aber **nichts** über Nullstellen von $\zeta$.
+
+**Label:** **Analogie** (Schicht **C**); Resonanzformel = **Theorem** (klassisch).
 
 ### 9.6 EABC/Wigner: chirale Paarung (Schicht C)
 
@@ -429,20 +450,39 @@ Der **reelle Halbzahl-Anteil** $\varphi^{-n/2}$ und die **Phase** $e^{-it n\log\
 | $\varphi^n$ (Expansion) vs. $(-\varphi^{-1})^n$ (Kontraktion) | chirale Paarung $\gamma^+$ (ABCEA) vs. $\gamma^-$ (CEABC) | **Analogie** (C) |
 | Parität $(-1)^n$ | Vorzeichenwechsel auf $C_4$-Zyklus | **Analogie** (C) |
 | Haupt- + Spiegelterm (Binet) | ABCE $\leftrightarrow$ CEAB — diskrete Wigner-Struktur | **Analogie** (C) |
+| Fibonacci-Fenster $F_k\le p<F_{k+1}$ | natürliches Renormierungsgitter für chirale Wigner-Zeugen | **Hypothese/Modell** (C) |
 
-**Explizit ausgeschlossen:** Fibonacci beweist **weder** die Riemann-Hypothese **noch** EABC-Holonomie oder $D_E$-Wachstum. Die Zuordnung ist **Interpretationsschicht** — dieselbe methodische Kategorie wie §4.2 und `collatz_eabc_zirkulationshypothese.md` §2.
+**Explizit ausgeschlossen:** Fibonacci beweist **weder** die Riemann-Hypothese **noch** EABC-Holonomie oder $D_E$-Wachstum. Fibonacci ist ein **Renormierungsgitter** für chirale Wigner-Zeugen — **Interpretationsschicht**, nicht Beweiskette.
 
-**Label:** gesamter §9.6 = **Analogie** (Schicht **C**).
+**Label:** gesamter §9.6 = **Analogie** / **Modell** (Schicht **C**).
 
-### 9.7 Kurzform
+### 9.7 Drei numerische Zeugen (Experiment, Schicht C)
 
-$$\boxed{\;\text{Fibonacci ist die diskrete hyperbolische Brücke zwischen }e^x\text{ und }\zeta(s)\text{ — ein goldener Testmodell für Zeta-Strukturen.}\;}$$
+Implementierung: `eabc_zeta_fibonacci_witnesses.py` → `eabc_zeta_fibonacci_witnesses.json`
+
+| Zeuge | Observable | Lesart |
+|-------|------------|--------|
+| **1** | $t_k=2\pi k/\log\varphi$: $\|\zeta(\tfrac12+it_k)\|$ vs. zufällige Höhen; parallel $\|\zeta_F(\tfrac12+it_k)\|$ | Resonanzgitter auf der kritischen Linie — diagnostisch |
+| **2** | $\theta_p=(\log p)/(\log\varphi)\bmod 1$ für $p\le B$; Histogramm / $\chi^2$-Test | Fibonacci-Sampling der Prim-Frequenzen — Uniformität = Nullbefund |
+| **3** | In Fenstern $F_k\le p<F_{k+1}$: Zählung ABCE vs. CEAB (mod-$12$-4-Gramm auf aufeinanderfolgenden Primzahlen), $D_k=(N_{\mathrm{ABCE}}-N_{\mathrm{CEAB}})/(N_{\mathrm{ABCE}}+N_{\mathrm{CEAB}})$ | EABC-Fibonacci-Fenster — minimale Wigner-Zählung |
+
+```bash
+python3 eabc_zeta_fibonacci_witnesses.py --prime-bound 50000
+pytest tests/test_eabc_zeta_fibonacci_witnesses.py -q
+```
+
+**Label:** gesamter §9.7 = **Experiment** (Schicht **C**); **kein Theorem**, **kein RH-Beweis**.
+
+### 9.8 Kurzform
+
+$$\boxed{\;\text{Fibonacci-Zeta = geordneter Resonator; Riemann-Zeta = arithmetisch gestörter Resonator — kontrolliertes Gegenmodell, kein „näher an Riemann“.}\;}$$
 
 | Aussage | Schicht | Tao-Label |
 |---------|---------|-----------|
-| Binet, Matrix-Eigenwerte, $\zeta_F$-Definition | — | **Theorem** / **Definition** |
-| Goldener Kamm als Prim-Nullmodell | **C** | **Hypothese** / **Modell** |
+| Binet, Matrix-Eigenwerte, $\zeta_F$-Definition, Resonanzgitter | — | **Theorem** / **Definition** |
+| $\zeta_F$ als Stufe-0-Gegenmodell (§4.8.2) | **C** | **Hypothese** / **Modell** |
 | Streifen-, kritische-Linie-, EABC-Paarung | **C** | **Analogie** |
+| Drei numerische Zeugen (§9.7) | **C** | **Experiment** |
 | RH oder EABC aus Fibonacci | — | **nicht behauptet** |
 
 ---
@@ -469,4 +509,4 @@ $$\boxed{\;\zeta_F(s)=\sum_{n\ge1}F_n^{-s}\;\Leftrightarrow\;\text{goldener Log-
 
 ---
 
-*Verknüpft mit `collatz_eabc_zirkulationshypothese.md` §4.8.2, §4.9; epistemischer Rahmen: `collatz_eabc_epistemik_schichten.md`; Bernoulli: `collatz_bernoulli_schalen.pdf`, `BernoulliClock.lean`; Oktanionen: `divisionsalgebren.tex`, `collatz_oktonionen_beweis.pdf`; Fibonacci-Numerik: `collatz_eabc_zeta_fibonacci_check.py`.*
+*Verknüpft mit `collatz_eabc_zirkulationshypothese.md` §4.8.2 (Stufe 0: $\zeta_F$), §4.9; epistemischer Rahmen: `collatz_eabc_epistemik_schichten.md`; Bernoulli: `collatz_bernoulli_schalen.pdf`, `BernoulliClock.lean`; Oktanionen: `divisionsalgebren.tex`, `collatz_oktonionen_beweis.pdf`; Fibonacci-Numerik: `collatz_eabc_zeta_fibonacci_check.py`, `eabc_zeta_fibonacci_witnesses.py`.*

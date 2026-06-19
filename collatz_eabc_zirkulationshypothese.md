@@ -933,10 +933,11 @@ $$\boxed{\;\text{Der eigentliche Gegner ist das \textbf{falsche Nullmodell} — 
 
 Level-2 testet **Kovarianzgeometrie**, nicht den Mittelwert. Ein Befund $\Delta_F>0$ gegen ein zu schwaches Nullmodell (z.\,B. volle Permutation) ist interessant, aber noch nicht arithmetisch; erst der Vergleich gegen **realistischere** Ensembles trägt epistemisches Gewicht.
 
-##### Stufen 1–4
+##### Stufen 0–4
 
 | Stufe | Nullmodell | Symbol | Status | Epistemische Lesart |
 |-------|------------|--------|--------|---------------------|
+| **0** | Regulärer goldener Log-Kamm ($\zeta_F$, $\omega_\varphi=\log\varphi$) | $\Sigma_A^{\mathrm{comb}}$ / $\zeta_F$ | **Hypothese/Experiment** | **regelmäßigstes** Referenzgitter — kontrolliertes Gegenmodell |
 | **1** | Volle Permutation (marginaltreu) | $\Sigma_A^{\mathrm{perm}}$ | **implementiert** | interessant, nicht sensationell |
 | **2** | Markov-erhaltend (lokale Übergänge) | $\Sigma_A^{\mathrm{Markov}}$ | **implementiert** | stärker — zerstört höhere Korrelationen, erhält $P(X_{i+1}\|X_i)$ |
 | **3** | Hardy-Littlewood-konsistent | $\Sigma_A^{\mathrm{HL}}$ | **Stub** | wahrhaft arithmetisch — Paar-/Mehrfachkorrelationen |
@@ -946,6 +947,7 @@ Level-2 testet **Kovarianzgeometrie**, nicht den Mittelwert. Ein Befund $\Delta_
 
 | ID | Modell | Was erhalten bleibt | Was zerstört wird |
 |----|--------|---------------------|-------------------|
+| **0** | Fibonacci-Zeta / goldener Kamm ($n\log\varphi$ äquidistant) | **volle** Frequenz-Regularität | arithmetische Prim-Irregularität ($\log p$) |
 | **A** | Volle Permutation von $(a_1,\ldots,a_n)$ | Klassenhäufigkeiten pro Fenster | gesamte Pfadordnung |
 | **B** | Markov-erhaltend | lokale Übergangswahrscheinlichkeiten $P(w_{i+1}\|w_i)$ | höhere Pfadkorrelationen |
 | **C** | Cramér-ähnlicher Primprozess | asymptotische Dichte | mod-$12$-Kanalstruktur |
@@ -994,7 +996,7 @@ pytest tests/test_eabc_level2_fluctuation.py -q
 
 **Lesart:** $\Delta_F^{\mathrm{Markov}}$ liegt durchgängig **10–15 Prozentpunkte unter** $\Delta_F^{\mathrm{perm}}$, kollabiert aber **nicht** gegen $0$ — die Kovarianzstruktur übersteigt Markov-Überschuss (höhere Korrelationen), bleibt aber auch gegen das stärkere Nullmodell deutlich von Null getrennt ($>40\%$ relativ). Erst Stufe 3 (HL) entscheidet über arithmetische Signifikanz.
 
-**Reguläres Vergleichsensemble (Hypothese/Modell, Schicht C):** Die Fibonacci-Zeta $\zeta_F(s)=\sum F_n^{-s}$ auf dem **äquidistanten** Log-Gitter $n\log\varphi$ (`collatz_eabc_zeta_exponential_gedankenexperiment.md` §9) ist ein **regulärer** Referenz-Kamm — methodische Parallele zu Stufe 1–3: Prim-Log-Geometrie ($\log p$, irregular) vs. goldener Kamm ($\omega_\varphi=\log\varphi$, regular). **Kein Theorem** über $\Sigma_A$ oder HL-Korrelationen.
+**Stufe 0 — regulärer Kamm (Hypothese/Modell, Schicht C):** Die Fibonacci-Zeta $\zeta_F(s)=\sum F_n^{-s}\approx 5^{s/2}\varphi^{-s}/(1-\varphi^{-s})$ auf dem **äquidistanten** Log-Gitter $n\log\varphi$ (`collatz_eabc_zeta_exponential_gedankenexperiment.md` §9) ist das **regelmäßigste** Referenzensemble (**Stufe 0**): kontrolliertes Gegenmodell / Testfeld, **nicht** „näher an Riemann“. Prim-Log-Geometrie ($\log p$, irregular) ist die **Störung** darüber; Stufen 1–3 testen zunehmend realistische Zerstörung der Pfadordnung. Numerik: `eabc_zeta_fibonacci_witnesses.py` (§9.7). **Kein Theorem** über $\Sigma_A$ oder HL-Korrelationen.
 
 **Label:** gesamter Abschnitt §4.8.2 = **Definition** (Nullmodell-Hierarchie) + **Experiment** (Multi-$\Delta_F$); **kein Theorem**.
 
