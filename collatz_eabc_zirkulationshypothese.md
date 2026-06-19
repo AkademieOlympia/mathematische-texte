@@ -3807,6 +3807,32 @@ $$\boxed{\;\textbf{Nicht behauptet:}\;\text{Dass }\mathcal{A}_{\mathrm{comp}}\te
 
 **Label:** §4.8.26 = **Definition** / **Analogie** / **Experiment** (Schicht **B** für Operator und Observablen, **C** für additive Brücke); **kein Theorem**.
 
+#### 4.8.27 Großskala-Replikation (Schalenprogramm)
+
+**Status:** numerische Replikation — **kein Theorem**; konsolidiert Smoke-Befunde aus §4.8.23–26 auf Primlimits $5\times10^5$–$10^6$ (Laufzeit je Modul $\lesssim20\,\mathrm{s}$ auf Standard-Hardware).
+
+**Querverweise:** Skripte und JSON-Ausgaben in `eabc_shell_large_scale_report.json`.
+
+##### Befunde (explorativ)
+
+| Modul | Parameter | Kernzahlen | Lesart |
+|-------|-----------|------------|--------|
+| $\delta$-Programm | `--limit 5\times10^5$, $10^6$ | $n=41536$ / $78496$ Primzahlen; EABC $\approx0.25$ je Klasse; $D_{AB}=-2$ / $-56$; $\bar\delta\approx2.4\times10^5$ / $4.8\times10^5$; $\|D_{AB}\|/X$ fallend | Gleichverteilung stabil; $o(X)$-Heuristik unverändert |
+| Achsenschalen $\kappa_F$ | $k\le5$, $\mathrm{exp\_max}=4$, Primlimit $50000$ | $1376$ Schalen, $930$ mit Band; Pearson $r=0.145$, Spearman $0.177$; Perm-$p=0.002$ | Schwache positive Korrelation — **Hypothese $H_\kappa$**, kein Kausalnachweis |
+| A-Absorption | $n,m,\ell\le6$ bzw. $\le8$ | $432$ / $1024$ Schalen; $\gamma_{\mathrm{comp}}=1.5$; $\Delta\bar\delta\approx-2.7$; alle $A$-Terme Klasse **A** | Operator stabil; $\delta$-Verschiebung konsistent, nicht signifikant getestet |
+| Fibonacci-Ensemble | $N=5\times10^5$, $10^6$ | $\Psi_F/\Psi_{\mathrm{Fib}}\approx-6\times10^{-4}$; $Z_{\mathrm{perm}}\approx-0.16$ / $-0.95$ | Kein starker φ-Bias; Perm-Null nicht signifikant bei $B=50$ |
+
+$$\boxed{\;\textbf{Großskala-Fazit:}\;\text{Smoke-Muster replizieren qualitativ — EABC-Gleichverteilung, kleines }D_{AB}\text{, schwache }\kappa_F\text{-Korrelation, stabile A-Absorption; \textbf{keine} neuen Gesetzmäßigkeiten.}\;}$$
+
+```bash
+python3 eabc_shell_prime_distribution.py --mode delta-program --limit 1000000
+python3 eabc_axis_shell_fibonacci.py --k-max 5 --exp-max 4 --prime-limit 50000
+python3 eabc_a_absorption.py --n-max 8 --m-max 8 --l-max 8
+python3 eabc_fibonacci_ensemble.py --limit 1000000
+```
+
+**Label:** §4.8.27 = **Experiment** / **Replikation** (Schicht **B**); **kein Theorem**.
+
 ### 4.9 Zeta-Exponential-Gedankenexperiment (Schicht **C**)
 
 $$\boxed{\;\text{Zeta ist die Exponentialfunktion auf der logarithmischen Primzahl-Geometrie — \textbf{Gedankenexperiment}, kein EABC-Theorem.}\;}$$

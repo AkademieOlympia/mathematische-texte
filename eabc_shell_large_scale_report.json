@@ -1,0 +1,115 @@
+{
+  "label": "Großskala-Replikation (§4.8.27) — explorativ, kein Theorem",
+  "generated": "2026-06-19",
+  "branch": "collatz/eabc-h12e-zirkulationshypothese",
+  "head": "7e81c53",
+  "runs": [
+    {
+      "script": "eabc_shell_prime_distribution.py",
+      "section": "4.8.23",
+      "mode": "delta-program",
+      "limit": 500000,
+      "n_primes": 41536,
+      "runtime_s": 2.66,
+      "eabc_fractions": {"E": 0.2487, "A": 0.2504, "B": 0.2505, "C": 0.2504},
+      "D_AB": -2.0,
+      "delta_mean": 238607.66,
+      "o_X_likely": true,
+      "perm_p_D_AB": 1.0,
+      "output": "eabc_delta_program_500k.json"
+    },
+    {
+      "script": "eabc_shell_prime_distribution.py",
+      "section": "4.8.23",
+      "mode": "delta-program",
+      "limit": 1000000,
+      "n_primes": 78496,
+      "runtime_s": 4.07,
+      "eabc_fractions": {"E": 0.249, "A": 0.250, "B": 0.251, "C": 0.250},
+      "D_AB": -56.0,
+      "delta_mean": 478290.89,
+      "o_X_likely": true,
+      "perm_p_D_AB": 1.0,
+      "output": "eabc_delta_program_1M.json"
+    },
+    {
+      "script": "eabc_axis_shell_fibonacci.py",
+      "section": "4.8.25",
+      "k_max": 5,
+      "exp_max": 4,
+      "prime_limit": 50000,
+      "n_shells_total": 1376,
+      "n_shells_eligible": 930,
+      "n_compressible": 514,
+      "runtime_s": 5.03,
+      "correlation_kappa_F_vs_asymmetry": {
+        "pearson": 0.1449,
+        "spearman": 0.1772,
+        "n": 930,
+        "perm_null_p_pearson": 0.002,
+        "perm_null_p_spearman": 0.002
+      },
+      "summary_stats": {"kappa_F_mean": 1.2841, "asymmetry_L1_mean": 1.5699, "C_F_mean": 2.0737},
+      "output": "eabc_axis_shell_fibonacci_large.json"
+    },
+    {
+      "script": "eabc_a_absorption.py",
+      "section": "4.8.26",
+      "n_max": 6,
+      "m_max": 6,
+      "l_max": 6,
+      "prime_limit": 50000,
+      "n_shells": 432,
+      "runtime_s": 0.93,
+      "absorption_defect_mean": 2122240.62,
+      "compression_grade_mean": 1.5,
+      "delta_mean_shift_mean": -2.7494,
+      "all_a_terms_in_A_class": true,
+      "output": "eabc_a_absorption_large.json"
+    },
+    {
+      "script": "eabc_a_absorption.py",
+      "section": "4.8.26",
+      "n_max": 8,
+      "m_max": 8,
+      "l_max": 8,
+      "prime_limit": 100000,
+      "n_shells": 1024,
+      "runtime_s": 1.46,
+      "absorption_defect_mean": 463237493.21,
+      "compression_grade_mean": 1.5,
+      "delta_mean_shift_mean": -2.6776,
+      "all_a_terms_in_A_class": true,
+      "output": "eabc_a_absorption_8.json"
+    },
+    {
+      "script": "eabc_fibonacci_ensemble.py",
+      "section": "4.8.24",
+      "n_primes": 500000,
+      "runtime_s": 8.46,
+      "Psi_F": -249.05,
+      "Z_perm": -0.159,
+      "asymmetry_vs_fibonacci": -0.000632,
+      "ratio_prime_over_perm_null": 1.051,
+      "output": "eabc_fibonacci_ensemble_500k.json"
+    },
+    {
+      "script": "eabc_fibonacci_ensemble.py",
+      "section": "4.8.24",
+      "n_primes": 1000000,
+      "runtime_s": 18.18,
+      "Psi_F": -342.16,
+      "Z_perm": -0.951,
+      "asymmetry_vs_fibonacci": -0.000427,
+      "ratio_prime_over_perm_null": 1.349,
+      "output": "eabc_fibonacci_ensemble_1M.json"
+    }
+  ],
+  "diagnosis": {
+    "delta_program": "EABC-Klassenanteile bleiben bei 41k–78k Primzahlen nahe 1/4; D_AB klein relativ zu N, |D_AB|/X fallend (heuristisch o(X)-kompatibel). Kein Perm-Signal auf D_AB.",
+    "axis_shells": "Schwache positive Korrelation κ_F vs. L¹-Asymmetrie (r≈0.15, p_perm=0.002 bei n=930); Effekt klein, explorativ — keine Kausalbehauptung.",
+    "a_absorption": "Operator läuft stabil; alle A-Terme in Klasse A; δ-Verschiebung im Band konsistent negativ (≈−2.7); Kompressionsgrad konstant 1.5; Absorptionsdefekt skaliert mit Schalengröße.",
+    "fibonacci_ensemble": "Ψ_F bleibt klein gegenüber Ψ_Fib; Z_perm ≈ −0.16 (500k) bzw. −0.95 (1M) — unter üblichen Signifikanzschwellen; kein starker φ-Ensemble-Bias."
+  },
+  "epistemic_note": "Replikation auf größerem N bestätigt Smoke-Muster qualitativ; keine neuen Theoreme oder Gesetzmäßigkeiten behauptet."
+}
