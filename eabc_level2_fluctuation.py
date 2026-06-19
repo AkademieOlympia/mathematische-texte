@@ -12,22 +12,27 @@ Kernmetrik (Pflicht-Checkpoints):
 wobei Σ_A = E[(a - μ_A)(a - μ_A)^T] über disjunkte Fenster der Größe m
 im EABC-Primstrom bzw. unter Nullmodell-Ensemble.
 
-Nullmodell-Hierarchie (Stufe 1–3):
+Nullmodell-Hierarchie (Stufe 0–3):
+  Stufe 0 — golden:    goldener Log-Kamm ζ_F (θ_φ-Marginalen, Kreisverschiebung)
   Stufe 1 — perm:      volle Permutation (marginaltreu, Reihenfolge zerstört)
   Stufe 2 — markov:    Markov-erhaltend (lokale Übergangswahrscheinlichkeiten)
   Stufe 3 — hl:        Hardy-Littlewood-konsistent (Stub, noch nicht implementiert)
 
-Ausgabe: JSON mit delta_F_perm, delta_F_markov (+ delta_F_hl=null) + stdout
+Ausgabe: JSON mit delta_F_golden, delta_F_perm, delta_F_markov (+ delta_F_hl=null) + stdout
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import math
 from math import isqrt
 from pathlib import Path
 
 import numpy as np
+
+LOG_PHI = math.log((1.0 + math.sqrt(5.0)) / 2.0)
+DEFAULT_GOLDEN_BINS = 8
 
 # ---------------------------------------------------------------------------
 # Konstanten
@@ -64,23 +69,39 @@ def class_of(p: int) -> str | None:
 # EABC-Wort
 # ---------------------------------------------------------------------------
 
-def build_eabc_word(n_primes: int) -> np.ndarray:
-    """Erstellt das EABC-Codewort (int8) der ersten n_primes Primzahlen > 3."""
+def build_eabc_word_with_primes(n_primes: int) -> tuple[np.ndarray, np.ndarray]:
+    """EABC-Codewort (int8) und zugehörige Primzahlen > 3."""
     limit = max(10_000_000, n_primes * 25)
     while True:
-        primes = sieve_primes(limit)
+        primes_all = sieve_primes(limit)
         codes: list[int] = []
-        for p in primes:
+        prime_list: list[int] = []
+        for p in primes_all:
             if p <= 3:
                 continue
             c = class_of(p)
             if c is not None:
                 codes.append(LABEL_TO_CODE[c])
+                prime_list.append(p)
             if len(codes) >= n_primes:
                 break
         if len(codes) >= n_primes:
-            return np.array(codes[:n_primes], dtype=np.int8)
+            return (
+                np.array(codes[:n_primes], dtype=np.int8),
+                np.array(prime_list[:n_primes], dtype=np.int64),
+            )
         limit = int(limit * 1.5)
+
+
+def build_eabc_word(n_primes: int) -> np.ndarray:
+    """Erstellt das EABC-Codewort (int8) der ersten n_primes Primzahlen > 3."""
+    word, _ = build_eabc_word_with_primes(n_primes)
+    return word
+
+
+def theta_phi_from_primes(primes: np.ndarray) -> np.ndarray:
+    """θ_φ(p) = (log p)/(log φ) mod 1 für Primarray."""
+    return np.log(primes.astype(np.float64)) / LOG_PHI % 1.0
 
 
 # ---------------------------------------------------------------------------
@@ -181,6 +202,109 @@ def collect_markov_null_vectors(
     return np.array(rows, dtype=np.float64)
 
 
+def golden_lattice_circular_shift(
+    window: np.ndarray,
+    thetas: np.ndarray,
+    rng: np.random.Generator,
+) -> np.ndarray:
+    """
+    Kreisverschiebung entlang θ_φ-sortiertem goldenem Gitter.
+
+    Erhält exakt die θ-Marginalen (Permutation entlang äquidistanter Phase),
+    zerstört arithmetische Pfadordnung — Stufe-0-Referenz für ζ_F-Kamm.
+    """
+    n = len(window)
+    if n <= 1:
+        return window.copy()
+    order = np.argsort(thetas, kind="stable")
+    buf = window[order].copy()
+    shift = int(rng.integers(1, n))
+    buf = np.roll(buf, shift)
+    out = np.empty(n, dtype=window.dtype)
+    out[order] = buf
+    return out
+
+
+def theta_marginal_shuffle(
+    window: np.ndarray,
+    thetas: np.ndarray,
+    n_bins: int,
+    rng: np.random.Generator,
+) -> np.ndarray:
+    """Permutation innerhalb θ_φ-Bins — ergänzende Stufe-0-Variante."""
+    n_bins = max(1, min(n_bins, len(window)))
+    bins = (np.floor(thetas * n_bins).astype(np.int64) % n_bins)
+    out = window.copy()
+    for b in range(n_bins):
+        idx = np.where(bins == b)[0]
+        if len(idx) > 1:
+            perm = idx.copy()
+            rng.shuffle(perm)
+            out[idx] = window[perm]
+    return out
+
+
+def _golden_null_resample(
+    window: np.ndarray,
+    thetas: np.ndarray,
+    buf: np.ndarray,
+    rng: np.random.Generator,
+    n_bins: int,
+) -> None:
+    """Stufe 0: abwechselnd Kreisverschiebung und θ-Bin-Shuffle."""
+    if rng.random() < 0.5:
+        buf[:] = golden_lattice_circular_shift(window, thetas, rng)
+    else:
+        buf[:] = theta_marginal_shuffle(window, thetas, n_bins, rng)
+
+
+def collect_golden_null_vectors(
+    word: np.ndarray,
+    primes: np.ndarray,
+    m: int,
+    B: int,
+    rng: np.random.Generator,
+    n_bins: int = DEFAULT_GOLDEN_BINS,
+) -> np.ndarray:
+    """
+    Stufe 0 — goldener Log-Kamm (ζ_F): θ_φ-erhaltende Ensemble-Generierung.
+
+    Pro Fenster B Resamples via Kreisverschiebung auf θ-sortiertem Gitter
+    bzw. Shuffle innerhalb goldener Phasen-Bins (ω_φ = log φ).
+    """
+    if len(word) != len(primes):
+        raise ValueError("word und primes müssen gleiche Länge haben")
+    thetas = theta_phi_from_primes(primes)
+    n = len(word)
+    rows: list[np.ndarray] = []
+    buf = np.empty(m, dtype=np.int8)
+    for start in range(0, n - m + 1, m):
+        win = word[start:start + m]
+        win_theta = thetas[start:start + m]
+        for _ in range(B):
+            _golden_null_resample(win, win_theta, buf, rng, n_bins)
+            a = compute_a_vector(buf)
+            if not np.any(np.isnan(a)):
+                rows.append(a)
+    return np.array(rows, dtype=np.float64)
+
+
+def sigma_A_golden_null(
+    word: np.ndarray,
+    primes: np.ndarray,
+    m: int,
+    B: int,
+    rng: np.random.Generator,
+    n_bins: int = DEFAULT_GOLDEN_BINS,
+) -> np.ndarray:
+    """Σ_A^golden(m) aus Stufe-0-Ensemble."""
+    vecs = collect_golden_null_vectors(word, primes, m, B, rng, n_bins=n_bins)
+    if vecs.shape[0] < 2:
+        raise ValueError(f"Zu wenige goldene Null-Vektoren für m={m}: K={vecs.shape[0]}")
+    _, sigma = empirical_covariance(vecs)
+    return sigma
+
+
 def collect_hl_null_vectors(
     word: np.ndarray,
     m: int,
@@ -228,48 +352,71 @@ def spectrum_summary(Sigma: np.ndarray) -> list[float]:
     return [float(v) for v in sorted(evals, reverse=True)]
 
 
+def _safe_ratio(numerator: float, denominator: float) -> float | None:
+    if denominator == 0.0 or math.isnan(denominator) or math.isnan(numerator):
+        return None
+    return float(numerator / denominator)
+
+
 def analyze_checkpoint(
     word: np.ndarray,
+    primes: np.ndarray,
     m: int,
     B_rand: int,
     rng: np.random.Generator,
+    golden_bins: int = DEFAULT_GOLDEN_BINS,
 ) -> dict:
-    """Berechnet Σ_A^prime und Δ_F(m) gegen perm- und Markov-Nullmodell."""
+    """Berechnet Σ_A^prime und Δ_F(m) gegen golden-, perm- und Markov-Nullmodell."""
     eabc_vecs = collect_window_vectors(word, m)
+    golden_vecs = collect_golden_null_vectors(
+        word, primes, m, B_rand, rng, n_bins=golden_bins
+    )
     perm_vecs = collect_perm_null_vectors(word, m, B_rand, rng)
     markov_vecs = collect_markov_null_vectors(word, m, B_rand, rng)
 
     if eabc_vecs.shape[0] < 2:
         raise ValueError(f"Zu wenige Fenster für m={m}: K_prime={eabc_vecs.shape[0]}")
-    for label, vecs in (("perm", perm_vecs), ("markov", markov_vecs)):
+    for label, vecs in (
+        ("golden", golden_vecs),
+        ("perm", perm_vecs),
+        ("markov", markov_vecs),
+    ):
         if vecs.shape[0] < 2:
             raise ValueError(
                 f"Zu wenige Null-Vektoren ({label}) für m={m}: K={vecs.shape[0]}"
             )
 
     mu_prime, sigma_prime = empirical_covariance(eabc_vecs)
+    _, sigma_golden = empirical_covariance(golden_vecs)
     _, sigma_perm = empirical_covariance(perm_vecs)
     _, sigma_markov = empirical_covariance(markov_vecs)
+    dF_golden = delta_F(sigma_prime, sigma_golden)
     dF_perm = delta_F(sigma_prime, sigma_perm)
     dF_markov = delta_F(sigma_prime, sigma_markov)
 
     return {
         "m": m,
         "K_prime": int(eabc_vecs.shape[0]),
+        "K_golden": int(golden_vecs.shape[0]),
         "K_perm": int(perm_vecs.shape[0]),
         "K_markov": int(markov_vecs.shape[0]),
         "mu_A_prime": [float(x) for x in mu_prime],
         "mu_A_prime_norm": float(np.linalg.norm(mu_prime)),
         "Sigma_A_prime": sigma_prime.tolist(),
+        "Sigma_A_golden": sigma_golden.tolist(),
         "Sigma_A_perm": sigma_perm.tolist(),
         "Sigma_A_markov": sigma_markov.tolist(),
         "spec_prime": spectrum_summary(sigma_prime),
+        "spec_golden": spectrum_summary(sigma_golden),
         "spec_perm": spectrum_summary(sigma_perm),
         "spec_markov": spectrum_summary(sigma_markov),
         "Delta_F": dF_perm,
+        "delta_F_golden": dF_golden,
         "delta_F_perm": dF_perm,
         "delta_F_markov": dF_markov,
         "delta_F_hl": None,
+        "ratio_perm_over_golden": _safe_ratio(dF_perm, dF_golden),
+        "ratio_markov_over_golden": _safe_ratio(dF_markov, dF_golden),
     }
 
 
@@ -278,25 +425,33 @@ def run_fluctuation_test(
     checkpoints: list[int] | None = None,
     B_rand: int = DEFAULT_B_RAND,
     seed: int = DEFAULT_SEED,
+    golden_bins: int = DEFAULT_GOLDEN_BINS,
 ) -> dict:
     """Führt Δ_F(m)-Test an allen Checkpoints aus."""
     checkpoints = list(checkpoints or CHECKPOINTS)
     rng = np.random.default_rng(seed)
-    word = build_eabc_word(n_primes)
+    word, primes = build_eabc_word_with_primes(n_primes)
 
     results: list[dict] = []
     for m in checkpoints:
         if m > len(word):
             continue
-        results.append(analyze_checkpoint(word, m, B_rand, rng))
+        results.append(
+            analyze_checkpoint(word, primes, m, B_rand, rng, golden_bins=golden_bins)
+        )
 
     return {
         "n_primes": n_primes,
         "word_length": int(len(word)),
         "B_rand": B_rand,
         "seed": seed,
+        "golden_bins": golden_bins,
         "checkpoints": checkpoints,
         "null_models": {
+            "golden": (
+                "Stufe 0 — goldener Log-Kamm ζ_F "
+                "(θ_φ-Kreisverschiebung / Phasen-Bin-Shuffle)"
+            ),
             "perm": "Stufe 1 — volle Permutation (marginaltreu)",
             "markov": "Stufe 2 — Markov-erhaltend (lokale Übergänge)",
             "hl": "Stufe 3 — HL-konsistent (Stub, delta_F_hl=null)",
@@ -305,38 +460,53 @@ def run_fluctuation_test(
     }
 
 
+def _hardest_null_label(row: dict) -> str:
+    candidates = {
+        "golden": row["delta_F_golden"],
+        "perm": row["delta_F_perm"],
+        "markov": row["delta_F_markov"],
+    }
+    return min(candidates, key=candidates.get)
+
+
 def print_summary(report: dict) -> None:
     print()
-    print("=" * 78)
-    print("LEVEL-2-FLUKTUATIONSGEOMETRIE: Δ_F(m) auf Λ²(ℝ⁴) — Multi-Nullmodell")
-    print("=" * 78)
-    print(f"  N_PRIMES = {report['n_primes']:,}  |  B_RAND = {report['B_rand']}")
-    print("  Nullmodelle: Stufe 1 perm | Stufe 2 markov | Stufe 3 hl (Stub)")
+    print("=" * 92)
+    print("LEVEL-2-FLUKTUATIONSGEOMETRIE: Δ_F(m) auf Λ²(ℝ⁴) — Multi-Nullmodell (Stufe 0–3)")
+    print("=" * 92)
+    print(
+        f"  N_PRIMES = {report['n_primes']:,}  |  B_RAND = {report['B_rand']}  |  "
+        f"golden_bins = {report.get('golden_bins', DEFAULT_GOLDEN_BINS)}"
+    )
+    print("  Nullmodelle: Stufe 0 golden | Stufe 1 perm | Stufe 2 markov | Stufe 3 hl (Stub)")
     print()
     print(
         f"  {'m':>8}  {'K':>5}  {'|μ_A|':>10}  "
-        f"{'Δ_F^perm':>10}  {'Δ_F^markov':>10}  Befund"
+        f"{'Δ_F^gold':>10}  {'Δ_F^perm':>10}  {'Δ_F^mark':>10}  "
+        f"{'perm/gold':>9}  {'mark/gold':>9}  härtestes"
     )
-    print("  " + "-" * 68)
+    print("  " + "-" * 88)
     for row in report["results"]:
         mu_norm = row["mu_A_prime_norm"]
+        dF_golden = row["delta_F_golden"]
         dF_perm = row["delta_F_perm"]
         dF_markov = row["delta_F_markov"]
-        ref = max(dF_perm, dF_markov)
-        if ref > 0.10:
-            verdict = "deutlich ≠ Null"
-        elif ref > 0.03:
-            verdict = "moderat ≠ Null"
-        else:
-            verdict = "≈ Null"
+        r_pg = row.get("ratio_perm_over_golden")
+        r_mg = row.get("ratio_markov_over_golden")
+        hardest = _hardest_null_label(row)
         print(
             f"  {row['m']:>8,}  {row['K_prime']:>5}  "
-            f"{mu_norm:>10.6f}  {dF_perm:>10.6f}  {dF_markov:>10.6f}  {verdict}"
+            f"{mu_norm:>10.6f}  {dF_golden:>10.6f}  {dF_perm:>10.6f}  "
+            f"{dF_markov:>10.6f}  "
+            f"{r_pg if r_pg is not None else float('nan'):>9.3f}  "
+            f"{r_mg if r_mg is not None else float('nan'):>9.3f}  {hardest}"
         )
     print()
-    print("  Schlüssel: Gegner ist falsches Nullmodell — perm vs. markov vs. HL (§4.8.2)")
-    print("  Interpretation: Δ_F(m) ↛ 0  ⇒  robuste Level-2-Fluktuationsstruktur")
-    print("=" * 78)
+    print(
+        "  Schlüssel: Gegner ist falsches Nullmodell — golden vs. perm vs. markov vs. HL (§4.8.2)"
+    )
+    print("  Interpretation: niedrigstes Δ_F = härtestes Null; Δ_F ↛ 0  ⇒  robuste Struktur")
+    print("=" * 92)
 
 
 def export_json(report: dict, out_path: Path) -> None:
@@ -366,6 +536,10 @@ def main() -> None:
         help="Zufallsseed für Permutationsnull",
     )
     parser.add_argument(
+        "--golden-bins", type=int, default=DEFAULT_GOLDEN_BINS,
+        help="θ_φ-Bins für Stufe-0-goldenes Nullmodell",
+    )
+    parser.add_argument(
         "--json", type=Path, default=None,
         help="JSON-Ausgabedatei (default: eabc_level2_fluctuation.json)",
     )
@@ -377,6 +551,7 @@ def main() -> None:
         checkpoints=args.checkpoints,
         B_rand=args.B_rand,
         seed=args.seed,
+        golden_bins=args.golden_bins,
     )
     print_summary(report)
 

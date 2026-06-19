@@ -937,7 +937,7 @@ Level-2 testet **Kovarianzgeometrie**, nicht den Mittelwert. Ein Befund $\Delta_
 
 | Stufe | Nullmodell | Symbol | Status | Epistemische Lesart |
 |-------|------------|--------|--------|---------------------|
-| **0** | Regulärer goldener Log-Kamm ($\zeta_F$, $\omega_\varphi=\log\varphi$) | $\Sigma_A^{\mathrm{comb}}$ / $\zeta_F$ | **Hypothese/Experiment** | **regelmäßigstes** Referenzgitter — kontrolliertes Gegenmodell |
+| **0** | Regulärer goldener Log-Kamm ($\zeta_F$, $\omega_\varphi=\log\varphi$) | $\Sigma_A^{\mathrm{golden}}$ / $\zeta_F$ | **implementiert** | **regelmäßigstes** Referenzgitter — kontrolliertes Gegenmodell |
 | **1** | Volle Permutation (marginaltreu) | $\Sigma_A^{\mathrm{perm}}$ | **implementiert** | interessant, nicht sensationell |
 | **2** | Markov-erhaltend (lokale Übergänge) | $\Sigma_A^{\mathrm{Markov}}$ | **implementiert** | stärker — zerstört höhere Korrelationen, erhält $P(X_{i+1}\|X_i)$ |
 | **3** | Hardy-Littlewood-konsistent | $\Sigma_A^{\mathrm{HL}}$ | **Stub** | wahrhaft arithmetisch — Paar-/Mehrfachkorrelationen |
@@ -955,7 +955,9 @@ Level-2 testet **Kovarianzgeometrie**, nicht den Mittelwert. Ein Befund $\Delta_
 
 **Metrik pro Stufe:**
 $$\Delta_F^{(\mathrm{null})}(m)=\frac{\|\Sigma_A^{\mathrm{prime}}(m)-\Sigma_A^{\mathrm{null}}(m)\|_F}{\|\Sigma_A^{\mathrm{null}}(m)\|_F},\qquad
-\mathrm{null}\in\{\mathrm{perm},\,\mathrm{Markov},\,\mathrm{HL}\}.$$
+\mathrm{null}\in\{\mathrm{golden},\,\mathrm{perm},\,\mathrm{Markov},\,\mathrm{HL}\}.$$
+
+**Stufe 0 (implementiert):** `collect_golden_null_vectors` in `eabc_level2_fluctuation.py` — pro Fenster $B$ Resamples via **Kreisverschiebung** entlang $\theta_\varphi$-sortiertem Gitter bzw. **Shuffle innerhalb goldener Phasen-Bins** ($\omega_\varphi=\log\varphi$). Erhält $\theta_\varphi$-Marginalen, zerstört arithmetische Pfadordnung; $\Sigma_A^{\mathrm{golden}}$ ist das $\zeta_F$-Referenzensemble. Zusätzlich: `ratio_perm_over_golden`, `ratio_markov_over_golden` (welches Nullmodell am „härtesten“ ist).
 
 ##### Spin-Liquid-Lektion (Schicht **C**, methodisch)
 
@@ -979,24 +981,24 @@ Frühes EABC suchte Drift/Holonomie ($\Phi_E\to 0$ plausibel unter Null); das ne
 
 ##### Numerischer Befund Multi-Null (Experiment, $N=5\cdot 10^5$, $B=50$, Seed 42)
 
-| $m$ | $\Delta_F^{\mathrm{perm}}$ | $\Delta_F^{\mathrm{Markov}}$ |
-|-----|---------------------------|------------------------------|
-| $10^3$ | 0.549 | 0.437 |
-| $2\cdot 10^3$ | 0.600 | 0.504 |
-| $5\cdot 10^3$ | 0.681 | 0.596 |
-| $10^4$ | 0.724 | 0.655 |
-| $2\cdot 10^4$ | 0.722 | 0.647 |
+| $m$ | $\Delta_F^{\mathrm{golden}}$ | $\Delta_F^{\mathrm{perm}}$ | $\Delta_F^{\mathrm{Markov}}$ | perm/gold | mark/gold |
+|-----|------------------------------|---------------------------|------------------------------|-----------|-----------|
+| $10^3$ | 0.379 | 0.549 | 0.437 | 1.46 | 1.15 |
+| $2\cdot 10^3$ | 0.418 | 0.600 | 0.505 | 1.44 | 1.18 |
+| $5\cdot 10^3$ | 0.485 | 0.684 | 0.595 | 1.41 | 1.23 |
+| $10^4$ | 0.464 | 0.729 | 0.651 | 1.57 | 1.40 |
+| $2\cdot 10^4$ | 0.475 | 0.722 | 0.644 | 1.52 | 1.36 |
 
-**Querverweis:** Perm-Spalte = früherer Einzelnull-Befund §4.8; Markov-Spalte aus `eabc_level2_fluctuation.py` (`delta_F_markov`); HL-Spalte = Stub (`delta_F_hl=null`).
+**Querverweis:** Golden-Spalte = Stufe 0 (`delta_F_golden`); Perm-Spalte = früherer Einzelnull-Befund §4.8; Markov-Spalte aus `eabc_level2_fluctuation.py` (`delta_F_markov`); HL-Spalte = Stub (`delta_F_hl=null`).
 
 ```bash
 python3 eabc_level2_fluctuation.py --n-primes 500000 --B-rand 50
 pytest tests/test_eabc_level2_fluctuation.py -q
 ```
 
-**Lesart:** $\Delta_F^{\mathrm{Markov}}$ liegt durchgängig **10–15 Prozentpunkte unter** $\Delta_F^{\mathrm{perm}}$, kollabiert aber **nicht** gegen $0$ — die Kovarianzstruktur übersteigt Markov-Überschuss (höhere Korrelationen), bleibt aber auch gegen das stärkere Nullmodell deutlich von Null getrennt ($>40\%$ relativ). Erst Stufe 3 (HL) entscheidet über arithmetische Signifikanz.
+**Lesart:** $\Delta_F^{\mathrm{golden}}$ (Stufe 0) ist durchgängig **15–20 Prozentpunkte unter** $\Delta_F^{\mathrm{perm}}$ und **5–10 Prozentpunkte unter** $\Delta_F^{\mathrm{Markov}}$ — das goldene $\theta_\varphi$-Referenzensemble ist das **härteste** implementierte Nullmodell (niedrigstes $\Delta_F$). Die Prim-Kovarianz weicht stärker von der regulären goldenen Phasengeometrie ab als von Permutations- oder Markov-Zerstörung allein; perm/gold $\approx1{,}4$–$1{,}6$, mark/gold $\approx1{,}15$–$1{,}4$. $\Delta_F^{\mathrm{Markov}}$ liegt wie zuvor **10–15 Prozentpunkte unter** $\Delta_F^{\mathrm{perm}}$, kollabiert aber **nicht** gegen $0$. Erst Stufe 3 (HL) entscheidet über arithmetische Signifikanz.
 
-**Stufe 0 — regulärer Kamm (Hypothese/Modell, Schicht C):** Die Fibonacci-Zeta $\zeta_F(s)=\sum F_n^{-s}$ mit **meromorpher Normalform** (§9.8 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`) auf dem **äquidistanten** Log-Gitter $n\log\varphi$ ist das **regelmäßigste** Referenzensemble (**Stufe 0**): kontrolliertes Gegenmodell / Testfeld, **nicht** „näher an Riemann“. Prim-Log-Geometrie ($\log p$, irregular) ist die **Störung** darüber; Stufen 1–3 testen zunehmend realistische Zerstörung der Pfadordnung. Numerik: `eabc_zeta_fibonacci_witnesses.py` (§9.7–9.9: Resonanzgitter, goldene Fourier-Zeugen $C_m,Z_m$, mod-210-Fibonacci-Schalen). **Kein Theorem** über $\Sigma_A$ oder HL-Korrelationen.
+**Stufe 0 — regulärer Kamm (Hypothese/Modell, Schicht C):** Die Fibonacci-Zeta $\zeta_F(s)=\sum F_n^{-s}$ mit **meromorpher Normalform** (§9.8 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`) auf dem **äquidistanten** Log-Gitter $n\log\varphi$ ist das **regelmäßigste** Referenzensemble (**Stufe 0**): kontrolliertes Gegenmodell / Testfeld, **nicht** „näher an Riemann“. **Numerische Kopplung an $\Sigma_A$:** `eabc_level2_fluctuation.py` (`collect_golden_null_vectors`, `delta_F_golden`). Prim-Log-Geometrie ($\log p$, irregular) ist die **Störung** darüber; Stufen 1–3 testen zunehmend realistische Zerstörung der Pfadordnung. Weitere Zeugen: `eabc_zeta_fibonacci_witnesses.py` (§9.7–9.9: Resonanzgitter, goldene Fourier-Zeugen $C_m,Z_m$, mod-210-Fibonacci-Schalen). **Kein Theorem** über $\Sigma_A$ oder HL-Korrelationen.
 
 **Label:** gesamter Abschnitt §4.8.2 = **Definition** (Nullmodell-Hierarchie) + **Experiment** (Multi-$\Delta_F$); **kein Theorem**.
 

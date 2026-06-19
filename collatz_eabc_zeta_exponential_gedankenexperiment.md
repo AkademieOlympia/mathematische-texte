@@ -514,11 +514,12 @@ mit $Q(N)$ = Anzahl klassifizierter Vierlinge $\le N$.
 | mod-210-Signatur vs. Fibonacci-Schalen | **C** | **Hypothese** / **Experiment** |
 | Kopplung $\zeta_F$-Resonanz ↔ EABC | **C** | **Analogie** — **nicht** behauptet |
 
-**Nullmodell-Hierarchie** (`collatz_eabc_zirkulationshypothese.md` §4.8.2): $\zeta_F$ und der goldene Log-Kamm sind **Stufe 0** (reguläres Referenzgitter); die Fourier-Zeugen $C_m,Z_m$ und mod-210-Schalen testen, ob **arithmetische** Vierlingsordnung dieselbe chirale Signatur trägt wie das ideale goldene Gitter — **ohne** Theorem über $\Sigma_A$ oder HL.
+**Nullmodell-Hierarchie** (`collatz_eabc_zirkulationshypothese.md` §4.8.2): $\zeta_F$ und der goldene Log-Kamm sind **Stufe 0** (reguläres Referenzgitter); die Fourier-Zeugen $C_m,Z_m$ und mod-210-Schalen testen, ob **arithmetische** Vierlingsordnung dieselbe chirale Signatur trägt wie das ideale goldene Gitter — **ohne** Theorem über $\Sigma_A$ oder HL. **Level-2-Kopplung:** `eabc_level2_fluctuation.py` koppelt $\Sigma_A$ direkt an Stufe 0 via $\theta_\varphi$-erhaltender Kreisverschiebung (`delta_F_golden`, `ratio_perm_over_golden`, `ratio_markov_over_golden`).
 
 ```bash
 python3 eabc_zeta_fibonacci_witnesses.py --quadruplet-bound 500000 --m-max 8
-pytest tests/test_eabc_zeta_fibonacci_witnesses.py -q
+python3 eabc_level2_fluctuation.py --n-primes 500000 --B-rand 50
+pytest tests/test_eabc_zeta_fibonacci_witnesses.py tests/test_eabc_level2_fluctuation.py -q
 ```
 
 Implementierung: Zeuge 4–6 in `eabc_zeta_fibonacci_witnesses.py` → `eabc_zeta_fibonacci_witnesses.json`.

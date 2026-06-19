@@ -13,12 +13,17 @@ from eabc_level2_fluctuation import (
     CHECKPOINTS,
     analyze_checkpoint,
     build_eabc_word,
+    build_eabc_word_with_primes,
+    collect_golden_null_vectors,
     collect_hl_null_vectors,
     collect_markov_null_vectors,
     compute_a_vector,
     delta_F,
     empirical_covariance,
+    golden_lattice_circular_shift,
     run_fluctuation_test,
+    sigma_A_golden_null,
+    theta_phi_from_primes,
 )
 
 
@@ -45,16 +50,19 @@ def test_delta_F_positive_for_different():
 
 
 def test_analyze_checkpoint_small():
-    word = build_eabc_word(5_000)
+    word, primes = build_eabc_word_with_primes(5_000)
     rng = np.random.default_rng(42)
-    row = analyze_checkpoint(word, m=100, B_rand=5, rng=rng)
+    row = analyze_checkpoint(word, primes, m=100, B_rand=5, rng=rng)
     assert row["m"] == 100
     assert row["K_prime"] >= 40
     assert len(row["Sigma_A_prime"]) == 6
+    assert 0.0 <= row["delta_F_golden"] < 1.0
     assert 0.0 <= row["delta_F_perm"] < 1.0
     assert 0.0 <= row["delta_F_markov"] < 1.0
     assert row["Delta_F"] == row["delta_F_perm"]
     assert row["delta_F_hl"] is None
+    assert row["ratio_perm_over_golden"] is not None
+    assert row["ratio_markov_over_golden"] is not None
     assert row["mu_A_prime_norm"] < 0.5
 
 
@@ -88,10 +96,37 @@ def test_run_fluctuation_test_structure():
     assert len(report["results"]) == 2
     for row in report["results"]:
         assert "Delta_F" in row
+        assert "delta_F_golden" in row
         assert "delta_F_perm" in row
         assert "delta_F_markov" in row
         assert row["delta_F_hl"] is None
         assert len(row["spec_prime"]) == 6
+        assert len(row["spec_golden"]) == 6
+
+
+def test_golden_null_preserves_theta_bins():
+    word, primes = build_eabc_word_with_primes(300)
+    thetas = theta_phi_from_primes(primes[:50])
+    win = word[:50]
+    rng = np.random.default_rng(0)
+    shifted = golden_lattice_circular_shift(win, thetas, rng)
+    assert shifted.shape == win.shape
+    assert set(shifted.tolist()) == set(win.tolist())
+
+
+def test_collect_golden_null_vectors():
+    word, primes = build_eabc_word_with_primes(2_000)
+    rng = np.random.default_rng(11)
+    vecs = collect_golden_null_vectors(word, primes, m=100, B=4, rng=rng)
+    assert vecs.shape[1] == 6
+    assert vecs.shape[0] >= 50
+
+
+def test_sigma_A_golden_null():
+    word, primes = build_eabc_word_with_primes(1_500)
+    rng = np.random.default_rng(3)
+    sigma = sigma_A_golden_null(word, primes, m=100, B=5, rng=rng)
+    assert sigma.shape == (6, 6)
 
 
 def test_checkpoints_default():
