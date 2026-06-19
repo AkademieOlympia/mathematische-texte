@@ -610,6 +610,80 @@ $$\boxed{\;\text{Fibonacci-Zeta = geordneter Resonator; Riemann-Zeta = arithmeti
 | Goldene Fourier-Zeugen, mod-210-Schalen (§9.9) | **C** | **Experiment** / **Hypothese** |
 | RH oder EABC aus Fibonacci | — | **nicht behauptet** |
 
+### 9.12 $\zeta_F$ an Riemann-Nullstellen-Ordinaten $\gamma_n$ (Experiment)
+
+**Status:** numerischer Resonanztest (Schicht **C**) — **kein** Beweis, **kein** RH-Anspruch.  
+**Skript:** `eabc_zeta_f_riemann_zeros.py` — **Daten:** `zeros6.npz` (bzw. `zeros6.npy`, $n\approx 2{,}001{,}052$ Ordinaten, Odlyzko-`zeros6`-Pipeline).
+
+Zwei **Einsetzungen** derselben Dirichlet-Reihe $\zeta_F(s)=\sum_{k\ge1}F_k^{-s}$:
+
+| Einsetzung | Argument | Erwartung / Befund |
+|------------|----------|------------------|
+| **reell** | $s=\gamma_n$ | $F_1=F_2=1$ ⇒ $\zeta_F(\gamma_n)=2+\sum_{k\ge3}F_k^{-\gamma_n}\approx 2$ (trivial) |
+| **kritisch** | $s=\tfrac12+i\gamma_n$ | nicht null; **Beinahe-Auslöschungen** $|\zeta_F|\ll 1$ an einzelnen $\gamma_n$ |
+
+**Numerik:** stabile Partialsumme $\sum F_k^{-s}$ (adaptives Abbruchkriterium, `rtol=10^{-14}$); für große $|\gamma|$ **nicht** die Resonatorformel aus §9.8–9.10 (dort Pol-Nähe instabil).
+
+#### Erste 20 Nullstellen ($N=20$, `zeros6.npz`)
+
+| $n$ | $\gamma_n$ | $|\zeta_F(\gamma_n)|$ | $|\zeta_F(\tfrac12+i\gamma_n)|$ |
+|-----|------------|----------------------|--------------------------------|
+| 1 | 14.134725 | 2.000056 | 1.320836 |
+| 2 | 21.022040 | 2.000000 | 1.324916 |
+| 3 | 25.010858 | 2.000000 | 1.773496 |
+| 4 | 30.424876 | 2.000000 | 1.762762 |
+| 5 | 32.935062 | 2.000000 | 1.682367 |
+| 6 | 37.586178 | 2.000000 | 1.484745 |
+| 7 | 40.918719 | 2.000000 | 1.039724 |
+| 8 | 43.327073 | 2.000000 | 1.910317 |
+| 9 | 48.005151 | 2.000000 | 1.789074 |
+| 10 | 49.773832 | 2.000000 | 1.098350 |
+| 11 | 52.970321 | 2.000000 | 1.862691 |
+| 12 | 56.446248 | 2.000000 | 2.068428 |
+| 13 | 59.347044 | 2.000000 | 0.982726 |
+| 14 | 60.831779 | 2.000000 | 1.810613 |
+| 15 | 65.112544 | 2.000000 | 0.355690 |
+| 16 | 67.079811 | 2.000000 | 1.385082 |
+| 17 | 69.546402 | 2.000000 | 2.356994 |
+| 18 | 72.067158 | 2.000000 | 1.960867 |
+| 19 | 75.704691 | 2.000000 | 2.102786 |
+| 20 | 77.144840 | 2.000000 | 0.178991 |
+
+#### Stichprobe $N=10^5$ (reproduziert mit `eabc_zeta_f_riemann_zeros.py`)
+
+| Größe | Riemann-$\gamma_n$ | Zufalls-$\gamma\in[\gamma_1,\gamma_N]$ (Seed 42) |
+|-------|------------------|--------------------------------------------------|
+| $\min|\zeta_F(\tfrac12+i\gamma)|$ | **0.0049567** ($n=74631$, $\gamma\approx 57710.12$) | 0.00701 |
+| Median | **2.0303** | 2.1808 |
+| Anzahl $|\zeta_F|<0.005$ | 1 | 0 |
+| Anzahl $|\zeta_F|<0.01$ | 2 | 2 |
+| Anzahl $|\zeta_F|<0.05$ | 15 | 10 |
+| Anzahl $|\zeta_F|<0.1$ | 53 | 52 |
+| Anzahl $|\zeta_F|<1$ | 8436 | — |
+
+**Zufallsvergleich:** ähnliche globale Minima; bei Riemann-$\gamma$ **leicht mehr** sehr kleine Werte ($<0.05$: 15 vs. 10). Das ist **vorsichtig interessant**, aber bei $N=10^5$ und ohne Mehrfachtests-Korrektur **kein Beweis** einer bevorzugten Kopplung.
+
+**Falsifikations-/Vorsichtsformulierung:** Wäre $|\zeta_F(\tfrac12+i\gamma_n)|$ systematisch kleiner als bei gleichverteilten Höhen im selben $\gamma$-Intervall (über viele Schwellen und $N$ hinweg, mit Kontrolle für $R_n$), wäre das ein **Resonanz-Hinweis** im Sinne des goldenen Kamm-Gegenmodells (§4.8.2, §4.8.5 in `collatz_eabc_zirkulationshypothese.md`). Der aktuelle Befund ist **nicht** signifikant genug, um diese Hypothese zu stützen — er rechtfertigt höchstens den **nächsten Test**.
+
+#### Nächste Größe: $R_n$ (Abstand zum $\varphi$-Kamm)
+
+$$K_\varphi := \left\{\frac{2\pi k}{\log\varphi}: k\in\mathbb{Z}\right\},\qquad
+R_n := \min_{t\in K_\varphi}|\gamma_n - t|.$$
+
+Im Skript implementiert (`--no-phi-comb` zum Abschalten). Median $R_n\approx 3.27$ auf $N=10^5$ — noch **keine** Korrelation $|\zeta_F(\tfrac12+i\gamma_n)|$ vs. $R_n$ ausgewertet; das ist der naheliegende nächste Schritt (Kopplungstest analog §4.8.5 Fibonacci-Kamm-Hypothese).
+
+$$\boxed{\;\text{Epistemik: Resonanztest-Ansatz — Experiment (Schicht C), kein Theorem, keine Identität }\zeta_F\leftrightarrow\zeta.\;}$$
+
+| Aussage | Schicht | Tao-Label |
+|---------|---------|-----------|
+| $\zeta_F(\gamma_n)\approx 2$ (reell) | — | **Theorem** (elementar) |
+| Beinahe-Auslöschungen auf $\Re(s)=\tfrac12$ | **C** | **Experiment** |
+| Riemann-$\gamma$ vs. Zufalls-Baseline | **C** | **Experiment** (explorativ) |
+| $R_n$-Kopplung (offen) | **C** | **Hypothese** |
+| RH / EABC aus $\zeta_F$ | — | **nicht behauptet** |
+
+**Artefakte:** `eabc_zeta_f_riemann_zeros.json` ($N=10^5$), `eabc_zeta_f_riemann_zeros_20.json` (Detail $N=20$).
+
 ---
 
 ## 10. Kurzform (Erweiterung)
@@ -634,4 +708,4 @@ $$\boxed{\;\zeta_F(s)=\sum_{n\ge1}F_n^{-s}\;\Leftrightarrow\;\text{goldener Log-
 
 ---
 
-*Verknüpft mit `collatz_eabc_zirkulationshypothese.md` §4.8.2 (Stufe 0: $\zeta_F$), §4.9; epistemischer Rahmen: `collatz_eabc_epistemik_schichten.md`; Bernoulli: `collatz_bernoulli_schalen.pdf`, `BernoulliClock.lean`; Oktanionen: `divisionsalgebren.tex`, `collatz_oktonionen_beweis.pdf`; Fibonacci-Numerik: `collatz_eabc_zeta_fibonacci_check.py`, `eabc_zeta_fibonacci_witnesses.py` (§9.7–9.9); Wigner-Zellen: `eabc_wigner_zellen.py`, `eabc_quadruplets.csv`.*
+*Verknüpft mit `collatz_eabc_zirkulationshypothese.md` §4.8.2 (Stufe 0: $\zeta_F$), §4.8.5 (Fibonacci-Kamm-Hypothese), §4.9; epistemischer Rahmen: `collatz_eabc_epistemik_schichten.md`; Bernoulli: `collatz_bernoulli_schalen.pdf`, `BernoulliClock.lean`; Oktanionen: `divisionsalgebren.tex`, `collatz_oktonionen_beweis.pdf`; Fibonacci-Numerik: `collatz_eabc_zeta_fibonacci_check.py`, `eabc_zeta_fibonacci_witnesses.py` (§9.7–9.10), `eabc_zeta_f_riemann_zeros.py` (§9.12, `zeros6.npz`); Wigner-Zellen: `eabc_wigner_zellen.py`, `eabc_quadruplets.csv`.*
