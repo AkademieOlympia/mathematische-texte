@@ -2562,9 +2562,13 @@ $$\mathcal{C}_E(n)=\begin{cases}E & n\equiv 1\pmod{12}\\ A & n\equiv 5\pmod{12}\
 
 | Satz | Inhalt | Lean |
 |------|--------|------|
-| Periodizität | $\mathcal{C}_E(n+12)=\mathcal{C}_E(n)$ | `mod12_period`, `mod12_period_mul` |
-| Nicht-Injektivität | $\exists\,a\neq b:\;\mathcal{C}_E(a)=\mathcal{C}_E(b)$ | `C_E_not_injective` |
+| Periodizität | $\mathcal{C}_E(n+12)=\mathcal{C}_E(n)$ | `mod12_period`, `eabcClass_period` |
+| Nicht-Injektivität | $\exists\,a\neq b:\;\mathcal{C}_E(a)=\mathcal{C}_E(b)$ | `C_E_not_injective`, `not_injective_C_E` |
+| Bildgröße | `#\{E,A,B,C\}=4$ auf dem EABC-Bild | `C_E_range_card`, `eabcClass_range_card` |
 | Unendliche Fasern | Jede Klasse hat unendlich viele Urbilder | `C_E_fiber_infinite` |
+| Shannon-Bound | $H(\mathrm{EABC}_N)\le 2$ Bit (endliche Fenster) | `shannonEntropyEABC_le_two` (**deklariert**, Beweis `sorry`) |
+| Gleichverteilung | $H=2$ bei periodischem Fenster | `shannonEntropyEABC_eq_two` (**deklariert**, Beweis `sorry`) |
+| Strukturstabilität | qualitative Erhaltung unter $\mathcal{C}_E$ | `structureStable`, `structureStable_open` (**offen**, `sorry`) |
 
 $$\boxed{\;\mathcal{C}_E\ \text{ist eine periodische, nicht injektive Abbildung — formal eine extrem verlustreiche Kompression (Schicht A).}\;}$$
 
