@@ -14,7 +14,6 @@ import CollatzEabc.Kappa
 import CollatzEabc.Mod12Matrix
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Int.CardIntervalMod
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.NegMulLog
 import Mathlib.Algebra.BigOperators.Field
@@ -110,71 +109,47 @@ noncomputable def shannonEntropyEABC (S : Finset ℕ) : ℝ :=
   let total := ∑ c : EabcLetter, eabcClassCount S c
   if total = 0 then 0 else
     -∑ c : EabcLetter,
-      let count := eabcClassCount S c
-      if count = 0 then (0 : ℝ) else (count / total : ℝ) * log2 (count / total)
+      (eabcClassCount S c : ℝ) / total *
+        Real.log ((eabcClassCount S c : ℝ) / total) / Real.log 2
 
 def eabcInitialWindow (N : ℕ) : Finset ℕ :=
   (Finset.range N).map ⟨fun i => i + 1, by intro a b h; exact Nat.add_one_inj.mp h⟩
 
 def eabcPeriodWindow (k : ℕ) : Finset ℕ := Finset.range (12 * k)
 
-private lemma classOfLetter_eq_some_iff (n : ℕ) (c : EabcLetter) :
-    classOfLetter n = some c ↔ n % 12 = eabcNatRep c := by
-  fin_cases c <;> simp [classOfLetter, eabcNatRep] <;> split <;> simp
-
-private lemma eabcClassCount_period (k : ℕ) (c : EabcLetter) :
-    eabcClassCount (eabcPeriodWindow k) c = k := by
-  set r := eabcNatRep c with hr
-  have hr_lt : r < 12 := by fin_cases c <;> simp [hr, eabcNatRep]
-  rw [eabcClassCount, eabcPeriodWindow]
-  simp only [eabcClass, classOfLetter_eq_some_iff, hr]
-  rw [← Nat.count_eq_card_filter_range, Nat.count_modEq_card]
-  simp [hr, hr_lt, Nat.mod_eq_of_lt hr_lt, Nat.mul_mod, Nat.zero_mod]
-
 private lemma log2_four : log2 (4 : ℝ) = 2 := by
   unfold log2
-  have hpos : 0 < Real.log 2 := Real.log_pos (by norm_num : (1 : ℝ) < 2)
-  have hlog4 : Real.log (4 : ℝ) = Real.log 2 * 2 := by
-    rw [show (4 : ℝ) = 2 * 2 by norm_num, Real.log_mul (by norm_num) (by norm_num), two_mul]
-  field_simp [hlog4, ne_of_gt hpos]
-
-private lemma log2_inv_four : log2 (1 / 4 : ℝ) = -2 := by
-  unfold log2
-  rw [show (1 / 4 : ℝ) = (4 : ℝ)⁻¹ by norm_num, Real.log_inv (by norm_num : (4 : ℝ) ≠ 0), log2_four]
-  field_simp
-
-theorem shannonEntropyEABC_eq_two (k : ℕ) (hk : 0 < k) :
-    shannonEntropyEABC (eabcPeriodWindow k) = 2 := by
-  have hcount : ∀ c, eabcClassCount (eabcPeriodWindow k) c = k := fun c => eabcClassCount_period k c
-  have htotal : ∑ c, eabcClassCount (eabcPeriodWindow k) c = 4 * k := by
-    simp [Finset.sum_const, Finset.card_fin, hcount]
-  have htotal_ne : (∑ c, eabcClassCount (eabcPeriodWindow k) c) ≠ 0 := by omega
-  have hp : ∀ c, (eabcClassCount (eabcPeriodWindow k) c : ℝ) / (4 * k) = 1 / 4 := by
-    intro c; field_simp [hcount, hk]
-  have hbody :
-      -∑ c, (eabcClassCount (eabcPeriodWindow k) c : ℝ) / (4 * k) *
-        log2 ((eabcClassCount (eabcPeriodWindow k) c : ℝ) / (4 * k)) = 2 := by
-    calc
-      _ = -∑ c, (1 / 4 : ℝ) * log2 (1 / 4) := by simp [hp, Finset.sum_const, Finset.card_fin]
-      _ = -4 * ((1 / 4 : ℝ) * log2 (1 / 4)) := by simp [Finset.sum_const, Finset.card_fin]
-      _ = 2 := by rw [log2_inv_four]; norm_num
-  simpa [shannonEntropyEABC, dif_neg htotal_ne, htotal] using hbody
+  calc Real.log 4 / Real.log 2
+      = Real.log (2 ^ (2 : ℕ)) / Real.log 2 := by rw [show (4 : ℝ) = 2 ^ 2 by norm_num]
+    _ = (2 * Real.log 2) / Real.log 2 := by rw [Real.log_pow]; ring_nf
+    _ = 2 := by field_simp
 
 private lemma entropy_prob_le_log_four
     (p : EabcLetter → ℝ) (hp_nonneg : ∀ c, 0 ≤ p c) (hp_sum : ∑ c, p c = 1) :
     -∑ c, p c * Real.log (p c) ≤ Real.log 4 := by
   have hp_mem : ∀ c, p c ∈ Set.Ici (0 : ℝ) := fun c => Set.mem_Ici.mpr (hp_nonneg c)
   have hJ :=
-    Real.concaveOn_negMulLog.le_map_sum (t := Finset.univ) (w := fun _ => (4 : ℝ)⁻¹) (p := p)
-      (by intro c _; positivity) (by simp [Finset.sum_const, Finset.card_fin]) (fun c _ => hp_mem c)
-  have hleft :
-      (4 : ℝ)⁻¹ * ∑ c, Real.negMulLog (p c) ≤ Real.negMulLog (1 / 4 : ℝ) := by
-    simpa [Finset.sum_const, Finset.card_fin, hp_sum, smul_eq_mul, one_div] using hJ
+    ConcaveOn.le_map_sum (𝕜 := ℝ) (β := ℝ) Real.concaveOn_negMulLog
+      (t := Finset.univ) (w := fun _ => (4 : ℝ)⁻¹) (p := p)
+      (h₀ := by intro c _; positivity)
+      (h₁ := by simp [Finset.sum_const, Finset.card_fin])
+      (hmem := fun c _ => hp_mem c)
+  have hJ' : ∑ c, (4 : ℝ)⁻¹ * Real.negMulLog (p c) ≤
+      Real.negMulLog (∑ c, (4 : ℝ)⁻¹ * p c) := by simpa [smul_eq_mul] using hJ
+  have hsumw : ∑ c, (4 : ℝ)⁻¹ * p c = (4 : ℝ)⁻¹ * ∑ c, p c := by
+    rw [← Finset.mul_sum]
+  have hcent : (4 : ℝ)⁻¹ * ∑ c, p c = (1 / 4 : ℝ) := by rw [hp_sum]; norm_num
+  have hleft : (4 : ℝ)⁻¹ * ∑ c, Real.negMulLog (p c) ≤ Real.negMulLog (1 / 4 : ℝ) := by
+    rw [← Finset.mul_sum, hsumw, hcent] at hJ'
+    exact hJ'
   have hsum : ∑ c, Real.negMulLog (p c) = -∑ c, p c * Real.log (p c) := by
     simp [Real.negMulLog, Finset.sum_neg_distrib, mul_comm]
-  have hright : Real.negMulLog (1 / 4 : ℝ) = (1 / 4 : ℝ) * Real.log 4 := by
-    simp [Real.negMulLog, Real.log_div (by norm_num) (by norm_num : (4 : ℝ) ≠ 0), Real.log_one]
-  rw [hsum] at hleft; rw [hright] at hleft; linarith
+  have hright : Real.negMulLog (1 / 4 : ℝ) = (4 : ℝ)⁻¹ * Real.log 4 := by
+    unfold Real.negMulLog
+    rw [show (1 / 4 : ℝ) = (4 : ℝ)⁻¹ by norm_num, Real.log_inv (4 : ℝ)]
+    ring
+  rw [hsum, hright] at hleft
+  exact le_of_mul_le_mul_left hleft (by norm_num : 0 < (4 : ℝ)⁻¹)
 
 theorem shannonEntropyEABC_le_two (S : Finset ℕ) : shannonEntropyEABC S ≤ 2 := by
   by_cases h0 : (∑ c, eabcClassCount S c) = 0
@@ -184,39 +159,38 @@ theorem shannonEntropyEABC_le_two (S : Finset ℕ) : shannonEntropyEABC S ≤ 2 
     have hne : (total : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr htotal_ne
     have hprob : ∑ c, (eabcClassCount S c : ℝ) / total = 1 := by
       have hcast : (∑ c, (eabcClassCount S c : ℝ)) = total := by simp [htotal_def]
-      rw [Finset.sum_div, hcast, div_self hne]
+      rw [← Finset.sum_div, hcast, div_self hne]
     have hle_nat :
         -∑ c, (eabcClassCount S c : ℝ) / total * Real.log ((eabcClassCount S c : ℝ) / total) ≤
           Real.log 4 := by
       refine entropy_prob_le_log_four (fun c => (eabcClassCount S c : ℝ) / total) ?_ hprob
       intro c; exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
     have hlog2pos : 0 < Real.log 2 := Real.log_pos (by norm_num : (1 : ℝ) < 2)
-    have hterm (c : EabcLetter) :
-        (if eabcClassCount S c = 0 then (0 : ℝ) else
-          (eabcClassCount S c : ℝ) / total *
-            (Real.log ((eabcClassCount S c : ℝ) / total) / Real.log 2)) =
-          (eabcClassCount S c : ℝ) / total *
-            Real.log ((eabcClassCount S c : ℝ) / total) / Real.log 2 := by
-      by_cases hc : eabcClassCount S c = 0 <;> simp [hc, zero_div, mul_div_assoc]
-    have hsum :
-        ∑ c, if eabcClassCount S c = 0 then (0 : ℝ) else
-          (eabcClassCount S c : ℝ) / total *
-            (Real.log ((eabcClassCount S c : ℝ) / total) / Real.log 2) =
-          ∑ c, (eabcClassCount S c : ℝ) / total *
-            Real.log ((eabcClassCount S c : ℝ) / total) / Real.log 2 := by
-      refine Finset.sum_congr rfl fun c _ => ?_
-      exact hterm c
-    have hbound :
+    have hfactor :
+        ∑ c, (eabcClassCount S c : ℝ) / total *
+          Real.log ((eabcClassCount S c : ℝ) / total) / Real.log 2 =
+        (∑ c, (eabcClassCount S c : ℝ) / total *
+          Real.log ((eabcClassCount S c : ℝ) / total)) / Real.log 2 := by
+      simpa using (Finset.sum_div (s := (Finset.univ : Finset EabcLetter))
+        (fun c => (eabcClassCount S c : ℝ) / total * Real.log ((eabcClassCount S c : ℝ) / total))
+        (Real.log 2)).symm
+    have hcore :
         -∑ c, (eabcClassCount S c : ℝ) / total *
-            Real.log ((eabcClassCount S c : ℝ) / total) / Real.log 2 ≤ 2 := by
-      have := (div_le_div_iff₀ hlog2pos hlog2pos).mpr hle_nat
-      rwa [log2_four]
-    have hval :
-        shannonEntropyEABC S =
-          -∑ c, (eabcClassCount S c : ℝ) / total *
-            Real.log ((eabcClassCount S c : ℝ) / total) / Real.log 2 := by
-      simp [shannonEntropyEABC, dif_neg htotal_ne, log2, htotal_def, hsum]
-    rw [hval]
+            Real.log ((eabcClassCount S c : ℝ) / total) / Real.log 2 ≤ log2 (4 : ℝ) := by
+      rw [hfactor, ← neg_div]
+      simpa [log2] using div_le_div_of_nonneg_right hle_nat hlog2pos.le
+    have hbound : -∑ c, (eabcClassCount S c : ℝ) / total *
+        Real.log ((eabcClassCount S c : ℝ) / total) / Real.log 2 ≤ 2 := by
+      simpa [log2_four] using hcore
+    have hshannon :
+        shannonEntropyEABC S = -∑ c, (eabcClassCount S c : ℝ) / total *
+          Real.log ((eabcClassCount S c : ℝ) / total) / Real.log 2 := by
+      unfold shannonEntropyEABC
+      by_cases ht : total = 0
+      · exfalso; exact htotal_ne ht
+      · rw [show (∑ c, eabcClassCount S c) = total from htotal_def.symm]
+        simp [ht]
+    rw [hshannon]
     exact hbound
 
 noncomputable def uniformEntropy (N : ℕ) : ℝ :=

@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung: $(\hbar,\sigma)$** §4.8.14 (Präzisierung: Phasenraum-Orientierung statt Raumrichtung, Abschnitt 9); **Symplektische Orientierung und EABC-Vierfachstruktur** §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17; **Assoziative Schranke und genealogische Primobjekte (Gedankenexperiment)** §4.8.18; **Kompressionskaskaden und atomare Fixpunkte (Gedankenexperiment)** §4.8.19; **EABC-Schalenraum (pythagoräische Radien)** §4.8.20; **Schalenhierarchie und Primprojektion** §4.8.21; **Schalen-Defekte und Ladungsdarstellung** §4.8.22; **Defektprogramm $S(N)$, $P(N)$, $\delta(p)$, V$_4$-Charaktere** §4.8.23; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung: $(\hbar,\sigma)$** §4.8.14 (Präzisierung: Phasenraum-Orientierung statt Raumrichtung, Abschnitt 9); **Symplektische Orientierung und EABC-Vierfachstruktur** §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17; **Assoziative Schranke und genealogische Primobjekte (Gedankenexperiment)** §4.8.18; **Kompressionskaskaden und atomare Fixpunkte (Gedankenexperiment)** §4.8.19; **EABC-Schalenraum (pythagoräische Radien)** §4.8.20; **Schalenhierarchie und Primprojektion** §4.8.21; **Schalen-Defekte und Ladungsdarstellung** §4.8.22; **Defektprogramm $S(N)$, $P(N)$, $\delta(p)$, V$_4$-Charaktere** §4.8.23; **Fibonacci-Ensemble und Kontraktion des Zahlenraums** §4.8.24; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
 - `collatz_eabc_zeta_exponential_gedankenexperiment.md` — **Gedankenexperiment / Analogie:** $\zeta$ als Exponentialsumme auf Log-Prim-Geometrie; Euler-Streifen $(1\pm p^{-s})$; $\xi$-Spiegelung; Brücke zu Log-Koordinaten, $\gamma^\pm$-Paarung, Level-2; §6–§10: Ganzzahl/Halbzahl-Exponenten, Oktanionen (Schicht C), Bernoulli-Subtraktion, Fibonacci-Zeta (kein RH-/EABC-Theorem)
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
@@ -3592,6 +3592,81 @@ $$\boxed{\;\textbf{Behauptet (Forschungsprogramm):}\; \text{Epistemische Dreitei
 | `eabc_shell_prime_distribution.py --mode delta-program` | **Experiment** | **B** |
 
 **Label:** §4.8.23 = **Meta** / **Forschungsprogramm** (Schicht **B**/**R**) / **Definition** (Schicht **A** für $S,P,V_4,\chi$) / **Experiment** ($\delta$-Buckets, Asymptotik); **kein Theorem**.
+
+#### 4.8.24 Fibonacci-Ensemble und Kontraktion des Zahlenraums
+
+**Status:** paper-ready Forschungsbaustein — **kein Theorem**; **komplementär** zum punktweisen Defektprogramm §4.8.23 (rechte Seite der Medaille: aggregierte Klassensumme statt $\delta(p)$).
+
+**Querverweise:** Fibonacci-Kamm $K_F$, $C_F$, $P_F$ §4.8.3–4.8.7; $\theta_\varphi$, Stufe-0-Nullensemble §4.8.2; Defektprogramm $\delta(p)$, $V_4$-Charaktere §4.8.23; Skript `eabc_fibonacci_ensemble.py` (ergänzt `eabc_sigma_fibonacci_coupling.py`).
+
+##### Epistemische Dreiteilung
+
+| Baustein | (1) Mathematisch definiert | (2) Fruchtbare Analogie | (3) Neue testbare Aussage |
+|----------|---------------------------|-------------------------|---------------------------|
+| $\kappa(\theta)=\varphi^{-\theta}$ | $\theta=\theta_\varphi(p)=(\log p)/(\log\varphi)\bmod 1$ | **„Atmen des Zahlenraums“**: Kontraktion/Expansion eines Maßes unter goldenen Log-Fenstern | **offen:** systematische Abweichung von reiner $\varphi$-Kontraktion? |
+| $\Psi_F=\sum_c w_c f_c$ | $f_c=\sum_{p:v(p)=c}\kappa(\theta_\varphi(p))\,\chi(v(p))$ mit $w_c\ge0$, $\chi\in\{\chi_A,\chi_B,\chi_C\}$ | Ensemble aller EABC-Klassen „atmet“ den Indexraum — **benannte Analogie**, kein kinematischer/physikalischer Beweis | $H_1$: $\Psi_F^{\mathrm{prime}}\not\approx\Psi_F^{\mathrm{perm}}$ oder $\Psi_F/\Psi_{\mathrm{Fib}}\neq 1$ stabil über $N$ |
+| $N_c(k)$, $\tau(k)$ | $N_c(k)$ = Zählung in $\varphi$-Bin $k$; $\tau(k)=\varphi^{-k/B}$ | Fibonacci-Fenster als diskrete Kontraktionsstufen | Bin-Ensemble $\sum_k\tau(k)\sum_c w_c N_c(k)\chi(v)$ asymmetrisch zu $\sum_k\tau(k)N(k)$? |
+
+$$\boxed{\;\textbf{Dreiteilung:}\;(1)=\text{Definition},\;(2)=\text{Analogie (explizit benannt)},\;(3)=\text{Hypothese/Experiment — kein Theorem.}\;}$$
+
+##### Definitionen
+
+**Kontraktionsfaktor** am goldenen Log-Gitter:
+
+$$\kappa(\theta)=\varphi^{-\theta},\qquad \theta=\theta_\varphi(p)=\frac{\log p}{\log\varphi}\bmod 1.$$
+
+**Gewichtete EABC-Ensemblesumme** (V$_4$-Charakter $\chi$, Klassengewichte $w_c$):
+
+$$\boxed{\;\Psi_F(X):=\sum_{c\in\{E,A,B,C\}} w_c\sum_{\substack{p\le X\\ v(p)=c}} \kappa(\theta_\varphi(p))\,\chi(v(p)).\;}$$
+
+**Reine Fibonacci-Kontraktion** (Referenz ohne Klassenasymmetrie):
+
+$$\Psi_{\mathrm{Fib}}(X):=\sum_{p\le X}\kappa(\theta_\varphi(p)).$$
+
+**Diskrete Bin-Variante** ($B$ gleichbreite $\varphi$-Fenster, $\tau(k)=\varphi^{-k/B}$):
+
+$$\Psi_F^{\mathrm{bin}}:=\sum_{k=0}^{B-1}\tau(k)\sum_{c} w_c\,N_c(k)\,\chi(v),\qquad N_c(k):=\#\{p:v(p)=c,\;\theta_\varphi(p)\in\text{Bin}_k\}.$$
+
+**Nullhypothese:** Nicht $\Psi_F=0$, sondern
+
+$$H_0:\;\Psi_F^{\mathrm{prime}}\approx\Psi_F^{\mathrm{perm}},\qquad \Psi_F^{\mathrm{prime}}/\Psi_{\mathrm{Fib}}^{\mathrm{prime}}\approx 1$$
+
+(Permutations-Null: EABC-Labels vertauscht, $\kappa(\theta)$ und Klassenmarginalen erhalten).
+
+##### Komplement zu §4.8.23
+
+| Perspektive | §4.8.23 (Defektprogramm) | §4.8.24 (Fibonacci-Ensemble) |
+|-------------|--------------------------|------------------------------|
+| Objekt | punktuell: $\delta(p)=\min\|p-R_{n,m}\|$ | global: aggregiert über Klassen und $\varphi$-Fenster |
+| Gewicht | Schalenabstand | $\kappa(\theta)$, optional $\tau(k)$ |
+| Struktur | $V_4$-Charaktere in $M(N)$, $\delta$-Buckets | $\Psi_F$, $N_c(k)$ unter Kontraktion |
+| Rolle | lokaler Freiheitsgrad am Schalenraster | **selektive Summe** — „andere Seite der Medaille“ |
+
+##### Numerischer Stub
+
+```bash
+python3 eabc_fibonacci_ensemble.py --limit 100000 --bins 8 --B-perm 30 --seed 42
+pytest tests/test_eabc_fibonacci_ensemble.py -q
+```
+
+**Smoke** ($N=10^5$, $B=8$, $\chi=\chi_A$, Seed 42, $30$ Perm-Nullzüge): $\Psi_F\approx-6{,}91\times10^1$, $\Psi_{\mathrm{Fib}}\approx7{,}97\times10^4$, $\Psi_F/\Psi_{\mathrm{Fib}}\approx-8{,}7\times10^{-4}$ (nahezu vollständige Auslöschung durch gegenläufige Klassen mit $\chi_A$); Perm-Null $Z\approx-0{,}38$, $\Psi_F/E[\Psi_F^{\mathrm{perm}}]\approx1{,}24$ — **kein** signifikanter Überschuss gegenüber Label-Permutation; Bin-Ensemble-Ratio $\approx-8{,}5\times10^{-4}$. **Lesart:** exploratives Nullresultat — starke **interne** Klassenkompensation; **keine** robuste Asymmetrie zur reinen $\varphi$-Kontraktion jenseits der Charakterwahl.
+
+##### Epistemische Kernboxen
+
+$$\boxed{\;\textbf{Box 1 (Schicht B):}\;\kappa(\theta)=\varphi^{-\theta},\;\Psi_F=\sum_c w_c f_c,\;\Psi_{\mathrm{Fib}}=\sum_p\kappa(\theta_\varphi(p)).\;}$$
+
+$$\boxed{\;\textbf{Box 2 (Schicht C):}\;\text{„Atmen des Zahlenraums“}=\textbf{benannte Analogie}\;\text{(Kontraktion/Expansion unter goldenen Fenstern) — kein Beweis, kein Physikanspruch.}\;}$$
+
+$$\boxed{\;\textbf{Nicht behauptet:}\;\text{Dass }\Psi_F\text{ eine neue Primzahlgesetzmäßigkeit beweist oder dass EABC den Zahlenraum „kinematisch“ kontrahiert.}\;}$$
+
+| Baustein | Tao-Label | Schicht |
+|----------|-----------|---------|
+| $\kappa$, $\Psi_F$, $\Psi_{\mathrm{Fib}}$, $N_c(k)$ | **Definition** / **Experiment** | **B**/**C** |
+| „Atmen des Zahlenraums“ | **Analogie** | **C** |
+| $H_1$ (Asymmetrie vs. $\Psi_{\mathrm{Fib}}$ / Perm-Null) | **Hypothese** / **Experiment** | **C** |
+| `eabc_fibonacci_ensemble.py` | **Experiment** | **B** |
+
+**Label:** §4.8.24 = **Definition** / **Analogie** / **Experiment** (Schicht **C** für Analogie, **B** für Observablen); **kein Theorem**.
 
 ### 4.9 Zeta-Exponential-Gedankenexperiment (Schicht **C**)
 
