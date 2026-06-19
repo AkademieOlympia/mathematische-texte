@@ -1443,64 +1443,57 @@ $$\boxed{\;\textbf{Aktueller Gesamtstatus:}\; algebraisch wohldefiniert \checkma
 
 **Querverweise:** Zwei-Rotor-Kopplung $(\Theta,\Phi)$ und $R_N$ §4.8.7; EABC–Fibonacci-Gesamtbaustein §4.8.6; Kegel-Analogie §9.13 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §3.1; numerischer Stub §4.8.9.
 
-##### Beobachtungsgeometrie als Kompressionsoperator
+Die EABC-Projektion kann nicht nur als geometrische, sondern auch als informationstheoretische Abbildung verstanden werden.
 
-Beobachtungsgeometrie ist nicht nur Bildsprache, sondern ein **Kompressionsoperator** auf $\mathbb{N}$: Sie legt fest, welche Freiheitsgrade behalten und welche verworfen werden. **Keine physikalische Ontologie** — nur informationsreduzierende Projektion (Schicht **B**).
+Sei
+$$\mathcal{C}_E:\mathbb{N}\longrightarrow\{E,A,B,C\}$$
+die Zuordnung der natürlichen Zahlen zu den vier Einheitenklassen modulo $12$,
+$$E=1,\qquad A=5,\qquad B=7,\qquad C=11.$$
 
-**Kompressionsabbildung.** Die EABC-Zuordnung
-$$C_E:\mathbb{N}\longrightarrow\{E,A,B,C\},\qquad C_E(n)=\text{Einheitenklasse von }n\bmod 12,$$
-ist eine **massive Kompression**: unendlich viele natürliche Zahlen werden auf vier Labels projiziert. Formal ist $C_E$ die Quotientenabbildung $\mathbb{N}\twoheadrightarrow\mathbb{N}/\!\sim_{12}$ gefolgt von der Isomorphie auf das EABC-Gerüst $G_E$ — dieselbe Information wie $\Theta(n)=(\pi/2)\sigma(n)$, aber als **Verlustkanal**: alles, was nicht in der Restklassenstruktur mod $12$ liegt, wird tilgt.
+Diese Projektion reduziert den Zustandsraum drastisch. Während eine natürliche Zahl $n$ prinzipiell beliebig viele arithmetische Eigenschaften trägt, behält $\mathcal{C}_E$ lediglich ihre Zugehörigkeit zu einer von vier Klassen.
 
-| Abbildung | Bild | Kompressionsgrad |
-|-----------|------|------------------|
-| $C_E$ | $\{E,A,B,C\}$ | $\infty\to 4$ |
-| $C_8$ | $\mathbb{Z}/8\mathbb{Z}$ | $\infty\to 8$ |
-| $C_{10}$ | $\mathbb{Z}/10\mathbb{Z}$ | $\infty\to 10$ |
-| $C_{30}$ | $\mathbb{Z}/30\mathbb{Z}$ | $\infty\to 30$ |
-| $C_{210}$ | $\mathbb{Z}/210\mathbb{Z}$ | $\infty\to 210$ |
-
-**Kegel als Kompressionsschema.** Der rotierende Kegel (Azimuth $\Theta$, Höhe $h$, Gitter $(\Theta,h)$) ist **kein** ontologisches Raummodell, sondern legt fest, **welche** Koordinaten man behält — analog zu Downsampling-Stufen (Schicht **C**; vgl. Kontext unten).
-
-**Pixelung = Informationsverlust.** Beschreibungspixelung ist **bewusster Informationsverlust**: Zahlen in derselben EABC-Zelle sind für den Beobachter identisch. Beispiel: $13$, $37$, $61$, $\ldots$ werden alle auf $E$ komprimiert — Faktorisierung und Höhenposition sind in $C_E$ nicht rekonstruierbar.
-
-**Entropie endlicher Stichprobe.** Für $\mathbb{N}_N=\{1,\ldots,N\}$ und Gleichverteilung auf $\mathbb{N}_N$:
+Für die endliche Stichprobe
+$$\mathbb{N}_N=\{1,\dots,N\}$$
+mit Gleichverteilung gilt
 $$H(\mathbb{N}_N)=\log_2 N.$$
-Die **Bild-Entropie** nach $C_E$ ist
-$$H(\mathrm{EABC}_N)=-\sum_{c\in\{E,A,B,C\}} p_N(c)\,\log_2 p_N(c),\qquad p_N(c)=\frac{\#\{n\le N:C_E(n)=c\}}{N}.$$
-Asymptotisch gilt $H(\mathrm{EABC}_N)\to\log_2 4=2$. Das **Entropiedefizit**
-$$I_E(N):=H(\mathbb{N}_N)-H(\mathrm{EABC}_N)=\log_2 N-H(\mathrm{EABC}_N)$$
-wächst wie $I_E(N)\approx\log_2 N-2$: EABC **verwirft asymptotisch fast alle Information** — von $\log_2 N$ Bits bleiben zwei.
 
-**Ausreichende Statistik.** $C_E$ ist **nicht** verlustfrei: aus $C_E(n)$ lässt sich $n$ nicht rekonstruieren. Offen bleibt, ob Primdynamik $\to$ EABC-Struktur trotzdem eine **informationsrelevante** Abbildung ist — ob Primstruktur unter $C_E$ **überlebensfähige** Signale trägt ($N_\pm$, $D_E$, $\Sigma_A$, Level-2 in $\Sigma_A$).
+Die EABC-Verteilung nähert sich asymptotisch der Gleichverteilung auf vier Zuständen an, sodass
+$$H(\mathrm{EABC}_N)\to\log_2 4=2.$$
 
-**Strukturstabile Kompression (Prüfbegriff).**
+Damit ergibt sich näherungsweise
+$$I_E(N)=H(\mathbb{N}_N)-H(\mathrm{EABC}_N)\approx\log_2 N-2.$$
 
-> **Definition (informell).** Ein Kompressionsoperator $C:\mathbb{N}\to\mathcal{L}$ heißt **strukturstabil** bezüglich eines Signals $S$, wenn $S(\mathbb{N})$ und $S(C(\mathbb{N}))$ dieselbe **qualitative Struktur** tragen — d. h. wenn die für $S$ charakteristischen Muster (Peaks, Korrelationen, Level-2-Abweichungen) unter $C$ **überlebensfähig** bleiben und nicht bloß Projektionsartefakte sind.
+Die EABC-Projektion verwirft somit asymptotisch fast die gesamte Information über die ursprünglichen Zahlen.
 
-$$\boxed{\;\text{Ist EABC strukturstabile Kompression der Primdynamik?}\;}$$
+Der erkenntnistheoretisch interessante Punkt besteht jedoch gerade darin, dass trotz dieses Informationsverlustes möglicherweise arithmetische Strukturen erhalten bleiben.
 
-Positiv $\Rightarrow$ Fall (1) oder (2) mit Evidenz (vgl. erkenntnistheoretischer Kern); negativ $\Rightarrow$ Fall (3) oder reine Beobachtungsgeometrie ohne arithmetischen Gehalt.
+Dies motiviert den Begriff der strukturstabilen Kompression.
 
-**Evidenzbedingungen.** Jede behauptete Resonanz muss
+> **Definition (informell).** Eine Kompression $\mathcal{C}$ heißt **strukturstabil** bezüglich eines Signals $S$, wenn die wesentlichen qualitativen Eigenschaften von $S(\mathbb{N})$ auch nach Anwendung von $\mathcal{C}$ sichtbar bleiben.
 
-1. **Kompression überleben** — nach Anwendung von $C_E$ noch von Nullmodellen (§4.8.2) getrennt werden, nicht nur in der vollen Primliste;
-2. **Robustheit** — dieselbe Observable unter $C_E$, $C_8$, $C_{10}$, $C_{30}$, $C_{210}$ auswerten (kanonische Stufen der arithmetischen Gitterhierarchie).
+Die zentrale Forschungsfrage lautet daher nicht, ob die EABC-Projektion verlustfrei ist — sie ist es offensichtlich nicht —, sondern ob sie für bestimmte arithmetische Fragestellungen eine überraschend gute Kompression darstellt.
 
-| Befund unter $\{C_E,C_8,C_{10},C_{30},C_{210}\}$ | Lesart |
-|---------------------------------------------------|--------|
-| Signal **nur** unter $C_E$ | Fall (2) — spezifisch für EABC-Beobachtungsgeometrie |
-| Signal **überall** | Fall (1) — strukturell relevant jenseits der Pixelung |
-| Signal **nirgends** | Fall (3) — Artefakt oder Rauschen |
+Insbesondere stellt sich die Frage:
+$$\boxed{\;\text{Ist die EABC-Projektion eine strukturstabile Kompression der Primzahldynamik?}\;}$$
 
-$$\boxed{\;\text{Welche Primzahlstrukturen überleben extreme Kompression?}\;}$$
+Der EABC-Kegel wird daher nicht primär als physikalische Ontologie verstanden, sondern als informationsreduzierende Beobachtungsgeometrie.
 
-**Falsifikation.** Verschwinden Signale unter alternativen Kompressionsoperatoren $C_k$, spricht das **gegen** eine EABC-Sonderrolle und für Fall (2) oder (3). Landauer-Lesart nur **konzeptuell** (Shannon-Reduktion präzise; keine physikalische Identität).
+Eine beobachtete Resonanz besitzt erst dann Evidenzcharakter, wenn sie
 
-$$\boxed{\;\text{Beobachtungsgeometrie = informationsreduzierender Kompressionsoperator — \textbf{nicht} ontologisches Kegelmodell.}\;}$$
+1. die Kompression durch $\mathcal{C}_E$ überlebt und
+2. gegenüber alternativen Projektionen robust bleibt.
 
-$$\boxed{\;\text{Strukturelle Relevanz nur bei strukturstabiler Kompression und Robustheit unter } C_E,\,C_8,\,C_{10},\,C_{30},\,C_{210}.}\;}$$
+Zu vergleichen sind insbesondere die Kompressionen
+$$\mathcal{C}_E,\quad\mathcal{C}_8,\quad\mathcal{C}_{10},\quad\mathcal{C}_{30},\quad\mathcal{C}_{210}.$$
 
-**Repo-Verweise (explorativ):** Shannon-Entropie der EABC-Besetzung in `Quantentests.py` (`eabc_occupation_entropy`); familienbasierte Entropie $C_{\mathrm{fam}}$ in `arithmetische_signaturgeometrie.tex`; κ-Robustheit in `collatz_stufe3_kappa_invarianz.md`. Geplanter numerischer Test: §4.8.9.
+Ein Signal, das ausschließlich unter $\mathcal{C}_E$ erscheint, könnte ein Artefakt der gewählten Kodierung sein. Ein Signal, das unter mehreren unabhängigen Kompressionen stabil bleibt, spricht dagegen für eine zugrunde liegende arithmetische Struktur.
+
+Die leitende Frage des Programms verschiebt sich damit von
+„Welche Geometrie besitzen die Primzahlen?“
+zu
+$$\boxed{\;\text{„Welche Primzahlstrukturen überleben extreme Kompression?“}\;}$$
+
+Diese Formulierung verbindet das EABC-Programm mit Konzepten aus Informationstheorie, Entropie und Strukturentdeckung und erlaubt eine direkte numerische Überprüfung unabhängig von physikalischen Interpretationen.
 
 ##### Kontext: Pixelung, Kegel und Zwei Rotoren
 
