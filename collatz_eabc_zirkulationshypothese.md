@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung: $(\hbar,\sigma)$** §4.8.14 (Präzisierung: Phasenraum-Orientierung statt Raumrichtung, Abschnitt 9); **Symplektische Orientierung und EABC-Vierfachstruktur** §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung: $(\hbar,\sigma)$** §4.8.14 (Präzisierung: Phasenraum-Orientierung statt Raumrichtung, Abschnitt 9); **Symplektische Orientierung und EABC-Vierfachstruktur** §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17; **Assoziative Schranke und genealogische Primobjekte (Gedankenexperiment)** §4.8.18; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
 - `collatz_eabc_zeta_exponential_gedankenexperiment.md` — **Gedankenexperiment / Analogie:** $\zeta$ als Exponentialsumme auf Log-Prim-Geometrie; Euler-Streifen $(1\pm p^{-s})$; $\xi$-Spiegelung; Brücke zu Log-Koordinaten, $\gamma^\pm$-Paarung, Level-2; §6–§10: Ganzzahl/Halbzahl-Exponenten, Oktanionen (Schicht C), Bernoulli-Subtraktion, Fibonacci-Zeta (kein RH-/EABC-Theorem)
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
@@ -28,6 +28,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `eabc_occupancy_tree.py` — monoidale Vierlings-Besetzungszustände $Z=(O,T,n)$, Williams-Baum (§4.6–4.7)
 - `collatz_eabc_core/CollatzEabc/OccupancyMonoid.lean` — Lean: kommutatives Monoid $(Z,\oplus,Z_0)$, `blockScan_append` (§4.6–4.7; Build-Artefakt, Quelle ggf. auf Hauptbranch)
 - `collatz_eabc_core/CollatzEabc/EABCCompression.lean` — Lean: $\mathcal{C}_E$, Stufe 0–4 Backlog (§4.8.17, Schicht **A**/**B**/**R**)
+- `collatz_eabc_core/CollatzEabc/GenealogicalPrime.lean` — Lean-Stub: genealogische Primobjekte, offene `Prop` (§4.8.18)
 - `collatz_eabc_graph_laplacian.py` — $\mathrm{Spec}(L_E)$
 - `collatz_eabc_evolution_analytik.md` — **Evolutionspfad** Bell→Sagnac→$C_E$→$\mathrm{Spec}(L_E)$, Wachstumsszenarien, Dirichlet-Stub
 - `collatz_eabc_D_growth.py` — Wachstumsdiagnostik $D_E(X)$, Charakter-Koeffizienten $a_\chi$
@@ -1436,7 +1437,7 @@ $$\boxed{\;\textbf{Aktueller Gesamtstatus:}\; algebraisch wohldefiniert \checkma
 
 **Label:** §4.8.7 = **Meta** / **Hypothese** / **Experiment** (Schicht **C**); **kein Theorem**.
 
-**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12; Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13; Prägeometrie der Wirkung $(\hbar,\sigma)$ §4.8.14 (Präzisierung Phasenraum-Orientierung, Abschnitt 9); Symplektische Orientierung und EABC-Vierfachstruktur §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17.
+**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12; Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13; Prägeometrie der Wirkung $(\hbar,\sigma)$ §4.8.14 (Präzisierung Phasenraum-Orientierung, Abschnitt 9); Symplektische Orientierung und EABC-Vierfachstruktur §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17; **Assoziative Schranke und genealogische Primobjekte (Gedankenexperiment)** §4.8.18.
 
 #### 4.8.8 Beobachtungsgeometrie als Kompressionsoperator
 
@@ -2749,6 +2750,147 @@ $$\boxed{\;\text{Physik: derzeit reine Hypothese.}\;}$$
 | 4 Physik | **C**/**R** | nicht formalisiert |
 
 **Label:** §4.8.17 = **Meta** / **Theorem** (Stufe 0–1) / **Definition** (Stufe 2) / **Forschungsfrage** (Stufe 3) / **Hypothese** (Stufe 4); **kein** zusätzlicher Physikanspruch.
+
+#### 4.8.18 Assoziative Schranke und genealogische Primobjekte (Gedankenexperiment)
+
+**Status:** paper-ready Gedankenexperiment — **kein Theorem**, **kein** Anspruch auf neue Zahlentheorie; epistemische Klärung der Grenze zwischen klassischer Primfaktorisierung und EABC-Erzeugungsgeschichten.
+
+**Querverweise:** Streaming-Monoid und Williams-Baum §4.6–4.7; Kompressionsoperator und Informationsverlust §4.8.8; Lean-Architektur §4.8.16; `eabc_occupancy_tree.py` (`scan_block`, `merge_state`, `reduce_tree`); `collatz_eabc_core/CollatzEabc/OccupancyMonoid.lean` (`blockScan_append`, `foldMerge_perm`); `streaming_factorization.lean` (`StreamingFactorization`, `AdditiveStreamingFactorization`); `streaming_homomorphism.lean` (`streamEvalHom`, `eabcHom`); Lean-Stub `collatz_eabc_core/CollatzEabc/GenealogicalPrime.lean`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §0, §3.1.
+
+Der folgende Abschnitt präzisiert, **warum** das EABC-Programm Primzahlen nicht nur über multiplikative Irreduzibilität, sondern über **Erzeugungsgeschichten** und **Streaming-Zerlegungen** liest — und welche Begriffe in einer nichtassoziativen Welt verloren gehen.
+
+##### 1. Klassischer Befund: Assoziativität und der Fundamentalsatz
+
+In der klassischen Arithmetik von $\mathbb{N}_{>1}$ ist eine Primzahl $p$ **irreduzibel** bezüglich der **assoziativen** Multiplikation: $p=ab$ impliziert $a=1$ oder $b=1$. Der Fundamentalsatz der Arithmetik (FTA) liefert darüber hinaus **Eindeutigkeit** der Primfaktorzerlegung bis auf Reihenfolge — eine Konsequenz von Assoziativität und Kommutativität des Produktmonoids $(\mathbb{N}_{>1},\cdot)$.
+
+$$\boxed{\;\text{Klassisch:}\; p\ \text{prim} \;\Longleftrightarrow\; p\ \text{irreduzibel in }(\mathbb{N}_{>1},\cdot)\ \text{assoziativ.}\;}$$
+
+**Label:** FTA und Irreduzibilität = **Theorem** (Schicht **A**, Standardarithmetik); EABC übernimmt diesen Befund **nicht** als Primärdefinition von „Prim".
+
+##### 2. Ohne Assoziativität: Zerlegungsbäume statt Faktoren
+
+Sei $(M,\ast)$ ein Magma **ohne** Assoziativität. Dann ist „unteilbar" / „irreduzibel" **nicht** kanonisch definiert:
+
+| Phänomen | Assoziativ | Nichtassoziativ |
+|----------|------------|-----------------|
+| Produkt $a\ast b\ast c$ | Klammerung irrelevant | verschiedene **Zerlegungsbäume** |
+| Irreduzibilität | wohldefiniert (FTA-Kontext) | **undefiniert** ohne Erzeugungsregeln |
+| Prim-Analogon | Atom der Multiplikation | abhängig von gewählter **Erzeugungsrelation** |
+
+Ohne Assoziativität verschwindet die kanonische Linearisierung $p_1\cdot p_2\cdot\ldots\cdot p_k$; stattdessen bleiben **geordnete oder baumförmige Erzeugungsgeschichten**. Die Frage „Ist $n$ prim?" zerfällt in: *prim bezüglich welcher Operation und welcher Kategorie?*
+
+$$\boxed{\;\text{Ohne Assoziativität:}\; \text{unteilbar ist undefiniert — es gibt nur Erzeugungsbäume.}\;}$$
+
+**Label:** nichtassoziative Welt = **Gedankenexperiment** / **Analogie** (Schicht **C**); keine Behauptung, dass $\mathbb{N}$ oder EABC-Strukturen nichtassoziativ sind.
+
+##### 3. EABC-Verbindung: genealogische Lesart des Primstroms
+
+Das EABC-Programm enthält bereits eine **genealogische** Lesart natürlicher Zahlen — nicht als Ersatz der FTA, sondern als **parallele Beschreibungsschicht**:
+
+| Begriff | Repo-Anker | Rolle |
+|---------|------------|-------|
+| **Primstrom** | §4.6–4.7, `collatz_eabc_epistemik_schichten.md` §0 | geordnete Prim-/Vierlingshistorie als Eingabedatenstrom |
+| **Streaming-Monoid** $(Z,\oplus,Z_0)$ | `OccupancyMonoid.lean`, `eabc_occupancy_tree.py` | assoziative Kompression lokaler Blockzustände |
+| **Williams-Baum** / `reduce_tree` | §4.6, `eabc_occupancy_tree.py` | monoidale Tree-Evaluation $\bigoplus_i Z_i$ |
+| **Additive Erreichbarkeit** | `streaming_factorization.lean` (`AdditiveStreamingFactorization`, `eabc_D_additive`, `eabc_Q_additive`) | $D$, $Q$ faktorisieren additiv über Stromkonkatenation |
+| **Streaming-Zerlegung** | `blockScan_append`, `StreamingFactorization` | $F(P_1\sqcup P_2)=F(P_1)\oplus F(P_2)$ |
+
+Die Pipeline
+$$\text{Primstrom} \longrightarrow \text{Streaming-Monoid} \longrightarrow \text{Observablen} \longrightarrow \text{Interpretation}$$
+(§4.7, `collatz_eabc_epistemik_schichten.md` §0) ersetzt **nicht** die Primfaktorzerlegung $n=\prod p_i^{e_i}$, sondern fragt: **Welche Erzeugungsgeschichte** des Primstroms führt zum Endzustand $Z_{\mathrm{final}}$ und welche Observablen ($D_E$, $Q_E$, …) sind davon **invariant**?
+
+**Primfaktorgenealogie (informell):** Die „Abstammung" einer Zahl $n$ wird hier als **Baum der lokalen Besetzungs-/Trigger-Ereignisse** im Primstrom gelesen — kanalweise Trigger $T(c)$, Zähler $n(c)$, offene Menge $O$ (§4.6). Das ist **genealogisch** (wer triggert wen, in welcher Blockreihenfolge), aber **assoziativ** auf der Merge-Ebene: verschiedene Binärbäume liefern denselben Endzustand (`foldMerge_perm`, Assoziativitätstests in `tests/test_eabc_occupancy_tree.py`).
+
+##### 4. Baum $T(N)$ statt Faktorzerlegung
+
+Fixiere ein Fenster $N$ und eine Blockzerlegung des Primstroms. Die **monoidale Auswertung** liefert einen Erzeugungsbaum
+
+$$T(N):\ \text{Blatt} = \text{lokale Blockzustände } Z_i,\quad \text{Knoten} = \oplus,\quad \text{Wurzel} = Z(N)=\bigoplus_i Z_i.$$
+
+| Klassische Lesart | EABC-Streaming-Lesart |
+|-------------------|----------------------|
+| $n=\prod p_i^{e_i}$ | $Z(N)=\bigoplus_i Z_i$ über Blöcke |
+| Primfaktoren als Atome | lokale $Z_i$ als Blätter |
+| Eindeutigkeit (FTA) | Eindeutigkeit des **Merge-Endzustands** (Theorem, §4.6) |
+| Reihenfolge der Faktoren irrelevant | Baumform irrelevant, **Endzustand** relevant (`reduce_tree`) |
+
+Die Kompressionsabbildung $\mathcal{C}_E$ (§4.8.8) wirkt **nachgelagert** auf Auswertungen von $Z$ — sie vernichtet fast alle Rohinformation ($I_E(N)\ge\log_2 N-2$), fragt aber, **welche** genealogische Struktur unter $\mathcal{C}_E$ strukturstabil bleibt (§4.8.8–4.8.9, §4.8.17 Stufe 3).
+
+##### 5. Forschungsbox: Objekte mit nur einem Erzeugungsbaum?
+
+$$\boxed{\;\textbf{Frage (Schicht R):}\; \text{Gibt es Objekte }n\text{ (bzw. Fenster-Konfigurationen), für die nur \textbf{eine} kanonische Erzeugungsgeschichte }T(n)\text{ existiert — obwohl die klassische Faktorzerlegung mehrere Darstellungen zuließe (z.\,B. durch Nichtassoziativität in einer erweiterten Algebra)?}\;}$$
+
+Im **assoziativen** EABC-Monoid ist die Antwort auf der Merge-Ebene trivial: **alle** gültigen Bäume liefern denselben $Z(N)$; die Baumform ist keine Invariante. Die Frage wird interessant, wenn man
+
+1. **Erzeugungsregeln** einschränkt (z.\,B. nur Williams-Blockscan, feste Blockgröße),
+2. **Trigger-Reihenfolge** $T(c)$ als zusätzliche genealogische Information zählt (nicht nur $O$ und $n(c)$),
+3. eine **nichtassoziative** Zwischenalgebra betrachtet (Gedankenexperiment, Schicht **C**).
+
+##### 6. Hypothese: „eindeutig prim"
+
+**Definition (hypothetisch, nicht kanonisch).** Ein Objekt $n$ heiße **eindeutig prim** (genealogisch), wenn alle zulässigen Erzeugungsbäume **dieselbe** genealogische Signatur tragen:
+$$T_1(n)=T_2(n)=\cdots=T(n)$$
+als Gleichheit von Erzeugungsbäumen (oder ihrer komprimierten Form), nicht als Gleichheit von Faktorlisten.
+
+| Begriff | Inhalt | Schicht |
+|---------|--------|---------|
+| klassisch prim | irreduzibel in $(\mathbb{N},\cdot)$ | **A** |
+| genealogisch eindeutig | einziger zulässiger Baum $T(n)$ | **R** (offen) |
+| Merge-invariant | alle Bäume $\to$ gleiches $Z(N)$ | **A** (§4.6, Theorem) |
+
+$$\boxed{\;\text{Hypothese:}\; T_1(n)=T_2(n)=\cdots=T(n)\ \Rightarrow\ \text{„eindeutig prim'' genealogisch — unabhängig von Faktorisierbarkeit in einer anderen Algebra.}\;}$$
+
+**Nicht behauptet:** Dass es in $\mathbb{N}$ Zahlen gibt, die klassisch zusammengesetzt, aber genealogisch eindeutig prim sind — das ist eine **offene Klassifikationsfrage** für konkrete Erzeugungsregeln.
+
+##### 7. Verschiebung der Fragestellung
+
+Die Leitfrage verschiebt sich:
+
+| Alt (objektzentriert) | Neu (genealogisch / zustandszentriert) |
+|-----------------------|----------------------------------------|
+| Ist $n$ faktorisierbar? | Welche **Erzeugungsgeschichte** erklärt den Endzustand? |
+| Wie viele Primfaktoren? | Wie viele **unterschiedliche Merge-Bäume** bei gleichem $Z$? |
+| Irreduzibilität in $\cdot$ | Irreduzibilität in $\oplus$ / Erreichbarkeit in Erzeugungsgraphen |
+
+**Additive Erreichbarkeit:** In `streaming_factorization.lean` ist $D$ und $Q$ über Stromkonkatenation **additiv** (`eabc_D_stream_additive`, `eabc_Q_stream_additive`); $W_E=D/Q$ ist **nicht** additiv (`W_E_not_additive`). Genealogische Primheit und additive Erreichbarkeit sind daher **verschiedene** Invarianten — vergleichbar mit der Trennung von multiplikativer FTA und additiver Zerlegung in mehrschichtigen Zerlegungsarchitekturen (`gesamtschau_hoffbauer.tex`, `mehrschichtige_zerlegungsarchitektur_standalone.tex`).
+
+##### 8. Lean-Präzisierung (Schicht **A**): Operation, Kategorie, Erzeugungsregeln
+
+Eine formale Lean-Entwicklung genealogischer Primobjekte benötigt **mindestens** drei Bausteine — im Stub `GenealogicalPrime.lean` als offene `Prop` angelegt:
+
+| Baustein | Inhalt | Lean-Status |
+|----------|--------|-------------|
+| **Operation** | Merge $\oplus$ auf Zuständen oder Erzeugung $\ast$ auf einer Magma | `OccupancyMonoid.lean`: **Theorem**; genealogische $\ast$: **offen** |
+| **Kategorie** | Morphismen = erlaubte Blockrefactorings / Baumhomomorphismen | **Stub** (`GenealogyTree`, `treeHom`) |
+| **Erzeugungsregeln** | Williams-Scan, Trigger-Monotonie, Kanalbesetzung | Python: `scan_block`; Lean: `blockScan_append` |
+
+$$\boxed{\;\textbf{Lean (Schicht A):}\; \text{Ohne explizite Erzeugungsregeln und Baumgleichheit bleibt „genealogisch prim'' eine offene }\texttt{Prop}\text{ — kein Theorem.}\;}$$
+
+**Offene `Prop` (Stub):** `genealogicallyPrime`, `uniqueGenerationTree`, `sameGenealogy` — siehe `GenealogicalPrime.lean`.
+
+##### 9. Epistemische Kernboxen
+
+$$\boxed{\;\textbf{Box 1 (Schicht C):}\; \text{In einer nichtassoziativen Welt gibt es keine kanonische „unteilbar''-Definition — nur Erzeugungsbäume und gewählte Regeln.}\;}$$
+
+$$\boxed{\;\textbf{Box 2 (Schicht R):}\; \text{Es kann Objekte mit eindeutigem genealogischem Ursprung geben, die in einer anderen Algebra \textbf{nicht} prim/faktorisierbar im klassischen Sinn sind — und umgekehrt.}\;}$$
+
+$$\boxed{\;\textbf{Box 3 (Schicht A):}\; \text{Im assoziativen EABC-Streaming-Monoid ist der Endzustand }Z(N)\ \text{baumunabhängig — genealogische Eindeutigkeit muss auf feinere Struktur (Trigger, Scan-Regeln) bezogen werden.}\;}$$
+
+$$\boxed{\;\textbf{Nicht behauptet:}\; \text{EABC ersetzt den Fundamentalsatz oder beweist neue Primzahlklassen.}\;}$$
+
+$$\boxed{\;\textbf{Behauptet (Gedankenexperiment):}\; \text{Die assoziative Schranke trennt klassische Primfaktorisierung von genealogischer Erzeugungsgeschichte; EABC operationalisiert Letztere über }T(N)\text{, Streaming-Monoid und Kompression }\mathcal{C}_E\text{ (§4.8.8).}\;}$$
+
+| Baustein | Tao-Label | Schicht |
+|----------|-----------|---------|
+| FTA, Irreduzibilität in $(\mathbb{N},\cdot)$ | **Theorem** | **A** |
+| $(Z,\oplus,Z_0)$, `blockScan_append` | **Theorem** | **A** |
+| Baum $T(N)$, Williams-Pipeline | **Definition** / **Experiment** | **A**/**B** |
+| Nichtassoziative Zerlegungsbäume | **Gedankenexperiment** | **C** |
+| „eindeutig prim" genealogisch | **Forschungsfrage** | **R** |
+| $\mathcal{C}_E$, strukturstabile Genealogie | **Hypothese** | **B**/**R** (§4.8.8) |
+| `genealogicallyPrime` | **Stub** (`Prop`, offen) | **A**/**R** |
+
+**Label:** §4.8.18 = **Meta** / **Gedankenexperiment** (Schicht **C** für nichtassoziative Welt) / **Theorem**-Verweis (Schicht **A** für Monoid) / **Forschungsfrage** (Schicht **R** für genealogische Primheit); **kein Theorem**.
 
 ### 4.9 Zeta-Exponential-Gedankenexperiment (Schicht **C**)
 
