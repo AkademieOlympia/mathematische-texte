@@ -42,6 +42,8 @@ $$\boxed{\;\text{Der größte Fortschritt ist nicht die Einführung neuer Größ
 
 **Erster numerischer Belastungstest** (vgl. `collatz_eabc_zirkulationshypothese.md` §4.3): Vollauf bis $X=10^{10}$ (13 Checkpoints) — prüft nur $(G_E,N_\pm,D_E)$, $R_{1/2}=D_E/\sqrt{Q}$ und Skalierungsobservablen; **kein** $\Phi_E$, **keine** Holonomie. **Ergebnis (Experiment):** bis $10^{10}$ kein numerischer Hinweis auf Holonomie ($\Phi_E\neq 0$) oder sublinearen Bias ($\alpha_E>\tfrac{1}{2}$); $D_E$ kompatibel mit Wurzelfehlerterm ($|D_E|=O(\sqrt{Q})$). H₀a/H₀b numerisch bevorzugt gegenüber H₂/H₃. Holonomie bleibt Endfrage (Ebene 4).
 
+**Literaturpositionierung und Novelty** (vgl. `collatz_eabc_zirkulationshypothese.md` §4.5): EABC ist **keine** neue Zahlentheorie ex nihilo, sondern eine **gerichtete Observable** $D_E(X)=N_+-N_-$ auf dem bekannten Feld Prime Races / consecutive-prime biases / HL-$k$-Tupel / Sieb-Lückenzyklen. Neu ist nicht mod $12$, sondern die chirale ABCEA/CEABC-Zählung auf $G_E$. Die Collatz$\leftrightarrow$EABC$\leftrightarrow$Quaternion-Brücke ist **programminterne Heuristik** (Schicht **C**), nicht etablierte Literatur.
+
 **Stabilisierungskette** ($\leadsto$ = führt zu Fragen; $\Rightarrow$ = bewiesene Implikation):
 $$G_E \;\leadsto\; (D_E,\,Q_E) \;\leadsto\; (R_\beta,\,\alpha_{\mathrm{eff}},\,\alpha_{\mathrm{loc}}) \;\leadsto\; (\alpha_E,\,W_E) \;\leadsto\; \Phi_E.$$
 
@@ -96,7 +98,7 @@ $$\boxed{\;\textbf{Beweis-Spur} \;\|\; \textbf{Ikone-Spur}\;}$$
 | Holonomien | $\mathrm{Hol}_E$, $\mathcal{P}\exp\oint A$ (Programm) | `collatz_eabc_holonomie_stufen.md` |
 | Kreisgraphen | $G_E=(V,E)$, $C_4\cong S^1$, $E^+/E^-$ | `collatz_eabc_diskrete_geometrie.md`, `FlussPhiE.lean` |
 | Harmonische Formen | $h\in H^1(C_4,\mathbb{Z})$, $\langle\omega_E,h\rangle$ | `collatz_eabc_uebergangsraum.md`, `collatz_eabc_hodge_eabc.py` |
-| Fluss | $\omega_E$, $C_E=\oint_\gamma\omega_E$, $W_E(X)$, $\alpha_E$, Ebenen 0–4, H₀a/H₀b–H₃ | `collatz_eabc_zirkulationshypothese.md` §4.1–4.2 |
+| Fluss | $\omega_E$, $C_E=\oint_\gamma\omega_E$, $W_E(X)$, $\alpha_E$, Ebenen 0–4, H₀a/H₀b–H₃, Literaturpositionierung §4.5 | `collatz_eabc_zirkulationshypothese.md` §4.1–4.5 |
 | Orientierungsklassen | $\Phi_E=\lim W_E$, chirale 1-Form | `collatz_eabc_chirale_polarisation.md` |
 
 **Kernfrage (Schicht B als Struktur, Schicht R als Brücke):**

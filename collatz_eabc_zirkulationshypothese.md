@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
 - `collatz_eabc_sagnac.md` — **Intuition only:** Sagnac-Bild für $\gamma^\pm$ (kein physikalischer Kern)
@@ -21,8 +21,10 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_sagnac_circulation.py` — $C_E(X)$, $\omega(e)$, $\alpha$
 - `collatz_eabc_holonomie_fehlerterm.py` — $N_\pm$, $D_E$, $S_E$, $\widetilde{D}_E$
 - `eabc_quadruplets_1e10.py` — Vierlings-Zählung bis $X$, $W_E$, $R_\beta$ (`Z_E` nur Diagnose-Alias), mod-$420$-Diagnostik
+- `eabc_witness_54044321_verify.py` — Verifikation Zeuge $p=54\,044\,321$ (§4.4, mod-$60060$-Kanal)
 - `eabc_quadruplets_fit_alpha.py` — Stufen 0–3: Diagnostik (nicht Theorie); $\alpha_E$-Plateau, H₀a/H₀b–H₃
 - `eabc_quadruplets_plot.py` — Vierfeld-Diagnose-Plot ($W_E$, $R_{1/2}$, $\alpha_{\mathrm{loc}}$, $R_\beta$)
+- `eabc_occupancy_tree.py` — monoidale Vierlings-Besetzungszustände $Z=(O,T,n)$, Williams-Baum (§4.6)
 - `collatz_eabc_graph_laplacian.py` — $\mathrm{Spec}(L_E)$
 - `collatz_eabc_evolution_analytik.md` — **Evolutionspfad** Bell→Sagnac→$C_E$→$\mathrm{Spec}(L_E)$, Wachstumsszenarien, Dirichlet-Stub
 - `collatz_eabc_D_growth.py` — Wachstumsdiagnostik $D_E(X)$, Charakter-Koeffizienten $a_\chi$
@@ -482,6 +484,182 @@ Keine monotone Drift — Schwankungen der Größenordnung $O(1)$, kompatibel mit
 **Verknüpfung:** vgl. `collatz_eabc_epistemik_schichten.md` §0 (10$^{10}$-Referenzpunkt); Diagnose-Plot: `eabc_quadruplets_diagnose.png`.
 
 **Label:** Belastungstest = **Experiment**; H₀a/H₀b = **Heuristik/Nullhypothese**; H₂/H₃ = **Hypothese/Vermutung** (numerisch nicht gestützt bis $10^{10}$).
+
+### 4.4 mod-$60060$-Zeuge: Primvierling $p=54\,044\,321$ (13-verfeinerte Schale)
+
+$$\boxed{\;p=54\,044\,321,\quad p\bmod 60060=50\,381,\quad \text{Orientierung ABCE.}\;}$$
+
+**Label:** **Beispiel/Zeuge** — struktureller Beleg für A-Startklasse und späten mod-$60060$-Kanal; **kein** Holonomie-Theorem, **kein** Beleg für $\Phi_E\neq 0$.
+
+#### Setup
+
+| Größe | Wert | Lesart |
+|-------|------|--------|
+| Primvierling | $(54\,044\,321,\;54\,044\,323,\;54\,044\,327,\;54\,044\,329)$ | alle vier Positionen prim |
+| $p\bmod 12$ | $5$ | **A-Startklasse** → 4-Fenster **ABCE** ($\gamma^+$-Vierling) |
+| $p\bmod 60060$ | $50\,381$ | **13-verfeinerte Schale** $60060=2\cdot3\cdot5\cdot7\cdot11\cdot13$ |
+| Orientierung | ABCE | **nicht** CEAB ($p\bmod 12=11$ wäre $\gamma^-$-Vierling) |
+
+Die mod-$420$-Diagnostik in §4.3 und `eabc_quadruplets_1e10.py` nutzt sechs reguläre HL-Kanäle. Die **13-verfeinerte Schale** mod $60060$ zerlegt jeden mod-$420$-Kanal weiter; es gibt $378$ HL-zulässige Startrestklassen mod $60060$ (Hardy–Littlewood: alle vier Positionen $p,p{+}2,p{+}6,p{+}8$ sind $\not\equiv 0$ mod jedes $q\in\{2,3,5,7,11,13\}$; vgl. `eabc_hl_coefficient_hypotheses.py`, `admissible_mod`).
+
+#### CERN-Motiv (didaktisch, **Analogie**)
+
+Wie eine theoretisch zugelassene, lange leere Detektorkammer, die schließlich ein Ereignis registriert: Der Kanal $r=50\,381$ ist **arithmetisch zulässig** (HL-Sieb), aber unter den **spätesten** mod-$60060$-Kanälen, die bis $X=10^8$ erstmals einen Primvierling tragen. Erst bei $p=54\,044\,321$ erscheint dort ein Vierling — der **letzte** der zehn spätesten HL-Kanäle in dieser Reichweite.
+
+**Späteste zehn HL-Kanäle mod $60060$ bis $10^8$** (Erstauftreten $p_1(r)$ absteigend; **Experiment**, reproduzierbar):
+
+| Rang | Kanal $r$ | Orient. | erstes $p$ |
+|------|-----------|---------|------------|
+| 1 | $50\,381$ | ABCE | $54\,044\,321$ |
+| 2 | $34\,211$ | CEAB | $33\,067\,211$ |
+| 3 | $54\,911$ | CEAB | $31\,706\,531$ |
+| 4 | $46\,301$ | ABCE | $26\,953\,181$ |
+| 5 | $18\,281$ | ABCE | $26\,684\,921$ |
+| 6 | $36\,011$ | CEAB | $26\,282\,231$ |
+| 7 | $39\,041$ | ABCE | $21\,720\,701$ |
+| 8 | $18\,371$ | CEAB | $20\,799\,131$ |
+| 9 | $11\,651$ | CEAB | $20\,612\,231$ |
+| 10 | $2\,411$ | CEAB | $20\,062\,451$ |
+
+Unter diesen zehn ist **nur** Kanal $50\,381$ ein **ABCE**-Start ($p\bmod 12=5$); die übrigen neun sind **CEAB** ($p\bmod 12=11$). Der Zeuge füllt damit den spätesten **A-Start**-HL-Kanal in dieser Liste — konsistent mit §2 ($\gamma^+$ vs. $\gamma^-$), ohne eine Holonomie-Aussage.
+
+#### Verifikation
+
+```bash
+python3 eabc_witness_54044321_verify.py
+python3 eabc_witness_54044321_verify.py --scan   # optional: 10-späteste-Kanäle bis 10^8
+```
+
+Lean (`PatternCount.lean`): Kommentar-Zeuge $p=54\,044\,321$ — ABCE-Vierling, mod-$60060$-Kanal $50\,381$ (**Beispiel**).
+
+**Abgrenzung:** Dieser Abschnitt dokumentiert **Geometrie und Restklassenstruktur** (Ebene 0), nicht $D_E$-Skalierung (Ebene 1–2) und nicht $\Phi_E$ (Ebene 4). Ein spät gefüllter HL-Kanal ist **kein** Widerspruch zu H₀a/H₀b aus §4.3.
+
+### 4.5 Literaturpositionierung und Novelty
+
+$$\boxed{\;\text{EABC ist keine neue Zahlentheorie ex nihilo, sondern eine neue gerichtete Observable auf einem bekannten Literaturfeld.}\;}$$
+
+**Kernthese (Positionierung).** Das EABC-Programm führt **keine** neue modulare Zahlentheorie „von Grund auf“ ein. Es definiert vielmehr eine **gerichtete Observable** auf einem etablierten Gegenstandsbereich:
+
+| Literaturfeld | Bezug zu EABC |
+|---------------|---------------|
+| **Prime Races** / Chebyshev-Bias | $D_E(X)$ als orientierter Race zwischen zwei Zählfunktionen |
+| **Consecutive-prime biases** mod $q$ | Primfolge-induzierte Kanten auf $(\mathbb{Z}/12\mathbb{Z})^\times$ |
+| **Hardy–Littlewood $k$-Tupel** | Vierlings-/Fünferfenster, HL-zulässige Startrestklassen (vgl. §4.4) |
+| **Sieve gap cycles** / primoriale Kanäle | mod-$420$-, mod-$60060$-Verfeinerung, späte Kanalfüllung |
+
+$$\boxed{\;\text{Neu ist nicht mod }12,\text{ sondern die gerichtete EABC-Zählung.}\;}$$
+
+#### Definition — orientierter Prime-Race-Parameter
+
+Auf dem reduzierten Restklassengraphen
+$$(\mathbb{Z}/12\mathbb{Z})^\times = \{1,5,7,11\} \;\cong\; \{E,A,B,C\}$$
+mit dem elementaren Zyklus $A\to B\to C\to E\to A$ (vgl. §1–2) ist
+$$D_E(X) := N_+(X) - N_-(X)$$
+ein **orientierter Prime-Race-Parameter**: $N_+(X)$ zählt geschlossene 5-Fenster vom Typ **ABCEA** ($\gamma^+$), $N_-(X)$ vom Typ **CEABC** ($\gamma^-$). Die beiden Wörter sind **chiral entgegengesetzte Orientierungen** desselben $C_4$-Gerüsts — nicht zwei verschiedene Lückenmuster, sondern zyklisch verschobene Richtungen auf demselben Kreis.
+
+**Label:** $D_E$, ABCEA vs. CEABC als chirale Gegenrichtungen = **Definition** (Ebene 0–1).
+
+#### Literatur — Nachbarn und Lesart
+
+Während mod-$q$-Biases aufeinanderfolgender Primzahlen und Prime Races gut untersucht sind, wird hier eine **spezifische gerichtete Observable** auf $(\mathbb{Z}/12\mathbb{Z})^\times$ eingeführt. Die beiden chiralen Fünferfenster ABCEA und CEABC definieren eine Zirkulationszählung $D_E(X)$. Diese Observable ist als **Spezialisierung** der Literatur zu consecutive-prime biases und Prime Races lesbar; in genau dieser **graphorientierten, EABC-chiralen Form** scheint sie jedoch **nicht dokumentiert** zu sein (vgl. Prior-Art-Suche unten).
+
+| # | Referenz | arXiv / Quelle | Relevanz für EABC |
+|---|----------|----------------|-------------------|
+| 1 | **Lemke-Oliver & Soundararajan** | [arXiv:1603.03720](https://arxiv.org/abs/1603.03720) | Unerwartete Biases in aufeinanderfolgenden Prim-Mustern mod $q$; HL-Heuristik für $k$-Tupel |
+| 2 | **Rubinstein & Sarnak** | *Experimental Mathematics* **3** (1994), 173–197 | Klassischer Prime Race / Chebyshev-Bias unter GRH/GSH; Vorlage für $D_E$ als orientierte Differenz |
+| 3 | **Goldston, Graham, Pintz, Yildirim** | [arXiv:1510.00743](https://arxiv.org/abs/1510.00743) | Eratosthenes-Sieb-Lückenzyklen, primoriale Kanäle; Verfeinerungsschalen (§4.4) |
+| 4 | **Pomerance, Rubinstein & Sarnak** | [arXiv:1709.06168](https://arxiv.org/abs/1709.06168) | Set von Primzahlen mit vorgegebenen Anfangslücken; HL-/Sieve-Kontext |
+| 5 | **Lamzouri** | [arXiv:1101.0836](https://arxiv.org/abs/1101.0836) | Prime-Race-Oszillationen, Vorzeichenwechsel (vgl. §4.3) |
+| 6 | *(weitere Prime-Race-Literatur)* | [arXiv:2405.03540](https://arxiv.org/abs/2405.03540) | Aktuelle Race-/Bias-Forschung; Einordnung als Nachbarfeld |
+
+**Label:** Tabelle = **Literatur** (extern); Zuordnung zu $D_E$ = **Analogie** / **Spezialisierung**, kein Zitat-Beweis.
+
+#### Prior Art — arXiv-Suche (Explizit)
+
+Eine gezielte Suche nach **ABCEA**, **CEABC**, **EABC-orientierter Zählung** und der Kombination „mod $12$ + chiral + consecutive primes + 5-cycle“ in arXiv und einschlägiger Primzahl-Literatur lieferte **keine direkte Vorarbeit** für genau diese graphorientierte, chirale Fünferfenster-Zählung $D_E(X)$.
+
+| Suchgegenstand | Ergebnis |
+|----------------|----------|
+| ABCEA / CEABC als orientierte 5-Zyklus-Wörter | **kein** direkter Treffer in etablierter Literatur |
+| $D_E(X)=N_+ - N_-$ auf $G_E$ | **kein** dokumentiertes Analogon unter diesem Namen/Setup |
+| mod-$12$-Restklassengraph + chirale Zirkulation | Nachbarliteratur (L&O, Rubinstein–Sarnak), aber **nicht** in EABC-Form |
+
+$$\boxed{\;\text{Keine direkte Prior Art für die orientierte ABCEA/CEABC-Zählung }D_E(X)\text{ gefunden (arXiv-Suche).}\;}$$
+
+Das ist **kein** Behaupten mathematischer Neuheit im Sinne eines Theorems — nur eine **ehrliche Einordnung**: Die Observable sitzt im Nachbarfeld bekannter Biases, die **spezifische gerichtete Zählung** auf dem EABC-Zyklus ist jedoch (Stand Dokumentation) **nicht zitiert**.
+
+**Label:** Prior-Art-Statement = **Literatur-Recherche** (offen für Widerspruch durch Referee).
+
+#### Zeuge — numerische Fallstudie (Querverweis §4.4)
+
+Der mod-$60060$-Zeuge $p=54\,044\,321$ ($p\bmod 60060=50\,381$, $50\,381\equiv A\pmod{12}$) illustriert die HL-/Kanal-Seite der Positionierung: **spätes Erstauftreten** eines zulässigen **13-verfeinerten ABCE-Kanals** unter den spätesten HL-Kanälen bis $10^8$. Details, Verifikation und Tabelle der zehn spätesten Kanäle: **§4.4**.
+
+| Größe | Wert | Lesart |
+|-------|------|--------|
+| $p$ | $54\,044\,321$ | Primvierling-Start |
+| $p\bmod 60060$ | $50\,381$ | 13-verfeinerte HL-Schale |
+| $p\bmod 12$ | $5$ ($A$) | $\gamma^+$-Startklasse → ABCE-Vierling |
+| Rolle | spätester ABCE-Kanal (Rang 1) | **Experiment** / **Beispiel** |
+
+Der Zeuge stützt die **geometrische** Lesart (Ebene 0) und die HL-Nachbarschaft — **nicht** $\Phi_E\neq 0$ oder $D_E$-Skalierung über $10^{10}$ (§4.3).
+
+**Label:** Zeuge = **Experiment** / **Beispiel** (konsistent mit §4.4).
+
+#### Collatz — defensive Abgrenzung (Programmarchitektur)
+
+$$\boxed{\;\text{Collatz}\;\leftrightarrow\;\text{EABC}\;\leftrightarrow\;\text{Quaternion}\;}$$
+
+ist **derzeit programminterne Heuristik/Architektur**, **nicht** etablierte Literatur. Die Verknüpfung Collatz–EABC–Quaternion dient der Forschungsorganisation (`collatz_generalangriff_2026.md`, Schicht **C** in `collatz_eabc_epistemik_schichten.md`) — sie darf **nicht** als zitierte mathematische oder physikalische These ausgegeben werden.
+
+| Aussage | Status | Label |
+|---------|--------|-------|
+| $D_E(X)$, $G_E$, ABCEA/CEABC | definiert, programmintern kanonisch | **Definition** |
+| Collatz $\Rightarrow$ EABC $\Rightarrow$ Quaternion | interne Brückenheuristik | **Heuristik** / **Ikone** (Schicht **C**) |
+| Collatz–EABC–Quaternion in der Literatur | **nicht** etabliert | **explizit nicht behauptet** |
+
+**Label:** Collatz-Box = **Heuristik** (defensiv); keine Literaturbehauptung.
+
+### 4.6 Monoid der Vierlings-Besetzungszustände (Cook–Mertz / Williams)
+
+$$\boxed{(Z,\oplus,Z_0)\ \text{ ist ein kommutatives Monoid der Vierlings-Besetzungszustände.}}$$
+
+**Label:** Monoid-Struktur auf $Z$ = **Definition** (Schicht 0); Assoziativität und Kommutativität von $\oplus$ = **Theorem** (strukturelle Aussage über die Merge-Operation, beweisbar aus den Komponentenregeln).
+
+#### Definition — Besetzungszustand und Merge
+
+Für die HL-zulässigen Kanäle $C_M$ (mod $60060$, $|C_M|=378$) ist ein **Besetzungszustand**
+$$Z = (O,\, T,\, n)$$
+gegeben durch:
+
+| Komponente | Bedeutung |
+|------------|-----------|
+| $O \subseteq C_M$ | besetzte Kanäle (mindestens ein Primvierling im Fenster) |
+| $T(c)$ | Erstbesetzungszeit $p$ pro Kanal $c\in O$ |
+| $n(c)$ | Ereigniszähler (Anzahl Vierlinge auf Kanal $c$) |
+
+**Neutrales Element:**
+$$Z_0 = (\varnothing,\, \varnothing,\, 0).$$
+
+**Monoid-Merge** (paarweise Blockfusion):
+$$Z_1 \oplus Z_2 = \bigl(O_1 \cup O_2,\; \min(T_1,T_2),\; n_1 + n_2\bigr),$$
+wobei $\min(T_1,T_2)$ kanalweise das frühere Erstauftreten und $n_1+n_2$ die punktweise Summe der Zähler ist.
+
+**Eigenschaft (Merge-Ordnungsunabhängigkeit):** $\bigoplus_i Z_i$ liefert denselben Endzustand unabhängig von linearer, baumförmiger oder paralleler Merge-Reihenfolge — folgt aus Assoziativität und Kommutativität von $\oplus$.
+
+#### Williams-Pipeline (Streaming-Kompression zuerst)
+
+$$\text{lange Prim-/Vierlingshistorie} \longrightarrow \text{lokale Blockzustände} \longrightarrow \text{monoidale Tree-Evaluation} \longrightarrow \text{kompakter EABC-Endzustand}$$
+
+EABC wird hier **primär als Streaming-Kompression** gelesen: lange Prim-/Vierlingshistorie wird nicht materialisiert, sondern blockweise auf $Z_i$ reduziert und assoziativ zum Endzustand $Z(N)$ gemerged. Holonomie ($\Phi_E$, Ebene 4) ist **sekundär** und setzt erst eine stabile asymptotische Lesart von $D_E$ bzw. $W_E$ voraus (vgl. §4.1–4.3).
+
+**Implementierung:** `eabc_occupancy_tree.py` — `identity_state`, `merge_state`, `state_equal`, `scan_block`, `reduce_tree`; Tests: `tests/test_eabc_occupancy_tree.py` (Assoziativität, Kommutativität).
+
+```bash
+python3 eabc_occupancy_tree.py --N 100000000 --simple
+pytest tests/test_eabc_occupancy_tree.py -q
+```
+
+**Label:** Williams-Pipeline = **Definition** / **Heuristik** (algorithmische Lesart); Referenz $\rho(N)=|O(N)|/|C_M|$ bei $N=10^8$: **Experiment** (`test_scan_occupancy_reference_1e8`).
 
 ---
 
