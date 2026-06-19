@@ -361,6 +361,8 @@ def main() -> None:
     )
     parser.add_argument(
         "--n-primes",
+        "--limit",
+        dest="n_primes",
         type=int,
         default=DEFAULT_N_PRIMES,
         help=f"Anzahl Primzahlen im EABC-Strom (Default: {DEFAULT_N_PRIMES:,})",

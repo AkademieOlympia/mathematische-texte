@@ -1628,7 +1628,7 @@ $$\boxed{\;\S4.8.8 = \textbf{methodische Sicherung}: Beobachtungsgeometrie ja �
 
 #### 4.8.9 Numerischer Robustheitstest — drei Skalierungstests
 
-**Status:** **Experiment** — Test C implementiert (`eabc_compression_robustness.py`); Tests A/B separat.
+**Status:** **Experiment** — Test C implementiert (`eabc_compression_robustness.py`); Tests A/B mit ersten Checkpoints.
 
 **Programm-Kette:**
 
@@ -1648,9 +1648,9 @@ $$\text{Primdaten }(\mathbb{P}) \;\xrightarrow{\;\mathcal{C}_k\;}\; \text{Kompre
 - **Observablen:** $\mathbf{M}=(D_E,\,Q_E,\,R_N,\,C_F)$; Referenz $\mathbf{V}_{\mathrm{raw}}$ auf kanonischem EABC-Wort.
 - **Index:** $S(\mathcal{C})=1-\|\mathbf{V}_{\mathcal{C}}-\mathbf{V}_{\mathrm{raw}}\|/\|\mathbf{V}_{\mathrm{raw}}\|$ (§4.8.8).
 - **Interpretation:** $S(\mathcal{C}_E)\gg S(\mathcal{C}_k)$ → EABC-spezifische Strukturerhaltung (Fall 2); $S(\mathcal{C}_E)\approx S(\mathcal{C}_k)$ → keine Spezifität (gegen EABC-Hypothese). Fall (1)–(3)-Lesart wie §4.8.8.
-- **CLI:** `python eabc_compression_robustness.py --n-primes 1000000 -o eabc_compression_robustness.json`
+- **CLI:** `python eabc_compression_robustness.py --limit 1000000 -o eabc_compression_robustness.json`
 
-**Erster Lauf** ($N=10^6$ Primzahlen, $m=5000$, $|R_N|$ bis $5\cdot 10^4$):
+**Erster Lauf Test C** ($N=10^6$ Primzahlen, $m=5000$, $|R_N|$ bis $5\cdot 10^4$):
 
 | $\mathcal{C}_k$ | $S(\mathcal{C})$ | $D_E$ | $W_E$ | $|R_N|$ | $C_F$ |
 |-----------------|------------------|-------|-------|---------|-------|
@@ -1661,6 +1661,10 @@ $$\text{Primdaten }(\mathbb{P}) \;\xrightarrow{\;\mathcal{C}_k\;}\; \text{Kompre
 | $\mathcal{C}_{210}$ | 0.200 | 100 | $+1.0\times 10^{-4}$ | 0.00492 | 0.000400 |
 
 *Numerische Lesart (ein Lauf, kein Theorem):* $S(\mathcal{C}_E)=1$ per Definition; $S(\mathcal{C}_E)\gg S(\mathcal{C}_{30}),\,S(\mathcal{C}_{210})$ — **tendenziell** Fall (2) (EABC-spezifische Strukturerhaltung). $S(\mathcal{C}_8)$ und $S(\mathcal{C}_{10})$ liegen zwischen beiden Extremen. Skaleninvariante Distanz über $(W_E,\,|R_N|,\,C_F)$ mit $W_E=D_E/Q_E$ (sonst dominiert $Q_E\sim N$ den Index).
+
+**Checkpoint Test B** ($N=10^6$, $m=5000$, `eabc_sigma_fibonacci_coupling.py --mode cf`): $C_F^{\mathrm{prime}}=3.03\times 10^{-4}$, $C_F^{\mathrm{golden}}=5.86\times 10^{-4}$, $Z_F^{\mathrm{perm}}=-7.33$ — kein φ-Kamm-Überschuss (konsistent mit §4.8.7).
+
+**Checkpoint Test A** ($n\le 10^5$, `zeros6.npz`, Laufzeitgrenze vor $10^6$): $\min|\zeta_F(\tfrac12+i\gamma)|\approx 0.0050$ bei $n=74631$; $\#\{|\zeta_F|<0.01\}=2$ (Riemann) vs.\ $2$ (Zufall); $|R_N|=0.0031$ vs.\ $|R_N^{\mathrm{rand}}|=8.5\times 10^{-4}$ — **nur Detektor**, kein EABC-Spezialitäts-Claim.
 
 **Erwartete Ausgabe:** Tabelle $S(\mathcal{C}_k)$, $\mathbf{M}$-Komponenten, JSON für Reproduzierbarkeit.
 
