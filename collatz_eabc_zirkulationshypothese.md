@@ -1175,6 +1175,8 @@ Die Fibonacci-Kamm-Hypothese verknüpft ein **externes Objekt** ($K_F$, $\varphi
 
 **Numerik und Details:** §4.8.3–4.8.4; algebraische $\zeta_F$-Struktur §9.8–9.10 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`.
 
+**$\zeta_F$-Resonanzdetektor an Riemann-$\gamma_n$ (Kurzverweis):** Unabhängig von $C_F$/$P_F$ testet `eabc_zeta_f_riemann_zeros.py` die Phasensumme $A_n=|\zeta_F(\tfrac12+i\gamma_n)|$ als **externen** $\varphi$-Kamm-Detektor. Methodische Parallele: vorhersagbare $\varphi$-Geometrie (goldener Kamm) trifft auf **eingesetzte** äußere Frequenzen $\gamma_n$ — analog zur vorhersagbaren Drehrichtung auf dem $C_4$-Gerüst ($\gamma^\pm$), aber im **Phasenraum** (§9.13 Gedankenexperiment; **Analogie**, kein Theorem). Nullhypothese: $\#\{A_n<\varepsilon\}$ bei Riemann-$\gamma$ vs. Zufalls-$\gamma$ gleicher Dichte; bei $N=10^5$ **kein** robuster Überschuss.
+
 **Label:** §4.8.5 = **Hypothese** / **Experiment** (Schicht **C**); **kein Theorem**.
 
 ### 4.9 Zeta-Exponential-Gedankenexperiment (Schicht **C**)

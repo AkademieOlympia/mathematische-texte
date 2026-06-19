@@ -684,6 +684,72 @@ $$\boxed{\;\text{Epistemik: Resonanztest-Ansatz — Experiment (Schicht C), kein
 
 **Artefakte:** `eabc_zeta_f_riemann_zeros.json` ($N=10^5$), `eabc_zeta_f_riemann_zeros_20.json` (Detail $N=20$).
 
+### 9.13 $\varphi$-Phasenapparat, rotierender Kegel und EABC-$C_4$-Gerüst (Analogie)
+
+**Status:** methodischer Baustein (Schicht **C**) — **keine** Nullstellenidentität, **kein** RH-Anspruch, **kein** EABC-Theorem.
+
+$$\boxed{\;\text{Riemann-Nullstellen sind \textbf{keine} }\zeta_F\text{-Nullstellen, können aber nahe }\varphi\text{-Resonanzen liegen — nur Beinahe-Auslöschungen, keine Identität.}\;}$$
+
+#### Epistemische Box (schwache vs. starke Lesart)
+
+| Lesart | Aussage | Label |
+|--------|---------|-------|
+| **schwach** | Einzelne $\gamma_n$ erzeugen **Beinahe-Auslöschungen** $A_n:=|\zeta_F(\tfrac12+i\gamma_n)|\ll 1$ — das ist **kein** Beweis einer strukturellen Kopplung | **Experiment** (C) |
+| **stark** (Hypothese) | $\#\{A_n<\varepsilon\}$ übertrifft **systematisch** die Zufalls-Baseline gleicher $\gamma$-Dichte (über viele $\varepsilon$, $N$, Seeds) | **Hypothese** (C) — **nicht** bestätigt bei $N=10^5$ |
+
+#### Phasenapparat auf dem goldenen Log-Kamm
+
+Auf der kritischen Linie $\Re(s)=\tfrac12$ ist
+
+$$A_n=\left|\zeta_F\!\left(\tfrac12+i\gamma_n\right)\right|
+=\left|\sum_{k\ge1}F_k^{-1/2}\,e^{-i\gamma_n\log F_k}\right|.$$
+
+Jeder Summand ist ein **Phasenzeiger** der Länge $F_k^{-1/2}$ mit Argument $-\gamma_n\log F_k$. Die Fibonacci-Indizes legen die **Stützstellen** auf dem goldenen Log-Gitter $k\mapsto\log F_k\approx k\log\varphi$ fest; $A_n$ misst die **Resultantenlänge** dieser $\varphi$-gewichteten Phasensumme bei der äußeren Frequenz $\gamma_n$.
+
+**Lesart:** $\zeta_F$ fungiert als **externer Resonanzdetektor** (vgl. §4.8.5 Fibonacci-Kamm-Hypothese): die Kammgeometrie ist **vorab** durch $\varphi$ fixiert; Riemann-Ordinaten $\gamma_n$ werden **eingesetzt**, nicht angepasst.
+
+**Nullhypothese:** Zufalls-$\gamma$ gleicher Dichte im Intervall $[\gamma_1,\gamma_N]$; vergleiche $\#\{A_n<\varepsilon\}$ (Riemann) vs. Zufall. Implementierung: `eabc_zeta_f_riemann_zeros.py` → Feld `threshold_comparison`.
+
+#### Rotierender Kegel und vorhersagbare Drehrichtung (EABC-Analogie)
+
+Im EABC-Programm trägt das **$C_4$-Kreisgerüst** $A\!\to\!B\!\to\!C\!\to\!E\!\to\!A$ zwei **vorhersagbare** Orientierungen $\gamma^+$ (ABCEA) und $\gamma^-$ (CEABC) auf demselben $C_4\cong S^1$ (`collatz_eabc_zirkulationshypothese.md` §1–2; `collatz_eabc_diskrete_geometrie.md`). Die quaternionische Hebung $E\leftrightarrow 1$, $A\leftrightarrow i$, $B\leftrightarrow j$, $C\leftrightarrow k$ macht **Drehrichtung** explizit: $q\,v\,q^{-1}$ rotiert um eine **festgelegte Achse** (`Dynamik.tex`, `Rotation.tex`; Drehimpuls-Bild in `Bahndrehimpuls.tex` §Spin und Bahndrehimpuls).
+
+**Analogie (Schicht C, kein Theorem):** Die Phasenzeiger $F_k^{-1/2}e^{-i\gamma\log F_k}$ bilden im komplexen $\mathbb{C}$-Ebene eine **rotierende Zeigerfamilie** mit **extern fixierter** $\varphi$-Geometrie (Kammachse $K_\varphi=\{2\pi k/\log\varphi\}$, §9.12). Wenn $A_n\ll 1$, liegen die Zeiger nahezu **gegengleich** — geometrisch ein **schmaler Kegel** um den Ursprung (kleiner Öffnungswinkel, Resultante nahe $0$). Das ist **Bildsprache** für „fast vollständige Destruktive Interferenz auf dem goldenen Kamm“, **nicht** ein kinematischer Kegel im Ereignisraum (`ViererRahmen.tex` §kinematischer Kegel) und **kein** Identitätsbeweis Riemann↔Fibonacci.
+
+| Bild | EABC / $\zeta_F$-Lesart | Label |
+|------|-------------------------|-------|
+| $C_4\cong S^1$, $\gamma^\pm$ | vorhersagbare **chirale** Orientierung auf festem Kreis | **Definition** (B) + **Analogie** (C) |
+| Quaternion-Rotation $q v q^{-1}$ | feste **Drehachse** aus $E,A,B,C$ | **Analogie** (C) |
+| Phasenzeiger-Summe, $A_n\ll 1$ | **schmaler Kegel** der Resultante im $\varphi$-Phasenraum | **Analogie** (C) |
+| Natürlicher Vierling / EABC-Klassifikation | äußere **arithmetische** Schale, auf der $C_4$-Transport lebt (`Bahndrehimpuls.tex`; `Carnot.py` Phasenverschiebung natürlicher Vierling) | **Analogie** (C) |
+| $A_n=0$ an Riemann-$\gamma_n$ | **nicht** behauptet (nur Beinahe-Auslöschungen) | **ausgeschlossen** |
+
+$$\boxed{\;\text{Kegel-Verbindung = \textbf{Analogie} (Schicht C): }\varphi\text{-Phasenresultante }\leftrightarrow\text{ orientiertes }C_4\text{-Gerüst — kein Overclaim.}\;}$$
+
+#### Befund und Schwellentest ($N=10^5$, Seed 42)
+
+| Größe | Riemann-$\gamma_n$ | Zufalls-$\gamma$ |
+|-------|-------------------|------------------|
+| $\min A_n$ | **0.0049567** ($n=74631$) | 0.00701 |
+| Median $A_n$ | 2.0303 | 2.1808 |
+| $\#\{A_n<0.005\}$ | 1 | 0 |
+| $\#\{A_n<0.01\}$ | 2 | 2 |
+| $\#\{A_n<0.05\}$ | 15 | 10 |
+| $\#\{A_n<0.1\}$ | 53 | 52 |
+
+**Lesart:** leicht **mehr** sehr kleine Werte bei Riemann-$\gamma$ ($<0.05$: 15 vs. 10), aber bei $N=10^5$ **ohne** Mehrfachtest-Korrektur **nicht** signifikant — rechtfertigt den **nächsten** Schwellentest ($N\ge10^6$, mehrere Seeds, $R_n$-Kopplung). Die **starke** Hypothese ($\#\{A_n<\varepsilon\}$ systematisch über Zufall) ist damit **offen**, nicht gestützt.
+
+| Aussage | Schicht | Tao-Label |
+|---------|---------|-----------|
+| Phasenzeiger-Formel, $A_n$ | — | **Definition** |
+| $\zeta_F$ als externer Resonanzdetektor | **C** | **Modell** |
+| Kegel / $C_4$ / Drehrichtung | **C** | **Analogie** |
+| $\#\{A_n<\varepsilon\}$ vs. Zufall | **C** | **Experiment** |
+| Identität Riemann-Nullstelle = $\zeta_F$-Nullstelle | — | **nicht behauptet** |
+| RH / EABC aus $\zeta_F$ | — | **nicht behauptet** |
+
+**Skript:** `eabc_zeta_f_riemann_zeros.py` (§9.12–9.13); **Verweis:** `collatz_eabc_zirkulationshypothese.md` §4.8.5.
+
 ---
 
 ## 10. Kurzform (Erweiterung)
@@ -708,4 +774,4 @@ $$\boxed{\;\zeta_F(s)=\sum_{n\ge1}F_n^{-s}\;\Leftrightarrow\;\text{goldener Log-
 
 ---
 
-*Verknüpft mit `collatz_eabc_zirkulationshypothese.md` §4.8.2 (Stufe 0: $\zeta_F$), §4.8.5 (Fibonacci-Kamm-Hypothese), §4.9; epistemischer Rahmen: `collatz_eabc_epistemik_schichten.md`; Bernoulli: `collatz_bernoulli_schalen.pdf`, `BernoulliClock.lean`; Oktanionen: `divisionsalgebren.tex`, `collatz_oktonionen_beweis.pdf`; Fibonacci-Numerik: `collatz_eabc_zeta_fibonacci_check.py`, `eabc_zeta_fibonacci_witnesses.py` (§9.7–9.10), `eabc_zeta_f_riemann_zeros.py` (§9.12, `zeros6.npz`); Wigner-Zellen: `eabc_wigner_zellen.py`, `eabc_quadruplets.csv`.*
+*Verknüpft mit `collatz_eabc_zirkulationshypothese.md` §4.8.2 (Stufe 0: $\zeta_F$), §4.8.5 (Fibonacci-Kamm-Hypothese), §4.9; epistemischer Rahmen: `collatz_eabc_epistemik_schichten.md`; Bernoulli: `collatz_bernoulli_schalen.pdf`, `BernoulliClock.lean`; Oktanionen: `divisionsalgebren.tex`, `collatz_oktonionen_beweis.pdf`; Fibonacci-Numerik: `collatz_eabc_zeta_fibonacci_check.py`, `eabc_zeta_fibonacci_witnesses.py` (§9.7–9.10), `eabc_zeta_f_riemann_zeros.py` (§9.12–9.13, `zeros6.npz`); Wigner-Zellen: `eabc_wigner_zellen.py`, `eabc_quadruplets.csv`.*

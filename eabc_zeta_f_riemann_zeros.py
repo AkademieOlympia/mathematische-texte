@@ -12,7 +12,7 @@ Reihe (stabil, ohne Resonatorformel):
 
 Optional: R_n = min_{t ∈ K_φ} |γ_n − t|,  K_φ = {2πk / log φ : k ∈ ℤ}.
 
-Referenz: collatz_eabc_zeta_exponential_gedankenexperiment.md §9.12
+Referenz: collatz_eabc_zeta_exponential_gedankenexperiment.md §9.12–9.13
 Label: Experiment (Schicht C) — kein RH-Anspruch, kein Beweis.
 
 CLI:
@@ -170,6 +170,36 @@ def threshold_counts(vals: np.ndarray, thresholds: tuple[float, ...]) -> dict[st
     return {f"count_lt_{thr:g}": int(np.sum(vals < thr)) for thr in thresholds}
 
 
+def threshold_comparison(
+    riemann_vals: np.ndarray,
+    random_vals: np.ndarray,
+    thresholds: tuple[float, ...],
+) -> dict[str, Any]:
+    """
+    Vergleich #{A_n < ε}: Riemann-γ vs. gleichverteilte Zufalls-γ (gleiche Dichte).
+    """
+    n_r = riemann_vals.size
+    n_z = random_vals.size
+    rows: list[dict[str, Any]] = []
+    for thr in thresholds:
+        c_r = int(np.sum(riemann_vals < thr))
+        c_z = int(np.sum(random_vals < thr))
+        rows.append(
+            {
+                "epsilon": thr,
+                "count_riemann": c_r,
+                "count_random": c_z,
+                "excess_riemann_minus_random": c_r - c_z,
+                "rate_riemann": c_r / n_r if n_r else 0.0,
+                "rate_random": c_z / n_z if n_z else 0.0,
+            }
+        )
+    return {
+        "description": "#{|ζ_F(1/2+iγ)| < ε}: Riemann-γ_n vs. Zufalls-γ gleicher Dichte",
+        "thresholds": rows,
+    }
+
+
 def quantile_summary(vals: np.ndarray) -> dict[str, float]:
     qs = [0.01, 0.05, 0.25, 0.5, 0.75, 0.95, 0.99]
     return {
@@ -196,6 +226,8 @@ def random_baseline(
         "n": n,
         "gamma_range": [gamma_lo, gamma_hi],
         "seed": seed,
+        "gamma_samples": t_rand,
+        "abs_critical": abs_crit,
         "critical": quantile_summary(abs_crit),
         "thresholds": threshold_counts(abs_crit, (0.005, 0.01, 0.05, 0.1, 1.0)),
     }
@@ -283,12 +315,20 @@ def run_analysis(
         }
 
     n_rand = random_baseline_n if random_baseline_n is not None else n
-    result["random_baseline"] = random_baseline(
+    rand_result = random_baseline(
         float(gamma[0]),
         float(gamma[-1]),
         n_rand,
         seed,
         **kw,
+    )
+    # JSON-serialisierbar: große Arrays weglassen
+    rand_json = {k: v for k, v in rand_result.items() if k not in ("gamma_samples", "abs_critical")}
+    result["random_baseline"] = rand_json
+    result["threshold_comparison"] = threshold_comparison(
+        abs_crit,
+        rand_result["abs_critical"],
+        thresholds,
     )
 
     return result
@@ -410,6 +450,15 @@ def main() -> int:
         f"  Zufall: min={rb['min']:.8g} median={rb['median']:.4f} "
         f"(n={result['random_baseline']['n']})"
     )
+    tc = result.get("threshold_comparison", {}).get("thresholds", [])
+    if tc:
+        print("  #{|ζ_F(1/2+iγ)|<ε}  Riemann vs. Zufall:")
+        for row in tc:
+            print(
+                f"    ε={row['epsilon']:g}: "
+                f"{row['count_riemann']} vs {row['count_random']} "
+                f"(Δ={row['excess_riemann_minus_random']:+d})"
+            )
     print(f"  → {out}")
     return 0
 
