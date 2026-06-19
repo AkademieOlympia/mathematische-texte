@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
 - `collatz_eabc_zeta_exponential_gedankenexperiment.md` — **Gedankenexperiment / Analogie:** $\zeta$ als Exponentialsumme auf Log-Prim-Geometrie; Euler-Streifen $(1\pm p^{-s})$; $\xi$-Spiegelung; Brücke zu Log-Koordinaten, $\gamma^\pm$-Paarung, Level-2; §6–§10: Ganzzahl/Halbzahl-Exponenten, Oktanionen (Schicht C), Bernoulli-Subtraktion, Fibonacci-Zeta (kein RH-/EABC-Theorem)
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
@@ -1435,13 +1435,13 @@ $$\boxed{\;\textbf{Aktueller Gesamtstatus:}\; algebraisch wohldefiniert \checkma
 
 **Label:** §4.8.7 = **Meta** / **Hypothese** / **Experiment** (Schicht **C**); **kein Theorem**.
 
-**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9.
+**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10.
 
 #### 4.8.8 Beobachtungsgeometrie als Kompressionsoperator
 
 **Status:** paper-ready methodische Klärung — schließt §4.8.6–4.8.7 ab; **kein Theorem**, **kein** zusätzlicher Physikanspruch.
 
-**Querverweise:** Zwei-Rotor-Kopplung $(\Theta,\Phi)$ und $R_N$ §4.8.7; EABC–Fibonacci-Gesamtbaustein §4.8.6; Kegel-Analogie §9.13 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §3.1; numerischer Stub §4.8.9.
+**Querverweise:** Zwei-Rotor-Kopplung $(\Theta,\Phi)$ und $R_N$ §4.8.7; EABC–Fibonacci-Gesamtbaustein §4.8.6; Kegel-Analogie §9.13 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §3.1; numerischer Stub §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10.
 
 Die EABC-Projektion kann nicht nur als geometrische, sondern auch als informationstheoretische Abbildung verstanden werden.
 
@@ -1631,6 +1631,144 @@ $$\boxed{\;\S4.8.8 = \textbf{methodische Sicherung}: Beobachtungsgeometrie ja �
 $$\boxed{\;\text{Numerischer Kompressions-Robustheitstest = Stub — Verknüpfung §4.8.8 mit Stufe 3.}\;}$$
 
 **Label:** §4.8.9 = **Experiment** (Stub); **kein Theorem**.
+
+#### 4.8.10 Orientierungsvektor-Erweiterung (Gedankenexperiment)
+
+**Status:** paper-ready Gedankenexperiment — **kein Theorem**, **kein** Physikanspruch über Atome; methodische Erweiterung der Beobachtungsgeometrie aus §4.8.8.
+
+**Querverweise:** Kompressionsoperator $\mathcal{C}_E$ und strukturstabile Kompression §4.8.8; Zwei-Rotor-Kopplung $(\Theta,\Phi)$, $R_N$, $C_F$ §4.8.6–4.8.7; EABC-Phase $\Theta(n)=(\pi/2)\sigma(n)$ §4.8.6; quaternionische Hebung und Bahndrehimpuls-Bild in `Bahndrehimpuls.tex` (Drehimpuls auf $C_4\cong S^1$); Ikosaeder–Dodekaeder als diskrete Orientierungsräume in `collatz_morley_metrik_erweiterung.md` § Ikosaeder–Dodekaeder-Dualität, `eabc_icosahedron_test.py`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §0–3.1.
+
+Der folgende Abschnitt entwickelt eine **methodische** Erweiterung der EABC-Beobachtungsgeometrie: von der skalaren Phase $\Theta(n)$ auf einen **Orientierungsvektor** $u(n)\in S^2$. Physikalische Bilder (Photon, Dipol, Kristall) dienen ausschließlich der **Orientierung des Testdesigns** (Schicht **C**); die formalen Objekte $u(n)$ und $R_{ij}=u_i\cdot u_j$ liegen in Schicht **A**/**B** und sind unabhängig von jeder atomphysikalischen Ontologie formulierbar.
+
+##### 1. Photon-Absorption: Energie und Drehimpuls
+
+Bei der Absorption eines Photons durch ein Atom werden zwei Erhaltungsgrößen gleichzeitig übertragen:
+
+1. **Energie** $E=\hbar\omega$,
+2. **Drehimpuls** $\hbar$ entlang der Ausbreitungsrichtung (für zirkular polarisiertes Licht).
+
+In der Dipolnäherung gelten **Auswahlregeln** für den Bahndrehimpuls $l$:
+
+$$\Delta l = \pm 1.$$
+
+Übergänge mit $\Delta l=0$ sind in dieser Näherung **verboten**. Das Photon trägt einen **definierten Drehimpuls** mit; die Kopplung an das Atom ist daher nicht nur energetisch, sondern auch **orientierungsabhängig**.
+
+**Lesart (Schicht C):** Die Trennung von Skalar (Energie) und Vektor (Orientierung/Drehimpuls) motiviert, warum eine rein skalare Phasenvariable $\Theta(n)$ möglicherweise zu arm ist, um Resonanzstrukturen zu kodieren — **ohne** Behauptung, Primzahlen „seien" Photonen oder Atome.
+
+##### 2. Kollinearität und Dipolmatrixelement
+
+Die Absorptionswahrscheinlichkeit hängt vom **Dipolmatrixelement** ab:
+
+$$\mathcal{M} \propto \langle f|\,\mathbf{E}\cdot\mathbf{r}\,|i\rangle.$$
+
+Entscheidend ist die **Kollinearität** von elektrischem Feld $\mathbf{E}$ und Dipolmoment $\mathbf{r}$:
+
+- **Kollinear** ($\mathbf{E}\parallel\mathbf{r}$): Matrixelement maximal,
+- **Orthogonal** ($\mathbf{E}\perp\mathbf{r}$): Matrixelement verschwindet (in der Dipolnäherung).
+
+Resonanz ist damit nicht nur eine Frage der **Frequenzübereinstimmung** $\Delta E$, sondern auch der **geometrischen Ausrichtung** der beteiligten Vektoren.
+
+**Lesart (Schicht C):** Analog zur Frage, ob EABC-Eigenmoden $v_i$ und Fibonacci-Kamm $k_F$ „kollinear" sind ($C_i=|\langle v_i,k_F\rangle|^2$, §4.8.6–4.8.7), wird hier gefragt, ob **Orientierungsvektoren** $u_i$ einer Kopplungsregel unterliegen, die über reine Skalarmultiplikation hinausgeht.
+
+##### 3. Atom-Durchlässigkeit und anisotrope Orbitale (spekulativ)
+
+Kristalle und anisotrope Atomorbitale ($p_x,p_y,p_z$) besitzen **richtungsabhängige** Durchlässigkeit: Licht einer bestimmten Polarisation wird bevorzugt entlang einer Achse transportiert, orthogonal dazu gedämpft.
+
+**Spekulative Analogie (Schicht C, explizit nicht ontologisch):** Könnte der Primstrom „durchlässiger" für bestimmte Orientierungskonfigurationen sein als für andere? Diese Frage ist **nicht** als Behauptung über reale Atome zu lesen, sondern als Motivation für einen **arithmetischen Orientierungsfilter** — testbar über $D_E$, $R_N$, $C_F$ (s. unten).
+
+##### 4. Ikosaeder und Dodekaeder als diskrete Orientierungsräume
+
+Die platonischen Körper Ikosaeder und Dodekaeder (dual zueinander) realisieren **diskrete Symmetriegruppen** auf der Einheitskugel $S^2$:
+
+| Polyeder | Ecken | Flächen | Symmetriegruppe |
+|----------|-------|---------|-----------------|
+| **Ikosaeder** | 12 | 20 (Dreiecke) | $A_5$ |
+| **Dodekaeder** | 20 | 12 (Pentagone) | $A_5$ |
+
+Die 12 Ikosaeder-Ecken bilden ein **diskretes Orientierungsgitter** auf $S^2$; das Dodekaeder-Dual liefert ein komplementäres Gitter mit 20 Orientierungen.
+
+**Epistemische Sicherung:** Diese Polyeder sind **Orientierungsräume** und Symmetrie-Testumgebungen — **keine** Behauptung, dass Primzahlen oder EABC-Restklassen „Ikosaeder-Atome" sind. Numerische Anbindung: `eabc_icosahedron_test.py` (Ikosaeder–Dodekaeder-Dualität, $R_{\mathrm{EABC}}$); geometrische Einordnung: `collatz_morley_metrik_erweiterung.md`.
+
+##### 5. EABC-Kegel: von $\Theta(n)$ zu $u(n)\in S^2$
+
+Die bisherige EABC-Beobachtungsgeometrie (§4.8.6–4.8.8) nutzt die skalare Phase
+
+$$\Theta(n) = \frac{\pi}{2}\,\sigma(n), \qquad \sigma=\sigma_1,$$
+
+die $n\bmod 12$ auf vier Winkel $\{0,\pi/2,\pi,3\pi/2\}$ abbildet — eine **eindimensionale** Orientierung auf $C_4\cong S^1$.
+
+**Erweiterung (Schicht B, Definition):** Hebe die Phase auf die zweidimensionale Sphäre $S^2$ an:
+
+$$u(n) \in S^2, \qquad u(n) = \bigl(\sin\Theta(n)\cos\Phi(n),\;\sin\Theta(n)\sin\Phi(n),\;\cos\Theta(n)\bigr),$$
+
+wobei $\Theta(n)$ wie oben aus der EABC-Pixelung stammt und $\Phi(n)$ eine **zweite Orientierungskoordinate** ist — z.\,B. aus Primindex, Logarithmus, Streaming-Zeit oder einer Ikosaeder-Quantisierung (12 bzw. 20 diskrete Werte).
+
+Der rotierende EABC-Kegel $(\Theta,h)$ aus §4.8.6 wird damit zu einem **Orientierungsfeld** auf $S^2$: nicht nur *wo* auf dem Kreis $C_4$, sondern auch *in welcher Raumrichtung* (Sphärenkoordinate).
+
+**Quaternionische Hebung (Schicht C, Analogie):** In `Bahndrehimpuls.tex` und `collatz_eabc_zeta_exponential_gedankenexperiment.md` §9.14 wird $E\leftrightarrow 1$, $A\leftrightarrow i$, $B\leftrightarrow j$, $C\leftrightarrow k$ als explizite Drehachsen verwendet; $u(n)$ kann als **Einheitsquaternion** oder dessen Projektion auf $S^2$ gelesen werden — **Bildsprache**, kein kinematischer Raumanspruch.
+
+$$\boxed{\;\textbf{Erweiterung:}\; \Theta(n) \;\Longrightarrow\; u(n)\in S^2 \text{ — Orientierungsvektor statt reiner Phase.}\;}$$
+
+##### 6. Resonanzfaktor $R_{ij}=u_i\cdot u_j$
+
+Für zwei EABC-Zustände $i,j$ (z.\,B. Primzahlen, Restklassen, Eigenmoden von $\Sigma_A$) definiere den **Orientierungs-Resonanzfaktor**
+
+$$R_{ij} = u_i \cdot u_j \;\in\; [-1,1].$$
+
+| Wert | Geometrische Lesart |
+|------|---------------------|
+| $R_{ij}=+1$ | kollinear (gleiche Orientierung) |
+| $R_{ij}=0$ | orthogonal |
+| $R_{ij}=-1$ | antiparallel |
+
+Eine **gewichtete Kopplung** (Analogie zu Auswahlregeln, Schicht **C**) lautet:
+
+$$\Delta E_{ij}^{\mathrm{eff}} = \Delta E_{ij}\cdot R_{ij},$$
+
+wobei $\Delta E_{ij}$ eine energetische Differenz (z.\,B. Log-Abstand, Spektrallücke, Kamm-Detuning) ist. Orthogonale Orientierungen ($R_{ij}=0$) unterdrücken die Kopplung — analog zu verbotenen Dipolübergängen; kollineare ($R_{ij}\approx 1$) verstärken sie.
+
+**Verbindung zu §4.8.6–4.8.7:** Der Fibonacci-Kopplungskoeffizient $C_i=|\langle v_i,k_F\rangle|^2$ misst bereits eine **Projektionskollinearität** in $\mathbb{R}^6$. Der Faktor $R_{ij}=u_i\cdot u_j$ ist die **Sphären-Variante** desselben Prinzips: Orientierung als multiplikativer Filter, nicht als bloße Addition.
+
+##### 7. Wissenschaftstheoretische Einordnung und Prüffrage
+
+**Schichten-Zuordnung** (vgl. `collatz_eabc_epistemik_schichten.md`):
+
+| Objekt | Schicht | Tao-Label |
+|--------|---------|-----------|
+| $u(n)\in S^2$, $R_{ij}=u_i\cdot u_j$ | **A**/**B** | **Definition** |
+| Sensitivität von $D_E$, $R_N$, $C_F$ auf $R_{ij}$ | **B**/**R** | **Forschungsfrage** |
+| Photon, Dipol, Kristall, Ikosaeder-Bilder | **C** | **Analogie** |
+| „Atome sind Ikosaeder" | — | **nicht behauptet** |
+
+Die Erweiterung steht in der **Kompressionslesart** von §4.8.8: $u(n)$ ist ein zusätzlicher Beobachtungsfreiheitsgrad nach $\mathcal{C}_E$ — nicht eine ontologische Entdeckung „verborgener Raumgeometrie".
+
+**Prüfbare Forschungsfrage:** Sind die EABC-Testobservablen
+
+$$D_E(X), \qquad R_N \;\text{(§4.8.7)}, \qquad C_F \;\text{(§4.8.5–4.8.6)}$$
+
+**sensitiv** auf die Orientierungskopplung $R_{ij}=u_i\cdot u_j$ — d.\,h. ändert sich $\mathcal{M}(\mathbf{O})$ signifikant, wenn $u(n)$ statt nur $\Theta(n)$ in die Kovarianz- bzw. Kamm-Projektion eingeht?
+
+**Operationalisierung (Verknüpfung §4.8.9):** Erweitere den geplanten Kompressions-Robustheitstest um eine **Orientierungsvariante**:
+
+1. Baseline: $\Theta(n)$ allein (§4.8.6),
+2. Erweiterung: $u(n)\in S^2$ mit $R_{ij}$-Gewichtung in $\Sigma_A$-Projektion und $C_F$-Berechnung,
+3. Vergleich $\mathcal{M}(\mathbf{O})$ und Nullmodell (§4.8.2) — Fall (1)–(3) wie §4.8.8.
+
+**Default-Hypothese:** $D_E$, $R_N$, $C_F$ sind **nicht** oder nur schwach sensitiv auf $R_{ij}$ — die skalare Phase $\Theta(n)$ trägt bereits die für die aktuelle Stichprobengröße relevante Orientierungsinformation. Eine Abweichung wäre **explorativ**, nicht als Theorem zu lesen.
+
+$$\boxed{\;\text{Prüffrage: Sensitivität von }D_E,\,R_N,\,C_F\text{ auf }R_{ij}=u_i\cdot u_j\text{ — numerisch offen (Stub §4.8.9).}\;}$$
+
+$$\boxed{\;\S4.8.10 = \textbf{Gedankenexperiment}: }u(n)\in S^2\text{ erweitert die Beobachtungsgeometrie — Physik-Bilder Schicht C, Formalismus Schicht A/B, kein Atom-Anspruch.}\;}$$
+
+| Baustein | Tao-Label | Schicht |
+|----------|-----------|---------|
+| $u(n)$, $R_{ij}=u_i\cdot u_j$ | **Definition** | **A**/**B** |
+| $\Delta E_{ij}^{\mathrm{eff}}=\Delta E_{ij}\cdot R_{ij}$ | **Analogie** | **C** |
+| Ikosaeder/Dodekaeder-Gitter auf $S^2$ | **Modell** / **Experiment** | **B**/**C** |
+| Photon, Dipol, Kristall | **Analogie** | **C** |
+| Sensitivitätstest $D_E,R_N,C_F$ | **Forschungsfrage** (Stub) | **B**/**R** |
+
+**Label:** §4.8.10 = **Meta** / **Definition** / **Analogie** (Schicht **C** für Physik-Bilder; **A**/**B** für $u(n)$, $R_{ij}$); **kein Theorem**.
 
 ### 4.9 Zeta-Exponential-Gedankenexperiment (Schicht **C**)
 
