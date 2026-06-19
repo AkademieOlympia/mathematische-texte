@@ -525,6 +525,8 @@ Implementierung: Zeuge 4–6 in `eabc_zeta_fibonacci_witnesses.py` → `eabc_zet
 
 **Label:** gesamter §9.9 = **Experiment** (Schicht **C**).
 
+**Experiment (N=10⁸, 2025-06):** `eabc_zeta_fibonacci_witnesses.py --quadruplet-bound 100000000 --m-max 8` auf $Q(10^8)=4768$ klassifizierten Vierlingen. Goldene Fourier-Zeugen: $Z_0=0{,}695$, $Z_1=0{,}737$, $Z_2=1{,}023$, …, $Z_8=0{,}490$ — $Z_1$ fällt gegenüber $N=5\cdot10^6$ ($Z_1\approx2{,}03$) auf $\mathcal{O}(1)$ zurück (kein persistenter Peak). **Aggregat** mod-210 über alle Vierlinge: $(D_{11},D_{101},D_{191})=(+44,+22,-19)$, Signatur **$(+,+,-)$** (bei $5\cdot10^6$ noch $(+,+,+)$). Fibonacci-Schalen: $2/28$ Schalen mit $(+,+,-)$ ($7{,}1\%$) vs. lineare Fenster gleicher Breite $1/23$ ($4{,}3\%$); per-Shell-Stabilität bleibt schwach, das Aggregat aligniert mit `eabc_quadruplets`-Skala. **Label:** Experiment (Schicht **C**) — diagnostisch, kein Theorem.
+
 ### 9.10 Kurzform
 
 $$\boxed{\;\text{Fibonacci-Zeta = geordneter Resonator; Riemann-Zeta = arithmetisch gestörter Resonator — kontrolliertes Gegenmodell, kein „näher an Riemann“.}\;}$$
