@@ -3668,6 +3668,70 @@ $$\boxed{\;\textbf{Nicht behauptet:}\;\text{Dass }\Psi_F\text{ eine neue Primzah
 
 **Label:** §4.8.24 = **Definition** / **Analogie** / **Experiment** (Schicht **C** für Analogie, **B** für Observablen); **kein Theorem**.
 
+#### 4.8.25 Achsenschalen und Fibonacci-Kompressibilität $\kappa_F$
+
+**Status:** paper-ready Forschungsbaustein — **kein Theorem**; erweitert §4.8.20–24 um **mehrgliedrige Primachsenschalen** und eine **definierte innere Kompressibilität** $\kappa_F$ (kein Physik-Overclaim).
+
+**Querverweise:** Pythagoräische Schalen $R_{n,m}$ §4.8.20; Defektprogramm $\delta(p)$ §4.8.23; Fibonacci-Ensemble $\kappa(\theta)$ §4.8.24; Skripte `eabc_shell_radius.py`, `eabc_shell_prime_distribution.py`, `eabc_fibonacci_ensemble.py`, **`eabc_axis_shell_fibonacci.py`**.
+
+##### Epistemische Dreiteilung
+
+| Baustein | (1) Mathematisch definiert | (2) Fruchtbare Analogie | (3) Neue testbare Aussage |
+|----------|---------------------------|-------------------------|---------------------------|
+| Mehrgliedrige Schale $R^2=\sum_{j=1}^k q_j^{\alpha_j}$ | $q_j$ Primachsen $\{2,3,5,7,\ldots\}$, $k$ = Achsenzahl | Verallgemeinerung der $(2,3)$-Pythagoras-Schale zu **$k$-Achsen-Energien** | $k=3,4,5$ als „natürliche Zone“ — **Hypothese**, kein Beweis |
+| $s_F(R)$, $\kappa_F(R)=k/s_F$ | $s_F$ = minimale Anzahl Fibonacci-Summanden mit $R^2\approx\sum F_{r_i}$ (exakt oder $\varepsilon$-relativ) | **Innere Kompressibilität** der Schalenenergie — benannte Lesart, keine thermodynamische Behauptung | $\kappa_F>1$ ⇔ echte Fibonacci-Kompression ($s_F<k$) |
+| $C_F(R)=\kappa_F\cdot(|D_{AB}|+|D_{AC}|+|D_{BC}|)$ | $D_{AB},D_{AC},D_{BC}$ aus EABC-Zählung im $\varepsilon$-Band um $R$ | Kopplung **Kompressionsgrad × chirale Ladung** — Analogie zu gewichteter Defektladung | $H_\kappa$: große $\kappa_F$ korreliert mit starken EABC-Asymmetrien (Pearson/Spearman, Perm-Null) |
+
+$$\boxed{\;\textbf{Dreiteilung:}\;(1)=\text{Definition},\;(2)=\text{Analogie (explizit benannt)},\;(3)=\text{Hypothese/Experiment — kein Theorem.}\;}$$
+
+##### Definitionen
+
+**$k$-Achsenschale** (Primachsen $q_1<\cdots<q_k$, Exponenten $\alpha_j\ge1$):
+
+$$\boxed{\;R^2=\sum_{j=1}^{k} q_j^{\alpha_j},\qquad R=\sqrt{R^2}.\;}$$
+
+Spezialfälle: $k=2$ mit $R^2=2^{n_1}+2^{n_2}$ oder $R^2=2^n+3^m$; $k=3$ mit $R^2=2^n+3^m+5^\ell$; allgemein $k\in\{2,3,4,5\}$ auf endlichem Exponentengitter.
+
+**Fibonacci-Kompressibilität:** Sei $\mathcal{F}=\{F_1,F_2,\ldots\}$ ($F_1=F_2=1$). Für Toleranz $\varepsilon\ge0$:
+
+$$s_F(R):=\min\Big\{s:\;\exists\, r_1<\cdots<r_s,\;\Big|R^2-\sum_{i=1}^s F_{r_i}\Big|\le \varepsilon R^2\Big\}.$$
+
+**Kompressionsgrad:**
+
+$$\kappa_F(R):=\frac{k}{s_F(R)}\qquad(\kappa_F>1\;\Leftrightarrow\;s_F<k).$$
+
+**EABC-Observable auf Schalenband** ($\varepsilon>0$, Primzahlen $p$ mit $|p-R|<\varepsilon$):
+
+$$C_F(R):=\kappa_F(R)\cdot\big(|D_{AB}|+|D_{AC}|+|D_{BC}|\big).$$
+
+**Testhypothese $H_\kappa$ (explorativ):** Unter Schalenfamilien mit $k\in\{2,3,4,5\}$ korreliert $\kappa_F$ positiv mit der $L^1$-Asymmetrie $|D_{AB}|+|D_{AC}|+|D_{BC}|$ — Permutations-Null vertauscht $\kappa_F$-Labels zwischen Schalen.
+
+##### Numerischer Stub
+
+```bash
+python3 eabc_axis_shell_fibonacci.py --smoke
+pytest tests/test_eabc_axis_shell_fibonacci.py -q
+```
+
+**Smoke** (begrenztes Gitter $k\in\{2,3\}$, $\mathrm{exp\_max}=2$, Primlimit $2000$, $\varepsilon=2$, Seed 42): erzeugt alle $k$-Achsenschalen inkl. Zwillings-$2^a+2^b$; berechnet $s_F$, $\kappa_F$, EABC im Radiusband und Korrelation $\kappa_F$ vs. Asymmetrie. **Lesart:** exploratives Korrelationsprogramm — **kein** Nachweis kausaler Kopplung; $k=3,4,5$ als natürliche Zone nur als **Hypothese** markiert.
+
+##### Epistemische Kernboxen
+
+$$\boxed{\;\textbf{Box 1 (Schicht B):}\;R^2=\sum q_j^{\alpha_j},\;s_F,\;\kappa_F=k/s_F,\;C_F=\kappa_F\sum|D_{\cdot\cdot}|.\;}$$
+
+$$\boxed{\;\textbf{Box 2 (Schicht C):}\;\text{„Innere Kompressibilität“}=\textbf{definierte Größe }\kappa_F\text{ — keine Behauptung über physikalische Kompression oder Energieerhaltung.}\;}$$
+
+$$\boxed{\;\textbf{Nicht behauptet:}\;\text{Dass }\kappa_F\text{ eine neue Primzahlgesetzmäßigkeit beweist oder dass Fibonacci-Struktur die EABC-Klassen kausal bestimmt.}\;}$$
+
+| Baustein | Tao-Label | Schicht |
+|----------|-----------|---------|
+| $R^2=\sum q_j^{\alpha_j}$, $s_F$, $\kappa_F$ | **Definition** | **A**/**B** |
+| $C_F$, $H_\kappa$ | **Hypothese** / **Experiment** | **B**/**R** |
+| $k=3,4,5$ „natürliche Zone“ | **Hypothese** | **C** |
+| `eabc_axis_shell_fibonacci.py` | **Experiment** | **B** |
+
+**Label:** §4.8.25 = **Definition** / **Analogie** / **Experiment** (Schicht **B** für Observablen, **C** für natürliche Zone); **kein Theorem**.
+
 ### 4.9 Zeta-Exponential-Gedankenexperiment (Schicht **C**)
 
 $$\boxed{\;\text{Zeta ist die Exponentialfunktion auf der logarithmischen Primzahl-Geometrie — \textbf{Gedankenexperiment}, kein EABC-Theorem.}\;}$$

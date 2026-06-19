@@ -276,6 +276,8 @@ $$\boxed{\;\text{Stärkster Satz (A): }\mathcal{C}_E\ \text{extrem verlustreich 
 
 **Fibonacci-Ensemble** (Kurzverweis, vollständig: `collatz_eabc_zirkulationshypothese.md` §4.8.24): Komplementär zu §4.8.23 — aggregierte/selektive Summe $\Psi_F=\sum_c w_c\sum_{p:v(p)=c}\kappa(\theta_\varphi(p))\chi(v(p))$ mit $\kappa(\theta)=\varphi^{-\theta}$ (**B**); reine Referenz $\Psi_{\mathrm{Fib}}=\sum_p\kappa(\theta_\varphi(p))$; Bin-Variante $\sum_k\tau(k)\sum_c w_c N_c(k)\chi(v)$; **Analogie** „Atmen des Zahlenraums“ = Kontraktion/Expansion unter goldenen Fenstern (**C**, benannt, kein Beweis); testbare Hypothese: $\Psi_F^{\mathrm{prime}}/\Psi_{\mathrm{Fib}}\not\approx 1$ oder Abweichung von Perm-Null — Smoke $N=10^5$: nahezu Auslöschung durch $\chi_A$-Kompensation, $Z_{\mathrm{perm}}\approx-0{,}4$ (**B**/**C**); Skript `eabc_fibonacci_ensemble.py`.
 
+**Achsenschalen $\kappa_F$** (Kurzverweis, vollständig: `collatz_eabc_zirkulationshypothese.md` §4.8.25): Mehrgliedrige Schalen $R^2=\sum_{j=1}^k q_j^{\alpha_j}$ mit Primachsen (**A**/**B**); Fibonacci-Kompressibilität $s_F(R)$, $\kappa_F(R)=k/s_F$ als **definierte innere Kompressibilität** — keine Physikbehauptung; Observable $C_F=\kappa_F(|D_{AB}|+|D_{AC}|+|D_{BC}|)$ im $\varepsilon$-Band um $R$; Hypothese $H_\kappa$: große $\kappa_F$ korreliert mit EABC-Asymmetrie (**B**/**R**); $k=3,4,5$ als „natürliche Zone“ nur **Hypothese** (**C**); Skript `eabc_axis_shell_fibonacci.py`.
+
 ---
 
 ## 4. Rote Schicht — interpretativer Scaffold (keine Theoreme)
