@@ -23,7 +23,7 @@ $$\boxed{\;\textbf{Theorem} \;\neq\; \textbf{Struktur} \;\neq\; \textbf{Brücke}
 - `collatz_eabc_euklidische_hebung.md` — algebraischer Nebenzweig $\mathbb{R}\subset\mathbb{C}\subset\mathbb{H}\subset\mathbb{O}$ (Schicht **A**)
 - `collatz_eabc_core/CollatzEabc/RadiationSpace.lean` — interpretativer Lean-Scaffold (rot)
 - `collatz_eabc_core/CollatzEabc/OccupancyMonoid.lean` — Streaming-Monoid $(Z,\oplus,Z_0)$, `blockScan_append` (Schicht **A**, §4.6–4.7)
-- `collatz_eabc_zirkulationshypothese.md` — Monoid §4.6; state-centric Hierarchie §4.7; Level-2 §4.8; Spin-Liquid-Analogie (methodisch, nicht ontologisch) §4.8.1; **Fibonacci-Kamm als externer Resonanzdetektor, Hypothesenleiter H$_0$–H$_4$** §4.8.7; **Beschreibungs- vs. effektive Pixelung, Beobachtungsgeometrie, erkenntnistheoretischer Kern** §4.8.8
+- `collatz_eabc_zirkulationshypothese.md` — Monoid §4.6; state-centric Hierarchie §4.7; Level-2 §4.8; Spin-Liquid-Analogie (methodisch, nicht ontologisch) §4.8.1; **Fibonacci-Kamm als externer Resonanzdetektor, Hypothesenleiter H$_0$–H$_4$** §4.8.7; **Beschreibungs- vs. effektive Pixelung, Beobachtungsgeometrie, erkenntnistheoretischer Kern, Kompressionsoperator** §4.8.8
 - `collatz_stufe3_kappa_invarianz.md` — Stufe 3: Kodierungsinvarianz (κ-Test; Stub-Verknüpfung zu §4.8.8)
 
 ---
@@ -231,7 +231,9 @@ $$\boxed{\;\text{Gegner ist falsches Nullmodell — nicht der verschwindende Mit
 
 **Erkenntnistheoretischer Kern** (§4.8.8, methodische Sicherung): Drei Ebenen — **A** Rohdaten ($\mathbb{N}$, $\mathbb{P}$), **B** Beobachtungsgeometrie ($\Theta$, $\mathbb{N}\to\mathbb{Z}_4$), **C** externe Resonanzdetektoren ($K_F$). Zwei Extreme: realistische vs. instrumentalistische Kegel-Lesart (Fourier/Wavelet/PCA = Schicht **C**). Drei Fälle bei Resonanzüberschuss: (1) in Primzahlen, (2) durch EABC-Projektion, (3) Artefakt. **Kodierungsinvarianz-Test** (mod $8$, $10$, $30$, $210$): nur EABC $\Rightarrow$ spezifisch; überall $\Rightarrow$ allgemein; nirgends $\Rightarrow$ Artefakt. Stub: `collatz_stufe3_kappa_invarianz.md`.
 
-$$\boxed{\;\text{Keine neue Ontologie der natürlichen Zahlen — nur Wahl von Gitter, Projektion und externem Detektor.}\;}$$
+**Kompressionsoperator** (§4.8.8): $C_E:\mathbb{N}\to\{E,A,B,C\}$ via $n\bmod 12$ — massive Kompression; Kegel = Kompressionsschema; Pixelung = Informationsverlust ($13,37,61,\ldots\to E$). Entropiedefizit $I_E(N)=H(\mathbb{N}_N)-H(\mathrm{EABC}_N)$ (Shannon; Landauer-Lesart konzeptuell). Resonanz muss Kompression **überleben** und unter $C_E,C_8,C_{10},C_{30},C_{210}$ **robust** sein — sonst Fall (2)/(3). Leitfrage: *Welche arithmetischen Strukturen überleben starke Kompression?* Verweise: `Quantentests.py` (`eabc_occupation_entropy`), `arithmetische_signaturgeometrie.tex` ($C_{\mathrm{fam}}$), Stufe-3-Entropie $h_F$.
+
+$$\boxed{\;\text{Beobachtungsgeometrie = informationsreduzierender Kompressionsoperator — strukturelle Relevanz nur bei Robustheit unter alternativen $C_k$.}\;}$$
 
 $$\boxed{\;\text{Resonanz hat Evidenz nur bei Stabilität gegenüber alternativen Projektionen (§4.8.8).}\;}$$
 
