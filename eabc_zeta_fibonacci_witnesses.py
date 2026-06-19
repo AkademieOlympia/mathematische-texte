@@ -21,7 +21,7 @@ Zeuge 5 — Goldene Fourier-Zeugen auf Primvierlingen:
 Zeuge 6 — Fibonacci-Schalen mit mod-210-Triple (11,101,191) vs. lineares Fenster:
   Signatur (+,+,-) = (D_11>0, D_101>0, D_191<0) entlang F_k ≤ p < F_{k+1}.
 
-Referenz: collatz_eabc_zeta_exponential_gedankenexperiment.md §9.8–9.9
+Referenz: collatz_eabc_zeta_exponential_gedankenexperiment.md §9.8–9.10
 Label: Experiment (Schicht C) — kein RH-Anspruch, kein EABC-Theorem.
 
 Ausgabe: eabc_zeta_fibonacci_witnesses.json (+ stdout)
@@ -148,6 +148,51 @@ def zeta_f_meromorphic(s: complex, m_max: int = 60) -> complex:
         coeff = rising_factorial(s, m) / math.factorial(m) * parity
         total += coeff * pow_term / denom
     return (5.0 ** (s / 2)) * total
+
+
+def resonator_kernel(s: complex, m: int) -> float:
+    """|R_m(s)|; am Pol (Residuum ≈ 0) → inf."""
+    res = resonator_residual(s, m)
+    if res < 1e-14:
+        return float("inf")
+    return 1.0 / res
+
+
+def resonator_residual(s: complex, m: int) -> float:
+    """|1-(-1)^m φ^{-(s+2m)}|; ≈0 an Polgitterpunkten."""
+    parity = (-1) ** m
+    return abs(1.0 - parity * PHI ** (-(s + 2 * m)))
+
+
+def pole_grid_s(m: int, k: int) -> complex:
+    """Pol s am Gitterpunkt (m,k) gemäß §9.10: s=-2m+(2k+δ_m)πi/log φ."""
+    delta_m = 1 if m % 2 else 0
+    im = (2 * k + delta_m) * math.pi / LOG_PHI
+    return (-2 * m) + 1j * im
+
+
+def resonator_pole_residuals(
+    m_values: tuple[int, ...] = (0, 1, 2, 3),
+    k_values: tuple[int, ...] = (-1, 1, 2),
+) -> list[dict]:
+    """
+    Prüft Resonator-Rest |1-u| an expliziten Polgitterpunkten (§9.10).
+    Erwartung: Residual ≪ 1 an exakten Gitterpunkten; O(1) dazwischen.
+    """
+    rows: list[dict] = []
+    for m in m_values:
+        for k in k_values:
+            s = pole_grid_s(m, k)
+            rows.append(
+                {
+                    "m": m,
+                    "k": k,
+                    "s": {"re": s.real, "im": s.imag},
+                    "residual": resonator_residual(s, m),
+                    "R_m_abs": resonator_kernel(s, m),
+                }
+            )
+    return rows
 
 
 def find_quadruplets(limit: int) -> np.ndarray:
@@ -465,6 +510,7 @@ def witness_meromorphic_normal_form(
             ],
         },
     ]
+    pole_checks = resonator_pole_residuals()
 
     return {
         "label": "Theorem (klassisch) — numerische Verifikation",
@@ -475,9 +521,14 @@ def witness_meromorphic_normal_form(
         "m_max": m_max,
         "n_terms_direct": n_terms,
         "resonance_towers": resonance_towers,
+        "pole_grid_residuals": pole_checks,
+        "max_pole_residual": max(r["residual"] for r in pole_checks),
         "verification_points": rows,
         "max_relative_error": max(r["relative_error"] for r in rows),
-        "note": "Exakte Reihe = klassische Analysis; Abgleich direct vs. meromorph ist Sanity-Check.",
+        "note": (
+            "Exakte Reihe = klassische Analysis; Abgleich direct vs. meromorph ist Sanity-Check. "
+            "pole_grid_residuals: |1-(-1)^m φ^{-(s+2m)}| an Gitterpunkten (§9.10)."
+        ),
     }
 
 
@@ -700,7 +751,7 @@ def run_witnesses(
             quadruplet_bound=quadruplet_bound
         ),
         "references": [
-            "collatz_eabc_zeta_exponential_gedankenexperiment.md §9.8–9.9",
+            "collatz_eabc_zeta_exponential_gedankenexperiment.md §9.8–9.10",
             "collatz_eabc_zirkulationshypothese.md §4.8.2 (Stufe 0: regulärer Kamm)",
         ],
     }
@@ -772,7 +823,7 @@ def main() -> int:
     )
     print(
         f"  Zeuge 4: meromorph max rel.err={w4['max_relative_error']:.2e} "
-        f"(m_max={w4['m_max']})"
+        f"(m_max={w4['m_max']}) pole_res_max={w4.get('max_pole_residual', 'n/a')}"
     )
     if w5["checkpoints"]:
         last = w5["checkpoints"][-1]

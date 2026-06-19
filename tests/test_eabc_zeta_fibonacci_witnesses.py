@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 import sys
 from pathlib import Path
 
@@ -22,6 +23,9 @@ from eabc_zeta_fibonacci_witnesses import (
     fourgram_pattern,
     matches_signature,
     mod210_triple,
+    pole_grid_s,
+    resonator_pole_residuals,
+    resonator_residual,
     run_witnesses,
     witness_fibonacci_mod210_shells,
     witness_fibonacci_windows,
@@ -147,6 +151,18 @@ def test_witness_meromorphic_structure():
     w = witness_meromorphic_normal_form(m_max=10, n_terms=20)
     assert w["resonance_towers"]
     assert w["max_relative_error"] < 0.2
+    assert w["max_pole_residual"] < 1e-10
+
+
+def test_resonator_pole_grid_residuals():
+    rows = resonator_pole_residuals(m_values=(0, 1, 2), k_values=(0, 1))
+    assert all(r["residual"] < 1e-12 for r in rows)
+    s0 = pole_grid_s(0, 1)
+    assert abs(s0.imag - 2 * math.pi / LOG_PHI) < 1e-12
+    assert s0.real == 0.0
+    # Off-grid-Punkt: großes Residual
+    off = 0.5 + 0.3j
+    assert resonator_residual(off, 0) > 0.1
 
 
 def test_fibonacci_mod210_shells():

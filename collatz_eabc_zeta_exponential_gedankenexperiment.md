@@ -527,7 +527,74 @@ Implementierung: Zeuge 4–6 in `eabc_zeta_fibonacci_witnesses.py` → `eabc_zet
 
 **Experiment (N=10⁸, 2025-06):** `eabc_zeta_fibonacci_witnesses.py --quadruplet-bound 100000000 --m-max 8` auf $Q(10^8)=4768$ klassifizierten Vierlingen. Goldene Fourier-Zeugen: $Z_0=0{,}695$, $Z_1=0{,}737$, $Z_2=1{,}023$, …, $Z_8=0{,}490$ — $Z_1$ fällt gegenüber $N=5\cdot10^6$ ($Z_1\approx2{,}03$) auf $\mathcal{O}(1)$ zurück (kein persistenter Peak). **Aggregat** mod-210 über alle Vierlinge: $(D_{11},D_{101},D_{191})=(+44,+22,-19)$, Signatur **$(+,+,-)$** (bei $5\cdot10^6$ noch $(+,+,+)$). Fibonacci-Schalen: $2/28$ Schalen mit $(+,+,-)$ ($7{,}1\%$) vs. lineare Fenster gleicher Breite $1/23$ ($4{,}3\%$); per-Shell-Stabilität bleibt schwach, das Aggregat aligniert mit `eabc_quadruplets`-Skala. **Label:** Experiment (Schicht **C**) — diagnostisch, kein Theorem.
 
-### 9.10 Kurzform
+### 9.10 Resonatoren, Pole und Spektralzerlegung
+
+Die meromorphe Normalform aus §9.8 ist **keine bloße Umformung** der Partialsumme $\sum F_n^{-s}$: Sie macht die analytische Struktur von $\zeta_F$ **vollständig sichtbar** — als Überlagerung unabhängiger Resonatoren mit expliziten Polgittern. Jeder Summand trägt einen **Resonator-Kern**
+
+$$R_m(s):=\frac{1}{1-(-1)^m\,\varphi^{-(s+2m)}},$$
+
+der groß wird, wenn $(-1)^m\,\varphi^{-(s+2m)}=1$.
+
+**Polgitter aus dem Logarithmus.** Setze $u:=(-1)^m\,\varphi^{-(s+2m)}$. Pole entstehen bei $u=1$, d. h.
+
+$$\varphi^{-(s+2m)}=(-1)^m \quad\Longleftrightarrow\quad -(s+2m)\log\varphi = m\pi i + 2\pi ik,\quad k\in\mathbb{Z}.$$
+
+Mit $\delta_m:=0$ für gerades $m$ und $\delta_m:=1$ für ungerades $m$ (weil $(-1)^m=e^{im\pi}=e^{i\delta_m\pi}$) folgt die einheitliche Bedingung
+
+$$\boxed{\;s+2m=(2k+\delta_m)\,\frac{\pi i}{\log\varphi},\qquad k\in\mathbb{Z},\;\delta_m\in\{0,1\}.\;}$$
+
+Daraus ergeben sich die **vertikalen Polgitter** (Resonanztürme):
+
+| Parität von $m$ | Polgitter $s$ | Lesart |
+|-----------------|---------------|--------|
+| **gerade** ($\delta_m=0$) | $s=-2m+\dfrac{2\pi ik}{\log\varphi}$ | volle Periodizität auf der imaginären Achse |
+| **ungerade** ($\delta_m=1$) | $s=-2m+\dfrac{(2k+1)\pi i}{\log\varphi}$ | halbe Periodenverschiebung (Paritäts-Phasensprung) |
+| **$m=0$** | $s=\dfrac{2\pi ik}{\log\varphi}$ | **Hauptkamm** (goldener Fourier-Resonator) |
+
+Jeder Summand der meromorphen Reihe ist damit ein **vertikales Polgitter** — die mathematische Rechtfertigung der Resonator-Lesart aus §9.3–9.5.
+
+**Warum $\varphi$ alles steuert.** Bei Riemann-Zeta entstehen Pole aus Faktoren $1/(1-p^{-s})$ — **ein Polgitter pro Primzahl** $p$, gesteuert durch das **irreguläre** Log-Gitter $\{\log p\}$. Bei $\zeta_F$ treten ausschließlich Potenzen $\varphi^{-(s+2m)}$ auf: **eine einzige algebraische Zahl** $\varphi$ (dominanter Binet-Eigenwert der Fibonacci-Matrix) kontrolliert sämtliche Resonatoren. Die arithmetische Komplexität der Primzahlen ist durch die **reguläre** goldene Geometrie ersetzt.
+
+**Dynamische Zerlegung.** Binet trennt die beiden Exponentialmoden:
+
+$$F_n=\frac{\varphi^n-\psi^n}{\sqrt5},\qquad \psi=-\varphi^{-1}.$$
+
+In $F_n^{-s}$ werden $\varphi^n$ und $(-\varphi^{-1})^n$ auseinandergezogen, über $n$ summiert und durch die Binomialentwicklung in **geometrische Resonatoren** $R_m(s)$ überführt — nicht als Metapher, sondern als **exakte Identität**.
+
+**Spektralanalogie (Physik).** In der Übertragungsfunktion
+
+$$G(s)=\sum_j \frac{A_j}{1-\lambda_j}\qquad\text{bzw.}\qquad G(s)=\sum_j \frac{A_j}{s-\lambda_j}$$
+
+spielen die $\lambda_j$ die Rolle der Eigenmoden. Hier wirken
+
+$$\lambda_m(s):=(-1)^m\,\varphi^{-(s+2m)}$$
+
+als **s-abhängige Resonanzparameter**: $\zeta_F(s)$ ist eine **Spektralzerlegung** in Moden $m$ mit Amplituden $(s)_m/m!\cdot(-1)^m\varphi^{-(s+2m)}$ und Resonator-Kern $R_m(s)$ — keine bloße Summe, sondern überlagerte Resonanzstruktur.
+
+**Vergleich: Polstruktur Riemann vs. Fibonacci**
+
+| Aspekt | Riemann $\zeta(s)$ | Fibonacci $\zeta_F(s)$ |
+|--------|-------------------|------------------------|
+| Lokale Faktoren | $1/(1-p^{-s})$ pro Prim $p$ | $R_m(s)=1/(1-(-1)^m\varphi^{-(s+2m)})$ pro Mode $m$ |
+| Pol-Steuerung | $\log p$ (irreguläres Prim-Gitter) | $\log\varphi$ (regulärer goldener Kamm) |
+| Pol-Anordnung | Trivial bei $s=1$; Nullstellen unbekannt (RH) | **Explizite vertikale Poltürme** auf $\Re(s)=-2m$ |
+| Parität / Spiegel | $(1+p^{-s})$-Faktoren (Euler-Produkt) | $\delta_m$-Phasenverschiebung gerade/ungerade $m$ |
+| Epistemische Rolle | Zielobjekt (arithmetisch) | Kontrolliertes Gegenmodell (regulär) |
+
+**EABC-Modenzerlegung (Schicht C, Analogie).** Die meromorphe Form von $\zeta_F$ steht strukturell neben EABC-Beobachtungsmodi: Holonomie, Zirkulation, Witness-Moden, Kovarianz-Spektren — jeweils eine **Modenprojektion** auf ein gemeinsames Gitter. $\zeta_F=\sum_m(\text{Mode }m)$ ist näher an **Fourier-/Spektralzerlegung** als an einer gewöhnlichen Dirichlet-Reihe. Die Resonatoren sind in der Formel **explizit**; die EABC-Kopplung (§9.9, goldene Fourier-Zeugen $C_m,Z_m$, mod-210-Schalen) testet, ob **arithmetische** Vierlingsordnung dieselbe Modenstruktur trägt — **ohne** Identitätsbehauptung.
+
+$$\boxed{\;\text{Intuition: Fibonacci-Zeta = Überlagerung goldener Resonatoren — wird zur exakten analytischen Identität.}\;}$$
+
+| Komponente | Schicht | Label |
+|------------|---------|-------|
+| $R_m(s)$, Polgitter, Spektralzerlegung | — | **Theorem** (klassische Analysis) |
+| Physik-Analogie ($G(s)$, $\lambda_m$) | **C** | **Analogie** |
+| EABC-Modenvergleich (Holonomie, $C_m$, Schalen) | **C** | **Analogie** / **Experiment** |
+| $\zeta_F$-Resonanz ↔ EABC-Kausalität | **C** | **nicht behauptet** |
+
+**Numerik:** `eabc_zeta_fibonacci_witnesses.py` — Hilfsfunktion `resonator_pole_residuals()` prüft $|1-(-1)^m\varphi^{-(s+2m)}|$ an den Gitterpunkten aus der obigen Tabelle (Zeuge 4, Erweiterung).
+
+### 9.11 Kurzform
 
 $$\boxed{\;\text{Fibonacci-Zeta = geordneter Resonator; Riemann-Zeta = arithmetisch gestörter Resonator — kontrolliertes Gegenmodell, kein „näher an Riemann“.}\;}$$
 
@@ -538,6 +605,7 @@ $$\boxed{\;\text{Fibonacci-Zeta = geordneter Resonator; Riemann-Zeta = arithmeti
 | Streifen-, kritische-Linie-, EABC-Paarung | **C** | **Analogie** |
 | Drei numerische Zeugen (§9.7) | **C** | **Experiment** |
 | Meromorphe Normalform (§9.8) | — | **Theorem** (klassisch) |
+| Resonatoren, Pole, Spektralzerlegung (§9.10) | — | **Theorem** (klassisch) |
 | Goldene Fourier-Zeugen, mod-210-Schalen (§9.9) | **C** | **Experiment** / **Hypothese** |
 | RH oder EABC aus Fibonacci | — | **nicht behauptet** |
 
