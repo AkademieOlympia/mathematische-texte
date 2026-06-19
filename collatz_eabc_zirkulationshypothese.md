@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung: $(\hbar,\sigma)$** §4.8.14 (Präzisierung: Phasenraum-Orientierung statt Raumrichtung, Abschnitt 9); **Symplektische Orientierung und EABC-Vierfachstruktur** §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17; **Assoziative Schranke und genealogische Primobjekte (Gedankenexperiment)** §4.8.18; **Kompressionskaskaden und atomare Fixpunkte (Gedankenexperiment)** §4.8.19; **EABC-Schalenraum (pythagoräische Radien)** §4.8.20; **Schalenhierarchie und Primprojektion** §4.8.21; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung: $(\hbar,\sigma)$** §4.8.14 (Präzisierung: Phasenraum-Orientierung statt Raumrichtung, Abschnitt 9); **Symplektische Orientierung und EABC-Vierfachstruktur** §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17; **Assoziative Schranke und genealogische Primobjekte (Gedankenexperiment)** §4.8.18; **Kompressionskaskaden und atomare Fixpunkte (Gedankenexperiment)** §4.8.19; **EABC-Schalenraum (pythagoräische Radien)** §4.8.20; **Schalenhierarchie und Primprojektion** §4.8.21; **Schalen-Defekte und Ladungsdarstellung** §4.8.22; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
 - `collatz_eabc_zeta_exponential_gedankenexperiment.md` — **Gedankenexperiment / Analogie:** $\zeta$ als Exponentialsumme auf Log-Prim-Geometrie; Euler-Streifen $(1\pm p^{-s})$; $\xi$-Spiegelung; Brücke zu Log-Koordinaten, $\gamma^\pm$-Paarung, Level-2; §6–§10: Ganzzahl/Halbzahl-Exponenten, Oktanionen (Schicht C), Bernoulli-Subtraktion, Fibonacci-Zeta (kein RH-/EABC-Theorem)
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
@@ -1437,7 +1437,7 @@ $$\boxed{\;\textbf{Aktueller Gesamtstatus:}\; algebraisch wohldefiniert \checkma
 
 **Label:** §4.8.7 = **Meta** / **Hypothese** / **Experiment** (Schicht **C**); **kein Theorem**.
 
-**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12; Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13; Prägeometrie der Wirkung $(\hbar,\sigma)$ §4.8.14 (Präzisierung Phasenraum-Orientierung, Abschnitt 9); Symplektische Orientierung und EABC-Vierfachstruktur §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17; **Assoziative Schranke und genealogische Primobjekte (Gedankenexperiment)** §4.8.18; **Kompressionskaskaden und atomare Fixpunkte (Gedankenexperiment)** §4.8.19; **EABC-Schalenraum (pythagoräische Radien)** §4.8.20; **Schalenhierarchie und Primprojektion** §4.8.21.
+**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12; Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13; Prägeometrie der Wirkung $(\hbar,\sigma)$ §4.8.14 (Präzisierung Phasenraum-Orientierung, Abschnitt 9); Symplektische Orientierung und EABC-Vierfachstruktur §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17; **Assoziative Schranke und genealogische Primobjekte (Gedankenexperiment)** §4.8.18; **Kompressionskaskaden und atomare Fixpunkte (Gedankenexperiment)** §4.8.19; **EABC-Schalenraum (pythagoräische Radien)** §4.8.20; **Schalenhierarchie und Primprojektion** §4.8.21; **Schalen-Defekte und Ladungsdarstellung** §4.8.22.
 
 #### 4.8.8 Beobachtungsgeometrie als Kompressionsoperator
 
@@ -3343,6 +3343,139 @@ $$\boxed{\;\textbf{Behauptet (Gedankenexperiment):}\; \text{Dreistufige Schalenh
 | `eabc_shell_prime_distribution.py` | **Experiment** | **B** |
 
 **Label:** §4.8.21 = **Meta** / **Gedankenexperiment** (Schicht **C** für $V,P,U$ und $r^8$) / **Definition** (Schicht **A**/**B** für Hierarchie) / **Forschungsprogramm** (Schicht **B**/**R**); **kein Theorem**.
+
+#### 4.8.22 Schalen-Defekte und Ladungsdarstellung
+
+**Paper-Titel (Baustein):** *Schalen-Defekte $\delta(p)$, V$_4$-Ladungsdarstellung und Band-Observablen — numerischer Strukturtest*
+
+**Status:** paper-ready Gedankenexperiment — **kein Theorem**, **keine** neue Primzahlverteilungstheorie; vertieft §4.8.20–4.8.21 um **Defektgeometrie** und **algebraische Ladungs-Observablen** auf Schalenbändern (Schicht **B**/**R**).
+
+**Querverweise:** EABC-Schalenraum §4.8.20; Schalenhierarchie §4.8.21; Kompressionsoperator $\mathcal{C}_E$ §4.8.8; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §0–3.1; **Defekt-/Bandtest** `eabc_shell_prime_distribution.py` (`--shell-mode defect`).
+
+##### 1. Deterministischer Schalenraum $V=\langle 2,3\rangle$
+
+Die glatte $(2,3)$-Hülle ist **deterministisch** erzeugt:
+
+$$V := \bigl\{\Phi(n,m)\mid n,m\ge 0\bigr\},\qquad \Phi(n,m):=\sqrt{2^n+3^m}=R_{n,m}.$$
+
+| Objekt | Definition | Schicht |
+|--------|------------|---------|
+| Schalenradius | $\Phi(n,m)=R_{n,m}$ | **A**/**B** |
+| Gitter $V$ | Alle $(n,m)$-Paare auf endlichem Fenster | **B** |
+| Prim als Defekt | $\delta(p):=\min_{n,m}|p-\Phi(n,m)|$ | **B** |
+
+Primzahlen $p>3$ liegen typischerweise **nicht** auf glatten Schalen — sie sind **Defekte** im Gitter $V$, gemessen durch den minimalen radialen Abstand $\delta(p)$ zur nächsten Schale $R_{n^*,m^*}$.
+
+$$\boxed{\;\delta(p)=\min_{n,m}|p-R_{n,m}|,\quad p\text{ Prim}>3.\;}$$
+
+**Label:** $V$, $\Phi$, $\delta(p)$ = **Definition** (Schicht **A**/**B**); **kein Theorem** über Prim-Dichte auf Schalen.
+
+##### 2. EABC als Ladungsgruppe V$_4 \cong C_2\times C_2$
+
+Die mod-$12$-EABC-Klassifikation $\mathcal{C}_E(p)\in\{E,A,B,C\}$ wird als **algebraische Ladung** gelesen:
+
+| Struktur | Inhalt | Schicht |
+|----------|--------|---------|
+| V$_4$-Gruppe | $\{E,A,B,C\}\cong C_2\times C_2$ | **A**/**B** |
+| Ladung $q(p)$ | $q(p):=v(p)=\mathcal{C}_E(p)$ | **A**/**B** |
+| Neutralität | $E$ als Identität / reale Achse | **B**/**C** |
+
+$$\boxed{\;\text{EABC-Ladung:}\; q(p)\in\{E,A,B,C\}\cong V_4.\;}$$
+
+**Label:** V$_4$-Lesart = **Modellabbildung** (Schicht **B**); **kein** Anspruch, mod-$12$ sei eine physikalische Ladungsquantisierung.
+
+##### 3. Impulsvektor $M(N)$ und logarithmische Zerlegung
+
+Für $N=2^\alpha 3^\beta\prod_i p_i^{e_i}$ (§4.8.20–4.8.21) gilt die **gewichtete V$_4$-Darstellung**
+
+$$M(N):=\sum_i e_i\,v(p_i)\,\log p_i,$$
+
+und die FTA-Zerlegung der logarithmischen Norm:
+
+$$\log N = \underbrace{\alpha\log 2+\beta\log 3}_{\text{Schalenenergie (Ort)}}\;+\;\underbrace{\sum_i e_i\log p_i}_{\text{Radikal-Masse}}.$$
+
+Die EABC-Ladung $q(p)$ gewichtet den Radikalanteil **richtungsweise** — Schalenenergie (glatter $2$-$3$-Anteil) und EABC-Ladung (mod-$12$-Familien) sind **additiv getrennt** in der Lesart, nicht ontologisch unabhängig.
+
+$$\boxed{\;\log N = \text{Schalenenergie} + \text{EABC-gewichtete Radikalmasse via }M(N).\;}$$
+
+**Label:** $M(N)$, $\log N$-Zerlegung = **Definition** / **Modellabbildung** (Schicht **B**); FTA = **Theorem** (Schicht **A**).
+
+##### 4. $r^8$-Erweiterung: Quaternion $\to$ Oktanion (Schicht **C**)
+
+**Spekulativ / ikonisch (Schicht C):** Die $r^8$-Normkugel aus §4.8.20–4.8.21 kann als **Quaternion $\to$ Oktanion-Erweiterung** gelesen werden: die reale Schalenachse $E$ und die chirale $A,B,C$-Struktur heben sich zu einer achtdimensionalen Kompressionsnorm — analog zu `collatz_eabc_zeta_exponential_gedankenexperiment.md` (Oktanionen, Schicht **C**).
+
+| Lesart | Inhalt | Schicht |
+|--------|--------|---------|
+| $r^8$-Norm | Kompressions-/Energie-Ikone auf $S_{\mathrm{EABC}}$ | **C** |
+| Quaternion $\to$ Oktanion | Erweiterung der $EABC$-Vierfachstruktur | **C** |
+| Arithmetischer Kern | $R_{n,m}$, $\delta(p)$, $\mathcal{C}_E$ | **A**/**B** |
+
+$$\boxed{\;\textbf{Schicht C:}\; r^8\text{ und Oktanion-Erweiterung — Ikone, kein EABC-Satz.}\;}$$
+
+**Label:** $r^8$, Oktanion = **Ikone** / **Analogie** (Schicht **C**).
+
+##### 5. Band-Observablen und numerischer Strukturtest
+
+**Schalenbänder** (Beobachtungswahl, `--shell-mode defect`):
+
+| Modus | Zuordnung | CLI |
+|-------|-----------|-----|
+| **nearest** | $p$ zum $\delta$-Minimierer $R_{n^*,m^*}$ | `--band-mode nearest` |
+| **ε-Band** | $|p-R_{n,m}|<\varepsilon$ um nächste Schale | `--band-mode epsilon --epsilon ε` |
+| **Intervall** | $R_k\le p<R_{k+1}$ auf sortiertem Gitter | `--band-mode interval` |
+
+Pro Band $R$ (bzw. Schalenindex $(n,m)$) zählen wir
+
+$$N_E(R),\;N_A(R),\;N_B(R),\;N_C(R)$$
+
+und bilden die **Ladungs-Observablen**
+
+$$D_{AB}(R):=N_A-N_B,\qquad D_{AC}(R):=N_A-N_C,$$
+
+$$D_E(R):=N_E-\tfrac{1}{3}(N_A+N_B+N_C).$$
+
+| Observable | Inhalt | Erwartung unter Gleichverteilung |
+|------------|--------|----------------------------------|
+| $D_{AB}$, $D_{AC}$ | Chiralitäts-Differenzen $A$ vs. $B/C$ | $0$ |
+| $D_E$ | $E$-Überschuss gegenüber $\frac{1}{3}\sum ABC$ | $0$ |
+
+**Nullvergleich** (`--null-model perm|uniform`):
+
+| Null | Inhalt |
+|------|--------|
+| **perm** | Permutation der EABC-Labels bei festen Marginalen; $p$-Werte für $\chi^2$ und $|D_*|$ |
+| **uniform** | Erwartung $N_i=n/4$, $D_*=0$; $\chi^2$ vs. Gleichverteilung |
+
+**Forschungsfrage (Schicht B/R):** Zeigen $D_{AB}$, $D_{AC}$, $D_E$ auf Schalenbändern **systematische Abweichung** vom Zufallsrauschen — oder handelt es sich um **Reparametrisierung** der mod-$12$-Verteilung ohne neue Struktur?
+
+**Epistemik:** Ein Signal wäre **empirisches Muster** (Schicht **B**), kein Beweis für physikalische Defekte. Gleichverteilung im Primfall bleibt **dirichlet-kompatibel** (Schicht **A**). Der Test prüft **Zusatzstruktur** über kanonische EABC-Kompression hinaus — analog §4.8.21, aber **band-resolved** via $\delta(p)$.
+
+**Smoke-Ergebnis** (`--limit 50000`, `--shell-mode defect`, `--band-mode nearest`, Gitter $8\times 8$): $5131$ Primzahlen $>3$, $14$ Schalenbuckets; EABC-Fraktionen $\approx 0{,}246/0{,}250/0{,}252/0{,}251$; $D_{AB}=-7$, $D_{AC}=-5$, $D_E=-25$; $\chi^2\approx 0{,}39$, Permutations-$p=1{,}0$ (global und für $|D_*|$) — **keine** signifikante Abweichung vom Nullmodell; $\bar\delta\approx 2{,}35\times 10^4$ (typische Defektgröße auf endlichem Gitter).
+
+##### 6. Epistemische Kernboxen
+
+$$\boxed{\;\textbf{Box 1 (Schicht A/B):}\; \delta(p)=\min_{n,m}|p-R_{n,m}|,\; R_{n,m}=\sqrt{2^n+3^m}.\;}$$
+
+$$\boxed{\;\textbf{Box 2 (Schicht B):}\; q(p)\in\{E,A,B,C\}\cong V_4;\; M(N)=\sum e_i v(p_i)\log p_i.\;}$$
+
+$$\boxed{\;\textbf{Box 3 (Schicht B):}\; D_{AB},D_{AC},D_E\text{ auf Schalenbändern — testbar via }\texttt{eabc\_shell\_prime\_distribution.py}.\;}$$
+
+$$\boxed{\;\textbf{Box 4 (Schicht C):}\; r^8\text{, Quaternion}\to\text{Oktanion — Kompressionsikone.}\;}$$
+
+$$\boxed{\;\textbf{Nicht behauptet:}\; \text{Dass }\delta(p)\text{ eine physikalische Defektenergie ist, dass }V_4\text{ eine bewiesene Ladungsgruppe der Primzahlen ist, oder dass Band-Observablen neue Primzahlgesetze liefern.}\;}$$
+
+$$\boxed{\;\textbf{Behauptet (Gedankenexperiment):}\; \text{Schalen-Defekte operationalisieren §4.8.20–4.8.21; EABC-Ladungs-Observablen auf Bändern sind gegen Perm-/Gleichverteilungs-Null testbar (}\texttt{--shell-mode defect}\text{).}\;}$$
+
+| Baustein | Tao-Label | Schicht |
+|----------|-----------|---------|
+| $V=\langle 2,3\rangle$, $\Phi(n,m)$, $\delta(p)$ | **Definition** | **A**/**B** |
+| $q(p)\in V_4$, $M(N)$ | **Modellabbildung** | **B** |
+| $D_{AB}$, $D_{AC}$, $D_E$ | **Definition** / **Experiment** | **B** |
+| Schalenbänder (nearest, ε, Intervall) | **Experiment** | **B** |
+| $r^8$, Oktanion-Erweiterung | **Ikone** | **C** |
+| `eabc_shell_prime_distribution.py` | **Experiment** | **B** |
+
+**Label:** §4.8.22 = **Meta** / **Gedankenexperiment** (Schicht **C** für $r^8$/Oktanion) / **Definition** (Schicht **A**/**B** für $\delta$, $V_4$) / **Forschungsprogramm** (Schicht **B**/**R**); **kein Theorem**.
 
 ### 4.9 Zeta-Exponential-Gedankenexperiment (Schicht **C**)
 
