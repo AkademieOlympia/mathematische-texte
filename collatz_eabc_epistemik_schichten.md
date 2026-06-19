@@ -22,6 +22,8 @@ $$\boxed{\;\textbf{Theorem} \;\neq\; \textbf{Struktur} \;\neq\; \textbf{Brücke}
 - `collatz_mathlib_eabc_kandidaten.md` — Mathlib-Inventar; Lean `RadiationSpace` (rote Schicht)
 - `collatz_eabc_euklidische_hebung.md` — algebraischer Nebenzweig $\mathbb{R}\subset\mathbb{C}\subset\mathbb{H}\subset\mathbb{O}$ (Schicht **A**)
 - `collatz_eabc_core/CollatzEabc/RadiationSpace.lean` — interpretativer Lean-Scaffold (rot)
+- `collatz_eabc_core/CollatzEabc/OccupancyMonoid.lean` — Streaming-Monoid $(Z,\oplus,Z_0)$, `blockScan_append` (Schicht **A**, §4.6–4.7)
+- `collatz_eabc_zirkulationshypothese.md` — Monoid §4.6; state-centric Hierarchie §4.7
 
 ---
 
@@ -36,18 +38,34 @@ $$\boxed{\;\textbf{Theorem} \;\neq\; \textbf{Struktur} \;\neq\; \textbf{Brücke}
 
 EABC erfüllt die zweite Beschreibung: Es legt $G_E$, $D_E(X)$, Skalierungsobservablen ($R_\beta$, $\alpha_{\mathrm{loc}}$, $\alpha_E$) und eine **Hierarchie offener Fragen** fest — von der Größenordnung von $|D_E|$ bis zur möglichen Endfrage $\Phi_E$. Die Lakatos-Einordnung (§2, vgl. `collatz_eabc_zirkulationshypothese.md` §4) ergänzt diese Lesart; sie widerspricht ihr nicht.
 
+**Vierter Perspektivwechsel (§4.7):** objektzentriert $\longrightarrow$ **zustandszentriert** — nicht „Welche Eigenschaft haben Primzahlen?", sondern „Welcher Zustand genügt zur Beschreibung des Prozesses?"
+
+**Kanonische Hierarchie (state-centric):**
+$$\text{Primstrom} \longrightarrow \text{Streaming-Monoid} \longrightarrow \text{Observablen} \longrightarrow \text{Interpretation}$$
+$$P \;\longrightarrow\; Z \;\longrightarrow\; (D_E,\,Q_E,\,W_E,\,\ldots) \;\longrightarrow\; \Phi_E$$
+
+$$\boxed{\;Z\ \text{ist das fundamentale Objekt; } D_E,\,Q_E,\,W_E\ \text{sind Funktoren } f_D,\,f_Q,\,f_W\ \text{auf } Z;\ \Phi_E\ \text{ist nur Interpretationsschicht (Ebene 4).}\;}$$
+
+**Dritter Perspektivwechsel (§4.6):** $\Phi_E \longrightarrow D_E \longrightarrow Z$ — vom asymptotischen Grenzwert zur **algebraischen Streaming-Struktur** $(Z,\oplus,Z_0)$ (Ebene 1: Monoid-Theorem in `OccupancyMonoid.lean`; Ebene 2: EABC-Interpretation). $N_\pm$, $D_E$, $Q_E$ werden Auswertungen eines Endzustands, nicht Primärdefinition.
+
 $$\boxed{\;\text{Der größte Fortschritt ist nicht die Einführung neuer Größen, sondern die Entkopplung des Programms von }\Phi_E.\;}$$
 
-**Harter Kern** (nicht Holonomie): (1) gerichteter EABC-Kreisgraph $G_E$, (2) orientierte Zyklusdifferenz $D_E(X)=N_+(X)-N_-(X)$, (3) daraus induzierte Skalierungsobservablen. Erst darauf bauen alle weiteren Fragen.
+$$\boxed{\;\text{Lakatos-Hard-Core (voll beweisbar): } (Z,\oplus,Z_0)\ \text{kommutatives Monoid — unabhängig von Primzahlen, HL, RH, Holonomie.}\;}$$
+
+**Harter Kern (empirisch/numerisch):** (1) gerichteter EABC-Kreisgraph $G_E$, (2) orientierte Zyklusdifferenz $D_E(X)=N_+(X)-N_-(X)$, (3) daraus induzierte Skalierungsobservablen — **nachgelagert** an $Z$ via $f_D,\,f_Q,\,f_W$. Erst darauf bauen Holonomie- und $\Phi_E$-Fragen (Interpretationsschicht).
 
 **Erster numerischer Belastungstest** (vgl. `collatz_eabc_zirkulationshypothese.md` §4.3): Vollauf bis $X=10^{10}$ (13 Checkpoints) — prüft nur $(G_E,N_\pm,D_E)$, $R_{1/2}=D_E/\sqrt{Q}$ und Skalierungsobservablen; **kein** $\Phi_E$, **keine** Holonomie. **Ergebnis (Experiment):** bis $10^{10}$ kein numerischer Hinweis auf Holonomie ($\Phi_E\neq 0$) oder sublinearen Bias ($\alpha_E>\tfrac{1}{2}$); $D_E$ kompatibel mit Wurzelfehlerterm ($|D_E|=O(\sqrt{Q})$). H₀a/H₀b numerisch bevorzugt gegenüber H₂/H₃. Holonomie bleibt Endfrage (Ebene 4).
 
 **Literaturpositionierung und Novelty** (vgl. `collatz_eabc_zirkulationshypothese.md` §4.5): EABC ist **keine** neue Zahlentheorie ex nihilo, sondern eine **gerichtete Observable** $D_E(X)=N_+-N_-$ auf dem bekannten Feld Prime Races / consecutive-prime biases / HL-$k$-Tupel / Sieb-Lückenzyklen. Neu ist nicht mod $12$, sondern die chirale ABCEA/CEABC-Zählung auf $G_E$. Die Collatz$\leftrightarrow$EABC$\leftrightarrow$Quaternion-Brücke ist **programminterne Heuristik** (Schicht **C**), nicht etablierte Literatur.
 
-**Stabilisierungskette** ($\leadsto$ = führt zu Fragen; $\Rightarrow$ = bewiesene Implikation):
+**Stabilisierungskette (klassisch, Observable-first):** ($\leadsto$ = führt zu Fragen; $\Rightarrow$ = bewiesene Implikation)
 $$G_E \;\leadsto\; (D_E,\,Q_E) \;\leadsto\; (R_\beta,\,\alpha_{\mathrm{eff}},\,\alpha_{\mathrm{loc}}) \;\leadsto\; (\alpha_E,\,W_E) \;\leadsto\; \Phi_E.$$
 
-**Referee-Perspektive:** „Ich glaube noch nicht $\Phi_E\neq 0$ — aber $D_E(X)$ ist definiert und ihre Größenordnung untersuchbar." Verschiebung: von „Ist die Vermutung wahr?" zu „Welche Eigenschaften besitzt die Observable?"
+**Stabilisierungskette (state-centric, kanonisch ab §4.7):**
+$$P \;\Longrightarrow\; (Z,\oplus,Z_0) \;\Longrightarrow\; (D_E,\,Q_E,\,W_E) \;\leadsto\; \Phi_E.$$
+(Monoid-Schritt = **Theorem**; Observablen = Funktoren auf $Z$; $\Phi_E$ = Interpretation.)
+
+**Referee-Perspektive:** „Ich glaube noch nicht $\Phi_E\neq 0$ — aber $F(P_1\sqcup P_2)=F(P_1)\oplus F(P_2)$ ist bewiesen und $D_E(X)$ ist definiert." Verschiebung: von „Ist die Vermutung wahr?" zu „Welcher Zustand beschreibt den Prozess?" und „Welche Eigenschaften besitzt die Observable?"
 
 ---
 

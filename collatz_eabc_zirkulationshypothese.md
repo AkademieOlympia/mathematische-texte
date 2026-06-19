@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
 - `collatz_eabc_sagnac.md` — **Intuition only:** Sagnac-Bild für $\gamma^\pm$ (kein physikalischer Kern)
@@ -24,7 +24,8 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `eabc_witness_54044321_verify.py` — Verifikation Zeuge $p=54\,044\,321$ (§4.4, mod-$60060$-Kanal)
 - `eabc_quadruplets_fit_alpha.py` — Stufen 0–3: Diagnostik (nicht Theorie); $\alpha_E$-Plateau, H₀a/H₀b–H₃
 - `eabc_quadruplets_plot.py` — Vierfeld-Diagnose-Plot ($W_E$, $R_{1/2}$, $\alpha_{\mathrm{loc}}$, $R_\beta$)
-- `eabc_occupancy_tree.py` — monoidale Vierlings-Besetzungszustände $Z=(O,T,n)$, Williams-Baum (§4.6)
+- `eabc_occupancy_tree.py` — monoidale Vierlings-Besetzungszustände $Z=(O,T,n)$, Williams-Baum (§4.6–4.7)
+- `collatz_eabc_core/CollatzEabc/OccupancyMonoid.lean` — Lean: kommutatives Monoid $(Z,\oplus,Z_0)$, `blockScan_append` (§4.6–4.7)
 - `collatz_eabc_graph_laplacian.py` — $\mathrm{Spec}(L_E)$
 - `collatz_eabc_evolution_analytik.md` — **Evolutionspfad** Bell→Sagnac→$C_E$→$\mathrm{Spec}(L_E)$, Wachstumsszenarien, Dirichlet-Stub
 - `collatz_eabc_D_growth.py` — Wachstumsdiagnostik $D_E(X)$, Charakter-Koeffizienten $a_\chi$
@@ -621,45 +622,116 @@ ist **derzeit programminterne Heuristik/Architektur**, **nicht** etablierte Lite
 
 ### 4.6 Monoid der Vierlings-Besetzungszustände (Cook–Mertz / Williams)
 
-$$\boxed{(Z,\oplus,Z_0)\ \text{ ist ein kommutatives Monoid der Vierlings-Besetzungszustände.}}$$
+$$\boxed{\;\Phi_E \longrightarrow D_E \longrightarrow Z\;}$$
+**Perspektivwechsel:** von einer asymptotischen Observable zu einer **algebraischen Streaming-Struktur**. EABC erscheint hier nicht primär als Holonomie- oder Fehlerterm-Theorie, sondern als **kommutative Streaming-Kompression arithmetischer Muster**; $N_\pm$, $D_E$, $Q_E$ werden **Auswertungen** eines algebraischen Endzustands (vgl. unten).
 
-**Label:** Monoid-Struktur auf $Z$ = **Definition** (Schicht 0); Assoziativität und Kommutativität von $\oplus$ = **Theorem** (strukturelle Aussage über die Merge-Operation, beweisbar aus den Komponentenregeln).
+---
 
-#### Definition — Besetzungszustand und Merge
+#### Ebene 1 — Abstraktes Monoid (unabhängig von Primzahlen)
 
-Für die HL-zulässigen Kanäle $C_M$ (mod $60060$, $|C_M|=378$) ist ein **Besetzungszustand**
-$$Z = (O,\, T,\, n)$$
-gegeben durch:
+**Definition (Zustandsmonoid, abstrakt).** Sei $Z=(O,T,n)$ mit
 
-| Komponente | Bedeutung |
-|------------|-----------|
-| $O \subseteq C_M$ | besetzte Kanäle (mindestens ein Primvierling im Fenster) |
-| $T(c)$ | Erstbesetzungszeit $p$ pro Kanal $c\in O$ |
-| $n(c)$ | Ereigniszähler (Anzahl Vierlinge auf Kanal $c$) |
+- $O$ in einer Menge mit assoziativer, kommutativer Vereinigung $\cup$;
+- $T$ in einer Menge mit idempotenter Meet-Operation $\wedge$ (hier: punktweises $\min$ auf Triggerwerten);
+- $n$ in einem kommutativen Monoid $(\mathcal N,+)$ (hier: $\mathbb N$-Zähler / `Counter` pro Kanal).
 
-**Neutrales Element:**
-$$Z_0 = (\varnothing,\, \varnothing,\, 0).$$
+Definiere
+$$Z_1 \oplus Z_2 = \bigl(O_1 \cup O_2,\; T_1 \wedge T_2,\; n_1 + n_2\bigr), \qquad Z_0 = (\varnothing,\, \top,\, 0),$$
+wobei $\top$ das neutrale Element der Meet-Operation ist (in der Implementierung: leeres Trigger-Dictionary als $\top$ auf dem **Support** der später besetzten Kanäle).
 
-**Monoid-Merge** (paarweise Blockfusion):
-$$Z_1 \oplus Z_2 = \bigl(O_1 \cup O_2,\; \min(T_1,T_2),\; n_1 + n_2\bigr),$$
-wobei $\min(T_1,T_2)$ kanalweise das frühere Erstauftreten und $n_1+n_2$ die punktweise Summe der Zähler ist.
+$$\boxed{(Z,\oplus,Z_0)\ \text{ ist ein kommutatives Monoid.}}$$
 
-**Eigenschaft (Merge-Ordnungsunabhängigkeit):** $\bigoplus_i Z_i$ liefert denselben Endzustand unabhängig von linearer, baumförmiger oder paralleler Merge-Reihenfolge — folgt aus Assoziativität und Kommutativität von $\oplus$.
+**Beweis (Komponentenweise).** Assoziativität und Kommutativität von $\oplus$ reduzieren sich auf die Standardgesetze von $\cup$, $\wedge$ und $+$:
+$$(A\cup B)\cup C = A\cup(B\cup C), \quad \wedge(\wedge(a,b),c)=\wedge(a,\wedge(b,c)), \quad (n_1+n_2)+n_3=n_1+(n_2+n_3).$$
 
-#### Williams-Pipeline (Streaming-Kompression zuerst)
+**Folgerung (Theorem).** $\bigoplus_{i=1}^{k} Z_i$ ist **wohldefiniert**. Lineare Auswertung, binäre Tree-Reduction, parallele Auswertung und MapReduce-artige Verarbeitung liefern **exakt denselben Endzustand** — mathematisch stärker als „der Python-Code funktioniert“.
+
+**Label:** Ebene 1 = **Definition** + **Theorem** (reine Algebra).
+
+---
+
+#### Ebene 2 — EABC-Interpretation
+
+Erst auf Ebene 2 wird $Z$ zum **EABC-Zustandsraum** (HL-Kanäle mod $60060$, $|C_M|=378$):
+
+| Komponente | EABC-Lesart |
+|------------|-------------|
+| $O$ | Menge **offener** (besetzter) Muster / Kanäle $O\subseteq C_M$ |
+| $T(c)$ | **früheste Trigger-** / Erstbesetzungsinformation (Prim $p$ auf Kanal $c$) |
+| $n(c)$ | Zählvektor ($N_+$, $N_-$, Ereignisse pro Kanal/Faser — je nach Auswertung) |
+
+**Scan:** Primstrom $\to$ lokale Blockzustände $Z_i$ via `scan_block`; **Merge:** $Z(N)=\bigoplus_i Z_i$ via `merge_state` / `reduce_tree`.
+
+**Zwei Architekturen:**
+
+| Bisher (Holonomie-Hierarchie) | Neu (Streaming) |
+|------------------------------|-----------------|
+| Primzahlen $\to N_\pm \to D_E \to W_E$ | Primstrom $\to$ lokale $Z_i$ $\to$ Monoid-Merge $\to Z_{\mathrm{final}}$ |
+| asymptotische Observable zuerst | algebraischer Endzustand zuerst |
+
+Der Endzustand $Z_{\mathrm{final}}$ enthält genügend Information, um $N_+$, $N_-$, $D_E$, $Q_E$ **zu rekonstruieren** (Auswertungsfunktional, nicht Teil des Monoid-Beweises).
+
+#### Williams-Pipeline
 
 $$\text{lange Prim-/Vierlingshistorie} \longrightarrow \text{lokale Blockzustände} \longrightarrow \text{monoidale Tree-Evaluation} \longrightarrow \text{kompakter EABC-Endzustand}$$
 
-EABC wird hier **primär als Streaming-Kompression** gelesen: lange Prim-/Vierlingshistorie wird nicht materialisiert, sondern blockweise auf $Z_i$ reduziert und assoziativ zum Endzustand $Z(N)$ gemerged. Holonomie ($\Phi_E$, Ebene 4) ist **sekundär** und setzt erst eine stabile asymptotische Lesart von $D_E$ bzw. $W_E$ voraus (vgl. §4.1–4.3).
+Holonomie ($\Phi_E$, Ebene 4) ist **sekundär**; sie setzt eine stabile asymptotische Lesart von Auswertungen auf $Z$ voraus (vgl. §4.1–4.3).
 
-**Implementierung:** `eabc_occupancy_tree.py` — `identity_state`, `merge_state`, `state_equal`, `scan_block`, `reduce_tree`; Tests: `tests/test_eabc_occupancy_tree.py` (Assoziativität, Kommutativität).
+**Implementierung:** `eabc_occupancy_tree.py` — `identity_state` ($Z_0$), `merge_state` ($\oplus$), `state_equal`, `scan_block`, `reduce_tree`; Tests: `tests/test_eabc_occupancy_tree.py` (Assoziativität, Kommutativität).
 
 ```bash
 python3 eabc_occupancy_tree.py --N 100000000 --simple
 pytest tests/test_eabc_occupancy_tree.py -q
 ```
 
-**Label:** Williams-Pipeline = **Definition** / **Heuristik** (algorithmische Lesart); Referenz $\rho(N)=|O(N)|/|C_M|$ bei $N=10^8$: **Experiment** (`test_scan_occupancy_reference_1e8`).
+**Label:** Ebene 2 + Williams-Pipeline = **Definition** / **Heuristik** (algorithmische Lesart); $\rho(N)=|O(N)|/|C_M|$ bei $N=10^8$: **Experiment** (`test_scan_occupancy_reference_1e8`).
+
+**Lean (Ebene 1, GREEN):** `collatz_eabc_core/CollatzEabc/OccupancyMonoid.lean` — `CommMonoid (OccupancyState α β)`, `foldMerge_perm`, `blockScan_append` (Streaming-Faktorisierung $F(P_1\sqcup P_2)=F(P_1)\oplus F(P_2)$ auf Blocklisten).
+
+---
+
+### 4.7 Zustandszentrierte Mathematik (state-centric shift)
+
+**Shift:** objektzentriert $\longrightarrow$ **zustandszentriert**
+
+| Alt (objektzentriert) | Neu (zustandszentriert) |
+|-----------------------|-------------------------|
+| „Welche Eigenschaft haben Primzahlen?" | „Welcher Zustand genügt zur Beschreibung des Prozesses?" |
+
+**Hierarchie (kanonisch):**
+$$\text{Primstrom} \longrightarrow \text{Streaming-Monoid} \longrightarrow \text{Observablen} \longrightarrow \text{Interpretation}$$
+$$P \;\longrightarrow\; Z \;\longrightarrow\; (D_E,\,Q_E,\,W_E,\,\ldots) \;\longrightarrow\; \Phi_E$$
+
+$$\boxed{\;Z\ \text{ist zentral — nicht } D_E,\ \text{nicht } \Phi_E.\;}$$
+
+**Harter Kern (Lakatos):** Das Monoid $(Z,\oplus,Z_0)$ ist **vollständig beweisbar** — unabhängig von Primzahlen, HL, RH, Holonomie. Das ist der algebraische **Hard Core** des Programms; alles Weitere (EABC-Lesart, $D_E$, $\Phi_E$) ist Schutzgürtel oder Interpretationsschicht.
+
+**Satz (Streaming-Faktorisierung, paper-ready).** Es existiert ein Monoid-Homomorphismus
+$$F:\ \text{PrimeStream} \longrightarrow M = (Z,\oplus,Z_0)$$
+(kommutatives Monoid), sodass für jede Partition $P = P_1 \sqcup \cdots \sqcup P_k$ gilt:
+$$\boxed{\;F(P) = F(P_1) \oplus \cdots \oplus F(P_k).\;}$$
+**Label:** **Theorem** (Ebene 1; Lean: `blockScan_append`, `foldMerge_append` in `OccupancyMonoid.lean`).
+
+**Observablen als Funktoren** auf dem Endzustand $Z_{\mathrm{final}}$ (Ebene 2, Struktur — nicht Teil des Monoid-Beweises):
+$$f_D(Z) = D_E,\qquad f_Q(Z) = Q_E,\qquad f_W(Z) = W_E.$$
+
+$$\boxed{\;\text{Die wichtigste Aussage ist nicht }\Phi_E\neq 0,\ \text{sondern}\quad F(P_1 \sqcup P_2) = F(P_1) \oplus F(P_2).\;}$$
+
+**Offene Forschungsfrage (Minimalität).** Ist $Z=(O,T,n)$ **minimal**? Definiere Kompressionskomplexität
+$$K_E(N) = \min\{\text{Bitgröße}(S) : S \Rightarrow (D_E,\,Q_E,\,W_E)\}.$$
+**Offen:** $K_E(N) = O(\log N)$? $N^\alpha$? $O(1)$?
+
+**Williams — Vorsicht:** Williams beweist **keine** Monoide. Die Verbindung ist **Tree-Evaluation-Philosophie**: der Zustand genügt, die volle Historie nicht. Dieselbe Architektur wie stream $\to$ state $\to$ merge $\to$ query (vgl. §4.6).
+
+**Parallele zu Streaming-Algorithmen:**
+
+| Phase | EABC | Streaming |
+|-------|------|-----------|
+| Eingabe | Primstrom $P$ | Datenstrom |
+| Zustand | lokale $Z_i$, Merge zu $Z_{\mathrm{final}}$ | Sketch / Aggregat |
+| Antwort | $f_D(Z)$, $f_Q(Z)$, … | Query auf Endzustand |
+
+**Label:** §4.7 = **Definition** / **Theorem** (Monoid) + **Forschungsfrage** ($K_E$) + **Analogie** (Williams, Streaming).
 
 ---
 
