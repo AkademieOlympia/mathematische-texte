@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
 - `collatz_eabc_sagnac.md` — **Intuition only:** Sagnac-Bild für $\gamma^\pm$ (kein physikalischer Kern)
@@ -735,6 +735,111 @@ $$K_E(N) = \min\{\text{Bitgröße}(S) : S \Rightarrow (D_E,\,Q_E,\,W_E)\}.$$
 
 ---
 
+### 4.8 Level-2-Fluktuationsgeometrie auf $\Lambda^2(\mathbb{R}^4)$
+
+**Pivot:** Während Level-1-Observablen ($D_E$, $W_E$, $\Phi_E$) bis $10^{10}$ **keinen robusten Drift** gegenüber Nullmodellen zeigen (§4.3), verschiebt sich der harte Kern des EABC-Programms auf die **antisymmetrische Level-2-Pfadsignatur** im Raum $\Lambda^2(\mathbb{R}^4)$.
+
+#### Zwei Achsen des EABC-Programms
+
+```mermaid
+flowchart LR
+  subgraph axis1 ["Achse 1 — Drift / Holonomie"]
+    DE["$D_E$"]
+    WE["$W_E$"]
+    PhiE["$\Phi_E$"]
+    DE --> WE --> PhiE
+  end
+  subgraph axis2 ["Achse 2 — Fluktuationsgeometrie"]
+    a["$a \in \Lambda^2(\mathbb{R}^4)$"]
+    Sigma["$\Sigma_A$"]
+    Spec["$\mathrm{Spec}(\Sigma_A)$"]
+    DeltaF["$\Delta_F(m)$"]
+    a --> Sigma --> Spec --> DeltaF
+  end
+```
+
+| Achse | Observablen | Status (bis $10^{10}$) |
+|-------|-------------|------------------------|
+| **Drift / Holonomie** | $D_E$, $W_E$, $\Phi_E$ | Level-1-Nullbefund (§4.3): $W_E\to 0$, H₀a kompatibel |
+| **Fluktuationsgeometrie** | $a$, $\Sigma_A$, $\mathrm{Spec}(\Sigma_A)$, $\Delta_F(m)$ | **neues Primärprogramm** (Experiment) |
+
+#### Definitionen (Ebene 0)
+
+**Antisymmetrischer Level-2-Vektor** $a\in\mathbb{R}^6\cong\Lambda^2(\mathbb{R}^4)$ auf einem Fenster der Länge $m$ im EABC-Primstrom:
+$$a_{XY} := \frac{N_{XY}-N_{YX}}{N_{XY}+N_{YX}}\in[-1,1],\qquad X,Y\in\{E,A,B,C\},\; X\neq Y,$$
+wobei $N_{XY}=\#\{(i,j): i<j,\; w_i=X,\; w_j=Y\}$.
+
+**Mittelwert und Kovarianz** über $K$ disjunkte Fenster:
+$$\mu_A := \mathbb{E}[a],\qquad \Sigma_A := \mathbb{E}\bigl[(a-\mu_A)(a-\mu_A)^T\bigr].$$
+
+**Permutations-Nullmodell:** pro Fenster $B$ Zufallspermutationen des EABC-Worts $\Rightarrow\;\Sigma_A^{\mathrm{rand}}(m)$.
+
+**Pflichtmetrik:**
+$$\boxed{\;\Delta_F(m)=\frac{\|\Sigma_A^{\mathrm{prime}}(m)-\Sigma_A^{\mathrm{rand}}(m)\|_F}{\|\Sigma_A^{\mathrm{rand}}(m)\|_F}\;}$$
+an Checkpoints $m\in\{10^3,\,2\cdot10^3,\,5\cdot10^3,\,10^4,\,2\cdot10^4\}$.
+
+**Label:** $a$, $\mu_A$, $\Sigma_A$, $\Delta_F$ = **Definition**.
+
+#### Schlüssel-Einsicht
+
+$$\boxed{\;\mu_A\approx 0\;\text{widerlegt keine Struktur — die Information liegt in }\Sigma_A=\mathbb{E}[(a-\mu_A)(a-\mu_A)^T].\;}$$
+
+Level-1-Mittelwerte ($D_E$, $W_E$) können gegen Null gehen, während die **Kovarianzgeometrie** im $\Lambda^2$-Raum vom Permutations-Nullmodell abweicht.
+
+#### Boxed Thesen (mit epistemischen Labels)
+
+**Starke These** (nicht Theorem):
+$$\boxed{\;\mathrm{Spec}(\Sigma_A^{\mathrm{prime}})\neq\mathrm{Spec}(\Sigma_A^{\mathrm{rand}}).\;}$$
+**Label:** **Hypothese**.
+
+**Referee-sichere Formulierung:**
+$$\boxed{\;\text{Die antisymmetrische Level-2-Pfadsignatur zeigt eine andere empirische Fluktuationsgeometrie als das Permutations-Nullmodell.}\;}$$
+**Label:** **Experiment** / **Hypothese** (je nach $\Delta_F$-Verlauf).
+
+**Paper-These:**
+> Während die bisherigen Level-1-Observablen keine robuste Drift gegenüber Nullmodellen zeigen, besitzt die antisymmetrische Level-2-Pfadsignatur eine reproduzierbare Kovarianzstruktur. Der Primstrom scheint weniger durch mittlere Holonomie als durch eingeschränkte Fluktuationsgeometrie im Raum $\Lambda^2(\mathbb{R}^4)$ charakterisiert.
+
+**Label:** **Hypothese** (interpretative Lesart, kein Theorem).
+
+#### Querverweis Level-1 vs. Level-2
+
+| Ebene | Frage | Befund bis $10^{10}$ (§4.3) | Neues Programm |
+|-------|-------|----------------------------|----------------|
+| Level-1 | Drift / Holonomie? | $W_E$ instabil, $|W_E|\to 0$; H₀a/H₀b bevorzugt | Sekundär |
+| Level-2 | Fluktuationsgeometrie? | $\Delta_F(m)\approx 0{,}55$–$0{,}73$ (Experiment, $N=5\cdot 10^5$) | **primär** |
+
+**Kriterium:** Falls $\Delta_F(m)$ **nicht** gegen $0$ kollabiert (über mehrere Checkpoints stabil $>3\%$), liegt ein **reproduzierbarer Level-2-Befund** vor — unabhängig von $\mu_A\approx 0$ und unabhängig von $\Phi_E$.
+
+#### Numerischer Befund (Experiment, $N=5\cdot 10^5$, $B=50$, Seed 42)
+
+| $m$ | $K$ | $\|\mu_A\|$ | $\Delta_F(m)$ |
+|-----|-----|-------------|---------------|
+| $10^3$ | 500 | 0.0026 | 0.549 |
+| $2\cdot 10^3$ | 250 | 0.0012 | 0.603 |
+| $5\cdot 10^3$ | 100 | 0.0033 | 0.673 |
+| $10^4$ | 50 | 0.0039 | 0.728 |
+| $2\cdot 10^4$ | 25 | 0.0039 | 0.725 |
+
+**Lesart:** $\Delta_F(m)$ **kollabiert nicht** gegen $0$; über alle Checkpoints $>50\%$ relative Frobenius-Abweichung. $\|\mu_A\|\ll 1$ bestätigt: Information liegt in $\Sigma_A$, nicht im Mittelwert.
+
+**Epistemische Grenze (Tao/Maynard):** Dies ist **numerische Evidenz**, kein Beweis. Das Permutations-Nullmodell (marginaltreue Zufallspermutation pro Fenster) ist explizit definiert; ein arithmetischer Mechanismus für die Kovarianzdifferenz bleibt offen. Robustheit gegenüber anderen Nullmodellen (z.\,B. i.i.d.\ uniform, Block-Shuffle) ist noch zu prüfen.
+
+#### Pipeline (Experiment)
+
+```bash
+python3 eabc_level2_fluctuation.py
+python3 eabc_level2_fluctuation.py --n-primes 500000 --B-rand 50
+pytest tests/test_eabc_level2_fluctuation.py -q
+```
+
+**Module:** `eabc_level2_fluctuation.py` (Δ_F-Checkpoints, JSON); erweiterte Kovarianz-Visualisierung: `eabc_altsig2_covariance.py`; Pfadsignatur-Basis: `eabc_signature_analysis.py`.
+
+**Ausgabe:** `eabc_level2_fluctuation.json`, Terminal-Zusammenfassung mit $\Delta_F(m)$ pro Checkpoint.
+
+**Label:** gesamter Abschnitt = **Definition** (Observablen) + **Experiment** ($\Delta_F$-Test) + **Hypothese** (Spektrum-Unterschied); **kein Theorem**.
+
+---
+
 ## 5. EABC-Hypothese (Fehlerterm)
 
 **EABC-Hypothese (Fehlerterm).** Der Fehlerterm
@@ -830,6 +935,7 @@ $$\boxed{\;\text{Welche Spektralinvarianten der EABC-Zirkulation unterscheiden P
 | $L_{\mathrm{mag}}$ | `magnetic_laplacian` | `collatz_eabc_hodge_eabc` |
 | $N_R$, $N_L$, $\phi_R$, $\phi_L$ | `N_R`, `N_L`, `phi_R`, `phi_L` | `collatz_eabc_chirale_transport` |
 | $T_R$, $T_L$ | `T_R`, `T_L` | `collatz_eabc_brachistochrone` |
+| $a$, $\Sigma_A$, $\Delta_F(m)$ | `compute_a_vector`, `delta_F`, `analyze_checkpoint` | `eabc_level2_fluctuation` |
 
 ---
 
