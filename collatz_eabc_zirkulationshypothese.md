@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung: $(\hbar,\sigma)$** §4.8.14 (Präzisierung: Phasenraum-Orientierung statt Raumrichtung, Abschnitt 9); **Symplektische Orientierung und EABC-Vierfachstruktur** §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17; **Assoziative Schranke und genealogische Primobjekte (Gedankenexperiment)** §4.8.18; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung: $(\hbar,\sigma)$** §4.8.14 (Präzisierung: Phasenraum-Orientierung statt Raumrichtung, Abschnitt 9); **Symplektische Orientierung und EABC-Vierfachstruktur** §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17; **Assoziative Schranke und genealogische Primobjekte (Gedankenexperiment)** §4.8.18; **Kompressionskaskaden und atomare Fixpunkte (Gedankenexperiment)** §4.8.19; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
 - `collatz_eabc_zeta_exponential_gedankenexperiment.md` — **Gedankenexperiment / Analogie:** $\zeta$ als Exponentialsumme auf Log-Prim-Geometrie; Euler-Streifen $(1\pm p^{-s})$; $\xi$-Spiegelung; Brücke zu Log-Koordinaten, $\gamma^\pm$-Paarung, Level-2; §6–§10: Ganzzahl/Halbzahl-Exponenten, Oktanionen (Schicht C), Bernoulli-Subtraktion, Fibonacci-Zeta (kein RH-/EABC-Theorem)
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
@@ -28,7 +28,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `eabc_occupancy_tree.py` — monoidale Vierlings-Besetzungszustände $Z=(O,T,n)$, Williams-Baum (§4.6–4.7)
 - `collatz_eabc_core/CollatzEabc/OccupancyMonoid.lean` — Lean: kommutatives Monoid $(Z,\oplus,Z_0)$, `blockScan_append` (§4.6–4.7; Build-Artefakt, Quelle ggf. auf Hauptbranch)
 - `collatz_eabc_core/CollatzEabc/EABCCompression.lean` — Lean: $\mathcal{C}_E$, Stufe 0–4 Backlog (§4.8.17, Schicht **A**/**B**/**R**)
-- `collatz_eabc_core/CollatzEabc/GenealogicalPrime.lean` — Lean-Stub: genealogische Primobjekte, offene `Prop` (§4.8.18)
+- `collatz_eabc_core/CollatzEabc/GenealogicalPrime.lean` — Lean-Stub: genealogische Primobjekte, offene `Prop` (§4.8.18–§4.8.19)
 - `collatz_eabc_graph_laplacian.py` — $\mathrm{Spec}(L_E)$
 - `collatz_eabc_evolution_analytik.md` — **Evolutionspfad** Bell→Sagnac→$C_E$→$\mathrm{Spec}(L_E)$, Wachstumsszenarien, Dirichlet-Stub
 - `collatz_eabc_D_growth.py` — Wachstumsdiagnostik $D_E(X)$, Charakter-Koeffizienten $a_\chi$
@@ -1437,7 +1437,7 @@ $$\boxed{\;\textbf{Aktueller Gesamtstatus:}\; algebraisch wohldefiniert \checkma
 
 **Label:** §4.8.7 = **Meta** / **Hypothese** / **Experiment** (Schicht **C**); **kein Theorem**.
 
-**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12; Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13; Prägeometrie der Wirkung $(\hbar,\sigma)$ §4.8.14 (Präzisierung Phasenraum-Orientierung, Abschnitt 9); Symplektische Orientierung und EABC-Vierfachstruktur §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17; **Assoziative Schranke und genealogische Primobjekte (Gedankenexperiment)** §4.8.18.
+**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12; Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13; Prägeometrie der Wirkung $(\hbar,\sigma)$ §4.8.14 (Präzisierung Phasenraum-Orientierung, Abschnitt 9); Symplektische Orientierung und EABC-Vierfachstruktur §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17; **Assoziative Schranke und genealogische Primobjekte (Gedankenexperiment)** §4.8.18; **Kompressionskaskaden und atomare Fixpunkte (Gedankenexperiment)** §4.8.19.
 
 #### 4.8.8 Beobachtungsgeometrie als Kompressionsoperator
 
@@ -2891,6 +2891,165 @@ $$\boxed{\;\textbf{Behauptet (Gedankenexperiment):}\; \text{Die assoziative Schr
 | `genealogicallyPrime` | **Stub** (`Prop`, offen) | **A**/**R** |
 
 **Label:** §4.8.18 = **Meta** / **Gedankenexperiment** (Schicht **C** für nichtassoziative Welt) / **Theorem**-Verweis (Schicht **A** für Monoid) / **Forschungsfrage** (Schicht **R** für genealogische Primheit); **kein Theorem**.
+
+#### 4.8.19 Kompressionskaskaden und atomare Fixpunkte (Gedankenexperiment)
+
+**Status:** paper-ready Gedankenexperiment — **kein Theorem**, **kein** Anspruch auf neue Zahlentheorie oder formale Kolmogorov-Theorie; epistemische Synthese fünf Kompressionskaskaden und philosophische Fixpunkt-Frage.
+
+**Querverweise:** Kompressionsoperator $\mathcal{C}_E$ und strukturstabile Kompression §4.8.8; Baum $T(N)$ und genealogische Primobjekte §4.8.18; Lean-Stub `collatz_eabc_core/CollatzEabc/GenealogicalPrime.lean`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §0, §3.1.
+
+Der folgende Abschnitt ordnet **fünf Kompressionskaskaden** nebeneinander — von multiplikativer Faktorisierung über informationstheoretische Endpunkte bis zur EABC-Makrokompression — und formuliert die Leitfrage: **Welche Objekte bleiben bei Verdichtung übrig?**
+
+##### 1. Fünf Kaskaden — Überblick
+
+| Nr. | Kaskade | Abbildung / Objekt | Fixpunkt-Lesart | Schicht |
+|-----|---------|-------------------|-----------------|---------|
+| 1 | **Multiplikativ** | $N\mapsto (p_1^{e_1},\ldots,p_k^{e_k})$ | Primzahlen: $p=ab\Rightarrow a=1\lor b=1$ (FTA) | **A** |
+| 2 | **Kolmogorov** (konzeptuell) | $N\mapsto K(N)$ — kürzeste Beschreibungslänge | $K(p)\approx\log_2 p$ für Primzahlen $p$ | **C**/**Meta** |
+| 3 | **Genealogisch** | $N\mapsto T(N)$ — Erzeugungsbaum (§4.8.18) | Primzahlen als **Blätter** / atomare Erzeugungsknoten | **R** |
+| 4 | **EABC** | $\mathcal{C}_E:\mathbb{N}\to\{E,A,B,C\}$ (§4.8.8) | Makrokompression auf **4 Zustände**; $I_E(N)\ge\log_2 N-2$ | **B** |
+| 5 | **Faktorisierungsbox** | iterative Zerlegung $N\to$ Faktoren $\to$ Primfaktoren | natürliche Kaskade bis zu **Prim-Atomen** | **A** |
+
+$$\boxed{\;\text{Kaskaden-Schema:}\; \mathbb{N} \;\xrightarrow{\;\text{multiplikativ}\;}\; \text{Primfaktoren} \;\xrightarrow{\;\text{genealogisch}\;}\; T(N) \;\xrightarrow{\;\mathcal{C}_E\;}\; \{E,A,B,C\}.\;}$$
+
+**Label:** Kaskade 1 und 5 = **Theorem** / **Definition** (Schicht **A**, Standardarithmetik); Kaskade 2 = **Analogie** (Schicht **C**, Kolmogorov-Komplexität nur konzeptuell — kein formaler $K$-Beweis im Repo); Kaskade 3 = **Forschungsfrage** (Schicht **R**, §4.8.18); Kaskade 4 = **Hypothese** / **Definition** (Schicht **B**, §4.8.8).
+
+##### 2. Kaskade 1 — Multiplikative Fixpunkte (FTA)
+
+In $(\mathbb{N}_{>1},\cdot)$ ist die **Primfaktorzerlegung** die kanonische Kompressionskaskade: jede Zahl $N$ wird iterativ in Faktoren zerlegt, bis nur noch **Prim-Atome** übrigbleiben. Primzahlen sind **Fixpunkte** dieser Kaskade — sie zerfallen nicht weiter.
+
+$$\boxed{\;\text{Multiplikativ:}\; p\ \text{prim} \;\Longleftrightarrow\; p\ \text{Fixpunkt der Faktorisierungskaskade in }(\mathbb{N}_{>1},\cdot).\;}$$
+
+Der Fundamentalsatz der Arithmetik (FTA) liefert **Eindeutigkeit** bis auf Reihenfolge — eine Konsequenz von Assoziativität und Kommutativität. Diese Kaskade ist die **Referenzschicht** für alle folgenden Lesarten (§4.8.18, Abschnitt 1).
+
+**Label:** FTA und multiplikative Fixpunkte = **Theorem** (Schicht **A**).
+
+##### 3. Kaskade 2 — Kolmogorov-Endpunkte (konzeptuell)
+
+Informationstheoretisch betrachtet: die **Kolmogorov-Komplexität** $K(N)$ misst die Länge der kürzesten Beschreibung von $N$. Für Primzahlen $p$ gilt näherungsweise
+
+$$K(p)\approx \log_2 p,$$
+
+d.\,h. Primzahlen sind **informationstheoretische Endpunkte** — sie tragen keine zusätzliche multiplikative Struktur, die eine kürzere Beschreibung erlauben würde.
+
+| Objekt | Kolmogorov-Lesart | Schicht |
+|--------|-------------------|---------|
+| Zusammengesetztes $N=\prod p_i^{e_i}$ | Beschreibung durch Faktorenliste | **A** |
+| Primzahl $p$ | $K(p)\approx\log_2 p$ — **nicht weiter komprimierbar** (multiplikativ) | **C**/**Meta** |
+| EABC-Kompression $\mathcal{C}_E(N)$ | $2$ Bit — **aggressiver** als $K(N)$ für großes $N$ | **B** |
+
+$$\boxed{\;\text{Kolmogorov (konzeptuell):}\; \text{Primzahlen sind Endpunkte der Beschreibungskaskade — nicht formale Lean-Theorie, sondern epistemische Brücke zu §4.8.8.}\;}$$
+
+**Nicht behauptet:** Formale Berechenbarkeit oder Inkompressibilität von $K(p)$ im Sinne der algorithmischen Informationstheorie — das Repo enthält **keinen** Kolmogorov-Beweis. Die Lesart dient der **Vergleichbarkeit** der Kaskaden.
+
+**Label:** Kolmogorov-Kaskade = **Analogie** / **Meta** (Schicht **C**).
+
+##### 4. Kaskade 3 — Genealogischer Baum $T(N)$ (§4.8.18)
+
+Die **genealogische Kaskade** (§4.8.18) ersetzt die flache Faktorliste durch einen **Erzeugungsbaum** $T(N)$:
+
+$$T(N):\ \text{Blatt} = \text{lokale Blockzustände } Z_i,\quad \text{Wurzel} = Z(N)=\bigoplus_i Z_i.$$
+
+In dieser Lesart sind **Primzahlen die Blätter** — die atomaren, nicht weiter zerlegbaren Erzeugungsknoten im Primstrom. Die Kaskade endet nicht bei $n=\prod p_i^{e_i}$, sondern bei der **Baumform** der lokalen Besetzungs-/Trigger-Ereignisse.
+
+| Klassische Kaskade | Genealogische Kaskade |
+|--------------------|----------------------|
+| $N\to p_1\cdot\ldots\cdot p_k$ | $N\to T(N)$ mit Blättern $Z_i$ |
+| Primfaktoren = Atome | Primzahlen = **Blätter** des Baums |
+| Eindeutigkeit (FTA) | Eindeutigkeit des Merge-Endzustands $Z(N)$ (§4.6) |
+
+**Label:** Baum $T(N)$, Primzahlen als Blätter = **Definition** / **Forschungsfrage** (Schicht **A**/**R**, §4.8.18).
+
+##### 5. Kaskade 4 — EABC-Makrokompression $\mathcal{C}_E$ (§4.8.8)
+
+Die **EABC-Kaskade** ist die aggressivste Stufe: $\mathcal{C}_E:\mathbb{N}\to\{E,A,B,C\}$ projiziert jede Zahl auf **einen von vier Zuständen** (mod $12$, Einheitenklassen $E=1,A=5,B=7,C=11$). Asymptotisch
+
+$$I_E(N)=H(\mathbb{N}_N)-H(\mathrm{EABC}_N)\approx\log_2 N-2,$$
+
+d.\,h. fast die gesamte Rohinformation wird verworfen. Die Frage ist nicht Verlustfreiheit, sondern **strukturstabile Kompression** (§4.8.8–4.8.9): welche arithmetischen Observablen ($D_E$, $Q_E$, $R_N$, $C_F$) überleben?
+
+$$\boxed{\;\mathcal{C}_E:\ \mathbb{N}\ \xrightarrow{\;\text{2 Bit}\;}\ \{E,A,B,C\}\quad\text{— Makrokompression, kein Prim-Fixpunkt im Bild.}\;}$$
+
+Primzahlen sind **keine** Fixpunkte von $\mathcal{C}_E$ — sie werden auf Klassen abgebildet. Die Kaskade endet bei **vier Makrozuständen**, nicht bei Prim-Atomen.
+
+**Label:** $\mathcal{C}_E$, $I_E(N)$ = **Definition** / **Hypothese** (Schicht **B**, §4.8.8).
+
+##### 6. Kaskade 5 — Faktorisierungsbox: natürliche Kaskade zu Primzahlen
+
+$$\boxed{\;\textbf{Box (Schicht A):}\; \text{Die Primfaktorzerlegung ist die natürliche Kompressionskaskade zu Primzahlen — iterativ, eindeutig (FTA), assoziativ.}\;}$$
+
+Diese Box fasst Kaskade 1 und die klassische Lesart zusammen: $N$ wird wiederholt faktorisiert, bis nur Prim-Atome übrigbleiben. Es ist die **Referenzkaskade**, gegen die genealogische, Kolmogorov- und EABC-Lesarten **verglichen** werden — nicht ersetzt.
+
+**Label:** Faktorisierungsbox = **Theorem**-Verweis (Schicht **A**).
+
+##### 7. Tiefer: $K(N)$ als minimaler Informationsbaum
+
+Philosophisch vertieft: $K(N)$ kann als **Länge des minimalen Informationsbaums** gelesen werden — der kürzesten Beschreibung, die $N$ erzeugt. Multiplikative Faktorisierung, genealogischer Baum $T(N)$ und Kolmogorov-Komplexität sind **verschiedene Schnitte** durch denselben Verdichtungsprozess:
+
+| Schnitt | Objekt | Endpunkt |
+|---------|--------|----------|
+| Multiplikativ | Faktorenliste | Primfaktoren |
+| Genealogisch | Baum $T(N)$ | Blätter / Merge-Wurzel $Z(N)$ |
+| Kolmogorov (konzeptuell) | Beschreibungsprogramm | $K(N)$ minimal |
+| EABC | $\mathcal{C}_E(N)\in\{E,A,B,C\}$ | 4 Makrozustände |
+
+$$\boxed{\;\textbf{Box (Schicht R):}\; \text{Sind Primzahlen die einzigen Fixpunkte \textbf{aller} sinnvollen Kompressionskaskaden?}\;}$$
+
+**Antwort (vorläufig, epistemisch):** **Nein** — verschiedene Kaskaden haben **verschiedene Fixpunkt-Mengen**:
+
+| Kaskade | Fixpunkte / Endpunkte |
+|---------|----------------------|
+| Multiplikativ (FTA) | Primzahlen in $(\mathbb{N},\cdot)$ |
+| Kolmogorov (konzeptuell) | Inkompressible Strings / Primzahlen als Endpunkte |
+| Genealogisch (§4.8.18) | Blätter $Z_i$; „eindeutig prim" = einziger Baum $T(n)$ |
+| EABC (§4.8.8) | **Keine** Prim-Fixpunkte — Bild ist $\{E,A,B,C\}$ |
+
+Primzahlen sind Fixpunkte der **multiplikativen** und (konzeptuell) **Kolmogorov-**Kaskade, aber **nicht** der EABC-Makrokompression. Die genealogische Kaskade hat **andere** Endpunkte (Blätter, Merge-Invarianten). Die Frage „einzige Fixpunkte aller sinnvollen Kaskaden?" ist daher **offen** und hängt von der Definition „sinnvoll" ab.
+
+**Label:** Fixpunkt-Vergleich = **Meta** / **Forschungsfrage** (Schicht **R**).
+
+##### 8. Forschungsfrage: Welche Objekte bleiben bei Verdichtung übrig?
+
+$$\boxed{\;\textbf{Frage (Schicht R):}\; \text{Welche Objekte bleiben bei Verdichtung übrig — und welche Kaskade definiert „übrig"?}\;}$$
+
+| Verdichtungsstufe | Was bleibt? | Testbar? |
+|-------------------|-------------|----------|
+| Primfaktorisierung | Prim-Atome $p_i$ | **ja** (FTA, Schicht **A**) |
+| Genealogischer Baum | $Z(N)$, Blätter $Z_i$, Trigger-Historie | **teilweise** (§4.6, §4.8.18) |
+| Kolmogorov (konzeptuell) | $K(N)$, Inkompressibilität | **nein** (nicht im Repo formalisiert) |
+| EABC $\mathcal{C}_E$ | Klasse $\sigma\in\{E,A,B,C\}$; strukturstabile Observablen | **ja** (§4.8.8–4.8.9, $S(\mathcal{C})$) |
+
+Die Leitfrage verbindet §4.8.8 („Welche Primzahlstrukturen überleben extreme Kompression?") mit §4.8.18 (genealogische vs. klassische Primheit) und der Kolmogorov-Analogie: **Verdichtung ist kaskadenabhängig** — es gibt keine universelle Fixpunkt-Menge.
+
+**Lean-Verknüpfung (Schicht A/R):** Im Stub `GenealogicalPrime.lean` ist `genealogicallyPrime` als offene `Prop` angelegt — ein formaler Fixpunkt-Begriff für **genealogische** Kaskaden, noch ohne Verbindung zu $K(N)$ (konzeptuell: minimaler Informationsbaum; Lean: offen).
+
+##### 9. Epistemische Kernboxen
+
+$$\boxed{\;\textbf{Box 1 (Schicht A):}\; \text{Primfaktorzerlegung = natürliche multiplikative Kaskade; Primzahlen = Fixpunkte (FTA).}\;}$$
+
+$$\boxed{\;\textbf{Box 2 (Schicht C):}\; \text{Kolmogorov: }K(p)\approx\log_2 p\text{ — Primzahlen als informationstheoretische Endpunkte (konzeptuell, kein Repo-Theorem).}\;}$$
+
+$$\boxed{\;\textbf{Box 3 (Schicht R):}\; \text{Genealogisch: Primzahlen als Blätter von }T(N)\text{ (§4.8.18); Fixpunkt-Menge $\neq$ multiplikativ.}\;}$$
+
+$$\boxed{\;\textbf{Box 4 (Schicht B):}\; \text{EABC: }\mathcal{C}_E\text{ komprimiert auf 4 Zustände — Primzahlen sind \textbf{keine} Fixpunkte im Bild.}\;}$$
+
+$$\boxed{\;\textbf{Box 5 (Schicht R):}\; \text{Sind Primzahlen die einzigen Fixpunkte aller sinnvollen Kaskaden? — \textbf{Offen}; Kaskaden haben verschiedene Endpunkt-Mengen.}\;}$$
+
+$$\boxed{\;\textbf{Nicht behauptet:}\; \text{Formale Kolmogorov-Theorie, universelle Fixpunkt-Klassifikation oder EABC-Ersatz der FTA.}\;}$$
+
+$$\boxed{\;\textbf{Behauptet (Gedankenexperiment):}\; \text{Fünf Kompressionskaskaden ordnen multiplikative, informationstheoretische, genealogische und EABC-Verdichtung; die Forschungsfrage lautet: welche Objekte bleiben bei Verdichtung übrig — kaskadenabhängig.}\;}$$
+
+| Baustein | Tao-Label | Schicht |
+|----------|-----------|---------|
+| FTA, multiplikative Fixpunkte | **Theorem** | **A** |
+| $K(p)\approx\log_2 p$ (konzeptuell) | **Analogie** | **C**/**Meta** |
+| Baum $T(N)$, Primzahlen als Blätter | **Definition** / **Forschungsfrage** | **A**/**R** (§4.8.18) |
+| $\mathcal{C}_E$, $I_E(N)$, 4 Zustände | **Definition** / **Hypothese** | **B** (§4.8.8) |
+| Faktorisierungsbox | **Theorem**-Verweis | **A** |
+| Fixpunkte aller Kaskaden | **Forschungsfrage** | **R** |
+| `genealogicallyPrime`, $K(N)$-Baum | **Stub** / **offen** | **A**/**R** |
+
+**Label:** §4.8.19 = **Meta** / **Gedankenexperiment** (Schicht **C** für Kolmogorov) / **Theorem**-Verweis (Schicht **A** für FTA) / **Forschungsfrage** (Schicht **R** für Fixpunkt-Vergleich); **kein Theorem**.
 
 ### 4.9 Zeta-Exponential-Gedankenexperiment (Schicht **C**)
 

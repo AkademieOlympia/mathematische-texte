@@ -1,11 +1,14 @@
 /-
-  CollatzEabc.GenealogicalPrime — Stub: genealogische Primobjekte (§4.8.18).
+  CollatzEabc.GenealogicalPrime — Stub: genealogische Primobjekte (§4.8.18–§4.8.19).
 
   Schicht **A**/**R**: Operation, Kategorie, Erzeugungsregeln — offene `Prop`.
   Kein Theorem; keine physikalische Ontologie.
 
+  Konzeptuell (§4.8.19): K(N) als Länge des minimalen Informationsbaums —
+  Verbindung zu `genealogicallyPrime` noch offen (kein Kolmogorov-Theorem im Repo).
+
   Querverweise: `OccupancyMonoid.lean`, `streaming_factorization.lean`,
-  `collatz_eabc_zirkulationshypothese.md` §4.8.18.
+  `collatz_eabc_zirkulationshypothese.md` §4.8.18, §4.8.19.
 -/
 
 import Mathlib
@@ -17,6 +20,7 @@ namespace CollatzEabc
 
 Baum `T(n)` mit Blättern = lokale Blockzustände, Wurzel = Merge-Endzustand.
 Formalisiert in §4.8.18; vollständige Kategorie-Theorie noch offen.
+Konzeptuell (§4.8.19): K(N) = Länge minimaler Informationsbaum — Lean-Verbindung offen.
 -/
 
 /-- Abstrakter Knoten eines Erzeugungsbaums (Stub). -/
