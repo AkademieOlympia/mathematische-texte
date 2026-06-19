@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
-EABC-Schalenradius — numerischer Stub (§4.8.20 in collatz_eabc_zirkulationshypothese.md).
+EABC-Schalenradius — numerischer Stub (§4.8.20–§4.8.21 in collatz_eabc_zirkulationshypothese.md).
+
+Primverteilung auf Schalen: eabc_shell_prime_distribution.py (§4.8.21).
 
 Berechnet pythagoräische Schalenradien
     R_{n,m} = sqrt(2^n + 3^m)

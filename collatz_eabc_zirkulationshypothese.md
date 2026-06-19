@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung: $(\hbar,\sigma)$** §4.8.14 (Präzisierung: Phasenraum-Orientierung statt Raumrichtung, Abschnitt 9); **Symplektische Orientierung und EABC-Vierfachstruktur** §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17; **Assoziative Schranke und genealogische Primobjekte (Gedankenexperiment)** §4.8.18; **Kompressionskaskaden und atomare Fixpunkte (Gedankenexperiment)** §4.8.19; **EABC-Schalenraum (pythagoräische Radien)** §4.8.20; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung: $(\hbar,\sigma)$** §4.8.14 (Präzisierung: Phasenraum-Orientierung statt Raumrichtung, Abschnitt 9); **Symplektische Orientierung und EABC-Vierfachstruktur** §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17; **Assoziative Schranke und genealogische Primobjekte (Gedankenexperiment)** §4.8.18; **Kompressionskaskaden und atomare Fixpunkte (Gedankenexperiment)** §4.8.19; **EABC-Schalenraum (pythagoräische Radien)** §4.8.20; **Schalenhierarchie und Primprojektion** §4.8.21; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
 - `collatz_eabc_zeta_exponential_gedankenexperiment.md` — **Gedankenexperiment / Analogie:** $\zeta$ als Exponentialsumme auf Log-Prim-Geometrie; Euler-Streifen $(1\pm p^{-s})$; $\xi$-Spiegelung; Brücke zu Log-Koordinaten, $\gamma^\pm$-Paarung, Level-2; §6–§10: Ganzzahl/Halbzahl-Exponenten, Oktanionen (Schicht C), Bernoulli-Subtraktion, Fibonacci-Zeta (kein RH-/EABC-Theorem)
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
@@ -1437,7 +1437,7 @@ $$\boxed{\;\textbf{Aktueller Gesamtstatus:}\; algebraisch wohldefiniert \checkma
 
 **Label:** §4.8.7 = **Meta** / **Hypothese** / **Experiment** (Schicht **C**); **kein Theorem**.
 
-**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12; Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13; Prägeometrie der Wirkung $(\hbar,\sigma)$ §4.8.14 (Präzisierung Phasenraum-Orientierung, Abschnitt 9); Symplektische Orientierung und EABC-Vierfachstruktur §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17; **Assoziative Schranke und genealogische Primobjekte (Gedankenexperiment)** §4.8.18; **Kompressionskaskaden und atomare Fixpunkte (Gedankenexperiment)** §4.8.19; **EABC-Schalenraum (pythagoräische Radien)** §4.8.20.
+**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12; Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13; Prägeometrie der Wirkung $(\hbar,\sigma)$ §4.8.14 (Präzisierung Phasenraum-Orientierung, Abschnitt 9); Symplektische Orientierung und EABC-Vierfachstruktur §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17; **Assoziative Schranke und genealogische Primobjekte (Gedankenexperiment)** §4.8.18; **Kompressionskaskaden und atomare Fixpunkte (Gedankenexperiment)** §4.8.19; **EABC-Schalenraum (pythagoräische Radien)** §4.8.20; **Schalenhierarchie und Primprojektion** §4.8.21.
 
 #### 4.8.8 Beobachtungsgeometrie als Kompressionsoperator
 
@@ -3237,6 +3237,112 @@ $$\boxed{\;\textbf{Behauptet (Gedankenexperiment):}\; \text{Der EABC-Schalenraum
 | `eabc_shell_radius.py` | **Experiment** (Stub) | **B** |
 
 **Label:** §4.8.20 = **Meta** / **Gedankenexperiment** (Schicht **C** für $r^8$ und Quaternionen) / **Definition** (Schicht **A**/**B** für $R_{n,m}$, FTA, $\mathcal{C}_E$); **kein Theorem**.
+
+#### 4.8.21 Schalenhierarchie und Primprojektion
+
+**Paper-Titel (Baustein):** *Dreistufige EABC-Schalenhierarchie: Geometrie, Primprojektion, Impuls — testbares Verteilungsprogramm*
+
+**Status:** paper-ready Gedankenexperiment — **kein Theorem**, **keine** neue Primzahlverteilungstheorie; **Geometrie ≠ Satz**. Die folgende dreistufige Hierarchie erweitert §4.8.20 um eine operationalisierbare Primprojektion und ein erstes numerisches Forschungsprogramm (Schicht **B**).
+
+**Querverweise:** EABC-Schalenraum §4.8.20; Kompressionsoperator $\mathcal{C}_E$ §4.8.8; Radikalschichten `Radikal Zerlegung der natürlichen Zahlen.tex`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §0–3.1; numerischer Stub `eabc_shell_radius.py`; **Verteilungstest** `eabc_shell_prime_distribution.py`.
+
+##### 1. Dreistufige Hierarchie
+
+| Ebene | Objekt | Inhalt | Schicht |
+|-------|--------|--------|---------|
+| **1 — Geometrie** | $R_{n,m}=\sqrt{2^n+3^m}$ | Glatte $(2,3)$-Schale, Log-Gitter $(n,m)$ | **A**/**B** |
+| **2 — Primprojektion** | $P(p)=(R_{n,m},\,v(p))$ | $v(p)=\mathcal{C}_E(p)\in\{E,A,B,C\}$ via $p\bmod 12$ | **A**/**B** |
+| **3 — Impuls/Masse** | $M(N)=\sum_i e_i\,v(p_i)\,\log p_i$ | Vektor aus Radikalfamilien und logarithmischen Primgewichten | **A**/**B** |
+
+**Ebene 1 (glatte Geometrie):** Das Log-Gitter $(n,m)$ indiziert Schalen $S_{n,m}$ mit Radius $R_{n,m}$ — dieselbe pythagoräische Lesart wie §4.8.20. Diese Ebene ist **rein arithmetisch** (Schicht **A**) und als Beobachtungsgitter **definitorisch** (Schicht **B**).
+
+**Ebene 2 (Primprojektion):** Jeder Primfaktor $p>3$ trägt ein Paar
+
+$$P(p)=\bigl(R_{n,m},\,v(p)\bigr),$$
+
+wobei $(n,m)$ aus der glatten $(2,3)$-Schale von $N=p$ stammt und $v(p)\in\{E,A,B,C\}$ die mod-$12$-EABC-Klasse ist. Für Primzahlen $p>3$ gilt kanonisch $2\nmid p$ und $3\nmid p$, also $(n,m)=(0,0)$ und $R_{0,0}=\sqrt5$ — die **Vakuum-Schale** im Primfall.
+
+**Ebene 3 (Impulsvektor und FTA-Lesart):** Für allgemeines $N=2^\alpha 3^\beta\prod_i p_i^{e_i}$ definieren wir den **Impuls-/Massenvektor**
+
+$$M(N):=\sum_i e_i\,v(p_i)\,\log p_i$$
+
+als gewichtete Summe der Radikalfamilien-Richtungen mit logarithmischen Primgewichten. In der **FTA-Lesart** (Schicht **B**) kodiert eine Zahl damit **Position** (Schalenindex $R_{n,m}$ aus der glatten Schale) **plus Orientierung** (EABC-Anteile in $M(N)$) — ohne Behauptung, dass $\mathbb{N}$ ontologisch ein Tangentialraum ist.
+
+$$\boxed{\;\text{Dreistufen-Schema:}\; (n,m)\;\xrightarrow{\;R_{n,m}\;}\;\text{Ort}\;\oplus\;P(p)=(R_{n,m},v(p))\;\xrightarrow{\;\sum e_i\log p_i\;}\;M(N).\;}$$
+
+**Label:** Ebenen 1–3 = **Definition** / **Modellabbildung** (Schicht **A**/**B**); **kein Theorem**.
+
+##### 2. $r^8$-Kompressionsnorm und $E$-Projektion (Schicht **C**)
+
+**Spekulativ / ikonisch (Schicht C):** Die $r^8$-Normkugel aus §4.8.20 dient als **Kompressionsnorm**: nach Entfernung entlang der $E$-Achse (reale Quaternionenkomponente / glatte Schalenreferenz) verbleibt der reduzierte Raum $X\perp E$ mit chiraler $A,B,C$-Struktur — analog zu $S_{\mathrm{ABC}}=S_{\mathrm{EABC}}\setminus E\text{-Faser}$.
+
+| Lesart | Inhalt | Schicht |
+|--------|--------|---------|
+| Kompressionsnorm $r^8$ | Normniveau für aggressive Verdichtung $\mathcal{C}_E$ bei Erhalt von $R_{n,m}$ | **C** |
+| $X\perp E$ nach $E$-Projektion | Chirale Orientierungsfreiheitsgrade $A,B,C$ auf fester Schale | **C** |
+| Arithmetischer Kern | $R_{n,m}$, $\mathcal{C}_E$, $\log p$-Gewichte | **A**/**B** |
+
+$$\boxed{\;\textbf{Schicht C:}\; r^8\text{-Kugel und }X\perp E\text{ — Ikone der Kompressionswahl, kein EABC-Satz.}\;}$$
+
+**Label:** $r^8$, $X\perp E$ = **Ikone** / **Analogie** (Schicht **C**).
+
+##### 3. Radikal, Vakuum, Primpunkte — Teilchen-Analogie (Schicht **C**)
+
+Im Bild der Radikalschichten (`Radikal Zerlegung der natürlichen Zahlen.tex`) trennen wir drei Mengen:
+
+| Menge | Definition | Lesart |
+|-------|------------|--------|
+| **Vakuum** $V$ | $\{R_{n,m}\}$ — reine Schalenradien ohne Radikalbelegung | leeres Gitter der glatten Geometrie |
+| **Primpunkte** $P$ | $\{(R_{n,m},\,v(p),\,\log p)\mid p\text{ Prim}>3\}$ | beobachtbare Radikal-Events auf Schalen |
+| **Vereinigung** $U$ | $U:=V\cup P$ | diskreter Beobachtungsraum |
+
+$$\boxed{\;V=\{R_{n,m}\},\quad P=\{(R_{n,m},v(p),\log p)\},\quad U=V\cup P.\;}$$
+
+**Teilchen-Analogie (Schicht C, explizit nicht ontologisch):** Ein Prim $p$ ist ein **Punkt** in $P$ — Schalenort $R_{n,m}$, EABC-Richtung $v(p)$, logarithmische Masse $\log p$. Das Vakuum $V$ trägt die geometrische Kulisse; $U$ ist der **Beobachtungsraum**, nicht ein behaupteter Hilbertraum oder eine Teilchentheorie.
+
+**Label:** $V,P,U$ = **Analogie** / **Definition** (Schicht **C** für Teilchenbild, **B** für Beobachtungsmenge).
+
+##### 4. Testbares Forschungsprogramm
+
+**Forschungsfrage (Schicht B/R):** Weichen die beobachteten EABC-Häufigkeiten $\{E,A,B,C\}$ **pro Schalen-Bucket** $(n,m)$ (oder $R$-Bin) systematisch von einem **Zufallsmodell** ab?
+
+| Test | Nullhypothese | Skript |
+|------|---------------|--------|
+| Global / pro Schale | Gleichverteilung $1/4$ je Klasse (bzw. Permutation mit gleichen Marginalen) | `eabc_shell_prime_distribution.py` |
+| Schalen-Zuordnung | **factor** (kanonisch): $(n,m)$ aus $2^\alpha 3^\beta\mid p$; für $p>3$ trivial $(0,0)$ | `--shell-mode factor` |
+| Stratifikation | **log-grid**: $(n,m)$ minimiert $\|\log p-\log R_{n,m}\|$ auf endlichem Gitter | `--shell-mode log-grid` |
+
+**Schalen-Zuordnung (dokumentierte Wahl):** Primzahlen $p>3$ werden als $N=p$ gelesen; die glatte Schale liefert $(n,m)$. Alternativ kann für empirische Stratifikation ein Log-Gitter-Matcher gewählt werden — **explizit** als Beobachtungswahl, nicht als neuer Faktorisierungssatz.
+
+**Epistemik:** Eine Abweichung vom Nullmodell wäre **empirisches Signal** (Schicht **B**), kein Beweis für physikalische Schalen. Gleichverteilung im Primfall ist **dirichlet-kompatibel** (Schicht **A**, erwartbar) und widerlegt die Geometrie-Hypothese nicht — sie testet **Zusatzstruktur** über die kanonische mod-$12$-Kanalisation hinaus.
+
+**Smoke-Ergebnis** (`--limit 5000`, `factor`, 667 Primzahlen $>3$): EABC-Fraktionen $\approx 0{,}238/0{,}255/0{,}256/0{,}250$, $\chi^2\approx 0{,}53$, Permutations-$p=1{,}0$ — **keine** signifikante Abweichung vom Marginal-Nullmodell in diesem Fenster.
+
+##### 5. Epistemische Kernboxen
+
+$$\boxed{\;\textbf{Box 1 (Schicht A):}\; P(p)=(R_{n,m},v(p)),\; v(p)=\mathcal{C}_E(p)\text{ — mod-12 auf Primzahlen.}\;}$$
+
+$$\boxed{\;\textbf{Box 2 (Schicht B):}\; M(N)=\sum_i e_i v(p_i)\log p_i\text{ — Impuls-/Massenvektor; FTA-Lesart Position+Orientierung.}\;}$$
+
+$$\boxed{\;\textbf{Box 3 (Schicht C):}\; V=\{R_{n,m}\},\; P=\{(R_{n,m},v(p),\log p)\},\; U=V\cup P\text{ — Teilchen-Analogie, nicht Ontologie.}\;}$$
+
+$$\boxed{\;\textbf{Box 4 (Schicht C):}\; r^8\text{-Norm, }X\perp E\text{ nach }E\text{-Projektion — Kompressionsikone.}\;}$$
+
+$$\boxed{\;\textbf{Nicht behauptet:}\; \text{Dass Primzahlen physikalische Schalen bewohnen, dass }r^8\text{ bewiesen ist, oder dass }M(N)\text{ ein Impulssatz der Zahlentheorie ist.}\;}$$
+
+$$\boxed{\;\textbf{Behauptet (Gedankenexperiment):}\; \text{Dreistufige Schalenhierarchie operationalisiert §4.8.20; EABC-Verteilungen auf Schalen sind gegen Perm-/Gleichverteilungs-Nullmodelle testbar (}\texttt{eabc\_shell\_prime\_distribution.py}\text{).}\;}$$
+
+| Baustein | Tao-Label | Schicht |
+|----------|-----------|---------|
+| $R_{n,m}$, Log-Gitter $(n,m)$ | **Definition** | **A**/**B** |
+| $P(p)$, $v(p)=\mathcal{C}_E(p)$ | **Definition** | **A**/**B** |
+| $M(N)=\sum e_i v(p_i)\log p_i$ | **Modellabbildung** | **B** |
+| $V,P,U$ Teilchen-Analogie | **Analogie** | **C** |
+| $r^8$, $X\perp E$ | **Ikone** | **C** |
+| EABC vs. Perm-Null | **Experiment** | **B** |
+| `eabc_shell_prime_distribution.py` | **Experiment** | **B** |
+
+**Label:** §4.8.21 = **Meta** / **Gedankenexperiment** (Schicht **C** für $V,P,U$ und $r^8$) / **Definition** (Schicht **A**/**B** für Hierarchie) / **Forschungsprogramm** (Schicht **B**/**R**); **kein Theorem**.
 
 ### 4.9 Zeta-Exponential-Gedankenexperiment (Schicht **C**)
 
