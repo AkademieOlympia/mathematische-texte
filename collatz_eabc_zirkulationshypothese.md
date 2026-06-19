@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung: $(\hbar,\sigma)$** §4.8.14; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung: $(\hbar,\sigma)$** §4.8.14 (Präzisierung: Phasenraum-Orientierung statt Raumrichtung, Abschnitt 9); Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
 - `collatz_eabc_zeta_exponential_gedankenexperiment.md` — **Gedankenexperiment / Analogie:** $\zeta$ als Exponentialsumme auf Log-Prim-Geometrie; Euler-Streifen $(1\pm p^{-s})$; $\xi$-Spiegelung; Brücke zu Log-Koordinaten, $\gamma^\pm$-Paarung, Level-2; §6–§10: Ganzzahl/Halbzahl-Exponenten, Oktanionen (Schicht C), Bernoulli-Subtraktion, Fibonacci-Zeta (kein RH-/EABC-Theorem)
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
@@ -1435,7 +1435,7 @@ $$\boxed{\;\textbf{Aktueller Gesamtstatus:}\; algebraisch wohldefiniert \checkma
 
 **Label:** §4.8.7 = **Meta** / **Hypothese** / **Experiment** (Schicht **C**); **kein Theorem**.
 
-**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12; Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13; Prägeometrie der Wirkung $(\hbar,\sigma)$ §4.8.14.
+**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12; Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13; Prägeometrie der Wirkung $(\hbar,\sigma)$ §4.8.14 (Präzisierung Phasenraum-Orientierung, Abschnitt 9).
 
 #### 4.8.8 Beobachtungsgeometrie als Kompressionsoperator
 
@@ -2306,6 +2306,70 @@ $$\boxed{\;\textbf{Behauptet (Gedankenexperiment):}\; \hbar\text{ verbindet Dyna
 | Prägeometrie, Orientierungsereignis | **Analogie** | **C** |
 | $(\hbar,\sigma)\Rightarrow\mathfrak{su}(2)$ | **Forschungsfrage** | **R** |
 | „EABC erklärt $\hbar$ oder QM" | — | **nicht behauptet** |
+
+##### 9. Präzisierung: Phasenraum-Orientierung statt Raumrichtung
+
+Die Abschnitte 1–8 können missverstanden werden, als ob $\hbar$ selbst eine **Raumrichtung** trüge. Diese Präzisierung schärft die Lesart: $\hbar$ ist **skalar**; Orientierung ist ein **separater** Freiheitsgrad — nicht als Vektor in $S^2$, sondern als **interne** bzw. **phasenraumbezogene** Orientierungsinformation.
+
+**Standardphysik (Schicht C):** $\hbar$ ist eine **skalare** Konstante. Orientierung im Raum folgt aus Drehimpuls, Spin und SU(2) — nicht aus $\hbar$ allein.
+
+**Prägeometrie-Lesart (Schicht C, Analogie):** Ein **elementares Wirkungsereignis** ist nicht durch $\hbar$ allein beschrieben, sondern durch ein **gepaartes** Ereignis
+
+$$\boxed{\;(\hbar,\,\sigma), \qquad \sigma\in\{E,A,B,C\}\cong\mathbb{Z}_4.\;}$$
+
+Dabei ist $\sigma$ eine **Orientierungsvariable** — getrennt von der skalaren Wirkungseinheit $\hbar$. Die Analogie zum Vektor (Betrag, Richtung) ist **heuristisch**, nicht ontologisch:
+
+| Vektor-Analogie | Prägeometrie-Lesart | Korrektur |
+|-----------------|---------------------|-----------|
+| Betrag $|v|$ | $\hbar$ (skalare Wirkungseinheit) | $\hbar$ ist **nicht** „nur der Betrag eines $\hbar$-Vektors" |
+| Richtung $\hat{v}\in S^2$ | $\sigma$ (diskretes Label) | $\sigma$ ist **keine** Raumrichtung in $S^2$ |
+| Vektor $v=|v|\hat{v}$ | $(\hbar,\sigma)$ | **Gekoppeltes Ereignis**, nicht Vektorprodukt |
+
+$$\boxed{\;\textbf{Nicht die Leitfrage:}\; \text{„Hat }\hbar\text{ eine Richtung?" — }\hbar\text{ ist skalar; die Frage ist falsch gestellt.}\;}$$
+
+**Phasenraum statt Raumrichtung:** $\hbar$ ist im Phasenraum **natürlich** verankert — nicht als Pfeil im Konfigurationsraum, sondern als **Einheit der symplektischen Fläche**:
+
+$$\Delta x\,\Delta p \;\gtrsim\; \hbar, \qquad \omega = dx\wedge dp.$$
+
+Die 2-Form $\omega$ trägt **Flächenorientierung** (Orientierung im $(x,p)$-Raum), aber **keine Raumrichtung** im üblichen Sinne. Geometrisch: $\hbar$ quantisiert die **untere Grenze einer orientierten Phasenraum-Zelle** — nicht die Richtung eines Objekts im $\mathbb{R}^3$.
+
+**Vorsichtige Formulierung der EABC-Hebung:** Die Kompressionskette §4.8.8–4.8.12 liefert nicht $\hbar\to(\hbar,u)$ mit $u\in S^2$ als Primäroutput, sondern präziser:
+
+$$\hbar \;\longrightarrow\; (\hbar,\,\omega),$$
+
+wobei $\omega$ die **diskrete Orientierung einer Phasenraum-Zelle** bezeichnet (symplektische 2-Form auf einer minimalen Zelle), und
+
+$$\sigma\in\{E,A,B,C\}$$
+
+die **Wirkungsereignis-Klasse** nach $\mathcal{C}_E$ ist — ein arithmetisches Label der Beobachtungskompression, **nicht** eine Raumrichtung.
+
+| Symbol | Bedeutung | Was es **nicht** ist |
+|--------|-----------|----------------------|
+| $\hbar$ | Skala der Wirkung / Phasenraum-Fläche | Orientierungsvektor |
+| $\omega$ | Flächenorientierung im Phasenraum $(x,p)$ | Raumrichtung in $S^2$ |
+| $\sigma$ | EABC-Klasse, Wirkungsereignis-Label | Drehachse oder Spinrichtung |
+
+**Physikalische Kompatibilität:** Eine **interne** Orientierungsinformation — ohne bevorzugte Raumrichtung — ist mit etablierter Physik vereinbar: Mittelung über alle Orientierungen einer symmetrischen Verteilung stellt **Rotationssymmetrie** wieder her. Die Prägeometrie-Lesart behauptet daher **nicht**, dass $\hbar$ eine bevorzugte Raumrichtung festlegt; sie fragt, ob das **elementare Wirkungsereignis** zusätzlich zu seiner skalaren Größe eine **diskrete interne Orientierungsinformation** trägt — und ob aus dieser (nach Mittelung) Drehimpuls- bzw. SU(2)-Struktur **emergieren** kann.
+
+$$\boxed{\;\textbf{Frage 1 (Schicht R):}\; \text{Besitzt ein elementares Wirkungsereignis diskrete interne Orientierungsinformation — getrennt von der skalaren Wirkungseinheit }\hbar\text{?}\;}$$
+
+| Perspektive | Antwort | Status |
+|-------------|---------|--------|
+| Standard-QM | $\hbar$ skalar; Orientierung via SU(2)/Drehimpuls | **Referenz** (Schicht **C**) |
+| Prägeometrie | $(\hbar,\omega)$: Wirkung plus Phasenraum-Flächenorientierung | **Bild** (Schicht **C**) |
+| EABC | $(\hbar,\sigma)$: Wirkung plus diskretes Beobachtungslabel | **Hypothese** (Schicht **A**/**B**) |
+
+$$\boxed{\;\textbf{Frage 2 (Schicht R):}\; \text{Kann aus interner Orientierungsinformation (diskret oder phasenraumbezogen) Drehimpuls- bzw. SU(2)-Struktur emergieren — ohne }\hbar\text{ selbst zu vektorisieren?}\;}$$
+
+| Perspektive | Mechanismus | Status |
+|-------------|-------------|--------|
+| Standard-QM | Rotationsinvarianz $\Rightarrow$ $\mathfrak{su}(2)$-Algebra | **Referenz** (Schicht **C**) |
+| EABC-Programm | Hebung $\sigma\mapsto u\in V\subset S^2$, SU(2)-Prüfstein §4.8.12 | **Forschungsfrage** (Schicht **R**) |
+| Mittelung | Interne Orientierung $\to$ Rotationssymmetrie im Makroskopischen | **Kompatibilitätsargument** (Schicht **C**) |
+
+$$\boxed{\;\textbf{Epistemische Sicherung:}\; \sigma\in\{E,A,B,C\}\text{ ist Wirkungsereignis-Klasse, nicht Raumrichtung; }\omega=dx\wedge dp\text{ ist Phasenraum-Orientierung, nicht }u\in S^2\text{; die Leitfrage ist \textbf{nicht} „Hat }\hbar\text{ eine Richtung?", sondern ob Orientierung als separater Freiheitsgrad am elementaren Wirkungsereignis ansetzt.}\;}$$
+
+**Label:** §4.8.14 Abschnitt 9 = **Meta** / **Präzisierung** / **Prägeometrie-Analogie** (Schicht **C** für Phasenraum-Bilder; **A**/**B** für $(\hbar,\sigma)$-Lesart; **R** für Emergenzfragen); **kein Theorem**.
 
 **Label:** §4.8.14 = **Meta** / **Gedankenexperiment** / **Prägeometrie-Analogie** (Schicht **C** für Physik-Bilder; **A**/**B** für $(\hbar,\sigma)$-Kompressionskette; **R** für Emergenzfrage); **kein Theorem**.
 
