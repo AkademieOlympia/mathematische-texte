@@ -1002,6 +1002,43 @@ pytest tests/test_eabc_level2_fluctuation.py -q
 
 **Label:** gesamter Abschnitt §4.8.2 = **Definition** (Nullmodell-Hierarchie) + **Experiment** (Multi-$\Delta_F$); **kein Theorem**.
 
+#### 4.8.3 Optionale Stufe-0-Kopplung: $\Sigma_A$ ↔ $\zeta_F$-Kamm
+
+$$\boxed{\;\text{NICHT: }\Sigma_A\text{ wird durch }\zeta_F\text{ erklärt — SONDERN: }\Sigma_A\text{ wird gegen den Fibonacci-/}\varphi\text{-Kamm projiziert.}\;}$$
+
+**Minimale Form** (Resonatorkamm ohne Pochhammer/$5^{s/2}$):
+
+$$K_F(s)=\sum_{m\ge0} w_m\,\frac{(-1)^m\,\varphi^{-(s+2m)}}{1-(-1)^m\,\varphi^{-(s+2m)}},\qquad w_m\ge0\;\text{(default: }w_m=1\text{)}.$$
+
+**Projektionsvektor** $k_F\in\mathbb{R}^6$ (Raum der Paar-Observablen $a\in\Lambda^2(\mathbb{R}^4)$):
+
+$$k_F[j]=\mathrm{Re}\bigl(K_F(\tfrac12+i\,t_j)\bigr),\quad t_j=\frac{2\pi j}{\log\varphi},\;j=1,\ldots,6,\quad \|k_F\|=1.$$
+
+**Kopplungsmetrik** (spektrale Kommensurabilität):
+
+$$\boxed{\;C_F(\Sigma,k_F):=\sum_i \lambda_i\,\bigl|\langle v_i,k_F\rangle\bigr|^2,\;}$$
+mit $(\lambda_i,v_i)=\mathrm{Spec}(\Sigma_A^{\mathrm{prime}})$.
+
+**Test:** Liegt $C_F(\Sigma_A^{\mathrm{prime}},k_F)$ über $C_F(\Sigma_A^{\mathrm{null}},k_F)$ für $\mathrm{null}\in\{\mathrm{golden},\mathrm{perm},\mathrm{Markov}\}$ bzw. über einer Isotropie-Baseline (zufällige Einheitsvektoren)?
+
+**Epistemik:** **Optionale** Stufe-0-Kopplung — **Experiment** (Schicht **C**), kein Erklärungsanspruch, kein Theorem. Tao-Stil: Definition / Experiment / keine Vermutung als Theorem.
+
+| Status | Inhalt |
+|--------|--------|
+| **Idee** | definiert (diese Box) |
+| **Methodik** | plausibel (Resonatorprojektion + Level-2-Nullhierarchie) |
+| **Implementierung** | `eabc_sigma_fibonacci_coupling.py` — **implementiert** + erste numerische Diagnostik |
+
+```bash
+python3 eabc_sigma_fibonacci_coupling.py --limit 100000 --B-rand 50
+```
+
+**Querverweis:** meromorphe Normalform und Resonatoren §9.8–9.10 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`; Stufe-0-Nullensemble §4.8.2 (`eabc_level2_fluctuation.py`).
+
+**Label:** §4.8.3 = **Definition** + **Experiment** (Schicht **C**); **kein Theorem**.
+
+**Erste Diagnostik** ($N=10^5$, $B=20$, Seed 42, Checkpoints $m\in\{10^3,5\cdot10^3,10^4\}$): $C_F^{\mathrm{prime}}/C_F^{\mathrm{golden}}\approx0{,}58$–$0{,}83$ (Prim-Kopplung **unter** goldenem Null); $C_F^{\mathrm{prime}}/C_F^{\mathrm{random}}\approx1{,}3$–$2{,}9$ (leichte Überlappung gegenüber Isotropie). **Lesart:** kein starker Resonanzbefund — diagnostisch offen.
+
 ### 4.9 Zeta-Exponential-Gedankenexperiment (Schicht **C**)
 
 $$\boxed{\;\text{Zeta ist die Exponentialfunktion auf der logarithmischen Primzahl-Geometrie — \textbf{Gedankenexperiment}, kein EABC-Theorem.}\;}$$
