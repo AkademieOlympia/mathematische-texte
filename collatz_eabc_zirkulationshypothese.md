@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
 - `collatz_eabc_sagnac.md` — **Intuition only:** Sagnac-Bild für $\gamma^\pm$ (kein physikalischer Kern)
@@ -822,7 +822,7 @@ $$\boxed{\;\text{Die antisymmetrische Level-2-Pfadsignatur zeigt eine andere emp
 
 **Lesart:** $\Delta_F(m)$ **kollabiert nicht** gegen $0$; über alle Checkpoints $>50\%$ relative Frobenius-Abweichung. $\|\mu_A\|\ll 1$ bestätigt: Information liegt in $\Sigma_A$, nicht im Mittelwert.
 
-**Epistemische Grenze (Tao/Maynard):** Dies ist **numerische Evidenz**, kein Beweis. Das Permutations-Nullmodell (marginaltreue Zufallspermutation pro Fenster) ist explizit definiert; ein arithmetischer Mechanismus für die Kovarianzdifferenz bleibt offen. Robustheit gegenüber anderen Nullmodellen (z.\,B. i.i.d.\ uniform, Block-Shuffle) ist noch zu prüfen.
+**Epistemische Grenze (Tao/Maynard):** Dies ist **numerische Evidenz**, kein Beweis. Das Permutations-Nullmodell (marginaltreue Zufallspermutation pro Fenster) ist explizit definiert; ein arithmetischer Mechanismus für die Kovarianzdifferenz bleibt offen. **Robustheit gegenüber realistischeren Nullmodellen** (Markov-erhaltend, HL-konsistent) ist Gegenstand von §4.8.2 und `eabc_level2_fluctuation.py`.
 
 #### Pipeline (Experiment)
 
@@ -923,6 +923,77 @@ $$\boxed{\;\text{Nur: Struktur liegt nicht im Mittelwert, sondern in der Fluktua
 **Wissenschaftlicher Gewinn:** Level-2 ist von Nullmodellen unterscheidbar, während Level-1 verschwindet — **methodische** Parallele zur Vielteilchenphysik, **keine** physikalische Identifikation.
 
 **Label:** gesamter Abschnitt §4.8.1 = **Analogie** (Schicht **C**); verknüpft mit **Experiment** (§4.3, §4.8) und **Beispiel** (Witness §4.4).
+
+#### 4.8.2 Nullmodell-Hierarchie für $\Sigma_A$
+
+$$\boxed{\;\text{Der eigentliche Gegner ist das \textbf{falsche Nullmodell} — nicht }\mu_A\approx 0.\;}$$
+
+**Schlüsselfrage:** Gegen welches Ensemble wird $\Sigma_A^{\mathrm{prime}}$ verglichen?
+
+Level-2 testet **Kovarianzgeometrie**, nicht den Mittelwert. Ein Befund $\Delta_F>0$ gegen ein zu schwaches Nullmodell (z.\,B. volle Permutation) ist interessant, aber noch nicht arithmetisch; erst der Vergleich gegen **realistischere** Ensembles trägt epistemisches Gewicht.
+
+##### Stufen 1–4
+
+| Stufe | Nullmodell | Symbol | Status | Epistemische Lesart |
+|-------|------------|--------|--------|---------------------|
+| **1** | Volle Permutation (marginaltreu) | $\Sigma_A^{\mathrm{perm}}$ | **implementiert** | interessant, nicht sensationell |
+| **2** | Markov-erhaltend (lokale Übergänge) | $\Sigma_A^{\mathrm{Markov}}$ | **implementiert** | stärker — zerstört höhere Korrelationen, erhält $P(X_{i+1}\|X_i)$ |
+| **3** | Hardy-Littlewood-konsistent | $\Sigma_A^{\mathrm{HL}}$ | **Stub** | wahrhaft arithmetisch — Paar-/Mehrfachkorrelationen |
+| **4** | Theoretische Erklärung | — | offen | neue Mathematik |
+
+**Beschreibung der Nullmodelle:**
+
+| ID | Modell | Was erhalten bleibt | Was zerstört wird |
+|----|--------|---------------------|-------------------|
+| **A** | Volle Permutation von $(a_1,\ldots,a_n)$ | Klassenhäufigkeiten pro Fenster | gesamte Pfadordnung |
+| **B** | Markov-erhaltend | lokale Übergangswahrscheinlichkeiten $P(w_{i+1}\|w_i)$ | höhere Pfadkorrelationen |
+| **C** | Cramér-ähnlicher Primprozess | asymptotische Dichte | mod-$12$-Kanalstruktur |
+| **D** | HL-konsistent | Paar-/Mehrfachkorrelationen (Hardy–Littlewood) | feinere arithmetische Constraints |
+
+**Metrik pro Stufe:**
+$$\Delta_F^{(\mathrm{null})}(m)=\frac{\|\Sigma_A^{\mathrm{prime}}(m)-\Sigma_A^{\mathrm{null}}(m)\|_F}{\|\Sigma_A^{\mathrm{null}}(m)\|_F},\qquad
+\mathrm{null}\in\{\mathrm{perm},\,\mathrm{Markov},\,\mathrm{HL}\}.$$
+
+##### Spin-Liquid-Lektion (Schicht **C**, methodisch)
+
+In der Spinon-Literatur testet man nicht gegen „reine Zufallskorrelationen“, sondern gegen **zunehmend realistische Ensembles** (short-range entanglement, gauge constraints, …). EABC-Parallel:
+
+$$\boxed{\;\Sigma_A^{\mathrm{prime}}\neq\Sigma_A^{\mathrm{perm}}\;\text{belegt noch keine Arithmetik — erst }\Sigma_A^{\mathrm{prime}}\neq\Sigma_A^{\mathrm{HL}}\;\text{wäre stark.}\;}$$
+
+**Label:** **Analogie** — methodische Parallele zur Physik, **keine** physikalische Identifikation.
+
+##### Observable-Verschiebung (Holonomie-Umkehrung)
+
+Frühes EABC suchte Drift/Holonomie ($\Phi_E\to 0$ plausibel unter Null); das neue Programm verschiebt den Fokus:
+
+| Frühes EABC (Level-1) | Aktuelles EABC (Level-2) |
+|-----------------------|--------------------------|
+| $D_E$ | $\Sigma_A$ |
+| $W_E$ | $\mathrm{Spec}(\Sigma_A)$ |
+| $\Phi_E$ | $\Delta_F$ |
+
+**Holonomie-Umkehrung:** $\Phi_E=0$ ist ein plausibles Nullmodell auf Level-1; die neuen Fragen sind $\Sigma_A^{\mathrm{prime}}=?$ und $\mathrm{Spec}(\Sigma_A)=?$.
+
+##### Numerischer Befund Multi-Null (Experiment, $N=5\cdot 10^5$, $B=50$, Seed 42)
+
+| $m$ | $\Delta_F^{\mathrm{perm}}$ | $\Delta_F^{\mathrm{Markov}}$ |
+|-----|---------------------------|------------------------------|
+| $10^3$ | 0.549 | 0.437 |
+| $2\cdot 10^3$ | 0.600 | 0.504 |
+| $5\cdot 10^3$ | 0.681 | 0.596 |
+| $10^4$ | 0.724 | 0.655 |
+| $2\cdot 10^4$ | 0.722 | 0.647 |
+
+**Querverweis:** Perm-Spalte = früherer Einzelnull-Befund §4.8; Markov-Spalte aus `eabc_level2_fluctuation.py` (`delta_F_markov`); HL-Spalte = Stub (`delta_F_hl=null`).
+
+```bash
+python3 eabc_level2_fluctuation.py --n-primes 500000 --B-rand 50
+pytest tests/test_eabc_level2_fluctuation.py -q
+```
+
+**Lesart:** $\Delta_F^{\mathrm{Markov}}$ liegt durchgängig **10–15 Prozentpunkte unter** $\Delta_F^{\mathrm{perm}}$, kollabiert aber **nicht** gegen $0$ — die Kovarianzstruktur übersteigt Markov-Überschuss (höhere Korrelationen), bleibt aber auch gegen das stärkere Nullmodell deutlich von Null getrennt ($>40\%$ relativ). Erst Stufe 3 (HL) entscheidet über arithmetische Signifikanz.
+
+**Label:** gesamter Abschnitt §4.8.2 = **Definition** (Nullmodell-Hierarchie) + **Experiment** (Multi-$\Delta_F$); **kein Theorem**.
 
 ---
 

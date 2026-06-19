@@ -13,6 +13,8 @@ from eabc_level2_fluctuation import (
     CHECKPOINTS,
     analyze_checkpoint,
     build_eabc_word,
+    collect_hl_null_vectors,
+    collect_markov_null_vectors,
     compute_a_vector,
     delta_F,
     empirical_covariance,
@@ -49,8 +51,30 @@ def test_analyze_checkpoint_small():
     assert row["m"] == 100
     assert row["K_prime"] >= 40
     assert len(row["Sigma_A_prime"]) == 6
-    assert 0.0 <= row["Delta_F"] < 1.0
+    assert 0.0 <= row["delta_F_perm"] < 1.0
+    assert 0.0 <= row["delta_F_markov"] < 1.0
+    assert row["Delta_F"] == row["delta_F_perm"]
+    assert row["delta_F_hl"] is None
     assert row["mu_A_prime_norm"] < 0.5
+
+
+def test_markov_null_differs_from_perm():
+    word = build_eabc_word(3_000)
+    rng = np.random.default_rng(99)
+    perm = collect_markov_null_vectors(word, m=200, B=10, rng=rng)
+    # Markov-Resampling erzeugt gültige 6-Vektoren
+    assert perm.shape[1] == 6
+    assert perm.shape[0] >= 100
+
+
+def test_hl_null_stub():
+    word = build_eabc_word(500)
+    rng = np.random.default_rng(0)
+    try:
+        collect_hl_null_vectors(word, m=100, B=2, rng=rng)
+        assert False, "HL-Stub sollte NotImplementedError werfen"
+    except NotImplementedError as exc:
+        assert "Stufe 3" in str(exc)
 
 
 def test_run_fluctuation_test_structure():
@@ -64,6 +88,9 @@ def test_run_fluctuation_test_structure():
     assert len(report["results"]) == 2
     for row in report["results"]:
         assert "Delta_F" in row
+        assert "delta_F_perm" in row
+        assert "delta_F_markov" in row
+        assert row["delta_F_hl"] is None
         assert len(row["spec_prime"]) == 6
 
 

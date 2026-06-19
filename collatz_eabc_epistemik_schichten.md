@@ -211,6 +211,17 @@ Ergänzend zu den **fünf Ebenen** 0–4 in Schicht **B** (Geometrie → Fehlert
 
 $$\boxed{\;\text{Kein Anspruch: }\Sigma_A\text{ sind Spinons oder Primzahlen bilden ein Spin Liquid. Nur methodische Parallele: Struktur in Fluktuationsgeometrie, nicht im Mittelwert.}\;}$$
 
+**Nullmodell-Leiter** (vollständig: `collatz_eabc_zirkulationshypothese.md` §4.8.2): Level-2 testet $\Sigma_A^{\mathrm{prime}}$ gegen eine **Hierarchie** realistischerer Ensembles — nicht gegen $\mu_A\approx 0$:
+
+| Stufe | Null | Frage |
+|-------|------|-------|
+| 1 | $\Sigma_A^{\mathrm{perm}}$ | Abweichung von marginaltreuer Zufallsreihenfolge? |
+| 2 | $\Sigma_A^{\mathrm{Markov}}$ | Abweichung bei erhaltenen lokalen Übergängen? |
+| 3 | $\Sigma_A^{\mathrm{HL}}$ | Abweichung bei HL-konsistenten Korrelationen? |
+| 4 | Theorie | Mechanismus / neue Mathematik |
+
+$$\boxed{\;\text{Gegner ist falsches Nullmodell — nicht der verschwindende Mittelwert.}\;}$$
+
 **Label:** gesamter Abschnitt §3.1 = **Analogie** (Schicht **C**); verknüpft mit **Experiment** (Level 1–2) und **Beispiel** (Witness).
 
 ---

@@ -7,12 +7,17 @@ Observable: a = (a_EA, a_EB, a_EC, a_AB, a_AC, a_BC) ∈ ℝ⁶
   a_XY = (N_XY - N_YX) / (N_XY + N_YX) ∈ [-1, 1]
 
 Kernmetrik (Pflicht-Checkpoints):
-  Δ_F(m) = ||Σ_A^prime(m) - Σ_A^rand(m)||_F / ||Σ_A^rand(m)||_F
+  Δ_F(m) = ||Σ_A^prime(m) - Σ_A^null(m)||_F / ||Σ_A^null(m)||_F
 
 wobei Σ_A = E[(a - μ_A)(a - μ_A)^T] über disjunkte Fenster der Größe m
-im EABC-Primstrom bzw. unter Permutations-Nullmodell.
+im EABC-Primstrom bzw. unter Nullmodell-Ensemble.
 
-Ausgabe: JSON + stdout
+Nullmodell-Hierarchie (Stufe 1–3):
+  Stufe 1 — perm:      volle Permutation (marginaltreu, Reihenfolge zerstört)
+  Stufe 2 — markov:    Markov-erhaltend (lokale Übergangswahrscheinlichkeiten)
+  Stufe 3 — hl:        Hardy-Littlewood-konsistent (Stub, noch nicht implementiert)
+
+Ausgabe: JSON mit delta_F_perm, delta_F_markov (+ delta_F_hl=null) + stdout
 """
 
 from __future__ import annotations
@@ -113,13 +118,13 @@ def collect_window_vectors(word: np.ndarray, m: int) -> np.ndarray:
     return np.array(rows, dtype=np.float64)
 
 
-def collect_null_vectors(
+def collect_perm_null_vectors(
     word: np.ndarray,
     m: int,
     B: int,
     rng: np.random.Generator,
 ) -> np.ndarray:
-    """Permutations-Nullmodell: B Zufallspermutationen pro disjunktes Fenster."""
+    """Stufe 1 — Permutations-Nullmodell: B Zufallspermutationen pro Fenster."""
     n = len(word)
     rows: list[np.ndarray] = []
     buf = np.empty(m, dtype=np.int8)
@@ -132,6 +137,70 @@ def collect_null_vectors(
             if not np.any(np.isnan(a)):
                 rows.append(a)
     return np.array(rows, dtype=np.float64)
+
+
+def _markov_transition_matrix(window: np.ndarray) -> np.ndarray:
+    """Zeilen-stochastische 4×4-Übergangsmatrix aus Adjazenzpaaren."""
+    counts = np.ones((4, 4), dtype=np.float64)  # Laplace-Glättung
+    for i in range(len(window) - 1):
+        counts[int(window[i]), int(window[i + 1])] += 1.0
+    row_sums = counts.sum(axis=1, keepdims=True)
+    return counts / row_sums
+
+
+def _markov_resample(
+    window: np.ndarray,
+    trans: np.ndarray,
+    buf: np.ndarray,
+    rng: np.random.Generator,
+) -> None:
+    """Erzeugt Markov-Nullfolge gleicher Länge mit erhaltener Startklasse."""
+    buf[0] = window[0]
+    for i in range(1, len(buf)):
+        buf[i] = int(rng.choice(4, p=trans[int(buf[i - 1])]))
+
+
+def collect_markov_null_vectors(
+    word: np.ndarray,
+    m: int,
+    B: int,
+    rng: np.random.Generator,
+) -> np.ndarray:
+    """Stufe 2 — Markov-erhaltendes Nullmodell (lokale Übergangswahrscheinlichkeiten)."""
+    n = len(word)
+    rows: list[np.ndarray] = []
+    buf = np.empty(m, dtype=np.int8)
+    for start in range(0, n - m + 1, m):
+        win = word[start:start + m]
+        trans = _markov_transition_matrix(win)
+        for _ in range(B):
+            _markov_resample(win, trans, buf, rng)
+            a = compute_a_vector(buf)
+            if not np.any(np.isnan(a)):
+                rows.append(a)
+    return np.array(rows, dtype=np.float64)
+
+
+def collect_hl_null_vectors(
+    word: np.ndarray,
+    m: int,
+    B: int,
+    rng: np.random.Generator,
+) -> np.ndarray:
+    """
+    Stufe 3 — Hardy-Littlewood-konsistentes Nullmodell (PLACEHOLDER).
+
+    Geplant: Erzeugung von Nullfolgen mit HL-konsistenten Paar-/Mehrfachkorrelationen
+    (Cramér-ähnlicher Primprozess + mod-12-Kanalrestriktion). Siehe §4.8.2.
+    """
+    raise NotImplementedError(
+        "HL-Nullmodell (Stufe 3): Hardy-Littlewood-konsistente Ensemble-Generierung "
+        "noch nicht implementiert — siehe collatz_eabc_zirkulationshypothese.md §4.8.2"
+    )
+
+
+# Rückwärtskompatibilität
+collect_null_vectors = collect_perm_null_vectors
 
 
 # ---------------------------------------------------------------------------
@@ -165,32 +234,42 @@ def analyze_checkpoint(
     B_rand: int,
     rng: np.random.Generator,
 ) -> dict:
-    """Berechnet Σ_A^prime, Σ_A^rand und Δ_F(m) für Fenstergröße m."""
+    """Berechnet Σ_A^prime und Δ_F(m) gegen perm- und Markov-Nullmodell."""
     eabc_vecs = collect_window_vectors(word, m)
-    null_vecs = collect_null_vectors(word, m, B_rand, rng)
+    perm_vecs = collect_perm_null_vectors(word, m, B_rand, rng)
+    markov_vecs = collect_markov_null_vectors(word, m, B_rand, rng)
 
-    if eabc_vecs.shape[0] < 2 or null_vecs.shape[0] < 2:
-        raise ValueError(
-            f"Zu wenige Fenster für m={m}: "
-            f"K_prime={eabc_vecs.shape[0]}, K_rand={null_vecs.shape[0]}"
-        )
+    if eabc_vecs.shape[0] < 2:
+        raise ValueError(f"Zu wenige Fenster für m={m}: K_prime={eabc_vecs.shape[0]}")
+    for label, vecs in (("perm", perm_vecs), ("markov", markov_vecs)):
+        if vecs.shape[0] < 2:
+            raise ValueError(
+                f"Zu wenige Null-Vektoren ({label}) für m={m}: K={vecs.shape[0]}"
+            )
 
     mu_prime, sigma_prime = empirical_covariance(eabc_vecs)
-    mu_rand, sigma_rand = empirical_covariance(null_vecs)
-    dF = delta_F(sigma_prime, sigma_rand)
+    _, sigma_perm = empirical_covariance(perm_vecs)
+    _, sigma_markov = empirical_covariance(markov_vecs)
+    dF_perm = delta_F(sigma_prime, sigma_perm)
+    dF_markov = delta_F(sigma_prime, sigma_markov)
 
     return {
         "m": m,
         "K_prime": int(eabc_vecs.shape[0]),
-        "K_rand": int(null_vecs.shape[0]),
+        "K_perm": int(perm_vecs.shape[0]),
+        "K_markov": int(markov_vecs.shape[0]),
         "mu_A_prime": [float(x) for x in mu_prime],
-        "mu_A_rand": [float(x) for x in mu_rand],
         "mu_A_prime_norm": float(np.linalg.norm(mu_prime)),
         "Sigma_A_prime": sigma_prime.tolist(),
-        "Sigma_A_rand": sigma_rand.tolist(),
+        "Sigma_A_perm": sigma_perm.tolist(),
+        "Sigma_A_markov": sigma_markov.tolist(),
         "spec_prime": spectrum_summary(sigma_prime),
-        "spec_rand": spectrum_summary(sigma_rand),
-        "Delta_F": dF,
+        "spec_perm": spectrum_summary(sigma_perm),
+        "spec_markov": spectrum_summary(sigma_markov),
+        "Delta_F": dF_perm,
+        "delta_F_perm": dF_perm,
+        "delta_F_markov": dF_markov,
+        "delta_F_hl": None,
     }
 
 
@@ -217,35 +296,47 @@ def run_fluctuation_test(
         "B_rand": B_rand,
         "seed": seed,
         "checkpoints": checkpoints,
+        "null_models": {
+            "perm": "Stufe 1 — volle Permutation (marginaltreu)",
+            "markov": "Stufe 2 — Markov-erhaltend (lokale Übergänge)",
+            "hl": "Stufe 3 — HL-konsistent (Stub, delta_F_hl=null)",
+        },
         "results": results,
     }
 
 
 def print_summary(report: dict) -> None:
     print()
-    print("=" * 72)
-    print("LEVEL-2-FLUKTUATIONSGEOMETRIE: Δ_F(m) auf Λ²(ℝ⁴)")
-    print("=" * 72)
+    print("=" * 78)
+    print("LEVEL-2-FLUKTUATIONSGEOMETRIE: Δ_F(m) auf Λ²(ℝ⁴) — Multi-Nullmodell")
+    print("=" * 78)
     print(f"  N_PRIMES = {report['n_primes']:,}  |  B_RAND = {report['B_rand']}")
+    print("  Nullmodelle: Stufe 1 perm | Stufe 2 markov | Stufe 3 hl (Stub)")
     print()
-    print(f"  {'m':>8}  {'K':>5}  {'|μ_A|':>10}  {'Δ_F(m)':>10}  Befund")
-    print("  " + "-" * 58)
+    print(
+        f"  {'m':>8}  {'K':>5}  {'|μ_A|':>10}  "
+        f"{'Δ_F^perm':>10}  {'Δ_F^markov':>10}  Befund"
+    )
+    print("  " + "-" * 68)
     for row in report["results"]:
         mu_norm = row["mu_A_prime_norm"]
-        dF = row["Delta_F"]
-        if dF > 0.10:
+        dF_perm = row["delta_F_perm"]
+        dF_markov = row["delta_F_markov"]
+        ref = max(dF_perm, dF_markov)
+        if ref > 0.10:
             verdict = "deutlich ≠ Null"
-        elif dF > 0.03:
+        elif ref > 0.03:
             verdict = "moderat ≠ Null"
         else:
             verdict = "≈ Null"
         print(
             f"  {row['m']:>8,}  {row['K_prime']:>5}  "
-            f"{mu_norm:>10.6f}  {dF:>10.6f}  {verdict}"
+            f"{mu_norm:>10.6f}  {dF_perm:>10.6f}  {dF_markov:>10.6f}  {verdict}"
         )
     print()
+    print("  Schlüssel: Gegner ist falsches Nullmodell — perm vs. markov vs. HL (§4.8.2)")
     print("  Interpretation: Δ_F(m) ↛ 0  ⇒  robuste Level-2-Fluktuationsstruktur")
-    print("=" * 72)
+    print("=" * 78)
 
 
 def export_json(report: dict, out_path: Path) -> None:
