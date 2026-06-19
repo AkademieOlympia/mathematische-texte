@@ -11,7 +11,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
 - `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
-- `collatz_eabc_zeta_exponential_gedankenexperiment.md` — **Gedankenexperiment / Analogie:** $\zeta$ als Exponentialsumme auf Log-Prim-Geometrie; Euler-Streifen $(1\pm p^{-s})$; $\xi$-Spiegelung; Brücke zu Log-Koordinaten, $\gamma^\pm$-Paarung, Level-2 (kein RH-/EABC-Theorem)
+- `collatz_eabc_zeta_exponential_gedankenexperiment.md` — **Gedankenexperiment / Analogie:** $\zeta$ als Exponentialsumme auf Log-Prim-Geometrie; Euler-Streifen $(1\pm p^{-s})$; $\xi$-Spiegelung; Brücke zu Log-Koordinaten, $\gamma^\pm$-Paarung, Level-2; §6–§9: Ganzzahl/Halbzahl-Exponenten, Oktanionen (Schicht C), Bernoulli-Subtraktion (kein RH-/EABC-Theorem)
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
 - `collatz_eabc_sagnac.md` — **Intuition only:** Sagnac-Bild für $\gamma^\pm$ (kein physikalischer Kern)
@@ -1008,7 +1008,7 @@ $$\zeta(s)=\sum_{n\ge 1} e^{-s\log n},\qquad (1-p^{-s})(1+p^{-s})=1-p^{-2s},\qqu
 
 **Heuristische Brücke zu EABC** (Interpretationsschicht): logarithmische Koordinaten ($\log n$, $\log p$); links–rechts-Paarung $(\gamma^+,\gamma^-)$ bzw. $(D_E,Q)$ parallel zu Differenz–Summen-Streifen $(e^x-e^{-x})(e^x+e^{-x})$; Level-2-Information in $\Sigma_A$ statt in Mittelwerten — analog zur Quadrat-Frequenz $p^{-2s}$ im Euler-Produkt.
 
-**Vollständige Ausführung** (Abschnitte 1–5, epistemische Tabelle, Abgrenzung): `collatz_eabc_zeta_exponential_gedankenexperiment.md`.
+**Vollständige Ausführung** (Abschnitte 1–5, epistemische Tabelle, Abgrenzung; Erweiterung §6–§9 Ganzzahl/Halbzahl, Oktanionen, Bernoulli-Subtraktion): `collatz_eabc_zeta_exponential_gedankenexperiment.md`.
 
 ---
 

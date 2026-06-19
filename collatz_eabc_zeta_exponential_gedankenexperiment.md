@@ -8,9 +8,13 @@ $$\boxed{\;\textbf{Schicht C:}\;\text{Dieses Dokument ist Interpretationsschicht
 
 **Querverweise:**
 - `collatz_eabc_zirkulationshypothese.md` — §4.9 (Kurzverweis); Level-2-Fluktuationsgeometrie §4.8; links-rechts-Paarung §2
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Abgrenzung Ikone vs. Struktur
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Abgrenzung Ikone vs. Struktur; Hurwitz-/Basel-Ikone §2
 - `collatz_eabc_diskrete_geometrie.md` — kanonische EABC-Definitionen ($G_E$, $\gamma^\pm$)
-- `collatz_offene_punkte.md` — Stirling–Bernoulli–Zeta-Anbindung (spekulativ, separater Kontext)
+- `collatz_offene_punkte.md` — Stirling–Bernoulli–Zeta-Anbindung; Bernoulli-Uhr (`BernoulliClock.lean`)
+- `collatz_bernoulli_schalen.pdf` — Bernoulli-Normschalen und $\zeta$-Anbindung (PDF)
+- `collatz_oktonionen_beweis.pdf` — oktanionischer Beweis-/Programmkontext (PDF)
+- `divisionsalgebren.tex` — Satz von Hurwitz, $\mathbb{R},\mathbb{C},\mathbb{H},\mathbb{O}$
+- `collatz_mathlib_eabc_kandidaten.md` — $\zeta(2n)$ via Bernoulli (`riemannZeta_two_mul_nat`); Hurwitz-Namensfalle
 
 ---
 
@@ -180,7 +184,178 @@ $$\boxed{\;\textbf{Zeta ist die Exponentialfunktion auf der logarithmischen Prim
 | Streifen- und Spiegelungsbild | **C** | **Analogie** |
 | EABC-Brücke §4 | **C** | **Analogie** / **Ikone** |
 | $D_E$, $\Sigma_A$, $\Delta_F$ | **B** / Experiment | **Definition** / **Experiment** |
+| §6–§8 (Ganzzahl/Halbzahl, Bernoulli) | **C** (+ klassisch in Boxen) | **Theorem** / **Analogie** |
 
 ---
 
-*Verknüpft mit `collatz_eabc_zirkulationshypothese.md` §4.9; epistemischer Rahmen: `collatz_eabc_epistemik_schichten.md`.*
+## 6. Ganzzahlige und halbzahlige Exponenten
+
+Die Streifen-Normierung in Box 2 setzt bereits $x=\tfrac{s}{2}\log p$ — der **Faktor $\tfrac12$** in der Exponentenachse ist kein Zufall der Notation, sondern markiert eine **halbzahlige Gitterstruktur** auf der Log-Skala: $p^{-s}=e^{-2x}$ mit $x=\tfrac{s}{2}\log p$.
+
+### 6.1 Exponentengitter $\mathbb{Z}$ und $\mathbb{Z}+\tfrac12$
+
+Wir **beschränken** das Gedankenexperiment (methodisch, nicht als Konvergenzbehauptung für die volle Dirichlet-Reihe) auf Exponenten
+
+$$s\in\mathcal{S}:=\mathbb{Z}\;\cup\;\Bigl(\tfrac12+\mathbb{Z}\Bigr)=\Bigl\{\ldots,-1,0,1,\ldots\Bigr\}\;\cup\;\Bigl\{\ldots,-\tfrac12,\tfrac12,\tfrac32,\ldots\Bigr\}.$$
+
+| Klasse | Beispiel | Rolle im Streifen-Bild |
+|--------|---------|------------------------|
+| $s\in\mathbb{Z}$ | $s=2$: $\zeta(2)=\pi^2/6$ | ganzzahlige „Frequenz“ auf $\log n$; Euler-Faktor $1-p^{-2s}$ bei $s\in\mathbb{Z}$ |
+| $s=\tfrac12+it$ | kritische Linie | reeller Anteil **halbzahlig**; $\xi(\tfrac12+z)=\xi(\tfrac12-z)$ (Box 3) |
+| $s=\tfrac{n}{2}$, $n\in\mathbb{Z}$ | $s=1$: Rand des Konvergenzstreifens | $p^{-s}=p^{-n/2}$; Verdopplung $s\mapsto 2s$ in Box 2 |
+
+**Lesart:** Die **Verdopplung** $s\mapsto 2s$ im Streifen-Produkt $(1-p^{-s})(1+p^{-s})=1-p^{-2s}$ ist auf $\mathcal{S}$ **geschlossen**: aus $s\in\mathcal{S}$ folgt $2s\in\mathbb{Z}$. Halbzahlige Exponenten liefern **ganzzahlige** Quadrat-Frequenzen in der Euler-Faktorisierung — parallel zur Übergangsregel $\sinh(x)\cosh(x)\propto\sinh(2x)$.
+
+**Label:** algebraische Identitäten = **Theorem** (klassisch); Gitter-Einschränkung = **Definition** (Gedankenexperiment).
+
+### 6.2 Klassische Spezialwerte (ganze gerade/ungerade Exponenten)
+
+$$\boxed{\;\zeta(-2n)=0\qquad(n\in\mathbb{N}_{>0}).\;}$$
+
+$$\boxed{\;\zeta(2n)=(-1)^{n+1}\,\frac{B_{2n}\,(2\pi)^{2n}}{2\,(2n)!}\qquad(n\in\mathbb{N}_{>0}),\;}$$
+
+wobei $B_{2n}$ die **Bernoulli-Zahlen** ($B_0=1$, $B_2=1/6$, $B_4=-1/30$, …) bezeichnen.
+
+Für **negative ungerade** ganze Exponente (nach analytischer Fortsetzung):
+
+$$\boxed{\;\zeta(1-2n)=-\frac{B_{2n}}{2n}\qquad(n\in\mathbb{N}_{>0}).\;}$$
+
+Die **Funktionalgleichung** $\xi(s)=\xi(1-s)$ verknüpft Werte bei $s$ und $1-s$: ganzzahlige Spezialwerte an der einen Seite bestimmen (über $\Gamma$-Faktoren und Polstellen) halbzahlige bzw. komplementäre Information — z. B. liegt die kritische Mitte $\Re(s)=\tfrac12$ genau **zwischen** $0$ und $1$.
+
+**Label:** alle Boxen in §6.2 = **Theorem** (klassisch, Standardreferenz).
+
+### 6.3 Halbzahlige Achse und kritische Linie
+
+Mit $s=\tfrac12+it$ ist $\Re(s)$ **fix halbzahlig**; die Funktionalgleichung wird zur **Geradigkeit** $\xi(\tfrac12+z)=\xi(\tfrac12-z)$ (Box 3). Auf der Streifen-Seite: $p^{-s}=p^{-1/2}\cdot p^{-it}$ faktorisiert in einen **reellen Halbzahl-Anteil** $p^{-1/2}$ (Wurzel-Gewichtung auf der Log-Achse) und eine **reine Phase** $p^{-it}=e^{-it\log p}$.
+
+**Wichtig:** Die Einschränkung auf $\mathcal{S}$ **ersetzt nicht** die analytische Theorie auf $\mathbb{C}$; sie ist eine **Lesart-Schicht** für das Gedankenexperiment — welche Exponenten im Streifen-Bild „resonieren“ und welche durch Bernoulli/Funktionalgleichung algebraisch geschlossen sind.
+
+**Label:** §6.3 = **Analogie** (Schicht **C**), außer explizit geboxte Identitäten.
+
+---
+
+## 7. Oktanionische Einordnung (Schicht C)
+
+$$\boxed{\;\text{Oktanionische Brücke = \textbf{Analogie} (Schicht C) — keine Behauptung über EABC-Beweise oder Collatz.}\;}$$
+
+### 7.1 Hurwitz-Kette und Dimensionsleiter
+
+Nach dem **Satz von Hurwitz** (normierte Divisionsalgebren) gibt es genau vier Stufen
+
+$$\mathbb{R}\;(1)\;\subset\;\mathbb{C}\;(2)\;\subset\;\mathbb{H}\;(4)\;\subset\;\mathbb{O}\;(8),$$
+
+jeweils mit Dimensionsverdopplung $1\to2\to4\to8$. Siehe `divisionsalgebren.tex`; oktanionischer Programmkontext: `collatz_oktonionen_beweis.pdf`.
+
+| Algebra | Dimension | EABC-Programm (Lesart) | Label |
+|---------|-----------|--------------------------|-------|
+| $\mathbb{R}$ | $1$ | reelle Skalare, $Q(X)$, Fenstergröße | **Definition** (B) |
+| $\mathbb{C}$ | $2$ | Phase, $\Phi_{\mathrm{pref}}$, komplexe Projektion | **Analogie** (C) |
+| $\mathbb{H}$ | $4$ | **Quaternionischer Schatten:** $C_4\cong S^1$, $V=\{E,A,B,C\}$ mod $12$, $\gamma^\pm$ | **Definition** (B) + **Analogie** (C) |
+| $\mathbb{O}$ | $8$ | **Schicht-C-Programm:** maximale nichtassoziative „Phase“; $G_2=\mathrm{Aut}(\mathbb{O})$ | **Analogie** (C) |
+
+**EABC auf $C_4$** ist kanonisch **quaternionisch** (vier Restklassen, vierdimensional als $H_1(C_4,\mathbb{Z})$-Gerüst) — nicht oktanionisch im Beweissinne (`collatz_eabc_diskrete_geometrie.md`, `collatz_eabc_epistemik_schichten.md` §2). Die Oktanionen treten als **Nebenprogramm / Ikone** auf: mögliche **Hebung** von $4$ auf $8$ Freiheitsgrade in der Interpretationsschicht.
+
+### 7.2 Halbzahlige Exponenten und Verdopplungsmuster
+
+Die Hurwitz-Dimensionen verdoppeln sich: $2^k$ für $k=0,1,2,3$. **Vorsichtige** Parallele zum Exponentengitter §6:
+
+| Hurwitz | Exponentengitter (Bild) | Gemeinsamkeit |
+|---------|-------------------------|---------------|
+| $1,2,4,8$ | Schrittweite $\tfrac12$ auf $s$-Achse (via $x=\tfrac{s}{2}\log p$) | **Verdopplung** als strukturelles Motiv |
+| $\mathbb{H}\to\mathbb{O}$: Assoziativität bricht | $s\mapsto 2s$ in Box 2 | „Quadrat“-Information ($p^{-2s}$) statt linearer Term |
+
+**Spinor / doppelte Überlagerung (nur Bildsprache):** In der Physik tritt $\mathrm{Spin}(n)$ als **zweifache Überlagerung** von $\mathrm{SO}(n)$ auf — eine **$2\pi$- vs. $4\pi$-Periodizität**. Die halbzahlige kritische Linie $\Re(s)=\tfrac12$ und die Normierung $x=\tfrac{s}{2}\log p$ erinnern **formal** an „halbe Schritte“ auf einer überlagerten Achse. Das ist **kein** Theorem über Spinoren, EABC oder $\zeta$-Nullstellen; es motiviert nur, warum $\mathcal{S}=\mathbb{Z}\cup(\tfrac12+\mathbb{Z})$ im Streifen-Gedankenexperiment **natürlicher** wirkt als beliebige $s\in\mathbb{C}$.
+
+**Label:** gesamter §7 = **Analogie** / **Ikone** (Schicht **C**).
+
+### 7.3 Mod $12$, $C_4$ und oktanionisches „Schicht-C-Deck“
+
+| Objekt | Schicht | Rolle |
+|--------|---------|-------|
+| $G_E$, $C_4$, $\gamma^\pm$, $D_E$ | **B** | beweisbare/kanonische diskrete Struktur |
+| Hurwitz-24-Einheiten, $24I_3$ | **A** / Ikone | `collatz_hurwitz_polytop_eabc.tex`, `collatz_eabc_epistemik_schichten.md` |
+| $\mathbb{O}$, $G_2$, Symmetriebruch $\mathbb{O}\to\mathbb{H}$ | **C** | `divisionsalgebren.tex`, `AntiInflation.tex` (spekulativ) |
+
+**Explizit ausgeschlossen:** EABC-Holonomie oder $D_E$-Wachstum **folgt nicht** aus oktanionischer Algebra; PR-Kontext „spektral-oktonion“ (falls vorhanden) ist **nicht** Teil des kanonischen B-Kerns.
+
+---
+
+## 8. Bernoulli-Subtraktion und regulierte analytische Größen
+
+Dieser Abschnitt präzisiert, was „**Bernoulli subtrahieren**“ im Zeta-Streifen-Gedankenexperiment **konkret** bedeuten kann — und trennt **klassische** Regularisierung von **EABC-Analogie**.
+
+### 8.1 Bernoulli in $\zeta(2n)$ und $\zeta(1-2n)$
+
+Die Identitäten in §6.2 zeigen: **gerade positive** Spezialwerte $\zeta(2n)$ sind **reine Bernoulli-Zahlen** (mit $\pi$-Gewicht); **negative ungerade** Werte $\zeta(1-2n)$ sind **rationale Vielfache** $B_{2n}/(2n)$. Die Funktionalgleichung transportiert diese Information zwischen $s$ und $1-s$.
+
+$$\boxed{\;\text{Spezialwerte an ganzzahligen Stellen }s\in\mathbb{Z}\text{ sind algebraisch durch }B_{2n}\text{ geschlossen (bis auf bekannte Transzendenz, z.\,B. }\pi\text{).}\;}$$
+
+**Label:** **Theorem** (klassisch). Verknüpfung zu `collatz_bernoulli_schalen.pdf`, Bernoulli-Uhr in `collatz_offene_punkte.md` ($B_{2m}=-2m\,\zeta(1-2m)$), Lean `BernoulliClock.lean`.
+
+### 8.2 Euler–Maclaurin: Subtraktion divergenter Anteile
+
+Für glatte $f$ mit $\sum_{k\ge1}f(k)$ liefert **Euler–Maclaurin** eine asymptotische Entwicklung
+
+$$\sum_{k=1}^{N} f(k)=\int_1^{N} f(x)\,dx+\frac{f(1)+f(N)}{2}+\sum_{j=1}^{m}\frac{B_{2j}}{(2j)!}\bigl(f^{(2j-1)}(N)-f^{(2j-1)}(1)\bigr)+R_m.$$
+
+Die **Bernoulli-Gewichte** $B_{2j}/(2j)!$ sind die universellen Koeffizienten, mit denen **Rand- und Derivativterme** subtrahiert werden, um die Summe an die Integral-Hauptform anzugleichen. Für $f(k)=k^{-s}$ ($\Re(s)>1$) entsteht so die analytische Fortsetzung von $\zeta(s)$; die **Pole** und **triviale Nullstellen** bei negativen geraden $s$ sind das Ergebnis dieser **Subtraktions-/Kompensationsstruktur**.
+
+**Lesart „Bernoulli subtrahieren“:** Man entfernt (formal oder asymptotisch) den **Polynom-/Potenz-Exponentialanteil** und behält den **endlichen Rest** bzw. die **regulierte Summe**.
+
+**Label:** Euler–Maclaurin-Formel = **Theorem** (klassisch); Stirling–Bernoulli–Zeta-Kette in `collatz_offene_punkte.md` = **spekulativ** (separater Kontext).
+
+### 8.3 Was „analytisches Resultat“ hier bedeutet
+
+| Begriff | Bedeutung | Beispiel |
+|---------|-----------|----------|
+| **Spezialwert** | exakter Wert an $s\in\mathbb{Z}$ | $\zeta(2)=\pi^2/6$, $\zeta(-1)=-\tfrac1{12}$ |
+| **Endlicher Teil** (Hadamard) | Konstante nach Abzug divergenter Hauptbeiträge in einer Regularisierung | $\zeta(-1)$ als endlicher Teil einer $\sum n$-Regularisierung |
+| **Regulierte Summe** | Grenzwert nach Subtraktion der ersten $m$ Euler–Maclaurin-Terme | $\zeta(s)$ für $\Re(s)$ klein |
+| **Algebraische Schließung** | Ausdruck nur durch $B_{2n}$, $\pi$, rationale Zahlen | $\zeta(2n)$ in §6.2 |
+
+Im Streifen-Gedankenexperiment (§2–3) ist das **analytische Resultat** nach Bernoulli-Subtraktion: die **geschlossene** Spezialwertformel — nicht eine neue EABC-Observable.
+
+### 8.4 Anbindung an Streifen-Produkt und $\zeta(s)/\zeta(2s)$
+
+Aus Box 2: lokales Produkt $(1-p^{-s})(1+p^{-s})=1-p^{-2s}$. Global (formal, $\Re(s)>1$):
+
+$$\frac{\zeta(s)}{\zeta(2s)}=\prod_{p}\frac{1-p^{-2s}}{1-p^{-s}}=\prod_{p}(1+p^{-s}).$$
+
+An **ganzzahligen** $s=2n$ verbindet dies **gerade** Zeta-Spezialwerte mit einem **nur-Summen-Euler-Produkt** (Differenzfaktor weggekürzt). Die Bernoulli-Darstellung von $\zeta(2n)$ kontrolliert dann das **symmetrische** Streifen-Produkt $\prod_p(1+p^{-2n})$ indirekt über $\zeta(2n)$ und $\zeta(4n)$.
+
+**Heuristik (Schicht C):** Die **Subtraktion** des antisymmetrischen Anteils $(1-p^{-s})$ im Quotienten $\zeta(s)/\zeta(2s)$ spiegelt die **Reduktion** von Differenz×Summe auf **reine Summe** — analog zum Übergang von $(e^x-e^{-x})(e^x+e^{-x})$ zu einer **einzigen** $\sinh(2x)$-Frequenz in Box 2. **Kein** Identitätsbeweis mit $D_E$ oder HL-Kanälen.
+
+### 8.5 Bernoulli-Uhr und EABC (Grenze)
+
+In der **Bernoulli-Uhr** (`collatz_offene_punkte.md`, `BernoulliClock.lean`) werden Tripel $(B_{2m-2},B_{2m},B_{2m+2})$ auf chiralen Zellen $\mathcal{E}_\pm$ (ABCE/CEAB) gelegt. Das ist **definitorische Geometrie** — **kein** numerischer Collatz-Befund, **keine** Lyapunov-Nutzung (Bernoulli-Normschale: No-Go in `collatz_generalangriff_2026.md`).
+
+| Objekt | Schicht | Status |
+|--------|---------|--------|
+| $\zeta(2n)$, $B_{2n}$, Euler–Maclaurin | klassisch | **Theorem** |
+| Bernoulli-Uhr-Tripel auf $\mathcal{E}_\pm$ | **C** | **Definition** (Gedankenmodell) |
+| $D_E$, $\Phi_E$ aus Bernoulli-Subtraktion | — | **nicht behauptet** |
+
+**Numerik (optional):** `collatz_eabc_zeta_bernoulli_check.py` verifiziert $\zeta(2n)$ gegen die Bernoulli-Formel in §6.2 für kleine $n$.
+
+---
+
+## 9. Kurzform (Erweiterung)
+
+$$\boxed{\;\mathcal{S}=\mathbb{Z}\cup(\tfrac12+\mathbb{Z})\;\text{ — halbzahlige Gitterlesart für Streifen-Exponenten.}\;}$$
+
+$$\boxed{\;\zeta(2n)=(-1)^{n+1}\,\dfrac{B_{2n}(2\pi)^{2n}}{2(2n)!},\qquad \zeta(1-2n)=-\dfrac{B_{2n}}{2n}\;\text{(klassisch).}\;}$$
+
+$$\boxed{\;\text{Bernoulli-Subtraktion}=\text{Euler–Maclaurin-/Funktionalgleichungs-Kompensation}\Rightarrow\text{ endliche Spezialwerte.}\;}$$
+
+$$\boxed{\;\mathbb{R}\subset\mathbb{C}\subset\mathbb{H}\subset\mathbb{O}\;\Leftrightarrow\;\text{Schicht-C-Ikone: }C_4\text{-Schatten }\mathbb{H}\text{, Oktanion-Programm ohne B-Theorem.}\;}$$
+
+| Aussage | Schicht | Tao-Label |
+|---------|---------|-----------|
+| §6.2, §8.1–8.2 (klassisch) | — | **Theorem** |
+| §6 Gitter, §8.4 Streifen-Quotient | **C** | **Analogie** |
+| §7 Hurwitz/Oktanionen | **C** | **Analogie** / **Ikone** |
+| Bernoulli-Uhr | **C** | **Definition** (Gedankenmodell) |
+
+---
+
+*Verknüpft mit `collatz_eabc_zirkulationshypothese.md` §4.9; epistemischer Rahmen: `collatz_eabc_epistemik_schichten.md`; Bernoulli: `collatz_bernoulli_schalen.pdf`, `BernoulliClock.lean`; Oktanionen: `divisionsalgebren.tex`, `collatz_oktonionen_beweis.pdf`.*
