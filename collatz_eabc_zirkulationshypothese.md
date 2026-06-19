@@ -1006,6 +1006,20 @@ pytest tests/test_eabc_level2_fluctuation.py -q
 
 $$\boxed{\;\text{NICHT: }\Sigma_A\text{ wird durch }\zeta_F\text{ erklärt — SONDERN: }\Sigma_A\text{ wird gegen den Fibonacci-/}\varphi\text{-Kamm projiziert.}\;}$$
 
+##### Drei-Ebenen-Trennung (referee-sicher)
+
+| Ebene | Inhalt | Status |
+|-------|--------|--------|
+| **Algebraisch** | Meromorphe Normalform von $\zeta_F$, Resonatoren $K_F(s)$, goldenes Log-Gitter $\omega_j=2\pi j/\log\varphi$ | **Definition** (§9.8–9.10 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`) |
+| **Daten** | $\Sigma_A^{\mathrm{prime}}$, $\mathrm{Spec}(\Sigma_A)$, Level-2-Nullhierarchie | **Experiment** (`eabc_level2_fluctuation.py`, §4.8.2) |
+| **Kopplung** | Projektion $\mathrm{Spec}(\Sigma_A)$ auf $\varphi$-Kamm ($C_F$, $P_F$) | **Experiment** (Schicht **C**), kein Theorem |
+
+Die Ebenen sind **getrennt**: algebraische $\zeta_F$-Struktur beweist nichts über Prim-Kovarianz; Datenbefunde ($\Delta_F>0$) implizieren keine Kamm-Resonanz; Kopplungsmetriken testen nur **spektrale Kommensurabilität** als messbaren Befund — ohne Beweisanspruch.
+
+**Nullhypothese (Kopplungsebene):** Nicht $C_F=0$ bzw. $P_F=0$, sondern
+$$H_0:\;C_F(\Sigma_A^{\mathrm{prime}},k_F)\;\not\!>\;C_F(\Sigma_A^{\mathrm{null}},k_F)$$
+(analog für $P_F$), mit $\mathrm{null}\in\{\mathrm{golden},\mathrm{perm},\mathrm{Markov}\}$ plus Isotropie-Baseline (zufällige Einheitsvektoren). **mod-$12$-kanalrestriktiert** und **HL-konsistent** (Stufe 3) sind in der Level-2-Hierarchie vorgesehen, im Kopplungsskript noch **nicht** angebunden (HL: Stub in `eabc_level2_fluctuation.py`).
+
 **Minimale Form** (Resonatorkamm ohne Pochhammer/$5^{s/2}$):
 
 $$K_F(s)=\sum_{m\ge0} w_m\,\frac{(-1)^m\,\varphi^{-(s+2m)}}{1-(-1)^m\,\varphi^{-(s+2m)}},\qquad w_m\ge0\;\text{(default: }w_m=1\text{)}.$$
@@ -1014,30 +1028,50 @@ $$K_F(s)=\sum_{m\ge0} w_m\,\frac{(-1)^m\,\varphi^{-(s+2m)}}{1-(-1)^m\,\varphi^{-
 
 $$k_F[j]=\mathrm{Re}\bigl(K_F(\tfrac12+i\,t_j)\bigr),\quad t_j=\frac{2\pi j}{\log\varphi},\;j=1,\ldots,6,\quad \|k_F\|=1.$$
 
-**Kopplungsmetrik** (spektrale Kommensurabilität):
+**Kopplungsmetrik** (skalare Kommensurabilität):
 
 $$\boxed{\;C_F(\Sigma,k_F):=\sum_i \lambda_i\,\bigl|\langle v_i,k_F\rangle\bigr|^2,\;}$$
 mit $(\lambda_i,v_i)=\mathrm{Spec}(\Sigma_A^{\mathrm{prime}})$.
 
-**Test:** Liegt $C_F(\Sigma_A^{\mathrm{prime}},k_F)$ über $C_F(\Sigma_A^{\mathrm{null}},k_F)$ für $\mathrm{null}\in\{\mathrm{golden},\mathrm{perm},\mathrm{Markov}\}$ bzw. über einer Isotropie-Baseline (zufällige Einheitsvektoren)?
+**Fibonacci-Kamm-Hypothese (Status-Box):**
 
-**Epistemik:** **Optionale** Stufe-0-Kopplung — **Experiment** (Schicht **C**), kein Erklärungsanspruch, kein Theorem. Tao-Stil: Definition / Experiment / keine Vermutung als Theorem.
-
-| Status | Inhalt |
-|--------|--------|
-| **Idee** | definiert (diese Box) |
-| **Methodik** | plausibel (Resonatorprojektion + Level-2-Nullhierarchie) |
-| **Implementierung** | `eabc_sigma_fibonacci_coupling.py` — **implementiert** + erste numerische Diagnostik |
+| | |
+|--|--|
+| **Definition** | $K_F(s)$, $k_F$ am goldenen Log-Gitter $t_j=2\pi j/\log\varphi$ |
+| **Fragestellung** | Zeigt $\mathrm{Spec}(\Sigma_A^{\mathrm{prime}})$ messbare Kommensurabilität mit dem $\varphi$-Resonatorkamm — stärker als gegen die Nullmodell-Hierarchie? |
+| **$C_F$** | **implementiert** (`eabc_sigma_fibonacci_coupling.py --mode cf`) + erste Diagnostik |
+| **$P_F(\omega)$** | **implementiert** (`--mode pf`, default) — frequenzaufgelöste Variante, §4.8.4 |
+| **Erster $C_F$-Befund** | $C_F^{\mathrm{prime}}/C_F^{\mathrm{golden}}\approx0{,}58$–$0{,}83$ ($N=10^5$): Prim-Kopplung **unter** goldenem Null — kein starker Resonanzbefund |
+| **Nächster Schritt** | $P_F(\omega)$-Spektrum gegen $\omega_j=2\pi j/\log\varphi$ auswerten (stabiler, frequenzsichtbar) |
 
 ```bash
-python3 eabc_sigma_fibonacci_coupling.py --limit 100000 --B-rand 50
+python3 eabc_sigma_fibonacci_coupling.py --mode pf --limit 100000 --B-rand 20
+python3 eabc_sigma_fibonacci_coupling.py --mode cf --limit 100000 --B-rand 20
 ```
 
 **Querverweis:** meromorphe Normalform und Resonatoren §9.8–9.10 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`; Stufe-0-Nullensemble §4.8.2 (`eabc_level2_fluctuation.py`).
 
 **Label:** §4.8.3 = **Definition** + **Experiment** (Schicht **C**); **kein Theorem**.
 
-**Erste Diagnostik** ($N=10^5$, $B=20$, Seed 42, Checkpoints $m\in\{10^3,5\cdot10^3,10^4\}$): $C_F^{\mathrm{prime}}/C_F^{\mathrm{golden}}\approx0{,}58$–$0{,}83$ (Prim-Kopplung **unter** goldenem Null); $C_F^{\mathrm{prime}}/C_F^{\mathrm{random}}\approx1{,}3$–$2{,}9$ (leichte Überlappung gegenüber Isotropie). **Lesart:** kein starker Resonanzbefund — diagnostisch offen.
+**Erste Diagnostik $C_F$** ($N=10^5$, $B=20$, Seed 42, Checkpoints $m\in\{10^3,5\cdot10^3,10^4\}$): $C_F^{\mathrm{prime}}/C_F^{\mathrm{golden}}\approx0{,}58$–$0{,}83$ (Prim-Kopplung **unter** goldenem Null); $C_F^{\mathrm{prime}}/C_F^{\mathrm{random}}\approx1{,}3$–$2{,}9$ (leichte Überlappung gegenüber Isotropie). **Lesart:** kein starker Resonanzbefund — diagnostisch offen.
+
+#### 4.8.4 Frequenzaufgelöste Kopplung $P_F(\omega)$
+
+$$\boxed{\;P_F(\omega_j):=\sum_i \lambda_i\,\bigl|\langle \hat v_i(\omega_j), k_F(\omega_j)\rangle\bigr|^2,\quad \omega_j=\frac{2\pi j}{\log\varphi},\;j=1,\ldots,6.\;}$$
+
+**Spektraldarstellung:** Für jede Eigenmode $v_i\in\mathbb{R}^6$ (Paar-Observablen) ist $\hat v_i=\mathrm{FFT}(v_i)/\sqrt{6}$ die diskrete Fourier-Darstellung entlang des Paarindex; $k_F(\omega_j)=k_F[j]$ am goldenen Resonanzpunkt $t_j=\omega_j$.
+
+**Aggregat:** $P_F^{\mathrm{total}}=\sum_j P_F(\omega_j)$; Peak-Lage $P_F^{\mathrm{peak}}$ und $P_F$-Spektrum pro Checkpoint in JSON.
+
+**Test:** Liegt $P_F^{\mathrm{prime}}$ über $P_F^{\mathrm{null}}$ für $\mathrm{null}\in\{\mathrm{golden},\mathrm{perm},\mathrm{Markov}\}$? Nullhypothese wie §4.8.3 ($H_0$: Prim **nicht** über Null).
+
+**Warum vor $C_F$?** $P_F(\omega)$ trennt Resonanz **pro goldenem Gitterpunkt** — weniger anfällig für globale Normierungseffekte als die skalare Summe $C_F$.
+
+**Implementierung:** `eabc_sigma_fibonacci_coupling.py --mode pf` (default); Nullvergleich parallel zu $C_F$.
+
+**Label:** §4.8.4 = **Definition** + **Experiment** (Schicht **C**); **kein Theorem**.
+
+**Erste Diagnostik $P_F$** ($N=10^5$, $B=20$, Seed 42, Checkpoints $m\in\{10^3,5\cdot10^3,10^4\}$): $P_F^{\mathrm{prime}}/P_F^{\mathrm{golden}}\approx0{,}32$–$0{,}65$ (Prim **unter** goldenem Null, konsistent mit $C_F$); kein Peak an einzelnen $\omega_j$ über Null hinaus. **Lesart:** frequenzaufgelöst bestätigt schwache Kamm-Kopplung — diagnostisch offen, kein Resonanztheorem.
 
 ### 4.9 Zeta-Exponential-Gedankenexperiment (Schicht **C**)
 
