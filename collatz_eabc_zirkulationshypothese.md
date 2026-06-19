@@ -1604,17 +1604,33 @@ ist eine **massive Kompression**: unendlich viele natürliche Zahlen werden auf 
 
 **Pixelung = Informationsverlust.** Beschreibungspixelung ist **bewusster Informationsverlust**: Zahlen, die in derselben EABC-Zelle landen, sind für den Beobachter **identisch**. Beispiel: $13$, $37$, $61$, $\ldots$ werden alle auf $E$ komprimiert — ihre individuelle Primfaktorisierung, Divisorenstruktur und Höhenposition auf dem Kegel sind in $C_E$ nicht mehr rekonstruierbar. Die zentrale Frage lautet daher nicht „Ist der Kegel real?“, sondern:
 
-> **Welche arithmetischen Strukturen überleben starke Kompression?**
+> **Welche Primzahlstruktur überlebt extreme Kompression?**
 
 Effektive Pixelung (§ oben) behauptet, dass **Primstruktur** trotz dieses Verlusts noch **nicht-triviale** Signale in den vier Zellen erzeugt ($N_\pm$, $D_E$, $\Sigma_A$) — ein Befund, der nur dann Evidenz hat, wenn er unter Kompression **robust** bleibt.
 
-**Entropie und Landauer-Lesart.** Für ein endliches Fenster $\mathbb{N}_N=\{1,\ldots,N\}$ sei $H(\mathbb{N}_N)=\log N$ die **maximale** Shannon-Entropie der Gleichverteilung (natürlicher Logarithmus; jede Zahl gleich wahrscheinlich). Die **Bild-Entropie** nach Kompression durch $C_E$ ist
-$$H(\mathrm{EABC}_N)=-\sum_{c\in\{E,A,B,C\}} p_N(c)\,\log p_N(c),\qquad p_N(c)=\frac{\#\{n\le N:C_E(n)=c\}}{N}.$$
-Die **informationsreduzierende Arbeit** der Beobachtungsgeometrie (Landauer-Lesart: jede irreversible Kompression hat thermodynamische Kosten) lässt sich als
-$$I_E(N):=H(\mathbb{N}_N)-H(\mathrm{EABC}_N)=\log N-H(\mathrm{EABC}_N)$$
-schreiben — groß für großes $N$, weil $H(\mathrm{EABC}_N)\le\log 4$. Resonanzsignale, die **nur** in der feingliedrigen Beschreibung existieren und unter $C_E$ verschwinden, tragen **keine** strukturelle Evidenz; Signale, die **nach** Kompression noch messbar sind, sind Kandidaten für **kompressionsinvariante** Arithmetik.
+**Entropie endlicher Stichprobe.** Für das endliche Fenster $\mathbb{N}_N=\{1,\ldots,N\}$ und die Gleichverteilung auf $\mathbb{N}_N$ (jede Zahl gleich wahrscheinlich) gilt
+$$H(\mathbb{N}_N)=\log_2 N.$$
+Die **Bild-Entropie** nach Kompression durch $C_E$ ist
+$$H(\mathrm{EABC}_N)=-\sum_{c\in\{E,A,B,C\}} p_N(c)\,\log_2 p_N(c),\qquad p_N(c)=\frac{\#\{n\le N:C_E(n)=c\}}{N}.$$
+(Wir schreiben $H(\mathrm{EABC}_N)$ und meinen stets die Shannon-Entropie in **Bits**.) Asymptotisch gilt $H(\mathrm{EABC}_N)\to\log_2 4=2$, weil die EABC-Besetzung im Limes gleichverteilt ist. Das **Entropiedefizit**
+$$I_E(N):=H(\mathbb{N}_N)-H(\mathrm{EABC}_N)=\log_2 N-H(\mathrm{EABC}_N)$$
+wächst daher wie $I_E(N)\approx\log_2 N-2$: EABC **verwirft asymptotisch fast alle Information** — von $\log_2 N$ Bits bleiben nur noch zwei. Resonanzsignale, die **nur** in der feingliedrigen Beschreibung existieren und unter $C_E$ verschwinden, tragen **keine** strukturelle Evidenz; Signale, die **nach** Kompression noch messbar sind, sind Kandidaten für **kompressionsinvariante** Arithmetik.
 
-**Repo-Verweise (explorativ, kein Theorem):** Shannon-Entropie der EABC-Besetzung in `Quantentests.py` (`eabc_occupation_entropy`); familienbasierte Entropie $C_{\mathrm{fam}}$ in `arithmetische_signaturgeometrie.tex`; Entropie der verbotenen Sprache $h_F$ und κ-Robustheit in `collatz_stufe3_kappa_invarianz.md` / `collatz_stufe2b_kappa_robustheit.md`. Ein expliziter Landauer-Transportbezug (`ABC Pfade.py`) betrifft Leitwert, nicht die hier gemeinte Kompressionsentropie — die Landauer-Verbindung bleibt **konzeptuell** (irreversible Projektion $\Leftrightarrow$ informierende Arbeit).
+**Ausreichende Statistik.** $C_E$ ist **nicht** verlustfrei: aus $C_E(n)$ lässt sich $n$ nicht rekonstruieren. Dennoch ist die Frage offen, ob $C_E$ für die **Primstruktur** eine überraschend gute Kompression darstellt — ob also Primdynamik $\to$ EABC-Struktur eine **informationsrelevante** Abbildung ist, obwohl sie massiv reduziert. Das wäre der Fall, wenn die für Primzahlen charakteristischen Observablen ($N_\pm$, $D_E$, $\Sigma_A$, Level-2 in $\Sigma_A$) in den vier Zellen **nicht-trivial** bleiben, während individuelle Höhen- und Faktorisierungsinformation tilgt wird.
+
+**Strukturstabile Kompression.** Wir führen einen präzisen Prüfbegriff ein:
+
+> **Definition (informell).** Ein Kompressionsoperator $C:\mathbb{N}\to\mathcal{L}$ heißt **strukturstabil** bezüglich eines Signals $S$, wenn $S(\mathbb{N})$ und $S(C(\mathbb{N}))$ dieselbe **qualitative Struktur** tragen — d. h. wenn die für $S$ charakteristischen Muster (Peaks, Korrelationen, Level-2-Abweichungen) unter $C$ **überlebensfähig** bleiben und nicht bloß Projektionsartefakte sind.
+
+Die zentrale EABC-Frage lautet damit präzise: **Ist die EABC-Projektion eine strukturstabile Kompression der Primdynamik?** Positiv $\Rightarrow$ Fall (1) oder (2) mit Evidenz; negativ $\Rightarrow$ Fall (3) oder reine Beobachtungsgeometrie ohne arithmetischen Gehalt.
+
+$$\boxed{\;\text{Strukturstabile Kompression: } S(\mathbb{N})\text{ und } S(C_E(\mathbb{N}))\text{ tragen dieselbe qualitative Struktur — Prüfbegriff für EABC-Evidenz.}\;}$$
+
+**Landauer-Lesart (vorsichtig).** EABC ist **informationsreduzierend im Shannon-Sinn** — das ist präzise und unabhängig von Physik. Die Analogie zu Landauers Prinzip (irreversible Löschung $\Leftrightarrow$ thermodynamische Kosten) ist **nur konzeptuell**: sie strukturiert die Lesart „Projektion tilgt Freiheitsgrade“, **ohne** physikalische Identität zu behaupten. Ein expliziter Landauer-Transportbezug (`ABC Pfade.py`) betrifft Leitwert, nicht die hier gemeinte Kompressionsentropie.
+
+$$\boxed{\;\text{EABC ist informationsreduzierend (Shannon) — Landauer-Analogie nur konzeptuell, keine physikalische Identität.}\;}$$
+
+**Repo-Verweise (explorativ, kein Theorem):** Shannon-Entropie der EABC-Besetzung in `Quantentests.py` (`eabc_occupation_entropy`); familienbasierte Entropie $C_{\mathrm{fam}}$ in `arithmetische_signaturgeometrie.tex`; Entropie der verbotenen Sprache $h_F$ und κ-Robustheit in `collatz_stufe3_kappa_invarianz.md` / `collatz_stufe2b_kappa_robustheit.md`.
 
 **Konkreter Test (Verknüpfung mit Kodierungsinvarianz).** Der Kodierungsinvarianz-Test oben wird in der Kompressionslesart präzisiert:
 
@@ -1627,7 +1643,11 @@ schreiben — groß für großes $N$, weil $H(\mathrm{EABC}_N)\le\log 4$. Resona
 | Signal **überall** (alle Kompressionsstufen) | Fall (1) — strukturell relevant jenseits der Pixelung |
 | Signal **nirgends** | Fall (3) — Artefakt oder Rauschen |
 
-Damit verschiebt sich die Leitfrage des EABC–Fibonacci-Programms: nicht „Existiert der Kegel?“, sondern **„Welche arithmetischen Invarianten sind gegenüber massiver Restklassen-Kompression stabil?“** — und damit kompatibel mit Stufe 3 (κ-Kodierungsinvarianz): dort werden $R(k)$, $h_F$, $\mathcal{L}_{\mathrm{arith}}^*$ unter $\kappa$-Wechsel geprüft; hier dieselbe Logik auf **EABC–Fibonacci-Resonanz** und **Kompressionsoperatoren** übertragen (**Stub**, numerisch offen).
+Damit verschiebt sich die Leitfrage des EABC–Fibonacci-Programms: nicht „Existiert der Kegel?“, sondern **„Welche Primzahlstruktur überlebt extreme Kompression?“** — und damit kompatibel mit Stufe 3 (κ-Kodierungsinvarianz): dort werden $R(k)$, $h_F$, $\mathcal{L}_{\mathrm{arith}}^*$ unter $\kappa$-Wechsel geprüft; hier dieselbe Logik auf **EABC–Fibonacci-Resonanz** und **Kompressionsoperatoren** übertragen (**Stub**, numerisch offen).
+
+$$\boxed{\;\text{EABC-Kegel = starke Kompression: } I_E(N)\approx\log_2 N-2\text{ — fast alle Bits gehen verloren.}\;}$$
+
+$$\boxed{\;\text{Zentrale Frage: Welche Strukturen überleben trotz Verlust? EABC als arithmetischer Informationsfilter.}\;}$$
 
 $$\boxed{\;\text{Beobachtungsgeometrie = informationsreduzierender Kompressionsoperator — \textbf{nicht} ontologisches Kegelmodell.}\;}$$
 
@@ -1641,7 +1661,7 @@ Zusammenfassend sichert §4.8.8 das gesamte Programm ab:
 2. **Instrumentalismus** — Kegel, Pixel/Welle, Physik-Analogien sind **Werkzeuge**, keine Ontologie.
 3. **Resonanz-Disjunktion** — künftiger Überschuss wird in drei Fälle zerlegt, bevor er exportiert wird.
 4. **Projektionsstabilität** — Evidenz nur bei Überleben alternativer Kodierungen.
-5. **Kompressionsoperator** — $C_E:\mathbb{N}\to\{E,A,B,C\}$; Entropiedefizit $I_E(N)$; Robustheit unter $C_E,C_8,C_{10},C_{30},C_{210}$.
+5. **Kompressionsoperator** — $C_E:\mathbb{N}\to\{E,A,B,C\}$; $I_E(N)=\log_2 N-H(\mathrm{EABC}_N)\approx\log_2 N-2$; strukturstabile Kompression; Robustheit unter $C_E,C_8,C_{10},C_{30},C_{210}$.
 6. **Verknüpfung** — Hypothesenleiter H$_0$–H$_4$ (§4.8.7), Nullmodell-Leiter (§4.8.2), κ-Stufe 3 (Stub).
 
 Ohne diese Sicherung wäre jedes numerische Flackern im Fibonacci-Kamm leicht als „Entdeckung“ zu lesen; mit ihr bleibt das Programm **falsifizierbar** und **schichtenkonform**.
@@ -1658,7 +1678,7 @@ $$\boxed{\;\S4.8.8 = \textbf{methodische Sicherung}: Beobachtungsgeometrie ja �
 | $\mathbb{N}\to\mathbb{N}/{\sim}$, Resonanz-Hypothese | **Hypothese** | **B**/**R** |
 | Drei Ebenen A/B/C, Zwei Extreme, Drei Fälle | **Meta** | **Meta** |
 | Kodierungsinvarianz-Test (mod $8,10,30,210$) | **Experiment** (Stub) | **B**/**R** |
-| Kompressionsoperator $C_E$, Entropie $I_E(N)$ | **Definition** / **Meta** | **B** |
+| Kompressionsoperator $C_E$, Entropie $I_E(N)$, strukturstabile Kompression | **Definition** / **Meta** | **B** |
 | Robustheit unter $C_E,C_8,C_{10},C_{30},C_{210}$ | **Experiment** (Stub) | **B**/**R** |
 
 **Label:** §4.8.8 = **Meta** / **Hypothese** / **Analogie** (Schicht **C** für Bilder; **A**/**B** für $\Theta$ und Quotient); **kein Theorem**.
