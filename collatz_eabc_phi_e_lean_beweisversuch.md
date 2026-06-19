@@ -58,6 +58,59 @@ $$\boxed{\;\Phi_E \neq 0 \;\Rightarrow\; D_E(X)\sim\Phi_E Q(X) \;\Rightarrow\; \
 
 ---
 
+## Architektur: Algebra ⊃ Streaming ⊃ EABC
+
+Drei Schichten (vgl. `collatz_eabc_zirkulationshypothese.md`, `eabc_occupancy_tree.py`):
+
+```mermaid
+flowchart TB
+  subgraph Ebene1["Ebene 1 — Theorem (GREEN, sorry-frei)"]
+    Z["Z = (O, T, n)"]
+    Z0["Z₀ = identity = (∅, ⊤, 0)"]
+    merge["⊕ = merge: O₁∪O₂, T₁∧T₂, n₁+n₂"]
+    CM["CommMonoid OccupancyState"]
+    Z --> merge
+    Z0 --> merge
+    merge --> CM
+  end
+  subgraph Ebene2["Ebene 2 — Struktur/Brücke"]
+    F["F: BlockData → OccupancyState"]
+    scan["blockScan / foldMerge"]
+    fD["f_D(Z)=D_E, f_Q(Z)=Q_E, f_W(Z)=W_E"]
+    F --> scan
+    scan --> fD
+  end
+  subgraph Ebene3["Ebene 3 — EABC"]
+    nvec["n = (N₊, N₋, …)"]
+    PC["PatternCount (folgt)"]
+    nvec --> PC
+  end
+  Ebene1 --> Ebene2
+  Ebene2 --> Ebene3
+```
+
+**Lean-Anker (Ebene 1, GREEN):** `collatz_eabc_core/CollatzEabc/OccupancyMonoid.lean`
+
+| Objekt | Lean-Name | Status |
+|--------|-----------|--------|
+| Zustand $Z=(O,T,n)$ | `OccupancyState` | **Definition** |
+| $Z_0$ | `identity` | **Definition** |
+| $Z_1 \oplus Z_2$ | `merge` | **Definition** |
+| Assoziativität | `merge_assoc` | **Theorem** |
+| Kommutativität | `merge_comm` | **Theorem** |
+| Linkes/rechtes Neutrum | `merge_identity_left`, `merge_identity_right` | **Theorem** |
+| `CommMonoid`-Instanz | `CommMonoid (OccupancyState α β)` | **Instance** |
+| Ordnungsunabhängigkeit | `foldMerge_perm`, `fold_merge_independent` | **Theorem** |
+| **Satz (Streaming-Kompression)** | `streaming_compression_monoid` | **Theorem** |
+| Block-Fusion | `blockScan`, `blockScan_append` | **Theorem** (Ebene 2) |
+
+```bash
+cd collatz_eabc_core
+lake build CollatzEabc.OccupancyMonoid   # sorry-frei (Ebene 1)
+```
+
+---
+
 ## Lean-Modul `HolonomyCore.lean` (sauberer Split)
 
 **GREEN/RED im Modul:** GREEN = `Node` … `W_E_bounds` (bewiesen); RED = `HasNonzeroHolonomyLimit`, `EABC_holonomy_limit_conjecture` (`sorry`) — formal **H₃** (Ebene 4: Holonomie-Grenzfall, $\alpha_E=1$).
