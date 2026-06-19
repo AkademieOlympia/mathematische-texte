@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung: $(\hbar,\sigma)$** §4.8.14 (Präzisierung: Phasenraum-Orientierung statt Raumrichtung, Abschnitt 9); **Symplektische Orientierung und EABC-Vierfachstruktur** §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17; **Assoziative Schranke und genealogische Primobjekte (Gedankenexperiment)** §4.8.18; **Kompressionskaskaden und atomare Fixpunkte (Gedankenexperiment)** §4.8.19; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung: $(\hbar,\sigma)$** §4.8.14 (Präzisierung: Phasenraum-Orientierung statt Raumrichtung, Abschnitt 9); **Symplektische Orientierung und EABC-Vierfachstruktur** §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17; **Assoziative Schranke und genealogische Primobjekte (Gedankenexperiment)** §4.8.18; **Kompressionskaskaden und atomare Fixpunkte (Gedankenexperiment)** §4.8.19; **EABC-Schalenraum (pythagoräische Radien)** §4.8.20; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
 - `collatz_eabc_zeta_exponential_gedankenexperiment.md` — **Gedankenexperiment / Analogie:** $\zeta$ als Exponentialsumme auf Log-Prim-Geometrie; Euler-Streifen $(1\pm p^{-s})$; $\xi$-Spiegelung; Brücke zu Log-Koordinaten, $\gamma^\pm$-Paarung, Level-2; §6–§10: Ganzzahl/Halbzahl-Exponenten, Oktanionen (Schicht C), Bernoulli-Subtraktion, Fibonacci-Zeta (kein RH-/EABC-Theorem)
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
@@ -1437,7 +1437,7 @@ $$\boxed{\;\textbf{Aktueller Gesamtstatus:}\; algebraisch wohldefiniert \checkma
 
 **Label:** §4.8.7 = **Meta** / **Hypothese** / **Experiment** (Schicht **C**); **kein Theorem**.
 
-**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12; Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13; Prägeometrie der Wirkung $(\hbar,\sigma)$ §4.8.14 (Präzisierung Phasenraum-Orientierung, Abschnitt 9); Symplektische Orientierung und EABC-Vierfachstruktur §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17; **Assoziative Schranke und genealogische Primobjekte (Gedankenexperiment)** §4.8.18; **Kompressionskaskaden und atomare Fixpunkte (Gedankenexperiment)** §4.8.19.
+**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12; Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13; Prägeometrie der Wirkung $(\hbar,\sigma)$ §4.8.14 (Präzisierung Phasenraum-Orientierung, Abschnitt 9); Symplektische Orientierung und EABC-Vierfachstruktur §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17; **Assoziative Schranke und genealogische Primobjekte (Gedankenexperiment)** §4.8.18; **Kompressionskaskaden und atomare Fixpunkte (Gedankenexperiment)** §4.8.19; **EABC-Schalenraum (pythagoräische Radien)** §4.8.20.
 
 #### 4.8.8 Beobachtungsgeometrie als Kompressionsoperator
 
@@ -3050,6 +3050,193 @@ $$\boxed{\;\textbf{Behauptet (Gedankenexperiment):}\; \text{Fünf Kompressionska
 | `genealogicallyPrime`, $K(N)$-Baum | **Stub** / **offen** | **A**/**R** |
 
 **Label:** §4.8.19 = **Meta** / **Gedankenexperiment** (Schicht **C** für Kolmogorov) / **Theorem**-Verweis (Schicht **A** für FTA) / **Forschungsfrage** (Schicht **R** für Fixpunkt-Vergleich); **kein Theorem**.
+
+#### 4.8.20 EABC-Schalenraum (pythagoräische Radien)
+
+**Paper-Titel (Baustein):** *EABC-Schalenraum über pythagoräischen $2^n/3^m$-Radien*
+
+**Status:** paper-ready Gedankenexperiment — **kein Theorem**, **kein** Anspruch auf neue Zahlentheorie oder physikalische Ontologie; geometrische Lesart der Faktorisierung und EABC-Kompression als **Beobachtungsraum**, nicht als Raumzeit.
+
+**Querverweise:** Kompressionsoperator $\mathcal{C}_E:\mathbb{N}\to\{E,A,B,C\}$ und strukturstabile Kompression §4.8.8; Kompressionskaskaden und atomare Fixpunkte §4.8.19; geschichtete Radikalzerlegung und EABC-Familien $E,A,B,C$ in `Radikal Zerlegung der natürlichen Zahlen.tex`; quaternionische Hebung $E\leftrightarrow 1$, $A\leftrightarrow i$, $B\leftrightarrow j$, $C\leftrightarrow k$ in `Dynamik.tex`, `Bahndrehimpuls.tex` (Drehimpuls auf $C_4\cong S^1$); epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §0–3.1; numerischer Stub `eabc_shell_radius.py`.
+
+Der folgende Abschnitt fasst den **EABC-Schalenraum** als paper-ready Baustein zusammen: natürliche Zahlen werden zuerst nach glatter $(2,3)$-Schale und Radikalschichten zerlegt, dann auf pythagoräische Schalenradien $R_{n,m}$ und EABC-Richtungen projiziert.
+
+##### 1. Pythagoräische Schalenradien
+
+Für nichtnegative Exponenten $n,m\in\mathbb{N}_0$ definieren wir den **Schalenradius**
+
+$$R_{n,m}:=\sqrt{2^n+3^m}.$$
+
+Die zugehörige **Schale** $S_{n,m}$ trägt den pythagoräischen Untergrund
+
+$$R_{n,m}^2=2^n+3^m.$$
+
+Damit liegt jede glatte $(2,3)$-Schale auf einer **rechten Dreiecks-Hypotenuse** in der $(2^n,3^m)$-Ebene — eine arithmetische Pythagoras-Lesart, in der $2^n$ und $3^m$ die beiden Katheten und $R_{n,m}$ die Radialkoordinate sind.
+
+| Objekt | Formel | Schicht |
+|--------|--------|---------|
+| Schalenradius $R_{n,m}$ | $\sqrt{2^n+3^m}$ | **A** (reine Arithmetik) |
+| Pythagoras-Untergrund | $R_{n,m}^2=2^n+3^m$ | **A** |
+| Schale $S_{n,m}$ | Indexpaar $(n,m)$ | **B** (Definition) |
+
+**Label:** $R_{n,m}$, $R_{n,m}^2=2^n+3^m$ = **Definition** (Schicht **A**/**B**).
+
+##### 2. EABC-Quaternionenachse und mod-$12$-Klassen
+
+EABC operiert auf den Einheitenklassen modulo $12$:
+
+$$E=1,\qquad A=5,\qquad B=7,\qquad C=11.$$
+
+Die **reale Achse** wird mit $E$ identifiziert; die quaternionische Hebung (Schicht **C**, Bildsprache — vgl. `Bahndrehimpuls.tex`, `eabc_holonomy.py`) lautet
+
+$$z = E + Ai + Bj + Ck,\qquad E\leftrightarrow 1,\; A\leftrightarrow i,\; B\leftrightarrow j,\; C\leftrightarrow k.$$
+
+Die Kompressionsabbildung $\mathcal{C}_E:\mathbb{N}\to\{E,A,B,C\}$ aus §4.8.8 ordnet jeder Zahl genau **eine** dieser vier Klassen zu — extrem verlustreich, aber strukturell kanonisch für den Primstrom mod $12$.
+
+**Label:** mod-$12$-EABC, $\mathcal{C}_E$ = **Definition** (Schicht **A**/**B**, §4.8.8); Quaternionenhebung = **Analogie** (Schicht **C**).
+
+##### 3. Radikalschicht und glatte $(2,3)$-Schale
+
+Jede natürliche Zahl $N\ge 1$ besitzt die eindeutige Zerlegung
+
+$$N = 2^\alpha\,3^\beta \prod_i p_i^{e_i},$$
+
+wobei alle Primfaktoren $p_i\ge 5$ zu $6$ teilerfremd sind. Der Faktor $2^\alpha 3^\beta$ bildet die **glatte Schale**; der Rest
+
+$$m := \frac{N}{2^\alpha 3^\beta}$$
+
+trägt die **Radikalschichten** $R_k(m)$ aus der geschichteten Radikalzerlegung (`Radikal Zerlegung der natürlichen Zahlen.tex`): auf jeder Schicht werden Primteiler paritätisch nach den Familien $E,A,B,C$ reduziert.
+
+| Schicht | Inhalt | EABC-Lesart |
+|---------|--------|-------------|
+| Glatt | $2^\alpha 3^\beta$ | bestimmt $(n,m)$-Index und $R_{n,m}=\sqrt{2^n+3^m}$ |
+| Radikal | $\prod_i p_i^{e_i}$, $p_i\ge 5$ | Familien $A,B,C,E$ mod $12$; Schichten $R_k$ |
+
+$$\boxed{\;N = \underbrace{2^\alpha 3^\beta}_{\text{glatte Schale }S_{\alpha,\beta}}\;\cdot\;\underbrace{\prod_i p_i^{e_i}}_{\text{Radikalschichten}}.\;}$$
+
+Die glatte Schale fixiert den **Ort** im Schalenraum ($R_{n,m}$ mit $n=\alpha$, $m=\beta$); die Radikalschichten liefern **Richtung** (EABC-Familie) und **Masse** (logarithmische Primgewichte).
+
+**Label:** Faktorisierung $N=2^\alpha 3^\beta\prod p_i^{e_i}$ = **Theorem** (Schicht **A**, FTA); Radikalschichten = **Definition**/**Theorem** (Schicht **A**, `Radikal Zerlegung der natürlichen Zahlen.tex`).
+
+##### 4. Beobachtungskette: Zahl $\to$ Schale $\to$ EABC-Richtung $\to$ Massevektor
+
+Die **EABC-Schalenraum-Kette** ordnet jeder Zahl $N$ vier Beobachtungsgrößen zu:
+
+$$\boxed{\;N\;\longrightarrow\; S_{n,m}\;\longrightarrow\;\mathcal{C}_E(N)\in\{E,A,B,C\}\;\longrightarrow\;\mathbf{w}(N).\;}$$
+
+| Stufe | Objekt | Operationalisierung |
+|-------|--------|---------------------|
+| 1 — Zahl | $N$ | Primfaktorzerlegung |
+| 2 — Schale | $S_{n,m}$, $R_{n,m}$ | $n=\alpha$, $m=\beta$ aus $2^\alpha 3^\beta$ |
+| 3 — Richtung | $\sigma=\mathcal{C}_E(N)$ | mod-$12$-EABC-Klasse |
+| 4 — Masse | $\mathbf{w}(N)$ | Komponenten $\log p$ bzw. $e_i\log p_i$ |
+
+**Ort:** $R_{n,m}=\sqrt{2^n+3^m}$ — radialer Schalenindex.
+
+**Richtung:** $A,B,C$ (und $E$ als reale Achse) — EABC-Familien aus Radikalschichten und $\mathcal{C}_E$.
+
+**Masse:** für Primfaktor $p$ Gewicht $\log p$; allgemein $e_i\log p_i$ pro Primfaktor — die additive Zerlegung der logarithmischen Norm.
+
+Diese Kette verbindet §4.8.19 (multiplikative Kaskade $\to$ EABC-Kompression) mit der **geometrischen** Lesart: Verdichtung endet nicht nur bei vier Makrozuständen, sondern trägt zusätzlich Schalenradius und logarithmische Massenkomponenten.
+
+**Label:** Beobachtungskette = **Definition** / **Modellabbildung** (Schicht **B**); Quaternionen-Richtung = **Analogie** (Schicht **C**).
+
+##### 5. Logarithmische Norm und geometrische FTA
+
+Die logarithmische Darstellung geometrisiert den Fundamentalsatz:
+
+$$\log N = \alpha\log 2 + \beta\log 3 + \sum_i e_i\log p_i.$$
+
+| Term | Geometrische Lesart |
+|------|---------------------|
+| $\alpha\log 2 + \beta\log 3$ | Radialanteil auf der glatten Schale ($2^n$-$3^m$-Ebene) |
+| $\sum_i e_i\log p_i$ | Massevektor entlang der Radikalfamilien $E,A,B,C$ |
+| $\log N$ | Gesamtlänge im logarithmischen Schalenraum |
+
+$$\boxed{\;\log N = \underbrace{\alpha\log 2 + \beta\log 3}_{\text{Schalen-Ort}}\;+\;\underbrace{\sum_i e_i\log p_i}_{\text{Radikal-Masse}}.\;}$$
+
+Die FTA wird damit zu einer **Vektorzerlegung** in glatte und radikale Anteile — arithmetisch exakt (Schicht **A**), geometrisch als Schalenraum-Lesart (Schicht **B**/**C**).
+
+**Label:** $\log N$-Zerlegung = **Theorem**-Verweis (Schicht **A**); geometrische FTA-Lesart = **Modellabbildung** (Schicht **B**).
+
+##### 6. Schalenräume $S_{\mathrm{EABC}}$ und $S_{\mathrm{ABC}}$
+
+Der **volle EABC-Schalenraum** ist die Menge der Beobachtungstriples
+
+$$S_{\mathrm{EABC}} := \bigl\{(R_{n,m},\,\theta_p,\,\mu_p)\bigr\},$$
+
+wobei $\theta_p$ die EABC-Richtung (Phasen-/Orientierungslabel aus $\mathcal{C}_E$ bzw. Radikalfamilie) und $\mu_p$ die logarithmische Massekomponente ($\log p$ oder $e_i\log p_i$) bezeichnet.
+
+Die **$E$-Achse** trennt die reale Schalenkomponente von den imaginären Quaternionenachsen. Nach **Entfernung entlang der $E$-Achse** — Projektion, die den glatten $2$-$3$-Anteil als radialen Träger behält und $E$ als skalare Referenz fixiert — verbleibt der reduzierte Raum
+
+$$S_{\mathrm{ABC}} := S_{\mathrm{EABC}}\;\setminus\;\text{$E$-Achsen-Faser}.$$
+
+| Raum | Koordinaten | Inhalt |
+|------|-------------|--------|
+| $S_{\mathrm{EABC}}$ | $(R_{n,m},\theta_p,\mu_p)$ | vollständige Kette Ort–Richtung–Masse |
+| $S_{\mathrm{ABC}}$ | $(R_{n,m},\theta_p,\mu_p)$ ohne $E$-Faser | chirale $A,B,C$-Richtungen auf fester Schale |
+
+Die Projektion $S_{\mathrm{EABC}}\to S_{\mathrm{ABC}}$ ist **keine** ontologische Reduktion, sondern eine **Beobachtungswahl**: $E$ als reale Achse / glatte Schalenreferenz; $A,B,C$ als Orientierungsfreiheitsgrade nach §4.8.8–4.8.12.
+
+**Label:** $S_{\mathrm{EABC}}$, $S_{\mathrm{ABC}}$ = **Definition** (Schicht **B**); $E$-Achsen-Projektion = **Modellabbildung** (Schicht **C**).
+
+##### 7. $r^8$-Kugel als Kompressionsnorm (Schicht **C**)
+
+**Spekulativ / ikonisch (Schicht C):** In der Interpretationsschicht kann eine **$r^8$-Normkugel** als **Kompressionsnorm** oder **Energie-Normkugel** gelesen werden — analog zu diskreten Normniveaus $\Sigma_n$ in `collatz_eabc_epistemik_schichten.md` §3 (Thomson-Schalen, Elektronenschalen-Ikone) und zur $ \mathbb{R}^8$-Packungsliteratur in `divisionsalgebren.tex`, `collatz_eabc_euklidische_hebung.md` (Schicht **C**, **kein** EABC-Theorem).
+
+| Lesart | Inhalt | Schicht |
+|------|--------|---------|
+| Kompressionsnorm | Aggressive Verdichtung $\mathcal{C}_E$ (§4.8.8) auf 4 Zustände bei Erhalt von $R_{n,m}$-Schalenindex | **C** |
+| Energie-Normkugel | $r^8$-Kugel als ikonisches Normniveau für logarithmische Massen $\sum e_i\log p_i$ | **C** |
+| Arithmetischer Kern | $R_{n,m}^2=2^n+3^m$, $\log N$-Zerlegung | **A**/**B** |
+
+$$\boxed{\;\textbf{Schicht C:}\; r^8\text{-Kugel = Kompressions-/Energie-Normkugel — Ikone, kein bewiesener EABC-Satz.}\;}$$
+
+**Nicht behauptet:** Dass EABC eine $ \mathbb{R}^8$-Packung, Viazovska-Dichte oder physikalische Energienorm **beweist**. Die $r^8$-Lesart dient der **Vergleichbarkeit** mit Normschalen-Bildern in §4.8.19 (Verdichtungs-Endpunkte) und der Kompressionsoperator-Frage §4.8.8 (welche Struktur überlebt?).
+
+**Label:** $r^8$-Normkugel = **Ikone** / **Analogie** (Schicht **C**).
+
+##### 8. Verknüpfung mit Kompressionskaskaden (§4.8.19)
+
+Die EABC-Schalenraum-Kette ergänzt die fünf Kaskaden aus §4.8.19 um eine **sechste geometrische Schnittebene**:
+
+| Kaskade (§4.8.19) | Schalenraum-Lesart (§4.8.20) |
+|-------------------|------------------------------|
+| Multiplikativ: $N\to\prod p_i^{e_i}$ | $\log N=\alpha\log 2+\beta\log 3+\sum e_i\log p_i$ |
+| EABC: $\mathcal{C}_E\to\{E,A,B,C\}$ | Richtung $\theta_p$ auf Schale $S_{n,m}$ |
+| Genealogisch: $T(N)$ | Baumblätter tragen $(R_{n,m},\sigma,\mu)$ |
+
+$$\boxed{\;\text{Schalenraum-Schema:}\; \mathbb{N}\;\xrightarrow{\;2^\alpha 3^\beta\;}\;R_{n,m}\;\xrightarrow{\;\mathcal{C}_E\;}\;\{E,A,B,C\}\;\xrightarrow{\;\log\;}\;\mathbf{w}(N).\;}$$
+
+**Label:** Kaskaden-Verknüpfung = **Meta** / **Modellabbildung** (Schicht **B**/**C**).
+
+##### 9. Epistemische Kernboxen
+
+$$\boxed{\;\textbf{Box 1 (Schicht A):}\; R_{n,m}=\sqrt{2^n+3^m},\; R_{n,m}^2=2^n+3^m\text{ — pythagoräische glatte Schale.}\;}$$
+
+$$\boxed{\;\textbf{Box 2 (Schicht A):}\; N=2^\alpha 3^\beta\prod_i p_i^{e_i}\text{ — FTA + Radikalschichten (}\texttt{Radikal Zerlegung der natürlichen Zahlen.tex}\text{).}\;}$$
+
+$$\boxed{\;\textbf{Box 3 (Schicht B):}\; \text{Beobachtungskette }N\to S_{n,m}\to\mathcal{C}_E(N)\to\mathbf{w}(N)\text{ — Ort, Richtung, Masse.}\;}$$
+
+$$\boxed{\;\textbf{Box 4 (Schicht C):}\; r^8\text{-Kugel als Kompressions-/Energie-Normkugel — Ikone, nicht Theorem.}\;}$$
+
+$$\boxed{\;\textbf{Nicht behauptet:}\; \text{Physikalische Schalen, }\mathbb{R}^8\text{-Packungsbeweis, EABC-Ersatz der FTA oder ontologischer Schalenraum.}\;}$$
+
+$$\boxed{\;\textbf{Behauptet (Gedankenexperiment):}\; \text{Der EABC-Schalenraum ordnet Faktorisierung, mod-12-EABC und logarithmische Norm in eine pythagoräische Beobachtungsgeometrie — testbar über }\mathcal{C}_E\text{ (§4.8.8) und Schalenindex }R_{n,m}\text{ (}\texttt{eabc\_shell\_radius.py}\text{).}\;}$$
+
+| Baustein | Tao-Label | Schicht |
+|----------|-----------|---------|
+| $R_{n,m}$, $R_{n,m}^2=2^n+3^m$ | **Definition** | **A**/**B** |
+| $N=2^\alpha 3^\beta\prod p_i^{e_i}$ | **Theorem** | **A** |
+| Radikalschichten $R_k$ | **Definition** / **Theorem** | **A** |
+| $\mathcal{C}_E$, mod-$12$-EABC | **Definition** | **A**/**B** (§4.8.8) |
+| Beobachtungskette, $S_{\mathrm{EABC}}$, $S_{\mathrm{ABC}}$ | **Modellabbildung** | **B** |
+| Quaternionenhebung $z=E+Ai+Bj+Ck$ | **Analogie** | **C** |
+| $\log N$-Geometrie | **Theorem**-Verweis / **Modell** | **A**/**B** |
+| $r^8$-Normkugel | **Ikone** | **C** |
+| `eabc_shell_radius.py` | **Experiment** (Stub) | **B** |
+
+**Label:** §4.8.20 = **Meta** / **Gedankenexperiment** (Schicht **C** für $r^8$ und Quaternionen) / **Definition** (Schicht **A**/**B** für $R_{n,m}$, FTA, $\mathcal{C}_E$); **kein Theorem**.
 
 ### 4.9 Zeta-Exponential-Gedankenexperiment (Schicht **C**)
 
