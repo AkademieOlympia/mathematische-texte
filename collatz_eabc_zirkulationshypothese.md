@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung: $(\hbar,\sigma)$** §4.8.14 (Präzisierung: Phasenraum-Orientierung statt Raumrichtung, Abschnitt 9); **Symplektische Orientierung und EABC-Vierfachstruktur** §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17; **Assoziative Schranke und genealogische Primobjekte (Gedankenexperiment)** §4.8.18; **Kompressionskaskaden und atomare Fixpunkte (Gedankenexperiment)** §4.8.19; **EABC-Schalenraum (pythagoräische Radien)** §4.8.20; **Schalenhierarchie und Primprojektion** §4.8.21; **Schalen-Defekte und Ladungsdarstellung** §4.8.22; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung: $(\hbar,\sigma)$** §4.8.14 (Präzisierung: Phasenraum-Orientierung statt Raumrichtung, Abschnitt 9); **Symplektische Orientierung und EABC-Vierfachstruktur** §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17; **Assoziative Schranke und genealogische Primobjekte (Gedankenexperiment)** §4.8.18; **Kompressionskaskaden und atomare Fixpunkte (Gedankenexperiment)** §4.8.19; **EABC-Schalenraum (pythagoräische Radien)** §4.8.20; **Schalenhierarchie und Primprojektion** §4.8.21; **Schalen-Defekte und Ladungsdarstellung** §4.8.22; **Defektprogramm $S(N)$, $P(N)$, $\delta(p)$, V$_4$-Charaktere** §4.8.23; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
 - `collatz_eabc_zeta_exponential_gedankenexperiment.md` — **Gedankenexperiment / Analogie:** $\zeta$ als Exponentialsumme auf Log-Prim-Geometrie; Euler-Streifen $(1\pm p^{-s})$; $\xi$-Spiegelung; Brücke zu Log-Koordinaten, $\gamma^\pm$-Paarung, Level-2; §6–§10: Ganzzahl/Halbzahl-Exponenten, Oktanionen (Schicht C), Bernoulli-Subtraktion, Fibonacci-Zeta (kein RH-/EABC-Theorem)
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
@@ -1437,7 +1437,7 @@ $$\boxed{\;\textbf{Aktueller Gesamtstatus:}\; algebraisch wohldefiniert \checkma
 
 **Label:** §4.8.7 = **Meta** / **Hypothese** / **Experiment** (Schicht **C**); **kein Theorem**.
 
-**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12; Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13; Prägeometrie der Wirkung $(\hbar,\sigma)$ §4.8.14 (Präzisierung Phasenraum-Orientierung, Abschnitt 9); Symplektische Orientierung und EABC-Vierfachstruktur §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17; **Assoziative Schranke und genealogische Primobjekte (Gedankenexperiment)** §4.8.18; **Kompressionskaskaden und atomare Fixpunkte (Gedankenexperiment)** §4.8.19; **EABC-Schalenraum (pythagoräische Radien)** §4.8.20; **Schalenhierarchie und Primprojektion** §4.8.21; **Schalen-Defekte und Ladungsdarstellung** §4.8.22.
+**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12; Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13; Prägeometrie der Wirkung $(\hbar,\sigma)$ §4.8.14 (Präzisierung Phasenraum-Orientierung, Abschnitt 9); Symplektische Orientierung und EABC-Vierfachstruktur §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17; **Assoziative Schranke und genealogische Primobjekte (Gedankenexperiment)** §4.8.18; **Kompressionskaskaden und atomare Fixpunkte (Gedankenexperiment)** §4.8.19; **EABC-Schalenraum (pythagoräische Radien)** §4.8.20; **Schalenhierarchie und Primprojektion** §4.8.21; **Schalen-Defekte und Ladungsdarstellung** §4.8.22; **Defektprogramm $S(N)$, $P(N)$, $\delta(p)$, V$_4$-Charaktere** §4.8.23.
 
 #### 4.8.8 Beobachtungsgeometrie als Kompressionsoperator
 
@@ -3476,6 +3476,122 @@ $$\boxed{\;\textbf{Behauptet (Gedankenexperiment):}\; \text{Schalen-Defekte oper
 | `eabc_shell_prime_distribution.py` | **Experiment** | **B** |
 
 **Label:** §4.8.22 = **Meta** / **Gedankenexperiment** (Schicht **C** für $r^8$/Oktanion) / **Definition** (Schicht **A**/**B** für $\delta$, $V_4$) / **Forschungsprogramm** (Schicht **B**/**R**); **kein Theorem**.
+
+#### 4.8.23 Defektprogramm: $S(N)$, $P(N)$, $\delta(p)$ und V$_4$-Charaktere
+
+**Paper-Titel (Baustein):** *Defektprogramm — logarithmische Zerlegung, $\delta(p)$-Freiheitsgrad und V$_4$-Charakterdarstellung*
+
+**Status:** paper-ready Forschungsprogramm — **kein Theorem**; stärkste Weiterentwicklung von §4.8.20–4.8.22 durch **epistemische Dreiteilung** (Definition / Analogie / offene arithmetische Aussage) und priorisierte Testleiter **A–E**.
+
+**Querverweise:** Schalenraum §4.8.20; Hierarchie §4.8.21; Defekte §4.8.22; Lean `V4Characters.lean`; **Defektprogramm-Test** `eabc_shell_prime_distribution.py` (`--mode delta-program`).
+
+##### 1. Logarithmische Zerlegung $S(N)$, $P(N)$
+
+Für $N=2^\alpha 3^\beta\prod_i p_i^{e_i}$ (FTA, Schicht **A**):
+
+$$S(N):=\alpha\log 2+\beta\log 3,\qquad P(N):=\sum_i e_i\log p_i,$$
+
+$$\boxed{\;\log N = S(N) + P(N).\;}$$
+
+| Anteil | Lesart | Schicht |
+|--------|--------|---------|
+| $S(N)$ | glatte $(2,3)$-Schalenenergie (Ort) | **A**/**B** |
+| $P(N)$ | Radikal-/Primanteil (Masse) | **A**/**B** |
+
+**Label:** $S$, $P$ = **Definition** (Schicht **A**); physikalische Energie-Lesart = **Analogie** (Schicht **B**/**C**).
+
+##### 2. $\delta(p)$ als messbarer Freiheitsgrad
+
+$$\delta:\mathbb{P}_{>3}\longrightarrow\mathbb{R}_{\ge 0},\qquad \delta(p)=\min_{n,m}|p-R_{n,m}|.$$
+
+| Frage | Status | Priorität |
+|-------|--------|-----------|
+| Wachstum / Beschränkung von $\delta(p)$ | **offen** | **B** |
+| Häufungen / Resonanzen nahe $R_{n,m}$ | **offen**, numerisch | **B** |
+| EABC-Verteilung bei kleinem $\delta$ | testbar | **C** |
+
+**Label:** $\delta$ operationalisiert §4.8.22; **keine** Behauptung über optimale Approximation oder „Defektenergie“.
+
+##### 3. V$_4\cong(\mathbb{Z}/12\mathbb{Z})^\times\cong C_2\times C_2$ — algebraisch fest
+
+$$V_4=\{E,A,B,C\},\qquad E\equiv 1,\;A\equiv 5,\;B\equiv 7,\;C\equiv 11\pmod{12}.$$
+
+Nichttriviale Charaktere $\chi_A,\chi_B,\chi_C:V_4\to\{\pm 1\}$ (Klein-Vierer-Gruppe; **kein** Quaternion-/Oktanion-Bild nötig):
+
+| Label | $\chi_A$ | $\chi_B$ | $\chi_C$ |
+|-------|----------|----------|----------|
+| $E$ | $+1$ | $+1$ | $+1$ |
+| $A$ | $-1$ | $+1$ | $-1$ |
+| $B$ | $+1$ | $-1$ | $-1$ |
+| $C$ | $-1$ | $-1$ | $+1$ |
+
+Charaktervektor pro Primzahl: $\vec\chi(p):=(\chi_A(v(p)),\chi_B(v(p)),\chi_C(v(p)))$.
+
+Gewichtete Darstellung:
+
+$$M(N):=\sum_i e_i\,v(p_i)\,\log p_i,\qquad M_\chi(N):=\sum_i e_i\,\chi_k(v(p_i))\,\log p_i$$
+
+(für $k\in\{A,B,C\}$).
+
+**Lean:** `collatz_eabc_core/CollatzEabc/V4Characters.lean` — Charakterwerte und Gruppengesetze (Stub, Schicht **A**).
+
+**Abgrenzung:** $r^8$/Oktanion/$E_8$-Hebung = **spekulativ** (Schicht **C**); **getrennt** vom abgesicherten V$_4$/Quaternion-Kern §4.8.15–4.8.22.
+
+##### 4. Test-Prioritäten A–E
+
+| Prio | Objekt | Inhalt | CLI / Artefakt |
+|------|--------|--------|----------------|
+| **A** | $R_{n,m}$ | Schalen-Gitter, pythagoräische Radien | §4.8.20–21 |
+| **B** | $\delta(p)$ | Wachstum, Beschränkung, Häufungen | `--mode delta-program` |
+| **C** | $N_A(\delta),\ldots$ | EABC-Zählungen in $\delta$-Buckets | `--n-delta-bins` |
+| **D** | $D_{AB},D_{AC}$ | Band-Observablen auf Schalen | `--shell-mode defect` |
+| **E** | $D_{AB}(X)=o(X)$? | asymptotische Chiralität vs. $X$ | `--asymptotic-checkpoints` |
+
+**Forschungsfrage (E):** Ist $|D_{AB}(X)|/X$ für $X\to\infty$ **fallend** (heuristisch $o(X)$-kompatibel) — oder bleibt strukturierte Vorzeichenasymmetrie?
+
+##### 5. Epistemische Dreiteilung
+
+| Baustein | (1) Mathematisch definiert | (2) Fruchtbare Analogie | (3) Neue arithmetische Aussage |
+|----------|---------------------------|-------------------------|--------------------------------|
+| $S(N),P(N)$ | FTA: $\log N=S+P$ | Schalenenergie vs. Radikalmasse | **offen** (keine neue Primzahlformel) |
+| $\delta(p)$ | $\min\|p-R_{n,m}\|$ auf endlichem Gitter | Defekt / Resonanzabstand | Wachstum, Beschränkung, Häufungen **offen** |
+| $V_4$, $\chi_A,\chi_B,\chi_C$ | $(\mathbb{Z}/12\mathbb{Z})^\times\cong C_2\times C_2$ | Ladungsgruppe, Darstellung | Charakter-Summen $M_\chi(N)$ **offen** |
+| $M(N)$ | $\sum e_i v(p_i)\log p_i$ | Impuls in V$_4$-Raum | Korrelation $\delta$–EABC **testbar, unbewiesen** |
+| $D_{AB},D_{AC},D_E$ | Zähl-Observablen | Chiralitäts-Differenzen | $D_{AB}(X)=o(X)$? **offen** |
+| $r^8$, Oktanion, $E_8$ | — | Kompressionsikone | **keine** (Schicht **C**) |
+
+$$\boxed{\;\textbf{Dreiteilung:}\; (1)=\text{Definition/Theorem},\;(2)=\text{Modell/Analogie},\;(3)=\text{offene oder testbare arithmetische Frage.}\;}$$
+
+##### 6. Numerischer Stub (`--mode delta-program`)
+
+**Smoke** (`--limit 100000`, Gitter $8\times 8$, $8$ $\delta$-Buckets): $S/P$-Samples für $72,210,2310,30030$; V$_4$-Charaktertabelle und Prim-Beispiele; $\delta$-Buckets mit $N_E,N_A,N_B,N_C$ und $D_*$; asymptotische Serie $D_{AB}(X)$, $|D_{AB}|/X$ und heuristische $o(X)$-Beurteilung.
+
+**Epistemik:** Ergebnisse = **empirisches Muster** (Schicht **B**); Permutations-$p$ und Gleichverteilungs-Null bleiben Referenz. Kein Anspruch auf $o(X)$-Theorem.
+
+##### 7. Epistemische Kernboxen
+
+$$\boxed{\;\textbf{Box 1 (Schicht A):}\; \log N=S(N)+P(N),\; S=\alpha\log 2+\beta\log 3,\; P=\sum e_i\log p_i.\;}$$
+
+$$\boxed{\;\textbf{Box 2 (Schicht A/B):}\; V_4\cong C_2\times C_2;\;\chi_A,\chi_B,\chi_C;\;\vec\chi(p)\text{ für Primzahlen.}\;}$$
+
+$$\boxed{\;\textbf{Box 3 (Schicht B):}\; \delta\text{-Buckets }N_A(\delta),\ldots;\; D_{AB}(X)\text{ vs. }X\text{ — testbar via }\texttt{--mode delta-program}.\;}$$
+
+$$\boxed{\;\textbf{Box 4 (Schicht C):}\; r^8\text{, Oktanion, }E_8\text{ — spekulativ, nicht Teil des V}_4\text{-Kerns.}\;}$$
+
+$$\boxed{\;\textbf{Nicht behauptet:}\; \text{Dass }\delta(p)\text{ beschränkt ist, dass }M_\chi(N)\text{ neue Primgesetze liefert, oder dass }D_{AB}(X)=o(X)\text{ bewiesen ist.}\;}$$
+
+$$\boxed{\;\textbf{Behauptet (Forschungsprogramm):}\; \text{Epistemische Dreiteilung operationalisiert §4.8.20–22; Testleiter A–E priorisiert messbare Freiheitsgrade.}\;}$$
+
+| Baustein | Tao-Label | Schicht |
+|----------|-----------|---------|
+| $S(N),P(N)$, FTA-Split | **Definition** / **Theorem** | **A** |
+| $\delta(p)$, $\delta$-Buckets | **Definition** / **Experiment** | **A**/**B** |
+| $V_4$, $\chi_A,\chi_B,\chi_C$, $M(N)$ | **Definition** / **Modellabbildung** | **A**/**B** |
+| Testleiter A–E | **Forschungsprogramm** | **B**/**R** |
+| $r^8$, Oktanion | **Ikone** | **C** |
+| `eabc_shell_prime_distribution.py --mode delta-program` | **Experiment** | **B** |
+
+**Label:** §4.8.23 = **Meta** / **Forschungsprogramm** (Schicht **B**/**R**) / **Definition** (Schicht **A** für $S,P,V_4,\chi$) / **Experiment** ($\delta$-Buckets, Asymptotik); **kein Theorem**.
 
 ### 4.9 Zeta-Exponential-Gedankenexperiment (Schicht **C**)
 

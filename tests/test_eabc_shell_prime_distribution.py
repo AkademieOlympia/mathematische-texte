@@ -1,4 +1,4 @@
-"""Smoke-Tests für EABC-Primverteilung auf Schalen (§4.8.21–4.8.22)."""
+"""Smoke-Tests für EABC-Primverteilung auf Schalen (§4.8.21–4.8.23)."""
 
 from __future__ import annotations
 
@@ -9,6 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from eabc_shell_prime_distribution import (
     analyze_defect_distribution,
+    analyze_delta_program,
     analyze_distribution,
     assign_shell_defect_nearest,
     assign_shell_factor,
@@ -17,7 +18,10 @@ from eabc_shell_prime_distribution import (
     class_of,
     defect_delta,
     format_summary,
+    log_decomposition,
     smooth_shell_exponents,
+    v4_characters,
+    v4_character_vector_prime,
 )
 import numpy as np
 
@@ -131,3 +135,34 @@ def test_analyze_defect_interval_band():
     )
     assert result["band_mode"] == "interval"
     assert result["n_buckets"] >= 1
+
+
+def test_log_decomposition_split():
+    dec = log_decomposition(72)
+    assert dec["alpha"] == 3 and dec["beta"] == 2
+    assert abs(dec["S"] + dec["P"] - dec["log_N"]) < 1e-9
+    assert dec["P"] == 0.0
+
+
+def test_v4_characters_klein_four():
+    assert v4_characters("E") == {"chi_A": 1, "chi_B": 1, "chi_C": 1}
+    assert v4_characters("A")["chi_A"] == -1
+    assert v4_characters("B")["chi_B"] == -1
+    assert v4_characters("C")["chi_C"] == 1
+    vec = v4_character_vector_prime(5)
+    assert vec["label"] == "A"
+    assert vec["chi_A"] == -1
+
+
+def test_analyze_delta_program_smoke():
+    result = analyze_delta_program(limit=5_000, n_max=5, m_max=5, n_perm=29, seed=5)
+    assert result["section"] == "4.8.23"
+    assert result["mode"] == "delta-program"
+    assert len(result["log_split"]["samples"]) >= 2
+    assert "chi_A" in result["v4_characters"]["table"]["E"]
+    assert len(result["delta_buckets"]) >= 2
+    assert len(result["asymptotic_D_AB"]["series"]) >= 3
+    g = result["global"]
+    assert "perm_p_D_AB" in g
+    summary = format_summary(result)
+    assert "delta-program" in summary
