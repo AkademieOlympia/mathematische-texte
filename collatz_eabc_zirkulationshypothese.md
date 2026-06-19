@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung: $(\hbar,\sigma)$** §4.8.14; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
 - `collatz_eabc_zeta_exponential_gedankenexperiment.md` — **Gedankenexperiment / Analogie:** $\zeta$ als Exponentialsumme auf Log-Prim-Geometrie; Euler-Streifen $(1\pm p^{-s})$; $\xi$-Spiegelung; Brücke zu Log-Koordinaten, $\gamma^\pm$-Paarung, Level-2; §6–§10: Ganzzahl/Halbzahl-Exponenten, Oktanionen (Schicht C), Bernoulli-Subtraktion, Fibonacci-Zeta (kein RH-/EABC-Theorem)
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
@@ -1435,13 +1435,13 @@ $$\boxed{\;\textbf{Aktueller Gesamtstatus:}\; algebraisch wohldefiniert \checkma
 
 **Label:** §4.8.7 = **Meta** / **Hypothese** / **Experiment** (Schicht **C**); **kein Theorem**.
 
-**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12.
+**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12; Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13.
 
 #### 4.8.8 Beobachtungsgeometrie als Kompressionsoperator
 
 **Status:** paper-ready methodische Klärung — schließt §4.8.6–4.8.7 ab; **kein Theorem**, **kein** zusätzlicher Physikanspruch.
 
-**Querverweise:** Zwei-Rotor-Kopplung $(\Theta,\Phi)$ und $R_N$ §4.8.7; EABC–Fibonacci-Gesamtbaustein §4.8.6; Kegel-Analogie §9.13 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §3.1; numerischer Stub §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12.
+**Querverweise:** Zwei-Rotor-Kopplung $(\Theta,\Phi)$ und $R_N$ §4.8.7; EABC–Fibonacci-Gesamtbaustein §4.8.6; Kegel-Analogie §9.13 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §3.1; numerischer Stub §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12; Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13.
 
 Die EABC-Projektion kann nicht nur als geometrische, sondern auch als informationstheoretische Abbildung verstanden werden.
 
@@ -2044,6 +2044,125 @@ $$\boxed{\;\textbf{Behauptet (Prüfstein):}\; \text{Die Frage, ob endliche Orien
 | „EABC erklärt QM/SU(2)" | — | **nicht behauptet** |
 
 **Label:** §4.8.12 = **Meta** / **Prüfstein** / **Zwischenhypothese** (Schicht **R** für SU(2)-Reproduktionsfrage; **A**/**B** für Hebung und Kompressionskette; **C** für Bahndrehimpuls-Referenz); **kein Theorem**.
+
+#### 4.8.13 Wirkungsquantum und Richtungsquantisierung (Gedankenexperiment)
+
+**Status:** paper-ready epistemisch vorsichtiger Gedankenexperiment-Abschnitt — **kein Theorem**, **kein** Anspruch, EABC erkläre $\hbar$ oder die Quantenmechanik; Schicht **C** für Physik-/Prägeometrie-Bilder, Schicht **A**/**B** für Kompressionskette, Schicht **R** für die SU(2)-Emergenzfrage.
+
+**Querverweise:** Kompressionsoperator $\mathcal{C}_E:\mathbb{N}\to\{E,A,B,C\}\cong\mathbb{Z}_4$ und strukturstabile Kompression §4.8.8; Orientierungsvektor $u(n)\in S^2$, Resonanzfaktor $R_{ij}$ §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM §4.8.11; SU(2)-Prüfstein, Orientierungshebung und Kompressionskette $\mathbb{N}\to\mathbb{Z}_4\to V\to\Pi$ §4.8.12; quaternionische Hebung und Bahndrehimpuls-Bild in `Bahndrehimpuls.tex`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §0–3.1; numerischer Test `eabc_su2_reconstruction_test.py` (§4.8.12).
+
+Der folgende Abschnitt trennt **Wirkungsquantisierung** (skalar) von **Richtungsquantisierung** (vektoriell) und verbindet die Frage mit der EABC-Orientierungsprogrammatik — ohne die etablierte QM zu ersetzen.
+
+##### 1. Das Plancksche Wirkungsquantum $h$ ist skalar
+
+Das Plancksche Wirkungsquantum $h$ quantisiert **Wirkung** — das Produkt aus Energie und Zeit:
+
+$$S = E\cdot t, \qquad S = n\,h \quad (n\in\mathbb{Z}).$$
+
+Diese Größe trägt **keine Raumrichtung**. Sie ist vergleichbar mit Masse oder Energie: eine **skalare** Einheit der Physik, die sagt, *wie groß* die kleinste zulässige Wirkung ist — nicht, *in welche Richtung* etwas zeigt.
+
+**Lesart (Schicht C):** $h$ setzt eine **Größenskala** für Wirkung; es ist **kein** Orientierungsvektor und **kein** Spin-Label.
+
+##### 2. Richtungsquantisierung folgt aus dem Drehimpuls $L$, nicht aus $h$ allein
+
+Die **Richtungsquantisierung** in der etablierten Quantenmechanik stammt aus dem **Drehimpuls** $\mathbf{L}$ und seiner Algebra:
+
+$$[L_i,\,L_j] = i\hbar\,\varepsilon_{ijk}\,L_k, \qquad \hbar = \frac{h}{2\pi}.$$
+
+Die Quantenzahlen
+
+$$l = 0,\,1,\,2,\,\ldots, \qquad m = -l,\,-l+1,\,\ldots,\,l-1,\,l$$
+
+folgen aus der **unitären Darstellungstheorie** von SU(2) — nicht aus der isolierten Größe $h$ (vgl. §4.8.11 Abschnitt 1, `Bahndrehimpuls.tex`).
+
+| Größe | Typ | Quelle | Quantisiert |
+|-------|-----|--------|-------------|
+| $h$ | Skalar | Wirkung $E\cdot t$ | Wirkungsstufen $nh$ |
+| $\hbar$ | Skalar | Drehimpulsalgebra | Einheit der Winkel-/Spin-Quantisierung |
+| $l,\,m$ | Diskrete Labels | SU(2)-Darstellungen | Richtungs- bzw. Projektionsquantisierung |
+
+**Epistemische Sicherung:** Aus $h$ allein folgt **keine** Magnetquantenzahl $m$ und **keine** Entartung $2l+1$.
+
+##### 3. Tiefere Frage: kleinste Wirkung — warum Orientierungsquantisierung?
+
+Wenn $h$ nur die **kleinste Wirkung** fixiert, bleibt offen: **Warum** quantisiert die Natur **Orientierungen** (Drehimpuls, Spin, Spektrallinien)?
+
+Die etablierte Antwort (Schicht **C**, extern): **Rotationsinvarianz** — die Symmetrie des Raumes unter Drehungen erzwingt die SU(2)-Struktur und damit $(l,m)$. Ohne diese Symmetrie (oder ohne einen äquivalenten algebraischen Rahmen) gibt es **keinen** physikalischen Grund, Richtungen diskret zu machen.
+
+**Prüffrage (Schicht R):** Reicht die Skala $h$ als „Urbaustein", oder braucht man zusätzlich eine **Orientierungsstruktur**?
+
+##### 4. EABC-Gedanke: $(h,\,u)$ statt nur $h$
+
+EABC schlägt eine **Kompressionslesart** vor (§4.8.8): Beobachtung projiziert den Primstrom nicht nur auf skalare Klassen, sondern kann einen **zusätzlichen Orientierungsfreiheitsgrad** tragen:
+
+$$\text{Primzahl} \;\xrightarrow{\;\mathcal{C}_E\;}\; \text{EABC-Klasse} \;\xrightarrow{\;\text{Hebung}\;}\; u(n)\in V\subset S^2.$$
+
+Statt nur „Wirkung ist quantisiert" ($h$) lautet die EABC-Hypothese **methodisch**: Beobachtung liefert ein **Paar**
+
+$$(h,\,u) \quad\text{— skalare Kompression plus Orientierungslabel,}$$
+
+wobei $u$ **kein** ontologischer Raumvektor ist, sondern ein Beobachtungsfreiheitsgrad nach $\mathcal{C}_E$ (§4.8.10–4.8.11).
+
+**Prägeometrie-Bilder (Schicht C, Analogie):**
+
+| Bild | Kernidee | EABC-Bezug |
+|------|----------|------------|
+| **Wheeler** | Raumzeit aus Relationen | Beobachtungsgeometrie statt Ontologie (§4.8.8) |
+| **Penrose** | Twistor, konforme Struktur | Orientierung als struktureller Freiheitsgrad |
+| **LQG / Spin-Netzwerke** | Diskrete Geometrie, SU(2)-Darstellungen | Endliche Orientierungsgitter $V\subset S^2$ als **Analogie** |
+| **EABC-Kompression** | $\mathbb{N}\to\mathbb{Z}_4\to V$ | Skalar **und** diskrete Richtung als **Beobachtungsoutput** |
+
+**Epistemische Sicherung:** Spin-Netze und Prägeometrie sind **Bilder** (Schicht **C**) — keine Behauptung, dass EABC LQG oder Wheeler-Geometrodynamik **ersetzt**.
+
+##### 5. Umgekehrte Logik: diskrete Richtungen $\Rightarrow$ SU(2)?
+
+Die etablierte QM folgt der Kette
+
+$$\text{Rotationsinvarianz} \;\Rightarrow\; \text{SU(2)} \;\Rightarrow\; (l,m)\text{-Quantisierung}.$$
+
+§4.8.12 hat die **inverse Forschungsfrage** operationalisiert:
+
+$$\text{diskrete Orientierungsgeometrie }V\subset S^2 \;\stackrel{?}{\Longrightarrow}\; \text{SU(2)-artige Struktur} \;\stackrel{?}{\Longrightarrow}\; (l,m).$$
+
+| Richtung | Logik | Status in EABC |
+|----------|-------|----------------|
+| Standard-QM | SU(2) $\Rightarrow$ Richtungsquantisierung | **Referenz** (Schicht **C**) |
+| EABC-Prüfstein (§4.8.12) | $V$ diskret $\Rightarrow$ SU(2)-Signaturen? | **Forschungsfrage** (Schicht **R**) |
+| Kompressionskette | $\mathbb{N}\to\mathbb{Z}_4\to V\to\Pi\to(l,m)$ | Stufe 4 **offen** (§4.8.12 Abschnitt 4) |
+
+**Lesart:** EABC **behauptet nicht**, dass Ikosaeder-Ecken SU(2) „erzeugen". Es **fragt**, ob aus endlicher Orientierungsgeometrie — unter geeigneter Hebung und Aggregation — eine **SU(2)-ähnliche** Algebra **emergieren kann**. Der numerische Prüfstein (`eabc_su2_reconstruction_test.py`) liefert bisher **diagnostische**, keine bestätigende Evidenz (§4.8.12 Abschnitt 7).
+
+$$\boxed{\;\textbf{Umkehrung (Hypothese):}\; \text{Diskrete Beobachtungsrichtungen sind primär; SU(2) wäre Grenz- bzw. Aggregationsstruktur — nicht die unmittelbare EABC-Algebra (vgl. §4.8.12 Zwischenhypothese).}\;}$$
+
+##### 6. Epistemische Kernbox: Ist $\hbar$ nur Größe — oder Hinweis auf einen elementaren geometrischen Baustein?
+
+$$\boxed{\;\textbf{Standardphysik:}\; h\text{ und }\hbar\text{ sind Skalen; }(l,m)\text{ folgen aus Rotationsinvarianz und SU(2) — unabhängig von platonischen Polyedern oder EABC-Kompression.}\;}$$
+
+$$\boxed{\;\textbf{EABC-Kompressionsbild (Hypothese, Schicht C/R):}\; \text{Beobachtung liefert }(h,u)\text{ — skalare Pixelung plus diskrete Orientierung; ob daraus }\hbar\text{ und SU(2)-Algebra folgen, ist offene Forschungsfrage.}\;}$$
+
+| Aspekt | Standardphysik | EABC-Lesart |
+|--------|----------------|-------------|
+| $h$ | Skala der Wirkung | Skala der Wirkung (unverändert) |
+| $\hbar$ | Einheit der Drehimpulsalgebra | **Frage:** nur Größe oder auch **Orientierungs-Einheit** nach Kompression? |
+| $(l,m)$ | SU(2)-Darstellungen | **Prüfstein:** emergiert aus $V$ und $\Pi$? (§4.8.12) |
+| Geometrie | Kontinuierliches $S^2$, SO(3)/SU(2) | Diskretes $V\subset S^2$ nach $\mathcal{C}_E$ (§4.8.8–4.8.11) |
+
+**Schwieriger Teil (Schicht R):** Ein **mathematischer Nachweis**, dass aus endlicher Orientierungsgeometrie $V$ die Lie-Algebra $\mathfrak{su}(2)$ mit $[L_i,L_j]=i\hbar\varepsilon_{ijk}L_k$ **emergiert**, liegt **nicht** vor. §4.8.12 fixiert das **Prüfschema** ($V\to\mathfrak{su}(2)$ bzw. $V\to\{(l,m)\}$ mit $2l+1$-Degenerierung); `eabc_su2_reconstruction_test.py` ist erste **Diagnostik**, kein Beweis.
+
+$$\boxed{\;\textbf{Nicht behauptet:}\; \text{EABC erklärt }\hbar\text{, Drehimpuls oder die Herleitung von SU(2) aus }h\text{ allein.}\;}$$
+
+$$\boxed{\;\textbf{Behauptet (Gedankenexperiment):}\; \text{Wirkungsquantisierung }(h)\text{ und Richtungsquantisierung }(l,m)\text{ sind konzeptionell zu trennen; EABC motiviert die Frage, ob Beobachtungskompression ein Paar }(h,u)\text{ liefert und ob aus diskreter Orientierungsgeometrie SU(2)-Struktur folgen kann — testbar über §4.8.8–4.8.12.}\;}$$
+
+| Baustein | Tao-Label | Schicht |
+|----------|-----------|---------|
+| $h$, $S=E\cdot t$ | **Referenz** (etablierte Physik) | **C** (extern) |
+| $[L_i,L_j]=i\hbar\varepsilon_{ijk}L_k$, $(l,m)$ | **Referenz** (etablierte Physik) | **C** (extern) |
+| $(h,u)$, Kompressionskette $\mathbb{N}\to\mathbb{Z}_4\to V$ | **Hypothese** / **Modell** | **A**/**B** |
+| Spin-Netze, Prägeometrie, Wheeler/Penrose/LQG | **Analogie** | **C** |
+| $V\Rightarrow\mathfrak{su}(2)$, Emergenz | **Forschungsfrage** | **R** |
+| „EABC erklärt $\hbar$ oder QM" | — | **nicht behauptet** |
+
+**Label:** §4.8.13 = **Meta** / **Gedankenexperiment** / **Analogie** (Schicht **C** für Physik/Prägeometrie; **A**/**B** für Kompressionskette; **R** für SU(2)-Emergenzfrage); **kein Theorem**.
 
 ### 4.9 Zeta-Exponential-Gedankenexperiment (Schicht **C**)
 
