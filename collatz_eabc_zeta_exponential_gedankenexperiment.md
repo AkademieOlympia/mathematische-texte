@@ -473,7 +473,59 @@ pytest tests/test_eabc_zeta_fibonacci_witnesses.py -q
 
 **Label:** gesamter §9.7 = **Experiment** (Schicht **C**); **kein Theorem**, **kein RH-Beweis**.
 
-### 9.8 Kurzform
+### 9.8 Meromorphe Normalform und Resonanztürme (klassisch)
+
+Aus $F_n^{-s}=5^{s/2}\,\varphi^{-ns}\,(1-(-1)^n\varphi^{-2n})^{-s}$ folgt die **exakte meromorphe Normalform** durch Binomialentwicklung $(1-u)^{-s}=\sum_{m\ge0}(s)_m/m!\,u^m$ mit $u=(-1)^n\varphi^{-2n}$:
+
+$$\boxed{\;\zeta_F(s)=5^{s/2}\sum_{m\ge0}\frac{(s)_m}{m!}\,\frac{(-1)^m\,\varphi^{-(s+2m)}}{1-(-1)^m\,\varphi^{-(s+2m)}}\;}$$
+
+| $m$ | Term | Resonanz / Polstruktur (imaginäre Achse) |
+|-----|------|------------------------------------------|
+| **0** | $5^{s/2}\,\varphi^{-s}/(1-\varphi^{-s})$ | **Hauptresonator** — $s=2\pi ik/\log\varphi$ |
+| **gerade $m>0$** | Paritäts-Spiegelterm | $s=-2m+2\pi ik/\log\varphi$ |
+| **ungerade $m$** | Paritäts-Spiegelterm (Phasenverschiebung) | $s=-2m+(2k+1)\pi i/\log\varphi$ |
+
+**Lesart:** Vertikale **Resonanztürme** — $m=0$ ist der goldene Hauptkamm; $m>0$ sind **parity-verschobene Spiegelresonatoren** (Binet-Korrekturen). Saubere mathematische Version von Expansion/Kontraktion/Parität.
+
+**Label:** Box + Tabelle = **Theorem** (klassische Analysis); EABC-Kopplung = **nicht** enthalten.
+
+**Numerik:** `eabc_zeta_fibonacci_witnesses.py` (Zeuge 4) vergleicht direkte Partialsumme $\sum F_n^{-s}$ mit meromorpher Partialsumme ($m\le m_{\max}$).
+
+### 9.9 Goldene Fourier-Zeugen und mod-210-Fibonacci-Schalen (Experiment)
+
+**Goldene Koordinaten** auf Primvierlingen $p$ (Start von $(p,p+2,p+6,p+8)$):
+
+$$\theta_\varphi(p)=\frac{\log p}{\log\varphi}\bmod 1,\qquad
+\chi(p)=\begin{cases}+1& p\equiv 5\pmod{12}\;\text{(ABCE)}\\ -1& p\equiv 11\pmod{12}\;\text{(CEAB)}\end{cases}$$
+
+$$\boxed{\;C_m(N)=\sum_{p\le N}\chi(p)\,e^{2\pi i m\,\theta_\varphi(p)},\qquad
+Z_m(N)=\frac{|C_m(N)|}{\sqrt{Q(N)}}\;}$$
+
+mit $Q(N)$ = Anzahl klassifizierter Vierlinge $\le N$.
+
+**Fibonacci-Schalen:** $F_k\le p<F_{k+1}$; je Schale mod-210-Triple $(D_{11,k},D_{101,k},D_{191,k})$ mit $D_{r,k}=N_{\mathrm{ABCE},r}-N_{\mathrm{CEAB},r}$ für $r\in\{11,101,191\}$ (Wigner-Zellen, vgl. `eabc_wigner_zellen.py`, `eabc_quadruplets.csv`).
+
+**Zentralfrage (Experiment):** Bleibt die Signatur $(+,+,-)$ — d. h. $D_{11}>0$, $D_{101}>0$, $D_{191}<0$ — entlang Fibonacci-Schalen **stabiler** als in linearen Fenstern gleicher Breite?
+
+| Komponente | Schicht | Label |
+|------------|---------|-------|
+| Meromorphe Normalform, Resonanztürme | — | **Theorem** (klassisch) |
+| $\theta_\varphi$, $C_m$, $Z_m$ auf Vierlingen | **C** | **Experiment** |
+| mod-210-Signatur vs. Fibonacci-Schalen | **C** | **Hypothese** / **Experiment** |
+| Kopplung $\zeta_F$-Resonanz ↔ EABC | **C** | **Analogie** — **nicht** behauptet |
+
+**Nullmodell-Hierarchie** (`collatz_eabc_zirkulationshypothese.md` §4.8.2): $\zeta_F$ und der goldene Log-Kamm sind **Stufe 0** (reguläres Referenzgitter); die Fourier-Zeugen $C_m,Z_m$ und mod-210-Schalen testen, ob **arithmetische** Vierlingsordnung dieselbe chirale Signatur trägt wie das ideale goldene Gitter — **ohne** Theorem über $\Sigma_A$ oder HL.
+
+```bash
+python3 eabc_zeta_fibonacci_witnesses.py --quadruplet-bound 500000 --m-max 8
+pytest tests/test_eabc_zeta_fibonacci_witnesses.py -q
+```
+
+Implementierung: Zeuge 4–6 in `eabc_zeta_fibonacci_witnesses.py` → `eabc_zeta_fibonacci_witnesses.json`.
+
+**Label:** gesamter §9.9 = **Experiment** (Schicht **C**).
+
+### 9.10 Kurzform
 
 $$\boxed{\;\text{Fibonacci-Zeta = geordneter Resonator; Riemann-Zeta = arithmetisch gestörter Resonator — kontrolliertes Gegenmodell, kein „näher an Riemann“.}\;}$$
 
@@ -483,6 +535,8 @@ $$\boxed{\;\text{Fibonacci-Zeta = geordneter Resonator; Riemann-Zeta = arithmeti
 | $\zeta_F$ als Stufe-0-Gegenmodell (§4.8.2) | **C** | **Hypothese** / **Modell** |
 | Streifen-, kritische-Linie-, EABC-Paarung | **C** | **Analogie** |
 | Drei numerische Zeugen (§9.7) | **C** | **Experiment** |
+| Meromorphe Normalform (§9.8) | — | **Theorem** (klassisch) |
+| Goldene Fourier-Zeugen, mod-210-Schalen (§9.9) | **C** | **Experiment** / **Hypothese** |
 | RH oder EABC aus Fibonacci | — | **nicht behauptet** |
 
 ---
@@ -509,4 +563,4 @@ $$\boxed{\;\zeta_F(s)=\sum_{n\ge1}F_n^{-s}\;\Leftrightarrow\;\text{goldener Log-
 
 ---
 
-*Verknüpft mit `collatz_eabc_zirkulationshypothese.md` §4.8.2 (Stufe 0: $\zeta_F$), §4.9; epistemischer Rahmen: `collatz_eabc_epistemik_schichten.md`; Bernoulli: `collatz_bernoulli_schalen.pdf`, `BernoulliClock.lean`; Oktanionen: `divisionsalgebren.tex`, `collatz_oktonionen_beweis.pdf`; Fibonacci-Numerik: `collatz_eabc_zeta_fibonacci_check.py`, `eabc_zeta_fibonacci_witnesses.py`.*
+*Verknüpft mit `collatz_eabc_zirkulationshypothese.md` §4.8.2 (Stufe 0: $\zeta_F$), §4.9; epistemischer Rahmen: `collatz_eabc_epistemik_schichten.md`; Bernoulli: `collatz_bernoulli_schalen.pdf`, `BernoulliClock.lean`; Oktanionen: `divisionsalgebren.tex`, `collatz_oktonionen_beweis.pdf`; Fibonacci-Numerik: `collatz_eabc_zeta_fibonacci_check.py`, `eabc_zeta_fibonacci_witnesses.py` (§9.7–9.9); Wigner-Zellen: `eabc_wigner_zellen.py`, `eabc_quadruplets.csv`.*
