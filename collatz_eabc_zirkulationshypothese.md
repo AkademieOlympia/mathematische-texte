@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beschreibungs- und effektive Pixelung** in §4.8.8; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beschreibungs- und effektive Pixelung, erkenntnistheoretischer Kern (methodische Sicherung)** in §4.8.8; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
 - `collatz_eabc_zeta_exponential_gedankenexperiment.md` — **Gedankenexperiment / Analogie:** $\zeta$ als Exponentialsumme auf Log-Prim-Geometrie; Euler-Streifen $(1\pm p^{-s})$; $\xi$-Spiegelung; Brücke zu Log-Koordinaten, $\gamma^\pm$-Paarung, Level-2; §6–§10: Ganzzahl/Halbzahl-Exponenten, Oktanionen (Schicht C), Bernoulli-Subtraktion, Fibonacci-Zeta (kein RH-/EABC-Theorem)
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
@@ -1527,6 +1527,77 @@ $$\boxed{\;\textbf{Keine neue Ontologie — nur Beobachtungsgeometrie.}\;}$$
 
 $$\boxed{\;\text{Pixel = Beschreibung oder effektiver Filter; Wellen = externer Kamm; Physik-Bilder = Schicht C — \textbf{methodisch}, \textbf{nicht} ontologisch.}\;}$$
 
+##### Erkenntnistheoretischer Kern (methodische Sicherung)
+
+§4.8.8 schließt die Kette §4.8.6–4.8.7 ab und dient als **methodische Sicherung** des gesamten EABC–Fibonacci-Programms: Sie fixiert, **was** beobachtet wird, **wie** es projiziert wird und **unter welchen Bedingungen** ein Resonanzsignal Evidenz erhält — unabhängig von ontologischen Lesarten. Vollständiger Schichten-Rahmen: `collatz_eabc_epistemik_schichten.md` §0–3.1.
+
+###### Drei Ebenen (A / B / C)
+
+| Ebene | Objekt | Rolle | Beispiel |
+|-------|--------|-------|----------|
+| **A** | Rohdaten | gegeben, nicht gewählt | $\mathbb{N}$, Primmenge $\mathbb{P}$, Primstrom $P$ |
+| **B** | Beobachtungsgeometrie | gewählte Kodierung / Projektion | $\Theta(n)=(\pi/2)\sigma(n)$, Abbildung $\mathbb{N}\to\mathbb{Z}_4$ auf $G_E$, $N_\pm$, $D_E$, $\Sigma_A$ |
+| **C** | Resonanzdetektoren (extern) | unabhängige Testinstrumente | Fibonacci-Kamm $K_F$, $\zeta_F$, $A_n$, $P_F(\omega)$, $R_N$ |
+
+Schicht **A** ist **datenseitig** (was existiert). Schicht **B** ist **instrumentell** (wie man misst). Schicht **C** ist **interpretativ-diagnostisch** (welche externen Detektoren ein Signal von Artefakt trennen). Keine Ebene darf ohne Kennzeichnung in die nächsthöhere aufsteigen: $\Theta$ bleibt **B**, der rotierende Kegel bleibt **C**.
+
+$$\boxed{\;\text{A = Rohdaten; B = Beobachtungsgeometrie; C = externe Resonanzdetektoren — strikt getrennt.}\;}$$
+
+###### Zwei Extreme: realistische vs. instrumentalistische Lesart
+
+Der **EABC-Kegel** (Azimuth $\Theta$, Höhe $h$, Gitter $(\Theta,h)$) lässt sich epistemisch an zwei Polen lesen:
+
+| Pol | Lesart | Konsequenz |
+|-----|--------|------------|
+| **Realistisch** | Der Kegel „ist“ die Struktur der Primzahlen | Gefahr von Reifikation; Kegel-Bild wird zur Ontologie |
+| **Instrumentalistisch** | Der Kegel ist ein **Beobachtungsinstrument** | Struktur ist nur **relativ zur gewählten Projektion** sichtbar |
+
+Das Programm verpflichtet sich zur **instrumentalistischen Lesart**: Der Kegel strukturiert **Beobachtungsgeometrie**, nicht die Ontologie von $\mathbb{N}$. Analogien aus der Signalverarbeitung — **Fourier-**, **Wavelet-** oder **PCA-Projektion** — gehören ebenfalls zu Schicht **C**: Sie erklären **warum** man projiziert, nicht **was** Primzahlen „sind“. Ein Resonanzüberschuss im Kamm ist erst dann interessant, wenn er **nicht** allein aus der Wahl der EABC-Pixelung folgt (vgl. Kodierungsinvarianz-Test unten).
+
+$$\boxed{\;\text{EABC-Kegel = Beobachtungsgeometrie, \textbf{nicht} physikalische Ontologie.}\;}$$
+
+###### Drei Fälle bei künftigem Resonanzüberschuss
+
+Sollte künftig ein **statistisch signifikanter Resonanzüberschuss** auftreten ($C_F^{\mathrm{prime}}/C_F^{\mathrm{golden}}>1$, $A_n$ über Schwellenwert, $R_N$ stabil), sind **drei Fälle** zu unterscheiden — bevor man Ontologie oder neue Physik behauptet:
+
+| Fall | Deutung | Kriterium | Konsequenz |
+|------|---------|-----------|------------|
+| **(1)** | Resonanz **in den Primzahlen selbst** | Signal überlebt **alle** Kodierungen (mod $8$, $10$, $30$, $210$, …) und externe Detektoren | echte arithmetische Struktur; Programm-Upgrade Schicht **A**/**B** |
+| **(2)** | Resonanz **durch EABC-Projektion** | Signal nur bei EABC-Kodierung / $\mathbb{Z}_4$-Gerüst, nicht bei alternativen Restklassen | spezifisch für gewählte Beobachtungsgeometrie; kein allgemeiner Primzahl-Satz |
+| **(3)** | **Artefakt** | Signal verschwindet unter Permutation, Markov-Null, HL-Null oder Kodierungswechsel | zurück zur Nullmodell-Leiter §4.8.2; keine Resonanz-Behauptung |
+
+Fall (1) wäre der stärkste Befund; Fall (2) wäre **methodisch wertvoll**, aber epistemisch **begrenzt**; Fall (3) ist der **Default** solange H$_0$ nicht verworfen ist (§4.8.7).
+
+$$\boxed{\;\text{Resonanz hat Evidenz nur, wenn sie stabil gegenüber alternativen Projektionen ist.}\;}$$
+
+###### Kodierungsinvarianz-Test
+
+Zur Abgrenzung der Fälle (1)–(3) dient ein **Kodierungsinvarianz-Test**: dieselbe Observable (z. B. $D_E$, $R_N$, $C_F^{\mathrm{prime}}/C_F^{\mathrm{golden}}$) wird unter **alternativen Restklassen-Kodierungen** ausgewertet — mindestens mod $8$, mod $10$, mod $30$, mod $210$ (kanonische Stufen der arithmetischen Gitterhierarchie).
+
+| Befund | Lesart |
+|--------|--------|
+| Resonanz **nur** unter EABC (mod $12$ / $\mathbb{Z}_4$) | **spezifisch** — Fall (2); Beobachtungsgeometrie, nicht Ontologie |
+| Resonanz **überall** (alle Kodierungen) | **allgemein** — Fall (1); Kandidat für arithmetische Struktur |
+| Resonanz **nirgends** (auch nicht EABC) | **Artefakt** oder Rauschen — Fall (3) |
+
+Dieser Test ist programmatisch verwandt mit **Stufe 3 — Kodierungsinvarianz** (`collatz_stufe3_kappa_invarianz.md`, Branch `collatz/kappa-invarianz-stufe3`): Dort wird $\kappa$-Invariante von $R(k)$, $h_F$, $\mathcal{L}_{\mathrm{arith}}^*$ systematisch geprüft; hier ist die gleiche Logik auf die **EABC–Fibonacci-Resonanzdiagnostik** übertragen — **Stub**, noch nicht numerisch durchgeführt.
+
+$$\boxed{\;\text{Kodierungsinvarianz: EABC-spezifisch $\Rightarrow$ Fall (2); kodierungsunabhängig $\Rightarrow$ Fall (1); kein Signal $\Rightarrow$ Fall (3).}\;}$$
+
+###### §4.8.8 als methodische Sicherung des Programms
+
+Zusammenfassend sichert §4.8.8 das gesamte Programm ab:
+
+1. **Schichtentrennung** — A (Rohdaten) / B (Beobachtungsgeometrie) / C (externe Detektoren) bleiben disjunkt.
+2. **Instrumentalismus** — Kegel, Pixel/Welle, Physik-Analogien sind **Werkzeuge**, keine Ontologie.
+3. **Resonanz-Disjunktion** — künftiger Überschuss wird in drei Fälle zerlegt, bevor er exportiert wird.
+4. **Projektionsstabilität** — Evidenz nur bei Überleben alternativer Kodierungen.
+5. **Verknüpfung** — Hypothesenleiter H$_0$–H$_4$ (§4.8.7), Nullmodell-Leiter (§4.8.2), κ-Stufe 3 (Stub).
+
+Ohne diese Sicherung wäre jedes numerische Flackern im Fibonacci-Kamm leicht als „Entdeckung“ zu lesen; mit ihr bleibt das Programm **falsifizierbar** und **schichtenkonform**.
+
+$$\boxed{\;\S4.8.8 = \textbf{methodische Sicherung}: Beobachtungsgeometrie ja — Ontologie nein — Evidenz nur bei Kodierungsstabilität.}\;}$$
+
 | Baustein | Tao-Label | Schicht |
 |----------|-----------|---------|
 | $\Theta(n)=(\pi/2)\sigma(n)$ | **Definition** | **A**/**B** |
@@ -1535,6 +1606,8 @@ $$\boxed{\;\text{Pixel = Beschreibung oder effektiver Filter; Wellen = externer 
 | Pixel/Welle, Fibonacci-Interferenz | **Analogie** / **Hypothese** | **C** |
 | Kristall, Doppelspalt, QM-Projektion | **Analogie** | **C** |
 | $\mathbb{N}\to\mathbb{N}/{\sim}$, Resonanz-Hypothese | **Hypothese** | **B**/**R** |
+| Drei Ebenen A/B/C, Zwei Extreme, Drei Fälle | **Meta** | **Meta** |
+| Kodierungsinvarianz-Test (mod $8,10,30,210$) | **Experiment** (Stub) | **B**/**R** |
 
 **Label:** §4.8.8 = **Meta** / **Hypothese** / **Analogie** (Schicht **C** für Bilder; **A**/**B** für $\Theta$ und Quotient); **kein Theorem**.
 

@@ -23,7 +23,8 @@ $$\boxed{\;\textbf{Theorem} \;\neq\; \textbf{Struktur} \;\neq\; \textbf{Brücke}
 - `collatz_eabc_euklidische_hebung.md` — algebraischer Nebenzweig $\mathbb{R}\subset\mathbb{C}\subset\mathbb{H}\subset\mathbb{O}$ (Schicht **A**)
 - `collatz_eabc_core/CollatzEabc/RadiationSpace.lean` — interpretativer Lean-Scaffold (rot)
 - `collatz_eabc_core/CollatzEabc/OccupancyMonoid.lean` — Streaming-Monoid $(Z,\oplus,Z_0)$, `blockScan_append` (Schicht **A**, §4.6–4.7)
-- `collatz_eabc_zirkulationshypothese.md` — Monoid §4.6; state-centric Hierarchie §4.7; Level-2 §4.8; Spin-Liquid-Analogie (methodisch, nicht ontologisch) §4.8.1; **Fibonacci-Kamm als externer Resonanzdetektor, Hypothesenleiter H$_0$–H$_4$** §4.8.7; **Beschreibungs- vs. effektive Pixelung, Beobachtungsgeometrie** §4.8.8
+- `collatz_eabc_zirkulationshypothese.md` — Monoid §4.6; state-centric Hierarchie §4.7; Level-2 §4.8; Spin-Liquid-Analogie (methodisch, nicht ontologisch) §4.8.1; **Fibonacci-Kamm als externer Resonanzdetektor, Hypothesenleiter H$_0$–H$_4$** §4.8.7; **Beschreibungs- vs. effektive Pixelung, Beobachtungsgeometrie, erkenntnistheoretischer Kern** §4.8.8
+- `collatz_stufe3_kappa_invarianz.md` — Stufe 3: Kodierungsinvarianz (κ-Test; Stub-Verknüpfung zu §4.8.8)
 
 ---
 
@@ -228,7 +229,11 @@ $$\boxed{\;\text{Gegner ist falsches Nullmodell — nicht der verschwindende Mit
 
 **Beobachtungsgeometrie vs. Ontologie** (vollständig: `collatz_eabc_zirkulationshypothese.md` §4.8.8): Die EABC-Phasenkoordinate $\Theta(n)=(\pi/2)\sigma(n)$ ist **Beschreibungspixelung** (Schicht **A**/**B**) — Kodierung wie $n\bmod 12$, keine neue Physik. **Effektive Pixelung** entsteht, wenn die Primdynamik auf $\{E,A,B,C\}$ reagiert (Observable, Schicht **B**/**R**). Kegel-Bild, Kristall-, Doppelspalt- und QM-Analogien sowie die Lesart „EABC = Pixel, Kamm = Wellen“ sind **Schicht C** — sie strukturieren **Beobachtungsgeometrie**, nicht die Ontologie von $\mathbb{N}$.
 
+**Erkenntnistheoretischer Kern** (§4.8.8, methodische Sicherung): Drei Ebenen — **A** Rohdaten ($\mathbb{N}$, $\mathbb{P}$), **B** Beobachtungsgeometrie ($\Theta$, $\mathbb{N}\to\mathbb{Z}_4$), **C** externe Resonanzdetektoren ($K_F$). Zwei Extreme: realistische vs. instrumentalistische Kegel-Lesart (Fourier/Wavelet/PCA = Schicht **C**). Drei Fälle bei Resonanzüberschuss: (1) in Primzahlen, (2) durch EABC-Projektion, (3) Artefakt. **Kodierungsinvarianz-Test** (mod $8$, $10$, $30$, $210$): nur EABC $\Rightarrow$ spezifisch; überall $\Rightarrow$ allgemein; nirgends $\Rightarrow$ Artefakt. Stub: `collatz_stufe3_kappa_invarianz.md`.
+
 $$\boxed{\;\text{Keine neue Ontologie der natürlichen Zahlen — nur Wahl von Gitter, Projektion und externem Detektor.}\;}$$
+
+$$\boxed{\;\text{Resonanz hat Evidenz nur bei Stabilität gegenüber alternativen Projektionen (§4.8.8).}\;}$$
 
 ---
 
