@@ -7,7 +7,7 @@
 $$\boxed{\;\textbf{Schicht C:}\;\text{Dieses Dokument ist Interpretationsschicht — keine mathematische Konsequenz für }D_E,\,\Phi_E\text{ oder EABC-Hypothesen.}\;}$$
 
 **Querverweise:**
-- `collatz_eabc_zirkulationshypothese.md` — §4.9 (Kurzverweis); Level-2-Fluktuationsgeometrie §4.8; links-rechts-Paarung §2
+- `collatz_eabc_zirkulationshypothese.md` — §4.9 (Kurzverweis); Level-2-Fluktuationsgeometrie §4.8 (Nullmodell-Hierarchie §4.8.2: $\zeta_F$ als **reguläres** Vergleichsensemble?); links-rechts-Paarung §2
 - `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Abgrenzung Ikone vs. Struktur; Hurwitz-/Basel-Ikone §2
 - `collatz_eabc_diskrete_geometrie.md` — kanonische EABC-Definitionen ($G_E$, $\gamma^\pm$)
 - `collatz_offene_punkte.md` — Stirling–Bernoulli–Zeta-Anbindung; Bernoulli-Uhr (`BernoulliClock.lean`)
@@ -185,6 +185,7 @@ $$\boxed{\;\textbf{Zeta ist die Exponentialfunktion auf der logarithmischen Prim
 | EABC-Brücke §4 | **C** | **Analogie** / **Ikone** |
 | $D_E$, $\Sigma_A$, $\Delta_F$ | **B** / Experiment | **Definition** / **Experiment** |
 | §6–§8 (Ganzzahl/Halbzahl, Bernoulli) | **C** (+ klassisch in Boxen) | **Theorem** / **Analogie** |
+| §9 (Fibonacci-Zeta) | **C** (+ klassisch in Boxen) | **Definition** / **Hypothese** / **Analogie** |
 
 ---
 
@@ -339,7 +340,114 @@ In der **Bernoulli-Uhr** (`collatz_offene_punkte.md`, `BernoulliClock.lean`) wer
 
 ---
 
-## 9. Kurzform (Erweiterung)
+## 9. Fibonacci-Zeta: goldene Zwischenwelt
+
+$$\boxed{\;\text{Fibonacci als diskrete hyperbolische Brücke zwischen }e^x\text{ und }\zeta(s)\text{ — goldener Testmodell für Zeta-Strukturen (Schicht C).}\;}$$
+
+Dieser Abschnitt fügt eine **dritte Skala** zum Dreieck aus §2–3 hinzu: neben der **kontinuierlichen** Exponentialfunktion $e^x$ und der **arithmetischen** Log-Exponentialsumme $\zeta(s)=\sum e^{-s\log n}$ die **goldene diskrete** Expansion/Kontraktion der Fibonacci-Zahlen $F_n$.
+
+### 9.1 Dreieck: kontinuierlich — arithmetisch — golden-diskret
+
+| Skala | Objekt | Lesart |
+|-------|--------|--------|
+| **Kontinuierlich** | $e^x$ | reine Expansion/Kontraktion auf $\mathbb{R}$ |
+| **Arithmetisch** | $\zeta(s)=\sum_{n\ge1} n^{-s}=\sum_{n\ge1} e^{-s\log n}$ | Exponentialsumme auf **irregulärer** Log-Achse ($\log n$, Prim-Marken $\log p$) |
+| **Golden-diskret** | $F_n$ (Fibonacci) | **reguläre** diskrete Expansion/Kontraktion mit Basis $\varphi=(1+\sqrt5)/2$ |
+
+**Label:** Tabelle = **Analogie** (Schicht **C**); $\zeta$-Definition = **Definition** (klassisch).
+
+### 9.2 Binet-Formel und Matrix-Eigenwerte
+
+Sei $\varphi=(1+\sqrt5)/2$ der goldene Schnitt und $\psi:=-\varphi^{-1}$. Dann gilt für $n\ge 0$ (**Binet**, klassisch):
+
+$$\boxed{\;F_n=\frac{\varphi^n-\psi^n}{\sqrt5},\qquad \psi=-\varphi^{-1}.\;}$$
+
+**Expansion vs. Kontraktion:** Der Term $\varphi^n$ wächst; der Term $\psi^n=(-\varphi^{-1})^n=(-1)^n\varphi^{-n}$ kontrahiert mit **Parität** $(-1)^n$. Die Fibonacci-Rekursion
+
+$$F_{n+2}=F_{n+1}+F_n$$
+
+entspricht der Potenz von
+
+$$M=\begin{pmatrix}1&1\\1&0\end{pmatrix},\qquad
+\begin{pmatrix}F_{n+1}\\F_n\end{pmatrix}=M^n\begin{pmatrix}1\\0\end{pmatrix},$$
+
+mit Eigenwerten $\lambda_\pm=\varphi,\psi$ — dieselbe **Differenz zweier Exponentialmoden** wie in $\sinh/\cosh$, nun auf $\mathbb{Z}_{\ge0}$.
+
+**Label:** Binet-Formel, Matrix-Eigenwerte = **Theorem** (klassisch).
+
+**Numerik (optional):** `collatz_eabc_zeta_fibonacci_check.py` verifiziert $F_n$ (Binet vs. $M^n$) für $n\le 20$.
+
+### 9.3 Fibonacci-Zeta $\zeta_F(s)$
+
+**Definition** (formal, Konvergenz für $\Re(s)$ hinreichend groß):
+
+$$\boxed{\;\zeta_F(s):=\sum_{n\ge1} F_n^{-s}.\;}$$
+
+Mit Binet und $F_n\sim \varphi^n/\sqrt5$ folgt asymptotisch
+
+$$\zeta_F(s)\sim 5^{s/2}\sum_{n\ge1}\varphi^{-ns},$$
+
+wobei die **Korrektur** durch den Kontraktionsterm lautet:
+
+$$\boxed{\;F_n^{-s}=5^{s/2}\,\varphi^{-ns}\,\bigl(1-(-1)^n\varphi^{-2n}\bigr)^{-s}.\;}$$
+
+**Geboxte Struktur** (goldene Version von $e^x\pm e^{-x}$):
+
+$$\boxed{\;\underbrace{\varphi^{-ns}}_{\text{Hauptterm (Expansion)}}\;+\;\underbrace{(-1)^n\varphi^{-2n}}_{\text{Spiegelterm (Kontraktion mit Parität)}}\;}$$
+
+— formal parallel zu $(e^x+e^{-x})$ und $(e^x-e^{-x})$ in Box 2, jetzt auf dem **regulären** Gitter $n\mapsto n\log\varphi$ statt $n\mapsto\log n$.
+
+**Label:** $\zeta_F$-Definition = **Definition**; asymptotische Entwicklung = **Theorem** (klassisch, Standard); Streifen-Parallele = **Analogie** (Schicht **C**).
+
+### 9.4 Vergleich zu Riemann-$\zeta$: goldener Fourier-Kamm
+
+| Aspekt | Riemann $\zeta(s)$ | Fibonacci-$\zeta_F(s)$ |
+|--------|-------------------|------------------------|
+| Gitter | $n\mapsto\log n$ (**irregulär**, Prim-Lücken) | $n\mapsto n\log\varphi$ (**regulär**, äquidistant) |
+| „Frequenzkamm“ | $\omega_p=\log p$ (Prim-Fourier-Kamm) | $\omega_\varphi=\log\varphi$ (goldener Kamm) |
+| Lokale Faktoren | Euler $(1-p^{-s})(1+p^{-s})$ | Binet-Haupt- + Spiegelterm |
+| Nullmodell-Lesart | — | **reguläres** Vergleichsensemble für arithmetische Irregularität |
+
+**Hypothese/Modell (nicht Theorem):** $\zeta_F$ als **regulärer** Log-Kamm dient als **Nullmodell** für die **irreguläre** Prim-Log-Geometrie hinter $\zeta(s)$ — methodische Parallele zur Level-2-Nullmodell-Hierarchie (`collatz_eabc_zirkulationshypothese.md` §4.8.2): dort werden zunehmend realistische Ensembles ($\Sigma_A^{\mathrm{perm}}\to\Sigma_A^{\mathrm{Markov}}\to\Sigma_A^{\mathrm{HL}}$) getestet; hier wäre $\zeta_F$ das **regelmäßigste** Referenzgitter auf der Log-Achse, **ohne** Behauptung einer Identität mit Prim-Korrelationen.
+
+**Label:** goldener Kamm als Prim-Nullmodell = **Hypothese** / **Modell** (Schicht **C**).
+
+### 9.5 Kritische Linie auf der goldenen Achse
+
+Analog zu $s=\tfrac12+it$ in §6.3 setze auf dem Fibonacci-Gitter
+
+$$\varphi^{-n(\tfrac12+it)}=\varphi^{-n/2}\,e^{-it\,n\log\varphi}.$$
+
+Der **reelle Halbzahl-Anteil** $\varphi^{-n/2}$ und die **Phase** $e^{-it n\log\varphi}$ faktorisieren wie $p^{-1/2}\cdot p^{-it}$ auf der Prim-Achse — **Bildsprache** für eine „goldene kritische Linie“, **kein** RH-Anspruch für $\zeta_F$ oder $\zeta$.
+
+**Label:** **Analogie** (Schicht **C**).
+
+### 9.6 EABC/Wigner: chirale Paarung (Schicht C)
+
+| Fibonacci / golden | EABC (Lesart) | Label |
+|------------------|---------------|-------|
+| $\varphi^n$ (Expansion) vs. $(-\varphi^{-1})^n$ (Kontraktion) | chirale Paarung $\gamma^+$ (ABCEA) vs. $\gamma^-$ (CEABC) | **Analogie** (C) |
+| Parität $(-1)^n$ | Vorzeichenwechsel auf $C_4$-Zyklus | **Analogie** (C) |
+| Haupt- + Spiegelterm (Binet) | ABCE $\leftrightarrow$ CEAB — diskrete Wigner-Struktur | **Analogie** (C) |
+
+**Explizit ausgeschlossen:** Fibonacci beweist **weder** die Riemann-Hypothese **noch** EABC-Holonomie oder $D_E$-Wachstum. Die Zuordnung ist **Interpretationsschicht** — dieselbe methodische Kategorie wie §4.2 und `collatz_eabc_zirkulationshypothese.md` §2.
+
+**Label:** gesamter §9.6 = **Analogie** (Schicht **C**).
+
+### 9.7 Kurzform
+
+$$\boxed{\;\text{Fibonacci ist die diskrete hyperbolische Brücke zwischen }e^x\text{ und }\zeta(s)\text{ — ein goldener Testmodell für Zeta-Strukturen.}\;}$$
+
+| Aussage | Schicht | Tao-Label |
+|---------|---------|-----------|
+| Binet, Matrix-Eigenwerte, $\zeta_F$-Definition | — | **Theorem** / **Definition** |
+| Goldener Kamm als Prim-Nullmodell | **C** | **Hypothese** / **Modell** |
+| Streifen-, kritische-Linie-, EABC-Paarung | **C** | **Analogie** |
+| RH oder EABC aus Fibonacci | — | **nicht behauptet** |
+
+---
+
+## 10. Kurzform (Erweiterung)
 
 $$\boxed{\;\mathcal{S}=\mathbb{Z}\cup(\tfrac12+\mathbb{Z})\;\text{ — halbzahlige Gitterlesart für Streifen-Exponenten.}\;}$$
 
@@ -355,7 +463,10 @@ $$\boxed{\;\mathbb{R}\subset\mathbb{C}\subset\mathbb{H}\subset\mathbb{O}\;\Leftr
 | §6 Gitter, §8.4 Streifen-Quotient | **C** | **Analogie** |
 | §7 Hurwitz/Oktanionen | **C** | **Analogie** / **Ikone** |
 | Bernoulli-Uhr | **C** | **Definition** (Gedankenmodell) |
+| §9 Fibonacci-Zeta | **C** (+ klassisch) | **Hypothese** / **Analogie** |
+
+$$\boxed{\;\zeta_F(s)=\sum_{n\ge1}F_n^{-s}\;\Leftrightarrow\;\text{goldener Log-Kamm }n\log\varphi\text{ mit Binet-Streifen }\varphi^{-ns}+(-1)^n\varphi^{-2n}.\;}$$
 
 ---
 
-*Verknüpft mit `collatz_eabc_zirkulationshypothese.md` §4.9; epistemischer Rahmen: `collatz_eabc_epistemik_schichten.md`; Bernoulli: `collatz_bernoulli_schalen.pdf`, `BernoulliClock.lean`; Oktanionen: `divisionsalgebren.tex`, `collatz_oktonionen_beweis.pdf`.*
+*Verknüpft mit `collatz_eabc_zirkulationshypothese.md` §4.8.2, §4.9; epistemischer Rahmen: `collatz_eabc_epistemik_schichten.md`; Bernoulli: `collatz_bernoulli_schalen.pdf`, `BernoulliClock.lean`; Oktanionen: `divisionsalgebren.tex`, `collatz_oktonionen_beweis.pdf`; Fibonacci-Numerik: `collatz_eabc_zeta_fibonacci_check.py`.*
