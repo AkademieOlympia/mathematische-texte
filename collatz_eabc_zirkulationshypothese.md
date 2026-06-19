@@ -1964,7 +1964,7 @@ $$\boxed{\;\textbf{Forschungsfrage (Prüfstein):}\; \text{Kann endliche EABC-/Ik
 
 ##### 7. Operationalisierung
 
-Numerischer Test: `eabc_su2_reconstruction_test.py` — **implementiert, erste Diagnostik** (§4.8.12).
+Numerischer Test: `eabc_su2_reconstruction_test.py` — **implementiert, Skalierung diagnostisch** (§4.8.12; Artefakt `eabc_su2_reconstruction_scaling.json`).
 
 **Prüfschema:**
 
@@ -1974,7 +1974,18 @@ Numerischer Test: `eabc_su2_reconstruction_test.py` — **implementiert, erste D
 4. **Resonanz:** Korrelation von $R_{ij}=u_i\cdot u_j$ mit $\Delta l$-Analogien (Auswahlregeln aus `Bahndrehimpuls.tex`).
 5. **Klassifikation:** Fall (1) SU(2)-artige Struktur unter EABC-Hebung, (2) nur unter spezieller Zuordnung, (3) keine Reproduktion — eigenständige endliche Geometrie.
 
-$$\boxed{\;\text{SU(2)-Rekonstruktionstest — implementiert, erste Diagnostik; Verknüpfung §4.8.11 (offene Frage) mit }eabc\_icosahedron\_test.py\text{ und Bahndrehimpuls-Bild.}\;}$$
+**N-Skalierung (diagnostisch, Seed 42, strukturierte Hebung vs. Zufalls-Null):**
+
+| $N$ | Lift | Schalen $|l|$ | $\chi^2$ strukt. | $\chi^2$ Zufall | $\mathrm{corr}_R(Y_1)$ | Klassifikation |
+|-----|------|---------------|------------------|-----------------|--------------------------|----------------|
+| 5000 | Ikosaeder $V_{12}$ | $1{+}3{+}5{+}3$ | 1,76 | 4,09 | 0,943 | (2) spezielle Zuordnung |
+| 50000 | Ikosaeder $V_{12}$ | $1{+}3{+}5{+}3$ | 0,64 | 1,35 | 0,943 | (2) spezielle Zuordnung |
+| 500000 | Ikosaeder $V_{12}$ | $1{+}3{+}5{+}3$ | 6,07 | 1,92 | 0,943 | (3) keine Reproduktion |
+| 50000 | Tetraeder $V_4$ | $1{+}3$ | 0,30 | 0,70 | 0,943 | (1) SU(2)-artig (Heuristik) |
+
+Lesart (kein SU(2)-Claim): Die **statische** Greedy-Partition auf $V_{12}$ bleibt $[1,3,5,3]\neq[1,3,5,7]$ ($2l{+}1$ unvollständig). Die Frobenius-Korrelation mit $l{=}1$ ist **$N$-unabhängig** (rein geometrisch aus $R_{ij}$). Die Schalen-$\chi^2$ der strukturierten Hebung verbessert sich gegenüber dem Nullmodell bis $N{\approx}5\cdot 10^4$, driftet bei $N{=}5\cdot 10^5$ jedoch — Klassifikation wechselt zu Fall (3). Tetraeder-Vergleich ($|V|{=}4$): exakte $[1,3]$-Partition und Heuristik-Fall (1); nur Kontrast zum Ikosaeder, keine Physikbehauptung.
+
+$$\boxed{\;\text{SU(2)-Rekonstruktionstest — implementiert, }N\text{-Skalierung }5\cdot10^3\text{–}5\cdot10^5\text{ diagnostisch; Verknüpfung §4.8.11 mit }eabc\_icosahedron\_test.py\text{ und Bahndrehimpuls-Bild.}\;}$$
 
 ##### 8. Epistemische Kernbox
 
@@ -1989,7 +2000,7 @@ $$\boxed{\;\textbf{Behauptet (Prüfstein):}\; \text{Die Frage, ob endliche Orien
 | Kompressionskette $\mathbb{N}\to\mathbb{Z}_4\to V\to\Pi$ | **Definition** | **A**/**B** |
 | Prämodell mit emergenten Auswahlregeln | **Zwischenhypothese** | **R** |
 | SU(2)-Reproduktion / Approximation | **Forschungsfrage** (Prüfstein) | **R** |
-| `eabc_su2_reconstruction_test.py` | **Experiment** (implementiert, erste Diagnostik) | **B**/**R** |
+| `eabc_su2_reconstruction_test.py` | **Experiment** (implementiert, $N$-Skalierung diagnostisch) | **B**/**R** |
 | „EABC erklärt QM/SU(2)" | — | **nicht behauptet** |
 
 **Label:** §4.8.12 = **Meta** / **Prüfstein** / **Zwischenhypothese** (Schicht **R** für SU(2)-Reproduktionsfrage; **A**/**B** für Hebung und Kompressionskette; **C** für Bahndrehimpuls-Referenz); **kein Theorem**.
