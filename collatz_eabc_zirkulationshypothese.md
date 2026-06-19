@@ -1534,9 +1534,17 @@ $$\mathcal{M}(\mathbf{O}) \in \{\text{Skalierungsexponenten},\;\text{Symmetriein
 | $R_N$ (§4.8.7) | Phasenkohärenz EABC↔$\varphi$-Rotor |
 | $C_F$ (§4.8.5–4.8.6) | Spektrale Kamm-Kopplung $\mathrm{Spec}(\Sigma_A)\to K_F$ |
 
-**Prüfschema:** Für jede Kompression $\mathcal{C}_k\in\{\mathcal{C}_E,\mathcal{C}_8,\mathcal{C}_{10},\mathcal{C}_{30},\mathcal{C}_{210}\}$ werden $\mathcal{M}(\mathbf{O})$ und $\mathcal{M}(\mathcal{C}_k(\mathbf{O}))$ verglichen; Abweichung gegenüber geeigneten Nullmodellen (§4.8.2) klassifiziert Fall (1)–(3). Implementierung (Stub): `eabc_compression_robustness.py` §4.8.9.
+**Prüfschema:** Für jede Kompression $\mathcal{C}_k\in\{\mathcal{C}_E,\mathcal{C}_8,\mathcal{C}_{10},\mathcal{C}_{30},\mathcal{C}_{210}\}$ werden $\mathcal{M}(\mathbf{O})$ und $\mathcal{M}(\mathcal{C}_k(\mathbf{O}))$ verglichen; Abweichung gegenüber geeigneten Nullmodellen (§4.8.2) klassifiziert Fall (1)–(3). Implementierung: `eabc_compression_robustness.py` §4.8.9.
 
-$$\boxed{\;\text{Strukturstabilität = qualitative Übereinstimmung von }\mathcal{M}(\mathbf{O})\text{ und }\mathcal{M}(\mathcal{C}(\mathbf{O}))\text{ — numerisch testbar, kein Theorem.}\;}$$
+**Strukturstabilitätsindex** (numerisch, Test C):
+
+$$\mathbf{M}=(D_E,\,Q_E,\,R_N,\,C_F),\qquad \mathbf{V}_{\mathcal{C}}=(M_1,\ldots,M_4),$$
+
+$$\boxed{\;S(\mathcal{C})=1-\frac{\|\mathbf{V}_{\mathcal{C}}-\mathbf{V}_{\mathrm{raw}}\|}{\|\mathbf{V}_{\mathrm{raw}}\|}\;}$$
+
+mit Referenz $\mathbf{V}_{\mathrm{raw}}=\mathbf{M}$ auf dem kanonischen EABC-Wort ($\mathcal{C}_E$). Numerisch wird über skaleninvariante Features $\mathbf{V}=(W_E,\,|R_N|,\,C_F)$ mit $W_E=D_E/Q_E$ gemessen (sonst dominiert $Q_E\sim N$ bei großem $N$). $S=1$: perfekte Erhaltung; $S=0$: vollständiger relativer Verlust. **Starke Aussage (Hypothese):** $S(\mathcal{C}_E)\gg S(\mathcal{C}_k)$ für $k\in\{8,10,30,210\}$ spricht für EABC-Spezifität; $S(\mathcal{C}_E)\approx S(\mathcal{C}_{30})\approx\cdots$ widerlegt sie.
+
+$$\boxed{\;\text{Strukturstabilität = qualitative Übereinstimmung von }\mathcal{M}(\mathbf{O})\text{ und }\mathcal{M}(\mathcal{C}(\mathbf{O}))\text{ — numerisch testbar via }S(\mathcal{C})\text{, kein Theorem.}\;}$$
 
 ##### Jaynes vor Landauer: Modellierung statt Ontologie
 
@@ -1611,26 +1619,54 @@ $$\boxed{\;\S4.8.8 = \textbf{methodische Sicherung}: Beobachtungsgeometrie ja �
 | Baustein | Tao-Label | Schicht |
 |----------|-----------|---------|
 | $C_E$, $I_E(N)$, strukturstabile Kompression | **Definition** / **Meta** | **B** |
-| Robustheit unter $C_E,C_8,C_{10},C_{30},C_{210}$ | **Experiment** (Stub) | **B**/**R** |
+| Robustheit unter $C_E,C_8,C_{10},C_{30},C_{210}$ | **Experiment** (Test C) | **B**/**R** |
 | Beschreibungs- vs. effektive Pixelung, $\Theta$ | **Definition** / **Hypothese** | **B**/**R** |
 | Kegel, Zwei Rotoren, Physik-Analogien | **Analogie** | **C** |
 | Drei Ebenen A/B/C, Drei Fälle | **Meta** | **Meta** |
 
 **Label:** §4.8.8 = **Meta** / **Hypothese** / **Analogie** (Schicht **C** für Bilder; **A**/**B** für $C_E$ und $\Theta$); **kein Theorem**.
 
-#### 4.8.9 Offener numerischer Test (Stub)
+#### 4.8.9 Numerischer Robustheitstest — drei Skalierungstests
 
-**Status:** **Experiment** (Stub) — noch nicht implementiert.
+**Status:** **Experiment** — Test C implementiert (`eabc_compression_robustness.py`); Tests A/B separat.
 
-**Ziel:** Prüfbarkeit der Forschungsfrage aus §4.8.8 — überleben Observablen ($D_E$, $\Delta_F$, $R_N$, $C_F^{\mathrm{prime}}/C_F^{\mathrm{golden}}$) die Kompression $C_E$ und bleiben sie robust unter $C_8,C_{10},C_{30},C_{210}$?
+**Programm-Kette:**
 
-**Geplantes Skript:** `eabc_compression_robustness.py` — Reuse von Primstrom- und Level-2-Infrastruktur aus `eabc_level2_fluctuation.py` (Fenster-Kovarianz $\Sigma_A$, $\Delta_F$); analog zur κ-Invarianz-Methodik in `collatz_stufe3_kappa_invarianz.md`.
+$$\text{Primdaten }(\mathbb{P}) \;\xrightarrow{\;\mathcal{C}_k\;}\; \text{Kompression} \;\xrightarrow{\;}\; \text{Observablen }\mathbf{M} \;\xrightarrow{\;K_F,\,A_n\;}\; \text{Resonanztest}.$$
 
-**Erwartete Ausgabe:** Tabelle der Signale unter $\{C_E,C_8,C_{10},C_{30},C_{210}\}$ mit Lesart Fall (1)–(3); JSON für Reproduzierbarkeit.
+**Priorisierung** (Belastungsreihenfolge):
 
-$$\boxed{\;\text{Numerischer Kompressions-Robustheitstest = Stub — Verknüpfung §4.8.8 mit Stufe 3.}\;}$$
+| Rang | Test | Skript | Frage |
+|------|------|--------|-------|
+| **1** | **C** — Kompressionsrobustheit | `eabc_compression_robustness.py` | Ist EABC etwas Besonderes? $S(\mathcal{C}_E)$ vs.\ $S(\mathcal{C}_k)$ |
+| 2 | B — $\Sigma_A(N)$-Stabilität | `eabc_level2_fluctuation.py`, `eabc_sigma_fibonacci_coupling.py` | Konvergieren $\lambda_i(N)$, $v_i(N)$, $C_F(N)$? Spezifisch für EABC? |
+| 3 | A — $A_n$ Riemann-Detektor | `eabc_zeta_f_riemann_zeros.py` | $\min A_n$, $\#\{A_n<\varepsilon\}$ bei $n\le 10^6$ — **nur Detektor**, nicht EABC-spezifisch |
 
-**Label:** §4.8.9 = **Experiment** (Stub); **kein Theorem**.
+**Test C — Operationalisierung:**
+
+- **Kompressionen:** $\mathcal{C}_E$ (mod $12$, EABC-Labels), $\mathcal{C}_8$, $\mathcal{C}_{10}$, $\mathcal{C}_{30}$, $\mathcal{C}_{210}$ (Einheitengruppe → vier Klassen; $\mathcal{C}_E$ feste Zuordnung $\{1,5,7,11\}$, sonst Rang-Quartile).
+- **Observablen:** $\mathbf{M}=(D_E,\,Q_E,\,R_N,\,C_F)$; Referenz $\mathbf{V}_{\mathrm{raw}}$ auf kanonischem EABC-Wort.
+- **Index:** $S(\mathcal{C})=1-\|\mathbf{V}_{\mathcal{C}}-\mathbf{V}_{\mathrm{raw}}\|/\|\mathbf{V}_{\mathrm{raw}}\|$ (§4.8.8).
+- **Interpretation:** $S(\mathcal{C}_E)\gg S(\mathcal{C}_k)$ → EABC-spezifische Strukturerhaltung (Fall 2); $S(\mathcal{C}_E)\approx S(\mathcal{C}_k)$ → keine Spezifität (gegen EABC-Hypothese). Fall (1)–(3)-Lesart wie §4.8.8.
+- **CLI:** `python eabc_compression_robustness.py --n-primes 1000000 -o eabc_compression_robustness.json`
+
+**Erster Lauf** ($N=10^6$ Primzahlen, $m=5000$, $|R_N|$ bis $5\cdot 10^4$):
+
+| $\mathcal{C}_k$ | $S(\mathcal{C})$ | $D_E$ | $W_E$ | $|R_N|$ | $C_F$ |
+|-----------------|------------------|-------|-------|---------|-------|
+| $\mathcal{C}_E$ | **1.000** | 340 | $+3.4\times 10^{-4}$ | 0.00272 | 0.000303 |
+| $\mathcal{C}_8$ | 0.636 | 402 | $+4.0\times 10^{-4}$ | 0.00172 | 0.000325 |
+| $\mathcal{C}_{10}$ | 0.758 | 99 | $+9.9\times 10^{-5}$ | 0.00210 | 0.000368 |
+| $\mathcal{C}_{30}$ | 0.199 | 507 | $+5.1\times 10^{-4}$ | 0.00052 | 0.000341 |
+| $\mathcal{C}_{210}$ | 0.200 | 100 | $+1.0\times 10^{-4}$ | 0.00492 | 0.000400 |
+
+*Numerische Lesart (ein Lauf, kein Theorem):* $S(\mathcal{C}_E)=1$ per Definition; $S(\mathcal{C}_E)\gg S(\mathcal{C}_{30}),\,S(\mathcal{C}_{210})$ — **tendenziell** Fall (2) (EABC-spezifische Strukturerhaltung). $S(\mathcal{C}_8)$ und $S(\mathcal{C}_{10})$ liegen zwischen beiden Extremen. Skaleninvariante Distanz über $(W_E,\,|R_N|,\,C_F)$ mit $W_E=D_E/Q_E$ (sonst dominiert $Q_E\sim N$ den Index).
+
+**Erwartete Ausgabe:** Tabelle $S(\mathcal{C}_k)$, $\mathbf{M}$-Komponenten, JSON für Reproduzierbarkeit.
+
+$$\boxed{\;\text{Test C = entscheidender Belastungstest: überlebt EABC-Struktur unter alternativen Kompressionen? — }S(\mathcal{C})\text{ quantifiziert dies.}\;}$$
+
+**Label:** §4.8.9 = **Experiment**; **kein Theorem**.
 
 #### 4.8.10 Orientierungsvektor-Erweiterung (Gedankenexperiment)
 
