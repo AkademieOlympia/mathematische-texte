@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
 - `collatz_eabc_zeta_exponential_gedankenexperiment.md` — **Gedankenexperiment / Analogie:** $\zeta$ als Exponentialsumme auf Log-Prim-Geometrie; Euler-Streifen $(1\pm p^{-s})$; $\xi$-Spiegelung; Brücke zu Log-Koordinaten, $\gamma^\pm$-Paarung, Level-2; §6–§10: Ganzzahl/Halbzahl-Exponenten, Oktanionen (Schicht C), Bernoulli-Subtraktion, Fibonacci-Zeta (kein RH-/EABC-Theorem)
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
@@ -1435,13 +1435,13 @@ $$\boxed{\;\textbf{Aktueller Gesamtstatus:}\; algebraisch wohldefiniert \checkma
 
 **Label:** §4.8.7 = **Meta** / **Hypothese** / **Experiment** (Schicht **C**); **kein Theorem**.
 
-**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11.
+**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12.
 
 #### 4.8.8 Beobachtungsgeometrie als Kompressionsoperator
 
 **Status:** paper-ready methodische Klärung — schließt §4.8.6–4.8.7 ab; **kein Theorem**, **kein** zusätzlicher Physikanspruch.
 
-**Querverweise:** Zwei-Rotor-Kopplung $(\Theta,\Phi)$ und $R_N$ §4.8.7; EABC–Fibonacci-Gesamtbaustein §4.8.6; Kegel-Analogie §9.13 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §3.1; numerischer Stub §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM §4.8.11.
+**Querverweise:** Zwei-Rotor-Kopplung $(\Theta,\Phi)$ und $R_N$ §4.8.7; EABC–Fibonacci-Gesamtbaustein §4.8.6; Kegel-Analogie §9.13 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §3.1; numerischer Stub §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12.
 
 Die EABC-Projektion kann nicht nur als geometrische, sondern auch als informationstheoretische Abbildung verstanden werden.
 
@@ -1867,6 +1867,132 @@ Eine positive Antwort wäre **explorativ** und erforderte einen expliziten Konst
 | „EABC erklärt QM" | — | **nicht behauptet** |
 
 **Label:** §4.8.11 = **Meta** / **Hypothese** / **Analogie** (Schicht **C** für Physik/Präquantisierung; **A**/**B** für $V$, Kompressionskette; **R** für SU(2)-Reproduktionsfrage); **kein Theorem**.
+
+#### 4.8.12 SU(2)-Prüfstein und Orientierungshebung
+
+**Status:** paper-ready methodischer Prüfstein — **kein Theorem**, **kein** Anspruch, EABC erkläre SU(2) oder Bahndrehimpuls; Schicht **R** für die Reproduktionsfrage, Schicht **A**/**B** für die Kompressionskette, Schicht **C** für Physikreferenz.
+
+**Querverweise:** Kompressionsoperator $\mathcal{C}_E:\mathbb{N}\to\{E,A,B,C\}\cong\mathbb{Z}_4$ und strukturstabile Kompression §4.8.8; Orientierungsvektor $u(n)\in S^2$, Resonanzfaktor $R_{ij}$ §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM, offene Reproduktionsfrage $(l,m)$ §4.8.11; quaternionische Hebung und Bahndrehimpuls-Bild in `Bahndrehimpuls.tex` (Drehimpuls auf $C_4\cong S^1$, Auswahlregeln $\Delta l=\pm 1$); Ikosaeder–Dodekaeder-Geometrie und $R_{\mathrm{EABC}}$ in `eabc_icosahedron_test.py`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §0–3.1; numerischer Stub `eabc_su2_reconstruction_test.py` (geplant).
+
+Der folgende Abschnitt fixiert den **nächsten methodischen Baustein** der Orientierungsprogrammatik: nicht die Behauptung einer SU(2)-Erklärung, sondern ein **Prüfstein**, der explizit testet, ob endliche EABC-/Ikosaeder-Orientierungsgeometrie eine **SU(2)-artige** Drehimpulsstruktur approximieren oder rekonstruieren kann.
+
+##### 1. Methodischer Prüfstein
+
+**Prüfstein:** Liefert die **diskrete EABC-/Ikosaeder-Geometrie** (12 bzw. 20 Orientierungen auf $S^2$, $A_5$-Symmetrie) eine Struktur, die **SU(2)-ähnlich** ist — oder nur eine endliche Rotationsgruppe ohne die volle Lie-Algebra?
+
+§4.8.11 hat bereits abgegrenzt: Ikosaeder und Dodekaeder realisieren **endliche** Orientierungsgitter $V\subset S^2$, während die etablierte Quantenmechanik **kontinuierliche** Drehsymmetrie via SO(3)/SU(2) nutzt. §4.8.12 verschärft diese Abgrenzung zu einem **operationalen Prüfschema**: welche SU(2)-Signaturen müssten aus $V$ **folgen**, damit ein Vergleich mit der Spektroskopie sinnvoll wäre?
+
+| Aspekt | Endliche Ikosaeder-Geometrie | Etablierte QM (SU(2)) |
+|--------|------------------------------|------------------------|
+| Symmetrie | $A_5$ (60 Elemente), endlich | SU(2), kontinuierlich |
+| Orientierungen | $|V|\in\{12,20\}$ diskrete Richtungen | $S^2$ kontinuierlich |
+| Algebra | Keine $[L_i,L_j]=i\hbar\varepsilon_{ijk}L_k$ | Lie-Algebra der Drehimpulse |
+| Quantenzahlen | (noch nicht definiert) | $l=0,1,2,\ldots$; $m=-l,\ldots,l$ |
+| Degenerierung | (noch nicht definiert) | $2l+1$ pro $l$-Niveau |
+
+**Lesart (Schicht R):** Der Prüfstein ist **methodisch** — er definiert, was gezeigt werden müsste, nicht was bereits gezeigt ist.
+
+##### 2. Was SU(2) liefert — und was diskrete Geometrie bisher nicht
+
+Die etablierte Quantenmechanik (vgl. `Bahndrehimpuls.tex`, §4.8.11 Abschnitt 1) liefert aus der unitären Darstellungstheorie von SU(2):
+
+$$l = 0,\,1,\,2,\,\ldots, \qquad m = -l,\,-l+1,\,\ldots,\,l-1,\,l, \qquad \dim = 2l+1.$$
+
+Jedes $l$-Niveau trägt **genau** $2l+1$ entartete Zustände (Magnetquantenzahl $m$). Die Auswahlregeln ($\Delta l=\pm 1$ in Dipolnäherung) folgen aus der Kopplung von **Darstellungen**, nicht aus einer endlichen Eckenliste.
+
+Die EABC-Orientierungserweiterung (§4.8.10–4.8.11) liefert bisher:
+
+- diskrete Richtungen $u(n)\in V$ mit $|V|\in\{12,20\}$,
+- skalaren Resonanzfaktor $R_{ij}=u_i\cdot u_j\in[-1,1]$,
+- **keine** Zuordnung von Labels $(l,m)$,
+- **keine** Degenerierung $2l+1$,
+- **keine** algebraische Struktur $[L_i,L_j]=i\hbar\varepsilon_{ijk}L_k$.
+
+**Prüffrage:** Reicht die Menge diskreter Richtungen auf $S^2$ aus, oder braucht man explizit die **Darstellungsebene** ($l$, $m$, $2l+1$)?
+
+##### 3. Nächster Baustein: diskrete Orientierungshebung $u(n)\in V\subset S^2$
+
+Der nächste Baustein in der Kompressionskette ist die **Hebung** von der vierklassigen EABC-Pixelung auf ein endliches Orientierungsgitter:
+
+$$u:\mathbb{N}\longrightarrow V\subset S^2, \qquad |V|\in\{12,20\},$$
+
+wobei $V$ die Ikosaeder- bzw. Dodekaeder-Eckenmenge ist (§4.8.10 Abschnitt 4, `eabc_icosahedron_test.py`). Die Hebung ist **keine** ontologische Raumstruktur, sondern ein zusätzlicher Beobachtungsfreiheitsgrad nach $\mathcal{C}_E$ (§4.8.8):
+
+$$\hat u(n)\in S^2 \;\text{ (kontinuierliche Zwischenstufe)}, \qquad u(n)=\pi_V(\hat u(n)) \;\text{ (diskrete Projektion)}.$$
+
+**Quaternionische Anbindung (Schicht C):** In `Bahndrehimpuls.tex` werden $E\leftrightarrow 1$, $A\leftrightarrow i$, $B\leftrightarrow j$, $C\leftrightarrow k$ als Drehachsen verwendet. Die Hebung $\mathbb{Z}_4\to V$ kann als **diskrete Quaternionenprojektion** gelesen werden — Bildsprache für die Frage, ob die vier EABC-Klassen auf 12/20 Raumrichtungen **strukturiert** heben, nicht zufällig.
+
+##### 4. Kompressionskette: $\mathbb{N}\to\mathbb{Z}_4\to V\to$ Darstellungen
+
+Die vollständige EABC-Orientierungskette (Erweiterung von §4.8.11 Abschnitt 4) lautet:
+
+$$\mathbb{N} \;\xrightarrow{\;\mathcal{C}_E\;}\; \mathbb{Z}_4 \;\xrightarrow{\;\text{Hebung}\;}\; V \subset S^2 \;\xrightarrow{\;\Pi\;}\; \text{Darstellungslabel}$$
+
+| Stufe | Abbildung | Objekt | Informationsgehalt |
+|-------|-----------|--------|-------------------|
+| 1 | $\mathcal{C}_E:\mathbb{N}\to\{E,A,B,C\}\cong\mathbb{Z}_4$ | 4 Klassen | 2 Bit (§4.8.8) |
+| 2 | Hebung $\mathbb{Z}_4\to V$ | 12 oder 20 Orientierungen | diskrete Raumrichtung |
+| 3 | Resonanz $R_{ij}=u_i\cdot u_j$ | Skalar in $[-1,1]$ | Orientierungsfilter (§4.8.10) |
+| 4 | $\Pi:V\to\{(l,m)\}$ **(offen)** | SU(2)-Labels | Degenerierung $2l+1$ **(Prüfstein)** |
+
+Stufe 4 ist der **Prüfstein**: Existiert eine Abbildung $\Pi$, die aus endlicher Ikosaeder-Geometrie die SU(2)-Quantenzahlen $(l,m)$ mit korrekter Degenerierung $2l+1$ **ableitet** — oder liefert $V$ eine **alternative**, endliche Orientierungsstruktur ohne SU(2)-Isomorphie?
+
+**Epistemische Sicherung:** Stufe 4 ist **Forschungsprogramm**, nicht etablierte EABC-Theorie. Scheitert $\Pi$, bleibt EABC ein eigenständiger arithmetischer Orientierungsfilter (§4.8.11 Abschnitt 7).
+
+##### 5. Endliche vs. volle Rotationsgruppe
+
+Ikosaeder und Dodekaeder sind **endliche** Rotationsgruppen ($A_5$, isomorph zu einer Untergruppe von SO(3)). Die Quantenmechanik benötigt die **volle** SU(2) (bzw. deren universelle Überlagerung für Spin-$\tfrac12$):
+
+| Objekt | Ordnung | Kontinuierlich? | $l,m$-Struktur |
+|--------|---------|-----------------|----------------|
+| $A_5$ (Ikosaeder) | 60 | nein | keine natürlichen $(l,m)$ |
+| Dodekaeder-Dual | 60 | nein | keine natürlichen $(l,m)$ |
+| SO(3) | $\infty$ | ja | via SU(2)-Darstellungen |
+| SU(2) | $\infty$ | ja | $l=0,1,2,\ldots$; $\dim=2l+1$ |
+
+**Zwischenhypothese (Schicht R):** EABC erklärt SU(2) **nicht sofort**. Es liefert ein **diskretes Prämodell** mit endlicher Orientierungsgeometrie — aus dem **emergente Auswahlregeln** (analog $\Delta l=\pm 1$ in `Bahndrehimpuls.tex`) **folgen könnten**, ohne dass die volle Lie-Algebra bereits vorliegt.
+
+$$\boxed{\;\textbf{Zwischenhypothese:}\; \text{EABC liefert ein diskretes Orientierungs-Prämodell }V\subset S^2\text{ — SU(2) wäre eine Grenz- bzw. Aggregationsstruktur, nicht die unmittelbare EABC-Algebra.}\;}$$
+
+##### 6. Forschungsfrage (Prüfstein)
+
+$$\boxed{\;\textbf{Forschungsfrage (Prüfstein):}\; \text{Kann endliche EABC-/Ikosaeder-Orientierungsgeometrie eine SU(2)-artige Drehimpulsstruktur — insbesondere }(l,m)\text{ mit Degenerierung }2l+1\text{ — approximieren oder rekonstruieren?}\;}$$
+
+**Positive Antwort** (explorativ): erfordert expliziten Konstruktionsweg $V\to\mathfrak{su}(2)$ bzw. $V\to\{(l,m)\}$ mit nachweisbarer $2l+1$-Entartung — der derzeit **nicht** vorliegt.
+
+**Negative Antwort** (ebenfalls informativ): EABC-Orientierung wäre ein **eigenständiger** endlicher Filter; Vergleich mit Spektroskopie nur über **Analogien** (Schicht **C**), nicht über Identität.
+
+##### 7. Operationalisierung (Stub)
+
+Geplanter numerischer Test: `eabc_su2_reconstruction_test.py` (Stub, §4.8.12).
+
+**Prüfschema:**
+
+1. **Baseline:** Ikosaeder-Ecken $V_{12}$ und Dodekaeder-Ecken $V_{20}$ aus `eabc_icosahedron_test.py`; $A_5$-Orbitstruktur auf $S^2$.
+2. **Hebung:** $\mathcal{C}_E:\mathbb{N}\to\mathbb{Z}_4$ und Zuordnung $\mathbb{Z}_4\to V$ (strukturiert vs. Zufall — Nullmodell §4.8.2).
+3. **SU(2)-Vergleich:** Suche nach Partitionen von $V$ in „$l$-Niveaus" mit Kardinalität $2l+1$; Vergleich mit SU(2)-Wigner-$D$-Matrix-Projektionen auf $V$.
+4. **Resonanz:** Korrelation von $R_{ij}=u_i\cdot u_j$ mit $\Delta l$-Analogien (Auswahlregeln aus `Bahndrehimpuls.tex`).
+5. **Klassifikation:** Fall (1) SU(2)-artige Struktur unter EABC-Hebung, (2) nur unter spezieller Zuordnung, (3) keine Reproduktion — eigenständige endliche Geometrie.
+
+$$\boxed{\;\text{SU(2)-Rekonstruktionstest = Stub — Verknüpfung §4.8.11 (offene Frage) mit }eabc\_icosahedron\_test.py\text{ und Bahndrehimpuls-Bild.}\;}$$
+
+##### 8. Epistemische Kernbox
+
+$$\boxed{\;\textbf{Nicht behauptet:}\; \text{EABC erklärt SU(2), Bahndrehimpuls oder }(l,m)\text{-Quantisierung.}\;}$$
+
+$$\boxed{\;\textbf{Behauptet (Prüfstein):}\; \text{Die Frage, ob endliche Orientierungsgeometrie SU(2)-Signaturen trägt, ist operational formulierbar — und der nächste testbare Baustein der Kompressionskette.}\;}$$
+
+| Baustein | Tao-Label | Schicht |
+|----------|-----------|---------|
+| $[L_i,L_j]=i\hbar\varepsilon_{ijk}L_k$, $(l,m)$, $2l+1$ | **Referenz** (etablierte Physik) | **C** (extern) |
+| $u(n)\in V\subset S^2$, Hebung $\mathbb{Z}_4\to V$ | **Definition** / **Modell** | **A**/**B** |
+| Kompressionskette $\mathbb{N}\to\mathbb{Z}_4\to V\to\Pi$ | **Definition** | **A**/**B** |
+| Prämodell mit emergenten Auswahlregeln | **Zwischenhypothese** | **R** |
+| SU(2)-Reproduktion / Approximation | **Forschungsfrage** (Prüfstein) | **R** |
+| `eabc_su2_reconstruction_test.py` | **Experiment** (Stub) | **B**/**R** |
+| „EABC erklärt QM/SU(2)" | — | **nicht behauptet** |
+
+**Label:** §4.8.12 = **Meta** / **Prüfstein** / **Zwischenhypothese** (Schicht **R** für SU(2)-Reproduktionsfrage; **A**/**B** für Hebung und Kompressionskette; **C** für Bahndrehimpuls-Referenz); **kein Theorem**.
 
 ### 4.9 Zeta-Exponential-Gedankenexperiment (Schicht **C**)
 
