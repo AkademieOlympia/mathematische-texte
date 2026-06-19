@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung: $(\hbar,\sigma)$** §4.8.14 (Präzisierung: Phasenraum-Orientierung statt Raumrichtung, Abschnitt 9); **Symplektische Orientierung und EABC-Vierfachstruktur** §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung: $(\hbar,\sigma)$** §4.8.14 (Präzisierung: Phasenraum-Orientierung statt Raumrichtung, Abschnitt 9); **Symplektische Orientierung und EABC-Vierfachstruktur** §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
 - `collatz_eabc_zeta_exponential_gedankenexperiment.md` — **Gedankenexperiment / Analogie:** $\zeta$ als Exponentialsumme auf Log-Prim-Geometrie; Euler-Streifen $(1\pm p^{-s})$; $\xi$-Spiegelung; Brücke zu Log-Koordinaten, $\gamma^\pm$-Paarung, Level-2; §6–§10: Ganzzahl/Halbzahl-Exponenten, Oktanionen (Schicht C), Bernoulli-Subtraktion, Fibonacci-Zeta (kein RH-/EABC-Theorem)
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
@@ -27,7 +27,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `eabc_quadruplets_plot.py` — Vierfeld-Diagnose-Plot ($W_E$, $R_{1/2}$, $\alpha_{\mathrm{loc}}$, $R_\beta$)
 - `eabc_occupancy_tree.py` — monoidale Vierlings-Besetzungszustände $Z=(O,T,n)$, Williams-Baum (§4.6–4.7)
 - `collatz_eabc_core/CollatzEabc/OccupancyMonoid.lean` — Lean: kommutatives Monoid $(Z,\oplus,Z_0)$, `blockScan_append` (§4.6–4.7; Build-Artefakt, Quelle ggf. auf Hauptbranch)
-- `collatz_eabc_core/CollatzEabc/EABCCompression.lean` — Lean: $\mathcal{C}_E$, `mod12_period`, `C_E_not_injective`, `C_E_fiber_infinite` (§4.8.16, Schicht **A**)
+- `collatz_eabc_core/CollatzEabc/EABCCompression.lean` — Lean: $\mathcal{C}_E$, Stufe 0–4 Backlog (§4.8.17, Schicht **A**/**B**/**R**)
 - `collatz_eabc_graph_laplacian.py` — $\mathrm{Spec}(L_E)$
 - `collatz_eabc_evolution_analytik.md` — **Evolutionspfad** Bell→Sagnac→$C_E$→$\mathrm{Spec}(L_E)$, Wachstumsszenarien, Dirichlet-Stub
 - `collatz_eabc_D_growth.py` — Wachstumsdiagnostik $D_E(X)$, Charakter-Koeffizienten $a_\chi$
@@ -1436,7 +1436,7 @@ $$\boxed{\;\textbf{Aktueller Gesamtstatus:}\; algebraisch wohldefiniert \checkma
 
 **Label:** §4.8.7 = **Meta** / **Hypothese** / **Experiment** (Schicht **C**); **kein Theorem**.
 
-**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12; Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13; Prägeometrie der Wirkung $(\hbar,\sigma)$ §4.8.14 (Präzisierung Phasenraum-Orientierung, Abschnitt 9); Symplektische Orientierung und EABC-Vierfachstruktur §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16.
+**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12; Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13; Prägeometrie der Wirkung $(\hbar,\sigma)$ §4.8.14 (Präzisierung Phasenraum-Orientierung, Abschnitt 9); Symplektische Orientierung und EABC-Vierfachstruktur §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17.
 
 #### 4.8.8 Beobachtungsgeometrie als Kompressionsoperator
 
@@ -2566,9 +2566,10 @@ $$\mathcal{C}_E(n)=\begin{cases}E & n\equiv 1\pmod{12}\\ A & n\equiv 5\pmod{12}\
 | Nicht-Injektivität | $\exists\,a\neq b:\;\mathcal{C}_E(a)=\mathcal{C}_E(b)$ | `C_E_not_injective`, `not_injective_C_E` |
 | Bildgröße | `#\{E,A,B,C\}=4$ auf dem EABC-Bild | `C_E_range_card`, `eabcClass_range_card` |
 | Unendliche Fasern | Jede Klasse hat unendlich viele Urbilder | `C_E_fiber_infinite` |
-| Shannon-Bound | $H(\mathrm{EABC}_N)\le 2$ Bit (endliche Fenster) | `shannonEntropyEABC_le_two` (**deklariert**, Beweis `sorry`) |
-| Gleichverteilung | $H=2$ bei periodischem Fenster | `shannonEntropyEABC_eq_two` (**deklariert**, Beweis `sorry`) |
-| Strukturstabilität | qualitative Erhaltung unter $\mathcal{C}_E$ | `structureStable`, `structureStable_open` (**offen**, `sorry`) |
+| Shannon-Bound | $H(\mathrm{EABC}_N)\le 2$ Bit (endliche Fenster) | `shannonEntropyEABC_le_two` |
+| Gleichverteilung | $H=2$ bei periodischem Fenster | `shannonEntropyEABC_eq_two` |
+| Informationsverlust | $I_E(N)\ge\log_2 N-2$ | `I_E_ge_log2_sub_two` |
+| Strukturstabilität | qualitative Erhaltung unter $\mathcal{C}_E$ | `structureStable`, `C_E_structureStable_conjecture` (**offen**, `Prop`) |
 
 $$\boxed{\;\mathcal{C}_E\ \text{ist eine periodische, nicht injektive Abbildung — formal eine extrem verlustreiche Kompression (Schicht A).}\;}$$
 
@@ -2655,6 +2656,99 @@ $$\boxed{\;\textbf{Fehlender Hauptsatz:}\;\{E,A,B,C\}\cong\mathbb{Z}_4 \;\not\Ri
 | **Spekulativ (C)** | Physik-Brücken SU(2), $(\hbar,\sigma)$, Spin-Liquid-Ikone |
 
 **Label:** §4.8.16 = **Meta** / **Theorem** (Schicht **A** für $\mathcal{C}_E$) / **Definition** (Schicht **B**) / **Analogie** (Schicht **C**); **kein** zusätzlicher Physikanspruch.
+
+#### 4.8.17 Lean-Theorem-Backlog (Stufe 0–4)
+
+**Status:** paper-ready Backlog — ordnet das EABC-Programm in fünf Lean-Stufen; **kein** zusätzlicher Physikanspruch.
+
+**Querverweise:** Architekturübersicht §4.8.16; Kompressionsoperator §4.8.8; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §0; Lean-Modul `collatz_eabc_core/CollatzEabc/EABCCompression.lean`.
+
+Das vier-/fünfstufige Backlog destilliert den Diskussionsstand in **beweisbare Algebra**, **Informationskompression**, **Strukturmaße**, **offene Strukturstabilität** und **Physik-Hypothesen** — mit expliziter Lean-Zuordnung.
+
+##### Stufe 0 — Reine Algebra (Schicht **A**, beweisbar)
+
+$$\mathcal{C}_E:\mathbb{N}\to\{E,A,B,C\},\quad E\equiv 1,\;A\equiv 5,\;B\equiv 7,\;C\equiv 11\pmod{12}.$$
+
+| Satz | Inhalt | Lean |
+|------|--------|------|
+| Periodizität | $\mathcal{C}_E(n+12)=\mathcal{C}_E(n)$ | `mod12_period`, `eabcClass_period` |
+| Surjektivität | $\operatorname{Range}(\mathcal{C}_E)=\{E,A,B,C\}$ | `eabcClass_surjective`, `C_E_range_card` |
+| Kardinalität | $\#\{E,A,B,C\}=4$ | `eabcClass_range_card` |
+| Nicht-Injektivität | $\neg\operatorname{Inj}(\mathcal{C}_E)$; $\exists\,a\neq b:\mathcal{C}_E(a)=\mathcal{C}_E(b)$ | `C_E_not_injective`, `not_injective_C_E` |
+| Unendliche Fasern | jede Klasse hat unendlich viele Urbilder | `C_E_fiber_infinite` |
+
+**Label:** reine Mathematik — **Theorem** (Schicht **A**).
+
+##### Stufe 1 — Kompression (Schicht **A**/**B**)
+
+Für $\mathbb{N}_N=\{1,\ldots,N\}$ und die EABC-Verteilung auf vier Zuständ
+$$H(\mathbb{N}_N)=\log_2 N,\qquad H(\mathrm{EABC}_N)\le 2,\qquad I_E(N)=H(\mathbb{N}_N)-H(\mathrm{EABC}_N)\ge\log_2 N-2.$$
+
+| Satz | Lean |
+|------|------|
+| Shannon-Bound $H\le 2$ | `shannonEntropyEABC_le_two` |
+| Gleichverteilung $H=2$ (periodisches Fenster) | `shannonEntropyEABC_eq_two` |
+| Informationsverlust $I_E(N)\ge\log_2 N-2$ | `I_E_ge_log2_sub_two` |
+| Kern-Zusammenfassung | `C_E_extreme_compression` |
+
+$$\boxed{\;\mathcal{C}_E\ \text{ist hochgradig informationsvernichtend — formal bewiesen (Schicht A).}\;}$$
+
+##### Stufe 2 — Strukturmaße (Definitionen, Schicht **B**, keine Sätze)
+
+| Observable | Bedeutung | Lean |
+|------------|-----------|------|
+| $D_E$ | $N_+(X)-N_-(X)$ | `EABCMeasures.D_E` |
+| $Q_E$ | $N_+(X)+N_-(X)$ | `EABCMeasures.Q_E` |
+| $R_N$ | Phasen-Kohärenz | `EABCMeasures.R_N` |
+| $C_F$ | Fibonacci-Kamm-Kopplung | `EABCMeasures.C_F` |
+
+**Label:** Definition akzeptiert — **noch kein Satz** (Schicht **B**).
+
+##### Stufe 3 — Strukturstabilität (Schicht **B**/**R**, offen)
+
+Sei $M=(D_E,Q_E,R_N,C_F)$ und
+$$\Delta_M(\mathcal{C})=d(M_{\mathrm{raw}},M_{\mathcal{C}}).$$
+$\mathcal{C}$ heißt **strukturstabil** bezüglich $M$, wenn $\Delta_M(\mathcal{C})\le\varepsilon$ (operational §4.8.8).
+
+| Objekt | Lean | Status |
+|--------|------|--------|
+| Metrik $d$ | `eabcMeasureDist` | **Definition** |
+| Stabilitäts-Prädikat | `structureStable` | **Definition** |
+| Offener Satz | `C_E_structureStable_conjecture`, `structureStable_open` | **Prop**, kein Beweis |
+
+$$\boxed{\;\mathcal{C}_E\ \text{ist strukturstabil bezüglich }M\ \text{— Forschungsfrage (Test C, §4.8.9).}\;}$$
+
+##### Stufe 4 — Physik-Hypothesen (Schicht **C**/**R**, nicht formalisiert)
+
+| Thema | Status |
+|-------|--------|
+| Orientierte Wirkung $(\hbar,\sigma)$, $\sigma\in\{E,A,B,C\}$ | **Hypothese** (§4.8.13–4.8.15) |
+| Diskrete Phasenraumzellen $(\hbar,\omega)$ | **Gedankenexperiment** |
+| $\{E,A,B,C\}\Rightarrow\mathrm{SU}(2)$ | **fehlende Brücke** (§4.8.12) |
+| Richtungsquantisierung $m=-l,\ldots,l$ | **Hypothese** |
+| $[L_i,L_j]=i\hbar\varepsilon_{ijk}L_k$ | **fehlende Konstruktion** |
+
+Lean stoppt hier: **Zeige die Konstruktion** — ohne explizite $L_x,L_y,L_z$ bleibt alles Interpretation (Schicht **C**).
+
+##### Kern-Satz und Lean-Diagnose
+
+$$\boxed{\;\text{EABC ist eine extreme Kompression, die dennoch bestimmte arithmetische Observablen stabil erhält.}\;}$$
+
+Drei Diagnose-Boxen (epistemischer Gewinn):
+
+$$\boxed{\;\text{Kompression: formal.}\;}$$
+$$\boxed{\;\text{Strukturstabilität: offen.}\;}$$
+$$\boxed{\;\text{Physik: derzeit reine Hypothese.}\;}$$
+
+| Stufe | Schicht | Lean-Status |
+|-------|---------|-------------|
+| 0 Algebra | **A** | bewiesen, `sorry`-frei |
+| 1 Kompression | **A**/**B** | bewiesen, `sorry`-frei |
+| 2 Strukturmaße | **B** | Definitionen |
+| 3 Strukturstabilität | **B**/**R** | `Prop`, offen |
+| 4 Physik | **C**/**R** | nicht formalisiert |
+
+**Label:** §4.8.17 = **Meta** / **Theorem** (Stufe 0–1) / **Definition** (Stufe 2) / **Forschungsfrage** (Stufe 3) / **Hypothese** (Stufe 4); **kein** zusätzlicher Physikanspruch.
 
 ### 4.9 Zeta-Exponential-Gedankenexperiment (Schicht **C**)
 

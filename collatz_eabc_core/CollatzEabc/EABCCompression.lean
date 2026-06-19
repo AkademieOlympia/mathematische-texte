@@ -4,7 +4,7 @@
   Stufe 0 (Schicht **A**): 𝒞_E periodisch, Range = 4, nicht injektiv.
   Stufe 1 (Schicht **A**/**B**): H(EABC_N) ≤ 2, I_E(N) ≥ log₂ N − 2.
   Stufe 2 (Schicht **B**): D_E, Q_E, R_N, C_F — Definitionen (keine Sätze).
-  Stufe 3 (Schicht **B**/**R**): structureStable — offener Satz (sorry).
+  Stufe 3 (Schicht **B**/**R**): structureStable — offener Satz (`Prop`, kein Beweis).
   Stufe 4: Physik (ℏ, σ), SU(2), L_i — nicht formalisiert.
 
   §4.8.8 / §4.8.16 / §4.8.17 in `collatz_eabc_zirkulationshypothese.md`.
@@ -78,9 +78,12 @@ theorem C_E_fiber_infinite (c : EabcLetter) :
     have : 12 * i = 12 * j := by simpa [Nat.add_mul, Nat.mul_add] using hij
     exact Nat.mul_left_cancel (by decide : (0 : ℕ) < 12) this
   · intro k
-    simp only [Set.mem_setOf_eq, C_E, classOfLetter]
-    rw [Nat.add_mul_mod_self_left, eabcResidue_roundtrip c]
-    exact hr
+    suffices C_E (r + 12 * k) = some c from Set.mem_setOf.mpr this
+    induction k with
+    | zero => exact hr
+    | succ k ih =>
+      rw [show r + 12 * (k + 1) = (r + 12 * k) + 12 by ring]
+      exact (mod12_period (r + 12 * k)).trans ih
 
 theorem eabcClass_surjective (c : EabcLetter) :
     ∃ n, eabcClass n = some c :=
@@ -111,19 +114,20 @@ noncomputable def shannonEntropyEABC (S : Finset ℕ) : ℝ :=
       if count = 0 then (0 : ℝ) else (count / total : ℝ) * log2 (count / total)
 
 def eabcInitialWindow (N : ℕ) : Finset ℕ :=
-  (Finset.range N).map ⟨Nat.succ, Nat.succ.inj⟩
+  (Finset.range N).map ⟨fun i => i + 1, by intro a b h; exact Nat.add_one_inj.mp h⟩
 
 def eabcPeriodWindow (k : ℕ) : Finset ℕ := Finset.range (12 * k)
 
 private lemma classOfLetter_eq_some_iff (n : ℕ) (c : EabcLetter) :
     classOfLetter n = some c ↔ n % 12 = eabcNatRep c := by
-  fin_cases c <;> simp [classOfLetter, eabcNatRep] <;> omega
+  fin_cases c <;> simp [classOfLetter, eabcNatRep] <;> split <;> simp
 
 private lemma eabcClassCount_period (k : ℕ) (c : EabcLetter) :
     eabcClassCount (eabcPeriodWindow k) c = k := by
   set r := eabcNatRep c with hr
   have hr_lt : r < 12 := by fin_cases c <;> simp [hr, eabcNatRep]
-  rw [eabcClassCount, eabcPeriodWindow, eabcClass, classOfLetter_eq_some_iff, hr]
+  rw [eabcClassCount, eabcPeriodWindow]
+  simp only [eabcClass, classOfLetter_eq_some_iff, hr]
   rw [← Nat.count_eq_card_filter_range, Nat.count_modEq_card]
   simp [hr, hr_lt, Nat.mod_eq_of_lt hr_lt, Nat.mul_mod, Nat.zero_mod]
 
@@ -252,10 +256,11 @@ def structureStable (_C : ℕ → Option EabcLetter) (M : EABCMeasures → ℝ) 
 structure StructureStability where
   preservesObservableStructure : Prop
 
-theorem C_E_structure_stable : structureStable C_E (fun m => (m.D_E : ℝ)) 0 := by
-  sorry
+/-- Offener Satz (Stufe 3): $\mathcal{C}_E$ strukturstabil bezüglich $M$ — kein Beweis, nur `Prop`. -/
+def C_E_structureStable_conjecture : Prop :=
+  structureStable C_E (fun m => (m.D_E : ℝ)) 0
 
-def structureStable_open : Prop := Nonempty StructureStability
+def structureStable_open : Prop := C_E_structureStable_conjecture
 
 /-!
 ## Diagnose-Box 3 — Physik Hypothese (Stufe 4)

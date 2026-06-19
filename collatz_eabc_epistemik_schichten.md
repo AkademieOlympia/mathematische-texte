@@ -14,9 +14,9 @@ $$\boxed{\;\textbf{A} = \text{beweisbar}\;\|\;\textbf{B} = \text{definierbar + n
 
 | Schicht | Label | Lean | Beispiel |
 |---------|-------|------|----------|
-| **A** | Theorem | bewiesen, kein `sorry` | `mod12_period`, `C_E_not_injective`, `C_E_range_card`, `blockScan_append` |
+| **A** | Theorem | bewiesen, kein `sorry` | `mod12_period`, `C_E_not_injective`, `C_E_range_card`, `shannonEntropyEABC_le_two`, `I_E_ge_log2_sub_two`, `blockScan_append` |
 | **B** | Struktur | Definition / `Prop` | `C_E`, `shannonEntropyEABC`, `W_E_up_to`, $d(M_{\mathrm{raw}},M_{\mathcal{C}})\le\varepsilon$, $K_F$, $K_{F,M}$ |
-| **R** | Forschungsbrücke | `sorry`, asymptotisch | `shannonEntropyEABC_le_two`, `structureStable_open`, `phi_E_conjecture_statement`, EABC$\Rightarrow$SU(2) |
+| **R** | Forschungsbrücke | `Prop`, offen | `C_E_structureStable_conjecture`, `structureStable_open`, `phi_E_conjecture_statement`, EABC$\Rightarrow$SU(2) |
 | **C** | Ikone | nur Markdown | Thomson, Sagnac, $(\hbar,\sigma)$-Ontologie, RadiationSpace-Lesart |
 
 **Querverweise:**
@@ -27,8 +27,8 @@ $$\boxed{\;\textbf{A} = \text{beweisbar}\;\|\;\textbf{B} = \text{definierbar + n
 - `collatz_eabc_euklidische_hebung.md` — algebraischer Nebenzweig $\mathbb{R}\subset\mathbb{C}\subset\mathbb{H}\subset\mathbb{O}$ (Schicht **A**)
 - `collatz_eabc_core/CollatzEabc/RadiationSpace.lean` — interpretativer Lean-Scaffold (rot)
 - `collatz_eabc_core/CollatzEabc/OccupancyMonoid.lean` — Streaming-Monoid $(Z,\oplus,Z_0)$, `blockScan_append` (Schicht **A**, §4.6–4.7; Quelle ggf. auf Hauptbranch)
-- `collatz_eabc_core/CollatzEabc/EABCCompression.lean` — $\mathcal{C}_E$, `mod12_period`, `C_E_not_injective`, `C_E_range_card`, `C_E_fiber_infinite`; `shannonEntropyEABC_le_two`, `structureStable_open` (Schicht **R**, `sorry`) (§4.8.16)
-- `collatz_eabc_zirkulationshypothese.md` — Monoid §4.6; state-centric Hierarchie §4.7; Level-2 §4.8; Spin-Liquid-Analogie (methodisch, nicht ontologisch) §4.8.1; **Fibonacci-Kamm als externer Resonanzdetektor, Hypothesenleiter H$_0$–H$_4$** §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung $(\hbar,\sigma)$** §4.8.14 (Präzisierung Phasenraum-Orientierung, Abschnitt 9); **Symplektische Orientierung und EABC-Vierfachstruktur** §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16
+- `collatz_eabc_core/CollatzEabc/EABCCompression.lean` — $\mathcal{C}_E$, Stufe 0–4 Backlog: `mod12_period`, `C_E_not_injective`, `shannonEntropyEABC_le_two`, `I_E_ge_log2_sub_two`; `structureStable_open` (Schicht **R**, offene `Prop`) (§4.8.17)
+- `collatz_eabc_zirkulationshypothese.md` — Monoid §4.6; state-centric Hierarchie §4.7; Level-2 §4.8; Spin-Liquid-Analogie (methodisch, nicht ontologisch) §4.8.1; **Fibonacci-Kamm als externer Resonanzdetektor, Hypothesenleiter H$_0$–H$_4$** §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung $(\hbar,\sigma)$** §4.8.14 (Präzisierung Phasenraum-Orientierung, Abschnitt 9); **Symplektische Orientierung und EABC-Vierfachstruktur** §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; **Lean-Theorem-Backlog (Stufe 0–4)** §4.8.17
 - `collatz_stufe3_kappa_invarianz.md` — Stufe 3: Kodierungsinvarianz (κ-Test; Stub-Verknüpfung zu §4.8.8/§4.8.9)
 
 ---
