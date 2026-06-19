@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung: $(\hbar,\sigma)$** §4.8.14 (Präzisierung: Phasenraum-Orientierung statt Raumrichtung, Abschnitt 9); Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung: $(\hbar,\sigma)$** §4.8.14 (Präzisierung: Phasenraum-Orientierung statt Raumrichtung, Abschnitt 9); **Symplektische Orientierung und EABC-Vierfachstruktur** §4.8.15; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
 - `collatz_eabc_zeta_exponential_gedankenexperiment.md` — **Gedankenexperiment / Analogie:** $\zeta$ als Exponentialsumme auf Log-Prim-Geometrie; Euler-Streifen $(1\pm p^{-s})$; $\xi$-Spiegelung; Brücke zu Log-Koordinaten, $\gamma^\pm$-Paarung, Level-2; §6–§10: Ganzzahl/Halbzahl-Exponenten, Oktanionen (Schicht C), Bernoulli-Subtraktion, Fibonacci-Zeta (kein RH-/EABC-Theorem)
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
@@ -1435,13 +1435,13 @@ $$\boxed{\;\textbf{Aktueller Gesamtstatus:}\; algebraisch wohldefiniert \checkma
 
 **Label:** §4.8.7 = **Meta** / **Hypothese** / **Experiment** (Schicht **C**); **kein Theorem**.
 
-**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12; Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13; Prägeometrie der Wirkung $(\hbar,\sigma)$ §4.8.14 (Präzisierung Phasenraum-Orientierung, Abschnitt 9).
+**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12; Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13; Prägeometrie der Wirkung $(\hbar,\sigma)$ §4.8.14 (Präzisierung Phasenraum-Orientierung, Abschnitt 9); Symplektische Orientierung und EABC-Vierfachstruktur §4.8.15.
 
 #### 4.8.8 Beobachtungsgeometrie als Kompressionsoperator
 
 **Status:** paper-ready methodische Klärung — schließt §4.8.6–4.8.7 ab; **kein Theorem**, **kein** zusätzlicher Physikanspruch.
 
-**Querverweise:** Zwei-Rotor-Kopplung $(\Theta,\Phi)$ und $R_N$ §4.8.7; EABC–Fibonacci-Gesamtbaustein §4.8.6; Kegel-Analogie §9.13 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §3.1; numerischer Stub §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12; Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13.
+**Querverweise:** Zwei-Rotor-Kopplung $(\Theta,\Phi)$ und $R_N$ §4.8.7; EABC–Fibonacci-Gesamtbaustein §4.8.6; Kegel-Analogie §9.13 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §3.1; numerischer Stub §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12; Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13; Prägeometrie $(\hbar,\sigma)$, Symplektik und EABC-Vierfach §4.8.14–4.8.15.
 
 Die EABC-Projektion kann nicht nur als geometrische, sondern auch als informationstheoretische Abbildung verstanden werden.
 
@@ -2168,7 +2168,7 @@ $$\boxed{\;\textbf{Behauptet (Gedankenexperiment):}\; \text{Wirkungsquantisierun
 
 **Status:** paper-ready Prägeometrie-Gedankenexperiment — **kein Theorem**, **kein** Anspruch, EABC erkläre $\hbar$ oder die Quantenmechanik; präzisiert §4.8.13 durch die EABC-Lesart $(\hbar,\sigma)$ statt der pauschalen Formulierung „EABC erklärt Richtungsquantisierung". Schicht **C** für Physik-/Prägeometrie-Bilder; Schicht **A**/**B** für Kompressionskette $\mathcal{C}_E$; Schicht **R** für Emergenzfragen.
 
-**Querverweise:** Kompressionsoperator $\mathcal{C}_E:\mathbb{N}\to\{E,A,B,C\}\cong\mathbb{Z}_4$ und strukturstabile Kompression §4.8.8; Orientierungsvektor $u(n)\in S^2$, Resonanzfaktor $R_{ij}$ §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM §4.8.11; SU(2)-Prüfstein, Orientierungshebung und Kompressionskette $\mathbb{N}\to\mathbb{Z}_4\to V\to\Pi$ §4.8.12; Trennung Wirkungs- vs. Richtungsquantisierung, Paar $(h,u)$ §4.8.13; quaternionische Hebung und Bahndrehimpuls-Bild in `Bahndrehimpuls.tex`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §0–3.1, §3.1 (Prägeometrie $(\hbar,\sigma)$).
+**Querverweise:** Kompressionsoperator $\mathcal{C}_E:\mathbb{N}\to\{E,A,B,C\}\cong\mathbb{Z}_4$ und strukturstabile Kompression §4.8.8; Orientierungsvektor $u(n)\in S^2$, Resonanzfaktor $R_{ij}$ §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM §4.8.11; SU(2)-Prüfstein, Orientierungshebung und Kompressionskette $\mathbb{N}\to\mathbb{Z}_4\to V\to\Pi$ §4.8.12; Trennung Wirkungs- vs. Richtungsquantisierung, Paar $(h,u)$ §4.8.13; quaternionische Hebung und Bahndrehimpuls-Bild in `Bahndrehimpuls.tex`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §0–3.1, §3.1 (Prägeometrie $(\hbar,\sigma)$); Symplektische Orientierung und EABC-Vierfachstruktur §4.8.15.
 
 §4.8.13 trennte skalare Wirkungsquantisierung ($h$) von vektorieller Richtungsquantisierung ($(l,m)$ via SU(2)). Der folgende Abschnitt vertieft die **Prägeometrie** der Wirkungseinheit: $\hbar$ als Brücke zwischen Dynamik und Geometrie — und als **elementares Orientierungsereignis**, das in der EABC-Lesart durch ein diskretes Label $\sigma\in\{E,A,B,C\}$ mitgetragen wird.
 
@@ -2369,9 +2369,167 @@ $$\boxed{\;\textbf{Frage 2 (Schicht R):}\; \text{Kann aus interner Orientierungs
 
 $$\boxed{\;\textbf{Epistemische Sicherung:}\; \sigma\in\{E,A,B,C\}\text{ ist Wirkungsereignis-Klasse, nicht Raumrichtung; }\omega=dx\wedge dp\text{ ist Phasenraum-Orientierung, nicht }u\in S^2\text{; die Leitfrage ist \textbf{nicht} „Hat }\hbar\text{ eine Richtung?", sondern ob Orientierung als separater Freiheitsgrad am elementaren Wirkungsereignis ansetzt.}\;}$$
 
-**Label:** §4.8.14 Abschnitt 9 = **Meta** / **Präzisierung** / **Prägeometrie-Analogie** (Schicht **C** für Phasenraum-Bilder; **A**/**B** für $(\hbar,\sigma)$-Lesart; **R** für Emergenzfragen); **kein Theorem**.
+**Label:** §4.8.14 Abschnitt 9 = **Meta** / **Präzisierung** / **Prägeometrie-Analogie** (Schicht **C** für Phasenraum-Bilder; **A**/**B** für $(\hbar,\sigma)$-Lesart; **R** für Emergenzfragen); **kein Theorem**. Symplektische Vertiefung: §4.8.15.
 
-**Label:** §4.8.14 = **Meta** / **Gedankenexperiment** / **Prägeometrie-Analogie** (Schicht **C** für Physik-Bilder; **A**/**B** für $(\hbar,\sigma)$-Kompressionskette; **R** für Emergenzfrage); **kein Theorem**.
+**Label:** §4.8.14 = **Meta** / **Gedankenexperiment** / **Prägeometrie-Analogie** (Schicht **C** für Physik-Bilder; **A**/**B** für $(\hbar,\sigma)$-Kompressionskette; **R** für Emergenzfrage); **kein Theorem**. Symplektische Vertiefung und EABC-Vierfachstruktur: §4.8.15.
+
+#### 4.8.15 Symplektische Orientierung und EABC-Vierfachstruktur
+
+**Status:** paper-ready Gedankenexperiment — **kein Theorem**, **kein** Anspruch, EABC erkläre $\hbar$, Spin oder die Quantenmechanik; vertieft §4.8.14 Abschnitt 9 durch die symplektische Lesart orientierter Phasenraumzellen und die EABC-Vierfachstruktur als diskrete interne Symmetrie $(\hbar,\sigma)$. Schicht **C** für Symplektik-/Spin-Analogien; Schicht **A**/**B** für $\mathcal{C}_E$ und $(\hbar,\sigma)$; Schicht **R** für SU(2)-Emergenzfrage.
+
+**Querverweise:** Kompressionsoperator $\mathcal{C}_E:\mathbb{N}\to\{E,A,B,C\}\cong\mathbb{Z}_4$ und strukturstabile Kompression, Kompression vs. Entdeckung §4.8.8; SU(2)-Prüfstein, Orientierungshebung und Kompressionskette $\mathbb{N}\to\mathbb{Z}_4\to V\to\Pi$ §4.8.12; Trennung Wirkungs- vs. Richtungsquantisierung §4.8.13; Prägeometrie $(\hbar,\sigma)$, Phasenraum-Orientierung §4.8.14 Abschnitt 9; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §0–3.1, §3.1 (Symplektik, EABC-Vierfach).
+
+§4.8.14 Abschnitt 9 präzisierte: $\hbar$ ist skalar; Orientierung ist ein **separater** Freiheitsgrad — phasenraumbezogen, nicht als Raumrichtung in $S^2$. Der folgende Abschnitt vertieft diese Lesart in der **symplektischen** Formulierung und verknüpft sie mit der **vierfachen** EABC-Struktur als diskreter interner Symmetrie.
+
+##### 1. Symplektische 2-Form: orientierte Phasenraumzelle
+
+Im $(q,p)$-Phasenraum (Schicht **C**, extern) definiert die kanonische symplektische 2-Form
+
+$$\omega = dq \wedge dp = -\,dp \wedge dq$$
+
+eine **orientierte Flächenstruktur**: $\omega$ ist eine 2-Form, deren Vorzeichen die **Orientierung** einer infinitesimalen Phasenraum-Parallelogrammfläche festlegt.
+
+Die Heisenberg-Unschärfe (§4.8.14 Abschnitt 3, 9)
+
+$$\Delta q\,\Delta p \;\gtrsim\; \hbar$$
+
+ist geometrisch lesbar als **untere Grenze des Flächeninhalts** einer Phasenraum-Zelle — nicht als Längenmaß allein:
+
+$$\boxed{\;\Delta q\,\Delta p \sim \hbar \;\;\Longleftrightarrow\;\; \text{minimales \textbf{orientiertes} Flächenelement im Phasenraum.}\;}$$
+
+| Größe | Symplektische Lesart | Was es **nicht** ist |
+|-------|----------------------|----------------------|
+| $\omega$ | Orientierte 2-Form im $(q,p)$-Raum | Raumrichtung in $\mathbb{R}^3$ |
+| $\Delta q\,\Delta p$ | Flächeninhalt einer minimalen Zelle | Skalar ohne Orientierung |
+| $\hbar$ | Skala der minimalen Phasenraum-Fläche | Orientierungsvektor |
+
+**Lesart (Schicht C):** Wirkungsquantisierung ist in der symplektischen Formulierung **Quantisierung einer orientierten Phasenraum-Zelle** — die Fläche trägt ein Vorzeichen (Orientierung der 2-Form), auch wenn $\hbar$ in der Standardphysik meist nur als **positiver Skalar** auftritt.
+
+##### 2. Ist $\hbar$ nur $|\omega|$? Das fundamentale Paar $(\hbar,\,\mathrm{sgn}\,\omega)$
+
+Die etablierte Physik (Schicht **C**) verwendet $\hbar>0$ als **skalare** Konstante; das Vorzeichen von $\omega$ erscheint implizit in Integrationsorientierungen und Kommutatorvorzeichen ($[q,p]=i\hbar$), wird aber selten als **eigenständiger Freiheitsgrad** gefasst.
+
+Die Prägeometrie-Frage (Schicht **C**, Analogie) schärft:
+
+$$\boxed{\;\textbf{Frage:}\; \text{Ist }\hbar\text{ nur der Betrag }|\omega|\text{ einer symplektischen Form — oder ist die fundamentale Größe das Paar }(\hbar,\,\mathrm{sgn}\,\omega)\text{?}\;}$$
+
+| Lesart | Fundamentale Größe | Orientierung |
+|--------|-------------------|--------------|
+| Standard-QM | $\hbar>0$ (Skalar) | Folgt aus Algebra, nicht aus $\hbar$ selbst |
+| Symplektik | $(\hbar,\,\mathrm{sgn}\,\omega)$ | **Intrinsisch** an der Phasenraum-Zelle |
+| EABC | $(\hbar,\,\sigma)$ mit $\sigma\in\{E,A,B,C\}$ | **Diskretes** Beobachtungslabel (Schicht **A**/**B**) |
+
+**Epistemische Sicherung:** $(\hbar,\mathrm{sgn}\,\omega)$ ist ein **Bild** (Schicht **C**) — keine Behauptung, dass die Natur $\mathrm{sgn}\,\omega$ als unabhängige Observable führt. Die EABC-Zuordnung $\hbar\to(\hbar,\sigma)$ ist **methodisch**: Beobachtungskompression liefert skalare Wirkungseinheit **plus** diskretes Orientierungslabel — analog zur symplektischen Trennung von Flächeninhalt und Orientierung.
+
+##### 3. Spin $\pm\tfrac12$-Analogie: $(\tfrac12,\pm)$ vs. $(\hbar,\pm)$ (Schicht **C**)
+
+Der Spin $\pm\tfrac12$ (Schicht **C**, extern) illustriert die **Untrennbarkeit** von Quantenzahl und Orientierung — nicht als Raumvektor, sondern als **internes** Paar:
+
+| Spin-Eigenschaft | Wert | Symplektik-/Prägeometrie-Analogie |
+|------------------|------|-----------------------------------|
+| Betrag | $s=\tfrac12$ | $\hbar$ (skalare Wirkungseinheit) |
+| Projektion | $m=\pm\tfrac12$ | $\mathrm{sgn}\,\omega$ bzw. binäre Orientierungswahl |
+| Gekoppeltes Paar | $(\tfrac12,\,+\tfrac12)$, $(\tfrac12,\,-\tfrac12)$ | $(\hbar,\,+)$, $(\hbar,\,-)$ — **nicht** zwei unabhängige Skalare |
+
+$$\boxed{\;\textbf{Analogie (Schicht C):}\; (\tfrac12,\,m)\text{ zeigt: Quantenzahl und Orientierung sind gekoppelt — analog }(\hbar,\,\mathrm{sgn}\,\omega)\text{ oder }(\hbar,\,\sigma)\text{ am elementaren Wirkungsereignis. EABC liefert ein \textbf{diskretes} Vierfach, kein binäres Spin-Doppel.}\;}$$
+
+| Spin | EABC-Vierfach |
+|------|---------------|
+| 2 Zustände ($m=\pm\tfrac12$) | 4 Klassen $\sigma\in\{E,A,B,C\}$ |
+| SU(2)-Doppelüberlagerung ($4\pi$-Symmetrie) | $\mathbb{Z}_4$-Zyklus auf $G_E$ (§4.8.8) |
+| Halbzahligkeit $s=\tfrac12$ | Arithmetische Analogie: vier Klassen, nicht zwei |
+
+**Epistemische Sicherung:** Spin-$\tfrac12$-Physik ist **Referenz** (Schicht **C**); $(\hbar,\sigma)$ ist **Kompressionsmodell** (Schicht **A**/**B**). Keine Behauptung, dass EABC Spin erklärt oder $\sigma$ mit $m$ identisch ist.
+
+##### 4. EABC als vier interne Orientierungen: $(\hbar,\,\sigma)$
+
+Die EABC-Pixelung (§4.8.8) liefert **vier** diskrete Beobachtungsklassen:
+
+$$\mathcal{C}_E:\mathbb{N}\longrightarrow\{E,A,B,C\}\cong\mathbb{Z}_4, \qquad E\equiv 1,\; A\equiv 5,\; B\equiv 7,\; C\equiv 11 \pmod{12}.$$
+
+In der symplektischen Lesart interpretiert das Programm diese Vierfachstruktur als **vier interne Orientierungen** eines elementaren Wirkungsereignisses:
+
+$$\boxed{\;\hbar \;\longrightarrow\; (\hbar,\,\sigma), \qquad \sigma\in\{E,A,B,C\}.\;}$$
+
+| Komponente | Symplektische Lesart | EABC-Rolle |
+|------------|---------------------|------------|
+| $\hbar$ | Skala der minimalen Phasenraum-Fläche | Externe Referenz (Schicht **C**) |
+| $\sigma$ | Diskrete Orientierung / Wirkungsereignis-Klasse | Output von $\mathcal{C}_E$ (Schicht **A**/**B**) |
+| $(\hbar,\sigma)$ | Elementares orientiertes Wirkungsereignis | Kompressionsbaustein (§4.8.14) |
+
+Kompressionskette (§4.8.8, §4.8.12):
+
+$$\mathbb{N} \;\xrightarrow{\;\mathcal{C}_E\;}\; \sigma\in\{E,A,B,C\} \;\xrightarrow{\;\text{Hebung}\;}\; u(\sigma)\in V\subset S^2 \;\xrightarrow{\;\Pi\;}\; (l,m)\;?$$
+
+Die letzte Stufe $(l,m)$ ist **offen** (§4.8.12) — die zentrale Hürde des Programms.
+
+##### 5. Kompression vs. Entdeckung (§4.8.8): zwei Lesarten der Vierfachstruktur
+
+§4.8.8 fixiert $\mathcal{C}_E$ als **extrem verlustreiche** Kompressionsabbildung. Die symplektische Erweiterung erlaubt **zwei Lesarten** der EABC-Vierfachstruktur — ohne sie zu vermischen:
+
+| Lesart | Kernfrage | Status |
+|--------|-----------|--------|
+| **Kompression** | Erzeugt $\mathcal{C}_E$ die vier Klassen als **Beobachtungspixel**? | **Kanonisch** (§4.8.8) — Jaynes-Lesart |
+| **Entdeckung** | War die Vierfachstruktur **schon vor** der Projektion in den Primdaten vorhanden? | **Offen** — Fall (1) vs. (2) in §4.8.8 |
+
+**Fall (1) — Entdeckung:** Die Vierfachstruktur $\{E,A,B,C\}$ ist in $\mathbb{N}$ bzw. $\mathbb{P}$ **inhärent** (Restklassen mod $12$); $\mathcal{C}_E$ **deckt** sie auf.
+
+**Fall (2) — Kompression:** Die Vierfachstruktur ist **keine** ontologische Eigenschaft der Primzahlen, sondern **Projektionsartefakt** einer gewählten Beobachtungsgeometrie; relevante Struktur **überlebt** nur, wenn $S(\mathcal{C}_E)\gg S(\mathcal{C}_k)$ (§4.8.8, Strukturstabilitätsindex).
+
+$$\boxed{\;\S4.8.8\text{ Kompression vs. Entdeckung:}\; \text{Beide Lesarten sind epistemisch zulässig — Evidenz entscheidet über Fall (1)–(3), nicht die symplektische Analogie.}\;}$$
+
+**Symplektische Brücke:** Unabhängig von Fall (1)/(2) liefert die Analogie $(\hbar,\mathrm{sgn}\,\omega)\leftrightarrow(\hbar,\sigma)$ ein **einheitliches Bild** orientierter Phasenraum-Ereignisse — die EABC-Vierfachstruktur als **diskrete interne Symmetrie**, testbar über $\mathcal{C}_E$, $D_E$, $R_N$, $C_F$ (§4.8.8).
+
+##### 6. Offene Hürde: $(E,A,B,C)\Rightarrow\mathrm{SU}(2)$
+
+§4.8.12 operationalisierte den **SU(2)-Prüfstein**: Kann aus endlicher Orientierungsgeometrie $V\subset S^2$ unter Hebung und Aggregation eine $\mathfrak{su}(2)$-artige Algebra mit $(l,m)$-Degenerierung $2l+1$ **emergieren**?
+
+Die symplektische Erweiterung verschärft die Hürde:
+
+$$\boxed{\;\textbf{Fehlende Brücke (Schicht R):}\; \{E,A,B,C\}\cong\mathbb{Z}_4 \;\not\Rightarrow\; \mathrm{SU}(2)\text{ — kein mathematischer Nachweis, dass die EABC-Vierfachstruktur die Drehgruppe erzeugt.}\;}$$
+
+| Stufe | Objekt | Status |
+|-------|--------|--------|
+| Arithmetisch | $\sigma\in\{E,A,B,C\}$ | **Definition** (Schicht **A**/**B**) |
+| Symplektisch | $(\hbar,\sigma)$, orientierte Phasenraum-Zelle | **Bild** (Schicht **C**) |
+| Geometrisch | $u(\sigma)\in V\subset S^2$ | **Hebung** (§4.8.10–4.8.12) |
+| Algebraisch | $\mathfrak{su}(2)$, $(l,m)$ | **Forschungsfrage** (Schicht **R**, §4.8.12) |
+
+Numerischer Prüfstein: `eabc_su2_reconstruction_test.py` (§4.8.12) — bisher **diagnostisch**, keine bestätigende Evidenz.
+
+##### 7. Epistemische Kernboxen
+
+$$\boxed{\;\textbf{Frage 1 (Schicht R):}\; \text{Ist Wirkungsquantisierung die Quantisierung eines \textbf{orientierten} Phasenraum-Ereignisses — nicht nur einer skalaren Konstante?}\;}$$
+
+| Antwort | Perspektive | Schicht |
+|---------|-------------|---------|
+| Skalare Quantisierung | $\hbar$ als positive Konstante; $\omega$ nur Integrationsdetail | **C** (Standard-QM) |
+| Orientierte Zelle | $\Delta q\,\Delta p\sim\hbar$ = minimales orientiertes Flächenelement | **C** (Symplektik-Analogie) |
+| Beobachtungspixel | $(\hbar,\sigma)$ als Kompressionsoutput | **A**/**B** (EABC) |
+
+$$\boxed{\;\textbf{Frage 2 (Schicht R):}\; \text{Kann eine diskrete Orientierungsstruktur — }(E,A,B,C)\text{ oder }V\subset S^2\text{ — Spin bzw. Drehimpuls \textbf{erzeugen}, ohne dass }\hbar\text{ selbst vektorisiert wird?}\;}$$
+
+| Mechanismus | Inhalt | Status |
+|-------------|--------|--------|
+| Standard-QM | Rotationsinvarianz $\Rightarrow$ $\mathfrak{su}(2)$, Spin als Darstellung | **Referenz** (Schicht **C**) |
+| EABC-Hebung | $\sigma\mapsto u\in V$, Aggregation $\to(l,m)$ | **Prüfschema** (§4.8.12, Schicht **R**) |
+| Mittelung | Diskrete interne Orientierung $\to$ makroskopische Rotationssymmetrie | **Kompatibilität** (Schicht **C**) |
+
+$$\boxed{\;\textbf{Nicht behauptet:}\; \text{EABC erklärt }\hbar\text{, Heisenberg-Unschärfe, Spin, Drehimpuls oder die Herleitung von SU(2) aus Primzahlen.}\;}$$
+
+$$\boxed{\;\textbf{Behauptet (Gedankenexperiment):}\; \omega=dq\wedge dp\text{ trägt Orientierung; }\Delta q\,\Delta p\sim\hbar\text{ ist orientiertes Flächenelement; die EABC-Lesart }(\hbar,\sigma)\text{ präzisiert diskrete interne Symmetrie — testbar über }\mathcal{C}_E\text{ (§4.8.8) und SU(2)-Prüfstein (§4.8.12); Brücke }(E,A,B,C)\Rightarrow\mathrm{SU}(2)\text{ bleibt offen.}\;}$$
+
+| Baustein | Tao-Label | Schicht |
+|----------|-----------|---------|
+| $\omega=dq\wedge dp$, $\Delta q\,\Delta p\gtrsim\hbar$ | **Referenz** (Symplektik/QM) | **C** |
+| $(\hbar,\,\mathrm{sgn}\,\omega)$, orientierte Phasenraum-Zelle | **Analogie** | **C** |
+| Spin $(\tfrac12,\pm)$, $(\hbar,\pm)$-Paar | **Analogie** | **C** |
+| $(\hbar,\sigma)$, $\mathcal{C}_E:\mathbb{N}\to\mathbb{Z}_4$ | **Definition** / **Modell** | **A**/**B** |
+| Kompression vs. Entdeckung (§4.8.8) | **Meta** / **Hypothese** | **A**/**B** |
+| $\{E,A,B,C\}\Rightarrow\mathfrak{su}(2)$ | **Forschungsfrage** | **R** |
+| „EABC erklärt $\hbar$, Spin oder QM" | — | **nicht behauptet** |
+
+**Label:** §4.8.15 = **Meta** / **Gedankenexperiment** / **Symplektik-Analogie** (Schicht **C** für $\omega$, Spin-Paar; **A**/**B** für $(\hbar,\sigma)$ und $\mathcal{C}_E$; **R** für SU(2)-Emergenz); **kein Theorem**.
 
 ### 4.9 Zeta-Exponential-Gedankenexperiment (Schicht **C**)
 
