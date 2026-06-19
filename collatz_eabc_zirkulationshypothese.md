@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
 - `collatz_eabc_zeta_exponential_gedankenexperiment.md` — **Gedankenexperiment / Analogie:** $\zeta$ als Exponentialsumme auf Log-Prim-Geometrie; Euler-Streifen $(1\pm p^{-s})$; $\xi$-Spiegelung; Brücke zu Log-Koordinaten, $\gamma^\pm$-Paarung, Level-2; §6–§10: Ganzzahl/Halbzahl-Exponenten, Oktanionen (Schicht C), Bernoulli-Subtraktion, Fibonacci-Zeta (kein RH-/EABC-Theorem)
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
@@ -1435,13 +1435,13 @@ $$\boxed{\;\textbf{Aktueller Gesamtstatus:}\; algebraisch wohldefiniert \checkma
 
 **Label:** §4.8.7 = **Meta** / **Hypothese** / **Experiment** (Schicht **C**); **kein Theorem**.
 
-**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10.
+**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11.
 
 #### 4.8.8 Beobachtungsgeometrie als Kompressionsoperator
 
 **Status:** paper-ready methodische Klärung — schließt §4.8.6–4.8.7 ab; **kein Theorem**, **kein** zusätzlicher Physikanspruch.
 
-**Querverweise:** Zwei-Rotor-Kopplung $(\Theta,\Phi)$ und $R_N$ §4.8.7; EABC–Fibonacci-Gesamtbaustein §4.8.6; Kegel-Analogie §9.13 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §3.1; numerischer Stub §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10.
+**Querverweise:** Zwei-Rotor-Kopplung $(\Theta,\Phi)$ und $R_N$ §4.8.7; EABC–Fibonacci-Gesamtbaustein §4.8.6; Kegel-Analogie §9.13 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §3.1; numerischer Stub §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM §4.8.11.
 
 Die EABC-Projektion kann nicht nur als geometrische, sondern auch als informationstheoretische Abbildung verstanden werden.
 
@@ -1769,6 +1769,104 @@ $$\boxed{\;\S4.8.10 = \textbf{Gedankenexperiment}: }u(n)\in S^2\text{ erweitert 
 | Sensitivitätstest $D_E,R_N,C_F$ | **Forschungsfrage** (Stub) | **B**/**R** |
 
 **Label:** §4.8.10 = **Meta** / **Definition** / **Analogie** (Schicht **C** für Physik-Bilder; **A**/**B** für $u(n)$, $R_{ij}$); **kein Theorem**.
+
+#### 4.8.11 Diskrete Orientierungsgeometrie vs. etablierte Quantenmechanik (Hypothese, nicht Erklärung)
+
+**Status:** paper-ready wissenschaftlich vorsichtige Erweiterung zu §4.8.10 — **kein Theorem**, **kein** Anspruch, EABC erkläre die Quantenmechanik; Schicht **C** für Physik- und Präquantisierungsbilder.
+
+**Querverweise:** Orientierungsvektor $u(n)\in S^2$ und Resonanzfaktor $R_{ij}$ §4.8.10; Kompressionsoperator $\mathcal{C}_E:\mathbb{N}\to\{E,A,B,C\}\cong\mathbb{Z}_4$ §4.8.8; quaternionische Hebung und Bahndrehimpuls-Bild in `Bahndrehimpuls.tex` (Drehimpuls auf $C_4\cong S^1$); Ikosaeder–Dodekaeder als diskrete Orientierungsräume in `collatz_morley_metrik_erweiterung.md` § Ikosaeder–Dodekaeder-Dualität, `eabc_icosahedron_test.py`, `collatz_ikosaeder_spannung.pdf`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §0–3.1.
+
+Der folgende Abschnitt ordnet die Orientierungsvektor-Erweiterung aus §4.8.10 **explizit** gegenüber der etablierten Quantenmechanik ein. Ziel ist nicht ein Physikersatz, sondern die **Abgrenzung**: EABC motiviert eine **Hypothese diskreter Orientierungsgeometrie** — es **erklärt** weder Bahndrehimpuls noch Richtungsquantisierung.
+
+##### 1. Etablierte Physik: kontinuierliche Drehsymmetrie
+
+In der etablierten Quantenmechanik (Atomspektroskopie, Bahndrehimpuls) genügt die **Lie-Algebra**
+
+$$[L_i,\,L_j] = i\hbar\,\varepsilon_{ijk}\,L_k$$
+
+mit der dreidimensionalen Rotationsgruppe **SO(3)** (bzw. ihrer Doppelüberlagerung **SU(2)** für Spin-$\tfrac12$). Die Quantenzahlen
+
+$$l = 0,\,1,\,2,\,\ldots, \qquad m = -l,\,-l+1,\,\ldots,\,l-1,\,l$$
+
+folgen aus der **unitären Darstellungstheorie** von SU(2) — **ohne** Ikosaeder, Dodekaeder oder platonische Polyeder. Ein Ecken- oder Flächengitter auf $S^2$ ist für die Standard-QM **nicht erforderlich**.
+
+**Lesart (Schicht C):** Die etablierte Theorie liefert bereits eine vollständige, kontinuierliche Beschreibung der Richtungsquantisierung. Jede EABC-Anbindung muss sich **explizit** von diesem etablierten Rahmen abgrenzen.
+
+##### 2. EABC-Gedanke: warum diskrete Orientierungen?
+
+§4.8.10 hebt die skalare EABC-Phase $\Theta(n)$ auf einen Orientierungsvektor $u(n)\in S^2$ an. Die **EABC-Motivation** für **diskrete** statt kontinuierlicher Orientierungen lautet:
+
+- Die EABC-Pixelung $\mathcal{C}_E:\mathbb{N}\to\mathbb{Z}_4$ liefert nur **vier** Klassen — eine extrem verlustreiche Kompression (§4.8.8).
+- Ikosaeder (12 Ecken) und Dodekaeder (20 Ecken) realisieren **endliche** Orientierungsgitter $V\subset S^2$ mit $A_5$-Symmetrie (§4.8.10, Abschnitt 4).
+- Statt $u(n)\in S^2$ kontinuierlich kann man $u(n)\in V$ mit $|V|\in\{12,20\}$ **modellieren** — als Beobachtungsfreiheitsgrad nach $\mathcal{C}_E$, nicht als ontologische Raumstruktur.
+
+**Definition (Schicht B):** Sei $V\subset S^2$ ein endliches Orientierungsgitter (z.\,B. Ikosaeder-Ecken). Eine **diskrete Orientierungszuordnung** ist
+
+$$u:\mathbb{N}\longrightarrow V, \qquad u(n) = \pi_V\bigl(\hat u(n)\bigr),$$
+
+wobei $\hat u(n)\in S^2$ aus §4.8.10 stammt und $\pi_V$ auf das nächste Gitterelement projiziert.
+
+**Epistemische Sicherung:** $V$ ist ein **Modellraum** für Orientierungstests — **keine** Behauptung, dass Atome Ikosaeder-Ecken „besitzen".
+
+##### 3. Präquantisierungsideen (Schicht C, Analogie)
+
+Historische und moderne **Präquantisierungs**-Programme fragen, ob Raum, Zeit oder Orientierung **diskret** sein könnten — **bevor** die Hilbert-Raum-Formulierung der QM greift:
+
+| Programm | Kernidee | Bezug zu EABC |
+|----------|----------|---------------|
+| **Wheeler** (Geometrodynamik) | Raumzeit aus Relationen | Beobachtungsgeometrie statt Ontologie (§4.8.8) |
+| **Penrose** (Twistor) | Konforme Struktur, Spin-Netze | Orientierung als struktureller Freiheitsgrad |
+| **LQG / Spin-Netzwerke** | Diskrete Geometrie, SU(2)-Darstellungen | Endliche Orientierungsgitter als **Analogie** |
+| **Diskrete Raumzeit** | Planck-Pixelung | EABC-Pixelung $\mathbb{N}\to\mathbb{Z}_4$ als **arithmetische** Analogie |
+
+**Lesart (Schicht C):** Diese Programme sind **Bildsprache** für die Frage, ob eine **diskrete Orientierungsgeometrie** sinnvoller Beobachtungsrahmen sein könnte als $S^2$ kontinuierlich — **ohne** Identitätsbehauptung EABC $\leftrightarrow$ LQG/Twistor/Penrose/Wheeler.
+
+##### 4. EABC als Kompressionskette
+
+Die EABC-Lesart ordnet die Orientierungserweiterung als **Kompressionskette**:
+
+$$\mathbb{N} \;\xrightarrow{\;\mathcal{C}_E\;}\; \mathbb{Z}_4 \;\xrightarrow{\;\text{Hebung}\;}\; V \subset S^2 \;\xrightarrow{\;R_{ij}\;}\; \text{Resonanzfilter}$$
+
+| Stufe | Abbildung | Informationsgehalt |
+|-------|-----------|-------------------|
+| 1 | $\mathcal{C}_E:\mathbb{N}\to\{E,A,B,C\}\cong\mathbb{Z}_4$ | 2 Bit pro Zahl (§4.8.8) |
+| 2 | Hebung $\mathbb{Z}_4\to V$ (12 oder 20 Orientierungen) | diskrete Raumrichtung |
+| 3 | Resonanz $R_{ij}=u_i\cdot u_j$ | Orientierungsfilter auf Kopplung (§4.8.10) |
+
+Die Kette ist **methodisch** (Beobachtungsgeometrie), nicht **ontologisch** (verborgene Raumstruktur). Sie testet, ob nach extremer Kompression noch **orientierungsabhängige** Resonanzsignale in $D_E$, $R_N$, $C_F$ überleben.
+
+##### 5. Offenes Problem: $l$, $m$ und SU(2)
+
+Die etablierte QM liefert $l=0,1,2,\ldots$ und $m=-l,\ldots,l$ aus SU(2)-Darstellungen. Die EABC-Orientierungserweiterung liefert bisher:
+
+- diskrete Richtungen $u(n)\in V$ mit $|V|\in\{12,20\}$,
+- skalaren Resonanzfaktor $R_{ij}\in[-1,1]$,
+- **keine** algebraische Struktur $[L_i,L_j]=i\hbar\varepsilon_{ijk}L_k$,
+- **keine** Ableitung von $l$ und $m$ aus Ikosaeder-Geometrie.
+
+**Offene Forschungsfrage (Schicht R):** Müsste aus einer diskreten Orientierungsgeometrie **SU(2)** (oder eine endliche Untergruppe mit analogen Quantenzahlen) **folgen**, damit EABC-relevante Orientierungsmodelle mit der etablierten Spektroskopie vergleichbar wären? Diese Frage ist **offen** — weder bejaht noch verneint.
+
+##### 6. Epistemische Kernbox (Abgrenzung)
+
+$$\boxed{\;\textbf{Nicht behauptet:}\; \text{EABC erklärt die Richtungsquantisierung der Quantenmechanik.}\;}$$
+
+$$\boxed{\;\textbf{Behauptet (Hypothese):}\; \text{EABC motiviert die Forschungshypothese einer diskreten Orientierungsgeometrie — testbar über }D_E,\,R_N,\,C_F\text{ und }R_{ij}\text{ (§4.8.8–4.8.10).}\;}$$
+
+##### 7. Offene Frage: Reproduktion der SU(2)-Quantenzahlen
+
+$$\boxed{\;\text{Offene Frage: Kann EABC-/Ikosaeder-Geometrie dieselben Quantenzahlen }(l,m)\text{ wie SU(2) reproduzieren — oder liefert sie eine alternative, endliche Orientierungsstruktur?}\;}$$
+
+Eine positive Antwort wäre **explorativ** und erforderte einen expliziten Konstruktionsweg $V\to\mathfrak{su}(2)$ bzw. $V\to$ Darstellungslabel — der derzeit **nicht** vorliegt. Eine negative Antwort wäre ebenfalls informativ: EABC-Orientierung wäre dann ein **eigenständiger** arithmetischer Filter, nicht eine QM-Neuformulierung.
+
+| Baustein | Tao-Label | Schicht |
+|----------|-----------|---------|
+| $[L_i,L_j]=i\hbar\varepsilon_{ijk}L_k$, $l,m$ aus SU(2) | **Referenz** (etablierte Physik) | **C** (extern) |
+| $u(n)\in V\subset S^2$, Kompressionskette | **Definition** / **Modell** | **A**/**B** |
+| Wheeler, Penrose, LQG, Spin-Netze | **Analogie** | **C** |
+| Reproduktion $(l,m)$ aus Ikosaeder | **Forschungsfrage** | **R** |
+| „EABC erklärt QM" | — | **nicht behauptet** |
+
+**Label:** §4.8.11 = **Meta** / **Hypothese** / **Analogie** (Schicht **C** für Physik/Präquantisierung; **A**/**B** für $V$, Kompressionskette; **R** für SU(2)-Reproduktionsfrage); **kein Theorem**.
 
 ### 4.9 Zeta-Exponential-Gedankenexperiment (Schicht **C**)
 
