@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
 - `collatz_eabc_zeta_exponential_gedankenexperiment.md` — **Gedankenexperiment / Analogie:** $\zeta$ als Exponentialsumme auf Log-Prim-Geometrie; Euler-Streifen $(1\pm p^{-s})$; $\xi$-Spiegelung; Brücke zu Log-Koordinaten, $\gamma^\pm$-Paarung, Level-2; §6–§10: Ganzzahl/Halbzahl-Exponenten, Oktanionen (Schicht C), Bernoulli-Subtraktion, Fibonacci-Zeta (kein RH-/EABC-Theorem)
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
@@ -1042,7 +1042,7 @@ mit $(\lambda_i,v_i)=\mathrm{Spec}(\Sigma_A^{\mathrm{prime}})$.
 | **$C_F$** | **implementiert** (`eabc_sigma_fibonacci_coupling.py --mode cf`) + erste Diagnostik |
 | **$P_F(\omega)$** | **implementiert** (`--mode pf`, default) — frequenzaufgelöste Variante, §4.8.4 |
 | **Erster $C_F$-Befund** | $C_F^{\mathrm{prime}}/C_F^{\mathrm{golden}}\approx0{,}58$–$0{,}83$ ($N=10^5$): Prim-Kopplung **unter** goldenem Null — kein starker Resonanzbefund |
-| **Nächster Schritt** | $P_F(\omega)$-Spektrum gegen $\omega_j=2\pi j/\log\varphi$ auswerten (stabiler, frequenzsichtbar) |
+| **Paper-Abschnitt** | Kompakte Kurzfassung §4.8.5 |
 
 ```bash
 python3 eabc_sigma_fibonacci_coupling.py --mode pf --limit 100000 --B-rand 20
@@ -1072,6 +1072,52 @@ $$\boxed{\;P_F(\omega_j):=\sum_i \lambda_i\,\bigl|\langle \hat v_i(\omega_j), k_
 **Label:** §4.8.4 = **Definition** + **Experiment** (Schicht **C**); **kein Theorem**.
 
 **Erste Diagnostik $P_F$** ($N=10^5$, $B=20$, Seed 42, Checkpoints $m\in\{10^3,5\cdot10^3,10^4\}$): $P_F^{\mathrm{prime}}/P_F^{\mathrm{golden}}\approx0{,}32$–$0{,}65$ (Prim **unter** goldenem Null, konsistent mit $C_F$); kein Peak an einzelnen $\omega_j$ über Null hinaus. **Lesart:** frequenzaufgelöst bestätigt schwache Kamm-Kopplung — diagnostisch offen, kein Resonanztheorem.
+
+#### 4.8.5 Fibonacci-Kamm-Hypothese (methodischer Baustein)
+
+*Paper-ready Kurzfassung — vollständige Definitionen und Numerik: §4.8.3–4.8.4, Skript `eabc_sigma_fibonacci_coupling.py`.*
+
+Wir führen als optionale Stufe-0-Kopplung einen unabhängig definierten Fibonacci-Resonanzkamm ein. Ausgangspunkt ist die analytische Darstellung der Fibonacci-Zeta-Funktion als Summe geometrischer Resonatoren:
+
+$$K_F(t)=\sum_{m\ge 0} w_m\,\frac{(-1)^m\,\varphi^{-(t+2m)}}{1-(-1)^m\,\varphi^{-(t+2m)}}.$$
+
+Dieser Kamm wird **nicht** aus dem Primstrom gelernt, sondern extern durch die $\varphi$-Geometrie motiviert. Die Level-2-Struktur des EABC-Programms liefert unabhängig davon die Kovarianzmatrix
+
+$$\Sigma_A,\qquad \Sigma_A v_i=\lambda_i v_i.$$
+
+Die eigentliche Testfrage lautet, ob die Eigenmoden $v_i$ der Primstrom-Kovarianz eine über geeignete Nullmodelle hinausgehende Projektion auf den Fibonacci-Kamm zeigen. Eine mögliche globale Kopplungsgröße ist
+
+$$C_F=\sum_i \lambda_i\,\left|\langle v_i,k_F\rangle\right|^2.$$
+
+Die Nullhypothese lautet **nicht** $C_F=0$, sondern
+
+$$C_F^{\mathrm{prime}}=C_F^{\mathrm{null}},$$
+
+wobei als Nullmodelle insbesondere Permutationsensembles, Markov-erhaltende Surrogate, mod-$12$-erhaltende Surrogate und Hardy–Littlewood-artige Referenzmodelle infrage kommen.
+
+Vor einer globalen Kopplungsgröße bietet sich numerisch zunächst ein lokaler Spektraltest an:
+
+$$P_F(\omega)=\left|\langle \hat v(\omega),k_F(\omega)\rangle\right|^2.$$
+
+Damit wird geprüft, ob Eigenmoden von $\Sigma_A$ bevorzugt an die durch den Goldenen Schnitt erzeugte logarithmische Kammstruktur koppeln, insbesondere an Skalen der Form
+
+$$\frac{2\pi}{\log\varphi}.$$
+
+Diese Hypothese ist ausdrücklich **explorativ**. Sie behauptet **keine** Erklärung der Primstrom-Kovarianz durch die Fibonacci-Zeta-Funktion, sondern formuliert lediglich einen Test auf **spektrale Kommensurabilität** zwischen einer unabhängig definierten $\varphi$-Geometrie und der Level-2-Fluktuationsstruktur des EABC-Programms.
+
+**Status:**
+
+| | |
+|--|--|
+| **formal definiert** | $K_F$, $k_F$, $C_F$, $P_F(\omega)$; Drei-Ebenen-Trennung §4.8.3 |
+| **methodisch sauber** | algebraisch / Daten / Kopplung getrennt; $H_0$: Prim **nicht** über Null |
+| **Implementierung** | $C_F$ und $P_F$ in `eabc_sigma_fibonacci_coupling.py` (`--mode cf` / `--mode pf`) |
+| **Erste Diagnostik** | $N=10^5$: prim/gold $<1$ für $C_F$ und $P_F$ — **kein Resonanzsignal** gegen goldenes Null |
+| **theoretisch** | **nicht begründet** |
+
+**Numerik und Details:** §4.8.3–4.8.4; algebraische $\zeta_F$-Struktur §9.8–9.10 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`.
+
+**Label:** §4.8.5 = **Hypothese** / **Experiment** (Schicht **C**); **kein Theorem**.
 
 ### 4.9 Zeta-Exponential-Gedankenexperiment (Schicht **C**)
 
