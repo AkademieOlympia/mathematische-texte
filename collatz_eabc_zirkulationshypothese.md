@@ -1870,9 +1870,9 @@ Eine positive Antwort wäre **explorativ** und erforderte einen expliziten Konst
 
 #### 4.8.12 SU(2)-Prüfstein und Orientierungshebung
 
-**Status:** paper-ready methodischer Prüfstein — **kein Theorem**, **kein** Anspruch, EABC erkläre SU(2) oder Bahndrehimpuls; Schicht **R** für die Reproduktionsfrage, Schicht **A**/**B** für die Kompressionskette, Schicht **C** für Physikreferenz.
+**Status:** implementiert, erste Diagnostik — paper-ready methodischer Prüfstein — **kein Theorem**, **kein** Anspruch, EABC erkläre SU(2) oder Bahndrehimpuls; Schicht **R** für die Reproduktionsfrage, Schicht **A**/**B** für die Kompressionskette, Schicht **C** für Physikreferenz.
 
-**Querverweise:** Kompressionsoperator $\mathcal{C}_E:\mathbb{N}\to\{E,A,B,C\}\cong\mathbb{Z}_4$ und strukturstabile Kompression §4.8.8; Orientierungsvektor $u(n)\in S^2$, Resonanzfaktor $R_{ij}$ §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM, offene Reproduktionsfrage $(l,m)$ §4.8.11; quaternionische Hebung und Bahndrehimpuls-Bild in `Bahndrehimpuls.tex` (Drehimpuls auf $C_4\cong S^1$, Auswahlregeln $\Delta l=\pm 1$); Ikosaeder–Dodekaeder-Geometrie und $R_{\mathrm{EABC}}$ in `eabc_icosahedron_test.py`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §0–3.1; numerischer Stub `eabc_su2_reconstruction_test.py` (geplant).
+**Querverweise:** Kompressionsoperator $\mathcal{C}_E:\mathbb{N}\to\{E,A,B,C\}\cong\mathbb{Z}_4$ und strukturstabile Kompression §4.8.8; Orientierungsvektor $u(n)\in S^2$, Resonanzfaktor $R_{ij}$ §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM, offene Reproduktionsfrage $(l,m)$ §4.8.11; quaternionische Hebung und Bahndrehimpuls-Bild in `Bahndrehimpuls.tex` (Drehimpuls auf $C_4\cong S^1$, Auswahlregeln $\Delta l=\pm 1$); Ikosaeder–Dodekaeder-Geometrie und $R_{\mathrm{EABC}}$ in `eabc_icosahedron_test.py`; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §0–3.1; numerischer Test `eabc_su2_reconstruction_test.py` (implementiert, erste Diagnostik).
 
 Der folgende Abschnitt fixiert den **nächsten methodischen Baustein** der Orientierungsprogrammatik: nicht die Behauptung einer SU(2)-Erklärung, sondern ein **Prüfstein**, der explizit testet, ob endliche EABC-/Ikosaeder-Orientierungsgeometrie eine **SU(2)-artige** Drehimpulsstruktur approximieren oder rekonstruieren kann.
 
@@ -1962,9 +1962,9 @@ $$\boxed{\;\textbf{Forschungsfrage (Prüfstein):}\; \text{Kann endliche EABC-/Ik
 
 **Negative Antwort** (ebenfalls informativ): EABC-Orientierung wäre ein **eigenständiger** endlicher Filter; Vergleich mit Spektroskopie nur über **Analogien** (Schicht **C**), nicht über Identität.
 
-##### 7. Operationalisierung (Stub)
+##### 7. Operationalisierung
 
-Geplanter numerischer Test: `eabc_su2_reconstruction_test.py` (Stub, §4.8.12).
+Numerischer Test: `eabc_su2_reconstruction_test.py` — **implementiert, erste Diagnostik** (§4.8.12).
 
 **Prüfschema:**
 
@@ -1974,7 +1974,7 @@ Geplanter numerischer Test: `eabc_su2_reconstruction_test.py` (Stub, §4.8.12).
 4. **Resonanz:** Korrelation von $R_{ij}=u_i\cdot u_j$ mit $\Delta l$-Analogien (Auswahlregeln aus `Bahndrehimpuls.tex`).
 5. **Klassifikation:** Fall (1) SU(2)-artige Struktur unter EABC-Hebung, (2) nur unter spezieller Zuordnung, (3) keine Reproduktion — eigenständige endliche Geometrie.
 
-$$\boxed{\;\text{SU(2)-Rekonstruktionstest = Stub — Verknüpfung §4.8.11 (offene Frage) mit }eabc\_icosahedron\_test.py\text{ und Bahndrehimpuls-Bild.}\;}$$
+$$\boxed{\;\text{SU(2)-Rekonstruktionstest — implementiert, erste Diagnostik; Verknüpfung §4.8.11 (offene Frage) mit }eabc\_icosahedron\_test.py\text{ und Bahndrehimpuls-Bild.}\;}$$
 
 ##### 8. Epistemische Kernbox
 
@@ -1989,7 +1989,7 @@ $$\boxed{\;\textbf{Behauptet (Prüfstein):}\; \text{Die Frage, ob endliche Orien
 | Kompressionskette $\mathbb{N}\to\mathbb{Z}_4\to V\to\Pi$ | **Definition** | **A**/**B** |
 | Prämodell mit emergenten Auswahlregeln | **Zwischenhypothese** | **R** |
 | SU(2)-Reproduktion / Approximation | **Forschungsfrage** (Prüfstein) | **R** |
-| `eabc_su2_reconstruction_test.py` | **Experiment** (Stub) | **B**/**R** |
+| `eabc_su2_reconstruction_test.py` | **Experiment** (implementiert, erste Diagnostik) | **B**/**R** |
 | „EABC erklärt QM/SU(2)" | — | **nicht behauptet** |
 
 **Label:** §4.8.12 = **Meta** / **Prüfstein** / **Zwischenhypothese** (Schicht **R** für SU(2)-Reproduktionsfrage; **A**/**B** für Hebung und Kompressionskette; **C** für Bahndrehimpuls-Referenz); **kein Theorem**.
