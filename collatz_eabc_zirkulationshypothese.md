@@ -1495,6 +1495,87 @@ $$\boxed{\;\text{„Welche Primzahlstrukturen überleben extreme Kompression?“
 
 Diese Formulierung verbindet das EABC-Programm mit Konzepten aus Informationstheorie, Entropie und Strukturentdeckung und erlaubt eine direkte numerische Überprüfung unabhängig von physikalischen Interpretationen.
 
+##### Entropie als verlustreiche Projektion (nicht als Kanal)
+
+Die Entropierechnung oben quantifiziert **Verlust**, nicht **Erhalt**. $\mathcal{C}_E$ ist eine **extrem verlustreiche** Projektion: asymptotisch bleiben von $\log_2 N$ Bit pro Zahl höchstens $2$ Bit — ein Kompressionsverhältnis von Ordnung $N/4$. Die EABC-Lesart ist damit **nicht** verlustarm (im Sinne nahezu injektiver Kodierung), sondern bewusst **aggressiv reduktiv**.
+
+Die leitende Frage verschiebt sich entsprechend:
+
+| Fragestellung | Status |
+|---------------|--------|
+| *Wie viel Information bleibt?* | trivial beantwortet: fast nichts ($I_E(N)\approx\log_2 N-2$) |
+| *Welche Information bleibt?* | **offen** — strukturelle Observablen, Resonanzen, Skalierungsgesetze |
+
+Bekannte Kompressionsparallelen (Schicht **C**, **Analogie** — erklären Testdesign, keine Ontologie):
+
+| Analogie | Was überlebt typischerweise? |
+|----------|------------------------------|
+| **Fourier** | dominante Frequenzen, Symmetrien |
+| **PCA** | Hauptvarianzachsen, Kovarianzstruktur |
+| **RG** (Renormierungsgruppe) | skaleninvariante Größen |
+| **Spektralzerlegung** | Eigenwerte, Modenenergie |
+
+$\mathcal{C}_E$ steht in dieser Reihe: nicht als Kanal mit hoher Übertragungsrate, sondern als **Projektion auf wenige beobachtbare Freiheitsgrade**, bei der der wissenschaftliche Wert ausschließlich davon abhängt, ob **relevante** arithmetische Struktur in den Projektionsbildern sichtbar bleibt.
+
+##### Operationalisierung strukturstabiler Kompression
+
+Die informelle Definition oben wird hier **operational** gefasst. Sei $\mathbf{O}=(O_1,\ldots,O_m)$ ein **Observablenvektor** auf dem Primstrom (z.\,B. Fenster-Kovarianz $\Sigma_A$, Zykluszählungen, Spektralprojektionen). Sei $\mathcal{M}$ ein **Statistikfunktional** auf $\mathbf{O}$, das qualitative Merkmale extrahiert:
+
+$$\mathcal{M}(\mathbf{O}) \in \{\text{Skalierungsexponenten},\;\text{Symmetrieindizes},\;\text{Kovarianzsignaturen},\;\ldots\}.$$
+
+> **Definition (operational).** Eine Kompression $\mathcal{C}$ heißt **strukturstabil** bezüglich $\mathbf{O}$, wenn $\mathcal{M}(\mathbf{O})$ und $\mathcal{M}(\mathcal{C}(\mathbf{O}))$ **qualitativ übereinstimmen** — d.\,h. dieselbe Skalierungsordnung, dieselbe Symmetrie und dieselbe Kovarianzstruktur (bis auf tolerierte numerische Abweichung unter geeigneten Nullmodellen).
+
+**EABC-Testobservablen** (Schicht **B**/**R**, numerisch auswertbar):
+
+| Observable | Rolle unter $\mathcal{M}$ |
+|------------|---------------------------|
+| $D_E(X)=N_+(X)-N_-(X)$ | Wachstumsordnung, Vorzeichenstabilität |
+| $Q_E(X)=N_+(X)+N_-(X)$ | Normierungsskala für $D_E$, $W_E$ |
+| $R_N$ (§4.8.7) | Phasenkohärenz EABC↔$\varphi$-Rotor |
+| $C_F$ (§4.8.5–4.8.6) | Spektrale Kamm-Kopplung $\mathrm{Spec}(\Sigma_A)\to K_F$ |
+
+**Prüfschema:** Für jede Kompression $\mathcal{C}_k\in\{\mathcal{C}_E,\mathcal{C}_8,\mathcal{C}_{10},\mathcal{C}_{30},\mathcal{C}_{210}\}$ werden $\mathcal{M}(\mathbf{O})$ und $\mathcal{M}(\mathcal{C}_k(\mathbf{O}))$ verglichen; Abweichung gegenüber geeigneten Nullmodellen (§4.8.2) klassifiziert Fall (1)–(3). Implementierung (Stub): `eabc_compression_robustness.py` §4.8.9.
+
+$$\boxed{\;\text{Strukturstabilität = qualitative Übereinstimmung von }\mathcal{M}(\mathbf{O})\text{ und }\mathcal{M}(\mathcal{C}(\mathbf{O}))\text{ — numerisch testbar, kein Theorem.}\;}$$
+
+##### Jaynes vor Landauer: Modellierung statt Ontologie
+
+Zwei informationstheoretische Lesarten sind zu trennen:
+
+| Rahmen | Inhalt | Schicht |
+|--------|--------|---------|
+| **Landauer** | Physikalische **Löschkosten** — irreversible Informationsvernichtung kostet Energie | **C** (Physik-Analogie) |
+| **Jaynes** | Statistische Modelle als **Informationskompression** — maximale Entropie unter Nebenbedingungen | **B**/**Meta** |
+
+Das EABC-Programm folgt der **Jaynes-Lesart**: $\mathbb{N}\to\mathbb{Z}_4$ (via $\mathcal{C}_E$) ist ein **Modellierungsakt**, keine Behauptung über eine „wahre" vierzuständige Ontologie der Primzahlen. Die Vier-Zustands-Beschreibung $\{E,A,B,C\}$ ist **ausreichend** für bestimmte Fragestellungen (orientierte Zyklusdifferenz, Level-2-Kovarianz) und **unzureichend** für andere (z.\,B. vollständige Primverteilung).
+
+Landauer erklärt, **warum** extreme Kompression physikalisch teuer wäre; Jaynes erklärt, **warum** man trotzdem mit reduzierten Modellen arbeitet — solange die gewählten Observablen unter der Projektion noch tragfähig sind. Die EABC-Beobachtungsgeometrie ist damit **epistemisch** (welche Fragen sind mit welcher Pixelung sinnvoll?), nicht **ontologisch** (was sind Primzahlen „wirklich"?).
+
+##### Interpretationsverschiebung: Kompression statt verborgene Geometrie
+
+Die methodische Verschiebung des Programms lässt sich kompakt fassen:
+
+| Lesart | Kernfrage | Status |
+|--------|-----------|--------|
+| **Alt** (zu vermeiden) | *Welche verborgene Geometrie besitzen die Primzahlen?* | ontologisch überhöht |
+| **Neu** (kanonisch) | *Welche Primzahlstrukturen überleben aggressive Kompression auf vier Zustände?* | falsifizierbar |
+
+Der EABC-Kegel, die Pixelung $\Theta$ und die Zwei-Rotor-Kopplung (§4.8.6–4.8.7) sind in der **neuen** Lesart **Kompressions- und Detektionsschemata** — nicht verborgene Raumgeometrien. Evidenz entsteht nur, wenn ein Signal die Projektion $\mathcal{C}_E$ überlebt **und** unter alternativen $\mathcal{C}_k$ robust bleibt (vgl. oben).
+
+$$\boxed{\;\text{Primdaten } \xrightarrow{\;\mathcal{C}_E\;} \text{vier Zustände} \;\Longrightarrow\; \text{Welche Strukturen überleben? — nicht: Welche Geometrie war verborgen?}\;}$$
+
+##### Fibonacci-Kamm als Informationsfilter
+
+Der Fibonacci-Kamm $K_F$ (§4.8.5–4.8.7) erhält in der Kompressionslesart eine **neue epistemische Rolle**: nicht als unabhängige „Entdeckung" im Primstrom, sondern als **zweiter Informationsfilter** nach $\mathcal{C}_E$.
+
+**Prüfpipeline:**
+
+$$\text{Primdaten }(\mathbb{P}) \;\xrightarrow{\;\mathcal{C}_E\;}\; \text{EABC-Observablen }(D_E,\,\Sigma_A,\,\ldots) \;\xrightarrow{\;\text{Kompression}\;}\; \text{reduzierte Statistik } \;\xrightarrow{\;K_F\;}\; \text{Fibonacci-Test }(C_F,\,P_F,\,R_N).$$
+
+$$\boxed{\;\text{Überleben Resonanzen massive Informationsreduktion? — der Kamm misst nur Robustheit, nicht Rohsignal.}\;}$$
+
+Der Kamm ist damit ein **Informationsfilter**: sein Wert wird **ausschließlich** an der Robustheit des Befunds unter (i) wachsendem $N$, (ii) Nullmodellwechsel (§4.8.2) und (iii) alternativen Kompressionen $\mathcal{C}_k$ gemessen. Ein $C_F$-Überschuss, der nur unter einer einzigen Kodierung erscheint, hat **keinen** Evidenzcharakter — analog zu einem Fourier-Peak, der beim Wechsel der Fensterfunktion verschwindet. **Aktueller Befund:** $C_F^{\mathrm{prime}}/C_F^{\mathrm{golden}}<1$ (§4.8.5–4.8.7) — der Filter liefert derzeit **keine** gestützte Resonanz; das ist ein **informatives Nullresultat**, kein Programmversagen.
+
 ##### Kontext: Pixelung, Kegel und Zwei Rotoren
 
 Die Kompressionslesart präzisiert die folgenden Bausteine aus §4.8.6–4.8.7 — **ohne** sie ontologisch zu überhöhen:

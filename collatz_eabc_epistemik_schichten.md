@@ -227,9 +227,17 @@ $$\boxed{\;\text{Gegner ist falsches Nullmodell — nicht der verschwindende Mit
 
 **Label:** gesamter Abschnitt §3.1 = **Analogie** (Schicht **C**); verknüpft mit **Experiment** (Level 1–2) und **Beispiel** (Witness).
 
-**Prüfbare Forschungsfrage — strukturstabile Kompression** (vollständig: `collatz_eabc_zirkulationshypothese.md` §4.8.8–§4.8.9): $\mathcal{C}_E:\mathbb{N}\to\{E,A,B,C\}$ (mod $12$, $E{=}1,A{=}5,B{=}7,C{=}11$) — informationsreduzierende Beobachtungsgeometrie, **keine physikalische Ontologie**. $H(\mathbb{N}_N)=\log_2 N$, $H(\mathrm{EABC}_N)\to 2$, $I_E(N)\approx\log_2 N-2$. **Strukturstabile Kompression:** qualitative Eigenschaften von $S(\mathbb{N})$ bleiben unter $\mathcal{C}$ sichtbar. **Forschungsfrage:** *Ist die EABC-Projektion eine strukturstabile Kompression der Primzahldynamik?* (nicht Verlustfreiheit.) **Evidenz** nur, wenn Resonanz (1) $\mathcal{C}_E$ überlebt und (2) robust unter $\mathcal{C}_E,\mathcal{C}_8,\mathcal{C}_{10},\mathcal{C}_{30},\mathcal{C}_{210}$ bleibt. Leitfrage: *Welche Primzahlstrukturen überleben extreme Kompression?* (statt Geometrie-Ontologie.) Kontext (Pixelung, Kegel, Zwei Rotoren §4.8.7): §4.8.8; numerischer Stub: §4.8.9.
+**Prüfbare Forschungsfrage — strukturstabile Kompression** (vollständig: `collatz_eabc_zirkulationshypothese.md` §4.8.8–§4.8.9): $\mathcal{C}_E:\mathbb{N}\to\{E,A,B,C\}$ (mod $12$, $E{=}1,A{=}5,B{=}7,C{=}11$) — **extrem verlustreiche** Projektion, **keine physikalische Ontologie**. $H(\mathbb{N}_N)=\log_2 N$, $H(\mathrm{EABC}_N)\to 2$, $I_E(N)\approx\log_2 N-2$. Leitfrage: nicht *wie viel Information bleibt?* (trivial: fast nichts), sondern *welche Information bleibt?* — Analogien Fourier/PCA/RG/Spektralzerlegung (Schicht **C**).
 
-$$\boxed{\;\text{Prüfbare Forschungsfrage: strukturstabile Kompression der Primzahldynamik — Evidenz nur bei Überleben und Robustheit unter alternativen $\mathcal{C}_k$ (§4.8.8).}\;}$$
+**Operationalisierung:** $\mathcal{C}$ strukturstabil bzgl. Observablenvektor $\mathbf{O}$, wenn $\mathcal{M}(\mathbf{O})$ und $\mathcal{M}(\mathcal{C}(\mathbf{O}))$ qualitativ übereinstimmen (Skalierung, Symmetrie, Kovarianz). Testobservablen: $D_E(X)$, $Q_E(X)$, $R_N$, $C_F$ — numerisch unter $\mathcal{C}_E,\mathcal{C}_8,\mathcal{C}_{10},\mathcal{C}_{30},\mathcal{C}_{210}$ (Stub §4.8.9).
+
+**Jaynes vor Landauer:** Landauer = physikalische Löschkosten (Schicht **C**); Jaynes = statistische Modelle als Informationskompression (Schicht **B**/**Meta**). $\mathbb{N}\to\mathbb{Z}_4$ ist Modellierungsakt, keine Ontologie.
+
+**Interpretationsverschiebung:** von *verborgene Geometrie* zu *aggressive Kompression der Primdaten* — Evidenz nur bei Überleben und Robustheit unter alternativen $\mathcal{C}_k$.
+
+**Fibonacci-Kamm als Informationsfilter:** Primdaten $\to\mathcal{C}_E\to$ Kompression $\to K_F$-Test; Kammwert nur an Robustheit gemessen (aktuell: $C_F^{\mathrm{prime}}/C_F^{\mathrm{golden}}<1$, informatives Nullresultat).
+
+$$\boxed{\;\text{Prüfbare Forschungsfrage: welche Primzahlstrukturen überleben extreme Kompression? — operational via }\mathcal{M}(\mathbf{O})\text{, Evidenz nur bei Robustheit unter }\mathcal{C}_k\text{ (§4.8.8).}\;}$$
 
 ---
 
