@@ -10,7 +10,7 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^+$, $E^-$, $\Phi_E$, EABC-Vermutung, drei Ebenen
 - `collatz_eabc_holonomie_stufen.md` — drei Stufen (Analogie / echte Holonomie / Wilson) + Fall A/B/C in $N$
 - `collatz_eabc_epistemik_physik.md` — **kanonische Abgrenzung:** Holonomie/Zirkulation ja; Zwillingsparadoxon/Zeitdilatation nein
-- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung: $(\hbar,\sigma)$** §4.8.14 (Präzisierung: Phasenraum-Orientierung statt Raumrichtung, Abschnitt 9); **Symplektische Orientierung und EABC-Vierfachstruktur** §4.8.15; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
+- `collatz_eabc_epistemik_schichten.md` — Schichten A/B/C/R; Lakatos-Einordnung und Ebenen 0–4 in §4; state-centric Hierarchie §0 + §4.7; asymptotische Chiralität in §4.1; erster Belastungstest harter Kern in §4.3; Literaturpositionierung in §4.5; Level-2-Fluktuationsgeometrie in §4.8; Spin-Liquid-Analogie (methodisch) in §4.8.1; Nullmodell-Hierarchie in §4.8.2; Fibonacci-Kamm-Hypothese (paper-ready) in §4.8.5; **EABC–Fibonacci-Kamm-Kopplung (Gesamtbaustein)** in §4.8.6; **Wissenschaftstheoretische Einordnung und Hypothesenleiter** in §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung: $(\hbar,\sigma)$** §4.8.14 (Präzisierung: Phasenraum-Orientierung statt Raumrichtung, Abschnitt 9); **Symplektische Orientierung und EABC-Vierfachstruktur** §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16; Zeta-Exponential-Gedankenexperiment (Schicht **C**) in §4.9
 - `collatz_eabc_zeta_exponential_gedankenexperiment.md` — **Gedankenexperiment / Analogie:** $\zeta$ als Exponentialsumme auf Log-Prim-Geometrie; Euler-Streifen $(1\pm p^{-s})$; $\xi$-Spiegelung; Brücke zu Log-Koordinaten, $\gamma^\pm$-Paarung, Level-2; §6–§10: Ganzzahl/Halbzahl-Exponenten, Oktanionen (Schicht C), Bernoulli-Subtraktion, Fibonacci-Zeta (kein RH-/EABC-Theorem)
 - `collatz_eabc_zirkulation_spektral.md` — Spektralgeometrie, diskrete 1-Form $\alpha$, $\mathrm{Spec}(L_E)$
 - `collatz_eabc_fehlerterm_hypothese.md` — **Teilhypothese:** Fehlerterm $D_E$, $\widetilde{D}_E$ (eingebettet in §5)
@@ -26,7 +26,8 @@ $$\boxed{\;\text{Primärdokument: } \texttt{collatz\_eabc\_diskrete\_geometrie.m
 - `eabc_quadruplets_fit_alpha.py` — Stufen 0–3: Diagnostik (nicht Theorie); $\alpha_E$-Plateau, H₀a/H₀b–H₃
 - `eabc_quadruplets_plot.py` — Vierfeld-Diagnose-Plot ($W_E$, $R_{1/2}$, $\alpha_{\mathrm{loc}}$, $R_\beta$)
 - `eabc_occupancy_tree.py` — monoidale Vierlings-Besetzungszustände $Z=(O,T,n)$, Williams-Baum (§4.6–4.7)
-- `collatz_eabc_core/CollatzEabc/OccupancyMonoid.lean` — Lean: kommutatives Monoid $(Z,\oplus,Z_0)$, `blockScan_append` (§4.6–4.7)
+- `collatz_eabc_core/CollatzEabc/OccupancyMonoid.lean` — Lean: kommutatives Monoid $(Z,\oplus,Z_0)$, `blockScan_append` (§4.6–4.7; Build-Artefakt, Quelle ggf. auf Hauptbranch)
+- `collatz_eabc_core/CollatzEabc/EABCCompression.lean` — Lean: $\mathcal{C}_E$, `mod12_period`, `C_E_not_injective`, `C_E_fiber_infinite` (§4.8.16, Schicht **A**)
 - `collatz_eabc_graph_laplacian.py` — $\mathrm{Spec}(L_E)$
 - `collatz_eabc_evolution_analytik.md` — **Evolutionspfad** Bell→Sagnac→$C_E$→$\mathrm{Spec}(L_E)$, Wachstumsszenarien, Dirichlet-Stub
 - `collatz_eabc_D_growth.py` — Wachstumsdiagnostik $D_E(X)$, Charakter-Koeffizienten $a_\chi$
@@ -1435,7 +1436,7 @@ $$\boxed{\;\textbf{Aktueller Gesamtstatus:}\; algebraisch wohldefiniert \checkma
 
 **Label:** §4.8.7 = **Meta** / **Hypothese** / **Experiment** (Schicht **C**); **kein Theorem**.
 
-**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12; Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13; Prägeometrie der Wirkung $(\hbar,\sigma)$ §4.8.14 (Präzisierung Phasenraum-Orientierung, Abschnitt 9); Symplektische Orientierung und EABC-Vierfachstruktur §4.8.15.
+**Pixelung und Beobachtungsgeometrie:** Beschreibungs- vs. effektive Pixelung, Kompressionsoperator, erkenntnistheoretischer Kern in §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment) §4.8.10; diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung) §4.8.11; SU(2)-Prüfstein und Orientierungshebung §4.8.12; Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13; Prägeometrie der Wirkung $(\hbar,\sigma)$ §4.8.14 (Präzisierung Phasenraum-Orientierung, Abschnitt 9); Symplektische Orientierung und EABC-Vierfachstruktur §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16.
 
 #### 4.8.8 Beobachtungsgeometrie als Kompressionsoperator
 
@@ -2530,6 +2531,126 @@ $$\boxed{\;\textbf{Behauptet (Gedankenexperiment):}\; \omega=dq\wedge dp\text{ t
 | „EABC erklärt $\hbar$, Spin oder QM" | — | **nicht behauptet** |
 
 **Label:** §4.8.15 = **Meta** / **Gedankenexperiment** / **Symplektik-Analogie** (Schicht **C** für $\omega$, Spin-Paar; **A**/**B** für $(\hbar,\sigma)$ und $\mathcal{C}_E$; **R** für SU(2)-Emergenz); **kein Theorem**.
+
+#### 4.8.16 Lean-Formalismus und Schichtentrennung
+
+**Status:** paper-ready Architekturübersicht — trennt formal beweisbar, definierbar, numerisch und spekulativ; **kein** zusätzlicher Physikanspruch.
+
+**Querverweise:** Kompressionsoperator und Entropie §4.8.8; strukturstabile Kompression (operational) §4.8.8–4.8.9; Fibonacci-Kamm $K_F$ §4.8.5–4.8.7; Riemann-$A_n$-Test §4.8.6, §9.12–9.13 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`; SU(2)-Prüfstein §4.8.12; epistemischer Rahmen `collatz_eabc_epistemik_schichten.md` §0–§3; Lean-Paket `collatz_eabc_core/`.
+
+Das EABC-Programm lässt sich in **sechs Bausteine** und **drei Lean-Schichten** (A/B/C) ordnen. Dieser Abschnitt fixiert, was in Lean bewiesen, was nur definiert, was numerisch getestet und was spekulativ bleibt.
+
+##### Schichten-Boxen (Lean-Architektur)
+
+| Schicht | Lean-Status | Epistemik | Beispiele |
+|---------|-------------|-----------|-----------|
+| **A** | **Theorem** — `sorry`-frei | kombinatorisch / algebraisch beweisbar | `mod12_period`, `C_E_not_injective`, `blockScan_append`, mod-$12$-Irreduzibilität |
+| **B** | **Definition** + **Prop**; endlich beweisbar, asymptotik offen | definierbar + numerisch testbar | $\mathcal{C}_E$, $D_E$, $W_E$, $d(M_{\mathrm{raw}},M_{\mathcal{C}})\le\varepsilon$, $K_F$, $K_{F,M}$ |
+| **C** | **nur Markdown** / interpretativer Scaffold | spekulativ / Analogie | EABC$\Rightarrow$SU(2), Richtungsquantisierung, $(\hbar,\sigma)$-Ontologie, Spin-Liquid-Ikone |
+
+$$\boxed{\;\textbf{A} = \text{beweisbar}\;\|\;\textbf{B} = \text{definierbar + numerisch}\;\|\;\textbf{C} = \text{spekulativ / Ikone.}\;}$$
+
+**Vier Wahrheitstypen** (wenn `FlussPhiE.lean` auf dem Branch vorhanden): **Theorem** $\neq$ **Struktur** $\neq$ **Brücke** $\neq$ **Ikone** — vgl. `collatz_eabc_epistemik_schichten.md` §0.1.
+
+##### Baustein 1 — $\mathcal{C}_E:\mathbb{N}\to\{E,A,B,C\}$ (Schicht **A**)
+
+Sei
+$$\mathcal{C}_E(n)=\begin{cases}E & n\equiv 1\pmod{12}\\ A & n\equiv 5\pmod{12}\\ B & n\equiv 7\pmod{12}\\ C & n\equiv 11\pmod{12}\\ \bot & \text{sonst}\end{cases}$$
+(Lean: `C_E` = `classOfLetter` in `Kappa.lean` / `EABCCompression.lean`).
+
+**Eigenschaften (Lean-beweisbar, Schicht A):**
+
+| Satz | Inhalt | Lean |
+|------|--------|------|
+| Periodizität | $\mathcal{C}_E(n+12)=\mathcal{C}_E(n)$ | `mod12_period`, `mod12_period_mul` |
+| Nicht-Injektivität | $\exists\,a\neq b:\;\mathcal{C}_E(a)=\mathcal{C}_E(b)$ | `C_E_not_injective` |
+| Unendliche Fasern | Jede Klasse hat unendlich viele Urbilder | `C_E_fiber_infinite` |
+
+$$\boxed{\;\mathcal{C}_E\ \text{ist eine periodische, nicht injektive Abbildung — formal eine extrem verlustreiche Kompression (Schicht A).}\;}$$
+
+**Lean-Verweise (bestehend):**
+
+| Modul | Rolle | Schicht |
+|-------|-------|---------|
+| `collatz_eabc_core/CollatzEabc/EABCCompression.lean` | `C_E`, `mod12_period`, `C_E_not_injective` | **A** |
+| `collatz_eabc_core/CollatzEabc/Kappa.lean` | `classOfLetter`, naive κ-Präfix-Kodierung | **A**/**B** |
+| `collatz_eabc_core/CollatzEabc/Mod12Matrix.lean` | `eabcResidue`, `eabc_mod12_matrix_irreducible` | **A** |
+| `collatz_eabc_core/CollatzEabc/PrefProjection.lean` | `EabcLetter`, $\Phi_{\mathrm{pref}}$ auf Wörtern | **A** |
+| `streaming_homomorphism.lean` | `streamEvalHom`, `eabcHom`, $D$/ $Q$-Korollar | **A** |
+| `collatz_eabc_core/CollatzEabc/OccupancyMonoid.lean` | Streaming-Monoid $(Z,\oplus,Z_0)$, `blockScan_append` | **A** (Quelle ggf. auf Hauptbranch; Build-Artefakt vorhanden) |
+| `collatz_eabc_core/CollatzEabc/FlussPhiE.lean` | $C_4$, harmonische 1-Form, $\Phi_E$-`Prop` | **A**–**B**–**R** (Quelle ggf. auf Hauptbranch) |
+
+##### Baustein 2 — Entropie und Informationsverlust (Schicht **A**/**B**)
+
+Für die endliche Stichprobe $\mathbb{N}_N=\{1,\ldots,N\}$ mit Gleichverteilung:
+$$H(\mathbb{N}_N)=\log_2 N.$$
+
+Die EABC-Verteilung auf vier Zuständen liefert asymptotisch
+$$H(\mathrm{EABC}_N)\to\log_2 4=2,$$
+damit
+$$I_E(N)=H(\mathbb{N}_N)-H(\mathrm{EABC}_N)\ge \log_2 N-2.$$
+
+**Label:** endliche Zählung = **Definition**/**Theorem** (arithmetisch); asymptotische Gleichverteilung auf $\{E,A,B,C\}$ = **Hypothese**/**Experiment** (Dirichlet-$L$ mod $12$). Vollständige Ausführung: §4.8.8.
+
+$$\boxed{\;\text{Stärkster formaler Satz: }\mathcal{C}_E\text{ ist extrem verlustreich — nicht dass viel Information bleibt, sondern welche.}\;}$$
+
+##### Baustein 3 — strukturstabile Kompression (Schicht **B**, Nachweis offen)
+
+**Definition (operational, §4.8.8):** Seien $M_{\mathrm{raw}}$ und $M_{\mathcal{C}}$ Metriken auf einem Observablenvektor $\mathbf{O}$. Die Kompression $\mathcal{C}$ heißt **strukturstabil** bezüglich $\mathbf{O}$, wenn
+$$d(M_{\mathrm{raw}}(\mathbf{O}),\,M_{\mathcal{C}}(\mathcal{C}(\mathbf{O})))\le\varepsilon$$
+für geeignete Toleranz $\varepsilon$ und qualitative Übereinstimmung von Skalierung, Symmetrie und Kovarianz.
+
+| Aspekt | Status | Schicht |
+|--------|--------|---------|
+| Definition von $d$, $\mathcal{M}$, $\varepsilon$ | **ja** (§4.8.8) | **B** |
+| Nachweis für $\mathcal{C}_E$ vs. $\mathcal{C}_8,\ldots,\mathcal{C}_{210}$ | **offen** | **B**/**Experiment** |
+| Numerischer Stub | `eabc_compression_robustness.py` (§4.8.9) | **Experiment** |
+
+Strukturstabilität ist **separat** von der Lean-Trivialität „$\mathcal{C}_E$ nicht injektiv" zu testen — erst Robustheit unter alternativen Kompressionen liefert Evidenz (§4.8.8–4.8.9).
+
+##### Baustein 4 — Fibonacci-Kamm $K_F$, $K_{F,M}$ (Schicht **B** definierbar)
+
+Der externe Resonanzkamm $K_F$ und seine endlichen Approximationen $K_{F,M}$ sind in §4.8.3–4.8.5 und `eabc_sigma_fibonacci_coupling.py` definiert; Konvergenz gegen das goldene Resonanzgitter $\Omega_\varphi$ ist **definierbar** (meromorphe Normalform §9.8 in `collatz_eabc_zeta_exponential_gedankenexperiment.md`).
+
+| Objekt | Lean/Python | Status |
+|--------|-------------|--------|
+| $K_F$, $k_F\in\mathbb{R}^6$ | Markdown + Python | **Definition** (**B**) |
+| $C_F$, $P_F(\omega)$ | `eabc_sigma_fibonacci_coupling.py` | **Experiment** (**C**-Kopplung) |
+| Konvergenz $K_{F,M}\to K_F$ | offen formalisiert | **B** (definierbar in Lean) |
+
+##### Baustein 5 — Riemann $A_n$ (Schicht **B**/**Experiment**)
+
+Gegeben die Riemann-Nullstellen $\gamma_n$, ist der Schwellentest
+$$A_n = A(\gamma_n;\,\Sigma_A^{\mathrm{prime}})$$
+in §4.8.6 und §9.12–9.13 definiert; Auswertung **numerisch** in `eabc_zeta_f_riemann_zeros.py`.
+
+| Aspekt | Status |
+|--------|--------|
+| Definition von $A_n$ bei gegebenen $\gamma_n$ | **ja** |
+| Lean-Formalismus | **offen** (Datengetrieben) |
+| Signifikanz | **explorativ** (§4.8.7 H$_2$) |
+
+##### Baustein 6 — NICHT ableitbar (Schicht **C**/**R**)
+
+Folgende Übergänge haben **keinen** Hauptsatz im EABC-Paket:
+
+| Behauptung | Status | Schicht |
+|------------|--------|---------|
+| EABC $\Rightarrow$ SU(2) | **fehlende Brücke** | **R** / **C** |
+| Richtungsquantisierung aus $\mathbb{Z}_4$ | **Gedankenexperiment** | **C** (§4.8.10–4.8.13) |
+| $(\hbar,\sigma)$ als ontologisches Paar | **Analogie** | **C** (§4.8.14–4.8.15) |
+
+$$\boxed{\;\textbf{Fehlender Hauptsatz:}\;\{E,A,B,C\}\cong\mathbb{Z}_4 \;\not\Rightarrow\; \mathrm{SU}(2),\;\text{Richtungsquantisierung oder }(\hbar,\sigma)\text{-Physik.}\;}$$
+
+##### Zusammenfassung: stärkster Satz vs. offene Prüfung
+
+| Typ | Inhalt |
+|-----|--------|
+| **Stärkster Lean-Satz (A)** | $\mathcal{C}_E$ ist periodisch und nicht injektiv — extrem verlustreiche Kompression |
+| **Zentrale offene Frage (B)** | Strukturstabilität: überleben $D_E$, $Q_E$, $R_N$, $C_F$ unter $\mathcal{C}_E$ und alternativen $\mathcal{C}_k$? |
+| **Spekulativ (C)** | Physik-Brücken SU(2), $(\hbar,\sigma)$, Spin-Liquid-Ikone |
+
+**Label:** §4.8.16 = **Meta** / **Theorem** (Schicht **A** für $\mathcal{C}_E$) / **Definition** (Schicht **B**) / **Analogie** (Schicht **C**); **kein** zusätzlicher Physikanspruch.
 
 ### 4.9 Zeta-Exponential-Gedankenexperiment (Schicht **C**)
 

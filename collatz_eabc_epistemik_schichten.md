@@ -4,16 +4,20 @@
 **Branch:** `collatz/eabc-05-holonomie-fehlerterm` (PR #59), `collatz/eabc-h12-epistemik-chiralitaet-doku` (PR #72), `collatz/eabc-h13-quadruplets-alpha` (PR #73)  
 **Tao-Labels:** Definition | Theorem | Modellabbildung | Analogie | Ikone | Forschungsfrage | Scaffold
 
-**Vier Wahrheitstypen (Lean `FlussPhiE.lean`):**
+**Vier Wahrheitstypen (Lean `FlussPhiE.lean`, falls auf Branch vorhanden):**
 
 $$\boxed{\;\textbf{Theorem} \;\neq\; \textbf{Struktur} \;\neq\; \textbf{Brücke} \;\neq\; \textbf{Ikone}\;}$$
 
+**Lean-Architektur (§4.8.16 in `collatz_eabc_zirkulationshypothese.md`):**
+
+$$\boxed{\;\textbf{A} = \text{beweisbar}\;\|\;\textbf{B} = \text{definierbar + numerisch}\;\|\;\textbf{C} = \text{spekulativ / Ikone.}\;}$$
+
 | Schicht | Label | Lean | Beispiel |
 |---------|-------|------|----------|
-| **A** | Theorem | bewiesen, kein `sorry` | `E_plus_union_E_minus`, `Phi_E_eq_inner_product_discrete` |
-| **B** | Struktur | Definition / `Prop` | `W_E_up_to`, `phi_E_conjecture`, `HasPhi_E` |
-| **R** | Forschungsbrücke | `sorry`, asymptotisch | `phi_E_conjecture_statement`, `Phi_E_zero_of_symmetry` |
-| **C** | Ikone | nur Markdown | Thomson, Sagnac, RadiationSpace-Lesart |
+| **A** | Theorem | bewiesen, kein `sorry` | `mod12_period`, `C_E_not_injective`, `E_plus_union_E_minus`, `blockScan_append` |
+| **B** | Struktur | Definition / `Prop` | `C_E`, `W_E_up_to`, $d(M_{\mathrm{raw}},M_{\mathcal{C}})\le\varepsilon$, $K_F$, $K_{F,M}$ |
+| **R** | Forschungsbrücke | `sorry`, asymptotisch | `phi_E_conjecture_statement`, `Phi_E_zero_of_symmetry`, EABC$\Rightarrow$SU(2) |
+| **C** | Ikone | nur Markdown | Thomson, Sagnac, $(\hbar,\sigma)$-Ontologie, RadiationSpace-Lesart |
 
 **Querverweise:**
 - `collatz_eabc_diskrete_geometrie.md` — **kanonisch:** $G_E$, $E^\pm$, $\Phi_E$, EABC-Vermutung (Schicht **B**)
@@ -22,8 +26,9 @@ $$\boxed{\;\textbf{Theorem} \;\neq\; \textbf{Struktur} \;\neq\; \textbf{Brücke}
 - `collatz_mathlib_eabc_kandidaten.md` — Mathlib-Inventar; Lean `RadiationSpace` (rote Schicht)
 - `collatz_eabc_euklidische_hebung.md` — algebraischer Nebenzweig $\mathbb{R}\subset\mathbb{C}\subset\mathbb{H}\subset\mathbb{O}$ (Schicht **A**)
 - `collatz_eabc_core/CollatzEabc/RadiationSpace.lean` — interpretativer Lean-Scaffold (rot)
-- `collatz_eabc_core/CollatzEabc/OccupancyMonoid.lean` — Streaming-Monoid $(Z,\oplus,Z_0)$, `blockScan_append` (Schicht **A**, §4.6–4.7)
-- `collatz_eabc_zirkulationshypothese.md` — Monoid §4.6; state-centric Hierarchie §4.7; Level-2 §4.8; Spin-Liquid-Analogie (methodisch, nicht ontologisch) §4.8.1; **Fibonacci-Kamm als externer Resonanzdetektor, Hypothesenleiter H$_0$–H$_4$** §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung $(\hbar,\sigma)$** §4.8.14 (Präzisierung Phasenraum-Orientierung, Abschnitt 9); **Symplektische Orientierung und EABC-Vierfachstruktur** §4.8.15
+- `collatz_eabc_core/CollatzEabc/OccupancyMonoid.lean` — Streaming-Monoid $(Z,\oplus,Z_0)$, `blockScan_append` (Schicht **A**, §4.6–4.7; Quelle ggf. auf Hauptbranch)
+- `collatz_eabc_core/CollatzEabc/EABCCompression.lean` — $\mathcal{C}_E$, `mod12_period`, `C_E_not_injective`, `C_E_fiber_infinite` (Schicht **A**, §4.8.16)
+- `collatz_eabc_zirkulationshypothese.md` — Monoid §4.6; state-centric Hierarchie §4.7; Level-2 §4.8; Spin-Liquid-Analogie (methodisch, nicht ontologisch) §4.8.1; **Fibonacci-Kamm als externer Resonanzdetektor, Hypothesenleiter H$_0$–H$_4$** §4.8.7; **Beobachtungsgeometrie als Kompressionsoperator, strukturstabile Kompression** §4.8.8; numerischer Robustheitstest (Stub) §4.8.9; **Orientierungsvektor-Erweiterung $u(n)\in S^2$ (Gedankenexperiment)** §4.8.10; **diskrete Orientierungsgeometrie vs. etablierte QM (Hypothese, nicht Erklärung)** §4.8.11; **SU(2)-Prüfstein und Orientierungshebung** §4.8.12; **Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment)** §4.8.13; **Prägeometrie der Wirkung $(\hbar,\sigma)$** §4.8.14 (Präzisierung Phasenraum-Orientierung, Abschnitt 9); **Symplektische Orientierung und EABC-Vierfachstruktur** §4.8.15; **Lean-Formalismus und Schichtentrennung** §4.8.16
 - `collatz_stufe3_kappa_invarianz.md` — Stufe 3: Kodierungsinvarianz (κ-Test; Stub-Verknüpfung zu §4.8.8/§4.8.9)
 
 ---
@@ -97,10 +102,11 @@ $$\boxed{\;\textbf{Beweis-Spur} \;\|\; \textbf{Ikone-Spur}\;}$$
 | Basel | $\zeta(2)$, Bernoulli-Normschalen, Fensterkonstanten | `collatz_eabc_bernoulli_uebersetzung.md` |
 | Fenstermassen | Gleitfenster $C_n^{(5)}$, ABCEA/CEABC-Zählung | `collatz_eabc_holonomie_fehlerterm.py` |
 | Covering | Überlagerung $C_4$, Windungszahl | `collatz_eabc_diskrete_geometrie.md` §0–2 |
+| $\mathcal{C}_E$ | mod-$12$-Kompression $\mathbb{N}\to\{E,A,B,C\}$, periodisch, nicht injektiv | `EABCCompression.lean`, `Kappa.classOfLetter`, §4.8.16 |
 | Fraktalskalen | Skalenhierarchie $\Sigma_n$, Normniveaus | `collatz_eabc_plattenuebergang.md`, `collatz_eabc_quaternion_mass_hypothese.md` |
 | Holonomie / Zirkulation | $D_E=N_+-N_-$, Lücken $(2,4,2,4)$, Taubenloch | `CollatzEabc/HolonomieFehlerterm.lean`, `collatz_eabc_fehlerterm_hypothese.md` |
 
-**Lean-Anker:** `CollatzEabc.Core`, `HolonomieFehlerterm`, `Kappa`, `ArithLanguage`, `FlussPhiE` (**Schicht A** — kombinatorischer Teil).
+**Lean-Anker:** `CollatzEabc.Core`, `EABCCompression`, `HolonomieFehlerterm`, `Kappa`, `ArithLanguage`, `Mod12Matrix`, `PrefProjection`, `streaming_homomorphism.lean`, `FlussPhiE` (**Schicht A** — kombinatorischer Teil; letztere Module ggf. auf Hauptbranch).
 
 **Epistemische Grenze:** Alles in Schicht A ist **arithmetisch oder kombinatorisch** — keine Thomson-Schale, kein Strahlungsraum, keine Quaternionenrotation als „physikalisch“.
 
@@ -117,7 +123,7 @@ $$\boxed{\;\textbf{Beweis-Spur} \;\|\; \textbf{Ikone-Spur}\;}$$
 | Holonomien | $\mathrm{Hol}_E$, $\mathcal{P}\exp\oint A$ (Programm) | `collatz_eabc_holonomie_stufen.md` |
 | Kreisgraphen | $G_E=(V,E)$, $C_4\cong S^1$, $E^+/E^-$ | `collatz_eabc_diskrete_geometrie.md`, `FlussPhiE.lean` |
 | Harmonische Formen | $h\in H^1(C_4,\mathbb{Z})$, $\langle\omega_E,h\rangle$ | `collatz_eabc_uebergangsraum.md`, `collatz_eabc_hodge_eabc.py` |
-| Fluss | $\omega_E$, $C_E=\oint_\gamma\omega_E$, $W_E(X)$, $\alpha_E$, Ebenen 0–4, H₀a/H₀b–H₃, Literaturpositionierung §4.5, Level-2 §4.8, Spin-Liquid §4.8.1, Fibonacci-Kamm §4.8.7, Kompressionsoperator §4.8.8, Robustheitstest (Stub) §4.8.9, Orientierungsvektor $u(n)\in S^2$ (Gedankenexperiment) §4.8.10, diskrete Orientierungsgeometrie vs. QM (Hypothese) §4.8.11, SU(2)-Prüfstein und Orientierungshebung §4.8.12, Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13, Prägeometrie $(\hbar,\sigma)$ §4.8.14, Symplektik und EABC-Vierfach §4.8.15 | `collatz_eabc_zirkulationshypothese.md` §4.1–4.5, §4.8–4.8.15 |
+| Fluss | $\omega_E$, $C_E=\oint_\gamma\omega_E$, $W_E(X)$, $\alpha_E$, Ebenen 0–4, H₀a/H₀b–H₃, Literaturpositionierung §4.5, Level-2 §4.8, Spin-Liquid §4.8.1, Fibonacci-Kamm §4.8.7, Kompressionsoperator §4.8.8, Robustheitstest (Stub) §4.8.9, Orientierungsvektor $u(n)\in S^2$ (Gedankenexperiment) §4.8.10, diskrete Orientierungsgeometrie vs. QM (Hypothese) §4.8.11, SU(2)-Prüfstein und Orientierungshebung §4.8.12, Wirkungsquantum vs. Richtungsquantisierung (Gedankenexperiment) §4.8.13, Prägeometrie $(\hbar,\sigma)$ §4.8.14, Symplektik und EABC-Vierfach §4.8.15, **Lean-Architektur §4.8.16** | `collatz_eabc_zirkulationshypothese.md` §4.1–4.5, §4.8–4.8.16 |
 | Orientierungsklassen | $\Phi_E=\lim W_E$, chirale 1-Form | `collatz_eabc_chirale_polarisation.md` |
 
 **Kernfrage (Schicht B als Struktur, Schicht R als Brücke):**
@@ -227,7 +233,7 @@ $$\boxed{\;\text{Gegner ist falsches Nullmodell — nicht der verschwindende Mit
 
 **Label:** gesamter Abschnitt §3.1 = **Analogie** (Schicht **C**); verknüpft mit **Experiment** (Level 1–2) und **Beispiel** (Witness).
 
-**Prüfbare Forschungsfrage — strukturstabile Kompression** (vollständig: `collatz_eabc_zirkulationshypothese.md` §4.8.8–§4.8.9): $\mathcal{C}_E:\mathbb{N}\to\{E,A,B,C\}$ (mod $12$, $E{=}1,A{=}5,B{=}7,C{=}11$) — **extrem verlustreiche** Projektion, **keine physikalische Ontologie**. $H(\mathbb{N}_N)=\log_2 N$, $H(\mathrm{EABC}_N)\to 2$, $I_E(N)\approx\log_2 N-2$. Leitfrage: nicht *wie viel Information bleibt?* (trivial: fast nichts), sondern *welche Information bleibt?* — Analogien Fourier/PCA/RG/Spektralzerlegung (Schicht **C**).
+**Prüfbare Forschungsfrage — strukturstabile Kompression** (vollständig: `collatz_eabc_zirkulationshypothese.md` §4.8.8–§4.8.9, Lean-Architektur §4.8.16): $\mathcal{C}_E:\mathbb{N}\to\{E,A,B,C\}$ (mod $12$, $E{=}1,A{=}5,B{=}7,C{=}11$) — **extrem verlustreiche** Projektion, **keine physikalische Ontologie**. $H(\mathbb{N}_N)=\log_2 N$, $H(\mathrm{EABC}_N)\to 2$, $I_E(N)\ge\log_2 N-2$. **Lean (Schicht A):** `mod12_period`, `C_E_not_injective`, `C_E_fiber_infinite` in `EABCCompression.lean`. Leitfrage: nicht *wie viel Information bleibt?* (trivial: fast nichts), sondern *welche Information bleibt?* — Analogien Fourier/PCA/RG/Spektralzerlegung (Schicht **C**).
 
 **Orientierungsgeometrie (Hypothese, nicht Erklärung)** (vollständig: `collatz_eabc_zirkulationshypothese.md` §4.8.10–§4.8.15): EABC hebt $\Theta(n)$ auf $u(n)\in S^2$ bzw. diskretes Gitter $V\subset S^2$ (Ikosaeder/Dodekaeder) — Kompressionskette $\mathbb{N}\to\mathbb{Z}_4\to V\to R_{ij}$ (Erweiterung: $\to\Pi\to(l,m)$ in §4.8.12). **Nicht behauptet:** EABC erklärt SU(2)-Quantenzahlen $(l,m)$ oder $\hbar$. **Behauptet (Hypothese):** diskrete Orientierungsgeometrie als testbarer Beobachtungsrahmen; präzisierte Lesart $(\hbar,\sigma)$ als elementarer Kompressionsbaustein (§4.8.14). **Prüfstein (§4.8.12):** Kann endliche Orientierungsgeometrie SU(2)-artige $(l,m)$-Struktur mit Degenerierung $2l+1$ approximieren? **Wirkungs- vs. Richtungsquantisierung (§4.8.13):** $h$ skalar (Wirkung), $(l,m)$ aus Drehimpuls/SU(2) — EABC-Hypothese $(h,u)$ statt nur $h$; umgekehrte Logik diskrete Richtungen $\Rightarrow$ SU(2)? **Prägeometrie (§4.8.14):** $\hbar$ als elementares Orientierungsereignis; $\hbar\to(\hbar,\sigma)$ präziser als „EABC erklärt Richtungsquantisierung". **Präzisierung (§4.8.14 Abschnitt 9):** $\hbar$ skalar, keine Raumrichtung; $(\hbar,\sigma)$ mit $\sigma$ als Orientierungsvariable getrennt von $\hbar$; Phasenraum-Flächenorientierung $\omega=dx\wedge dp$ statt $u\in S^2$; $\sigma$ = Wirkungsereignis-Klasse, nicht Raumrichtung. **Symplektik (§4.8.15):** $\omega=dq\wedge dp$, $\Delta q\,\Delta p\sim\hbar$ als orientiertes Flächenelement; fundamentales Paar $(\hbar,\mathrm{sgn}\,\omega)$; Spin-$(\tfrac12,\pm)$-Analogie (Schicht **C**); EABC-Vierfach $\{E,A,B,C\}$ als diskrete interne Symmetrie; Kompression vs. Entdeckung (§4.8.8); offene Brücke $(E,A,B,C)\not\Rightarrow\mathrm{SU}(2)$; Kernfragen: Wirkungsquantisierung = Quantisierung orientierten Phasenraum-Ereignisses? Emergenz Spin/Drehimpuls aus diskreter Orientierungsstruktur? Physik-/Präquantisierungsbilder (Wheeler, Penrose, LQG) = Schicht **C**.
 
@@ -239,7 +245,20 @@ $$\boxed{\;\text{Gegner ist falsches Nullmodell — nicht der verschwindende Mit
 
 **Fibonacci-Kamm als Informationsfilter:** Primdaten $\to\mathcal{C}_E\to$ Kompression $\to K_F$-Test; Kammwert nur an Robustheit gemessen (aktuell: $C_F^{\mathrm{prime}}/C_F^{\mathrm{golden}}<1$, informatives Nullresultat).
 
-$$\boxed{\;\text{Prüfbare Forschungsfrage: welche Primzahlstrukturen überleben extreme Kompression? — operational via }\mathcal{M}(\mathbf{O})\text{, Evidenz nur bei Robustheit unter }\mathcal{C}_k\text{ (§4.8.8).}\;}$$
+$$\boxed{\;\text{Prüfbare Forschungsfrage: welche Primzahlstrukturen überleben extreme Kompression? — operational via }\mathcal{M}(\mathbf{O})\text{, Evidenz nur bei Robustheit unter }\mathcal{C}_k\text{ (§4.8.8); Lean-Hard-Core: }\mathcal{C}_E\text{ periodisch + nicht injektiv (§4.8.16).}\;}$$
+
+**Lean-Formalismus — sechs Bausteine** (vollständig: `collatz_eabc_zirkulationshypothese.md` §4.8.16):
+
+| # | Baustein | Schicht | Status |
+|---|----------|---------|--------|
+| 1 | $\mathcal{C}_E:\mathbb{N}\to\{E,A,B,C\}$, periodisch, nicht injektiv | **A** | Lean-beweisbar (`EABCCompression.lean`) |
+| 2 | Entropie $H(\mathbb{N}_N)=\log_2 N$, $I_E(N)\ge\log_2 N-2$ | **A**/**B** | endliche Zählung |
+| 3 | strukturstabile Kompression $d(M_{\mathrm{raw}},M_{\mathcal{C}})\le\varepsilon$ | **B** | Definition ja, Nachweis offen |
+| 4 | Fibonacci-Kamm $K_F$, $K_{F,M}$ | **B** | definierbar in Lean; numerisch Python |
+| 5 | Riemann $A_n$ bei gegebenen $\gamma_n$ | **B** | definiert; numerisch `eabc_zeta_f_riemann_zeros.py` |
+| 6 | EABC$\Rightarrow$SU(2), Richtungsquantisierung, $(\hbar,\sigma)$ | **C**/**R** | **nicht ableitbar** — fehlender Hauptsatz |
+
+$$\boxed{\;\text{Stärkster Satz (A): }\mathcal{C}_E\ \text{extrem verlustreich — Strukturstabilität separat testen (B).}\;}$$
 
 ---
 
@@ -295,6 +314,7 @@ class RadiationSpace where
 | `collatz_eabc_brachistochrone.md` | **C** | Fermat-Modell |
 | `collatz_eabc_sagnac.md` | **C** | Didaktische Intuition |
 | `CollatzEabc/RadiationSpace.lean` | **rot** | Scaffold only |
+| `CollatzEabc/EABCCompression.lean` | **A** | `C_E`, `mod12_period`, `C_E_not_injective` |
 | `CollatzEabc/FlussPhiE.lean` | **A**–**B**–**R** | $C_4$, $h$ bewiesen (**A**); $W_E$, $\Phi_E$ (**B**); EABC-Vermutung (**R**) |
 | `CollatzEabc/HolonomyCore.lean` | **B**–**R** | **GREEN** `W_E_bounds`; **RED** `HasNonzeroHolonomyLimit` |
 | `CollatzEabc/HolonomieFehlerterm.lean` | **A**–**B**–**R** | Lücken bewiesen (**A**); Zähldefinitionen (**B**); Prime `sorry` (**R**) |
@@ -328,9 +348,9 @@ Diese Parallelen dienen der **Orientierung** in der Ikone-Spur. Sie begründen *
 
 ## 8. Boxed Zusammenfassung
 
-$$\boxed{\;\text{A = hart (24I}_3\text{, Defekte, Fenster, Holonomie kombinatorisch).}\;}$$
+$$\boxed{\;\text{A = hart (24I}_3\text{, Defekte, Fenster, Holonomie kombinatorisch, }\mathcal{C}_E\text{ periodisch/nicht injektiv).}\;}$$
 
-$$\boxed{\;\text{B = Struktur (Kreisgraph, Fluss, Harmonik, Grenzwert-`Prop`).}\;}$$
+$$\boxed{\;\text{B = Struktur (Kreisgraph, Fluss, Harmonik, Grenzwert-`Prop`, strukturstabile Kompression, }K_F\text{).}\;}$$
 
 $$\boxed{\;\text{R = Forschungsbrücke (Prim-Enumeration, asymptotik, } \Phi_E \neq 0 \text{ — `sorry` erlaubt).}\;}$$
 
