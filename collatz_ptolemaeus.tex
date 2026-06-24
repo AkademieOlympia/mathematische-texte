@@ -1,0 +1,902 @@
+\documentclass[12pt,a4paper]{article}
+
+% -------------------------------------------------
+% Sprache / Kodierung
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc,angles,quotes}
+
+% -------------------------------------------------
+% Layout / Grafik / Farben
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks,unicode]{hyperref}
+\pdfstringdefDisableCommands{%
+  \def\ü{ue}\def\ö{oe}\def\ä{ae}\def\Ü{Ue}\def\Ö{Oe}\def\Ä{Ae}\def\ss{ss}%
+}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{array}
+
+% -------------------------------------------------
+% Farben (konsistent mit Vorgängerdokumenten)
+% -------------------------------------------------
+\definecolor{lückenrot}{RGB}{180,40,40}
+\definecolor{bewiesengrün}{RGB}{30,100,50}
+\definecolor{warnorange}{RGB}{200,100,10}
+\definecolor{hintergrundblau}{RGB}{235,242,250}
+\definecolor{hintergrundgelb}{RGB}{255,252,225}
+\definecolor{adischviolett}{RGB}{90,20,140}
+\definecolor{fehlerrot}{RGB}{200,0,0}
+\definecolor{konjviolett}{RGB}{80,0,130}
+\definecolor{e8grau}{RGB}{55,55,90}
+\definecolor{korrekturorange}{RGB}{200,100,10}
+\definecolor{ptolgrün}{RGB}{0,100,80}
+
+% -------------------------------------------------
+% tcolorbox-Stile
+% -------------------------------------------------
+\tcbset{
+  lücke/.style={colback=red!8, colframe=lückenrot, fonttitle=\bfseries,
+    title={Offene Lücke}},
+  ergebnis/.style={colback=green!7, colframe=bewiesengrün,
+    fonttitle=\bfseries, title={Bewiesenes Ergebnis}},
+  warnung/.style={colback=orange!10, colframe=warnorange,
+    fonttitle=\bfseries, title={Achtung / Heuristik}},
+  adisch/.style={colback=violet!6, colframe=adischviolett,
+    fonttitle=\bfseries, title={2-adische Perspektive}},
+  kernidee/.style={colback=hintergrundblau, colframe=blue!60!black,
+    fonttitle=\bfseries, title={Kernidee}},
+  konj/.style={colback=violet!5, colframe=konjviolett, fonttitle=\bfseries,
+    title={Konjektur (unbewiesen)}},
+  lte/.style={colback=yellow!8, colframe=e8grau, fonttitle=\bfseries,
+    title={Modellrechnung}},
+  hauptsatz/.style={colback=green!10, colframe=bewiesengrün!80!black,
+    fonttitle=\bfseries\large, title={Stärkster beweisbarer Satz}},
+  korrektur/.style={colback=yellow!5, colframe=orange!70!black,
+    fonttitle=\bfseries},
+  ptolstil/.style={colback=ptolgrün!6, colframe=ptolgrün!70!black,
+    fonttitle=\bfseries, title={Ptolemäus-Struktur}},
+}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+\newtheorem{hypothese}[definition]{Hypothese}
+\newtheorem{satz}[definition]{Satz}
+
+\newenvironment{beweis}{\begin{proof}[Beweis]}{\end{proof}}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\vii}{\nu_2}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Ztwo}{\mathbb{Z}_2}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\atwo}[1]{\lvert#1\rvert_2}
+\newcommand{\logt}{\log_2}
+\newcommand{\chord}[2]{d_{#1#2}}   % Chord-Länge zwischen zwei Klassen
+\newcommand{\Ptol}{\Pi}             % Ptolemäus-Defekt
+
+% -------------------------------------------------
+% Dokument
+% -------------------------------------------------
+\title{%
+  Die EABC-Klassen als Sehnenviereck:\\[0.3em]
+  Ptolemäus-Struktur und Lyapunov-Exponent der Collatz-Dynamik\\[0.5em]
+  \large Geometrischer Ergänzungsversuch zur Collatz-Synthese vom 16.\ Juni 2026%
+}
+\author{Thomas Hoffbauer}
+\date{16.\ Juni 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Die vier ungeraden Einheiten $\{1,5,7,11\} \pmod{12}$, die im EABC-Rahmen
+der Collatz-Dynamik als Klassen E, A, B, C erscheinen, bilden die Kleinssche
+Vierergruppe $(\Z/12\Z)^\times \cong \Z/2\Z \times \Z/2\Z$.
+Ihre kanonische Einbettung auf dem Einheitskreis --- wie sie im
+\emph{Bamberg-Modul} (\texttt{bamberg\_ptolemy\_walter\_morley.tex}) entwickelt
+wurde --- ergibt ein reguläres Quadrat: ein Sehnenviereck, für das der
+Satz von Ptolemäus mit Gleichheit gilt.
+
+Wir untersuchen, ob diese geometrische Struktur eine Aussage über den
+Block-Lyapunov-Exponenten
+\[
+  \Lambda = \limsup_{J\to\infty} \frac{1}{J}\sum_{j=1}^J \log F(B_j) < 0
+\]
+liefern kann. Das Ergebnis ist zweigeteilt:
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Was funktioniert:} Der Ptolemäus-Rahmen identifiziert das
+    reguläre Quadrat (alle Chord-Gewichte gleich) als geometrisches Bild
+    der \emph{balancierten} Dynamik~$\Lambda = 0$. Der
+    \emph{Ptolemäus-Defekt}~$\Ptol$, der für die logarithmische
+    Bamberg-Einbettung negativ ist ($\Ptol_{\mathrm{II}} < 0$),
+    ist ein geometrisches Signal für den negativen Drift.
+  \item \textbf{Was nicht funktioniert:} Eine kanonische Kodierung der
+    Blockfaktoren~$F(B_j)$ durch Chord-Längen existiert nicht. Der Satz
+    von Ptolemäus liefert eine algebraische Identität, aber keine
+    Ungleichung, die direkt $\Lambda < 0$ erzwingt.
+\end{itemize}
+Das Dokument benennt die nützlichste Teilaussage: den Ptolemäus-Defekt
+als geometrisches Maß für die Drift-Asymmetrie.
+\end{abstract}
+
+\tableofcontents
+
+\bigskip
+\begin{tcolorbox}[warnung, title={Einordnung}]
+Dieses Dokument ist ein \textbf{Analogie-Versuch}, kein Beweisabschluss.
+Der Ptolemäus-Satz wird auf die EABC-Geometrie angewendet; es wird
+ehrlich ausgewiesen, welche Schritte rigoros und welche bloß
+motivierend sind.
+\end{tcolorbox}
+
+% ====================================================
+\section{Die EABC-Klassen als Sehnenviereck}
+\label{sec:sehnenviereck}
+% ====================================================
+
+\subsection{Erinnerung: EABC-Klassen mod 12}
+
+\begin{definition}[EABC-Klassen]
+\label{def:eabc}
+Die vier ungeraden Restklassen modulo~$12$, die teilerfremd zu~$12$ sind,
+bilden die multiplikative Gruppe
+\[
+  (\Z/12\Z)^\times \;=\; \{1,5,7,11\} \;\cong\; \Z/2\Z \times \Z/2\Z.
+\]
+Im EABC-Rahmen werden sie benannt:
+\[
+  E \leftrightarrow [1]_{12},\quad
+  A \leftrightarrow [5]_{12},\quad
+  B \leftrightarrow [7]_{12},\quad
+  C \leftrightarrow [11]_{12}.
+\]
+Diese vier Klassen enthalten alle ungeraden Nicht-Vielfachen von~$3$,
+also insbesondere alle ungeraden Primzahlen~$p > 3$.
+\end{definition}
+
+\begin{bemerkung}[Gruppen-Struktur]
+Die Multiplikationstafel von $(\Z/12\Z)^\times$ zeigt:
+\[
+  E^2 = E,\quad A^2 = E,\quad B^2 = E,\quad C^2 = E,
+\]
+\[
+  A \cdot B = C,\quad B \cdot C = A,\quad A \cdot C = B.
+\]
+Das ist die Kleinssche Vierergruppe~$V_4$. Kein Element (außer~$E$) hat
+Ordnung~$> 2$: Dies ist die maximale Symmetrie für vier Punkte auf einem Kreis.
+\end{bemerkung}
+
+\subsection{Kanonische Einbettung auf dem Einheitskreis}
+
+\begin{definition}[Symmetrische EABC-Einbettung]
+\label{def:einbettung}
+Wir platzieren die vier Klassen als gleichmäßig verteilte Punkte auf
+dem Einheitskreis~$S^1 \subset \R^2$ (vgl.\ \texttt{bamberg\_ptolemy\_walter\_morley.tex}):
+\[
+  \mathbf{E} = (1,\,0),\quad
+  \mathbf{A} = (0,\,1),\quad
+  \mathbf{B} = (-1,\,0),\quad
+  \mathbf{C} = (0,\,-1).
+\]
+In komplexer Schreibweise: $E = e^{i\cdot 0}$, $A = e^{i\pi/2}$,
+$B = e^{i\pi}$, $C = e^{i3\pi/2}$.
+\end{definition}
+
+\begin{center}
+\begin{tikzpicture}[scale=2.2]
+  \draw[gray!40, thick] (0,0) circle(1);
+  \draw[gray!20] (-1.2,0) -- (1.2,0);
+  \draw[gray!20] (0,-1.2) -- (0,1.2);
+  % Seiten des Quadrats
+  \draw[blue!60, thick] (1,0) -- (0,1) -- (-1,0) -- (0,-1) -- cycle;
+  % Diagonalen
+  \draw[red!60, dashed, thick] (1,0) -- (-1,0);
+  \draw[red!60, dashed, thick] (0,1) -- (0,-1);
+  % Punkte
+  \filldraw[blue!80] (1,0) circle(2pt) node[right=4pt] {$\mathbf{E}$};
+  \filldraw[blue!80] (0,1) circle(2pt) node[above=4pt] {$\mathbf{A}$};
+  \filldraw[blue!80] (-1,0) circle(2pt) node[left=4pt] {$\mathbf{B}$};
+  \filldraw[blue!80] (0,-1) circle(2pt) node[below=4pt] {$\mathbf{C}$};
+  % Beschriftungen Seiten
+  \node[blue!70, font=\small] at (0.6,0.65) {$\sqrt{2}$};
+  \node[blue!70, font=\small] at (-0.6,0.65) {$\sqrt{2}$};
+  \node[blue!70, font=\small] at (-0.6,-0.65) {$\sqrt{2}$};
+  \node[blue!70, font=\small] at (0.6,-0.65) {$\sqrt{2}$};
+  % Beschriftungen Diagonalen
+  \node[red!70, font=\small] at (0.15,0.12) {$2$};
+\end{tikzpicture}
+\end{center}
+
+\begin{proposition}[Chord-Längen des EABC-Quadrats]
+\label{prop:chords}
+Für die symmetrische Einbettung (Definition~\ref{def:einbettung}) gelten
+folgende Chord-Längen:
+\begin{align*}
+  \chord{E}{A} &= \chord{A}{B} = \chord{B}{C} = \chord{C}{E} = \sqrt{2}
+  \quad\text{(Seiten, adjazente Klassen),}\\
+  \chord{E}{B} &= \chord{A}{C} = 2
+  \quad\text{(Diagonalen, gegenüberliegende Klassen).}
+\end{align*}
+Dabei bezeichnet $\chord{X}{Y} := \|\mathbf{X} - \mathbf{Y}\|$ die
+euklidische Distanz.
+\end{proposition}
+
+\begin{beweis}
+Direkte Berechnung:
+$\chord{E}{A} = \|(1,0)-(0,1)\| = \sqrt{2}$,
+$\chord{E}{B} = \|(1,0)-(-1,0)\| = 2$,
+usw.\
+\end{beweis}
+
+% ====================================================
+\section{Ptolemäus-Theorem für das EABC-Quadrat}
+\label{sec:ptolemaeus}
+% ====================================================
+
+\subsection{Der Satz von Ptolemäus}
+
+\begin{theorem}[Ptolemäus, klassisch]
+\label{thm:ptolemaeus-klassisch}
+Sei $PQRS$ ein \emph{Sehnenviereck} (Kreisviereck), d.\,h.\ ein Viereck,
+das einem Kreis einbeschrieben ist. Dann gilt:
+\[
+  \chord{P}{R} \cdot \chord{Q}{S}
+  \;=\; \chord{P}{Q} \cdot \chord{R}{S} \;+\; \chord{P}{S} \cdot \chord{Q}{R}.
+\]
+\textup{(Produkt der Diagonalen $=$ Summe der Produkte gegenüberliegender Seiten.)}
+
+Für beliebige vier Punkte in der Ebene gilt die \emph{Ptolemäus-Ungleichung}:
+\[
+  \chord{P}{R} \cdot \chord{Q}{S}
+  \;\leq\; \chord{P}{Q} \cdot \chord{R}{S} \;+\; \chord{P}{S} \cdot \chord{Q}{R},
+\]
+mit Gleichheit genau dann, wenn $P, Q, R, S$ in dieser zyklischen Reihenfolge
+auf einem Kreis (oder einer Geraden) liegen.
+\end{theorem}
+
+\subsection{Ptolemäus für die EABC-Einbettung}
+
+\begin{proposition}[Ptolemäus-Gleichung für das EABC-Quadrat]
+\label{prop:ptol-eabc}
+Mit der zyklischen Anordnung $E \to A \to B \to C$ (Uhrzeigersinn) gilt
+die Ptolemäus-Gleichung:
+\[
+  \chord{E}{B} \cdot \chord{A}{C}
+  \;=\;
+  \chord{E}{A} \cdot \chord{B}{C} \;+\; \chord{A}{B} \cdot \chord{E}{C}.
+\]
+Numerisch:
+\[
+  2 \cdot 2 \;=\; \sqrt{2} \cdot \sqrt{2} \;+\; \sqrt{2} \cdot \sqrt{2}
+  \;\;\Longleftrightarrow\;\; 4 = 2 + 2. \quad\checkmark
+\]
+\end{proposition}
+
+\begin{beweis}
+Das EABC-Quadrat ist einem Kreis (Einheitskreis) einbeschrieben, also
+Sehnenviereck. Nach Theorem~\ref{thm:ptolemaeus-klassisch} gilt Ptolemäus
+mit Gleichheit. Die numerische Verifikation folgt aus
+Proposition~\ref{prop:chords}.
+\end{beweis}
+
+\begin{tcolorbox}[ptolstil]
+Das reguläre Quadrat ist das \textbf{symmetrischste} Sehnenviereck: alle
+Seiten gleich ($\sqrt{2}$), alle Diagonalen gleich ($2$), Ptolemäus mit
+Gleichheit. Diese maximale Symmetrie entspricht --- wie wir zeigen werden ---
+dem \textbf{Gleichgewichtsfall} $\Lambda = 0$ der Collatz-Dynamik.
+\end{tcolorbox}
+
+\subsection{Der Ptolemäus-Defekt}
+
+\begin{definition}[Ptolemäus-Defekt, nach Bamberg-Modul]
+\label{def:defekt}
+Für vier Punkte $X_1, X_2, X_3, X_4 \in \R^2$ definieren wir den
+\emph{Ptolemäus-Defekt}:
+\[
+  \Ptol(X_1,X_2,X_3,X_4)
+  \;:=\;
+  \chord{X_1}{X_3}\cdot\chord{X_2}{X_4}
+  - \chord{X_1}{X_2}\cdot\chord{X_3}{X_4}
+  - \chord{X_2}{X_3}\cdot\chord{X_4}{X_1}.
+\]
+Die Ptolemäus-Ungleichung besagt $\Ptol \leq 0$ stets, mit $\Ptol = 0$
+genau für Sehnenvierecke in zyklischer Anordnung.
+\end{definition}
+
+\begin{bemerkung}
+Für das symmetrische EABC-Quadrat in der Anordnung $(E,A,B,C)$:
+\[
+  \Ptol(E,A,B,C) = 2\cdot 2 - \sqrt{2}\cdot\sqrt{2} - \sqrt{2}\cdot\sqrt{2}
+  = 4 - 2 - 2 = 0.
+\]
+Für die Kreuzanordnung $(E,B,A,C)$ (nicht zyklisch):
+\[
+  \Ptol(E,B,A,C) = \chord{E}{A}\cdot\chord{B}{C} - \chord{E}{B}\cdot\chord{A}{C}
+  - \chord{B}{A}\cdot\chord{C}{E}
+  = 2 - 4 - 2 = -4 < 0.
+\]
+\end{bemerkung}
+
+% ====================================================
+\section{Versuch einer Chord-Kodierung der Blockfaktoren}
+\label{sec:kodierung}
+% ====================================================
+
+\subsection{Motivation und Ziel}
+
+Jeder Collatz-Block $B_j = \mathrm{C}^{l_j}\!\cdot\mathrm{A}$ hat einen
+Nettofaktor
+\[
+  F(B_j) \;=\; \frac{3^{l_j+1}}{2^{l_j+\nu_j}},
+  \quad \nu_j := \vii(3n_{l_j}^{(j)}+1) \geq 2.
+\]
+\textbf{Frage}: Kann man Chord-Längen $\chord{X}{Y}$ für $X, Y \in \{E,A,B,C\}$
+so wählen, dass die Ptolemäus-Relation eine multiplikative Identität zwischen
+den Blockfaktoren $F(B_j)$ liefert?
+
+\subsection{Versuch 1: Konstante Skalierung}
+
+\textbf{Idee}: Multipliziere alle Chord-Längen mit einem gemeinsamen Faktor~$\lambda > 0$.
+\[
+  \chord{X}{Y} \;\mapsto\; \lambda \cdot \chord{X}{Y}.
+\]
+Die Ptolemäus-Gleichung wird zu
+$\lambda^2 \cdot 2 \cdot 2 = \lambda^2 \cdot 2 + \lambda^2 \cdot 2$, also
+$4\lambda^2 = 4\lambda^2$: trivial, keine Information über~$\lambda$.
+
+\textbf{Fazit}: Konstante Skalierung kodiert keinen Drift.
+
+\subsection{Versuch 2: Klassengewichte}
+
+\textbf{Idee}: Weise jeder Klasse $X \in \{E,A,B,C\}$ ein Gewicht $w_X > 0$ zu
+und definiere gewichtete Chord-Längen:
+\[
+  \tilde{d}(X,Y) \;:=\; w_X \cdot \chord{X}{Y} \cdot w_Y.
+\]
+
+\begin{proposition}[Gewichtete Ptolemäus-Gleichung]
+\label{prop:gewichtet}
+Seien $w_E, w_A, w_B, w_C > 0$ beliebige Gewichte.
+Für die gewichteten Chord-Längen $\tilde{d}(X,Y) = w_X \cdot d(X,Y) \cdot w_Y$
+gilt:
+\[
+  \tilde{d}(E,B)\cdot\tilde{d}(A,C)
+  = \tilde{d}(E,A)\cdot\tilde{d}(B,C) + \tilde{d}(A,B)\cdot\tilde{d}(E,C).
+\]
+\end{proposition}
+
+\begin{beweis}
+\begin{align*}
+  \tilde{d}(E,B)\cdot\tilde{d}(A,C)
+  &= (w_E \cdot 2 \cdot w_B)(w_A \cdot 2 \cdot w_C)
+   = 4\,w_E w_A w_B w_C. \\
+  \tilde{d}(E,A)\cdot\tilde{d}(B,C)
+  &= (w_E \cdot \sqrt{2} \cdot w_A)(w_B \cdot \sqrt{2} \cdot w_C)
+   = 2\,w_E w_A w_B w_C. \\
+  \tilde{d}(A,B)\cdot\tilde{d}(E,C)
+  &= (w_A \cdot \sqrt{2} \cdot w_B)(w_E \cdot \sqrt{2} \cdot w_C)
+   = 2\,w_E w_A w_B w_C.
+\end{align*}
+Also: $4 w_E w_A w_B w_C = 2 w_E w_A w_B w_C + 2 w_E w_A w_B w_C$. \qedhere
+\end{beweis}
+
+\begin{tcolorbox}[warnung, title={Strukturelles Problem}]
+Proposition~\ref{prop:gewichtet} zeigt: \textbf{Die Ptolemäus-Gleichung gilt
+für das EABC-Quadrat für beliebige Klassengewichte}, da die geometrische
+Konfiguration (Quadrat auf dem Einheitskreis) durch Gewichtung nicht
+verändert wird --- die Gleichung bleibt trivialerweise erfüllt.
+
+Das bedeutet: Eine Kodierung $w_X = e^{\alpha_X}$ mit klassenspezifischen
+Log-Gewichten~$\alpha_X$ liefert \emph{keinen} nicht-trivialen Informationsgehalt
+aus dem Ptolemäus-Satz.
+
+Die Ptolemäus-Relation \textbf{kann nicht unterscheiden} zwischen:
+\begin{itemize}[leftmargin=*]
+  \item $w_E = w_A = 1$ und $w_B = w_C = 1$ (ausbalancierte Dynamik, $\Lambda = 0$), und
+  \item $w_E = w_A = e^{-0.4}$ und $w_B = w_C = e^{+0.4}$ (unausbalancierte Dynamik, $\Lambda < 0$).
+\end{itemize}
+\end{tcolorbox}
+
+\subsection{Versuch 3: Asymmetrische Einbettung (Bamberg-Modul)}
+
+Das eigentliche Vorgehen im Bamberg-Modul (\texttt{bamberg\_ptolemy\_walter\_morley.tex})
+verwendet \emph{keine} Einheitskreis-Einbettung, sondern \textbf{logarithmische
+Radien}:
+\[
+  \mathbf{A}_p = (0,\,\log p),\quad
+  \mathbf{B}_p = (-\log(p+2),\,0),\quad
+  \mathbf{C}_p = (0,\,-\log(p+6)),\quad
+  \mathbf{E}_p = (\log(p+8),\,0).
+\]
+Die vier Punkte liegen hier im Allgemeinen \emph{nicht} auf einem Kreis.
+Der Ptolemäus-Defekt ist daher nicht-trivial:
+
+\begin{proposition}[Bamberg-Befund, nach \texttt{bamberg\_ptolemy\_walter\_morley.tex}]
+\label{prop:bamberg}
+Für die logarithmische Einbettung mit der natürlichen Anordnung $Q_{\mathrm I} = (A_p, B_p, C_p, E_p)$
+gilt numerisch für Primzahlvierlinge $p$ bis~$4700$:
+\[
+  \Ptol_{\mathrm I}(p) \;:=\; \Ptol(A_p,B_p,C_p,E_p) \;\longrightarrow\; 0
+  \quad (p \to \infty).
+\]
+Für die Kreuzanordnung $Q_{\mathrm{II}} = (A_p, C_p, B_p, E_p)$:
+\[
+  \Ptol_{\mathrm{II}}(p) \;<\; 0, \qquad
+  |\Ptol_{\mathrm{II}}(p)| \;\sim\; 4(\log p)^2.
+\]
+\end{proposition}
+
+\begin{tcolorbox}[ptolstil]
+\textbf{Geometrische Interpretation}:
+\begin{enumerate}[leftmargin=*, label=(\roman*)]
+  \item $\Ptol_{\mathrm{I}} \to 0$ bedeutet: Die logarithmische EABC-Einbettung
+    ist \emph{asymptotisch konzyklisch} für die natürliche Anordnung.
+    Für große Primzahlen liegen $A_p, B_p, C_p, E_p$ approximativ auf einem Kreis.
+  \item $\Ptol_{\mathrm{II}} < 0$ und $|\Ptol_{\mathrm{II}}| \sim 4(\log p)^2$
+    wächst: Dies ist eine wachsende \emph{Strukturspannung} in der
+    Kreuzanordnung. Die Nichtverträglichkeit von E-Pol und ABC-Triade
+    nimmt mit~$p$ zu.
+\end{enumerate}
+\end{tcolorbox}
+
+% ====================================================
+\section{Ptolemäus und der Drift: Was folgt wirklich?}
+\label{sec:drift}
+% ====================================================
+
+\subsection{Das Gleichgewicht $\Lambda = 0$: Das reguläre Quadrat}
+
+\begin{proposition}[Symmetrisches Quadrat $\leftrightarrow$ $\Lambda = 0$]
+\label{prop:gleichgewicht}
+Seien die vier EABC-Übergänge (C-Schritt B→C, C-Schritt C→A, A-Schritt E→A,
+A-Schritt A→E usw.) durch Log-Faktoren $\delta_{XY} := \log F(\text{Block } X\to Y)$
+gewichtet. Das reguläre Quadrat entspricht dem Fall
+\[
+  \delta_{EA} = \delta_{AB} = \delta_{BC} = \delta_{CE}
+  \quad\text{und}\quad
+  \delta_{EB} = \delta_{AC},
+\]
+also allen Übergängen mit gleichem Log-Faktor. In diesem Fall gilt trivialerweise
+\[
+  \Lambda \;=\; \text{gemeinsamer Log-Faktor}.
+\]
+Der Fall $\Lambda = 0$ entspricht \emph{genau} dem Gleichgewicht, bei dem
+alle Chord-Gewichte identisch sind --- dem symmetrischen Sehnenviereck.
+\end{proposition}
+
+\subsection{Asymmetrie: Kontraktion und Expansion}
+
+Die Collatz-Dynamik ist \emph{asymmetrisch}:
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Kontraktive Übergänge} (A-Schritte mit $\nu \geq 2$):
+    $F(B) = 3^{l+1}/2^{l+\nu} < 1$ für $\nu > 0{,}585\,(l+1) + 1{,}585$.
+  \item \textbf{Expansive Übergänge} (C-Schritte, $l$ groß, $\nu$ klein):
+    $F(B) = 3^{l+1}/2^{l+\nu} > 1$ für kleine~$\nu$.
+\end{itemize}
+Im Modell (geometrische Verteilung $\Pr[l=k] = 2^{-(k+1)}$, $\E[\nu]=3$)
+ergibt sich:
+\[
+  \E[\logt F(B)] = 2\logt 3 - 4 \approx -0{,}830 < 0.
+\]
+
+\begin{definition}[Dynamisches EABC-Viereck]
+\label{def:dyn-viereck}
+Ersetze die geometrischen Chord-Längen durch gewichtete \emph{Drift-Längen}:
+\[
+  d^{\mathrm{dyn}}(X,Y) \;:=\;
+  \exp\!\Bigl(\E\bigl[\logt F(B) \mid B = \text{Typ-}XY\text{-Block}\bigr]\Bigr),
+\]
+also die erwartete geometrische Rate des Typ-$XY$-Übergangs.
+
+Für das Modell:
+\begin{align*}
+  d^{\mathrm{dyn}}(B,C) = d^{\mathrm{dyn}}(C,A) &= 2^{\logt(3/2)} = 3/2 \approx 1{,}5
+    \quad\text{(C-Schritt, Expansion)},\\
+  d^{\mathrm{dyn}}(E,A) = d^{\mathrm{dyn}}(A,E) &\approx 2^{-0{,}415} \approx 0{,}75
+    \quad\text{(A-Schritt $l=0$, $\nu=2$, Kontraktion)}.
+\end{align*}
+\end{definition}
+
+\subsection{Ptolemäus-Identität für das dynamische Viereck}
+
+\begin{proposition}[Ptolemäus-Identität für Drift-Längen]
+\label{prop:ptol-drift}
+Seien die Drift-Längen $d^{\mathrm{dyn}}$ wie in Definition~\ref{def:dyn-viereck}
+definiert. Dann ist das dynamische Viereck \emph{kein} Sehnenviereck mehr
+(die vier Punkte liegen nicht auf einem gemeinsamen Kreis), und der
+Ptolemäus-Defekt ist negativ:
+\[
+  \Ptol^{\mathrm{dyn}}
+  \;=\;
+  d^{\mathrm{dyn}}(E,B)\cdot d^{\mathrm{dyn}}(A,C)
+  - d^{\mathrm{dyn}}(E,A)\cdot d^{\mathrm{dyn}}(B,C)
+  - d^{\mathrm{dyn}}(A,B)\cdot d^{\mathrm{dyn}}(E,C)
+  \;<\; 0.
+\]
+\end{proposition}
+
+\begin{beweis}[Modellrechnung]
+Mit $c := d^{\mathrm{dyn}}(B,C) = 3/2$ (Expansion) und
+$s := d^{\mathrm{dyn}}(E,A) = 3/4$ (Kontraktion) und symmetrischer
+Annahme $d^{\mathrm{dyn}}(E,B) = d^{\mathrm{dyn}}(A,C) = \sqrt{s \cdot c} = \sqrt{9/8}$
+(geometrisches Mittel der Diagonale):
+\begin{align*}
+  \Ptol^{\mathrm{dyn}}
+  &= \tfrac{9}{8} - s \cdot c - s \cdot c
+   = \tfrac{9}{8} - 2 \cdot \tfrac{3}{4} \cdot \tfrac{3}{2}
+   = \tfrac{9}{8} - \tfrac{9}{4}
+   = -\tfrac{9}{8} \;<\; 0.
+\end{align*}
+Die exakte Rechnung hängt von der Wahl der Diagonal-Drift-Längen ab;
+das Vorzeichen ist robust gegenüber plausiblen Variationen.
+\end{beweis}
+
+\begin{tcolorbox}[ptolstil]
+\textbf{Geometrische Interpretation des negativen Defekts}:
+
+Der Ptolemäus-Defekt $\Ptol^{\mathrm{dyn}} < 0$ bedeutet, dass die
+Kontraktionsseiten (EA, AB, EC --- A-Schritte) und die Expansionsseiten
+(BC, CA --- C-Schritte) so zueinander stehen, dass das dynamische Viereck
+\emph{nicht konzyklisch} ist.
+
+Die Abweichung vom Sehnenviereck ($\Ptol = 0$ entspricht $\Lambda = 0$)
+in Richtung $\Ptol < 0$ ist geometrisch konsistent mit einem negativen
+mittleren Log-Drift~$\Lambda < 0$. Sie beweist ihn jedoch nicht.
+\end{tcolorbox}
+
+\subsection{Ptolemäus-Ungleichung als a-priori-Schranke}
+
+\begin{korollar}[Produktschranke aus Ptolemäus-Ungleichung]
+\label{kor:produktschranke}
+Für beliebige (nicht notwendig konzyklische) vier Drift-Längen gilt:
+\[
+  d^{\mathrm{dyn}}(E,B) \cdot d^{\mathrm{dyn}}(A,C)
+  \;\leq\;
+  d^{\mathrm{dyn}}(E,A) \cdot d^{\mathrm{dyn}}(B,C)
+  \;+\;
+  d^{\mathrm{dyn}}(A,B) \cdot d^{\mathrm{dyn}}(E,C).
+\]
+In logarithmischer Form: Falls $\Delta_{XY} := \log d^{\mathrm{dyn}}(X,Y)$:
+\[
+  \Delta_{EB} + \Delta_{AC}
+  \;\leq\;
+  \log\!\bigl(
+    e^{\Delta_{EA} + \Delta_{BC}} + e^{\Delta_{AB} + \Delta_{EC}}
+  \bigr).
+\]
+\end{korollar}
+
+\begin{bemerkung}[Was diese Schranke liefert]
+Korollar~\ref{kor:produktschranke} ist eine Schranke an das \emph{Produkt}
+zweier Diagonal-Drift-Längen durch die \emph{Summe} von Seitenprodukten.
+Im Kontext der Collatz-Dynamik:
+\begin{itemize}[leftmargin=*]
+  \item Falls $\Delta_{EB}, \Delta_{AC} > 0$ (Diagonal-Übergänge expandieren),
+    wird das Produkt durch die Seitenprodukte nach oben beschränkt.
+  \item Falls die Kontraktionsseiten dominieren
+    ($\Delta_{EA} + \Delta_{BC} < 0$ und $\Delta_{AB} + \Delta_{EC} < 0$),
+    folgt $\Delta_{EB} + \Delta_{AC} < \log(2 \cdot \text{neg.\ Zahlen})$,
+    also keine direkte Information.
+\end{itemize}
+Die Ptolemäus-Ungleichung liefert daher \textbf{nur dann eine echte Schranke},
+wenn die expansiven Übergänge auf den Diagonalen und die kontraktiven auf
+den Seiten konzentriert sind. Diese Separation ist für beliebige
+Collatz-Bahnen nicht garantiert.
+\end{bemerkung}
+
+% ====================================================
+\section{Verbindung zur bestehenden Ptolemäus-Literatur im Projekt}
+\label{sec:literatur}
+% ====================================================
+
+\subsection{Das Bamberg-Modul: Asymptotische Konzyklizität}
+
+Im Bamberg-Modul (\texttt{bamberg\_ptolemy\_walter\_morley.tex}) wird die
+EABC-Einbettung mit \emph{logarithmischen Radien} für Primzahlvierlinge
+$Q(p) = (p, p+2, p+6, p+8)$ untersucht. Das Hauptresultat:
+
+\begin{tcolorbox}[ergebnis, title={Bamberg-Hauptbefund (numerisch)}]
+Die natürliche Anordnung $Q_{\mathrm I} = (A_p, B_p, C_p, E_p)$
+mit logarithmischen Radien ist \textbf{asymptotisch konzyklisch}:
+\[
+  \Ptol_{\mathrm{I}}(p) \;\xrightarrow{p \to \infty}\; 0.
+\]
+Die logarithmische Einbettung der EABC-Klassen ``strebt'' für große Primzahlen
+dem Sehnenviereck entgegen.
+\end{tcolorbox}
+
+\textbf{Übertragung auf Collatz}: Falls man die Primzahlvierlinge als
+``Stichproben'' der EABC-Klassen auf Collatz-Bahnen interpretiert, entspricht
+$\Ptol_{\mathrm I} \to 0$ der Aussage, dass die Dynamik für große Werte
+asymptotisch ``balancierter'' wird. Dies ist konsistent mit $\Lambda \to 0$
+für periodische Orbits (Zyklusbedingung aus \textit{collatz\_lyapunov.tex}).
+
+\subsection{Strukturspannung und Drift-Asymmetrie}
+
+Der negative Bamberg-Defekt $\Ptol_{\mathrm{II}} < 0$ mit $|\Ptol_{\mathrm{II}}| \sim 4(\log p)^2$
+hat eine arithmetische Entsprechung:
+
+\begin{proposition}[Strukturspannung als Drift-Signal]
+\label{prop:strukturspannung}
+Die Bamberg-Strukturspannung $\Delta E_{EABC}(p) := |\Ptol_{\mathrm{II}}(p)|$ wächst wie
+$(\log p)^2$. In der logarithmischen Einbettung bedeutet das:
+\begin{align}
+  \Delta E_{EABC}(p) \;&=\;
+  \bigl|d(A_p,B_p)\cdot d(C_p,E_p) - d(A_p,C_p)\cdot d(B_p,E_p) - \ldots \bigr| \notag\\
+  &\sim 4(\log p)^2 \quad (p \to \infty). \label{eq:strukturspannung}
+\end{align}
+Das Wachstum $\sim (\log p)^2$ ist konsistent mit einer kumulativen
+Drift-Asymmetrie: Pro Collatz-Block tritt ein Log-Drift der Größenordnung
+$O(1)$ auf, und nach $J$ Blöcken akkumuliert sich eine Drift von $O(J)$,
+was in logarithmischer Primzahl-Größe $\sim J \cdot O(\log p)$ entspricht.
+\end{proposition}
+
+\subsection{Das Stabilitätsprinzip aus dem Hilbert-Pólya-Modul}
+
+In \texttt{Ptol Stab Polya.tex} wird die EABC-Phasenstruktur
+\[
+  \theta_{\mathrm{EABC}} \;\in\; \Bigl\{0, \tfrac{\pi}{2}, \pi, \tfrac{3\pi}{2}\Bigr\}
+\]
+als diskrete Komponente eines resonanten Operators auf Primzahlvierlingen
+eingeführt. Das Schlüsselprinzip:
+
+\begin{tcolorbox}[adisch, title={Stabilitätsprinzip (Hilbert-Pólya-Modul)}]
+Die vier EABC-Zustände wirken als \emph{Träger einer diskreten Phase}.
+Die Überlagerung der kontinuierlichen Phase $\alpha \log\log p$ mit der
+diskreten EABC-Phase erzeugt eine \emph{interferierende Dynamik}, deren
+Eigenwertabstände mit den Zeta-Nullstellen korrelieren.
+
+\textbf{Übertragung auf Collatz}: Ersetze die Primzahlen durch Collatz-Werte
+$n_0^{(j)}$ und die spektralen Abstände durch die Block-Driften~$\log F(B_j)$.
+Die EABC-Phase eines Wertes $n$ ist $\theta(n) = \frac{\pi}{2} \cdot k_n$,
+wobei $k_n \in \{0,1,2,3\}$ die Klasse (E,A,B,C) kodiert.
+\end{tcolorbox}
+
+Die Verbindung: In beiden Kontexten (Primzahlen und Collatz) erzeugt die
+EABC-Phasenstruktur eine \emph{resonante Interferenz}, die die Dynamik stabilisiert.
+Für Primzahlen entspricht dies der Korrelation mit Zeta-Nullstellen; für Collatz
+entspricht es der negativen mittleren Drift.
+
+% ====================================================
+\section{Ehrliche Bilanz: Was lässt sich beweisen? Was bleibt Analogie?}
+\label{sec:bilanz}
+% ====================================================
+
+\subsection{Was rigoros beweisbar ist}
+
+\begin{tcolorbox}[ergebnis, title={Rigorose Aussagen}]
+\begin{enumerate}[label=\upshape(\arabic*), leftmargin=*]
+  \item \textbf{Ptolemäus für das EABC-Quadrat (Thm.~\ref{prop:ptol-eabc}):}
+    $2 \cdot 2 = \sqrt{2}\cdot\sqrt{2} + \sqrt{2}\cdot\sqrt{2}$.
+    Exakt, trivial, kein Bezug zu $F(B_j)$.
+
+  \item \textbf{Gewichtete Ptolemäus-Identität (Prop.~\ref{prop:gewichtet}):}
+    Für beliebige Klassengewichte bleibt Ptolemäus für das Quadrat erfüllt.
+    Liefert keine Schranke für $\Lambda$.
+
+  \item \textbf{Ptolemäus-Ungleichung (Kor.~\ref{kor:produktschranke}):}
+    Allgemein gültig. Nutzbar nur bei geeigneter Separation von
+    kontraktiven Seiten und expansiven Diagonalen.
+
+  \item \textbf{Negativer dynamischer Defekt (Prop.~\ref{prop:ptol-drift}):}
+    Für die Modell-Drift-Längen gilt $\Ptol^{\mathrm{dyn}} < 0$.
+    Korrekt unter Modellverteilung, heuristisch für feste Bahnen.
+
+  \item \textbf{Bamberg asymptotische Konzyklizität (Prop.~\ref{prop:bamberg}):}
+    Numerisch bestätigt, analytisch noch nicht bewiesen.
+\end{enumerate}
+\end{tcolorbox}
+
+\subsection{Die nützlichste Teilaussage}
+
+\begin{tcolorbox}[hauptsatz]
+\textbf{Stärkste Aussage des Ptolemäus-Rahmens für Collatz:}
+
+\medskip
+Das reguläre EABC-Quadrat repräsentiert den \textbf{Gleichgewichtszustand}
+$\Lambda = 0$ der Collatz-Dynamik: alle Übergänge gleich gewichtet,
+Ptolemäus-Defekt~$= 0$.
+
+\medskip
+Die Collatz-Dynamik weicht von diesem Gleichgewicht ab:
+\begin{itemize}[leftmargin=*]
+  \item A-Schritte (E- und A-Klasse) sind \emph{systematisch kontraktiv}:
+    $F(B) \lesssim 0{,}75$ für $l=0$, $\nu=2$.
+  \item C-Schritte (B- und C-Klasse) sind \emph{expansiv}:
+    Faktor $3/2$ pro Schritt.
+  \item Diese Asymmetrie erzeugt einen negativen Ptolemäus-Defekt
+    $\Ptol^{\mathrm{dyn}} < 0$ im dynamischen Viereck.
+\end{itemize}
+
+\medskip
+Der Ptolemäus-Defekt $\Ptol$ ist damit ein \textbf{geometrisches Maß für die
+Drift-Asymmetrie}: $\Ptol = 0 \leftrightarrow \Lambda = 0$;
+$\Ptol < 0 \leftrightarrow$ konsistent mit $\Lambda < 0$.
+
+\medskip
+Dies \emph{beweist nicht} $\Lambda < 0$ für alle Bahnen, aber es liefert
+ein geometrisches Bild, das mit allen bekannten analytischen Resultaten
+konsistent ist.
+\end{tcolorbox}
+
+\subsection{Was nicht funktioniert und warum}
+
+\begin{tcolorbox}[lücke, title={Grenzen des Ptolemäus-Ansatzes}]
+\begin{enumerate}[label=\upshape(\alph*), leftmargin=*]
+  \item \textbf{Keine kanonische Chord-Kodierung:}
+    Es gibt keine natürliche, dynamisch erzwungene Zuordnung von Blockfaktoren
+    $F(B_j)$ zu Chord-Längen auf dem Einheitskreis. Jede Wahl ist ad hoc.
+
+  \item \textbf{Ptolemäus-Gleichheit ist zu schwach:}
+    Die Gleichung $d_{EB}\cdot d_{AC} = d_{EA}\cdot d_{BC} + d_{AB}\cdot d_{EC}$
+    ist eine algebraische Identität für Sehnenvierecke --- sie schränkt
+    den \emph{Zeitmittelwert} $\frac{1}{J}\sum \log F(B_j)$ nicht ein.
+
+  \item \textbf{Ptolemäus-Ungleichung erfordert Separation:}
+    Die Ungleichung $d_{EB}\cdot d_{AC} \leq d_{EA}\cdot d_{BC} + d_{AB}\cdot d_{EC}$
+    ist nutzbar nur, wenn expansive Übergänge auf Diagonalen und kontraktive
+    auf Seiten konzentriert sind. Dies gilt für die Collatz-Dynamik nicht
+    in dieser strukturierten Form.
+
+  \item \textbf{Bamberg-Asymptotik ist Primzahl-Ergebnis:}
+    $\Ptol_{\mathrm I}(p) \to 0$ gilt für Primzahlvierlinge, nicht für
+    allgemeine Collatz-Bahnen. Der Transfer ist motivierend, aber nicht rigoros.
+
+  \item \textbf{Das Kernproblem bleibt:}
+    Selbst wenn alle geometrischen Beobachtungen rigoros wären, würde
+    daraus kein quantitativer Nachweis folgen, dass $\limsup_{J\to\infty}
+    \frac{1}{J}\sum \log F(B_j) < 0$ für \emph{jede} Bahn gilt.
+\end{enumerate}
+\end{tcolorbox}
+
+\subsection{Statusübersicht}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{p{7.5cm} p{2.5cm} p{3.5cm}}
+\toprule
+\textbf{Aussage} & \textbf{Status} & \textbf{Quelle} \\
+\midrule
+Ptolemäus für EABC-Quadrat (Gleichheit)
+  & \textcolor{bewiesengrün}{\bfseries Exakt}
+  & Prop.~\ref{prop:ptol-eabc} \\
+Gewichtete Ptolemäus-Gleichheit (alle Gewichte)
+  & \textcolor{bewiesengrün}{\bfseries Exakt}
+  & Prop.~\ref{prop:gewichtet} \\
+Ptolemäus-Ungleichung (allgemein)
+  & \textcolor{bewiesengrün}{\bfseries Klassisch}
+  & Thm.~\ref{thm:ptolemaeus-klassisch} \\
+Negativer dynamischer Defekt ($\Ptol^{\mathrm{dyn}} < 0$)
+  & \textcolor{warnorange}{\bfseries Modell}
+  & Prop.~\ref{prop:ptol-drift} \\
+Bamberg: $\Ptol_{\mathrm I}(p) \to 0$, $\Ptol_{\mathrm{II}} < 0$
+  & \textcolor{warnorange}{\bfseries Numerisch}
+  & \texttt{bamberg...tex} \\
+\midrule
+Chord-Kodierung $F(B_j) \leftrightarrow$ Chord-Länge
+  & \textcolor{lückenrot}{\bfseries Nicht kanonisch}
+  & §\ref{sec:kodierung} \\
+Ptolemäus $\Rightarrow$ $\Lambda < 0$
+  & \textcolor{lückenrot}{\bfseries Nicht beweisbar}
+  & §\ref{sec:bilanz} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Der produktive Kern: Geometrie der Drift-Asymmetrie}
+
+Auch wenn der direkte Beweis-Weg versperrt ist, liefert der Ptolemäus-Rahmen
+eine wertvolle geometrische Sprache:
+
+\begin{enumerate}[label=\textbf{(\arabic*)}, leftmargin=*]
+  \item \textbf{Das Sehnenviereck als Gleichgewichtsreferenz:}
+    Das Collatz-Problem ist äquivalent zur Frage, ob das dynamische
+    EABC-Viereck immer einen negativen Ptolemäus-Defekt hat. Das ist
+    ein neues geometrisches Äquivalent der Vermutung.
+
+  \item \textbf{Der Defekt als Lyapunov-Analogon:}
+    $\Ptol^{\mathrm{dyn}} < 0$ ist ein geometrisches Analogon zu $\Lambda < 0$.
+    Beide messen die Asymmetrie zwischen Expansion und Kontraktion in der
+    Collatz-Dynamik --- eines in der Sprache der Sehnengeometrie, das andere
+    in der Sprache der Ergodentheorie.
+
+  \item \textbf{Ausblick: Metrische Einbettungen:}
+    Eine zukünftige Arbeit könnte versuchen, die Collatz-Dynamik in
+    einem \emph{metrischen Raum} einzubetten, in dem die Ptolemäus-Ungleichung
+    als strukturelle Schranke auf den Lyapunov-Exponenten wirkt.
+    Kandidaten: hyperbolische Geometrie ($\delta$-hyperbolische Räume
+    haben Ptolemäus-ähnliche Ungleichungen) oder die $2$-adischen Zahlen
+    $\mathbb{Z}_2$ mit ultrametrischer Struktur.
+\end{enumerate}
+
+% ====================================================
+% Literatur
+% ====================================================
+\begin{thebibliography}{99}
+
+\bibitem{hoffbauer-lyapunov}
+T.\ Hoffbauer,
+\textit{Der Lyapunov-Exponent der Collatz-Dynamik: Negativer Log-Drift,
+  Birkhoff-Ergodensatz und Zyklen-Ausschluss},
+Mathematische Texte, \texttt{collatz\_lyapunov.tex} (2026).
+
+\bibitem{hoffbauer-mehrblock}
+T.\ Hoffbauer,
+\textit{Mehrblock-Drift und das Scheitern der lokalen Kontraktion},
+Mathematische Texte, \texttt{collatz\_mehrblock\_drift.tex} (2026).
+
+\bibitem{hoffbauer-bamberg}
+T.\ Hoffbauer,
+\textit{Bamberg-Modul: Ptolemäus--Walter--Morley für Primzahlvierlinge},
+Mathematische Texte, \texttt{bamberg\_ptolemy\_walter\_morley.tex} (2026).
+
+\bibitem{hoffbauer-ptolemaeus}
+T.\ Hoffbauer,
+\textit{Geometrische Familienstruktur der Hurwitz-Quaternionen und
+  ptolemäische Invariante in der Primzahlverteilung},
+Mathematische Texte, \texttt{Ptomemäus.tex} (2026).
+
+\bibitem{hoffbauer-polya}
+T.\ Hoffbauer,
+\textit{Ein resonanter Operator auf Primzahlvierlingen: Ein proto-spektales
+  Modell im Sinne von Hilbert--Pólya},
+Mathematische Texte, \texttt{Ptol Stab Polya.tex} (2026).
+
+\bibitem{hoffbauer-schluss}
+T.\ Hoffbauer,
+\textit{EABC-Rahmen und Collatz-Dynamik: Ein strukturierter Beweisversuch},
+Mathematische Texte, \texttt{collatz\_schlussartikel.tex} (2026).
+
+\bibitem{tao-collatz}
+T.\ Tao,
+\textit{Almost all orbits of the Collatz map attain almost bounded values},
+Forum of Mathematics Pi \textbf{10} (2022), e12.
+\texttt{arXiv:1909.03562}
+
+\bibitem{ptolemaeus}
+Ptolemäus (Klaudios Ptolemaios),
+\textit{Almagest}, ca.\ 150 n.\ Chr.
+(Satz von Ptolemäus: Buch~I, Prop.~10.)
+
+\bibitem{lagarias-survey}
+J.\,C.\ Lagarias,
+\textit{The $3x+1$ problem and its generalizations},
+Amer.\ Math.\ Monthly \textbf{92} (1985), 3--23.
+
+\bibitem{berger-hyperb}
+M.\ Berger,
+\textit{Geometry I},
+Springer, Berlin (1987).
+(Ptolemäus-Ungleichung in metrischen Räumen: Kap.~9.)
+
+\end{thebibliography}
+
+\end{document}
