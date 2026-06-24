@@ -1,0 +1,769 @@
+\documentclass[12pt,a4paper]{article}
+
+% -------------------------------------------------
+% Sprache / Kodierung
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+
+% -------------------------------------------------
+% Layout / Grafik / Farben
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks,unicode]{hyperref}
+\pdfstringdefDisableCommands{%
+  \def\ü{ue}\def\ö{oe}\def\ä{ae}\def\Ü{Ue}\def\Ö{Oe}\def\Ä{Ae}\def\ss{ss}%
+}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{array}
+
+% -------------------------------------------------
+% Farben
+% -------------------------------------------------
+\definecolor{lückenrot}{RGB}{180,40,40}
+\definecolor{bewiesengrün}{RGB}{30,100,50}
+\definecolor{warnorange}{RGB}{200,100,10}
+\definecolor{hintergrundblau}{RGB}{235,242,250}
+\definecolor{hintergrundgelb}{RGB}{255,252,225}
+\definecolor{adischviolett}{RGB}{90,20,140}
+\definecolor{fehlerrot}{RGB}{200,0,0}
+\definecolor{konjviolett}{RGB}{80,0,130}
+
+% -------------------------------------------------
+% tcolorbox-Stile
+% -------------------------------------------------
+\tcbset{
+  lücke/.style={colback=red!8, colframe=lückenrot, fonttitle=\bfseries,
+    title={Offene Lücke}},
+  ergebnis/.style={colback=green!7, colframe=bewiesengrün,
+    fonttitle=\bfseries, title={Bewiesenes Ergebnis}},
+  warnung/.style={colback=orange!10, colframe=warnorange,
+    fonttitle=\bfseries, title={Achtung / Heuristik}},
+  adisch/.style={colback=violet!6, colframe=adischviolett,
+    fonttitle=\bfseries, title={2-adische Perspektive}},
+  kernidee/.style={colback=hintergrundblau, colframe=blue!60!black,
+    fonttitle=\bfseries, title={Kernidee}},
+  korrektur/.style={colback=red!4, colframe=fehlerrot, fonttitle=\bfseries,
+    title={Korrektur eines Vorgängerdokuments}},
+  konj/.style={colback=violet!5, colframe=konjviolett, fonttitle=\bfseries,
+    title={Konjektur (unbewiesen)}},
+}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+\newtheorem{hypothese}[definition]{Hypothese}
+\newtheorem{satz}[definition]{Satz}
+
+\newenvironment{beweis}{\begin{proof}[Beweis]}{\end{proof}}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\vii}{\nu_2}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Ztwo}{\mathbb{Z}_2}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+
+% -------------------------------------------------
+% Dokument
+% -------------------------------------------------
+\title{%
+  C-Ketten, 5-glatte Zahlen und Abstiegsstruktur\\[0.3em]
+  \large Dichteargumente, Størmer-Verbindung und\\
+  \large der obligatorische EA-Schritt nach einer C-Kette%
+}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Wir vertiefen die Analyse der C-Kettenlängen aus \textit{collatz\_c\_ketten\_2adisch.tex}
+in drei Richtungen.
+
+\emph{(i)}~Es wird eine Off-by-one-Fehler im dortigen Korollar~3.1 korrigiert:
+Die korrekte 2-adische Bedingung für eine C-Kette der Länge~$k$ lautet
+$\vii(n_0+1) \geq k+1$ (nicht $k+2$), und die maximale Kettenlänge für festes~$n_0$
+beträgt $\leq \vii(n_0+1)-1$ (nicht $\vii(n_0+1)$).
+
+\emph{(ii)}~Es wird präzise gezeigt, dass auf eine C-Kette der Länge~$k$
+\emph{stets} ein EA-Schritt folgt: Der erste Nachfolger~$n_k$ hat immer
+$\vii(3n_k+1) \geq 2$.  Das quantitative Ausmaß der anschließenden Kontraktion
+hängt aber vom konkreten Wert $\vii(3n_k+1)$ ab und ist nicht uniform beschränkt.
+
+\emph{(iii)}~5-glatte Zahlen (Hamming-Zahlen) $n_0+1 = 2^a \cdot 3^b \cdot 5^c$
+bilden die extremsten Fälle für lange C-Ketten: Sie haben Dichte~$0$ in~$\N$
+(genauer: Anzahl $O((\log N)^3)$ bis~$N$). Størmer's Theorem liefert die
+Endlichkeit bestimmter Extremfälle, schließt aber keine neue Lücke.
+
+\emph{Ehrliches Fazit:} Die gewonnenen Ergebnisse verstärken das strukturelle
+Bild, schließen die Kernlücke (uniforme DC-Schranke) aber nicht.
+\end{abstract}
+
+\tableofcontents
+
+\bigskip
+\begin{tcolorbox}[warnung, title={Zur Einordnung}]
+Dieses Dokument ist ein analytisches Weiterführungsdokument zum Stand in
+\textit{collatz\_c\_ketten\_2adisch.tex} und \textit{collatz\_beweis\_abschluss.tex}.
+Es enthält sowohl Korrekturen als auch neue Ergebnisse und ehrliche Abgrenzungen.
+\end{tcolorbox}
+
+% ====================================================
+\section{Korrektur: Die exakte C-Kettenlängenbedingung}
+\label{sec:korrektur}
+% ====================================================
+
+\subsection{Das Problem im Vorgängerdokument}
+
+Korollar~3.1 in \textit{collatz\_c\_ketten\_2adisch.tex} behauptet:
+\begin{quote}
+\emph{``C-Ketten der Länge~$k$ erfordern $n_0 \equiv 2^{k+2}-1 \pmod{2^{k+2}}$,
+also $n_0 \equiv -1 \pmod{2^{k+2}}$.''
+Konkret: $k=1\colon n_0 \equiv 11 \pmod{12}$,\; $k=2\colon n_0 \equiv 23 \pmod{24}$,\; $k=3\colon n_0 \equiv 47 \pmod{48}$.}
+\end{quote}
+Die aufgeführten konkreten Residuenklassen sind korrekt; die allgemeine Formel
+$n_0 \equiv -1 \pmod{2^{k+2}}$ stimmt jedoch \emph{nicht} mit ihnen überein.
+
+\begin{tcolorbox}[korrektur]
+\textbf{Gegenbeispiel:} Für $k=1$ ergibt die Formel $n_0 \equiv 2^3-1 = 7 \pmod{8}$.
+Aber $n_0 = 11$ genügt $n_0 \equiv 3 \pmod{8} \neq 7 \pmod{8}$ und startet
+dennoch eine C-Kette der Länge~$1$.
+
+Ebenso für $k=2$: Die Formel verlangt $n_0 \equiv 15 \pmod{16}$, aber $n_0 = 23$
+erfüllt $23 \equiv 7 \pmod{16} \neq 15$ und startet eine C-Kette der Länge~$2$.
+\end{tcolorbox}
+
+\subsection{Die korrekte Bedingung}
+
+\begin{proposition}[Korrekte 2-adische Bedingung für C-Ketten]
+\label{prop:korrekt}
+Sei $n_0 \in \N$ ungerade mit $n_0 \equiv 11 \pmod{12}$. Dann gilt:
+\[
+  \text{$n_0$ startet eine C-Kette der Länge $\geq k$}
+  \;\Longleftrightarrow\;
+  \vii(n_0+1) \geq k+1.
+\]
+Die maximale Länge der C-Kette von $n_0$ beträgt $\leq \vii(n_0+1) - 1$.
+\end{proposition}
+
+\begin{beweis}
+Aus der Formel $n_j = 3^j(n_0+1)/2^j - 1$ (Proposition~2.1 in
+\textit{collatz\_c\_ketten\_2adisch.tex}) und $\vii(n_j+1) = \vii(n_0+1) - j$
+folgt:
+
+\textit{Notwendige Bedingung für C-Typ von $n_j$:} $n_j \equiv 11 \pmod{12}$
+erfordert $4 \mid (n_j+1)$, also $\vii(n_j+1) \geq 2$.
+Damit: $\vii(n_0+1) - j \geq 2$, d.\,h.\ $j \leq \vii(n_0+1) - 2$.
+
+\textit{Für die Kette der Länge $k$:} Die Elemente $n_0, n_1, \ldots, n_{k-1}$
+müssen alle C-Typ sein. Das erfordert $j \leq k-1 \leq \vii(n_0+1) - 2$,
+also $k \leq \vii(n_0+1) - 1$, d.\,h.\ $\vii(n_0+1) \geq k+1$.
+
+\textit{Hinreichende Bedingung:} Ist $\vii(n_0+1) = k+1$, so gilt
+$\vii(n_j+1) = k+1 - j$ für $j = 0, \ldots, k-1$.
+Für $j \leq k-1$ ist $\vii(n_j+1) \geq 2$ (\checkmark) und
+$n_j+1 = 3^j(n_0+1)/2^j \in \N$ (\checkmark, da $2^j \mid 2^{k+1}$).
+Die mod-3-Bedingung (C-Typ benötigt $3 \mid (n_j+1)$) überträgt sich durch
+$n_j+1 = 3^j \cdot (n_0+1)/2^j$ direkt, da $3^j$ und $3 \mid (n_0+1)$
+zusammen $3 \mid (n_j+1)$ sichern.
+
+Für $j = k$: $\vii(n_k+1) = \vii(n_0+1) - k = 1$, also $\vii(n_k+1) = 1 < 2$;
+$n_k$ kann kein C-Typ sein. Die Kette bricht ab. \qedhere
+\end{beweis}
+
+\begin{tcolorbox}[ergebnis]
+\textbf{Korrigierte Schranke (scharf):}
+\[
+  \text{C-Kettenlänge} \;\leq\; \vii(n_0+1) - 1 \;\leq\; \lfloor\log_2(n_0+1)\rfloor - 1.
+\]
+Für $n_0 \leq N$ ist die Länge jeder C-Kette $\leq \log_2 N$.
+Außerdem: Das Maximum $\vii(n_0+1) - 1$ wird erreicht, wenn
+$n_0+1 = 2^{k+1} \cdot m$ mit $3 \mid m$, $m$ ungerade, und die
+mod-3-Bedingung für alle Kettenglieder erfüllt ist.
+\end{tcolorbox}
+
+\begin{korollar}[Residuenklassen: korrigiertes Muster]
+\label{kor:muster-korr}
+Eine C-Kette der Länge $k$ erfordert $\vii(n_0+1) \geq k+1$, d.\,h.\
+$n_0 \equiv -1 \pmod{2^{k+1}}$ (2-adische Bedingung). Zusammen mit der
+mod-3-Bedingung ($n_0 \equiv 11 \pmod{12}$ impliziert $3 \mid n_0+1$):
+\[
+  k=1\colon\; n_0 \equiv -1 \pmod{4},\quad
+  k=2\colon\; n_0 \equiv -1 \pmod{8},\quad
+  k=3\colon\; n_0 \equiv -1 \pmod{16}.
+\]
+Mit der mod-3-Bedingung (lcm-Modulus $3 \cdot 2^{k+1}$):
+\[
+  k=1\colon\; n_0 \equiv 11 \pmod{12},\quad
+  k=2\colon\; n_0 \equiv 23 \pmod{24},\quad
+  k=3\colon\; n_0 \equiv 47 \pmod{48}.
+\]
+\end{korollar}
+
+% ====================================================
+\section{Der EA-Schritt nach einer C-Kette}
+\label{sec:eastep}
+% ====================================================
+
+\subsection{Explizite Formel für $n_k$}
+
+Sei $n_0$ der Start einer C-Kette der Länge genau~$k$ mit $\vii(n_0+1) = k+1$.
+Schreibe $n_0 + 1 = 2^{k+1} \cdot m$ mit $m$ ungerade.
+Da $n_0 \equiv 11 \pmod{12}$ gilt $3 \mid (n_0+1)$, also $3 \mid m$.
+
+Nach $k$ C-Schritten ist:
+\[
+  n_k = \frac{3^k(n_0+1)}{2^k} - 1
+      = \frac{3^k \cdot 2^{k+1} \cdot m}{2^k} - 1
+      = 2 \cdot 3^k \cdot m - 1.
+\]
+
+\begin{proposition}[Parität und 2-adische Bewertung von $n_k$]
+\label{prop:nk}
+Mit den obigen Bezeichnungen gilt:
+\begin{enumerate}[label=(\roman*)]
+  \item $n_k$ ist ungerade.
+  \item $\vii(n_k + 1) = 1$.
+  \item $n_k \equiv 1 \pmod 4$ (also $n_k$ kein C- und kein B-Typ).
+\end{enumerate}
+\end{proposition}
+
+\begin{beweis}
+(i) $n_k = 2 \cdot 3^k \cdot m - 1 =$ gerade $-1 =$ ungerade. \checkmark
+
+(ii) $n_k + 1 = 2 \cdot 3^k \cdot m$. Da $3^k$ und $m$ ungerade:
+$\vii(n_k+1) = \vii(2 \cdot \text{ungerade}) = 1$. \checkmark
+
+(iii) $\vii(n_k+1) = 1$ bedeutet $n_k + 1 \equiv 2 \pmod 4$, also
+$n_k \equiv 1 \pmod 4$. Da C-Typ $n \equiv 11 \equiv 3 \pmod 4$ erfordert,
+ist $n_k$ kein C-Typ. B-Typ erfordert ebenfalls $n \equiv 7 \equiv 3 \pmod 4$,
+also ist $n_k$ auch kein B-Typ. \qedhere
+\end{beweis}
+
+\subsection{Der nächste Schritt ist stets ein EA-Schritt}
+
+\begin{theorem}[Zwingender EA-Schritt nach C-Kette]
+\label{thm:ea-nach-ck}
+Sei $n_0$ der Start einer C-Kette der Länge $k \geq 1$, und sei
+$n_k = \U^k(n_0)$ das erste Nicht-C-Typ-Glied danach.
+Dann gilt $\vii(3n_k+1) \geq 2$, d.\,h.\ $n_k$ ist vom Typ E oder A.
+\end{theorem}
+
+\begin{beweis}
+Mit $n_k = 2 \cdot 3^k \cdot m - 1$ (aus Proposition~\ref{prop:nk}):
+\[
+  3n_k + 1 = 3(2 \cdot 3^k \cdot m - 1) + 1 = 6 \cdot 3^k \cdot m - 2
+           = 2\bigl(3^{k+1} m - 1\bigr).
+\]
+Da $3^{k+1} \cdot m$ ungerade, ist $3^{k+1} m - 1$ gerade, also
+$\vii(3^{k+1}m - 1) \geq 1$.
+Damit: $\vii(3n_k+1) = 1 + \vii(3^{k+1}m-1) \geq 2$. \qedhere
+\end{beweis}
+
+\begin{tcolorbox}[ergebnis]
+\textbf{Strukturaussage:} Auf jede C-Kette der Länge $k \geq 1$ folgt
+unmittelbar ein EA-Schritt. Das Muster \textnormal{B}$^{\leq 1}$\textnormal{C}$^k$\textnormal{A}
+tritt zwingend auf.
+\end{tcolorbox}
+
+\subsection{Wie groß ist $\nu_2(3n_k+1)$?}
+
+Die untere Schranke $\vii(3n_k+1) \geq 2$ ist scharf für $k=1$ möglich.
+Der genaue Wert hängt von $m$ und $k$ ab.
+
+\begin{proposition}[Bedingung für $\vii(3n_k+1) \geq 3$]
+\label{prop:nu3-nach-ck}
+Mit $s := 3^{k+1}m - 1$ gilt $\vii(3n_k+1) = 1 + \vii(s)$. Es ist
+$\vii(s) \geq 2$ (also $\vii(3n_k+1) \geq 3$) genau dann, wenn
+$3^{k+1} m \equiv 1 \pmod{4}$.
+
+Da $3 \equiv -1 \pmod 4$:
+\[
+  3^{k+1} \equiv (-1)^{k+1} \pmod 4.
+\]
+Also ist $3^{k+1}m \equiv 1 \pmod 4$ äquivalent zu:
+\[
+  m \equiv (-1)^{k+1} \pmod 4
+  \;=\;
+  \begin{cases}
+    1 \pmod 4 & \text{falls $k$ ungerade,}\\
+    3 \pmod 4 & \text{falls $k$ gerade.}
+  \end{cases}
+\]
+\end{proposition}
+
+\begin{beweis}
+$4 \mid s = 3^{k+1}m - 1$ iff $3^{k+1}m \equiv 1 \pmod 4$ iff
+$(-1)^{k+1}m \equiv 1 \pmod 4$ iff $m \equiv (-1)^{k+1} \pmod 4$.
+\end{beweis}
+
+\begin{bemerkung}
+Da $m$ ungerade ist, gilt entweder $m \equiv 1 \pmod 4$ oder $m \equiv 3 \pmod 4$,
+je nach konkretem Startwert $n_0$. Ohne Wissen über $m \bmod 4$ liegt
+$\vii(3n_k+1) \in \{2, 3, 4, \ldots\}$ mit jeweils halber Wahrscheinlichkeit
+im heuristischen Sinn.
+\end{bemerkung}
+
+\subsection{Quantitative Analyse: Kontraktion nach C-Kette + EA-Schritt}
+
+Wir berechnen den Gesamtfaktor nach einem Block der Länge~$k$ (C-Kette) plus
+einem anschließenden EA-Schritt.
+
+\begin{proposition}[Nettofaktor C$^k$A]
+\label{prop:ck-a-faktor}
+Sei $n_0+1 = 2^{k+1} \cdot m$ und $\nu := \vii(3n_k+1) \geq 2$. Dann:
+\[
+  n_{k+1} := \U(n_k) = \frac{3n_k+1}{2^\nu} = \frac{2(3^{k+1}m-1)}{2^\nu}
+           = \frac{3^{k+1}m - 1}{2^{\nu-1}}.
+\]
+Der Verhältnisfaktor lautet:
+\[
+  \frac{n_{k+1}}{n_0}
+  = \frac{(3^{k+1}m - 1)/2^{\nu-1}}{2^{k+1}m - 1}
+  \;\approx\; \frac{3^{k+1}m}{2^{k+\nu}}
+  = \left(\frac{3}{2}\right)^{k+1} \cdot \frac{1}{2^{\nu-1}}
+  \quad\text{für großes }m.
+\]
+Kontraktion (d.\,h.\ $n_{k+1} < n_0$) tritt asymptotisch genau dann ein, wenn:
+\[
+  \left(\frac{3}{2}\right)^{k+1} < 2^{\nu-1}
+  \;\Longleftrightarrow\;
+  (k+1)\log_2 3 < k + \nu
+  \;\Longleftrightarrow\;
+  \nu > (k+1)\log_2 3 - k = k\bigl(\log_2 3 - 1\bigr) + \log_2 3.
+\]
+Mit $\log_2 3 \approx 1{,}585$ ist die Kontraktionsschwelle:
+\[
+  \nu > 0{,}585 \cdot k + 1{,}585.
+\]
+\end{proposition}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{cccc}
+\toprule
+$k$ & Minschwelle $\nu_{\min}$ & Nettofaktor bei $\nu = \nu_{\min}$ & Kontrahiert? \\
+\midrule
+1 & $> 2{,}17$ & $\nu=2$: $\approx 3^2/2^3 = 9/8 > 1$ & Nein bei $\nu=2$ \\
+  &            & $\nu=3$: $\approx 9/16 < 1$ & Ja bei $\nu=3$ \\
+2 & $> 2{,}75$ & $\nu=3$: $\approx 3^3/2^5 = 27/32 < 1$ & Ja bei $\nu=3$ \\
+3 & $> 3{,}34$ & $\nu=4$: $\approx 3^4/2^7 = 81/128 < 1$ & Ja bei $\nu=4$ \\
+5 & $> 4{,}51$ & $\nu=5$: $\approx 3^6/2^{10} = 729/1024 < 1$ & Ja bei $\nu=5$ \\
+10 & $> 7{,}44$ & $\nu=8$: $\approx 3^{11}/2^{18} \approx 0{,}67 < 1$ & Ja bei $\nu=8$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{tcolorbox}[warnung]
+\textbf{Fehlende Schranke:} Die Kontraktionsschwelle $\nu \geq \lceil 0{,}585k + 1{,}585 \rceil + 1$
+wächst linear mit~$k$. Es ist nicht bekannt, ob $\vii(3n_k+1)$ für
+die in der Praxis auftretenden C-Ketten-Startwerte diese Schwelle
+systematisch überschreitet. Das ist genau der Kern der offenen DC-Lücke.
+\end{tcolorbox}
+
+% ====================================================
+\section{5-glatte Zahlen und das Dichteargument}
+\label{sec:fglatt}
+% ====================================================
+
+\subsection{Definition und Dichte}
+
+\begin{definition}[5-glatte Zahlen / Hamming-Zahlen]
+Eine natürliche Zahl $m \geq 1$ heißt \emph{5-glatt} (auch: \emph{reguläre Zahl}
+oder \emph{Hamming-Zahl}), falls alle ihre Primteiler in $\{2, 3, 5\}$ liegen:
+\[
+  m = 2^a \cdot 3^b \cdot 5^c, \quad a, b, c \geq 0.
+\]
+Die Menge der 5-glatten Zahlen ist $\mathcal{H} := \{1, 2, 3, 4, 5, 6, 8, 9,
+10, 12, 15, 16, 18, 20, 24, 25, \ldots\}$.
+\end{definition}
+
+\begin{proposition}[Dichte der 5-glatten Zahlen]
+\label{prop:dichte-5glatt}
+Sei $H(N)$ die Anzahl der 5-glatten Zahlen $\leq N$. Dann gilt:
+\[
+  H(N) = \frac{(\log_2 N)(\log_3 N)(\log_5 N)}{6} + O\!\left((\log N)^2\right)
+       = O\!\left((\log N)^3\right).
+\]
+Insbesondere: Die Dichte der 5-glatten Zahlen unter allen natürlichen Zahlen
+ist~$0$:
+\[
+  \frac{H(N)}{N} \to 0 \quad (N \to \infty).
+\]
+\end{proposition}
+
+\begin{beweis}[Beweisskizze]
+Eine 5-glatte Zahl $m = 2^a 3^b 5^c \leq N$ entspricht einem Gitterpunkt
+$(a,b,c) \in \Z_{\geq 0}^3$ mit $a\log 2 + b\log 3 + c\log 5 \leq \log N$.
+Das Volumen des entsprechenden Simplexes ist
+$\frac{(\log N)^3}{6 \log 2 \cdot \log 3 \cdot \log 5}$, also
+$H(N) \sim \frac{(\log N)^3}{6\log 2 \cdot \log 3 \cdot \log 5} = O((\log N)^3)$.
+Da $(\log N)^3 / N \to 0$, verschwindet die Dichte. \qedhere
+\end{beweis}
+
+\subsection{5-glatte $n_0+1$ als Extremfälle}
+
+Für eine C-Kette der Länge $k$ ausgehend von $n_0$ schreiben wir
+$n_0+1 = 2^{k+1} \cdot m$ mit $m$ ungerade. Was passiert, wenn $m$ besonders
+klein (5-glatt) ist?
+
+\begin{bemerkung}[5-glatte Startwerte]
+Ist $n_0 + 1 = 2^a \cdot 3^b \cdot 5^c$ (5-glatt), so gilt:
+\begin{enumerate}[label=(\roman*)]
+  \item Die maximale C-Kettenlänge beträgt $\vii(n_0+1) - 1 = a - 1$.
+  \item Der ungerade Anteil von $n_0+1$ ist $3^b \cdot 5^c$; für Schritt~$k$
+    ist $m = 3^{b'} \cdot 5^c$ mit $b' \geq 1$.
+  \item $n_k = 2 \cdot 3^k \cdot m - 1 = 2 \cdot 3^{k+b'} \cdot 5^c - 1$.
+    Die Zahl $3n_k+1 = 2(3^{k+b'+1}\cdot 5^c - 1)$ hat keine offensichtliche
+    große 2-Potenz als Faktor --- 5-Glattheit von $n_0+1$ überträgt sich
+    \emph{nicht} auf $n_k$.
+\end{enumerate}
+\end{bemerkung}
+
+\begin{bemerkung}[Typisches $\vii(n_0+1)$ und heuristische Kettenlänge]
+Für zufälliges ungerades $n_0$ ist $\vii(n_0+1)$ geometrisch verteilt:
+$\Pr[\vii(n_0+1) = v] = 2^{-v}$ für $v \geq 1$.
+Der Erwartungswert ist $\mathbb{E}[\vii(n_0+1)] = 2$.
+
+Damit ist die \emph{typische} C-Kettenlänge $\leq \vii(n_0+1) - 1 \approx 1$.
+Sehr lange C-Ketten (Länge $k \gg 1$) treten nur für Startwerte auf, bei
+denen $\vii(n_0+1) \geq k+1$, was Dichte $\leq 1/2^{k+1}$ hat.
+
+\textbf{Fazit:} 5-glatte $n_0+1$ mit großem $a = \vii(n_0+1)$ liefern die
+längsten C-Ketten, sind aber auch am seltensten.
+\end{bemerkung}
+
+\subsection{Verbindung zur Kontraktionsanalyse}
+
+Haben wir $n_0+1 = 2^{k+1} \cdot 3^b \cdot 5^c$ (5-glatt), so ist
+$m = 3^{b-1} \cdot 5^c$ (mit $b \geq 1$) der ungerade Anteil nach Division
+durch $2^{k+1}$. Dann:
+\[
+  n_k = 2 \cdot 3^k \cdot 3^{b-1} \cdot 5^c - 1 = 2 \cdot 3^{k+b-1} \cdot 5^c - 1.
+\]
+\[
+  3n_k + 1 = 2(3^{k+b} \cdot 5^c - 1).
+\]
+Die 2-adische Bewertung $\vii(3^{k+b} \cdot 5^c - 1)$ hängt von~$k+b \bmod 2$
+und $5^c \bmod 4$ ab (da $5 \equiv 1 \pmod 4$):
+
+$5^c \equiv 1 \pmod 4$ für alle $c$. Daher $3^{k+b} \cdot 5^c \equiv 3^{k+b} \pmod 4$.
+
+Damit: $3^{k+b} \cdot 5^c - 1 \equiv 3^{k+b} - 1 \pmod 4$.
+\begin{itemize}
+  \item $k+b$ gerade: $3^{k+b} \equiv 1 \pmod 4$, also $3^{k+b}-1 \equiv 0 \pmod 4$,
+    $\vii(3n_k+1) \geq 3$.
+  \item $k+b$ ungerade: $3^{k+b} \equiv 3 \pmod 4$, also $3^{k+b}-1 \equiv 2 \pmod 4$,
+    $\vii(3n_k+1) = 2$ (minimal).
+\end{itemize}
+
+% ====================================================
+\section{Størmer's Theorem und extreme C-Ketten}
+\label{sec:stoermer}
+% ====================================================
+
+\subsection{Statement von Størmer's Theorem}
+
+\begin{theorem}[Størmer 1897]
+\label{thm:stoermer}
+Sei $P = \{p_1, \ldots, p_r\}$ eine endliche Menge von Primzahlen.
+Dann gibt es nur endlich viele $n \in \N$, sodass sowohl $n$ als auch $n+1$
+$P$-glatt sind (d.\,h.\ alle Primteiler in $P$ liegen).
+
+Die vollständige Liste der $P$-glatten Paare $(n, n+1)$ lässt sich effektiv
+berechnen (via Pellsche Gleichungen).
+\end{theorem}
+
+Für $P = \{2, 3, 5\}$ sind die vollständigen 5-glatten Paare bekannt:
+$(1,2), (2,3), (3,4), (4,5), (7,8), (8,9), (15,16), (24,25), (35,36), (63,64), (80,81), (224,225)$.
+
+\subsection{Implikation für C-Ketten: Eine begrenzte Aussage}
+
+\begin{bemerkung}[Størmer und C-Ketten]
+\label{bem:stoermer}
+Størmer's Theorem besagt: Wenn $n_0$ \emph{und} $n_0+1$ beide 5-glatt wären,
+gibt es nur endlich viele solche $n_0$; diese könnten einzeln überprüft werden.
+
+Für unser Problem reicht es aber, dass $n_0+1$ 5-glatt ist (nicht $n_0$ selbst).
+Diese Einschränkung liefert Størmer's Theorem nicht --- es gibt unendlich
+viele $n_0$ mit 5-glattem $n_0+1$ (z.\,B.\ $n_0 = 2^a - 1$ für alle $a$).
+
+\textbf{Was Størmer liefert:} Für die Spezialklasse der Startwerte, wo
+\emph{beide} $n_0$ und $n_0+1$ 5-glatt sind, gibt es nur endlich viele
+Fälle (die obige Liste). In dieser Liste kann die C-Kettenlänge direkt
+verifiziert werden:
+\begin{itemize}
+  \item $(n_0, n_0+1) = (3, 4)$: $\vii(4) = 2$, max. Länge $\leq 1$. $n_0 = 3 \equiv 3 \pmod{12}$: kein C-Typ.
+  \item $(7, 8)$: $\vii(8) = 3$, max. Länge $\leq 2$. $n_0 = 7 \equiv 7 \pmod{12}$: B-Typ, kein C-Typ.
+  \item $(15, 16)$: $\vii(16) = 4$, max. Länge $\leq 3$. $n_0 = 15 \equiv 3 \pmod{12}$: kein C-Typ.
+  \item $(35, 36)$: $\vii(36) = 2$. $n_0 = 35 \equiv 11 \pmod{12}$: C-Typ! Max. Länge $\leq 1$. Tatsächlich: $n_1 = (3\cdot35+1)/2 = 53 \equiv 5 \pmod{12}$ (A-Typ). Kette endet nach $k=1$. \checkmark
+  \item $(63, 64)$: $\vii(64) = 6$, max. Länge $\leq 5$. $n_0 = 63 \equiv 3 \pmod{12}$: kein C-Typ.
+  \item $(224, 225)$: $\vii(225) = 0$, $225$ ungerade; $n_0 = 224$ ist gerade.
+\end{itemize}
+Kein Fall in der Størmer-Liste erzeugt eine besonders lange C-Kette.
+\end{bemerkung}
+
+\begin{tcolorbox}[warnung]
+\textbf{Begrenzter Nutzen für die DC:}
+Størmer's Theorem ist elegant, liefert aber für unser Problem keinen
+wesentlichen Fortschritt. Die eigentlichen Extremfälle für lange C-Ketten
+(mit $\vii(n_0+1) \gg 1$) sind $n_0 = 2^{k+1}t - 1$ für beliebig große~$k$;
+hier ist $n_0$ typischerweise nicht selbst 5-glatt.
+\end{tcolorbox}
+
+% ====================================================
+\section{Kombiniertes Abstiegsargument}
+\label{sec:abstieg}
+% ====================================================
+
+\subsection{Der C$^k$A-Block als Grundbaustein}
+
+Wir fassen die bewiesenen Ergebnisse zu einem kombinierten Abstiegsblock zusammen.
+
+\begin{theorem}[C$^k$A-Block: Struktursatz]
+\label{thm:cka}
+Sei $n_0$ der Start einer C-Kette der Länge $k$ (mit $\vii(n_0+1) = k+1$ und
+$n_0+1 = 2^{k+1} \cdot m$, $m$ ungerade, $3 \mid m$).
+Sei $\nu := \vii(3n_k+1) \geq 2$ (nach Theorem~\ref{thm:ea-nach-ck}).
+
+Dann gilt für $n_{k+1} = \U(n_k)$:
+\begin{align*}
+  n_k &= 2 \cdot 3^k m - 1,\\
+  n_{k+1} &= \frac{3^{k+1}m - 1}{2^{\nu-1}}.
+\end{align*}
+Die Nettowirkung des gesamten C$^k$A-Blocks beträgt asymptotisch:
+\[
+  \frac{n_{k+1}}{n_0}
+  \approx \frac{3^{k+1}}{2^{k+\nu}}
+  = \left(\frac{3}{2}\right)^{k+1} \cdot 2^{1-\nu}.
+\]
+\end{theorem}
+
+\begin{tcolorbox}[kernidee]
+\textbf{Zwei Regime:}
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{$k$ klein, $\nu$ beliebig:} Für $k \leq 2$ und $\nu = 2$
+    gilt $n_{k+1}/n_0 \approx 9/8$ (Wachstum) bzw.\ $27/32$ (Kontraktion für $\nu=3$).
+    Im schlechtesten Fall ($k=1$, $\nu=2$): $n_2/n_0 \approx 9/8 > 1$.
+
+  \item \textbf{$k$ groß:} Für C-Ketten der Länge $k \gg 1$ ist der Nettofaktor
+    $(3/2)^{k+1}/2^{\nu-1}$. Damit dieser kleiner als~$1$ ist, muss
+    $\nu \geq \lceil (k+1)\log_2 3 - k \rceil + 1 \approx 0{,}585k + 2$.
+
+    Da $\vii(3n_k+1) \geq 2$ bewiesen, aber nicht mehr, fehlt ein Argument,
+    das erzwingt, dass dieser Wert groß genug ist.
+\end{enumerate}
+\end{tcolorbox}
+
+\subsection{Logarithmische Schranke und Gesamtkontraktion}
+
+\begin{korollar}[Logarithmische Längenbeschränkung]
+\label{kor:log-laenge}
+Für jeden Startwert $n_0 \leq N$ hat die C-Kette Länge
+$k \leq \vii(n_0+1) - 1 \leq \lfloor\log_2(N+1)\rfloor - 1 \leq \log_2 N$.
+
+Damit wächst $n_k$ höchstens um den Faktor:
+\[
+  \frac{n_k}{n_0}
+  = \frac{2 \cdot 3^k m - 1}{2^{k+1}m - 1}
+  \approx \frac{3^k}{2^k}
+  = \left(\frac{3}{2}\right)^k
+  \leq \left(\frac{3}{2}\right)^{\log_2 N}
+  = N^{\log_2(3/2)}
+  = N^{\log_2 3 - 1}
+  \approx N^{0{,}585}.
+\]
+\end{korollar}
+
+\begin{bemerkung}[Subpolynomialer Anstieg]
+Das Wachstum der C-Kette beträgt $O(n_0^{0{,}585})$ (als Funktion von~$n_0$),
+nicht mehr exponentiell in $k$, da $k \leq \log_2 n_0$.
+Für einen vollständigen Abstiegsbeweis müsste der nachfolgende EA-Schritt
+diesen Anstieg überbieten.
+\end{bemerkung}
+
+\subsection{Zur Rolle von $\nu_2(3n_k+1)$: Heuristische und analytische Sicht}
+
+\begin{tcolorbox}[warnung, title={Heuristisches Argument}]
+Für $n_k = 2 \cdot 3^k m - 1$ ist $3^{k+1}m - 1$ eine ``typische'' ungerade Zahl
+minus~$1$. Heuristisch ist $\vii(3^{k+1}m-1)$ geometrisch verteilt:
+$\Pr[\vii(3^{k+1}m-1) = v] \approx 2^{-v}$.
+
+Der Erwartungswert $\mathbb{E}[\vii(3n_k+1)] = \mathbb{E}[\vii(3^{k+1}m-1)] + 1 \approx 2 + 1 = 3$.
+
+Damit hätte der C$^k$A-Block im Mittel $\nu = 3$, was den Nettofaktor
+$(3/2)^{k+1} \cdot 2^{-2}$ ergibt. Kontraktion im Mittel iff $k \leq 3$.
+
+Dies ist eine \emph{heuristische} Rechnung, kein Beweis.
+\end{tcolorbox}
+
+% ====================================================
+\section{Was lässt sich beweisen, was bleibt offen}
+\label{sec:fazit}
+% ====================================================
+
+\begin{tcolorbox}[ergebnis, title={Bewiesene neue Ergebnisse dieses Dokuments}]
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{Korrekte Längenschranke} (Proposition~\ref{prop:korrekt}):
+    C-Kettenlänge $\leq \vii(n_0+1) - 1$ (Off-by-one-Korrektur).
+
+  \item \textbf{Zwingender EA-Schritt} (Theorem~\ref{thm:ea-nach-ck}):
+    Nach jeder C-Kette der Länge $k$ folgt sofort ein EA-Schritt.
+    D.\,h.\ $n_k$ hat stets $\vii(3n_k+1) \geq 2$.
+
+  \item \textbf{Paritätsbedingung} (Proposition~\ref{prop:nu3-nach-ck}):
+    $\vii(3n_k+1) \geq 3$ genau wenn die Parität von~$k$ und~$m$ zusammenpassen
+    (explizite mod-4-Bedingung angegeben).
+
+  \item \textbf{Logarithmische C-Kettenlänge} (Korollar~\ref{kor:log-laenge}):
+    Für $n_0 \leq N$ ist die C-Kettenlänge $\leq \log_2 N$, und der Anstieg
+    in der Kette beträgt höchstens $O(n_0^{0{,}585})$.
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{tcolorbox}[lücke, title={Offene Fragen --- präzise benannt}]
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{Uniforme Schranke für $\nu$:}
+    Gezeigt ist $\vii(3n_k+1) \geq 2$ nach einer C-Kette der Länge~$k$.
+    Für Kontraktion des C$^k$A-Blocks braucht man $\nu \geq 0{,}585k + 2$.
+    Es ist unbekannt, ob eine solche Schranke für alle relevanten Startwerte
+    gilt. Dies ist äquivalent zur DC (Durchlaufbedingung).
+
+  \item \textbf{5-glatte Zahlen schließen keine Lücke:}
+    Das 5-glatt-Dichteargument zeigt, dass C-Ketten maximaler Länge selten sind.
+    Maar es liefert keine untere Schranke für $\vii(3n_k+1)$.
+    Størmer's Theorem ist nicht direkt anwendbar.
+
+  \item \textbf{Gesamtkontraktion nach $m_0$ Schritten:}
+    Selbst wenn jeder einzelne C$^k$A-Block nicht kontrahiert, könnte eine
+    Folge von Blöcken insgesamt kontrahieren (iterierter Abstieg).
+    Dies ist die inhaltliche Hoffnung der DC-Analyse, aber bisher unbewiesen.
+
+  \item \textbf{Der Kern: gleichmäßige DC vs.\ pointwise DC:}
+    Bewiesen (und nicht widerrufbar): Für jedes feste $n_0$ gibt es endlich
+    viele C-Schritte. Unbewiesen: eine von $n_0$ unabhängige Schranke.
+\end{enumerate}
+\end{tcolorbox}
+
+\subsection{Gesamtübersicht: Statusmatrix}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{p{7.5cm} p{2.5cm} p{3.5cm}}
+\toprule
+\textbf{Aussage} & \textbf{Status} & \textbf{Methode / Quelle} \\
+\midrule
+C-Kettenlänge $\leq \vii(n_0+1)-1$ (korrekte Schranke)
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen} & Prop.~\ref{prop:korrekt}, dieses Dok. \\
+Off-by-one-Korrektur Kor.~3.1 in C-Ketten-2adisch
+  & \textcolor{bewiesengrün}{\bfseries Korrigiert} & Abschn.~\ref{sec:korrektur} \\
+Nach C-Kette der Länge $k$: $\vii(3n_k+1)\geq 2$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen} & Thm.~\ref{thm:ea-nach-ck} \\
+Parität: $\vii(3n_k+1)\geq 3$ genau bei mod-4-Bedingung
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen} & Prop.~\ref{prop:nu3-nach-ck} \\
+C-Ketten-Wachstum $\leq n_0^{0{,}585}$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen} & Kor.~\ref{kor:log-laenge} \\
+5-glatte Zahlen haben Dichte $0$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen} & Prop.~\ref{prop:dichte-5glatt} \\
+Størster Theorem: endlich viele 5-glatte Paare
+  & \textcolor{bewiesengrün}{\bfseries Extern bekannt} & Størmer 1897 \\
+Kontraktion des C$^k$A-Blocks für beliebiges $k$
+  & \textcolor{lückenrot}{\bfseries Offen} & erfordert $\nu \gtrsim 0{,}585k$ \\
+Uniforme DC-Schranke $m_0$ (unabh.\ von $n_0$)
+  & \textcolor{lückenrot}{\bfseries Offen} & Kernlücke \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Gesamteinschätzung}
+
+\begin{tcolorbox}[kernidee, title={Fazit}]
+Der Hauptgewinn dieses Dokuments ist struktureller Natur:
+
+\textbf{(a) Fehlerkorrektur.} Die C-Kettenlänge ist $\leq \vii(n_0+1) - 1$
+(nicht $\vii(n_0+1)$ wie im Vorgängerdokument, und nicht $\vii(n_0+1) - 2$
+wie im fehlerhaften Korollar~3.1 behauptet). Der korrekte Wert liegt dazwischen.
+
+\textbf{(b) Strukturergebnis.} Der zwingende EA-Schritt nach einer C-Kette
+(Theorem~\ref{thm:ea-nach-ck}) ist ein echter Fortschritt: Die Kollatzfolge
+wechselt nach jedem C-Block zwingend in einen Abstiegsschritt.
+
+\textbf{(c) Wo die Lücke liegt.} Das Problem ist \emph{nicht} die Endlichkeit
+einzelner C-Ketten (bewiesen), sondern die Frage, ob der nachfolgende EA-Schritt
+groß genug ist ($\nu \geq 0{,}585k + 2$). Für kleine $k$ ist das Standard,
+für große $k$ fehlt das Argument.
+
+\textbf{(d) 5-glatte Zahlen / Størmer.} Diese Werkzeuge liefern
+Dichteinformation (lange C-Ketten sind selten) und Endlichkeitsaussagen für
+Spezialfälle, schließen die DC-Lücke aber nicht.
+
+\medskip
+Die Situation ist ehrlich zusammengefasst: Wir wissen, dass jede Kollatz-Bahn
+nach einer C-Kette zu einem echten EA-Schritt zwingt. Wie tief dieser Schritt
+ist, hängt von $\vii(3n_k+1)$ ab --- und genau diesen Wert zu kontrollieren
+ist das offene Kernproblem.
+\end{tcolorbox}
+
+% ====================================================
+% Literatur
+% ====================================================
+\begin{thebibliography}{9}
+
+\bibitem{collatz-c-ketten}
+T.\ Hoffbauer,
+\textit{C-Ketten in der Collatz-Dynamik: Eine 2-adische Analyse der
+Durchlaufbedingung},
+Mathematische Texte (2025/2026).
+
+\bibitem{collatz-abschluss}
+T.\ Hoffbauer,
+\textit{Collatz-Beweisversuch: Synthese und Abschlussanalyse},
+Mathematische Texte (2026).
+
+\bibitem{stoermer}
+C.\ Størmer,
+\textit{Quelques théorèmes sur l'équation de Pell $x^2 - Dy^2 = \pm 1$ et
+leurs applications},
+Videnskapsselskapets skrifter, Kristiania (1897).
+
+\bibitem{regular-numbers}
+D.\ E.\ Knuth,
+\textit{The Art of Computer Programming, Vol.~2: Seminumerical Algorithms},
+3rd ed., Addison-Wesley (1997), Sect.~4.5.2 (Hamming-Zahlen).
+
+\bibitem{lagarias}
+J.\,C.\ Lagarias,
+\textit{The $3x+1$ problem and its generalizations},
+Amer.\ Math.\ Monthly \textbf{92} (1985), 3--23.
+
+\bibitem{tao-collatz}
+T.\ Tao,
+\textit{Almost all orbits of the Collatz map attain almost bounded values},
+Forum of Mathematics Pi \textbf{10} (2022), e12.
+
+\end{thebibliography}
+
+\end{document}

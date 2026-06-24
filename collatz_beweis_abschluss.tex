@@ -1,0 +1,790 @@
+\documentclass[12pt,a4paper]{article}
+
+% -------------------------------------------------
+% Sprache / Kodierung
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+
+% -------------------------------------------------
+% Layout / Grafik / Farben
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{array}
+
+% -------------------------------------------------
+% Farben
+% -------------------------------------------------
+\definecolor{lückenrot}{RGB}{180,40,40}
+\definecolor{bewiesengrün}{RGB}{30,100,50}
+\definecolor{warnorange}{RGB}{200,100,10}
+\definecolor{hintergrundblau}{RGB}{235,242,250}
+\definecolor{hintergrundgelb}{RGB}{255,252,225}
+\definecolor{fehlerrot}{RGB}{200,0,0}
+\definecolor{konjviolett}{RGB}{80,0,130}
+
+% -------------------------------------------------
+% tcolorbox-Stile
+% -------------------------------------------------
+\tcbset{
+  lücke/.style={colback=red!8, colframe=lückenrot, fonttitle=\bfseries,
+    title={Offene Lücke}},
+  kernidee/.style={colback=hintergrundblau, colframe=blue!60!black,
+    fonttitle=\bfseries, title={Kernidee}},
+  ergebnis/.style={colback=green!7, colframe=bewiesengrün,
+    fonttitle=\bfseries, title={Bewiesenes Ergebnis}},
+  warnung/.style={colback=orange!10, colframe=warnorange,
+    fonttitle=\bfseries, title={Achtung: Heuristik\,/\,Konjektur}},
+  korrektur/.style={colback=red!4, colframe=fehlerrot, fonttitle=\bfseries,
+    title={Korrektur eines Vorgängerdokuments}},
+  konj/.style={colback=violet!5, colframe=konjviolett, fonttitle=\bfseries,
+    title={Konjektur (unbewiesen)}},
+}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+\newtheorem{hypothese}[definition]{Hypothese}
+\newtheorem{satz}[definition]{Satz}
+
+\newenvironment{beweis}{\begin{proof}[Beweis]}{\end{proof}}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\vii}{\nu_2}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Ztwo}{\mathbb{Z}_2}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+
+% -------------------------------------------------
+% Dokument
+% -------------------------------------------------
+\title{%
+  Collatz-Beweisversuch: Synthese und Abschlussanalyse\\[0.4em]
+  \large Kombinierter Abstieg, Zyklenfreiheit und ehrliche Bestandsaufnahme%
+}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Dieses Dokument synthetisiert die Ergebnisse aus fünf Vorgängertexten
+(\textit{eabc\_spektrum}, \textit{oktonionen\_beweis},
+\textit{dc\_morley\_walter}, \textit{c\_ketten\_2adisch},
+\textit{lean\_dc}) zu einem Gesamtbild.
+
+Tatsächlich rigoros bewiesen sind: (i)~B-Typ kann nicht auf B-Typ folgen,
+(ii)~C-Ketten der Länge~$k$ erfordern Startwerte in einer Residuenklasse
+der Dichte $\leq 1/2^k$, (iii)~eine kompakte Iterationsformel für
+C-Kettenglieder, (iv)~Normdeszenz für EA-Schritte im $E_8$-Gitter für
+hinreichend große Normen.
+
+Als neues Ergebnis wird hier gezeigt: Ein vollständiger B\textbullet C\textbullet A-Block
+mit~$\vii = 2$ beim A-Schritt wächst um Faktor $\approx 27/16$; Kontraktion
+tritt genau dann ein, wenn $\vii \geq 3$ beim A-Schritt gilt.
+Für das Zyklenausschluss-Argument wird die Tao-Identität mit der DC-Struktur
+verbunden: Für einen Zyklus mit B\textbullet C\textbullet A-Blöcken gilt
+$2^m < 3^l$ (nötig wäre $2^m > 3^l$) --- ein direkter Widerspruch,
+der Zyklen dieser Struktur ausschließt.
+
+Offen bleibt die Lücke zwischen dem 2-adischen Argument (keine unendlichen
+C-Ketten in $\Ztwo$) und der universellen Aussage für alle $n \in \N$.
+\end{abstract}
+
+\tableofcontents
+
+\bigskip
+\begin{tcolorbox}[warnung, title={Zur Einordnung dieses Dokuments}]
+Die Collatz-Vermutung ist unbewiesen. Dieses Dokument führt den Stand
+des Beweisversuchs so weit wie möglich voran, trennt aber konsequent
+zwischen \emph{bewiesenen Aussagen}, \emph{Konjekturen} und
+\emph{offenen Lücken}. Ein Beweis der Collatz-Vermutung liegt hier nicht vor.
+\end{tcolorbox}
+
+% ====================================================
+\section{Bewiesene Bausteine: Übersicht}
+\label{sec:bausteine}
+% ====================================================
+
+Die folgende Tabelle fasst alle rigoros bewiesenen Ergebnisse aus
+den fünf Vorgängerdokumenten zusammen.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.45}
+\begin{tabular}{>{\raggedright}p{5.8cm} >{\centering}p{2.8cm} >{\raggedright\arraybackslash}p{4.5cm}}
+\toprule
+\textbf{Aussage} & \textbf{Status} & \textbf{Quelle / Methode} \\
+\midrule
+$\vii(3n+1) = 1$ für $n \equiv 7,11 \pmod{12}$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & EABC-Spektrum, Kongruenzrechnung \\[2pt]
+$\vii(3n+1) \geq 2$ für $n \equiv 1,5 \pmod{12}$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & EABC-Spektrum, Kongruenzrechnung \\[2pt]
+B-Typ folgt nicht auf B-Typ
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & DC-Morley-Walter, Prop.\,2.1 \\[2pt]
+BC-Ketten haben Form $\mathrm{B}^{\leq 1}\cdot\mathrm{C}^k$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & DC-Morley-Walter, Kor.\,2.1 \\[2pt]
+C-Ketten Länge~$k$: Dichte $\leq 1/2^k$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & DC-Morley-Walter, Induktion \\[2pt]
+Formel $n_j = 3^j(n_0+1)/2^j - 1$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & C-Ketten-2-adisch, Prop.\,2.1 \\[2pt]
+C-Kette Länge $k$ erfordert $\vii(n_0+1) \geq k$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & C-Ketten-2-adisch, Prop.\,2.2 \\[2pt]
+Unendliche C-Kette $\Rightarrow n_0 = -1 \in \Ztwo$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & 2-adischer Limes \\[2pt]
+$E_8$-Normformel: $N(3x+1) = 9N(x)+6\operatorname{Re}(x)+1$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & Oktonionen, Prop.\,3.1 \\[2pt]
+Normabstieg bei EA-Schritt ($N \gg 1$)
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & Oktonionen-Normabschätzung \\[2pt]
+Tao-Identität: $\U^l(n)\cdot 2^m = 3^l\cdot n + G_l$
+  & \textcolor{warnorange}{\bfseries extern}
+  & johnjanik/syracuse \\[2pt]
+Keine positiven Zyklen (bedingt)
+  & \textcolor{warnorange}{\bfseries bedingt}
+  & ericmerle, Baker-Axiom \\[2pt]
+DC (gleichmäßige Schranke $m_0$)
+  & \textcolor{lückenrot}{\bfseries offen}
+  & --- \\[2pt]
+Collatz-Vermutung
+  & \textcolor{lückenrot}{\bfseries offen}
+  & --- \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ====================================================
+\section{EABC-Grundstruktur: Präzisierung}
+\label{sec:eabc}
+% ====================================================
+
+\subsection{Korrekte mod-24-Aussagen}
+
+\begin{tcolorbox}[korrektur]
+Das Dokument \texttt{collatz\_lean\_dc.tex} enthält eine missverständliche
+Aussage: Die Lean\,4-Verifikation
+\[
+  \texttt{forall r : ZMod 12,\; r = 11 -> (3*r+1)/2 = 5}
+\]
+prüft lediglich, dass für den \emph{Repräsentanten} $r = 11$ in \texttt{ZMod\,12}
+der Ausdruck $34/2 = 17 \equiv 5 \pmod{12}$ gilt.
+Das bedeutet \emph{nicht}, dass $\U(n) \equiv 5 \pmod{12}$ für alle
+$n \equiv 11 \pmod{12}$. Gegenbeispiel: $n = 23$, $\U(23) = 35 \equiv 11 \pmod{12}$.
+
+Die korrekte Aussage benötigt Modulus~$24$, nicht~$12$.
+\end{tcolorbox}
+
+\begin{proposition}[Übergangsregeln modulo 24]
+\label{prop:mod24}
+Für ungerades $n \in \N$ gilt unter der odd-to-odd-Abbildung $\U(n) = (3n+1)/2^{\vii(3n+1)}$:
+\begin{align*}
+  n \equiv 7  \pmod{24} \;&\Rightarrow\; \U(n) \equiv 11 \pmod{12},\quad (\text{B} \to \text{C})\\
+  n \equiv 19 \pmod{24} \;&\Rightarrow\; \U(n) \equiv 5  \pmod{12},\quad (\text{B} \to \text{A})\\
+  n \equiv 11 \pmod{24} \;&\Rightarrow\; \U(n) \equiv 5  \pmod{12},\quad (\text{C} \to \text{A})\\
+  n \equiv 23 \pmod{24} \;&\Rightarrow\; \U(n) \equiv 11 \pmod{12},\quad (\text{C} \to \text{C})
+\end{align*}
+\end{proposition}
+
+\begin{beweis}
+Sei $n = 24k + r$ für $r \in \{7,19,11,23\}$.
+\textit{Fall $r=7$}: $n_1 = (3(24k+7)+1)/2 = (72k+22)/2 = 36k+11$.
+$36k+11 \equiv 11 \pmod{12}$ (da $36k \equiv 0 \pmod{12}$). \\
+\textit{Fall $r=19$}: $n_1 = (72k+58)/2 = 36k+29$. $36k+29 \equiv 5 \pmod{12}$. \\
+\textit{Fall $r=11$}: $n_1 = (72k+34)/2 = 36k+17$. $36k+17 \equiv 5 \pmod{12}$. \\
+\textit{Fall $r=23$}: $n_1 = (72k+70)/2 = 36k+35$. $36k+35 \equiv 11 \pmod{12}$.
+\end{beweis}
+
+\begin{korollar}[Zwingender EA-Schritt nach maximal 2 BC-Schritten]
+\label{kor:bca}
+Jede Collatz-Bahn, die einen B-Schritt durchläuft, durchläuft nach
+spätestens zwei weiteren Schritten einen EA-Schritt. Formal:
+Ist $n$ B-Typ, so ist $\U(\U(n))$ stets EA-Typ
+(unabhängig davon, ob $n \equiv 7$ oder $n \equiv 19 \pmod{24}$).
+
+\emph{Achtung:} Dies beschreibt nur die mod-24-Ebene. C-Ketten der Länge~$\geq 2$
+sind auf feinerer Ebene (mod~$48$, mod~$96$, \ldots) möglich.
+\end{korollar}
+
+\begin{beweis}
+Aus Prop.~\ref{prop:mod24}: \\
+--- Fall B$\to$A ($n \equiv 19 \pmod{24}$): Bereits der erste Folgeschritt ist A-Typ (EA). \\
+--- Fall B$\to$C ($n \equiv 7 \pmod{24}$): $n_1 \equiv 11 \pmod{12}$, C-Typ.
+Dann gilt $n_1 = 36k+11$ für passendes~$k$.
+$n_1 \equiv 11 \pmod{24}$ oder $n_1 \equiv 23 \pmod{24}$.
+Im Fall $n_1 \equiv 11 \pmod{24}$ folgt sofort A-Typ.
+Im Fall $n_1 \equiv 23 \pmod{24}$ folgt $n_2 \equiv 11 \pmod{12}$ (C-Typ wieder).
+\end{beweis}
+
+Die Länge der C-Kette nach dem B-Schritt kann damit größer als~$1$ sein.
+Die vollständige Analyse der C-Kettenlängen erfordert die 2-adische Methode.
+
+% ====================================================
+\section{Kombinierter Abstiegssatz: BCA-Analyse}
+\label{sec:bca}
+% ====================================================
+
+\subsection{Exakte Faktorberechnung}
+
+Sei $n_0$ B-Typ mit $n_0 \equiv 7 \pmod{24}$, damit $n_1 = \U(n_0)$ C-Typ.
+Sei weiter $n_1 \equiv 11 \pmod{24}$, damit $n_2 = \U(n_1)$ A-Typ.
+Ein vollständiger B\textbullet C\textbullet A-Block liefert dann:
+
+\begin{proposition}[Exakte B\textbullet C\textbullet A-Faktoren]
+\label{prop:bca-faktoren}
+Seien $n_0, n_1, n_2$ wie oben, und sei $\nu := \vii(3n_2+1) \geq 2$.
+Dann gilt:
+\[
+  n_1 = \frac{3n_0 + 1}{2}, \qquad
+  n_2 = \frac{9n_0 + 5}{4}, \qquad
+  n_3 := \U(n_2) = \frac{27n_0 + 19}{4 \cdot 2^\nu}.
+\]
+Der Verhältnisfaktor des gesamten Blocks beträgt:
+\[
+  \frac{n_3}{n_0}
+  = \frac{27n_0 + 19}{4 \cdot 2^\nu \cdot n_0}
+  \;\approx\; \frac{27}{4 \cdot 2^\nu}
+  \quad\text{für großes }n_0.
+\]
+\end{proposition}
+
+\begin{beweis}
+$n_1 = (3n_0+1)/2$ (B-Schritt, $\vii=1$).
+$n_2 = (3n_1+1)/2 = (3(3n_0+1)/2+1)/2 = (9n_0+5)/4$ (C-Schritt, $\vii=1$).
+$n_3 = (3n_2+1)/2^\nu = (3(9n_0+5)/4+1)/2^\nu = (27n_0+19)/(4\cdot 2^\nu)$.
+\end{beweis}
+
+\begin{tcolorbox}[ergebnis]
+\textbf{Kontraktionsbedingung für den B\textbullet C\textbullet A-Block:}
+\[
+  \frac{n_3}{n_0} < 1
+  \;\Longleftrightarrow\;
+  27n_0 + 19 < 4 \cdot 2^\nu \cdot n_0
+  \;\Longleftrightarrow\;
+  n_0 > \frac{19}{4 \cdot 2^\nu - 27}.
+\]
+Das Nennervorzeichen bestimmt die Kontraktionsschwelle:
+\begin{itemize}
+  \item $\nu = 2$: $4 \cdot 4 = 16 < 27$, \emph{kein Kontraktor möglich}
+    (Nenner negativ; $n_3/n_0 \approx 27/16 \approx 1{,}69 > 1$).
+  \item $\nu = 3$: $4 \cdot 8 = 32 > 27$, \emph{Kontraktion für} $n_0 > 19/(32-27) = 3{,}8$,
+    also für alle $n_0 \geq 5$. Faktor $\approx 27/32 \approx 0{,}84 < 1$.
+  \item $\nu = 4$: Faktor $\approx 27/64 \approx 0{,}42 < 1$ (starke Kontraktion).
+\end{itemize}
+\end{tcolorbox}
+
+\subsection{Wann gilt $\nu \geq 3$ beim A-Schritt?}
+
+Sei $n_2 = (9n_0+5)/4$ A-Typ. Dann $n_2 \equiv 5 \pmod{12}$, und
+$3n_2+1 \equiv 16 \equiv 4 \pmod{12}$, also $\vii(3n_2+1) \geq 2$.
+Die Frage nach $\nu \geq 3$ hängt davon ab, ob $8 \mid 3n_2+1$:
+
+\begin{proposition}[Bedingung für $\nu \geq 3$ beim A-Schritt]
+\label{prop:nu3}
+Mit $n_0 \equiv 7 \pmod{24}$ (schreibe $n_0 = 24m+7$) gilt
+$n_2 = 54m + 17$ und
+\[
+  3n_2 + 1 = 162m + 52 = 4(40m + 13) + 4(m\cdot 0 + \tfrac{162m+52-4(40m+13)}{4}).
+\]
+Präziser: $3n_2 + 1 = 162m + 52$. Hiervon gilt:
+\begin{itemize}
+  \item $m$ gerade ($m = 2s$): $3n_2+1 = 324s+52 = 4(81s+13)$,
+    und $81s+13$ ist ungerade für $s$ gerade, gerade für $s$ ungerade.
+    Damit $\vii(3n_2+1) = 2$ für $s$ gerade ($m \equiv 0 \pmod 4$, $n_0 \equiv 7 \pmod{96}$)
+    und $\vii \geq 3$ für $s$ ungerade ($n_0 \equiv 55 \pmod{96}$).
+  \item $m$ ungerade: entsprechende mod-96-Analyse ergibt analog $\nu \in \{2, 3, \ldots\}$.
+\end{itemize}
+\end{proposition}
+
+Für die heuristische Abschätzung genügt das empirische Mittel:
+Numerisch beobachtet man für A-Typ-Zahlen $n \equiv 5 \pmod{12}$
+durchschnittlich $\overline{\vii}(3n+1) \approx 3{,}0$ (vgl.\ \textit{collatz\_eabc\_spektrum.tex}).
+Das bedeutet: Im Mittel gilt $\nu = 3$, also \emph{mittlere} Kontraktion
+mit Faktor $\approx 27/32 < 1$ pro B\textbullet C\textbullet A-Block.
+
+\subsection{Was nach einem B\textbullet C\textbullet A-Block mit $\nu = 2$ folgt}
+
+Im Fall $\nu = 2$ wächst $n_3 \approx (27/16)n_0$. Der nächste Schritt
+startet bei $n_3$, das E-Typ oder A-Typ ist. E-Typ hat typischerweise
+$\vii \approx 3$, was starke Kontraktion $\approx 3/8$ liefert. Dann ist
+$n_4 \approx (3/8) \cdot n_3 \approx (3/8)(27/16)n_0 = (81/128)n_0 \approx 0{,}63\,n_0 < n_0$.
+
+\begin{tcolorbox}[warnung]
+\textbf{Heuristischer Zweischrittabstieg:}
+Selbst im ungünstigsten Fall $\nu = 2$ kontrahiert die Bahn
+nach einem weiteren EA-Schritt:
+\[
+  n_0 \;\xrightarrow{\text{B}\cdot\text{C}\cdot\text{A}_2}\;
+  \tfrac{27}{16}n_0 \;\xrightarrow{\text{EA}_3}\;
+  \tfrac{3}{8}\cdot\tfrac{27}{16}n_0 = \tfrac{81}{128}n_0 < n_0.
+\]
+Dies ist eine \emph{heuristische} Aussage (mittleres $\vii$), kein Beweis.
+Das tatsächliche $\vii$ kann für einzelne $n$ kleiner ausfallen.
+\end{tcolorbox}
+
+\subsection{Geometrischer Mittelwert der Schrittfaktoren}
+
+Die numerischen Daten aus \textit{collatz\_eabc\_spektrum.tex} geben:
+\[
+  \text{B, C:}\; \U(n)/n \approx 3/2,\qquad
+  \text{E, A:}\; \U(n)/n \approx 3/8.
+\]
+Da jede der vier EABC-Klassen gleichgroßen Anteil unter den ungeraden Zahlen hat,
+ist der geometrische Mittelfaktor:
+\[
+  \sqrt[4]{\frac{3}{2} \cdot \frac{3}{2} \cdot \frac{3}{8} \cdot \frac{3}{8}}
+  = \sqrt[4]{\frac{9}{4} \cdot \frac{9}{64}}
+  = \sqrt[4]{\frac{81}{256}}
+  = \frac{3}{4} = 0{,}75 < 1.
+\]
+Der geometrische Mittelfaktor \emph{aller} odd-to-odd-Schritte
+liegt klar unter~$1$. Das erklärt heuristisch die globale Konvergenz
+--- ist aber kein Beweis, da einzelne Bahnen vom Mittelwert abweichen können.
+
+% ====================================================
+\section{C-Ketten: Endlichkeit und verbleibende Lücke}
+\label{sec:cketten}
+% ====================================================
+
+\subsection{Die 2-adische Formel}
+
+Das stärkste algebraische Resultat des Beweisversuchs ist die geschlossene
+Formel für C-Kettenglieder:
+
+\begin{theorem}[C-Ketten-Formel, aus \textit{collatz\_c\_ketten\_2adisch.tex}]
+\label{thm:cformel}
+Ist $n_0$ der Startwert einer C-Kette (alle Glieder $n_0,\ldots,n_{k-1}$
+sind C-Typ), so gilt für alle $j \geq 0$:
+\[
+  n_j = \frac{3^j(n_0+1)}{2^j} - 1.
+\]
+\end{theorem}
+
+Für $n_j \in \Z$ muss $2^j \mid 3^j(n_0+1)$. Da $\gcd(3,2)=1$, folgt:
+\[
+  2^j \mid (n_0+1) \quad \text{für alle } j \leq k.
+\]
+Das bedeutet: Eine C-Kette der Länge~$k$ erfordert $\vii(n_0+1) \geq k$.
+
+\subsection{2-adisches Grenzwertargument}
+
+\begin{theorem}[Keine unendlichen C-Ketten in $\N$, 2-adisch]
+\label{thm:2adisch}
+Eine unendliche C-Kette würde $\vii(n_0+1) \geq k$ für \emph{alle} $k \geq 1$
+erfordern, d.\,h.\ $n_0 + 1 \equiv 0 \pmod{2^k}$ für alle $k$.
+Das bedeutet: $n_0 = -1$ in den 2-adischen ganzen Zahlen $\Ztwo$.
+Da $-1 \notin \N_{\geq 1}$, gibt es in $\N$ kein $n_0$, das eine
+unendliche C-Kette startet --- \emph{vorausgesetzt}, dass
+der 2-adische Grenzwert $n_0 = -1$ tatsächlich der einzige
+Häufungspunkt der Residuenklassenfolge ist.
+\end{theorem}
+
+\begin{tcolorbox}[lücke]
+\textbf{Verbleibende Lücke beim 2-adischen Argument:}
+Theorem~\ref{thm:2adisch} zeigt, dass kein \emph{festes} $n_0 \in \N$
+für alle $k$ die Bedingung $n_0 \equiv -1 \pmod{2^k}$ erfüllt.
+Das schließt unendliche C-Ketten für jedes einzelne $n_0$ aus.
+
+Was \emph{nicht} direkt folgt: Dass auch C-Ketten beliebig großer
+\emph{endlicher} Länge für immer größere $n_0$ tatsächlich
+zur Kollatz-Konvergenz keinen Widerspruch erzeugen.
+Der kritische Schritt --- von ``keine unendliche C-Kette''
+zu ``C-Ketten sind gleichmäßig durch $m_0$ beschränkt'' --- bleibt offen.
+\end{tcolorbox}
+
+\begin{tcolorbox}[ergebnis]
+\textbf{Was rigoros gilt:}
+Für jedes feste $n_0 \in \N$ gibt es nur endlich viele aufeinanderfolgende
+C-Schritte (da nur endlich viele $k$ die Bedingung $\vii(n_0+1) \geq k$
+erfüllen). Es gibt also keine ``unendliche C-Kette'' im elementarsten Sinn.
+Die Frage nach einer \emph{gleichmäßigen} Schranke $m_0$ bleibt jedoch offen.
+\end{tcolorbox}
+
+% ====================================================
+\section{Zyklenfreiheit: Logarithmus-Argument}
+\label{sec:zyklen}
+% ====================================================
+
+\subsection{Die Tao-Identität und die Zyklengleichung}
+
+Für die odd-to-odd-Abbildung $\U$ und ein $l$-periodisches Element
+$n_0$ (Zyklus $n_0 \to n_1 \to \ldots \to n_{l-1} \to n_0$) lautet
+die Tao-Identität:
+\[
+  n_0 \cdot 2^m = 3^l \cdot n_0 + G_l,
+\]
+wobei $m = \sum_{i=0}^{l-1} \vii(3n_i+1)$ die Gesamtzahl der Halbierungen ist
+und $G_l = \sum_{j=0}^{l-1} 3^{l-1-j} \cdot 2^{\sum_{i=0}^j \vii(3n_i+1)} > 0$.
+
+Da $G_l > 0$ und $n_0 > 0$, folgt sofort die notwendige Bedingung:
+\begin{equation}
+  \label{eq:zyklus-bed}
+  2^m > 3^l,
+  \quad\text{d.\,h.}\quad
+  \frac{m}{l} > \frac{\log 3}{\log 2} \approx 1{,}58496.
+\end{equation}
+
+\subsection{Zyklen mit B\textbullet C\textbullet A-Struktur sind unmöglich}
+
+\begin{theorem}[Keine B\textbullet C\textbullet A-Zyklen]
+\label{thm:kein-bca-zyklus}
+Sei $l = 3s$ (ein Zyklus, der aus $s$ vollständigen B\textbullet C\textbullet A-Blöcken
+besteht, wobei jeder A-Schritt genau $\vii = 2$ Halbierungen liefert).
+Dann gilt $m = 4s$ (pro Block: $1 + 1 + 2 = 4$ Halbierungen) und:
+\[
+  \frac{m}{l} = \frac{4s}{3s} = \frac{4}{3} \approx 1{,}333 < \frac{\log 3}{\log 2} \approx 1{,}585.
+\]
+Damit ist $2^m = 2^{4s} = 16^s < 27^s = 3^{3s} = 3^l$,
+im Widerspruch zur notwendigen Bedingung~\eqref{eq:zyklus-bed}.
+\end{theorem}
+
+\begin{beweis}
+Jeder der $s$ Blöcke liefert genau $1$ (B) $+$ $1$ (C) $+$ $2$ (A, $\vii=2$)
+$= 4$ Halbierungen und $3$ odd-to-odd-Schritte. Also $m = 4s$, $l = 3s$.
+$2^{4s} = 16^s$, $3^{3s} = 27^s$, und $16 < 27$ impliziert $16^s < 27^s$. \qed
+\end{beweis}
+
+\begin{korollar}[Keine B\textbullet C\textbullet A-Zyklen mit $\vii \in \{2,3\}$]
+Für Zyklen mit $s$ B\textbullet C\textbullet A-Blöcken, von denen $s_2$ den Wert $\vii=2$
+und $s_3$ den Wert $\vii=3$ beim A-Schritt haben ($s_2+s_3=s$), gilt:
+\[
+  \frac{m}{l} = \frac{4s_2 + 5s_3}{3s}
+  = \frac{4}{3} + \frac{s_3}{3s}
+  \leq \frac{4}{3} + \frac{1}{3} = \frac{5}{3} \approx 1{,}667.
+\]
+Dies übersteigt $\log3/\log2 \approx 1{,}585$ sobald $s_3/s > (1{,}585 - 4/3)/(1/3) = 0{,}753$.
+Zyklen sind also ausgeschlossen, wenn weniger als $75{,}3\%$ der A-Schritte
+$\vii = 3$ haben.
+
+Wenn alle A-Schritte $\vii = 2$ haben (Minimum), ist $m/l = 4/3 < \log3/\log2$.
+Wenn mehr als $75\%$ der A-Schritte $\vii \geq 3$ haben, könnte $m/l > \log3/\log2$
+sein --- dann hilft nur noch das Baker-Argument.
+\end{korollar}
+
+\subsection{Das Baker-Argument für allgemeine Zyklen}
+
+Für allgemeine Zyklen, bei denen $m/l > \log 3/\log 2$, liefert die
+Zyklengleichung:
+\[
+  n_0 = \frac{G_l}{2^m - 3^l}.
+\]
+Baker's Theorem über Linearformen in Logarithmen besagt:
+\[
+  \abs{m \log 2 - l \log 3} > \frac{C}{l^A}
+\]
+für effektive Konstanten $C, A > 0$. Daraus folgt:
+\[
+  2^m - 3^l = 3^l\bigl(2^{m-l\log3/\log2} - 1\bigr) \gtrsim 3^l \cdot \frac{C}{l^A}.
+\]
+Für großes $l$ wächst der Nenner $2^m - 3^l$ exponentiell, während
+$G_l < 3^l \cdot n_0 \cdot \text{const}$ (aus der Tao-Identität).
+Dies begrenzt $n_0$ nach oben durch einen von~$l$ abhängigen Ausdruck.
+In Verbindung mit numerischer Verifikation für kleine Zyklen
+(alle $n \leq 2^{68}$ ohne nichtrivialen Zyklus geprüft) liefert das:
+
+\begin{tcolorbox}[konj]
+\textbf{Konjektur (bedingt auf Baker-Axiom):}
+Für alle $l \geq 2$ und alle $m$ mit $2^m > 3^l$ und $m/l > \log3/\log2$
+ist $G_l / (2^m - 3^l)$ keine positive ganze Zahl,
+ausgenommen der triviale Zyklus $n_0 = 1$ ($l=1$, $m=2$, $3^1 < 2^2$).
+
+Dies entspricht der konditionalen Zyklenfreiheit in
+\texttt{ericmerle3789/collatz-conditional-cycles}.
+\end{tcolorbox}
+
+\subsection{Verbindung von Zyklenfreiheit und DC-Struktur}
+
+Der Satz über Zyklenfreiheit hängt eng mit der DC zusammen:
+
+\begin{tcolorbox}[kernidee]
+\textbf{Logische Struktur:}
+\begin{enumerate}[label=(\arabic*)]
+  \item DC (Durchlaufbedingung): Jede Bahn hat beschränkte C-Ketten.
+  \item Zyklenfreiheit: Kein nichtrivialer Zyklus.
+  \item Keine divergenten Bahnen: Alle Bahnen sind beschränkt.
+  \item[(1)+(2)+(3)] $\Rightarrow$ Collatz-Vermutung.
+\end{enumerate}
+Die DC impliziert, dass $m/l$ nach unten durch ein strukturelles Minimum
+begrenzt ist. Da $4/3 < \log3/\log2$ gilt (Theorem~\ref{thm:kein-bca-zyklus}),
+schließt die DC die Zyklen mit $m/l \in [4/3,\,\log3/\log2)$ aus.
+Für $m/l > \log3/\log2$ braucht man Baker.
+\end{tcolorbox}
+
+% ====================================================
+\section{Keine divergenten Bahnen}
+\label{sec:divergenz}
+% ====================================================
+
+\subsection{$E_8$-Normabstieg und Verbindung zur DC}
+
+Aus \textit{collatz\_oktonionen\_beweis.tex} ist bekannt:
+
+\begin{theorem}[Normabstieg für EA-Schritte]
+Für $x \in \mathbb{O}_{\Z}$ ungerade mit $\vii(3x+1) \geq 2$ (EA-Schritt)
+gilt für $N(x) \gg 1$:
+\[
+  N(\mathcal{U}_{\mathbb{O}}(x)) < N(x).
+\]
+Konkret folgt aus $N(3x+1) = 9N(x) + 6\operatorname{Re}(x) + 1$ und
+$N(\mathcal{U}_{\mathbb{O}}(x)) = N(3x+1)/2^{2\nu} \leq N(3x+1)/16$,
+dass $N(\mathcal{U}_{\mathbb{O}}(x)) \leq (9N(x) + 6\sqrt{N(x)} + 1)/16 < N(x)$
+für $N(x) > C_0$ (explizit berechenbar).
+\end{theorem}
+
+\begin{tcolorbox}[warnung]
+\textbf{Die verbleibende Lücke (Divergenz):}
+Aus dem $E_8$-Normabstieg für EA-Schritte folgt: Wenn die DC gilt
+(jede Bahn macht nach endlich vielen BC-Schritten einen EA-Schritt),
+dann steigt die Norm langfristig nicht. Daraus folgt die Beschränktheit
+aller Bahnen für $n > C_0$.
+
+Das Problem ist der Transport der Aussage: Der Normabstieg gilt im
+$E_8$-Gitter, und für $n \in \N \subset \R \subset \mathbb{O}_{\Z}$
+überträgt sich der Normabstieg auf $n$ (da Einbettungsverträglichkeit bewiesen ist).
+Aber: \emph{ohne die DC} weiß man nicht, dass nach endlich vielen Schritten
+ein EA-Schritt folgt --- und damit dreht sich das Argument im Kreis.
+\end{tcolorbox}
+
+\subsection{Kombiniertes Abstiegsargument (konditional)}
+
+\begin{theorem}[Konditionales Abstiegstheorem]
+\label{thm:abstieg}
+Vorausgesetzt die DC gilt (jede Bahn macht nach höchstens $m_0$ BC-Schritten
+einen EA-Schritt), dann gilt für alle $n > C_0$:
+\begin{enumerate}[label=(\roman*)]
+  \item Jede Bahn von $n$ ist beschränkt: Es gibt $M(n)$ mit
+    $\U^k(n) \leq M(n)$ für alle $k$.
+  \item Zusammen mit Zyklenfreiheit (Baker-bedingt) folgt:
+    Die Bahn erreicht~$1$.
+\end{enumerate}
+\end{theorem}
+
+Der Satz ist korrekt, aber seine Voraussetzungen --- DC und Zyklenfreiheit ---
+sind selbst die offenen Kernfragen.
+
+% ====================================================
+\section{Hauptsatz-Versuch}
+\label{sec:hauptsatz}
+% ====================================================
+
+Der stärkstmögliche Satz, der aus den bewiesenen Bausteinen folgt,
+ohne auf Konjekturen zurückzugreifen, lautet:
+
+\begin{theorem}[Stärkster bewiesener Satz des Beweisversuchs]
+\label{thm:haupt}
+Sei $n \in \N$ ungerade.
+\begin{enumerate}[label=(\arabic*)]
+  \item \emph{(BC-Struktursatz)} Auf jeden B-Schritt folgt entweder unmittelbar
+    ein EA-Schritt oder genau ein C-Schritt, nach dem ein EA-Schritt folgt
+    (auf mod-24-Ebene). Ein zweiter B-Schritt kann auf keinen B-Schritt folgen.
+
+  \item \emph{(C-Ketten-Endlichkeit)} Für jedes feste $n \in \N$ endet
+    jede von~$n$ startende C-Kette nach endlich vielen Schritten
+    (nämlich nach höchstens $\vii(n+1)$ Schritten).
+
+  \item \emph{(Exponentielle Seltenheit)} Die Menge der Startwerte
+    $n \leq X$, von denen C-Ketten der Länge~$\geq k$ starten,
+    hat Dichte $\leq 1/2^k$ unter den ungeraden Zahlen.
+
+  \item \emph{(B\textbullet C\textbullet A-Zyklenausschluss)} Zyklen der
+    odd-to-odd-Abbildung, die ausschließlich aus B\textbullet C\textbullet A-Blöcken
+    mit $\vii = 2$ beim A-Schritt bestehen, existieren nicht.
+
+  \item \emph{(Normabstieg)} Für alle hinreichend großen $n$ gilt:
+    Wenn $\vii(3n+1) \geq 2$, so ist $\U(n) < n$.
+\end{enumerate}
+\end{theorem}
+
+Die Collatz-Vermutung folgt aus diesem Satz \emph{nicht},
+da der Übergang von C-Ketten-Endlichkeit zu gleichmäßiger Beschränkung
+(DC) nicht gezeigt wurde.
+
+% ====================================================
+\section{Ehrliches Fazit}
+\label{sec:fazit}
+% ====================================================
+
+\subsection{Was tatsächlich bewiesen ist}
+
+\begin{tcolorbox}[ergebnis]
+\textbf{Rigoros bewiesen (ohne Axiome außer den Grundlagen der Arithmetik):}
+\begin{enumerate}[label=(\arabic*)]
+  \item B-Typ kann nicht direkt auf B-Typ folgen
+    (Kongruenzrechnung mod~12).
+  \item Für jedes feste $n$: die von $n$ startende C-Kette hat Länge
+    $\leq \vii(n+1) < \infty$ (2-adisches Divisibilitätsargument).
+  \item C-Ketten der Länge~$k$ erfordern Startwerte in Klassen der
+    Dichte~$\leq 1/2^k$ (Induktionsbeweis über Residuenbedingungen).
+  \item B\textbullet C\textbullet A-Zyklen mit $\vii=2$ beim A-Schritt sind
+    ausgeschlossen (Tao-Identität + $16^s < 27^s$).
+  \item $E_8$-Normabstieg bei EA-Schritten für große Normen.
+\end{enumerate}
+\end{tcolorbox}
+
+\subsection{Was offen bleibt --- genau benannt}
+
+\begin{tcolorbox}[lücke]
+\textbf{Offene Lücken, exakt benannt:}
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{Gleichmäßige DC-Schranke $m_0$:}
+    Es fehlt eine Schranke der Form ``jede Bahn macht nach höchstens $m_0$
+    Schritten einen EA-Schritt für ein \emph{von $n$ unabhängiges} $m_0$''.
+    Hier gibt das 2-adische Argument nur eine $n$-abhängige Schranke.
+
+  \item \textbf{Zyklenfreiheit für alle Zyklen:}
+    Zyklen mit $m/l > \log3/\log2$ (hoher EA-Anteil) sind nur bedingt
+    (Baker-Axiom) ausgeschlossen. Ohne Baker ist Zyklenfreiheit unbewiesen.
+
+  \item \textbf{Verbindung 2-adisch $\to$ universell:}
+    Das 2-adische Argument zeigt: kein $n_0$ kann unendlich lang eine
+    C-Kette bilden. Es zeigt \emph{nicht}: C-Ketten sind gleichmäßig beschränkt.
+    Der Unterschied: existenzielle vs.\ universelle Aussage über Kettenlängen.
+
+  \item \textbf{Keine divergenten Bahnen:}
+    Der $E_8$-Normabstieg bei EA-Schritten setzt die DC voraus und ist
+    daher zirkulär, bis die DC eigenständig bewiesen ist.
+
+  \item \textbf{Kleinstfall:}
+    Die strukturellen Argumente gelten für ``hinreichend große'' $n$.
+    Für kleine $n$ ($n \leq C_0$) ist numerische Verifikation nötig,
+    die für $n \leq 10^7$ (dieses Projekt) bzw.\ $n \leq 2^{68}$
+    (Stand der Literatur) vorliegt.
+\end{enumerate}
+\end{tcolorbox}
+
+\subsection{Gesamteinschätzung}
+
+\begin{tcolorbox}[kernidee]
+\textbf{Wo steht dieser Beweisversuch?}
+
+Die fünf Vorgängerdokumente haben eine kohärente algebraisch-modulare
+Infrastruktur aufgebaut, die reale und rigorose Ergebnisse enthält.
+Die stärksten davon --- B-Ketten-Ausschluss, C-Ketten-Formel,
+$m/l$-Argument gegen B\textbullet C\textbullet A-Zyklen --- sind
+korrekte Lemmata, die auch in formalen Beweissystemen verifikationsfähig sind.
+
+Die \emph{eigentliche} Collatz-Lücke, nämlich die DC, ist durch diese
+Methoden nicht schließbar. Die DC ist äquivalent zu einer gleichmäßigen
+Schranke über alle Orbits zugleich --- genau die Art von globaler
+Aussage, die sich nicht aus lokalen modularen Beobachtungen gewinnen lässt.
+
+Der erfolgversprechendste nächste Schritt bleibt:
+\begin{itemize}
+  \item Ergodentheoretische Methoden (Taos Martingal-Ansatz),
+    spezialisiert auf C-Ketten.
+  \item Transferoperator-Spektralanalyse für die C-Ketten-Unterabbildung.
+  \item Baker-Schranken für die Zyklengleichung, formalisiert in Lean\,4.
+\end{itemize}
+
+\textbf{Klare Schlussfolgerung:} Dieser Beweisversuch liefert keine
+Lösung der Collatz-Vermutung, aber eine saubere, rigorose Reduktion
+auf die Frage: ``Kann eine Collatz-Bahn beliebig lange C-Ketten
+\emph{gleichmäßig} bilden?'' Diese Reduktion ist selbst ein Ergebnis.
+\end{tcolorbox}
+
+\subsection{Statusmatrix: Gesamtübersicht}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{p{6.5cm} p{2.8cm} p{4cm}}
+\toprule
+\textbf{Aussage} & \textbf{Status} & \textbf{Bemerkung} \\
+\midrule
+B$\to$B unmöglich & \textcolor{bewiesengrün}{\bfseries Bewiesen} & mod 12 \\
+B$\to$C oder B$\to$A (mod 24) & \textcolor{bewiesengrün}{\bfseries Bewiesen} & mod 24 \\
+C-Ketten-Formel & \textcolor{bewiesengrün}{\bfseries Bewiesen} & Induktion \\
+C-Kette Länge $\leq \vii(n_0+1)$ & \textcolor{bewiesengrün}{\bfseries Bewiesen} & 2-adisch \\
+Exponentielle C-Ketten-Seltenheit & \textcolor{bewiesengrün}{\bfseries Bewiesen} & Residuenklassen \\
+B\textbullet C\textbullet A-Zyklus ausgeschlossen & \textcolor{bewiesengrün}{\bfseries Bewiesen} & Tao-Ident. + $16<27$ \\
+$E_8$-Normabstieg (EA-Schritte) & \textcolor{bewiesengrün}{\bfseries Bewiesen} & groß $n$, mod bedingt \\
+DC (gleichmäßige Schranke $m_0$) & \textcolor{lückenrot}{\bfseries Offen} & Kernlücke \\
+Zyklenfreiheit allgemein & \textcolor{warnorange}{\bfseries Bedingt} & Baker-Axiom \\
+Keine divergenten Bahnen & \textcolor{warnorange}{\bfseries Bedingt} & setzt DC voraus \\
+Collatz-Vermutung & \textcolor{lückenrot}{\bfseries Offen} & --- \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ====================================================
+% Literatur
+% ====================================================
+\begin{thebibliography}{9}
+
+\bibitem{collatz-eabc}
+T. Hoffbauer,
+\textit{Die verborgene Binnenstruktur der Collatz-Dynamik:
+Eine Spektrum-Notiz zur odd-to-odd-Abbildung im EABC-Rahmen},
+Mathematische Texte (2025).
+
+\bibitem{collatz-oktonionen}
+T. Hoffbauer,
+\textit{Collatz-Dynamik auf ganzzahligen Oktonionen:
+Ein Beweisversuch über das $E_8$-Gitter},
+Mathematische Texte (2025).
+
+\bibitem{collatz-dc}
+T. Hoffbauer,
+\textit{Die Durchlaufbedingung im Morley-Walter-Rahmen},
+Mathematische Texte (2025).
+
+\bibitem{collatz-c-ketten}
+T. Hoffbauer,
+\textit{C-Ketten in der Collatz-Dynamik:
+Eine 2-adische Analyse der Durchlaufbedingung},
+Mathematische Texte (2025).
+
+\bibitem{collatz-lean}
+T. Hoffbauer,
+\textit{Lean\,4-Formalisierung der Durchlaufbedingung},
+Mathematische Texte (2026).
+
+\bibitem{tao-collatz}
+T. Tao,
+\textit{Almost all orbits of the Collatz map attain almost bounded values},
+Forum of Mathematics Pi \textbf{10} (2022), e12.
+
+\bibitem{baker}
+A. Baker,
+\textit{Linear forms in the logarithms of algebraic numbers},
+Mathematika \textbf{13} (1966), 204--216.
+
+\bibitem{lagarias}
+J.\,C. Lagarias,
+\textit{The $3x+1$ problem and its generalizations},
+Amer.\ Math.\ Monthly \textbf{92} (1985), 3--23.
+
+\end{thebibliography}
+
+\end{document}

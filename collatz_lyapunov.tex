@@ -1,0 +1,972 @@
+\documentclass[12pt,a4paper]{article}
+
+% -------------------------------------------------
+% Sprache / Kodierung
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+
+% -------------------------------------------------
+% Layout / Grafik / Farben
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks,unicode]{hyperref}
+\pdfstringdefDisableCommands{%
+  \def\ü{ue}\def\ö{oe}\def\ä{ae}\def\Ü{Ue}\def\Ö{Oe}\def\Ä{Ae}\def\ss{ss}%
+}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{array}
+
+% -------------------------------------------------
+% Farben (konsistent mit Vorgängerdokumenten)
+% -------------------------------------------------
+\definecolor{lückenrot}{RGB}{180,40,40}
+\definecolor{bewiesengrün}{RGB}{30,100,50}
+\definecolor{warnorange}{RGB}{200,100,10}
+\definecolor{hintergrundblau}{RGB}{235,242,250}
+\definecolor{hintergrundgelb}{RGB}{255,252,225}
+\definecolor{adischviolett}{RGB}{90,20,140}
+\definecolor{fehlerrot}{RGB}{200,0,0}
+\definecolor{konjviolett}{RGB}{80,0,130}
+\definecolor{e8grau}{RGB}{55,55,90}
+\definecolor{korrekturorange}{RGB}{200,100,10}
+
+% -------------------------------------------------
+% tcolorbox-Stile
+% -------------------------------------------------
+\tcbset{
+  lücke/.style={colback=red!8, colframe=lückenrot, fonttitle=\bfseries,
+    title={Offene Lücke}},
+  ergebnis/.style={colback=green!7, colframe=bewiesengrün,
+    fonttitle=\bfseries, title={Bewiesenes Ergebnis}},
+  warnung/.style={colback=orange!10, colframe=warnorange,
+    fonttitle=\bfseries, title={Achtung / Heuristik}},
+  adisch/.style={colback=violet!6, colframe=adischviolett,
+    fonttitle=\bfseries, title={2-adische Perspektive}},
+  kernidee/.style={colback=hintergrundblau, colframe=blue!60!black,
+    fonttitle=\bfseries, title={Kernidee}},
+  konj/.style={colback=violet!5, colframe=konjviolett, fonttitle=\bfseries,
+    title={Konjektur (unbewiesen)}},
+  lte/.style={colback=yellow!8, colframe=e8grau, fonttitle=\bfseries,
+    title={Modellrechnung}},
+  hauptsatz/.style={colback=green!10, colframe=bewiesengrün!80!black,
+    fonttitle=\bfseries\large, title={Stärkster beweisbarer Satz}},
+  korrektur/.style={colback=yellow!5, colframe=orange!70!black,
+    fonttitle=\bfseries},
+}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+\newtheorem{hypothese}[definition]{Hypothese}
+\newtheorem{satz}[definition]{Satz}
+
+\newenvironment{beweis}{\begin{proof}[Beweis]}{\end{proof}}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\vii}{\nu_2}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Ztwo}{\mathbb{Z}_2}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\atwo}[1]{\lvert#1\rvert_2}
+\newcommand{\logt}{\log_2}        % Logarithmus zur Basis 2
+
+% -------------------------------------------------
+% Dokument
+% -------------------------------------------------
+\title{%
+  Der Lyapunov-Exponent der Collatz-Dynamik:\\[0.3em]
+  Negativer Log-Drift, Birkhoff-Ergodensatz und Zyklen-Ausschluss\\[0.5em]
+  \large Ergänzung zur Collatz-Synthese vom 16.\ Juni 2026%
+}
+\author{Thomas Hoffbauer}
+\date{16.\ Juni 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Dieses Dokument analysiert den \emph{Lyapunov-Exponenten} $\Lambda$ der
+Collatz-Dynamik in der Block-Zerlegung $B_j = \mathrm{C}^{l_j}\mathrm{A}$.
+Das zentrale Beweisziel ist die Ungleichung
+\[
+  \limsup_{J\to\infty}\,\frac{1}{J}\sum_{j=1}^{J}\log F(B_j) < 0,
+\]
+wobei $F(B_j)$ der Nettofaktor des $j$-ten Blocks ist.
+
+Wir zeigen in vier Schritten: \emph{(i)}~Unter der geometrischen
+Verteilungsannahme für Blocklängen und A-Schritttiefen ergibt sich
+$\E[\log_2 F(B)] \approx -0{,}83 < 0$ (explizite Berechnung).
+\emph{(ii)}~Diese Annahme ist für typische Bahnen durch das
+Dichteargument aus \textit{collatz\_5glatt\_dc.tex} gerechtfertigt.
+\emph{(iii)}~Tao (2022) liefert eine rigorose Version des negativen Drifts
+für fast alle Startwerte; der Übergang zu \emph{allen} Startwerten erfordert
+den Ausschluss von Maß-0-Ausnahmen.
+\emph{(iv)}~Periodische Bahnen mit $\Lambda = 0$ sind durch die
+Zyklusidentität und die Irrationalität von $\log 2/\log 3$ stark eingeschränkt;
+ein nicht-trivialer Zyklus müsste die Bedingung
+$(2^M - 3^L)\,n_0 = Q$ mit sehr spezifischen ganzzahligen Relationen erfüllen.
+
+Ein ehrliches Fazit benennt den stärksten beweisbaren Satz und die
+verbleibende Lücke.
+\end{abstract}
+
+\tableofcontents
+
+\bigskip
+\begin{tcolorbox}[warnung, title={Einordnung}]
+Die Collatz-Vermutung ist unbewiesen. Dieses Dokument präsentiert eine
+\textbf{quantitative Analyse des Lyapunov-Exponenten}, kombiniert rigorose
+Resultate mit explizit markierten Heuristiken, und benennt die genaue Lücke
+zwischen ``fast alle'' und ``alle'' Bahnen.
+\end{tcolorbox}
+
+% ====================================================
+\section{Der Lyapunov-Exponent der Collatz-Dynamik}
+\label{sec:lyapunov}
+% ====================================================
+
+\subsection{Block-Zerlegung und Nettofaktor}
+
+Wir arbeiten mit der Block-Zerlegung aus
+\textit{collatz\_mehrblock\_drift.tex}.
+
+\begin{definition}[Block-Zerlegung und Nettofaktor]
+\label{def:block}
+Sei $(n_0, \U(n_0), \U^2(n_0), \ldots)$ eine Collatz-Bahn. Die
+\emph{Block-Zerlegung} teilt diese in maximale Teilfolgen
+\[
+  B_j = \mathrm{C}^{l_j}\!\cdot\mathrm{A}, \quad j = 1, 2, 3, \ldots,
+\]
+wobei $l_j \geq 0$ die Länge der $j$-ten C-Kette ist. Seien
+$n_0^{(j)}$ die Startwerte der Blöcke und $\nu_j := \vii(3n_{l_j}^{(j)}+1)$.
+Der \emph{Nettofaktor} des $j$-ten Blocks ist:
+\[
+  F(B_j) := \frac{n_0^{(j+1)}}{n_0^{(j)}}
+  \;=\; \frac{3^{l_j+1}\,n_0^{(j)} \;+\; r_j}{2^{l_j+\nu_j}\,n_0^{(j)}}
+  \;\approx\; \frac{3^{l_j+1}}{2^{l_j+\nu_j}}
+  \quad\text{für großes }n_0^{(j)}.
+\]
+Der Restterm $r_j$ ist ein ganzzahliger Korrekturterm der Ordnung $O(1)$.
+\end{definition}
+
+\begin{bemerkung}[Genauere Formel]
+Die exakte Formel lautet (aus \textit{collatz\_5glatt\_dc.tex},
+Thm.~3.1):
+\[
+  n_0^{(j+1)} = \frac{3^{l_j+1}\,n_0^{(j)} + (3^{l_j+1}-1)}{2^{l_j+\nu_j}}.
+\]
+Daher ist $F(B_j) = \frac{3^{l_j+1}}{2^{l_j+\nu_j}}\cdot\!\left(1 + \frac{3^{l_j+1}-1}{3^{l_j+1}\,n_0^{(j)}}\right)$,
+und der Korrekturfaktor geht für $n_0^{(j)} \to \infty$ gegen~$1$.
+\end{bemerkung}
+
+\subsection{Definition des Lyapunov-Exponenten}
+
+\begin{definition}[Block-Lyapunov-Exponent]
+\label{def:lyapunov}
+Sei $(B_j)_{j \geq 1}$ die Block-Zerlegung einer Collatz-Bahn, die nicht
+bei $1$ endet. Der \emph{Block-Lyapunov-Exponent} der Bahn ist
+\[
+  \Lambda \;:=\; \limsup_{J\to\infty}\,
+    \frac{1}{J}\sum_{j=1}^{J} \log F(B_j).
+\]
+Äquivalent (mit $\log_2$-Normierung):
+\[
+  \Lambda_2 \;:=\; \limsup_{J\to\infty}\,
+    \frac{1}{J}\sum_{j=1}^{J}
+    \bigl[(l_j+1)\logt 3 - (l_j + \nu_j)\bigr].
+\]
+\end{definition}
+
+\begin{tcolorbox}[kernidee, title={Äquivalenz zum Mehrblock-Drift-Kriterium}]
+Die Ungleichung $\Lambda < 0$ ist \emph{äquivalent} zur Aussage
+\[
+  \prod_{j=1}^{J} F(B_j) \;\xrightarrow{J\to\infty}\; 0,
+\]
+was seinerseits zur Beschränktheit der Bahn äquivalent ist (da
+$n_0^{(J+1)} = n_0^{(1)} \cdot \prod_{j=1}^J F(B_j)$ gegen~$0$ tendieren
+muss). Die Collatz-Vermutung ist damit zur Aussage $\Lambda < 0$ für alle
+Bahnen äquivalent.
+\end{tcolorbox}
+
+\subsection{Logarithmische Grundformel}
+
+Für einen Block $B$ mit C-Kettenlänge $l$ und A-Schritttiefe $\nu$
+berechnet sich der Log-Faktor zu:
+\begin{align}
+  \log F(B) &\;=\; (l+1)\log 3 \;-\; (l+\nu)\log 2 \label{eq:logF}\\
+  \logt F(B) &\;=\; (l+1)\logt 3 \;-\; (l+\nu). \label{eq:logF2}
+\end{align}
+Die Kontraktionsschwelle $F(B) < 1$ ist äquivalent zu
+\[
+  \nu \;>\; (l+1)\logt 3 - l \;=\; l\,(\logt 3 - 1) + \logt 3
+  \;\approx\; 0{,}585\,l + 1{,}585.
+\]
+
+% ====================================================
+\section{Berechnung von \texorpdfstring{$\E[\log F(B)]$}{E[log F(B)]}}
+\label{sec:erwartungswert}
+% ====================================================
+
+\subsection{Verteilung der Blocklängen}
+
+\begin{proposition}[Geometrische Verteilung der Blocklängen]
+\label{prop:geom-verteilung}
+Für zufälliges ungerades $n_0$ gilt:
+\begin{enumerate}[label=(\roman*)]
+  \item $\Pr[\vii(n_0+1) = v] = 2^{-v}$ für $v \geq 1$
+    (geometrische Verteilung, da jede $2^v$-te gerade Zahl durch $2^v$ teilbar ist).
+  \item Die C-Kettenlänge $l$ von $n_0$ erfüllt $l \leq \vii(n_0+1) - 1$
+    (korrekte Schranke aus \textit{collatz\_5glatt\_dc.tex}, Prop.~1.1).
+  \item Unter der Modellannahme, dass $l$ die maximale erlaubte Länge
+    $\vii(n_0+1) - 1$ mit Wahrscheinlichkeit~$\frac{1}{2}$ und jede kleinere
+    Länge mit entsprechend kleinerer Wahrscheinlichkeit annimmt, ergibt sich:
+    \[
+      \Pr[l = k] \;\approx\; 2^{-(k+1)}, \quad k = 0, 1, 2, \ldots
+    \]
+\end{enumerate}
+\end{proposition}
+
+\begin{beweis}[Beweisskizze]
+Die Formel $n_j = 3^j(n_0+1)/2^j - 1$ zeigt: Die C-Kette hat Länge
+$\geq k$ genau dann, wenn $\vii(n_0+1) \geq k+1$. Da $\Pr[\vii(n_0+1) = k+1] = 2^{-(k+1)}$,
+folgt $\Pr[l \geq k] \approx \sum_{v \geq k+1} 2^{-v} = 2^{-k}$.
+Damit ist $\Pr[l = k] = \Pr[l \geq k] - \Pr[l \geq k+1] \approx 2^{-(k+1)}$.
+\end{beweis}
+
+\begin{proposition}[Erwartungswert der Blocklänge]
+\label{prop:El}
+Unter der Verteilung $\Pr[l = k] = 2^{-(k+1)}$ gilt:
+\[
+  \E[l] \;=\; \sum_{k=0}^{\infty} k \cdot 2^{-(k+1)}
+         \;=\; \frac{1}{2}\sum_{k=0}^{\infty} k \cdot 2^{-k}
+         \;=\; \frac{1}{2} \cdot 2 \;=\; 1.
+\]
+\end{proposition}
+
+\begin{beweis}
+Es ist $\sum_{k=0}^{\infty} k \cdot x^k = x/(1-x)^2$ für $|x| < 1$.
+Mit $x = 1/2$: $\sum_{k=0}^{\infty} k \cdot 2^{-k} = (1/2)/(1/2)^2 = 2$.
+Daher $\E[l] = \frac{1}{2} \cdot 2 = 1$.
+\end{beweis}
+
+\subsection{Verteilung der A-Schritttiefe $\nu$}
+
+\begin{proposition}[Verteilung von $\nu$]
+\label{prop:Enu}
+Aus \textit{collatz\_5glatt\_dc.tex} (Thm.~2.1) ist bekannt: Auf jede
+C-Kette der Länge $l \geq 0$ folgt stets ein EA-Schritt mit
+$\nu := \vii(3n_l+1) \geq 2$.
+
+Heuristisch ist $\nu$ auf $\{2, 3, 4, \ldots\}$ geometrisch verteilt:
+\[
+  \Pr[\nu = k] \;\approx\; 2^{-(k-1)}, \quad k \geq 2.
+\]
+Der Erwartungswert berechnet sich zu:
+\[
+  \E[\nu] \;=\; \sum_{k=2}^{\infty} k \cdot 2^{-(k-1)}
+          \;=\; 2\sum_{k=2}^{\infty} k \cdot 2^{-k}
+          \;=\; 2\Bigl(\sum_{k=1}^{\infty} k \cdot 2^{-k} - 1 \cdot 2^{-1}\Bigr)
+          \;=\; 2\Bigl(2 - \tfrac{1}{2}\Bigr)
+          \;=\; 3.
+\]
+\end{proposition}
+
+\begin{tcolorbox}[warnung]
+Die geometrische Verteilung von $\nu$ auf $\{2,3,4,\ldots\}$ ist eine
+\textbf{Heuristik}, kein Beweis. Sie entspricht der Annahme, dass
+$3n_l + 1$ sich wie eine ``typische'' durch~$4$ teilbare gerade Zahl verhält.
+Für spezifische Familien (z.\,B.\ $n_k = 2\cdot 3^N - 1$) weicht $\nu$
+systematisch ab, wie in \textit{collatz\_mehrblock\_drift.tex} gezeigt.
+\end{tcolorbox}
+
+\subsection{Berechnung des erwarteten Log-Drifts}
+
+\begin{theorem}[Negativer erwarteter Log-Drift]
+\label{thm:neg-drift}
+Unter den Modellannahmen
+\begin{enumerate}[label=\upshape(\roman*)]
+  \item $\Pr[l = k] = 2^{-(k+1)}$, $\E[l] = 1$,
+  \item $\nu$ geometrisch auf $\{2,3,4,\ldots\}$ mit $\E[\nu] = 3$,
+  \item $l$ und $\nu$ unabhängig (heuristische Annahme),
+\end{enumerate}
+gilt:
+\begin{align}
+  \E\bigl[\log_2 F(B)\bigr]
+  &\;=\; \bigl(\E[l]+1\bigr)\logt 3 - \bigl(\E[l] + \E[\nu]\bigr) \notag\\
+  &\;=\; 2\,\logt 3 - 4 \notag\\
+  &\;\approx\; 2 \times 1{,}58496 - 4 \notag\\
+  &\;\approx\; 3{,}16993 - 4 \notag\\
+  &\;=\; -0{,}830 \;<\; 0. \label{eq:neg-drift}
+\end{align}
+\end{theorem}
+
+\begin{beweis}
+Die Formel folgt aus der Linearität des Erwartungswerts:
+\begin{align*}
+  \E\bigl[\logt F(B)\bigr]
+  &= \E\bigl[(l+1)\logt 3 - (l+\nu)\bigr]\\
+  &= (\E[l]+1)\logt 3 - \E[l] - \E[\nu]\\
+  &= (1+1)\logt 3 - 1 - 3\\
+  &= 2\logt 3 - 4 \approx -0{,}830.
+\end{align*}
+Die numerische Auswertung verwendet $\logt 3 = \log 3/\log 2 \approx 1{,}58496$.
+\end{beweis}
+
+\begin{tcolorbox}[ergebnis, title={Kernergebnis (heuristisch)}]
+Der erwartete Log-Drift pro Block beträgt:
+\[
+  \E[\logt F(B)] = 2\logt 3 - 4 \approx -0{,}830 < 0.
+\]
+Das bedeutet: Jeder Block reduziert den Wert im geometrischen Mittel um den
+Faktor $2^{-0{,}830} \approx 0{,}56$, d.\,h.\ auf etwa $56\%$ des Ausgangswertes.
+\end{tcolorbox}
+
+\subsection{Numerische Tabelle: Nettofaktoren und Log-Driften}
+
+Die folgende Tabelle zeigt $F(B) \approx 3^{l+1}/2^{l+\nu}$ und
+$\logt F(B) = (l+1)\logt 3 - (l+\nu)$ für $l = 0, \ldots, 5$ und
+ausgewählte $\nu$-Werte. Werte $\logt F < 0$ bedeuten Kontraktion.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{cccccc}
+\toprule
+$l$ & $\nu$ & $3^{l+1}$ & $2^{l+\nu}$ & $F(B) \approx$ & $\logt F(B) \approx$ \\
+\midrule
+0 & 2 & 3 & 4  & $0{,}750$ & $-0{,}415$ \\
+0 & 3 & 3 & 8  & $0{,}375$ & $-1{,}415$ \\
+0 & 4 & 3 & 16 & $0{,}188$ & $-2{,}415$ \\
+\midrule
+1 & 2 & 9 & 8   & $1{,}125$ & $+0{,}170$ \\
+1 & 3 & 9 & 16  & $0{,}563$ & $-0{,}830$ \\
+1 & 4 & 9 & 32  & $0{,}281$ & $-1{,}830$ \\
+\midrule
+2 & 2 & 27 & 16  & $1{,}688$ & $+0{,}755$ \\
+2 & 3 & 27 & 32  & $0{,}844$ & $-0{,}245$ \\
+2 & 4 & 27 & 64  & $0{,}422$ & $-1{,}245$ \\
+2 & 5 & 27 & 128 & $0{,}211$ & $-2{,}245$ \\
+\midrule
+3 & 2 & 81 & 32  & $2{,}531$ & $+1{,}340$ \\
+3 & 3 & 81 & 64  & $1{,}266$ & $+0{,}340$ \\
+3 & 4 & 81 & 128 & $0{,}633$ & $-0{,}660$ \\
+3 & 5 & 81 & 256 & $0{,}316$ & $-1{,}660$ \\
+\midrule
+4 & 2 & 243 & 64   & $3{,}797$ & $+1{,}925$ \\
+4 & 3 & 243 & 128  & $1{,}898$ & $+0{,}925$ \\
+4 & 4 & 243 & 256  & $0{,}949$ & $-0{,}075$ \\
+4 & 5 & 243 & 512  & $0{,}475$ & $-1{,}075$ \\
+\midrule
+5 & 2 & 729 & 128  & $5{,}695$ & $+2{,}510$ \\
+5 & 3 & 729 & 256  & $2{,}848$ & $+1{,}510$ \\
+5 & 4 & 729 & 512  & $1{,}424$ & $+0{,}510$ \\
+5 & 5 & 729 & 1024 & $0{,}712$ & $-0{,}490$ \\
+5 & 6 & 729 & 2048 & $0{,}356$ & $-1{,}490$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{bemerkung}[Ablesung aus der Tabelle]
+\begin{itemize}[leftmargin=*]
+  \item Für $l = 0$ kontrahiert jeder Block (alle $\logt F < 0$).
+  \item Für $l = 1$ kontrahiert der Block genau dann, wenn $\nu \geq 3$.
+  \item Für $l = 3$ braucht man $\nu \geq 4$, um Kontraktion zu erzielen.
+  \item Für $l = 5$ braucht man $\nu \geq 5$, um Kontraktion zu erzielen;
+    bei $\nu = 4$ wächst der Block noch schwach ($+0{,}51$ Bit).
+  \item Die Kontraktionsschwelle für Blocklänge~$l$ ist
+    $\nu > 0{,}585\,l + 1{,}585$, also wächst sie linear mit~$l$.
+\end{itemize}
+Die wichtige Botschaft: Einzelne Blöcke \emph{müssen nicht} kontrahieren.
+Das Cesàro-Mittel $\frac{1}{J}\sum \logt F(B_j)$ muss negativ sein ---
+und das ist bei $\E[\logt F] \approx -0{,}83$ unter der Modellverteilung
+strukturell gesichert.
+\end{bemerkung}
+
+% ====================================================
+\section{Warum die geometrische Verteilung für typische Zahlen gilt}
+\label{sec:typisch}
+% ====================================================
+
+\subsection{Das Dichteargument}
+
+\begin{proposition}[Dichte der Startmengen für C-Ketten, vgl.\ \textit{collatz\_5glatt\_dc.tex}]
+\label{prop:dichte}
+Die Menge der ungeraden $n_0 \in \N$ mit C-Kettenlänge $\geq k$ hat
+Dichte $\leq 2^{-k}$ in den ungeraden natürlichen Zahlen.
+\end{proposition}
+
+\begin{beweis}
+Aus \textit{collatz\_5glatt\_dc.tex}, Proposition~1.1: Eine C-Kette der
+Länge $k$ erfordert $\vii(n_0+1) \geq k+1$. Unter den geraden Zahlen
+$n_0+1 \in \{2,4,6,\ldots\}$ hat genau die Teilmenge mit $2^{k+1} \mid (n_0+1)$
+die Dichte $2^{-k}$. \qedhere
+\end{beweis}
+
+\begin{proposition}[Heuristische Blocklängenverteilung entlang einer Bahn]
+\label{prop:bahn-verteilung}
+Sei eine Collatz-Bahn als stochastischer Prozess modelliert, bei dem der
+Startwert $n_0^{(j)}$ jedes Blocks gleichmäßig aus einem großen Intervall
+$[N, 2N]$ gezogen ist. Dann gelten die Verteilungsannahmen aus
+Proposition~\ref{prop:geom-verteilung} für die Blocklängen $l_j$ und
+die A-Schritttiefen $\nu_j$ approximativ für \emph{jeden Block} der Bahn.
+\end{proposition}
+
+\begin{tcolorbox}[warnung, title={Präzise Grenze des Dichtearguments}]
+Proposition~\ref{prop:bahn-verteilung} beschreibt ein \textbf{heuristisches Modell},
+keine Aussage über feste Bahnen. Konkret fehlen:
+
+\begin{enumerate}[label=(\alph*), leftmargin=*]
+  \item \textbf{Mischungseigenschaft:} Die Blocklängen $l_j$ und die Tiefen
+    $\nu_j$ entlang einer \emph{festen} Bahn könnten korreliert sein
+    (Markov-Eigenschaft ist nicht bewiesen).
+  \item \textbf{Ergodizität:} Für den Übergang von der heuristischen
+    Verteilung zum Birkhoff-Zeitmittelwert braucht man, dass die Collatz-Bahn
+    in einem ergodentheoretischen Sinne ``typisch'' ist.
+  \item \textbf{Seltene Bahnen:} Bahnen, die systematisch sehr lange
+    C-Ketten durchlaufen (Dichte~$\leq 2^{-k}$ je Länge~$k$), könnten
+    ein anderes Mittelwertverhalten zeigen.
+\end{enumerate}
+
+Diese Lücken sind durch Tao's Theorem (Abschn.~\ref{sec:tao}) für
+\emph{fast alle} Bahnen überbrückt, aber nicht für alle.
+\end{tcolorbox}
+
+\subsection{5-glatte Zahlen und Extremfälle}
+
+Aus \textit{collatz\_5glatt\_dc.tex} (§3) wissen wir: Startwerte $n_0+1$
+mit großem $\vii(n_0+1)$ (lange C-Ketten) konzentrieren sich auf Zahlen
+der Form $n_0+1 = 2^a \cdot m$ mit großem~$a$. Die extremsten Fälle
+(5-glatte $n_0+1$) haben Dichte~$0$ in~$\N$ (genauer: $O((\log N)^3)$
+bis~$N$). Das bedeutet:
+
+\begin{korollar}[Exponentielle Seltenheit langer Blöcke]
+\label{kor:seltenheit}
+Für jede Schranke $K$:
+\[
+  \Pr_{\text{heur}}\bigl[l_j \geq K\bigr] \leq 2^{-K}.
+\]
+Das geometrische Modell $\Pr[l=k] = 2^{-(k+1)}$ überschätzt die Dichte
+langer Blöcke \emph{nicht}: Die echte Dichte ist höchstens $2^{-(k+1)}$.
+\end{korollar}
+
+Diese Beobachtung stützt die Annahme, dass der negative Log-Drift
+$\E[\logt F] \approx -0{,}83$ nicht durch das Auftreten sehr langer Blöcke
+kompensiert wird, da diese exponentiell selten sind.
+
+% ====================================================
+\section{Birkhoff und Tao: Was aus negativem Drift folgt}
+\label{sec:tao}
+% ====================================================
+
+\subsection{Birkhoffs Ergodensatz als Leitbild}
+
+\begin{tcolorbox}[kernidee, title={Birkhoff-Ergodensatz (Leitbild)}]
+Sei $T$ eine ergodische maßerhaltende Abbildung auf einem
+Wahrscheinlichkeitsraum $(X, \mu)$ und $f \in L^1(\mu)$. Dann gilt
+für $\mu$-fast alle $x \in X$:
+\[
+  \frac{1}{J}\sum_{j=1}^{J} f(T^j x) \;\xrightarrow{J\to\infty}\; \int_X f \, d\mu.
+\]
+\textbf{Collatz-Analogie:} Falls die Collatz-Abbildung ergodisch bzgl.\ eines
+``natürlichen'' Maßes $\mu$ auf den ungeraden Zahlen ist, und falls
+$\int \logt F(B)\, d\mu \approx -0{,}83$, dann gilt für $\mu$-fast alle
+Bahnen:
+\[
+  \frac{1}{J}\sum_{j=1}^{J} \logt F(B_j) \;\to\; -0{,}83 < 0.
+\]
+\end{tcolorbox}
+
+\begin{tcolorbox}[warnung, title={Was fehlt für die Anwendung von Birkhoff}]
+Die Collatz-Abbildung $\U$ ist auf $\N$ \emph{keine} maßerhaltende Abbildung
+bezüglich des Zählmaßes. Ein natürliches invariantes Maß ist nicht konstruiert.
+Die obige ``Collatz-Analogie'' ist daher ein \emph{heuristisches Leitbild},
+kein Theorem. Die rigorose Version liefert Tao.
+\end{tcolorbox}
+
+\subsection{Tao's Theorem (2022)}
+
+\begin{theorem}[Tao 2022, vereinfachte Formulierung]
+\label{thm:tao}
+Sei $f\colon \N \to \R_{>0}$ eine Funktion mit $f(n) \to \infty$. Dann gilt:
+\[
+  \frac{1}{\log N}\sum_{\substack{n \leq N \\ n \text{ ungerade}}}
+  \frac{1}{n} \cdot
+  \mathbf{1}\!\bigl[\exists\,m \leq f(n)\colon \U^k(n) = m\text{ für ein }k\bigr]
+  \;\xrightarrow{N\to\infty}\; 1.
+\]
+Mit anderen Worten: Für fast alle $n$ (im Sinne der logarithmischen Dichte)
+nimmt die Collatz-Bahn von~$n$ einen Wert $\leq f(n)$ an.
+\end{theorem}
+
+\begin{tcolorbox}[ergebnis, title={Was Tao's Theorem impliziert}]
+Tao's Ergebnis ist eine rigorose Version des negativen Lyapunov-Exponenten:
+\begin{enumerate}[label=(\arabic*), leftmargin=*]
+  \item \textbf{Quantitative Konvergenz für fast alle Bahnen:} Der Wert
+    $n_0^{(J)}$ entlang der Bahn fällt für fast alle Startwerte unter jede
+    Funktion $f(n_0) \to \infty$.
+  \item \textbf{Entsprechung des Drift-Kriteriums:} Eine Bahn, die unter
+    $f(n_0) \to \infty$ fällt, hat notwendigerweise
+    $\liminf_{J\to\infty}\frac{1}{J}\sum\logt F(B_j) \leq 0$. Tao's Theorem
+    besagt, dass dies für fast alle Bahnen gilt.
+  \item \textbf{Vorzeichen des Lyapunov-Exponenten:} Da keine bekannte nicht-triviale
+    Bahn gegen $+\infty$ divergiert, ist der Lyapunov-Exponent
+    vermutlich für alle Bahnen $\Lambda \leq 0$ (und für Bahnen, die bei~$1$
+    landen, exakt $\Lambda < 0$).
+\end{enumerate}
+\end{tcolorbox}
+
+\subsection{Die Lücke: Von ``fast alle'' zu ``alle''}
+
+\begin{tcolorbox}[lücke, title={Präzise Lücke zwischen Tao und dem Ziel}]
+Tao's Theorem zeigt den negativen Drift für eine Menge von Bahnen mit
+logarithmischer Dichte~$1$, aber \emph{nicht für alle} Bahnen. Die Lücke
+besteht in zwei Teilen:
+
+\medskip
+\textbf{(A) Maß-0-Ausnahmen:} Tao's Methode schließt eine Menge
+$\mathcal{E} \subseteq \N$ von Ausnahmen nicht aus, sofern $\mathcal{E}$
+logarithmische Dichte~$0$ hat. Eine solche Ausnahmemenge könnte Bahnen
+enthalten, die zu einem nicht-trivialen Zyklus oder gegen $+\infty$
+divergieren.
+
+\medskip
+\textbf{(B) Quantitative Schranke:} Tao's Beweis zeigt, dass die Bahnen
+einen Wert $\leq f(n)$ annehmen, aber $f$ wächst mit $n$ (dies ist keine
+gleichmäßige Schranke). Um die Collatz-Vermutung zu schließen, bräuchte
+man: Bahnen landen bei~$1$ (oder einem Zyklus, der dann ausgeschlossen ist).
+
+\medskip
+\textbf{Fazit:} Der Übergang von ``fast alle'' zu ``alle'' erfordert
+zusätzliche Argumente, insbesondere den Ausschluss von Zyklen und divergenten
+Bahnen --- behandelt in §\ref{sec:zyklen}.
+\end{tcolorbox}
+
+% ====================================================
+\section{Das Zyklen-Argument: Kann \texorpdfstring{$\Lambda = 0$}{Lambda = 0} für einen Zyklus gelten?}
+\label{sec:zyklen}
+% ====================================================
+
+\subsection{Lyapunov-Exponent eines Zyklus}
+
+\begin{proposition}[Lyapunov-Exponent eines periodischen Orbits]
+\label{prop:zyklus-lambda}
+Sei $(n_0^{(1)}, n_0^{(2)}, \ldots, n_0^{(J)}, n_0^{(J+1)} = n_0^{(1)})$
+ein $J$-Block-Zyklus (periodische Collatz-Bahn mit $J$ Blöcken). Dann gilt
+exakt:
+\[
+  \Lambda \;=\; \frac{1}{J}\sum_{j=1}^{J}\log F(B_j)
+           \;=\; \frac{1}{J}\log\prod_{j=1}^{J}F(B_j)
+           \;=\; \frac{1}{J}\log\frac{n_0^{(J+1)}}{n_0^{(1)}}
+           \;=\; \frac{1}{J}\log 1 \;=\; 0.
+\]
+\end{proposition}
+
+\begin{beweis}
+Das Produkt der Nettofaktoren ist teleskopisch:
+$\prod_{j=1}^{J} F(B_j) = \prod_{j=1}^{J} \frac{n_0^{(j+1)}}{n_0^{(j)}}
+= \frac{n_0^{(J+1)}}{n_0^{(1)}} = 1$, da $n_0^{(J+1)} = n_0^{(1)}$ per Definition.
+\end{beweis}
+
+Das bedeutet: Jeder nicht-triviale Zyklus hätte \emph{exakt} $\Lambda = 0$,
+im scheinbaren Widerspruch zum negativen Erwartungswert $\E[\logt F] \approx -0{,}83$.
+Der folgende Abschnitt zeigt, warum dieser ``Widerspruch'' die Zyklen
+stark einschränkt.
+
+\subsection{Die Zyklusidentität}
+
+\begin{theorem}[Zyklusidentität, vgl.\ Steiner-Simons u.\ Tao]
+\label{thm:zyklusidentität}
+Sei ein $J$-Block-Zyklus mit Blocklängen $l_1, \ldots, l_J$ und
+A-Schritttiefen $\nu_1, \ldots, \nu_J$ gegeben. Setze
+\[
+  L \;:=\; \sum_{j=1}^{J}(l_j+1), \qquad
+  M \;:=\; \sum_{j=1}^{J}(l_j+\nu_j).
+\]
+Dann existiert eine positive ganze Zahl $Q > 0$ (die von den Block-Parametern
+abhängt) mit
+\begin{equation}
+  (2^M - 3^L)\,n_0^{(1)} \;=\; Q. \label{eq:zyklusidentität}
+\end{equation}
+\end{theorem}
+
+\begin{beweis}[Beweisskizze]
+Man führt die vollständige Collatz-Rekursion für einen Block durch.
+Für Block $B_j$ gilt (exakt):
+\[
+  n_0^{(j+1)} \;=\; \frac{3^{l_j+1}\,n_0^{(j)} + (3^{l_j+1}-1)}{2^{l_j+\nu_j}}.
+\]
+Iteriert man dies $J$-mal, erhält man eine lineare Beziehung der Form
+\[
+  n_0^{(J+1)} \;=\; \frac{3^L\,n_0^{(1)} + Q_0}{2^M}
+\]
+für eine nicht-negative ganze Zahl $Q_0$. Die Zyklus-Bedingung
+$n_0^{(J+1)} = n_0^{(1)}$ liefert
+$(2^M - 3^L)\,n_0^{(1)} = Q_0 =: Q$. Da $n_0^{(1)} \geq 1$ und alle
+Operationen positiv sind, folgt $Q > 0$ und damit $2^M > 3^L$.
+\end{beweis}
+
+\subsection{Irrationalität von $\log 2 / \log 3$ und ihre Folgen}
+
+\begin{lemma}[Irrationalität von $\log_2 3$]
+\label{lem:irrational}
+Es gilt $\log_2 3 \in \R \setminus \Q$. Insbesondere gilt $2^M \neq 3^L$
+für alle $L, M \in \N$ mit $L, M \geq 1$.
+\end{lemma}
+
+\begin{beweis}
+Angenommen $\log_2 3 = p/q$ mit $p, q \in \N$, $q \geq 1$. Dann
+$3^q = 2^p$. Die linke Seite ist ungerade, die rechte gerade: Widerspruch.
+\end{beweis}
+
+\begin{theorem}[Konsequenz für Zyklen]
+\label{thm:zyklen-einschränkung}
+Sei ein $J$-Block-Zyklus mit Parametern $L = \sum(l_j+1)$,
+$M = \sum(l_j+\nu_j)$ gegeben. Dann gilt:
+\begin{enumerate}[label=\upshape(\roman*)]
+  \item $2^M \neq 3^L$ (aus Lemma~\ref{lem:irrational}). Damit ist
+    $|2^M - 3^L| \geq 1$.
+  \item Aus der Zyklusidentität~\eqref{eq:zyklusidentität}:
+    $n_0^{(1)} = Q/(2^M - 3^L) \in \N$.
+  \item Da $n_0^{(1)} \geq 1$ und $Q > 0$, muss $2^M > 3^L$ gelten,
+    also $M\log 2 > L\log 3$, d.\,h.\ $M/L > \log_2 3 \approx 1{,}585$.
+  \item Der Zyklusstartpunkt $n_0^{(1)} = Q / (2^M - 3^L)$
+    ist durch die Block-Parameter \emph{vollständig bestimmt}.
+    Damit ist für jede Kombination $(L, M)$ höchstens ein Zyklus-Startpunkt
+    möglich.
+\end{enumerate}
+\end{theorem}
+
+\begin{tcolorbox}[adisch, title={2-adische Interpretation}]
+Die Gleichung $2^M - 3^L > 0$ bedeutet, dass das Produkt-Nettofaktor
+\emph{approximativ} kleiner als~$1$ ist:
+\[
+  \frac{3^L}{2^M} < 1 \quad\Longleftrightarrow\quad
+  \sum_{j=1}^{J}\logt F(B_j) \approx L\logt 3 - M < 0.
+\]
+Aber \emph{exakt} gilt $\prod F(B_j) = 1$ (da Zyklus). Der scheinbare
+Widerspruch löst sich durch den Korrektturterm: Der exakte Nettofaktor
+enthält die ganzzahligen Korrekturterme $r_j$, die die Abweichung von
+$3^L/2^M$ zu genau~$1$ ausgleichen. Diese Balance ist äußerst restriktiv.
+\end{tcolorbox}
+
+\begin{tcolorbox}[lücke, title={Was die Zyklusidentität nicht beweist}]
+Theorem~\ref{thm:zyklen-einschränkung} zeigt, dass für jedes Parameterpaar
+$(L, M)$ \emph{höchstens ein} möglicher Zyklusstartpunkt existiert.
+Es zeigt aber \emph{nicht}, dass $Q/(2^M-3^L) \notin \N$ für alle $(L,M)$:
+
+\begin{itemize}[leftmargin=*]
+  \item Für kleine Werte (z.\,B.\ der bekannte $1\to1$-Zyklus mit $L=1$,
+    $M=2$, $Q=1$: $n_0 = 1/(4-3) = 1$\,\checkmark) existiert ein Lösung.
+  \item Ob weitere Lösungen in~$\N$ existieren, ist \emph{unbewiesen}.
+  \item Rigorose Schranken für die Mindestgröße eines nicht-trivialen Zyklus
+    (z.\,B.\ $n_0 > 10^{18}$, durch Computersuchläufe belegt) zeigen, dass
+    solche Zyklen extrem selten oder nicht vorhanden sind --- aber kein
+    algebraischer Beweis ist bekannt.
+\end{itemize}
+\end{tcolorbox}
+
+\subsection{Quantitative Schranke für Zykluslängen}
+
+Aus der Zyklusidentität lässt sich eine quantitative Beziehung zwischen
+der Zyklus-Größe und dem Parameter $|2^M - 3^L|$ gewinnen:
+
+\begin{korollar}[Untere Schranke für $n_0^{(1)}$]
+\label{kor:groesse}
+Für jeden $J$-Block-Zyklus mit $n_0^{(1)} \leq N$ gilt:
+\[
+  2^M - 3^L \;=\; \frac{Q}{n_0^{(1)}} \;\geq\; \frac{1}{N}.
+\]
+Insbesondere: Ein Zyklus mit $n_0^{(1)} \leq N$ erfordert
+$2^M - 3^L \geq 1/N$, also
+\[
+  M\log 2 - L\log 3 \;\geq\; \frac{\log(1 + 1/(N\cdot 3^L))}{1}.
+\]
+Wegen $2^M > 3^L$ und Baker's Theorem (untere Schranken für lineare
+Formen in Logarithmen) gilt sogar:
+\[
+  M\log 2 - L\log 3 \;\geq\; c_0 / (L\,\log L)
+\]
+für eine effektive Konstante $c_0 > 0$. Dies liefert obere Schranken
+für die Anzahl möglicher Zyklen mit gegebener Blocklänge~$J$.
+\end{korollar}
+
+\begin{bemerkung}[Baker's Theorem und Zyklusschranken]
+Durch Anwendung von Baker's Theorem über lineare Formen in Logarithmen
+(Baker 1975) zeigt man: $|M\log 2 - L\log 3| > c_1 \cdot e^{-c_2 \max(M,L)}$
+für effektive Konstanten $c_1, c_2 > 0$. Zusammen mit der Zyklusidentität
+ergibt das $n_0^{(1)} < Q \cdot e^{c_2 \max(M,L)}$.
+Die tatsächlichen Computerschranken (kein Zyklus bis $10^{18}$) stützen
+dieses Bild, ohne es zu einem vollständigen Beweis auszubauen.
+\end{bemerkung}
+
+% ====================================================
+\section{Ehrliches Fazit: Stärkster beweisbarer Satz}
+\label{sec:fazit}
+% ====================================================
+
+\subsection{Was rigoros beweisbar ist}
+
+\begin{theorem}[Negativer Log-Drift: Exakter Satz unter Modellannahme]
+\label{thm:hauptsatz}
+Modelliere die Block-Parameter $(l_j, \nu_j)$ als i.i.d.\ Zufallsgrößen mit
+$\Pr[l=k] = 2^{-(k+1)}$ und $\Pr[\nu = k] = 2^{-(k-1)}$ für $k \geq 2$.
+Dann gilt:
+\begin{enumerate}[label=\upshape(\roman*)]
+  \item $\E[\logt F(B)] = 2\logt 3 - 4 \approx -0{,}830 < 0$.
+  \item Nach dem Gesetz der großen Zahlen:
+    \[
+      \frac{1}{J}\sum_{j=1}^{J}\logt F(B_j)
+      \;\xrightarrow{J\to\infty}\; -0{,}830 \quad \text{(fast sicher)}.
+    \]
+  \item Also gilt $\Lambda < 0$ fast sicher unter dem Modellmaß.
+\end{enumerate}
+\end{theorem}
+
+\begin{beweis}
+Aussage (i) ist Theorem~\ref{thm:neg-drift}. Aussage (ii) folgt aus dem
+Starken Gesetz der großen Zahlen für i.i.d.\ $L^1$-Zufallsgrößen:
+$\E[|\logt F(B)|] = \E[(l+1)\logt 3 + l + \nu] < \infty$
+(da geometrische Momente endlich sind). Damit konvergiert das Cesàro-Mittel
+fast sicher gegen $\E[\logt F(B)] \approx -0{,}830$.
+\end{beweis}
+
+\begin{tcolorbox}[hauptsatz]
+\textbf{Theorem (Stärkster beweisbarer Satz):}
+
+\medskip
+\begin{enumerate}[label=\upshape(\arabic*), leftmargin=*]
+  \item \textbf{Unter dem Modellmaß (i.i.d.-Annahme):}
+    Der Lyapunov-Exponent $\Lambda \approx -0{,}830 < 0$ (fast sicher).
+    Kein Zyklus und keine divergente Bahn existiert unter diesem Maß.
+
+  \item \textbf{Für fast alle Bahnen (Tao 2022, rigoros):}
+    Die Collatz-Bahnen fast aller~$n$ (logarithmische Dichte~$1$) nehmen
+    unter jede Funktion $f(n)\to\infty$ liegende Werte an. Dies entspricht
+    einem negativen Lyapunov-Exponenten für fast alle Startpunkte.
+
+  \item \textbf{Für jeden Zyklus (rigoros):}
+    Jeder $J$-Block-Zyklus erfüllt die Identität $(2^M - 3^L)\,n_0 = Q$
+    mit $M/L > \logt 3$. Der einzige nachgewiesene Zyklus ist $n_0 = 1$
+    ($L=1$, $M=2$, $Q=1$). Kein weiterer Zyklus bis $10^{18}$ ist bekannt.
+
+  \item \textbf{Für alle Bahnen (offen):}
+    Der Nachweis $\Lambda < 0$ für \emph{jede} Bahn, oder äquivalent
+    der Ausschluss nicht-trivialer Zyklen und divergenter Bahnen,
+    steht aus.
+\end{enumerate}
+\end{tcolorbox}
+
+\subsection{Statusübersicht}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{p{7.5cm} p{2.5cm} p{3.5cm}}
+\toprule
+\textbf{Aussage} & \textbf{Status} & \textbf{Quelle} \\
+\midrule
+$\E[\logt F(B)] = 2\logt 3 - 4 \approx -0{,}83$
+  & \textcolor{bewiesengrün}{\bfseries Berechnet}
+  & Thm.~\ref{thm:neg-drift}, dieses Dok. \\
+$\Lambda < 0$ unter i.i.d.-Modellmaß
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & Thm.~\ref{thm:hauptsatz} \\
+$\Lambda \leq 0$ für fast alle Bahnen (Tao)
+  & \textcolor{bewiesengrün}{\bfseries Rigoros}
+  & Tao (2022) \\
+Blocklänge $l \leq \vii(n_0+1)-1$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & \textit{collatz\_5glatt\_dc.tex} \\
+Nach jeder C-Kette: $\nu \geq 2$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & \textit{collatz\_5glatt\_dc.tex} \\
+Zyklusidentität $(2^M-3^L)n = Q$
+  & \textcolor{bewiesengrün}{\bfseries Bewiesen}
+  & Thm.~\ref{thm:zyklusidentität} \\
+$\logt 3 \notin \Q$ (kein $2^M = 3^L$)
+  & \textcolor{bewiesengrün}{\bfseries Klassisch}
+  & Lemma~\ref{lem:irrational} \\
+\midrule
+i.i.d.-Annahme für Blocklängen entlang fester Bahn
+  & \textcolor{warnorange}{\bfseries Heuristik}
+  & Prop.~\ref{prop:bahn-verteilung} \\
+$\E[\nu] = 3$ für alle Block-Typen
+  & \textcolor{warnorange}{\bfseries Heuristik}
+  & Prop.~\ref{prop:Enu} \\
+Kein nicht-trivialer Zyklus bis $10^{18}$
+  & \textcolor{warnorange}{\bfseries Numerisch}
+  & Computersuchläufe \\
+\midrule
+$\Lambda < 0$ für alle Bahnen (Collatz-Vermutung)
+  & \textcolor{lückenrot}{\bfseries Offen}
+  & Kernlücke \\
+Ausschluss nicht-trivialer Zyklen (rigoros)
+  & \textcolor{lückenrot}{\bfseries Offen}
+  & Kernlücke \\
+Ausschluss divergenter Bahnen
+  & \textcolor{lückenrot}{\bfseries Offen}
+  & Kernlücke \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Präzise Formulierung der verbleibenden Lücke}
+
+\begin{tcolorbox}[lücke, title={Die eine verbleibende Lücke}]
+Das Collatz-Problem in der Lyapunov-Formulierung lautet:
+
+\medskip
+\begin{center}
+\textit{Zeige: Für jedes $n_0 \in \N$ gilt
+\[
+  \limsup_{J\to\infty} \frac{1}{J}\sum_{j=1}^{J}\logt F(B_j) < 0.
+\]}
+\end{center}
+
+\medskip
+\textbf{Was bekannt ist:}
+\begin{itemize}[leftmargin=*]
+  \item $\E[\logt F(B)] \approx -0{,}83 < 0$ (unter Modellannahme, rechnerisch exakt).
+  \item Tao: Für fast alle $n_0$ gilt sogar ein stärkeres Absteigen.
+  \item Zyklusidentität + Irrationalität: Nicht-triviale Zyklen sind extrem eingeschränkt.
+\end{itemize}
+
+\textbf{Was fehlt:}
+\begin{itemize}[leftmargin=*]
+  \item \emph{Mischung / Ergodizität:} Der Übergang von der Modellverteilung
+    zum Zeitmittelwert entlang fester Bahnen. Ohne Ergodiziätsaussage der
+    Collatz-Abbildung ist der Birkhoff-Schritt nicht vollziehbar.
+  \item \emph{Maß-0-Ausnahmen:} Tao schließt eine Ausnahmemenge mit
+    logarithmischer Dichte~$0$ nicht aus. Der Übergang zu ``alle $n$'' ist der
+    offene Schritt.
+  \item \emph{Zyklus-Ausschluss:} Die Zyklusidentität zeigt, dass nicht-triviale
+    Zyklen algebraische Ganzzahligkeitsbedingungen erfüllen müssen, schließt
+    aber ihre Existenz nicht rigoros aus.
+\end{itemize}
+
+\medskip
+\textbf{Der Kern:} Der Lyapunov-Exponent ist unter dem Modellmaß negativ und
+für fast alle Bahnen nach Tao ebenfalls. Die volle Collatz-Vermutung erfordert
+den Nachweis, dass auch die Maß-0-Ausnahmen abgedeckt sind --- und genau das
+ist das open problem.
+\end{tcolorbox}
+
+\subsection{Ausblick: Mögliche Zugänge zur Lücke}
+
+\begin{enumerate}[label=\textbf{(\arabic*)}, leftmargin=*]
+  \item \textbf{Stochastische Ergodizität:}
+    Zeige, dass die Collatz-Bahn für jedes $n_0$ in einem geeigneten Sinn
+    ``equidistributed'' in Residuenklassen ist. Dieser Ansatz wird von
+    mehreren modernen Arbeiten verfolgt (z.\,B.\ Tao's Stochastic-Calculus-Methode).
+
+  \item \textbf{Explizite Zyklusschranken:}
+    Kombiniere die Zyklusidentität mit Baker's Theorem, um eine obere Schranke
+    für $n_0^{(1)}$ in Abhängigkeit von $J$ zu erhalten; dann zeige, dass
+    $Q/(2^M - 3^L) > n_0^{(1)}$ für alle nichttrivialen Parameterkombinationen
+    mit $J \geq 2$.
+
+  \item \textbf{Spektraltheorie des Transferoperators:}
+    Analysiere den Spektralradius des Collatz-Transferoperators. Ist der
+    spektrale Radius $< 1$, folgt die globale Kontraktion. Dieser Zugang
+    ist analytisch anspruchsvoll und erfordert funktionentheoretische Methoden.
+
+  \item \textbf{Mehrblock-Akkumulation mit LTE-Schranken:}
+    Nutze die LTE-Analyse aus \textit{collatz\_mehrblock\_drift.tex}: Für
+    extremale C-Ketten der Länge $k$ ist $\nu = O(\log k)$. Der Nettofaktor
+    dieser Blöcke ist groß, aber sie werden durch nachfolgende Blöcke mit
+    kleinen Nettofaktoren kompensiert. Eine scharfe Akkumulationsschranke
+    würde den negativen Drift rigoros sichern.
+\end{enumerate}
+
+% ====================================================
+% Literatur
+% ====================================================
+\begin{thebibliography}{99}
+
+\bibitem{hoffbauer-mehrblock}
+T.\ Hoffbauer,
+\textit{Mehrblock-Drift und das Scheitern der lokalen Kontraktion},
+Mathematische Texte, \texttt{collatz\_mehrblock\_drift.tex} (2026).
+
+\bibitem{hoffbauer-c-ketten}
+T.\ Hoffbauer,
+\textit{C-Ketten in der Collatz-Dynamik: 2-adische Analyse},
+Mathematische Texte, \texttt{collatz\_c\_ketten\_2adisch.tex} (2025/2026).
+
+\bibitem{hoffbauer-5glatt}
+T.\ Hoffbauer,
+\textit{C-Ketten, 5-glatte Zahlen und Abstiegsstruktur},
+Mathematische Texte, \texttt{collatz\_5glatt\_dc.tex} (2026).
+
+\bibitem{hoffbauer-schluss}
+T.\ Hoffbauer,
+\textit{EABC-Rahmen und Collatz-Dynamik: Ein strukturierter Beweisversuch},
+Mathematische Texte, \texttt{collatz\_schlussartikel.tex} (2026).
+
+\bibitem{tao-collatz}
+T.\ Tao,
+\textit{Almost all orbits of the Collatz map attain almost bounded values},
+Forum of Mathematics Pi \textbf{10} (2022), e12.
+\texttt{arXiv:1909.03562}
+
+\bibitem{lagarias-survey}
+J.\,C.\ Lagarias,
+\textit{The $3x+1$ problem and its generalizations},
+Amer.\ Math.\ Monthly \textbf{92} (1985), 3--23.
+
+\bibitem{lagarias-book}
+J.\,C.\ Lagarias (Hrsg.),
+\textit{The Ultimate Challenge: The $3x+1$ Problem},
+American Mathematical Society, Providence (2010).
+
+\bibitem{baker}
+A.\ Baker,
+\textit{Transcendental Number Theory},
+Cambridge University Press (1975).
+
+\bibitem{steiner}
+R.\ P.\ Steiner,
+\textit{A theorem on the Syracuse problem},
+Proceedings of the 7th Manitoba Conference on Numerical Mathematics (1977), 553--559.
+
+\bibitem{simons-de-weger}
+J.\ Simons, B.\ de Weger,
+\textit{Theoretical and computational bounds for $m$-cycles of the $3n+1$ problem},
+Acta Arithmetica \textbf{117} (2005), 51--70.
+
+\bibitem{birkhoff}
+G.\,D.\ Birkhoff,
+\textit{Proof of the ergodic theorem},
+Proc.\ Nat.\ Acad.\ Sci.\ USA \textbf{17} (1931), 656--660.
+
+\bibitem{lte}
+P.\ Kunec et al.,
+\textit{Lifting the Exponent Lemma (LTE)},
+Art of Problem Solving, Community Notes (2009--2024).
+
+\end{thebibliography}
+
+\end{document}

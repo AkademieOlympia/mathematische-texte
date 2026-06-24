@@ -1,0 +1,569 @@
+\documentclass[12pt,a4paper]{article}
+
+% -------------------------------------------------
+% Sprache / Kodierung
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+
+% -------------------------------------------------
+% Layout / Grafik / Farben
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks,unicode]{hyperref}
+\pdfstringdefDisableCommands{%
+  \def\ü{ue}\def\ö{oe}\def\ä{ae}\def\Ü{Ue}\def\Ö{Oe}\def\Ä{Ae}\def\ss{ss}%
+}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{array}
+
+% -------------------------------------------------
+% Farben (konsistent mit Vorgängerdokumenten)
+% -------------------------------------------------
+\definecolor{lückenrot}{RGB}{180,40,40}
+\definecolor{bewiesengrün}{RGB}{30,100,50}
+\definecolor{warnorange}{RGB}{200,100,10}
+\definecolor{hintergrundblau}{RGB}{235,242,250}
+\definecolor{hintergrundgelb}{RGB}{255,252,225}
+\definecolor{adischviolett}{RGB}{90,20,140}
+\definecolor{fehlerrot}{RGB}{200,0,0}
+\definecolor{konjviolett}{RGB}{80,0,130}
+\definecolor{e8grau}{RGB}{55,55,90}
+\definecolor{korrekturorange}{RGB}{200,100,10}
+
+% -------------------------------------------------
+% tcolorbox-Stile
+% -------------------------------------------------
+\tcbset{
+  lücke/.style={colback=red!8, colframe=lückenrot, fonttitle=\bfseries,
+    title={Offene Lücke}},
+  ergebnis/.style={colback=green!7, colframe=bewiesengrün,
+    fonttitle=\bfseries, title={Bewiesenes Ergebnis}},
+  warnung/.style={colback=orange!10, colframe=warnorange,
+    fonttitle=\bfseries, title={Achtung / Heuristik}},
+  adisch/.style={colback=violet!6, colframe=adischviolett,
+    fonttitle=\bfseries, title={2-adische Perspektive}},
+  kernidee/.style={colback=hintergrundblau, colframe=blue!60!black,
+    fonttitle=\bfseries, title={Kernidee}},
+  konj/.style={colback=violet!5, colframe=konjviolett, fonttitle=\bfseries,
+    title={Konjektur (unbewiesen)}},
+  lte/.style={colback=yellow!8, colframe=e8grau, fonttitle=\bfseries,
+    title={LTE-Analyse}},
+  hauptsatz/.style={colback=green!10, colframe=bewiesengrün!80!black,
+    fonttitle=\bfseries\large, title={Stärkster beweisbarer Satz}},
+  korrektur/.style={colback=yellow!5, colframe=orange!70!black,
+    fonttitle=\bfseries},
+}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+\newtheorem{hypothese}[definition]{Hypothese}
+\newtheorem{satz}[definition]{Satz}
+
+\newenvironment{beweis}{\begin{proof}[Beweis]}{\end{proof}}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\vii}{\nu_2}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Ztwo}{\mathbb{Z}_2}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\atwo}[1]{\lvert#1\rvert_2}
+
+% -------------------------------------------------
+% Dokument
+% -------------------------------------------------
+\title{%
+  Mehrblock-Drift und das Scheitern der lokalen Kontraktion:\\[0.3em]
+  Vom Einzelblock-Argument zur globalen Dynamik\\[0.5em]
+  \large Ergänzung zur Collatz-Synthese vom 15.\ Juni 2026%
+}
+\author{Thomas Hoffbauer}
+\date{15.\ Juni 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Dieses Dokument ergänzt \textit{collatz\_schlussartikel.tex} um eine zentrale
+neue Erkenntnis: Die lineare DC-Schranke $\nu \gtrsim 0{,}585\,k$, die einen
+einzelnen C$^k$A-Block zur Kontraktion zwingen würde, ist der
+\textbf{falsche Mechanismus} --- und das lässt sich nun \emph{beweisen}.
+
+Für extremale C-Ketten mit $n_0+1 = 2^{k+1}\cdot 3^r$ (Startpunkte der
+Familie $m = 3^r$) liefert das LTE-Lemma $\nu = 3 + \vii(k+r+1) = O(\log k)$.
+Das reicht für Einzelblock-Kontraktion \emph{prinzipiell nicht} aus.
+
+Das richtige Ziel ist ein \emph{Mehrblock-Drift-Argument}: Nicht jeder
+einzelne Block $\mathrm{C}^{l_j}\mathrm{A}$ muss kontrahieren, sondern das
+Produkt der Nettofaktoren muss asymptotisch gegen~$0$ gehen. Dies ist
+strukturell der Ansatz von Tao (2022) --- globale Drift statt lokaler
+Kontraktion.
+\end{abstract}
+
+\tableofcontents
+
+\bigskip
+\begin{tcolorbox}[warnung, title={Einordnung}]
+Die Collatz-Vermutung ist unbewiesen. Dieses Dokument zeigt, warum ein
+konkreter Beweisansatz (Einzelblock-Kontraktion) fundamental scheitert,
+und präzisiert das richtige Beweisziel. Das ist eine \textbf{Verbesserung
+des Kenntnisstands}, keine Niederlage.
+\end{tcolorbox}
+
+% ====================================================
+\section{Das Scheitern der lokalen Kontraktion}
+\label{sec:scheitern}
+% ====================================================
+
+\subsection{Die Extremfamilie $m = 3^r$}
+
+Wir betrachten Startwerte der Form
+\[
+  n_0 + 1 = 2^{k+1} \cdot 3^r, \quad r \geq 1,
+\]
+also $n_0 = 2^{k+1}\cdot 3^r - 1$. Diese Werte starten eine C-Kette der
+maximalen Länge~$k$ (denn $\vii(n_0+1) = k+1$, und die Kettenlänge ist
+$\leq \vii(n_0+1) - 1 = k$).
+
+Nach der C-Ketten-Formel gilt:
+\[
+  n_k + 1 = \frac{3^k(n_0+1)}{2^k} = 3^k \cdot 2 \cdot 3^r = 2\cdot 3^{k+r}.
+\]
+Also:
+\[
+  n_k = 2\cdot 3^{k+r} - 1.
+\]
+
+\subsection{LTE-Berechnung des A-Schritts}
+
+\begin{theorem}[Extremale Tiefe des EA-Schritts]
+\label{thm:lte-extrem}
+Für $n_0+1 = 2^{k+1}\cdot 3^r$ gilt am Ende der C-Kette:
+\[
+  \vii(3n_k + 1) = 1 + \vii(3^{k+r+1} - 1).
+\]
+Konkret:
+\[
+  \vii(3n_k+1) =
+  \begin{cases}
+    2 & \text{falls $k+r+1$ ungerade,}\\
+    3 + \vii(k+r+1) & \text{falls $k+r+1$ gerade.}
+  \end{cases}
+\]
+Insbesondere: $\vii(3n_k+1) = O(\log k)$ für $k \to \infty$.
+\end{theorem}
+
+\begin{beweis}
+Es ist $3n_k + 1 = 3(2\cdot 3^{k+r}-1)+1 = 6\cdot 3^{k+r} - 2 = 2(3^{k+r+1}-1)$.
+Daher $\vii(3n_k+1) = 1 + \vii(3^{k+r+1}-1)$.
+Das LTE-Lemma für $p=2$ und die Basis~$3$ (mit $2 \mid 3-1$) liefert:
+\[
+  \vii(3^N - 1) =
+  \begin{cases}
+    1 & \text{falls $N$ ungerade,}\\
+    \vii(N) + 2 & \text{falls $N$ gerade.}
+  \end{cases}
+\]
+Mit $N = k+r+1$ folgt die Behauptung. Da $\vii(k+r+1) = O(\log k)$, gilt
+auch $\vii(3n_k+1) = O(\log k)$.
+\end{beweis}
+
+\subsection{Divergenz des Nettofaktors}
+
+\begin{theorem}[Lokale Kontraktion scheitert fundamental]
+\label{thm:kein-einzelblock}
+Für $n_0 + 1 = 2^{k+1}\cdot 3^r$ (extremale Familie) gilt:
+\[
+  \frac{n_{k+1}}{n_0}
+  \approx \frac{(3/2)^{k+1}}{2^{\vii(3n_k+1)}}
+  \geq \frac{(3/2)^{k+1}}{2^{3+\vii(k+r+1)}}
+  \;\xrightarrow{k\to\infty}\; +\infty.
+\]
+Der Nettofaktor des C$^k$A-Blocks divergiert. Einzelne Blöcke kontrahieren
+im Extremfall \textbf{nicht} für große~$k$.
+\end{theorem}
+
+\begin{beweis}
+Nach dem A-Schritt gilt:
+$n_{k+1} = (3n_k+1)/2^{\nu}$ mit $\nu = \vii(3n_k+1)$.
+Damit:
+\[
+  \frac{n_{k+1}}{n_0}
+  = \frac{(3^{k+1}m-1)/2^{\nu-1}}{2^{k+1}\cdot m - 1}
+  \approx \frac{3^{k+1}m}{2^{\nu-1} \cdot 2^{k+1} m}
+  = \frac{3^{k+1}}{2^{\nu+k}}.
+\]
+Für $\nu = 3 + \vii(k+r+1)$ und $m = 3^r$:
+\[
+  \frac{n_{k+1}}{n_0}
+  \approx \frac{3}{2^3} \cdot \frac{(3/2)^k}{2^{\vii(k+r+1)}}
+  = \frac{3}{8} \cdot \frac{(3/2)^k}{2^{\vii(k+r+1)}}.
+\]
+Da $(3/2)^k$ exponentiell wächst und $2^{\vii(k+r+1)} \leq k+r+1$ nur
+linear, divergiert der Quotient.
+\end{beweis}
+
+\begin{tcolorbox}[ergebnis, title={Nicht-Ergebnis als Ergebnis}]
+\textbf{Theorem~\ref{thm:kein-einzelblock} ist ein bewiesenes Nicht-Ergebnis.}
+Es belegt, dass kein reines Einzelblock-Argument die DC schließen kann ---
+das ist keine Beweislücke, sondern ein struktureller Satz über die Grenzen
+des Ansatzes.
+
+\medskip
+Die lineare DC-Schranke $\nu \gtrsim 0{,}585\,k$ ist
+\textbf{für die extremale Familie unerreichbar}, denn $\nu = O(\log k)$.
+Dieser Befund ist exakt und widerlegungsfest.
+\end{tcolorbox}
+
+\subsection{Vergleichstabelle: Nettofaktor für $m = 3$ ($r = 1$)}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{ccccc}
+\toprule
+$k$ & $\nu = \vii(3n_k+1)$ & Nettofaktor $\approx$ & Bedarf~$\nu$ & Kontrahiert? \\
+\midrule
+1 & $3 + \vii(3) = 4$ & $(3/2)^2/2^3 = 9/32 \approx 0{,}28$ & $>2{,}17$ & Ja \\
+2 & $2$ (da $k+r+1=5$ ung.) & $(3/2)^3/2^1 = 27/8 \approx 3{,}4$ & $>2{,}75$ & Nein \\
+3 & $3+\vii(4)=5$ & $(3/2)^4/2^3 = 81/128 \approx 0{,}63$ & $>3{,}34$ & Nein \\
+4 & $2$ (da $k+r+1=7$ ung.) & $(3/2)^5/2^0 = 243/32 \approx 7{,}6$ & $>3{,}92$ & Nein \\
+6 & $2$ (da $k+r+1=9$ ung.) & $(3/2)^7/2^0 \approx 17{,}1$ & $>5{,}1$ & Nein \\
+7 & $3+\vii(8)=6$ & $(3/2)^8/2^4 = 6561/4096 \approx 1{,}6$ & $>5{,}68$ & Nein \\
+10 & $2$ & $(3/2)^{11}/2^0 \approx 86$ & $>7{,}4$ & Nein \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Für $k \geq 3$ kontrahiert der einzelne $\mathrm{C}^k\mathrm{A}$-Block
+(mit $m = 3$) selbst im besten verfügbaren Fall ($\nu = 5$) nicht mehr.
+Der Orbit muss weitere Blöcke durchlaufen.
+
+% ====================================================
+\section{Die Endpunkt-Familie $2\cdot 3^N - 1$}
+\label{sec:endpunkte}
+% ====================================================
+
+\subsection{Herkunft und Bedeutung}
+
+Aus dem vorigen Abschnitt folgt: Die Endpunkte extremaler C-Ketten
+(mit $n_0+1 = 2^{k+1}\cdot 3^r$) liegen alle auf der Familie
+\[
+  n_k = 2\cdot 3^{k+r} - 1 =: 2\cdot 3^N - 1, \quad N = k+r.
+\]
+Dies ist eine \emph{einparametrige Familie}, deren Verhalten unter der
+Collatz-Abbildung vollständig durch LTE klassifizierbar ist.
+
+\subsection{Vollständige LTE-Klassifikation}
+
+\begin{proposition}[Klassifikation der Familie $2\cdot 3^N - 1$]
+\label{prop:endpunktfamilie}
+Für $n = 2\cdot 3^N - 1$ gilt:
+\[
+  \vii\bigl(3n + 1\bigr)
+  = \vii\bigl(6\cdot 3^N - 2\bigr)
+  = 1 + \vii(3^{N+1} - 1)
+  =
+  \begin{cases}
+    2 & \text{falls $N+1$ ungerade (d.\,h.\ $N$ gerade),}\\[2pt]
+    3 + \vii(N+1) & \text{falls $N+1$ gerade (d.\,h.\ $N$ ungerade).}
+  \end{cases}
+\]
+Insbesondere: Für ungerades $N$ ist $\vii(3n+1)$ explizit und vollständig
+bestimmt. Die Größe ist für diese Familie \textbf{nicht offen}.
+\end{proposition}
+
+\begin{beweis}
+$3n + 1 = 3(2\cdot 3^N - 1) + 1 = 6\cdot 3^N - 2 = 2(3^{N+1} - 1)$.
+Daher $\vii(3n+1) = 1 + \vii(3^{N+1}-1)$.
+LTE für $p=2$: $\vii(3^M - 1) = 1$ falls $M$ ungerade, $\vii(M)+2$ falls
+$M$ gerade.
+\end{beweis}
+
+\subsection{Explizite Wertetabelle}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{ccccc}
+\toprule
+$N$ & $n = 2\cdot 3^N - 1$ & $N+1$ & $\vii(N+1)$ & $\vii(3n+1)$ \\
+\midrule
+1  & 5           & 2 (ger.)  & 1 & $3+1 = 4$ \\
+2  & 17          & 3 (ung.)  & — & $2$ \\
+3  & 53          & 4 (ger.)  & 2 & $3+2 = 5$ \\
+4  & 161         & 5 (ung.)  & — & $2$ \\
+5  & 485         & 6 (ger.)  & 1 & $3+1 = 4$ \\
+6  & 1457        & 7 (ung.)  & — & $2$ \\
+7  & 4373        & 8 (ger.)  & 3 & $3+3 = 6$ \\
+8  & 13121       & 9 (ung.)  & — & $2$ \\
+9  & 39365       & 10 (ger.) & 1 & $3+1 = 4$ \\
+10 & 118097      & 11 (ung.) & — & $2$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{tcolorbox}[ergebnis, title={Vollständige Klassifikation}]
+Für $n = 2\cdot 3^N - 1$ ist $\vii(3n+1)$ für alle $N \in \N$ explizit
+und geschlossen berechenbar. Das Muster:
+\begin{itemize}
+  \item $N$ gerade: $\vii(3n+1) = 2$ (minimale Tiefe, schlechtester Fall).
+  \item $N$ ungerade: $\vii(3n+1) = 3 + \vii(N+1)$
+    (Tiefe wächst logarithmisch mit $N$).
+\end{itemize}
+Diese Familie hat \emph{kontrollierbares, vollständig analysiertes Verhalten}.
+\end{tcolorbox}
+
+\subsection{Beobachtung: Kein Wachstum der Tiefe über $O(\log N)$}
+
+Die Tabelle zeigt das strukturelle Muster: Die Tiefe $\vii(3n+1)$ ist für
+$N$ ungerade genau $3 + \vii(N+1)$. Da $\vii(N+1) \leq \log_2(N+1)$, wächst
+die Tiefe höchstens logarithmisch. Ein lineares Wachstum (wie für Kontraktion
+nötig) tritt \emph{nie} auf. Die Endpunkte extremaler C-Ketten liefern also
+systematisch zu flache A-Schritte für große~$k$.
+
+% ====================================================
+\section{Übergang zur Mehrblock-Dynamik}
+\label{sec:mehrblock}
+% ====================================================
+
+\subsection{Definitionen}
+
+\begin{definition}[Block-Zerlegung einer Collatz-Bahn]
+Eine \emph{Block-Zerlegung} der Bahn $(n_0, \U(n_0), \U^2(n_0), \ldots)$
+ist die Einteilung in maximale Teilfolgen vom Typ
+\[
+  B_j = \mathrm{C}^{l_j}\!\cdot\mathrm{A},
+\]
+wobei $l_j \geq 0$ die Länge der $j$-ten C-Kette und der abschließende
+A-Schritt obligatorisch ist (nach Thm.~3.3 in \textit{collatz\_schlussartikel.tex}).
+Der \emph{Nettofaktor} des $j$-ten Blocks ist:
+\[
+  F(B_j) := \frac{n_0^{(j+1)}}{n_0^{(j)}}
+  \approx \frac{(3/2)^{l_j+1}}{2^{\vii(3n_{l_j}^{(j)}+1)}},
+\]
+wobei $n_0^{(j)}$ der Startwert des $j$-ten Blocks ist.
+\end{definition}
+
+\subsection{Die Mehrblock-Bedingung}
+
+\begin{tcolorbox}[kernidee, title={Das richtige Beweisziel}]
+Die Collatz-Vermutung ist äquivalent zur Aussage: Für jedes $n_0 \in \N$
+gilt
+\[
+  \prod_{j=1}^{J} F(B_j) \;\xrightarrow{J \to \infty}\; 0.
+\]
+In logarithmischer Form: Das \emph{Mehrblock-Drift-Kriterium}
+\[
+  \limsup_{J\to\infty} \frac{1}{J} \sum_{j=1}^{J} \log F(B_j) < 0
+\]
+ist notwendig und hinreichend für die Beschränktheit der Bahn von $n_0$.
+\end{tcolorbox}
+
+\begin{bemerkung}[Vergleich mit Einzelblock-Kriterium]
+Das Einzelblock-Kriterium verlangt $F(B_j) < 1$ für alle $j$. Das
+Mehrblock-Kriterium verlangt nur, dass der \emph{Cesàro-Mittelwert}
+der Logarithmen negativ ist. Letzteres ist wesentlich schwächer und
+prinzipiell erreichbar --- auch wenn einzelne Blöcke $F(B_j) \gg 1$ haben.
+\end{bemerkung}
+
+\subsection{Strukturelles Bild}
+
+Das Mehrblock-Drift-Kriterium besagt: Für jeden Block mit großem
+Nettofaktor ($l_j$ groß, $\nu_j$ klein) müssen nachfolgende Blöcke
+mit kleinem Nettofaktor ($\nu_j$ groß) ausgleichen. Dies erfordert
+\emph{keine} Kontraktion in jedem Schritt, sondern nur eine
+\emph{negative mittlere Steigung} im logarithmischen Bild.
+
+\begin{tcolorbox}[lte, title={Mittlerer Nettofaktor nach LTE}]
+Modellrechnung: Sei die C-Kettenlänge gleichverteilt in
+$\{0, 1, \ldots, L\}$ und $\nu \in \{2, 3\}$ mit gleicher Wahrscheinlichkeit.
+Dann ist der erwartete Logarithmus des Nettofaktors:
+\[
+  \mathbb{E}[\log F(B)] = \frac{1}{L+1}\sum_{l=0}^{L} \Bigl[
+    (l+1)\log\tfrac{3}{2} - \bar\nu \log 2
+  \Bigr]
+  = \tfrac{L+2}{2} \log\tfrac{3}{2} - \bar\nu\log 2,
+\]
+wobei $\bar\nu \approx 2{,}5$. Für $L \leq L^*$ mit
+$\frac{L^*+2}{2}\log\frac{3}{2} < \bar\nu\log 2$, d.\,h.\
+$L^* < \frac{2\bar\nu\log 2}{\log(3/2)} - 2 \approx 6{,}4$, ist der
+mittlere Nettofaktor $< 1$. Dies stützt die Konvergenz für \emph{typische}
+Bahnen, beweist sie aber nicht für alle.
+\end{tcolorbox}
+
+% ====================================================
+\section{Präzise Formulierung des Beweisziels}
+\label{sec:beweisziel}
+% ====================================================
+
+\subsection{Die richtige Form der DC}
+
+\begin{tcolorbox}[kernidee, title={Mehrblock-DC (richtige Form)}]
+\textbf{Ziel:} Zeige für jedes $n_0 \in \N$:
+\[
+  \limsup_{J\to\infty} \frac{1}{J} \sum_{j=1}^{J} \log F(B_j) < 0.
+\]
+Dies ist äquivalent zur Collatz-Vermutung (für die Klasse der divergenzfreien
+Bahnen), aber in einer Form, die \emph{ergodisch-theoretisch angreifbar} ist:
+Es geht um das Vorzeichen eines Lyapunov-Exponenten.
+\end{tcolorbox}
+
+\subsection{Drei Präzisierungsstufen}
+
+\begin{enumerate}[label=\textbf{(\arabic*)}, leftmargin=*]
+  \item \textbf{Fast alle Bahnen (Tao 2022):}
+    Tao zeigt: Für fast alle $n_0$ (im Sinne der logarithmischen Dichte)
+    nehmen Orbits fast beschränkte Werte an. Das entspricht einer
+    ``fast überall''-Version des Drift-Kriteriums.
+
+  \item \textbf{Alle Bahnen mit beschränkter Kettenlänge:}
+    Falls $l_j \leq C$ für alle $j$ (gleichmäßig beschränkte Kettenlängen),
+    dann gilt $F(B_j) \leq (3/2)^{C+1}/2 < \infty$. Das Drift-Kriterium
+    reduziert sich auf eine endliche Zahl von Fällen und ist analytisch
+    handhabbar.
+
+  \item \textbf{Alle Bahnen (Collatz-Vermutung):}
+    Das allgemeine Drift-Kriterium für unbeschränkte $l_j$ erfordert globale
+    Methoden. Die LTE-Analyse zeigt: Für große $l_j$ sind die Nettofaktoren
+    groß ($\gg 1$), aber selten (Dichte $\leq 2^{-(l_j+1)}$). Die Frage
+    ist, ob Seltenheit + logarithmisches Mittel negativ erzwingen.
+\end{enumerate}
+
+\subsection{Verbindung zur Ergodizität}
+
+Die Drift-Bedingung lässt sich als Bedingung an den \emph{Lyapunov-Exponenten}
+des Transferoperators $\mathcal{T}$ der Collatz-Abbildung formulieren:
+\[
+  \lambda := \lim_{J\to\infty} \frac{1}{J}\sum_{j=1}^J \log F(B_j)
+  = \log\frac{3}{2} - \bar\nu\,\log 2 \stackrel{?}{<} 0.
+\]
+Die Frage $\bar\nu > \log_2 3 \approx 1{,}585$ (mittlere EA-Tiefe über
+$\log_2 3$) ist äquivalent zur Collatz-Vermutung in dieser Formulierung.
+
+\begin{tcolorbox}[konj, title={Drift-Konjektur}]
+Für jede Collatz-Bahn gilt:
+\[
+  \liminf_{J\to\infty} \frac{1}{J} \sum_{j=1}^J \vii(3n_{l_j}^{(j)}+1) > \log_2 3.
+\]
+Das ist die \emph{rechte} Form der Durchlaufbedingung.
+\end{tcolorbox}
+
+% ====================================================
+\section{Verbindung zur $E_8$-Analyse}
+\label{sec:e8}
+% ====================================================
+
+\subsection{Return-Map-Argument}
+
+In \textit{collatz\_oktonionen\_beweis.tex} wird ein $E_8$-Normabstieg
+nachgewiesen, der bei jedem EA-Schritt für hinreichend große~$n$ eintritt.
+Das Mehrblock-Drift-Argument ist die \emph{arithmetische Parallele} dazu:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{p{4.5cm}p{1.5cm}p{5.5cm}}
+\toprule
+\textbf{$E_8$-Analyse} & & \textbf{Mehrblock-Drift} \\
+\midrule
+$E_8$-Norm fällt nicht nach jedem Schritt &$\longleftrightarrow$&
+  Nettofaktor $F(B_j)$ ist nicht immer $<1$ \\[4pt]
+Aber: Norm fällt nach jedem EA-Schritt &$\longleftrightarrow$&
+  Einzelne große Blöcke werden durch folgende kompensiert \\[4pt]
+Return-Map: Norm fällt nach jedem Rückzug in die ``Normalzone'' &$\longleftrightarrow$&
+  Cesàro-Mittel von $\log F(B_j)$ ist negativ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Strukturelle Konsequenz}
+
+\begin{tcolorbox}[kernidee, title={Gemeinsamer Kern}]
+Sowohl das $E_8$-Argument als auch das Mehrblock-Drift-Argument zeigen:
+\textbf{Lokale Kontraktion ist nicht das Ziel}. Beide Methoden liefern
+Aussagen über \emph{akkumuliertes} Verhalten, nicht über einzelne Schritte.
+
+Der $E_8$-Normabstieg bei EA-Schritten und das negative Cesàro-Mittel
+von $\log F(B_j)$ sind zwei Seiten derselben strukturellen Aussage:
+Die Collatz-Dynamik \emph{driftet} im Mittel nach unten.
+
+Was fehlt, ist der Nachweis, dass dieser Mittelwert auch
+\emph{für jeden einzelnen Orbit} negativ ist --- nicht nur im
+statistischen Durchschnitt.
+\end{tcolorbox}
+
+\subsection{Formulierung als offenes Problem}
+
+\begin{tcolorbox}[lücke, title={Präzise verbleibende Lücke}]
+Die einzige verbleibende Lücke lautet jetzt:
+
+\medskip
+\begin{center}
+\textit{Zeige: Für jedes $n_0 \in \N$ gilt\\[6pt]
+$\displaystyle\limsup_{J\to\infty}\frac{1}{J}\sum_{j=1}^{J}\log F(B_j) < 0.$}
+\end{center}
+
+\medskip
+Das ist der \emph{Lyapunov-Exponent der Collatz-Dynamik}.
+Sein Vorzeichen ist das Collatz-Problem in seiner schärfsten Form.
+\end{tcolorbox}
+
+% ====================================================
+% Literatur
+% ====================================================
+\begin{thebibliography}{9}
+
+\bibitem{hoffbauer-schluss}
+T.\ Hoffbauer,
+\textit{EABC-Rahmen und Collatz-Dynamik: Ein strukturierter Beweisversuch},
+Mathematische Texte, \texttt{collatz\_schlussartikel.tex} (2026).
+
+\bibitem{hoffbauer-c-ketten}
+T.\ Hoffbauer,
+\textit{C-Ketten in der Collatz-Dynamik: 2-adische Analyse},
+Mathematische Texte, \texttt{collatz\_c\_ketten\_2adisch.tex} (2025/2026).
+
+\bibitem{hoffbauer-5glatt}
+T.\ Hoffbauer,
+\textit{C-Ketten, 5-glatte Zahlen und Abstiegsstruktur},
+Mathematische Texte, \texttt{collatz\_5glatt\_dc.tex} (2026).
+
+\bibitem{hoffbauer-oktonionen}
+T.\ Hoffbauer,
+\textit{Collatz-Dynamik auf ganzzahligen Oktonionen: Beweisversuch über das $E_8$-Gitter},
+Mathematische Texte, \texttt{collatz\_oktonionen\_beweis.tex} (2025).
+
+\bibitem{tao-collatz}
+T.\ Tao,
+\textit{Almost all orbits of the Collatz map attain almost bounded values},
+Forum of Mathematics Pi \textbf{10} (2022), e12.
+
+\bibitem{lte}
+P.\ Kunec / V.\ Pop / B.\ Eskenazi et al.,
+\textit{Lifting the Exponent Lemma (LTE)},
+Art of Problem Solving, Community Notes (2009--2024).
+
+\end{thebibliography}
+
+\end{document}
