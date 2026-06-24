@@ -1,0 +1,225 @@
+# EABC Φ_E — analytischer Lean-Beweisversuch
+
+**Status:** Skeleton (PR #63, `collatz/eabc-h03-diskrete-geometrie-fluss`; Basis PR #59)  
+**Lean (Hodge-Layer):** `collatz_eabc_core/CollatzEabc/FlussPhiE.lean`  
+**Lean (minimaler Kern):** `collatz_eabc_core/CollatzEabc/HolonomyCore.lean` (`EABC`-Namespace)  
+**Epistemik:** `collatz_eabc_epistemik_schichten.md` — **A / B / R / C**; Lakatos §4 (#72)  
+**Kanonische Geometrie:** `collatz_eabc_diskrete_geometrie.md`  
+**Numerik:** `eabc_quadruplets_1e10.py`, `eabc_quadruplets_fit_alpha.py` (#73); `collatz_eabc_hodge_eabc.py` (`Phi_E`, `flux_density_limit`, `inner_product_omega_h`)
+
+---
+
+## Epistemische Schichten in `FlussPhiE.lean`
+
+| Schicht | Label | Lean-Rolle | Sorry? |
+|---------|-------|------------|--------|
+| **A** | Theorem | Kombinatorisch bewiesen | nein |
+| **B** | Struktur | Definitionen, `Prop`-Skelette | nein |
+| **R** | Forschungsbrücke | Asymptotik, Prim-Enumeration, EABC-Vermutung | ja |
+| **C** | Ikone | Nur Markdown (Physik-Analogien) | — |
+
+**Leitsatz:** Theorem ≠ Struktur ≠ Brücke ≠ Ikone
+
+---
+
+## Programm
+
+**Status:** EABC ist wissenschaftstheoretisch eher **Forschungsprogramm** als bereits **Theorie** — es definiert Gegenstandsbereich, Observablen, Invarianten und eine Hierarchie offener Fragen (vgl. `collatz_eabc_epistemik_schichten.md` §0, `collatz_eabc_zirkulationshypothese.md` §4).
+
+EABC = priminduzierter Fluss auf $C_4 \cong S^1$ mit
+
+- $G_E = (V,E)$, $V=\{E,A,B,C\}$ — **harter Kern** (Ebene 0)
+- $E^+ = \{EA, AB, BC, CE\}$, $E^- = \{EC, CB, BA, AE\}$
+- orientierte Zyklen $\gamma^+ = \mathrm{ABCEA}$, $\gamma^- = \mathrm{CEABC}$
+- $D_E(X) = N_+(X) - N_-(X)$ (Ebene 1: primäre Observable; **harter Kern**)
+- Skalierungsobservablen $R_\beta$, $\alpha_{\mathrm{loc}}$, $\alpha_E$ (Ebene 2; aus $D_E$ induziert)
+- $W_E(X) = D_E(X)/Q(X)$ (Ebene 3)
+- $\Phi_E = \lim_{X\to\infty} W_E(X)$ (Ebene 4: **Endfrage**, nicht Ausgangsannahme)
+
+$$\boxed{\;\text{Der größte Fortschritt ist nicht die Einführung neuer Größen, sondern die Entkopplung des Programms von }\Phi_E.\;}$$
+
+$$\boxed{\;\text{Das EABC-Programm untersucht primär die Wachstumsordnung der orientierten Zyklusdifferenz }D_E(X)\text{, während die Holonomie }\Phi_E\text{ als mögliche Endstufe dieser Skalierungstheorie erscheint.}\;}$$
+
+$$\boxed{\;\text{Nicht }\Phi_E\text{ ist der Anfang, sondern }D_E(X).\;}$$
+
+**Lakatos-Einordnung** (`collatz_eabc_zirkulationshypothese.md` §4): harter Kern $G_E$, $D_E$, induzierte Skalierungsobservablen (Ebene 0–1); primär $D_E$, $Q$ (Ebene 1); sekundär $R_\beta$, $\alpha_{\mathrm{loc}}$ (Numerik primär), $\alpha_{\mathrm{eff}}$, $\alpha_E$ (Ebene 2); Orientierung $W_E$ (Ebene 3); **Endfrage** $\Phi_E$ (Ebene 4).
+
+**V1 → V2:** V1 startete mit $\Phi_E\neq 0$ und Hilfsgrößen zur Stützung; V2 macht $\Phi_E$ zur **Endfrage** der $D_E$-Skalierungstheorie. Stabilisierungskette: $G_E \leadsto (D_E,Q_E) \leadsto (R_\beta,\alpha_{\mathrm{eff}},\alpha_{\mathrm{loc}}) \leadsto (\alpha_E,W_E) \leadsto \Phi_E$.
+
+**Paradigmenwechsel:** Früher Grenzwerttheorie $W_E\to\Phi_E\neq 0$; jetzt Fehlertermtheorie $D_E(X)=A(X)-C(X)$ (analytische Zahlentheorie). Referee-Perspektive: $D_E(X)$ ist definiert und ihre Größenordnung untersuchbar — unabhängig davon, ob $\Phi_E\neq 0$ je bestätigt wird.
+
+**Vorwärtskette** ($\leadsto$ offene Fragen; $\Rightarrow$ bewiesene Implikationen): $G_E \leadsto D_E(X) \leadsto \alpha_E \leadsto W_E(X) \leadsto \Phi_E$.
+
+**Endfrage (Schicht R):** $\Phi_E \neq 0$ bzw. $\langle\omega_E, h\rangle \neq 0$ für kanonisches harmonisches $h$. Dies ist **H₃** (starke Holonomie: $W_E(X)\to\Phi_E\neq 0$) — **Ebene 4** des Programms, nach Geometrie (Ebene 0), Zirkulationsfehler $D_E$ (Ebene 1), Skalierung $\alpha_{\mathrm{loc}}/\alpha_E$ (Ebene 2) und Orientierung $W_E$ (Ebene 3). Entspricht Lean-**RED** `HasNonzeroHolonomyLimit`. Vorgelagert (`collatz_eabc_zirkulationshypothese.md` §4.2): zuerst $D_E$ und $R_\beta$, dann $\alpha_{\mathrm{loc}}$, dann $\alpha_E$, dann Orientierung (H₀b vs. H₃). $\alpha_E>\tfrac{1}{2} \nRightarrow \Phi_E\neq 0$. Scheitern von H₃ zerstört das Programm nicht; selbst bei $\Phi_E=0$ bleiben Fragen zu $\alpha_E$, $\alpha_{\mathrm{loc}}$-Plateaus und kritischen $R_\beta$ offen.
+
+$$\boxed{\;\Phi_E \neq 0 \;\Rightarrow\; D_E(X)\sim\Phi_E Q(X) \;\Rightarrow\; \alpha_E = 1.\;}$$
+
+**Nicht äquivalent:** $\alpha_E=1$ allein garantiert weder $\Phi_E\neq 0$ noch $\lim W_E$. Gegenbeispiel: $D_E(X)=Q(X)\sin(\log\log Q(X))$ — $\alpha_E=1$, aber $W_E$ ohne Grenzwert. $\Phi_E$ (Orientierungsparameter) ist **stärker** als $\alpha_E$ (Skalenparameter).
+
+---
+
+## Architektur: Algebra ⊃ Streaming ⊃ EABC
+
+Drei Schichten (vgl. `collatz_eabc_zirkulationshypothese.md`, `eabc_occupancy_tree.py`):
+
+```mermaid
+flowchart TB
+  subgraph Ebene1["Ebene 1 — Theorem (GREEN, sorry-frei)"]
+    Z["Z = (O, T, n)"]
+    Z0["Z₀ = identity = (∅, ⊤, 0)"]
+    merge["⊕ = merge: O₁∪O₂, T₁∧T₂, n₁+n₂"]
+    CM["CommMonoid OccupancyState"]
+    Z --> merge
+    Z0 --> merge
+    merge --> CM
+  end
+  subgraph Ebene2["Ebene 2 — Struktur/Brücke"]
+    F["F: BlockData → OccupancyState"]
+    scan["blockScan / foldMerge"]
+    fD["f_D(Z)=D_E, f_Q(Z)=Q_E, f_W(Z)=W_E"]
+    F --> scan
+    scan --> fD
+  end
+  subgraph Ebene3["Ebene 3 — EABC"]
+    nvec["n = (N₊, N₋, …)"]
+    PC["PatternCount (folgt)"]
+    nvec --> PC
+  end
+  Ebene1 --> Ebene2
+  Ebene2 --> Ebene3
+```
+
+**Lean-Anker (Ebene 1, GREEN):** `collatz_eabc_core/CollatzEabc/OccupancyMonoid.lean`
+
+| Objekt | Lean-Name | Status |
+|--------|-----------|--------|
+| Zustand $Z=(O,T,n)$ | `OccupancyState` | **Definition** |
+| $Z_0$ | `identity` | **Definition** |
+| $Z_1 \oplus Z_2$ | `merge` | **Definition** |
+| Assoziativität | `merge_assoc` | **Theorem** |
+| Kommutativität | `merge_comm` | **Theorem** |
+| Linkes/rechtes Neutrum | `merge_identity_left`, `merge_identity_right` | **Theorem** |
+| `CommMonoid`-Instanz | `CommMonoid (OccupancyState α β)` | **Instance** |
+| Ordnungsunabhängigkeit | `foldMerge_perm`, `fold_merge_independent` | **Theorem** |
+| **Satz (Streaming-Kompression)** | `streaming_compression_monoid` | **Theorem** |
+| Block-Fusion | `blockScan`, `blockScan_append` | **Theorem** (Ebene 2) |
+
+```bash
+cd collatz_eabc_core
+lake build CollatzEabc.OccupancyMonoid   # sorry-frei (Ebene 1)
+```
+
+---
+
+## Lean-Modul `HolonomyCore.lean` (sauberer Split)
+
+**GREEN/RED im Modul:** GREEN = `Node` … `W_E_bounds` (bewiesen); RED = `HasNonzeroHolonomyLimit`, `EABC_holonomy_limit_conjecture` (`sorry`) — formal **H₃** (Ebene 4: Holonomie-Grenzfall, $\alpha_E=1$).
+
+Minimale Architektur im Namespace `EABC` — ohne Prim-Enumeration, ohne Hodge-Layer:
+
+| Objekt | Lean-Name | Status |
+|--------|-----------|--------|
+| Kreisgraph-Knoten | `Node`, `next`, `prev` | **Definition** |
+| Zykluszählung | `CycleCounts`, `circulation`, `size` | **Definition** |
+| $W_E$ auf endlicher Stichprobe | `phiApprox`, `W_E` | **Definition** |
+| $-1 \le W_E \le 1$ | `phiApprox_bounds`, `W_E_bounds` | **Theorem** (bewiesen) |
+| Fluss bis Schranke $X$ | `EABCFlow`, `C_E`, `S_E` | **Definition** |
+| $\Phi_E \neq 0$ (asymptotisch) | `HasNonzeroHolonomyLimit`, `EABC_holonomy_limit_conjecture` | **Vermutung** (`sorry`; **H₃**, Ebene 4, $\alpha_E=1$) |
+
+**Grenze Beweis vs. Vermutung:** `W_E(X)=\frac{N_+(X)-N_-(X)}{N_+(X)+N_-(X)}$ liegt formal in $[-1,1]$;
+die asymptotische Aussage $\lim_{X\to\infty} W_E(X)=\Phi_E\neq 0$ steht in `EABC_holonomy_limit_conjecture` (`Tendsto` in $\mathbb{R}$), nicht als exakte rationale Endkonstante.
+Die zu starke Variante (eventuell konstantes rationales $\Phi$) ist nur als auskommentiertes Scaffold erhalten.
+
+`FlussPhiE.lean` ergänzt denselben Fluss um C₄-Kanten, harmonisches $h$, Prim-Brücken (`HolonomieFehlerterm`).
+
+```bash
+cd collatz_eabc_core
+lake build CollatzEabc.HolonomyCore
+```
+
+---
+
+## Lean-Modul `FlussPhiE.lean`
+
+### Schicht B — Struktur
+
+| Objekt | Lean-Name | Status |
+|--------|-----------|--------|
+| Gerichtete Kanten $E^\pm$ | `C4DirectedEdge`, `E_plus`, `E_minus` | **Struktur** |
+| Kantenquelle/-ziel | `edgeSrc`, `edgeTgt` | **Struktur** |
+| Vorwärtszyklus (Liste) | `forwardCycleVertices` | **Struktur** |
+| Kanonisches $h$ | `h_canonical`, `C4HarmonicForm` | **Struktur** |
+| $C_E$, $S_E$, $W_E$ bis $X$ | `C_E_up_to`, `S_E_up_to`, `W_E_up_to` | **Struktur** (Primteil `sorry` in `HolonomieFehlerterm`) |
+| $\Phi_E$ als Grenzwert | `HasPhi_E` | **Struktur** |
+| $\Phi_E = 0$ (Hypothese) | `Phi_E_eq_zero` | **Struktur** |
+| $\Phi_E \neq 0$ (Vermutung) | `phi_E_conjecture` | **Struktur** (`Prop`) |
+| Diskrete Paarung | `innerProductOmegaH`, `circulationOmega`, `OmegaE` | **Struktur** |
+
+### Schicht A — Theorem (bewiesen)
+
+| Aussage | Lean-Name | Status |
+|---------|-----------|--------|
+| $E^+ \sqcup E^-$ | `E_plus_union_E_minus` | **Theorem** |
+| Zyklus geschlossen | `forward_cycle_closed` | **Theorem** |
+| Harmonisches $h$ existiert | `harmonic_form_exists` | **Theorem** |
+| $h \notin \mathrm{im}\,\delta$ | `h_canonical_not_coboundary` | **Theorem** |
+| $N_+=N_-$ auf Liste $\Rightarrow$ $\chi_{\mathrm{Hol}}=0$ | `chi_Hol_zero_of_balance` | **Theorem** |
+| $N_+(X)=N_-(X) \Rightarrow W_E(X)=0$ | `W_E_up_to_zero_of_balance` | **Theorem** |
+| $\langle\omega,h\rangle = C_E$ (diskret) | `Phi_E_eq_inner_product_discrete` | **Theorem** |
+
+### Schicht R — Forschungsbrücken (`sorry`)
+
+| Brücke | Lean-Name | Status |
+|--------|-----------|--------|
+| Asymptotische Symmetrie $\Rightarrow \Phi_E=0$ | `Phi_E_zero_of_symmetry` | **Brücke** (`sorry`) |
+| Prim-$\omega_E$ $\leftrightarrow$ asymptotische Paarung | `Phi_E_eq_inner_product` | **Brücke** (`sorry`) |
+| HL-Symmetrie $\Rightarrow \mathrm{Hol}_E=0 \Rightarrow \Phi_E=0$ | `hol_E_zero_of_HL` | **Brücke** (`sorry`) |
+| **EABC-Vermutung** $\Phi_E \neq 0$ | `phi_E_conjecture_statement` | **Brücke** (`sorry`; **H₃**, Ebene 4, $\alpha_E=1$) |
+
+### Abhängigkeit `HolonomieFehlerterm.lean` (Schicht R)
+
+| Objekt | Lean-Name | Status |
+|--------|-----------|--------|
+| $N_+(X)$, $N_-(X)$ auf κ-Folge | `N_plus_up_to`, `N_minus_up_to` | **Brücke** (`sorry`) |
+| $\mathrm{Hol}_E = 0$ | `Hol_E_zero` | **Brücke** (`sorry`) |
+
+---
+
+## Bewiesen vs. offen
+
+### Schicht A — bewiesen (kombinatorisch)
+
+1. Partition $E^+ \sqcup E^- =$ alle acht gerichteten Kanten (`E_plus_union_E_minus`).
+2. Geschlossener Vorwärtszyklus (`forward_cycle_closed`).
+3. Existenz und Nicht-Korand-Eigenschaft des harmonischen Generators $h$ (`harmonic_form_exists`, `h_canonical_not_coboundary`).
+4. Diskrete Identität $\langle\omega_E, h\rangle = \sum_{E^+}\omega - \sum_{E^-}\omega$ (`Phi_E_eq_inner_product_discrete`).
+5. Endliche Symmetrie $N_+=N_- \Rightarrow W_E=0$ (`chi_Hol_zero_of_balance`, `W_E_up_to_zero_of_balance`; Testfall in `HolonomieFehlerterm.test_manual_D_E_zero`).
+
+### Schicht R — `sorry` (analytisch / Prim-Enumeration)
+
+1. `N_plus_up_to`, `N_minus_up_to`, `Hol_E_zero` — in `HolonomieFehlerterm.lean`.
+2. `Phi_E_zero_of_symmetry` — Filter-Grenzwert bei asymptotisch gleichen $N_\pm$.
+3. `Phi_E_eq_inner_product` — Prim-induzierte $\omega_E$ und asymptotische Paarung.
+4. `hol_E_zero_of_HL` — Hardy–Littlewood-artige Symmetriehypothese $\Rightarrow \Phi_E=0$.
+5. `phi_E_conjecture_statement` — **EABC-Vermutung** $\Phi_E \neq 0$ (**H₃**, Ebene 4, Grenzfall $\alpha_E=1$).
+
+---
+
+## Build
+
+```bash
+cd collatz_eabc_core
+lake build CollatzEabc.HolonomyCore   # minimaler Kern (1 sorry)
+lake build CollatzEabc.FlussPhiE      # Hodge-Layer (4 sorry)
+```
+
+Sorries in Schicht R sind erlaubt; Ziel ist ein kompilierender Beweisrahmen mit klarer A/B/R-Trennung.
+
+---
+
+## Nächste Schritte
+
+1. `N_plus_up_to` / `N_minus_up_to` aus κ-Folge + `PrimeCounting` definieren (Schicht R).
+2. `Phi_E_zero_of_symmetry` aus `W_E_up_to_zero_of_balance` + Filter-`Eventually` (Schicht R).
+3. Prim-$\omega_E$ aus Gleitfenster-Zählung; `Phi_E_eq_inner_product` als Grenzwertbrücke (Schicht R).
+4. Optional: `Mathlib.Combinatorics.SimpleGraph` für $G_E$; magnetischer Laplace $L_{\mathrm{mag}}$ (vgl. `collatz_mathlib_eabc_kandidaten.md`).
