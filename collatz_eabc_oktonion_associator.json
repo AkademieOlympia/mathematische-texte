@@ -1,0 +1,924 @@
+{
+  "meta": {
+    "hypothesis_doc": [
+      "collatz_eabc_oktonion_singularitaet.md §3.7",
+      "collatz_eabc_plattenuebergang.md §2.6"
+    ],
+    "script": "collatz_eabc_oktonion_associator.py",
+    "lattice": "Z^8 stub (nicht Hurwitz O_H)",
+    "max_n": 50,
+    "samples_per_factorization": 25,
+    "seed": 54,
+    "computed": [
+      "algebraic associator ||(xy)z - x(yz)||",
+      "EABC associator ||Γ((xy)z) - Γ(x(yz))||_smooth",
+      "𝔞_E(n) over representative n=abc factorizations"
+    ],
+    "not_computed": [
+      "full Σ_n enumeration for large n",
+      "μ_n shell measure averaging",
+      "Hurwitz O_H lattice",
+      "all Catalan trees beyond single (xy)z vs x(yz) split"
+    ],
+    "epistemic_note": "Sampling auf repräsentativen abc-Faktorisierungen; 𝔞_E(p)=0 konventionell für Prim (keine nichttriviale Klammerung). Sichtbarer Bias: Primschalen minimieren 𝔞_E per Definition; Frage ist ob zusammengesetzte Schalen 𝔞_E maximieren oder Profil tragen."
+  },
+  "canonical_tests": {
+    "quaternion_subalgebra_e1_e2_e3": {
+      "algebraic_associator_norm": 0.0,
+      "eabc_associator_norm": 0.0,
+      "tree_product_norm_diff": 0.0
+    },
+    "generic_o_e1_e2_e4": {
+      "algebraic_associator_norm": 2.0,
+      "eabc_associator_norm": 0.0,
+      "tree_product_norm_diff": 2.0
+    },
+    "shell_sample_sigma2_sigma2_sigma3": {
+      "algebraic_associator_norm": 2.0,
+      "eabc_associator_norm": 1.0,
+      "tree_product_norm_diff": 2.0
+    },
+    "quaternion_associator_zero": true,
+    "generic_associator_nonzero": true,
+    "shell_eabc_associator_nonzero": true
+  },
+  "rows": [
+    {
+      "n": 2,
+      "is_prime": true,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "Prim: keine nichttriviale abc-Zerlegung; 𝔞_E nicht definiert (0 by convention)"
+    },
+    {
+      "n": 3,
+      "is_prime": true,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "Prim: keine nichttriviale abc-Zerlegung; 𝔞_E nicht definiert (0 by convention)"
+    },
+    {
+      "n": 4,
+      "is_prime": false,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "zusammengesetzt, aber kein abc mit a,b,c≥2"
+    },
+    {
+      "n": 5,
+      "is_prime": true,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "Prim: keine nichttriviale abc-Zerlegung; 𝔞_E nicht definiert (0 by convention)"
+    },
+    {
+      "n": 6,
+      "is_prime": false,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "zusammengesetzt, aber kein abc mit a,b,c≥2"
+    },
+    {
+      "n": 7,
+      "is_prime": true,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "Prim: keine nichttriviale abc-Zerlegung; 𝔞_E nicht definiert (0 by convention)"
+    },
+    {
+      "n": 8,
+      "is_prime": false,
+      "triple_factorizations": 1,
+      "factorization_details": [
+        {
+          "factors": [
+            2,
+            2,
+            2
+          ],
+          "shell_sizes": [
+            112,
+            112,
+            112
+          ],
+          "sample_count": 25,
+          "mean_algebraic_associator_norm": 1.4965393841805632,
+          "mean_eabc_associator_norm": 0.23313708498984761,
+          "max_eabc_associator_norm": 1.4142135623730951
+        }
+      ],
+      "a_E_algebraic": 1.4965393841805632,
+      "a_E_eabc": 0.23313708498984761,
+      "max_factor_eabc": 0.23313708498984761
+    },
+    {
+      "n": 9,
+      "is_prime": false,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "zusammengesetzt, aber kein abc mit a,b,c≥2"
+    },
+    {
+      "n": 10,
+      "is_prime": false,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "zusammengesetzt, aber kein abc mit a,b,c≥2"
+    },
+    {
+      "n": 11,
+      "is_prime": true,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "Prim: keine nichttriviale abc-Zerlegung; 𝔞_E nicht definiert (0 by convention)"
+    },
+    {
+      "n": 12,
+      "is_prime": false,
+      "triple_factorizations": 1,
+      "factorization_details": [
+        {
+          "factors": [
+            2,
+            2,
+            3
+          ],
+          "shell_sizes": [
+            112,
+            112,
+            448
+          ],
+          "sample_count": 25,
+          "mean_algebraic_associator_norm": 2.305690036581414,
+          "mean_eabc_associator_norm": 0.6955562022824503,
+          "max_eabc_associator_norm": 2.0
+        }
+      ],
+      "a_E_algebraic": 2.305690036581414,
+      "a_E_eabc": 0.6955562022824503,
+      "max_factor_eabc": 0.6955562022824503
+    },
+    {
+      "n": 13,
+      "is_prime": true,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "Prim: keine nichttriviale abc-Zerlegung; 𝔞_E nicht definiert (0 by convention)"
+    },
+    {
+      "n": 14,
+      "is_prime": false,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "zusammengesetzt, aber kein abc mit a,b,c≥2"
+    },
+    {
+      "n": 15,
+      "is_prime": false,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "zusammengesetzt, aber kein abc mit a,b,c≥2"
+    },
+    {
+      "n": 16,
+      "is_prime": false,
+      "triple_factorizations": 1,
+      "factorization_details": [
+        {
+          "factors": [
+            2,
+            2,
+            4
+          ],
+          "shell_sizes": [
+            112,
+            112,
+            1136
+          ],
+          "sample_count": 25,
+          "mean_algebraic_associator_norm": 2.579904864463404,
+          "mean_eabc_associator_norm": 0.891535999746917,
+          "max_eabc_associator_norm": 1.7320508075688772
+        }
+      ],
+      "a_E_algebraic": 2.579904864463404,
+      "a_E_eabc": 0.891535999746917,
+      "max_factor_eabc": 0.891535999746917
+    },
+    {
+      "n": 17,
+      "is_prime": true,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "Prim: keine nichttriviale abc-Zerlegung; 𝔞_E nicht definiert (0 by convention)"
+    },
+    {
+      "n": 18,
+      "is_prime": false,
+      "triple_factorizations": 1,
+      "factorization_details": [
+        {
+          "factors": [
+            2,
+            3,
+            3
+          ],
+          "shell_sizes": [
+            112,
+            448,
+            448
+          ],
+          "sample_count": 25,
+          "mean_algebraic_associator_norm": 2.3210198120932812,
+          "mean_eabc_associator_norm": 0.8074180386750446,
+          "max_eabc_associator_norm": 2.23606797749979
+        }
+      ],
+      "a_E_algebraic": 2.3210198120932812,
+      "a_E_eabc": 0.8074180386750446,
+      "max_factor_eabc": 0.8074180386750446
+    },
+    {
+      "n": 19,
+      "is_prime": true,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "Prim: keine nichttriviale abc-Zerlegung; 𝔞_E nicht definiert (0 by convention)"
+    },
+    {
+      "n": 20,
+      "is_prime": false,
+      "triple_factorizations": 1,
+      "factorization_details": [
+        {
+          "factors": [
+            2,
+            2,
+            5
+          ],
+          "shell_sizes": [
+            112,
+            112,
+            2016
+          ],
+          "sample_count": 25,
+          "mean_algebraic_associator_norm": 2.9727205758587787,
+          "mean_eabc_associator_norm": 0.9034022991907156,
+          "max_eabc_associator_norm": 2.0
+        }
+      ],
+      "a_E_algebraic": 2.9727205758587787,
+      "a_E_eabc": 0.9034022991907156,
+      "max_factor_eabc": 0.9034022991907156
+    },
+    {
+      "n": 21,
+      "is_prime": false,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "zusammengesetzt, aber kein abc mit a,b,c≥2"
+    },
+    {
+      "n": 22,
+      "is_prime": false,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "zusammengesetzt, aber kein abc mit a,b,c≥2"
+    },
+    {
+      "n": 23,
+      "is_prime": true,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "Prim: keine nichttriviale abc-Zerlegung; 𝔞_E nicht definiert (0 by convention)"
+    },
+    {
+      "n": 24,
+      "is_prime": false,
+      "triple_factorizations": 2,
+      "factorization_details": [
+        {
+          "factors": [
+            2,
+            2,
+            6
+          ],
+          "shell_sizes": [
+            112,
+            112,
+            3136
+          ],
+          "sample_count": 25,
+          "mean_algebraic_associator_norm": 2.842254200926158,
+          "mean_eabc_associator_norm": 1.1403533921574651,
+          "max_eabc_associator_norm": 2.6457513110645907
+        },
+        {
+          "factors": [
+            2,
+            3,
+            4
+          ],
+          "shell_sizes": [
+            112,
+            448,
+            1136
+          ],
+          "sample_count": 25,
+          "mean_algebraic_associator_norm": 3.8883711337777944,
+          "mean_eabc_associator_norm": 1.543936611898865,
+          "max_eabc_associator_norm": 2.449489742783178
+        }
+      ],
+      "a_E_algebraic": 3.365312667351976,
+      "a_E_eabc": 1.3421450020281651,
+      "max_factor_eabc": 1.543936611898865
+    },
+    {
+      "n": 25,
+      "is_prime": false,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "zusammengesetzt, aber kein abc mit a,b,c≥2"
+    },
+    {
+      "n": 26,
+      "is_prime": false,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "zusammengesetzt, aber kein abc mit a,b,c≥2"
+    },
+    {
+      "n": 27,
+      "is_prime": false,
+      "triple_factorizations": 1,
+      "factorization_details": [
+        {
+          "factors": [
+            3,
+            3,
+            3
+          ],
+          "shell_sizes": [
+            448,
+            448,
+            448
+          ],
+          "sample_count": 25,
+          "mean_algebraic_associator_norm": 3.3834277623467,
+          "mean_eabc_associator_norm": 1.1703967426837438,
+          "max_eabc_associator_norm": 2.23606797749979
+        }
+      ],
+      "a_E_algebraic": 3.3834277623467,
+      "a_E_eabc": 1.1703967426837438,
+      "max_factor_eabc": 1.1703967426837438
+    },
+    {
+      "n": 28,
+      "is_prime": false,
+      "triple_factorizations": 1,
+      "factorization_details": [
+        {
+          "factors": [
+            2,
+            2,
+            7
+          ],
+          "shell_sizes": [
+            112,
+            112,
+            5504
+          ],
+          "sample_count": 25,
+          "mean_algebraic_associator_norm": 3.596081830339304,
+          "mean_eabc_associator_norm": 1.1492528739883945,
+          "max_eabc_associator_norm": 2.0
+        }
+      ],
+      "a_E_algebraic": 3.596081830339304,
+      "a_E_eabc": 1.1492528739883945,
+      "max_factor_eabc": 1.1492528739883945
+    },
+    {
+      "n": 29,
+      "is_prime": true,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "Prim: keine nichttriviale abc-Zerlegung; 𝔞_E nicht definiert (0 by convention)"
+    },
+    {
+      "n": 30,
+      "is_prime": false,
+      "triple_factorizations": 1,
+      "factorization_details": [
+        {
+          "factors": [
+            2,
+            3,
+            5
+          ],
+          "shell_sizes": [
+            112,
+            448,
+            2016
+          ],
+          "sample_count": 25,
+          "mean_algebraic_associator_norm": 3.9693947974218506,
+          "mean_eabc_associator_norm": 1.5839704775321193,
+          "max_eabc_associator_norm": 2.6457513110645907
+        }
+      ],
+      "a_E_algebraic": 3.9693947974218506,
+      "a_E_eabc": 1.5839704775321193,
+      "max_factor_eabc": 1.5839704775321193
+    },
+    {
+      "n": 31,
+      "is_prime": true,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "Prim: keine nichttriviale abc-Zerlegung; 𝔞_E nicht definiert (0 by convention)"
+    },
+    {
+      "n": 32,
+      "is_prime": false,
+      "triple_factorizations": 2,
+      "factorization_details": [
+        {
+          "factors": [
+            2,
+            2,
+            8
+          ],
+          "shell_sizes": [
+            112,
+            112,
+            9328
+          ],
+          "sample_count": 25,
+          "mean_algebraic_associator_norm": 4.0000632297225485,
+          "mean_eabc_associator_norm": 1.1467023767938878,
+          "max_eabc_associator_norm": 2.8284271247461903
+        },
+        {
+          "factors": [
+            2,
+            4,
+            4
+          ],
+          "shell_sizes": [
+            112,
+            1136,
+            1136
+          ],
+          "sample_count": 25,
+          "mean_algebraic_associator_norm": 3.393543490183533,
+          "mean_eabc_associator_norm": 1.2505369071258852,
+          "max_eabc_associator_norm": 2.6457513110645907
+        }
+      ],
+      "a_E_algebraic": 3.6968033599530408,
+      "a_E_eabc": 1.1986196419598865,
+      "max_factor_eabc": 1.2505369071258852
+    },
+    {
+      "n": 33,
+      "is_prime": false,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "zusammengesetzt, aber kein abc mit a,b,c≥2"
+    },
+    {
+      "n": 34,
+      "is_prime": false,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "zusammengesetzt, aber kein abc mit a,b,c≥2"
+    },
+    {
+      "n": 35,
+      "is_prime": false,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "zusammengesetzt, aber kein abc mit a,b,c≥2"
+    },
+    {
+      "n": 36,
+      "is_prime": false,
+      "triple_factorizations": 3,
+      "factorization_details": [
+        {
+          "factors": [
+            2,
+            2,
+            9
+          ],
+          "shell_sizes": [
+            112,
+            112,
+            12112
+          ],
+          "sample_count": 25,
+          "mean_algebraic_associator_norm": 4.323013312761352,
+          "mean_eabc_associator_norm": 1.1559095944399156,
+          "max_eabc_associator_norm": 2.8284271247461903
+        },
+        {
+          "factors": [
+            2,
+            3,
+            6
+          ],
+          "shell_sizes": [
+            112,
+            448,
+            3136
+          ],
+          "sample_count": 25,
+          "mean_algebraic_associator_norm": 3.7717095238256535,
+          "mean_eabc_associator_norm": 1.3536922086547398,
+          "max_eabc_associator_norm": 3.0
+        },
+        {
+          "factors": [
+            3,
+            3,
+            4
+          ],
+          "shell_sizes": [
+            448,
+            448,
+            1136
+          ],
+          "sample_count": 25,
+          "mean_algebraic_associator_norm": 3.982355717871938,
+          "mean_eabc_associator_norm": 1.3994490676405518,
+          "max_eabc_associator_norm": 3.3166247903554
+        }
+      ],
+      "a_E_algebraic": 4.025692851486315,
+      "a_E_eabc": 1.3030169569117358,
+      "max_factor_eabc": 1.3994490676405518
+    },
+    {
+      "n": 37,
+      "is_prime": true,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "Prim: keine nichttriviale abc-Zerlegung; 𝔞_E nicht definiert (0 by convention)"
+    },
+    {
+      "n": 38,
+      "is_prime": false,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "zusammengesetzt, aber kein abc mit a,b,c≥2"
+    },
+    {
+      "n": 39,
+      "is_prime": false,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "zusammengesetzt, aber kein abc mit a,b,c≥2"
+    },
+    {
+      "n": 40,
+      "is_prime": false,
+      "triple_factorizations": 2,
+      "factorization_details": [
+        {
+          "factors": [
+            2,
+            2,
+            10
+          ],
+          "shell_sizes": [
+            112,
+            112,
+            14112
+          ],
+          "sample_count": 25,
+          "mean_algebraic_associator_norm": 3.4778050712019333,
+          "mean_eabc_associator_norm": 1.1211233463402541,
+          "max_eabc_associator_norm": 3.0
+        },
+        {
+          "factors": [
+            2,
+            4,
+            5
+          ],
+          "shell_sizes": [
+            112,
+            1136,
+            2016
+          ],
+          "sample_count": 25,
+          "mean_algebraic_associator_norm": 4.369042663726969,
+          "mean_eabc_associator_norm": 1.6665772243564292,
+          "max_eabc_associator_norm": 3.1622776601683795
+        }
+      ],
+      "a_E_algebraic": 3.923423867464451,
+      "a_E_eabc": 1.3938502853483417,
+      "max_factor_eabc": 1.6665772243564292
+    },
+    {
+      "n": 41,
+      "is_prime": true,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "Prim: keine nichttriviale abc-Zerlegung; 𝔞_E nicht definiert (0 by convention)"
+    },
+    {
+      "n": 42,
+      "is_prime": false,
+      "triple_factorizations": 1,
+      "factorization_details": [
+        {
+          "factors": [
+            2,
+            3,
+            7
+          ],
+          "shell_sizes": [
+            112,
+            448,
+            5504
+          ],
+          "sample_count": 25,
+          "mean_algebraic_associator_norm": 4.950304296938786,
+          "mean_eabc_associator_norm": 1.7107995269090175,
+          "max_eabc_associator_norm": 2.8284271247461903
+        }
+      ],
+      "a_E_algebraic": 4.950304296938786,
+      "a_E_eabc": 1.7107995269090175,
+      "max_factor_eabc": 1.7107995269090175
+    },
+    {
+      "n": 43,
+      "is_prime": true,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "Prim: keine nichttriviale abc-Zerlegung; 𝔞_E nicht definiert (0 by convention)"
+    },
+    {
+      "n": 44,
+      "is_prime": false,
+      "triple_factorizations": 1,
+      "factorization_details": [
+        {
+          "factors": [
+            2,
+            2,
+            11
+          ],
+          "shell_sizes": [
+            112,
+            112,
+            21312
+          ],
+          "sample_count": 25,
+          "mean_algebraic_associator_norm": 4.222792487072511,
+          "mean_eabc_associator_norm": 1.35261531094476,
+          "max_eabc_associator_norm": 3.3166247903554
+        }
+      ],
+      "a_E_algebraic": 4.222792487072511,
+      "a_E_eabc": 1.35261531094476,
+      "max_factor_eabc": 1.35261531094476
+    },
+    {
+      "n": 45,
+      "is_prime": false,
+      "triple_factorizations": 1,
+      "factorization_details": [
+        {
+          "factors": [
+            3,
+            3,
+            5
+          ],
+          "shell_sizes": [
+            448,
+            448,
+            2016
+          ],
+          "sample_count": 25,
+          "mean_algebraic_associator_norm": 4.8388027599931975,
+          "mean_eabc_associator_norm": 1.655173121602016,
+          "max_eabc_associator_norm": 2.8284271247461903
+        }
+      ],
+      "a_E_algebraic": 4.8388027599931975,
+      "a_E_eabc": 1.655173121602016,
+      "max_factor_eabc": 1.655173121602016
+    },
+    {
+      "n": 46,
+      "is_prime": false,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "zusammengesetzt, aber kein abc mit a,b,c≥2"
+    },
+    {
+      "n": 47,
+      "is_prime": true,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "Prim: keine nichttriviale abc-Zerlegung; 𝔞_E nicht definiert (0 by convention)"
+    },
+    {
+      "n": 48,
+      "is_prime": false,
+      "triple_factorizations": 4,
+      "factorization_details": [
+        {
+          "factors": [
+            2,
+            2,
+            12
+          ],
+          "shell_sizes": [
+            112,
+            112,
+            31808
+          ],
+          "sample_count": 25,
+          "mean_algebraic_associator_norm": 4.052752384482609,
+          "mean_eabc_associator_norm": 1.3671257790609739,
+          "max_eabc_associator_norm": 2.8284271247461903
+        },
+        {
+          "factors": [
+            2,
+            3,
+            8
+          ],
+          "shell_sizes": [
+            112,
+            448,
+            9328
+          ],
+          "sample_count": 25,
+          "mean_algebraic_associator_norm": 4.977876532039491,
+          "mean_eabc_associator_norm": 1.3467021838789577,
+          "max_eabc_associator_norm": 2.8284271247461903
+        },
+        {
+          "factors": [
+            2,
+            4,
+            6
+          ],
+          "shell_sizes": [
+            112,
+            1136,
+            3136
+          ],
+          "sample_count": 25,
+          "mean_algebraic_associator_norm": 5.122125033613239,
+          "mean_eabc_associator_norm": 1.772787446967135,
+          "max_eabc_associator_norm": 3.7416573867739413
+        },
+        {
+          "factors": [
+            3,
+            4,
+            4
+          ],
+          "shell_sizes": [
+            448,
+            1136,
+            1136
+          ],
+          "sample_count": 25,
+          "mean_algebraic_associator_norm": 4.8981675976594445,
+          "mean_eabc_associator_norm": 1.6810124887934454,
+          "max_eabc_associator_norm": 2.23606797749979
+        }
+      ],
+      "a_E_algebraic": 4.762730386948696,
+      "a_E_eabc": 1.541906974675128,
+      "max_factor_eabc": 1.772787446967135
+    },
+    {
+      "n": 49,
+      "is_prime": false,
+      "triple_factorizations": 0,
+      "a_E_algebraic": null,
+      "a_E_eabc": null,
+      "note": "zusammengesetzt, aber kein abc mit a,b,c≥2"
+    },
+    {
+      "n": 50,
+      "is_prime": false,
+      "triple_factorizations": 1,
+      "factorization_details": [
+        {
+          "factors": [
+            2,
+            5,
+            5
+          ],
+          "shell_sizes": [
+            112,
+            2016,
+            2016
+          ],
+          "sample_count": 25,
+          "mean_algebraic_associator_norm": 4.198048002762095,
+          "mean_eabc_associator_norm": 1.5357986412063898,
+          "max_eabc_associator_norm": 2.449489742783178
+        }
+      ],
+      "a_E_algebraic": 4.198048002762095,
+      "a_E_eabc": 1.5357986412063898,
+      "max_factor_eabc": 1.5357986412063898
+    }
+  ],
+  "prime_vs_composite": {
+    "composite_count_with_a_E": 17,
+    "prime_count": 15,
+    "mean_a_E_eabc_composite": 1.2040350106279218,
+    "mean_a_E_eabc_prime_convention_zero": 0.0,
+    "mean_a_E_algebraic_composite": 3.5652170437209625,
+    "ratio_prime_over_composite_eabc": 0.0,
+    "bias_visible": "Primschalen minimieren 𝔞_E (by definition: keine abc-Zerlegung); zusammengesetzte n zeigen positive mittlere EABC-Assoziator-Norm (17 n mit Daten, Mittel=1.2040)",
+    "sample_a_E_composite_first_10": [
+      {
+        "n": 8,
+        "a_E_eabc": 0.23313708498984761
+      },
+      {
+        "n": 12,
+        "a_E_eabc": 0.6955562022824503
+      },
+      {
+        "n": 16,
+        "a_E_eabc": 0.891535999746917
+      },
+      {
+        "n": 18,
+        "a_E_eabc": 0.8074180386750446
+      },
+      {
+        "n": 20,
+        "a_E_eabc": 0.9034022991907156
+      },
+      {
+        "n": 24,
+        "a_E_eabc": 1.3421450020281651
+      },
+      {
+        "n": 27,
+        "a_E_eabc": 1.1703967426837438
+      },
+      {
+        "n": 28,
+        "a_E_eabc": 1.1492528739883945
+      },
+      {
+        "n": 30,
+        "a_E_eabc": 1.5839704775321193
+      },
+      {
+        "n": 32,
+        "a_E_eabc": 1.1986196419598865
+      }
+    ]
+  }
+}

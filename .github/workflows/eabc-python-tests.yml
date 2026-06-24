@@ -4,12 +4,38 @@ on:
   push:
     paths:
       - "eabc_from_lean.py"
+      - "collatz_eabc_discrete_associator.py"
+      - "collatz_eabc_oktonion_associator.py"
+      - "collatz_eabc_shell_defekt_test.py"
+      - "collatz_eabc_Z_decomposition_test.py"
+      - "collatz_eabc_dirichlet_D.py"
+      - "collatz_eabc_oktonion_spectrum.py"
       - "tests/test_eabc_from_lean.py"
+      - "tests/test_eabc_discrete_associator.py"
+      - "tests/test_eabc_oktonion_associator.py"
+      - "tests/test_eabc_shell_defekt.py"
+      - "tests/test_eabc_Z_decomposition.py"
+      - "tests/test_eabc_dirichlet_D.py"
+      - "tests/test_eabc_oktonion_spectrum.py"
+      - "tests/test_eabc_product_tree.py"
       - ".github/workflows/eabc-python-tests.yml"
   pull_request:
     paths:
       - "eabc_from_lean.py"
+      - "collatz_eabc_discrete_associator.py"
+      - "collatz_eabc_oktonion_associator.py"
+      - "collatz_eabc_shell_defekt_test.py"
+      - "collatz_eabc_Z_decomposition_test.py"
+      - "collatz_eabc_dirichlet_D.py"
+      - "collatz_eabc_oktonion_spectrum.py"
       - "tests/test_eabc_from_lean.py"
+      - "tests/test_eabc_discrete_associator.py"
+      - "tests/test_eabc_oktonion_associator.py"
+      - "tests/test_eabc_shell_defekt.py"
+      - "tests/test_eabc_Z_decomposition.py"
+      - "tests/test_eabc_dirichlet_D.py"
+      - "tests/test_eabc_oktonion_spectrum.py"
+      - "tests/test_eabc_product_tree.py"
       - ".github/workflows/eabc-python-tests.yml"
   workflow_dispatch:
 
@@ -31,10 +57,10 @@ jobs:
           python -m pip install ruff black
 
       - name: Run ruff
-        run: ruff check eabc_from_lean.py tests/test_eabc_from_lean.py
+        run: ruff check eabc_from_lean.py collatz_eabc_discrete_associator.py collatz_eabc_oktonion_associator.py collatz_eabc_shell_defekt_test.py collatz_eabc_Z_decomposition_test.py collatz_eabc_dirichlet_D.py collatz_eabc_oktonion_spectrum.py tests/
 
       - name: Run black check
-        run: black --check eabc_from_lean.py tests/test_eabc_from_lean.py
+        run: black --check eabc_from_lean.py collatz_eabc_discrete_associator.py collatz_eabc_oktonion_associator.py collatz_eabc_shell_defekt_test.py collatz_eabc_Z_decomposition_test.py collatz_eabc_dirichlet_D.py collatz_eabc_oktonion_spectrum.py tests/
 
   test:
     needs: lint
@@ -54,4 +80,4 @@ jobs:
           python -m pip install pytest
 
       - name: Run EABC tests
-        run: pytest tests/test_eabc_from_lean.py -q
+        run: pytest tests/test_eabc_from_lean.py tests/test_eabc_discrete_associator.py tests/test_eabc_oktonion_associator.py tests/test_eabc_shell_defekt.py tests/test_eabc_Z_decomposition.py tests/test_eabc_dirichlet_D.py tests/test_eabc_oktonion_spectrum.py tests/test_eabc_product_tree.py -q
