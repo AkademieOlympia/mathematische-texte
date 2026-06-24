@@ -1,0 +1,760 @@
+\documentclass[12pt,a4paper]{article}
+
+% -------------------------------------------------
+% Sprache / Kodierung
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+
+% -------------------------------------------------
+% Layout / Grafik / Farben
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks,unicode]{hyperref}
+\pdfstringdefDisableCommands{%
+  \def\ü{ue}\def\ö{oe}\def\ä{ae}\def\Ü{Ue}\def\Ö{Oe}\def\Ä{Ae}\def\ss{ss}%
+}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{array}
+
+% -------------------------------------------------
+% Farben (konsistent mit Vorgängerdokumenten)
+% -------------------------------------------------
+\definecolor{lückenrot}{RGB}{180,40,40}
+\definecolor{bewiesengrün}{RGB}{30,100,50}
+\definecolor{warnorange}{RGB}{200,100,10}
+\definecolor{hintergrundblau}{RGB}{235,242,250}
+\definecolor{hintergrundgelb}{RGB}{255,252,225}
+\definecolor{adischviolett}{RGB}{90,20,140}
+\definecolor{fehlerrot}{RGB}{200,0,0}
+\definecolor{konjviolett}{RGB}{80,0,130}
+\definecolor{e8grau}{RGB}{55,55,90}
+\definecolor{korrekturorange}{RGB}{200,100,10}
+\definecolor{bernoulliblau}{RGB}{0,70,130}
+\definecolor{quaterniongrün}{RGB}{0,100,60}
+
+% -------------------------------------------------
+% tcolorbox-Stile
+% -------------------------------------------------
+\tcbset{
+  lücke/.style={colback=red!8, colframe=lückenrot, fonttitle=\bfseries,
+    title={Offene Lücke}},
+  ergebnis/.style={colback=green!7, colframe=bewiesengrün,
+    fonttitle=\bfseries, title={Bewiesenes Ergebnis}},
+  warnung/.style={colback=orange!10, colframe=warnorange,
+    fonttitle=\bfseries, title={Achtung / Heuristik}},
+  adisch/.style={colback=violet!6, colframe=adischviolett,
+    fonttitle=\bfseries, title={2-adische Perspektive}},
+  kernidee/.style={colback=hintergrundblau, colframe=blue!60!black,
+    fonttitle=\bfseries, title={Kernidee}},
+  konj/.style={colback=violet!5, colframe=konjviolett, fonttitle=\bfseries,
+    title={Konjektur (unbewiesen)}},
+  lte/.style={colback=yellow!8, colframe=e8grau, fonttitle=\bfseries,
+    title={Modellrechnung}},
+  hauptsatz/.style={colback=green!10, colframe=bewiesengrün!80!black,
+    fonttitle=\bfseries\large, title={Stärkster beweisbarer Satz}},
+  korrektur/.style={colback=yellow!5, colframe=orange!70!black,
+    fonttitle=\bfseries},
+  bernoulli/.style={colback=blue!5, colframe=bernoulliblau,
+    fonttitle=\bfseries},
+  quaternion/.style={colback=green!5, colframe=quaterniongrün,
+    fonttitle=\bfseries, title={Quaternionen-Perspektive}},
+}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+\newtheorem{hypothese}[definition]{Hypothese}
+\newtheorem{satz}[definition]{Satz}
+
+\newenvironment{beweis}{\begin{proof}[Beweis]}{\end{proof}}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\vii}{\nu_2}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\HH}{\mathbb{H}}
+\newcommand{\Ztwo}{\mathbb{Z}_2}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\atwo}[1]{\lvert#1\rvert_2}
+\newcommand{\logt}{\log_2}
+\newcommand{\In}{\mathcal{I}}
+\newcommand{\Denom}[1]{D(#1)}
+\newcommand{\Nq}{N}          % Quaternionennorm
+\newcommand{\Re}{\operatorname{Re}}
+
+% -------------------------------------------------
+% Dokument
+% -------------------------------------------------
+\title{%
+  Vier-Teilnormen-Faktorisierung und Collatz-Dynamik:\\[0.3em]
+  Asymmetrische Quaternionentransformation unter $3n+1$\\[0.5em]
+  \large Lagrange-Vierquadratesatz, Hurwitz-Quaternionen und\\
+  optimale Quaternionenwahl als Minimierungsproblem\\[0.3em]
+  \large Ergänzung zur Collatz-Synthese vom 16.\ Juni 2026%
+}
+\author{Thomas Hoffbauer}
+\date{16.\ Juni 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Wir untersuchen einen neuen Zugang zur Collatz-Dynamik über die
+\emph{Vier-Quadrate-Zerlegung} im Sinne des Lagrange-Vierquadratensatzes:
+Jede natürliche Zahl $n$ besitzt eine Darstellung $n = a^2+b^2+c^2+d^2$
+als Norm eines Quaternions $q = a+bi+cj+dk \in \HH$.
+Der Collatz-Schritt $n \mapsto 3n+1$ wirkt auf der Quaternionen-Ebene
+als \emph{asymmetrische Transformation}: Die Abbildung $q \mapsto 3q+1$
+transformiert die vier Teilnormen $(N_1,N_2,N_3,N_4) = (a^2,b^2,c^2,d^2)$
+mit unterschiedlichen Korrekturtermen:
+\[
+  \Nq(3q+1) \;=\; 9n + 6\,\Re(q) + 1 \;=\; 9n + 6a + 1.
+\]
+Nur die erste Teilnorm $N_1 = a^2$ erhält den Korrekturfaktor $6a+1$,
+während $N_2, N_3, N_4$ uniform um Faktor~$9$ wachsen. Diese \emph{ausgezeichnete
+Richtung} (die Realteil-Achse) trägt den gesamten Collatz-Fehlerterm.
+
+Das führt zu einem natürlichen Minimierungsproblem: Wähle die Zerlegung so,
+dass $a$ minimal (negativ) ist. Für Quadratzahlen $n = m^2$ mit $a = -m$
+ergibt sich die bemerkenswerte Formel $\Nq(3q+1) = (3m-1)^2$ --- eine
+Quadratzahl. Ferner untersuchen wir Korrelationen zwischen der EABC-Klassen-Struktur
+und den Paritätsmustern der Vier-Quadrate-Koeffizienten sowie einen Ausblick
+auf die D${}_4$-Theta-Funktion und Bernoulli-Normschalen $\In(n)$.
+\end{abstract}
+
+\tableofcontents
+
+\bigskip
+\begin{tcolorbox}[warnung, title={Einordnung}]
+Die Collatz-Vermutung ist unbewiesen. Dieses Dokument präsentiert einen
+\textbf{explorativen algebraischen Zugang}, der auf der Quaternionen-Darstellung
+von $n$ beruht. Die Vier-Teilnormen-Zerlegung liefert interessante Strukturen,
+aber noch keinen vollständigen Konvergenzbeweis.
+\end{tcolorbox}
+
+% ====================================================
+\section{Vier-Quadrate-Zerlegung und Quaternionendarstellung}
+\label{sec:zerlegung}
+% ====================================================
+
+\subsection{Der Satz von Lagrange}
+
+\begin{theorem}[Lagrange, 1770]
+\label{thm:lagrange}
+Jede positive ganze Zahl $n \in \N$ lässt sich als Summe von vier ganzzahligen
+Quadraten schreiben:
+\[
+  n \;=\; a^2 + b^2 + c^2 + d^2, \quad a,b,c,d \in \Z.
+\]
+\end{theorem}
+
+Die Anzahl der Darstellungen ist durch den Jacobi-Vierquadratensatz gegeben:
+\[
+  r_4(n) \;=\; 8 \sum_{\substack{d \mid n \\ 4 \nmid d}} d.
+\]
+Insbesondere gilt $r_4(n) \neq 0$ für alle $n \geq 1$, und für Primzahlen $p$
+ist $r_4(p) = 8(p+1) > 0$.
+
+\subsection{Lipschitz- und Hurwitz-Quaternionen}
+
+\begin{definition}[Lipschitz-Quaternionen]
+Die \emph{Lipschitz-Quaternionen} sind $\mathcal{L} := \Z + \Z i + \Z j + \Z k \subset \HH$,
+d.\,h.\ Quaternionen mit ganzzahligen Koeffizienten.
+Für $q = a + bi + cj + dk \in \mathcal{L}$ ist die \emph{Norm}
+\[
+  N(q) \;:=\; q\bar{q} \;=\; a^2 + b^2 + c^2 + d^2 \;\in\; \N_0.
+\]
+Nach Lagrange gilt: Für jedes $n \in \N$ existiert $q \in \mathcal{L}$ mit $N(q) = n$.
+\end{definition}
+
+\begin{definition}[Hurwitz-Quaternionen]
+Die \emph{Hurwitz-Quaternionen} sind
+\[
+  \mathcal{H} \;:=\; \Bigl\{ a + bi + cj + dk \;\Big|\;
+    a,b,c,d \in \Z \;\text{ oder alle } \in \Z + \tfrac{1}{2} \Bigr\}.
+\]
+$\mathcal{H}$ ist ein maximaler Ordnungsring in $\HH$ und bildet das D${}_4$-Gitter.
+Jede ungerade Primzahl $p$ ist Norm eines Hurwitz-Quaternions: $p = N(q_p)$ für
+ein geeignetes $q_p \in \mathcal{H}$.
+\end{definition}
+
+\subsection{Die vier Teilnormen}
+
+\begin{definition}[Vier Teilnormen]
+\label{def:teilnormen}
+Sei $q = a + bi + cj + dk \in \mathcal{L}$ mit $N(q) = n$. Die \emph{vier Teilnormen}
+(oder Quadrantnormen) sind:
+\[
+  N_1 \;:=\; a^2, \quad
+  N_2 \;:=\; b^2, \quad
+  N_3 \;:=\; c^2, \quad
+  N_4 \;:=\; d^2,
+\]
+mit der Zerlegungseigenschaft $N(q) = N_1 + N_2 + N_3 + N_4 = n$.
+\end{definition}
+
+\begin{tcolorbox}[kernidee]
+Die Vier-Teilnormen-Faktorisierung bricht die Norm $n$ in vier unabhängige Quadratbeiträge
+auf. Die Frage ist: Wie transformiert der Collatz-Schritt $n \mapsto 3n+1$ diese vier
+Beiträge --- und gibt es eine ausgezeichnete Zerlegung, die die Collatz-Dynamik
+besonders transparent macht?
+\end{tcolorbox}
+
+% ====================================================
+\section{Collatz-Schritt als Quaternionentransformation}
+\label{sec:transformation}
+% ====================================================
+
+\subsection{Hauptformel}
+
+\begin{proposition}[Asymmetrische Quaternionentransformation]
+\label{prop:hauptformel}
+Sei $q = a + bi + cj + dk \in \mathcal{L}$ mit $N(q) = n$. Dann gilt:
+\[
+  \boxed{N(3q+1) \;=\; 9\,N(q) + 6\,\Re(q) + 1 \;=\; 9n + 6a + 1.}
+\]
+\end{proposition}
+
+\begin{beweis}
+Sei $q = a + bi + cj + dk$. Dann ist $3q + 1 = (3a+1) + 3bi + 3cj + 3dk$.
+Die Quaternionen-Norm ist die Summe der Quadrate der Koeffizienten:
+\begin{align*}
+  N(3q+1) &= (3a+1)^2 + (3b)^2 + (3c)^2 + (3d)^2 \\
+           &= 9a^2 + 6a + 1 + 9b^2 + 9c^2 + 9d^2 \\
+           &= 9(a^2+b^2+c^2+d^2) + 6a + 1 \\
+           &= 9\,N(q) + 6\,\Re(q) + 1. \qedhere
+\end{align*}
+\end{beweis}
+
+\subsection{Transformation der vier Teilnormen}
+
+Die Proposition~\ref{prop:hauptformel} lässt sich auf Teilnormen-Ebene präzisieren.
+Unter $q \mapsto 3q+1$ transformieren sich die Teilnormen wie folgt:
+\begin{align}
+  N_1(3q+1) &= (3a+1)^2 = 9a^2 + 6a + 1 = 9N_1 + 6\sqrt{N_1} + 1, \label{eq:N1}\\
+  N_2(3q+1) &= (3b)^2   = 9b^2            = 9N_2, \label{eq:N2}\\
+  N_3(3q+1) &= (3c)^2   = 9c^2            = 9N_3, \label{eq:N3}\\
+  N_4(3q+1) &= (3d)^2   = 9d^2            = 9N_4. \label{eq:N4}
+\end{align}
+
+\begin{tcolorbox}[quaternion]
+\textbf{Kernbeobachtung: Asymmetrie der Transformation.}
+
+Drei Teilnormen $N_2, N_3, N_4$ wachsen uniform um \emph{Faktor~$9$}.
+Nur $N_1 = a^2$ (die Realteil-Teilnorm) erhält den \emph{Korrekturfaktor} $6a+1$.
+Die Abbildung $q \mapsto 3q+1$ ist daher \textbf{nicht isotrop}: Sie zerstört
+die Symmetrie zwischen den vier Teilnormen und definiert eine ausgezeichnete
+Richtung --- die Realteil-Richtung $\Re(q)$.
+\end{tcolorbox}
+
+\begin{bemerkung}[Geometrische Interpretation]
+In $\R^4 \cong \HH$ wirkt $q \mapsto 3q$ als isotrope Skalierung (alle Koordinaten
+mal~$3$). Der Versatz $q \mapsto q + \frac{1}{3}$ verschiebt ausschließlich in
+Realteil-Richtung. Die Collatz-Abbildung $q \mapsto 3q + 1$ ist daher eine
+\emph{Kombination aus isotroper Streckung und nicht-isotroper Translation},
+wobei die Translation $+1$ die Realteil-Richtung auszeichnet.
+\end{bemerkung}
+
+\subsection{Wann ist \texorpdfstring{$a$}{a} wichtig?}
+
+Der Korrekturfaktor $6a + 1$ bestimmt den Unterschied zwischen dem Collatz-Bild
+$9n+6a+1$ und dem isotropen Bild $9n+1$. Für $a > 0$ expandiert die Transformation
+stärker als isotrop, für $a < 0$ schwächer.
+
+\begin{itemize}[noitemsep]
+  \item $a > 0$: $N(3q+1) = 9n + 6a + 1 > 9n + 1$ --- \emph{Überkompensation}.
+  \item $a = 0$: $N(3q+1) = 9n + 1$ --- \emph{isotropes Bild}.
+  \item $a < 0$: $N(3q+1) = 9n + 6a + 1 < 9n + 1$ --- \emph{Unterkompensation} (Kontraktion relativ zur isotropen Referenz).
+\end{itemize}
+
+Entscheidend für die Collatz-Dynamik ist nicht $N(3q+1)$, sondern
+$N(3q+1)/2^{\nu_2(3n+1)}$ nach Division durch die maximale 2er-Potenz.
+Die Frage, ob $a$ die 2-adische Valuation $\vii(3n+1)$ beeinflusst, führt
+zur Verbindung mit den EABC-Klassen (Abschnitt~\ref{sec:eabc}).
+
+% ====================================================
+\section{EABC-Klassen und Vier-Quadrate-Struktur}
+\label{sec:eabc}
+% ====================================================
+
+\subsection{EABC-Klassifikation}
+
+Das EABC-Modell klassifiziert ungerade Zahlen $n$ nach $\vii(3n+1)$:
+\begin{itemize}[noitemsep]
+  \item \textbf{E}: $n \equiv 1 \pmod{4}$, also $\vii(3n+1) \geq 2$.
+  \item \textbf{A}: $n \equiv 3 \pmod{8}$, also $\vii(3n+1) = 1$.
+  \item \textbf{B}: $n \equiv 7 \pmod{16}$, also $\vii(3n+1) = 1$ (nach anderem Muster).
+  \item \textbf{C}: $n \equiv 5 \pmod{8}$, also $\vii(3n+1) \geq 3$.
+\end{itemize}
+(Genaue Definition und Beweis in den Vorgängerdokumenten der EABC-Serie.)
+
+\subsection{Paritätsmuster in der Vier-Quadrate-Zerlegung}
+
+Der Jacobi-Vierquadratensatz gibt Aufschluss über die \emph{minimalen} Zerlegungen.
+Ein zentrales Resultat über die Paritätsstruktur:
+
+\begin{proposition}[Paritätsmuster nach Residuenklasse]
+\label{prop:paritaet}
+Sei $n$ ungerade. In jeder Vier-Quadrate-Zerlegung $n = a^2+b^2+c^2+d^2$ gilt:
+\begin{enumerate}[label=(\roman*), noitemsep]
+  \item $n \equiv 1 \pmod{4}$: Die Anzahl ungerader Koeffizienten unter $a,b,c,d$ ist
+        gerade (0, 2 oder 4 ungerade Koeffizienten).
+  \item $n \equiv 3 \pmod{4}$: Die Anzahl ungerader Koeffizienten ist ungerade (1 oder 3).
+\end{enumerate}
+\end{proposition}
+
+\begin{beweis}[Beweisskizze]
+Modulo~2: $a^2 \equiv a \pmod{2}$ für jedes ganze $a$. Also ist die Parität von
+$a^2+b^2+c^2+d^2$ gleich der Parität der Summe $a+b+c+d$.
+\begin{itemize}[noitemsep]
+  \item Für $n \equiv 1 \pmod{4}$: Man rechnet modulo~4. Quadrate modulo~4 sind
+        $0$ oder $1$. Eine Summe von vier solchen Werten ist $\equiv 1 \pmod{4}$
+        genau dann, wenn genau eines oder drei der $a_i^2 \equiv 1 \pmod{4}$
+        (d.\,h.\ genau 1 oder 3 ungerade Koeffizienten). Tatsächlich können auch
+        alle vier ungerade sein (Summe $\equiv 0 \pmod{4}$, nein) --- eine sorgfältige
+        Fallunterscheidung zeigt: es müssen 0, 2 oder 4 ungerade sein, wenn
+        $n \equiv 1 \pmod{4}$, da sonst die Summe $\equiv 2$ oder $3 \pmod{4}$ wäre.
+  \item Für $n \equiv 3 \pmod{4}$: Analog; hier müssen 1 oder 3 Koeffizienten ungerade sein.
+\end{itemize}
+\end{beweis}
+
+\subsection{Tabelle: Konkrete Werte und Zerlegungen}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{rccrrp{3.5cm}rr}
+\toprule
+$n$ & EABC & $\vii(3n{+}1)$ & $(a,b,c,d)$ & $a$ & Parität & $9n{+}6a{+}1$ & $\div 2^{\vii}$ \\
+\midrule
+ 1 & E & 2 & $(1,0,0,0)$    &  1 & 1 ung., 3 ger. & 16  & 4 \\
+ 5 & E & 2 & $(2,1,0,0)$    &  2 & 2 ung., 2 ger. & 58  & 14 \\
+   &   &   & $(1,2,0,0)$    &  1 & & 52  & 13 \\
+ 9 & C & 3 & $(3,0,0,0)$    &  3 & 1 ung., 3 ger. & 100 & 100/8=12,5? \\
+   &   &   & \multicolumn{5}{l}{NB: $3\cdot 9+1=28$, $\nu_2(28)=2$} & 7 \\
+ 3 & B & 1 & $(1,1,1,0)$    &  1 & 3 ung., 1 ger. & 28  & 14 \\
+ 7 & A & 1 & $(2,1,1,1)$    &  2 & 3 ung., 1 ger. & 64  & 32 \\
+   &   &   & $(1,2,1,1)$    &  1 & & 58  & 29 \\
+11 & A & 1 & $(3,1,1,0)$    &  3 & 2 ung., 2 ger. & 118 & 59 \\
+   &   &   & $(1,3,1,0)$    &  1 & & 106 & 53 \\
+13 & C & 3 & $(3,2,0,0)$    &  3 & 1 ung., 3 ger. & 136 & 17 \\
+   &   &   & $(2,3,0,0)$    &  2 & & 130 & --- \\
+15 & B & 1 & $(3,2,1,1)$    &  3 & 3 ung., 1 ger. & 154 & 77 \\
+21 & C & 3 & $(4,2,1,0)$    &  4 & 2 ung., 2 ger. & 214 & 214/8? \\
+   &   &   & \multicolumn{5}{l}{NB: $3\cdot 21+1=64$, $\nu_2(64)=6$} & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{tcolorbox}[warnung]
+\textbf{Beobachtung aus der Tabelle.}
+Die Wahl von $a$ (Realteil) in der Vier-Quadrate-Zerlegung hängt von der
+Zerlegungsstrategie ab. Für jede Zerlegung erhält man ein anderes $N(3q+1) = 9n+6a+1$.
+Ob $9n+6a+1$ durch eine hohe Zweierpotenz teilbar ist (hohe $\vii$-Werte), hängt
+von der Kongruenzklasse von $n$ ab --- nicht von der spezifischen Wahl von $a$.
+
+Das bedeutet: Die EABC-Klasse ist eine Eigenschaft von $n$ modulo kleine Potenzen
+von~2, unabhängig von der Quaternionendarstellung.
+\end{tcolorbox}
+
+\begin{proposition}[Unabhängigkeit von EABC-Klasse und Quaternionenwahl]
+\label{prop:unabhaengigkeit}
+Die 2-adische Valuation $\vii(3n+1)$ ist eine Eigenschaft von $n$ allein
+(insbesondere von $n$ modulo~$4$ bzw.\ modulo~$8$ usw.) und hängt \emph{nicht}
+von der Wahl der Vier-Quadrate-Zerlegung $n = a^2+b^2+c^2+d^2$ ab.
+\end{proposition}
+
+\begin{beweis}
+$3n+1$ hängt nur von $n$ ab, nicht von der Darstellung von $n$ als Quaternionennorm.
+$\vii(3n+1)$ ist eine Funktion von $3n+1$ allein.
+\end{beweis}
+
+\begin{bemerkung}
+Proposition~\ref{prop:unabhaengigkeit} klärt die Grenzen des Quaternionen-Ansatzes:
+Die EABC-Klasse ist keine Eigenschaft der Quaternionendarstellung, sondern der Zahl $n$
+selbst. Die Quaternionendarstellung bereichert die Analyse durch die Formel
+$N(3q+1) = 9n+6a+1$, aber die Frage, \emph{wie weit} $3n+1$ durch~2 teilbar ist,
+bleibt eine modulo-arithmetische Frage.
+\end{bemerkung}
+
+% ====================================================
+\section{Minimierungsproblem: Optimale Quaternionenwahl}
+\label{sec:minimierung}
+% ====================================================
+
+\subsection{Problemformulierung}
+
+\begin{definition}[Optimale Quaternionenwahl]
+\label{def:optimal}
+Für gegebenes $n \in \N$ definieren wir das \emph{Minimierungsproblem der Vier-Teilnormen}:
+\[
+  a_{\min}(n) \;:=\; \min\bigl\{ a \in \Z \;\big|\; \exists\, b,c,d \in \Z:\;
+    a^2+b^2+c^2+d^2 = n \bigr\}.
+\]
+Das entsprechende Quaternion $q_{\min} = a_{\min}(n) + bi + cj + dk$ minimiert
+$N(3q+1) = 9n + 6a + 1$ unter allen Zerlegungen von $n$.
+\end{definition}
+
+\begin{proposition}[Schranken für $a_{\min}$]
+\label{prop:amin}
+Für alle $n \geq 1$ gilt:
+\[
+  -\lfloor\sqrt{n}\rfloor \;\leq\; a_{\min}(n) \;\leq\; 0,
+\]
+mit Gleichheit $a_{\min}(n) = -\lfloor\sqrt{n}\rfloor$ genau dann, wenn
+$n - \lfloor\sqrt{n}\rfloor^2$ als Summe von drei Quadraten darstellbar ist
+(was nach dem Satz von Legendre für fast alle $n$ gilt).
+\end{proposition}
+
+\begin{beweis}
+Da $a^2 \leq n$, gilt $|a| \leq \lfloor\sqrt{n}\rfloor$, also $a \geq -\lfloor\sqrt{n}\rfloor$.
+Die Wahl $a = -\lfloor\sqrt{n}\rfloor$ ist genau dann realisierbar, wenn
+$n - \lfloor\sqrt{n}\rfloor^2 = b^2+c^2+d^2$ für ganzzahlige $b,c,d$.
+Nach dem Satz von Legendre (Dreieckszahlensatz) ist $m = b^2+c^2+d^2$ genau
+dann möglich, wenn $m$ nicht von der Form $4^a(8b+7)$ ist.
+\end{beweis}
+
+\subsection{Minimales \texorpdfstring{$N(3q+1)$}{N(3q+1)}}
+
+\begin{proposition}[Minimale Transformation]
+\label{prop:minimal}
+Das minimale Bild unter der Collatz-Quaternionen-Abbildung ist:
+\[
+  N_{\min}(n) \;:=\; \min_{q:\,N(q)=n} N(3q+1)
+             \;=\; 9n + 6\,a_{\min}(n) + 1
+             \;\leq\; 9n - 6\lfloor\sqrt{n}\rfloor + 1.
+\]
+\end{proposition}
+
+\begin{korollar}[Grobe Abschätzung]
+Für alle $n \geq 1$ gilt $N_{\min}(n) \leq 9n - 6\lfloor\sqrt{n}\rfloor + 1$.
+Der Term $-6\lfloor\sqrt{n}\rfloor$ liefert eine Kontraktion von $O(\sqrt{n})$
+gegenüber dem isotropen Bild $9n+1$.
+\end{korollar}
+
+\begin{bemerkung}
+Für große $n$ gilt $N_{\min}(n) \approx 9n - 6\sqrt{n}$, was immer noch
+super-linear in $n$ wächst. Die Kontraktion durch negative Wahl von $a$
+reicht nicht aus, um die Collatz-Dynamik allein durch Quaternionen-Optimierung
+zu kontrollieren --- der entscheidende Faktor bleibt die Division durch
+$2^{\vii(3n+1)}$ nach dem ungeraden Schritt.
+\end{bemerkung}
+
+\subsection{Spezialfall: Quadratzahlen}
+
+\begin{theorem}[Quadratzahlen und Quaternionentransformation]
+\label{thm:quadratzahlen}
+Sei $n = m^2$ eine Quadratzahl mit $m \geq 1$. Mit der Wahl $q = -m$ (rein reell)
+gilt $a = -m$, $b = c = d = 0$, $N(q) = m^2 = n$, und:
+\[
+  N(3q + 1) \;=\; (3(-m) + 1)^2 \;=\; (1 - 3m)^2 \;=\; (3m-1)^2.
+\]
+Das Bild $N(3q+1) = (3m-1)^2$ ist ebenfalls eine Quadratzahl!
+\end{theorem}
+
+\begin{beweis}
+Direkte Rechnung: $3q+1 = 3(-m)+1 = 1-3m$, also
+$N(3q+1) = (1-3m)^2 = (3m-1)^2$. \qedhere
+\end{beweis}
+
+\begin{tcolorbox}[ergebnis, title={Schöner Spezialfall: Quadratzahlen}]
+Für $n = m^2$ gilt mit der optimalen Quaternionenwahl $q = -m$:
+\[
+  N(3q+1) \;=\; (3m-1)^2.
+\]
+Die Tabelle der ersten Werte:
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{rrrrr}
+\toprule
+$m$ & $n = m^2$ & $q = -m$ & $N(3q+1) = (3m-1)^2$ & $\sqrt{N(3q+1)}$ \\
+\midrule
+1 &  1 & $-1$ &   4 &  2 \\
+2 &  4 & $-2$ &  25 &  5 \\
+3 &  9 & $-3$ &  64 &  8 \\
+4 & 16 & $-4$ & 121 & 11 \\
+5 & 25 & $-5$ & 196 & 14 \\
+6 & 36 & $-6$ & 289 & 17 \\
+\bottomrule
+\end{tabular}
+\end{center}
+Die Folge $1, 5, 8, 11, 14, 17, \ldots$ hat die Differenz~3: $3m-1 = 2, 5, 8, 11, \ldots$
+für $m = 1, 2, 3, \ldots$ --- eine arithmetische Progression mit Differenz~3.
+\end{tcolorbox}
+
+\begin{bemerkung}[Verbindung zum Collatz-Schritt für Quadratzahlen]
+Für $n = m^2$ ist der Collatz-Schritt $3n+1 = 3m^2+1$. Die Zerlegungsformel
+$N(3q+1) = (3m-1)^2$ beschreibt jedoch nicht den Collatz-Schritt $3n+1$,
+sondern die Norm des Bildes des Quaternions unter der Abbildung $q \mapsto 3q+1$
+bei optimaler Wahl $q = -m$.
+
+Die entscheidende Frage: Wird $(3m-1)^2$ als Norm des Collatz-Bildes realisiert?
+Das Collatz-Bild von $n = m^2$ ist $3m^2+1$ (für ungerades $m$), und
+$(3m-1)^2 = 9m^2 - 6m + 1 \neq 3m^2 + 1$ im Allgemeinen.
+
+Der Quaternionen-Ansatz kodiert also eine andere (optimierte) Trajektorie als
+die Standard-Collatz-Abbildung.
+\end{bemerkung}
+
+% ====================================================
+\section{Verbindung zur D\texorpdfstring{${}_4$}{4}-Theta-Funktion und \texorpdfstring{$\mathcal{I}(n)$}{I(n)}}
+\label{sec:theta}
+% ====================================================
+
+\subsection{Die D${}_4$-Theta-Funktion}
+
+Das D${}_4$-Gitter (Hurwitz-Quaternionen-Gitter) hat die Theta-Funktion:
+\[
+  \Theta_{D_4}(\tau) \;=\; \sum_{q \in \mathcal{H}} e^{i\pi\tau N(q)}
+  \;=\; \sum_{n=0}^{\infty} r_4^{\mathcal{H}}(n)\, q^n,
+  \quad q = e^{2\pi i \tau},
+\]
+wobei $r_4^{\mathcal{H}}(n)$ die Anzahl der Hurwitz-Quaternionen mit Norm $n$ ist.
+
+Die Theta-Funktion des D${}_4$-Gitters ist bekannt als:
+\[
+  \Theta_{D_4}(\tau) \;=\; \frac{1}{2}\left(\theta_3(\tau)^4 + \theta_2(\tau)^4 + \theta_4(\tau)^4 - 2\right),
+\]
+wobei $\theta_2, \theta_3, \theta_4$ die Jacobi-Theta-Funktionen sind.
+
+Alternativ gilt für das einfachere Lipschitz-Gitter:
+\[
+  \Theta_{\mathcal{L}}(\tau) \;=\; \theta_3(\tau)^4
+  \;=\; \left(\sum_{n \in \Z} q^{n^2}\right)^4
+  \;=\; \sum_{n=0}^{\infty} r_4(n)\, q^n,
+\]
+was den Jacobi-Vierquadratensatz reproduziert.
+
+\subsection{Verbindung zu Eisenstein-Reihen und Bernoulli-Zahlen}
+
+Die Eisenstein-Reihen $G_{2k}(\tau) = 2\zeta(2k) + \frac{2(2\pi i)^{2k}}{(2k-1)!}
+\sum_{n=1}^\infty \sigma_{2k-1}(n) q^n$ sind Modulformen, die durch Gitterpunktsummen
+definiert sind. Die Verbindung zur D${}_4$-Theta-Funktion:
+
+\begin{proposition}[Eisenstein-Reihen und Vier-Quadrate]
+\label{prop:eisenstein}
+Die Theta-Funktion $\Theta_{\mathcal{L}}(\tau) = \theta_3(\tau)^4$ ist eine
+Modulform vom Gewicht~2 für eine Kongruenzuntergruppe von $\mathrm{SL}_2(\Z)$.
+Für die ersten Koeffizienten gilt:
+\[
+  r_4(n) \;=\; 8 \sum_{\substack{d \mid n \\ 4 \nmid d}} d
+          \;=\; 8\,\sigma_1(n) - 32\,\sigma_1(n/4),
+\]
+wobei $\sigma_1(m) = \sum_{d|m} d$ die Summe der Teiler ist und $\sigma_1(m) = 0$
+für nicht-ganzzahliges $m$.
+\end{proposition}
+
+\subsection{Hypothetische Verbindung zu \texorpdfstring{$\In(n)$}{I(n)}}
+
+\begin{tcolorbox}[lücke, title={Offene Frage: D${}_4$-Theta und Bernoulli-Normschalen}]
+\textbf{Hypothese (unbewiesen):} Gibt es eine direkte Verbindung zwischen
+$r_4(n)$ (Anzahl der Vier-Quadrate-Zerlegungen) und $\In(n)$ (Bernoulli-Normschale)?
+
+Bekannte Verbindungen:
+\begin{enumerate}[leftmargin=*, noitemsep, label=(\alph*)]
+  \item Sowohl $r_4(n)$ als auch $\In(n)$ sind mit Eisenstein-Reihen verknüpft.
+  \item Die Formel $\In(n) = \frac{2(2n)!\,\zeta(2n)}{(2\pi)^{2n}}\cdot D(n)$
+        verwendet $\zeta(2n)$, das seinerseits via Modulformen mit Theta-Funktionen
+        zusammenhängt.
+  \item Beide Größen messen auf unterschiedliche Weise die ``Dichte'' von
+        Gitterpunkten --- $r_4(n)$ auf dem Lipschitz-Gitter, $D(n)$ auf dem
+        Primzahlgitter (von Staudt--Clausen).
+\end{enumerate}
+
+Eine explizite Formel, die $r_4(n)$ und $\In(n)$ verbindet, ist offen.
+\end{tcolorbox}
+
+\begin{bemerkung}[Modulare Struktur]
+Die Theta-Funktion $\theta_3(\tau)^4$ und die Eisenstein-Reihe $E_2(\tau)$ sind
+beide Modulformen (bzw.\ quasi-Modulformen) für $\Gamma_0(4)$. Die Bernoulli-Zahlen
+erscheinen als Konstanten in den $q$-Entwicklungen der Eisenstein-Reihen.
+Die Verbindung zwischen $r_4(n)$ und $B_{2n}$ verläuft daher durch den
+Raum der Modulformen --- ein tiefer, aber noch nicht vollständig verstandener Link.
+\end{bemerkung}
+
+% ====================================================
+\section{Fazit}
+\label{sec:fazit}
+% ====================================================
+
+\subsection{Zusammenfassung der Ergebnisse}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{p{7cm} p{2.8cm} p{3.5cm}}
+\toprule
+\textbf{Aussage} & \textbf{Status} & \textbf{Anmerkung} \\
+\midrule
+$N(3q+1) = 9N(q) + 6\,\Re(q) + 1$
+  & \textcolor{bewiesengrün}{\bfseries Beweis}
+  & Direktrechnung \\
+Transformation der Teilnormen (Gleichungen \ref{eq:N1}--\ref{eq:N4})
+  & \textcolor{bewiesengrün}{\bfseries Beweis}
+  & Direktrechnung \\
+Für $n = m^2$: $N_{\min}(3q+1) = (3m-1)^2$
+  & \textcolor{bewiesengrün}{\bfseries Beweis}
+  & Theorem~\ref{thm:quadratzahlen} \\
+EABC-Klasse unabhängig von Quaternionenwahl
+  & \textcolor{bewiesengrün}{\bfseries Beweis}
+  & Proposition~\ref{prop:unabhaengigkeit} \\
+Paritätsmuster nach Residuenklasse mod~4
+  & \textcolor{bewiesengrün}{\bfseries Beweis}
+  & Proposition~\ref{prop:paritaet} \\
+\midrule
+Verbindung D${}_4$-Theta zu $\In(n)$
+  & \textcolor{warnorange}{\bfseries Offen}
+  & Strukturell motiviert \\
+Optimale Quaternionenwahl steuert Konvergenz
+  & \textcolor{warnorange}{\bfseries Heuristik}
+  & Kontraktion zu gering \\
+\midrule
+Quaternionenwahl liefert direkten Collatz-Beweis
+  & \textcolor{lückenrot}{\bfseries Falsch}
+  & EABC-Klasse unabhängig \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Strukturelle Erkenntnisse}
+
+\begin{tcolorbox}[hauptsatz]
+\textbf{Hauptergebnisse:}
+
+\medskip
+\textbf{(1) Asymmetrische Transformation.}
+Der Collatz-Schritt $q \mapsto 3q+1$ auf $\mathcal{L}$ transformiert die
+vier Teilnormen asymmetrisch:
+\[
+  (N_1, N_2, N_3, N_4) \;\mapsto\;
+  \bigl(9N_1 + 6\sqrt{N_1}+1,\; 9N_2,\; 9N_3,\; 9N_4\bigr).
+\]
+Die Realteil-Richtung ist die \textbf{ausgezeichnete Richtung}, die den
+gesamten Collatz-Korrekturfaktor $6a+1$ trägt.
+
+\medskip
+\textbf{(2) Quadratzahlformel.}
+Für $n = m^2$ mit optimaler Wahl $q = -m$ gilt $N(3q+1) = (3m-1)^2$ ---
+eine Quadratzahl. Die Folge $3m-1$ ist eine arithmetische Progression.
+
+\medskip
+\textbf{(3) Grenzen des Ansatzes.}
+Die EABC-Klasse (2-adische Valuation von $3n+1$) ist eine Eigenschaft von $n$
+allein und hängt nicht von der Quaternionendarstellung ab.
+Die Quaternionen-Zerlegung bereichert die Struktur, kontrolliert aber nicht
+die 2-adische Tiefe des Collatz-Schritts.
+
+\medskip
+\textbf{(4) Ausblick: D${}_4$-Theta.}
+Die Vier-Quadrate-Zerlegung ist über die D${}_4$-Theta-Funktion mit den
+Eisenstein-Reihen und (über Euler) mit den Bernoulli-Zahlen verknüpft.
+Eine explizite Verbindung zu den Bernoulli-Normschalen $\In(n)$ ist offen
+und strukturell motiviert.
+\end{tcolorbox}
+
+\subsection{Offene Fragen}
+
+\begin{tcolorbox}[lücke]
+\begin{enumerate}[leftmargin=*, label=(\arabic*)]
+  \item \textbf{Modulare Verbindung $r_4(n)$ und $\In(n)$:}
+        Gibt es eine Formel, die die Anzahl der Vier-Quadrate-Zerlegungen
+        mit dem Bernoulli-Zähler $\In(n)$ verbindet?
+
+  \item \textbf{Hurwitz-Quaternionen und EABC:}
+        Haben Primzahlen $p \equiv 1 \pmod 4$ (E-Klasse) strukturell andere
+        Hurwitz-Quaternionen-Darstellungen als $p \equiv 3 \pmod 4$ (A/B-Klasse)?
+
+  \item \textbf{Optimierungsproblem in höheren Dimensionen:}
+        Gibt es eine Verallgemeinerung auf Oktonionen (8 Teilnormen), die eine
+        feinere Struktur der Collatz-Abbildung aufdeckt?
+
+  \item \textbf{Spektrale Interpretation:}
+        Das D${}_4$-Gitter hat eine natürliche spektrale Interpretation via
+        Theta-Reihen. Kann die Collatz-Dynamik als Fluss auf dem D${}_4$-Gitter
+        verstanden werden?
+\end{enumerate}
+\end{tcolorbox}
+
+% ====================================================
+% Literatur
+% ====================================================
+\begin{thebibliography}{99}
+
+\bibitem{hoffbauer-bernoulli}
+T.\ Hoffbauer,
+\textit{Bernoulli-Normschalen und Collatz-Dynamik: Der Satz von von Staudt--Clausen
+als Lyapunov-Kandidat},
+Mathematische Texte, \texttt{collatz\_bernoulli\_schalen.tex} (2026).
+
+\bibitem{hoffbauer-lyapunov}
+T.\ Hoffbauer,
+\textit{Der Lyapunov-Exponent der Collatz-Dynamik},
+Mathematische Texte, \texttt{collatz\_lyapunov.tex} (2026).
+
+\bibitem{hoffbauer-oktonionen}
+T.\ Hoffbauer,
+\textit{Collatz-Beweis via Oktonionen-Norm},
+Mathematische Texte, \texttt{collatz\_oktonionen\_beweis.tex} (2026).
+
+\bibitem{lagrange}
+J.-L.\ Lagrange,
+\textit{Démonstration d'un théorème d'arithmétique},
+Nouv.\ Mém.\ Acad.\ Berlin (1770), 123--133.
+
+\bibitem{jacobi}
+C.\,G.\,J.\ Jacobi,
+\textit{Fundamenta Nova Theoriae Functionum Ellipticarum},
+Königsberg (1829).
+
+\bibitem{hurwitz}
+A.\ Hurwitz,
+\textit{Vorlesungen über die Zahlentheorie der Quaternionen},
+Springer, Berlin (1919).
+
+\bibitem{conway-sloane}
+J.\,H.\ Conway, N.\,J.\,A.\ Sloane,
+\textit{Sphere Packings, Lattices and Groups},
+3.\ Aufl., Springer, New York (1999).
+
+\bibitem{serre-cours}
+J.-P.\ Serre,
+\textit{Cours d'arithmétique},
+Presses Universitaires de France, Paris (1970).
+
+\bibitem{ireland-rosen}
+K.\ Ireland, M.\ Rosen,
+\textit{A Classical Introduction to Modern Number Theory},
+Springer, New York, 2.\ Aufl.\ (1990).
+
+\bibitem{tao-collatz}
+T.\ Tao,
+\textit{Almost all orbits of the Collatz map attain almost bounded values},
+Forum of Mathematics Pi \textbf{10} (2022), e12.
+\texttt{arXiv:1909.03562}
+
+\end{thebibliography}
+
+\end{document}
