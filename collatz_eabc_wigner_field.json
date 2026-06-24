@@ -1,0 +1,497 @@
+{
+  "meta": {
+    "module": "collatz_eabc_wigner_field.py",
+    "theory": "collatz_eabc_wigner_analog.md",
+    "theory_chirale_polarisation": "collatz_eabc_chirale_polarisation.md",
+    "theory_zirkulation": "collatz_eabc_zirkulationshypothese.md",
+    "theory_holonomie_stufen": "collatz_eabc_holonomie_stufen.md",
+    "theory_potential_geometrie": "collatz_eabc_potential_geometrie.md",
+    "theory_generalangriff": "collatz_generalangriff_2026.md",
+    "epistemic": "Analogie/Hypothese/Modell — keine Quantenphysik-Behauptung",
+    "max_p": 100000
+  },
+  "definitions": {
+    "W_E_4block": "count(ABCE) - count(CEAB) on 4-path windows",
+    "D_E_5block": "count(ABCEA) - count(CEABC) on 5-cycle holonomy",
+    "W_transition_ij": "W_ij = sum_n chi_i(n) chi_j(n+1)",
+    "W_matrix_signed": "W(a,b) = sum_n chi_a(n) chi_b(n) Q(n)",
+    "W_E_edge": "W_E(i,j;N) = (N_ij^(+) - N_ij^(-)) / (N_ij^(+) + N_ij^(-))",
+    "Q": "Omega_Pfad in {+1,-1,0}"
+  },
+  "W_E": {
+    "max_p": 100000,
+    "N_ABCE": 112,
+    "N_CEAB": 110,
+    "W_E": 2,
+    "S_W": 0.009009009009009009,
+    "block_width": 4,
+    "words": {
+      "positive": "ABCE",
+      "negative": "CEAB"
+    }
+  },
+  "D_E": {
+    "N_plus": 39,
+    "N_minus": 30,
+    "D_E": 9,
+    "S_E": 0.13043478260869565,
+    "block_width": 5
+  },
+  "four_vs_five_block": {
+    "W_E": 2,
+    "D_E": 9,
+    "same_sign": true,
+    "difference": -7,
+    "note": "4-block Pfadorientierung (CEAB) vs. 5-block Holonomie (CEABC)"
+  },
+  "W_transition_matrix": {
+    "matrix": [
+      [
+        313.0,
+        831.0,
+        642.0,
+        588.0
+      ],
+      [
+        507.0,
+        320.0,
+        925.0,
+        657.0
+      ],
+      [
+        659.0,
+        592.0,
+        301.0,
+        857.0
+      ],
+      [
+        895.0,
+        665.0,
+        542.0,
+        295.0
+      ]
+    ],
+    "matrix_labeled": {
+      "E": {
+        "E": 313.0,
+        "A": 831.0,
+        "B": 642.0,
+        "C": 588.0
+      },
+      "A": {
+        "E": 507.0,
+        "A": 320.0,
+        "B": 925.0,
+        "C": 657.0
+      },
+      "B": {
+        "E": 659.0,
+        "A": 592.0,
+        "B": 301.0,
+        "C": 857.0
+      },
+      "C": {
+        "E": 895.0,
+        "A": 665.0,
+        "B": 542.0,
+        "C": 295.0
+      }
+    },
+    "transition_count": 9589,
+    "carrier": "consecutive_class_transitions",
+    "formula": "W_ij = sum_n chi_i(n) chi_j(n+1)"
+  },
+  "W_matrix_sliding": {
+    "matrix": [
+      [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ]
+    ],
+    "matrix_labeled": {
+      "E": {
+        "E": 2.0,
+        "A": 2.0,
+        "B": 2.0,
+        "C": 2.0
+      },
+      "A": {
+        "E": 2.0,
+        "A": 2.0,
+        "B": 2.0,
+        "C": 2.0
+      },
+      "B": {
+        "E": 2.0,
+        "A": 2.0,
+        "B": 2.0,
+        "C": 2.0
+      },
+      "C": {
+        "E": 2.0,
+        "A": 2.0,
+        "B": 2.0,
+        "C": 2.0
+      }
+    },
+    "oriented_window_count": 222,
+    "carrier": "prime_sequence_sliding_4",
+    "formula": "W(a,b) = sum_n chi_a(n) chi_b(n) Q(n)"
+  },
+  "W_matrix_quadruplets": {
+    "matrix": [
+      [
+        6.0,
+        6.0,
+        6.0,
+        6.0
+      ],
+      [
+        6.0,
+        6.0,
+        6.0,
+        6.0
+      ],
+      [
+        6.0,
+        6.0,
+        6.0,
+        6.0
+      ],
+      [
+        6.0,
+        6.0,
+        6.0,
+        6.0
+      ]
+    ],
+    "matrix_labeled": {
+      "E": {
+        "E": 6.0,
+        "A": 6.0,
+        "B": 6.0,
+        "C": 6.0
+      },
+      "A": {
+        "E": 6.0,
+        "A": 6.0,
+        "B": 6.0,
+        "C": 6.0
+      },
+      "B": {
+        "E": 6.0,
+        "A": 6.0,
+        "B": 6.0,
+        "C": 6.0
+      },
+      "C": {
+        "E": 6.0,
+        "A": 6.0,
+        "B": 6.0,
+        "C": 6.0
+      }
+    },
+    "quadruplet_count": 38,
+    "carrier": "prime_quadruplets",
+    "formula": "W(a,b) = sum_{Q in Vierlingen} chi_a chi_b omega(Q)"
+  },
+  "W_E_edge_field": {
+    "W_E_edge_field": {
+      "E": {
+        "E": null,
+        "A": -1.0,
+        "B": null,
+        "C": null
+      },
+      "A": {
+        "E": null,
+        "A": null,
+        "B": 0.009009009009009009,
+        "C": null
+      },
+      "B": {
+        "E": null,
+        "A": null,
+        "B": null,
+        "C": 1.0
+      },
+      "C": {
+        "E": 0.009009009009009009,
+        "A": null,
+        "B": null,
+        "C": null
+      }
+    },
+    "edge_counts": {
+      "E": {
+        "E": {
+          "N_plus": 0,
+          "N_minus": 0,
+          "total": 0
+        },
+        "A": {
+          "N_plus": 0,
+          "N_minus": 110,
+          "total": 110
+        },
+        "B": {
+          "N_plus": 0,
+          "N_minus": 0,
+          "total": 0
+        },
+        "C": {
+          "N_plus": 0,
+          "N_minus": 0,
+          "total": 0
+        }
+      },
+      "A": {
+        "E": {
+          "N_plus": 0,
+          "N_minus": 0,
+          "total": 0
+        },
+        "A": {
+          "N_plus": 0,
+          "N_minus": 0,
+          "total": 0
+        },
+        "B": {
+          "N_plus": 112,
+          "N_minus": 110,
+          "total": 222
+        },
+        "C": {
+          "N_plus": 0,
+          "N_minus": 0,
+          "total": 0
+        }
+      },
+      "B": {
+        "E": {
+          "N_plus": 0,
+          "N_minus": 0,
+          "total": 0
+        },
+        "A": {
+          "N_plus": 0,
+          "N_minus": 0,
+          "total": 0
+        },
+        "B": {
+          "N_plus": 0,
+          "N_minus": 0,
+          "total": 0
+        },
+        "C": {
+          "N_plus": 112,
+          "N_minus": 0,
+          "total": 112
+        }
+      },
+      "C": {
+        "E": {
+          "N_plus": 112,
+          "N_minus": 110,
+          "total": 222
+        },
+        "A": {
+          "N_plus": 0,
+          "N_minus": 0,
+          "total": 0
+        },
+        "B": {
+          "N_plus": 0,
+          "N_minus": 0,
+          "total": 0
+        },
+        "C": {
+          "N_plus": 0,
+          "N_minus": 0,
+          "total": 0
+        }
+      }
+    },
+    "formula": "W_E(i,j;N) = (N_ij^(+) - N_ij^(-)) / (N_ij^(+) + N_ij^(-))",
+    "oriented_words": {
+      "positive": "ABCE",
+      "negative": "CEAB"
+    }
+  },
+  "information_excess_test": {
+    "reconstructed_from_marginals": {
+      "E": {
+        "E": 0.009009009009009009,
+        "A": 0.009009009009009009,
+        "B": 0.009009009009009009,
+        "C": 0.009009009009009009
+      },
+      "A": {
+        "E": 0.009009009009009009,
+        "A": 0.009009009009009009,
+        "B": 0.009009009009009009,
+        "C": 0.009009009009009009
+      },
+      "B": {
+        "E": 0.009009009009009009,
+        "A": 0.009009009009009009,
+        "B": 0.009009009009009009,
+        "C": 0.009009009009009009
+      },
+      "C": {
+        "E": 0.009009009009009009,
+        "A": 0.009009009009009009,
+        "B": 0.009009009009009009,
+        "C": 0.009009009009009009
+      }
+    },
+    "marginal_inputs": {
+      "global_S_W": 0.009009009009009009,
+      "total_transitions": 9589,
+      "note": "prediction: W_E(i,j) ≈ S_W wherever T_ij > 0"
+    },
+    "compared_edge_pairs": 4,
+    "rmse_vs_marginals": 0.7071354757906452,
+    "max_abs_error": 1.009009009009009,
+    "recoverable_from_marginals_only": false,
+    "information_excess": true,
+    "interpretation": "arithmetische Wigner-Negativität: sign structure not in marginals alone"
+  },
+  "information_excess_hypothesis": "arithmetische Wigner-Negativität",
+  "sign_structure": {
+    "E": {
+      "E": "+",
+      "A": "+",
+      "B": "+",
+      "C": "+"
+    },
+    "A": {
+      "E": "+",
+      "A": "+",
+      "B": "+",
+      "C": "+"
+    },
+    "B": {
+      "E": "+",
+      "A": "+",
+      "B": "+",
+      "C": "+"
+    },
+    "C": {
+      "E": "+",
+      "A": "+",
+      "B": "+",
+      "C": "+"
+    }
+  },
+  "sign_domains": {
+    "positive_regions": 16,
+    "negative_regions": 21,
+    "null_regions": 36,
+    "positive_steps": 1723,
+    "negative_steps": 6342,
+    "null_steps": 1522,
+    "sign_changes": 72,
+    "dominant_sign": "negative",
+    "info_in_transitions": true
+  },
+  "W_E_profile_tail": [
+    {
+      "index": 9582,
+      "word": "EBCA",
+      "omega": 0,
+      "cum_ABCE": 112,
+      "cum_CEAB": 110,
+      "W_E_cumulative": 2
+    },
+    {
+      "index": 9583,
+      "word": "BCAE",
+      "omega": 0,
+      "cum_ABCE": 112,
+      "cum_CEAB": 110,
+      "W_E_cumulative": 2
+    },
+    {
+      "index": 9584,
+      "word": "CAEC",
+      "omega": 0,
+      "cum_ABCE": 112,
+      "cum_CEAB": 110,
+      "W_E_cumulative": 2
+    },
+    {
+      "index": 9585,
+      "word": "AECA",
+      "omega": 0,
+      "cum_ABCE": 112,
+      "cum_CEAB": 110,
+      "W_E_cumulative": 2
+    },
+    {
+      "index": 9586,
+      "word": "ECAB",
+      "omega": 0,
+      "cum_ABCE": 112,
+      "cum_CEAB": 110,
+      "W_E_cumulative": 2
+    }
+  ],
+  "W_E_profile_length": 9587,
+  "near_zero_modes": {
+    "operator": "L_E^sym (graph Laplacian stub; no Dirac D in repo)",
+    "reference": "collatz_eabc_graph_laplacian.py",
+    "dirac_stub": "D psi = lambda psi — not implemented; use L_E near-zero modes",
+    "eigenvalues": [
+      -1.642509399624382e-13,
+      2673.9448311573133,
+      2809.183468494272,
+      2876.871700348415
+    ],
+    "near_zero_tolerance": 1e-06,
+    "near_zero_mode_count": 1,
+    "near_zero_modes": [
+      {
+        "index": 0,
+        "eigenvalue": -1.642509399624382e-13,
+        "eigenvector": {
+          "E": -0.5,
+          "A": -0.5,
+          "B": -0.5000000000000001,
+          "C": -0.5000000000000001
+        },
+        "norm": 1.0
+      }
+    ],
+    "pop_mass_analog": "sum of |psi_k|^2 for |lambda_k| < tol",
+    "graph_meta": {
+      "max_p": 100000,
+      "total_edges": 9589
+    }
+  },
+  "boxed": {
+    "information": "signed field on EABC — not point counts",
+    "wigner_analog": "quasi-probability: negative domains allowed",
+    "state_space": "transition structure E<->A<->B<->C, not single primes"
+  }
+}
