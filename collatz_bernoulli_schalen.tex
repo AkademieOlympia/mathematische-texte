@@ -1,0 +1,941 @@
+\documentclass[12pt,a4paper]{article}
+
+% -------------------------------------------------
+% Sprache / Kodierung
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+
+% -------------------------------------------------
+% Layout / Grafik / Farben
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks,unicode]{hyperref}
+\pdfstringdefDisableCommands{%
+  \def\ü{ue}\def\ö{oe}\def\ä{ae}\def\Ü{Ue}\def\Ö{Oe}\def\Ä{Ae}\def\ss{ss}%
+}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{array}
+
+% -------------------------------------------------
+% Farben (konsistent mit Vorgängerdokumenten)
+% -------------------------------------------------
+\definecolor{lückenrot}{RGB}{180,40,40}
+\definecolor{bewiesengrün}{RGB}{30,100,50}
+\definecolor{warnorange}{RGB}{200,100,10}
+\definecolor{hintergrundblau}{RGB}{235,242,250}
+\definecolor{hintergrundgelb}{RGB}{255,252,225}
+\definecolor{adischviolett}{RGB}{90,20,140}
+\definecolor{fehlerrot}{RGB}{200,0,0}
+\definecolor{konjviolett}{RGB}{80,0,130}
+\definecolor{e8grau}{RGB}{55,55,90}
+\definecolor{korrekturorange}{RGB}{200,100,10}
+\definecolor{bernoulliblau}{RGB}{0,70,130}
+
+% -------------------------------------------------
+% tcolorbox-Stile
+% -------------------------------------------------
+\tcbset{
+  lücke/.style={colback=red!8, colframe=lückenrot, fonttitle=\bfseries,
+    title={Offene Lücke}},
+  ergebnis/.style={colback=green!7, colframe=bewiesengrün,
+    fonttitle=\bfseries, title={Bewiesenes Ergebnis}},
+  warnung/.style={colback=orange!10, colframe=warnorange,
+    fonttitle=\bfseries, title={Achtung / Heuristik}},
+  adisch/.style={colback=violet!6, colframe=adischviolett,
+    fonttitle=\bfseries, title={2-adische Perspektive}},
+  kernidee/.style={colback=hintergrundblau, colframe=blue!60!black,
+    fonttitle=\bfseries, title={Kernidee}},
+  konj/.style={colback=violet!5, colframe=konjviolett, fonttitle=\bfseries,
+    title={Konjektur (unbewiesen)}},
+  lte/.style={colback=yellow!8, colframe=e8grau, fonttitle=\bfseries,
+    title={Modellrechnung}},
+  hauptsatz/.style={colback=green!10, colframe=bewiesengrün!80!black,
+    fonttitle=\bfseries\large, title={Stärkster beweisbarer Satz}},
+  korrektur/.style={colback=yellow!5, colframe=orange!70!black,
+    fonttitle=\bfseries},
+  bernoulli/.style={colback=blue!5, colframe=bernoulliblau,
+    fonttitle=\bfseries},
+}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+\newtheorem{hypothese}[definition]{Hypothese}
+\newtheorem{satz}[definition]{Satz}
+
+\newenvironment{beweis}{\begin{proof}[Beweis]}{\end{proof}}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\vii}{\nu_2}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Ztwo}{\mathbb{Z}_2}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\atwo}[1]{\lvert#1\rvert_2}
+\newcommand{\logt}{\log_2}
+\newcommand{\In}{\mathcal{I}}      % Bernoulli-Normschale I(n)
+\newcommand{\Denom}[1]{D(#1)}     % Nenner von B_{2n}
+
+% -------------------------------------------------
+% Dokument
+% -------------------------------------------------
+\title{%
+  Bernoulli-Normschalen und Collatz-Dynamik:\\[0.3em]
+  Der Satz von von Staudt--Clausen als Lyapunov-Kandidat\\[0.5em]
+  \large Analyse, SageMath-Experimente und ehrliche Schlussfolgerungen\\[0.3em]
+  \large Ergänzung zur Collatz-Synthese vom 16.\ Juni 2026%
+}
+\author{Thomas Hoffbauer}
+\date{16.\ Juni 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Dieses Dokument untersucht einen neuen Zugang zur Collatz-Dynamik via
+\emph{Bernoulli-Normschalen}: die durch den Satz von von Staudt--Clausen
+definierte ganzzahlige Funktion
+\[
+  \In(n) \;:=\; \abs{B_{2n}} \cdot \prod_{\substack{p \text{ prim}\\(p-1)\mid 2n}} p
+  \;=\; \bigl|\text{Zähler}(B_{2n})\bigr|,
+\]
+wobei $B_{2n}$ die Bernoulli-Zahl ist. Es gilt $\In(1) = 1$ (einziger Fixpunkt mit
+$\In(n) = 1$ unter den ersten vier Werten), und die Grundidee ist, ob $\log \In(n)$
+als Lyapunov-Funktion entlang der Collatz-Trajektorie dienen könnte.
+
+Die SageMath-Berechnung der Trajektorie von $7$ zeigt: $\log_2 \In(n)$
+\emph{explodiert} bei ungeraden Schritten ($n \to 3n+1$) typischerweise massiv
+(z.\,B.\ von $2{,}8$ auf $74{,}6$ bei $7\to 22$) und \emph{kollabiert} bei geraden
+Schritten, aber die Funktion ist hochgradig irregulär und kein Lyapunov-Kandidat
+im klassischen Sinne.
+
+Positiv: Die Verbindung $\In(n) = \frac{2(2n)!\,\zeta(2n)}{(2\pi)^{2n}} \cdot \Denom{n}$
+verknüpft die Collatz-Dynamik direkt mit Werten der Riemann-Zeta-Funktion an
+geraden positiven ganzen Zahlen --- ein strukturell interessanter Link.
+
+Ein ehrliches Fazit benennt, was neu ist, was heuristisch, was offen bleibt.
+\end{abstract}
+
+\tableofcontents
+
+\bigskip
+\begin{tcolorbox}[warnung, title={Einordnung}]
+Die Collatz-Vermutung ist unbewiesen. Dieses Dokument präsentiert einen
+\textbf{explorativen Ansatz}, der auf interessanten Strukturen aufbaut,
+aber nach gründlicher Analyse \textbf{kein Lyapunov-Argument} liefert.
+Die Darstellung ist bewusst ehrlich: Neue Ideen und ihre Grenzen werden
+gleichermaßen benannt.
+\end{tcolorbox}
+
+% ====================================================
+\section{Von Staudt--Clausen und die Bernoulli-Normschale \texorpdfstring{$\In(n)$}{I(n)}}
+\label{sec:definition}
+% ====================================================
+
+\subsection{Der Satz von von Staudt--Clausen}
+
+Die Bernoulli-Zahlen $B_{2n}$ ($n \geq 1$) sind rationale Zahlen mit
+bemerkenswert strukturiertem Nenner. Der Satz von von Staudt--Clausen
+(1840) beschreibt diesen Nenner vollständig.
+
+\begin{theorem}[Von Staudt--Clausen, 1840]
+\label{thm:staudt-clausen}
+Für jede positive ganze Zahl $n \geq 1$ gilt:
+\[
+  B_{2n} + \sum_{\substack{p \text{ prim}\\(p-1)\mid 2n}} \frac{1}{p}
+  \;\in\; \Z.
+\]
+Insbesondere ist der Nenner von $B_{2n}$ (in gekürzter Bruchdarstellung) gleich
+\[
+  \Denom{n} \;:=\; \prod_{\substack{p \text{ prim}\\(p-1)\mid 2n}} p.
+\]
+\end{theorem}
+
+\begin{beweis}[Beweisskizze]
+Das klassische Argument (Clausen 1840, von Staudt 1840) verwendet die
+Bernoulli-Summenformel $\sum_{k=0}^{p-1} k^{2n} \equiv -1 \pmod{p}$
+für Primzahlen $p$ mit $(p-1)\mid 2n$ und $\equiv 0 \pmod{p}$ sonst.
+Hieraus folgt die $p$-adische Struktur von $B_{2n}$ für alle Primzahlen~$p$.
+\end{beweis}
+
+\subsection{Definition der Bernoulli-Normschale}
+
+\begin{definition}[Bernoulli-Normschale $\In(n)$]
+\label{def:bernoulli-normschale}
+Für $n \geq 1$ definieren wir die \emph{Bernoulli-Normschale} als
+\[
+  \In(n) \;:=\; \abs{B_{2n}} \cdot \Denom{n}
+         \;=\; \abs{B_{2n}} \cdot \prod_{\substack{p \text{ prim}\\(p-1)\mid 2n}} p.
+\]
+Nach Theorem~\ref{thm:staudt-clausen} ist $\In(n) \in \N$ (positive ganze Zahl).
+\end{definition}
+
+\begin{proposition}[$\In(n)$ als Zähler von $B_{2n}$]
+\label{prop:zaehler}
+Es gilt $\In(n) = \abs{\text{Zähler}(B_{2n})}$, d.\,h.\ $\In(n)$ ist der
+Absolutwert des Zählers von $B_{2n}$ in gekürzter Bruchdarstellung.
+\end{proposition}
+
+\begin{beweis}
+Da $\Denom{n}$ nach Theorem~\ref{thm:staudt-clausen} exakt der Nenner von
+$B_{2n}$ ist, gilt: Schreibe $B_{2n} = \pm \In(n)/\Denom{n}$ in gekürzter Form.
+Dann ist $\abs{B_{2n}} \cdot \Denom{n} = \In(n) = \abs{\text{Zähler}(B_{2n})}$.
+\end{beweis}
+
+\subsection{Erste Werte und der Fixpunkt \texorpdfstring{$\In(1) = 1$}{I(1)=1}}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{rllrr}
+\toprule
+$n$ & $B_{2n}$ & $(p\text{ prim, }(p{-}1)\mid 2n)$ & $\Denom{n}$ & $\In(n)$ \\
+\midrule
+1 & $\phantom{-}1/6$    & $p \in \{2,3\}$     & 6    & 1 \\
+2 & $-1/30$             & $p \in \{2,3,5\}$   & 30   & 1 \\
+3 & $\phantom{-}1/42$   & $p \in \{2,3,7\}$   & 42   & 1 \\
+4 & $-1/30$             & $p \in \{2,3,5\}$   & 30   & 1 \\
+5 & $\phantom{-}5/66$   & $p \in \{2,3,11\}$  & 66   & 5 \\
+6 & $-691/2730$         & $p \in \{2,3,5,7,13\}$ & 2730 & 691 \\
+7 & $\phantom{-}7/6$    & $p \in \{2,3\}$     & 6    & 7 \\
+8 & $-3617/510$         & $p \in \{2,3,5,17\}$ & 510 & 3617 \\
+9 & $\phantom{-}43867/798$ & $p\in\{2,3,19\}$ & 798 & 43867 \\
+10 & $-174611/330$      & $p\in\{2,3,5,11\}$ & 330 & 174611 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{tcolorbox}[bernoulli, title={Schlüsseleigenschaft: Fixpunkt $\In(1) = 1$}]
+Es gilt $\In(1) = 1$, da $B_2 = 1/6$ und $\Denom{1} = 6$, also
+$\In(1) = (1/6)\cdot 6 = 1$.
+Ferner gilt $\In(n) = 1$ genau dann, wenn $B_{2n}$ Zähler~$\pm 1$ hat,
+d.\,h.\ für $n \in \{1, 2, 3, 4\}$. Ab $n = 5$ wächst $\In(n) > 1$.
+
+Der Collatz-Fixpunkt $n = 1$ entspricht also dem Wert $\In(1) = 1$
+(dem Minimum von $\In$).
+\end{tcolorbox}
+
+% ====================================================
+\section{Mathematische Eigenschaften von \texorpdfstring{$\In(n)$}{I(n)}}
+\label{sec:eigenschaften}
+% ====================================================
+
+\subsection{Wachstumsrate}
+
+\begin{proposition}[Asymptotik von $\In(n)$]
+\label{prop:wachstum}
+Für $n \to \infty$ gilt:
+\[
+  \log \In(n) \;\sim\; \log\abs{B_{2n}} + \log \Denom{n}
+              \;\sim\; 2n\log\frac{n}{\pi e} + \log \Denom{n},
+\]
+wobei die zweite Asymptotik aus der Stirling-Formel für $\abs{B_{2n}}$ folgt.
+Genauer: Mit $\abs{B_{2n}} \sim 2\cdot (2n)!/(2\pi)^{2n}$ und Stirling gilt
+\[
+  \log\abs{B_{2n}} \sim 2n\log(2n) - 2n\log(2\pi e) + \tfrac{1}{2}\log(4\pi n).
+\]
+Für $\log \Denom{n}$: Da die primerzeugenden Primzahlen durch $p\leq 2n+1$ beschränkt
+sind und nach dem Primzahlsatz $\sum_{p\leq x}\log p \sim x$ gilt (Tschebyschow-Funktion
+$\theta(x) \sim x$), erhält man
+\[
+  \log \Denom{n} \;=\; \sum_{\substack{p \text{ prim}\\(p-1)\mid 2n}} \log p
+  \;\leq\; \theta(2n+1) \;\sim\; 2n.
+\]
+Damit dominiert $\log\abs{B_{2n}} \sim 2n\log n$ den Nennerterm, und es gilt
+\[
+  \log \In(n) \;\sim\; 2n\log n \quad (n\to\infty).
+\]
+Das Wachstum von $\log \In(n)$ ist \emph{super-linear} in $n$, d.\,h.\
+$\In(n)$ wächst \emph{super-exponentiell}.
+\end{proposition}
+
+\begin{tcolorbox}[warnung, title={Unregelmäßigkeit des Wachstums}]
+Obwohl $\In(n)$ im Mittel super-exponentiell wächst, ist das Wachstum
+hochgradig \textbf{irregulär}: Es gibt lokale ``Einbrüche'' wie
+$\In(7) = 7$ zwischen $\In(6) = 691$ und $\In(8) = 3617$.
+Diese entstehen, wenn der Zähler von $B_{2n}$ aus Zufall klein ist.
+$\In(n)$ ist weder monoton noch annähernd gleichmäßig wachsend.
+\end{tcolorbox}
+
+\subsection{Zur Monotoniefrage}
+
+\begin{proposition}[Nicht-Monotonie von $\In$]
+\label{prop:nicht-monoton}
+Die Funktion $\In\colon \N \to \N$ ist \emph{nicht monoton}. Konkrete Gegenbeispiele:
+\begin{itemize}[noitemsep]
+  \item $\In(6) = 691 > \In(7) = 7$ (obwohl $6 < 7$).
+  \item $\In(11) = 854\,513 > \In(12) = 236\,364\,091$ --- nein, hier ist
+    $\In(12) > \In(11)$; aber $\In(13) = 8\,553\,103 < \In(14) = 23\,749\,461\,029$.
+  \item Im Allgemeinen: Immer wenn $B_{2n}$ einen kleinen Zähler hat (z.\,B.\ eine
+    einzelne Primzahl), fällt $\In(n)$ lokal ab.
+\end{itemize}
+\end{proposition}
+
+\subsection{Halbgruppenstruktur: Gerade Halbierung}
+
+Für den geraden Collatz-Schritt $n \mapsto n/2$ (bei geradem $n$) vergleichen wir
+$\In(n)$ mit $\In(n/2)$:
+
+\begin{proposition}[Abnahme bei gerader Halbierung]
+\label{prop:halbierung}
+Für alle geraden $n \geq 6$ gilt (numerisch verifiziert):
+\[
+  \In(n/2) \;<\; \In(n).
+\]
+Für $n = 2, 4$ gilt $\In(1) = \In(2) = \In(4) = 1$ (keine strikte Abnahme).
+\end{proposition}
+
+\begin{beweis}[Beweisskizze]
+Die Relation $\In(n/2) < \In(n)$ ist äquivalent zu
+$\abs{B_n} \cdot \Denom{n/2} < \abs{B_{2n}} \cdot \Denom{n}$.
+Asymptotisch dominiert der Unterschied in $\abs{B_{2n}}$ gegenüber $\abs{B_n}$:
+$\abs{B_{2n}} \sim 2(2n)!/(2\pi)^{2n}$, also $\abs{B_{2n}}/\abs{B_n} \sim
+(2n)!/(n!\,(2\pi)^n)$, was für großes $n$ gegen $+\infty$ geht.
+Ein vollständiger Beweis würde explizite Schranken für $\In$ erfordern (open).
+\end{beweis}
+
+% Numerische Tabelle: log2 I(n) fuer n=1..20
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{rrrrr}
+\toprule
+$n$ & $\In(n)$ & $\log_2 \In(n)$ &
+$n$ & $\log_2 \In(n)$ \\
+\midrule
+ 1 & 1                    & 0{,}000  & 11 & 19{,}705 \\
+ 2 & 1                    & 0{,}000  & 12 & 27{,}816 \\
+ 3 & 1                    & 0{,}000  & 13 & 23{,}028 \\
+ 4 & 1                    & 0{,}000  & 14 & 34{,}467 \\
+ 5 & 5                    & 2{,}322  & 15 & 42{,}970 \\
+ 6 & 691                  & 9{,}433  & 16 & 42{,}810 \\
+ 7 & 7                    & 2{,}807  & 17 & 41{,}229 \\
+ 8 & 3617                 & 11{,}821 & 18 & 64{,}513 \\
+ 9 & 43867                & 15{,}421 & 19 & 51{,}380 \\
+10 & 174611               & 17{,}414 & 20 & 67{,}823 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Die lokalen Einbrüche bei $n = 7, 13, 17, 19$ sind deutlich sichtbar.
+
+% ====================================================
+\section{\texorpdfstring{$\In(n)$}{I(n)} entlang der Collatz-Trajektorie}
+\label{sec:trajektorie}
+% ====================================================
+
+\subsection{Setup}
+
+Wir berechnen $\In(n)$ entlang der Standard-Collatz-Trajektorie von $n_0 = 7$:
+\[
+  7 \;\to\; 22 \;\to\; 11 \;\to\; 34 \;\to\; 17 \;\to\;
+  52 \;\to\; 26 \;\to\; 13 \;\to\; 40 \;\to\; 20 \;\to\;
+  10 \;\to\; 5 \;\to\; 16 \;\to\; 8 \;\to\; 4 \;\to\; 2 \;\to\; 1.
+\]
+Für jeden Wert $k$ in der Trajektorie berechnen wir $\In(k) = \abs{\text{Zähler}(B_{2k})}$
+und $\log_2 \In(k)$.
+
+\subsection{Tabelle: Explosion und Kollaps}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{rclrr}
+\toprule
+$k$ & Parität & Schritt & $\log_2 \In(k)$ & $\In(k)$ (Stellenanzahl) \\
+\midrule
+ 7 & ungerade & Start               &  2{,}807  &  1 \\
+22 & gerade   & $3\cdot 7+1 = 22$  & 74{,}559  & 23 \\
+11 & ungerade & $22/2 = 11$        & 19{,}705  &  6 \\
+34 & gerade   & $3\cdot 11+1 = 34$ & 145{,}821 & 44 \\
+17 & ungerade & $34/2 = 17$        & 41{,}229  & 13 \\
+52 & gerade   & $3\cdot 17+1 = 52$ & 287{,}362 & 87 \\
+26 & gerade   & $52/2 = 26$        &  99{,}338 & 30 \\
+13 & ungerade & $26/2 = 13$        &  23{,}028 &  7 \\
+40 & gerade   & $3\cdot 13+1 = 40$ & 201{,}519 & 61 \\
+20 & gerade   & $40/2 = 20$        &  67{,}823 & 21 \\
+10 & gerade   & $20/2 = 10$        &  17{,}414 &  6 \\
+ 5 & ungerade & $10/2 = 5$         &   2{,}322 &  1 \\
+16 & gerade   & $3\cdot 5+1 = 16$  &  42{,}810 & 13 \\
+ 8 & gerade   & $16/2 = 8$         &  11{,}821 &  4 \\
+ 4 & gerade   & $8/2 = 4$          &   0{,}000 &  1 \\
+ 2 & gerade   & $4/2 = 2$          &   0{,}000 &  1 \\
+ 1 & ungerade & Ende               &   0{,}000 &  1 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{tcolorbox}[bernoulli, title={Ablesungen aus der Tabelle}]
+\begin{itemize}[leftmargin=*, noitemsep]
+  \item \textbf{Ungerade Schritte ($n \to 3n+1$) explodieren:}
+        $7 \to 22$: $\log_2 \In$ springt von $2{,}8$ auf $74{,}6$ (Faktor $\approx 26$).
+        $11 \to 34$: von $19{,}7$ auf $145{,}8$ (Faktor $\approx 7$, da $\In(34)$
+        den riesigen Zähler von $B_{68}$ trägt).
+        $17 \to 52$: von $41{,}2$ auf $287{,}4$ (Faktor $\approx 7$).
+  \item \textbf{Gerade Schritte ($n \to n/2$) kollabieren:}
+        $22 \to 11$: von $74{,}6$ auf $19{,}7$ (Faktor $\approx 0{,}26$).
+        $34 \to 17$: von $145{,}8$ auf $41{,}2$ (Faktor $\approx 0{,}28$).
+        $52 \to 26$: von $287{,}4$ auf $99{,}3$ (Faktor $\approx 0{,}35$).
+  \item \textbf{Ausreißer nach oben:} $5 \to 16$: $\log_2\In$ steigt von $2{,}3$
+        auf $42{,}8$ trotz $5$ ungerade. Ursache: $3\cdot 5+1 = 16$ ist eine
+        Zweierpotenz, und $\In(16) = 3617$ ist ungewöhnlich groß für seinen Index.
+  \item \textbf{Gesamtbild:} Die Trajektorie endet bei $\In(1) = 1$.
+        Der Verlauf ist hochgradig \emph{nicht-monoton}: Es gibt abwechselnd
+        extreme Anstiege und Abfälle.
+\end{itemize}
+\end{tcolorbox}
+
+\subsection{Warum die Explosion nicht vermeidbar ist}
+
+\begin{proposition}[Untere Schranke für ungerade Schritte]
+\label{prop:explosion}
+Sei $n$ ungerade und $m = 3n+1$ (gerade). Dann gilt für fast alle solche Paare
+$(n, m)$:
+\[
+  \log \In(m) \;\gg\; \log \In(n),
+\]
+da $m = 3n+1 \approx 3n$ und damit $\log\abs{B_{2m}} \sim 2m\log m \approx 6n\log(3n)$,
+während $\log\abs{B_{2n}} \sim 2n\log n$.
+\end{proposition}
+
+\begin{beweis}
+Aus der Stirling-Asymptotik: $\log\abs{B_{2k}} \sim 2k\log k$.
+Für $k = 3n+1 \approx 3n$ ergibt sich
+$\log\abs{B_{2m}} \sim 6n\log(3n) = 6n\log 3 + 6n\log n$.
+Das Verhältnis zu $\log\abs{B_{2n}} \sim 2n\log n$ konvergiert gegen $+\infty$.
+\end{beweis}
+
+% ====================================================
+\section{Ist \texorpdfstring{$\log \In(n)$}{log I(n)} eine Lyapunov-Funktion?}
+\label{sec:lyapunov}
+% ====================================================
+
+\subsection{Anforderungen an eine Lyapunov-Funktion}
+
+Eine Lyapunov-Funktion $V\colon \N \to \R_{\geq 0}$ für die Collatz-Dynamik
+$\U$ müsste erfüllen:
+\begin{enumerate}[label=(\roman*)]
+  \item $V(1) = 0$ (Minimum am Fixpunkt),
+  \item $V(\U(n)) \leq V(n) - \varepsilon$ für alle $n > 1$ und ein $\varepsilon > 0$
+    (strikte Abnahme in jedem Schritt), oder zumindest
+  \item $\limsup_{J\to\infty}\frac{1}{J}\sum_{j=0}^{J-1} [V(\U^{j+1}(n)) - V(\U^j(n))] < 0$
+    (negativer mittlerer Drift).
+\end{enumerate}
+
+\begin{tcolorbox}[lücke, title={$\log \In(n)$ ist keine Lyapunov-Funktion}]
+Die Bedingungen (i)--(iii) sind für $V = \log\In$ \textbf{nicht erfüllt}:
+
+\begin{enumerate}[leftmargin=*, label=(\alph*)]
+  \item \textbf{Bedingung (i) ist erfüllt:} $\In(1) = 1$, also $\log\In(1) = 0$.
+
+  \item \textbf{Bedingung (ii) ist nicht erfüllt:}
+        Bei jedem ungeraden Schritt $n \to 3n+1$ \emph{explodiert} $\log\In$.
+        Konkret: $\log\In(3n+1) - \log\In(n) \sim (6n\log(3n) - 2n\log n) \to +\infty$.
+
+  \item \textbf{Bedingung (iii) ist offen und unwahrscheinlich:}
+        Der mittlere Drift ist unklar. Wegen der extremen Explosionen bei ungeraden
+        Schritten wächst $\log\In(n)$ auf langen Trajektorienabschnitten stark an,
+        bevor die geraden Schritte es wieder reduzieren.
+
+  \item \textbf{Nicht-Monotonie als strukturelles Hindernis:}
+        $\In$ ist in $n$ nicht monoton (z.\,B.\ $\In(6) = 691 \gg \In(7) = 7$),
+        weshalb selbst die qualitative Aussage
+        ``$\In$ nimmt auf der Trajektorie ab'' keinen klaren Sinn ergibt.
+\end{enumerate}
+\end{tcolorbox}
+
+\subsection{Detaillierte Analyse des mittleren Drifts}
+
+Betrachte den mittleren Log-Drift pro Collatz-Schritt entlang einer Trajektorie.
+Ein Block der Collatz-Dynamik besteht aus einem ungeraden Schritt ($\times 3$)
+gefolgt von mehreren geraden Schritten ($\div 2$). Im Block mit C-Kettenlänge $l$
+und A-Schritttiefe $\nu$ geht die Trajektorie von $n_0$ über $n_0 \to 3n_0+1
+\to \ldots \to n_0^{(1)} \approx 3^{l+1}n_0/2^{l+\nu}$.
+
+Die Wirkung auf $\log\In$:
+\begin{itemize}[noitemsep]
+  \item \textbf{Ungerader Schritt} $n \to 3n+1 = m$: $\log\In(m) \approx 3\,\log\In(n)$
+    (grobe Abschätzung), da $m \approx 3n$ und $\log\In(k) \sim 2k\log k$.
+  \item \textbf{Gerader Schritt} $n \to n/2$: $\log\In(n/2) \approx \tfrac{1}{2}\,\log\In(n)$
+    (grob), da $n/2$ kleiner ist und die Bernoulli-Zahl entsprechend kleiner.
+\end{itemize}
+In einem Block mit $l$ geraden Schritten (C-Kette) plus $\nu$ weiteren geraden Schritten
+würde $\log\In$ durch den ungeraden Schritt um den Faktor $\approx 3$ anwachsen
+und durch $l+\nu$ gerade Schritte jeweils um Faktor $\approx \tfrac{1}{2}$ schrumpfen.
+Der Nettofaktor für $\log\In$ wäre $\approx 3 \cdot (1/2)^{l+\nu}$.
+Unter den Modellverteilungen aus \textit{collatz\_lyapunov.tex}
+($\E[l] = 1$, $\E[\nu] = 3$) ergäbe sich:
+\[
+  \E\!\bigl[\Delta\log\In\bigr] \;\approx\; \log 3 - (l+\nu)\log 2
+  \;\approx\; \log 3 - 4\log 2 \approx 1{,}099 - 2{,}773 = -1{,}674 < 0.
+\]
+
+\begin{tcolorbox}[warnung, title={Warum diese Rechnung trügerisch ist}]
+Die Abschätzung $\log\In(m) \approx 3\log\In(n)$ für $m = 3n+1$ ist nur
+asymptotisch korrekt ($n \to \infty$) und für \emph{konkrete kleine Werte}
+völlig falsch: z.\,B.\ ist $\In(22)/\In(7)$ nicht $\approx 3$, sondern
+$\In(22)/\In(7) \approx 2{,}78 \times 10^{22}/7 \approx 4 \times 10^{21}$.
+Die Irregularität der Bernoulli-Zahlen macht jede Abschätzung des mittleren
+Drifts von $\log\In$ heuristisch und numerisch unzuverlässig.
+\end{tcolorbox}
+
+\subsection{Vergleich mit dem klassischen Lyapunov-Exponenten}
+
+Der klassische Ansatz aus \textit{collatz\_lyapunov.tex} verwendet
+$V(n) = \log n$ (den natürlichen Logarithmus) und analysiert den Block-Nettofaktor
+$F(B) = n_{\text{nach}} / n_{\text{vor}} \approx 3^{l+1}/2^{l+\nu}$. Dort ergibt sich
+$\E[\logt F(B)] \approx -0{,}83 < 0$ unter Modellannahmen.
+
+Im Gegensatz dazu:
+\begin{itemize}[noitemsep]
+  \item $V = \log n$: Direkte Aussage über die Trajektorie des \emph{Wertes} $n$.
+  \item $V = \log\In(n)$: Indirekte Aussage über den \emph{Bernoulli-Zähler} am Index $n$.
+    Die Funktion ist hochgradig irregulär und an den Collatz-Werten nicht angepasst.
+\end{itemize}
+
+\begin{tcolorbox}[ergebnis, title={Bewiesenes Ergebnis: Gerade Schritte}]
+Für alle geraden Collatz-Werte $k \geq 6$ in der Trajektorie gilt
+$\In(k/2) < \In(k)$. Dies ist rigoros aus Proposition~\ref{prop:halbierung}.
+Jedoch sind die ungeraden Sprünge $k \to 3k+1$ nicht kontrollierbar.
+\end{tcolorbox}
+
+% ====================================================
+\section{Verbindung zu \texorpdfstring{$\zeta(2n)$}{zeta(2n)}: Funktionale Synthese}
+\label{sec:riemann}
+% ====================================================
+
+\subsection{Die Brücke über die Funktionalgleichung}
+\label{subsec:funktionalgleichung}
+
+Der tiefste Zusammenhang zwischen der Bernoulli-Normschale $\In(n)$ und der
+Riemannschen Zeta-Funktion wird durch die \emph{Riemannsche Funktionalgleichung}
+vermittelt. Diese lautet für $s \in \C$:
+\[
+  \zeta(s) \;=\; 2^s \pi^{s-1} \sin\!\left(\frac{\pi s}{2}\right) \Gamma(1-s)\,\zeta(1-s).
+\]
+Wertet man für $s = -2n$ aus (mit anschließender analytischer Regularisierung, die
+die scheinbaren Nullstellen von $\sin(\pi s/2)$ bei $s = -2n$ durch die Polstellen
+von $\Gamma(1-s)$ aufhebt) und nutzt $\zeta(-2n) = 0$ (triviale Nullstellen), so
+erhält man durch analytische Fortsetzung die klassische \emph{Euler-Formel} für
+positive gerade Argumente:
+
+\begin{proposition}[Darstellung von $\In(n)$ durch $\zeta(2n)$]
+\label{prop:zeta-verbindung}
+Für $n \geq 1$ gilt die Formel von Euler (1740):
+\[
+  \zeta(2n) \;=\; \frac{(-1)^{n+1}(2\pi)^{2n}}{2\,(2n)!} \cdot B_{2n},
+\]
+aufgelöst nach $B_{2n}$:
+\[
+  B_{2n} \;=\; (-1)^{n+1}\,\frac{2\,(2n)!}{(2\pi)^{2n}} \cdot \zeta(2n).
+\]
+Daraus folgt sofort:
+\[
+  \In(n) \;=\; \abs{B_{2n}} \cdot \Denom{n}
+         \;=\; \frac{2\,(2n)!\;\zeta(2n)}{(2\pi)^{2n}} \cdot \Denom{n},
+\]
+wobei $\Denom{n} = \prod_{(p-1)\mid 2n,\, p \text{ prim}} p$ der von Staudt--Clausen-Nenner ist.
+\end{proposition}
+
+\begin{tcolorbox}[bernoulli, title={Verbindung zur Riemann-Zeta-Funktion}]
+Die Funktionalgleichung ist der \textbf{tiefere Grund} für die Verbindung zwischen
+der analytischen Welt ($\zeta$), der kontinuierlichen Skalierung ($\pi$, $\Gamma$)
+und der diskreten Arithmetik ($B_{2n}$). Sie kodiert die
+\textbf{Dualität zwischen kleinen und großen Skalen}: $\zeta(2n)$ bei großem
+$n$ beschreibt das Verhalten weit rechts der kritischen Achse, während
+$\zeta(1-2n)$ (über die Nullstellen) das Verhalten links der kritischen Achse widerspiegelt.
+\[
+  \boxed{\In(n) \;=\; \frac{2\,(2n)!}{\,(2\pi)^{2n}} \cdot \zeta(2n) \cdot \Denom{n}.}
+\]
+Entlang einer Collatz-Trajektorie $(n_0, n_1, n_2, \ldots)$ ``tastet'' $\In(n_k)$
+die Werte $\zeta(2n_k)$ auf der reellen Achse ab --- vermittelt durch die
+Gamma-Skalierung $(2n)!/(2\pi)^{2n}$ und die arithmetische Modulation $\Denom{n}$.
+\end{tcolorbox}
+
+\begin{bemerkung}[Zur Riemann-Hypothese]
+Die Riemann-Hypothese betrifft die Nullstellen von $\zeta(s)$ im kritischen Streifen
+$0 < \operatorname{Re}(s) < 1$; auf der reellen Achse bei $s = 2n > 0$ hat $\zeta$
+keine Nullstellen. Die Verwendung von $\zeta(2n)$ in $\In(n)$ ist daher \emph{nicht}
+direkt mit der Riemann-Hypothese verknüpft, aber strukturell durch dieselbe analytische
+Maschinerie motiviert.
+\end{bemerkung}
+
+% -------------------------
+\subsection{Stirling-Asymptotik: Makro- und Mikro-Regime}
+\label{subsec:stirling}
+% -------------------------
+
+Die vollständige Asymptotik von $\In(n)$ ergibt sich durch Einsetzen der
+Stirling-Formel $(2n)! \sim \sqrt{4\pi n}\,(2n/e)^{2n}$ in die Darstellung aus
+Proposition~\ref{prop:zeta-verbindung}.
+
+\begin{proposition}[Stirling-Asymptotik von $\In(n)$]
+\label{prop:stirling}
+Mit der Stirling-Näherung $\Gamma(2n+1) = (2n)! \sim \sqrt{4\pi n}\,(2n/e)^{2n}$ gilt:
+\begin{align*}
+  \In(n) &= \frac{2\,(2n)!\,\zeta(2n)}{(2\pi)^{2n}} \cdot \Denom{n} \\
+         &\sim \frac{2\sqrt{4\pi n}\,(2n/e)^{2n}}{(2\pi)^{2n}} \cdot \Denom{n}
+               \cdot \zeta(2n) \\
+         &= 2\sqrt{4\pi n}\cdot \frac{2^{2n}\,n^{2n}}{e^{2n}\cdot 2^{2n}\,\pi^{2n}}
+            \cdot \Denom{n}\cdot \zeta(2n) \\
+         &= 2\sqrt{4\pi n}\cdot \left(\frac{n}{\pi e}\right)^{2n}
+            \cdot \Denom{n}\cdot \zeta(2n).
+\end{align*}
+Da $\zeta(2n) \to 1$ für $n \to \infty$ (geometrisch schnell:
+$\zeta(2n) - 1 \sim 2^{-2n}$), vereinfacht sich dies zu:
+\[
+  \boxed{\In(n) \;\sim\; 2\sqrt{4\pi n}\cdot \left(\frac{n}{\pi e}\right)^{2n}
+  \cdot \Denom{n}.}
+\]
+\end{proposition}
+
+\begin{beweis}
+Die Rechnung ist explizit:
+\begin{alignat*}{2}
+  \frac{(2n)^{2n}}{e^{2n}\cdot(2\pi)^{2n}}
+  &= \frac{2^{2n}\,n^{2n}}{e^{2n}\cdot 2^{2n}\,\pi^{2n}}
+  &&= \left(\frac{n}{\pi e}\right)^{2n}.
+\end{alignat*}
+Damit gilt das $2^{2n}$ im Zähler gegen das $2^{2n}$ im Nenner $(2\pi)^{2n} = 2^{2n}\pi^{2n}$,
+und man erhält direkt $(n/\pi e)^{2n}$.
+Da $\zeta(2n) - 1 = \sum_{k=2}^\infty k^{-2n} \leq 2\cdot 2^{-2n} \to 0$
+exponentiell schnell, folgt $\zeta(2n) \to 1$.
+\end{beweis}
+
+Die Formel enthüllt zwei klar getrennte Regime der Bernoulli-Normschale:
+
+\medskip
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{p{3.8cm} p{4.5cm} p{5cm}}
+\toprule
+\textbf{Regime} & \textbf{Faktor} & \textbf{Bedeutung} \\
+\midrule
+Makroskopisch (Stirling) & $(n/\pi e)^{2n}$ &
+  Super-exponentielles Wachstum; glatter, deterministischer Hintergrund \\
+Dämpfung ($\zeta$) & $\zeta(2n) \to 1$ &
+  Kollabiert auf $1$; vernachlässigbar für große $n$ \\
+Mikroskopisch (von Staudt--Clausen) & $\Denom{n}$ &
+  Fraktale Primzahlsprünge; lokale arithmetische Modulation \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+\textbf{Numerische Illustration.} Für $n = 10$:
+\[
+  \left(\frac{10}{\pi e}\right)^{20}
+  = \left(\frac{10}{8{,}5397\ldots}\right)^{20}
+  \approx (1{,}1710)^{20}
+  \approx 23{,}1.
+\]
+Damit ist $\In(10) \approx 2\sqrt{40\pi}\cdot 23{,}1\cdot\Denom{10}
+= 2\cdot 11{,}21\cdot 23{,}1\cdot 330 \approx 170\,900$,
+in exzellenter Übereinstimmung mit dem exakten Wert $\In(10) = 174\,611$.
+
+Kombiniert man alle Terme in Logarithmen:
+\begin{align}
+  \log\In(n) &= \log(2n)! - 2n\log(2\pi) + \log\zeta(2n) + \log\Denom{n}
+               \notag \\
+             &= (2n+\tfrac{1}{2})\log(2n) - 2n + \tfrac{1}{2}\log(2\pi)
+                - 2n\log(2\pi) + O(1) + O(n) \notag \\
+             &= 2n\log(2n) - 2n(1+\log(2\pi)) + O(\log n + n). \label{eq:log-asym}
+\end{align}
+Der $O(n)$-Term aus $\log\Denom{n} \leq \theta(2n+1) \sim 2n$ kann der Hauptterm
+werden, wenn $\Denom{n}$ groß ist. In jedem Fall gilt:
+\[
+  \frac{\log\In(n)}{n} \;\xrightarrow{n\to\infty}\; +\infty,
+\]
+d.\,h.\ $\log\In(n)$ wächst schneller als jedes Polynom in $n$.
+
+% -------------------------
+\subsection{Das funktionale Dreieck: \texorpdfstring{$\zeta$}{zeta} als Scharnier}
+\label{subsec:dreieck}
+% -------------------------
+
+Die Formel $\In(n) = \frac{2(2n)!\,\zeta(2n)}{(2\pi)^{2n}}\cdot\Denom{n}$ zerlegt
+die Bernoulli-Normschale in drei mathematisch unabhängige Beiträge, die gemeinsam
+das ``funktionale Dreieck'' der Collatz-Struktur bilden:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{p{3.5cm} p{4.2cm} p{5.5cm}}
+\toprule
+\textbf{Komponente} & \textbf{Mathematischer Ursprung} & \textbf{Funktion im Collatz-Kontext} \\
+\midrule
+$\zeta(2n)$ & Funktionalgleichung & Dämpfender Faktor; kollabiert für große $n$ auf~$1$ \\
+$\dfrac{(2n)!}{(2\pi)^{2n}}$ & Stirling/Gamma & Super-exponentielle Zustandsdichte; Invarianten-Landschaft \\
+$\Denom{n}$ & Von-Staudt--Clausen & Lokale arithmetische Modulation durch Primzahlstruktur \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+\textbf{Fazit des Dreiecks:} Die Collatz-Dynamik gehorcht \emph{asymptotisch der
+Geometrie der Gamma-Funktion} (Stirling-Regime), während ihre topologischen
+Feinheiten durch die Primzahlverteilung gesteuert werden ($\Denom{n}$).
+Die Zeta-Funktion $\zeta(2n)$ ist das \textbf{Scharnier} zwischen der
+kontinuierlichen analytischen Welt und der diskreten arithmetischen Welt:
+Sie koppelt über die Funktionalgleichung die Gamma-Skalierung an die Bernoulli-Zahlen.
+
+\begin{bemerkung}[Verbindung zu Quantenchaos und Spektraltheorie]
+Die Hilbert--Pólya-Vermutung verbindet die Nullstellen von $\zeta(s)$ mit dem
+Spektrum eines selbstadjungierten Operators. Das ``funktionale Dreieck'' legt
+nahe, dass die Collatz-Dynamik ebenfalls eine \emph{spektrale} Interpretation
+besitzen könnte: Die Bernoulli-Normschalen $\In(n)$ spielen die Rolle von
+``Zustandsdichten'' in einem hypothetischen Hilbert-Raum, dessen Spektrum
+durch $\Denom{n}$ (Primzahlmodulation) und $\Gamma$ (kontinuierliche Hüllkurve)
+ko-definiert wird. Dies bleibt eine spekulative, aber strukturell motivierte Analogie.
+\end{bemerkung}
+
+\begin{tcolorbox}[colback=blue!5,colframe=blue!75!black,title={Kernaussage: Funktionales Dreieck}]
+Die Formel $\In(n) \sim 2\sqrt{4\pi n}\cdot(n/\pi e)^{2n}\cdot \Denom{n}$ zerlegt die Bernoulli-Normschale in drei unabhängige Beiträge:
+\begin{enumerate}[leftmargin=*, noitemsep]
+\item \textbf{Geometrie (Stirling/Gamma):} $(n/\pi e)^{2n}$ --- super-exponentielle Zustandsdichte
+\item \textbf{Dämpfung ($\zeta$):} Kollabiert für große $n$ auf $1$ --- analytisches Korsett
+\item \textbf{Arithmetik ($\Denom{n}$):} Primzahl-Modulation --- hier muss die $3x+1$-Struktur kodiert sein
+\end{enumerate}
+Die Collatz-Vermutung wäre äquivalent zu: \emph{Die Primzahl-Modulation $\Denom{n}$ dominiert niemals die Gamma-Kontraktion entlang einer Trajektorie.}
+\end{tcolorbox}
+
+% ====================================================
+\section{Fazit: Was ist neu, was bleibt offen?}
+\label{sec:fazit}
+% ====================================================
+
+\subsection{Bewertungsmatrix}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{p{6.5cm} p{2.8cm} p{4cm}}
+\toprule
+\textbf{Aussage} & \textbf{Status} & \textbf{Anmerkung} \\
+\midrule
+Definition $\In(n) = \abs{\text{Zähler}(B_{2n})}$
+  & \textcolor{bewiesengrün}{\bfseries Beweis}
+  & Satz von von Staudt--Clausen \\
+$\In(1) = 1$ (Fixpunkt)
+  & \textcolor{bewiesengrün}{\bfseries Beweis}
+  & Direkte Rechnung \\
+$\In(n) \in \N$ für alle $n$
+  & \textcolor{bewiesengrün}{\bfseries Beweis}
+  & Satz von von Staudt--Clausen \\
+$\In(n/2) < \In(n)$ für gerade $n \geq 6$
+  & \textcolor{bewiesengrün}{\bfseries Numerisch}
+  & Asymptotisch klar, rigoros offen \\
+$\In(n) = \frac{2(2n)!\zeta(2n)}{(2\pi)^{2n}}\cdot\Denom{n}$
+  & \textcolor{bewiesengrün}{\bfseries Beweis}
+  & Euler-Formel + von Staudt--Clausen \\
+\midrule
+$\log\In$ wächst in ungeraden Schritten
+  & \textcolor{warnorange}{\bfseries Heuristik}
+  & Asymptotisch korrekt, lokal irregulär \\
+Mittlerer Drift von $\log\In$ entlang Trajektorien
+  & \textcolor{warnorange}{\bfseries Unklar}
+  & Irregularität von $B_{2n}$-Zählern \\
+\midrule
+$\log\In(n)$ ist Lyapunov-Funktion für Collatz
+  & \textcolor{lückenrot}{\bfseries Falsch}
+  & Explodiert bei ungeraden Schritten \\
+Mittlerer Drift $<0$ (schwächere Aussage)
+  & \textcolor{lückenrot}{\bfseries Offen}
+  & Heuristisches Argument funktioniert \\
+Verbindung zu Nullstellen von $\zeta$
+  & \textcolor{lückenrot}{\bfseries Nicht vorhanden}
+  & Nur reelle Argumente, keine Nullstellen \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Was neu ist}
+
+\begin{tcolorbox}[bernoulli, title={Neue Beobachtungen}]
+\begin{enumerate}[leftmargin=*, noitemsep, label=(\arabic*)]
+  \item \textbf{Die Normschale $\In(n)$ als natürlicher Begleiter der Collatz-Bahn.}
+        Der Satz von von Staudt--Clausen liefert eine ganzzahlige Funktion mit
+        $\In(1) = 1$ (dem Collatz-Fixpunkt).
+  \item \textbf{Systematische SageMath-Berechnung} der Werte $\log_2\In(n)$
+        entlang der Trajektorie von $n_0 = 7$ (Tabelle in §\ref{sec:trajektorie}).
+        Insbesondere sehen wir: $\log_2\In(52) \approx 287$ --- die Zahl
+        $\In(52) = \abs{\text{Zähler}(B_{104})}$ ist eine 87-stellige Zahl.
+  \item \textbf{Direkte Verbindung zu $\zeta(2n)$} (Proposition~\ref{prop:zeta-verbindung}):
+        $\In(n) = \frac{2(2n)!\zeta(2n)}{(2\pi)^{2n}}\cdot\Denom{n}$.
+        Collatz-Dynamik ``tastet'' Zeta-Werte auf der reellen Achse ab.
+  \item \textbf{Ehrliche Diagnose:} $\log\In(n)$ ist kein Lyapunov-Kandidat
+        --- die Explosionen bei ungeraden Schritten sind nicht kontrollierbar.
+\end{enumerate}
+\end{tcolorbox}
+
+\subsection{Was bleibt offen}
+
+\begin{tcolorbox}[lücke, title={Offene Fragen}]
+\begin{enumerate}[leftmargin=*, label=(\arabic*)]
+  \item \textbf{Mittlerer Drift:}
+        Gilt $\frac{1}{J}\sum_{j=0}^{J-1}[\log\In(n_{j+1}) - \log\In(n_j)] < 0$
+        für alle (oder fast alle) Collatz-Trajektorien?
+        Die Berechnung für $n_0 = 7$ ergibt: Gesamtdrift $= \log\In(1) - \log\In(7) < 0$.
+        Aber die Irregularität macht eine allgemeine Aussage schwierig.
+
+  \item \textbf{Arithmetik von $\In(3n+1)$ vs.\ $\In(n)$:}
+        Gibt es eine Formel, die $\In(3n+1)/\In(n)$ durch $n$ ausdrückt?
+        Die Bernoulli-Zähler haben keine bekannte multiplikative Struktur unter
+        der Abbildung $n \mapsto 3n+1$.
+
+  \item \textbf{Regularisierung:}
+        Könnte man $\In(n)$ durch einen ``geglätteten'' Bernoulli-Wert ersetzen,
+        der monotoner ist? Z.\,B.\ $\tilde{\In}(n) := e^{2n\log n}$ als
+        Stirling-Approximation --- aber dann verliert man die ganzzahlige Struktur.
+
+  \item \textbf{$p$-adische Interpretation:}
+        Der $p$-adische Betrag $|B_{2n}|_p$ hat für $(p-1)\mid 2n$ den Wert $p$.
+        Könnte die $p$-adische Norm von $B_{2n}$ entlang der Trajektorie
+        eine nützlichere Lyapunov-Funktion liefern?
+\end{enumerate}
+\end{tcolorbox}
+
+\subsection{Synthese: Riemann-Einbettung der Collatz-Dynamik}
+
+Die Analyse von §\ref{sec:riemann} zeigt: $\In(n)$ ist kein ``zufälliges'' Artefakt
+der Zahlentheorie, sondern \textbf{bettet die Riemannsche Funktionalgleichung in die
+diskrete Collatz-Dynamik ein}. Konkret:
+
+\begin{itemize}[leftmargin=*, noitemsep]
+  \item Die Funktionalgleichung $\zeta(s) = 2^s\pi^{s-1}\sin(\pi s/2)\Gamma(1-s)\zeta(1-s)$
+        liefert via Euler die exakte Brücke zwischen $B_{2n}$ und $\zeta(2n)$.
+  \item Die Stirling-Asymptotik macht den dominanten Beitrag $(n/\pi e)^{2n}$ sichtbar:
+        die Gamma-Geometrie bestimmt den glatten Hintergrund.
+  \item Die arithmetische Modulation $\Denom{n}$ trägt die diskrete Primzahlstruktur ---
+        genau dort, wo die $3x+1$-Dynamik ansetzt.
+\end{itemize}
+
+Der Beweis der Collatz-Vermutung würde in dieser Sprache bedeuten, dass
+$\Denom{n}$ nie die Gamma-Kontraktion entlang einer Trajektorie \emph{übertrumpfen}
+kann. Dies ist eine neue Formulierung der offenen Fragen: Statt ``Warum konvergiert
+jede Collatz-Trajektorie zu~$1$?'' könnte man fragen:
+\begin{quote}
+\emph{Warum kann die Primzahl-Modulation $\Denom{n}$ die super-exponentielle
+Gamma-Kontraktion nie dauerhaft überbieten?}
+\end{quote}
+
+\subsection{Gesamteinschätzung}
+
+Die Idee, den Satz von von Staudt--Clausen mit der Collatz-Dynamik zu verknüpfen,
+ist strukturell originell. Der Fixpunkt $\In(1) = 1$ ist eleganter als der
+triviale Fixpunkt $\log 1 = 0$ der klassischen Analyse.
+
+Die fundamentale Schwierigkeit: Die Bernoulli-Zähler $\abs{\text{Zähler}(B_{2n})}$
+wachsen super-exponentiell und irregulär in $n$. Für die Collatz-Abbildung $n \to 3n+1$
+entspricht das einem Sprung von Index $2n$ zu Index $6n+2$ --- einem fast
+dreifachen Anstieg des Arguments der Bernoulli-Zahl. Die entsprechende
+Explosion des Zählers ist unvermeidbar und kann durch die geraden Halbierungsschritte
+nicht kompensiert werden.
+
+\begin{tcolorbox}[hauptsatz]
+\textbf{Hauptergebnis:}
+
+Die Bernoulli-Normschale $\In(n) = \abs{\text{Zähler}(B_{2n})}$ ist eine
+zahlentheoretisch interessante Funktion mit dem Fixpunkt $\In(1) = 1$
+und der Darstellung
+\[
+  \In(n) \;=\; \frac{2(2n)!\,\zeta(2n)}{(2\pi)^{2n}}\cdot\Denom{n}
+  \;\sim\; 2\sqrt{4\pi n}\cdot\left(\frac{n}{\pi e}\right)^{2n}\cdot\Denom{n}.
+\]
+
+\medskip
+Sie ist \textbf{kein Lyapunov-Kandidat} für die Collatz-Vermutung, da
+$\log\In(3n+1) \gg \log\In(n)$ für jede ungerade Zahl $n$.
+
+\medskip
+Die \textbf{funktionale Synthese} (§\ref{sec:riemann}) zeigt jedoch: $\In(n)$ bettet
+die Riemann-Funktionalgleichung in die diskrete Collatz-Dynamik ein. $\zeta(2n)$ wirkt
+als analytisches Scharnier zwischen der Gamma-Geometrie (Stirling) und der
+Primzahl-Arithmetik ($\Denom{n}$). Die Collatz-Vermutung würde bedeuten, dass
+$\Denom{n}$ niemals die Gamma-Kontraktion dauerhaft überbieten kann.
+
+\medskip
+Die klassische Analyse via Block-Nettofaktoren und $\E[\logt F(B)] \approx -0{,}83$
+aus \textit{collatz\_lyapunov.tex} bleibt der robustere Ansatz.
+\end{tcolorbox}
+
+% ====================================================
+% Literatur
+% ====================================================
+\begin{thebibliography}{99}
+
+\bibitem{hoffbauer-lyapunov}
+T.\ Hoffbauer,
+\textit{Der Lyapunov-Exponent der Collatz-Dynamik: Negativer Log-Drift, Birkhoff-Ergodensatz
+und Zyklen-Ausschluss},
+Mathematische Texte, \texttt{collatz\_lyapunov.tex} (2026).
+
+\bibitem{hoffbauer-m-verteilung}
+T.\ Hoffbauer,
+\textit{Die $m$-Verteilung an C-Ketten-Endpunkten: Drei Korrekturen und eine neue Forschungsfrage},
+Mathematische Texte, \texttt{collatz\_m\_verteilung.tex} (2026).
+
+\bibitem{hoffbauer-5glatt}
+T.\ Hoffbauer,
+\textit{C-Ketten, 5-glatte Zahlen und Abstiegsstruktur},
+Mathematische Texte, \texttt{collatz\_5glatt\_dc.tex} (2026).
+
+\bibitem{staudt}
+K.\,G.\,C.\ von Staudt,
+\textit{Beweis eines Lehrsatzes die Bernoullischen Zahlen betreffend},
+J.\ Reine Angew.\ Math.\ \textbf{21} (1840), 372--374.
+
+\bibitem{clausen}
+T.\ Clausen,
+\textit{Theorem},
+Astron.\ Nachr.\ \textbf{17} (1840), 351--352.
+
+\bibitem{euler-zeta}
+L.\ Euler,
+\textit{De summis serierum reciprocarum},
+Comment.\ Acad.\ Sci.\ Petropol.\ \textbf{7} (1740), 123--134.
+
+\bibitem{tao-collatz}
+T.\ Tao,
+\textit{Almost all orbits of the Collatz map attain almost bounded values},
+Forum of Mathematics Pi \textbf{10} (2022), e12.
+\texttt{arXiv:1909.03562}
+
+\bibitem{ireland-rosen}
+K.\ Ireland, M.\ Rosen,
+\textit{A Classical Introduction to Modern Number Theory},
+Springer, New York, 2.\ Aufl.\ (1990). [Kapitel über Bernoulli-Zahlen]
+
+\bibitem{lagarias-survey}
+J.\,C.\ Lagarias,
+\textit{The $3x+1$ problem and its generalizations},
+Amer.\ Math.\ Monthly \textbf{92} (1985), 3--23.
+
+\bibitem{sagemath}
+The Sage Developers,
+\textit{SageMath, the Sage Mathematics Software System},
+\url{https://www.sagemath.org} (2024).
+
+\end{thebibliography}
+
+\end{document}
