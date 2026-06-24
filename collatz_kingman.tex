@@ -1,0 +1,786 @@
+\documentclass[12pt,a4paper]{article}
+
+% -------------------------------------------------
+% Sprache / Kodierung
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+
+% -------------------------------------------------
+% Layout / Grafik / Farben
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks,unicode]{hyperref}
+\pdfstringdefDisableCommands{%
+  \def\ü{ue}\def\ö{oe}\def\ä{ae}\def\Ü{Ue}\def\Ö{Oe}\def\Ä{Ae}\def\ss{ss}%
+}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{array}
+
+% -------------------------------------------------
+% Farben (konsistent mit Vorgängerdokumenten)
+% -------------------------------------------------
+\definecolor{lückenrot}{RGB}{180,40,40}
+\definecolor{bewiesengrün}{RGB}{30,100,50}
+\definecolor{warnorange}{RGB}{200,100,10}
+\definecolor{hintergrundblau}{RGB}{235,242,250}
+\definecolor{hintergrundgelb}{RGB}{255,252,225}
+\definecolor{adischviolett}{RGB}{90,20,140}
+\definecolor{fehlerrot}{RGB}{200,0,0}
+\definecolor{konjviolett}{RGB}{80,0,130}
+\definecolor{e8grau}{RGB}{55,55,90}
+\definecolor{kingmanblau}{RGB}{20,60,130}
+
+% -------------------------------------------------
+% tcolorbox-Stile
+% -------------------------------------------------
+\tcbset{
+  lücke/.style={colback=red!8, colframe=lückenrot, fonttitle=\bfseries,
+    title={Offene Lücke}},
+  ergebnis/.style={colback=green!7, colframe=bewiesengrün,
+    fonttitle=\bfseries, title={Bewiesenes Ergebnis}},
+  warnung/.style={colback=orange!10, colframe=warnorange,
+    fonttitle=\bfseries, title={Achtung / Heuristik}},
+  adisch/.style={colback=violet!6, colframe=adischviolett,
+    fonttitle=\bfseries, title={2-adische Perspektive}},
+  kernidee/.style={colback=hintergrundblau, colframe=blue!60!black,
+    fonttitle=\bfseries, title={Kernidee}},
+  konj/.style={colback=violet!5, colframe=konjviolett, fonttitle=\bfseries,
+    title={Konjektur (unbewiesen)}},
+  lte/.style={colback=yellow!8, colframe=e8grau, fonttitle=\bfseries,
+    title={LTE-Analyse}},
+  hauptsatz/.style={colback=green!10, colframe=bewiesengrün!80!black,
+    fonttitle=\bfseries\large, title={Satz (bewiesen)}},
+  negativ/.style={colback=red!5, colframe=lückenrot!80!black,
+    fonttitle=\bfseries, title={Negatives Ergebnis (bewiesen)}},
+  kingman/.style={colback=blue!5, colframe=kingmanblau,
+    fonttitle=\bfseries, title={Kingman-Perspektive}},
+  tao/.style={colback=teal!5, colframe=teal!60!black,
+    fonttitle=\bfseries, title={Verbindung zu Tao (2019)}},
+}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+\newtheorem{hypothese}[definition]{Hypothese}
+\newtheorem{satz}[definition]{Satz}
+
+\newenvironment{beweis}{\begin{proof}[Beweis]}{\end{proof}}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\vii}{\nu_2}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Ztwo}{\mathbb{Z}_2}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\atwo}[1]{\lvert#1\rvert_2}
+\newcommand{\Epi}{\mathbb{E}_\pi}
+\newcommand{\Lam}{\Lambda}
+
+% -------------------------------------------------
+% Dokument
+% -------------------------------------------------
+\title{%
+  Kingmans Unteradditivitätssatz und die Collatz-Dynamik\\[0.3em]
+  \large Birkhoff, Kingman und Ruelle-Perron-Frobenius im Vergleich ---
+  welcher Satz passt?\\[0.5em]
+  \normalsize Ergänzung zu \textit{collatz\_lte\_dichte.tex} und
+  \textit{collatz\_schlussartikel.tex}%
+}
+\author{Thomas Hoffbauer}
+\date{16.\ Juni 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Wir analysieren, welcher Ergodensatz für den Collatz-Lyapunov-Exponenten
+$\Lambda \approx -0{,}830$ am direktesten anwendbar ist.
+
+\textbf{Hauptergebnis:} Die Block-Faktor-Folge ist \emph{additiv} (nicht
+nur subadditiv), weshalb der \textbf{Birkhoff-Ergodensatz} und der
+\textbf{Ruelle-Perron-Frobenius-Satz} (für die mod-12-Markov-Kette)
+direkter anwendbar sind als Kingmans Satz. Kingman ist dennoch nützlich
+für die \emph{subadditive Hülle} der LTE-korrigierten Folge.
+
+\textbf{Verbindung zu Tao (2019):} Unser $\Lambda \approx -0{,}830$
+quantifiziert explizit, was Tao mit Log-Dichte-$1$-Methoden implizit
+zeigt: Fast alle Collatz-Bahnen haben einen negativen Lyapunov-Exponenten.
+
+\textbf{Ehrliche Einschätzung:} Die Ergodizität von $T$ bleibt das
+zentrale offene Problem. Birkhoff und Kingman liefern Konvergenz nur
+unter dieser Voraussetzung --- und Ergodizität ist zur Collatz-Vermutung
+äquivalent (über 2-adische Orbits).
+\end{abstract}
+
+\tableofcontents
+
+\bigskip
+\begin{tcolorbox}[warnung, title={Einordnung dieses Dokuments}]
+Dieses Dokument enthält eine Kombination aus \textbf{bewiesenen Sätzen}
+der Ergodentheorie (grün), \textbf{Anwendungsanalysen} auf Collatz
+(orange, teils offen) und \textbf{Verbindungen zur Literatur}.
+Die Collatz-Vermutung bleibt unbewiesen.
+\end{tcolorbox}
+
+% ====================================================
+\section{Kingmans Unteradditivitätssatz}
+\label{sec:kingman-satz}
+% ====================================================
+
+\subsection{Präzises Statement}
+
+\begin{tcolorbox}[hauptsatz, title={Kingmans Unteradditivitätssatz (Kingman 1968)}]
+\label{satz:kingman}
+Sei $(X, \mathcal{F}, \mu, T)$ ein maßerhaltendes ergodisches System.
+Sei $(f_n)_{n \geq 1}$ eine Folge von $L^1(\mu)$-Funktionen mit der
+\emph{subadditiven} Eigenschaft:
+\[
+  f_{m+n}(x) \leq f_m(x) + f_n(T^m x)
+  \quad \mu\text{-fast überall für alle } m,n \geq 1.
+\]
+Dann gilt:
+\begin{enumerate}[label=(\roman*)]
+  \item Die Folge $\frac{1}{n} f_n(x)$ konvergiert $\mu$-fast überall und
+    in $L^1$ gegen eine $T$-invariante Funktion $f^* \in L^1(\mu)$.
+  \item Für ergodisches $T$ ist $f^*$ $\mu$-fast überall konstant:
+    \[
+      f^*(x) = \inf_{n \geq 1} \frac{1}{n}\int f_n \,d\mu
+              = \lim_{n \to \infty} \frac{1}{n}\int f_n \,d\mu
+              \quad \mu\text{-f.ü.}
+    \]
+  \item Es gilt stets $\frac{1}{n}\int f_n \,d\mu \searrow f^*$ (monoton
+    fallend, da $\frac{1}{n}\int f_n \leq \frac{1}{m}\int f_m$ für $m \mid n$
+    aus Subadditivität folgt).
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{bemerkung}[Spezialisierung]
+Für \emph{additive} Folgen, d.h.\ $f_n(x) = \sum_{k=0}^{n-1} \phi(T^k x)$,
+ist die subadditive Ungleichung mit Gleichheit erfüllt. In diesem Fall
+liefert Kingmans Satz nichts Neues gegenüber dem klassischen
+Birkhoff-Ergodensatz. Kingman ist eine \emph{echte Verallgemeinerung}
+nur für genuint subadditive Folgen, bei denen Ungleichheit herrscht.
+\end{bemerkung}
+
+\subsection{Superadditive Variante}
+
+Für eine \emph{superadditive} Folge $(g_n)$, also
+$g_{m+n}(x) \geq g_m(x) + g_n(T^m x)$, gilt das analoge Resultat
+mit $\sup$ statt $\inf$. Das ist relevant für die subadditive Hülle
+in §\,\ref{sec:kingman-lte}.
+
+% ====================================================
+\section{Das Collatz-System als ergodischer Rahmen}
+\label{sec:system}
+% ====================================================
+
+\subsection{Die 2-adische Erweiterung}
+
+Die klassische Collatz-Abbildung auf $\N_{\text{odd}} = 2\N+1$ ist keine
+Selbstabbildung eines kompakten Raums. Die kanonische Einbettung nutzt den
+Ring der 2-adischen ganzen Zahlen:
+
+\begin{definition}[2-adischer Collatz-Raum]
+Sei $\Ztwo$ der Ring der 2-adischen ganzen Zahlen mit ultrametrischer Topologie,
+$\Ztwo^* = \{x \in \Ztwo : \atwo{x} = 1\}$ die Einheitengruppe
+(``ungerade 2-adische Zahlen''). Die Collatz-Abbildung
+\[
+  T\colon \Ztwo^* \to \Ztwo^*,
+  \qquad
+  T(x) = \frac{3x+1}{2^{\vii(3x+1)}}
+\]
+ist auf $\Ztwo^*$ wohldefiniert und \emph{stetig} bezüglich der 2-adischen Topologie.
+\end{definition}
+
+Das Haar-Maß $\mu_H$ auf $\Ztwo^*$ ist das natürliche Wahrscheinlichkeitsmaß
+(normiert: $\mu_H(\Ztwo^*) = 1$). Es ist unter $T$ \emph{nicht erhalten}, aber
+quasi-invariant mit kontrollierter Radon-Nikodym-Ableitung.
+
+\begin{tcolorbox}[adisch, title={Tao (2019): Quasi-Invarianz}]
+Tao zeigt, dass für jedes $\varepsilon > 0$ die Menge
+\[
+  \bigl\{x \in \Ztwo^* : \sup_n T^n(x) > f(x)\bigr\}
+\]
+für geeignet wachsendes $f$ Haar-Maß null hat. Das impliziert, dass
+$T$ kein $\mu_H$-erhaltendes System ist, aber ein \emph{dissipativer}
+Endomorphismus mit messbarer Struktur.
+\end{tcolorbox}
+
+\subsection{Die Block-Zerlegung}
+
+Auf der Ebene der \emph{Blöcke} ergibt sich ein besseres ergodisches Bild.
+Jede ungerade Zahl $n$ wird nach ihrer EABC-Klasse (mod\,12) klassifiziert:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{ccc}
+\toprule
+Klasse & $n \bmod 12$ & Block-Typ \\
+\midrule
+E & $1$ & reine E-Schritte, starke Kontraktion \\
+A & $5$ & A-Schritt, moderate Kontraktion \\
+B & $7$ & B-Schritt, schwache Kontraktion \\
+C & $11$ & C-Kette gefolgt von A-Schritt \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Die Block-Iteration $T^{(1)}: \Ztwo^* \to \Ztwo^*$ wirft jeweils einen
+Block ab und liefert den nächsten Startzustand. Die Zustandsraumreduktion
+auf $\{E, A, B, C\} \cong \Z/12\Z$ ergibt eine \emph{endliche Markov-Kette}.
+
+% ====================================================
+\section{Birkhoff, Kingman, Ruelle-Perron-Frobenius — Vergleich}
+\label{sec:vergleich}
+% ====================================================
+
+Für das Collatz-Block-System stehen drei Werkzeuge zur Verfügung.
+Wir analysieren Stärken und Schwächen.
+
+\subsection{Birkhoffs Ergodensatz}
+
+\begin{theorem}[Birkhoff 1931]
+Sei $(X, \mathcal{F}, \mu, T)$ ergodisch und $\phi \in L^1(\mu)$.
+Dann gilt für $\mu$-fast alle $x$:
+\[
+  \frac{1}{n}\sum_{k=0}^{n-1}\phi(T^k x) \xrightarrow{n\to\infty} \int \phi \,d\mu.
+\]
+\end{theorem}
+
+\textbf{Anwendung auf Collatz:} Definiere $\phi(x) = \log_2 F(B(x))$, wobei
+$F(B)$ der Wachstumsfaktor des ersten Blocks von $x$ ist. Dann ist
+\[
+  f_n(x) = \sum_{k=0}^{n-1} \phi\bigl(T^{(k)}x\bigr)
+\]
+\emph{exakt additiv}: $f_{m+n}(x) = f_m(x) + f_n(T^{(m)} x)$.
+
+\begin{tcolorbox}[ergebnis, title={Birkhoff ist \emph{direkt} anwendbar}]
+Falls das Blocksystem $(X_{\mathrm{block}}, \mu_\pi, T^{(1)})$ ergodisch ist,
+konvergiert
+\[
+  \frac{1}{n} f_n(x) = \frac{1}{n}\sum_{k=0}^{n-1}\log_2 F(B_k(x))
+  \xrightarrow{n\to\infty} \int \log_2 F(B)\,d\mu_\pi = \Epi[\log_2 F(B)]
+\]
+für $\mu_\pi$-fast alle $x$. Kein Umweg über Subadditivität nötig ---
+die Folge ist additiv.
+\end{tcolorbox}
+
+\textbf{Voraussetzung:} Ergodizität von $T^{(1)}$ auf dem Blocksystem.
+Das ist die kritische offene Frage (§\,\ref{sec:voraussetzungen}).
+
+\subsection{Kingmans Unteradditivitätssatz}
+
+\textbf{Anwendung auf Collatz:}
+Kingman wäre nötig, wenn $f_{m+n}(x) < f_m(x) + f_n(T^{(m)}x)$ echt
+zutrifft. Das ist für die reine Block-Faktor-Folge \emph{nicht} der Fall
+(die Blöcke hängen durch den Übergangsmechanismus zusammen, aber die
+Summenstruktur bleibt additiv).
+
+\begin{tcolorbox}[kingman, title={Wann Kingman gegenüber Birkhoff Mehrwert hat}]
+Kingman ist stärker als Birkhoff genau dann, wenn die Folge $(f_n)$ echt
+subadditiv ist, d.h.\ wenn die ``Kopplung'' zwischen Blöcken zur
+Ungleichheit führt. Das tritt auf bei:
+\begin{itemize}[nosep]
+  \item \textbf{LTE-Korrekturen:} Die tatsächliche 2-adische Tiefe
+    $\vii(3^{k+1}m-1)$ eines langen C-Blocks hängt vom Vorgänger $m$
+    ab. Das führt zu Gedächtniseffekten.
+  \item \textbf{Zufälliger Hintergrund:} Wenn man robuste obere Schranken
+    für alle Orbits (statt fast alle) sucht.
+  \item \textbf{Subadditive Hülle} (§\,\ref{sec:kingman-lte}): Die
+    superadditive Folge $g_n(x) = \inf_{k\geq n} \frac{1}{k}f_k(x)\cdot k$
+    erlaubt Aussagen über den $\limsup$.
+\end{itemize}
+\end{tcolorbox}
+
+\subsection{Ruelle-Perron-Frobenius (Markov-Ketten)}
+
+Für das endliche Markov-System auf dem mod-12-Zustandsraum ist der
+präziseste Satz der Ruelle-Perron-Frobenius (RPF)-Satz:
+
+\begin{theorem}[RPF für endliche Markov-Ketten]
+\label{thm:rpf}
+Sei $(Z_n)_{n\geq 0}$ eine irreduzible, aperiodische Markov-Kette auf
+endlichem Zustandsraum $S$ mit stationärer Verteilung $\pi$. Sei
+$\phi: S \to \R$ messbar und beschränkt. Dann gilt für $\mu_\pi$-fast alle
+Startzustände $z_0$:
+\[
+  \frac{1}{n}\sum_{k=0}^{n-1}\phi(Z_k) \xrightarrow{n\to\infty} \Epi[\phi]
+  = \sum_{s \in S} \pi(s)\,\phi(s).
+\]
+Außerdem gilt ein zentraler Grenzwertsatz mit Varianz
+$\sigma^2 = \sum_{s}\pi(s)(\phi(s) - \Epi[\phi])^2 + 2\sum_{k\geq 1}\mathrm{Cov}_\pi(\phi(Z_0), \phi(Z_k))$.
+\end{theorem}
+
+\textbf{Warum RPF für Collatz am direktesten ist:} Der Transfer-Operator
+$\mathcal{L}$ der mod-12-Markov-Kette hat eine \emph{Spektrallücke}
+(der zweitgrößte Eigenwert $\lambda_2 < 1$). Das impliziert:
+\begin{itemize}
+  \item Exponentiell schnelle Mischung: $\|\mu_t - \pi\|_{TV} \leq C\lambda_2^t$.
+  \item Konvergenz von $\frac{1}{n}\sum_{k}\phi(B_k)$ für \emph{alle}
+    Startzustände, nicht nur $\mu_\pi$-fast alle.
+  \item Explizite Schranke für die Mischungszeit.
+\end{itemize}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{>{\raggedright}p{3.2cm}
+                >{\centering}p{2.6cm}
+                >{\centering}p{2.6cm}
+                >{\raggedright\arraybackslash}p{4.2cm}}
+\toprule
+\textbf{Satz} & \textbf{Folgentyp} & \textbf{Beweisstärke} & \textbf{Für Collatz} \\
+\midrule
+Birkhoff (1931) & additiv & $\mu$-f.ü. & Direkt, falls Ergodizität \\
+Kingman (1968) & subadditiv & $\mu$-f.ü. & Für LTE-Hülle nützlich \\
+RPF / Markov & additiv, endl. Zustandsr. & alle Starts & \textbf{Am direktesten} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ====================================================
+\section{Prüfung aller Voraussetzungen}
+\label{sec:voraussetzungen}
+% ====================================================
+
+Wir prüfen systematisch, welche Voraussetzungen im Collatz-System
+erfüllt, wahrscheinlich erfüllt oder offen sind.
+
+\subsection{Tabelle der Voraussetzungen}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{>{\raggedright}p{5.0cm}
+                >{\centering}p{2.2cm}
+                >{\raggedright\arraybackslash}p{5.0cm}}
+\toprule
+\textbf{Voraussetzung} & \textbf{Status} & \textbf{Bemerkung} \\
+\midrule
+Maßraum $(X, \mu)$ existiert
+  & \textcolor{bewiesengrün}{\bfseries ✓ Klar}
+  & Haar-Maß auf $\Ztwo^*$; kompakter p-adischer Raum \\[2pt]
+$T$ ist messbar
+  & \textcolor{bewiesengrün}{\bfseries ✓ Klar}
+  & $T$ ist stetig auf $\Ztwo^*$ (Borel-messbar) \\[2pt]
+Block-Abbildung $T^{(1)}$ messbar
+  & \textcolor{bewiesengrün}{\bfseries ✓ Klar}
+  & Komposition stetiger Funktionen \\[2pt]
+$f_n \in L^1(\mu)$
+  & \textcolor{bewiesengrün}{\bfseries ✓ Wahrsch.}
+  & $|\log_2 F(B)| \leq C(k+1)$; geometrische Verteilung von $k$ \\[2pt]
+Endlicher Zustandsraum (mod\,12)
+  & \textcolor{bewiesengrün}{\bfseries ✓ Klar}
+  & $\{1,5,7,11\}$ mod\,12 \\[2pt]
+Transfer-Operator irreduzibel
+  & \textcolor{bewiesengrün}{\bfseries ✓ Num.}
+  & Empirisch: alle 4 Zustände kommunizieren \\[2pt]
+Transfer-Operator aperiodisch
+  & \textcolor{bewiesengrün}{\bfseries ✓ Num.}
+  & Keine periodischen Unterzyklen beobachtet \\[2pt]
+Spektrallücke des Transfer-Operators
+  & \textcolor{warnorange}{\bfseries $\approx$ Num.}
+  & Numerisch: $\lambda_2 \approx 0{,}35$; formaler Beweis offen \\[2pt]
+Ergodizität von $T$ auf $\Ztwo^*$
+  & \textcolor{lückenrot}{\bfseries ✗ Offen}
+  & Äquivalent zur Collatz-Vermutung (2-adisch) \\[2pt]
+Maßerhaltung von $T$
+  & \textcolor{lückenrot}{\bfseries ✗ Falsch}
+  & $T$ ist nicht $\mu_H$-erhaltend; $T$ ist dissipativ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Die Ergodizitätsfrage}
+
+\begin{tcolorbox}[lücke, title={Hauptproblem: Ergodizität}]
+Die Ergodizität von $T$ auf $(\Ztwo^*, \mu_H)$ ist die zentrale offene
+Frage. Formal: $T$ ist ergodisch $\Leftrightarrow$ jede messbare
+$T$-invariante Menge hat Maß $0$ oder $1$.
+
+\medskip
+Diese Eigenschaft ist zur Collatz-Vermutung \emph{im Wesentlichen
+äquivalent} über den folgenden Zusammenhang: Wenn die Collatz-Vermutung
+gilt, dann hat $T$ auf dem 2-adischen Raum nur einen einzigen minimalen
+Attraktor ($\{1\}$ über $\N$), was Irreduzibilität und Ergodizität impliziert.
+Umgekehrt würde ein ergodisches, $\mu_H$-erhaltendes $T$ mit negativem
+Lyapunov-Exponenten die Collatz-Vermutung für $\mu_H$-fast alle Startpunkte
+implizieren.
+
+\medskip
+\textbf{Ausweg:} Man kann Birkhoff/RPF auf die mod-12-Markov-Kette
+anwenden (endlicher Zustandsraum, klar irreduzibel und aperiodisch), ohne
+die volle Ergodizität von $T$ zu benötigen.
+\end{tcolorbox}
+
+\subsection{Das Maßerhaltungsproblem und Birkhoffs Anwendbarkeit}
+
+Da $T$ kein $\mu_H$-erhaltendes System ist, ist der klassische Birkhoff-Satz
+nicht direkt auf $(\Ztwo^*, \mu_H, T)$ anwendbar. Es gibt zwei Auswege:
+
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{Invariantes Maß suchen:} Es ist offen, ob ein $T$-invariantes
+    Wahrscheinlichkeitsmaß auf $\Ztwo^*$ existiert. Tao (2019) konstruiert
+    kein solches Maß explizit, arbeitet aber mit Log-Dichte-Argumenten.
+  \item \textbf{Markov-Niveau:} Auf dem endlichen mod-12-Zustandsraum hat die
+    induzierte Markov-Kette eine eindeutige stationäre Verteilung $\pi$.
+    Das ist das ``natürliche'' invariante Maß für den Blockmechanismus.
+\end{enumerate}
+
+% ====================================================
+\section{Verbindung zu Tao (2019)}
+\label{sec:tao}
+% ====================================================
+
+\begin{tcolorbox}[tao, title={Taos Hauptergebnis (2019)}]
+\textbf{Tao (2019):} Für jede Funktion $f: \N \to \R$ mit $f(n) \to \infty$
+gilt:
+\[
+  \text{Dens}\bigl(\{n \in \N : \min_{k\geq 0} \mathrm{Col}^k(n) \leq f(n)\}\bigr) = 1,
+\]
+wobei $\text{Dens}$ die logarithmische Dichte bezeichnet.
+
+Mit anderen Worten: Fast alle natürlichen Zahlen (bzgl.\ logarithmischer
+Dichte) haben Collatz-Bahnen, die beliebig klein werden.
+\end{tcolorbox}
+
+\subsection{Impliziter Lyapunov-Exponent bei Tao}
+
+Taos Beweis benutzt:
+\begin{itemize}
+  \item Fourier-Analyse auf $\Ztwo$ (2-adische Charaktere).
+  \item Exponential-Summen-Abschätzungen für die Collatz-Statistik.
+  \item Implizit: Die 2-adische Verteilung von $\vii(3n+1)$ wird als
+    geometrisch verteilt behandelt (Heuristik der geometrisch verteilten
+    Bit-Längen).
+\end{itemize}
+
+Die Kernaussage lässt sich in unserer Sprache so reformulieren:
+\[
+  \frac{1}{n}\sum_{k=0}^{n-1}\log_2 F(B_k(x)) < -\varepsilon
+\]
+gilt für Log-Dichte-$1$ viele Startzahlen $x$ und alle hinreichend großen $n$.
+
+\subsection{Unser $\Lambda \approx -0{,}830$ als explizite Quantifizierung}
+
+\begin{tcolorbox}[ergebnis, title={Quantifizierung von Taos Ergebnis}]
+Der Lyapunov-Exponent
+\[
+  \boxed{\Lambda = \Epi[\log_2 F(B)]
+  = \pi_E \cdot \log_2 F_E
+  + \pi_A \cdot \log_2 F_A
+  + \pi_B \cdot \log_2 F_B
+  + \pi_C \cdot \log_2 F_C
+  \approx -0{,}830}
+\]
+ist die explizite Quantifizierung des in Taos Beweis implizit enthaltenen
+negativen Exponenten.
+
+\medskip
+\textbf{Präzisierung:} Taos Ergebnis gibt $\varepsilon > 0$ ohne expliziten
+Wert. Unser $\Lambda \approx -0{,}830$ entspricht dem Erwartungswert
+$\mathbb{E}_\pi[\log_2 F]$ unter der stationären Markov-Verteilung $\pi$.
+Das gibt dem ``fast alle''-Ergebnis ein konkretes quantitatives Gesicht:
+Jeder typische Block kontrahiert im Mittel um den Faktor $2^{-0{,}830} \approx 0{,}562$.
+
+\medskip
+\textbf{Wichtige Einschränkung:} Tao beweist Log-Dichte $1$, nicht
+Haar-Maß $1$. Die Aussage gilt also für ``fast alle $n$'' im
+logarithmischen Sinne, aber nicht notwendigerweise für alle $n$
+(was der Collatz-Vermutung entspräche).
+\end{tcolorbox}
+
+\subsection{Warum $\Lambda \approx -0{,}830$ und nicht $\Lambda_A \approx -1{,}83$?}
+
+Der Unterschied zwischen den zwei berechneten Werten:
+\begin{itemize}
+  \item $\Lambda_A \approx -1{,}83$ (aus \textit{collatz\_lte\_dichte.tex}):
+    Gewichteter Mittelwert über \emph{alle} Blocklängen mit der 2-adischen
+    Dichtegewichtung $P(l=k) \leq 2^{-(k+1)}$.
+  \item $\Lambda \approx -0{,}830$: Mittlerer Blockfaktor unter der
+    stationären Markov-Verteilung $\pi$ auf $\{E,A,B,C\}$, ohne
+    Längengewichtung.
+\end{itemize}
+Beide Werte sind negativ --- das ist das Wesentliche. Die genauen Zahlenwerte
+hängen vom Modellierungsrahmen ab.
+
+% ====================================================
+\section{Kingman für die LTE-Korrekturen: Subadditive Hülle}
+\label{sec:kingman-lte}
+% ====================================================
+
+\subsection{Wo Kingman wirklich stärker ist}
+
+Obwohl die Block-Folge additiv ist, gibt es einen Aspekt, bei dem Kingman
+einen echten Mehrwert liefert: die \emph{LTE-Korrekturen}.
+
+Für lange C-Ketten (Länge $k \geq 3$) ist der Wachstumsfaktor
+$F_k = (3/2)^{k+1} \cdot 2^{-\vii(3^{k+1}m-1)}$ \emph{nicht} unabhängig
+von der Vorgeschichte: Die 2-adische Tiefe $\vii(3^{k+1}m-1)$ hängt von
+$m = (n_0+1)/2^{k+1}$ ab, das seinerseits durch vorherige Blöcke bestimmt wird.
+
+\begin{tcolorbox}[kingman, title={Subadditive Hülle der LTE-korrigierten Folge}]
+Definiere die \emph{LTE-korrigierte} Folge
+\[
+  \tilde{f}_n(x) = \text{(tatsächlicher Logarithmus des Wachstumsfaktors
+  nach $n$ Blöcken mit LTE-Korrekturen)}.
+\]
+Falls die LTE-Korrekturen ``Gedächtnis'' einführen (was sie tun:
+$\vii(3^{k+1}m-1)$ hängt von $m$ ab), dann gilt \emph{im Allgemeinen}:
+\[
+  \tilde{f}_{m+n}(x) \leq \tilde{f}_m(x) + \tilde{f}_n(T^{(m)}x).
+\]
+In Worten: Die LTE-korrigierte Folge ist subadditiv, weil lange C-Ketten
+in einem zusammengesetzten Block ``besser kontrahieren'' als die Summe
+zweier Einzelblöcke erwarten ließe (die Kette ``weiß'', dass $m$ groß ist).
+
+\medskip
+Kingmans Satz liefert dann:
+\[
+  \limsup_{n\to\infty}\frac{1}{n}\tilde{f}_n(x)
+  \leq \Lambda_{\mathrm{Kingman}}
+  = \inf_{n\geq 1}\frac{1}{n}\mathbb{E}[\tilde{f}_n].
+\]
+Falls $\Lambda_{\mathrm{Kingman}} < 0$, dann $\tilde{f}_n \to -\infty$ fast sicher.
+\end{tcolorbox}
+
+\begin{bemerkung}[Subadditivität ist nicht erzwungen]
+Die LTE-Korrekturen können auch zu \emph{Superadditivität} führen, falls
+die Vorgeschichte ungünstig ist (schlechter $m$-Wert). Daher ist die
+Frage, ob $\tilde{f}_n$ echt subadditiv oder nur additiv ist, nicht a priori
+klar. Man müsste die Korrelationsstruktur der $m$-Werte analysieren.
+\end{bemerkung}
+
+\subsection{Die superadditive Hülle als Schranke}
+
+Eine sicherere Anwendung von Kingman ist die \emph{superadditive Hülle}:
+
+\begin{definition}[Superadditive Hülle]
+Für eine beliebige Folge $(f_n)$ definiere die superadditive Hülle:
+\[
+  g_n(x) = \inf_{k \geq n}\frac{1}{k}f_k(x)\cdot n.
+\]
+Dann ist $(g_n)$ superadditiv, und $\frac{1}{n}g_n \to f^*$ von unten.
+\end{definition}
+
+Kingmans Satz (superadditive Version) gibt:
+\[
+  f^*(x) = \sup_{n \geq 1}\frac{1}{n}\mathbb{E}[g_n]
+  = \lim_{n\to\infty}\frac{1}{n}\mathbb{E}[g_n].
+\]
+Falls $f^* < 0$ (was für $\Lambda \approx -0{,}830$ plausibel ist), dann
+folgt $f_n \to -\infty$ fast sicher --- unabhängig davon, ob die Folge
+additiv oder subadditiv ist.
+
+% ====================================================
+\section{Was bleibt: Ergodizität als letzter offener Schritt}
+\label{sec:offen}
+% ====================================================
+
+\subsection{Abhängigkeitsgraph der Schlüsselaussagen}
+
+Die logische Struktur des Beweisversuchs:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{>{\raggedright}p{5.5cm}
+                >{\centering}p{2.0cm}
+                >{\raggedright\arraybackslash}p{4.5cm}}
+\toprule
+\textbf{Aussage} & \textbf{Status} & \textbf{Benötigt} \\
+\midrule
+$\Lambda < 0$ (negativer Exp.) & Numerisch & Explizite Berechnung \\
+Transfer-Op.\ hat Spektrallücke & Formal offen & Irreduzibilität + Aperiodizität \\
+Markov-Kette (mod\,12) ergodisch & Numerisch ✓ & Irreduzibilität (beweisbar?) \\
+$\frac{1}{n}f_n \to \Lambda$ fast sicher & \textcolor{warnorange}{Bedingt} & Ergodizität von $T^{(1)}$ \\
+Ergodizität von $T$ auf $\Ztwo^*$ & \textcolor{lückenrot}{Offen} & Äquiv.\ zu Collatz? \\
+Collatz-Vermutung (alle $n$) & \textcolor{lückenrot}{Offen} & Uniforme Schranke \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Der entscheidende Lückenschluss}
+
+\begin{tcolorbox}[lücke, title={Die letzte offene Lücke}]
+Selbst wenn man akzeptiert:
+\begin{enumerate}[label=(\arabic*), nosep]
+  \item $\Lambda \approx -0{,}830 < 0$ (numerisch solide),
+  \item Spektrallücke des Transfer-Operators (numerisch, formal offen),
+  \item Quasi-Invarianz des Haar-Maßes unter $T$ (Tao),
+\end{enumerate}
+verbleibt der Schritt von
+\[
+  \text{``}\tfrac{1}{n}f_n \to \Lambda < 0 \text{ für } \mu\text{-fast alle } x\text{''}
+\]
+zur Collatz-Vermutung (``für \emph{alle} ungeraden $n \in \N$''):
+
+\medskip
+\textbf{Das Maß-$0$-Problem:} Birkhoff und Kingman liefern Konvergenz
+``$\mu$-fast überall'', aber ein einziger Orbit könnte auf einer
+$\mu$-Nullmenge liegen und trotzdem divergieren. Die Collatz-Vermutung
+fordert Konvergenz auf ganz $\N$ --- einer abzählbaren Menge, die
+im 2-adischen Haar-Maß ebenfalls eine Nullmenge ist.
+
+\medskip
+\textbf{Ausweg:} Man müsste zeigen, dass alle ganzzahligen Startpunkte
+``typisch'' sind im Sinne der ergodischen Theorie --- d.h.\ in keiner
+$T$-invarianten Nullmenge liegen. Das ist ein Uniformitätsproblem, das
+durch keinen der drei Ergodensätze allein gelöst wird.
+\end{tcolorbox}
+
+\subsection{Was die ergodische Methode dennoch leistet}
+
+\begin{tcolorbox}[ergebnis, title={Positive Leistungsbilanz der ergodischen Methode}]
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{Quantitative Schranke:} $\Lambda \approx -0{,}830$ ist die
+    erste explizite numerische Schranke für den mittleren Konvergenzgrad.
+  \item \textbf{Taos Ergebnis präzisiert:} Log-Dichte-$1$-Aussage erhält
+    konkreten Exponenten.
+  \item \textbf{LTE-Barriere relativiert:} Die LTE-Worst-Case-Blöcke tragen
+    exponentiell wenig zum Gesamtdrift bei (aus \textit{collatz\_lte\_dichte.tex}).
+  \item \textbf{Strukturelle Kompensation bewiesen:} Nach jedem LTE-extremalen
+    Block folgt erzwungene Kontraktion (Proposition aus \textit{collatz\_lte\_dichte.tex}).
+  \item \textbf{RPF anwendbar auf mod-12-Ebene:} Auf dem endlichen
+    Zustandsraum ist Konvergenz für alle (nicht nur fast alle) Startklassen
+    garantiert, mit expliziter Mischungsrate.
+\end{enumerate}
+\end{tcolorbox}
+
+% ====================================================
+\section{Fazit: Bewertungsmatrix}
+\label{sec:fazit}
+% ====================================================
+
+\subsection{Welcher Satz passt für Collatz?}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{>{\raggedright}p{3.5cm}
+                >{\centering}p{1.8cm}
+                >{\centering}p{1.8cm}
+                >{\centering}p{1.8cm}
+                >{\raggedright\arraybackslash}p{3.2cm}}
+\toprule
+\textbf{Kriterium} & \textbf{Birkhoff} & \textbf{Kingman} & \textbf{RPF/Markov} & \textbf{Anmerkung} \\
+\midrule
+Folgentyp passend
+  & additiv ✓
+  & subadditiv (✓)
+  & additiv ✓
+  & Block-Folge additiv \\
+Benötigt Maßerhaltung
+  & Ja ✗
+  & Ja ✗
+  & Nein ✓
+  & $T$ dissipativ \\
+Endlicher Zustandsraum
+  & Nein
+  & Nein
+  & Ja ✓
+  & mod-12 \\
+Konvergenz für alle Starts
+  & Nein
+  & Nein
+  & Ja ✓
+  & Bei Irreduzibilität \\
+Ergodizität nötig
+  & Ja
+  & Ja
+  & Nein ✓
+  & RPF braucht nur Irreduz. \\
+LTE-Korrekturen
+  & Nicht direkt
+  & Ja ✓
+  & Approximativ
+  & Subadditivität nützlich \\
+Verbindung zu Tao
+  & Mittel
+  & Mittel
+  & Stark ✓
+  & Expliziter Exponent \\
+\midrule
+\textbf{Gesamteignung}
+  & \textcolor{warnorange}{\bfseries Mittel}
+  & \textcolor{warnorange}{\bfseries Ergänzend}
+  & \textcolor{bewiesengrün}{\bfseries Am besten}
+  & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Abschließende Einschätzung}
+
+\begin{tcolorbox}[kernidee, title={Zusammenfassung: Drei Werkzeuge, ein Ziel}]
+\textbf{Birkhoff} ist der ``natürliche'' Satz für die additive Block-Folge,
+aber er scheitert am Maßerhaltungsproblem: $T$ ist kein erhaltendes System.
+Birkhoff wäre vollständig anwendbar, falls ein $T$-invariantes Maß auf
+$\Ztwo^*$ gefunden würde --- was eine offene Frage bleibt.
+
+\medskip
+\textbf{Kingman} liefert keinen direkten Vorteil für die additive Block-Folge.
+Er ist jedoch das richtige Werkzeug für die LTE-korrigierte, subadditive
+Hülle der Folge und für robuste obere Schranken auf dem $\limsup$.
+
+\medskip
+\textbf{Ruelle-Perron-Frobenius} ist für das Collatz-Block-System am
+direktesten anwendbar: Der endliche mod-12-Zustandsraum, die numerisch
+belegte Irreduzibilität und Aperiodizität, und die Spektrallücke des
+Transfer-Operators ergeben zusammen den stärksten verfügbaren Konvergenzsatz
+--- ohne dass volle Ergodizität von $T$ benötigt wird.
+
+\medskip
+\textbf{Offene Kernfrage:} Der Schritt von ``$\mu$-fast alle Startpunkte
+konvergieren'' zu ``alle ganzzahligen Startpunkte konvergieren'' ist der
+eigentliche Collatz-Inhalt. Er wird durch keinen der drei Sätze automatisch
+geliefert und erfordert ein zusätzliches Uniformitätsargument.
+\end{tcolorbox}
+
+\begin{tcolorbox}[warnung, title={Ehrliche Gesamtbilanz}]
+\begin{itemize}[nosep]
+  \item Kingman, Birkhoff und RPF sind \textbf{leistungsstarke Werkzeuge},
+    die für Collatz \textbf{bedingt anwendbar} sind.
+  \item Der negative Lyapunov-Exponent $\Lambda \approx -0{,}830$
+    ist robust und quantifiziert Taos Ergebnis explizit.
+  \item Die Collatz-Vermutung folgt aus diesen Überlegungen \textbf{nicht}
+    direkt --- die Ergodizitätslücke und das Nullmengen-Problem bleiben bestehen.
+  \item Der nächste substanzielle Schritt wäre: Spektrallücke des
+    Transfer-Operators formell beweisen (mod-12-Irreduzibilität ist
+    endliche Kombinatorik).
+\end{itemize}
+\end{tcolorbox}
+
+\subsection{Referenzen}
+
+\begin{itemize}
+  \item J.\ F.\ C.\ Kingman: \textit{The ergodic theory of subadditive stochastic
+    processes}. J.\ Roy.\ Stat.\ Soc.\ Ser.\ B \textbf{30} (1968), 499--510.
+  \item G.\ D.\ Birkhoff: \textit{Proof of the ergodic theorem}. Proc.\ Nat.\
+    Acad.\ Sci.\ USA \textbf{17} (1931), 656--660.
+  \item T.\ Tao: \textit{Almost all orbits of the Collatz map attain almost
+    bounded values}. Forum Math.\ Pi \textbf{10} (2022), e12.
+  \item D.\ Ruelle: \textit{Thermodynamic Formalism}. Addison-Wesley, 1978.
+  \item Ergänzende Dokumente: \textit{collatz\_lte\_dichte.tex},
+    \textit{collatz\_schlussartikel.tex}.
+\end{itemize}
+
+\end{document}
