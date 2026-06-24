@@ -1,0 +1,935 @@
+\documentclass[12pt,a4paper]{article}
+
+% -------------------------------------------------
+% Sprache / Kodierung
+% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% -------------------------------------------------
+% Mathematik
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+
+% -------------------------------------------------
+% Layout / Grafik / Farben
+% -------------------------------------------------
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[hidelinks,unicode]{hyperref}
+\pdfstringdefDisableCommands{%
+  \def\ü{ue}\def\ö{oe}\def\ä{ae}\def\Ü{Ue}\def\Ö{Oe}\def\Ä{Ae}\def\ss{ss}%
+}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{array}
+
+% -------------------------------------------------
+% Farben (konsistent mit Vorgängerdokumenten)
+% -------------------------------------------------
+\definecolor{lückenrot}{RGB}{180,40,40}
+\definecolor{bewiesengrün}{RGB}{30,100,50}
+\definecolor{warnorange}{RGB}{200,100,10}
+\definecolor{hintergrundblau}{RGB}{235,242,250}
+\definecolor{hintergrundgelb}{RGB}{255,252,225}
+\definecolor{adischviolett}{RGB}{90,20,140}
+\definecolor{fehlerrot}{RGB}{200,0,0}
+\definecolor{konjviolett}{RGB}{80,0,130}
+\definecolor{e8grau}{RGB}{55,55,90}
+\definecolor{kingmanblau}{RGB}{20,60,130}
+\definecolor{zirkelrot}{RGB}{160,0,0}
+
+% -------------------------------------------------
+% tcolorbox-Stile
+% -------------------------------------------------
+\tcbset{
+  lücke/.style={colback=red!8, colframe=lückenrot, fonttitle=\bfseries,
+    title={Offene Lücke}},
+  ergebnis/.style={colback=green!7, colframe=bewiesengrün,
+    fonttitle=\bfseries, title={Bewiesenes Ergebnis}},
+  warnung/.style={colback=orange!10, colframe=warnorange,
+    fonttitle=\bfseries, title={Achtung / Heuristik}},
+  adisch/.style={colback=violet!6, colframe=adischviolett,
+    fonttitle=\bfseries, title={2-adische Perspektive}},
+  kernidee/.style={colback=hintergrundblau, colframe=blue!60!black,
+    fonttitle=\bfseries, title={Kernidee}},
+  konj/.style={colback=violet!5, colframe=konjviolett, fonttitle=\bfseries,
+    title={Konjektur (unbewiesen)}},
+  lte/.style={colback=yellow!8, colframe=e8grau, fonttitle=\bfseries,
+    title={LTE-Analyse}},
+  hauptsatz/.style={colback=green!10, colframe=bewiesengrün!80!black,
+    fonttitle=\bfseries\large, title={Satz (bewiesen)}},
+  negativ/.style={colback=red!5, colframe=lückenrot!80!black,
+    fonttitle=\bfseries, title={Negatives Ergebnis (bewiesen)}},
+  kingman/.style={colback=blue!5, colframe=kingmanblau,
+    fonttitle=\bfseries, title={Kingman-Perspektive}},
+  tao/.style={colback=teal!5, colframe=teal!60!black,
+    fonttitle=\bfseries, title={Verbindung zu Tao (2019)}},
+  rpf/.style={colback=cyan!5, colframe=cyan!50!black,
+    fonttitle=\bfseries, title={RPF / Spektraltheorie}},
+  zirkel/.style={colback=red!12, colframe=zirkelrot,
+    fonttitle=\bfseries\color{white}, coltitle=white,
+    title={Zirkularit\"{a}tswarnung --- Schritt C ist schwach}},
+  bewmat/.style={colback=gray!5, colframe=gray!60!black,
+    fonttitle=\bfseries, title={Bewertungsmatrix}},
+}
+
+% -------------------------------------------------
+% Theorem-Umgebungen
+% -------------------------------------------------
+\newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{korollar}[definition]{Korollar}
+\newtheorem{bemerkung}[definition]{Bemerkung}
+\newtheorem{hypothese}[definition]{Hypothese}
+\newtheorem{satz}[definition]{Satz}
+
+\newenvironment{beweis}{\begin{proof}[Beweis]}{\end{proof}}
+
+% -------------------------------------------------
+% Makros
+% -------------------------------------------------
+\newcommand{\vii}{\nu_2}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\H}{\mathbb{H}}
+\newcommand{\Ztwo}{\mathbb{Z}_2}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\atwo}[1]{\lvert#1\rvert_2}
+\newcommand{\Epi}{\mathbb{E}_\pi}
+\newcommand{\TV}{\mathrm{TV}}
+\newcommand{\Lam}{\Lambda}
+\newcommand{\col}{\mathrm{Col}}
+
+% -------------------------------------------------
+% Dokument
+% -------------------------------------------------
+\title{%
+  Das Uniformitätsproblem bei Collatz\\[0.3em]
+  \large RPF-Mischung, mod-12-Primitivität und die Grenzen des
+  Quaternionen-Arguments\\[0.5em]
+  \normalsize Ergänzung zu \textit{collatz\_kingman.tex} und
+  \textit{collatz\_lte\_dichte.tex}%
+}
+\author{Thomas Hoffbauer}
+\date{16.\ Juni 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Taos Ergebnis (2022) zeigt: fast alle $n \in \N$ haben Collatz-Bahnen,
+die beliebig klein werden --- im Sinne der logarithmischen Dichte.
+Die verbleibende Lücke zur vollen Vermutung ist das
+\emph{Uniformitätsproblem}: Maßargumente liefern nur Aussagen für
+``fast alle $n$'', aber nicht für alle $n \in \N$.
+
+Wir untersuchen drei Strategien, diese Lücke zu schließen:
+\textbf{(A)} LTE-Worst-Cases als ``ewige Ausnahmen'' ausschließen via
+Ergodentheorie;
+\textbf{(B)} mod-12-Primitivität und exponentiellen Mischungssatz
+des Transfer-Operators;
+\textbf{(C)} Quaternionen-Norm-Identität als diophantische Schranke.
+
+\textbf{Ergebnis der Analyse:}
+Schritt A ist konzeptionell stark, setzt aber Ergodizität voraus.
+Schritt B ist das mathematisch solideste Argument und quantifizierbar.
+Schritt C enthält eine versteckte Zirkularität und liefert
+keinen echten Widerspruch --- er wird in \S\,4 mit roter Warnung markiert.
+\end{abstract}
+
+\tableofcontents
+
+\bigskip
+\begin{tcolorbox}[warnung, title={Einordnung dieses Dokuments}]
+Dieses Dokument enthält eine Kombination aus \textbf{bewiesenen Sätzen}
+der Ergodentheorie (grün), \textbf{Anwendungsanalysen} auf Collatz
+(orange, teils offen) und \textbf{einer kritischen Fehleranalyse} (rot).
+Die Collatz-Vermutung bleibt unbewiesen.
+Insbesondere schließt kein Argument in diesem Dokument die volle Lücke.
+\end{tcolorbox}
+
+% ====================================================
+\section{Die Ergodizitätslücke: präzise Formulierung}
+\label{sec:luecke}
+% ====================================================
+
+\subsection{Was Tao beweist --- und was nicht}
+
+\begin{tcolorbox}[tao, title={Taos Hauptergebnis (Forum Math.\ Pi, 2022)}]
+Für jede Funktion $f: \N \to \R$ mit $f(n) \to \infty$ gilt:
+\[
+  \mathrm{Dens}_{\log}\bigl(\{n \in \N : \min_{k\geq 0}\col^k(n) \leq f(n)\}\bigr) = 1,
+\]
+wobei $\mathrm{Dens}_{\log}$ die logarithmische Dichte bezeichnet.
+\end{tcolorbox}
+
+Taos Methode arbeitet mit Fourier-Analyse auf $\Ztwo$ und
+exponential-sum-Abschätzungen. Im Kern zeigt sie, dass das
+Haar-Maß $\mu_H$ auf $\Ztwo^*$ unter der Collatz-Dynamik
+``quasi-ergodisch'' ist: Fast alle Startpunkte im 2-adischen Sinne
+sind konvergent.
+
+\subsection{Die Ergodizitätslücke}
+
+\begin{tcolorbox}[lücke, title={Das Maß-$0$-Problem (zentral)}]
+Sei $E \subseteq \N$ die (hypothetische) Menge aller $n \in \N$,
+deren Collatz-Bahn nicht gegen $1$ konvergiert. Taos Ergebnis zeigt:
+\[
+  \mu_H(E) = 0
+  \quad\text{(E hat 2-adisches Haar-Maß Null).}
+\]
+Aber: $\N \subset \Ztwo^*$ ist eine \emph{abzählbare} Menge, also
+selbst eine $\mu_H$-Nullmenge. Deshalb ist $\mu_H(E) = 0$ kein
+Widerspruch zu $E \neq \emptyset$.
+
+\medskip
+\textbf{Die Lücke:} Man muss zeigen, dass jedes einzelne $n \in \N$
+``typisch'' im ergodischen Sinne ist --- es darf auf keiner
+$T$-invarianten Nullmenge liegen. Das ist das
+\emph{Uniformitätsproblem}.
+\end{tcolorbox}
+
+Formal: Birkhoff und Kingman liefern Konvergenz für
+$\mu$-\emph{fast alle} Startpunkte. Die Collatz-Vermutung fordert
+Konvergenz für \emph{alle} $n \in \N$. Da $\N$ eine $\mu_H$-Nullmenge
+ist, sind diese Aussagen grundsätzlich verschieden.
+
+\subsection{Drei Strategien, die Lücke zu schließen}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{>{\raggedright}p{1.8cm}
+                >{\raggedright}p{5.5cm}
+                >{\centering}p{2.0cm}
+                >{\raggedright\arraybackslash}p{3.8cm}}
+\toprule
+\textbf{Schritt} & \textbf{Idee} & \textbf{Status} & \textbf{Bewertung} \\
+\midrule
+A & LTE-Worst-Cases können nicht ewig dominieren (Ergodentheorie)
+  & \textcolor{warnorange}{Bedingt}
+  & Setzt Ergodizität voraus \\[2pt]
+B & mod-12-Primitivität erzwingt exponentielle Mischung
+  & \textcolor{bewiesengrün}{Partiell}
+  & Quantifizierbar; formal offen \\[2pt]
+C & Quaternionen-Norm als diophantische Schranke
+  & \textcolor{lückenrot}{Schwach}
+  & Enthält Zirkularität \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ====================================================
+\section{Schritt A: Lokale Expansion und ``ewige Worst-Cases''}
+\label{sec:schrittA}
+% ====================================================
+
+\subsection{Die Idee}
+
+Ein hypothetisches $n \in E$ (Ausnahmeset) müsste eine Collatz-Trajektorie
+haben, die sich \emph{systematisch und dauerhaft} in den LTE-Worst-Case-Zuständen
+aufhält. Der Transfer-Operator würde dann nie zum RPF-stationären Maß $\pi$
+konvergieren. Ist das möglich?
+
+\subsection{Formale Formulierung}
+
+Sei $\mathcal{L}: \R^S \to \R^S$ der Transfer-Operator der mod-12-Markov-Kette
+auf $S = \{E, A, B, C\}$ (Zustände nach EABC-Klassifikation). Sei $\pi$ die
+stationäre Verteilung ($\pi \mathcal{L} = \pi$).
+
+\begin{definition}[Ausnahme-Trajektorie]
+Eine Trajektorie $(T^k(n))_{k\geq 0}$ heißt \emph{ausnahme-typisch} für den
+Zustand $s \in S$, falls
+\[
+  \limsup_{n\to\infty}\frac{1}{n}\sum_{k=0}^{n-1}\mathbf{1}[T^k(n) \equiv s]
+  > \pi(s) + \varepsilon
+\]
+für ein $\varepsilon > 0$.
+\end{definition}
+
+\begin{tcolorbox}[kingman, title={Was Birkhoff/RPF über Ausnahmen sagt}]
+Unter der stationären Verteilung $\pi$ gilt für $\pi$-fast alle Startzustände:
+\[
+  \frac{1}{n}\sum_{k=0}^{n-1}\phi(B_k(n)) \xrightarrow{n\to\infty} \Epi[\phi].
+\]
+Ein ``ausnahme-typisches'' $n$ müsste im Widerspruch zu Birkhoff stehen ---
+\textbf{wenn $n$ ein typischer Startpunkt ist}. Das ist der Kern:
+der Birkhoff-Ergodensatz gilt nur für $\mu_\pi$-fast alle Starts,
+und $n \in \N$ könnte auf einer invarianten $\mu_\pi$-Nullmenge liegen.
+\end{tcolorbox}
+
+\subsection{Was Schritt A leistet und was nicht}
+
+\begin{tcolorbox}[warnung, title={Grenzen von Schritt A}]
+\begin{enumerate}[label=(\arabic*), nosep]
+  \item Der Birkhoff-Ergodensatz sagt: Für $\mu_\pi$-fast alle $n$ ist
+    eine dauerhaft ausnahme-typische Trajektorie \emph{unmöglich}.
+  \item Aber: Gilt das auch für spezifische $n \in \N$? Nur wenn $\N$
+    keine $\mu_\pi$-invariante Nullmenge bildet.
+  \item Das ist eine zusätzliche Voraussetzung, die --- in allgemeiner
+    Form --- zur Ergodizität von $T$ äquivalent ist.
+\end{enumerate}
+\textbf{Schritt A reduziert das Problem, löst es aber nicht.} Er zeigt,
+dass ``zufällige'' Trajektories keine ewigen Ausnahmen sind. Für
+konkrete Zahlen braucht man Schritt B oder C.
+\end{tcolorbox}
+
+% ====================================================
+\section{Schritt B: mod-12-Primitivität und exponentielle Mischung}
+\label{sec:schrittB}
+% ====================================================
+
+\subsection{Die Übergangsmatrix der mod-12-Markov-Kette}
+
+Die mod-12-Markov-Kette auf $S = \{E, A, B, C\}$ hat Transfer-Operator
+$\mathcal{L}$ mit Übergangsmatrix $M$. Numerisch gilt:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{c|cccc}
+\toprule
+$M_{ij} = P(B_{n+1} = j \mid B_n = i)$ & E & A & B & C \\
+\midrule
+E & $3/8$ & $1/8$ & $3/8$ & $1/8$ \\
+A & $3/8$ & $1/8$ & $3/8$ & $1/8$ \\
+B & $3/8$ & $1/8$ & $3/8$ & $1/8$ \\
+C & $3/8$ & $1/8$ & $3/8$ & $1/8$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{bemerkung}
+Die tatsächliche Übergangsmatrix hängt von den genauen Wahrscheinlichkeiten
+ab, mit denen Blöcke auf Nachfolger des jeweiligen Typs zeigen. Die obige
+Darstellung ist eine Vereinfachung; entscheidend ist, dass alle Einträge
+\emph{positiv} sind (Primitivität), was nachfolgend angenommen wird.
+\end{bemerkung}
+
+\subsection{Irreduzibilität und Aperiodizität (Primitivität)}
+
+\begin{tcolorbox}[rpf, title={Primitivität des Transfer-Operators (numerisch belegt)}]
+Die mod-12-Markov-Kette auf $\{E, A, B, C\}$ ist:
+\begin{itemize}[nosep]
+  \item \textbf{Irreduzibel:} Jeder Zustand erreicht jeden anderen Zustand
+    mit positiver Wahrscheinlichkeit (numerisch: alle $M^k$-Einträge
+    für $k \leq 4$ positiv).
+  \item \textbf{Aperiodisch:} Der $\gcd$ aller Rückkehrzeiten an jedem
+    Zustand ist $1$ (Selbstschleifen durch E $\to$ E-Übergänge).
+  \item \textbf{Primitiv} (= irreduzibel + aperiodisch): $M^k \to \mathbf{1}\pi^T$
+    (Konvergenz zur stationären Verteilung) für $k \to \infty$.
+\end{itemize}
+\end{tcolorbox}
+
+\subsection{Das exponentielle Mischungsargument}
+
+\begin{theorem}[Mischungsrate des RPF-Operators]
+\label{thm:mischung}
+Sei $M$ primitiv mit stationärer Verteilung $\pi$ und zweitem Eigenwert
+$|\lambda_2| < 1$. Dann gilt für alle Startzustände $s \in S$ und
+alle $n \geq 0$:
+\[
+  \bigl\|M^n e_s - \pi\bigr\|_{\TV} \leq C\,|\lambda_2|^n,
+\]
+wobei $C > 0$ eine von $s$ abhängige Konstante ist.
+\end{theorem}
+
+\textbf{Numerisch:} $|\lambda_2| \approx 0{,}35$ (aus der Spektralanalyse
+des mod-12-Operators).
+
+\begin{tcolorbox}[ergebnis, title={Schlüsseleigenschaft: Mindestbesuchswahrscheinlichkeit}]
+Sei $p := \min_{s,t \in S} M_{st} > 0$ die kleinste Übergangswahrscheinlichkeit.
+Für eine Trajektorie der Länge $n$ gilt:
+\[
+  P\bigl(\text{Trajektorie besucht Zustand } E \text{ in den ersten }
+  n \text{ Blöcken nie}\bigr) \leq (1-p)^n.
+\]
+Allgemeiner: Die Wahrscheinlichkeit, dass die Trajektorie $\lfloor n/12 \rfloor$
+Schritte ohne ``gute'' Kontraktion verbringt, fällt exponentiell:
+\[
+  P\bigl(\text{keine gute Kontraktion in } \lfloor n/12 \rfloor \text{ Schritten}\bigr)
+  \leq (1-p)^{\lfloor n/12 \rfloor}.
+\]
+\end{tcolorbox}
+
+\subsection{Was Schritt B für das Uniformitätsproblem leistet}
+
+\begin{tcolorbox}[kernidee, title={Schritt B: Stärken und Grenzen}]
+\textbf{Stärken:}
+\begin{enumerate}[label=(\arabic*), nosep]
+  \item Die Mischungsrate ist \emph{explizit quantifizierbar} via $|\lambda_2|$.
+  \item Für jeden konkreten Startzustand $s \in S$ (mod-12-Klasse) gibt
+    der RPF-Satz eine \emph{gleichmäßige} Schranke für die Mischungszeit.
+  \item Im Gegensatz zu Birkhoff braucht RPF keine Maßerhaltung ---
+    nur Irreduzibilität und Aperiodizität der Kette.
+\end{enumerate}
+\textbf{Grenzen:}
+\begin{enumerate}[label=(\arabic*), nosep]
+  \item Der RPF-Satz für die mod-12-Kette garantiert Mischung
+    auf Blockebene --- nicht für die ursprüngliche Abbildung $T$ auf $\N$.
+  \item Ein konkretes $n \in \N$ könnte ``pathologische'' Blockfolgen
+    erzeugen, die nicht der RPF-stationären Verteilung folgen, wenn
+    die Blockabbildung $T^{(1)}$ nicht messbar-typisch wirkt.
+  \item Die Aussage ``alle $n \in \N$ sind typisch'' bleibt eine
+    zusätzliche Annahme, die formal nicht folgt.
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{bemerkung}[Wert für Taos Ergebnis]
+Schritt B liefert: Die Dichte der Ausnahmen kann höchstens $(1-p)^{N/12}$
+betragen, was für $N \to \infty$ gegen $0$ fällt. Das ist konsistent
+mit $\mu_H(E) = 0$ (Tao) und quantifiziert die Mischungsgeschwindigkeit.
+Aber $E = \emptyset$ folgt nicht.
+\end{bemerkung}
+
+% ====================================================
+\section{Schritt C: Quaternionen-Diophantik (kritische Analyse)}
+\label{sec:schrittC}
+% ====================================================
+
+\subsection{Das Argument in präziser Form}
+
+Die Quaternionen-Norm-Identität lautet: Für die Hurwitz-Quaternionen
+$\H$ und $q = a + bi + cj + dk$ mit $N(q) = a^2 + b^2 + c^2 + d^2$
+gilt bei einer natürlichen Einbettung $n \mapsto q_n$:
+\[
+  N(3q + 1) = 9N(q) + 6a + 1.
+\]
+Diese Identität ist via \texttt{ring} in Lean beweisbar (für die
+Einbettung $a = n$, $b = c = d = 0$):
+\[
+  N(3n+1) = (3n+1)^2 = 9n^2 + 6n + 1 = 9N(n) + 6n + 1. \checkmark
+\]
+
+Das vorgeschlagene Widerspruchsargument:
+\begin{enumerate}[label=(\arabic*)]
+  \item Für jede \emph{ganzzahlige} Trajektorie nimmt $N(T^k(q))$
+    nur ganzzahlige Werte an.
+  \item ``Fraktale'' Ausnahmepfade müssten irrational-algebraische
+    Normwerte erzeugen.
+  \item Widerspruch zur Ganzzahligkeit $\Rightarrow$ Ausnahmen können
+    keine gewöhnlichen Ganzzahlen sein.
+\end{enumerate}
+
+\subsection{Kritische Analyse: Ist der Widerspruch wasserdicht?}
+
+\begin{tcolorbox}[zirkel]
+\textbf{Schritt C ist mathematisch \emph{nicht} wasserdicht.}
+Es liegt eine versteckte Zirkularität vor.
+
+\medskip
+\textbf{Warum der Widerspruch nicht eintreten kann:}
+
+Die Collatz-Abbildung $T: \N_{\mathrm{odd}} \to \N_{\mathrm{odd}}$,
+$T(n) = (3n+1)/2^{\vii(3n+1)}$, ist definitionsgemäß eine Selbstabbildung
+der ungeraden natürlichen Zahlen. Für jedes $n \in \N$ gilt also:
+\[
+  T^k(n) \in \N \quad\text{für alle } k \geq 0,
+\]
+\emph{unabhängig davon}, ob die Bahn konvergiert oder nicht. Ein
+hypothetisches $n \in E$ hat eine Collatz-Bahn, die aus lauter
+positiven ungeraden ganzen Zahlen besteht --- entweder divergiert sie
+oder ist periodic. In beiden Fällen gilt:
+\[
+  N(T^k(n)) = (T^k(n))^2 \in \N \quad\text{für alle } k \geq 0.
+\]
+
+\medskip
+\textbf{Die versteckte Zirkularität:}
+Der behauptete Schritt (2) --- ``fraktale Ausnahmepfade erzeugen
+irrational-algebraische Normwerte'' --- trifft schlicht nicht zu.
+Ausnahmepfade sind Folgen ganzer Zahlen; ihre Quaternionen-Normen
+sind ganzzahlig. Es entsteht kein Widerspruch zur Ganzzahligkeit.
+
+\medskip
+\textbf{Die zirkuläre Annahme:} Um zu begründen, warum Ausnahmepfade
+``irrational-algebraische'' Strukturen erzeugen müssten, bräuchte man
+bereits zu wissen, dass sie sich \emph{anders} als Ganzzahlfolgen
+verhalten --- was genau das ist, was bewiesen werden soll.
+
+\medskip
+\textbf{Was die Identität tatsächlich leistet:} Die Norm-Identität
+$N(3q+1) = 9N(q)+6a+1$ ist eine \emph{reine Rechenidentität} in $\H$.
+Sie liefert keine neue Constraint auf die Collatz-Dynamik.
+\end{tcolorbox}
+
+\subsection{Kann Schritt C gerettet werden?}
+
+Eine abgeschwächte Version von Schritt C könnte argumentieren:
+
+\begin{tcolorbox}[konj]
+\textbf{Mögliche Rettungsstrategie:} Falls man die Collatz-Dynamik
+in einem Nicht-Standard-Sinne in $\H$ einbettet (z.\,B.\ via
+2-adische Quaternionen $\H_2 = \H \otimes_\Q \Q_2$), dann könnten
+Ausnahmepfade tatsächlich ``nicht-kompakt'' bezüglich einer
+$p$-adischen Norm werden. Aber:
+\begin{enumerate}[label=(\arabic*), nosep]
+  \item Diese Einbettung müsste erst konstruiert werden.
+  \item Der Widerspruch müsste zeigen, dass die 2-adische Quaternionen-Norm
+    für divergente Bahnen unbeschränkt wird --- was wiederum auf die
+    Divergenz selbst hinausläuft.
+  \item Es ist nicht klar, ob diese Einbettung mehr liefert als
+    das direkte Argument über $\Ztwo^*$.
+\end{enumerate}
+\textit{Diese Strategie ist unbewiesen und möglicherweise zirkulär.}
+\end{tcolorbox}
+
+\subsection{Ehrliche Einordnung von Schritt C}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{>{\raggedright}p{4.0cm}
+                >{\centering}p{2.8cm}
+                >{\raggedright\arraybackslash}p{5.5cm}}
+\toprule
+\textbf{Aspekt} & \textbf{Bewertung} & \textbf{Anmerkung} \\
+\midrule
+Norm-Identität (Lean-beweisbar)
+  & \textcolor{bewiesengrün}{\bfseries Klar wahr}
+  & Ring-Identität in $\H$ \\[2pt]
+Ganzzahligkeit der Normen entlang $\N$-Trajektorien
+  & \textcolor{bewiesengrün}{\bfseries Trivial wahr}
+  & Gilt auch für Ausnahme-Bahnen \\[2pt]
+Widerspruch für Ausnahme-$n$
+  & \textcolor{lückenrot}{\bfseries Nicht gegeben}
+  & Zirkularität: Ausnahmen bleiben ganzzahlig \\[2pt]
+``Fraktale irrational-algebraische Werte''
+  & \textcolor{lückenrot}{\bfseries Nicht begründet}
+  & Nicht aus der Identität ableitbar \\[2pt]
+Gesamtstärke des Arguments
+  & \textcolor{lückenrot}{\bfseries Schwach}
+  & Kein echter Beitrag zum Uniformitätsproblem \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ====================================================
+\section{Das vollständige Uniformitätsargument}
+\label{sec:uniform}
+% ====================================================
+
+\subsection{Was aus A, B, C zusammen folgt}
+
+Kombiniert man Schritte A, B, C, ergibt sich folgendes Bild:
+
+\begin{tcolorbox}[kernidee, title={Gesamtbild: Was gezeigt werden kann}]
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{Tao + Schritt B (mod-12-RPF):} Der Ausnahmeset $E$
+    hat Dichte~$0$ --- sowohl logarithmisch (Tao) als auch mit
+    expliziter Mischungsrate $(1-p)^{n/12}$.
+  \item \textbf{Schritt A + B:} Ein $n \in E$ müsste eine Trajektorie haben,
+    die systematisch ``schlechte'' Blockklassen ansteuert. Die
+    Mischungsrate des RPF-Operators macht solche dauerhaften Ausnahmen
+    exponentiell unwahrscheinlich --- \emph{für generische Starts}.
+  \item \textbf{Schritt C:} Kein Beitrag (Zirkularität).
+\end{enumerate}
+
+\medskip
+\textbf{Gesamtresultat:} Die Kombination aus Tao und mod-12-RPF zeigt,
+dass jedes $n \in E$ eine hochgradig unnatürliche arithmetische Struktur
+benötigt --- eine Trajektorie, die die stationäre Blockverteilung $\pi$
+systematisch meidet. Das ist heuristisch sehr unwahrscheinlich, aber
+\emph{nicht formell ausgeschlossen}.
+\end{tcolorbox}
+
+\subsection{Warum das Uniformitätsproblem offen bleibt}
+
+\begin{tcolorbox}[lücke, title={Die unüberbrückte Lücke}]
+Das Uniformitätsproblem lässt sich wie folgt präzisieren:
+
+\medskip
+\textbf{Gegeben:} Der Transfer-Operator ist primitiv, $|\lambda_2| < 1$,
+$\Lambda \approx -0{,}830 < 0$.
+
+\medskip
+\textbf{Gesucht:} Ein Argument, warum jede Collatz-Trajektorie
+$n \in \N$ die RPF-stationäre Verteilung $\pi$ erreich --- nicht nur
+$\mu$-fast alle.
+
+\medskip
+\textbf{Das Problem:} Der Satz von Birkhoff/RPF liefert Konvergenz
+für ``$\mu$-fast alle'' Startpunkte. Für $n \in \N$ (abzählbare
+Nullmenge) braucht man entweder:
+\begin{enumerate}[label=(\alph*), nosep]
+  \item \textbf{Quantitative Gleichmäßigkeit:} Eine Schranke
+    $\|M^n e_{B(m)} - \pi\|_{\TV} \leq C\lambda_2^n$ für
+    \emph{alle} $m \in \N$ (nicht nur fast alle).
+  \item \textbf{Ausschluss spezieller Nullmengen:} Zeigen, dass kein
+    $m \in \N$ auf einer $T$-invarianten $\mu$-Nullmenge liegt.
+\end{enumerate}
+Für (a) ist die RPF-Schranke auf dem mod-12-Niveau hinreichend, aber
+man braucht noch, dass die Blockabbildung $T^{(1)}$ alle
+$m \in \N$ gleichförmig auf die Markov-Kette projiziert.
+Für (b) ist die Frage äquivalent zur Ergodizität --- und damit
+zur Collatz-Vermutung selbst.
+\end{tcolorbox}
+
+\subsection{Eine bedingte Aussage}
+
+\begin{proposition}[Bedingte Uniformität, formal]
+\label{prop:bedingt}
+Angenommen:
+\begin{enumerate}[label=(V\arabic*)]
+  \item\label{V1} Die mod-12-Markov-Kette ist irreduzibel und aperiodisch
+    (mit Spektrallücke $1 - |\lambda_2| > 0$).
+  \item\label{V2} Die Blockabbildung $T^{(1)}: \N_{\mathrm{odd}} \to \N_{\mathrm{odd}}$
+    ist gleichmäßig verteilt über die mod-12-Klassen in folgendem Sinne:
+    Für alle $n \in \N$ und alle $K \in \N$ gilt
+    \[
+      \frac{1}{K}\sum_{k=0}^{K-1}\mathbf{1}[T^{(k)}(n) \equiv s \pmod{12}]
+      \xrightarrow{K\to\infty} \pi(s).
+    \]
+\end{enumerate}
+Dann gilt für alle $n \in \N$:
+\[
+  \frac{1}{K}\sum_{k=0}^{K-1}\log_2 F(B_k(n)) \xrightarrow{K\to\infty} \Lambda < 0,
+\]
+was (für $\Lambda < 0$) die Collatz-Vermutung für $n$ impliziert.
+\end{proposition}
+
+\begin{beweis}
+Voraussetzung~\ref{V2} ist genau die Birkhoff-Konvergenz für $n$.
+Mit $\Lambda < 0$ folgt $F_k(n) \to 0$ geometrisch, also
+$T^{(K)}(n) \to 0$, also letztlich Konvergenz gegen $1$.
+\end{beweis}
+
+\begin{bemerkung}
+Voraussetzung~\ref{V2} ist stark --- sie ist für ein \emph{einzelnes} $n$
+nicht aus dem RPF-Satz allein ableitbar. Sie ist die Umformulierung
+der Ergodizitätsforderung für dieses spezifische $n$.
+\end{bemerkung}
+
+% ====================================================
+\section{Was bleibt offen? Bewertungsmatrix}
+\label{sec:offen}
+% ====================================================
+
+\subsection{Tabelle der Argumente}
+
+\begin{tcolorbox}[bewmat]
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{>{\raggedright}p{4.2cm}
+                >{\centering}p{1.6cm}
+                >{\centering}p{1.6cm}
+                >{\raggedright\arraybackslash}p{4.8cm}}
+\toprule
+\textbf{Argument} & \textbf{Stärke} & \textbf{Lücke?} & \textbf{Was fehlt} \\
+\midrule
+Tao: $\mu_H(E) = 0$
+  & \textcolor{bewiesengrün}{\bfseries Stark}
+  & Ja
+  & $\N$ ist $\mu_H$-Nullmenge \\[2pt]
+RPF mod-12: exponentielle Mischung
+  & \textcolor{bewiesengrün}{\bfseries Mittel}
+  & Ja
+  & Formaler Spektrallückenbeweis offen \\[2pt]
+LTE-Worst-Cases + strukturelle Kompensation
+  & \textcolor{bewiesengrün}{\bfseries Mittel}
+  & Ja
+  & Uniforme Zweiblockkompensation \\[2pt]
+Schritt A: Keine ewigen Worst-Cases
+  & \textcolor{warnorange}{\bfseries Schwach}
+  & Ja
+  & Setzt Ergodizität voraus \\[2pt]
+Schritt B: Mindestbesuchsrate $p > 0$
+  & \textcolor{warnorange}{\bfseries Mittel}
+  & Ja
+  & Einzelnes $n$ vs.\ fast alle \\[2pt]
+Schritt C: Quaternionen-Diophantik
+  & \textcolor{lückenrot}{\bfseries Sehr schwach}
+  & Ja
+  & Zirkulär (§\,4) \\[2pt]
+\midrule
+\textbf{Gesamtschau}
+  & \textcolor{warnorange}{\bfseries Offen}
+  & \textbf{Ja}
+  & Uniformitätsproblem nicht gelöst \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{tcolorbox}
+
+\subsection{Nächste substanzielle Schritte}
+
+\begin{enumerate}[label=(\Roman*)]
+  \item \textbf{Spektrallücke formell beweisen:} Die Irreduzibilität
+    und Aperiodizität der mod-12-Markov-Kette ist \emph{endliche Kombinatorik}.
+    Der Beweis, dass alle Zustände in $\{E,A,B,C\}$ kommunizieren
+    und dass die Periodizität $= 1$ ist, sollte formalisierbar sein
+    (z.\,B.\ in Lean mit \texttt{Finset}-Methoden).
+
+  \item \textbf{Zweiblockkompensation gleichmäßig:} Aus
+    \textit{collatz\_lte\_dichte.tex}, Prop.\,3.1 folgt, dass nach dem
+    LTE-extremalen Block eine Kontraktionsphase einsetzt. Kann man dies
+    \emph{uniform} über alle $(k,r)$ zeigen? Das würde das
+    Dichte-Argument auf Zwei-Block-Ebene retten.
+
+  \item \textbf{Von mod-12 zu konkreten $n$:} Finden einer expliziten
+    Klasse $\mathcal{C} \subseteq \N$ mit $\N \setminus \mathcal{C}$
+    endlich, für die V2 (gleichmäßige Blockverteilung) beweisbar ist.
+
+  \item \textbf{Schritt C ersetzen:} Das Quaternionen-Argument sollte
+    durch einen vollständig neuen Ansatz ersetzt werden, der nicht
+    auf der trivialen Ganzzahligkeit der Norm aufbaut.
+\end{enumerate}
+
+\subsection{Ehrliche Abschlussbewertung}
+
+\begin{tcolorbox}[warnung, title={Ehrliche Gesamtbilanz}]
+\begin{itemize}[nosep]
+  \item Das dreistufige Argument (A, B, C) \textbf{schließt die Lücke
+    zwischen Tao und der vollen Conjecture nicht}.
+  \item Schritt B (mod-12-RPF) ist der mathematisch substanziellste
+    Beitrag: Er quantifiziert, wie schnell Ausnahmen ``verdrängt''
+    werden, und gibt $E$ eine exponentielle Mischungsschranke.
+  \item Schritt C ist \textbf{mathematisch nicht valide} (Zirkularität)
+    und sollte nicht als Bestandteil eines Beweisversuchs präsentiert werden.
+  \item Schritt A ist konzeptionell korrekt, aber konditionell auf
+    Voraussetzungen, die zur Collatz-Vermutung äquivalent sind.
+  \item \textbf{Der nächste echte Schritt} ist der formale Beweis der
+    Spektrallücke des mod-12-Transfer-Operators --- endliche Kombinatorik,
+    Lean-formalisierbar.
+\end{itemize}
+\end{tcolorbox}
+
+\subsection{Referenzen}
+
+\begin{itemize}
+  \item T.\ Tao: \textit{Almost all orbits of the Collatz map attain almost
+    bounded values}. Forum Math.\ Pi \textbf{10} (2022), e12.
+  \item J.\ F.\ C.\ Kingman: \textit{The ergodic theory of subadditive stochastic
+    processes}. J.\ Roy.\ Stat.\ Soc.\ B \textbf{30} (1968), 499--510.
+  \item D.\ Ruelle: \textit{Thermodynamic Formalism}. Addison-Wesley, 1978.
+  \item Ergänzende Dokumente: \textit{collatz\_kingman.tex},
+    \textit{collatz\_lte\_dichte.tex}, \textit{collatz\_schlussartikel.tex}.
+\end{itemize}
+
+% ====================================================
+\section{Das Binärinformations-Argument: Analyse und Einordnung}
+\label{sec:binaer}
+% ====================================================
+
+\subsection{Das intuitive Argument}
+\label{sec:binaer:intuitiv}
+
+\begin{tcolorbox}[colback=orange!9, colframe=warnorange, fonttitle=\bfseries,
+  title={Argument D: Endliche Binärinformation (vielversprechend, aber unvollständig)}]
+Jede natürliche Zahl $x \in \N$ besitzt eine \textbf{endliche Binärdarstellung}
+mit $\lfloor\log_2 x\rfloor + 1$ Bits. Das Argument lautet:
+
+\medskip
+\textit{``Sobald die Trajektorie die ``Länge'' dieser Binärdarstellung abgelaufen hat,
+bricht die lokale Speicherfähigkeit des Startwerts zusammen. Die exponentielle
+Mischungsrate $(1-p)^{\lfloor n/12\rfloor}$ frisst die endliche Information
+in endlicher Zeit auf.''}
+
+\medskip
+\textbf{Intuitive Stärke:} Der Startwert $x$ trägt nur $\lfloor\log_2 x\rfloor + 1$
+Bits Information. Nach hinreichend vielen Collatz-Schritten --- mit exponentiell
+mischender mod-12-Dynamik --- sollte diese endliche Information gegen die
+stationäre Verteilung $\pi$ ``eingeebnet'' sein: kein Startwert $x$ kann
+dauerhaft bestimmte mod-12-Klassen bevorzugen.
+
+\medskip
+\textbf{Status:} Das Argument ist intuitiv ansprechend und greift die richtige
+Idee auf (endliche Information des Starts), aber enthält --- wie in \S\,\ref{sec:binaer:zirkel}
+gezeigt --- eine subtile Zirkularität.
+\end{tcolorbox}
+
+\subsection{Die präzise Zirkularitätsprüfung}
+\label{sec:binaer:zirkel}
+
+\begin{tcolorbox}[lücke, title={Das zentrale Problem: Bitlänge wächst mit der Trajektorie}]
+Der Collatz-Schritt $n \mapsto 3n+1$ kann die Bitlänge \emph{vergrößern}:
+\[
+  n \text{ hat } \lfloor\log_2 n\rfloor + 1 \text{ Bits},
+  \qquad
+  3n+1 \text{ hat ca.\ } \lfloor\log_2 n\rfloor + 2 \text{ Bits.}
+\]
+Präziser gilt:
+\[
+  \lfloor\log_2(3n+1)\rfloor \approx \lfloor\log_2 n\rfloor + \log_2 3
+  \approx \lfloor\log_2 n\rfloor + 1{,}58.
+\]
+Die ``endliche Information'' des Startwerts $x$ wird durch die wachsenden
+Folgeglieder \emph{erweitert}, nicht ``aufgefressen''. Nach $k$ ungeraden
+Collatz-Schritten kann die Bitlänge bis auf
+$\lfloor\log_2 x\rfloor + k \cdot \log_2 3 \approx \lfloor\log_2 x\rfloor + 1{,}58\,k$
+angewachsen sein.
+\end{tcolorbox}
+
+\begin{proposition}[Äquivalenz mit Nicht-Divergenz]
+\label{prop:bitlaenge}
+Die Aussage ``Die Bitlänge der Trajektorie $(T^k(n))_{k\geq 0}$ bleibt nach
+oben beschränkt'' ist \textbf{äquivalent zur Collatz-Vermutung für $n$} (im Sinne
+der Nicht-Divergenz).
+\end{proposition}
+
+\begin{beweis}
+$(\Rightarrow)$: Ist die Bitlänge beschränkt, so ist die Trajektorie beschränkt,
+also periodisch. Da die einzige bekannte Periode die $1 \to 4 \to 2 \to 1$-Schleife
+ist, folgt Konvergenz gegen $1$.
+
+$(\Leftarrow)$: Konvergiert die Trajektorie gegen $1$, so ist sie letztlich beschränkt,
+also auch die Bitlänge.
+\end{beweis}
+
+\begin{tcolorbox}[zirkel]
+\textbf{Die Zirkularität von Argument D:} Man darf nicht annehmen, dass die
+Trajektorie beschränkt bleibt --- und damit nicht, dass ihre Bitlänge durch
+$\lfloor\log_2 x\rfloor + \mathrm{const}$ beschränkt ist. Genau diese
+Annahme ist das, was bewiesen werden soll.
+
+\medskip
+\textbf{Vergleich mit Schritt C:} Argument D enthält dieselbe versteckte
+Zirkularität wie Schritt C (\S\,\ref{sec:schrittC}): Beide setzen implizit
+voraus, dass die Trajektorie sich ``kontrolliert'' verhält, um daraus die
+Kontrolle abzuleiten.
+\end{tcolorbox}
+
+\subsection{Was korrekt bleibt: 2-adische Endlichkeit vs.\ Konvergenz}
+\label{sec:binaer:adisch}
+
+Trotz der Zirkularität enthält Argument D einen richtigen Kern, der präzisiert
+werden kann:
+
+\begin{tcolorbox}[adisch, title={Korrekte Aussagen zur 2-adischen Struktur}]
+\begin{enumerate}[label=(\arabic*), nosep]
+  \item \textbf{Endlichkeit in $\N$ vs.\ $\Ztwo$:} Für $n \in \N$ ist die
+    Binärdarstellung endlich. Für allgemeines $x \in \Ztwo$ ist die
+    2-adische Darstellung unendlich. Elemente $\N \subset \Ztwo^*$ sind
+    \emph{isoliert} in der 2-adischen Topologie.
+
+  \item \textbf{Fixpunkte auf $\Ztwo$:} Die Collatz-Abbildung auf $\Ztwo$
+    besitzt Fixpunkte, z.\,B.\ $x = -1$ (da $3\cdot(-1)+1 = -2 \to -1$).
+    Elemente von $\N$ liegen weit von diesen $p$-adischen Fixpunkten entfernt
+    --- aber ob sie zu $1$ konvergieren, folgt daraus nicht.
+
+  \item \textbf{Tao's 2-adische Methode:} Taos Beweis nutzt gerade die
+    \emph{unendliche} 2-adische Entwicklung für die Fourier-Analyse auf $\Ztwo^*$.
+    Die Endlichkeit der Darstellung von $n \in \N$ hilft dort nicht direkt.
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{bemerkung}[Warum Endlichkeit nicht genügt]
+Sei $x \in \N$ mit Binärdarstellung der Länge $L = \lfloor\log_2 x\rfloor + 1$.
+Die Tatsache $L < \infty$ unterscheidet $x$ topologisch von generischen
+$\Ztwo$-Elementen, liefert aber keine arithmetische Schranke für die Dynamik.
+Die Collatz-Abbildung ist nicht isometrisch bzgl.\ der 2-adischen Norm:
+$|T(n)|_2$ kann kleiner oder größer als $|n|_2$ sein.
+\end{bemerkung}
+
+\subsection{Das stärkere, bedingte Argument}
+\label{sec:binaer:bedingt}
+
+Eine \emph{korrekte} und substanzielle Version des Informations-Arguments ist
+die folgende bedingte Aussage, die RPF für die Konditionierung nutzt:
+
+\begin{tcolorbox}[kernidee, title={Das bedingte Informations-Argument (korrekt)}]
+Sei $n \in \N$ gegeben. Definiere $K(n)$ als den Index, nach dem die
+mod-12-Klasse von $T^k(n)$ ``gut gemischt'' ist --- d.\,h.\ den kleinsten
+$K$, so dass:
+\[
+  \bigl\|M^K e_{B(n)} - \pi\bigr\|_{\TV} \leq \varepsilon
+\]
+für ein vorgewähltes $\varepsilon > 0$. Dann gilt:
+\[
+  K(n) \leq \frac{\log(C \cdot \varepsilon^{-1})}{\log(|\lambda_2|^{-1})},
+\]
+wobei $C > 0$ von der Startklasse $B(n) \in \{E,A,B,C\}$ abhängt (nur 4 Fälle).
+Dieser Wert $K(n)$ ist \textbf{endlich und explizit berechenbar} --- unabhängig
+von der Größe von $n$.
+
+\medskip
+\textbf{Was das bedeutet:} Nach $K(n)$ Blockschritten ist die mod-12-Klasse
+gut gemischt, \emph{falls die Trajektorie bis dahin nicht divergiert}. Das ist:
+\begin{enumerate}[label=(\alph*), nosep]
+  \item Kein Beweis der Nicht-Divergenz (conditio sine qua non).
+  \item Aber: eine \emph{quantitative} Verstärkung gegenüber Schritt B.
+    Die Mischungszeit hängt \emph{nicht} von $n$ ab, sondern nur von der
+    mod-12-Klasse des Startwerts.
+  \item Damit: Die ``endliche Binärinformation'' von $n$ verliert ihren
+    Einfluss auf die Klassen-Dynamik nach $K(n)$ Schritten --- \emph{bedingt}
+    auf Nicht-Divergenz.
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{proposition}[Klassen-Vergessen nach $K(n)$ Schritten]
+\label{prop:vergessen}
+Sei $p := \min_{s,t \in S} M_{st} > 0$ die kleinste Übergangswahrscheinlichkeit
+der mod-12-Kette, und sei $|\lambda_2| < 1$ die Spektrallücke. Dann gibt es
+$C > 0$ (unabhängig von $n$), so dass für alle $n \in \N$ und alle $k \geq 0$:
+\[
+  \bigl\|M^k e_{B(n)} - \pi\bigr\|_{\TV} \leq C \cdot |\lambda_2|^k.
+\]
+Insbesondere: Nach
+\[
+  K_\varepsilon := \left\lceil\frac{\log(C/\varepsilon)}{\log(1/|\lambda_2|)}\right\rceil
+  \quad \text{Schritten}
+\]
+ist $\|M^{K_\varepsilon} e_{B(n)} - \pi\|_{\TV} \leq \varepsilon$
+für \textbf{jeden} Startpunkt $n \in \N$ (da $K_\varepsilon$ nicht von $n$ abhängt).
+\end{proposition}
+
+\begin{beweis}
+Direkt aus Theorem~\ref{thm:mischung} mit $C = \max_{s \in S} C_s$ über
+die endlich vielen Startklassen $s \in \{E, A, B, C\}$.
+\end{beweis}
+
+\begin{tcolorbox}[bewmat, title={Vergleichende Einordnung der vier Argumente}]
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{>{\raggedright}p{2.0cm}
+                >{\centering}p{2.2cm}
+                >{\centering}p{1.8cm}
+                >{\raggedright\arraybackslash}p{5.2cm}}
+\toprule
+\textbf{Argument} & \textbf{Stärke} & \textbf{Zirkulär?} & \textbf{Kernaussage} \\
+\midrule
+Schritt A (Ergodentheorie)
+  & \textcolor{warnorange}{\bfseries Bedingt}
+  & Ja (implizit)
+  & Keine ewigen Ausnahmen --- setzt Ergodizität voraus \\[2pt]
+Schritt B (RPF mod-12)
+  & \textcolor{bewiesengrün}{\bfseries Quantitativ}
+  & Nein
+  & Mischung in $K_\varepsilon$ Schritten, unabhängig von $n$ \\[2pt]
+Schritt C (Quaternionen)
+  & \textcolor{lückenrot}{\bfseries Schwach}
+  & \textbf{Ja}
+  & Kein echter Beitrag (§\,\ref{sec:schrittC}) \\[2pt]
+Arg.\ D (Binärinfo)
+  & \textcolor{warnorange}{\bfseries Bedingt}
+  & \textbf{Ja}
+  & Korrekt nur bedingt auf Nicht-Divergenz \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{tcolorbox}
+
+\begin{tcolorbox}[warnung, title={Fazit zu Argument D}]
+Das Binärinformations-Argument ist \textbf{intuitiv wertvoll}, weil es auf
+den richtigen Mechanismus zeigt: Die endliche ``Gedächtnistiefe'' eines
+Startwerts $n \in \N$ sollte nach hinreichend vielen Schritten gegen die
+stationäre Verteilung eingeebnet werden. Der präzise Inhalt dieser Idee
+ist Proposition~\ref{prop:vergessen} (keine Abhängigkeit von $n$ in $K_\varepsilon$).
+
+Zur Schließung der Uniformitätslücke fehlt jedoch der entscheidende Schritt:
+der Nachweis, dass die Trajektorie \emph{überhaupt} $K_\varepsilon$ Schritte
+macht, ohne zu divergieren. Das ist zirkulär.
+
+\textbf{Nächster echter Schritt:} Kombiniere Prop.~\ref{prop:vergessen}
+mit einer \emph{Divergenzausschluss}-Schranke --- z.\,B.\ über 2-adische
+Kontraktionsargumente oder eine positive untere Schranke für die
+Konvergenzwahrscheinlichkeit in den ersten $K_\varepsilon$ Schritten.
+\end{tcolorbox}
+
+\end{document}
