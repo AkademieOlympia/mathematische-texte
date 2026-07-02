@@ -43,13 +43,21 @@ theorem density_C_chains_finite (N k : Nat) :
       (Finset.range (2 * N + 1)).filter (fun e => 2 ^ (k + 1) | e + 1) := by
     ext n; simp only [Finset.mem_filter, Finset.mem_range]
     constructor
-    . rintro hn_hpadic; exact hn_hpadic
-    . intro hn_hdvd
-      refine hn_hdvd, (padicVal_succ_ge_iff_dvd n (k + 1)).mpr hn_hdvd
+    . intro h
+      exact ⟨h.1.1, (padicVal_succ_ge_iff_dvd n (k + 1)).mp h.2⟩
+    . intro h
+      have hodd : Odd n := by
+        rcases Nat.even_or_odd n with heven | hod
+        . rcases heven with ⟨t, rfl⟩
+          have hdvd' : 2 ^ (k + 1) | 2 * t + 1 := by simpa [two_mul] using h.2
+          have h2 : 2 | 2 * t + 1 :=
+            dvd_trans (dvd_pow_self 2 (Nat.succ_ne_zero k)) hdvd'
+          norm_num at h2
+        . exact hod
+      exact And.intro (And.intro h.1 hodd) ((padicVal_succ_ge_iff_dvd n (k + 1)).mpr h.2)
   rw [hset_eq]
   have h_count := Nat.card_multiples (2 * N + 1) (2 ^ (k + 1))
-  rw [h_count]
-  rw [show (2 : Nat) ^ (k + 1) = 2 * 2 ^ k from by ring, Nat.div_div_eq_div_mul]
+  rw [h_count, show (2 : Nat) ^ (k + 1) = 2 * 2 ^ k from by ring, ← Nat.div_div_eq_div_mul]
   have h_div : (2 * N + 1) / 2 = N := by omega
   rw [h_div]
 
@@ -92,9 +100,10 @@ theorem collatz_norm_before_halving (n : Int) :
     (3 * n + 1) ^ 2 > n ^ 2 <-> n ^ 2 + 3 * n > 0 := by
   constructor <;> intro h <;> nlinarith [sq_nonneg n]
 
-theorem exception_probability_decay (p : Real) (hp0 : 0 < p) (hp1 : p < 1) (n : Nat) :
+theorem exception_probability_decay (p : Real) (_hp0 : 0 < p) (hp1 : p < 1) (n : Nat) :
     (1 - p) ^ n <= (1 - p) ^ 0 := by
-  apply pow_le_one_of_nonpos_of_le <;> linarith
+  rw [pow_zero]
+  exact pow_le_one₀ (by linarith : 0 <= 1 - p) (by linarith : 1 - p <= 1)
 
 theorem exception_probability_tendsto_zero (p : Real) (hp0 : 0 < p) (hp1 : p < 1) :
     Filter.Tendsto (fun n : Nat => (1 - p) ^ n) Filter.atTop (nhds 0) := by
