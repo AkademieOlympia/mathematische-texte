@@ -126,10 +126,9 @@ theorem valuation_le_two_limits_C_chain (n : Nat) (h : padicValNat 2 (n + 1) ≤
     padicValNat 2 (n + 1) < 3 := by omega
 
 /-- Mischschranken-Kern: (1-p)^n → 0 für p ∈ (0,1). -/
-theorem mixing_probability_bound (p : Real) (hp0 : 0 < p) (hp1 : p < 1) (n : Nat) :
+theorem mixing_probability_bound (p : Real) (_hp0 : 0 < p) (hp1 : p < 1) (n : Nat) :
     (1 - p) ^ n ≤ 1 := by
-  have : 0 ≤ 1 - p := by linarith
-  exact pow_le_one_of_nonpos_of_le this (by linarith)
+  exact pow_le_one₀ (by linarith : 0 ≤ 1 - p) (by linarith : 1 - p ≤ 1)
 
 theorem mixing_probability_tendsto_zero (p : Real) (hp0 : 0 < p) (hp1 : p < 1) :
     Filter.Tendsto (fun n : Nat => (1 - p) ^ n) Filter.atTop (nhds 0) := by
@@ -151,11 +150,21 @@ theorem density_C_chains_finite (N k : Nat) :
       (Finset.range (2 * N + 1)).filter (fun e => 2 ^ (k + 1) | e + 1) := by
     ext n; simp only [Finset.mem_filter, Finset.mem_range]
     constructor
-    . rintro ⟨hn_hpadic, _⟩; exact hn_hpadic
-    . intro hn_hdvd; refine hn_hdvd, (padicVal_succ_ge_iff_dvd n (k + 1)).mpr hn_hdvd
+    . intro h
+      exact ⟨h.1.1, (padicVal_succ_ge_iff_dvd n (k + 1)).mp h.2⟩
+    . intro h
+      have hodd : Odd n := by
+        rcases Nat.even_or_odd n with heven | hod
+        . rcases heven with ⟨t, rfl⟩
+          have hdvd' : 2 ^ (k + 1) | 2 * t + 1 := by simpa [two_mul] using h.2
+          have h2 : 2 | 2 * t + 1 :=
+            dvd_trans (dvd_pow_self 2 (Nat.succ_ne_zero k)) hdvd'
+          norm_num at h2
+        . exact hod
+      exact And.intro (And.intro h.1 hodd) ((padicVal_succ_ge_iff_dvd n (k + 1)).mpr h.2)
   rw [hset_eq]
   have h_count := Nat.card_multiples (2 * N + 1) (2 ^ (k + 1))
-  rw [h_count, show (2 : Nat) ^ (k + 1) = 2 * 2 ^ k from by ring, Nat.div_div_eq_div_mul]
+  rw [h_count, show (2 : Nat) ^ (k + 1) = 2 * 2 ^ k from by ring, ← Nat.div_div_eq_div_mul]
   have h_div : (2 * N + 1) / 2 = N := by omega
   rw [h_div]
 
