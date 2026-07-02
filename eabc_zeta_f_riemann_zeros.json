@@ -28,6 +28,7 @@
     "thresholds": {
       "count_lt_0.005": 0,
       "count_lt_0.01": 0,
+      "count_lt_0.02": 0,
       "count_lt_0.05": 0,
       "count_lt_0.1": 0,
       "count_lt_1": 0
@@ -53,6 +54,7 @@
     "thresholds": {
       "count_lt_0.005": 1,
       "count_lt_0.01": 2,
+      "count_lt_0.02": 7,
       "count_lt_0.05": 15,
       "count_lt_0.1": 53,
       "count_lt_1": 8436
@@ -491,5 +493,77 @@
       "count_lt_0.1": 52,
       "count_lt_1": 6782
     }
+  },
+  "threshold_comparison": {
+    "description": "#{|ζ_F(1/2+iγ)| < ε}: Riemann-γ_n vs. Zufalls-γ gleicher Dichte",
+    "thresholds": [
+      {
+        "epsilon": 0.005,
+        "count_riemann": 1,
+        "count_random": 0,
+        "excess_riemann_minus_random": 1,
+        "rate_riemann": 1e-05,
+        "rate_random": 0.0
+      },
+      {
+        "epsilon": 0.01,
+        "count_riemann": 2,
+        "count_random": 2,
+        "excess_riemann_minus_random": 0,
+        "rate_riemann": 2e-05,
+        "rate_random": 2e-05
+      },
+      {
+        "epsilon": 0.02,
+        "count_riemann": 7,
+        "count_random": 2,
+        "excess_riemann_minus_random": 5,
+        "rate_riemann": 7e-05,
+        "rate_random": 2e-05
+      },
+      {
+        "epsilon": 0.05,
+        "count_riemann": 15,
+        "count_random": 10,
+        "excess_riemann_minus_random": 5,
+        "rate_riemann": 0.00015,
+        "rate_random": 0.0001
+      },
+      {
+        "epsilon": 0.1,
+        "count_riemann": 53,
+        "count_random": 52,
+        "excess_riemann_minus_random": 1,
+        "rate_riemann": 0.00053,
+        "rate_random": 0.00052
+      },
+      {
+        "epsilon": 1.0,
+        "count_riemann": 8436,
+        "count_random": 6782,
+        "excess_riemann_minus_random": 1654,
+        "rate_riemann": 0.08436,
+        "rate_random": 0.06782
+      }
+    ]
+  },
+  "phase_correlation": {
+    "description": "R_N = (1/N) sum exp(i(Theta(n) - Phi(gamma_n))); Phi(t)=t log phi",
+    "theta_mode": "sigma",
+    "theta_definition": "Theta(n) = (pi/2) sigma(n)",
+    "N": 100000,
+    "R_N": {
+      "re": 0.0018525955941806015,
+      "im": 0.0024900646905758384,
+      "abs": 0.0031036321622946754
+    },
+    "R_N_rand": {
+      "re": -0.0006912689455745304,
+      "im": -0.000490477155486916,
+      "abs": 0.0008475969532568292,
+      "n_random": 100000,
+      "seed": 42
+    },
+    "abs_excess_riemann_minus_rand": 0.002256035209037846
   }
 }

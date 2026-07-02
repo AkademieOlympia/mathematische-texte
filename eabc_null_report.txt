@@ -1,0 +1,80 @@
+EABC-AltSig²-Null-Ergebnisbericht
+===================================
+Datum: 2026-06-19 11:14
+
+DATENBASIS
+----------
+  Basislauf:      N = 200,000 Primzahlen, p ≤ 2,999,999
+  Erweiterung:    N = 500,000 Primzahlen, p ≤ 7,368,811
+  Fenstergrössen: m ∈ [1000, 5000, 10000]
+  Fensteranzahl:  K = N/m (disjunkt)
+
+BEFUND
+------
+  Kein signifikanter Unterschied zum Permutations-Nullmodell.
+
+  Basislauf (N=200k), Permutations-median-p:
+    A_EA: 0.2630, 0.4350, 0.6240 (über m=1k/5k/10k)
+    A_EB: 0.4850, 0.5100, 0.5690
+    A_EC: 0.4550, 0.5240, 0.5530
+    Minimum: 0.2630  (alle > 0.05 → H₀ nicht verworfen)
+
+  Erweiterungslauf (N=500k), Permutations-median-p:
+    A_EA: 0.3250, 0.4025, 0.5500
+    A_EB: 0.4600, 0.5237, 0.5787
+    A_EC: 0.3525, 0.5487, 0.5825
+    Minimum: 0.3250  (alle > 0.05 → H₀ nicht verworfen)
+
+TRENDVERGLEICH 200k → 500k
+--------------------------
+  A_EA: μ_200k = -0.000812,  μ_500k = +0.000348  → Trend schwächer/gleich
+  A_EB: μ_200k = +0.000763,  μ_500k = +0.000810  → Trend stärker
+  A_EC: μ_200k = +0.000124,  μ_500k = +0.001189  → Trend stärker
+
+SENSITIVITÄTSSCHRANKE (Power-Analyse)
+--------------------------------------
+  Methode: einseitiger z-Test, α=0.05, Power=80%
+  Formel:  δ_min = (z_α + z_β) · σ / sqrt(K)  = 2.4865 · σ / sqrt(K)
+
+  Minimale detektierbare Effektgröße bei N=200k:
+    A_EA: 0.005015 … 0.005988
+    A_EB: 0.004578 … 0.005634
+    A_EC: 0.004215 … 0.005625
+
+  Minimale detektierbare Effektgröße bei N=500k:
+    A_EA: 0.003172 … 0.003787
+    A_EB: 0.002895 … 0.003563
+    A_EC: 0.002666 … 0.003558
+
+  → Die Methode ist sensitiv für Effekte dieser Größenordnung.
+    Falls |E[a_EX]| kleiner ist, bleibt er unentdeckt.
+
+N_NEEDED: Wann wird der beobachtete Trend nachweisbar?
+-------------------------------------------------------
+  (Gesucht: N sodass δ_min(N) ≤ |μ_obs| aus dem Basislauf)
+
+    A_EA: N_needed ≈ 1,386,433 … 598,445,580
+    A_EB: N_needed ≈ 1,556,579 … 32,914,168
+    A_EC: N_needed ≈ 4,840,189 … 35,693,997
+
+INTERPRETATION
+--------------
+  Falls E[a_EX] ≠ 0, dann gilt: |E[a_EX]| < δ_min(200k) in diesem N-Bereich.
+
+  Ein eventueller Effekt hätte folgende Eigenschaften:
+    - Er ist kleiner als die detektierbare Schwelle bei N=200k/500k
+    - Er wäre erst bei N > N_needed oben nachweisbar
+    - Das Vorzeichen des Trends (falls konsistent negativ) ist kein
+      belastbarer Befund, solange p > 0.05 und frac_sig < 0.50
+
+  WISSENSCHAFTLICHE AUSSAGE:
+  Das Null-Ergebnis ist quantifiziert: Es schließt Effekte der Größenordnung
+  |a_EX| > 0.00527
+  bei N=200k mit 80% Power aus.
+  Schwächere Effekte bleiben bei diesem N unentdeckt.
+
+FAZIT
+-----
+  Keine arithmetische Pfadasymmetrie zweiter Ordnung nachweisbar.
+  Das Ergebnis ist statistisch quantifiziert und nicht nur qualitativ.
+===================================

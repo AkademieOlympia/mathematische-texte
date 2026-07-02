@@ -1,0 +1,224 @@
+{
+  "meta": {
+    "module": "collatz_eabc_oktaeder_flux_test.py",
+    "theory_oktaeder": "collatz_eabc_oktaeder_test.md",
+    "theory_diskrete_geometrie": "collatz_eabc_diskrete_geometrie.md",
+    "max_p": 1000000,
+    "epistemic_label": "Modellabbildung / Experiment — kein Beweis",
+    "mapping": {
+      "carrier": "regular octahedron O_6 in R^3",
+      "equator": "C4 cycle E→A→B→C→E",
+      "poles": "P+ (ABCEA), P- (CEABC)",
+      "shell_weight": "r_8(p) via Jacobi r4*r4 convolution",
+      "8D_projection": "(e1,e2)→E, (e3,e4)→A, (e5,e6)→B, (e7,e8)→C"
+    }
+  },
+  "graph": {
+    "vertices": [
+      "E",
+      "A",
+      "B",
+      "C",
+      "P+",
+      "P-"
+    ],
+    "edge_count": 12,
+    "equatorial_edges": [
+      "EA",
+      "AB",
+      "BC",
+      "CE"
+    ],
+    "E_plus": [
+      "AB",
+      "BC",
+      "CE",
+      "EA"
+    ],
+    "E_minus": [
+      "AE",
+      "BA",
+      "CB",
+      "EC"
+    ]
+  },
+  "r8_verification": {
+    "expected": {
+      "0": 1.0,
+      "1": 16.0,
+      "2": 112.0,
+      "3": 448.0,
+      "4": 1136.0
+    },
+    "computed": {
+      "0": 1.0,
+      "1": 16.0,
+      "2": 112.0,
+      "3": 448.0,
+      "4": 1136.0
+    },
+    "ok": true
+  },
+  "c4_baseline": {
+    "Phi_E": 0.12016293279022404,
+    "C_E": 59,
+    "S_E": 491,
+    "N_plus": 275,
+    "N_minus": 216,
+    "inner_product_omega_h": 118.0,
+    "omega_E": {
+      "EA": 59.0,
+      "AB": 59.0,
+      "BC": 59.0,
+      "CE": 59.0
+    },
+    "holonomy_S_E": 0.12016293279022404
+  },
+  "octahedron_unweighted": {
+    "omega_equatorial": {
+      "EA": 59.0,
+      "AB": 59.0,
+      "BC": 59.0,
+      "CE": 59.0
+    },
+    "omega_vector": [
+      59.0,
+      59.0,
+      59.0,
+      59.0,
+      275.0,
+      216.0,
+      275.0,
+      216.0,
+      275.0,
+      216.0,
+      275.0,
+      216.0
+    ],
+    "N_plus": 275,
+    "N_minus": 216,
+    "C_E": 59,
+    "S_E": 491,
+    "Phi_equatorial": 0.12016293279022404,
+    "Phi_shell_weighted": null,
+    "shell_weighted": false,
+    "polar_plus_flux": 275.0,
+    "polar_minus_flux": 216.0,
+    "polar_preference": 0.12016293279022404,
+    "inner_product_equatorial": 118.0,
+    "inner_product_octahedron": 118.0
+  },
+  "octahedron_shell_weighted": {
+    "omega_equatorial": {
+      "EA": -1.191059059165392e+19,
+      "AB": -1.191059059165392e+19,
+      "BC": -1.191059059165392e+19,
+      "CE": -1.191059059165392e+19
+    },
+    "omega_vector": [
+      -1.191059059165392e+19,
+      -1.191059059165392e+19,
+      -1.191059059165392e+19,
+      -1.191059059165392e+19,
+      8.631030192672141e+20,
+      8.750136098588683e+20,
+      8.631030192672141e+20,
+      8.750136098588683e+20,
+      8.631030192672141e+20,
+      8.750136098588683e+20,
+      8.631030192672141e+20,
+      8.750136098588683e+20
+    ],
+    "N_plus": 275,
+    "N_minus": 216,
+    "C_E": 59,
+    "S_E": 491,
+    "Phi_equatorial": 0.12016293279022404,
+    "Phi_shell_weighted": -0.006852584223673482,
+    "shell_weighted": true,
+    "polar_plus_flux": 8.631030192672141e+20,
+    "polar_minus_flux": 8.750136098588683e+20,
+    "polar_preference": -0.0068525842236736205,
+    "inner_product_equatorial": -2.382118118330784e+19,
+    "inner_product_octahedron": -2.382118118330784e+19
+  },
+  "magnetic_laplacian": {
+    "vertices": [
+      "E",
+      "A",
+      "B",
+      "C",
+      "P+",
+      "P-"
+    ],
+    "eigenvalues": [
+      0.0,
+      0.0,
+      1026.8140465871554,
+      16754.24250074852,
+      17262.503905856836,
+      25618.967153886406
+    ],
+    "smallest_lambda": 0.0,
+    "near_zero_count": 2,
+    "near_zero_eigenvalues": [
+      0.0,
+      0.0
+    ],
+    "formula": "L_mag on equatorial EABC subgraph embedded in O_6"
+  },
+  "comparison": {
+    "Phi_equatorial_matches_c4": true,
+    "Phi_equatorial_delta": 0.0,
+    "C_E_matches": true,
+    "inner_product_equatorial_matches_c4": true,
+    "polar_orientation_preference": 0.12016293279022404,
+    "ABCEA_vs_CEABC_pole_ratio": {
+      "P_plus_flux": 275.0,
+      "P_minus_flux": 216.0
+    }
+  },
+  "verdict": {
+    "Phi_E_nonzero_at_scale": true,
+    "Phi_oct_equatorial_nonzero": true,
+    "Phi_oct_shell_nonzero": true,
+    "Phi_oct_shell_same_sign_as_c4": false,
+    "supports_Phi_E_conjecture": true,
+    "supports_harmonic_pairing": true,
+    "interpretation": "Oktaeder-Äquator + harmonische Paarung unterstützen Φ_E ≠ 0; r₈-Schalen-Gewicht kann bei endlichem X Vorzeichen drehen"
+  },
+  "flux_density_series": [
+    {
+      "max_p": 1000,
+      "Phi_E_c4": 0.0,
+      "Phi_oct_equatorial": 0.0,
+      "Phi_oct_shell": -0.30377247006481695,
+      "C_E": 0,
+      "S_E": 8
+    },
+    {
+      "max_p": 10000,
+      "Phi_E_c4": 0.14285714285714285,
+      "Phi_oct_equatorial": 0.14285714285714285,
+      "Phi_oct_shell": 0.7842930919953398,
+      "C_E": 2,
+      "S_E": 14
+    },
+    {
+      "max_p": 100000,
+      "Phi_E_c4": 0.13043478260869565,
+      "Phi_oct_equatorial": 0.13043478260869565,
+      "Phi_oct_shell": 0.2872536806940304,
+      "C_E": 9,
+      "S_E": 69
+    },
+    {
+      "max_p": 1000000,
+      "Phi_E_c4": 0.12016293279022404,
+      "Phi_oct_equatorial": 0.12016293279022404,
+      "Phi_oct_shell": -0.006852584223673482,
+      "C_E": 59,
+      "S_E": 491
+    }
+  ]
+}

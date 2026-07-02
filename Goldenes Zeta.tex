@@ -1,0 +1,307 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\usepackage{microtype}
+
+\title{Die Fibonacci-Zetafunktion als Summe geometrischer Resonatoren}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Bemerkung}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Wir leiten eine Darstellung der Fibonacci-Zetafunktion als unendliche
+		Summe geometrischer Resonatoren her.
+		Ausgehend von der Binet-Formel entsteht eine Entwicklung,
+		deren Pole durch einfache Resonanzbedingungen bestimmt werden.
+		Die Darstellung macht sichtbar, dass die Fibonacci-Zeta
+		als \"Uberlagerung elementarer geometrischer Reihen verstanden werden kann.
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Die klassische Riemannsche Zetafunktion
+	\[
+	\zeta(s)
+	=
+	\sum_{n\ge1}\frac1{n^s}
+	\]
+	ist urspr\"unglich f\"ur
+	\[
+	\operatorname{Re}(s)>1
+	\]
+	definiert.
+	
+	Eine nat\"urliche Variante entsteht,
+	wenn man die nat\"urlichen Zahlen durch die Fibonacci-Zahlen ersetzt.
+	
+	Die Fibonacci-Zahlen wachsen exponentiell.
+	Aus der Binet-Formel folgt
+	\[
+	F_n
+	=
+	\frac{\varphi^n-\psi^n}{\sqrt5},
+	\]
+	mit
+	\[
+	\varphi
+	=
+	\frac{1+\sqrt5}{2},
+	\qquad
+	\psi
+	=
+	\frac{1-\sqrt5}{2}.
+	\]
+	Daraus ergibt sich die Asymptotik
+	\[
+	F_n
+	\sim
+	\frac{\varphi^n}{\sqrt5}
+	\qquad (n\to\infty).
+	\]
+	Somit gilt
+	\[
+	F_n^{-s}
+	\sim
+	5^{s/2}\varphi^{-ns}.
+	\]
+	Da die rechte Seite geometrisch abf\"allt,
+	konvergiert die Reihe
+	\[
+	\sum_{n\ge1}F_n^{-s}
+	\]
+	absolut genau dann, wenn
+	\[
+	|\varphi^{-s}|<1.
+	\]
+	Dies ist \"aquivalent zu
+	\[
+	\operatorname{Re}(s)>0.
+	\]
+	
+	\begin{definition}[Fibonacci-Zetafunktion]
+		F\"ur komplexe Zahlen $s$ mit
+		\[
+		\operatorname{Re}(s)>0
+		\]
+		definieren wir
+		\[
+		\zeta_F(s)
+		=
+		\sum_{n\ge1}
+		\frac1{F_n^s}.
+		\]
+	\end{definition}
+	
+	Unser Ziel ist eine Darstellung dieser Funktion
+	als Summe elementarer Resonatoren.
+	
+	\section{Die Binet-Darstellung}
+	
+	Die geschlossene Formel von Binet lautet
+	\[
+	F_n
+	=
+	\frac{\varphi^n-\psi^n}{\sqrt5}.
+	\]
+	Mit
+	\[
+	\psi=-\varphi^{-1}
+	\]
+	erh\"alt man
+	\[
+	F_n
+	=
+	\frac{\varphi^n}{\sqrt5}
+	\left(
+	1-(-1)^n\varphi^{-2n}
+	\right).
+	\]
+	Daher
+	\[
+	F_n^{-s}
+	=
+	5^{s/2}
+	\varphi^{-ns}
+	\left(
+	1-(-1)^n\varphi^{-2n}
+	\right)^{-s}.
+	\]
+	
+	\section{Binomialentwicklung}
+	
+	\begin{definition}[Pochhammer-Symbol]
+		F\"ur $m\ge0$ definiert man
+		\[
+		(s)_m
+		=
+		s(s+1)(s+2)\cdots(s+m-1),
+		\]
+		mit der Konvention
+		\[
+		(s)_0=1.
+		\]
+		Das Symbol wird auch als aufsteigende Fakult\"at
+		(rising factorial) bezeichnet.
+	\end{definition}
+	
+	F\"ur
+	\[
+	|u|<1
+	\]
+	gilt die verallgemeinerte Binomialreihe
+	\[
+	(1-u)^{-s}
+	=
+	\sum_{m\ge0}
+	\frac{(s)_m}{m!}u^m.
+	\]
+	Setzt man
+	\[
+	u=(-1)^n\varphi^{-2n},
+	\]
+	so folgt
+	\[
+	F_n^{-s}
+	=
+	5^{s/2}
+	\sum_{m\ge0}
+	\frac{(s)_m}{m!}
+	(-1)^{mn}
+	\varphi^{-n(s+2m)}.
+	\]
+	
+	\section{Vertauschung der Summationen}
+	
+	Durch Summation \"uber alle Fibonacci-Indizes erh\"alt man
+	\[
+	\zeta_F(s)
+	=
+	\sum_{n\ge1}F_n^{-s}.
+	\]
+	Einsetzen der Entwicklung liefert
+	\[
+	\zeta_F(s)
+	=
+	5^{s/2}
+	\sum_{n\ge1}
+	\sum_{m\ge0}
+	\frac{(s)_m}{m!}
+	(-1)^{mn}
+	\varphi^{-n(s+2m)}.
+	\]
+	F\"ur
+	\[
+	\operatorname{Re}(s)>0
+	\]
+	konvergiert die entstehende Doppelsumme absolut.
+	Daher ist nach dem Satz von Fubini bzw.\ Tonelli
+	die Vertauschung der Summationsreihenfolge zul\"assig.
+	
+	Somit
+	\[
+	\zeta_F(s)
+	=
+	5^{s/2}
+	\sum_{m\ge0}
+	\frac{(s)_m}{m!}
+	\sum_{n\ge1}
+	\Bigl(
+	(-1)^m
+	\varphi^{-(s+2m)}
+	\Bigr)^n.
+	\]
+	
+	\section{Geometrische Resonatoren}
+	
+	Die innere Summe ist eine geometrische Reihe.
+	
+	F\"ur
+	\[
+	|q|<1
+	\]
+	gilt
+	\[
+	\sum_{n\ge1}q^n
+	=
+	\frac{q}{1-q}.
+	\]
+	Mit
+	\[
+	q
+	=
+	(-1)^m
+	\varphi^{-(s+2m)}
+	\]
+	erh\"alt man
+	\[
+	\boxed{
+		\zeta_F(s)
+		=
+		5^{s/2}
+		\sum_{m\ge0}
+		\frac{(s)_m}{m!}
+		\frac{
+			(-1)^m\varphi^{-(s+2m)}
+		}{
+			1-(-1)^m\varphi^{-(s+2m)}
+		}.
+	}
+	\]
+	
+	Dies ist die Resonatordarstellung der Fibonacci-Zetafunktion.
+	
+	\section{Resonanzbedingungen}
+	
+	Definiere
+	\[
+	R_m(s)
+	=
+	\frac{
+		(-1)^m\varphi^{-(s+2m)}
+	}{
+		1-(-1)^m\varphi^{-(s+2m)}
+	}.
+	\]
+	Jeder Term besitzt die Form eines elementaren Resonators.
+	
+	Pole entstehen genau dann, wenn
+	\[
+	1-(-1)^m\varphi^{-(s+2m)}
+	=0.
+	\]
+	Dies ist \"aquivalent zu
+	\[
+	\varphi^{s+2m}
+	=
+	(-1)^m.
+	\]
+	Die Fibonacci-Zetafunktion erscheint somit als \"Uberlagerung
+	einer unendlichen Familie geometrischer Resonatoren,
+	deren Resonanzlagen durch den Goldenen Schnitt bestimmt werden.
+	
+	\section{Schlussbemerkung}
+	
+	Die erhaltene Darstellung zeigt,
+	dass die Fibonacci-Zetafunktion als Summe einfacher
+	geometrischer Resonatoren interpretiert werden kann.
+	
+	Der Goldene Schnitt
+	\[
+	\varphi=\frac{1+\sqrt5}{2}
+	\]
+	\"ubernimmt dabei die Rolle einer fundamentalen Skala.
+	
+	Weitere Untersuchungen k\"onnten die analytische Fortsetzung,
+	die genaue Struktur der Resonanzpole sowie Verallgemeinerungen
+	auf andere rekursiv definierte Zahlenfolgen behandeln.
+	
+\end{document}
