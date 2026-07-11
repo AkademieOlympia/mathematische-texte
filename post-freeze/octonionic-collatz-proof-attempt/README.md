@@ -26,7 +26,15 @@ This branch adds **post-freeze** octonionic lift scaffolding under `Collatz/Octo
 ```bash
 python3 post-freeze/octonionic-collatz-proof-attempt/verify_o1_o2.py
 python3 post-freeze/octonionic-collatz-proof-attempt/verify_o1_o2.py --L-max 64
+cd post-freeze/octonionic-collatz-proof-attempt && lake build
 ```
+
+## Lean (Module O3 stub)
+
+| Artefakt | Rolle |
+|---|---|
+| `Collatz/Octonion/OddCoreLogCocycle.lean` | O1 multiplicative cocycle (sorry-free) |
+| `Collatz/Octonion/VariantC.lean` | O4/O5 open `Prop` scaffold |
 
 ## Dossier
 

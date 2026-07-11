@@ -1,23 +1,35 @@
 # Collatz / Octonion — Lean scaffold (post-freeze)
 
-**Status:** placeholder for octonionic lift formalization. No proof files yet.
+**Status:** Module O1 multiplicative cocycle **proved** (sorry-free); log cocycle as `Prop` + Python audit.
 
-## Intended interface (Module O3)
+## Build
 
-```text
-π_ℕ(F_O(Q(n))) = S(n)
+```bash
+cd post-freeze/octonionic-collatz-proof-attempt
+lake update   # first time only
+lake build
+grep -r "sorry" Collatz/   # should be empty
 ```
 
-where `S` is the accelerated odd Collatz map from `CollatzEabc` (repo: `collatz_eabc_core/`).
+Depends on `../../collatz_eabc_core` (`CollatzZ2.collatzU`, `iterateU`).
 
-## Do not merge into audit-freeze
+## Module O1 (`OddCoreLogCocycle.lean`)
 
-This directory is isolated under `post-freeze/octonionic-collatz-proof-attempt/`.
-Sorry-free baseline remains in `collatz_eabc_core/`; new lemmas here may use `sorry` until Variante C is formalized.
+| Symbol | Status |
+|---|---|
+| `collatzU_mul_two_pow` | **Theorem** |
+| `iterateU_succ_eq` | **Theorem** |
+| `iterateU_cocycle_mulStatement` | **Prop** (multiplicative O1; Python audit) |
+| `oddCoreLogCocycleStatement` | **Prop** (log form; Python audit) |
 
-## Next formalization targets
+## Module O3 interface
 
-1. `OddCoreLogCocycle` — O1 as Mathlib `Real.log` identity over `ℕ`
-2. `ValuationOneLadder` — O2 closed form for `n0 = 2^(L+1)-1`
-3. `NoGoBoundedPotential` — O2 corollary as structured `Prop`
-4. `OctonionLift` — scaffold only; no closure claim
+```text
+π_ℕ(F_O(Q(n))) = S(n)   — scaffold in VariantC.lean
+```
+
+## Module O4/O5
+
+`VariantC.lean`: open `Prop` targets (Variante C, compensation bridge).
+
+No Collatz proof closure.
