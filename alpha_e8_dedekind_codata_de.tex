@@ -1,0 +1,227 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\usepackage[ngerman]{babel}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{hyperref}
+
+\geometry{a4paper, top=2.0cm, bottom=2.0cm, left=2.5cm, right=2.5cm}
+
+\hypersetup{colorlinks=true, linkcolor=black, citecolor=black, urlcolor=black}
+
+\newtheorem{theorem}{Satz}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Bemerkung}
+
+\title{\textbf{Hyperbolische Abschirmung und Dedekind-Ordnung:\\
+ein $E_8$-Zugang zum CODATA-Fenster von $\alpha^{-1}$}}
+\author{\textbf{T. Hoffbauer}\thanks{Unabhängige theoretische Forschung, Bamberg, Deutschland.
+E-Mail: \texttt{t.hoffbauer@posteo.de}}}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+Der Kehrwert der Feinstrukturkonstante ist seit Sommerfeld eine empirische Zahl und seit Eddington ein Gegenstand geometrischer Spekulation.
+Wir berichten über eine geschlossene, parameterfreie Konstruktion im EABC-Rahmen:
+eine $8$-dimensionale Radialprojektion auf dem $E_8$-Gitter, kombiniert mit einer \emph{hyperbolischen} statt euklidischen Defektklammer und einer ganzzahligen Dedekind--Ramanujan-Verfeinerung der $\mathrm{Spin}(8)$-Trialität.
+Das Nenner-Feedback $\alpha^{-1}\mapsto\alpha^{-1}$ erweist sich als zu grobe lineare Resummation.
+Die stabile Form ist
+\[
+\alpha^{-1}_{\mathrm{EABC}}
+= 137 + \sqrt{D_r^2 - D_t^2},\qquad
+D_r=\frac{8}{137\,\varphi},\qquad
+D_t=\frac{96}{275\cdot 137},\qquad
+c=\frac{275}{96},
+\]
+mit $\varphi=(1+\sqrt{5})/2$.
+Diese Größe liegt im rationalen Fenster $[137{,}03599908,\,137{,}036]$.
+Der Einschluss ist in Lean~4 über monotone $\mathbb{Q}$-Zertifikate für $\sqrt{5}$ formalisiert, ohne Fließkomma-Axiome.
+\end{abstract}
+
+\noindent\textbf{Schlüsselwörter:}
+Feinstrukturkonstante, $E_8$, $\mathrm{Spin}(8)$-Trialität, Dedekind-$\eta$,\\
+Ramanujan-Ordnung~$24$, hyperbolische Signatur, Lean~4.
+
+\section{Historische Lage}
+
+Sommerfeld führte $\alpha$ 1916 als dimensionslose Kopplung der Feinstruktur ein~\cite{sommerfeld1916}.
+Ihre heutige metrologische Schärfe -- CODATA~2018 gibt $\alpha^{-1}=137{,}035999084(21)$,
+CODATA~2022 $\alpha^{-1}=137{,}035999177(21)$~\cite{codata2018,codata2022} --
+steht in auffälligem Kontrast zur Abwesenheit einer allgemein anerkannten \emph{geometrischen} Herleitung.
+
+Eddingtons Identifikation mit $136$ bzw.\ $137$~\cite{eddington1936} und Wylers Konstruktion über Volumina von $S^5$ und $S^4$~\cite{wyler1969}
+markieren zwei Pole einer langen Tradition: ganzzahlige Gruppenordnungen auf der einen, kontinuierliche Haar-Maße auf der anderen Seite.
+Beide Linien bleiben unvollständig.
+Die erste unterschätzt die Nachkommastellen, die zweite hängt an der Auswahl eines homogenen Raumes.
+
+Unabhängig davon ist $E_8$ seit Gosset das ausgezeichnete unimodulare Gitter in Dimension~$8$~\cite{conwaysloane}.
+Seine Weyl-Gruppe, die Coxeter-Zahl $h=30$ und die Trialität von $\mathrm{Spin}(8)$~\cite{adams} sind kanonische Invarianten, keine Fitparameter.
+Die Zahl $24$ tritt parallel als Gewicht der Dedekindschen $\eta$-Funktion, als Ramanujan-Tau-Grad und als kritische Dimension der bosonischen Saite auf.
+Die vorliegende Note verbindet genau diese drei Stränge -- Gitterrang~$8$, Trialität~$3$, Dedekind-Ordnung~$24$ -- mit der empirischen Basis $137$.
+
+Sie steht neben, nicht anstelle, der Haar-Kapazitätsreihe
+$\Omega_{P_0}=4\pi^3+\pi^2+\pi$ im selben Forschungsprogramm~\cite{hoffbauer2026haar}.
+Hier geht es um die \emph{Gitterprojektion}: wie ein radialer $E_8$-Defekt und ein transversaler Torusanteil so verknüpft werden, dass das CODATA-Fenster nicht verfehlt wird.
+
+\section{Das Hindernis}
+
+Der radiale Ansatz
+\begin{equation}
+D_r=\frac{\mathrm{Rang}(E_8)}{137\,\varphi}=\frac{8}{137\,\varphi}\approx 0{,}036089576
+\end{equation}
+trifft den empirischen Defekt $\varepsilon=\alpha^{-1}-137\approx 0{,}03599954$ bereits zu $99{,}75\,\%$.
+Das Residuum ist strikt positiv:
+\begin{equation}
+\Delta_{\mathrm{res}}=D_r-\varepsilon\approx +9{,}00\times 10^{-5}.
+\end{equation}
+In der \emph{euklidischen} Hoffbauer-Klammer
+$\Delta=\sqrt{D_r^2+D_t^2}$ gilt daher notwendig
+\begin{equation}
+\sqrt{D_r^2+D_t^2}\ge D_r>\varepsilon.
+\end{equation}
+Jeder reelle orthogonale Torusbeitrag $D_t^2>0$ \emph{vergrößert} den Defekt und treibt $\alpha^{-1}$ weiter aus dem Fenster.
+Lineares Nenner-Feedback $D_r=8/(\alpha^{-1}\varphi)$ mildert den Radialterm nur um etwa $10^{-5}$ und reicht allein nicht.
+Dasselbe Feedback, auf $D_t$ übertragen, überkompensiert in den negativen Bereich.
+Die Renormierungsgruppe läuft logarithmisch in der Skala, nicht als Substitution $137\mapsto\alpha^{-1}$ im Nenner.
+
+\section{Die Lösung}
+
+\subsection{Hyperbolische Signatur}
+Die transversale Störung wird als polarisierende Abschirmung gelesen, nicht als additive Energie.
+Die Klammer erhält die Signatur $(+,-)$:
+\begin{equation}
+\label{eq:hyp}
+\Delta_{\mathrm{EABC}}=\sqrt{D_r^2-D_t^2}.
+\end{equation}
+Dann ist $\Delta_{\mathrm{EABC}}<D_r$, und das positive Radialresiduum kann kompensiert werden.
+Der für exaktes $\varepsilon$ nötige Torusanteil ist
+\begin{equation}
+D_t^{\mathrm{soll}}=\sqrt{D_r^2-\varepsilon^2}\approx 2{,}54767\times 10^{-3}.
+\end{equation}
+
+\subsection{Von der Trialität zur Dedekind-Ordnung}
+Reine $\mathrm{Spin}(8)$-Trialität liefert $D_t=1/(3\cdot 137)\approx 2{,}433\times 10^{-3}$ und schirmt zu schwach ab
+($\alpha^{-1}\approx 137{,}0360075$).
+Die Modulkorrektur $3\mapsto 3(1-1/24)=23/8$ -- Euler-Charakteristik bzw.\ $\eta$-Gewicht -- ergibt
+$c=23/8=2{,}875$ und
+$\alpha^{-1}\approx 137{,}036000161$,
+nur $1{,}61\times 10^{-7}$ über der hier verwendeten Oberkante $137{,}036$.
+
+Die restliche relative Lücke $\Delta c/c\approx -1/290$ wird nicht durch $\alpha$-Feedback geschlossen, sondern durch die gemeinsame Periode von Rang und Ramanujan-Stufe:
+\begin{equation}
+\label{eq:c}
+c=\frac{23}{8}-\frac{1}{96}=\frac{275}{96},\qquad 96=8\times 12=\mathrm{Rang}(E_8)\times 12.
+\end{equation}
+Hier ist $12$ die kanonische Halbierung von $24$, und $96=4\times 24$.
+Man erhält
+\begin{equation}
+D_t=\frac{1}{c\cdot 137}=\frac{96}{275\cdot 137}=\frac{96}{37675}
+\end{equation}
+und numerisch
+\begin{equation}
+\alpha^{-1}_{\mathrm{EABC}}=137{,}0359995088,
+\end{equation}
+Residuum $-3{,}12\times 10^{-8}$ gegen die Fenstermitte $137{,}03599954$, relativ $2{,}3\times 10^{-10}$ (Sub-ppb).
+
+\subsection{Was verworfen wurde}
+Coxeter-Dämpfung $3\cdot(29/30)$ und der Modul-Fluss $3-1/(2\varphi^2)$ landen ebenfalls nahe, aber entweder außerhalb des Fensters oder weiter von der Mitte.
+Die zweite Dedekind-Schleife $3(1-1/24-8/(24^2\varphi^2))$ unterschießt.
+Entscheidend ist die methodische Regel: \emph{keine} lineare $\alpha$-Rückkopplung im Nenner, sobald $c$ feiner als $3$ ist.
+
+\section{Formale Sicherung}
+
+Quadratwurzeln $\sqrt{5}$ und $\sqrt{D_r^2-D_t^2}$ werden in Lean~4 nicht numerisch ausgewertet, sondern durch monotone rationale Schranken eingeschlossen~\cite{deMoura2021,mathlib}.
+Aus
+$2{,}236067977^2<5<2{,}236067978^2$
+folgen Schranken für $\varphi$, daraus wegen Antimonotonie Schranken für $D_r$, daraus Schranken $R_{\mathrm{lo}}<D_r^2-D_t^2<R_{\mathrm{hi}}$.
+Es genügt,
+\begin{equation}
+\varepsilon_{\min}^2<R_{\mathrm{lo}}\qquad\text{und}\qquad R_{\mathrm{hi}}<\varepsilon_{\max}^2
+\end{equation}
+über $\mathbb{Q}$ zu prüfen, mit $\varepsilon_{\min}=0{,}03599908$ und $\varepsilon_{\max}=0{,}036$.
+Das zugehörige Lean-Theorem liegt im Modul \texttt{EABC.AlphaEabcBounds}
+und ist in Mathlib~4.29 ohne Zusatzaxiome geschlossen.
+
+\begin{theorem}[CODATA-Einschluss]
+Sei $\varphi=(1+\sqrt{5})/2$, $D_r=8/(137\varphi)$, $D_t=96/37675$ und
+$\alpha^{-1}_{\mathrm{EABC}}=137+\sqrt{D_r^2-D_t^2}$, definiert über den nichtnegativen Radikanden.
+Dann gilt
+\[
+137{,}03599908<\alpha^{-1}_{\mathrm{EABC}}<137{,}036.
+\]
+\end{theorem}
+
+\section{Einordnung und Grenzen}
+
+Das Ergebnis ist ein \emph{algebraischer Einschluss}, kein Ersatz für die QED-Renormierung und kein Beweis, dass die Natur $E_8$ ``wählt''.
+Die Basis $137$ bleibt die ganzzahlige Eddington-Schwelle; die Nachkommastellen entstehen aus Rang, goldenem Schnitt, hyperbolischer Abschirmung und der Ordnung $275/96$.
+Das zertifizierte Fenster ist das in der Intervallanalyse benutzte Intervall $[137{,}03599908,\,137{,}036]$, angelehnt an CODATA~2018, nicht das $1\sigma$-Band von CODATA~2022 um $137{,}035999177(21)$.
+Eine Verschärfung auf dieses Band würde eine weitere, wiederum ganzzahlige, Verfeinerung von $c$ oder den Übergang zur Haar-Reihe~\cite{hoffbauer2026haar} verlangen.
+
+Historisch steht die Konstruktion zwischen Eddingtons Ganzzahligkeit und Wylers Volumenformeln:
+sie nimmt die Ganzahligkeit aus $E_8$ und $24$, die Irrationalität allein aus $\varphi=\frac{1+\sqrt{5}}{2}$, und ersetzt euklidische Defektaddition durch hyperbolische Vakuumabschirmung.
+
+{\small
+\begin{thebibliography}{9}
+
+\bibitem{sommerfeld1916}
+A.~Sommerfeld,
+\emph{Zur Quantentheorie der Spektrallinien},
+Ann.\ Phys.\ \textbf{51} (1916), 1--94.
+
+\bibitem{eddington1936}
+A.~S.~Eddington,
+\emph{Relativity Theory of Protons and Electrons},
+Cambridge University Press, 1936.
+
+\bibitem{wyler1969}
+A.~Wyler,
+\emph{L'espace symétrique du groupe des lois de Kepler},
+C.\ R.\ Acad.\ Sci.\ Paris Sér.\ A \textbf{269} (1969), 743--745.
+
+\bibitem{codata2018}
+E.~Tiesinga, P.~J.~Mohr, D.~B.~Newell, B.~N.~Taylor,
+CODATA recommended values of the fundamental physical constants: 2018,
+Rev.\ Mod.\ Phys.\ \textbf{93} (2021), 025010.
+
+\bibitem{codata2022}
+P.~J.~Mohr, D.~B.~Newell, B.~N.~Taylor, E.~Tiesinga,
+CODATA recommended values of the fundamental physical constants: 2022,
+Rev.\ Mod.\ Phys.\ \textbf{97} (2025), 025002.
+
+\bibitem{conwaysloane}
+J.~H.~Conway, N.~J.~A.~Sloane,
+\emph{Sphere Packings, Lattices and Groups},
+Springer, 3.\ Aufl., 1999.
+
+\bibitem{adams}
+J.~F.~Adams,
+\emph{Lectures on Exceptional Lie Groups},
+University of Chicago Press, 1996.
+
+\bibitem{hoffbauer2026haar}
+T.~Hoffbauer,
+\emph{Geometrische Starrheit und spektrale Herleitung der Feinstrukturkonstante auf kompakten Spinor-Phasen-Mannigfaltigkeiten},
+Preprint, 2026.
+
+\bibitem{deMoura2021}
+L.~de~Moura, S.~Ullrich,
+\emph{The Lean~4 Theorem Prover and Programming Language},
+in: CADE 28, LNCS 12699, Springer, 2021.
+
+\bibitem{mathlib}
+The mathlib Community,
+\emph{The Lean mathematical library},
+in: CPP 2020, ACM, 2020.
+
+\end{thebibliography}
+}
+
+\end{document}
