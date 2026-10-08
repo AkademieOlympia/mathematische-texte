@@ -107,6 +107,15 @@ inline double alpha_inverse_point() {
     return 137.0 + std::sqrt(dr * dr - dt * dt);
 }
 
+// Volle Planck-Wirkung h = 2 pi hbar, hbar = alpha^{-1} (e = c = 1)
+inline double planck_h_point() {
+    return 2.0 * std::acos(-1.0) * alpha_inverse_point();
+}
+
+inline double planck_h0_point() {
+    return 2.0 * std::acos(-1.0) * ALPHA_0_INV;
+}
+
 } // namespace eabc
 
 #endif // EABC_ALPHA_HPP

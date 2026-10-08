@@ -1,0 +1,329 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{array}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\DeclareMathOperator{\Var}{Var}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+
+\title{Theoretical Research Report: EABC-Proof-Theory (Version 19)}
+\author{Research Collaboration}
+\date{2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This document establishes formal-logical and algebraic components of the
+Euler-Adic-Borel-Cantor (EABC) research program. We formulate the orthogonal
+Pythagorean ANOVA decomposition of the Hurwitz--Hoffbauer defect, derive its
+exact representation as an unnormalized window-integrated algebraic two-point
+functional, prove that the uniform asymptotic frequency set over the four-symbol
+EABC alphabet is $\mathbf{\Pi}^0_3$-complete, and analyze a specified
+eight-state isotropic reward-controlled Markov kernel. For this kernel the
+limiting entropy is positive, so deterministic zero-entropy crystallization is
+excluded.
+\end{abstract}
+
+\section{Pythagorean Orthogonal Decomposition and Variance Splitting}
+
+Let $\eta_{\min}:=(1,1,1,1)$ denote the minimal EABC reference pattern,
+and let $P=(h_E,h_A,h_B,h_C)$ be the observed Hoffbauer bracket. Define
+\[
+\delta:=P-\eta_{\min}
+=(\delta_E,\delta_A,\delta_B,\delta_C),
+\qquad
+\delta_X:=h_X-1,
+\]
+and
+\[
+K:=\langle\delta,\mathbf 1_4\rangle
+=\sum_{X\in\{E,A,B,C\}}\delta_X,
+\qquad
+\mathbf 1_4:=(1,1,1,1).
+\]
+
+Since $\|\mathbf 1_4\|_2^2=4$, the space $\mathbb R^4$ decomposes as
+\[
+\mathbb R^4
+=\operatorname{span}\{\mathbf 1_4\}
+\mathbin{\overset{\perp}{\oplus}}
+\mathbf 1_4^\perp,
+\qquad
+\delta
+=\underbrace{\frac K4\mathbf 1_4}_{\delta_\parallel}
++\underbrace{\left(\delta-\frac K4\mathbf 1_4\right)}_{\delta_\perp}.
+\]
+By construction, $\langle\delta_\perp,\mathbf 1_4\rangle=0$.
+
+Define the unminimized direct defect by
+\[
+D_{\mathrm{HH}}^0(P)
+:=\|\delta\|_2^2
+=\sum_{X\in\{E,A,B,C\}}\delta_X^2.
+\]
+The Pythagorean theorem gives
+\[
+\boxed{
+D_{\mathrm{HH}}^0(P)
+=\underbrace{\frac{K^2}{4}}_{\text{radial quadratic contribution}}
++\underbrace{D_{\mathrm{HH}}^\perp(P)}_{
+\text{internal EABC asymmetry}}
+}
+\]
+with
+\[
+\begin{aligned}
+D_{\mathrm{HH}}^\perp(P)
+&:=\|\delta_\perp\|_2^2
+=\sum_X\left(\delta_X-\frac K4\right)^2\\
+&=\sum_X\delta_X^2-\frac14\left(\sum_X\delta_X\right)^2
+=4\,\Var_{\mathrm{pop}}(\delta_E,\delta_A,\delta_B,\delta_C).
+\end{aligned}
+\]
+
+\subsection{Representation as an Integrated Two-Point Functional}
+
+Let $I$ be a finite window of EABC prime classes. Put
+\[
+N:=|I|,
+\qquad
+h_X:=\#\{t\in I:c_t=X\}.
+\]
+Then $\sum_Xh_X=N$ and $K=\sum_X(h_X-1)=N-4$. For the centered
+simplex embedding
+\[
+v(c_t):=e_{c_t}-\frac14\mathbf 1_4\in\mathbf 1_4^\perp
+\]
+one has
+\[
+\sum_{t\in I}v(c_t)
+=\left(h_E-\frac N4,h_A-\frac N4,h_B-\frac N4,h_C-\frac N4\right)
+=\delta_\perp.
+\]
+Consequently,
+\[
+\boxed{
+\begin{aligned}
+D_{\mathrm{HH}}^\perp(I)
+&=\left\|\sum_{t\in I}v(c_t)\right\|_2^2\\
+&=\sum_{r,s\in I}\langle v(c_r),v(c_s)\rangle\\
+&=\sum_{X\in\{E,A,B,C\}}h_X^2-\frac{N^2}{4}.
+\end{aligned}}
+\]
+Thus $D_{\mathrm{HH}}^\perp$ is an unnormalized, window-integrated
+algebraic two-point functional. No physical or thermodynamic assumptions are
+required for this identity.
+
+\subsection{Range of the Relative Anisotropy Index}
+
+For $D_{\mathrm{HH}}^0(P)>0$, define
+\[
+R_\perp(P)
+:=\frac{D_{\mathrm{HH}}^\perp(P)}{D_{\mathrm{HH}}^0(P)}
+=1-\frac{K^2}{4D_{\mathrm{HH}}^0(P)}.
+\]
+It is invariant under nonzero rescaling $\delta\mapsto\lambda\delta$.
+
+\begin{enumerate}
+\item In the ambient defect space $\mathbb R^4$, Cauchy--Schwarz gives
+\[
+0\le R_\perp\le1,
+\]
+with
+\[
+R_\perp=0\iff\delta\in\operatorname{span}\{\mathbf 1_4\},
+\qquad
+R_\perp=1\iff K=0\ \text{and}\ \delta\ne0.
+\]
+
+\item In the positive excess cone $\delta_X\ge0$, nonnegativity of the
+cross terms and Cauchy--Schwarz give
+\[
+D_{\mathrm{HH}}^0(P)\le K^2\le4D_{\mathrm{HH}}^0(P),
+\qquad
+\boxed{0\le R_\perp\le\frac34}.
+\]
+Here $R_\perp=0$ if and only if all four components of $\delta$ are
+equal. For a nonzero integer-valued radial defect this implies $4\mid K$.
+The equality $R_\perp=3/4$ holds if and only if exactly one component is
+nonzero; up to permutation, $\delta=(K,0,0,0)$ with $K>0$.
+\end{enumerate}
+
+\section{Descriptive Complexity and Topological Classification}
+
+Let $\mathcal C:=\{E,A,B,C\}$ and let
+$Y:=\mathcal C^{\mathbb N}$ carry the product topology. Define
+\[
+A_{\mathrm{freq}}
+:=\left\{\omega\in Y:
+\lim_{n\to\infty}\frac1n
+\sum_{i=1}^n\mathbf 1_{\{X\}}(\omega_i)=\frac14
+\text{ for every }X\in\mathcal C\right\}.
+\]
+
+We use the standard prototype
+\[
+\mathcal Z
+:=\left\{\alpha\in2^{\mathbb N}:
+\lim_{n\to\infty}\frac1n\sum_{i=1}^n\alpha_i=0\right\},
+\]
+which is $\mathbf{\Pi}^0_3$-complete; see \cite{KiLinton1994}.
+
+\begin{theorem}
+The uniform asymptotic frequency set $A_{\mathrm{freq}}$ is a
+$\mathbf{\Pi}^0_3$-complete (equivalently, $F_{\sigma\delta}$) subset of
+$\mathcal C^{\mathbb N}$.
+\end{theorem}
+
+\begin{proof}
+For the upper bound, for $X\in\mathcal C$, $m\ge1$, and $N\ge1$, let
+\[
+F_{X,m,N}
+:=\bigcap_{n\ge N}
+\left\{\omega:\left|
+\frac1n\sum_{i=1}^n\mathbf 1_{\{X\}}(\omega_i)-\frac14
+\right|\le\frac1m\right\}.
+\]
+Each set inside the intersection depends on a finite prefix and is clopen;
+hence $F_{X,m,N}$ is closed. Moreover,
+\[
+A_{\mathrm{freq}}
+=\bigcap_{X\in\mathcal C}\bigcap_{m=1}^\infty
+\bigcup_{N=1}^\infty F_{X,m,N},
+\]
+so $A_{\mathrm{freq}}\in\mathbf{\Pi}^0_3$.
+
+For hardness, define a continuous map
+$f:2^{\mathbb N}\to\mathcal C^{\mathbb N}$ using blocks of constant length
+four. Let
+\[
+H:=(E,A,B,C),
+\qquad
+S:=(E,E,E,E),
+\]
+and set
+\[
+f(\alpha):=B_1B_2B_3\cdots,
+\qquad
+B_k:=\begin{cases}
+H,&\alpha_k=0,\\
+S,&\alpha_k=1.
+\end{cases}
+\]
+Every output prefix depends on only finitely many input bits, so $f$ is
+continuous. Write $d_n:=n^{-1}\sum_{k=1}^n\alpha_k$. At the end of the
+$n$th block,
+\[
+\operatorname{freq}_{4n}(X;f(\alpha))
+=\frac{1-d_n}{4}
+\quad(X\in\{A,B,C\}),
+\]
+whereas
+\[
+\operatorname{freq}_{4n}(E;f(\alpha))
+=\frac14+\frac34d_n.
+\]
+The discrepancy between an arbitrary prefix and the preceding block endpoint
+is at most $4/N$, which tends to zero. Hence
+\[
+\alpha\in\mathcal Z
+\iff d_n\to0
+\iff f(\alpha)\in A_{\mathrm{freq}}.
+\]
+Thus $\mathcal Z\le_{\mathrm W}A_{\mathrm{freq}}$, proving
+$\mathbf{\Pi}^0_3$-hardness and therefore completeness.
+\end{proof}
+
+\section{Markov-Kernel Analysis and Entropy Limits}
+
+Let $S_8:=\mathcal C\times\{+,-\}$, so $|S_8|=8$. This is a specified
+model state space; no arithmetic identification beyond this product definition
+is asserted. For fixed $T_{\mathrm{eff}}>0$ and scale parameter $\rho>0$, put
+\[
+\beta_\rho:=\frac{\rho^2}{T_{\mathrm{eff}}},
+\qquad
+E_{ij}(\rho):=-\rho^2\kappa_{ij},
+\qquad
+\kappa_{ii}=0,
+\qquad
+\kappa_{ij}=1\quad(i\ne j).
+\]
+The associated Gibbs kernel is
+\[
+T_{ij}(\rho)
+=\frac{\exp(\beta_\rho\kappa_{ij})}
+{\sum_{k=1}^8\exp(\beta_\rho\kappa_{ik})}.
+\]
+As $\rho\to\infty$,
+\[
+T(\rho)\longrightarrow T_\infty:=\frac17(J_8-I_8).
+\]
+
+\subsection{Entropy and Information Limits}
+
+The formal high-temperature limit $\beta_\rho\to0$ has row entropy
+\[
+H_{\mathrm{high}}=\log_2 8=3\ \mathrm{bits}.
+\]
+In the low-effective-temperature limit $\beta_\rho\to\infty$,
+\[
+H_\infty=\log_2 7\approx2.80735\ \mathrm{bits},
+\qquad
+\Delta H=\log_2\frac87\approx0.192645\ \mathrm{bits}.
+\]
+Under the uniform stationary distribution of the limiting chain,
+\[
+I(X_n;X_{n+1})=\log_2\frac87.
+\]
+This mutual information records exactly the exclusion of the current state
+from the seven admissible successors.
+
+\subsection{Spectral Characterization}
+
+The spectrum is
+\[
+\operatorname{spec}(T_\infty)
+=\left\{1,\left(-\frac17\right)^{[7]}\right\}.
+\]
+With $\Pi:=J_8/8$,
+\[
+T_\infty^n
+=\Pi+\left(-\frac17\right)^n(I_8-\Pi).
+\]
+Thus every initial distribution converges geometrically to the uniform
+stationary distribution. The limiting kernel describes isotropic
+self-avoidance, not deterministic crystallization.
+
+\section{Epistemic Status Summary}
+
+\begin{center}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.62\linewidth}|
+                >{\raggedright\arraybackslash}p{0.24\linewidth}}
+\hline
+\textbf{Component} & \textbf{Status}\\
+\hline
+Pythagorean defect decomposition & $[\mathrm T]$ Proved\\
+Integrated two-point functional identity & $[\mathrm T]$ Proved\\
+Anisotropy bounds in the stated domains & $[\mathrm T]$ Proved\\
+Uniform frequency set is $\mathbf{\Pi}^0_3$-complete
+& $[\mathrm T]$ Proved, using the cited prototype theorem\\
+Specified Markov limit $T_\infty=(J_8-I_8)/7$ & $[\mathrm T]$ Proved\\
+Deterministic zero-entropy limit for this kernel & $[\mathrm F]$ Refuted\\
+Application of the eight-state kernel to prime dynamics & $[\mathrm H]$ Open\\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{thebibliography}{9}
+\bibitem{KiLinton1994}
+H.~Ki and T.~Linton,
+\emph{Normal numbers and subsets of $\mathbb N$ with given densities},
+Fundamenta Mathematicae \textbf{144} (1994), 163--179.
+\end{thebibliography}
+
+\end{document}

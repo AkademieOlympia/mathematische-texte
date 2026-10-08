@@ -1,0 +1,711 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{csquotes}
+\geometry{margin=27mm}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,pdftitle={Zentralmoden auf Hurwitz-Primschalen},pdfauthor={Entwurf}}
+\pagestyle{fancy}
+\setlength{\headheight}{14pt}
+\fancyhf{}
+\lhead{Zentralmoden auf Hurwitz-Primschalen}
+\rhead{Mathematischer Entwurf}
+\cfoot{\thepage}
+
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{proposition}[satz]{Proposition}
+\newtheorem{korollar}[satz]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+\newtheorem{beispiel}[satz]{Beispiel}
+\newtheorem{vermutung}[satz]{Vermutung}
+
+\newcommand{\HH}{\mathcal H}
+\newcommand{\SSp}{\mathcal S_p}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+
+\title{\textbf{Zentralmoden auf Hurwitz-Primschalen}\\[3mm]
+\large Projektorspektren, Zwei- und Drei-Quadrate-Sätze und eine mod-8-Obstruktion}
+\author{Mathematischer Arbeitsentwurf}
+\date{9. September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Wir untersuchen eine elementar definierte Spektralobservable auf Primnormschalen der Hurwitz-Quaternionen. Für eine ungerade Primzahl $p$ sei
+\[
+\mathcal S_p=\{q\in\mathcal H:N(q)=p\},
+\]
+und sei $R(a,b,c,d)=(b,a,d,c)$ eine symmetrische Involution des umgebenden reellen Viererraums. Mit den orthogonalen Projektoren $P_\pm=\frac12(I\pm R)$ definieren wir
+\[
+A_\pm(q)=\frac{\|P_\pm q^2\|^2}{p^2}.
+\]
+Es gilt identisch $A_+(q)+A_-(q)=1$. Der zentrale Spektralwert $1/2$ ist äquivalent zum Verschwinden einer expliziten rationalen Chiralitätsobservable
+\[
+\chi_R(q)=\frac{4a\bigl[b(2a^2-p)+2acd\bigr]}{p^2}.
+\]
+Der Hauptsatz charakterisiert für ungerade Primzahlen das Auftreten einer Zentralmode durch die Kongruenzklasse modulo $8$:
+\[
+\frac12\in\Spec_R(p)\quad\Longleftrightarrow\quad p\not\equiv7\pmod8.
+\]
+Die Existenzseite folgt konstruktiv aus dem Zwei-Quadrate-Satz für $p\equiv1\pmod4$ beziehungsweise aus dem Drei-Quadrate-Satz für $p\equiv3\pmod8$. Die Nicht-Existenzseite für $p\equiv7\pmod8$ verbindet die Drei-Quadrate-Obstruktion mit einer aus der Projektorbedingung hervorgehenden Zwei-Quadrate-Relation. Wir diskutieren ferner die Verfeinerung einer extern vorgegebenen mod-12-Klassifikation zu modulo $24$, exakte Spektralstatistiken sowie die Grenze zwischen dem rein arithmetischen Satz und möglichen physikalischen Toy-Interpretationen.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Einleitung}
+Die Darstellung natürlicher Zahlen als Summen von Quadraten gehört zu den ältesten systematischen Themen der neuzeitlichen Zahlentheorie. Fermat formulierte im 17. Jahrhundert die Aussage, dass jede Primzahl $p\equiv1\pmod4$ als Summe zweier Quadrate darstellbar ist. Euler gab im 18. Jahrhundert den ersten vollständigen Beweis. Die Theorie der quadratischen Formen wurde anschließend insbesondere durch Legendre und Gauß systematisiert. Im 19. Jahrhundert führten Lipschitz und Hurwitz arithmetische Ordnungen in der Quaternionenalgebra ein und eröffneten damit einen vierdimensionalen Rahmen, in dem Normdarstellungen durch vier Quadrate natürlich erscheinen.
+
+Die vorliegende Arbeit führt keinen neuen klassischen Quadratesatz ein. Stattdessen wird eine konkrete Projektorobservable auf endlichen Hurwitz-Normschalen untersucht. Das überraschende Resultat ist, dass das Auftreten des zentralen Spektralwerts $1/2$ exakt durch die klassische $8n+7$-Obstruktion gesteuert wird. Der neue Inhalt liegt somit in der \emph{Übersetzung} klassischer Darstellbarkeitssätze in die Spektralgeometrie des Operators
+\[
+q\longmapsto P_\pm q^2.
+\]
+
+Die Konstruktion entstand aus einem Toy-Modell mit einer zusaetzlichen Klassifikation modulo $12$. Für den mathematischen Hauptsatz ist diese physikalisch motivierte Herkunft jedoch irrelevant: Alle Resultate der Abschnitte \ref{sec:hurwitz}--\ref{sec:main} sind Aussagen über die Hurwitz-Ordnung, eine fest gewählte Involution $R$ und klassische Zahlentheorie. Eine mögliche physikalische Interpretation wird erst am Ende und ausdrücklich getrennt behandelt.
+
+\section{Historischer und mathematischer Hintergrund}
+\subsection{Der Zwei-Quadrate-Satz}
+Für ungerade Primzahlen lautet Fermats Zwei-Quadrate-Satz
+\begin{equation}\label{eq:2square}
+p=x^2+y^2\quad\Longleftrightarrow\quad p\equiv1\pmod4.
+\end{equation}
+Fermat gab die Behauptung im 17. Jahrhundert an; Euler wird der erste vollständige Beweis zugeschrieben. Spätere Beweise verwenden unter anderem Gaußsche ganze Zahlen, binäre quadratische Formen oder Gitterargumente. Für unsere Zwecke ist allein die konstruktive Existenzrichtung wichtig: Ist $p\equiv1\pmod4$, so existieren $u,v\in\ZZ$ mit $p=u^2+v^2$.
+
+\subsection{Der Drei-Quadrate-Satz}
+Der Drei-Quadrate-Satz charakterisiert die positiven ganzen Zahlen, die als Summe dreier Quadrate darstellbar sind:
+\begin{equation}\label{eq:3square}
+n=x^2+y^2+z^2
+\quad\Longleftrightarrow\quad
+n\neq4^\alpha(8\beta+7)
+\end{equation}
+mit $\alpha,\beta\in\NN_0$. Historisch ist das Resultat mit Legendre und Gauß verbunden. Für eine ungerade Primzahl vereinfacht sich die Obstruktion zu
+\begin{equation}\label{eq:prime3square}
+p\equiv7\pmod8
+\quad\Longleftrightarrow\quad
+p\text{ ist nicht als Summe dreier ganzer Quadrate darstellbar.}
+\end{equation}
+
+\subsection{Lipschitz- und Hurwitz-Quaternionen}
+Wir arbeiten in der rationalen Hamilton-Quaternionenalgebra
+\[
+\mathbb H(\QQ)=\QQ\oplus\QQ i\oplus\QQ j\oplus\QQ k,
+\qquad i^2=j^2=k^2=ijk=-1.
+\]
+Für
+\[
+q=a+bi+cj+dk
+\]
+ist die Konjugation
+\[
+\bar q=a-bi-cj-dk
+\]
+und die reduzierte Norm
+\[
+N(q)=q\bar q=a^2+b^2+c^2+d^2.
+\]
+Die Hurwitz-Ordnung kann in Koordinatenform geschrieben werden als
+\begin{equation}\label{eq:hurwitzorder}
+\HH=\ZZ^4\;\cup\;\left(\ZZ+\tfrac12\right)^4,
+\end{equation}
+wobei die zweite Menge als Quaternionen mit vier echt halbzahligen Koeffizienten verstanden wird. Diese Beschreibung ist für die hier verwendete Normzählung ausreichend.
+
+Für ungerades $n$ lautet die klassische Zählformel für Hurwitz-Quaternionen gegebener Norm
+\begin{equation}\label{eq:hurwitzcount}
+r_{\HH}(n)=24\sum_{d\mid n}d.
+\end{equation}
+Insbesondere gilt für eine ungerade Primzahl $p$
+\begin{equation}\label{eq:shellsize}
+|\mathcal S_p|=24(p+1).
+\end{equation}
+Wir zählen dabei alle Hurwitzpunkte, also insbesondere Vorzeichen und Assoziierte, nicht Äquivalenzklassen modulo Einheiten.
+
+\section{Primnormschalen und Projektorgeometrie}\label{sec:hurwitz}
+\begin{definition}[Primnormschale]
+Für eine ungerade Primzahl $p$ sei
+\[
+\mathcal S_p=\{q\in\HH:N(q)=p\}.
+\]
+\end{definition}
+
+Wir identifizieren $q=a+bi+cj+dk$ mit seinem Koordinatenvektor $(a,b,c,d)^T\in\RR^4$. Die Linksmultiplikation mit $q$ besitzt die reelle Matrixdarstellung
+\begin{equation}\label{eq:leftmatrix}
+M_L(q)=
+\begin{pmatrix}
+a&-b&-c&-d\\
+b&a&-d&c\\
+c&d&a&-b\\
+d&-c&b&a
+\end{pmatrix}.
+\end{equation}
+Sie erfüllt
+\begin{equation}\label{eq:similitude}
+M_L(q)^T M_L(q)=N(q)I_4.
+\end{equation}
+Somit ist $N(q)^{-1/2}M_L(q)$ orthogonal. Ferner ist
+\[
+M_L(q)\,(a,b,c,d)^T
+\]
+genau der Koordinatenvektor von $q^2$.
+
+\subsection{Die Involution $R$}
+Wir fixieren die reelle lineare Abbildung
+\begin{equation}\label{eq:R}
+R(a,b,c,d)=(b,a,d,c),
+\end{equation}
+mit Matrix
+\[
+R=
+\begin{pmatrix}
+0&1&0&0\\
+1&0&0&0\\
+0&0&0&1\\
+0&0&1&0
+\end{pmatrix}.
+\]
+Offensichtlich gilt
+\[
+R^2=I,
+\qquad
+R^T=R,
+\qquad
+\tr R=0.
+\]
+Daher sind
+\begin{equation}\label{eq:projectors}
+P_+=\frac12(I+R),
+\qquad
+P_-=\frac12(I-R)
+\end{equation}
+orthogonale Projektoren auf zwei zueinander orthogonale zweidimensionale Unterräume.
+
+\begin{definition}[Projektorintensitäten]
+Für $q\in\mathcal S_p$ definieren wir
+\begin{equation}\label{eq:Adef}
+A_\pm(q)=\frac{\|P_\pm q^2\|^2}{p^2}.
+\end{equation}
+Das zugehörige diskrete Spektrum ist
+\[
+\Spec_R(p)=\{A_+(q):q\in\mathcal S_p\}.
+\]
+Die Multiplizität eines Spektralwertes $x$ sei
+\[
+m_p(x)=\#\{q\in\mathcal S_p:A_+(q)=x\}.
+\]
+\end{definition}
+
+\begin{proposition}[Komplementarität]\label{prop:complement}
+Für jedes $q\in\mathcal S_p$ gilt
+\[
+A_+(q)+A_-(q)=1.
+\]
+\end{proposition}
+\begin{proof}
+Da $P_+$ und $P_-$ orthogonale komplementäre Projektoren sind,
+\[
+\|P_+v\|^2+\|P_-v\|^2=\|v\|^2
+\]
+für alle $v\in\RR^4$. Für $v=q^2$ gilt wegen der Multiplikativität der Quaternionennorm
+\[
+\|q^2\|^2=N(q^2)=N(q)^2=p^2.
+\]
+Division durch $p^2$ liefert die Behauptung.
+\end{proof}
+
+\section{Geschlossene Koordinatenformel}
+Für $q=a+bi+cj+dk\in\mathcal S_p$ ist
+\begin{equation}\label{eq:q2}
+q^2=(2a^2-p)+2ab\,i+2ac\,j+2ad\,k.
+\end{equation}
+Wir schreiben
+\[
+s=2a^2-p,
+\quad x=2ab,
+\quad y=2ac,
+\quad z=2ad.
+\]
+Dann
+\[
+P_+(s,x,y,z)^T
+=\frac12(s+x,s+x,y+z,y+z)^T
+\]
+und
+\[
+P_-(s,x,y,z)^T
+=\frac12(s-x,-s+x,y-z,-y+z)^T.
+\]
+Daraus folgt
+\begin{align}
+A_+(q)&=\frac{(s+x)^2+(y+z)^2}{2p^2},\label{eq:Aplus}\\
+A_-(q)&=\frac{(s-x)^2+(y-z)^2}{2p^2}.\label{eq:Aminus}
+\end{align}
+
+\begin{definition}[Chiralitätsdifferenz]
+Wir definieren
+\[
+\chi_R(q)=A_+(q)-A_-(q).
+\]
+\end{definition}
+
+\begin{proposition}[Explizite Chiralitätsformel]\label{prop:chi}
+Für $q=a+bi+cj+dk\in\mathcal S_p$ gilt
+\begin{equation}\label{eq:chi}
+\boxed{
+\chi_R(q)=\frac{4a\bigl[b(2a^2-p)+2acd\bigr]}{p^2}.}
+\end{equation}
+Insbesondere
+\[
+A_\pm(q)=\frac{1\pm\chi_R(q)}2.
+\]
+\end{proposition}
+\begin{proof}
+Aus \eqref{eq:Aplus} und \eqref{eq:Aminus} folgt
+\[
+A_+-A_-=\frac{4sx+4yz}{2p^2}=\frac{2(sx+yz)}{p^2}.
+\]
+Mit $s=2a^2-p$, $x=2ab$, $y=2ac$ und $z=2ad$ ergibt sich
+\[
+\chi_R(q)
+=\frac{4ab(2a^2-p)+8a^2cd}{p^2}
+=\frac{4a\bigl[b(2a^2-p)+2acd\bigr]}{p^2}.
+\]
+Aus Proposition \ref{prop:complement} folgt damit $A_\pm=(1\pm\chi_R)/2$.
+\end{proof}
+
+\section{Zentralmoden}
+\begin{definition}[Zentralmode]
+Ein $q\in\mathcal S_p$ heißt Zentralmode, wenn
+\[
+A_+(q)=A_-(q)=\frac12.
+\]
+Äquivalent gilt $\chi_R(q)=0$.
+\end{definition}
+
+Aus \eqref{eq:chi} folgt unmittelbar:
+\begin{lemma}[Zentralmodengleichung]\label{lem:central}
+Für $q=a+bi+cj+dk\in\mathcal S_p$ gilt
+\begin{equation}\label{eq:central}
+A_+(q)=\frac12
+\quad\Longleftrightarrow\quad
+a\bigl[b(2a^2-p)+2acd\bigr]=0.
+\end{equation}
+\end{lemma}
+Damit zerfällt die Zentralmodenbedingung in den Zweig $a=0$ und den Zweig $a\neq0$.
+
+\subsection{Der Zweig $a=0$}
+Ist $a=0$, so kann $q$ kein echt halbzahliger Hurwitzpunkt sein; daher $b,c,d\in\ZZ$. Die Normgleichung wird
+\begin{equation}\label{eq:3branch}
+p=b^2+c^2+d^2.
+\end{equation}
+Somit ist dieser Zweig vollständig durch den Drei-Quadrate-Satz kontrolliert.
+
+\begin{korollar}\label{cor:a0}
+Ist $p\equiv7\pmod8$, so existiert keine Zentralmode mit $a=0$.
+\end{korollar}
+
+\subsection{Der Zweig $a\neq0$ und eine Zwei-Quadrate-Relation}
+Für die Plus-Projektion setzen wir
+\begin{equation}\label{eq:XY}
+X=2a^2-p+2ab,
+\qquad
+Y=2a(c+d).
+\end{equation}
+Aus \eqref{eq:Aplus} folgt für eine Zentralmode
+\begin{equation}\label{eq:XYcircle}
+X^2+Y^2=p^2.
+\end{equation}
+Für ganzzahlige Hurwitzpunkte sind $X,Y\in\ZZ$. Für echt halbzahlige Hurwitzpunkte sind die in \eqref{eq:XY} auftretenden Kombinationen ebenfalls ganzzahlig, da $2a,2b,2c,2d$ ungerade ganze Zahlen sind und die entsprechenden Summen gerade sind.
+
+\begin{lemma}[Degeneration für $p\equiv3\pmod4$]\label{lem:degenerate}
+Sei $p\equiv3\pmod4$ prim und seien $X,Y\in\ZZ$ mit $X^2+Y^2=p^2$. Dann
+\[
+(X,Y)\in\{(\pm p,0),(0,\pm p)\}.
+\]
+\end{lemma}
+\begin{proof}
+Modulo $p$ gilt $X^2+Y^2\equiv0$. Wäre $Y\not\equiv0\pmod p$, so wäre
+\[
+(XY^{-1})^2\equiv-1\pmod p,
+\]
+im Widerspruch dazu, dass $-1$ für $p\equiv3\pmod4$ kein quadratischer Rest ist. Also $p\mid Y$; analog $p\mid X$. Schreibe $X=pu$, $Y=pv$. Dann $u^2+v^2=1$, woraus die vier angegebenen Möglichkeiten folgen.
+\end{proof}
+
+\subsection{Ausschluss der degenerierten Fälle}
+Der folgende Schritt enthält die technische Kernprüfung. Wir trennen ganzzahlige und echt halbzahlige Hurwitzpunkte.
+
+\begin{lemma}[Ganzzahliger $a\neq0$-Zweig]\label{lem:intcase}
+Sei $p\equiv7\pmod8$ prim und $q=(a,b,c,d)\in\ZZ^4$ mit $N(q)=p$ und $a\neq0$. Dann kann $q$ keine Zentralmode sein.
+\end{lemma}
+\begin{proof}
+Nach Lemma \ref{lem:degenerate} gilt für eine Zentralmode $(X,Y)\in\{(\pm p,0),(0,\pm p)\}$. Da $p$ ungerade und $Y=2a(c+d)$ gerade ist, sind die Fälle $(0,\pm p)$ ausgeschlossen. Also $Y=0$, mithin $c=-d$.
+
+Ist $X=-p$, so
+\[
+2a^2-p+2ab=-p,
+\]
+also $2a(a+b)=0$. Wegen $a\neq0$ folgt $b=-a$. Dann
+\[
+p=N(q)=2a^2+2c^2
+\]
+ist gerade, Widerspruch.
+
+Ist $X=p$, so
+\[
+a(a+b)=p.
+\]
+Da $p$ prim ist und $a\in\ZZ\setminus\{0\}$, gilt $|a|\in\{1,p\}$. Aus $a^2\le p$ folgt für $p>1$ $|a|=1$. Dann $|a+b|=p$, also $|b|\ge p-1$ und
+\[
+N(q)\ge1+(p-1)^2>p
+\]
+für $p\ge3$, Widerspruch.
+\end{proof}
+
+\begin{lemma}[Halbzahlige $a\neq0$-Zweig]\label{lem:halfcase}
+Sei $p\equiv7\pmod8$ prim und
+\[
+q=\frac12(A+Bi+Cj+Dk)\in\HH
+\]
+mit ungeraden $A,B,C,D\in\ZZ$, $N(q)=p$ und $A\neq0$. Dann kann $q$ keine Zentralmode sein.
+\end{lemma}
+\begin{proof}
+Die Normbedingung lautet
+\begin{equation}\label{eq:scalednorm}
+A^2+B^2+C^2+D^2=4p.
+\end{equation}
+Ferner
+\[
+X=\frac{A(A+B)}2-p,
+\qquad
+Y=\frac{A(C+D)}2.
+\]
+Wieder gilt $(X,Y)\in\{(\pm p,0),(0,\pm p)\}$.
+
+\emph{Fall 1: $Y=0$.} Dann $D=-C$. Für $X=-p$ folgt $A+B=0$, also $B=-A$. Aus \eqref{eq:scalednorm} folgt
+\[
+2p=A^2+C^2.
+\]
+Da $A,C$ ungerade sind, ist $A^2+C^2\equiv2$ oder $10\pmod{16}$, also $2p\equiv2$ oder $10\pmod{16}$ und damit $p\equiv1$ oder $5\pmod8$, Widerspruch zu $p\equiv7\pmod8$.
+
+Für $X=p$ gilt
+\[
+A(A+B)=4p.
+\]
+Da $A$ ungerade ist, teilt $A$ die ungerade Primzahl $p$; somit $|A|\in\{1,p\}$. Ist $|A|=1$, so $|A+B|=4p$ und daher $|B|\ge4p-1$, unvereinbar mit $B^2\le4p$. Ist $|A|=p$, so $|A+B|=4$ und damit $|B|\ge p-4$. Für $p\ge7$ gilt
+\[
+p^2+(p-4)^2>4p,
+\]
+Widerspruch zu \eqref{eq:scalednorm}.
+
+\emph{Fall 2: $X=0$.} Dann
+\[
+A(A+B)=2p.
+\]
+Da $A$ ungerade ist, folgt erneut $|A|\in\{1,p\}$. Zusätzlich ist $|Y|=p$, also
+\[
+|A(C+D)|=2p.
+\]
+Für $|A|=1$ folgt $|A+B|=2p$, somit $|B|\ge2p-1$ und $B^2>4p$ für $p\ge7$. Für $|A|=p$ gilt $|A+B|=2$, also $|B|\ge p-2$, und
+\[
+p^2+(p-2)^2>4p
+\]
+für $p\ge7$. In allen Fällen entsteht ein Widerspruch.
+\end{proof}
+
+\section{Der Zentralmodensatz}\label{sec:main}
+\begin{satz}[Zentralmodensatz für Hurwitz-Primschalen]\label{thm:central}
+Sei $p$ eine ungerade Primzahl. Dann gilt
+\begin{equation}\label{eq:main}
+\boxed{
+\frac12\in\Spec_R(p)
+\quad\Longleftrightarrow\quad
+p\not\equiv7\pmod8.}
+\end{equation}
+Äquivalent:
+\begin{equation}\label{eq:mainmult}
+\boxed{
+m_p(1/2)=0
+\quad\Longleftrightarrow\quad
+p\equiv7\pmod8.}
+\end{equation}
+\end{satz}
+\begin{proof}
+\emph{Nicht-Existenz für $p\equiv7\pmod8$.} Nach Korollar \ref{cor:a0} existiert keine Zentralmode im Zweig $a=0$. Für $a\neq0$ schließt Lemma \ref{lem:intcase} alle ganzzahligen und Lemma \ref{lem:halfcase} alle echt halbzahligen Hurwitzpunkte aus.
+
+\emph{Existenz für $p\equiv1,5\pmod8$.} Dann $p\equiv1\pmod4$. Nach dem Zwei-Quadrate-Satz existieren $u,v\in\ZZ$ mit
+\[
+p=u^2+v^2.
+\]
+Setze
+\[
+q=u+vj,
+\]
+also $(a,b,c,d)=(u,0,v,0)$. Dann $N(q)=p$ und die rechte Seite von \eqref{eq:central} verschwindet wegen $b=d=0$. Somit ist $q$ Zentralmode.
+
+\emph{Existenz für $p\equiv3\pmod8$.} Nach dem Drei-Quadrate-Satz existieren $b,c,d\in\ZZ$ mit
+\[
+p=b^2+c^2+d^2.
+\]
+Setze $q=bi+cj+dk$, also $a=0$. Dann ist $N(q)=p$ und \eqref{eq:central} ist automatisch erfüllt.
+\end{proof}
+
+\begin{korollar}[Klassifikation nach modulo $8$]
+Für ungerade Primzahlen gilt:
+\[
+\begin{array}{c|c|c}
+p\bmod8 & \text{Zentralmode} & \text{Konstruktionsmechanismus}\\\hline
+1 & \text{ja} & p=u^2+v^2\\
+3 & \text{ja} & p=b^2+c^2+d^2\\
+5 & \text{ja} & p=u^2+v^2\\
+7 & \text{nein} & \text{Zwei-/Drei-Quadrate-Obstruktion}
+\end{array}
+\]
+\end{korollar}
+
+\section{Verfeinerung modulo 24}
+Der Hauptsatz ist intrinsisch ein modulo-$8$-Resultat. Eine modulo-$24$-Struktur entsteht erst, wenn zusätzlich eine unabhängige Klassifikation modulo $12$ vorgegeben wird. Da
+\[
+\operatorname{lcm}(8,12)=24,
+\]
+ist modulo $24$ der kleinste gemeinsame endliche Verfeinerungsraum.
+
+Insbesondere zerfällt die Klasse
+\[
+p\equiv7\pmod{12}
+\]
+in
+\[
+p\equiv7\pmod{24}
+\qquad\text{und}\qquad
+p\equiv19\pmod{24}.
+\]
+Der Zentralmodensatz unterscheidet diese beiden Unterklassen scharf:
+\begin{align*}
+p\equiv7\pmod{24}&\Longrightarrow p\equiv7\pmod8\Longrightarrow m_p(1/2)=0,\\
+p\equiv19\pmod{24}&\Longrightarrow p\equiv3\pmod8\Longrightarrow m_p(1/2)>0.
+\end{align*}
+Die mod-24-Verfeinerung ist somit keine zusätzliche Annahme des Zentralmodensatzes, sondern die Kombination einer mod-12-Etikettierung mit der genuinen mod-8-Obstruktion.
+
+\section{Spektralmaß und statistische Observablen}
+Der Mittelwert von $A_+$ allein kann keine vollständige Information über die Schale enthalten. Wir definieren deshalb das normierte diskrete Spektralmaß
+\begin{equation}\label{eq:spectralmeasure}
+\rho_{p,R}=\frac1{|\mathcal S_p|}\sum_{q\in\mathcal S_p}\delta_{A_+(q)}.
+\end{equation}
+Seine Momente sind
+\[
+M_k(p)=\int x^k\,d\rho_{p,R}(x)
+=\frac1{|\mathcal S_p|}\sum_{q\in\mathcal S_p}A_+(q)^k.
+\]
+Von besonderem Interesse sind die Zentralmasse
+\[
+Z_p=\rho_{p,R}(\{1/2\})=\frac{m_p(1/2)}{24(p+1)},
+\]
+die Varianz
+\[
+\operatorname{Var}_p(A)=M_2(p)-M_1(p)^2
+\]
+und die vollständige Multiplizitätsfunktion
+\[
+x\longmapsto m_p(x).
+\]
+Der Hauptsatz charakterisiert exakt das Verschwinden von $Z_p$.
+
+\subsection{Kleine Beispiele}
+Für einige Primnormen erhält man durch exakte Enumeration:
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+$p$ & $p\bmod8$ & $|\mathcal S_p|$ & $m_p(1/2)$ & $Z_p$\\
+\midrule
+5  & 5 & 144  & 56 & $7/18$\\
+7  & 7 & 192  & 0  & $0$\\
+17 & 1 & 432  & 80 & $5/27$\\
+19 & 3 & 480  & 24 & $1/20$\\
+29 & 5 & 720  & 104 & $13/90$\\
+31 & 7 & 768  & 0 & $0$\\
+41 & 1 & 1008 & 128 & $8/63$\\
+43 & 3 & 1056 & 24 & $1/44$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Diese Daten illustrieren den Satz, sind aber für seinen Beweis nicht erforderlich.
+
+\section{Was an dem Resultat neu ist -- und was nicht}
+Die klassischen Sätze über zwei und drei Quadrate sind selbstverständlich nicht neu. Ebenfalls klassisch sind die Hurwitz-Ordnung und die Normzählungen. Neu innerhalb der hier definierten Konstruktion ist die Beobachtung, dass die spezielle Projektorobservable
+\[
+q\mapsto\frac{\|P_+q^2\|^2}{N(q)^2}
+\]
+den Wert $1/2$ genau dann aus ihrem Primschalenspektrum ausschließt, wenn die Primnorm in der Restklasse $7\pmod8$ liegt.
+
+Der Satz ist daher am besten als \emph{Spektralübersetzung} klassischer Quadratesätze zu verstehen. Er verbindet drei Ebenen:
+\begin{enumerate}[label=(\roman*)]
+\item die arithmetische Normgeometrie der Hurwitz-Ordnung,
+\item die quadratische Nichtlinearität $q\mapsto q^2$,
+\item eine feste $2+2$-Projektorzerlegung des umgebenden reellen Viererraums.
+\end{enumerate}
+Die resultierende Zentralmodenobstruktion ist vollständig intern mathematisch formuliert und benötigt keine physikalische Interpretation.
+
+\section{Abhängigkeit von der Wahl des Projektors}
+Der Operator $R$ ist in dieser Arbeit fest gewählt. Der Satz ist deshalb ein Satz über das Paar $(\HH,R)$, nicht über jede beliebige Involution mit Signatur $(2,2)$. Eine natürliche Fortsetzung besteht darin, die Konjugationsklasse von $R$ unter der Automorphismengruppe geeigneter Hurwitz-Schalen zu bestimmen und zu fragen, für welche Involutionen ein analoger mod-8-Satz gilt.
+
+Mögliche Fragen sind:
+\begin{enumerate}[label=(Q\arabic*)]
+\item Welche Involutionen $R'$ sind unter Hurwitz-Gitterautomorphismen zu $R$ äquivalent?
+\item Ist das Verschwinden der Zentralmode invariant auf einer ganzen Orbitklasse von Projektoren?
+\item Welche Spektralwerte außer $1/2$ besitzen klassische arithmetische Charakterisierungen?
+\item Lassen sich Multiplizitäten $m_p(1/2)$ für $p\not\equiv7\pmod8$ geschlossen bestimmen?
+\end{enumerate}
+
+\section{Physikalische Toy-Interpretation und ihre Grenze}\label{sec:physics}
+Die Konstruktion wurde ursprünglich durch die Idee motiviert, zwei komplementäre Randsektoren eines endlichen Systems mittels $P_+$ und $P_-$ zu modellieren. Mathematisch ist dies zulässig; physikalisch folgt daraus jedoch noch keine Kopplung an elektromagnetische, gravitative oder atomare Freiheitsgrade.
+
+Eine dimensionskonsistente Toy-Kopplung könnte formal lauten
+\begin{equation}\label{eq:toyphase}
+\Delta\phi(q)=\epsilon\,A_+(q)\frac{p_{\mathrm{phys}}L}{\hbar},
+\end{equation}
+wobei $\epsilon$ eine dimensionslose, experimentell zu beschränkende Kopplungskonstante ist. Die Standardrelation
+\[
+\lambda_{\mathrm{dB}}=\frac{h}{p_{\mathrm{phys}}}
+\]
+bleibt dabei unverändert. Für eine statistische Population von Hurwitz-Zuständen mit Gewichten $w_q$ wäre die Kohärenzamplitude
+\begin{equation}\label{eq:charfunction}
+\mathcal C_p(\kappa)=\sum_{q\in\mathcal S_p}w_q e^{i\kappa A_+(q)},
+\qquad
+\kappa=\epsilon\frac{p_{\mathrm{phys}}L}{\hbar}.
+\end{equation}
+Bei Gleichgewichtung ist dies die charakteristische Funktion des Spektralmaßes \eqref{eq:spectralmeasure}.
+
+\textbf{Wissenschaftliche Statusgrenze.} Gleichung \eqref{eq:toyphase} ist keine Folgerung aus QED, Atomphysik oder Gravitation. Insbesondere ist nicht gezeigt, dass reale Lithiumatome Hurwitz-Normschalen sampeln oder dass Solenoid-Randfelder den Operator $R$ realisieren. Der mathematische Zentralmodensatz bleibt davon unabhängig gültig; jede physikalische Anwendung erfordert eine zusätzliche dynamische Theorie und experimentelle Falsifikation.
+
+\section{Numerische Verifikation}
+Der folgende SageMath-10.5-Code enumeriert die Hurwitz-Schale exakt und prüft Zentralmoden sowie die Spektralverteilung. Er verwendet ausschließlich rationale Arithmetik.
+
+\lstset{language=Python,basicstyle=\ttfamily\small,breaklines=true,frame=single,showstringspaces=false,columns=fullflexible}
+\begin{lstlisting}
+from sage.all import *
+
+def hurwitz_shell(p):
+    L = int(isqrt(p)) + 1
+    vals = [QQ(n)/2 for n in range(-2*L, 2*L+1)]
+    shell = []
+    for a in vals:
+        for b in vals:
+            for c in vals:
+                for d in vals:
+                    coeff = (a,b,c,d)
+                    all_int = all(x.denominator() == 1 for x in coeff)
+                    all_half = all(x.denominator() == 2 for x in coeff)
+                    if not (all_int or all_half):
+                        continue
+                    if a*a+b*b+c*c+d*d == p:
+                        shell.append(coeff)
+    return shell
+
+def A_plus(q,p):
+    a,b,c,d = q
+    s = 2*a*a-p
+    x = 2*a*b
+    y = 2*a*c
+    z = 2*a*d
+    return ((s+x)^2 + (y+z)^2)/(2*QQ(p)^2)
+
+def analyze(p):
+    S = hurwitz_shell(p)
+    vals = [A_plus(q,p) for q in S]
+    half = QQ(1)/2
+    return {
+        'p': p,
+        'size': len(S),
+        'expected': 24*(p+1),
+        'central_mult': vals.count(half),
+        'unique_values': len(set(vals)),
+        'mean': sum(vals)/len(vals)
+    }
+
+for p in [5,7,17,19,29,31,41,43]:
+    print(analyze(p))
+\end{lstlisting}
+
+Für größere $p$ sollte die Enumeration durch eine direkte Darstellungssuche oder Orbitreduktion ersetzt werden. Die Zählidentität $|\mathcal S_p|=24(p+1)$ bietet dabei eine unabhängige Checksumme.
+
+\section{Offene Probleme}
+Die vorliegende Konstruktion legt mehrere rein mathematische Folgefragen nahe.
+
+\begin{enumerate}[label=\textbf{O\arabic*.}]
+\item \textbf{Geschlossene Multiplizitätsformel.} Bestimme $m_p(1/2)$ für $p\equiv1,3,5\pmod8$ explizit in Abhängigkeit von klassischen Darstellungszahlen.
+\item \textbf{Projektororbits.} Klassifiziere die Involutionen vom Typ $(2,2)$ unter der relevanten Hurwitz-Gitterautomorphismengruppe.
+\item \textbf{Vollständiges Spektrum.} Bestimme Struktur, Extremwerte und Multiplizitäten von $\Spec_R(p)$ ohne vollständige Enumeration.
+\item \textbf{Lokale Dichten.} Formuliere $\rho_{p,R}$ in einer Sprache lokaler Darstellungsdichten und untersuche insbesondere den Beitrag der Stelle $2$.
+\item \textbf{Komposite Normen.} Erweitere den Zentralmodensatz auf ungerade zusammengesetzte $N$ und untersuche, wie die Primfaktorstruktur die Zentralmasse steuert.
+\item \textbf{Andere Polynome.} Ersetze $q^2$ durch $q^m$ oder durch bilineare Produkte $q_1q_2$ und untersuche entsprechende Projektorspektren.
+\end{enumerate}
+
+\section{Schluss}
+Die zentrale Aussage dieser Arbeit ist einfach formulierbar: Für die fest gewählte Involution $R(a,b,c,d)=(b,a,d,c)$ erkennt die Projektorobservable des Quaternionenquadrats auf einer Hurwitz-Primschale exakt die klassische Restklasse $7\pmod8$ durch das Fehlen des zentralen Spektralwerts $1/2$.
+
+Die mathematische Bedeutung liegt nicht in einer neuen Darstellungstheorie für Quadrate, sondern darin, dass zwei klassische arithmetische Mechanismen -- der Zwei-Quadrate-Satz und die Drei-Quadrate-Obstruktion -- in einer einzigen diskreten Spektralobservable zusammentreffen. Wird zusätzlich eine mod-12-Klassifikation betrachtet, erscheint diese mod-8-Information als natürliche Verfeinerung modulo $24$.
+
+Die mögliche physikalische Deutung über Interferenzphasen oder Randsektoren bleibt ein getrenntes Toy-Programm. Gerade diese Trennung ist methodisch nützlich: Der Zahlentheoriesatz kann unabhängig bewiesen, geprüft und gegebenenfalls verallgemeinert werden, während jede physikalische Behauptung einer eigenen dynamischen Herleitung und experimentellen Prüfung bedarf.
+
+\begin{thebibliography}{99}
+\bibitem{ConwaySmith}
+J. H. Conway und D. A. Smith,
+\emph{On Quaternions and Octonions: Their Geometry, Arithmetic, and Symmetry},
+A K Peters, 2003.
+
+\bibitem{HardyWright}
+G. H. Hardy und E. M. Wright,
+\emph{An Introduction to the Theory of Numbers},
+6. Auflage, Oxford University Press, 2008.
+
+\bibitem{Hurwitz}
+A. Hurwitz,
+\emph{Vorlesungen ueber die Zahlentheorie der Quaternionen},
+Springer, Berlin, 1919.
+
+\bibitem{Dickson}
+L. E. Dickson,
+\emph{History of the Theory of Numbers, Vol. II: Diophantine Analysis},
+Carnegie Institution of Washington, 1920.
+
+\bibitem{Serre}
+J.-P. Serre,
+\emph{A Course in Arithmetic},
+Springer, 1973.
+
+\bibitem{Cox}
+D. A. Cox,
+\emph{Primes of the Form $x^2+ny^2$},
+2. Auflage, Wiley, 2013.
+
+\bibitem{MacTutorFermat}
+J. J. O'Connor und E. F. Robertson,
+\emph{MacTutor History of Mathematics: Fermat and the two-squares theorem},
+University of St Andrews. Online: \url{https://mathshistory.st-andrews.ac.uk/Miscellaneous/messages/06-15/}.
+
+\bibitem{MacTutorEuler}
+J. J. O'Connor und E. F. Robertson,
+\emph{MacTutor History of Mathematics: Euler},
+University of St Andrews. Online: \url{https://mathshistory.st-andrews.ac.uk/Biographies/Euler/}.
+\end{thebibliography}
+
+\end{document}

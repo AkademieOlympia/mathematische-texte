@@ -1,0 +1,183 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{hyperref}
+\usepackage{booktabs}
+
+\newtheorem{theorem}{Satz}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\liminf}{liminf}
+\DeclareMathOperator{\limsup}{limsup}
+\DeclareMathOperator{\spanop}{span}
+
+\title{\textbf{Von Euklid und Euler über Hamilton zu Tao und Maynard}\\\vspace{0.3em}
+\large Eine historische und mathematische Einordnung des Euler-Adic-Borel-Cantor-Frameworks (EABC) und der deskriptiven Komplexität von Primzahl-Kettenbrüchen}
+\author{Thomas Hoffbauer \\ Bamberg}
+\date{1. September 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Die Geschichte der Primzahltheorie lässt sich als fortschreitende Erweiterung ihrer mathematischen Ausdrucksmittel lesen: von Euklids elementarer Arithmetik über Eulers analytische Produktdarstellungen und Hamiltons nichtkommutative Algebra bis zu den modernen Siebverfahren von Maynard und Tao sowie zur metrischen Theorie der Kettenbrüche. Die vorliegende Arbeit ordnet das Euler-Adic-Borel-Cantor-Framework (EABC) in diese Entwicklung ein. Das EABC-Modell codiert Primzahlen $p \ge 5$ durch ihre vier reduzierten Restklassen modulo 12 und untersucht die daraus entstehenden endlichen und unendlichen Symbolfolgen mit algebraischen, geometrischen, statistischen und deskriptiv-mengentheoretischen Mitteln. Im Mittelpunkt stehen drei voneinander zu unterscheidende Ebenen: die elementare Restklassenstruktur und ihre euklidische Geometrie, die orthogonale Zerlegung des Hurwitz-Hoffbauer-Defekts in Größen- und Formkomponenten sowie die topologische Klassifikation asymptotischer Häufigkeitsbedingungen im symbolischen EABC-Pfadraum.
+\end{abstract}
+
+\section{Historische Genealogie: Von der elementaren Arithmetik zur Dynamik der Kettenbrüche}
+Die Primzahlen gehören zu den ältesten Gegenständen der Mathematik. Ihre Theorie entwickelte sich jedoch nicht geradlinig, sondern durch wiederholte Erweiterungen des mathematischen Blickfeldes.
+
+\subsection{Euklid: Unendlichkeit und elementare Struktur}
+Euklids \textit{Elemente} enthalten den klassischen Beweis, dass es unendlich viele Primzahlen gibt. Die Idee ist ebenso einfach wie folgenreich: Aus jeder endlichen Liste von Primzahlen lässt sich eine Zahl konstruieren, deren Primteiler nicht sämtlich in dieser Liste vorkommen können. Die bei Euklid angelegte Theorie von Teilbarkeit, Primzahlen und größten gemeinsamen Teilern bildet zugleich eine historische Grundlage für die spätere eindeutige Primfaktorzerlegung. Der Fundamentalsatz der Arithmetik in seiner heutigen Form ist allerdings das Ergebnis einer längeren Entwicklung und sollte nicht ohne Einschränkung einem einzigen antiken Satz zugeschrieben werden.
+
+\subsection{Euler: Die analytische Öffnung der Primzahltheorie}
+Leonhard Euler verband im 18. Jahrhundert die additive Welt der natürlichen Zahlen mit der multiplikativen Struktur der Primzahlen. Für $\operatorname{Re}(s) > 1$ gilt
+\begin{equation}
+\zeta(s) = \sum_{n=1}^{\infty}\frac{1}{n^s} = \prod_{p\in\mathbb P}\left(1-p^{-s}\right)^{-1}.
+\end{equation}
+Das Euler-Produkt macht sichtbar, dass die Primzahlen nicht lediglich eine ausgezeichnete Teilmenge der natürlichen Zahlen sind. Sie bilden vielmehr die multiplikativen Bausteine einer analytischen Funktion, deren Pole, Nullstellen und Fortsetzungen zentrale Informationen über ihre Verteilung tragen. Mit Euler beginnt daher eine neue Epoche: Fragen über diskrete Primzahlen werden in Fragen über kontinuierliche und komplex-analytische Objekte übersetzt.
+
+\subsection{Gauß: Primzahlstatistik und Kettenbruchdynamik}
+Carl Friedrich Gauß erkannte früh die logarithmische Größenordnung der Primzahlzählfunktion,
+\begin{equation}
+\pi(x)\sim \frac{x}{\log x},
+\end{equation}
+und untersuchte zugleich die statistischen Eigenschaften regulärer Kettenbrüche. Die Gauß-Abbildung
+\begin{equation}
+G(x) = \frac{1}{x} - \left\lfloor\frac{1}{x}\right\rfloor, \qquad x\in(0,1),
+\end{equation}
+verschiebt die Kettenbruchentwicklung $x = [0; a_1, a_2, a_3, \ldots]$ um eine Stelle. Dadurch wird die Folge der Teilquotienten $(a_n)$ zum Orbit eines dynamischen Systems. Diese Perspektive bildet einen Ausgangspunkt der metrischen Zahlentheorie: Nicht nur einzelne Kettenbrüche, sondern Häufigkeiten, Grenzgesetze und typische Eigenschaften ganzer Klassen reeller Zahlen werden untersuchbar.
+
+\section{Nichtkommutative Arithmetik: Hamilton und die Hurwitz-Quaternionen}
+William Rowan Hamilton führte 1843 die Quaternionen
+\begin{equation}
+\mathbb H = \{a+bi+cj+dk : a,b,c,d\in\mathbb R\}
+\end{equation}
+mit den Relationen $i^2 = j^2 = k^2 = ijk = -1$ ein. Im Unterschied zu den reellen und komplexen Zahlen ist ihre Multiplikation nicht kommutativ. Die quaternionische Norm $N(q) = q\bar{q} = a^2+b^2+c^2+d^2$ ist multiplikativ: $N(q_1q_2) = N(q_1)N(q_2)$.
+
+Adolf Hurwitz identifizierte später eine maximale Ordnung in $\mathbb H$, die heute als Hurwitz-Ordnung bezeichnet wird. Ihre Elemente besitzen entweder ganzzahlige oder gemeinsam halbzahlige Koordinaten. Der Vierquadratesatz garantiert, dass jede natürliche Zahl und damit insbesondere jede Primzahl als Summe von vier Quadraten dargestellt werden kann. Primzahlen treten folglich als Normen geeigneter ganzzahliger oder hurwitzscher Quaternionen auf.
+
+Für das EABC-Modell liefert diese Tatsache einen möglichen algebraisch-geometrischen Darstellungsraum. Sie beweist jedoch noch nicht, dass die Verteilung der Primzahlen modulo 12 von einer quaternionischen Dynamik erzeugt wird. Die Zuordnung zwischen EABC-Zählvektoren und Hurwitz-Koordinaten ist zunächst eine wohldefinierte Einbettung beziehungsweise Modellkonstruktion; eine darüber hinausgehende arithmetische Dynamik wäre gesondert nachzuweisen.
+
+\section{Moderne analytische Zahlentheorie: Beschränkte Primzahllücken}
+Die moderne Theorie kleiner Primzahllücken erlebte 2013 einen entscheidenden Durchbruch. Aufbauend auf Arbeiten von Goldston, Pintz und Yıldırım sowie auf Zhangs erstem Beweis beschränkter Primzahllücken entwickelte James Maynard eine multidimensionale Variante des Selberg-Siebs. Terence Tao fand unabhängig einen eng verwandten Zugang.
+
+Maynard bewies zunächst $\liminf_{n\to\infty}(p_{n+1}-p_n)\leq 600$ und darüber hinaus, dass für jedes feste $m$ Intervalle beschränkter Länge existieren, die unendlich oft mindestens $m$ Primzahlen enthalten. Das anschließende Polymath8-Projekt verbesserte die unbedingte numerische Schranke für zwei aufeinanderfolgende Primzahlen auf
+\begin{equation}
+\liminf_{n\to\infty}(p_{n+1}-p_n)\leq 246.
+\end{equation}
+Die Schranke 246 ist somit ein Resultat der gemeinschaftlichen Polymath8-Optimierung und nicht allein der ursprünglichen Maynard-Arbeit (welche die Schranke 600 lieferte). 
+
+Diese Verfahren beweisen, dass Primzahlen unendlich oft in beschränkten Abständen auftreten. Sie liefern jedoch keine vollständige Beschreibung aufeinanderfolgender Restklassenfolgen und kein allgemeines Gesetz für EABC-Körbe. Für das EABC-Programm bilden sie daher einen wichtigen analytischen Vergleichshorizont, aber nicht automatisch dessen Beweisgrundlage.
+
+\section{Das EABC-Framework}
+Nach Ausschluss der Primzahlen 2 und 3 liegt jede Primzahl in genau einer der vier reduzierten Restklassen modulo 12. In der hier verwendeten EABC-Konvention gilt
+\begin{equation}
+E\equiv 1\pmod{12},\quad A\equiv 5\pmod{12},\quad B\equiv 7\pmod{12},\quad C\equiv 11\pmod{12}.
+\end{equation}
+Damit wird jede Primzahl $p\geq 5$ eindeutig durch ein Symbol aus $\mathcal A_{\mathrm{EABC}}=\{E,A,B,C\}$ codiert. Eine Folge aufeinanderfolgender Primzahlen erzeugt entsprechend eine symbolische EABC-Folge. Diese Codierung ist elementar und verlustbehaftet: Sie erhält die Restklasse modulo 12, nicht aber die Primzahl selbst oder die zwischen aufeinanderfolgenden Primzahlen liegenden Abstände. Für eine verlustfreie Rekonstruktion wären zusätzliche Anker- und Lückendaten erforderlich.
+
+\subsection{Die Geometrie des Restklassenvierecks}
+Ordnet man den vier Restklassen die entsprechenden zwölften Einheitswurzeln zu, so erhält man Punkte mit Exponenten $1, 5, 7, 11$. In ihrer zyklischen Reihenfolge bilden sie ein Rechteck mit Seitenlängen $1$ und $\sqrt{3}$ sowie Diagonalen der Länge $2$. Der Satz von Ptolemäus liefert deshalb
+\begin{equation}
+2\cdot2 = 1\cdot1+\sqrt{3}\cdot\sqrt{3} \quad\Longleftrightarrow\quad 4 = 1+3.
+\end{equation}
+Diese Identität ist eine exakte euklidische Eigenschaft des gewählten Sehnenvierecks. Sie darf als geometrische Darstellung der vier Restklassen verwendet werden. Aus ihr folgt für sich allein jedoch weder ein Primzahlsatz noch eine dynamische Aussage über die Reihenfolge der EABC-Symbole.
+
+\subsection{Hoffbauer-Klammer und Referenzzustand}
+Für ein endliches Primzahlfenster sei $P=(h_E,h_A,h_B,h_C)$ der Vektor der vier EABC-Häufigkeiten. Als ausgeglichener Referenzzustand dient $\eta_{\min}=(1,1,1,1)$. Der Abweichungsvektor lautet $\delta=P-\eta_{\min}$, und der Gesamtüberschuss ist
+\begin{equation}
+K=\langle\delta,\mathbf1_4\rangle =\delta_E+\delta_A+\delta_B+\delta_C.
+\end{equation}
+Der direkte Hurwitz--Hoffbauer-Defekt wird durch $D_{\mathrm{HH}}^0(P)=\|\delta\|_2^2$ definiert.
+
+\subsection{Pythagoreische Varianzzerlegung}
+Der Raum $\mathbb R^4$ zerfällt orthogonal in die radiale Gerade und ihr Komplement:
+\begin{equation}
+\mathbb R^4 = \operatorname{span}\{\mathbf1_4\} \mathbin{\overset{\perp}{\oplus}} \mathbf1_4^\perp.
+\end{equation}
+Dementsprechend gilt $\delta = \frac{K}{4}\mathbf1_4 + \left(\delta-\frac{K}{4}\mathbf1_4\right)$. Aus dem Satz des Pythagoras folgt die exakte Identität
+\begin{equation}
+\boxed{ D_{\mathrm{HH}}^0(P) = \frac{K^2}{4} + D_{\mathrm{HH}}^\perp(P) }
+\end{equation}
+mit
+\begin{equation}
+D_{\mathrm{HH}}^\perp(P) = \sum_{X\in\{E,A,B,C\}} \left(\delta_X-\frac{K}{4}\right)^2 = 4\operatorname{Var}_{\mathrm{pop}}(\delta_E,\delta_A,\delta_B,\delta_C).
+\end{equation}
+Die Zerlegung trennt somit zwei verschiedene Effekte: $K^2/4$ misst die quadratische radiale Größenkomponente, während $D_{\mathrm{HH}}^\perp$ die interne Ungleichverteilung der vier Kanäle misst. Der relative Anisotropie-Index
+\begin{equation}
+R_\perp(P) = \frac{D_{\mathrm{HH}}^\perp(P)}{D_{\mathrm{HH}}^0(P)}
+\end{equation}
+ist für $D_{\mathrm{HH}}^0(P)>0$ skaleninvariant. Im positiven Überschusskegel $\delta_X\geq 0$ gilt die scharfe Schranke
+\begin{equation}
+\boxed{0\leq R_\perp\leq\frac{3}{4}}.
+\end{equation}
+Dabei bezeichnet $R_\perp=0$ eine radiale Abweichung mit vier gleichen Komponenten (bei ganzzahligen Abweichungen setzt dies $4\mid K$ voraus). Der Wert $R_\perp=3/4$ wird genau dann erreicht, wenn der gesamte Überschuss in einem einzigen Kanal konzentriert ist. Diese Aussagen sind lineare Algebra und endliche Statistik. Eine physikalische Interpretation als Energie, Masse oder Symmetrieschutz ist für ihre Gültigkeit weder erforderlich noch durch sie bewiesen.
+
+\section{Primzahlen in Kettenbrüchen}
+Die Verbindung von Primzahlen und Kettenbrüchen tritt in mindestens zwei mathematisch verschiedenen Formen auf.
+
+\subsection{Primzahlen als Teilquotienten typischer Zahlen}
+Schindler und Zweimüller untersuchten die Häufigkeit und Größe primzahliger Kettenbruchziffern für Lebesgue-typische reelle Zahlen. Für fast jedes $x\in(0,1)$ konvergiert der Anteil der Indizes $k$, für die $a_k(x)$ prim ist, gegen
+\begin{equation}
+\mu_G(\mathbb P) = \frac{1}{\log 2} \log \prod_{p\in\mathbb P} \left(1+\frac{1}{p(p+2)}\right) \approx 0{,}335.
+\end{equation}
+Sie untersuchten darüber hinaus Extremwerte, Borel-Cantelli-Gesetze und getrimmte Summen für die unbeschränkte Observable der Primzahlziffern. Dieses Resultat betrifft typische Kettenbruchentwicklungen bezüglich des Gauß- beziehungsweise Lebesgue-Maßes; es ist nicht mit einer Gleichverteilung der Primzahlen auf EABC-Kanäle gleichzusetzen.
+
+\subsection{Die Primzahl-Kettenbruch-Cantor-Menge}
+Das und Simmons betrachten die wesentlich dünnere Menge
+\begin{equation}
+\Lambda_{\mathbb P} = \left\{ x=[0;a_1,a_2,\ldots]: a_n\in\mathbb P\text{ für alle }n \right\}.
+\end{equation}
+Hier ist nicht nur gelegentlich, sondern jeder Teilquotient prim. Die Menge ist das Grenzobjekt eines abzählbaren konformen iterierten Funktionensystems. Ihre Hausdorff- und Packungsdimension stimmen überein:
+\begin{equation}
+\dim_H(\Lambda_{\mathbb P}) = \dim_P(\Lambda_{\mathbb P}) = \delta_{\mathbb P}, \quad \text{mit } \delta_{\mathbb P}\approx 0{,}657.
+\end{equation}
+Das und Simmons bestimmen feine Hausdorff- und Packungsmaße beziehungsweise Null-Unendlich-Dichotomien. (Ein früherer Wert von $0{,}6751$ ist durch den in der Arbeit angegebenen Näherungswert von ungefähr $0{,}657$ zu ersetzen).
+
+\section{Deskriptive Komplexität asymptotischer EABC-Häufigkeiten}
+Sei $\Omega=\{E,A,B,C\}^{\mathbb N}$ der kompakte symbolische Pfadraum mit Produkttopologie. Für eine Zielverteilung $\mu=(\mu_E,\mu_A,\mu_B,\mu_C)$ mit $\mu_X>0$ und $\sum_X\mu_X=1$ definieren wir
+\begin{equation}
+A_{\mathrm{freq}}(\mu) = \left\{ \omega\in\Omega: \lim_{n\to\infty} \frac1n \#\{1\leq k\leq n:\omega_k=X\} = \mu_X \ \text{für alle }X \right\}.
+\end{equation}
+Die Konvergenzbedingung besitzt die Quantorenform
+\begin{equation}
+\forall m\in\mathbb N\; \exists N\in\mathbb N\; \forall n\geq N: \left| \frac1n \#\{1\leq k\leq n:\omega_k=X\} -\mu_X \right| <\frac1m.
+\end{equation}
+Da die Bedingungen bei festem $m,N,n$ nur von endlich vielen Koordinaten abhängen, folgt $A_{\mathrm{freq}}(\mu)\in\mathbf{\Pi}^0_3$. Unter den im EABC-Bericht ausgeführten Voraussetzungen lässt sich durch eine stetige Wadge-Reduktion von einer Standardmenge verschwindender Binärdichte auch die $\mathbf{\Pi}^0_3$-Härte zeigen. Damit erhält man
+\begin{equation}
+A_{\mathrm{freq}}(\mu) \quad\text{ist}\quad \mathbf{\Pi}^0_3\text{-vollständig}.
+\end{equation}
+Äquivalent handelt es sich um eine $F_{\sigma\delta}$-Menge von maximaler Komplexität innerhalb dieser Borel-Stufe. Diese Klassifikation ist eine Aussage über die topologische Komplexität einer Grenzbedingung im vollständigen symbolischen Pfadraum. Sie beweist nicht, dass die konkrete Primzahlfolge ein Element dieser Menge ist.
+
+\section{Verhältnis der Forschungsstränge}
+Die besprochenen Theorien berühren einander, fallen aber nicht zusammen:
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+\textbf{Forschungsstrang} & \textbf{Mathematisches Objekt} & \textbf{Gesicherte Aussage} \\
+\midrule
+Maynard--Tao / Polymath8 & Primzahltupel und Primzahllücken & Unendlich viele beschränkte Lücken \\
+Schindler--Zweimüller & Primzahlen als Ziffern typischer Kettenbrüche & Metrische Häufigkeits- und Grenzgesetze \\
+Das--Simmons & Primzahl-Kettenbruch-Cantor-Menge & Fraktale Dimensionen und feine Maße \\
+EABC-Zählgeometrie & Vier Restklassen modulo 12 & Exakte ANOVA-Zerlegung und Anisotropieschranken \\
+EABC-Pfadraum & Symbolfolgen über vier Klassen & $\mathbf{\Pi}^0_3$-Klassifikation der Frequenzmenge \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Die Synthese liegt somit nicht in einem bereits bewiesenen gemeinsamen Mechanismus. Sie liegt in einer gemeinsamen methodischen Leitidee: Primzahlstrukturen werden durch geeignete Codierungen in Räume überführt, in denen analytische, geometrische, dynamische oder topologische Werkzeuge anwendbar werden.
+
+\section{Fazit}
+Von Euklids elementarem Widerspruchsbeweis bis zu den multidimensionalen Siebgewichten von Maynard und Tao zieht sich eine beständige Bewegung durch die Zahlentheorie: Neue Darstellungsräume machen Eigenschaften sichtbar, die in der ursprünglichen Form verborgen bleiben. 
+
+Das EABC-Framework fügt dieser Entwicklung eine vierkanalige Restklassencodierung hinzu. Seine derzeit mathematisch gesicherten Bestandteile sind insbesondere: die ANOVA-Zerlegung $D_{\mathrm{HH}}^0 = \frac{K^2}{4} + D_{\mathrm{HH}}^\perp$, die Darstellung des transversalen Defekts als Varianz- und Zweipunktfunktional, die scharfe Schranke $0\leq R_\perp\leq\frac{3}{4}$ im positivem Überschusskegel sowie die deskriptive Klassifikation der zugehörigen asymptotischen Frequenzmenge. Diese Resultate zeigen nicht, dass der Primzahlfluss von einer verborgenen quaternionischen Gitterdynamik erzeugt wird. Sie stellen vielmehr ein präzises Vokabular bereit, mit dem entsprechende Hypothesen formuliert, numerisch geprüft und gegebenenfalls falsifiziert werden können.
+
+\end{document}

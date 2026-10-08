@@ -1,0 +1,536 @@
+\documentclass[11pt,a4paper,reqno]{amsart}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,amsfonts,mathtools}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{tikz-cd}
+\usetikzlibrary{babel}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\geometry{margin=25mm}
+\setlength{\emergencystretch}{2em}
+\raggedbottom
+
+\hypersetup{
+  pdftitle={Skalare Projektionen, Faserquotienten und semiprime Repräsentationen},
+  pdfauthor={Thomas Hoffbauer},
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  citecolor=blue!50!black,
+  urlcolor=blue!50!black
+}
+
+% Theorem-Umgebungen
+\newtheorem{theorem}{Satz}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Korollar}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Beispiel}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Bemerkung}
+
+% Code-Listing
+\definecolor{codegreen}{rgb}{0,0.45,0}
+\definecolor{codegray}{rgb}{0.45,0.45,0.45}
+\definecolor{codepurple}{rgb}{0.50,0,0.70}
+\definecolor{backcolour}{rgb}{0.97,0.97,0.97}
+
+\lstdefinestyle{sagestyle}{
+  backgroundcolor=\color{backcolour},
+  commentstyle=\color{codegreen},
+  keywordstyle=\color{magenta!70!black},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codepurple},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,
+  breaklines=true,
+  captionpos=b,
+  columns=fullflexible,
+  keepspaces=true,
+  numbers=left,
+  numbersep=7pt,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  tabsize=4,
+  frame=single,
+  framerule=0.3pt
+}
+\lstset{style=sagestyle}
+
+% Mathematische Abkürzungen
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Npos}{\mathbb{N}_{>0}}
+\newcommand{\Pset}{\mathbb{P}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Fact}{\operatorname{Fact}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\eqpi}{\mathrel{\equiv_{\pi}}}
+
+\title[Skalare Projektionen und Faserquotienten]{Skalare Projektionen, Faserquotienten und semiprime Repräsentationen in strukturierten Modellräumen}
+
+\author{Thomas Hoffbauer}
+\address{Computer Institut Bamberg, Deutschland}
+\email{research@cib.de}
+\date{5. August 2026}
+
+\subjclass[2020]{11A51, 13F15, 18A05}
+\keywords{Hauptsatz der Arithmetik, Faserquotient, skalare Projektion, Projektionsäquivalenz, semiprime Repräsentation}
+
+\begin{document}
+
+\begin{abstract}
+Diese Arbeit erweitert den Hauptsatz der Arithmetik nicht. Sie formuliert vielmehr einen Kompatibilitätsrahmen für strukturierte Modellräume mit skalaren Projektionen. Für eine Abbildung $\pi\colon M\to\Npos$ untersuchen wir die Projektionsäquivalenz
+$x\eqpi y\iff\pi(x)=\pi(y)$, beweisen den kanonischen Quotientensatz
+$M/{\equiv_\pi}\cong\im(\pi)$ und formulieren die universelle Eigenschaft dieses Faserquotienten. Die eindeutige Primfaktorzerlegung im Skalarraum induziert eine faserkonstante Faktorisierungssignatur, ohne eine Faktorisierung der Zustände in $M$ zu bestimmen. Semiprime Daten werden typisiert als $(a,b;c)_M\in\Pset^2\times M$. Beispiele in den Gaußschen und Eisensteinschen Zahlen zeigen, dass gleiche Normwerte weder Gleichheit noch Assoziiertheit noch identische Faktorisierungsmuster erzwingen. Ein SageMath-Referenzskript für das gaußsche Beispiel ist im Anhang angegeben.
+\end{abstract}
+
+\maketitle
+
+\section{Einleitung und Geltungsbereich}
+
+Strukturierte Modellräume treten unter anderem in der Algebra, in Gittermodellen, in Darstellungen von Algebren und in Modulräumen auf. Häufig ist ein solcher Raum $M$ mit einer skalaren Abbildung
+\[
+  \pi\colon M\longrightarrow\Npos
+\]
+ausgestattet. Verschiedene Zustände können dabei denselben Skalarwert besitzen. Ein typisches Schema lautet
+\[
+  \pi(x)=\pi(y)=n,
+\]
+obwohl $x$ und $y$ geometrisch oder algebraisch verschieden sind.
+
+Die daraus entstehende Mehrdeutigkeit betrifft die Repräsentation in $M$, nicht die Primfaktorzerlegung von $n$ in $\Npos$. Ziel dieser Arbeit ist daher ausschließlich eine Kompatibilitätsaussage:
+
+\begin{quote}
+Mehrere Modellrepräsentationen desselben Skalars stehen nicht im Widerspruch zum Hauptsatz der Arithmetik, sofern Skalarfaktorisierung und Zustandsfaktorisierung strikt getrennt werden.
+\end{quote}
+
+\begin{remark}[Keine physikalische Voraussetzung]
+Für die mathematischen Resultate ist keine physikalische Interpretation erforderlich. Die Begriffe Zustand, Sektor und Repräsentant dienen ausschließlich der Beschreibung algebraischer oder mengentheoretischer Daten.
+\end{remark}
+
+\section{Modellobjekte und Projektionen}
+
+Die grundlegenden Quotientenaussagen benötigen lediglich Mengen. Zusätzliche algebraische Struktur wird erst dort vorausgesetzt, wo Multiplikativität oder Faktorisierung in $M$ betrachtet wird.
+
+\begin{definition}[Skalares Modell]
+Ein \emph{skalares Modell} ist ein Paar $(M,\pi)$ aus einer nichtleeren Menge $M$ und einer Abbildung
+\[
+  \pi\colon M\longrightarrow\Npos.
+\]
+Für $n\in\im(\pi)$ heißt
+\[
+  M_n:=\pi^{-1}(n)=\{x\in M\mid \pi(x)=n\}
+\]
+die \emph{Projektionsfaser über $n$}.
+\end{definition}
+
+Die Faseridee lässt sich schematisch als Familie disjunkter Zustandsmengen über ihren Skalarwerten darstellen:
+\[
+\begin{tikzcd}[column sep=huge]
+M_{25} \arrow[d,"\pi|_{M_{25}}"'] &
+M_{49} \arrow[d,"\pi|_{M_{49}}"'] &
+M_{77} \arrow[d,"\pi|_{M_{77}}"']\\
+25 & 49 & 77
+\end{tikzcd}
+\]
+Jede senkrechte Abbildung ist konstant; innerhalb einer Faser können dennoch mehrere verschiedene Zustände liegen.
+
+\begin{remark}[Kategoriale Einordnung]
+Sei $\mathcal C$ eine Kategorie und $B$ ein ausgezeichnetes Objekt. Ein Objekt mit Projektion ist ein Morphismus $\pi\colon M\to B$, also ein Objekt der Überkategorie $\mathcal C/B$. Ein Morphismus
+\[
+  f\colon(M,\pi_M)\longrightarrow(M',\pi_{M'})
+\]
+erfüllt $\pi_{M'}\circ f=\pi_M$:
+\[
+\begin{tikzcd}[column sep=large]
+M \arrow[rr,"f"] \arrow[dr,"\pi_M"'] && M' \arrow[dl,"\pi_{M'}"]\\
+& B &
+\end{tikzcd}
+\]
+Für die mengentheoretischen Sätze verwenden wir $\mathcal C=\mathbf{Set}$ und $B=\Npos$. Für multiplikative Modelle kann man $\mathcal C=\mathbf{Mon}$ und $B=(\Npos,\cdot,1)$ wählen. Die bloße Bezeichnung von $M$ als Kategorie wäre ohne Objekte, Morphismen und Komposition nicht gerechtfertigt.
+\end{remark}
+
+\begin{remark}[Anschluss an etablierte Terminologie]
+Der Quotient nach der durch eine Abbildung induzierten Äquivalenzrelation ist ein Standardkonstrukt der Mengen- und Kategorientheorie; die universelle Eigenschaft ist die übliche Faktorisierung über einen Quotienten \cite{MacLane,Riehl}. Die skalare Faktorisierungssignatur verwendet ausschließlich die klassische eindeutige Primfaktorzerlegung \cite{IrelandRosen,NivenZuckermanMontgomery}. Für Faktorisierung in Ringen und die Rolle von Einheiten verweisen wir auf \cite{AtiyahMacdonald}; Normbeispiele in erweiterten Zahlbereichen stehen im Zusammenhang mit der etablierten Arithmetik quadratischer und quaternionischer Ordnungen \cite{ConwaySmith}. Die hier verwendeten Fasern sind mengentheoretische Urbilder; ohne zusätzliche lokale Trivialisierungen wird insbesondere kein Faserbündel und keine Garbe behauptet.
+\end{remark}
+
+\section{Projektionsäquivalenz und Faserquotient}
+
+\begin{definition}[Projektionsäquivalenz]
+Für $x,y\in M$ definieren wir
+\[
+  x\eqpi y
+  \quad:\Longleftrightarrow\quad
+  \pi(x)=\pi(y).
+\]
+\end{definition}
+
+\begin{lemma}
+Die Relation $\equiv_\pi$ ist eine Äquivalenzrelation auf $M$. Ihre Äquivalenzklassen sind genau die nichtleeren Fasern $M_n$, $n\in\im(\pi)$.
+\end{lemma}
+
+\begin{proof}
+Reflexivität, Symmetrie und Transitivität folgen aus den entsprechenden Eigenschaften der Gleichheit in $\Npos$. Für $x\in M$ gilt
+\[
+  [x]_\pi=\{y\in M\mid \pi(y)=\pi(x)\}=M_{\pi(x)}.
+\]
+\end{proof}
+
+\begin{theorem}[Theorem A: Kanonischer Quotientensatz]
+\label{thm:quotient}
+Sei $q\colon M\to M/{\equiv_\pi}$ die Quotientenabbildung $x\mapsto[x]_\pi$. Dann existiert genau eine Bijektion
+\[
+  \overline\pi\colon M/{\equiv_\pi}\longrightarrow\im(\pi)
+\]
+mit $\pi=\overline\pi\circ q$. Sie ist gegeben durch
+\[
+  \overline\pi([x]_\pi)=\pi(x).
+\]
+Insbesondere gilt die disjunkte Faserzerlegung
+\[
+  M=\bigsqcup_{n\in\im(\pi)}M_n.
+\]
+\end{theorem}
+
+\begin{proof}
+Aus $[x]_\pi=[y]_\pi$ folgt $x\eqpi y$ und damit $\pi(x)=\pi(y)$; somit ist $\overline\pi$ wohldefiniert. Ist $\overline\pi([x]_\pi)=\overline\pi([y]_\pi)$, so gilt $x\eqpi y$ und daher $[x]_\pi=[y]_\pi$. Also ist $\overline\pi$ injektiv. Die Surjektivität folgt aus der Definition von $\im(\pi)$.
+\end{proof}
+
+\begin{theorem}[Theorem B: Universelle Eigenschaft]
+\label{thm:universal}
+Sei $f\colon M\to X$ eine Abbildung in eine Menge $X$. Angenommen, $f$ ist auf jeder $\pi$-Faser konstant, also
+\[
+  \pi(x)=\pi(y)\quad\Longrightarrow\quad f(x)=f(y).
+\]
+Dann existiert genau eine Abbildung
+\[
+  \widetilde f\colon M/{\equiv_\pi}\longrightarrow X
+\]
+mit $f=\widetilde f\circ q$.
+\[
+\begin{tikzcd}[column sep=large,row sep=large]
+M \arrow[r,"f"] \arrow[d,"q"'] & X\\
+M/{\equiv_\pi} \arrow[ur,dashed,"\exists!\,\widetilde f"'] &
+\end{tikzcd}
+\]
+\end{theorem}
+
+\begin{proof}
+Setze $\widetilde f([x]_\pi):=f(x)$. Die Faserkonstanz macht diese Definition unabhängig vom gewählten Repräsentanten. Da $q$ surjektiv ist, ist jede Faktorisierung $f=\widetilde f\circ q$ durch diese Vorschrift eindeutig bestimmt.
+\end{proof}
+
+\section{Skalare Faktorisierungsinvariante}
+
+Für $n\in\Npos$ bezeichnet $v_p(n)$ die $p$-adische Bewertung. Der Hauptsatz der Arithmetik liefert die eindeutig bestimmte, endlich getragene Signatur
+\[
+  \Fact_{\Npos}(n):=(v_p(n))_{p\in\Pset}
+  \in\bigoplus_{p\in\Pset}\N.
+\]
+Dabei wird $\N$ im direkten Summanden als $\mathbb N_0$ verstanden.
+
+\begin{theorem}[Theorem C: Skalare Faktorisierungssignatur]
+\label{thm:factor-signature}
+Die Komposition
+\[
+  \Phi_{\mathrm{fact}}
+  :=\Fact_{\Npos}\circ\pi
+  \colon M\longrightarrow\bigoplus_{p\in\Pset}\mathbb N_0
+\]
+ist auf jeder Projektionsfaser konstant. Daher existiert genau eine Abbildung
+\[
+  \widetilde\Phi_{\mathrm{fact}}
+  \colon M/{\equiv_\pi}\longrightarrow
+  \bigoplus_{p\in\Pset}\mathbb N_0
+\]
+mit $\Phi_{\mathrm{fact}}=\widetilde\Phi_{\mathrm{fact}}\circ q$.
+
+Ist $M$ zusätzlich ein Monoid und
+\[
+  \pi\colon(M,\star,1_M)\longrightarrow(\Npos,\cdot,1)
+\]
+ein Monoidhomomorphismus, so gilt für jedes $p\in\Pset$
+\[
+  v_p\!\left(\pi(x\star y)\right)
+  =v_p(\pi(x))+v_p(\pi(y)).
+\]
+\end{theorem}
+
+\begin{proof}
+Aus $\pi(x)=\pi(y)$ folgt unmittelbar
+$\Fact_{\Npos}(\pi(x))=\Fact_{\Npos}(\pi(y))$. Die eindeutige Faktorisierung über den Quotienten folgt aus Satz~\ref{thm:universal}. Im multiplikativen Fall gilt
+$\pi(x\star y)=\pi(x)\pi(y)$; die letzte Gleichung ist die Additivität der $p$-adischen Bewertung.
+\end{proof}
+
+\begin{remark}[Reichweite der Schutzformel]
+Aus der bloßen Gleichheit $\pi(x)=\pi(y)$ folgt ohne weitere Annahmen im Allgemeinen weder
+\[
+  x=y,
+  \qquad x\sim y,
+  \qquad\text{noch}\qquad
+  \Fact_M(x)=\Fact_M(y),\quad\text{sofern diese Ausdrücke definiert sind}.
+\]
+Dies ist keine Behauptung, dass die Implikationen für jedes konkrete Modell scheitern: Ist $\pi$ beispielsweise injektiv, folgt aus gleicher Projektion sehr wohl $x=y$. Die Aussage lautet vielmehr, dass keine dieser Folgerungen allein aus den Axiomen eines skalaren Modells herleitbar ist.
+\end{remark}
+
+\section{Semiprime Daten und Typentrennung}
+
+\begin{definition}[Semiprimes Modell-Tupel]
+Ein \emph{semiprimes Modell-Tupel} ist zunächst ein typisiertes Element
+\[
+  (a,b;c)_M\in\Pset^2\times M.
+\]
+Das Semikolon trennt die natürlichen Primzahlen $a,b$ vom Modellzustand $c$.
+\end{definition}
+
+\begin{definition}[Semiprim-kompatibles Repräsentationsdatum]
+Ein \emph{semiprim-kompatibles Repräsentationsdatum} besteht aus
+\[
+  a,b\in\Pset,
+  \qquad x,y\in M,
+  \qquad \pi(x)=\pi(y)=ab.
+\]
+Wird zusätzlich eine Produktstruktur auf $M$ verwendet und schreibt man
+\[
+  x=\iota(a)\star\iota(b)\star E_1,
+  \qquad y=c\star E_2,
+\]
+so müssen die Einbettung $\iota\colon\Npos\to M$, die Sektorelemente $E_1,E_2$ und die Verträglichkeit mit $\pi$ ausdrücklich angegeben werden. Ohne diese Zusatzdaten ist der Ausdruck $a\star b\star E_1$ nicht typkorrekt.
+\end{definition}
+
+\begin{proposition}[Ausschluss einer natürlichen dritten Primzahl]
+Angenommen, $c\in\Pset\subset\Npos$, $\pi(c)=c$ und $\pi(c\star E_2)=\pi(c)$. Gilt zugleich
+\[
+  \pi(x)=\pi(c\star E_2)=ab
+\]
+für Primzahlen $a,b>1$, so ist ein Widerspruch erreicht. Insbesondere kann ein kompakter Zustand mit Skalarbild $ab$ nicht zugleich die natürliche Primzahl $c=ab$ sein.
+\end{proposition}
+
+\begin{proof}
+Aus den Voraussetzungen folgt $c=ab$. Das Produkt zweier natürlicher Zahlen größer als $1$ ist zusammengesetzt und daher keine Primzahl.
+\end{proof}
+
+\section{Beispiele}
+
+\subsection{Gaußsche Zahlen}
+
+\begin{proposition}[Gleiche Norm, verschiedene Faktorisierung]
+\label{prop:gauss}
+Im Ring $\Z[i]$ mit der Norm
+\[
+  N(a+bi)=a^2+b^2
+\]
+seien $x=5$ und $y=3+4i$. Dann gilt
+\[
+  N(x)=N(y)=25,
+\]
+aber $x\neq y$ und $x\not\sim y$. Ferner besitzen die beiden Elemente unterschiedliche Faktorisierungsmuster:
+\[
+  5=(2+i)(2-i),
+  \qquad
+  3+4i=(2+i)^2.
+\]
+Die Faktoren $2+i$ und $2-i$ sind nicht assoziiert.
+\end{proposition}
+
+\begin{proof}
+Die Normgleichheit folgt aus $N(5)=25$ und $N(3+4i)=3^2+4^2=25$. Wären $x$ und $y$ assoziiert, so wäre $x/y$ eine Einheit in $\Z[i]$. Es gilt jedoch
+\[
+  \frac{5}{3+4i}=\frac{3-4i}{5}\notin\Z[i].
+\]
+Die angegebenen Faktorisierungen werden direkt ausmultipliziert. Die Einheiten von $\Z[i]$ sind $\{\pm1,\pm i\}$; keine davon überführt $2+i$ in $2-i$.
+\end{proof}
+
+\begin{remark}
+Dieses Beispiel bestätigt die Schutzformel, ist aber nicht ohne Zusatzstruktur als Identität
+$x=\iota(5)\star\iota(5)\star E_1$ zu lesen. Unter der üblichen Einbettung $\Npos\hookrightarrow\Z[i]$ gilt nämlich $N(25)=625$, nicht $25$. Der skalare Semiprimwert $25=5^2$ und seine Faserrepräsentanten müssen daher von einer Produktdarstellung in $\Z[i]$ getrennt werden.
+\end{remark}
+
+\subsection{Eisensteinsche Zahlen}
+
+Sei $\omega^2+\omega+1=0$. Für $a,b\in\Z$ ist
+\[
+  N(a+b\omega)=a^2-ab+b^2.
+\]
+
+\begin{proposition}[Eisensteinsches Analogon]
+In $\Z[\omega]$ seien
+\[
+  x=7,
+  \qquad
+  u=3+8\omega.
+\]
+Dann gilt $N(x)=N(u)=49$. Darüber hinaus bestehen die Faktorisierungen
+\[
+  7=(3+\omega)(2-\omega),
+  \qquad
+  3+8\omega=(1+\omega)(3+\omega)^2,
+\]
+wobei $1+\omega$ eine Einheit ist. Die Elemente $3+\omega$ und $2-\omega$ sind nicht assoziierte irreduzible Faktoren der Norm $7$.
+\end{proposition}
+
+\begin{proof}
+Es gilt
+\[
+  N(7)=49,
+  \qquad
+  N(3+8\omega)=9-24+64=49.
+\]
+Unter Verwendung von $\omega^2=-1-\omega$ erhält man
+\[
+  (3+\omega)(2-\omega)=7
+\]
+und
+\[
+  (1+\omega)(3+\omega)^2=3+8\omega.
+\]
+Da $N(1+\omega)=1$, ist $1+\omega$ eine Einheit. Elemente der Norm $7$ sind irreduzibel, weil $7$ eine natürliche Primzahl ist und die Norm multiplikativ ist. Die sechs Einheiten von $\Z[\omega]$ überführen $3+\omega$ nicht in $2-\omega$; somit sind diese Faktoren nicht assoziiert.
+\end{proof}
+
+\section{Grenzen und offene Aufgaben}
+
+Die vorstehenden Sätze liefern eine Konsistenz- und Quotientenarchitektur. Sie beweisen insbesondere nicht:
+\begin{enumerate}[label=\textup{(\arabic*)}]
+  \item dass zu jedem Primzahlpaar $(a,b)$ ein irreduzibles $c\in M$ mit $\pi(c)=ab$ existiert;
+  \item dass ein solcher Repräsentant bis auf Einheiten eindeutig ist;
+  \item dass eine kanonische Konstruktion $(a,b)\mapsto c$ existiert;
+  \item dass $\equiv_\pi$ ohne Multiplikativitätsannahmen eine Monoid- oder Ringkongruenz ist;
+  \item dass aus den mengentheoretischen Quotientensätzen physikalische Aussagen folgen.
+\end{enumerate}
+
+Diese Punkte müssen für jeden konkreten Modellraum separat formuliert und bewiesen werden.
+
+\section{Fazit}
+
+Die mathematische Kernaussage besteht nicht in einer Erweiterung der eindeutigen Primfaktorzerlegung. Sie besteht in der sauberen Trennung zweier Ebenen: Der Skalar $n=\pi(x)$ besitzt seine eindeutige Faktorisierung in $\Npos$, während die Faser $M_n$ mehrere unterschiedliche Repräsentanten enthalten kann. Der kanonische Quotient
+\[
+  M/{\equiv_\pi}\cong\im(\pi)
+\]
+und seine universelle Eigenschaft machen diese Trennung formal präzise. Semiprime Notationen wie $(a,b;c)_M$ sind nur dann algebraisch aussagekräftig, wenn Einbettungen, Produktstruktur und Projektionsverträglichkeit ausdrücklich angegeben werden.
+
+\appendix
+\section{SageMath-Referenzskript}
+
+Das folgende Skript prüft das gaußsche Faserbeispiel für den Skalarwert $25=5^2$. Es verifiziert nicht die Existenz einer faktoriellen Darstellung $x=\iota(5)\star\iota(5)\star E_1$ in $\Z[i]$, sondern ausschließlich Normgleichheit, Nichtidentität, Nichtassoziiertheit und die unterschiedlichen Faktorisierungsmuster der beiden Faserrepräsentanten.
+
+\begin{lstlisting}[language=Python,caption={SageMath-Referenzskript für die Faser über 25}]
+from sage.all import I, Primes, ZZ, factor
+
+
+class GaussianFiberAudit:
+    def __init__(self):
+        self.R = ZZ[I]
+        self.primes = Primes()
+
+    def projection(self, element):
+        """Scalar projection pi(z) = N(z)."""
+        return ZZ(element.norm())
+
+    def compute_fiber(self, n, search_bound=5):
+        """Compute all Gaussian integers of norm n in a finite box."""
+        fiber = []
+        for real_part in range(-search_bound, search_bound + 1):
+            for imag_part in range(-search_bound, search_bound + 1):
+                z = self.R(real_part + imag_part * I)
+                if self.projection(z) == n:
+                    fiber.append(z)
+        return fiber
+
+    def are_associated(self, x, y):
+        """Test association using the four units of ZZ[i]."""
+        units = [self.R(1), self.R(-1), self.R(I), self.R(-I)]
+        return any(x == unit * y for unit in units)
+
+    def verify(self, a, b, x, y):
+        if a not in self.primes or b not in self.primes:
+            raise ValueError("a and b must be natural primes")
+
+        scalar = ZZ(a * b)
+        fiber = self.compute_fiber(scalar)
+        result = {
+            "scalar": scalar,
+            "scalar_factorization": factor(scalar),
+            "pi_x": self.projection(x),
+            "pi_y": self.projection(y),
+            "same_fiber": self.projection(x) == scalar
+                          and self.projection(y) == scalar,
+            "identical": x == y,
+            "associated": self.are_associated(x, y),
+            "x_factorization": x.factor(),
+            "y_factorization": y.factor(),
+            "fiber": fiber,
+        }
+        return result
+
+
+if __name__ == "__main__":
+    audit = GaussianFiberAudit()
+
+    # Scalar target: 25 = 5^2.
+    a = 5
+    b = 5
+
+    # Two distinct representatives in the norm fiber over 25.
+    x = audit.R(5)
+    y = audit.R(3 + 4 * I)
+
+    result = audit.verify(a, b, x, y)
+
+    assert result["same_fiber"]
+    assert not result["identical"]
+    assert not result["associated"]
+    assert len(result["fiber"]) == 12
+
+    for key, value in result.items():
+        print(f"{key}: {value}")
+\end{lstlisting}
+
+\begin{thebibliography}{99}
+
+\bibitem{AtiyahMacdonald}
+M.~F. Atiyah and I.~G. Macdonald,
+\emph{Introduction to Commutative Algebra},
+Addison--Wesley, 1969.
+
+\bibitem{ConwaySmith}
+J.~H. Conway and D.~A. Smith,
+\emph{On Quaternions and Octonions: Their Geometry, Arithmetic, and Symmetry},
+A K Peters, 2003.
+
+\bibitem{IrelandRosen}
+K. Ireland and M. Rosen,
+\emph{A Classical Introduction to Modern Number Theory}, 2nd ed.,
+Graduate Texts in Mathematics 84, Springer, 1990.
+
+\bibitem{MacLane}
+S. Mac Lane,
+\emph{Categories for the Working Mathematician}, 2nd ed.,
+Graduate Texts in Mathematics 5, Springer, 1998.
+
+\bibitem{NivenZuckermanMontgomery}
+I. Niven, H.~S. Zuckerman, and H.~L. Montgomery,
+\emph{An Introduction to the Theory of Numbers}, 5th ed.,
+Wiley, 1991.
+
+\bibitem{Riehl}
+E. Riehl,
+\emph{Category Theory in Context},
+Dover Publications, 2016.
+
+\end{thebibliography}
+
+\end{document}

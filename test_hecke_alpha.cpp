@@ -41,6 +41,15 @@ int main() {
     std::cout << "Hecke-Intervallgrenzen       : [" << bounds.lower() << ", " << bounds.upper() << "]\n";
     std::cout << "CODATA-Analysefenster        : [" << codata.lower() << ", " << codata.upper() << "]\n";
     std::cout << "Punktauswertung (Hecke)      : " << eabc::alpha_inverse_point() << "\n";
+    std::cout << std::setprecision(14);
+    const double hbar = eabc::alpha_inverse_point();
+    const double h = eabc::planck_h_point();
+    const double h0 = eabc::planck_h0_point();
+    std::cout << "hbar = alpha^{-1}             : " << hbar << "\n";
+    std::cout << "h0 = 2 pi * 137              : " << h0 << "\n";
+    std::cout << "h  = 2 pi * hbar             : " << h << "\n";
+    std::cout << "h - 861                      : " << std::showpos << (h - 861.0) << std::noshowpos << "\n";
+    std::cout << "Delta_41                     : 861\n";
     if (bounds.lower() >= codata.lower() && bounds.upper() <= codata.upper()) {
         std::cout << "Status: Strikter Einschluss gewaehrleistet.\n";
     } else {

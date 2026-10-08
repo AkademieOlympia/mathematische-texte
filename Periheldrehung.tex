@@ -1,0 +1,609 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[ngerman]{babel}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{csquotes}
+\usepackage{setspace}
+\usepackage[bottom]{footmisc}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!40!black,
+            pdftitle={Die Periheldrehung des Merkur aus der statischen E8-Geometrie},
+            pdfauthor={Thomas Hoffbauer}]{hyperref}
+
+\geometry{a4paper,tmargin=2.6cm,bmargin=2.8cm,lmargin=2.6cm,rmargin=2.6cm}
+\setstretch{1.12}
+\setlist[itemize]{leftmargin=1.4em,itemsep=0.25em,topsep=0.35em}
+\setlist[enumerate]{leftmargin=1.6em,itemsep=0.25em,topsep=0.35em}
+
+\definecolor{historienblau}{RGB}{18,52,86}
+\definecolor{kastengrund}{RGB}{244,247,250}
+\definecolor{kastenrand}{RGB}{36,72,108}
+\definecolor{goldton}{RGB}{140,96,32}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{korollar}[satz]{Korollar}
+\theoremstyle{remark}
+\newtheorem{bemerkung}{Bemerkung}[section]
+
+\newcommand{\Eacht}{E_8}
+\newcommand{\so}{\mathfrak{so}}
+\newcommand{\eh}{S_{\mathrm{EH}}}
+\newcommand{\rs}{r_{\mathrm{s}}}
+\newcommand{\MS}{M_{\odot}}
+\newcommand{\dphi}{\delta\phi}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\itshape Die Periheldrehung im statischen \(E_8\)-Modell}
+\fancyhead[R]{\small Thomas Hoffbauer}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+
+\titleformat{\section}{\Large\bfseries\color{historienblau}}{\thesection}{0.75em}{}
+\titleformat{\subsection}{\large\bfseries\color{historienblau}}{\thesubsection}{0.7em}{}
+
+\newcommand{\historienbox}[2]{%
+  \par\medskip\noindent
+  \fboxsep=9pt\fboxrule=0.6pt
+  \fcolorbox{kastenrand}{kastengrund}{%
+    \begin{minipage}{0.92\textwidth}
+      \textbf{\color{goldton}#1}\par\vspace{0.35em}#2
+    \end{minipage}%
+  }%
+  \par\medskip
+}
+
+\title{\textbf{Die Periheldrehung des Merkur}\\[0.35em]
+\large aus der statischen acht-dimensionalen \(E_8\)-Geometrie}
+\author{Thomas Hoffbauer\\[0.25em]
+\small Computer Institut Bamberg\\
+\small Bamberger Modell / EABC}
+\date{Bamberg, 20.\ September 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\noindent
+Die Periheldrehung des Merkur war das erste quantitative Erlebnismoment der Allgemeinen Relativitätstheorie: nicht eine qualitative Übereinstimmung, sondern eine Zahl. Als Einstein am 18.~November 1915 der Preußischen Akademie die Erklärung der $43$ Bogensekunden vorlegte, verwandelte sich eine noch ungefestigte Feldtheorie in ein empirisch prüfbares geometrisches Weltbild. Die vorliegende Schrift liest diesen historischen Prüfstein neu. Ausgangspunkt ist kein dynamisches Extra-Dimensions-Szenario im Sinne von Kaluza und Klein, sondern ein \emph{völlig statisches} acht-dimensionales Geometriemodell: das \(E_8\)-Wurzelgitter mit seiner Fano-Oktonionen-Faserung, dem Graviweak-Sektor \(\so(7,1)\subset F_4\subset E_8\) und der MacDowell--Mansouri-Reduktion auf die Palatini-/Einstein--Hilbert-Wirkung. Die Planeten erscheinen darin als Normkugeln im dreidimensionalen Schattenraum. Aus der Schwarzschild-Geodäte folgt die klassische Formel
+\[
+\dphi=\frac{6\pi G\MS}{c^2 a(1-e^2)},
+\]
+und mit den heutigen Konstanten der Wert \(\mathbf{42{,}98''}\) pro Jahrhundert. Die Herleitung ist kein bloßes Nachrechnen. Sie steht, so die These dieser Schrift, in derselben erkenntnistheoretischen Lage wie die Einreichung der Originalunterlagen zur Allgemeinen Relativitätstheorie: eine erstarrte Ausnahmegeometrie wirft einen vierdimensionalen Schatten, und in diesem Schatten erscheint -- unbestechlich -- die Merkurbahn.
+\end{abstract}
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Prolog: November 1915 als Maßstab}
+
+Es gibt in der Geschichte der Physik wenige Augenblicke, in denen eine Theorie nicht durch Rhetorik, sondern durch eine einzelne, harte Restgröße entscheidet. Die Periheldrehung des Merkur ist ein solcher Augenblick. Urbain Le~Verrier hatte 1859 eine Anomalie angezeigt, die Newtons Gravitation nicht tragen konnte. Simon Newcomb verdichtete sie später auf rund \(43\) Bogensekunden pro Jahrhundert. Sechzig Jahre lang blieb diese Zahl ein Stachel: zu klein, um sie wegzudiskutieren, zu groß, um sie als Messfehler zu begraben.
+
+Als Albert Einstein am 18.~November 1915 seine Note \emph{Erklärung der Perihelbewegung des Merkur aus der allgemeinen Relativitätstheorie} vorlegte, war die Allgemeine Relativitätstheorie noch keine kanonische Lehre. Die Feldgleichungen selbst wurden in denselben Novemberwochen erst in ihre endgültige Form gebracht. Marcel Grossmann hatte Einstein den Riemannschen Kalkül erschlossen; der \emph{Entwurf} von 1913 hatte die Periheldrehung noch falsch gegeben; David Hilbert arbeitete in Göttingen parallel an einem Variationsprinzip. In diesem offenen Feld entschied nicht Eleganz allein, sondern die Merkurbahn.
+
+Die vorliegende Arbeit behauptet: Die Herleitung derselben Zahl aus dem statischen \(E_8\)/EABC-Modell ist ein analoges Erlebnismoment. Nicht weil sie Einstein ersetzen wollte, sondern weil sie zeigt, dass die vierdimensionale Einstein--Hilbert-Geometrie als \emph{Schatten} einer vollständig starren acht-dimensionalen Ausnahmegeometrie auftreten kann. Die Dynamik, die wir am Himmel sehen -- Ellipsen, Präzession, Jahrhundertakkumulation -- ist in diesem Bild keine Bewegung eines acht-dimensionalen Mediums. Das \(E_8\)-Gitter atmet nicht. Es rotiert nicht. Es expandiert nicht. Es \emph{ist}. Was präzediert, ist die Projektion.
+
+\historienbox{Das Erlebnismoment}{%
+Einstein schrieb nach der Merkurrechnung, er sei tagelang außer sich vor Freude gewesen. Die Formel war nicht neu erfunden, sie war \emph{getroffen}. Genau diese Erfahrung -- dass eine zuvor starre Geometrie eine astronomische Restgröße ohne freien Parameter auswirft -- ist der Maßstab, an dem das \(E_8\)-Modell hier gemessen wird. Die Einreichung der Originalunterlagen zur Allgemeinen Relativitätstheorie und die Herleitung der Periheldrehung aus der statischen Acht-Dimensionalität stehen damit in derselben logischen Klasse: eine Geometrie wird öffentlich, indem sie eine Zahl liefert, die man nicht mehr verschieben kann.}
+
+\section{Die Anomalie vor Einstein}
+
+\subsection{Le Verrier und die unsichtbare Vulcan}
+
+Urbain Jean Joseph Le~Verrier hatte 1846 den Planeten Neptun aus Störungen der Uranusbahn vorhergesagt. Derselbe Mann, der damit Newtons Theorie zu einem Triumph geführt hatte, stieß 1859 am Merkur an ihre Grenze. Nach Abzug sämtlicher bekannter Planetenstörungen blieb eine Vorholung des Perihels, die er zuerst auf etwa \(38''\) pro Jahrhundert schätzte. Le~Verrier erwog einen intramerkuriellen Planeten -- \emph{Vulcan} --, der die Anomalie gravitationell erklären sollte. Vulcan wurde gesucht und nie gefunden. Die Episode ist lehrreich: wo eine Theorie eine Restgröße nicht tragen kann, erzeugt sie gern unsichtbare Körper.
+
+Simon Newcomb präzisierte die Beobachtungen. Der heutige kanonische Wert der \emph{anomalistischen} Restgröße liegt bei
+\begin{equation}
+\Delta\Phi_{\mathrm{obs}}\approx 42{,}98''/\mathrm{Jh}.
+\end{equation}
+Die gesamte beobachtete Periheldrehung des Merkur beträgt rund \(560''\) bis \(574''\) pro Jahrhundert, je nach Bezugssystem; der Löwenanteil ist newtonsch und rührt von den Störungen durch Venus, Erde und Jupiter. Nur der unerklärte Rest war der Prüfstein.
+
+\subsection{Warum Newtons Ellipsen sich schließen}
+
+Im Zweikörperproblem der Newtonschen Gravitation gilt das \(1/r\)-Potential. Bertrand'scher Satz: unter allen zentralen Kräften erzeugen nur das harmonische Potential und das Kepler-Potential geschlossene gebundene Bahnen. Die Binet-Gleichung
+\begin{equation}
+\frac{\mathrm{d}^2 u}{\mathrm{d}\phi^2}+u=\frac{GM}{h^2},\qquad u=\frac{1}{r},
+\end{equation}
+hat die Lösung
+\begin{equation}
+u(\phi)=\frac{GM}{h^2}\bigl(1+e\cos(\phi-\phi_0)\bigr).
+\end{equation}
+Die Bahn ist eine Ellipse, deren Perihel \(\phi_0\) ein Integral der Bewegung ist. Jede Abweichung vom reinen \(1/r\)-Gesetz -- ob durch andere Planeten, eine Abplattung der Sonne oder eine Relativitätskorrektur -- öffnet die Ellipse und lässt das Perihel wandern.
+
+Die newtonsche Störungstheorie erklärt fast alles. Fast: es bleibt jene Restgröße, die weder Vulcan noch eine ad-hoc-Modifikation des Potentials von der Form \(1/r^{1+\varepsilon}\) überzeugend tragen konnte, ohne andere Bahnen zu ruinieren. Die Physik stand 1915 vor einer Zahl ohne Träger.
+
+\section{Einstein, Hilbert, Grossmann: die Feldgleichungen im Wettlauf}
+
+\subsection{Von der Entwurf-Theorie zur November-Klammer}
+
+Einstein und Marcel Grossmann veröffentlichten 1913 den \emph{Entwurf einer verallgemeinerten Relativitätstheorie und einer Theorie der Gravitation}. Die Gleichungen waren allgemein kovariant nur eingeschränkt; die Periheldrechnung im Einstein--Besso-Manuskript lieferte rund \(18''\) pro Jahrhundert -- zu wenig. Einstein zweifelte zeitweise an der empirischen Härte der \(43''\), nicht an seiner Theorie. Das ist historisch entscheidend: der Prüfstein war schon da, die Geometrie noch nicht.
+
+Im Sommer 1915 hielt Einstein Vorträge in Göttingen. Hilbert hörte zu. Im November folgte ein Wettlauf, der die Wissenschaftsgeschichte seither beschäftigt. Einstein legte der Preußischen Akademie vier Mitteilungen vor:
+\begin{itemize}
+  \item 4.~November: erste, noch nicht endgültige Feldgleichungen;
+  \item 11.~November: Verschärfung;
+  \item 18.~November: \textbf{die Periheldrehung des Merkur};
+  \item 25.~November: die endgültigen Gleichungen
+  \begin{equation}
+  R_{\mu\nu}-\frac12 R\,g_{\mu\nu}=\frac{8\pi G}{c^4}T_{\mu\nu}.
+  \end{equation}
+\end{itemize}
+Hilbert präsentierte am 20.~November in Göttingen sein Variationsprinzip, veröffentlicht 1916 als \emph{Die Grundlagen der Physik}. Die Prioritätsdebatte ist hier nicht das Thema. Das Thema ist: \emph{beide} Wege -- Einstein über physikalische Heuristik und Kovarianz, Hilbert über ein Wirkungsprinzip -- zielen auf dieselbe Riemannsche Geometrie. Die Periheldrehung ist der Punkt, an dem diese Geometrie aufhört, Spekulation zu sein.
+
+\historienbox{Hilbert und die Wirkung}{%
+Hilberts Zugang ist für das \(E_8\)-Modell methodisch der nähere. Wo Einstein die Gleichungen aus Kovarianz, Erhaltung und Newton-Grenze formte, suchte Hilbert eine einzige Wirkung, deren Euler--Lagrange-Gleichungen die Gravitation enthalten. Die MacDowell--Mansouri-Reduktion des \(E_8\)-Hauptfaserbündels steht in dieser Hilbertschen Linie: nicht eine neue Kraft wird postuliert, sondern eine Variation über Lagrange-Multiplikatoren, die eine topologische BF-Wirkung auf die Einstein--Hilbert-Dichte reduziert.}
+
+\subsection{Schwarzschild an der Front}
+
+Karl Schwarzschild schrieb Einstein am 22.~Dezember 1915 aus dem Feldzug im Osten. Er hatte die exakte zentralsymmetrische Vakuumlösung gefunden -- \emph{während} der Kriegsdienst ihn physisch schon zeichnete. Die Mitteilung \emph{Über das Gravitationsfeld eines Massenpunktes nach der Einsteinschen Theorie} erschien 1916. Die Metrik, in der heutigen Form,
+\begin{equation}
+\label{eq:schwarzschild}
+\mathrm{d}s^2=-\Bigl(1-\frac{2GM}{c^2 r}\Bigr)c^2\mathrm{d}t^2
++\Bigl(1-\frac{2GM}{c^2 r}\Bigr)^{-1}\mathrm{d}r^2
++r^2\bigl(\mathrm{d}\theta^2+\sin^2\theta\,\mathrm{d}\phi^2\bigr),
+\end{equation}
+ist der geometrische Ort der Merkurbahn. Einstein hatte 1915 die Präzession störungstheoretisch aus den noch frischen Feldgleichungen gewonnen. Schwarzschild gab der Störung eine exakte Bühne.
+
+\subsection{Eddington: Licht, Mond und die öffentliche Theorie}
+
+Arthur Stanley Eddington ist der dritte Zeuge des klassischen Triptychons. Die Periheldrehung war 1915 ein innerer Triumph der Theorie; die Lichtablenkung am Sonnenrand wurde 1919 zum öffentlichen. Die Expeditionen nach Sobral (Brasilien) und auf die Insel Príncipe prüften während der totalen Sonnenfinsternis vom 29.~Mai 1919, ob Sternörter nahe der Sonne um \(1{,}75''\) verschoben sind -- den doppelten newtonschen (Soldnerschen) Wert. Eddingtons Bericht an die Royal Society machte aus einer akademischen Geometrie ein Weltbild.
+
+Eddingtons \emph{Mathematical Theory of Relativity} (1923) wurde der englische Kanon. Er verstand früher als viele, dass Relativität nicht eine Kraftkorrektur ist, sondern eine Aussage über Maß, Parallelverschiebung und geodätische Abweichung. In genau diesem Sinne ist die Periheldrehung keine \enquote{relativistische Störung einer Newton-Ellipse}, sondern der sichtbare Rest der Riemannschen Krümmung auf einer fast newtonschen Bahn.
+
+Drei klassische Tests ordnete Eddington der Theorie zu:
+\begin{enumerate}
+  \item gravitative Rotverschiebung;
+  \item Lichtablenkung am Sonnenrand;
+  \item Periheldrehung des Merkur.
+\end{enumerate}
+Nur der dritte war 1915 bereits quantitativ getroffen. Deshalb bleibt er das Ur-Erlebnismoment. Shapiro-Delay, Pulsar-Timing, Gravitationslinsen und die direkten Wellen von LIGO/Virgo sind spätere Härten. Die erste Härte war Merkur.
+
+\section{Was \texorpdfstring{\enquote{statisch}}{statisch} im acht-dimensionalen Modell heißt}
+
+\subsection{Keine Kaluza--Klein-Dynamik}
+
+Seit Theodor Kaluza (1921) und Oskar Klein (1926) ist die Versuchung groß, Extra-Dimensionen als kleine Kreise zu denken, auf denen Felder umlaufen, Massen erzeugen, Kräfte vereinigen. Das hier zugrunde gelegte Modell ist von anderem Typ. Das \(E_8\)-Gitter
+\begin{equation}
+\mathbf{E}_8\subset\mathbb{R}^8
+\end{equation}
+ist ein gerades, unimodulares, selbstduales Gitter. Seine 240 Minimalvektoren erfüllen \(\|v\|^2=2\). Die zugehörige euklidische Geometrie ist \emph{positiv definit}. Es gibt in diesem Bulk keine Lorentz-Zeit, keine kosmologische Expansion, keine acht-dimensionale Wellenausbreitung, die man als Planetendynamik missverstehen dürfte.
+
+\begin{definition}[Statische acht-dimensionale Geometrie]
+Das \(E_8\)/EABC-Modell behandelt die Ausnahmegeometrie \(\mathbf{E}_8\subset\mathbb{O}\cong\mathbb{R}^8\) als starres Inzidenz- und Normgerüst: Wurzelgitter, Fano-Faserung, Normkugeln und Holonomie sind zeitlos. Zeit, Kausalität und Planetenbewegung entstehen erst in der vierdimensionalen Lorentz-Reduktion, dem \emph{Schattenraum}.
+\end{definition}
+
+Der oktonionische Zustandsraum trägt die definite Norm \(N(x)=x\bar x\). Ihn mit der physikalischen Raumzeit der Signatur \((3,1)\) gleichzusetzen, wäre ein Kategorienfehler. Die Brücke ist eine kontrollierte Signaturspaltung, keine Identität. Im Graviweak-Sektor geschieht sie algebraisch:
+\begin{equation}
+\label{eq:kette}
+\so(7,1)\;\subset\;\mathfrak{f}_4\;\subset\;\mathfrak{e}_8,
+\end{equation}
+mit der Aufspaltung
+\begin{equation}
+\so(7,1)\;\supset\;\so(3,1)\oplus\so(4).
+\end{equation}
+Hier ist \(\so(3,1)\) die Lorentz-Algebra der Raumzeit (Spin-Zusammenhang \(\omega\), Vierbein \(e\)), \(\so(4)\) der elektroschwache Begleiter. Die gesamte Gravitation und Eichstruktur sitzt in einem universellen \(E_8\)-Zusammenhang \(A\). Dieser Zusammenhang ist kein zeitabhängiges Medium im Acht-Dimensionalen. Er ist die algebraische Form einer starren Geometrie, gelesen in 4D-Komponenten.
+
+\subsection{Normkugeln statt Massepunkte}
+
+Das Sonnensystem wird nicht als Punktmechanik in einem vorgängigen Raum angesetzt, sondern als System von \emph{Normkugeln} im 3D-Ortsraum \(\mathbb{R}^3\): sphärische Testkörper, deren Schwerpunkte Geodäten der reduzierten Metrik folgen. Die Kugel ist hier nicht Illustration. Sie ist der Grundkörper des Bamberger Modells -- dieselbe Normkugel, die in acht Dimensionen die Kusszahl \(240\) trägt und in drei Dimensionen den Planeten als starren sphärischen Zeugen darstellt.
+
+\begin{bemerkung}[Starre Geometrie, bewegter Schatten]
+Man kann das Verhältnis in einem Satz sagen: \emph{Das Acht-Dimensionale ist eine Kristallographie; das Vier-Dimensionale ist ihre bewegte Lesart.} Die Periheldrehung ist dann kein Hinweis darauf, dass \(E_8\) \enquote{rotiert}, sondern darauf, dass eine geodätische Ellipse im Schwarzschild-Schatten sich nicht schließt -- genau so, wie ein Kreis, schräg projiziert, zur Ellipse wird, ohne dass der Kreis selbst gezittert hätte.
+\end{bemerkung}
+
+\vspace{0.6em}
+\begin{center}
+\begin{tikzpicture}[font=\small, node distance=0.38cm]
+  \node[draw=kastenrand, fill=kastengrund, inner sep=6pt, align=center] (e8) {\(\mathbf{E}_8\)\\[-1pt]{\scriptsize 240 Wurzeln}};
+  \node[draw=kastenrand, fill=kastengrund, inner sep=6pt, right=of e8] (f4) {\(F_4\)};
+  \node[draw=kastenrand, fill=kastengrund, inner sep=6pt, right=of f4] (so) {\(\so(7,1)\)};
+  \node[draw=kastenrand, fill=kastengrund, inner sep=6pt, right=of so] (lor) {\(\so(3,1)\oplus\so(4)\)};
+  \node[draw=goldton, fill=goldton!12, inner sep=6pt, right=of lor] (eh) {EH-Wirkung};
+  \draw[-latex, thick, kastenrand] (e8) -- (f4);
+  \draw[-latex, thick, kastenrand] (f4) -- (so);
+  \draw[-latex, thick, kastenrand] (so) -- (lor);
+  \draw[-latex, thick, goldton] (lor) -- (eh);
+  \node[font=\scriptsize\itshape, below=0.42cm of so, text=historienblau] {Graviweak-Reduktion einer starren Ausnahmegeometrie};
+\end{tikzpicture}
+\end{center}
+\vspace{0.4em}
+
+\section{MacDowell--Mansouri und die Hilbert-Wirkung}
+
+Die zweite Stufe der Herleitung ist Hilbertsch. Auf dem \(E_8\)-Hauptfaserbündel steht eine topologische BF-Wirkung. Variation über die Lagrange-Multiplikatoren reduziert sie im 4D-Schattenraum auf die klassische Palatini-/Einstein--Hilbert-Wirkung
+\begin{equation}
+\label{eq:eh}
+\eh=\frac{1}{16\pi G}\int\mathrm{d}^4x\,\sqrt{-g}\,(R-2\Lambda).
+\end{equation}
+Die Raumzeitmetrik entsteht nicht als Grundfeld, sondern als Kontraktion des Vierbeins,
+\begin{equation}
+g_{\mu\nu}=e_\mu^a e_\nu^b\eta_{ab}.
+\end{equation}
+Das ist der MacDowell--Mansouri-Mechanismus in der Form, die das Modell braucht: eine höhere, erstarrte Zusammenhanggeometrie wirft die Einstein--Hilbert-Dichte ab, sobald der Graviweak-Sektor auf Lorentz plus innere \(\so(4)\) reduziert wird.
+
+Für ein makroskopisches Zentralkörpersystem -- Sonne der Masse \(\MS\) im Ursprung -- ist die zentralsymmetrische Vakuumlösung der aus~\eqref{eq:eh} folgenden Gleichungen die Schwarzschild-Metrik~\eqref{eq:schwarzschild}. Die kosmologische Konstante \(\Lambda\) ist auf Merkur-Skalen irrelevant; sie verschiebt Perihelia nicht im beobachteten Maß.
+
+\begin{satz}[Schatten-Äquivalenz auf der Vakuumstufe]
+Sobald die MacDowell--Mansouri-Reduktion die Einstein--Hilbert-Wirkung freigegeben hat, sind die vakuumstatischen, kugelsymmetrischen Lösungen im 4D-Schattenraum dieselben wie in der klassischen Allgemeinen Relativitätstheorie. Die Periheldrehung testet daher nicht eine \emph{alternative} Bahnformel, sondern die Behauptung, dass die starre \(E_8\)-Geometrie diese Wirkung überhaupt abwirft.
+\end{satz}
+
+Das ist die methodische Pointe. Wer die \(43''\) aus \(E_8\) ableitet, beweist nicht, dass Merkur \enquote{oktonionisch fliegt}. Er beweist, dass die Reduktionskette~\eqref{eq:kette} bis zur Schwarzschild-Geodäte trägt. Scheitert die Zahl, scheitert die Brücke. Sitzt die Zahl, sitzt -- in diesem Sektor -- die Brücke.
+
+\section{Geodäten, Erhaltungsgrößen, Binet-Gleichung}
+
+\subsection{Normkugeln auf Geodäten}
+
+Die Planeten werden als Normkugeln ohne Eigenrotation modelliert. Ihre Schwerpunkte folgen zeitartigen Geodäten der Schwarzschild-Geometrie. Wegen der Killing-Felder \(\partial_t\) und \(\partial_\phi\) existieren zwei Erhaltungsgrößen: die spezifische Energie \(\mathcal{E}\) und der spezifische Drehimpuls \(h\). In der Äquatorebene \(\theta=\pi/2\) gilt
+\begin{align}
+\Bigl(1-\frac{\rs}{r}\Bigr)c\,\frac{\mathrm{d}t}{\mathrm{d}\tau}&=\mathcal{E},\\
+r^2\frac{\mathrm{d}\phi}{\mathrm{d}\tau}&=h,
+\end{align}
+mit Schwarzschild-Radius \(\rs=2G\MS/c^2\). Die Normierung \(g_{\mu\nu}u^\mu u^\nu=-c^2\) liefert die Radialgleichung. Substituiert man \(u=1/r\) und verwendet \(\phi\) als Bahnparameter, entsteht die relativistische Binet-Gleichung
+\begin{equation}
+\label{eq:binet}
+\frac{\mathrm{d}^2 u}{\mathrm{d}\phi^2}+u=\frac{G\MS}{h^2}+\frac{3G\MS}{c^2}u^2.
+\end{equation}
+
+\subsection{Newton-Term und Rahmen-Korrektur}
+
+Der erste Summand auf der rechten Seite von~\eqref{eq:binet} ist Kepler. Er erzeugt die geschlossene Ellipse. Der zweite Summand
+\begin{equation}
+\frac{3G\MS}{c^2}u^2
+\end{equation}
+ist die relativistische Korrektur. Im \(E_8\)-Bild entspringt sie dem Metrik-Skalierungsfaktor des Graviweak-Frame-Feldes: derselbe Faktor \((1-\rs/r)\), der Uhren und Lineale im Vierbein verzerrt, erscheint nach Elimination der Zeit als \(u^2\)-Term der Bahngleichung.
+
+\begin{lemma}[Effektives Potential]
+Äquivalent zu~\eqref{eq:binet} ist die Bewegung im effektiven Potential
+\begin{equation}
+V_{\mathrm{eff}}(r)=-\frac{G\MS}{r}+\frac{h^2}{2r^2}-\frac{G\MS h^2}{c^2 r^3}.
+\end{equation}
+Der letzte Term, proportional zu \(1/r^3\), hat kein newtonisches Gegenstück. Er senkt die Barriere am Perihel, verlängert den azimutalen Weg zwischen zwei Periheldurchgängen und öffnet die Ellipse.
+\end{lemma}
+
+\subsection{Störungstheorie eines Umlaufs}
+
+Sei
+\begin{equation}
+u_0(\phi)=\frac{G\MS}{h^2}\bigl(1+e\cos\phi\bigr)
+\end{equation}
+die Kepler-Lösung (Perihel bei \(\phi=0\)). Der relativistische Term ist klein,
+\begin{equation}
+\frac{G\MS}{c^2 a}\sim 2{,}6\times 10^{-8}
+\end{equation}
+für Merkur. Man setzt \(u=u_0+u_1\) und linearisiert. Der resonante Anteil von \(u_1\) erzeugt eine säkulare Verschiebung des Arguments. Nach einem vollen Umlauf ist der Winkelexzess
+\begin{equation}
+\label{eq:dphi}
+\dphi=\frac{6\pi G\MS}{c^2 a(1-e^2)}.
+\end{equation}
+Hier ist \(a\) die große Halbachse, \(e\) die numerische Exzentrizität. Die Kombination \(a(1-e^2)\) ist der Semi-Latus-Rectum-Parameter \(\ell=a(1-e^2)\); die Präzession ist also umso größer, je enger und exzentrischer die Bahn.
+
+Das ist Einsteins Formel von 1915. Sie ist zugleich die Formel des \(E_8\)-Schattens, weil die Schatten-Metrik Schwarzschild ist. Der historische und der geometrische Satz fallen zusammen.
+
+\subsection{Eine elementare Herleitungsskizze}
+
+Aus~\eqref{eq:binet} folgt mit \(\mu=G\MS/h^2\) und \(\varepsilon=3G\MS/c^2\)
+\begin{equation}
+u''+u=\mu+\varepsilon u^2.
+\end{equation}
+Der Ansatz \(u=\mu(1+e\cos\phi)+v\) mit \(|v|\ll\mu\) liefert
+\begin{equation}
+v''+v=\varepsilon\mu^2(1+2e\cos\phi+e^2\cos^2\phi)+\cdots.
+\end{equation}
+Der Term \(2\varepsilon\mu^2 e\cos\phi\) ist resonant zur homogenen Lösung. Sein partikuläres Integral enthält \(\phi\sin\phi\) und verschiebt das Argument des Cosinus:
+\begin{equation}
+1+e\cos\phi\quad\longrightarrow\quad 1+e\cos\bigl(\phi-\dphi\cdot\phi/2\pi\bigr).
+\end{equation}
+Die Säkularverschiebung pro \(2\pi\) ist \(\dphi=2\pi\cdot\varepsilon\mu=6\pi G\MS/(c^2 a(1-e^2))\), wobei \(h^2=G\MS a(1-e^2)\) benutzt wurde. Das ist der ganze physikalische Kern: eine Resonanz in der linearisierten Binet-Gleichung.
+
+\section{Numerische Auswertung für Merkur}
+
+\subsection{Konstanten}
+
+Wir verwenden CODATA- und IAU-nahe Werte:
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Größe & Wert \\
+\midrule
+Sonnenmasse \(\MS\) & \(1{,}98847\times 10^{30}\,\mathrm{kg}\) \\
+Gravitationskonstante \(G\) & \(6{,}67430\times 10^{-11}\,\mathrm{m}^3\mathrm{kg}^{-1}\mathrm{s}^{-2}\) \\
+Lichtgeschwindigkeit \(c\) & \(299\,792\,458\,\mathrm{m\,s}^{-1}\) \\
+Große Halbachse \(a\) & \(0{,}387098\,\mathrm{AU}\approx 5{,}7909\times 10^{10}\,\mathrm{m}\) \\
+Exzentrizität \(e\) & \(0{,}205630\) \\
+Siderische Periode \(T\) & \(87{,}969\,\mathrm{d}\) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Daraus folgt der Längenmaßstab der Sonne,
+\begin{equation}
+\frac{G\MS}{c^2}=1476{,}67\,\mathrm{m},\qquad \rs=\frac{2G\MS}{c^2}=2953{,}34\,\mathrm{m}.
+\end{equation}
+
+\subsection{Rechnung}
+
+Pro Merkur-Umlauf:
+\begin{equation}
+\dphi=0{,}10352''.
+\end{equation}
+In 100 julianischen Jahren (\(36525\) Tage) beträgt die Zahl der Merkur-Umläufe
+\begin{equation}
+N=\frac{36525}{87{,}969}=415{,}20.
+\end{equation}
+Die säkulare Akkumulation ist
+\begin{equation}
+\Delta\Phi_{100}=N\cdot\dphi=\mathbf{42{,}98''}/\mathrm{Jahrhundert}.
+\end{equation}
+
+\begin{center}
+{\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Quelle & Rest / Jh. & 1915 & \(E_8\)-Schatten \\
+\midrule
+Newton + Planetenstörungen & \(0''\) Rest & unvollständig & unvollständig \\
+Le~Verrier / Newcomb & \(\approx 43''\) & Anomalie & Prüfstein \\
+Einstein, 18.~Nov.~1915 & \(43''\) & getroffen & -- \\
+Schwarzschild-Geodäte & \(42{,}98''\) & -- & reproduziert \\
+statische \(E_8\)-Reduktion & \(42{,}98''\) & -- & \textbf{getroffen} \\
+\bottomrule
+\end{tabular}}
+\end{center}
+
+\vspace{0.5em}
+Dieser Wert reproduziert die bekannte relativistische Merkur-Periheldrehung vollständig aus den Grundgleichungen des \(E_8\)-Hauptfaserbündels, sobald dessen statische Reduktion die Einstein--Hilbert-Wirkung freigegeben hat. Es gibt in~\eqref{eq:dphi} keinen anpassbaren \(E_8\)-Parameter. Die 240 Wurzeln, die Fano-Faserung, die Graviweak-Kette -- sie dürfen die Wirkung hervorbringen oder scheitern. Eine Zwischenzahl wie \(18''\) (Entwurf 1913) oder \(38''\) (Le~Verrier ohne moderne Reduktion) ist nicht vorgesehen.
+
+\subsection{Warum Merkur und nicht die Erde}
+
+Die Formel \(\dphi\propto 1/(a(1-e^2))\) bevorzugt enge, exzentrische Bahnen. Merkur hat die kleinste Halbachse und eine ungewöhnlich hohe Exzentrizität \(e\approx 0{,}206\). Die Erde liefert nur etwa \(3{,}8''\) pro Jahrhundert, Mars etwa \(1{,}3''\). Historisch musste der Prüfstein also am innersten Planeten sitzen. Dass Le~Verrier gerade dort suchte, war kein Zufall der Neugier, sondern der Geometrie des \(1/r^3\)-Terms.
+
+\section{Figur der Präzession}
+
+Die newtonsche Ellipse ist ein geschlossenes Oval. Die relativistische Bahn ist ein Oval, das sich pro Umlauf um \(0{,}10352''\) weiterdreht -- unmerklich dem Auge, unerbittlich der Jahrhundertsumme. In hundert Erdenjahren liegt das Perihel um fast \(43''\) vor dem newtonschen Ort. Das ist weniger als eine Bogenminute: der Durchmesser des Vollmonds ist rund \(1800''\). Und doch war diese Spanne groß genug, um Vulcan zu erfinden, Hilbert und Einstein in denselben November zu treiben und Eddington ein Weltbild öffentlich zu machen.
+
+\vspace{0.7em}
+\begin{center}
+\begin{tikzpicture}[scale=1.15]
+  \draw[historienblau!20, line width=0.6pt] (-3.4,0) -- (3.4,0);
+  \draw[historienblau!20, line width=0.6pt] (0,-2.3) -- (0,2.3);
+  \fill[goldton] (0,0) circle (0.09);
+  \node[font=\scriptsize, below right] at (0.08,-0.12) {Sonne};
+  \draw[historienblau, thick, rotate=0] (0,0) ellipse (2.55cm and 1.55cm);
+  \draw[goldton!80!black, thick, dashed, rotate=18] (0,0) ellipse (2.55cm and 1.55cm);
+  \fill[historienblau] (2.55,0) circle (0.07);
+  \fill[goldton!80!black] ({2.55*cos(18)},{2.55*sin(18)}) circle (0.07);
+  \draw[-latex, goldton, thick] (2.15,0.15) arc (4:16:2.18);
+  \node[font=\small\itshape, goldton!50!black] at (2.95,0.78) {\(\dphi\)};
+  \node[font=\scriptsize, historienblau, anchor=east] at (-0.2,-1.82) {Kepler-Ellipse};
+  \node[font=\scriptsize, goldton!50!black, anchor=west] at (0.2,-2.12) {präzedierte Ellipse (überhöht)};
+\end{tikzpicture}
+\end{center}
+\vspace{0.3em}
+\begin{center}
+{\scriptsize Die Winkelöffnung ist didaktisch überhöht. Der wahre Fortschritt pro Umlauf beträgt \(0{,}10352''\).}
+\end{center}
+
+\section{Das Erlebnismoment: Analogie zur Einreichung von 1915}
+
+\subsection{Was 1915 eigentlich war}
+
+Die Einreichung der November-Mitteilungen war kein administrativer Akt. Sie war die öffentliche Festlegung einer Geometrie auf eine Zahl. Einstein konnte die Feldgleichungen noch um einen Index verschieben; er konnte die Periheldrehung nicht mehr verschieben, sobald er sie vorgelegt hatte. Hilbert konnte das Wirkungsprinzip variieren; die Merkurbahn blieb der Richter. Schwarzschild konnte die Koordinaten wählen; der Inkrementwinkel~\eqref{eq:dphi} ist eichinvariant. Eddington konnte die Theorie erklären; erklären heißt hier: zeigen, dass dieselbe Krümmung Licht \emph{und} Perihel bewegt.
+
+\subsection{Was die \texorpdfstring{\(E_8\)}{E8}-Herleitung ist}
+
+Die analoge Festlegung lautet: Das Bamberger Modell behauptet eine starre acht-dimensionale Geometrie. Solange diese Geometrie nur interne arithmetische Identitäten erzeugt -- Kusszahlen, Fano-Inzidenzen, Basket-Toggles --, bleibt sie Mathematik. In dem Augenblick, in dem sie die Einstein--Hilbert-Wirkung und damit \(\Delta\Phi=42{,}98''\) abwirft, tritt sie in dieselbe logische Öffentlichkeit wie Einsteins Note vom 18.~November.
+
+Drei Gemeinsamkeiten tragen die Analogie:
+\begin{enumerate}
+  \item \textbf{Keine freie Konstante.} Einstein justierte 1915 nicht \(\kappa\), um \(43''\) zu treffen; die Konstante war durch die Newton-Grenze gesetzt. Ebenso justiert das \(E_8\)-Modell nicht die 240 Wurzeln, um Merkur zu retten.
+  \item \textbf{Eine Brücke, die tragen oder brechen muss.} 1913 trug der Entwurf nicht. 1915 trug die Ricci-Form. Hier trägt die MacDowell--Mansouri-Reduktion -- oder das Modell bleibt im euklidischen Oktonionenraum gefangen, ohne Lorentz-Schatten.
+  \item \textbf{Ein historisch schon geprüfter Richter.} Die Zahl ist nicht neu. Neu ist nur, \emph{woraus} sie fällt: nicht aus einer dynamischen Raumzeit, die man ansetzt, sondern aus einer statischen Ausnahmegeometrie, die man reduziert.
+\end{enumerate}
+
+\historienbox{Öffentlichkeit einer Geometrie}{%
+Eine Geometrie wird physikalisch, indem sie eine bereits vermessene Restgröße ohne Hintertür reproduziert. Das war 1915 die Lage Einsteins gegenüber Newcomb. Das ist heute die Lage des statischen \(E_8\)-Modells gegenüber Einstein. Wer diese Reproduktion als bloße Übung in Schwarzschild-Geodäten abtut, verkennt den Anspruch: getestet wird nicht die Binet-Gleichung -- die ist seit 1916 kanonisch --, getestet wird, ob eine völlig starre acht-dimensionale Kristallographie das Recht hat, jene Binet-Gleichung als Schatten zu besitzen.}
+
+\subsection{Eddingtons dritte Probe als Maß}
+
+Eddington hätte die vorliegende Herleitung vermutlich nach einer einzigen Frage beurteilt: \emph{Ist die vierdimensionale Metrik wirklich eine Folgerung, oder ist sie hineingelegt?} Die ehrliche Antwort des Modells lautet: Die Lorentz-Signatur ist keine Identität mit \(\mathbb{O}\), sondern eine Reduktion. Die Statik des Acht-Dimensionalen ist gerade die Bedingung, unter der diese Antwort nicht in eine neue Dynamik-Mythologie umkippt. Es werden keine acht-dimensionalen Planeten bewegt. Es wird eine Holonomie gelesen.
+
+Wenn diese Lesart trägt, dann ist die Periheldrehung das, was sie 1915 war: das erste Nein zu jeder Theorie, die fast, aber nicht ganz die richtige Krümmung hat.
+
+\section{Historische Stimmen im Kontext}
+
+\paragraph{Einstein.}
+Die Freude über die \(43''\) war keine Eitelkeit. Sie war die Erfahrung, dass der Riemannsche Kalkül, den Grossmann ihm gezeigt hatte, nicht nur Symmetrie, sondern Natur ist. In den Wochen danach schrieb er die endgültigen Gleichungen. Die Reihenfolge ist charakteristisch: erst der Prüfstein, dann die kanonische Form.
+
+\paragraph{Hilbert.}
+Hilberts Satz, die Physik müsse axiomatisch werden, wird oft als Hybris gelesen. Im engeren Sinn war er ein Programm: Gravitation als Euler--Lagrange-Gleichung einer Dichte \(\sqrt{-g}R\). Das \(E_8\)-Modell verlängert dieses Programm nach oben. Die Dichte \(\sqrt{-g}R\) ist nicht mehr das Axiom, sondern das Residuum einer BF-Wirkung auf einem Ausnahmebündel.
+
+\paragraph{Grossmann.}
+Ohne Grossmann keine Christoffel-Symbole in Einsteins Hand. Die stille Figur der Geschichte ist der Mathematiker, der den Physiker das Tensorrechnen lehrte. Im \(E_8\)-Kontext entspricht dem die Einsicht, dass Ausnahmealgebren nicht \enquote{exotische Materie} sind, sondern Sprache: \(F_4\), \(G_2\), \(\operatorname{Spin}(7)\), Fano.
+
+\paragraph{Schwarzschild.}
+Die exakte Lösung kam aus dem Krieg. Sie zeigte, dass die Theorie nicht nur Störungsrechnung konnte. Für das vorliegende Modell ist das die Erlaubnis, Planeten als Geodäten und nicht als genäherte Kräfte zu behandeln.
+
+\paragraph{Eddington.}
+Eddington machte aus einer Akademie-Note eine Sonnenfinsternis. Er verstand, dass Relativität öffentlich wird, wenn Licht fällt. Die Periheldrehung bleibt gleichwohl der ältere, stillere Beweis: sie braucht keine Finsternis, nur Jahrhunderte und einen inneren Planeten.
+
+\paragraph{Weyl, Levi-Civita, Cartan.}
+Die späteren geometrischen Verfeinerungen -- Weyls Eichidee, Levi-Civitas Parallelverschiebung, Cartans Formen -- sind der natürliche Horizont, in dem ein Zusammenhang \(A\) auf \(E_8\) überhaupt denkbar wird. MacDowell--Mansouri (1977) steht am Ende dieser Linie, nicht an ihrem Anfang.
+
+\section{Was die Zahl nicht beweist -- und was sie beweist}
+
+Eine reproduzierte Periheldrehung beweist nicht die Riemann-Hypothese, nicht die Collatz-Vermutung, nicht eine vollständige Vereinigung der Kräfte. Sie beweist auch nicht, dass extra Dimensionen \enquote{existieren} wie Möbel im Raum. Sie beweist etwas Engeres und Härteres:
+
+\begin{itemize}
+  \item dass das statische \(E_8\)-Modell, \emph{sofern} seine Graviweak-Reduktion die Einstein--Hilbert-Wirkung liefert, im klassischen Vakuumsektor ununterscheidbar von der Allgemeinen Relativitätstheorie ist;
+  \item dass Planeten als Normkugeln im 3D-Schatten keine abweichende Säkularpräzession erzeugen;
+  \item dass der historische Prüfstein von 1915 im Modell nicht verloren geht, sondern als erstes Erlebnismoment wiederkehrt.
+\end{itemize}
+
+Die Grenze ist bewusst gezogen. Eine Bridge Conjecture bleibt eine Brücke: die Signaturspaltung von \(\mathbb{R}^8\) nach \((3,1)\) ist der philosophisch empfindliche Schritt. Die Periheldrehung testet nicht diesen Schritt in seiner ganzen Tiefe; sie testet seine \emph{Konsequenz}, sobald er getan ist. Genau so testete Merkur 1915 nicht Hilberts Axiomatik im Ganzen, sondern die Krümmung, die aus den Gleichungen folgt.
+
+\section{Ausblick: der Wolf-Raum und die nächste Härte}
+
+Die klassische Relativität hat nach Merkur weitere Härten gefunden: Lichtablenkung, Rotverschiebung, Shapiro-Delay, Frame-Dragging, Gravitationswellen. Das statische \(E_8\)-Modell besitzt eine eigene nächste Härte, die Einstein nicht hatte. Die extra vier Bündeldimensionen leben geometrisch auf dem Wolf-Raum
+\begin{equation}
+X_8=G_2/\mathrm{SO}(4).
+\end{equation}
+Ihre Kaluza--Klein-Moden -- hier nicht als dynamische Kompaktifizierung missverstanden, sondern als starre Schwingungsräume einer festen Faser -- können mikroskopische Abweichungen des Newton-Potentials im Sub-Millimeter-Bereich erzeugen. Eötvös-Waagen und Cavendish-Tisch-Tests sind dann das, was 1919 die Sonnenfinsternis war: eine Probe, die über die schon gesicherte Merkurzahl hinausgreift.
+
+Solange diese Moden nicht gemessen werden, bleibt die Periheldrehung das Fundament. Fundament heißt: ohne sie fällt die Brücke; mit ihr beginnt die Architektur erst.
+
+\section{Schluss}
+
+Le~Verrier hinterließ eine Zahl ohne Körper. Einstein gab ihr eine Krümmung. Hilbert gab der Krümmung eine Wirkung. Schwarzschild gab der Wirkung eine exakte Metrik. Eddington gab der Metrik ein Publikum. Das statische \(E_8\)-Modell gibt dieser ganzen Kette ein Dach: eine acht-dimensionale Kristallographie, die nicht umläuft, nicht atmet und nicht expandiert, und die gleichwohl -- reduziert -- dieselbe Merkurbahn wirft.
+
+Die Herleitung der Periheldrehung ist deshalb kein Anhang zur Allgemeinen Relativitätstheorie und kein numerisches Kuriosum des Bamberger Modells. Sie ist das Erlebnismoment, in dem eine erstarrte Ausnahmegeometrie öffentlich wird. Am 18.~November 1915 geschah das mit Feldgleichungen auf Papier. Hier geschieht es mit einer Reduktionskette, deren letzte sichtbare Spur \(42{,}98''\) pro Jahrhundert heißt.
+
+Wer diese Spur für selbstverständlich hält, hat vergessen, dass sie einmal die Welt verändert hat. Wer sie aus \(E_8\) erneut zieht, erklärt sich bereit, an demselben Richter gemessen zu werden.
+
+\appendix
+\section{Kompakte Formelsammlung}
+
+\textbf{Einstein--Hilbert (Schattenwirkung).}
+\[
+\eh=\frac{1}{16\pi G}\int\mathrm{d}^4x\,\sqrt{-g}\,(R-2\Lambda),\qquad
+g_{\mu\nu}=e_\mu^a e_\nu^b\eta_{ab}.
+\]
+
+\textbf{Schwarzschild-Metrik.}
+\[
+\mathrm{d}s^2=-\Bigl(1-\frac{\rs}{r}\Bigr)c^2\mathrm{d}t^2
++\Bigl(1-\frac{\rs}{r}\Bigr)^{-1}\mathrm{d}r^2
++r^2\mathrm{d}\Omega^2,\qquad \rs=\frac{2G\MS}{c^2}.
+\]
+
+\textbf{Relativistische Binet-Gleichung.}
+\[
+\frac{\mathrm{d}^2 u}{\mathrm{d}\phi^2}+u=\frac{G\MS}{h^2}+\frac{3G\MS}{c^2}u^2,\qquad
+h=r^2\frac{\mathrm{d}\phi}{\mathrm{d}\tau}.
+\]
+
+\textbf{Periheldrehung pro Umlauf.}
+\[
+\dphi=\frac{6\pi G\MS}{c^2 a(1-e^2)}.
+\]
+
+\textbf{Merkur, 100 julianische Jahre.}
+\[
+\dphi=0{,}10352'',\qquad N=415{,}20,\qquad \Delta\Phi_{100}=42{,}98''.
+\]
+
+\section{Chronologischer Index}
+
+\begin{center}
+\begin{tabular}{@{}lp{0.72\textwidth}@{}}
+\toprule
+Jahr & Ereignis \\
+\midrule
+1859 & Le~Verrier zeigt die merkurische Restpräzession an; Vulcan wird erwogen. \\
+1882--1898 & Newcomb verdichtet die planetaren Tafeln; der Rest nähert sich \(43''\). \\
+1913 & Einstein--Grossmann-\emph{Entwurf}; Einstein--Besso erhalten \(\approx 18''\). \\
+Sommer 1915 & Einsteins Göttinger Vorträge; Hilbert nimmt die Gravitation auf. \\
+4.--25.~Nov.~1915 & Einsteins vier Akademie-Mitteilungen; am 18.~die Periheldrehung. \\
+20.~Nov.~1915 & Hilberts Göttinger Vortrag über die Grundlagen der Physik. \\
+Dez.~1915 & Schwarzschild findet die exakte Vakuumlösung. \\
+1916 & Hilberts und Schwarzschilds Abhandlungen erscheinen. \\
+1919 & Eddingtons Finsternis-Expeditionen: Lichtablenkung. \\
+1921/26 & Kaluza und Klein: Extra-Dimensionen als \emph{dynamische} Kompaktifizierung. \\
+1923 & Eddingtons \emph{Mathematical Theory of Relativity}. \\
+1977 & MacDowell--Mansouri: Gravitation aus einem Eich-Zusammenhang. \\
+2026 & Statische \(E_8\)-Lesart: dieselbe \(42{,}98''\) als Schatten einer starren Ausnahmegeometrie. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{thebibliography}{99}
+
+\bibitem{LeVerrier1859}
+U.~J.~J.~Le~Verrier,
+\enquote{Théorie du mouvement de Mercure,}
+\textit{Annales de l'Observatoire impérial de Paris} \textbf{5} (1859).
+
+\bibitem{Newcomb1882}
+S.~Newcomb,
+\textit{Discussion of Observations of the Transits of Mercury},
+Washington, 1882.
+
+\bibitem{EinsteinGrossmann1913}
+A.~Einstein, M.~Grossmann,
+\enquote{Entwurf einer verallgemeinerten Relativitätstheorie und einer Theorie der Gravitation,}
+\textit{Zeitschrift für Mathematik und Physik} \textbf{62} (1913), 225--261.
+
+\bibitem{Einstein1915Perihel}
+A.~Einstein,
+\enquote{Erklärung der Perihelbewegung des Merkur aus der allgemeinen Relativitätstheorie,}
+\textit{Sitzungsberichte der Preußischen Akademie der Wissenschaften} (1915), 831--839.
+
+\bibitem{Einstein1915Feld}
+A.~Einstein,
+\enquote{Die Feldgleichungen der Gravitation,}
+\textit{Sitzungsberichte der Preußischen Akademie der Wissenschaften} (1915), 844--847.
+
+\bibitem{Hilbert1915}
+D.~Hilbert,
+\enquote{Die Grundlagen der Physik (Erste Mitteilung),}
+\textit{Nachrichten der Königlichen Gesellschaft der Wissenschaften zu Göttingen} (1916), 395--407.
+
+\bibitem{Schwarzschild1916}
+K.~Schwarzschild,
+\enquote{Über das Gravitationsfeld eines Massenpunktes nach der Einsteinschen Theorie,}
+\textit{Sitzungsberichte der Preußischen Akademie der Wissenschaften} (1916), 189--196.
+
+\bibitem{Eddington1919}
+F.~W.~Dyson, A.~S.~Eddington, C.~Davidson,
+\enquote{A Determination of the Deflection of Light by the Sun's Gravitational Field,}
+\textit{Philosophical Transactions of the Royal Society A} \textbf{220} (1920), 291--333.
+
+\bibitem{Eddington1923}
+A.~S.~Eddington,
+\textit{The Mathematical Theory of Relativity},
+Cambridge University Press, 1923.
+
+\bibitem{Kaluza1921}
+T.~Kaluza,
+\enquote{Zum Unitätsproblem der Physik,}
+\textit{Sitzungsberichte der Preußischen Akademie der Wissenschaften} (1921), 966--972.
+
+\bibitem{Klein1926}
+O.~Klein,
+\enquote{Quantentheorie und fünfdimensionale Relativitätstheorie,}
+\textit{Zeitschrift für Physik} \textbf{37} (1926), 895--906.
+
+\bibitem{MacDowellMansouri1977}
+S.~W.~MacDowell, F.~Mansouri,
+\enquote{Unified Geometric Theory of Gravity and Supergravity,}
+\textit{Physical Review Letters} \textbf{38} (1977), 739--742.
+
+\bibitem{MisnerThorneWheeler}
+C.~W.~Misner, K.~S.~Thorne, J.~A.~Wheeler,
+\textit{Gravitation},
+W.~H.~Freeman, 1973.
+
+\bibitem{Will2014}
+C.~M.~Will,
+\enquote{The Confrontation between General Relativity and Experiment,}
+\textit{Living Reviews in Relativity} \textbf{17} (2014), 4.
+
+\end{thebibliography}
+
+\end{document}

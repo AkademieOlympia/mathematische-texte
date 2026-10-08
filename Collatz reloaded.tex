@@ -1,0 +1,651 @@
+\documentclass[11pt,reqno]{amsart}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[ngerman]{babel}
+
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{microtype}
+\usepackage{cite}
+
+\usepackage[
+  a4paper,
+  top=2.2cm,
+  bottom=2.2cm,
+  left=2.5cm,
+  right=2.5cm
+]{geometry}
+
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=black
+}
+
+\newtheorem{theorem}{Satz}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Korollar}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Bemerkung}
+
+\numberwithin{equation}{section}
+
+\title{\textbf{\texorpdfstring{
+Collatz im $E_8$-Rahmen:\\
+$2$-adische Dynamik, geometrische Einbettung und die offene globale Lücke
+}{
+Collatz im E8-Rahmen:
+2-adische Dynamik, geometrische Einbettung und die offene globale Luecke
+}}}
+
+\author{\textbf{Thomas Hoffbauer}}
+\thanks{Bamberger Modell für Mathematische Physik,
+Zahlentheorie und Spektralgeometrie.
+Korrespondenz: \texttt{t.hoffbauer@posteo.de}, Bamberg, Deutschland.}
+
+\date{14.~September 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Die Collatz-Vermutung besagt, dass jede positive ganze Zahl unter der iterierten Syracuse-Abbildung schließlich den trivialen Zyklus $\{1, 2\}$ erreicht. Trotz massiver numerischer Verifikation (nachgewiesen für alle Startwerte $n < 2^{71}$ und fortgeführt bis $2075 \cdot 2^{60} \approx 2^{71{,}02}$) sowie starker maßtheoretischer Fast-überall-Sätze bezüglich des Orbit-Infimums ist die universelle Aussage für jedes einzelne $n \in \mathbb{N}$ weiterhin offen.
+
+Diese Arbeit untersucht eine geometrisch-arithmetische Darstellung der Collatz-Dynamik im Schnittfeld dreier Strukturen: der $2$-adischen Fortsetzung auf dem kompakten Ring $\mathbb{Z}_2$, der Wurzelgeometrie des Gitters $E_8$ und der pseudoeuklidischen Hoffbauer-Klammer $\Delta_{\mathrm{EABC}} = \sqrt{D_r^2 - D_t^2}$.
+
+Ziel der Untersuchung ist nicht die Behauptung eines voreiligen Beweises, sondern eine methodisch rigorose Scheidung zwischen exakten algebraischen Einbettungen, heuristischen Sonden und den verbleibenden offenen globalen Gattern. Wir beweisen zwei No-Go-Theoreme: (i)~Keine gleichmäßig beschränkte additive Störung des Logarithmus besitzt einen uniformen endlichen Mehrschritt-Abstiegshorizont; (ii)~lineare Countdown-Korrekturen der Form $\lambda v_2(n+1)$ scheitern auf Einzelblöcken an konstruierbaren Reset-Singularitäten. 
+
+Als konstruktives Resultat etablieren wir die Dynamik des gebündelten Odd-to-Odd-Blockoperators $U$: Wir beweisen, dass das normierte Haar-Maß $\mu_\times$ auf $\mathbb{Z}_2^\times$ strikt invariant unter $U$ ist ($U_* \mu_\times = \mu_\times$), der Einblock-Übergangskern bedingt unabhängig geometrisch mit Erwartungswert $2$ verteilt ist ($\mathbb{P}(s=a, r'=b \mid r) = 2^{-(a+b)}$) und relative Resets exponentiell mit Rate $2^{-d}/3$ unterdrückt werden. Überdies beweisen wir eine topologische Dichotomie für unbeschränkte Orbits ($n_i \to \infty$), wodurch das asymptotische Divergenzgatter auf das fundamentale Driftverhältnis $\limsup (a \bar{r}_K - \bar{s}_K) \ge 0$ reduziert wird.
+\end{abstract}
+
+\medskip
+
+\noindent\textbf{MSC (2020):}
+11B83, 37P35, 11S82, 37A25.
+
+\noindent\textbf{Schlüsselwörter:}
+Collatz-Vermutung (offen), Syracuse-Abbildung, $2$-adische Dynamik,
+$E_8$-Gitter, $\operatorname{Spin}(8)$-Trialität, Lyapunov-Funktion,
+Hoffbauer-Klammer, No-Go-Theorem, Haar-Maß-Invarianz.
+
+\section{Einleitung und Problemstellung}
+
+Auf der Menge der positiven ganzen Zahlen $\mathbb{N} = \{1, 2, 3, \ldots\}$ definieren wir die komprimierte Collatz- oder Syracuse-Abbildung durch:
+\begin{equation}
+T(n) =
+\begin{cases}
+\dfrac{n}{2}, & n \equiv 0 \pmod 2, \\[0.8em]
+\dfrac{3n+1}{2}, & n \equiv 1 \pmod 2.
+\end{cases}
+\label{eq:syracuse}
+\end{equation}
+
+Die Collatz-Vermutung fordert:
+\begin{equation}
+\forall n \in \mathbb{N} \quad \exists k \in \mathbb{N}_0: \qquad T^k(n) = 1.
+\end{equation}
+In dieser Zählung bildet $1 \mapsto 2 \mapsto 1$ den trivialen Zyklus der Periode 2.
+
+Die numerische Verifikation reicht mittlerweile weit über frühere Schranken hinaus. David Barina publizierte die rechnerische Konvergenz für alle Startwerte:
+\begin{equation}
+n < 2^{71} \approx 2{,}36 \times 10^{21},
+\end{equation}
+wobei Projektplattformen den Bereich über die Marke $2075 \cdot 2^{60} \approx 2^{71{,}02}$ hinaus verifiziert haben \cite{Barina2025}. Dennoch kann kein endlicher Algorithmus die Gültigkeit für unendlich viele Startwerte etablieren.
+
+Die logische Hürde zerfällt exakt in zwei disjunkte globale Hindernisse:
+\begin{enumerate}
+\item \textbf{Divergenzgatter (Gatter A):} Ausschluss unbeschränkter Trajektorien:
+\begin{equation}
+\forall n \in \mathbb{N}: \qquad \sup_{k \ge 0} T^k(n) < \infty.
+\label{eq:gateA}
+\end{equation}
+\item \textbf{Zyklusgatter (Gatter B):} Ausschluss sämtlicher nichttrivialer periodischer Orbits:
+\begin{equation}
+T^k(n) = n \implies n \in \{1, 2\}.
+\label{eq:gateB}
+\end{equation}
+\end{enumerate}
+
+Da eine beschränkte ganzzahlige Folge nach dem Dirichletschen Schubfachprinzip zwingend schließlich periodisch wird, impliziert das simultane Schließen von Gatter A und Gatter B die Collatz-Vermutung vollständig.
+
+\subsection{Probabilistische Heuristik und der Satz von Tao}
+
+Modelliert man die Paritätsentscheidungen $T(n) \bmod 2$ näherungsweise als unabhängig mit Wahrscheinlichkeit $\frac{1}{2}$, so ergibt sich die mittlere logarithmische Schrittweite:
+\begin{equation}
+\mathbb{E}[\Delta \log n] \approx \frac{1}{2} \log\left(\frac{1}{2}\right) + \frac{1}{2} \log\left(\frac{3}{2}\right) = \frac{1}{2} \log\left(\frac{3}{4}\right) \approx -0{,}1438 < 0.
+\end{equation}
+Dieser negative Driftwert liefert eine Plausibilität für den Abstieg, ist jedoch für Einzeltrajektorien nicht bindend.
+
+Einen maßtheoretischen Meilenstein erzielte Terence Tao (2019) \cite{Tao2019}: Er bewies, dass für jede reelle Funktion $f(N) \to \infty$ der minimale Wert des Orbits für fast alle $N \in \mathbb{N}$ im Sinne logarithmischer Dichte schließlich unter $f(N)$ fällt:
+\begin{equation}
+\lim_{X \to \infty} \frac{1}{\log X} \sum_{\substack{1 \le N \le X \\ \inf_{k \ge 0} T^k(N) < f(N)}} \frac{1}{N} = 1.
+\end{equation}
+Trotz dieser Schärfe schließt Taos Resultat eine Ausnahmemenge der Dichte null nicht aus. Gatter A bleibt für beliebige Einzelwerte von $n$ unbewiesen.
+
+---
+
+\section{Die $2$-adische Fortsetzung und ihre Grenzen}
+
+Die algebraische Struktur der Fallunterscheidung erzwingt die Einbettung in den Ring der $2$-adischen ganzen Zahlen $\mathbb{Z}_2 = \varprojlim_k \mathbb{Z}/2^k\mathbb{Z}$. Jedes Element besitzt die kanonische Entwicklung:
+\begin{equation}
+x = \sum_{j=0}^\infty a_j 2^j, \qquad a_j \in \{0, 1\}.
+\end{equation}
+Die Syracuse-Abbildung lässt sich auf $\mathbb{Z}_2$ stetig fortsetzen (Bernstein--Lagarias \cite{Lagarias1985}). Das normierte Haar-Maß auf dem kompakten Raum $\mathbb{Z}_2$ ist unter dieser Dynamik quasi-invariant.
+
+\begin{remark}[Kein Transfer auf archimedische Schranken]
+Kompaktheit, Ergodizität oder Maßtreue der fortgesetzten Dynamik auf $\mathbb{Z}_2$ liefern keine Schranken für die archimedische Größe $|T^k(n)|_{\infty} \in \mathbb{N}$. 
+Der $2$-adische Betrag $|x|_2 = 2^{-v_2(x)}$ misst die algebraische Teilbarkeit durch Potenzen von 2. Zwei Zahlen mit kleiner $2$-adischer Distanz können auf der reellen Zahlengeraden beliebig weit voneinander entfernt liegen. Eine ergodische Rückkehr im Raum $\mathbb{Z}_2$ impliziert daher keinen Abstieg auf $\mathbb{N}$.
+\end{remark}
+
+---
+
+\section{Geometrische Analogien: $E_8$, Trialität und Fano-Ebenen}
+
+Im EABC-Rahmen werden zwei fundamentale algebraische Parallelen zur Collatz-Dynamik sichtbar:
+\begin{enumerate}
+\item \textbf{Das Untergitter $D_8 \subset E_8$:} Die Division durch 2 entspricht der Projektion entlang binärer Koordinatenachsen des geraden Wurzelgitters.
+\item \textbf{Die äußere Automorphismengruppe $\operatorname{Spin}(8)$:} Es gilt
+\begin{equation}
+\operatorname{Out}(\operatorname{Spin}(8)) \cong \mathfrak{S}_3, \qquad |\mathfrak{S}_3| = 6.
+\end{equation}
+Die zyklische Gruppe $\mathbb{Z}_3$ permutiert die drei 8-dimensionalen Darstellungen $\mathbf{8}_v, \mathbf{8}_s, \mathbf{8}_c$ (Trialität). Dies spiegelt den Multiplikator $3$ geometrisch auf den Fano-Ebenen der Oktonionen $\mathbb{O}$ wider.
+\end{enumerate}
+
+\begin{remark}[Analogie vs. dynamische Konjugation]
+Das Auftreten der Primfaktoren 2 und 3 in den Isometriegruppen von $E_8$ belegt eine gemeinsame algebraische Symmetriebasis, begründet aber keine dynamische Konjugation. 
+Für eine echte Einbettung müsste ein injektiver Morphismus $\Phi: \mathbb{N} \to X$ in einen Phasenraum $X$ sowie ein stetiger Operator $F: X \to X$ konstruiert werden, sodass $\Phi(T(n)) = F(\Phi(n))$ gilt. Solange $\Phi$ und $F$ nicht explizit unter Erhaltung der diskreten Metrik angegeben werden, verbleibt der Übergang im Status einer strukturellen Heuristik.
+\end{remark}
+
+---
+
+\section{No-Go-Theoreme für additive und lineare Lyapunov-Kandidaten}
+
+Im Bamberger EABC-Modell misst die pseudoeuklidische \textbf{Hoffbauer-Klammer}
+\begin{equation}
+\Delta_{\mathrm{EABC}} := [D_r, D_t]_{\mathcal{H}} = \sqrt{D_r^2 - D_t^2} \approx 0{,}03599954
+\end{equation}
+das Gleichgewicht zwischen radialer Skalendeformation $D_r = 8/(137\phi)$ und transversaler Hecke-Eigenwert-Abschirmung $D_t = 126/49457$.
+
+Wir untersuchen nun formal, ob sich aus dieser Größe eine Lyapunov-Funktion konstruieren lässt.
+
+\subsection{Der allgemeine No-Go-Satz für beschränkte Störungen}
+
+\begin{theorem}[No-Go-Satz für beschränkte additive Lyapunov-Kandidaten]
+\label{thm:nogo_lyapunov}
+Sei $V: \mathbb{N} \to \mathbb{R}$ eine Funktion der Gestalt
+\begin{equation}
+V(n) = \log_2 n + B(n), \qquad n \in \mathbb{N},
+\end{equation}
+wobei die Störung $B: \mathbb{N} \to \mathbb{R}$ gleichmäßig beschränkt sei: Es existiere ein $C_B < \infty$ mit
+\begin{equation}
+|B(n)| \le C_B \qquad \forall n \in \mathbb{N}.
+\end{equation}
+Dann existieren keine Konstanten $M, N_0 \in \mathbb{N}$, sodass für jedes $n \ge N_0$ wenigstens ein $m \in \{1, \dots, M\}$ existiert mit:
+\begin{equation}
+V(T^m(n)) < V(n).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Angenommen, die Behauptung sei falsch. Dann existieren $M, N_0 \in \mathbb{N}$ derart, dass für jedes $n \ge N_0$ ein $m \in \{1, \dots, M\}$ mit $V(T^m(n)) < V(n)$ existiert.
+
+Setze $a := \log_2(3/2) > 0$. Wir wählen eine ganze Zahl $R$ mit $Ra > 2C_B$, setzen $L := R + M$ und wählen ein hinreichend großes $q \in \mathbb{N}$, sodass
+\begin{equation}
+n := 2^L q - 1 \ge N_0.
+\end{equation}
+Für $0 \le j \le L$ gilt induktiv:
+\begin{equation}
+T^j(n) = 3^j 2^{L-j} q - 1.
+\end{equation}
+Wegen $A = 3^j 2^{L-j} > B = 2^L$ für $1 \le j \le L$ gilt:
+\begin{equation}
+\frac{T^j(n)}{n} = \frac{Aq - 1}{Bq - 1} > \frac{A}{B} = \left(\frac{3}{2}\right)^j.
+\end{equation}
+Damit folgt für jeden Zwischenschritt $1 \le j \le L$:
+\begin{equation}
+V(T^j(n)) - V(n) = \log_2\left(\frac{T^j(n)}{n}\right) + B(T^j(n)) - B(n) > j a - 2C_B.
+\label{eq:lower_bound_chain}
+\end{equation}
+
+Wir wenden die angenommene Abstiegsbedingung rekursiv an:
+Setze $j_0 = 0$. Solange $j_r \le R$, gilt $j_r + M \le L$. Da $T^{j_r}(n) \ge n \ge N_0$, existiert nach Annahme ein $m_r \in \{1, \dots, M\}$ mit $V(T^{j_r + m_r}(n)) < V(T^{j_r}(n))$.
+Wir setzen $j_{r+1} := j_r + m_r$. Da $j_{r+1} - j_r \ge 1$, existiert ein Index $k$ mit $R < j_k \le R + M = L$. 
+Durch Aufsummieren der Abstiegsungleichungen folgt:
+\begin{equation}
+V(T^{j_k}(n)) < V(n).
+\end{equation}
+Andererseits liefert Ungleichung~\eqref{eq:lower_bound_chain} für $j = j_k$:
+\begin{equation}
+V(T^{j_k}(n)) - V(n) > j_k a - 2C_B > R a - 2C_B > 0.
+\end{equation}
+Dies erzwingt $V(T^{j_k}(n)) > V(n)$, ein Widerspruch.
+\end{proof}
+
+\begin{corollary}[Blindheit der statischen Hoffbauer-Torusphase]
+\label{cor:torus_blindness}
+Sei $B_p(n) = \Delta_{\mathrm{EABC}} \frac{n \bmod 2^p}{2^p}$ mit $p \in \mathbb{N}$ und $V_p(n) = \log_2 n + B_p(n)$. 
+Für jeden vorgegebenen Zeithorizont $M \in \mathbb{N}$ existieren unendlich viele Startwerte $n \in \mathbb{N}$, sodass:
+\begin{equation}
+B_p(T^j(n)) - B_p(n) = 0 \quad \text{und} \quad V_p(T^j(n)) > V_p(n) \qquad \forall j \in \{1, \dots, M\}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Wähle $L = M + p$ und $n = 2^L q - 1$ mit $q \in \mathbb{N}$. Für alle $0 \le j \le M$ gilt:
+\begin{equation}
+T^j(n) = 3^j 2^{M+p-j} q - 1 \equiv -1 \pmod{2^p}.
+\end{equation}
+Folglich ist $\psi_p(T^j(n)) = \frac{2^p - 1}{2^p}$ konstant, die Phasenkorrektur hebt sich identisch auf, und es verbleibt der reine logarithmische Aufstieg $V_p(T^j(n)) - V_p(n) > j \log_2(3/2) > 0$.
+\end{proof}
+
+\subsection{Die Countdown-Koordinate $v_2(n+1)$ und das Reset-No-Go}
+
+Sei $n \in 2\mathbb{N}-1$ mit $r = v_2(n+1) \ge 1$, also $n + 1 = 2^r u$ mit $u$ ungerade. Für $0 \le j \le r$ gilt induktiv:
+\begin{equation}
+T^j(n) + 1 = 3^j 2^{r-j} u \implies v_2(T^j(n) + 1) = r - j.
+\end{equation}
+Für $0 \le j < r$ ist $T^j(n)$ ungerade; bei $j = r$ ist $v_2(T^r(n)+1) = 0$, also $T^r(n)$ gerade.
+Nach genau $r = v_2(n+1)$ ungeraden Schritten erreicht der Orbit einen geraden Zustand; die Countdown-Koordinate ist auf 0 gefallen.
+
+Entlang reiner Ungerade-Ketten fällt das Potential $V_\lambda(n) = \log_2 n + \lambda v_2(n+1)$ streng monoton für $\lambda > \log_2(5/3) \approx 0{,}736966$. 
+Auf vollständigen Blöcken scheitert dieser lineare Ansatz jedoch an Rekombinationsstellen:
+
+\begin{theorem}[Reset-No-Go für die lineare Countdown-Korrektur]
+\label{thm:reset_nogo}
+Sei $U: 2\mathbb{N}-1 \to 2\mathbb{N}-1$ der Odd-to-Odd-Blockoperator.
+Für jedes $\lambda > 0$ und jedes fixierte $r \ge 1$ existieren unendlich viele ungerade Zahlen $n \in 2\mathbb{N}-1$ mit $v_2(n+1) = r$, sodass:
+\begin{equation}
+W_\lambda(U(n)) - W_\lambda(n) > 0 \qquad \text{für} \quad W_\lambda(n) = \log_2 n + \lambda v_2(n+1).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Fixiere $r \ge 1$. Da $\gcd(3^r, 2) = 1$, existiert für jedes $k \ge 1$ eine eindeutige ungerade Lösungsklasse der linearen Kongruenz:
+\begin{equation}
+3^r u \equiv -1 \pmod{2^{k+1}} \iff u \equiv -3^{-r} \pmod{2^{k+1}}.
+\end{equation}
+Setze $n := 2^r u - 1$. Dann ist $v_2(n+1) = r$. Nach $r$ ungeraden Schritten ist $T^r(n) = 3^r u - 1 \equiv -2 \pmod{2^{k+1}}$.
+Damit gilt $v_2(T^r(n)) = 1$, also $s = 1$. 
+Der nächste ungerade Zustand lautet:
+\begin{equation}
+U(n) = \frac{3^r u - 1}{2} \equiv -1 \pmod{2^k} \implies r' := v_2(U(n) + 1) \ge k.
+\end{equation}
+Die exakte Blockdifferenz ergibt:
+\begin{equation}
+W_\lambda(U(n)) - W_\lambda(n) = r \log_2\left(\frac{3}{2}\right) - 1 + \lambda(r' - r) + \log_2\left(1 + \frac{1 - (2/3)^r}{n}\right).
+\end{equation}
+Da der letzte Term positiv ist und $r' \ge k$ beliebig groß gewählt werden kann, wächst die Differenz für $k \to \infty$ unbeschränkt gegen $+\infty$.
+\end{proof}
+
+---
+
+\section{Die Blockdynamik und das asymptotische Divergenzgatter}
+
+\begin{definition}[Odd-to-Odd-Blockoperator]
+Sei $n \in 2\mathbb{N}-1$ mit $r = v_2(n+1) \ge 1$ und $s = v_2(T^r(n)) \ge 1$. Der \textbf{Odd-to-Odd-Blockoperator} $U: 2\mathbb{N}-1 \to 2\mathbb{N}-1$ ist definiert durch:
+\begin{equation}
+U(n) := \frac{T^r(n)}{2^s} = \frac{3^r(n+1) - 2^r}{2^{r+s}}.
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Fundamentale $K$-Block-Größenidentität]
+\label{thm:block_size_identity}
+Sei $n_0 \in 2\mathbb{N}-1$ und $(n_i)_{i \ge 0}$ der Orbit $n_{i+1} = U(n_i)$. Mit
+\begin{equation}
+r_i := v_2(n_i + 1), \qquad s_i := v_2(T^{r_i}(n_i)), \qquad a := \log_2\left(\frac{3}{2}\right) \approx 0{,}5849625,
+\end{equation}
+gilt für jedes $K \ge 1$ exakt:
+\begin{equation}
+\log_2\left(\frac{n_K}{n_0}\right) = a \sum_{i=0}^{K-1} r_i - \sum_{i=0}^{K-1} s_i + \sum_{i=0}^{K-1} \eta_i,
+\label{eq:master_block_identity}
+\end{equation}
+wobei die affinen Korrekturen
+\begin{equation}
+\eta_i := \log_2\left( 1 + \frac{1 - (2/3)^{r_i}}{n_i} \right)
+\end{equation}
+strikt positiv sind und $0 < \eta_i < \frac{1}{(\ln 2) n_i}$ erfüllen. 
+Überdies teleskopieren die Reset-Terme für $W_\lambda(n) = \log_2 n + \lambda v_2(n+1)$ exakt zu:
+\begin{equation}
+W_\lambda(n_K) - W_\lambda(n_0) = a \sum_{i=0}^{K-1} r_i - \sum_{i=0}^{K-1} s_i + \lambda(r_K - r_0) + \sum_{i=0}^{K-1} \eta_i.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Division von $U(n_i)$ durch $n_i$ liefert $\frac{n_{i+1}}{n_i} = (3/2)^{r_i} 2^{-s_i} (1 + \frac{1-(2/3)^{r_i}}{n_i})$. Logarithmieren zur Basis 2 und Summation über $0 \le i < K$ ergibt unmittelbar Gleichung~\eqref{eq:master_block_identity}. Die Teleskopierung der $\lambda$-Terme folgt aus $\sum_{i=0}^{K-1} (r_{i+1} - r_i) = r_K - r_0$.
+\end{proof}
+
+\subsection{Topologische Dichotomie und die zwei Collatz-Szenarien}
+
+\begin{proposition}[Topologische Dichotomie des Blockoperators]
+\label{prop:block_dichotomy}
+Für jeden Orbit $(n_i)_{i \ge 0}$ unter $U$ auf $2\mathbb{N}-1$ gilt genau eine der folgenden Alternativen:
+\begin{enumerate}
+\item \textbf{Der Orbit ist beschränkt:} Dann ist er schließlich periodisch.
+\item \textbf{Der Orbit ist unbeschränkt:} Dann gilt zwingend $\lim_{i \to \infty} n_i = \infty$, woraus $\lim_{i \to \infty} \eta_i = 0$ und für das Cesàro-Mittel
+\begin{equation}
+\lim_{K \to \infty} \frac{1}{K} \sum_{i=0}^{K-1} \eta_i = 0
+\end{equation}
+folgt.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Ist der Orbit beschränkt, nimmt er nur endlich viele Werte an. Nach dem Schubfachprinzip tritt ein Zustand doppelt auf; wegen der Determiniertheit von $U$ ist der Orbit schließlich periodisch.
+
+Ist der Orbit unbeschränkt, kann keine Schranke $B < \infty$ existieren, die unendlich oft besucht wird (sonst träte Periodizität ein, Widerspruch). Also gilt $n_i \to \infty$. Wegen $0 < \eta_i < \frac{1}{(\ln 2) n_i}$ folgt $\eta_i \to 0$ und nach Cesàro $\frac{1}{K} \sum_{i=0}^{K-1} \eta_i \to 0$.
+\end{proof}
+
+\paragraph{1. Periodische Orbits (Zyklus-Gatter).}
+Gilt $n_K = n_0$, so verschwindet die linke Seite von \eqref{eq:master_block_identity}. Mit $R_K := \sum r_i$ und $S_K := \sum s_i$ folgt:
+\begin{equation}
+(R_K + S_K) \ln 2 - R_K \ln 3 = (\ln 2) \sum_{i=0}^{K-1} \eta_i > 0.
+\end{equation}
+Für den Minimalwert $N_{\min} := \min_{0 \le i < K} n_i$ gilt $0 < \frac{1}{K} \left[ (R_K + S_K) \ln 2 - R_K \ln 3 \right] < \frac{1}{N_{\min}}$. 
+Die Blockidentität führt exakt auf eine positive ganzzahlige Linearform in $\ln 2$ und $\ln 3$, wie sie in klassischen diophantischen Schranken hypothetischer Collatz-Zyklen auftritt.
+
+\paragraph{2. Unbeschränkte Orbits (Divergenz-Gatter).}
+Ist der Orbit unbeschränkt, liefert Proposition~\ref{prop:block_dichotomy}:
+\begin{equation}
+\frac{1}{K} \log_2\left(\frac{n_K}{n_0}\right) = a \bar{r}_K - \bar{s}_K + o(1), \qquad \bar{r}_K = \frac{1}{K}\sum_{i=0}^{K-1} r_i, \quad \bar{s}_K = \frac{1}{K}\sum_{i=0}^{K-1} s_i.
+\end{equation}
+Folglich muss jeder unbeschränkte Orbit notwendig
+\begin{equation}
+\limsup_{K \to \infty} \left[ a \bar{r}_K - \bar{s}_K \right] \ge 0 \implies \liminf_{K \to \infty} \frac{\bar{s}_K}{\bar{r}_K} \le a = \log_2\left(\frac{3}{2}\right)
+\end{equation}
+erfüllen. Jede gleichmäßige Schranke $\bar{s}_K \ge (a + \delta) \bar{r}_K$ mit $\delta > 0$ für große $K$ schließt unbeschränkte Orbits kategorisch aus.
+
+---
+
+\section{Der $2$-adische Übergangskern und die Haar-Invarianz}
+
+\begin{theorem}[Exakter Haar-Übergangskern und Invarianz des Blockoperators]
+\label{thm:haar_block_kernel}
+Sei $\mu_\times$ das auf den ungeraden Einheiten $\mathbb{Z}_2^\times = 1 + 2\mathbb{Z}_2$ normierte Haar-Maß ($\mu_\times(\mathbb{Z}_2^\times) = 1$). 
+Für festes $r \ge 1$ sei $u \in \mathbb{Z}_2^\times$ bezüglich $\mu_\times$ verteilt. Wir setzen $x := 3^r u$, $s := v_2(x - 1)$, $U := (x - 1)/2^s$ und $r' := v_2(U + 1)$. Dann gilt:
+\begin{enumerate}
+\item \textbf{Exakter Produktkern:} Für alle $a, b \ge 1$ gilt
+\begin{equation}
+\mu_\times(s = a, \, r' = b \mid r) = 2^{-(a+b)}.
+\label{eq:haar_transition_kernel}
+\end{equation}
+Insbesondere sind $s$ und $r'$ bedingt auf $r$ unabhängig und jeweils geometrisch verteilt:
+\begin{equation}
+\mathbb{P}(s = a \mid r) = 2^{-a}, \qquad \mathbb{P}(r' = b \mid r) = 2^{-b} \implies \mathbb{E}[s \mid r] = 2, \quad \mathbb{E}[r' \mid r] = 2.
+\end{equation}
+\item \textbf{Haar-Invarianz des Operators:} Die induzierte Bildverteilung von $U$ erfüllt:
+\begin{equation}
+U_* \mu_\times = \mu_\times.
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+1. Da $\gcd(3^r, 2) = 1$, ist $u \mapsto x = 3^r u$ ein maßerhaltender Automorphismus auf $\mathbb{Z}_2^\times$. Für Haar-verteiltes $x$ gilt $\mu_\times(s = a) = \mu_\times(x \equiv 1 + 2^a \pmod{2^{a+1}}) = 2^{-a}$. 
+Bedingt auf $s = a$ besitzt $x$ die Zerlegung $x = 1 + 2^a y$ mit $y \in \mathbb{Z}_2^\times$. Die Restriktion von $\mu_\times$ auf diesen Ball induziert auf $y = U$ erneut das normierte Haar-Maß $\mu_\times$. 
+Damit besitzt $r' = v_2(y+1)$ bedingt auf $s = a$ dieselbe Verteilung $\mu_\times(r' = b) = 2^{-b}$. Hieraus folgt die Unabhängigkeit und der Produktkern $2^{-(a+b)}$.
+
+2. Integration über alle Zylinderbahnen $(a, b) \in \mathbb{N}^2$ beweist $\mu_\times(U^{-1}(A)) = \mu_\times(A)$ für alle Borelmengen $A \subset \mathbb{Z}_2^\times$.
+\end{proof}
+
+\begin{corollary}[Analytische Reset-Dämpfung]
+\label{cor:reset_tail}
+Unter dem normierten Haar-Maß $\mu_\times$ gilt:
+\begin{enumerate}
+\item Für festes $r \ge 1$ und minimale Kontraktion $s = 1$ fällt die Wahrscheinlichkeit eines absoluten Resets $r' \ge k$ exponentiell ab:
+\begin{equation}
+\mathbb{P}(r' \ge k \mid r, s = 1) = 2^{1-k} \implies \mathbb{E}[r' - r \mid r, s = 1] = 2 - r.
+\end{equation}
+\item Für relative Sprünge $r' - r \ge d$ ($d \ge 0$) gilt unter allen Blöcken:
+\begin{equation}
+\mathbb{P}(s = 1, \, r' - r \ge d) = \frac{2^{-d}}{3} \implies \mathbb{P}(r' - r \ge d \mid s = 1) = \frac{2^{1-d}}{3}.
+\end{equation}
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+Teil (1) folgt durch Summation $\sum_{b=k}^\infty 2^{-b} / (1/2) = 2^{1-k}$. 
+Für Teil (2) summieren wir über $r \sim \operatorname{Geom}(1/2)$:
+\begin{equation*}
+\sum_{j=1}^\infty \mathbb{P}(r=j)\mathbb{P}(s=1)\mathbb{P}(r' \ge j+d \mid s=1) = \sum_{j=1}^\infty 2^{-j} \cdot \frac{1}{2} \cdot 2^{1-(j+d)} = 2^{-d} \sum_{j=1}^\infty 4^{-j} = \frac{2^{-d}}{3}. \qedhere
+\end{equation*}
+\end{proof}
+
+Aus Korollar~\ref{cor:reset_tail} folgen die exakten Wahrscheinlichkeiten:
+\begin{equation}
+\mathbb{P}(s=1, \, r'-r \ge 4) = \frac{1}{48} \approx 2{,}08\%, \qquad \mathbb{P}(s=1, \, r'-r \ge 8) = \frac{1}{768} \approx 0{,}13\%.
+\end{equation}
+Für alle Blöcke mit $r \ge 3$ ist der Reset im Mittel kontraktionsfördernd ($\mathbb{E}[r' - r \mid s=1] \le -1$).
+
+---
+
+\section{Gatter D: Zylinder von Terras--Everett, Residuen und No-Descent-Pruning}
+
+Die Haar-Statistik auf $\mathbb{Z}_2^\times$ unterscheidet nicht zwischen generischen $2$-adischen Pfaden und positiven ganzen Zahlen.
+Eine $3$-adische Zusatzbedingung an den ungeraden Kern $u_i$ in $n_i=2^{r_i}u_i-1$ tut das ebenfalls nicht:
+sobald der Block $(r_i,s_i)$ festliegt, ist $u_i$ durch die Blockdefinition bereits bestimmt.
+Jedes endliche Blockwort ist lokal realisierbar; das ist die Zylinderstruktur von Terras und Everett~\cite{Terras1976,Everett1977}, keine unabhängige Restriktion.
+Der Hebel sitzt ausschließlich in der \emph{archimedischen} Starrheit der kanonischen Restklassenvertreter $\rho_K$.
+
+\subsection{Affine Rekursion und Pruning}
+
+Nach $j$ Blöcken gilt die ganzzahlige Identität
+\begin{equation}
+\label{eq:affine_ND}
+2^{Q_j}\, n_j
+= 3^{R_j}\, n_0 + B_j,
+\qquad
+D_j := 2^{Q_j}-3^{R_j},
+\end{equation}
+mit $R_j=\sum_{i<j} r_i$, $Q_j=\sum_{i<j}(r_i+s_i)$ und der Rekursion
+\begin{equation}
+B_{0}=0,
+\qquad
+B_{j+1}
+= 3^{r}\, B_j + (3^{r}-2^{r})\, 2^{Q_j}
+\quad\text{für den nächsten Block }(r,s).
+\end{equation}
+No-Descent $n_j\ge n_0$ ist äquivalent zu $B_j\ge n_0 D_j$.
+Für $D_j>0$ folgt die obere Schranke $n_0\le B_j/D_j$.
+Das exakte Blockwort legt $n_0$ modulo $2^{Q_j+1}$ fest; der kanonische Vertreter $\rho_j\in\{0,\dots,2^{Q_j+1}-1\}$ erfüllt $n_0\ge\rho_j$.
+Sobald daher
+\begin{equation}
+\label{eq:prune}
+D_j>0
+\quad\text{und}\quad
+\rho_j D_j > B_j,
+\end{equation}
+enthält der Zylinder keinen positiven Integer, der den Präfix ohne Abstieg durchläuft.
+Das ist ein deterministisches Branch-and-Bound, ohne Haar-Maß.
+
+Für $D_j<0$ kehrt die Ungleichung um.
+Mit $B_j>0$ gilt $B_j/D_j<0$, also ist $n_j\ge n_0$ für jedes $n_0\ge 1$ automatisch.
+\textbf{Expandierende Wörter werden von~\eqref{eq:prune} nie geschnitten.}
+
+\subsection{Lifts und Stabilisierung}
+
+Die Schachtelung der Zylinder schreibt sich
+\begin{equation}
+\rho_{K+1}
+= \rho_K + \ell_K\, 2^{Q_K+1},
+\qquad
+\ell_K\in\{0,1,\dots,2^{r_K+s_K}-1\}.
+\end{equation}
+Ist $n_0$ ein echter positiver Integer, so gilt $\rho_K=n_0$ sobald $2^{Q_K+1}>n_0$, und alle weiteren Lifts verschwinden: $\ell_K=0$.
+Ein unendlicher No-Descent-Pfad \emph{außerhalb} von $\mathbb{N}$ stabilisiert nicht.
+Das konstante Wort $(2,1)^{\infty}$ hat den $2$-adischen Fixpunkt $y=-5$ und die Residuen
+\begin{equation}
+\rho_K=2^{3K+1}-5\to\infty,
+\qquad
+D_K=8^K-9^K<0,
+\qquad
+\ell_K=7
+\text{ für alle }K\ge 1.
+\end{equation}
+Die Bedingung~\eqref{eq:prune} feuert nie.
+Der Integer $n_0=123=2^7-5$ folgt $(2,1)$ nur endlich oft und bricht mit einem Abstieg ab ($157\mapsto 59$).
+
+Das verbleibende Finite-Descent-Ziel ist daher:
+kein unendlicher No-Descent-Pfad mit $\ell_K=0$ für alle großen $K$,
+außer der Pfad erreicht $n_0=1$.
+Stabilisierte Lifts bedeuten $\rho_K=n_0\in\mathbb{N}$.
+Diese Zielsetzung ist die klassische Reduktion auf Minimalgegenbeispiele, nicht ein zusätzliches Theorem.
+
+\subsection{Diagnose im endlichen Baum}
+
+Im Alphabet $r,s\in\{1,2,3\}$ und Tiefe $6$ wurden $7200$ Präfixe geprüft:
+$3423$ erfüllen~\eqref{eq:prune} und sterben,
+$2978$ Blätter überleben,
+davon $2977$ mit $D<0$.
+Das einzige kontrahierend lebendige Blatt ist das triviale Wort $(1,1)^6$, auf dem $\rho D=B$ den Zyklus $1\mapsto 1$ trägt.
+Die Pruning-Regel räumt also genau die Zylinder aus, in denen $2^{Q}>3^{R}$ bereits einen Abstieg erzwingt.
+Der offene Rest ist der expandierende Teilbaum, und der ist unendlich (schon $(2,1)^{K}$ für alle $K$).
+Endliche Suche kann ihn nicht ausschöpfen.
+Gatter~D ist damit \emph{methodisch} geschlossen (keine $3$-adische Extraebene, Hebel $=$ Residuen auf $\mathbb{N}$) und \emph{inhaltlich} offen (keine Uniformschranke auf den Zweigen mit $D_j<0$).
+
+\subsection{Prefix-Constraint $2^{Q}\le 3^{R}$}
+
+Im Regime $A_K=2^{Q_K}/3^{R_K}\le 1$ folgt No-Descent automatisch:
+$n_0+C_K=A_K n_K$ mit $C_K>0$ liefert $n_K>n_0$.
+Dauerhaftes Verharren ist die Prefix-Bedingung $2^{Q_j}\le 3^{R_j}$ für alle $j\le K$,
+äquivalent zu $S_j\le a R_j$ mit $a=\log_2(3/2)$.
+Der kanonische Rest $\rho_K$ eines endlichen Ballot-Wortes \emph{ist} selbst ein positiver Integer, der den Präfix realisiert.
+Deshalb gilt
+\begin{equation}
+\min_{|w|=K}\rho(w)
+= m(K)
+:= \min\{\,n_0\text{ ungerade}:\ \text{Ballot-Tiefe}(n_0)\ge K\,\}.
+\end{equation}
+Empirisch, unter allen ungeraden $n_0<2\cdot 10^5$:
+$m(1)=7$, $m(2)=\cdots=m(14)=27$, $m(15)=703$, $m(18)=7527$, $m(21)=10087$, $m(25)=35655$;
+kein solches $n_0$ erreicht Tiefe $32$.
+Top-Down bis $X=10^6$: $L(n)$ ist die Ballot-Tiefe des echten $U$-Orbits.
+Es gilt $\mathbb{P}(L=0)\approx 71\%$, Mittelwert $\approx 0{,}74$,
+$\max L=40$ bei $n=626331$ und $667375$,
+und $L(n)/\log_2 n \le L(27)/\log_2 27 \approx 2{,}94$.
+Bei jedem Austritt aus $A\le 1$ war in diesem Fenster bereits $n_{\mathrm{next}}<n_0$
+(kein einziger ``exit-and-rise''-Fall).
+Das ist eine starke Diagnose, kein Uniformsatz: $L(n)=\infty$ bleibt die offene
+Integer-Form des dauerhaften $A\le 1$-Regimes, und Oszillation $A_K\lessgtr 1$
+mit $n_K\ge n_0$ ist durch den Census nicht ausgeschlossen, nur in $n\le 10^6$
+nicht beobachtet.
+
+\subsection{Präfix-Majorante $M_K$ statt $\Xi_*$}
+
+Am ersten Crossing $A_K>1$ (also $K=L(n)+1$) gilt
+$C_K=U_K-2^{-s_{K-1}}A_K$ mit
+$U_K=1+\sum_{j=1}^{K-1}(1-2^{-s_{j-1}})A_j$,
+also strikt $C_K<U_K$.
+Die Identität $U_K=A_K(n_K+2^{-s_{K-1}})-n_0$ zeigt jedoch, dass
+$\Xi_*=n_0(A_K-1)/U_K\ge 1$ am Crossing äquivalent zu $n_K<n_0$ ist
+($n_0,n_K$ ungerade): $\Xi_*$ ist eine verkleidete Tautologie, keine unabhängige Majorante.
+Im sicheren Präfix $A_j\le 1$ ($j<K$) gilt dagegen die echte $n_K$-freie Schranke
+\begin{equation}
+U_K\le M_K:=K-\sum_{j=0}^{K-2}2^{-s_j}=1+\sum_{j=1}^{K-1}(1-2^{-s_{j-1}}).
+\end{equation}
+Wegen $1-2^{-s}\ge\tfrac12$ für jedes $s\ge 1$ folgt $M_K\ge(K+1)/2$.
+Daher kann $M_K$ einen Startwert nur zertifizieren, wenn bereits
+$n_0(A_K-1)\ge(K+1)/2$.
+Exakt (Integer-Arithmetik) gilt bis $X=10^7$ für alle $4\,999\,999$ ungeraden $n_0\in(1,X]$:
+$n_0(A_K-1)\ge M_K$ außer genau bei $n_0=27$ und $n_0=63$.
+Beide verletzen sogar die universelle Unterschranke $n_0(A_K-1)<(K+1)/2$
+($27$: $7{,}566<8$; $63$: $5{,}051<6{,}5$).
+Der frühere $\Xi<1$-Fall $n_0=31$ wird von $M_K$ zertifiziert
+($13{,}648>M_{14}=8{,}75$).
+$L(27)=14$ zählt sichere Blöcke; der verletzende Index ist $K_{\mathrm{exit}}=15$.
+Eine uniforme Drift-Schranke $A_j\le 2^{-\min\lambda}$ reicht für die zwei Restfälle
+ebenfalls nicht ($27$: $M_{\mathrm{unif}}\approx 8{,}33>7{,}57$;
+$63$: $M_{\mathrm{unif}}\approx 5{,}74>5{,}05$),
+weil $A_j$ im Ballot-Fenster oszilliert und vor dem Crossing wieder ansteigen kann.
+Ersetzt man $A_j=2^{-d_j}$ durch $2^{-\{aR_j\}}$, so gilt
+$d_j=\{aR_j\}+m_j$ mit dem ganzzahligen Rest
+$m_j=\lfloor\log_2(3^{R_j})\rfloor-Q_j$
+(exakt: $m_j=(3^{R_j}).\mathrm{bit\_length}()-1-Q_j$).
+Damit ist $2^{-\{aR_j\}}=2^{m_j}A_j$: die Majorante $M_K^{(2)}$ überschätzt
+jeden Term um $2^{m_j}$. Für $n_0=63$ ergibt das $M^{(2)}\approx 5{,}985>5{,}051$.
+Die Summe mit den \emph{tatsächlichen} $m_j$ ist identisch $U_K$, also erneut tautologisch.
+$m_j=0$ bedeutet $A_j\in(\tfrac12,1]$ und ist nicht nach wenigen Schritten erzwungen:
+$(2,1)^5$ auf $n_0=65531$ hat $m=(0,0,0,0,0)$ bis zum Exit;
+$n_0=31$ fällt auf $m=1$ und kehrt bei $j=13$ zu $m=0$ zurück ($A_{13}=0{,}540$).
+Bis $10^6$ haben $\approx 6\%$ irgendein $m_j=0$ für $j\ge 3$, und $\approx 22\%$ enden
+mit $m_{K-1}=0$. Selbst die Hybridschranke ``$A\le 1$ für $j\le 2$, $A\le\tfrac12$ für $j\ge 3$''
+verfehlt $63$ ($5{,}0625>5{,}051$).
+Der Census ist kein Beweis.
+Der Ast $(2,1)^K$ reproduziert $\rho_K=2^{3K+1}-5$ und $\ell_K=7$, $\theta_K\to 1$; er ist \emph{nicht} der Extremalast für kleines $\rho$.
+Die Beatty-Wand $r_j=2$, $S_K=\lfloor K\log_2(9/4)\rfloor$ (exakt $\mathrm{bit\_length}(3^{2K})-1-2K$) ist sturmianisch: $n+1$ Faktoren der Länge $n$.
+Jedes zulässige Wortstück der Länge $q\in\{1,5,6\}$ hat \emph{genau eine} ungerade Restklasse modulo $2^{L_{K,q}+1}$, nämlich den kanonischen Zylinderrest $\rho$ dieses Stücks ($L_{K,1}\in\{3,4\}$, $L_{K,6}\in\{19,20\}$).
+Ein Three-Shift-Automat über $P_K\bmod 2^M$ expandiert deshalb nicht: die Wand selbst überlebt jeden endlichen Shift.
+$\ell_K$ ist selbst bei Faktoren der Länge $24$ nicht lokal. Auf der kanonischen Bahn bis $K=120$ ist $\ell_K=0$ isoliert oder in Paaren, nie ein Schwanz. Das zeigt $x_*\notin\mathbb{N}$ nicht; es bleibt die Unbeschränktheit von $\rho_K$ auf diesem einen Wort.
+Ein Satz ``$\rho_K$ unbeschränkt auf jedem unendlichen Ballot-Wort'' wäre genau $m(K)\to\infty$, also der Ausschluss dauerhaften $A_K\le 1$ für $n_0>1$.
+Er ist kein Collatz-Beweis: ein No-Descent-Orbit darf zwischen $A_K<1$ und $A_K>1$ wechseln.
+
+---
+
+\section{Zusammenfassung und Forschungsleiter}
+
+\begin{table}[h!]
+\centering
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{clll}
+\toprule
+\textbf{Stufe} & \textbf{Mathematischer Ansatz} & \textbf{Status} & \textbf{Strukturelle Diagnose / Theorem} \\
+\midrule
+\textbf{1} & Statische Torusphase $\Delta_{\mathrm{EABC}} \psi_p(n)$ & \textbf{Ausgeschlossen} & Phasenauslöschung auf $n \equiv -1 \pmod{2^{M+p}}$ (Korollar~4.2) \\
+\textbf{2} & Beliebiges beschränktes additives $B(n)$ & \textbf{Ausgeschlossen} & Universelles No-Go-Theorem via $L \ge R+M$ (Satz~4.1) \\
+\textbf{3a} & Lineares $v_2(n+1)$ auf ungeraden Ketten & \textbf{Lokal kontrolliert} & Monotoner Abstieg für $\lambda > \log_2(5/3)$ \\
+\textbf{3b} & Lineares $v_2(n+1)$ pro Einzelblock & \textbf{Ausgeschlossen} & Reset-No-Go via $u \equiv -3^{-r} \pmod{2^{k+1}}$ (Satz~4.3) \\
+\midrule
+\textbf{4a} & $K$-Block-Teleskopierung & \textbf{Bewiesen} & Exakte Identität: Resets teleskopieren zu $\lambda(r_K - r_0)$ (Satz~5.1) \\
+\textbf{4b} & Topologische Dichotomie & \textbf{Bewiesen} & Schließlich periodisch oder $n_i \to \infty$ mit $\bar{\eta}_K \to 0$ (Prop.~\ref{prop:block_dichotomy}) \\
+\textbf{4c} & Haar-Marginalstatistik & \textbf{Bewiesen} & Hauptterm-Mittelwert: $\mathbb{E}[a r - s] \approx -0{,}830 < 0$ \\
+\textbf{4d$_1$} & Haar-Maß-Invarianz von $U$ & \textbf{Bewiesen} & $U_* \mu_\times = \mu_\times$ auf $\mathbb{Z}_2^\times$ (Satz~6.1) \\
+\textbf{4d$_2$} & Exakter Einblock-Übergangskern & \textbf{Bewiesen} & $\mathbb{P}(s=a, r'=b \mid r) = 2^{-(a+b)}$ (Satz~6.1) \\
+\textbf{4d$_3$} & Ergodizität / Mixing von $U$ & \textbf{Offen} & Spektrallücke des Transferoperators auf $L^2(\mathbb{Z}_2^\times, \mu_\times)$ \\
+\midrule
+\textbf{4e} & Uniforme Blockkontrolle auf $\mathbb{N}$ & \textbf{Collatz-Kerngatter} &
+\parbox[t]{6.8cm}{Für endlichen Abstieg ist exakt
+$\sum s_i > a \sum r_i + \sum \eta_i$ zu erzwingen. Zum Divergenzausschluss genügt $\limsup (a \bar{r}_K - \bar{s}_K) < 0$.} \\
+\textbf{4f} & Residuen-Pruning / Gatter D & \textbf{Tautologie + Diagnose} &
+\parbox[t]{6.8cm}{Pruning $\rho D>B$ nur für $D>0$.
+Expandierende Wörter ($(2,1)^\infty$) bleiben.} \\
+\textbf{5} & Nichtlineare / Wort-Potentiale & \textbf{Offenes Feld} & Dynamische Kopplung an Blockwort-Zustände $F(r_i, s_i, \dots)$ \\
+\bottomrule
+\end{tabular}
+\caption{Systematische Klassifikation der Lyapunov-Kandidaten und Blockdynamiken im EABC-Rahmen.}
+\label{tab:final_research_ladder}
+\end{table}
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{
+\textbf{Fazit zum Stand des Forschungsprogramms:}\\[0.4em]
+Der Odd-to-Odd-Blockoperator $U$ besitzt das normierte Haar-Maß auf $\mathbb{Z}_2^\times$ als echtes invariantes Maß ($U_* \mu_\times = \mu_\times$). Sein Einblock-Übergang erzeugt für $s_i$ und $r_{i+1}$ bedingt auf $r_i$ unabhängige geometrische Verteilungen mit Erwartungswert 2. 
+Extreme Resets werden exponentiell mit der Sprunghöhe unterdrückt ($\mathbb{P}(s=1, r'-r \ge d) = \frac{2^{-d}}{3}$), und die mittlere Netto-Drift des algebraischen Hauptterms beträgt signifikante $-0{,}830$ Bits pro Block. 
+
+Ob die iterierte Blockdynamik ergodisch oder hinreichend mischend ist (Stufe 4d$_3$) und wie sich diese maßtheoretische Eigenschaft auf ausnahmslos alle ganzzahligen Einbettungen $\mathbb{N} \subset \mathbb{Z}_2^\times$ übertragen lässt (Stufe 4e), bildet das exakt isolierte mathematische Kerngatter der Collatz-Forschung.
+Gatter~D verschiebt den Hebel auf die archimedischen Residuen $\rho_K$, ohne die expandierenden Zweige $D_j<0$ zu schließen.
+}}
+\end{center}
+
+\begin{thebibliography}{99}
+\bibitem{Barina2025} D.~Barina, \emph{Convergence verification of the Collatz conjecture for all initial values up to $2^{71}$}, Project Status and Verification Log, Brno University of Technology (2025).
+\bibitem{Tao2019} T.~Tao, \emph{Almost all orbits of the Collatz map attain almost bounded values}, arXiv:1909.03562 [math.PR] (2019).
+\bibitem{Lagarias1985} J.~C.~Lagarias, \emph{The $3x+1$ problem and its generalizations}, Amer. Math. Monthly \textbf{92} (1), 3--23 (1985).
+\bibitem{Terras1976} R.~Terras, \emph{A stopping time problem on the positive integers}, Acta Arith.\ \textbf{30} (1976), 241--252.
+\bibitem{Everett1977} C.~J.~Everett, \emph{Iteration of the number-theoretic function $f(2n)=n$, $f(2n+1)=3n+1$}, Adv.\ Math.\ \textbf{25} (1977), 42--45.
+\bibitem{Steiner1977} R.~P.~Steiner, \emph{A theorem on the Syracuse problem}, Proc. 7th Manitoba Conf. Numerical Math., 553--559 (1977).
+\bibitem{SimonsDeWeger2005} J.~Simons, B.~de~Weger, \emph{Theoretical and computational bounds for m-cycles of the $3x+1$-problem}, Acta Arith. \textbf{117} (1), 51--70 (2005).
+\end{thebibliography}
+
+\end{document}

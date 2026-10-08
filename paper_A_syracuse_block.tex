@@ -1,0 +1,419 @@
+\documentclass[11pt,reqno]{amsart}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+% \usepackage[ngerman]{babel}
+
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{microtype}
+\usepackage{cite}
+
+\usepackage[
+  a4paper,
+  top=2.2cm,
+  bottom=2.2cm,
+  left=2.5cm,
+  right=2.5cm
+]{geometry}
+
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=black
+}
+
+\newtheorem{theorem}{Satz}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Korollar}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Bemerkung}
+
+\numberwithin{equation}{section}
+
+\title{\textbf{\texorpdfstring{
+Blockdynamik der Syracuse-Abbildung:\\
+No-Go-Lyapunov-Resultate, induzierte Bernoulli-Kodierung\\
+und die offenen globalen Gatter
+}{
+Blockdynamik der Syracuse-Abbildung:
+No-Go-Lyapunov-Resultate, induzierte Bernoulli-Kodierung
+und die offenen globalen Gatter
+}}}
+
+\author{Thomas Hoffbauer}
+\thanks{Institut f\"ur Mathematische Physik und Spektralgeometrie, Bamberg, Deutschland. Korrespondenz: \texttt{t.hoffbauer@posteo.de}}
+
+\date{14.~September 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Die Collatz-Vermutung besagt, dass jede positive ganze Zahl unter der iterierten Syracuse-Abbildung schlie\ss{}lich den trivialen Zyklus $\{1, 2\}$ erreicht. Trotz massiver numerischer Verifikation (nachgewiesen f\"ur alle Startwerte $n < 2^{71}$ durch Barina \cite{Barina2025} sowie fortgef\"uhrt bis $2075 \cdot 2^{60} \approx 2^{71{,}02}$) und ma\ss{}theoretischer Fast-\"uberall-S\"atze bez\"uglich des Infimums fast aller Orbits (Tao \cite{Tao2019}) ist die universelle Aussage f\"ur jedes einzelne $n \in \mathbb{N}$ weiterhin offen.
+
+In dieser Arbeit untersuchen wir die Dynamik \"uber einen induzierten Odd-to-Odd-Blockoperator $U$, der jeweils $r$ konsekutive ungerade Schritte mit den nachfolgenden $s$ Divisionen durch 2 zu Paaren $(r, s) \in \mathbb{N}_{\ge1}^2$ b\"undelt:
+\begin{enumerate}
+\item \textbf{No-Go-Theoreme:} Wir beweisen analytisch, dass keine gleichm\"a\ss{}ig beschr\"ankte additive St\"orung des Logarithmus $V(n) = \log_2 n + B(n)$ einen uniformen endlichen Mehrschritt-Abstiegshorizont auf $\mathbb{N}$ besitzen kann. Ferner zeigen wir, dass lineare Countdown-Korrekturen der Gestalt $\log_2 n + \lambda v_2(n+1)$ auf Einzelbl\"ocken unweigerlich an konstruierbaren Reset-Singularit\"aten mit minimalem geraden Abstieg ($s=1$) scheitern.
+\item \textbf{Induzierte Bernoulli-Blockkodierung:} Auf den ungeraden $2$-adischen Einheiten $\mathbb{Z}_2^\times$ erweist sich das normierte Haar-Ma\ss{} $\mu_\times$ als strikt invariant unter $U$ ($U_* \mu_\times = \mu_\times$). Der Einblock-\"Ubergangskern erzeugt bedingt auf $r$ unabh\"angige geometrische Variablen mit $\mu_\times(s=a, r'=b \mid r) = 2^{-(a+b)}$. \"Uber verschachtelte kompakte Zylinderfolgen erhalten wir eine metrische Konjugation zum einseitigen Bernoulli-Shift auf $\mathbb{N}_{\ge1}^2$.
+\item \textbf{Drift und Gro\ss{}abweichungen:} F\"ur den algebraischen Hauptterm gilt das starke Gesetz der gro\ss{}en Zahlen: $a\bar{r}_K - \bar{s}_K \to 2\log_2(3/2) - 2 \approx -0{,}830075$ $\mu_\times$-fast sicher. Die Wahrscheinlichkeit einer nicht-negativen kumulierten Drift \"uber $K$ Bl\"ocke f\"allt exponentiell mit Schranke $e^{-I(0) K}$, wobei $I(0) \approx 0{,}1464785$ die Cram\'ersche Ratenfunktion ist.
+\item \textbf{Topologische Dichotomie auf $\mathbb{N}$:} F\"ur deterministische Orbits auf $\mathbb{N}$ existiert keine unbeschr\"ankte Oszillation mit unendlich vielen R\"uckkehren in kompakte Bereiche: Jeder unbeschr\"ankte Orbit divergiert bestimmt gegen unendlich ($n_i \to \infty$), wodurch die affinen Restterme im Ces\`aro-Mittel verschwinden ($\bar{\eta}_K \to 0$).
+\end{enumerate}
+Die Analyse isoliert damit zwei weiterhin offene arithmetische Collatz-Gatter. Erstens m\"ussen s\"amtliche nichttrivialen realisierbaren Blockzyklen ausgeschlossen werden. Zweitens muss ausgeschlossen werden, dass ein unbeschr\"ankter positiver ganzzahliger Orbit dauerhaft eine Blockfolge mit nichtnegativer asymptotischer Hauptdrift realisiert. Die $2$-adische Fast-\"uberall-Statistik ersetzt keine dieser beiden universellen arithmetischen Aussagen.
+\end{abstract}
+
+\medskip
+
+\noindent\textbf{MSC (2020):}
+11B83, 37P35, 11S82, 37A25, 60F10.
+
+\noindent\textbf{Schl\"usselw\"orter:}
+Collatz-Vermutung, Syracuse-Abbildung, $2$-adische Dynamik,
+Blockoperator, No-Go-Theorem, Bernoulli-Shift, Cram\'er-Gro\ss{}abweichung, Barina-Schranke.
+
+\section{Einleitung und Problemstellung}
+
+Auf der Menge der positiven ganzen Zahlen $\mathbb{N} = \{1, 2, 3, \ldots\}$ definieren wir die komprimierte Syracuse-Abbildung durch:
+\begin{equation}
+T(n) =
+\begin{cases}
+\dfrac{n}{2}, & n \equiv 0 \pmod 2, \\[0.8em]
+\dfrac{3n+1}{2}, & n \equiv 1 \pmod 2.
+\end{cases}
+\label{eq:syracuse}
+\end{equation}
+
+Die Collatz-Vermutung fordert, dass f\"ur jedes $n \in \mathbb{N}$ ein $k \in \mathbb{N}_0$ mit $T^k(n) = 1$ existiert. David Barina publizierte die rechnerische Verifikation f\"ur alle Startwerte $n < 2^{71} \approx 2{,}36 \times 10^{21}$ \cite{Barina2025}, w\"ahrend verteilte Berechnungen den Bereich \"uber die Marke $2075 \cdot 2^{60} \approx 2^{71{,}02}$ hinaus ausgedehnt haben.
+
+Die mathematische H\"urde zerf\"allt exakt in zwei globale Gatter:
+\begin{enumerate}
+\item \textbf{Divergenzgatter (Gatter A):} Ausschluss unbeschr\"ankter Trajektorien: $\sup_{k \ge 0} T^k(n) < \infty$.
+\item \textbf{Zyklusgatter (Gatter B):} Ausschluss nichttrivialer periodischer Orbits: $T^k(n) = n \implies n \in \{1, 2\}$.
+\end{enumerate}
+
+Terence Tao bewies 2019 \cite{Tao2019}, dass f\"ur jede Funktion $f(N) \to \infty$ das Infimum des Orbits f\"ur fast alle $N \in \mathbb{N}$ im Sinne logarithmischer Dichte unter $f(N)$ f\"allt. Da dieses Resultat Ausnahmemengen der Dichte null zul\"asst, bleibt die universelle Aussage f\"ur jedes einzelne $n$ offen.
+
+---
+
+\section{No-Go-Theoreme f\"ur additive Lyapunov-Kandidaten}
+
+Um Gatter A zu schlie\ss{}en, wird in dynamischen Systemen \"ublicherweise eine eigentliche (proper) Lyapunov-Funktion gesucht. Wir beweisen zun\"achst analytisch, dass naheliegende additive St\"orungen des Logarithmus prinzipbedingt scheitern.
+
+\begin{theorem}[No-Go-Satz f\"ur beschr\"ankte additive Lyapunov-Kandidaten]
+\label{thm:nogo_lyapunov}
+Sei $V: \mathbb{N} \to \mathbb{R}$ eine Funktion der Gestalt
+\begin{equation}
+V(n) = \log_2 n + B(n), \qquad n \in \mathbb{N},
+\end{equation}
+wobei die St\"orung $B: \mathbb{N} \to \mathbb{R}$ gleichm\"a\ss{}ig beschr\"ankt sei: Es existiere ein $C_B < \infty$ mit $|B(n)| \le C_B$ f\"ur alle $n \in \mathbb{N}$.
+
+Dann existieren keine Konstanten $M, N_0 \in \mathbb{N}$, sodass f\"ur jedes $n \ge N_0$ wenigstens ein $m \in \{1, \dots, M\}$ existiert mit:
+\begin{equation}
+V(T^m(n)) < V(n).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Angenommen, es existieren $M, N_0 \in \mathbb{N}$ derart, dass f\"ur jedes $n \ge N_0$ ein $m \in \{1, \dots, M\}$ mit $V(T^m(n)) < V(n)$ existiert.
+
+Setze $a := \log_2(3/2) > 0$. W\"ahle $R \in \mathbb{N}$ mit $Ra > 2C_B$, setze $L := R + M$ und w\"ahle $q \in \mathbb{N}$ so gro\ss{}, dass $n := 2^L q - 1 \ge N_0$.
+F\"ur $0 \le j \le L$ gilt induktiv:
+\begin{equation}
+T^j(n) = 3^j 2^{L-j} q - 1.
+\end{equation}
+Wegen $3^j 2^{L-j} > 2^L$ f\"ur $1 \le j \le L$ folgt f\"ur das Verh\"altnis:
+\begin{equation}
+\frac{T^j(n)}{n} = \frac{3^j 2^{L-j} q - 1}{2^L q - 1} > \left(\frac{3}{2}\right)^j.
+\end{equation}
+Damit gilt f\"ur jeden Zwischenschritt $1 \le j \le L$:
+\begin{equation}
+V(T^j(n)) - V(n) = \log_2\left(\frac{T^j(n)}{n}\right) + B(T^j(n)) - B(n) > j a - 2C_B.
+\label{eq:lower_bound_chain}
+\end{equation}
+
+Wir wenden die angenommene Abstiegsbedingung rekursiv an:
+Setze $j_0 = 0$. Solange $j_r \le R$, gilt $j_r + M \le L$. Da $T^{j_r}(n) \ge n \ge N_0$, existiert nach Annahme ein $m_r \in \{1, \dots, M\}$ mit $V(T^{j_r + m_r}(n)) < V(T^{j_r}(n))$.
+Wir setzen $j_{r+1} := j_r + m_r$. Da $j_{r+1} - j_r \ge 1$, existiert ein Index $k$ mit $R < j_k \le R + M = L$. 
+Durch Aufsummieren der Abstiegsungleichungen folgt:
+\begin{equation}
+V(T^{j_k}(n)) < V(n).
+\end{equation}
+Andererseits liefert Ungleichung~\eqref{eq:lower_bound_chain} f\"ur $j = j_k$:
+\begin{equation}
+V(T^{j_k}(n)) - V(n) > j_k a - 2C_B > R a - 2C_B > 0.
+\end{equation}
+Dies erzwingt $V(T^{j_k}(n)) > V(n)$, ein Widerspruch.
+\end{proof}
+
+\subsection{Die Countdown-Koordinate und das Reset-No-Go}
+
+Sei $n \in 2\mathbb{N}-1$ mit $r = v_2(n+1) \ge 1$, also $n + 1 = 2^r u$ mit $u$ ungerade. F\"ur $0 \le j \le r$ gilt induktiv:
+\begin{equation}
+T^j(n) + 1 = 3^j 2^{r-j} u \implies v_2(T^j(n) + 1) = r - j.
+\end{equation}
+F\"ur $0 \le j < r$ ist $T^j(n)$ ungerade; bei $j = r$ ist $v_2(T^r(n)+1) = 0$, also $T^r(n)$ gerade.
+Nach genau $r = v_2(n+1)$ ungeraden Schritten erreicht der Orbit einen geraden Zustand.
+
+Definieren wir den Odd-to-Odd-Blockoperator $U(n) := T^r(n) / 2^s$ mit $s = v_2(T^r(n)) \ge 1$. Auf reinen Ungerade-Ketten f\"allt $V_\lambda(n) = \log_2 n + \lambda v_2(n+1)$ f\"ur $\lambda > \log_2(5/3) \approx 0{,}736966$. Auf vollst\"andigen Bl\"ocken scheitert dieser lineare Ansatz jedoch:
+
+\begin{theorem}[Reset-No-Go f\"ur die lineare Countdown-Korrektur]
+\label{thm:reset_nogo}
+F\"ur jedes $\lambda > 0$ und jedes fixierte $r \ge 1$ existieren unendlich viele ungerade Zahlen $n \in 2\mathbb{N}-1$ mit $v_2(n+1) = r$, sodass:
+\begin{equation}
+W_\lambda(U(n)) - W_\lambda(n) > 0 \qquad \text{f\"ur} \quad W_\lambda(n) = \log_2 n + \lambda v_2(n+1).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Fixiere $r \ge 1$. Da $\gcd(3^r, 2) = 1$, existiert f\"ur jedes $k \ge 1$ eine eindeutige ungerade L\"osungsklasse der linearen Kongruenz:
+\begin{equation}
+3^r u \equiv -1 \pmod{2^{k+1}} \iff u \equiv -3^{-r} \pmod{2^{k+1}}.
+\end{equation}
+Setze $n := 2^r u - 1$. Dann ist $v_2(n+1) = r$. Nach $r$ ungeraden Schritten ist $T^r(n) = 3^r u - 1 \equiv -2 \pmod{2^{k+1}}$.
+Damit gilt $v_2(T^r(n)) = 1$, also $s = 1$. 
+Der n\"achste ungerade Zustand lautet:
+\begin{equation}
+U(n) = \frac{3^r u - 1}{2} \equiv -1 \pmod{2^k} \implies r' := v_2(U(n) + 1) \ge k.
+\end{equation}
+Die exakte Blockdifferenz ergibt:
+\begin{equation}
+W_\lambda(U(n)) - W_\lambda(n) = r \log_2\left(\frac{3}{2}\right) - 1 + \lambda(r' - r) + \log_2\left(1 + \frac{1 - (2/3)^r}{n}\right).
+\end{equation}
+Da der letzte Term positiv ist und $r' \ge k$ beliebig gro\ss{} gew\"ahlt werden kann, w\"achst die Differenz f\"ur $k \to \infty$ unbeschr\"ankt gegen $+\infty$.
+\end{proof}
+
+---
+
+\section{Die fundamentale Block-Identit\"at und topologische Dichotomie}
+
+\begin{theorem}[Fundamentale $K$-Block-Gr\"o\ss{}enidentit\"at]
+\label{thm:block_size_identity}
+Sei $n_0 \in 2\mathbb{N}-1$ und $(n_i)_{i \ge 0}$ der Orbit $n_{i+1} = U(n_i)$. Mit $r_i := v_2(n_i + 1)$, $s_i := v_2(T^{r_i}(n_i))$ und $a := \log_2(3/2)$ gilt f\"ur jedes $K \ge 1$ exakt:
+\begin{equation}
+\log_2\left(\frac{n_K}{n_0}\right) = a \sum_{i=0}^{K-1} r_i - \sum_{i=0}^{K-1} s_i + \sum_{i=0}^{K-1} \eta_i,
+\label{eq:master_block_identity}
+\end{equation}
+wobei $\eta_i := \log_2\left( 1 + \frac{1 - (2/3)^{r_i}}{n_i} \right)$ strikt positiv ist und $0 < \eta_i < \frac{1}{(\ln 2) n_i}$ erf\"ullt. 
+\"Uberdies teleskopieren die Reset-Terme f\"ur $W_\lambda(n) = \log_2 n + \lambda v_2(n+1)$ exakt zu:
+\begin{equation}
+W_\lambda(n_K) - W_\lambda(n_0) = a \sum_{i=0}^{K-1} r_i - \sum_{i=0}^{K-1} s_i + \lambda(r_K - r_0) + \sum_{i=0}^{K-1} \eta_i.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Folgt unmittelbar aus $U(n_i)/n_i = (3/2)^{r_i} 2^{-s_i} (1 + \frac{1-(2/3)^{r_i}}{n_i})$ durch Logarithmieren und Summation. Die Teleskopierung der $\lambda$-Terme folgt aus $\sum_{i=0}^{K-1} (r_{i+1} - r_i) = r_K - r_0$.
+\end{proof}
+
+\begin{proposition}[Topologische Dichotomie des Blockoperators]
+\label{prop:block_dichotomy}
+F\"ur jeden Orbit $(n_i)_{i \ge 0}$ unter $U$ auf $2\mathbb{N}-1$ gilt genau eine der folgenden Alternativen:
+\begin{enumerate}
+\item \textbf{Der Orbit ist beschr\"ankt:} Dann ist er schlie\ss{}lich periodisch.
+\item \textbf{Der Orbit ist unbeschr\"ankt:} Dann gilt zwingend $\lim_{i \to \infty} n_i = \infty$, woraus $\lim_{i \to \infty} \eta_i = 0$ und f\"ur das Ces\`aro-Mittel $\lim_{K \to \infty} \frac{1}{K} \sum_{i=0}^{K-1} \eta_i = 0$ folgt.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Ist der Orbit beschr\"ankt, nimmt er nur endlich viele Werte an und ist deterministisch schlie\ss{}lich periodisch.
+Ist der Orbit unbeschr\"ankt, kann keine Schranke $B < \infty$ existieren, die unendlich oft besucht wird (sonst tr\"ate Periodizit\"at ein). Also gilt $n_i \to \infty$. Wegen $0 < \eta_i < \frac{1}{(\ln 2) n_i}$ folgt $\eta_i \to 0$ und nach Ces\`aro $\frac{1}{K} \sum_{i=0}^{K-1} \eta_i \to 0$.
+\end{proof}
+
+\paragraph{Folgerung f\"ur Zyklen und Divergenz:}
+\begin{itemize}
+\item \textbf{Zyklus-Gatter:} F\"ur $n_K = n_0$ gilt mit $R_K := \sum r_i, S_K := \sum s_i$ exakt $(R_K + S_K) \ln 2 - R_K \ln 3 = (\ln 2) \sum \eta_i > 0$. Dies ist eine strikt positive ganzzahlige Linearform zweier Logarithmen.
+\item \textbf{Divergenz-Gatter:} F\"ur unbeschr\"ankte Orbits gilt $\frac{1}{K} \log_2(n_K/n_0) = a \bar{r}_K - \bar{s}_K + o(1)$. Divergenz erfordert notwendig $\limsup_{K \to \infty} (a \bar{r}_K - \bar{s}_K) \ge 0 \implies \liminf_{K \to \infty} \frac{\bar{s}_K}{\bar{r}_K} \le a \approx 0{,}58496$.
+\end{itemize}
+
+---
+
+\section{Die induzierte Bernoulli-Struktur und Haar-Dynamik}
+
+Sei $\mathbb{Z}_2^\times = 1 + 2\mathbb{Z}_2$ die kompakte Gruppe der ungeraden $2$-adischen Einheiten mit normiertem Haar-Ma\ss{} $\mu_\times$ ($\mu_\times(\mathbb{Z}_2^\times) = 1$). 
+Die bekannte metrische Konjugation der Syracuse-Abbildung zum Shift-Operator auf $\mathbb{Z}_2$ (Bernstein--Lagarias \cite{BernsteinLagarias1996}) induziert auf dem Blockoperator $U$ eine explizite Run-Length-Darstellung.
+
+F\"ur $x \in \mathbb{Z}_2^\times$ definieren wir $r(x) := v_2(x+1)$ und, falls $r(x) < \infty$,
+\begin{equation}
+u(x) := \frac{x+1}{2^{r(x)}}, \qquad s(x) := v_2(3^{r(x)}u(x) - 1).
+\end{equation}
+Die Menge der singul\"aren Zust\"ande ist $E := \{x \in \mathbb{Z}_2^\times \mid r(x) = \infty \text{ oder } s(x) = \infty\}$. 
+Der Operator $U$ ist wohldefiniert auf $\mathbb{Z}_2^\times \setminus \mathcal{S}$, wobei
+\begin{equation}
+\mathcal{S} := \bigcup_{j=0}^\infty U^{-j}(E)
+\end{equation}
+die abz\"ahlbare Vereinigung aller Urbilder von $E$ darstellt. Da $E$ aus isolierten Punkten besteht und jedes Urbild endlich ist, gilt $\mu_\times(\mathcal{S}) = 0$.
+
+\begin{theorem}[Haar-Invarianz und Einblock-Produktkern]
+\label{thm:haar_block_kernel}
+Sei $n \in \mathbb{Z}_2^\times$ bez\"uglich $\mu_\times$ verteilt. Dann gilt:
+\begin{enumerate}
+\item Das Ma\ss{} $\mu_\times$ ist strikt invariant unter $U$:
+\begin{equation}
+U_* \mu_\times = \mu_\times.
+\end{equation}
+\item F\"ur jedes feste $r \ge 1$ sind $s$ und $r' := v_2(U(n)+1)$ bedingt auf $r$ unabh\"angig und strikt geometrisch verteilt:
+\begin{equation}
+\mu_\times(s = a, \, r' = b \mid r) = 2^{-(a+b)} \qquad \forall a, b \ge 1.
+\end{equation}
+Insbesondere gilt $\mathbb{E}[s \mid r] = 2$ und $\mathbb{E}[r' \mid r] = 2$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Da $n \sim \mu_\times$, gilt $\mathbb{P}(r = a) = 2^{-a}$, und bedingt auf $r = a$ ist $u = (n+1)/2^a$ erneut nach $\mu_\times$ verteilt. 
+Da $3^a$ eine Einheit ist, ist $x = 3^a u$ Haar-verteilt auf $\mathbb{Z}_2^\times$. 
+Damit ist $s = v_2(x-1)$ geometrisch verteilt mit $\mathbb{P}(s=b) = 2^{-b}$. 
+Bedingt auf $s=b$ ist $y = (x-1)/2^b = U(n)$ erneut bez\"uglich $\mu_\times$ verteilt. 
+F\"ur jede Borel-Menge $A \subset \mathbb{Z}_2^\times$ gilt daher:
+\begin{equation}
+\mathbb{P}(U(n) \in A) = \sum_{a=1}^\infty \mathbb{P}(r = a) \sum_{b=1}^\infty \mathbb{P}(s = b \mid r=a) \, \mu_\times(A) = \sum_{a=1}^\infty 2^{-a} \sum_{b=1}^\infty 2^{-b} \mu_\times(A) = \mu_\times(A).
+\end{equation}
+Hieraus folgt zugleich der Produktkern $\mu_\times(s=a, r'=b \mid r) = 2^{-a} 2^{-b} = 2^{-(a+b)}$.
+\end{proof}
+
+\begin{corollary}[Analytische Reset-D\"ampfung]
+\label{cor:reset_tail}
+Unter dem normierten Haar-Ma\ss{} $\mu_\times$ gilt:
+\begin{enumerate}
+\item F\"ur festes $r \ge 1$ und minimale Kontraktion $s = 1$ f\"allt die Wahrscheinlichkeit eines absoluten Resets $r' \ge k$ exponentiell ab:
+\begin{equation}
+\mathbb{P}(r' \ge k \mid r, s = 1) = \sum_{b=k}^\infty 2^{-b} = 2^{1-k} \implies \mathbb{E}[r' - r \mid r, s = 1] = 2 - r.
+\end{equation}
+\item F\"ur relative Spr\"unge $r' - r \ge d$ ($d \ge 0$) gilt unter allen Bl\"ocken:
+\begin{equation}
+\mathbb{P}(s = 1, \, r' - r \ge d) = \frac{2^{-d}}{3} \implies \mathbb{P}(r' - r \ge d \mid s = 1) = \frac{2^{1-d}}{3}.
+\end{equation}
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+Teil (1) folgt unmittelbar aus der geometrischen Reihe $\sum_{b=k}^\infty 2^{-b} = 2^{1-k}$. 
+F\"ur Teil (2) summieren wir \"uber $r \sim \operatorname{Geom}(1/2)$:
+\begin{equation*}
+\sum_{j=1}^\infty \mathbb{P}(r=j)\mathbb{P}(s=1)\mathbb{P}(r' \ge j+d \mid s=1) = \sum_{j=1}^\infty 2^{-j} \cdot \frac{1}{2} \cdot 2^{1-(j+d)} = 2^{-d} \sum_{j=1}^\infty 4^{-j} = \frac{2^{-d}}{3}. \qedhere
+\end{equation*}
+\end{proof}
+
+\subsection{Metrische Konjugation \"uber kontrahierende Zylinder}
+
+\begin{theorem}[Bernoulli-Struktur des Odd-to-Odd-Blockoperators]
+\label{thm:block_bernoulli}
+Modulo der $\mu_\times$-Nullmenge $\mathcal{S}$ ist das dynamische System $(\mathbb{Z}_2^\times, \mu_\times, U)$ metrisch isomorph zum einseitigen Bernoulli-Shift auf dem abz\"ahlbaren Alphabet $\mathcal{A} = \mathbb{N}_{\ge1} \times \mathbb{N}_{\ge1}$ mit Symbolgewichten $p_{a,b} = 2^{-(a+b)}$.
+
+Insbesondere sind die Blocksymbole $(r_i, s_i)_{i \ge 0}$ unter $\mu_\times$ unabh\"angig und identisch verteilt. Folglich ist $U$ bez\"uglich $\mu_\times$ ergodisch und stark mischend.
+\end{theorem}
+
+\begin{proof}
+Nach Theorem~\ref{thm:haar_block_kernel} gilt f\"ur jedes Zylinderereignis $\mathbb{P}(r = a, \, s = b, \, U(n) \in A) = 2^{-(a+b)} \mu_\times(A)$. Die Blocksymbole $(r, s)$ sind somit stochastisch unabh\"angig vom Folgezustand $U(n)$, der erneut nach $\mu_\times$ verteilt ist. Durch Induktion bildet $(r_i, s_i)_{i \ge 0}$ eine i.i.d.-Folge auf $(\mathbb{Z}_2^\times, \mu_\times)$.
+
+F\"ur jedes Symbol $(a, b) \in \mathcal{A}$ ist der inverse Zweig gegeben durch:
+\begin{equation}
+F_{a,b}(y) = 2^a 3^{-a}(1 + 2^b y) - 1.
+\end{equation}
+F\"ur $y_1, y_2 \in \mathbb{Z}_2^\times$ gilt $|F_{a,b}(y_1) - F_{a,b}(y_2)|_2 = 2^{-(a+b)} |y_1 - y_2|_2 \le \frac{1}{4} |y_1 - y_2|_2$. 
+F\"ur eine beliebige unendliche Symbolfolge $\omega = ((a_0, b_0), (a_1, b_1), \dots) \in \mathcal{A}^{\mathbb{N}_0}$ betrachten wir die Folge kompakter verschachtelter Zylinder:
+\begin{equation}
+\mathcal{C}_N(\omega) := \left( F_{a_0, b_0} \circ F_{a_1, b_1} \circ \dots \circ F_{a_N, b_N} \right)(\mathbb{Z}_2^\times).
+\end{equation}
+Da $\operatorname{diam}_2(\mathcal{C}_N(\omega)) \le 2^{-\sum_{j=0}^N (a_j + b_j)} \le 2^{-2(N+1)} \to 0$ f\"ur $N \to \infty$ gilt und $\mathbb{Z}_2^\times$ ein kompakter, vollst\"andiger ultrametrischer Raum ist, besitzen die nichtleeren kompakten Mengen $\mathcal{C}_0 \supset \mathcal{C}_1 \supset \dots$ nach Cantors Durchschnittssatz genau einen gemeinsamen Punkt:
+\begin{equation}
+\bigcap_{N=0}^\infty \mathcal{C}_N(\omega) = \{ x_\omega \} \subset \mathbb{Z}_2^\times.
+\end{equation}
+Die Abbildung $\omega \mapsto x_\omega$ ist invertierbar au\ss{}erhalb von $\mathcal{S}$ und erf\"ullt $U(x_\omega) = x_{\sigma\omega}$, wobei $\sigma$ der Shift-Operator auf $\mathcal{A}^{\mathbb{N}_0}$ ist. Dies definiert modulo der Nullmenge $\mathcal{S}$ eine ma\ss{}erhaltende Konjugation zum Bernoulli-Shift. Ergodizit\"at und starkes Mixing folgen unmittelbar.
+\end{proof}
+
+\begin{corollary}[Starkes Gesetz der gro\ss{}en Zahlen f\"ur die Hauptdrift]
+\label{cor:slln_drift}
+Sei $a = \log_2(3/2)$. F\"ur $\mu_\times$-fast alle $n \in \mathbb{Z}_2^\times$ konvergiert die mittlere Blockdrift gegen:
+\begin{equation}
+\lim_{K \to \infty} \left( a \bar{r}_K - \bar{s}_K \right) = 2 a - 2 = 2 \log_2\left(\frac{3}{2}\right) - 2 \approx -0{,}830075.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Folgt aus Theorem~\ref{thm:block_bernoulli} \"uber das starke Gesetz der gro\ss{}en Zahlen f\"ur die i.i.d.-Zufallsvariablen $X_i = a r_i - s_i$ mit Erwartungswert $\mathbb{E}[X_i] = 2a - 2$.
+\end{proof}
+
+\begin{proposition}[Cram\'er-Gro\ss{}abweichungsschranke f\"ur positive Blockdrift]
+\label{prop:cramer_tail}
+Sei $X = a r - s$. Die momentenerzeugende Funktion unter $\mu_\times$ lautet:
+\begin{equation}
+M_X(t) = \mathbb{E}[e^{t X}] = \left( \frac{e^{a t}}{2 - e^{a t}} \right) \left( \frac{e^{-t}}{2 - e^{-t}} \right), \qquad t \in \left(-\ln 2, \, \frac{\ln 2}{a}\right).
+\end{equation}
+Das Minimum liegt bei $t_* \approx 0{,}3633513$, mit $M_X(t_*) \approx 0{,}8637443$. 
+Daraus folgt f\"ur die Cram\'ersche Ratenfunktion:
+\begin{equation}
+I(0) = - \ln M_X(t_*) \approx 0{,}1464785248.
+\end{equation}
+F\"ur jedes $K \ge 1$ ist die Wahrscheinlichkeit einer nicht-negativen kumulierten Drift exponentiell beschr\"ankt:
+\begin{equation}
+\mu_\times\left( a \sum_{i=0}^{K-1} r_i - \sum_{i=0}^{K-1} s_i \ge 0 \right) \le e^{-I(0) K} \approx (0{,}863744)^K.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Die angegebene endliche-$K$-Schranke folgt direkt aus der Chernoff-Ungleichung f\"ur die Summe unabh\"angiger Zufallsvariablen: $\mathbb{P}(\sum X_i \ge 0) \le \inf_{t > 0} (M_X(t))^K = e^{-I(0) K}$. Die Gr\"o\ss{}e $I(0)$ ist zugleich die Cram\'ersche Ratenfunktion der gro\ss{}en Abweichungen.
+\end{proof}
+
+---
+
+\section{Zusammenfassung und Status der offenen Gatter}
+
+\begin{table}[h!]
+\centering
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{clll}
+\toprule
+\textbf{Stufe} & \textbf{Analytischer Baustein} & \textbf{Status} & \textbf{Mathematische Formulierung / Theorem} \\
+\midrule
+\textbf{1} & Beschr\"ankte additive St\"orungen $V(n) = \log_2 n + B(n)$ & \textbf{Widerlegt} & No-Go-Theorem via Kettendehnung $L \ge R+M$ (Satz~2.1) \\
+\textbf{2} & Lineare Countdown-Korrektur $\log_2 n + \lambda v_2(n+1)$ & \textbf{Widerlegt} & Reset-No-Go via $3^r u \equiv -1 \pmod{2^{k+1}}$ (Satz~2.2) \\
+\midrule
+\textbf{3a} & $K$-Block-Gr\"o\ss{}enidentit\"at \& Teleskopierung & \textbf{Bewiesen} & $\log_2(n_K/n_0) = a \sum r_i - \sum s_i + \sum \eta_i$ (Satz~3.1) \\
+\textbf{3b} & Topologische Dichotomie auf $\mathbb{N}$ & \textbf{Bewiesen} & Periodisch oder $n_i \to \infty$ mit $\bar{\eta}_K \to 0$ (Prop.~3.2) \\
+\midrule
+\textbf{4a} & Haar-Invarianz des Blockoperators & \textbf{Bewiesen} & $U_* \mu_\times = \mu_\times$ auf $\mathbb{Z}_2^\times$ (Satz~4.1) \\
+\textbf{4b} & Exakter Einblock-Produktkern & \textbf{Bewiesen} & $\mu_\times(s=a, r'=b \mid r) = 2^{-(a+b)}$ (Satz~4.1) \\
+\textbf{4c} & Exponentielle Reset-D\"ampfung & \textbf{Bewiesen} & $\mathbb{P}(s=1, r'-r \ge d) = \frac{2^{-d}}{3}$ (Korollar~4.2) \\
+\textbf{4d} & Induzierte Bernoulli-Blockkodierung & \textbf{Bewiesen} & Metrisch konjugiert via kontrahierende Zylinder $\mathcal{C}_N$ (Satz~4.3) \\
+\textbf{4e} & Starkes Gesetz \& Cram\'er-Schranke & \textbf{Bewiesen} & Drift $\to -0{,}830$ f.s.; Ratenfunktion $I(0) \approx 0{,}1465$ (Prop.~4.5) \\
+\midrule
+\textbf{5a} & \textbf{Nichttriviale Blockzyklen} & \textbf{Offenes Zyklus-Gatter} & 
+\parbox[t]{6.8cm}{Ausschluss aller realisierbaren nichttrivialen Zyklen, die notwendig $(R+S)\ln 2 - R\ln 3 = (\ln 2)\sum \eta_i > 0$ erf\"ullen.} \\
+\textbf{5b} & \textbf{Uniforme Blockkontrolle auf $\mathbb{N}$} & \textbf{Offenes Divergenz-Gatter} & 
+\parbox[t]{6.8cm}{Ausschluss positiver ganzzahliger Orbits mit $\limsup_{K \to \infty} (a \bar{r}_K - \bar{s}_K) \ge 0$.} \\
+\bottomrule
+\end{tabular}
+\caption{Klassifikation der bewiesenen dynamischen Resultate und der beiden offenen arithmetischen Gatter.}
+\label{tab:final_research_ladder}
+\end{table}
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{
+\textbf{Zusammenfassung des Forschungsstatus:}\\[0.4em]
+Die induzierte Blockkodierung liefert eine explizite Bernoulli-Darstellung der f\"ur diese Arbeit verwendeten $2$-adischen Syracuse-Dynamik. Haar-fast sicher besitzt der algebraische Blockhauptterm negative Drift, und nichtnegative Driftpr\"afixe werden exponentiell unterdr\"uckt.\\[0.4em]
+F\"ur die Collatz-Vermutung bleiben jedoch zwei universelle arithmetische Probleme offen: der Ausschluss nichttrivialer Blockzyklen und der Ausschluss unbeschr\"ankter positiver Ganzzahlorbits mit atypischer Blockdrift.
+}}
+\end{center}
+
+\begin{thebibliography}{99}
+\bibitem{Barina2025} D.~Barina, \emph{Improved verification limit for the convergence of the Collatz conjecture}, The Journal of Supercomputing \textbf{81} (7), Article 810 (2025). \url{https://doi.org/10.1007/s11227-025-07337-0}
+\bibitem{Tao2019} T.~Tao, \emph{Almost all orbits of the Collatz map attain almost bounded values}, arXiv:1909.03562 [math.PR] (2019).
+\bibitem{BernsteinLagarias1996} D.~J.~Bernstein, J.~C.~Lagarias, \emph{The $3x+1$ conjugacy map}, Canad. J. Math. \textbf{48} (6), 1154--1169 (1996).
+\bibitem{Lagarias1985} J.~C.~Lagarias, \emph{The $3x+1$ problem and its generalizations}, Amer. Math. Monthly \textbf{92} (1), 3--23 (1985).
+\bibitem{Steiner1977} R.~P.~Steiner, \emph{A theorem on the Syracuse problem}, Proc. 7th Manitoba Conf. Numerical Math., 553--559 (1977).
+\bibitem{SimonsDeWeger2005} J.~Simons, B.~de~Weger, \emph{Theoretical and computational bounds for m-cycles of the $3x+1$-problem}, Acta Arith. \textbf{117} (1), 51--70 (2005).
+\end{thebibliography}
+
+\end{document}

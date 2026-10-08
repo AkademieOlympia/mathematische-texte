@@ -1,0 +1,660 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{booktabs}
+\usepackage{array}
+
+\title{Feinauflösung natürlicher Zahlen\\[0.35em]
+	\large in Semiprime-Normalform\\[0.2em]
+	\normalsize EABC-Restklassen, Provenienzauflösung und $A_2$-Diagonalchirurgie}
+\author{}
+\date{}
+
+\newtheorem{theorem}{Satz}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Bemerkung}
+\newtheorem{example}[theorem]{Beispiel}
+
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\one}{\mathbf{1}}
+\newcommand{\qq}{\mathbf{q}}
+\newcommand{\nn}{\mathbf{n}}
+\newcommand{\Pan}{P_{\mathrm{aniso}}}
+\newcommand{\Evol}{E_{\mathrm{vol}}}
+\newcommand{\EDelta}{E_{\Delta}}
+\newcommand{\Esurg}{E_{\mathrm{surg}}}
+\newcommand{\forget}{\operatorname{forget}}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		\noindent
+		Wir entwickeln eine \emph{Feinauflösung} für natürliche Zahlen, die als Produkt
+		zweier Primfaktoren $p,q>3$ (Semiprime) vorliegen und in den EABC-Restklassen
+		modulo~$12$ liegen. Die Kleinsche Vierergruppe
+		$\E=\{E,A,B,C\}\cong C_2\times C_2$ liefert die grobe Multiplikationsalgebra.
+		Darüber wird eine provenance-erhaltende Auflösung der Diagonalfaser
+		$\mu^{-1}(E)=\Delta_V$ konstruiert, welche die drei Selbstkopplungskanäle
+		$E_A,E_B,E_C$ vom Volumenabschluss $\Evol=ABC$ trennt.
+		Auf dem Kanalvektor $\qq=(n_A^2,n_B^2,n_C^2)^\top$ wirkt der anisotrope
+		Projektor $\Pan=I_3-\tfrac13\one\one^\top$; die chirurgische Energie
+		$\Esurg(\qq)=\qq^\top\Pan\qq$ misst die Klassenanisotropie im reellen
+		Wurzelraum $A_2^\R$. Die Identifikation mit der Tensorrestauration
+		$M_{\mathrm{eff}}=24I_3+D_E^\circ$ bleibt als offene Brücke markiert.
+	\end{abstract}
+	
+	\tableofcontents
+	\vspace{1em}
+	\hrule
+	\vspace{1em}
+	
+	%==============================================================================
+	\section{Einleitung und epistemischer Rahmen}
+	\label{sec:intro}
+	%==============================================================================
+	
+	Eine natürliche Zahl $N$ heißt \emph{Semiprime}, wenn
+	$N=pq$ mit Primzahlen $p,q$ (nicht notwendig verschieden).
+	Für $p,q>3$ liegen die Restklassen in
+	\[
+	[p]_{12},[q]_{12}\in\{1,5,7,11\},
+	\]
+	welche wir mit den Symbolen $E,A,B,C$ der EABC-Algebra bezeichnen.
+	Die grobe Restklassenmultiplikation kollabiert alle diagonalen Produkte
+	$x\cdot x$ auf dasselbe Einselement~$E$. Die \emph{Feinauflösung} besteht darin,
+	diese Kollision wieder nach Provenienz zu differenzieren und die resultierende
+	anisotropie auf dem Kanalvektor $\qq$ linear zu messen.
+	
+	Die Architektur ist dreistufig:
+	
+	\begin{center}
+		\begin{tabular}{@{}llp{6.2cm}@{}}
+			\toprule
+			\textbf{Ebene} & \textbf{Gegenstand} & \textbf{Aussage} \\
+			\midrule
+			1 & Restklassenalgebra &
+			$A^2=B^2=C^2=ABC=E$ in $\E\cong C_2\times C_2$ \\
+			2 & Provenienzauflösung &
+			$E_A,E_B,E_C,\Evol$ typologisch paarweise verschieden \\
+			3 & Lineare Chirurgie &
+			$\mathcal S_E(\Evol)=\Evol$,\;
+			$\mathcal S_E\big|_{\mathrm{span}\{E_A,E_B,E_C\}}=\Pan$ \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	
+	\begin{remark}[Epistemischer Status]
+		\label{rem:status}
+		Die Ebenen~1 und~2 sind endlich formal verifizierbar (Lean~4).
+		Ebene~3 ist symbolisch geschlossen.
+		Die Brücke
+		$\Esurg(\qq)\Longrightarrow D_E^\circ\Longrightarrow M_{\mathrm{eff}}=24I_3+D_E^\circ$
+		ist ein \emph{Open Non-Claim}.
+	\end{remark}
+	
+	%==============================================================================
+	\section{Ebene 1: EABC-Restklassenalgebra}
+	\label{sec:eabc}
+	%==============================================================================
+	
+	\begin{definition}[EABC-Klassen]
+		\label{def:eabc}
+		Die vier invertierbaren Restklassen modulo~$12$ werden bezeichnet durch
+		\[
+		E\equiv 1,\qquad A\equiv 5,\qquad B\equiv 7,\qquad C\equiv 11\pmod{12}.
+		\]
+		Wir setzen $\E:=\{E,A,B,C\}$.
+	\end{definition}
+	
+	\begin{definition}[EABC-Multiplikation]
+		\label{def:mul}
+		Die Multiplikation $\mu:\E\times\E\to\E$ ist die Restklassenmultiplikation
+		modulo~$12$ und lautet explizit:
+		\[
+		\begin{array}{c|cccc}
+			\cdot & E & A & B & C \\ \hline
+			E & E & A & B & C \\
+			A & A & E & C & B \\
+			B & B & C & E & A \\
+			C & C & B & A & E
+		\end{array}
+		\]
+	\end{definition}
+	
+	\begin{proposition}[Kleinsche Vierergruppe]
+		\label{prop:klein}
+		$(\E,\mu)$ ist isomorph zu $C_2\times C_2$. Insbesondere gilt
+		$x^2=E$ für alle $x\in\E$, und $\mu$ ist kommutativ und assoziativ.
+	\end{proposition}
+	
+	\begin{proof}
+		Unmittelbar aus der Multiplikationstafel; jedes Element ist selbstinvers.
+	\end{proof}
+	
+	\begin{definition}[Nichttrivialer Träger]
+		\label{def:V}
+		Der nichttriviale Träger ist
+		$V:=\{A,B,C\}=\E\setminus\{E\}$.
+	\end{definition}
+	
+	\begin{lemma}[Diagonales und gemischtes Produkt]
+		\label{lem:diag-mixed}
+		Für $x,y\in V$ gilt:
+		\begin{enumerate}
+			\item \emph{Diagonaltyp:} falls $x=y$, so $\mu(x,y)=E$;
+			\item \emph{Gemischter Typ:} falls $x\neq y$, so existiert ein eindeutig
+			bestimmtes $z\in V\setminus\{x,y\}$ mit $\mu(x,y)=z$.
+		\end{enumerate}
+		Explizit: $AB=C$, $BC=A$, $CA=B$.
+	\end{lemma}
+	
+	\begin{proof}
+		Fallunterscheidung an der Tafel; bei $x\neq y$ ist
+		$\{x,y,z\}=\{A,B,C\}$.
+	\end{proof}
+	
+	\begin{definition}[Semiprime-Normalform]
+		\label{def:semiprime-nf}
+		Ein Semiprime $N=pq$ mit $p,q>3$ liegt in Semiprime-Normalform vor, wenn
+		$[p]_{12},[q]_{12}\in V$ und
+		\[
+		\mu\bigl([p]_{12},[q]_{12}\bigr)
+		=
+		\begin{cases}
+			E, & [p]_{12}=[q]_{12},\\
+			z, & \{[p]_{12},[q]_{12},z\}=\{A,B,C\}.
+		\end{cases}
+		\]
+	\end{definition}
+	
+	\begin{lemma}[Tripelabschluss]
+		\label{lem:ABC}
+		Für paarweise verschiedene $x,y,z\in V$ gilt
+		$\mu(\mu(x,y),z)=E$. Insbesondere $ABC=E$ in $\E$.
+	\end{lemma}
+	
+	\begin{proof}
+		Wegen Lemma~\ref{lem:diag-mixed} ist $\mu(x,y)=z'$, wobei $\{x,y,z'\}=\{A,B,C\}$.
+		Bei $\{x,y,z\}=\{A,B,C\}$ folgt $z'=z$, also $\mu(z,z)=E$.
+	\end{proof}
+	
+	\begin{remark}
+		\label{rem:same-E}
+		In der Restklassenalgebra sind $A^2=E$ und $ABC=E$ \emph{dasselbe}
+		Gruppenelement. Die Unterscheidung $\EDelta\neq\Evol$ erfordert Ebene~2.
+	\end{remark}
+	
+	%==============================================================================
+	\section{Diagonalfaser und Semiprime-Struktur}
+	\label{sec:fiber}
+	%==============================================================================
+	
+	\begin{definition}[Multiplikationsfaser]
+		\label{def:fiber}
+		Für $w\in\E$ sei $\mu^{-1}(w):=\{(x,y)\in V\times V:\mu(x,y)=w\}$.
+	\end{definition}
+	
+	\begin{theorem}[Diagonalfaser]
+		\label{thm:diagonal-fiber}
+		Es gilt
+		\[
+		\mu^{-1}(E)=\Delta_V:=\{(A,A),(B,B),(C,C)\}.
+		\]
+		Die Fasern der nichttrivialen Ausgänge sind dagegen gemischt:
+		\begin{align*}
+			\mu^{-1}(A)&=\{(B,C),(C,B)\},\\
+			\mu^{-1}(B)&=\{(A,C),(C,A)\},\\
+			\mu^{-1}(C)&=\{(A,B),(B,A)\}.
+		\end{align*}
+	\end{theorem}
+	
+	\begin{proof}
+		Direkt aus Lemma~\ref{lem:diag-mixed}.
+	\end{proof}
+	
+	\begin{corollary}[Strukturelle Asymmetrie]
+		\label{cor:asymmetry}
+		$A,B,C$ entstehen aus gemischten Paaren; $E$ entsteht auf $V\times V$
+		ausschließlich aus Selbstpaarungen.
+	\end{corollary}
+	
+	%==============================================================================
+	\section{Ebene 2: Provenienzauflösung}
+	\label{sec:provenance}
+	%==============================================================================
+	
+	\begin{definition}[Provenienzmarker]
+		\label{def:prov}
+		Die Menge der Provenienzmarker über dem Restklassenbild~$E$ ist
+		\[
+		\mathrm{EProvenance}
+		:=
+		\{E_A,E_B,E_C,\Evol\}.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Vergessensabbildung]
+		\label{def:forget}
+		Die Vergessensabbildung
+		$\forget:\mathrm{EProvenance}\to\E$
+		ist durch
+		$\forget(E_A)=\forget(E_B)=\forget(E_C)=\forget(\Evol)=E$
+		definiert.
+	\end{definition}
+	
+	\begin{definition}[Aufgelöster Ausgang]
+		\label{def:resolved}
+		Der aufgelöste Ausgangsraum ist die disjunkte Summe
+		\[
+		\mathrm{ResolvedOutput}
+		:=
+		V\;\sqcup\;\mathrm{EProvenance},
+		\]
+		typologisch geschrieben als
+		$\texttt{nontrivial}\oplus\texttt{prov}$.
+	\end{definition}
+	
+	\begin{definition}[Aufgelöstes Produkt]
+		\label{def:resolved-mul}
+		Das provenance-erhaltende Produkt
+		$\widetilde\mu:V\times V\to\mathrm{ResolvedOutput}$
+		ist gegeben durch
+		\[
+		\widetilde\mu(x,y)
+		=
+		\begin{cases}
+			E_x, & x=y,\\
+			z, & x\neq y,\;\{x,y,z\}=\{A,B,C\}.
+		\end{cases}
+		\]
+		Explizit:
+		\[
+		\begin{array}{c|ccc}
+			\widetilde\mu & A & B & C \\ \hline
+			A & E_A & C & B \\
+			B & C & E_B & A \\
+			C & B & A & E_C
+		\end{array}
+		\]
+	\end{definition}
+	
+	\begin{definition}[Projektion]
+		\label{def:project}
+		Die Projektion $\pi:\mathrm{ResolvedOutput}\to\E$ ist
+		$\pi|_V=\mathrm{id}_V$ und
+		$\pi|_{\mathrm{EProvenance}}=\forget$.
+	\end{definition}
+	
+	\begin{theorem}[Kommutatives Quadrat]
+		\label{thm:commutes}
+		Für alle $x,y\in V$ gilt
+		\[
+		\pi\circ\widetilde\mu=\mu\Big|_{V\times V}.
+		\]
+	\end{theorem}
+	
+	\begin{proof}
+		Auf der Diagonale: $\pi(E_x)=E=\mu(x,x)$.
+		Off-Diagonal: $\pi(z)=z=\mu(x,y)$.
+	\end{proof}
+	
+	\begin{theorem}[Provenienztrennung]
+		\label{thm:provenance}
+		Es gilt
+		\[
+		\Evol\notin\{E_A,E_B,E_C\}
+		\quad\text{und}\quad
+		\forget(\Evol)=\forget(E_x)=E\quad(x\in V).
+		\]
+		Somit sind $\EDelta$ (diagonale Selbstkopplung) und $\Evol$ (Tripelabschluss)
+		verschiedene Provenienzklassen mit gleichem Restklassenbild.
+	\end{theorem}
+	
+	\begin{definition}[Annotiertes Tripel]
+		\label{def:triple}
+		Die annotierte Auswertung $\tau:V^3\to\mathrm{ResolvedOutput}$ ist
+		\[
+		\tau(x,y,z)
+		=
+		\begin{cases}
+			\Evol, & x,y,z\text{ paarweise verschieden},\\
+			x, & x=y=z,\\
+			\text{Trägerklasse}, & \text{genau zwei gleich}
+		\end{cases}
+		\]
+		(bei genau zwei gleichen Faktoren liefert die Halsheilung $x^2\cdot y=y$
+		wieder eine Klasse in~$V$).
+	\end{definition}
+	
+	\begin{lemma}[Halsheilung]
+		\label{lem:neck}
+		Für $x,y\in V$ gilt in $\E$:
+		$\mu(\mu(x,x),y)=y$.
+		Im annotierten Sinn wird der diagonale Zwischenmarker durch den transversalen
+		Faktor wieder in den Träger zurückgeführt.
+	\end{lemma}
+	
+	\begin{proof}
+		$\mu(x,x)=E$ und $\mu(E,y)=y$.
+	\end{proof}
+	
+	\begin{proposition}[Volumenabschluss]
+		\label{prop:volume}
+		Es gilt $\tau(A,B,C)=\Evol$ und
+		$\widetilde\mu(x,x)\neq\Evol$ für alle $x\in V$.
+	\end{proposition}
+	
+	%==============================================================================
+	\section{Kanalvektoren und Zählkonventionen}
+	\label{sec:channels}
+	%==============================================================================
+	
+	\begin{definition}[Faktorhäufigkeitsvektor]
+		\label{def:n}
+		Seien $n_A,n_B,n_C\in\R_{\ge 0}$ die Anzahlen der Primfaktoren in den Klassen
+		$A,B,C$. Der Häufigkeitsvektor ist
+		$\nn=(n_A,n_B,n_C)^\top$.
+	\end{definition}
+	
+	\begin{definition}[Paarzählkonvention]
+		\label{def:convention}
+		Die diagonale Semiprimekanalmasse $q_x$ hängt von der Multimengenkonvention ab:
+		\begin{align*}
+			q_x&=n_x^2
+			&&\text{(geordnete Paare mit Wiederholung)},\\
+			q_x&=n_x(n_x-1)
+			&&\text{(geordnete Paare, $p\neq q$)},\\
+			q_x&=\binom{n_x}{2}
+			&&\text{(ungeordnete Paare, $p\neq q$)},\\
+			q_x&=\binom{n_x+1}{2}
+			&&\text{(ungeordnet inkl.\ Primquadrate)}.
+		\end{align*}
+		Im Folgenden ist die Standardkonvention $q_x=n_x^2$.
+	\end{definition}
+	
+	\begin{definition}[Kanalvektor]
+		\label{def:q}
+		Der diagonale Semiprimekanalvektor ist
+		$\qq=(q_A,q_B,q_C)^\top$ mit $q_x=n_x^2$.
+	\end{definition}
+	
+	\begin{remark}
+		\label{rem:n-vs-q}
+		Die Größe $\nn^\top\Pan\nn$ misst Häufigkeitsanisotropie;
+		$\qq^\top\Pan\qq$ misst die Anisotropie der tatsächlich erzeugten
+		Selbstkopplungskanäle. Die Chirurgie operiert auf~$\qq$.
+	\end{remark}
+	
+	%==============================================================================
+	\section{Ebene 3: Anisotroper Projektor und $A_2$-Energie}
+	\label{sec:paniso}
+	%==============================================================================
+	
+	\begin{definition}[Anisotroper Projektor]
+		\label{def:paniso}
+		Auf $\R^3$ sei
+		\[
+		\Pan
+		:=
+		I_3-\frac13\one\one^\top,
+		\qquad
+		\one=(1,1,1)^\top.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Reeller und ganzzahliger $A_2$-Raum]
+		\label{def:a2}
+		\[
+		A_2^\R
+		:=
+		\{(a,b,c)\in\R^3:a+b+c=0\},
+		\qquad
+		A_2
+		:=
+		\{(a,b,c)\in\Z^3:a+b+c=0\}.
+		\]
+	\end{definition}
+	
+	\begin{lemma}[Projektoraxiome]
+		\label{lem:projector}
+		Es gilt:
+		\begin{enumerate}
+			\item Idempotenz: $\Pan^2=\Pan$;
+			\item Kern: $\Pan\one=0$;
+			\item Bild: $\operatorname{range}(\Pan)=A_2^\R$.
+		\end{enumerate}
+	\end{lemma}
+	
+	\begin{proof}
+		(1)~folgt aus $\one^\top\one=3$.
+		(2)~ist $\Pan\one=\one-\one=0$.
+		(3)~: $\Pan v$ ist spurfrei; ist $v$ spurfrei, so $\Pan v=v$.
+	\end{proof}
+	
+	\begin{remark}
+		\label{rem:lattice}
+		Für ganzzahliges $\nn$ liegt $\Pan\nn$ im reellen Raum $A_2^\R$, wegen des
+		Faktors $\tfrac13$ jedoch nicht notwendig im Gitter~$A_2$.
+		Ganzzahlige Defekte liefert etwa
+		$(n_A-n_B,\,n_B-n_C,\,n_C-n_A)^\top\in A_2$.
+	\end{remark}
+	
+	\begin{definition}[Chirurgische Energie]
+		\label{def:esurg}
+		\[
+		\Esurg(\qq)
+		:=
+		\qq^\top\Pan\qq.
+		\]
+	\end{definition}
+	
+	\begin{theorem}[$A_2$-Energieidentität]
+		\label{thm:energy}
+		Für jeden Kanalvektor $\qq\in\R^3$ gilt
+		\[
+		\Esurg(\qq)
+		=
+		\qq^\top\Pan\qq
+		=
+		\frac13\Bigl[
+		(q_A-q_B)^2+(q_B-q_C)^2+(q_C-q_A)^2
+		\Bigr].
+		\]
+		Insbesondere $\Esurg(\qq)\ge 0$, und
+		$\Esurg(\qq)=0$ genau dann, wenn $q_A=q_B=q_C$.
+	\end{theorem}
+	
+	\begin{proof}
+		Mit $\bar q=\tfrac13(q_A+q_B+q_C)$ und $\delta_x=q_x-\bar q$ ist
+		$\Pan\qq=\boldsymbol\delta$ und
+		$\qq^\top\Pan\qq=\|\boldsymbol\delta\|^2$.
+		Die Identität
+		$\sum_x\delta_x^2=\tfrac13\sum_{\mathrm{zyk}}(q_x-q_y)^2$
+		folgt durch direkte Expansion unter $\delta_A+\delta_B+\delta_C=0$.
+	\end{proof}
+	
+	\begin{corollary}[Zerlegung der Diagonalmasse]
+		\label{cor:decomp}
+		Mit $M_E=\|\qq\|_2^2$ (geordnete Paare) gilt
+		\[
+		M_E
+		=
+		3\bar q^2+\Esurg(\qq).
+		\]
+		Der Term $3\bar q^2$ ist der \emph{isotrope Diagonalanteil};
+		$\Esurg$ ist der anisotrope Rest.
+	\end{corollary}
+	
+	%==============================================================================
+	\section{Chirurgischer Operator mit Volumenschutz}
+	\label{sec:surgery}
+	%==============================================================================
+	
+	\begin{definition}[Erweiterter Diagonalraum]
+		\label{def:extended}
+		Der erweiterte Raum der $E$-Provenienzen ist
+		\[
+		\widetilde V_E
+		:=
+		\operatorname{span}\{E_A,E_B,E_C\}
+		\;\oplus\;
+		\operatorname{span}\{\Evol\}
+		\;\cong\;
+		\R^3\oplus\R.
+		\]
+	\end{definition}
+	
+	\begin{definition}[Chirurgischer Operator]
+		\label{def:SE}
+		Der Operator $\mathcal S_E:\widetilde V_E\to\widetilde V_E$ ist definiert durch
+		\[
+		\mathcal S_E\big|_{\operatorname{span}\{E_A,E_B,E_C\}}
+		=
+		\Pan,
+		\qquad
+		\mathcal S_E(\Evol)=\Evol.
+		\]
+		Äquivalent in Koordinaten $(e_A,e_B,e_C;e_{\mathrm{vol}})$:
+		\[
+		\mathcal S_E(e_A,e_B,e_C;e_{\mathrm{vol}})
+		=
+		\bigl(e_A-\bar e,\,e_B-\bar e,\,e_C-\bar e;\,e_{\mathrm{vol}}\bigr),
+		\]
+		wobei $\bar e=\tfrac13(e_A+e_B+e_C)$.
+	\end{definition}
+	
+	\begin{theorem}[Semiprime-Diagonalchirurgie]
+		\label{thm:main}
+		Es gilt:
+		\begin{enumerate}
+			\item Diagonalfaser: $\mu^{-1}(E)=\Delta_V$ auf $V\times V$.
+			\item Die Auflösung $\widetilde\mu$ trennt $E_A,E_B,E_C$.
+			\item $\Evol$ liegt nicht in der Diagonalfaser und ist unter $\mathcal S_E$
+			invariant.
+			\item $\mathcal S_E$ vernichtet genau den isotropen Diagonalanteil:
+			$\mathcal S_E(E_A+E_B+E_C)=0$ im Diagonalsektor.
+			\item Die Restenergie $\Esurg(\qq)$ verschwindet genau bei
+			Kanalisotropie $q_A=q_B=q_C$.
+		\end{enumerate}
+	\end{theorem}
+	
+	\begin{proof}
+		(1)--(2) aus den Theoremen~\ref{thm:diagonal-fiber} und~\ref{thm:commutes}.
+		(3)--(4) aus Definition~\ref{def:SE} und Lemma~\ref{lem:projector}.
+		(5) aus Theorem~\ref{thm:energy}.
+	\end{proof}
+	
+	\begin{corollary}[Leitprinzip]
+		\label{cor:principle}
+		Die Chirurgie wirkt auf den aufgelösten diagonalen Kanalvektor~$\qq$,
+		nicht auf das Gruppenelement $E\in\E$.
+	\end{corollary}
+	
+	%==============================================================================
+	\section{Offene Brücke zum $24I_3$-Tensorsektor}
+	\label{sec:bridge}
+	%==============================================================================
+	
+	\begin{definition}[Diagonale Einbettung]
+		\label{def:embed}
+		Die lineare Einbettung $\iota:\R^3\to\mathrm{Sym}_3(\R)$ ist
+		$\iota(a,b,c)=\operatorname{diag}(a,b,c)$.
+	\end{definition}
+	
+	\begin{definition}[Defekttensor-Kandidat]
+		\label{def:DE}
+		Für einen Kanalvektor $\qq$ setzen wir
+		\[
+		D_E^\circ(\qq)
+		:=
+		\iota(\Pan\qq)
+		=
+		\operatorname{diag}(\delta_A,\delta_B,\delta_C),
+		\]
+		wobei $\boldsymbol\delta=\Pan\qq$, und
+		\[
+		M_{\mathrm{eff}}^{\mathrm{cand}}(\qq)
+		:=
+		24I_3+D_E^\circ(\qq).
+		\]
+	\end{definition}
+	
+	\begin{proposition}[Schnittstelleneigenschaften]
+		\label{prop:interface}
+		Es gilt $\operatorname{tr}D_E^\circ(\qq)=0$ und
+		\[
+		\bigl\|D_E^\circ(\qq)\bigr\|_F^2
+		=
+		\Esurg(\qq).
+		\]
+	\end{proposition}
+	
+	\begin{proof}
+		Spurfreiheit folgt aus $\Pan\qq\in A_2^\R$.
+		Die Frobeniusnorm diagonaler Matrizen reduziert sich auf
+		$\|\Pan\qq\|_2^2=\qq^\top\Pan\qq$.
+	\end{proof}
+	
+	\begin{remark}[Open Non-Claim]
+		\label{rem:open}
+		Die Identifikation von $M_{\mathrm{eff}}^{\mathrm{cand}}$ mit der
+		Restaurationssemantik der EABC-Operatoralgebra
+		($M_{\mathrm{eff}}(R^*(K))=24I_3$) ist \emph{nicht} bewiesen.
+		Strukturelle Alternativen zur Einbettung sind:
+		\begin{enumerate}
+			\item linear: $\iota\circ\Pan$ (erhält $\dim A_2^\R=2$);
+			\item nichtlinear: spurfreie $\operatorname{diag}(\delta_A^2,\delta_B^2,\delta_C^2)$;
+			\item Rang-1-Kollaps $w\,vv^\top$ (nur eindimensional; Dimension geht verloren).
+		\end{enumerate}
+	\end{remark}
+	
+	%==============================================================================
+	\section{Zusammenfassung}
+	\label{sec:summary}
+	%==============================================================================
+	
+	Die Feinauflösung Semiprimer in EABC-Normalform trennt drei Ebenen:
+	
+	\begin{enumerate}
+		\item In $\E$ kollabieren Diagonale und Volumen auf dasselbe $E$.
+		\item Die Provenienzauflösung stellt $E_A,E_B,E_C$ und $\Evol$ als
+		verschiedene Marker wieder her.
+		\item Die lineare Chirurgie $\Pan$ kontrahiert den isotropen Diagonalanteil
+		auf dem Kanalvektor $\qq$ und schützt $\Evol$; die Energie
+		$\Esurg(\qq)$ ist die exakte $A_2$-Varianz der Selbstkopplungskanäle.
+	\end{enumerate}
+	
+	Die einzige offene Schicht ist die kanonische Einbettung dieses Defekts in den
+	bestehenden $3\times 3$-Tensorsektor der $24I_3$-Restauration.
+	
+	\begin{thebibliography}{9}
+		
+		\bibitem{eabc-renorm}
+		T.~Hoffbauer,
+		\emph{EABC-Operatoralgebra und Renormierungskette},
+		Manuskript und Lean-4-Formalisierung,
+		\texttt{eabc-renorm}.
+		
+		\bibitem{kepler-hurwitz}
+		KeplerHurwitz/EABC,
+		\emph{SemiprimeNormalForm}, \emph{ProvenanceComposition},
+		\emph{SemiprimeTensorSurgery}, \emph{Semiprime24Bridge},
+		Lean~4.29-Module.
+		
+	\end{thebibliography}
+	
+\end{document}

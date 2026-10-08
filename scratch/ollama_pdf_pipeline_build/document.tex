@@ -1,0 +1,127 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{xcolor}
+\definecolor{gray}{gray}{0.45}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+
+\definecolor{navy}{HTML}{1A365D}
+\definecolor{accent}{HTML}{2B6CB0}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=accent,
+    urlcolor=accent,
+    pdftitle={Protokoll der letzten Frage}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\small \textcolor{gray}{gpt-oss:latest}}
+\lhead{\small \textcolor{gray}{Letzte Frage}}
+\cfoot{\small \thepage}
+
+\title{\Huge \textbf{\textcolor{navy}{Protokoll der letzten Frage}}\\[0.3em]
+\large \textcolor{accent}{gpt-oss:latest}}
+\author{}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\thispagestyle{fancy}
+
+\vspace{0.3cm}
+\hrule height 1pt
+\vspace{0.8cm}
+
+
+\section*{Frage}
+
+\begin{quote}
+\raggedright
+Wann wurde Heidelberg gegründet? Antworte in zwei Sätzen.
+\end{quote}
+
+\subsection*{Durchlauf 1: zufällige Parameter}
+
+{\small
+\begin{tabularx}{\textwidth}{Xr}
+\toprule
+\textbf{Kennzahl} & \textbf{Wert} \\
+\midrule
+Temperature & 0,3863 \\
+Top-p & 0,6530 \\
+Repeat-Penalty & 1,4601 \\
+Kontext angefordert & 5525 Tokens \\
+\bottomrule
+\end{tabularx}
+}
+\paragraph{Antwort}
+\begin{quote}
+\raggedright
+Heidelberges Gründung geht zurück bis ins frühe XIIe Jahrhundert, als an der Neckarwiese ein befestigtes Siedlungszentrum errichtet wurde.\\
+Die erste urkundliche Erwähnung von Heidelberg datiert auf das Jahr 1120.
+\end{quote}
+\subsection*{Durchlauf 2: voroptimierte Parameter}
+
+{\small
+\begin{tabularx}{\textwidth}{Xr}
+\toprule
+\textbf{Kennzahl} & \textbf{Wert} \\
+\midrule
+Temperature & 0,1418 \\
+Top-p & 0,4063 \\
+Repeat-Penalty & 1,2306 \\
+Kontext angefordert & 6289 Tokens \\
+\bottomrule
+\end{tabularx}
+}
+\paragraph{Antwort}
+\begin{quote}
+\raggedright
+Heidelberg wurde um das Jahr 1245 gegründet, vermutlich vom kurpfälzischen Grafen Otto I., dem Gründer des Kurfürstentums Palatinat. Die erste schriftliche Erwähnung der Stadt findet sich in einem Dokument aus 1252.
+\end{quote}
+
+\subsection*{Vergleich}
+{\footnotesize
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+\textbf{Kennzahl} & \textbf{Zufällig} & \textbf{Voroptimiert} & \textbf{Dif{}ferenz} \\
+\midrule
+Temperature & 0,3863 & 0,1418 & -0,2445 \\
+Top-p & 0,6530 & 0,4063 & -0,2467 \\
+Repeat-Penalty & 1,4601 & 1,2306 & -0,2295 \\
+Kontext angefordert & 5525 Tokens & 6289 Tokens & +764 Tokens \\
+Kontext belegt & 5525 Tokens & 6289 Tokens & +764 Tokens \\
+Grafikspeicher & 11,86 GiB & 11,86 GiB & +0,00 GiB \\
+Wandzeit & 141957,0 ms & 19885,8 ms & -122071,2 ms \\
+Ladezeit & 1381,3 ms & 4647,5 ms & +3266,2 ms \\
+Zeit ohne Laden & 140574,8 ms & 15235,6 ms & -125339,2 ms \\
+Bis zum ersten Token & 1591,3 ms & 4862,9 ms & +3271,7 ms \\
+Prompt-Auswertung & 210,0 ms & 215,5 ms & +5,5 ms \\
+Prompt-Durchsatz & 357,17 Tokens/s & 348,10 Tokens/s & -9,07 Tokens/s \\
+Antwort-Tokens & 4206 & 441 & -3765 \\
+Generierung & 140385,9 ms & 15007,1 ms & -125378,8 ms \\
+Antwort-Durchsatz & 29,96 Tokens/s & 29,39 Tokens/s & -0,57 Tokens/s \\
+Zeit pro Antwort-Token & 33,38 ms & 34,03 ms & +0,65 ms \\
+Antwortzeichen & 212 & 215 & +3 \\
+Zeichendurchsatz & 1,5 Zeichen/s & 14,3 Zeichen/s & +12,8 Zeichen/s \\
+Gesamtzeit laut Ollama & 141956,0 ms & 19883,1 ms & -122073,0 ms \\
+\bottomrule
+\end{tabular}
+}
+
+\medskip
+\noindent Die Dif{}ferenz ist Voroptimiert minus Zufällig. Die Ladezeit des zweiten Durchlaufs ist kürzer, weil das Modell bereits im Speicher liegt. Vergleichbar sind Zeit ohne Laden, Generierung und Durchsatz.
+
+\end{document}

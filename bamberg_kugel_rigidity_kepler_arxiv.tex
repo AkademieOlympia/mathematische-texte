@@ -1,0 +1,869 @@
+
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{longtable}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric}
+
+\geometry{margin=2.35cm}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlist[itemize]{leftmargin=1.5em,itemsep=2pt,topsep=3pt}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=2pt,topsep=3pt}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!45!black,
+  citecolor=blue!45!black,
+  urlcolor=blue!45!black,
+  pdftitle={Die Bamberg-Kugel: Icosianische Normschalen, lokale Rigidity und die Kepler-Normalisierung},
+  pdfauthor={Arbeitsmanuskript}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Bamberg-Kugel -- Zertifizierungsübersicht}
+\fancyhead[R]{BK-I1.0 bis BK-I2.6+}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{proposition}[satz]{Proposition}
+\newtheorem{korollar}[satz]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+\newtheorem{gate}[satz]{Zertifizierungsgate}
+
+\newcommand{\twoI}{2I}
+\newcommand{\QI}{Q_I}
+\newcommand{\Pgen}{\mathcal P_{\mathrm{gen}}}
+\newcommand{\Pall}{\mathcal P_{\mathrm{all}}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{E_8}
+\newcommand{\BK}{\mathrm{BK}}
+
+\title{\textbf{Die Bamberg-Kugel}\\
+\large Icosianische Normschalen, lokale Rigidity und eine Kepler-Normalisierungsrelation\\[4pt]
+\small Mathematische Übersichtsthese und maschinenprüfbares Zertifizierungsprotokoll BK-I1.0--BK-I2.6+}
+\author{Arbeitsmanuskript}
+\date{10. September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Wir beschreiben ein endliches, exakt zertifizierbares Modell, das aus dem regulären Ikosaeder, seiner Rotationsgruppe \(A_5\), der binären Ikosaedergruppe \(\twoI\subset \mathrm{SU}(2)\) und dem Icosianenring konstruiert wird. Ausgangspunkt ist ein kubischer \(C_2\)-Lift des 60-knotigen Graphen des abgestumpften Ikosaeders auf 120 Knoten. Über eine explizite Bijektion in die 120 Einheitsicosianen wird jede Graphkante als Differenz zweier Icosianen mit einheitlicher Icosianennorm \(\QI=2\) realisiert. Die vollständige Normschalenanalyse aller \(\binom{120}{2}=7140\) ungeordneten Paare führt zu den Schalen \(1,2,3,4\) mit Multiplizitäten \(1920,3240,1920,60\). Die Norm-\(2\)-Schale besitzt lokal 54 Richtungen, während der Bamberg-Kugel-Graph davon exakt drei auswählt; die Selektionsrate ist daher \(3/54=1/18\).
+
+Die 54 relativen Norm-\(2\)-Richtungen zerfallen in drei Konjugationsklassen der binären Ikosaedergruppe mit Größen \(30,12,12\) und Elementordnungen \(4,5,10\). Die lokale Bamberg-Kugel-Nachbarschaft trägt die Signatur \(\{4,10,10\}\), wobei die beiden Ordnung-10-Schritte invers sind und die Ordnung-5-Klasse metrisch zulässig, aber graphisch nicht realisiert wird. Daraus entsteht ein Rigidity-Orbit-Gate: erzeugende Paare \((a,b)\in C_{10}^{\mathrm{BK}}\times C_4\) mit \((ab)^3=-1\) werden unter simultaner Konjugation klassifiziert. Ein einziger 60er-Orbit würde die lokale Erzeugerstruktur bis auf die effektive \(A_5\)-Wirkung eindeutig bestimmen; falls zusätzlich jedes zulässige Paar \(\twoI\) erzeugt, folgt eine stärkere ``Strong Rigidity''.
+
+Schließlich ordnen wir die auffällige Identität
+\[
+\frac1{18}=\frac{\Delta_3^2}{\pi^2},\qquad \Delta_3=\frac{\pi}{\sqrt{18}},
+\]
+ein, wobei \(\Delta_3\) die Keplersche optimale Kugelpackungsdichte in \(\R^3\) ist. Diese Gleichung ist exakt, stellt aber \emph{noch keinen geometrischen Ableitungssatz} zwischen der Bamberg-Kugel und der Keplerpackung dar. Wir formulieren deshalb eine klar falsifizierbare Brückenfrage: Erst eine kanonische dreidimensionale Projektion oder lokale Volumenform, die den Faktor \(\sqrt{18}\) intrinsisch reproduziert, würde aus der numerischen Normalisierungsidentität eine echte geometrische Verbindung machen.
+\end{abstract}
+
+\textbf{Statushinweis.}
+Dieses Manuskript trennt strikt zwischen bereits algebraisch hergeleiteten Konsequenzen, im Zertifizierungsskript enthaltenen Assertions und Resultaten, die erst nach einem erfolgreichen SageMath-10.5-Lauf als maschinenzertifiziert gelten dürfen. Insbesondere werden Rigidity und Strong Rigidity bis zur protokollierten Ausführung von BK-I2.6 konditional formuliert.
+
+\section{Einleitung}
+
+Der reguläre Ikosaeder ist eines der klassischen Objekte, an denen endliche Symmetrie, Quaternionenalgebra und hochdimensionale Gittergeometrie zusammentreffen. Seine orientierungserhaltende Symmetriegruppe ist \(A_5\) von Ordnung \(60\). Hebt man diese Rotationen entlang der Doppelüberlagerung
+\[
+\mathrm{SU}(2)\longrightarrow \mathrm{SO}(3)
+\]
+an, erhält man die binäre Ikosaedergruppe \(\twoI\) von Ordnung \(120\). Die 120 Gruppenelemente können als Einheitsquaternionen und zugleich als Einheitsicosianen aufgefasst werden. Der Icosianenring liefert wiederum eine klassische Konstruktion des \(E_8\)-Gitters; diese Verbindung vom Ikosaeder über Quaternionen zu \(E_8\) ist gut bekannt \cite{Baez2018}.
+
+Das hier untersuchte Objekt, die \emph{Bamberg-Kugel}, ist keine neue Kugelpackung im üblichen euklidischen Sinn. Es handelt sich vielmehr um einen endlichen kubischen Graphen auf den 120 Einheitsicosianen, dessen Kanten durch eine exakte Normbedingung ausgezeichnet sind. Der zentrale Gegenstand ist die Frage, wie stark die Graphstruktur innerhalb der wesentlich größeren metrisch zulässigen Normschale selektiert und ob diese Selektion algebraisch starr ist.
+
+Die Untersuchung wird in vier Stufen organisiert:
+\[
+\boxed{
+\mathrm{BK\!-\!I1.0}
+\Longrightarrow
+\mathrm{BK\!-\!I2}
+\Longrightarrow
+\mathrm{BK\!-\!I2.5}
+\Longrightarrow
+\mathrm{BK\!-\!I2.6(+)}.
+}
+\]
+BK-I1.0 konstruiert den Spin-Lift und beweist die einheitliche Kantenlänge. BK-I2 bestimmt die vollständige Paarschalenstatistik und die Selektionsrate \(1/18\). BK-I2.5 zerlegt die Norm-\(2\)-Richtungen in Konjugationsklassen und identifiziert die lokale Signatur. BK-I2.6 klassifiziert schließlich die zulässigen lokalen Erzeugerpaare unter simultaner Konjugation.
+
+Ein zweites Motiv ist die Zahl \(18\). Die optimale Dichte kongruenter Kugeln im dreidimensionalen euklidischen Raum ist nach der Keplerschen Vermutung
+\[
+\Delta_3=\frac{\pi}{\sqrt{18}}\approx0.74048,
+\]
+wie Hales bewiesen hat \cite{Hales2005}. Die Bamberg-Kugel liefert unabhängig davon die Selektionsrate \(1/18\). Daraus folgt die exakte Identität
+\[
+\frac1{18}=\frac{\Delta_3^2}{\pi^2}.
+\]
+Die mathematische Aufgabe besteht darin, diese Identität weder zu überinterpretieren noch vorschnell als Zufall abzutun. Wir zeigen, welche Art zusätzlicher geometrischer Struktur nötig wäre, um daraus einen echten Satz zu machen.
+
+\section{Ikosaeder, binäre Ikosaedergruppe und Icosianen}
+
+\subsection{Vom Ikosaeder zum 60-knotigen Basisgraphen}
+
+Der reguläre Ikosaeder \(I\) besitzt
+\[
+|V(I)|=12,\qquad |E(I)|=30,\qquad |F(I)|=20.
+\]
+Seine orientierten Kanten oder \emph{Darts}
+\[
+D(I)=\{(X,Y):\{X,Y\}\in E(I)\}
+\]
+haben Kardinalität \(60\). Die Rotationsgruppe \(A_5\) wirkt frei und transitiv auf \(D(I)\). Fixiert man einen Dart als Ursprung, kann man die Darts daher mit den Gruppenelementen von \(A_5\) identifizieren.
+
+Die natürliche kubische Nachbarschaft entsteht aus zwei Operationen: zyklischem Weiterschalten um einen Ikosaedervertex und Umkehr einer orientierten Kante. Der resultierende Graph \(G_0\) besitzt
+\[
+|V(G_0)|=60,\qquad |E(G_0)|=90,\qquad \deg(G_0)=3
+\]
+und ist isomorph zum Graphen des abgestumpften Ikosaeders. Gruppen-theoretisch kann er als
+\[
+G_0\cong \operatorname{Cay}\!\left(A_5,\{a,a^{-1},b\}\right)
+\]
+mit
+\[
+a^5=b^2=(ab)^3=1
+\]
+beschrieben werden.
+
+\subsection{Warum der Spin-Lift kein naiver Cayleygraph ist}
+
+Die binäre Ikosaedergruppe liegt in der exakten Sequenz
+\[
+1\longrightarrow\{\pm1\}\longrightarrow\twoI
+\longrightarrow A_5\longrightarrow1.
+\]
+Für geeignete Lifts \(\tilde a,\tilde b\in\twoI\) gelten
+\[
+\tilde a^5=\tilde b^2=(\tilde a\tilde b)^3=-1.
+\]
+Hier liegt eine wichtige strukturelle Falle: Weil \(\tilde b^2=-1\), gilt
+\[
+\tilde b^{-1}=-\tilde b\neq\tilde b.
+\]
+Ein ungerichteter Cayleygraph auf \(\twoI\) mit den Symbolen
+\(\{\tilde a,\tilde a^{-1},\tilde b\}\) müsste inverse-geschlossen sein und hätte daher effektiv vier Generatorrichtungen. Er wäre 4-regulär und hätte 240 Kanten, nicht die gesuchten 180.
+
+Die korrekte Konstruktion ist ein \(C_2\)-Voltage-Lift des Basisgraphen. Wähle eine Sektion
+\[
+s:A_5\to\twoI
+\]
+und definiere
+\[
+\lambda(g,\varepsilon)=(-1)^\varepsilon s(g),\qquad
+\varepsilon\in\{0,1\}.
+\]
+Für eine orientierte Basiskante \(g\to gh\) wird die Spannung
+\(\alpha(g,h)\in\mathbb F_2\) durch
+\[
+s(g)\tilde h=(-1)^{\alpha(g,h)}s(gh)
+\]
+bestimmt. Der Lift ist
+\[
+(g,\varepsilon)\longmapsto
+(gh,\varepsilon+\alpha(g,h)).
+\]
+Jede ungerichtete Basiskante wird genau einmal orientiert und erzeugt exakt zwei Liftkanten. Damit entstehen 120 Knoten und 180 Kanten.
+
+\begin{gate}[BK-I1.0: Spin-Lift und Normtreue]
+Das Zertifizierungsziel lautet:
+\[
+|V(\widehat G_0)|=120,\quad
+|E(\widehat G_0)|=180,\quad
+\deg(v)=3,
+\]
+\(\widehat G_0\) ist zusammenhängend, und
+\(\lambda:V(\widehat G_0)\to\twoI\) ist bijektiv.
+\end{gate}
+
+\subsection{Icosianennorm und \(E_8\)-Einbettung}
+
+Für einen Icosianen \(q\) liegt die reduzierte Quaternionennorm in
+\(\mathbb Q(\sqrt5)\):
+\[
+N_{\mathbb H}(q)=x+\sqrt5\,y.
+\]
+Die für die \(E_8\)-Realisierung relevante quadratische Form ist
+\[
+\QI(q)=x+y.
+\]
+Mit dieser Form bilden die Icosianen, nach der üblichen Skalierungskonvention, eine Realisierung des \(E_8\)-Gitters \cite{Baez2018}. Die 120 Elemente von \(\twoI\) haben \(\QI(q)=1\).
+
+Wichtig ist die Normalisierung: In der hier verwendeten Icosianennorm haben die Einheitsicosianen Norm \(1\); die standardmäßigen \(E_8\)-Wurzeln werden häufig mit quadratischer Norm \(2\) normalisiert. Daher darf aus \(\QI(\delta)=2\) nicht ohne Skalierungsangabe geschlossen werden, dass \(\delta\) eine \(E_8\)-Wurzel sei.
+
+Für eine Liftkante mit relativer Richtung \(h\) gilt
+\[
+\delta=\lambda(v)-\lambda(u)=\lambda(u)(h-1).
+\]
+Da \(\lambda(u)\) eine Einheit ist,
+\[
+N_{\mathbb H}(\delta)=N_{\mathbb H}(h-1),
+\]
+und somit
+\[
+\QI(\delta)=\QI(h-1).
+\]
+Die Generatorwahl wird so zertifiziert, dass
+\[
+\QI(\tilde a-1)=\QI(\tilde a^{-1}-1)
+=\QI(\tilde b-1)=2.
+\]
+Damit folgt für jede BK-Kante exakt
+\[
+\boxed{\QI(\lambda(v)-\lambda(u))=2.}
+\]
+
+\section{Die globale Normschale: BK-I2}
+
+\subsection{Reduktion der 7140 Paare auf relative Gruppenelemente}
+
+Es gibt
+\[
+\binom{120}{2}=7140
+\]
+ungeordnete Paare verschiedener Einheitsicosianen. Für \(q,r\in\twoI\) gilt wegen der Einheitseigenschaft
+\[
+\QI(r-q)=\QI(q^{-1}r-1).
+\]
+Die Paardistanz hängt daher nur vom relativen Gruppenelement
+\[
+g=q^{-1}r
+\]
+ab. Die globale Paarstatistik ist somit eine gruppentheoretische Distanzverteilung.
+
+Das Zertifizierungsprotokoll prüft exakt die Verteilung
+\[
+\begin{array}{c|r|r}
+\toprule
+\QI(r-q) & \text{ungeordnete Paare} & \text{Nachbarn pro Vertex}\\
+\midrule
+1 & 1920 & 32\\
+2 & 3240 & 54\\
+3 & 1920 & 32\\
+4 & 60 & 1\\
+\bottomrule
+\end{array}
+\]
+mit den Checksummen
+\[
+1920+3240+1920+60=7140
+\]
+und
+\[
+32+54+32+1=119.
+\]
+Die Norm-\(4\)-Paare sind die 60 Antipodenpaare \(q,-q\).
+
+\subsection{Die 54-reguläre Norm-\(2\)-Distanzstruktur}
+
+Definiere den vollständigen Norm-\(2\)-Distanzgraphen
+\[
+\Gamma_2:
+\qquad
+q\sim r
+\Longleftrightarrow
+\QI(r-q)=2.
+\]
+Aus der lokalen Schalenstatistik folgt
+\[
+\deg_{\Gamma_2}(q)=54,
+\]
+also
+\[
+|E(\Gamma_2)|
+=\frac{120\cdot54}{2}
+=3240.
+\]
+Der Bamberg-Kugel-Graph \(\widehat G_0\) ist ein 3-regulärer spannender Teilgraph mit 180 Kanten. Damit ergibt sich sowohl global als auch lokal dieselbe Selektionsrate:
+\[
+\boxed{
+\frac{|E(\widehat G_0)|}{|E(\Gamma_2)|}
+=\frac{180}{3240}
+=\frac{3}{54}
+=\frac1{18}.
+}
+\]
+
+\begin{satz}[BK-I2, nach erfolgreicher Maschinenzertifizierung]
+Der Bamberg-Kugel-Graph ist ein 3-regulärer spannender Teilgraph des 54-regulären Norm-\(2\)-Distanzgraphen auf den 120 Einheitsicosianen und selektiert exakt den Anteil \(1/18\) der metrisch zulässigen Norm-\(2\)-Kanten.
+\end{satz}
+
+Diese Aussage ist zunächst metrisch-kombinatorisch. Sie sagt noch nicht, \emph{warum} gerade diese drei der 54 Richtungen ausgewählt werden. Die Antwort darauf beginnt mit der Konjugationsklassenanalyse.
+
+\section{Konjugationsklassen und lokale Signatur: BK-I2.5}
+
+Definiere die Menge relativer Norm-\(2\)-Richtungen
+\[
+S_2=
+\{g\in\twoI\setminus\{1\}:\QI(g-1)=2\}.
+\]
+Die Zertifizierung ergibt
+\[
+|S_2|=54.
+\]
+Die bekannte Klassenstruktur der binären Ikosaedergruppe umfasst Klassen der Größen
+\[
+1,1,20,30,12,12,20,12,12
+\]
+mit Elementordnungen
+\[
+1,2,3,4,5,5,6,10,10
+\]
+\cite{nLab2I}. Innerhalb von \(S_2\) treten exakt drei Klassen auf:
+\[
+\boxed{
+S_2=C_4\;\dot\cup\;C_5\;\dot\cup\;C_{10}^{\mathrm{BK}},
+}
+\]
+mit
+\[
+|C_4|=30,\qquad |C_5|=12,\qquad
+|C_{10}^{\mathrm{BK}}|=12.
+\]
+
+Für einen Einheitsquaternion \(g\) gilt
+\[
+N_{\mathbb H}(g-1)=2-2\operatorname{Re}(g).
+\]
+Die drei Klassen lassen sich daher auch durch Realteile unterscheiden:
+\[
+\begin{array}{c|c|c}
+\toprule
+\text{Klasse} & \operatorname{ord}(g) & \operatorname{Re}(g)\\
+\midrule
+C_4 & 4 & 0\\
+C_5 & 5 & (\sqrt5-1)/4\\
+C_{10}^{\mathrm{BK}} & 10 & -(\sqrt5-1)/4\\
+\bottomrule
+\end{array}
+\]
+
+Für jeden gerichteten BK-Schritt \(v\to w\) wird das relative Gruppenelement
+\[
+g_{v,w}=\lambda(v)^{-1}\lambda(w)
+\]
+gebildet. Die verschärfte Klassenprüfung zertifiziert vertexweise
+\[
+\boxed{
+\{\operatorname{ord}(g_{v,w}):w\sim v\}
+=
+\{4,10,10\},
+}
+\]
+wobei die beiden Ordnung-10-Elemente invers zueinander sind.
+
+\begin{satz}[Lokale Klassenselektion]
+Unter der BK-I2.5-Zertifizierung gilt an jedem Vertex:
+\[
+1\times C_4,\qquad
+0\times C_5,\qquad
+2\times C_{10}^{\mathrm{BK}}.
+\]
+Die Ordnung-5-Klasse ist somit metrisch zulässig, wird aber von keiner gerichteten BK-Kante als relativer Schritt realisiert.
+\end{satz}
+
+Diese Aussage ist stärker als die reine Rate \(3/54\). Sie identifiziert die algebraische Art der drei ausgewählten Richtungen.
+
+\section{Rigidity als Orbitproblem: BK-I2.6}
+
+\subsection{Zulässige und erzeugende Paare}
+
+Die lokale Signatur legt nahe, ein Ordnung-10-Element \(a\in C_{10}^{\mathrm{BK}}\) und ein Ordnung-4-Element \(b\in C_4\) als lokale Generatoren zu betrachten. Die binär-ikosaedrische Relation lautet
+\[
+(ab)^3=-1.
+\]
+Wir definieren
+\[
+\Pall=
+\{(a,b)\in C_{10}^{\mathrm{BK}}\times C_4:(ab)^3=-1\}
+\]
+und die Teilmenge
+\[
+\Pgen=
+\{(a,b)\in\Pall:\langle a,b\rangle=\twoI\}.
+\]
+
+Die Gruppe \(\twoI\) wirkt durch simultane Konjugation:
+\[
+h\cdot(a,b)
+=
+(hah^{-1},hbh^{-1}).
+\]
+Für ein erzeugendes Paar gilt
+\[
+\operatorname{Stab}(a,b)
+=
+C_{\twoI}(a)\cap C_{\twoI}(b).
+\]
+Wenn \(\langle a,b\rangle=\twoI\), zentralisiert jedes Element des Stabilisators die gesamte Gruppe. Daher
+\[
+\operatorname{Stab}(a,b)=Z(\twoI)=\{\pm1\}.
+\]
+Folglich besitzt jeder erzeugende Orbit zwingend
+\[
+\boxed{
+\frac{|\twoI|}{|Z(\twoI)|}
+=\frac{120}{2}
+=60
+}
+\]
+Elemente.
+
+Damit reduziert sich die Rigidity-Frage auf eine einzige diskrete Zahl:
+\[
+r=\#(\Pgen/\twoI).
+\]
+Es gilt automatisch
+\[
+|\Pgen|=60r.
+\]
+
+\subsection{Rigidity und Strong Rigidity}
+
+\begin{definition}[Rigidity]
+Die lokale BK-Erzeugerstruktur heißt \emph{rigide}, wenn
+\[
+\#(\Pgen/\twoI)=1.
+\]
+Äquivalent ist dann
+\[
+|\Pgen|=60.
+\]
+\end{definition}
+
+\begin{definition}[Strong Rigidity]
+Die lokale BK-Erzeugerstruktur heißt \emph{stark rigide}, wenn zusätzlich
+\[
+\Pall=\Pgen.
+\]
+Dann folgt bereits aus Klassenwahl und Relation
+\[
+a\in C_{10}^{\mathrm{BK}},\quad
+b\in C_4,\quad
+(ab)^3=-1
+\Longrightarrow
+\langle a,b\rangle=\twoI.
+\]
+\end{definition}
+
+Der Unterschied ist wesentlich. Rigidity klassifiziert die \emph{erzeugenden} Lösungen bis auf Symmetrie. Strong Rigidity besagt darüber hinaus, dass die Erzeugungsklausel redundant ist.
+
+\begin{gate}[BK-I2.6]
+Das SageMath-Protokoll muss unabhängig prüfen:
+\begin{enumerate}
+\item \(\Pall\neq\varnothing\) und \(\Pgen\neq\varnothing\);
+\item alle erzeugenden Orbits haben Größe \(60\);
+\item \(|\Pgen|/60\) stimmt mit der expliziten Orbitanzahl überein;
+\item der gemeinsame Zentralisator jedes Orbitrepräsentanten ist \(\{\pm1\}\);
+\item für Rigidity: genau ein erzeugender Orbit;
+\item für Strong Rigidity: zusätzlich \(\Pall=\Pgen\).
+\end{enumerate}
+\end{gate}
+
+\subsection{Effektive \(A_5\)-Symmetrie}
+
+Das Zentrum wirkt bei Konjugation trivial. Die effektive Wirkung faktorisiert daher durch
+\[
+\twoI/Z(\twoI)\cong A_5.
+\]
+Die Zahl \(60\) hat somit eine intrinsische gruppentheoretische Bedeutung:
+\[
+60=|A_5|.
+\]
+Sie ist nicht mit der Selektionszahl \(1/18\) zu verwechseln. Die beiden Zahlen entstehen auf verschiedenen Ebenen:
+\[
+54\to3\quad\text{ist metrisch-kombinatorische Selektion,}
+\]
+während
+\[
+120\to60\quad\text{Orbit--Stabilisator und Zentralquotient ist.}
+\]
+
+\begin{center}
+\begin{tikzpicture}[
+node distance=1.05cm and 1.3cm,
+box/.style={draw,rounded corners,align=center,inner sep=6pt,font=\small},
+arr/.style={-{Latex[length=2mm]},thick}
+]
+\node[box] (i1) {BK-I1.0\\120-Knoten-\(C_2\)-Lift\\\(\QI(\delta)=2\)};
+\node[box,right=of i1] (i2) {BK-I2\\54 Norm-\(2\)-Richtungen\\3 ausgewählt: \(1/18\)};
+\node[box,right=of i2] (i25) {BK-I2.5\\Klassen \(30+12+12\)\\lokal \(\{4,10,10\}\)};
+\node[box,below=of i25] (i26) {BK-I2.6\\\(\Pgen/\twoI\)\\Rigidity-Orbits};
+\node[box,left=of i26] (i26p) {BK-I2.6+\\\(\Pall=\Pgen\)?\\Strong Rigidity};
+\draw[arr] (i1)--(i2);
+\draw[arr] (i2)--(i25);
+\draw[arr] (i25)--(i26);
+\draw[arr] (i26)--(i26p);
+\end{tikzpicture}
+\end{center}
+
+\section{Beziehung zur Keplerschen Kugelpackung in \(\R^3\)}
+
+\subsection{Der gesicherte Kepler-Satz}
+
+Die Keplersche Vermutung fragt nach der maximalen asymptotischen Dichte einer Packung kongruenter Kugeln in \(\R^3\). Hales bewies, dass keine solche Packung dichter sein kann als die flächenzentriert-kubische Packung; die optimale Dichte ist
+\[
+\boxed{
+\Delta_3=\frac{\pi}{\sqrt{18}}
+=\frac{\pi}{3\sqrt2}
+\approx0.74048.
+}
+\]
+Hales' Beweis ist ein globales Optimierungsresultat, das lokale Konfigurationen und computerunterstützte Abschätzungen kombiniert \cite{Hales2005}. Insbesondere ist die optimale Dichte nicht als Eindeutigkeit einer einzigen globalen Packung zu verstehen; fcc- und hcp-artige Strukturen können dieselbe optimale Dichte erreichen. Hales' Analyse enthält jedoch starke lokale Optimalitätsaussagen.
+
+\subsection{Die exakte Normalisierungsidentität}
+
+Aus BK-I2 folgt die Selektionsrate
+\[
+\sigma_{\BK}=\frac1{18}.
+\]
+Damit besteht die exakte arithmetische Identität
+\[
+\boxed{
+\sigma_{\BK}
+=
+\frac1{18}
+=
+\frac{\Delta_3^2}{\pi^2}.
+}
+\]
+Äquivalent:
+\[
+\boxed{
+\Delta_3=\pi\sqrt{\sigma_{\BK}}.
+}
+\]
+Diese Gleichung ist mathematisch korrekt, aber zunächst nur eine Beziehung zwischen zwei dimensionslosen Zahlen. Sie ist \emph{kein Beweis}, dass die BK-Selektion eine dreidimensionale Kugelpackungsdichte erzeugt.
+
+Die Gefahr einer Überinterpretation ist offensichtlich: Der Faktor \(18\) kann in verschiedenen mathematischen Problemen aus völlig verschiedenen Zähl- oder Volumenmechanismen entstehen. Für eine echte Verbindung muss der Faktor \(\sqrt{18}=3\sqrt2\) aus einer kanonischen geometrischen Konstruktion der Bamberg-Kugel hervorgehen.
+
+\subsection{Was eine echte Kepler-Brücke leisten müsste}
+
+Wir formulieren drei Stufen.
+
+\textbf{Stufe K0: arithmetische Identität.}
+\[
+\sigma_{\BK}=1/18=\Delta_3^2/\pi^2.
+\]
+Diese Stufe ist bereits exakt.
+
+\textbf{Stufe K1: kanonische dreidimensionale Volumenform.}
+Man müsste aus der Icosianen-/Quaternionenstruktur eine natürliche 3-dimensionale lokale Geometrie
+\[
+\Pi:\mathcal N_{\BK}\longrightarrow\R^3
+\]
+ableiten, ohne frei wählbare Skalierungsparameter, so dass ein intrinsisches Gram- oder Zellvolumen den Faktor
+\[
+\sqrt{\det G_{\BK}}=\sqrt{18}
+\]
+oder eine äquivalente Volumenrelation erzeugt.
+
+\textbf{Stufe K2: Packungsinterpretation.}
+Zusätzlich müsste gezeigt werden, dass die projizierten oder abgeleiteten lokalen Zellen tatsächlich eine nichtüberlappende Kugelpackung oder eine kanonische lokale Dichtefunktion definieren, deren optimale Dichte
+\[
+\pi/\sqrt{18}
+\]
+ist.
+
+Erst K1+K2 würden eine geometrische Ableitung der Keplerdichte aus der BK-Struktur rechtfertigen.
+
+\begin{proposition}[Kepler-Normalisierung, derzeitiger gesicherter Stand]
+Unter BK-I2 gilt exakt
+\[
+\sigma_{\BK}=\Delta_3^2/\pi^2.
+\]
+Ohne eine kanonische dreidimensionale Volumen- oder Projektionskonstruktion folgt daraus keine Gleichheit geometrischer Packungsprobleme und keine neue Herleitung der Keplerschen Vermutung.
+\end{proposition}
+
+\subsection{Warum Rigidity trotzdem relevant ist}
+
+Obwohl die Zahlengleichheit allein keine geometrische Brücke liefert, macht BK-I2.5/2.6 die Situation interessanter. Die Rate \(1/18\) stammt nicht aus einer beliebigen Auswahl von drei Richtungen. Die drei Richtungen sind klassenstrukturell eingeschränkt:
+\[
+1\times C_4,\qquad 2\times C_{10}^{\mathrm{BK}},
+\]
+und bei erfolgreichem BK-I2.6 sogar bis auf effektive \(A_5\)-Symmetrie eindeutig.
+
+Damit erhält die Selektionsrate eine algebraische \emph{Rigiditätsunterlage}: Nicht die Zahl \(1/18\) selbst wird erklärt, wohl aber die Eindeutigkeit des lokalen Mechanismus, der drei von 54 Richtungen auswählt. Dies ist die sachlich richtige Stelle, an der ein Vergleich mit lokalen Optimalitätsstrukturen in Packungsproblemen sinnvoll wird.
+
+Der Vergleich bleibt jedoch strukturell, nicht beweistheoretisch:
+\[
+\text{Kepler: lokale Geometrie } \Rightarrow \text{globale Dichteschranke},
+\]
+\[
+\text{BK: lokale Klassenrigidität } \Rightarrow \text{eindeutige diskrete Selektion}.
+\]
+Ein zukünftiger Brückensatz müsste beide Pfeile in einer gemeinsamen dreidimensionalen Volumengeometrie zusammenführen.
+
+\section{Die Rolle von \(E_8\) und der Dimensionswechsel}
+
+Die Icosianen sind nicht nur ein technisches Koordinatensystem. Sie verbinden die icosahedrale Quaternionensymmetrie mit dem \(E_8\)-Gitter \cite{Baez2018}. In Dimension acht ist \(E_8\) selbst die optimale Kugelpackung; Viazovska bewies 2016, dass keine Kugelpackung in \(\R^8\) dichter ist als die \(E_8\)-Packung \cite{Viazovska2017}.
+
+Damit erscheinen in der BK-Konstruktion zwei verschiedene Packungsdimensionen:
+\[
+\R^8:\quad \text{Icosianen und }E_8,
+\]
+\[
+\R^3:\quad \text{Keplerdichte }\pi/\sqrt{18}.
+\]
+Dies darf nicht vermischt werden. Die BK-Knoten leben algebraisch in der icosianischen \(E_8\)-Realisierung; die Keplerfrage ist dreidimensional. Eine mathematisch belastbare Verbindung benötigt daher einen expliziten Dimensionsreduktionsmechanismus.
+
+Eine natürliche Forschungsrichtung wäre, die quaternionische Darstellung
+\[
+q=x_0+x_1i+x_2j+x_3k
+\]
+zu verwenden und den skalaren Anteil sowie die imaginäre 3-Komponente getrennt zu untersuchen. Für Einheitsquaternionen liegt der imaginäre Teil in einer 3-dimensionalen Kugelgeometrie, deren Radius durch den Realteil bestimmt wird. Da BK-I2.5 die Realteile der relevanten Konjugationsklassen exakt kontrolliert, könnte eine kanonische 3D-Schicht nach Klassen entstehen. Dies ist jedoch derzeit ein \emph{Forschungsprogramm}, kein Resultat.
+
+Ein brauchbarer Kepler-Test müsste daher mindestens folgende Invarianzbedingungen erfüllen:
+\begin{enumerate}
+\item Die 3D-Konstruktion darf nicht von einer willkürlichen Wahl eines Vertex oder einer Koordinatenbasis abhängen, außer bis auf \(A_5\)-Rotation.
+\item Die Normierung muss aus \(\QI\), der Quaternionennorm oder einer daraus kanonisch induzierten Gramform folgen.
+\item Der Faktor \(18\) muss aus einem determinantischen, volumetrischen oder Zähl-zu-Volumen-Übergang entstehen, nicht durch nachträgliche Skalierung eingesetzt werden.
+\item Die resultierende lokale Dichte muss mit einer wohldefinierten Packungs- oder Kontaktgeometrie verbunden sein.
+\end{enumerate}
+
+\section{Maschinenzertifizierung in SageMath 10.5}
+
+Das Zertifizierungsprogramm ist bewusst so aufgebaut, dass numerische Approximationen keine beweistragende Rolle spielen. Die Rechnungen erfolgen im exakten Zahlkörper
+\[
+K=\mathbb Q(\sqrt5)
+\]
+und in einer Quaternionenalgebra über \(K\). Gleichheiten, Normen, Gruppenabschlüsse, Konjugationsklassen und Graphinvarianten werden exakt geprüft.
+
+\subsection{Zertifizierungsladder}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{2.1cm}p{5.1cm}p{6.1cm}}
+\toprule
+\textbf{Gate} & \textbf{Mathematisches Objekt} & \textbf{Harte Prüfaussage}\\
+\midrule
+\endhead
+BK-I1.0 & \(C_2\)-Lift \(\widehat G_0\), Bijektion \(\lambda\) & 120 Knoten, 180 Kanten, kubisch, zusammenhängend, \(\lambda\) bijektiv, alle BK-Kanten \(\QI=2\)\\
+BK-I2 & alle 7140 ungeordneten Paare & Schalen \(1,2,3,4\) mit \(1920,3240,1920,60\); lokal \(32,54,32,1\); Selektivität \(1/18\)\\
+BK-I2.5 & \(S_2\) und Konjugationsklassen & \(54=30+12+12\), Ordnungen \(4,5,10\), lokale Signatur \(4,10,10\), Ordnung-10-Inversenpaar\\
+BK-I2.6 & \(\Pgen\) unter simultaner Konjugation & jeder erzeugende Orbit Größe 60; genau ein Orbit für Rigidity\\
+BK-I2.6+ & \(\Pall\) versus \(\Pgen\) & \(\Pall=\Pgen\) für Strong Rigidity\\
+\bottomrule
+\end{longtable}
+
+\subsection{Logik des Rigidity-Codes}
+
+Der entscheidende Abschnitt enumeriert höchstens
+\[
+|C_{10}^{\mathrm{BK}}|\cdot|C_4|
+=12\cdot30
+=360
+\]
+geordnete Kandidatenpaare. Für jedes Paar wird die Relation
+\[
+(ab)^3=-1
+\]
+exakt geprüft. Danach wird die erzeugte Untergruppe durch Abschluss unter Multiplikation bestimmt. Die simultanen Konjugationsorbits werden explizit enumeriert.
+
+Die Kontrolllogik ist absichtlich redundant:
+\[
+|\Pgen|\equiv0\pmod{60},
+\]
+\[
+|\Pgen|/60=\#\{\text{explizit gefundene Orbits}\},
+\]
+\[
+|\operatorname{Orb}(a,b)|=
+120/|\operatorname{Stab}(a,b)|,
+\]
+und
+\[
+\operatorname{Stab}(a,b)=\{\pm1\}.
+\]
+Ein Mehrorbit-Ergebnis führt zu einem harten Abbruch und darf nicht durch eine statische Erfolgsmeldung überschrieben werden.
+
+\subsection{Was der Maschinenlauf beweist und was nicht}
+
+Ein erfolgreicher exakter Lauf ist ein endlicher Exhaustionsbeweis innerhalb der implementierten algebraischen Darstellung. Er zertifiziert die Aussagen über die 120 Gruppenelemente, 7140 Paare, 54 Richtungen und höchstens 360 Generatorpaare.
+
+Er beweist \emph{nicht}:
+\begin{itemize}
+\item eine neue optimale Kugelpackung in \(\R^3\);
+\item eine Herleitung der Keplerschen Vermutung aus \(E_8\);
+\item dass \(1/18\) und \(\pi/\sqrt{18}\) durch denselben geometrischen Mechanismus entstehen;
+\item eine Aussage über unendliche Icosianenschalen jenseits der zertifizierten endlichen Konfiguration.
+\end{itemize}
+
+Diese Negativabgrenzung ist Teil des wissenschaftlichen Protokolls.
+
+\section{Übersichtsthese}
+
+Die bisherige Struktur lässt sich in einer einzigen Übersichtsthese bündeln.
+
+\begin{satz}[Bamberg-Kugel-Übersichtsthese, zertifizierungsabhängige Form]
+Es existiert ein 120-knotiger kubischer \(C_2\)-Lift \(\widehat G_0\) des Graphen des abgestumpften Ikosaeders mit einer Bijektion
+\[
+\lambda:V(\widehat G_0)\to\twoI
+\]
+in die 120 Einheitsicosianen, so dass jede BK-Kante die Icosianennorm
+\[
+\QI(\lambda(v)-\lambda(u))=2
+\]
+besitzt.
+
+Die vollständige Norm-\(2\)-Distanzstruktur auf denselben 120 Punkten ist 54-regulär und besitzt 3240 Kanten. Der BK-Graph selektiert davon 180 Kanten, also exakt
+\[
+\frac1{18}
+\]
+global und lokal.
+
+Die 54 relativen Norm-\(2\)-Richtungen zerfallen in drei \(\twoI\)-Konjugationsklassen
+\[
+C_4\dot\cup C_5\dot\cup C_{10}^{\mathrm{BK}}
+\]
+mit Größen \(30,12,12\). An jedem BK-Vertex werden genau eine Richtung aus \(C_4\) und zwei inverse Richtungen aus \(C_{10}^{\mathrm{BK}}\) realisiert; \(C_5\) bleibt graphisch unbenutzt.
+
+Falls BK-I2.6 im exakten SageMath-Lauf genau einen erzeugenden simultanen Konjugationsorbit liefert, ist die lokale Erzeugerstruktur bis auf die effektive \(A_5\)-Wirkung rigide. Falls zusätzlich \(\Pall=\Pgen\), folgt Strong Rigidity: Klassenwahl und Relation \((ab)^3=-1\) erzwingen bereits die Erzeugung von \(\twoI\).
+
+Die Selektionsrate erfüllt die exakte Normalisierungsidentität
+\[
+\frac1{18}=\frac{\Delta_3^2}{\pi^2},
+\qquad
+\Delta_3=\frac{\pi}{\sqrt{18}},
+\]
+wobei \(\Delta_3\) die optimale Kepler-Packungsdichte in \(\R^3\) bezeichnet. Diese Identität ist derzeit eine exakte numerische Korrespondenz; eine geometrische Ableitung erfordert zusätzlich eine kanonische dreidimensionale Volumen- oder Projektionsstruktur.
+\end{satz}
+
+Die These trennt damit drei Ebenen:
+\[
+\boxed{
+\text{Metrik}
+\;\longrightarrow\;
+\text{Klassenrigidität}
+\;\longrightarrow\;
+\text{mögliche 3D-Volumenbrücke}.
+}
+\]
+Nur die ersten beiden Ebenen sind Gegenstand des aktuellen endlichen Zertifizierungsprogramms.
+
+\section{Offene Probleme und Falsifikationskriterien}
+
+\textbf{O1: Rigidity.}
+Liefert BK-I2.6 tatsächlich
+\[
+|\Pgen|=60,\qquad \#(\Pgen/\twoI)=1?
+\]
+Ein Ergebnis \(>60\) falsifiziert die Eindeutigkeitsaussage.
+
+\textbf{O2: Strong Rigidity.}
+Gilt
+\[
+\Pall=\Pgen?
+\]
+Schon ein einziges zulässiges, aber nicht erzeugendes Paar widerlegt Strong Rigidity, ohne notwendigerweise Rigidity zu widerlegen.
+
+\textbf{O3: Kepler-Volumen-Gate.}
+Existiert eine kanonische, \(A_5\)-äquivariante 3D-Konstruktion aus der lokalen BK-Geometrie, deren Gramdeterminante oder Fundamentalvolumen den Faktor \(18\) intrinsisch erzeugt? Ohne eine solche Konstruktion bleibt
+\[
+1/18=\Delta_3^2/\pi^2
+\]
+eine Normalisierungsidentität.
+
+\textbf{O4: Erweiterte Schalen.}
+Wie verhalten sich analoge Selektions- und Klassenstrukturen auf höheren Icosianennormschalen? Ist die lokale Rigidity ein isoliertes Phänomen der Einheitsicosianen oder Teil einer stabilen Hierarchie?
+
+\textbf{O5: Spektrale Signatur.}
+Der 3-reguläre BK-Graph sitzt als hochselektiver spannender Teilgraph in einem 54-regulären Distanzgraphen. Die Spektren beider Graphen könnten eine weitere, basisunabhängige Rigidity-Signatur liefern.
+
+\section{Schluss}
+
+Die Bamberg-Kugel liefert ein überschaubares Beispiel dafür, wie sich eine geometrisch motivierte Konstruktion in eine Kette exakt falsifizierbarer algebraischer Aussagen überführen lässt. Der entscheidende Schritt ist nicht die Zahl \(1/18\) allein, sondern die Auflösung ihrer lokalen Trägerstruktur: 54 metrisch zulässige Norm-\(2\)-Richtungen zerfallen in wohldefinierte Konjugationsklassen, und der kubische Graph wählt daraus eine sehr spezielle Signatur.
+
+Falls das Rigidity-Orbit-Gate einen einzigen 60er-Orbit bestätigt, wird diese Auswahl bis auf die effektive Ikosaedersymmetrie eindeutig. Falls darüber hinaus \(\Pall=\Pgen\), ist die Erzeugungsbedingung selbst eine Konsequenz der Klassenwahl und der Relation \((ab)^3=-1\). Das wäre die stärkste derzeit vorgesehene endliche algebraische Aussage.
+
+Die Beziehung zur Keplerdichte ist demgegenüber bewusst vorsichtiger zu formulieren. Sicher ist
+\[
+\Delta_3=\frac{\pi}{\sqrt{18}}
+\quad\text{und}\quad
+\sigma_{\BK}=\frac1{18}.
+\]
+Sicher ist daher auch
+\[
+\sigma_{\BK}=\Delta_3^2/\pi^2.
+\]
+Nicht sicher ist, dass beide Vorkommen der Zahl \(18\) denselben geometrischen Ursprung besitzen. Genau daraus entsteht ein neues, präzises Forschungsproblem: eine kanonische dreidimensionale Volumenstruktur zu finden oder ihre Existenz zu widerlegen. Diese Trennung zwischen bewiesener Identität und offener geometrischer Erklärung ist wesentlich für die wissenschaftliche Belastbarkeit des Programms.
+
+\begin{thebibliography}{9}
+
+\bibitem{Baez2018}
+J. C. Baez,
+\emph{From the Icosahedron to \(E_8\)},
+London Mathematical Society Newsletter 476 (2018), 18--23.
+Preprint: \url{https://math.ucr.edu/home/baez/icosahedron.pdf}.
+
+\bibitem{Hales2005}
+T. C. Hales,
+\emph{A Proof of the Kepler Conjecture},
+Annals of Mathematics \textbf{162} (2005), 1065--1185.
+\url{https://doi.org/10.4007/annals.2005.162.1065}.
+
+\bibitem{Viazovska2017}
+M. Viazovska,
+\emph{The Sphere Packing Problem in Dimension 8},
+Annals of Mathematics \textbf{185} (2017), 991--1015.
+Preprint: \url{https://arxiv.org/abs/1603.04246}.
+
+\bibitem{nLab2I}
+nLab,
+\emph{Icosahedral group / binary icosahedral group: character table and conjugacy classes},
+accessed September 2026.
+\url{https://ncatlab.org/nlab/show/icosahedral+group}.
+
+\bibitem{ConwaySloane}
+J. H. Conway and N. J. A. Sloane,
+\emph{Sphere Packings, Lattices and Groups},
+3rd ed., Springer, 1999.
+
+\end{thebibliography}
+
+\appendix
+\section{Kernlogik des Zertifizierungsskripts}
+
+Der folgende Pseudocode fasst den beweistragenden Ablauf zusammen; die tatsächliche Implementierung erfolgt mit exakter Arithmetik in SageMath 10.5.
+
+\begin{verbatim}
+1. K = Q(sqrt(5)); konstruiere Quaternionenalgebra H/K.
+2. Erzeuge exakt die 120 Elemente von 2I; prüfe Abschluss, Inversen, Zentrum.
+3. Konstruiere 60 Repräsentanten modulo +/-1 und den Basisgraphen G0.
+4. Baue den C2-Voltage-Lift G_hat mit 120 Knoten und 180 Kanten.
+5. Zertifiziere lambda: V(G_hat) -> 2I als Bijektion.
+6. Prüfe Q_I(lambda(v)-lambda(u)) = 2 auf allen 180 BK-Kanten.
+7. Enumeriere alle 7140 ungeordneten Paare:
+      Normschalen = {1:1920, 2:3240, 3:1920, 4:60}.
+8. Bestimme S2 = {g != 1 : Q_I(g-1)=2}; prüfe |S2|=54.
+9. Zerlege S2 in volle 2I-Konjugationsklassen:
+      Größen 30,12,12; Ordnungen 4,5,10.
+10. Prüfe vertexweise relative BK-Schritte:
+      genau 1x Ordnung 4, 0x Ordnung 5, 2x Ordnung 10;
+      die beiden Ordnung-10-Schritte sind invers.
+11. Isoliere C4 und C10_BK.
+12. P_all = {(a,b): (ab)^3=-1}.
+13. P_gen = {(a,b) in P_all : <a,b>=2I}.
+14. Zerlege P_gen unter simultaner 2I-Konjugation.
+15. Prüfe für jeden erzeugenden Orbit:
+      Zentralisator = {+/-1}, Orbitgröße = 60.
+16. Rigidity PASS genau dann, wenn #Orbits = 1.
+17. Strong Rigidity PASS genau dann, wenn zusätzlich P_all = P_gen.
+\end{verbatim}
+
+\end{document}

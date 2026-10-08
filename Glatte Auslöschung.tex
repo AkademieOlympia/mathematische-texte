@@ -1,0 +1,550 @@
+\documentclass[11pt,a4paper]{article}
+
+% arXiv-taugliches Manuskript zu B-029 (Relative Cancellation Defect)
+% Stand: Freeze-Tag b029-freeze-2026-07-24 / verified SHA 3c626f5...
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Satz}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Bemerkung}
+\newtheorem{example}[theorem]{Beispiel}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Sy}{\mathcal{S}_y}
+\newcommand{\nuP}{\nu}
+\newcommand{\dlog}{d_{\log}}
+\newcommand{\dlogone}{d_{1,\log}}
+\newcommand{\Cy}{\mathfrak{C}_y}
+\newcommand{\rhoy}{\rho_y}
+\newcommand{\Ry}{R_y}
+\newcommand{\SignCoh}{\operatorname{SignCoherent}}
+
+\title{Normierter Ausl{\"o}schungsdefekt glatter Zahlen\\[0.35em]
+	\large Gegenl{\"a}ufige Primexponenten, relative Defekte und das Supremum~$1$}
+\author{Thomas Hoffbauer%
+	\thanks{Formale Verifikation in Lean~4 / Mathlib; Repository-Freeze
+		\texttt{b029-freeze-2026-07-24} auf Commit
+		\texttt{3c626f5ac6d90195387eaf54e4df1af699294637}.}}
+\date{}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		\noindent
+		Sei $y\ge 2$ und $\Sy$ die Menge der $y$-glatten positiven ganzen Zahlen.
+		F{\"u}r $m,n\in\Sy$ vergleichen wir die skalare Logdistanz
+		$\dlog(m,n)=\lvert\log(n/m)\rvert$ mit der gewichteten Exponenten-$L^1$-Distanz
+		$\dlogone(m,n)=\sum_{p\le y}\lvert\nuP_p(n)-\nuP_p(m)\rvert\log p$.
+		Ihre Differenz ist der \emph{Ausl{\"o}schungsdefekt}
+		$\Cy(m,n)=\dlogone-\dlog=2\min(P,N)$, wobei $P$ und $N$ die
+		positiv bzw.\ negativ gerichteten logarithmischen Exponentenfl{\"u}sse sind.
+		Der \emph{normierte} Defekt
+		$\rhoy=\Cy/\dlogone$ (f{\"u}r $m\neq n$) erf{\"u}llt
+		$0\le\rhoy(m,n)<1$ und verschwindet genau bei Signkoh{\"a}renz.
+		F{\"u}r $y\ge 3$ zeigen wir {\"u}ber die Irrationalit{\"a}t von
+		$\log 3/\log 2$ und den Dirichlet-Approximationssatz, dass
+		$\rhoy$ auf der Zweiprimzahlfamilie $(3^a,2^b)$ beliebig nahe an~$1$ kommt.
+		Damit gilt $\sup\Ry=1$ bei gleichzeitig $1\notin\Ry$: relative Ausl{\"o}schung
+		kann beliebig stark, aber nie vollst{\"a}ndig sein.
+		Die Resultate sind maschinengepr{\"u}ft formalisiert.
+	\end{abstract}
+	
+	\noindent
+	\textbf{MSC 2020:}
+	11N25 % smooth numbers
+	\quad
+	11J68 % Diophantine approximation / logs
+	\quad
+	11A51 % factorization
+	\quad
+	11Y35 % computational number theory (formal verification adjacent)
+	\\
+	\textbf{Schl{\"u}sselw{\"o}rter:}
+	glatte Zahlen,
+	$p$-adische Bewertung,
+	Logarithmen irrationaler Verh{\"a}ltnisse,
+	Dirichletscher Approximationssatz,
+	Ausl{\"o}schung gegenl{\"a}ufiger Exponentenfl{\"u}sse,
+	formale Verifikation.
+	
+	\tableofcontents
+	
+	%==============================================================================
+	\section{Einleitung und zahlentheoretische Einordnung}
+	\label{sec:intro}
+	%==============================================================================
+	
+	\subsection{Glatte Zahlen und Exponentengeometrie}
+	
+	F{\"u}r eine Schranke $y\ge 2$ hei{\ss}t eine positive ganze Zahl $n$
+	\emph{$y$-glatt}, wenn jeder Primteiler von~$n$ h{\"o}chstens~$y$ ist.
+	Die Menge
+	\[
+	\Sy
+	:=
+	\{n\in\N_{>0}:\ \text{jeder Primteiler von }n\text{ ist }\le y\}
+	\]
+	ist die nat{\"u}rliche Tr{\"a}germenge f{\"u}r die elementare
+	\emph{Exponentengeometrie}: {\"u}ber die kanonische Abbildung
+	\[
+	\Phi_y:\Sy\to\N_0^{\pi(y)},
+	\qquad
+	n\mapsto\bigl(\nuP_p(n)\bigr)_{p\le y}
+	\]
+	wird Multiplikation in~$\Sy$ zur Addition von Exponentenvektoren.
+	Skalare Logarithmen und gewichtete $\ell^1$-Normen auf diesen Vektoren
+	liefern zwei Metriken, die in der Z{\"a}hltheorie glatter Zahlen
+	(Dickman--de~Bruijn-Funktion, friable numbers) und in der
+	Geometrie von Primfaktorzerlegungen zentral sind
+	\cite{tenenbaum1995,hildebrand-tenenbaum1993,granville2008}.
+	
+	Die vorliegende Note isoliert einen rein \emph{lokalen} Vergleich dieser
+	beiden Metriken auf festen $y$ und stellt keine asymptotischen
+	Aussagen {\"u}ber $\Psi(x,y)$ oder die Dickman-Funktion auf.
+	
+	\subsection{Zwei Distanzen, eine Ausl{\"o}schung}
+	
+	F{\"u}r $m,n\in\Sy$ setzen wir
+	\begin{align}
+		\label{eq:dlog}
+		\dlog(m,n)
+		&:=
+		\bigl\lvert\log n-\log m\bigr\rvert
+		=
+		\biggl\lvert\sum_{p\le y}\bigl(\nuP_p(n)-\nuP_p(m)\bigr)\log p\biggr\rvert,
+		\\
+		\label{eq:d1log}
+		\dlogone(m,n)
+		&:=
+		\sum_{p\le y}
+		\bigl\lvert\nuP_p(n)-\nuP_p(m)\bigr\rvert\log p.
+	\end{align}
+	Offenbar gilt stets $\dlog\le\dlogone$. Gleichheit liegt genau dann vor,
+	wenn alle Vorzeichen der Differenzen $\Delta_p:=\nuP_p(n)-\nuP_p(m)$
+	{\"u}bereinstimmen (Signkoh{\"a}renz). Andernfalls kompensieren sich
+	positive und negative logarithmische Beitr{\"a}ge teilweise: Die skalare
+	Logdistanz untersch{\"a}tzt die gewichtete Exponentenbewegung.
+	Diese Kompensation messen wir durch den Ausl{\"o}schungsdefekt
+	$\Cy=\dlogone-\dlog$ und seinen Normierten $\rhoy=\Cy/\dlogone$.
+	
+	\subsection{Zahlentheoretische Pointe}
+	
+	Die zentrale Aussage lautet:
+	\begin{quote}
+		\emph{Gegenl{\"a}ufige {\"A}nderungen der Primfaktorexponenten k{\"o}nnen sich
+			relativ beliebig stark ausl{\"o}schen, aber bei zwei verschiedenen
+			nat{\"u}rlichen Zahlen niemals vollst{\"a}ndig.}
+	\end{quote}
+	Punktweise gilt $\rhoy(m,n)<1$ f{\"u}r $m\neq n$; global (f{\"u}r $y\ge 3$)
+	gilt $\sup\rhoy=1$. Der Sprung von der lokalen strikten Ungleichung zum
+	Supremum~$1$ beruht auf der klassischen Tatsache, dass
+	$\log 3/\log 2$ irrational ist
+	({\"a}quivalent zur eindeutigen Primfaktorzerlegung:
+	$3^a\neq 2^b$ f{\"u}r $a,b>0$), kombiniert mit dem
+	Dirichlet-Approximationssatz
+	\cite{cassels1957,schmidt1980}.
+	
+	Damit steht das Resultat in einer klassischen Linie der
+	diophantischen Approximation von Logarithmen
+	(Gelfond--Schneider, Baker, lineare Formen in Logarithmen),
+	benutzt aber von dieser Theorie nur den elementaren Fall zweier
+	Primzahllogarithmen und Dirichlets Schubfachprinzip.
+	
+	\subsection{Formalisierung}
+	
+	Die S{\"a}tze dieser Note sind in Lean~4 mit Mathlib formalisiert und im
+	Repository-Freeze
+	\texttt{b029-freeze-2026-07-24}
+	(Commit \texttt{3c626f5ac6d90195387eaf54e4df1af699294637})
+	archiviert. Die Axiomenabh{\"a}ngigkeit der Kerns{\"a}tze reduziert sich auf
+	\texttt{propext}, \texttt{Classical.choice} und \texttt{Quot.sound}.
+	
+	%==============================================================================
+	\section{Notationen und Grunddefinitionen}
+	\label{sec:defs}
+	%==============================================================================
+	
+	\begin{definition}[Vorw{\"a}rtsdifferenzen und Fl{\"u}sse]
+		\label{def:flows}
+		F{\"u}r $m,n\in\Sy$ und Primzahlen $p\le y$ setzen wir
+		\[
+		\Delta_p(m,n)
+		:=
+		\nuP_p(n)-\nuP_p(m)\in\Z.
+		\]
+		Die \emph{positiven} bzw.\ \emph{negativen logarithmischen Fl{\"u}sse} sind
+		\begin{align*}
+			P(m,n)
+			&:=
+			\sum_{\Delta_p>0}\Delta_p\log p,
+			&
+			N(m,n)
+			&:=
+			\sum_{\Delta_p<0}(-\Delta_p)\log p.
+		\end{align*}
+		Beide Gr{\"o}{\ss}en sind nichtnegativ.
+	\end{definition}
+	
+	\begin{lemma}[Elementare Identit{\"a}ten]
+		\label{lem:PN-ids}
+		F{\"u}r alle $m,n\in\Sy$ gilt
+		\begin{align}
+			\label{eq:P-N}
+			P-N
+			&=
+			\log\frac{n}{m},
+			\\
+			\label{eq:P+N}
+			P+N
+			&=
+			\dlogone(m,n),
+			\\
+			\label{eq:absPN}
+			\lvert P-N\rvert
+			&=
+			\dlog(m,n).
+		\end{align}
+		Insbesondere folgt $\lvert P-N\rvert>0$ aus $m\neq n$ allein durch
+		Injektivit{\"a}t von $\log$ auf $\R_{>0}$, ohne lineare Unabh{\"a}ngigkeit
+		der Familie $\{\log p\}$.
+	\end{lemma}
+	
+	\begin{proof}
+		Die Identit{\"a}t~\eqref{eq:P-N} ist die Zerlegung der Summe
+		$\sum_p\Delta_p\log p$ in positive und negative Terme.
+		Daraus folgen~\eqref{eq:P+N} und~\eqref{eq:absPN} durch
+		Fallunterscheidung $P\ge N$ bzw.\ $N\ge P$.
+		Ist $m\neq n$, so ist $n/m\neq 1$, also $\log(n/m)\neq 0$.
+	\end{proof}
+	
+	\begin{definition}[Signkoh{\"a}renz]
+		\label{def:signcoherent}
+		Das Paar $(m,n)$ hei{\ss}t \emph{signkoh{\"a}rent}, geschrieben
+		$\SignCoh(m,n)$, wenn entweder $\Delta_p(m,n)\ge 0$ f{\"u}r alle $p\le y$
+		oder $\Delta_p(m,n)\le 0$ f{\"u}r alle $p\le y$ gilt.
+		{\"A}quivalent: $N=0$ oder $P=0$.
+	\end{definition}
+	
+	%==============================================================================
+	\section{Der Ausl{\"o}schungsdefekt}
+	\label{sec:defect}
+	%==============================================================================
+	
+	\begin{definition}
+		\label{def:C}
+		Der \emph{Ausl{\"o}schungsdefekt} ist
+		\[
+		\Cy(m,n)
+		:=
+		\dlogone(m,n)-\dlog(m,n).
+		\]
+	\end{definition}
+	
+	\begin{theorem}[Defektidentit{\"a}t]
+		\label{thm:C}
+		F{\"u}r alle $m,n\in\Sy$ gilt
+		\[
+		\Cy(m,n)
+		=
+		2\min\bigl(P(m,n),\,N(m,n)\bigr)\ge 0.
+		\]
+		Insbesondere
+		\[
+		\Cy(m,n)=0
+		\iff
+		\SignCoh(m,n)
+		\iff
+		\dlog(m,n)=\dlogone(m,n).
+		\]
+	\end{theorem}
+	
+	\begin{proof}
+		Mit Lemma~\ref{lem:PN-ids} und der reellen Identit{\"a}t
+		$P+N-\lvert P-N\rvert=2\min(P,N)$ folgt die Behauptung unmittelbar.
+		$\Cy=0$ ist {\"a}quivalent zu $\min(P,N)=0$, also zu Signkoh{\"a}renz.
+	\end{proof}
+	
+	\begin{example}[Klassischer Zeuge]
+		\label{ex:4-9}
+		F{\"u}r $y\ge 3$, $m=4=2^2$ und $n=9=3^2$ gilt
+		$P=2\log 3$, $N=2\log 2$, also
+		\[
+		\Cy(4,9)=4\log 2>0.
+		\]
+		Die beiden Metriken sind hier strikt verschieden.
+	\end{example}
+	
+	%==============================================================================
+	\section{Der normierte Defekt}
+	\label{sec:rho}
+	%==============================================================================
+	
+	\begin{definition}
+		\label{def:rho}
+		Der \emph{normierte Ausl{\"o}schungsdefekt} ist
+		\[
+		\rhoy(m,n)
+		:=
+		\begin{cases}
+			0,&\text{falls }\dlogone(m,n)=0,\\[1mm]
+			\dfrac{\Cy(m,n)}{\dlogone(m,n)},&\text{sonst.}
+		\end{cases}
+		\]
+	\end{definition}
+	
+	\begin{theorem}[Punktweise Identit{\"a}t und Schranken]
+		\label{thm:rho}
+		F{\"u}r $m\neq n$ gilt
+		\begin{equation}
+			\label{eq:rho-id}
+			\rhoy(m,n)
+			=
+			\frac{2\min(P,N)}{P+N}
+			=
+			1-\frac{\lvert P-N\rvert}{P+N}
+			=
+			1-\frac{\dlog(m,n)}{\dlogone(m,n)}.
+		\end{equation}
+		Ferner
+		\begin{align}
+			0&\le\rhoy(m,n)<1,
+			\\
+			\rhoy(m,n)&=0
+			\iff
+			\SignCoh(m,n),
+			\\
+			\rhoy(m,n)&>0
+			\iff
+			P>0\ \text{und}\ N>0,
+			\\
+			\rhoy(m,n)&=\rhoy(n,m).
+		\end{align}
+	\end{theorem}
+	
+	\begin{proof}
+		Die Identit{\"a}ten folgen aus Theorem~\ref{thm:C} und
+		Lemma~\ref{lem:PN-ids}.
+		Wegen $\lvert P-N\rvert>0$ und $P+N>0$ ist der Quotient in~\eqref{eq:rho-id}
+		positiv und echt kleiner als~$1$, also $\rhoy<1$.
+		$\rhoy=0$ ist {\"a}quivalent zu $\min(P,N)=0$.
+		Die Symmetrie folgt aus $(P,N)\mapsto(N,P)$ beim Vertauschen von $m$ und~$n$.
+	\end{proof}
+	
+	\begin{remark}
+		Die strikte Ungleichung $\rhoy<1$ benutzt nur $\log(n/m)\neq 0$ f{\"u}r
+		$m\neq n$. Sie ist daher formal schw{\"a}cher als jede Aussage {\"u}ber die
+		$\Q$-lineare Unabh{\"a}ngigkeit der Familie $\{\log p\}_{p\text{ prim}}$.
+	\end{remark}
+	
+	%==============================================================================
+	\section{Ann{\"a}herung an das Supremum}
+	\label{sec:sup}
+	%==============================================================================
+	
+	Sei fortan $y\ge 3$, so dass $2,3\in\Sy$ und damit alle Potenzen
+	$2^b,3^a\in\Sy$ liegen. Setze
+	\[
+	\Ry
+	:=
+	\bigl\{\rhoy(m,n):\ m,n\in\Sy,\ m\neq n\bigr\}.
+	\]
+	
+	\subsection{Die Zweiprimzahlfamilie}
+	
+	\begin{proposition}
+		\label{prop:family}
+		F{\"u}r $a,b\in\N_{>0}$ gilt $3^a\neq 2^b$ und
+		\[
+		\rhoy(3^a,2^b)
+		=
+		1-
+		\frac{\lvert a\log 3-b\log 2\rvert}{a\log 3+b\log 2}.
+		\]
+	\end{proposition}
+	
+	\begin{proof}
+		Die Ungleichung $3^a\neq 2^b$ folgt aus der eindeutigen Primfaktorzerlegung
+		(der Primteiler~$2$ teilt die rechte, nicht die linke Seite).
+		Die Fl{\"u}sse sind $P=b\log 2$ und $N=a\log 3$ (oder vertauscht, je nach
+		Orientierung); Einsetzen in~\eqref{eq:rho-id} liefert die Formel.
+	\end{proof}
+	
+	\subsection{Irrationalit{\"a}t und Approximation}
+	
+	\begin{lemma}
+		\label{lem:irrational}
+		Es gilt $\alpha:=\log 3/\log 2\notin\Q$.
+	\end{lemma}
+	
+	\begin{proof}
+		W{\"a}re $\alpha=r/s$ mit $r,s\in\N_{>0}$, so folgte
+		$s\log 3=r\log 2$, also $3^s=2^r$, Widerspruch zu
+		Proposition~\ref{prop:family}.
+	\end{proof}
+	
+	\begin{lemma}[$\varepsilon$-Approximation]
+		\label{lem:eps}
+		F{\"u}r jedes $\varepsilon>0$ existieren $a,b\in\N_{>0}$ mit
+		\[
+		\frac{\lvert a\log 3-b\log 2\rvert}{a\log 3+b\log 2}<\varepsilon.
+		\]
+	\end{lemma}
+	
+	\begin{proof}[Beweisskizze]
+		Nach dem Dirichlet-Approximationssatz
+		\cite{cassels1957}
+		existieren zu irrationalem $\alpha$ rationale $q=b/a$ mit
+		$\lvert\alpha-q\rvert$ beliebig klein und $a,b>0$.
+		Dann ist
+		\[
+		\frac{\lvert a\log 3-b\log 2\rvert}{a\log 3+b\log 2}
+		=
+		\frac{\lvert\alpha-b/a\rvert}{\alpha+b/a}.
+		\]
+		F{\"u}r hinreichend gute positive Approximationen ist der Nenner
+		$\ge\alpha$, und die rechte Seite wird kleiner als jedes vorgegebene
+		$\varepsilon>0$.
+	\end{proof}
+	
+	\begin{theorem}[$\varepsilon$-Fassung]
+		\label{thm:eps}
+		F{\"u}r jedes $\varepsilon>0$ existieren $m,n\in\Sy$ mit $m\neq n$ und
+		\[
+		1-\varepsilon<\rhoy(m,n)<1.
+		\]
+	\end{theorem}
+	
+	\begin{proof}
+		W{\"a}hle $a,b$ nach Lemma~\ref{lem:eps} und setze $m=3^a$, $n=2^b$.
+		Proposition~\ref{prop:family} und Theorem~\ref{thm:rho} liefern die
+		Behauptung.
+	\end{proof}
+	
+	\begin{theorem}[Supremum ohne Maximum]
+		\label{thm:sup}
+		Es gilt
+		\[
+		\sup\Ry=1
+		\qquad\text{und}\qquad
+		1\notin\Ry.
+		\]
+		Insbesondere besitzt $\Ry$ kein Maximum.
+	\end{theorem}
+	
+	\begin{proof}
+		Nach Theorem~\ref{thm:rho} ist jedes Element von $\Ry$ strikt kleiner
+		als~$1$, also $1\notin\Ry$ und $\sup\Ry\le 1$.
+		Theorem~\ref{thm:eps} zeigt, dass $\sup\Ry\ge 1-\varepsilon$ f{\"u}r jedes
+		$\varepsilon>0$, also $\sup\Ry=1$.
+		Ein maximales Element m{\"u}sste gleich dem Supremum~$1$ sein und l{\"a}ge
+		damit in $\Ry$, Widerspruch.
+	\end{proof}
+	
+	%==============================================================================
+	\section{Zahlentheoretische Bemerkungen}
+	\label{sec:remarks}
+	%==============================================================================
+	
+	\begin{remark}[Bezug zur glatten Z{\"a}hltheorie]
+		Die Metrik $\dlogone$ misst die gesamte logarithmische Masse der
+		Exponenten{\"a}nderung und ist daher eng mit der multiplikativen Struktur
+		von $\Sy$ verkn{\"u}pft.
+		Die skalare Distanz $\dlog$ erfasst nur den Nettoeffekt auf $\log n$.
+		Der Quotient $\rhoy$ ist damit ein dimensionsloses Ma{\ss} daf{\"u}r, wie stark
+		sich gegenl{\"a}ufige Primbeitr{\"a}ge innerhalb eines Paares $(m,n)$
+		kompensieren.
+		Asymptotische Dichten solcher Paare in wachsenden K{\"a}sten
+		$\{n\in\Sy:n\le X\}$ sind hier \emph{nicht} Gegenstand; sie w{\"u}rden
+		Analysen vom Typ Dickman--de~Bruijn bzw.\ Sattelpunktmethoden erfordern
+		\cite{hildebrand-tenenbaum1993} und liegen au{\ss}erhalb des Freeze-Scopes.
+	\end{remark}
+	
+	\begin{remark}[Diophantische Qualit{\"a}t]
+		Lemma~\ref{lem:eps} benutzt nur die qualitative Dirichlet-Approximation
+		an irrationales $\alpha$.
+		Effektive Raten (wie schnell $\rhoy(3^a,2^b)\to 1$) h{\"a}ngen von der
+		Approximationsg{\"u}te von $\log 3/\log 2$ ab und k{\"o}nnen {\"u}ber
+		Kettenbr{\"u}che oder Resultate zu linearen Formen in Logarithmen
+		versch{\"a}rft werden; dies ist hier nicht formalisiert.
+	\end{remark}
+	
+	\begin{remark}[Mehrere Primzahlen]
+		Die Familie $(3^a,2^b)$ gen{\"u}gt f{\"u}r $\sup\Ry=1$ bereits vollst{\"a}ndig.
+		Aussagen {\"u}ber die Verteilung von $\rhoy$ auf gemischten Signaturen mit
+		vielen Primteilern bleiben offen und sind von der Supremumsaussage logisch
+		unabh{\"a}ngig.
+	\end{remark}
+	
+	%==============================================================================
+	\section{Formalisierungshinweis}
+	\label{sec:lean}
+	%==============================================================================
+	
+	Die Beweise sind in Lean~4 modularisiert:
+	\begin{itemize}[leftmargin=1.5em]
+		\item \texttt{CancellationDefect.lean} --- Theorem~\ref{thm:C};
+		\item \texttt{RelativeCancellationDefect.lean} --- Theorem~\ref{thm:rho};
+		\item \texttt{LogRatioIrrational.lean} --- Lemma~\ref{lem:irrational};
+		\item \texttt{RelativeDefectApproximation.lean} --- Theorem~\ref{thm:eps};
+		\item \texttt{RelativeDefectSupremum.lean} --- Theorem~\ref{thm:sup}.
+	\end{itemize}
+	Der Freeze-Tag \texttt{b029-freeze-2026-07-24} bezeichnet den verifizierten
+	Code-Stand; sp{\"a}tere reine Dokumentationscommits {\"a}ndern diesen Anker nicht.
+	
+	%==============================================================================
+	\section*{Danksagung}
+	%==============================================================================
+	
+	Die maschinelle Pr{\"u}fung st{\"u}tzt sich auf Mathlib, insbesondere auf die
+	Module zur diophantischen Approximation und zur reellen Analysis.
+	
+	\begin{thebibliography}{99}
+		
+		\bibitem{cassels1957}
+		J.~W.~S.~Cassels,
+		\emph{An Introduction to Diophantine Approximation},
+		Cambridge University Press, Cambridge, 1957.
+		
+		\bibitem{granville2008}
+		A.~Granville,
+		Smooth numbers: computational number theory and beyond,
+		in: \emph{Algorithmic Number Theory}, MSRI Publications~44,
+		Cambridge University Press, 2008, S.~267--323.
+		
+		\bibitem{hildebrand-tenenbaum1993}
+		A.~Hildebrand and G.~Tenenbaum,
+		Integers without large prime factors,
+		\emph{J.\ Th{\'e}or.\ Nombres Bordeaux} \textbf{5} (1993), 411--484.
+		
+		\bibitem{schmidt1980}
+		W.~M.~Schmidt,
+		\emph{Diophantine Approximation},
+		Lecture Notes in Mathematics~785,
+		Springer, Berlin, 1980.
+		
+		\bibitem{tenenbaum1995}
+		G.~Tenenbaum,
+		\emph{Introduction to Analytic and Probabilistic Number Theory},
+		Cambridge Studies in Advanced Mathematics~46,
+		Cambridge University Press, Cambridge, 1995.
+		
+	\end{thebibliography}
+	
+\end{document}

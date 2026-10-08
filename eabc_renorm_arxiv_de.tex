@@ -1,0 +1,712 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.6cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\hypersetup{
+  pdftitle={Oktonionische Assoziatorgeometrie, triadische Ähnlichkeiten und epistemische Claim Walls},
+  pdfauthor={Thomas Hoffbauer},
+  colorlinks=true,
+  linkcolor=blue!45!black,
+  citecolor=blue!45!black,
+  urlcolor=blue!45!black
+}
+
+\setlist{nosep}
+\renewcommand{\arraystretch}{1.15}
+
+\newtheorem{theorem}{Satz}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Bemerkung}
+
+\newcommand{\Oalg}{\mathbb O}
+\newcommand{\ImO}{\operatorname{Im}(\mathbb O)}
+\newcommand{\Assoc}{\operatorname{Assoc}}
+\newcommand{\MtwoThree}{\mathcal M_{2,3}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Nzero}{\mathbb N_0}
+\newcommand{\id}{\operatorname{id}}
+
+\lstdefinestyle{logstyle}{
+  basicstyle=\ttfamily\scriptsize,
+  breaklines=true,
+  frame=single,
+  columns=fullflexible,
+  keepspaces=true,
+  backgroundcolor=\color{black!2}
+}
+
+\title{\textbf{Oktonionische Assoziatorgeometrie, triadische Ähnlichkeiten\\
+und epistemische Claim Walls}\\[0.4em]
+\large Ein hochpräzises Audit- und Governance-Modell für \texttt{eabc-renorm}}
+
+\author{
+Thomas Hoffbauer\\
+Computer Institut Bamberg (CIB)\\
+Akademie Olympia\\
+\texttt{research@cib-bamberg.de}
+}
+
+\date{3. August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Wir untersuchen drei miteinander verbundene, aber epistemisch strikt zu trennende Strukturebenen: erstens die exakte Zerlegung des oktonionischen Assoziators auf dem siebendimensionalen Imaginärraum $\ImO$, zweitens die Gram--$G_2$-Identität für seine Norm und drittens triadische Ähnlichkeitstransformationen sowie das explizit definierte dyadisch-triadische Skalierungsmonoid $\MtwoThree$. Für Einheitsvektoren $x,y\in\ImO$ mit $\langle x,y\rangle=-\tfrac12$ tritt in der Vektorraumzerlegung des Assoziators der Summand $\tfrac12 z$ auf. Wir zeigen jedoch, dass dieser Summand keinen longitudinalen Nettoanteil erzeugt, da der vollständige Assoziator orthogonal zu $\operatorname{span}\{x,y,z\}$ ist. Ein Artin-Kontrollfall innerhalb der von $x$ und $y$ erzeugten quaternionischen Unteralgebra zeigt zusätzlich, dass der Winkel $120^\circ$ keine Nichtassoziativität erzwingt. Die Norm des Assoziators wird durch
+\[
+\|\Assoc(x,y,z)\|^2
+=
+4\bigl(\det G(x,y,z)-\varphi(x,y,z)^2\bigr)
+\]
+bestimmt. Für Ähnlichkeiten $\mathcal T_{\lambda,A}=\lambda A$ mit $\lambda=\tfrac13$ werden die Homogenitätsgrade eins, zwei und drei für Längen, quadratische Formen beziehungsweise trilineare Strukturen explizit getrennt. Das Monoid $\MtwoThree=\{2^{-a}3^{-b}\id\}$ wird als exakte mathematische Definition, seine Verwendung als Modellschicht jedoch als revidierbare Modellentscheidung klassifiziert. Ein projektinternes SageMath-Audit auf \texttt{RealField(200)} liefert Residuen in der Größenordnung $10^{-58}$. Der Beitrag formuliert schließlich eine formale Claim Wall, welche die unzulässige Ableitung physikalischer Skalierungsdynamik aus bloßen Zerlegungskoeffizienten ausschließt.
+\end{abstract}
+
+\noindent\textbf{Schlagwörter:}
+Oktonionen, Assoziator, $G_2$-Geometrie, Malcev-Algebra, Gram-Determinante,
+Ähnlichkeitstransformation, glatte Zahlen, mathematische Governance,
+numerisches Audit.
+
+\section{Einleitung}
+
+Nichtassoziative Algebren besitzen eine ungewöhnliche Doppelrolle. Einerseits stellen sie präzise und hochstrukturierte mathematische Objekte dar; andererseits laden ihre Symmetrien, Winkelkoeffizienten und Skalengesetze zu physikalischen Deutungen ein, die über die tatsächlich bewiesenen Aussagen hinausgehen können. Im Projekt \texttt{eabc-renorm} wird deshalb eine explizite epistemische Governance verwendet: mathematische Identitäten, numerische Implementierungstests, Modellentscheidungen und physikalische Hypothesen werden unterschiedlichen Aussageklassen zugeordnet.
+
+Der vorliegende Beitrag verfolgt drei Ziele:
+\begin{enumerate}
+  \item die exakte oktonionische Assoziatorzerlegung unter einer $120^\circ$-Winkelbedingung darzustellen;
+  \item die geometrische Norm des Assoziators durch die Gram--$G_2$-Identität zu charakterisieren;
+  \item triadische Ähnlichkeiten und das Monoid $\MtwoThree$ einzuführen, ohne einen Zerlegungskoeffizienten fälschlich als dynamischen Skalierungsoperator zu interpretieren.
+\end{enumerate}
+
+Die numerischen Resultate werden als projektinterne, reproduzierbare Auditdaten berichtet. Sie ersetzen keinen mathematischen Beweis, sondern prüfen Implementierung, Vorzeichenkonventionen und numerische Konsistenz.
+
+\section{Algebraische Grundlagen}
+
+\subsection{Oktonionen und Kreuzprodukt}
+
+Wir schreiben
+\[
+\Oalg=\R\oplus\ImO,
+\qquad
+\ImO\cong\R^7.
+\]
+Für $x,y\in\ImO$ gilt
+\begin{equation}
+xy=-\langle x,y\rangle+x\times y,
+\label{eq:imag-product}
+\end{equation}
+wobei $x\times y\in\ImO$ das siebendimensionale Kreuzprodukt bezeichnet. Es ist alternierend und erfüllt
+\[
+\|x\times y\|^2
+=
+\|x\|^2\|y\|^2-\langle x,y\rangle^2.
+\]
+Die $G_2$-Dreiform ist
+\begin{equation}
+\varphi(x,y,z)
+=
+\langle x\times y,z\rangle.
+\label{eq:g2-form}
+\end{equation}
+
+\begin{definition}[Assoziator]
+Für $x,y,z\in\Oalg$ sei
+\begin{equation}
+\Assoc(x,y,z)
+\coloneqq
+(xy)z-x(yz).
+\end{equation}
+\end{definition}
+
+Da $\Oalg$ alternativ ist, ist der Assoziator alternierend. Für rein imaginäre Argumente ist er wiederum rein imaginär und orthogonal zu jedem seiner drei Argumente.
+
+\subsection{Exakte Vektorraumzerlegung}
+
+\begin{theorem}[Assoziatorzerlegung]
+\label{thm:assoc-decomp}
+Für $x,y,z\in\ImO$ gilt
+\begin{equation}
+\Assoc(x,y,z)
+=
+-\langle x,y\rangle z
++\langle y,z\rangle x
++(x\times y)\times z
+-x\times(y\times z).
+\label{eq:assoc-decomp}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Aus \cref{eq:imag-product} folgt
+\begin{align}
+(xy)z
+&=
+-\langle x\times y,z\rangle
+-\langle x,y\rangle z
++(x\times y)\times z,\\
+x(yz)
+&=
+-\langle x,y\times z\rangle
+-\langle y,z\rangle x
++x\times(y\times z).
+\end{align}
+Wegen
+\[
+\langle x\times y,z\rangle
+=
+\langle x,y\times z\rangle
+=
+\varphi(x,y,z)
+\]
+heben sich die skalaren Dreifachprodukte in der Differenz auf.
+\end{proof}
+
+\subsection{Der $120^\circ$-Koeffizient und seine Kompensation}
+
+\begin{proposition}[Winkelterm ohne longitudinalen Nettoanteil]
+\label{prop:120}
+Seien $x,y\in\ImO$ Einheitsvektoren mit
+\[
+\langle x,y\rangle=\cos(120^\circ)=-\frac12.
+\]
+Dann lautet der erste Summand in \cref{eq:assoc-decomp}
+\[
+-\langle x,y\rangle z=\frac12z.
+\]
+Gleichzeitig gilt für alle $z\in\ImO$
+\[
+\langle\Assoc(x,y,z),z\rangle=0,
+\]
+also
+\begin{equation}
+\left\langle
+\langle y,z\rangle x
++(x\times y)\times z
+-x\times(y\times z),
+z
+\right\rangle
+=
+-\frac12\|z\|^2.
+\label{eq:compensation}
+\end{equation}
+\end{proposition}
+
+\begin{remark}
+Der Term $\tfrac12z$ ist ein winkelabhängiger Bestandteil einer Zerlegung. Er ist weder ein isolierter Anteil des Gesamtassoziators noch eine lineare Dynamik $z\mapsto z/2$.
+\end{remark}
+
+\subsection{Artin-Kontrollfall}
+
+\begin{proposition}[Assoziative Zweierunteralgebra]
+\label{prop:artin}
+Sei
+\[
+\mathbb A_{x,y}
+=
+\operatorname{alg}_{\R}\langle x,y\rangle
+\subset\Oalg.
+\]
+Nach dem Satz von Artin ist $\mathbb A_{x,y}$ assoziativ. Sind $x$ und $y$ rein imaginär, normiert und linear unabhängig, so gilt
+\[
+\mathbb A_{x,y}
+=
+\operatorname{span}_{\R}\{1,x,y,x\times y\}
+\cong_{\R\text{-alg}}\mathbb H.
+\]
+Für jedes
+\[
+z\in\mathbb A_{x,y}\cap\ImO
+\]
+folgt
+\[
+\Assoc(x,y,z)=0.
+\]
+\end{proposition}
+
+Damit verschwindet der Assoziator beispielsweise für
+\[
+z_{\mathbb A}
+=
+\frac{x\times y}{\|x\times y\|},
+\]
+obwohl der Summand $\tfrac12z_{\mathbb A}$ in der Zerlegung weiterhin vorkommt. Der Winkelkoeffizient ist folglich kein Maß der Nichtassoziativität.
+
+\section{Gram--$G_2$-Geometrie}
+
+Für $v_1=x$, $v_2=y$, $v_3=z$ sei
+\[
+G(x,y,z)
+=
+\bigl(\langle v_i,v_j\rangle\bigr)_{i,j=1}^{3}
+\]
+die Gram-Matrix.
+
+\begin{theorem}[Gram--$G_2$-Identität]
+\label{thm:gram-g2}
+Für alle $x,y,z\in\ImO$ gilt
+\begin{equation}
+\|\Assoc(x,y,z)\|^2
+=
+4\left(
+\det G(x,y,z)-\varphi(x,y,z)^2
+\right).
+\label{eq:gram-g2}
+\end{equation}
+Insbesondere
+\[
+0\leq \varphi(x,y,z)^2\leq \det G(x,y,z).
+\]
+\end{theorem}
+
+Die Differenz
+\[
+\det G-\varphi^2
+\]
+misst den Anteil des euklidischen Dreiervolumens, der nicht durch die $G_2$-kalibrierte Dreiform erfasst wird. \Cref{eq:gram-g2} bestimmt die Norm, nicht die vollständige Richtung des Assoziators.
+
+\subsection{Jacobiator}
+
+Definiere
+\[
+J_\times(x,y,z)
+=
+(x\times y)\times z
++(y\times z)\times x
++(z\times x)\times y.
+\]
+
+\begin{theorem}[Jacobiator-Assoziator-Relation]
+Für die Konventionen
+\[
+\Assoc(x,y,z)=(xy)z-x(yz),
+\qquad
+x\times y=\frac12(xy-yx)
+\]
+gilt
+\begin{equation}
+J_\times(x,y,z)
+=
+\frac32\Assoc(x,y,z).
+\label{eq:jac-assoc}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Für den Kommutator $[x,y]_{\mathrm c}=xy-yx$ gilt in einer alternativen Algebra
+\[
+[[x,y]_{\mathrm c},z]_{\mathrm c}
++
+[[y,z]_{\mathrm c},x]_{\mathrm c}
++
+[[z,x]_{\mathrm c},y]_{\mathrm c}
+=
+6\Assoc(x,y,z).
+\]
+Jeder doppelt geschachtelte Kreuzproduktterm ist ein Viertel des entsprechenden Kommutatorterms. Daraus folgt \cref{eq:jac-assoc}.
+\end{proof}
+
+\section{Triadische Ähnlichkeitstransformationen}
+
+\subsection{Dreidimensionaler Trägerraum und globale Wirkung}
+
+Sei $V\subset\ImO$ ein dreidimensionaler euklidischer Unterraum und $\Delta\subset V$ ein reguläres Tetraeder. Weiter sei
+\[
+A\in O(\ImO),
+\qquad
+A(V)=V,
+\]
+und $A_V=A|_V$.
+
+\begin{definition}[Triadische Ähnlichkeit]
+Für
+\[
+\lambda=\frac13
+\]
+definieren wir
+\[
+\mathcal T_{\lambda,A}
+=
+\lambda A.
+\]
+\end{definition}
+
+Dann gilt
+\[
+\mathcal T_{\lambda,A}^{\,k}
+=
+3^{-k}A^k.
+\]
+Kantenlängen skalieren mit $3^{-k}$, dreidimensionale Volumina mit $27^{-k}$.
+
+Für
+\[
+N(x)=\|x\|^2,
+\qquad
+Q(x)=\frac12\|x\|^2
+\]
+gilt
+\begin{equation}
+N(\mathcal T_{\lambda,A}x)
+=
+\frac19N(x),
+\qquad
+Q(\mathcal T_{\lambda,A}x)
+=
+\frac19Q(x).
+\label{eq:quadratic-scale}
+\end{equation}
+
+\subsection{Rotation und zentrale Inversion}
+
+Eine Halbdrehung um die Achse $\R n\subset V$ ist
+\[
+R_{\pi,n}x
+=
+2\langle n,x\rangle n-x.
+\]
+Sie besitzt in drei Dimensionen die Eigenwerte
+\[
+1,-1,-1
+\]
+und Determinante $+1$. Die zentrale Inversion $-I_V$ besitzt dagegen die Eigenwerte
+\[
+-1,-1,-1
+\]
+und Determinante $-1$. Daher
+\[
+R_{\pi,n}\neq -I_V.
+\]
+
+Nur für die globale zentrale Inversion $A=-I_7$ gilt
+\[
+\mathcal T_{\lambda,-I_7}^{\,k}x
+=
+\left(-\frac13\right)^kx.
+\]
+
+\subsection{Homogenitätsgrade}
+
+Für jede trilineare Abbildung $F$ gilt
+\[
+F(\lambda x,\lambda y,\lambda z)
+=
+\lambda^3F(x,y,z).
+\]
+Somit skalieren
+\[
+\varphi,\qquad \Assoc,\qquad J_\times
+\]
+bei gemeinsamer Skalierung ihrer drei Argumente mit $\lambda^3$.
+
+Für die $G_2$-Dreiform gilt allgemeiner
+\begin{equation}
+\varphi(\lambda Ax,\lambda Ay,\lambda Az)
+=
+\lambda^3(A^*\varphi)(x,y,z),
+\end{equation}
+wobei
+\[
+(A^*\varphi)(x,y,z)
+=
+\varphi(Ax,Ay,Az).
+\]
+
+Ist $A\in G_2$, dann
+\[
+A^*\varphi=\varphi,
+\qquad
+A(x\times y)=Ax\times Ay,
+\]
+und folglich
+\[
+J_\times(\lambda Ax,\lambda Ay,\lambda Az)
+=
+\lambda^3A\,J_\times(x,y,z).
+\]
+
+Für $A=-I_7$ gilt dagegen
+\[
+A^*\varphi=-\varphi.
+\]
+
+\section{Das dyadisch-triadische Skalierungsmonoid}
+
+\begin{definition}
+Auf einem reellen Vektorraum seien
+\[
+D(x)=\frac12x,
+\qquad
+T(x)=\frac13x.
+\]
+Das von $D$ und $T$ erzeugte kommutative Monoid ist
+\begin{equation}
+\MtwoThree
+=
+\{D^aT^b\mid a,b\in\Nzero\}
+=
+\{2^{-a}3^{-b}\id\mid a,b\in\Nzero\}.
+\label{eq:monoid}
+\end{equation}
+\end{definition}
+
+Es gilt
+\[
+D^aT^b=T^bD^a
+\]
+und für jede quadratische Form
+\begin{equation}
+Q(D^aT^bx)
+=
+4^{-a}9^{-b}Q(x).
+\label{eq:monoid-q}
+\end{equation}
+
+Die mathematische Definition von $\MtwoThree$ besitzt den Rang \texttt{[A-def]}. Die Auswahl gerade dieses Monoids als Modellschicht von \texttt{eabc-renorm} ist dagegen eine revidierbare Modellentscheidung \texttt{[B-model]}.
+
+\section{Numerisches Hochpräzisionsaudit}
+
+\subsection{Methodik}
+
+Nach projektinternem Auditprotokoll wurden zwei SageMath-Suiten eingesetzt:
+\begin{enumerate}
+  \item eine konventionskalibrierte, implementierungsentkoppelte Fano-Rekonstruktion der Assoziatorzerlegung;
+  \item eine getrennte Prüfung dreidimensionaler Transformationsidentitäten und siebendimensionaler Homogenitätsgesetze.
+\end{enumerate}
+
+Die linke Seite der Assoziatoridentität wurde über die native Oktonionenmultiplikation berechnet. Die rechte Seite wurde über einen explizit implementierten Fano-Tensor rekonstruiert. Die beiden Auswertungspfade teilen dieselbe Oktonionenstruktur und stellen daher keinen zweiten mathematischen Beweis dar; sie sind jedoch als Implementierungspfade entkoppelt.
+
+Als numerische Umgebung wurden nach dem vorgelegten Protokoll verwendet:
+\[
+\texttt{SageMath 10.5},
+\qquad
+\texttt{RealField(200)},
+\qquad
+\texttt{samples}=100,
+\qquad
+\varepsilon_{\mathrm{tol}}=10^{-45}.
+\]
+
+\subsection{Berichtete Resultate}
+
+\begin{table}[ht]
+\centering
+\small
+\caption{Projektintern berichtete Auditwerte. Die Werte sind als Provenienzdaten des Repository-Audits zu verstehen.}
+\label{tab:audit}
+\begin{tabularx}{\textwidth}{@{}Xrr@{}}
+\toprule
+\textbf{Prüfdimension} & \textbf{Residuum/Wert} & \textbf{Status}\\
+\midrule
+Fano-Basiskalibrierung & $0$ & \texttt{PASS}\\
+Unprojizierte Reinheit des 8D-Assoziators & $0$ & \texttt{PASS}\\
+$120^\circ$-Winkelbedingung & $0$ & \texttt{PASS}\\
+Kreuzproduktnorm & $1{,}9721\cdot10^{-59}$ & \texttt{PASS}\\
+Fano-Assoziatorrekonstruktion & $3{,}9443\cdot10^{-59}$ & \texttt{PASS}\\
+Volle Orthogonalität & $1{,}9721\cdot10^{-59}$ & \texttt{PASS}\\
+Kompensationsidentität & $1{,}9721\cdot10^{-59}$ & \texttt{PASS}\\
+Alternierung & $0$ & \texttt{PASS}\\
+Antisymmetrie & $0$ & \texttt{PASS}\\
+Artin-Nullkontrolle & $0$ & \texttt{PASS}\\
+Gram--$G_2$-Identität & $1{,}5777\cdot10^{-58}$ & \texttt{PASS}\\
+Minimal beobachteter Gap $\det G-\varphi^2$ & $1{,}4712\cdot10^{-3}$ & \texttt{PASS}\\
+$\det R_{\pi,n}=+1$ in $3$D & $0$ & \texttt{PASS}\\
+$\det(-I_3)=-1$ & $0$ & \texttt{PASS}\\
+Achsenunterscheidung & $0$ & \texttt{PASS}\\
+Kubische Jacobiatorskalierung & $1{,}9721\cdot10^{-59}$ & \texttt{PASS}\\
+Monoidkommutativität & $0$ & \texttt{PASS}\\
+Quadratische Monoidwirkung & $0$ & \texttt{PASS}\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Als Provenienz wurden angegeben:
+\begin{itemize}
+  \item Assoziator-Audit: Commit \texttt{7ff7c62d8e41a8b9c204918f3a5619d08e7b4c91};
+  \item triadisches Modul: Commit \texttt{8dbfd66};
+  \item Protokolldatei: \texttt{artifacts/audit\_120deg\_assoc\_RF200.txt}.
+\end{itemize}
+
+Die genannten Commit- und Mergeangaben werden hier als vom Projekt bereitgestellte Provenienzinformation wiedergegeben.
+
+\section{Epistemische Governance}
+
+\begin{table}[ht]
+\centering
+\small
+\caption{Epistemische Klassifikation der behandelten Aussagen.}
+\begin{tabularx}{\textwidth}{@{}p{0.20\textwidth}p{0.17\textwidth}X@{}}
+\toprule
+\textbf{Kategorie} & \textbf{Rang} & \textbf{Geltungsbereich}\\
+\midrule
+Algebraische Identitäten & \texttt{[A-kernel]} &
+Assoziatorzerlegung, Artin-Kontrolle, Gram--$G_2$-Identität,
+Jacobiatorrelation und Homogenitätsgrade.\\
+Monoidstruktur & \texttt{[A-def]} &
+Exakte Definition von $\MtwoThree$ und seine Wirkung auf Vektoren
+und quadratische Formen.\\
+Modellwahl & \texttt{[B-model]} &
+Auswahl von $\MtwoThree$ als Skalierungsarchitektur von
+\texttt{eabc-renorm}.\\
+Numerisches Audit & \texttt{[B-audit]} &
+Hochpräzise Regressionstests der Implementierung und Konventionen.\\
+Claim Wall & \texttt{NON-CLAIM} &
+Keine Herleitung von $D=\tfrac12I$ aus dem Zerlegungsterm
+$\tfrac12z$.\\
+Physikalische Dynamik & \texttt{[C]/NON-CLAIM} &
+Raumzeitquantisierung, Eichfelder oder Renormierungsflüsse erfordern
+zusätzliche Dynamik und Evidenz.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Formale Claim Wall}
+
+Die zulässige und die unzulässige Schlusskette lassen sich als
+\[
+120^\circ
+\longrightarrow
+-\langle x,y\rangle z=\frac12z
+\not\Longrightarrow
+D=\frac12I
+\]
+und
+\[
+D=\frac12I,\quad T=\frac13I
+\longrightarrow
+\MtwoThree
+\not\Longrightarrow
+\text{Raumzeitquantisierung}
+\]
+darstellen.
+
+\begin{quote}
+\textbf{Claim Wall.}
+Der Faktor $\tfrac12$ in der $120^\circ$-Assoziatorzerlegung ist ein
+winkelabhängiger Koeffizient einer algebraischen Identität. Er
+definiert keine dyadische Homothetie. Das Monoid $\MtwoThree$ entsteht
+erst durch die explizite Definition der Operatoren $D$ und $T$. Seine
+Verwendung als Modellschicht begründet weder einen physikalischen
+Renormierungsfluss noch eine Raumzeitquantisierung.
+\end{quote}
+
+\section{Offene Forschungsfragen}
+
+Nach Schließung der internen Konsistenzfragen verbleibt die eigentliche Modellfrage:
+\begin{equation}
+\boxed{
+\text{Warum sollte }\MtwoThree
+\text{ eine ausgezeichnete Skalierungsstruktur für EABC sein?}
+}
+\end{equation}
+
+Mögliche Untersuchungsrichtungen sind:
+\begin{enumerate}
+  \item spektrale Eigenschaften diskreter Gitterprojektionen und die Frage, ob $2$- und $3$-glatte Skalen ausgezeichnete Eigen- oder Selbstähnlichkeitsstrukturen erzeugen;
+  \item rationale und $3$-adische Modellräume, in denen
+  \[
+  \left\|\frac13v\right\|_3=3\|v\|_3
+  \]
+  der archimedischen Kontraktion gegenübersteht;
+  \item algebraische Wirkungen von Moufang-Schleifen auf explizit definierten Selbstähnlichkeitsoperatoren;
+  \item Vergleich des Monoids $\MtwoThree$ mit alternativen Skalenmonoiden und Nullmodellen;
+  \item Entwicklung einer eigenständigen Dynamik, bevor physikalische Aussagen über Renormierung oder Raumzeit getroffen werden.
+\end{enumerate}
+
+\section{Schlussfolgerung}
+
+Die mathematische Analyse trennt einen Winkelkoeffizienten in einer oktonionischen Zerlegung von einer eigenständigen Skalierungsoperation. Der Term $\tfrac12z$ besitzt keine longitudinale Nettowirkung im Assoziator und erzwingt keine Nichtassoziativität. Die Gram--$G_2$-Identität liefert ein geometrisch präzises Normmaß der nichtassoziativen Abweichung. Triadische Ähnlichkeiten skalieren Längen, quadratische Formen und trilineare Strukturen entsprechend ihren Homogenitätsgraden. Das Monoid $\MtwoThree$ ist mathematisch wohldefiniert, seine Modellrolle jedoch nicht aus der Oktonionenalgebra hergeleitet.
+
+Die zentrale methodische Folgerung lautet:
+\[
+\boxed{
+\text{Strukturidentität}
+\neq
+\text{Modelloperator}
+\neq
+\text{physikalische Dynamik}.
+}
+\]
+
+\appendix
+
+\section{Abfrage und Ereignisprotokoll}
+
+Die projektinterne Abfrage für Claim-Wall-Verifikationsereignisse lautet:
+\begin{lstlisting}[style=logstyle]
+type:SecurityEvent
+| where Category == "AlgebraicGovernance"
+  AND Action == "ClaimWallVerification"
+\end{lstlisting}
+
+Ein gekürzter CEF-Ereignisstrom wurde in folgender Form berichtet:
+\begin{lstlisting}[style=logstyle]
+CEF:0|CIB|eabc-renorm|10.5|GOV-101|Octonionic Assoc Vector Decomp|1|
+msg=Exact vector space decomposition confirmed for 343 basis triples.
+
+CEF:0|CIB|eabc-renorm|10.5|GOV-103|Longitudinal Orthogonality Guard|1|
+msg=Orthogonality <Assoc(x,y,z),z>=0 verified.
+
+CEF:0|CIB|eabc-renorm|10.5|GOV-105|Gram-G2 Volume Identity|1|
+msg=||Assoc||^2 = 4*(det(G)-phi^2) confirmed.
+
+CEF:0|CIB|eabc-renorm|10.5|GOV-201|Triadic Homothetia Degree-3 Check|1|
+msg=phi, Assoc and J_cross scale cubically with lambda^3=1/27.
+
+CEF:0|CIB|eabc-renorm|10.5|GOV-202|3D Transformation Distinction|1|
+msg=det(R_pi_3D)=+1 and det(-I_3D)=-1 verified.
+
+CEF:0|CIB|eabc-renorm|10.5|GOV-203|Monoid M_2,3 Commutativity|1|
+msg=D^a T^b == T^b D^a confirmed.
+\end{lstlisting}
+
+\section*{Hinweis zur Reproduzierbarkeit}
+
+Die mathematischen Aussagen des Artikels sind von den projektintern
+berichteten Audit- und Repository-Metadaten zu unterscheiden. Die
+numerischen Werte, Commit-Kennungen und Mergeangaben werden aus dem
+bereitgestellten Laborbericht übernommen. Für eine arXiv-Einreichung
+sollten Quellskripte, vollständige Commit-Hashes, Maschinenprotokolle
+und eine eindeutige Softwareumgebung dauerhaft öffentlich archiviert
+werden.
+
+\begin{thebibliography}{9}
+
+\bibitem{Baez2002}
+J.~C. Baez,
+\newblock The Octonions,
+\newblock \emph{Bulletin of the American Mathematical Society}
+39 (2002), 145--205.
+
+\bibitem{Harvey1990}
+F.~R. Harvey,
+\newblock \emph{Spinors and Calibrations},
+\newblock Academic Press, Boston, 1990.
+
+\bibitem{Schafer1966}
+R.~D. Schafer,
+\newblock \emph{An Introduction to Nonassociative Algebras},
+\newblock Academic Press, New York, 1966.
+
+\bibitem{SpringerVeldkamp2000}
+T.~A. Springer und F.~D. Veldkamp,
+\newblock \emph{Octonions, Jordan Algebras and Exceptional Groups},
+\newblock Springer, Berlin, 2000.
+
+\end{thebibliography}
+
+\end{document}

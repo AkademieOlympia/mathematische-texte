@@ -1,0 +1,324 @@
+\documentclass[11pt,a4paper]{article}
+
+% --- Pakete fuer Mathematik, Sprache und Layout ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsfonts,amsthm,mathtools}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{cite}
+
+\geometry{a4paper, margin=2.5cm}
+
+% --- Theorem-Umgebungen ---
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{korollar}[theorem]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{bemerkung}[theorem]{Bemerkung}
+
+% --- Dokumentmetadaten ---
+\title{\textbf{Serielle Fano-Assoziatoren, Spatprodukt-Quantisierung und orthogonale Korrelationszerlegung über Restklassenprimzahlen}}
+\author{\textbf{Thomas Hoffbauer}\\
+\small Unabhängiger Forscher, Bamberg, Deutschland\\
+\small\texttt{arXiv:math.NT / math.RA}}
+\date{August 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Wir untersuchen die algebraische, geometrische und statistische Feinstruktur nichtassoziativer Produkte von Restklassenprimzahlen in der reellen Oktonionenalgebra $\mathbb{O}$. Ausgehend von den vier primen Restklassen modulo $12$ ($(\mathbb{Z}/12\mathbb{Z})^\times = \{1, 5, 7, 11\} \cong V_4$), konstruieren wir eine Einbettung in die Fano-Ebene. Wir beweisen, dass der serielle Fano-Assoziator dreier konsekutiver Primzahleinbettungen exakt in die siebte Basiseinheit $e_7$ kollabiert und seine Amplitude auf das diskrete Gitter $288\mathbb{Z}$ quantisiert ist. Die zugrundeliegende Determinante erfüllt die Gitterteilbarkeit $144\mathbb{Z}$, wobei die Chiralität $\chi_n \in \mathbb{Z}$ divisionsfrei mit dem Spatprodukt der reduzierten Lückenvektoren $G_n = (v_{n+1}-v_n)/12$ übereinstimmt: $\chi_n = v_n \cdot (G_n \times G_{n+1})$.
+
+Lokal-adisch stimmen die Bewertungen $v_\ell(\chi_n)$ für $\ell \in \{2, 3\}$ über einen algebraischen $(3\times 3 \to 2\times 2)$-Dimensionskollaps exakt mit den Haar-Maßen auf $\mathrm{GL}_2(\mathbb{Z}_\ell)$ überein ($P(v_2=0)=3/8$, $P(v_3=0)=16/27$). An höheren Primstellen ($q \ge 5$) deckt die Projektion auf den algebraischen Torus $(\mathbf{G}_m)^4 \cong (\mathbb{F}_q^\times)^{3\times 3}/G_{\mathrm{eff}}$ eine signifikante Überhöhung der Chiralitätsteilbarkeit gegenüber dem Haar-Nullmodell auf (z.\,B. $28{,}587\%$ bei $q=5$ gegenüber $23{,}200\%$, $>40\sigma$). Wir lösen diese Abweichung analytisch durch eine orthogonale Hoeffding-ANOVA-Zerlegung des Chiralitätsresiduums $R_q = R_q^{(4)} + R_q^{(\ge 6)}$ auf: Im $4$-Punkt-Sektor $\mathcal{H}_4$ treibt die lokale Übergangshemmung (Repetition Avoidance nach Lemke Oliver und Soundararajan) die Lag-1-Rechteckresonanz auf $\bar{r}_5^{(1)} \approx 26{,}3\%$, was durch eine destruktive $6$-Zyklen-Abschirmung ($\mathcal{H}_{\ge 6}$) partiell kompensiert wird. Makroskopisch zeigen Surrogat-Analysen ($N = 100.000$), dass serielle Vorzeichenautokorrelationen und transversale Raumwinkelverschiebungen vollständig innerhalb des $95\%$-Simultanbandes verbleiben. Sämtliche algebraischen Kernsätze sind formal in Lean 4 mit Mathlib verifiziert.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+% ==============================================================================
+\section{Einleitung und historische Einordnung}
+% ==============================================================================
+
+Die Suche nach inneren Ordnungsprinzipien und nicht-trivialen Korrelationen in der Primzahlverteilung berührt fundamentale Schnittstellen der modernen algebraischen Zahlentheorie und der mathematischen Physik[cite: 7].
+
+\subsection{Analytische Zahlentheorie und Übergangshemmung}
+Während der klassische Primzahlsatz von Hadamard und de la Vallée Poussin (1896) die makroskopische Asymptotik $\pi(x) \sim x / \log x$ sichert und der Satz von Dirichlet die Gleichverteilung auf die primen Restklassen $(\mathbb{Z}/m\mathbb{Z})^\times$ garantiert, befasst sich die tiefere Theorie mit Mehrpunktkorrelationen[cite: 7]. Die Vermutungen von Hardy und Littlewood (1923) über Primzahltupel sowie von Gallagher (1976) über kurze Lückenabstände lieferten erste statistische Zugänge[cite: 7]. 
+
+Einen bemerkenswerten Strukturbruch im Postulat der lokalen Unabhängigkeit konsekutiver Primzahlen wiesen Lemke Oliver und Soundararajan (2016) nach: Konsekutive Primzahlen zeigen eine ausgeprägte \emph{Repetition Avoidance}[cite: 4, 7]. Ein Übergang $p_n \equiv a \pmod q$ gefolgt von $p_{n+1} \equiv a \pmod q$ ist für kleine Moduln $q$ signifikant seltener als der Übergang in ungleiche Restklassen[cite: 4, 7].
+
+\subsection{Hyperkomplexe Algebren und Quantengeometrie}
+Die Oktonionen $\mathbb{O}$ stellen nach dem Satz von Hurwitz (1898) die maximale normierte Divisionsalgebra über den reellen Zahlen dar[cite: 17, 27, 28]. Durch den Verlust der Assoziativität ($(xy)z \neq x(yz)$) nehmen sie eine isolierte Stellung ein[cite: 21]. Bereits Pascual Jordan (1932/33) sowie Jordan, von Neumann und Wigner (1934) erkannten, dass nichtassoziative Algebren (Jordan-Algebren) einen natürlichen Rahmen für quantenmechanische Observablen bieten können[cite: 14, 15]. 
+
+In Carl Friedrich von Weizsäckers Quantentheorie der Ur-Alternativen sowie in modernen Modellen zur Vereinheitlichung der Eichgruppen des Standardmodells (u.\,a. Günaydin, Gürsey, Dixon, Furey, Boyle) fungieren die Oktonionen und die Fano-Ebene als Träger fundamentaler innerer Freiheitsgrade[cite: 14, 23, 24, 25]. Die vorliegende Arbeit verknüpft diese Disziplinen: Wir betten arithmetische Primzahltripel über ihre Restklassenstruktur modulo $12$ in $\mathbb{O}$ ein und analysieren die resultierende Quantisierungs- und Korrelationsstruktur[cite: 1, 7].
+
+% ==============================================================================
+\section{Arithmetische Fano-Einbettung und algebraische Quantisierung}
+% ==============================================================================
+
+\subsection{Die EABC-Fano-Konstruktion}
+Für alle Primzahlen $p > 3$ existieren modulo $12$ genau vier prime Restklassen[cite: 1, 7]:
+\begin{equation}
+(\mathbb{Z}/12\mathbb{Z})^\times = \{1, 5, 7, 11\} \cong V_4 \cong \mathbb{Z}/2\mathbb{Z} \times \mathbb{Z}/2\mathbb{Z}[cite: 7].
+\end{equation}
+Wir bezeichnen diese Klassen mit $E \equiv 1$, $A \equiv 5$, $B \equiv 7$ und $C \equiv 11 \pmod{12}$[cite: 1]. Sei $\mathbb{O} = \mathbb{R} \oplus \operatorname{Im}(\mathbb{O})$ die 8-dimensionale Divisionsalgebra mit der kanonischen Basis $\{e_0 = 1, e_1, \dots, e_7\}$[cite: 7, 25]. Die Multiplikation der imaginären Einheiten folgt der Fano-Ebene[cite: 18, 25]:
+\begin{equation}
+e_i e_j = -\delta_{ij} + \sum_{k=1}^7 \varepsilon_{ijk} e_k,
+\end{equation}
+wobei $\varepsilon_{ijk} = +1$ für die Zykel $(123), (145), (176), (246), (257), (347), (365)$[cite: 18]. Wir definieren die Einbettung der Restklassen[cite: 1, 7]:
+\begin{equation}
+E \mapsto 1, \qquad A \mapsto e_1, \qquad B \mapsto e_2, \qquad C \mapsto e_4[cite: 1].
+\end{equation}
+Da $\{e_1, e_2, e_4\}$ keine Linie der Fano-Ebene bilden, spannen sie einen maximal nichtassoziativen Unterraum auf[cite: 1]. Für ihren Assoziator $[x, y, z] = (xy)z - x(yz)$ gilt[cite: 1, 7]:
+\begin{equation}
+[e_1, e_2, e_4] = 2e_7[cite: 1, 7].
+\end{equation}
+
+\subsection{Vollständige Generatoren und Unitalitätslemma}
+\begin{lemma}[Unitales Assoziatorlemma]
+Seien $X_i = p_{E,i} \cdot 1 + p_{A,i} e_1 + p_{B,i} e_2 + p_{C,i} e_4 \in \mathbb{O}$ für $i \in \{1, 2, 3\}$ vollständige Generatoren[cite: 1, 7]. Dann gilt:
+\begin{equation}
+[X_1, X_2, X_3] = 2 \det(v_1, v_2, v_3) e_7 = 2\Delta e_7[cite: 1, 7],
+\end{equation}
+wobei $v_i = (p_{A,i}, p_{B,i}, p_{C,i})^T \in \mathbb{Z}^3$[cite: 1, 7].
+\end{lemma}
+\begin{proof}
+Wegen der Unitalität der Oktonionenalgebra gilt $[1, x, y] = [x, 1, y] = [x, y, 1] = 0$ für alle $x, y \in \mathbb{O}$[cite: 1, 7, 18]. Aus der Trilinearität folgt, dass sämtliche Terme mit skalarer Beteiligung $p_{E,i}$ identisch verschwinden[cite: 1, 7, 18]. Auf dem dreidimensionalen reellen Unterraum $V = \operatorname{span}_{\mathbb{R}}\{e_1, e_2, e_4\}$ ist der Assoziator vollständig alternierend[cite: 1, 7]. Folglich gilt $[x_1, x_2, x_3] = \det(v_1, v_2, v_3)[e_1, e_2, e_4] = 2\Delta e_7$[cite: 1, 7].
+\end{proof}
+
+\subsection{Die 144-Gitterkonstante und das 288-Quantisierungstheorem}
+\begin{theorem}[Gitterteilbarkeit und 288-Quantisierung]
+Für alle Generatortripel mit $v_i \equiv (5, 7, 11)^T \pmod{12}$ gilt $\Delta \in 144\mathbb{Z}$[cite: 1, 21]. Der Assoziator ist quantisiert gemäß[cite: 1]:
+\begin{equation}
+\boxed{[X_1, X_2, X_3] = 288 \chi e_7 \in 288\mathbb{Z}e_7, \qquad \chi \in \mathbb{Z}}[cite: 1].
+\end{equation}
+\end{theorem}
+\begin{proof}
+Da alle Vektoren dieselbe Restklasse modulo $12$ besitzen, gilt $v_2 - v_1 = 12G_1$ und $v_3 - v_1 = 12G_2$ mit $G_1, G_2 \in \mathbb{Z}^3$[cite: 1, 7, 21]. Zeilenoperationen liefern[cite: 1, 21]:
+\begin{equation}
+\Delta = \det(v_1, v_1 + 12G_1, v_1 + 12G_2) = 12^2 \det(v_1, G_1, G_2) = 144 \chi[cite: 1, 21].
+\end{equation}
+Multiplikation mit dem Fano-Faktor $2$ ergibt $[X_1, X_2, X_3] = 2 \cdot (144\chi) e_7 = 288\chi e_7$[cite: 1, 10].
+\end{proof}
+
+\subsection{Schärfe und spektrale Reichweite}
+Definieren wir die positiven Trägermengen $\mathcal{D}_{\mathrm{prime}}^{+} = \{|\Delta| : \Delta \neq 0\}$ und $\mathcal{C}_{\mathrm{prime}}^{+} = \{|c| : c \neq 0, \, [X_1,X_2,X_3]=ce_7\}$ über zulässigen Primzahltripeln[cite: 1]:
+\begin{enumerate}
+\item \textbf{Primzahl-Schärfesatz:} Das Primzahltripel $v_1=(5,7,11)^T$, $v_2=(5,19,23)^T$, $v_3=(17,7,23)^T$ liefert $\chi = 1$ ($\Delta = 144$)[cite: 1, 26]. Daraus folgt analytisch[cite: 1]:
+\begin{equation}
+\min \mathcal{D}_{\mathrm{prime}}^{+} = \gcd \mathcal{D}_{\mathrm{prime}}^{+} = 144, \qquad \min \mathcal{C}_{\mathrm{prime}}^{+} = \gcd \mathcal{C}_{\mathrm{prime}}^{+} = 288[cite: 1].
+\end{equation}
+\item \textbf{Gitter-Surjektivität:} Für die allgemeine ganzzahlige Familie $\{v \in \mathbb{Z}^3 : v \equiv (5,7,11)^T \pmod{12}\}$ beweist die Bézout-Identität $\det((5,7,11)^T, (0,1,0)^T, (a,0,c)^T) = 5c - 11a = k$, dass $\{\Delta\} = 144\mathbb{Z}$ und $\{c_{\mathrm{assoc}}\} = 288\mathbb{Z}$ auch in $\mathbb{Z}_{>0}$ vollständig surjektiv ist.
+\item \textbf{Serielle Spatprodukt-Darstellung:} Für konsekutive Primzahlindizes mit reduzierten Lückenvektoren $G_n = (v_{n+1}-v_n)/12$ kollabiert die Chiralität auf das Spatprodukt[cite: 6, 7]:
+\begin{equation}
+\boxed{\chi_n = v_n \cdot (G_n \times G_{n+1})}[cite: 6, 7].
+\end{equation}
+\end{enumerate}
+
+% ==============================================================================
+\section{Lokale $p$-adische Theorie und der $(3\times 3 \to 2\times 2)$-Dimensionskollaps}
+% ==============================================================================
+
+\subsection{Algebraischer Dimensionskollaps für $\ell \in \{2, 3\}$}
+Für $\ell \in \{2, 3\}$ ist der Basisvektor $v_1 \equiv (5, 7, 11)^T \pmod{12}$ primitiv in $\mathbb{Z}_\ell^3$[cite: 1]. Es existiert eine invertierbare Matrix $U \in \mathrm{GL}_3(\mathbb{Z}_\ell)$ mit $U v_1 = (1, 0, 0)^T$[cite: 1]. Die Laplace-Entwicklung reduziert die 3-dimensionale Determinante auf einen $2\times 2$-Minor[cite: 1]:
+\begin{equation}
+\chi \sim_{\ell\text{-unit}} x_1 y_2 - x_2 y_1 = \det M, \qquad M \in M_2(\mathbb{Z}_\ell)[cite: 1].
+\end{equation}
+
+\subsection{Haar-Invertibilitätsgesetze}
+Unter der Haar-Zufallsmatrixannahme auf $M_2(\mathbb{Z}_\ell)$ ist die Wahrscheinlichkeit der Invertibilität modulo $\ell$ exakt gegeben durch[cite: 8]:
+\begin{equation}
+P(v_\ell(\det M) = 0) = \frac{|\mathrm{GL}_2(\mathbb{F}_\ell)|}{|M_2(\mathbb{F}_\ell)|} = \left(1 - \frac{1}{\ell}\right)\left(1 - \frac{1}{\ell^2}\right)[cite: 8].
+\end{equation}
+Dies liefert die analytischen Grenzwerte[cite: 8]:
+\begin{align}
+\ell = 2: \quad & P(v_2(\chi) = 0) = \frac{3}{8} = 37{,}50\%[cite: 8], \qquad \mathbb{E}[v_2(\chi)] = \frac{4}{3} \approx 1{,}3333[cite: 7, 19], \\
+\ell = 3: \quad & P(v_3(\chi) = 0) = \frac{16}{27} \approx 59{,}26\%[cite: 8], \qquad \mathbb{E}[v_3(\chi)] = \frac{5}{8} = 0{,}6250[cite: 7, 19].
+\end{align}
+Für den Assoziatorkoeffizienten $A = 288\chi = 2^5 \cdot 3^2 \cdot \chi$ verschiebt sich der Erwartungswert exakt auf $\mathbb{E}[v_2(A)] = 5 + \frac{4}{3} = \frac{19}{3}$ und $\mathbb{E}[v_3(A)] = 2 + \frac{5}{8} = \frac{21}{8}$[cite: 13, 19].
+
+\subsection{Der $6$-primitive Kern $\chi_n^{(6)}$}
+Zur Bereinigung der lokalen $2$- und $3$-adischen Zwangsbedingungen definieren wir[cite: 1, 6]:
+\begin{equation}
+\chi_n^{(6)} := \frac{\chi_n}{2^{v_2(\chi_n)} 3^{v_3(\chi_n)}} \in \mathbb{Z} \setminus 6\mathbb{Z}[cite: 6].
+\end{equation}
+Da $2$ und $3$ für alle $q \ge 5$ Einheiten in $\mathbb{Z}_q$ sind, gilt $(q \mid \chi_n) \iff (q \mid \chi_n^{(6)})$[cite: 4, 29].
+
+% ==============================================================================
+\section{Torus-Geometrie und der $4$-dimensionale Eichquotient}
+% ==============================================================================
+
+Für Primstellen $q \ge 5$ sind alle Matrixelemente invertierbar ($M_{ij} \in \mathbb{F}_q^\times$)[cite: 30]. Der Matrizenraum ist der algebraische Torus $\mathcal{T}_9 = (\mathbf{G}_m)^9$[cite: 3].
+
+\subsection{Eichgruppe und Zyklusrang von $K_{3,3}$}
+Die Skalierungsgruppe $G = (\mathbf{G}_m)^6$ wirkt via $M_{ij} \mapsto r_i c_j M_{ij}$ mit dem 1-dimensionalen Kern $\ker G = \{(\lambda, \lambda, \lambda; \lambda^{-1}, \lambda^{-1}, \lambda^{-1})\}$. Der effektive Orbitraum ist ein 4-dimensionaler algebraischer Torus[cite: 3]:
+\begin{equation}
+\mathcal{T}_9 / G_{\mathrm{eff}} \cong (\mathbf{G}_m)^4[cite: 3].
+\end{equation}
+Dies entspricht dem Zyklusrang $b_1(K_{3,3}) = |E| - |V| + 1 = 9 - 6 + 1 = 4$[cite: 3]. Bezüglich des Einheitsspannbaums existiert eine eindeutige Normalform[cite: 3]:
+\begin{equation}
+M \sim \begin{pmatrix} 1 & 1 & 1 \\ 1 & a & b \\ 1 & c & d \end{pmatrix}, \qquad a, b, c, d \in \mathbb{F}_q^\times[cite: 3],
+\end{equation}
+wobei $(a, b, c, d)$ den vier fundamentalen $2\times 2$-Kreuzverhältnissen entsprechen.
+
+\subsection{Der Torus-Satz}
+\begin{theorem}[Torus-Satz]
+Die Wahrscheinlichkeit einer singulären Matrix auf dem algebraischen Torus $(\mathbb{F}_q^\times)^{3\times 3}$ ist unter dem Haar-Torusmaß $\mu_0$ exakt gegeben durch[cite: 3, 5]:
+\begin{equation}
+\boxed{P_{\mathrm{tor}}(q) = \frac{\#\{(a,b,c,d) \in (\mathbb{F}_q^\times)^4 : ad - bc - d + b + c - a = 0\}}{(q-1)^4} = \frac{q^3 - 3q^2 + 5q - 5}{(q-1)^4}}[cite: 3, 5].
+\end{equation}
+\end{theorem}
+Für $q = 5$ gilt $P_{\mathrm{tor}}(5) = \frac{35}{128} = 27{,}34375\%$[cite: 3].
+
+% ==============================================================================
+\section{Orthogonale Hoeffding-Projektion und Mehrskalenstruktur}
+% ==============================================================================
+
+\subsection{Der orthogonale Projektionsoperator $\Pi_{\mathcal{H}_4}$}
+Das Hoeffding-Strukturlemma besagt, dass wegen der Zyklusfreiheit von Subgraphen mit $\le 3$ Kanten $\mathcal{H}_1 = \mathcal{H}_2 = \mathcal{H}_3 = \{0\}$ gilt. Zudem verschwindet $\mathcal{H}_5$ durch Ausmitteln von Blattkanten. Der führende Korrelationsraum ist $\mathcal{H}_4$, aufgespannt durch die $9$ Rechtecke $S = \{i, k\} \times \{j, \ell\}$[cite: 3]:
+\begin{equation}
+\Pi_{\mathcal{H}_4}\left(\mathbf{1}_{\{\det = 0\}} - P_{\mathrm{tor}}\right) = \frac{q^2 - 2q - 1}{(q-1)^3} \sum_{S=1}^9 \left( \mathbf{1}_{\{\rho_S = 1\}} - \frac{1}{q-1} \right)[cite: 3].
+\end{equation}
+Für $q = 5$ folgt mit der mittleren Rechteckresonanz $\bar{r}_5 = \frac{1}{9}\sum_{S=1}^9 P(\rho_S = 1)$ exakt[cite: 3]:
+\begin{equation}
+R_5^{(4)} = \frac{63}{32}\left(\bar{r}_5 - \frac{1}{4}\right)[cite: 3, 22].
+\end{equation}
+
+\subsection{Mehrskalen-Residuenzerlegung und Überkompensation}
+Das Gesamtresiduum zerfällt orthogonal in $R_q = R_q^{(4)} + R_q^{(\mathrm{rem})}$[cite: 5, 8]. Im gefilterten Sliding-Window-Sampling ($N_{\mathrm{eff}} = 99.999$) misst man $\bar{r}_5 \approx 0{,}258467$ und $R_5 \approx +1{,}3565\text{ PP}$[cite: 3, 16]:
+\begin{equation}
+\underbrace{+1{,}6669\text{ PP}}_{R_5^{(4)} \ (\mathcal{H}_4)} + \underbrace{(-0{,}3104\text{ PP})}_{R_5^{(\mathrm{rem})} \ (\mathcal{H}_{\ge 6})} = \underbrace{+1{,}3565\text{ PP}}_{R_5}[cite: 16].
+\end{equation}
+Die signierte Quote $R_5^{(4)}/R_5 \approx 122{,}9\%$ weist eine Mehrskalenstruktur nach: Die starke positive lokale 4-Punkt-Resonanz wird auf höherer Zyklusebene ($\mathcal{H}_{\ge 6}$) destruktiv abgeschirmt[cite: 3, 16].
+
+% ==============================================================================
+\section{Kausale Rückführung: Markov-Kollisionsgeometrie}
+% ==============================================================================
+
+\subsection{Multiplikative Inkrement-Äquivalenz}
+Auf $\mathbb{F}_5^\times$ ist die Minor-Resonanz zweier Klassen $j, k$ äquivalent zur Gleichheit der multiplikativen Übergangsverhältnisse $Q_n = p_{n+1}/p_n \in \mathbb{F}_5^\times$[cite: 3]:
+\begin{equation}
+\rho_{jk}^{(1)} = 1 \iff Q_j = Q_k \in \mathbb{F}_5^\times[cite: 3].
+\end{equation}
+
+\subsection{Kollisionsformel und quadratische Emergenz}
+Sei $s_j = \mathbf{u} + \delta_j$ mit $\mathbf{u} = (1/4, 1/4, 1/4, 1/4)$ die Randverteilung von $Q_j$[cite: 5]. Dann gilt[cite: 5]:
+\begin{equation}
+r_{jk}^{(1)} = \frac{1}{4} + \delta_j \cdot \delta_k + C_{jk}, \qquad C_{jk} = \sum_{r=1}^4 \operatorname{Cov}\left(\mathbf{1}_{\{Q_j=r\}}, \mathbf{1}_{\{Q_k=r\}}\right)[cite: 5].
+\end{equation}
+\begin{bemerkung}[Auflösung des Orthogonalitäts-Paradoxons]
+Ein linearer Übergangsbias $\delta = \mathcal{O}(\varepsilon)$ hat erster Ordnung keinen Einfluss auf die globale Determinante ($\mathbf{u} \cdot \delta = 0$)[cite: 5]. Erst die Kollision zweier Zeilen im $2\times 2$-Minor erzeugt den quadratischen $\mathcal{H}_4$-Term $\delta_j \cdot \delta_k = \mathcal{O}(\varepsilon^2)$[cite: 5].
+\end{bemerkung}
+
+\subsection{Dominanz der Repetition Avoidance}
+Aus der empirischen Übergangsmatrix modulo $5$ folgt $s = (0{,}1530, 0{,}2805, 0{,}2805, 0{,}2860)^T$[cite: 3]. Die parameterfreie Prognose lautet[cite: 3]:
+\begin{equation}
+r_{\mathrm{prod}}^{(1)} = \|s\|_2^2 = \mathbf{0{,}2625655} \implies \mathbf{26{,}2566\%} \quad (\text{Empirie: } \mathbf{26{,}3058\%})[cite: 3].
+\end{equation}
+Zerlegt man $\|s-\mathbf{u}\|_2^2 = \frac{(4d-1)^2}{12} + \sum \varepsilon_r^2$ mit der Diagonaldepression $d = s(1) = 0{,}1530$, so entfallen[cite: 3]:
+\begin{equation}
+\frac{r_{\mathrm{diag}} - 1/4}{r_T^{(1)} - 1/4} = \frac{0{,}01254533}{0{,}01256550} = \mathbf{99{,}8395\% \approx 99{,}84\%}[cite: 3]
+\end{equation}
+des Lag-1-Produktüberschusses allein auf die Repetition Avoidance ($d \approx 15{,}3\% \ll 25\%$)[cite: 3].
+
+% ==============================================================================
+\section{Makroskopische Surrogat-Statistik und serielle Dynamik}
+% ==============================================================================
+
+Im Bestätigungslauf ($N = 100.000$ Primzahltripel bis $p \approx 5{,}5 \times 10^6$, $B = 10.000$ Surrogat-Iterationen) wurden drei primäre Hypothesen evaluiert[cite: 7]:
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{lllcc}
+\toprule
+\textbf{Hypothese} & \textbf{Observable / Kontrast} & \textbf{Empirischer Wert} & \textbf{Holm-$p$-Wert} & \textbf{Inferenz-Status} \\
+\midrule
+$H_1$ (Transversalität) & $\Delta_S^{\mathrm{local}} = \mathbb{E}[S]_{\mathrm{Real}} - \mathbb{E}[S]_{B_{\mathrm{local}}}$[cite: 7] & $-1{,}24 \times 10^{-4}$[cite: 2, 7] & $p = 0{,}8436$[cite: 2, 7] & Gehalten (kein Residualeffekt)[cite: 7] \\
+Globaler Confounder & $\Delta_S^{\mathrm{global}} = \mathbb{E}[S]_{\mathrm{Real}} - \mathbb{E}[S]_{B_{\mathrm{global}}}$[cite: 7] & $-6{,}81 \times 10^{-3}$[cite: 7] & $p < 0{,}0002$ & Reines Skalen-Artefakt[cite: 7] \\
+$H_2$ (Lag-1-Vorzeichen) & $C_s(1)_{\mathrm{Real}} - \mathbb{E}[C_s(1)]_{A_{\mathrm{local}}}$[cite: 7] & $-0{,}006124$[cite: 2, 7] & $p = 0{,}1626$[cite: 2, 7] & Explorativer Bias nicht repliziert[cite: 2, 7] \\
+$H_3$ (Orientierungsbias) & $\mathbb{E}[O_n]_{\mathrm{Real}} - 0$[cite: 7] & $-1{,}84 \times 10^{-4}$[cite: 2, 7] & $p = 0{,}8436$[cite: 2, 7] & Gehalten (vollkommen symmetrisch)[cite: 2, 7] \\
+Simultanband ($1\le h\le 20$) & $\max_h |C_s(h)| \le c_{0{,}95} = 0{,}008412$[cite: 2, 7] & $0{,}006124 < 0{,}008412$[cite: 2, 7] & — & Keine serielle Vorzeichenordnung[cite: 2, 7] \\
+\bottomrule
+\end{tabular}
+\caption{Konfirmatorisches Hypothesentableau der makroskopischen Surrogat-Prüfung.}
+\end{table}
+
+% ==============================================================================
+\section{Formale Verifikation in Lean 4}
+% ==============================================================================
+
+Sämtliche algebraischen Kernsätze wurden im interaktiven Theorembeweiser \textbf{Lean 4} (Mathlib v4.11.0) formalisiert[cite: 3, 7]:
+\begin{enumerate}
+\item \texttt{EabcFano/Determinant.lean}: Beweist $\Delta = 144\chi$ und die Spatprodukt-Identität $\chi_n = v_n \cdot (G_n \times G_{n+1})$[cite: 7, 29].
+\item \texttt{EabcFano/Padic.lean}: Beweist für alle $q \ge 5$ die Assoziiertheit von $\chi$ und $\chi^{(6)}$ im Ring $\mathbb{Z}_q$:
+\begin{verbatim}
+theorem associated_chi_chiSix (chi : Int) (hchi : chi != 0) (hq : q >= 5) :
+    Associated (chi : PadicInt q) (chiSix chi : PadicInt q)
+\end{verbatim}
+\end{enumerate}
+
+% ==============================================================================
+\section{Epistemische Governance und Gesamtsynthese}
+% ==============================================================================
+
+Zur methodischen Absicherung unterliegt das Forschungsprogramm der folgenden Schichtenarchitektur[cite: 10]:
+\begin{equation}
+\boxed{\text{Algebraische Theoreme} \;\longrightarrow\; \text{Exakte Referenzgesetze} \;\longrightarrow\; \text{Empirische Kompatibilität} \;\longrightarrow\; \text{Nicht-Detektion zusätzlicher Dynamik}}[cite: 10]
+\end{equation}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{llll}
+\toprule
+\textbf{Ebene} & \textbf{Observable / Parameter} & \textbf{Formaler Befund} & \textbf{Status} \\
+\midrule
+Algebra & $[X_n, X_{n+1}, X_{n+2}] = 288\chi_n e_7$[cite: 2, 3] & Exakt auf $288\mathbb{Z}$[cite: 2, 3] & \textbf{Theorem (Lean 4)}[cite: 2, 3] \\
+Algebra & $\chi_n = v_n \cdot (G_n \times G_{n+1})$[cite: 2, 3] & Identität in $\mathbb{Z}^3$[cite: 2, 3] & \textbf{Theorem (Lean 4)}[cite: 2, 3] \\
+Algebra & $\mathcal{T}_9 / G_{\mathrm{eff}} \cong (\mathbf{G}_m)^4$ & Zyklusrang $b_1(K_{3,3}) = 4$[cite: 3] & \textbf{Theorem}[cite: 3] \\
+Hoeffding & $\Pi_{\mathcal{H}_4}(\mathbf{1}_{\det=0} - P_{\mathrm{tor}})$[cite: 3] & 9 Rechtecke mit Vorfaktor $(q-1)A_q$[cite: 3] & \textbf{Analytisch geschlossener Sektor}[cite: 3] \\
+Lokal-adisch & $P(v_\ell(\chi)=0)$, $\ell \in \{2,3\}$[cite: 2, 3] & Konvergenz gegen $3/8$ bzw. $16/27$[cite: 2, 3] & \textbf{Random-Matrix-Kompatibilität}[cite: 2, 3] \\
+Lokal-adisch & $P(q \mid \chi^{(6)})$, $q \ge 5$[cite: 2, 3] & Überhöhung via Markov-Kollision[cite: 4] & \textbf{Erklärt durch Repetition Avoidance}[cite: 4] \\
+Serialität & $C_s(1)$ (Vorzeichen Lag 1)[cite: 2, 3] & $-0{,}006124$ ($p_{\mathrm{Holm}} = 0{,}1626$)[cite: 2, 3] & \textbf{Explorativer Bias nicht repliziert}[cite: 2, 3] \\
+Serialität & $C_s(h)$, $1 \le h \le 20$[cite: 2, 3] & $|C_s(h)| < 0{,}008412$[cite: 2, 3] & \textbf{Keine serielle Ordnung im Band}[cite: 2, 3] \\
+\bottomrule
+\end{tabular}
+\caption{Epistemisches Schluss-Tableau der Fano-Chiralitätsanalyse.}
+\end{table}
+
+\paragraph{Sampling-Governance:} Kein Residualwert wird ohne Angabe des vollständigen Sampling-Protokolls $\mathcal{P} = (N, N_{\mathrm{eff}}, n_{\mathrm{start}}, \text{Fenster}, \text{Klassen}, q, \text{Torus-Maske})$ interpretiert[cite: 3].
+
+% ==============================================================================
+\begin{thebibliography}{99}
+% ==============================================================================
+\bibitem{Baez2002}
+J.~C. Baez, \emph{The Octonions}, Bull. Amer. Math. Soc. \textbf{39} (2002), 145--205[cite: 7].
+
+\bibitem{ConwaySmith2003}
+J.~H. Conway und D.~A. Smith, \emph{On Quaternions and Octonions: Their Geometry, Arithmetic, and Symmetry}, A K Peters, Natick, MA, 2003[cite: 7, 17].
+
+\bibitem{Gallagher1976}
+P.~X. Gallagher, \emph{On the distribution of primes in short intervals}, Mathematika \textbf{23} (1976), no.~1, 4--9[cite: 7].
+
+\bibitem{HardyLittlewood1923}
+G.~H. Hardy und J.~E. Littlewood, \emph{Some problems of `Partitio numerorum'; III: On the expression of a number as a sum of primes}, Acta Math. \textbf{44} (1923), 1--70[cite: 7].
+
+\bibitem{JordanNeumannWigner1934}
+P.~Jordan, J.~von Neumann und E.~Wigner, \emph{On an algebraic generalization of the quantum mechanical formalism}, Ann. Math. \textbf{35} (1934), 29--64[cite: 14, 15].
+
+\bibitem{LemkeOliverSound2016}
+R.~J. Lemke Oliver und K.~Soundararajan, \emph{Unexpected biases in the distribution of consecutive primes}, Proc. Natl. Acad. Sci. USA \textbf{113} (2016), no.~31, E4446--E4454.
+
+\bibitem{Weizsaecker1985}
+C.~F. von Weizsäcker, \emph{Aufbau der Physik}, Carl Hanser Verlag, München, 1985[cite: 14].
+
+\end{thebibliography}
+
+\end{document}

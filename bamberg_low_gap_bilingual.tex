@@ -1,0 +1,485 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman,english]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{geometry}
+\geometry{margin=2.6cm}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,enumitem}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage[numbers,sort&compress]{natbib}
+
+\hypersetup{colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{reduction}[theorem]{Reduction Theorem}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\newcommand{\Hur}{\mathcal H}
+\newcommand{\Sp}{\mathcal S_p}
+\newcommand{\Dp}{\mathcal D_p}
+\newcommand{\Op}{\mathcal O_p}
+\newcommand{\Def}{\mathscr D}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+
+\title{\textbf{Local Obstructions and Global Diophantine Geometry\\
+in the Defect-Protection Property of the Bamberg Model}\\[0.4em]
+\large Lokale Obstruktionen und globale diophantische Geometrie\\
+bei der Defektschutz-Eigenschaft des Bamberger Modells}
+\author{Thomas Hoffbauer\\Bamberg, Germany}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We study a low-gap defect-protection property in an arithmetic model based on Hurwitz quaternions for primes \(p\equiv7\pmod8\). On each Hurwitz norm shell we distinguish a diagonal sector \(D\) and a non-diagonal sector \(O\), with minimal positive defects \(g_D(p)\) and \(g_O(p)\). We prove
+\[
+g_D(p)=4\Longrightarrow g_O(p)\ge4,\qquad
+g_D(p)=9\Longrightarrow g_O(p)\ge9,
+\]
+using divisibility, archimedean product--sum estimates, parity constraints and local obstructions modulo \(3,7,8,16\). The next admissible layer \(g_D=25\) is not protected: at \(p=31\), \(g_D(31)=25\) and \(g_O(31)=20\). For \(g_D=36\), the problem is reduced to six explicit global Diophantine cases. The first residual case is further reduced to a genus-one quartic, coupled Pell equations and a square problem in two Lucas-type sequences.
+\end{abstract}
+
+\selectlanguage{ngerman}
+\section*{Deutsche Fassung}
+
+\section{Einleitung und Problemstellung}
+Wir untersuchen eine Defektschutz-Eigenschaft in einem auf Hurwitz-Quaternionen basierenden arithmetischen Modell für Primzahlen
+\[
+p\equiv7\pmod8.
+\]
+Auf jeder Hurwitz-Normschale unterscheiden wir einen diagonalen Sektor \(D\) und einen nichtdiagonalen Sektor \(O\). Die minimalen positiven Defekte werden mit \(g_D(p)\) bzw. \(g_O(p)\) bezeichnet. Für \(k>0\) definieren wir
+\[
+L_k:\qquad g_D(p)=k\Longrightarrow g_O(p)\ge k.
+\]
+
+\section{Hurwitz-Schalen und Defektfunktion}
+Sei \(\Hur\) die Hurwitz-Ordnung in der rationalen Hamiltonschen Quaternionenalgebra. Für eine ungerade Primzahl \(p\) betrachten wir
+\[
+\Sp=\{q\in\Hur:N(q)=p\}.
+\]
+Wir verwenden verdoppelte Koordinaten
+\[
+q=\frac12(A+Bi+Cj+Dk),
+\]
+wobei \(A,B,C,D\in\Z\) alle dieselbe Parität besitzen und
+\[
+A^2+B^2+C^2+D^2=4p.
+\]
+
+\begin{definition}[Defekt]
+\[
+\Def(A,B,C,D)=\frac{A}{2}\left[B(A^2-2p)+ACD\right].
+\]
+\end{definition}
+
+\begin{definition}[Sektoren]
+\[
+\Dp=\{(A,B,C,D)\in\Sp:|A|=|B|\},
+\quad
+\Op=\{(A,B,C,D)\in\Sp:|A|\ne|B|\}.
+\]
+Ferner
+\[
+g_D(p)=\min_{\Dp,\Def\ne0}|\Def|,
+\qquad
+g_O(p)=\min_{\Op,\Def\ne0}|\Def|.
+\]
+\end{definition}
+
+\section{Diagonale Reduktion}
+Mit
+\[
+s=\frac{C+D}{2},\qquad r=\frac{C-D}{2}
+\]
+gilt im halbzahlig-diagonalen Ast
+\[
+2p=A^2+s^2+r^2,
+\qquad
+|\Def|=A^2r^2.
+\]
+Für \(p\equiv7\pmod8\) ergibt die mod-\(16\)-Analyse unter \(g_D<100\)
+\[
+\boxed{g_D\in\{4,9,25,36\}.}
+\]
+Der Wert \(25\) ist nicht geschützt:
+\[
+g_D(31)=25,\qquad g_O(31)=20.
+\]
+
+\section{Schutzsatz \(L_4\)}
+Für \(g_D=4\) gilt
+\[
+2p=s^2+5.
+\]
+Im ganzzahligen Hurwitz-Zweig ist \(4\mid\Def\). Im halbzahligen Zweig gilt \(A\mid\Def\). Die Fälle \(|\Def|=1,2,3\) werden durch Teilbarkeit, Produkt--Summen-Abschätzungen und lokale Kongruenzen ausgeschlossen. Der letzte Ast reduziert sich auf
+\[
+z^2-3k^2=1,\qquad v^2-2z^2=-3,
+\]
+was modulo \(3\) unmöglich ist.
+
+\begin{theorem}
+Für jede Primzahl \(p\equiv7\pmod8\) gilt
+\[
+\boxed{g_D(p)=4\Longrightarrow g_O(p)\ge4.}
+\]
+\end{theorem}
+
+\section{Schutzsatz \(L_9\)}
+Für \(g_D=9\) gilt
+\[
+2p=s^2+10,\qquad s\equiv2\pmod4.
+\]
+Der ganzzahlige Zweig erlaubt unterhalb \(9\) nur \(|\Def|=4,8\). Im halbzahligen Zweig bleiben nach Teilbarkeit und einer uniformen Abschätzung nur
+\[
+(|\Def|,|A|)=(3,3),(5,5),(7,7).
+\]
+Diese drei Fälle werden durch Schranken für \(|B|\), die Substitution
+\[
+v=\frac{C+D}{2},\qquad z=\frac{C-D}{2},
+\]
+und lokale Obstruktionen modulo \(3,7,8\) eliminiert. Die ganzzahligen Fälle \(|\Def|=4,8\) werden separat ausgeschlossen.
+
+\begin{theorem}
+Für jede Primzahl \(p\equiv7\pmod8\) gilt
+\[
+\boxed{g_D(p)=9\Longrightarrow g_O(p)\ge9.}
+\]
+\end{theorem}
+
+\section{Die Schicht \(g_D=36\)}
+Es treten zwei Diagonalfamilien auf:
+\[
+\mathrm{D36}_{13}:\quad 2p=s^2+13,
+\qquad
+\mathrm{D36}_{37}:\quad 2p=s^2+37.
+\]
+Der Minimalitätsfilter gegen \(g_D\in\{4,9,25\}\) folgt aus
+\[
+(t-s)(t+s)=\lambda-\mu.
+\]
+Damit erhält man
+\[
+s^2\ge81\quad(\lambda=13),
+\qquad
+s^2\ge121\quad(\lambda=37).
+\]
+
+Sei
+\[
+m=|\Def|<36,\quad a=|A|,\quad b=|B|,\quad m=aq.
+\]
+Die notwendige archimedische Ungleichung lautet
+\[
+(b-a)x+b(\lambda-a^2)-a\lambda+\frac{a^3}{2}
++\frac{ab^2}{2}-2q\le0,
+\qquad x=s^2.
+\]
+Unter den scharfen Untergrenzen für \(x\) überlebt kein Fall mit \(b>a\). Da \(b=a\) diagonal wäre,
+\[
+\boxed{1\le b<a,\qquad a\ge3.}
+\]
+Mit \(v=(C+D)/2\) und \(z=(C-D)/2\) folgt die universelle binäre Gleichung
+\[
+\boxed{
+(a-b)v^2-(a+b)z^2
+=
+\frac{b(b^2-a^2)}2\pm2q.
+}
+\]
+
+\section{Exakte Reduktion von \(L_{36}\)}
+Teiler-, Paritäts- und archimedische Filter liefern \(372\) strukturierte Tupel \((\lambda,m,a,b)\). Wegen der beiden Vorzeichen entstehen \(744\) Vorzeichenäste. Lokale Filter reduzieren
+\[
+744\longrightarrow252\longrightarrow21\longrightarrow6.
+\]
+
+\begin{longtable}{@{}lll@{}}
+\toprule
+\((\lambda,m,a,b)\) & Binäre Gleichung & Quadratbedingung\\
+\midrule
+\endhead
+\((13,15,5,1)\) & \(2v^2-3z^2=-3\) & \(s^2=v^2+z^2\)\\
+\((13,25,25,1)\) & \(12v^2-13z^2=-157\) & \(s^2=v^2+z^2+300\)\\
+\((13,33,3,1)\) & \(v^2-2z^2=9\) & \(s^2=v^2+z^2-8\)\\
+\((37,15,3,1)\) & \(v^2-2z^2=-7\) & \(s^2=v^2+z^2-32\)\\
+\((37,25,25,23)\) & \(v^2-24z^2=-551\) & \(s^2=v^2+z^2+540\)\\
+\((37,33,3,1)\) & \(v^2-2z^2=9\) & \(s^2=v^2+z^2-32\)\\
+\bottomrule
+\end{longtable}
+
+\begin{reduction}
+Die Aussage
+\[
+g_D(p)=36\Longrightarrow g_O(p)\ge36
+\]
+ist im vorliegenden Modell auf sechs explizite globale diophantische Restfälle reduziert.
+\end{reduction}
+
+\section{Globaler Restfall 1}
+Aus
+\[
+2v^2-3z^2=-3,\qquad s^2=v^2+z^2
+\]
+folgt mit \(v=3u\)
+\[
+z^2-6u^2=1,\qquad s^2-15u^2=1.
+\]
+Eine rationale Parametrisierung der ersten Konik liefert
+\[
+y^2=36t^4+48t^2+1.
+\]
+Die projektive Glättung besitzt Geschlecht \(1\).
+
+Schreibe
+\[
+t=\frac rq,\qquad \gcd(r,q)=1,\qquad d=q^2-6r^2.
+\]
+Integrabilität erzwingt \(d\mid12\). Lokale Filter eliminieren \(d=6,-2,3\). Die beiden verbleibenden Normklassen \(d=1,-6\) führen auf dieselbe Quartik
+\[
+\boxed{\mathcal C:\quad y^2=360x^4+60x^2+1}
+\]
+mit Pell-Nebenbedingung
+\[
+\boxed{X^2-6x^2=1.}
+\]
+
+\section{Lucas-Reduktion}
+Aus dem gekoppelten System folgt
+\[
+5W^2-2y^2=3,\qquad W=12x^2+1.
+\]
+Nach Zerlegung der positiven Lösungen in zwei Einheitenorbits und Restriktion auf \(W\equiv1\pmod{12}\) erhält man
+\[
+A_0=1,\quad A_1=1177,
+\qquad
+B_0=265,\quad B_1=382129,
+\]
+mit
+\[
+\boxed{T_{k+2}=1442T_{k+1}-T_k.}
+\]
+Offen bleibt, ob
+\[
+\frac{A_k-1}{12}
+\]
+für \(k\ge1\) oder
+\[
+\frac{B_k-1}{12}
+\]
+für \(k\ge0\) ein Quadrat sein kann.
+
+\section{Forschungsstand}
+\[
+\boxed{\mathrm{L4:\ PROVED}},
+\qquad
+\boxed{\mathrm{L9:\ PROVED}},
+\]
+\[
+\boxed{\mathrm{L36:\ REDUCED\ TO\ 6\ GLOBAL\ DIOPHANTINE\ CASES}.}
+\]
+
+\section{Offene Probleme}
+\begin{enumerate}
+\item Bestimmung aller Pell-kompatiblen Integralpunkte von
+\[
+y^2=360x^4+60x^2+1.
+\]
+\item Entscheidung der beiden Quadratprobleme in den Folgen \(A_k,B_k\).
+\item Globale Analyse der fünf weiteren L36-Restfälle.
+\item Erst danach vollständige Entscheidung von \(L_{36}\).
+\end{enumerate}
+
+\clearpage
+\selectlanguage{english}
+\section*{English Version}
+
+\section{Introduction}
+We study a defect-protection property in an arithmetic model based on Hurwitz quaternions for primes \(p\equiv7\pmod8\). On each Hurwitz norm shell we distinguish a diagonal sector \(D\) and a non-diagonal sector \(O\), with minimal positive defects \(g_D(p)\) and \(g_O(p)\). Define
+\[
+L_k:\qquad g_D(p)=k\Longrightarrow g_O(p)\ge k.
+\]
+
+\section{Hurwitz shells and the defect}
+Let \(\Hur\) denote the Hurwitz order. For an odd prime \(p\),
+\[
+\Sp=\{q\in\Hur:N(q)=p\}.
+\]
+Write
+\[
+q=\frac12(A+Bi+Cj+Dk),
+\]
+where \(A,B,C,D\in\Z\) have common parity and
+\[
+A^2+B^2+C^2+D^2=4p.
+\]
+Define
+\[
+\Def(A,B,C,D)=\frac A2\left[B(A^2-2p)+ACD\right].
+\]
+The diagonal and non-diagonal sectors are given by \(|A|=|B|\) and \(|A|\ne|B|\), respectively.
+
+\section{Diagonal reduction}
+With
+\[
+s=\frac{C+D}{2},\qquad r=\frac{C-D}{2},
+\]
+the half-integral diagonal branch satisfies
+\[
+2p=A^2+s^2+r^2,\qquad |\Def|=A^2r^2.
+\]
+For \(p\equiv7\pmod8\) and \(g_D<100\),
+\[
+\boxed{g_D\in\{4,9,25,36\}.}
+\]
+At \(p=31\),
+\[
+g_D(31)=25,\qquad g_O(31)=20.
+\]
+
+\section{Protection at \(g_D=4\)}
+For \(g_D=4\),
+\[
+2p=s^2+5.
+\]
+The integral branch satisfies \(4\mid\Def\). In the half-integral branch, \(A\mid\Def\). The cases \(|\Def|=1,2,3\) are excluded by divisibility, product--sum inequalities and local congruences. The last branch reduces to
+\[
+z^2-3k^2=1,\qquad v^2-2z^2=-3,
+\]
+which is impossible modulo \(3\).
+
+\begin{theorem}
+For every prime \(p\equiv7\pmod8\),
+\[
+\boxed{g_D(p)=4\Longrightarrow g_O(p)\ge4.}
+\]
+\end{theorem}
+
+\section{Protection at \(g_D=9\)}
+For \(g_D=9\),
+\[
+2p=s^2+10,\qquad s\equiv2\pmod4.
+\]
+The half-integral branch reduces to the three cases
+\[
+(|\Def|,|A|)=(3,3),(5,5),(7,7),
+\]
+which are eliminated by bounds on \(|B|\), the substitution \(v=(C+D)/2,\ z=(C-D)/2\), and local obstructions modulo \(3,7,8\). The integral cases \(|\Def|=4,8\) are excluded separately.
+
+\begin{theorem}
+For every prime \(p\equiv7\pmod8\),
+\[
+\boxed{g_D(p)=9\Longrightarrow g_O(p)\ge9.}
+\]
+\end{theorem}
+
+\section{The \(g_D=36\) layer}
+Two diagonal families occur:
+\[
+\mathrm{D36}_{13}:\quad 2p=s^2+13,
+\qquad
+\mathrm{D36}_{37}:\quad 2p=s^2+37.
+\]
+A minimality filter against \(g_D\in\{4,9,25\}\) yields
+\[
+s^2\ge81\quad(\lambda=13),
+\qquad
+s^2\ge121\quad(\lambda=37).
+\]
+For \(m=|\Def|<36\), \(a=|A|\), \(b=|B|\), \(m=aq\), the necessary inequality
+\[
+(b-a)x+b(\lambda-a^2)-a\lambda+\frac{a^3}{2}
++\frac{ab^2}{2}-2q\le0
+\]
+forces
+\[
+1\le b<a,\qquad a\ge3.
+\]
+Every surviving branch satisfies
+\[
+\boxed{
+(a-b)v^2-(a+b)z^2
+=
+\frac{b(b^2-a^2)}2\pm2q.
+}
+\]
+
+\section{Exact reduction of \(L_{36}\)}
+The divisibility, parity and archimedean filters leave \(372\) structured tuples. The two signs give \(744\) signed branches. Local sieving produces
+\[
+744\longrightarrow252\longrightarrow21\longrightarrow6.
+\]
+The six remaining cases are the same six cases listed in the German section above.
+
+\begin{reduction}
+Within the present model,
+\[
+g_D(p)=36\Longrightarrow g_O(p)\ge36
+\]
+is reduced to six explicit global Diophantine cases.
+\end{reduction}
+
+\section{Global residual case 1}
+The first case reduces to
+\[
+z^2-6u^2=1,\qquad s^2-15u^2=1,
+\]
+then to the genus-one quartic
+\[
+y^2=36t^4+48t^2+1.
+\]
+After denominator reduction, the two remaining norm classes lead to the common quartic
+\[
+\boxed{\mathcal C:\quad y^2=360x^4+60x^2+1}
+\]
+with Pell side condition
+\[
+\boxed{X^2-6x^2=1.}
+\]
+
+\section{Lucas reduction}
+Elimination gives
+\[
+5W^2-2y^2=3,\qquad W=12x^2+1.
+\]
+The relevant terms split into two sequences
+\[
+A_0=1,\ A_1=1177,
+\qquad
+B_0=265,\ B_1=382129,
+\]
+both satisfying
+\[
+\boxed{T_{k+2}=1442T_{k+1}-T_k.}
+\]
+The remaining question is whether \((A_k-1)/12\) or \((B_k-1)/12\) can be a square in the stated index ranges.
+
+\section{Current status}
+\[
+\boxed{\mathrm{L4:\ PROVED}},
+\qquad
+\boxed{\mathrm{L9:\ PROVED}},
+\]
+\[
+\boxed{\mathrm{L36:\ REDUCED\ TO\ 6\ GLOBAL\ DIOPHANTINE\ CASES}.}
+\]
+
+\section{Open problems}
+\begin{enumerate}
+\item Determine all Pell-compatible integral points on
+\[
+y^2=360x^4+60x^2+1.
+\]
+\item Decide the two associated Lucas square problems.
+\item Solve the remaining five global \(L_{36}\) cases.
+\item Only then decide \(L_{36}\) itself.
+\end{enumerate}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+\end{document}

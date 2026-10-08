@@ -1,0 +1,498 @@
+\documentclass[11pt,a4paper,reqno]{amsart}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+
+\geometry{top=2.4cm,bottom=2.4cm,left=2.45cm,right=2.45cm}
+\setlength{\emergencystretch}{2em}
+\raggedbottom
+
+\newtheorem{theorem}{Satz}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Korollar}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Beispiel}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Bemerkung}
+
+\newcommand{\Npos}{\mathbb{N}_{>0}}
+\newcommand{\Pset}{\mathbb{P}}
+\newcommand{\Fam}{\mathcal{F}_{12}}
+\newcommand{\suppE}{\operatorname{supp}_{EABC}}
+\newcommand{\rankE}{\rho_{EABC}}
+\newcommand{\vP}{v_p}
+\newcommand{\dotcupsmall}{\mathbin{\dot\cup}}
+
+\title[Modulo-12-Primfamilien und EABC-Familienrang]{Modulo-12-Primfamilien und der EABC-Familienrang natürlicher Zahlen\\
+Terminologie, Zerlegungssätze und Tabellen der ersten 100 Familienprimzahlen}
+\author{Thomas Hoffbauer}
+\address{Computer Institut Bamberg, Deutschland}
+\email{research@cib.de}
+\date{5. August 2026}
+\subjclass[2020]{11A07, 11A41, 11A51}
+\keywords{Primzahlen, Restklassen modulo 12, Primfaktorzerlegung, Familienträger, Familienrang, EABC}
+
+\begin{document}
+
+\begin{abstract}
+Für jede Primzahl $p>3$ ist die Restklasse modulo $12$ eine der vier Klassen $1,5,7,11$. Diese Arbeit legt eine einheitliche Terminologie für die daraus entstehenden Primfamilien $E,A,B,C$ und für ihre Rolle in der Primfaktorzerlegung natürlicher Zahlen fest. Für $n\in\Npos$ definieren wir den \emph{EABC-Familienträger} $\suppE(n)$ als die Menge derjenigen Familien, aus denen mindestens ein Primteiler $p>3$ von $n$ stammt, sowie den \emph{EABC-Familienrang} $\rankE(n)=|\suppE(n)|$. Daraus entsteht eine exakte Fünfschichtung nach den Rängen $0,1,2,3,4$ und, nach Ausschluss der $3$-glatten Zahlen, eine kanonische Dreiteilung in monofamiliale, bifamiliale und multifamiliale EABC-Zahlen. Ferner unterscheiden wir den Familienträger von der multiplikativen Restklassensignatur und zeigen, warum eine Klassifikation allein über den kleinsten und größten Primteiler höchstens zwei Familien erkennen kann. Eine vollständige Tabelle listet die jeweils ersten $100$ Primzahlen der vier Familien.
+\end{abstract}
+
+\maketitle
+
+\section{Einleitung}
+
+Jede Primzahl $p>3$ ist teilerfremd zu $12$ und liegt deshalb in genau einer der vier reduzierten Restklassen
+\[
+1,\ 5,\ 7,\ 11 \pmod{12}.
+\]
+Diese elementare Beobachtung erlaubt eine stabile Einteilung der Primzahlen in vier Modulo-$12$-Familien. Für die Untersuchung zusammengesetzter Zahlen genügt es jedoch nicht, nur die Restklasse des Produkts zu betrachten: Verschiedene Mengen von Primfamilien können zum selben Produktrest führen. Benötigt wird daher zusätzlich eine Invariante, die festhält, \emph{welche} Familien in der Primfaktorzerlegung tatsächlich auftreten.
+
+Ziel dieser Note ist keine neue Aussage über die Verteilung der Primzahlen. Festgelegt wird vielmehr eine präzise Sprache für drei voneinander zu trennende Ebenen:
+\begin{enumerate}[label=(\roman*)]
+    \item die Familie eines einzelnen Primfaktors $p>3$,
+    \item die Menge aller in $n$ vertretenen Familien,
+    \item die Anzahl dieser vertretenen Familien.
+\end{enumerate}
+Die Terminologie ist so gewählt, dass sowohl eine exakte Rangklassifikation als auch die ursprünglich gewünschte Dreiteilung natürlicher Zahlen möglich wird.
+
+\section{Die vier Modulo-12-Primfamilien}
+
+\begin{definition}[EABC-Primfamilien]
+Es sei $\Pset_{>3}=\{p\in\Pset:p>3\}$. Wir definieren
+\begin{align*}
+E&:=\{p\in\Pset_{>3}:p\equiv 1\pmod{12}\},\\
+A&:=\{p\in\Pset_{>3}:p\equiv 5\pmod{12}\},\\
+B&:=\{p\in\Pset_{>3}:p\equiv 7\pmod{12}\},\\
+C&:=\{p\in\Pset_{>3}:p\equiv 11\pmod{12}\}.
+\end{align*}
+Die bevorzugten deutschen Langformen lauten:
+\begin{center}
+\begin{tabular}{cll}
+\toprule
+Symbol & terminologischer Name & Restklasse \\
+\midrule
+$E$ & Modulo-12-Einserprimzahlen & $1\pmod{12}$ \\
+$A$ & Modulo-12-Fünferprimzahlen & $5\pmod{12}$ \\
+$B$ & Modulo-12-Siebenerprimzahlen & $7\pmod{12}$ \\
+$C$ & Modulo-12-Elferprimzahlen & $11\pmod{12}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+Ein Element einer dieser Mengen heißt \emph{EABC-Primzahl} oder \emph{Modulo-12-Familienprimzahl}. Der mehrdeutige Ausdruck »Restprimzahl« wird nicht als Grundbegriff verwendet.
+\end{definition}
+
+\begin{proposition}[Partition der Primzahlen größer drei]
+Es gilt die disjunkte Zerlegung
+\[
+\Pset_{>3}=E\ \dotcupsmall\ A\ \dotcupsmall\ B\ \dotcupsmall\ C.
+\]
+Jede der vier Mengen ist unendlich.
+\end{proposition}
+
+\begin{proof}
+Eine Primzahl $p>3$ ist weder durch $2$ noch durch $3$ teilbar. Unter den zwölf Restklassen modulo $12$ bleiben deshalb genau $1,5,7,11$. Die Klassen sind disjunkt. Ihre Unendlichkeit folgt aus dem Satz von Dirichlet über Primzahlen in arithmetischen Progressionen, da jede der vier Restklassen teilerfremd zu $12$ ist; vgl. etwa \cite{Davenport,Niven}.
+\end{proof}
+
+\begin{definition}[Familienabbildung]
+Die Abbildung
+\[
+\kappa_{12}:\Pset_{>3}\longrightarrow \Fam:=\{E,A,B,C\}
+\]
+ordnet einer Primzahl ihre eindeutige Modulo-$12$-Familie zu.
+\end{definition}
+
+\section{Familienträger und Familienrang}
+
+\begin{definition}[Von $2$ und $3$ bereinigter Anteil]
+Für $n\in\Npos$ sei
+\[
+n^{\sharp}:=\frac{n}{2^{v_2(n)}3^{v_3(n)}}
+       =\prod_{\substack{p\mid n\\p>3}}p^{v_p(n)}.
+\]
+Der Wert $n^{\sharp}$ heißt der \emph{EABC-Anteil} von $n$.
+\end{definition}
+
+\begin{definition}[EABC-Familienträger]
+Für $n\in\Npos$ definieren wir
+\[
+\suppE(n)
+:=\bigl\{X\in\Fam:\exists p\mid n,\ p>3,\ \kappa_{12}(p)=X\bigr\}.
+\]
+Diese Menge heißt der \emph{EABC-Familienträger} von $n$. In englischer Terminologie entspricht sie dem \emph{EABC family support}.
+\end{definition}
+
+\begin{definition}[EABC-Familienrang]
+Der \emph{EABC-Familienrang} von $n$ ist
+\[
+\rankE(n):=|\suppE(n)|\in\{0,1,2,3,4\}.
+\]
+Die Exponenten $v_p(n)$ beeinflussen den Rang nicht; gezählt werden ausschließlich verschiedene vertretene Familien.
+\end{definition}
+
+\begin{remark}
+Der Familienträger ist nicht die Menge der Primteiler und nicht die Menge ihrer Restwerte mit Vielfachheiten. Beispielsweise haben $5$, $5^8$ und $5^2\cdot17^3$ denselben Familienträger $\{A\}$ und damit Rang $1$.
+\end{remark}
+
+\section{Exakte Rangklassen und endgültige Terminologie}
+
+\begin{definition}[Exakte Rangklassen]
+Für $r\in\{0,1,2,3,4\}$ sei
+\[
+\mathcal N^{(r)}_{EABC}:=\{n\in\Npos:\rankE(n)=r\}.
+\]
+Die verbindliche Terminologie lautet:
+\begin{center}
+\begin{tabular}{cll}
+\toprule
+Rang & bevorzugter Name & Bedeutung \\
+\midrule
+$0$ & EABC-familienfrei & kein Primteiler $p>3$ \\
+$1$ & monofamilial & genau eine Familie vertreten \\
+$2$ & bifamilial & genau zwei Familien vertreten \\
+$3$ & trifamilial & genau drei Familien vertreten \\
+$4$ & tetrafamilial & alle vier Familien vertreten \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{definition}
+
+\begin{theorem}[Exakte Fünfschichtung]
+Die positiven natürlichen Zahlen zerfallen disjunkt als
+\[
+\Npos
+=\mathcal N^{(0)}_{EABC}\ \dotcupsmall\
+ \mathcal N^{(1)}_{EABC}\ \dotcupsmall\
+ \mathcal N^{(2)}_{EABC}\ \dotcupsmall\
+ \mathcal N^{(3)}_{EABC}\ \dotcupsmall\
+ \mathcal N^{(4)}_{EABC}.
+\]
+Dabei ist
+\[
+\mathcal N^{(0)}_{EABC}
+=\{2^\alpha3^\beta:\alpha,\beta\in\mathbb N_0\}.
+\]
+\end{theorem}
+
+\begin{proof}
+Der Familienträger ist eine Teilmenge der vier-elementigen Menge $\Fam$. Seine Mächtigkeit ist daher eindeutig einer der Werte $0,1,2,3,4$. Rang $0$ bedeutet $n^{\sharp}=1$, also genau $n=2^\alpha3^\beta$.
+\end{proof}
+
+\begin{definition}[Profilklassen]
+Für jede Teilmenge $S\subseteq\Fam$ sei
+\[
+\mathcal N_S:=\{n\in\Npos:\suppE(n)=S\}.
+\]
+Die Menge $S$ heißt das \emph{EABC-Familienprofil} der Zahlen in $\mathcal N_S$.
+\end{definition}
+
+\begin{corollary}[Verfeinerung nach Profilen]
+Für jedes $r$ gilt
+\[
+\mathcal N^{(r)}_{EABC}
+=\bigsqcup_{\substack{S\subseteq\Fam\\|S|=r}}\mathcal N_S.
+\]
+Somit gibt es vier monofamiliale, sechs bifamiliale, vier trifamiliale und eine tetrafamiliale Profilklasse.
+\end{corollary}
+
+\section{Die kanonische Dreiteilung}
+
+Die ursprünglich gewünschte Dreiteilung ist sinnvoll, wenn man den Bereich der EABC-familienbehafteten Zahlen betrachtet:
+\[
+\mathbb{N}_{>0,EABC}
+:=\{n\in\Npos:\rankE(n)\ge 1\}
+=\Npos\setminus\{2^\alpha3^\beta:\alpha,\beta\in\mathbb N_0\}.
+\]
+
+\begin{definition}[Grobe Drei-Klassen-Terminologie]
+Wir setzen
+\begin{align*}
+\mathcal C_{\mathrm{mono}}&:=\mathcal N^{(1)}_{EABC},\\
+\mathcal C_{\mathrm{bi}}&:=\mathcal N^{(2)}_{EABC},\\
+\mathcal C_{\mathrm{multi}}&:=\mathcal N^{(3)}_{EABC}\cup\mathcal N^{(4)}_{EABC}.
+\end{align*}
+Die Elemente heißen entsprechend \emph{monofamiliale}, \emph{bifamiliale} und \emph{multifamiliale EABC-Zahlen}. Der Ausdruck multifamilial bezeichnet in dieser groben Klassifikation genau den Bereich $\rankE(n)\ge3$.
+\end{definition}
+
+\begin{theorem}[Kanonische Dreiteilung]
+Es gilt die disjunkte Zerlegung
+\[
+\mathbb{N}_{>0,EABC}
+=\mathcal C_{\mathrm{mono}}\ \dotcupsmall\
+ \mathcal C_{\mathrm{bi}}\ \dotcupsmall\
+ \mathcal C_{\mathrm{multi}}.
+\]
+\end{theorem}
+
+\begin{proof}
+Auf $\mathbb{N}_{>0,EABC}$ nimmt der Familienrang nur die Werte $1,2,3,4$ an. Die drei Mengen entsprechen den disjunkten Fällen $1$, $2$ und $\ge3$.
+\end{proof}
+
+\section{Warum kleinster und größter Primteiler nicht genügen}
+
+Für eine Zahl mit $n^{\sharp}>1$ kann man zwar
+\[
+p_{\min}^{>3}(n):=\min\{p>3:p\mid n\},\qquad
+p_{\max}^{>3}(n):=\max\{p>3:p\mid n\}
+\]
+definieren und daraus den \emph{Randfamilienträger}
+\[
+\operatorname{EdgeSupp}_{EABC}(n)
+:=\bigl\{\kappa_{12}(p_{\min}^{>3}(n)),
+          \kappa_{12}(p_{\max}^{>3}(n))\bigr\}
+\]
+bilden.
+
+\begin{proposition}[Informationsgrenze der Randklassifikation]
+Für jedes $n$ mit $n^{\sharp}>1$ gilt
+\[
+\bigl|\operatorname{EdgeSupp}_{EABC}(n)\bigr|\le2.
+\]
+Eine Klassifikation nach einer, zwei oder drei vertretenen Familien kann daher nicht allein auf dem kleinsten und größten Primteiler beruhen.
+\end{proposition}
+
+\begin{proof}
+Der Randfamilienträger wird von höchstens zwei Elementen erzeugt. Eine dritte oder vierte, nur zwischen den Randprimteilern auftretende Familie bleibt unsichtbar.
+\end{proof}
+
+\begin{example}
+Für
+\[
+n=5\cdot7\cdot11\cdot13
+\]
+ist $p_{\min}^{>3}(n)=5$ aus $A$ und $p_{\max}^{>3}(n)=13$ aus $E$. Der Randfamilienträger ist also $\{A,E\}$, während der vollständige Familienträger $\{E,A,B,C\}$ lautet.
+\end{example}
+
+\section{Familienträger und multiplikative Restklassensignatur}
+
+Die Restklassen $1,5,7,11$ bilden unter der Multiplikation modulo $12$ die Kleinsche Vierergruppe. In der EABC-Schreibweise gilt
+\[
+E^2=A^2=B^2=C^2=E,
+\qquad
+AB=C,\quad AC=B,\quad BC=A,
+\]
+wobei $E$ das neutrale Element bezeichnet.
+
+\begin{definition}[Restklassensignatur]
+Für $n\in\Npos$ definieren wir
+\[
+\sigma_{12}(n)
+:=\prod_{\substack{p\mid n\\p>3}}
+\kappa_{12}(p)^{v_p(n)}\in\Fam.
+\]
+Für $n^{\sharp}>1$ entspricht $\sigma_{12}(n)$ genau der Restklasse von $n^{\sharp}$ modulo $12$.
+\end{definition}
+
+\begin{proposition}[Trennung der Invarianten]
+Der Familienrang $\rankE(n)$ ist im Allgemeinen weder durch $\sigma_{12}(n)$ bestimmt noch bestimmt er umgekehrt die Restklassensignatur. Der Rang erfasst das Vorkommen verschiedener Familien; die Signatur erfasst das Produkt unter Berücksichtigung der Exponentenparität.
+\end{proposition}
+
+\begin{example}
+Es gelten
+\begin{align*}
+5\cdot17&\equiv1\pmod{12},
+&\suppE(5\cdot17)&=\{A\},
+&\rankE(5\cdot17)&=1,\\
+5\cdot7&\equiv11\pmod{12},
+&\suppE(5\cdot7)&=\{A,B\},
+&\rankE(5\cdot7)&=2,\\
+5\cdot7\cdot11&\equiv1\pmod{12},
+&\suppE(5\cdot7\cdot11)&=\{A,B,C\},
+&\rankE(5\cdot7\cdot11)&=3.
+\end{align*}
+Die erste und die dritte Zahl besitzen dieselbe Restklassensignatur $E$, aber verschiedene Familienränge.
+\end{example}
+
+\section{Beispiele der Rangklassifikation}
+
+\begin{center}
+\begin{tabular}{rlll}
+\toprule
+$n$ & Primfaktorzerlegung ohne $2,3$ & $\suppE(n)$ & Terminologie \\
+\midrule
+$2^8 3^4$ & $1$ & $\varnothing$ & EABC-familienfrei \\
+$5^2\cdot17$ & $5^2\cdot17$ & $\{A\}$ & monofamilial \\
+$7\cdot11$ & $7\cdot11$ & $\{B,C\}$ & bifamilial \\
+$5\cdot7\cdot13$ & $5\cdot7\cdot13$ & $\{E,A,B\}$ & trifamilial \\
+$5\cdot7\cdot11\cdot13$ & $5\cdot7\cdot11\cdot13$ & $\{E,A,B,C\}$ & tetrafamilial \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Die jeweils ersten 100 Primzahlen der vier Familien}
+
+Wir bezeichnen mit $p_X(k)$ die $k$-te Primzahl der Familie $X\in\{E,A,B,C\}$ in aufsteigender Reihenfolge. Tabelle~\ref{tab:first100} enthält die jeweils ersten hundert Werte. Jede Spalte wurde durch einen deterministischen Primzahlsieb-Lauf erzeugt und anschließend auf Primalität, Restklasse und Vollständigkeit bis zum letzten Tabelleneintrag geprüft.
+
+\begingroup
+\small
+\setlength{\tabcolsep}{8pt}
+\renewcommand{\arraystretch}{1.05}
+\begin{longtable}{r r r r r}
+\caption{Die jeweils ersten $100$ Primzahlen der EABC-Familien.}\label{tab:first100}\\
+\toprule
+$k$ & $p_E(k)\equiv1$ & $p_A(k)\equiv5$ & $p_B(k)\equiv7$ & $p_C(k)\equiv11$ \\
+& $\pmod{12}$ & $\pmod{12}$ & $\pmod{12}$ & $\pmod{12}$ \\
+\midrule
+\endfirsthead
+\multicolumn{5}{c}{\tablename\ \thetable\ -- Fortsetzung}\\
+\toprule
+$k$ & $p_E(k)\equiv1$ & $p_A(k)\equiv5$ & $p_B(k)\equiv7$ & $p_C(k)\equiv11$ \\
+& $\pmod{12}$ & $\pmod{12}$ & $\pmod{12}$ & $\pmod{12}$ \\
+\midrule
+\endhead
+\midrule
+\multicolumn{5}{r}{Fortsetzung auf der nächsten Seite}\\
+\endfoot
+\bottomrule
+\endlastfoot
+1 & 13 & 5 & 7 & 11 \\
+2 & 37 & 17 & 19 & 23 \\
+3 & 61 & 29 & 31 & 47 \\
+4 & 73 & 41 & 43 & 59 \\
+5 & 97 & 53 & 67 & 71 \\
+6 & 109 & 89 & 79 & 83 \\
+7 & 157 & 101 & 103 & 107 \\
+8 & 181 & 113 & 127 & 131 \\
+9 & 193 & 137 & 139 & 167 \\
+10 & 229 & 149 & 151 & 179 \\
+11 & 241 & 173 & 163 & 191 \\
+12 & 277 & 197 & 199 & 227 \\
+13 & 313 & 233 & 211 & 239 \\
+14 & 337 & 257 & 223 & 251 \\
+15 & 349 & 269 & 271 & 263 \\
+16 & 373 & 281 & 283 & 311 \\
+17 & 397 & 293 & 307 & 347 \\
+18 & 409 & 317 & 331 & 359 \\
+19 & 421 & 353 & 367 & 383 \\
+20 & 433 & 389 & 379 & 419 \\
+21 & 457 & 401 & 439 & 431 \\
+22 & 541 & 449 & 463 & 443 \\
+23 & 577 & 461 & 487 & 467 \\
+24 & 601 & 509 & 499 & 479 \\
+25 & 613 & 521 & 523 & 491 \\
+26 & 661 & 557 & 547 & 503 \\
+27 & 673 & 569 & 571 & 563 \\
+28 & 709 & 593 & 607 & 587 \\
+29 & 733 & 617 & 619 & 599 \\
+30 & 757 & 641 & 631 & 647 \\
+31 & 769 & 653 & 643 & 659 \\
+32 & 829 & 677 & 691 & 683 \\
+33 & 853 & 701 & 727 & 719 \\
+34 & 877 & 761 & 739 & 743 \\
+35 & 937 & 773 & 751 & 827 \\
+36 & 997 & 797 & 787 & 839 \\
+37 & 1009 & 809 & 811 & 863 \\
+38 & 1021 & 821 & 823 & 887 \\
+39 & 1033 & 857 & 859 & 911 \\
+40 & 1069 & 881 & 883 & 947 \\
+41 & 1093 & 929 & 907 & 971 \\
+42 & 1117 & 941 & 919 & 983 \\
+43 & 1129 & 953 & 967 & 1019 \\
+44 & 1153 & 977 & 991 & 1031 \\
+45 & 1201 & 1013 & 1039 & 1091 \\
+46 & 1213 & 1049 & 1051 & 1103 \\
+47 & 1237 & 1061 & 1063 & 1151 \\
+48 & 1249 & 1097 & 1087 & 1163 \\
+49 & 1297 & 1109 & 1123 & 1187 \\
+50 & 1321 & 1181 & 1171 & 1223 \\
+51 & 1381 & 1193 & 1231 & 1259 \\
+52 & 1429 & 1217 & 1279 & 1283 \\
+53 & 1453 & 1229 & 1291 & 1307 \\
+54 & 1489 & 1277 & 1303 & 1319 \\
+55 & 1549 & 1289 & 1327 & 1367 \\
+56 & 1597 & 1301 & 1399 & 1427 \\
+57 & 1609 & 1361 & 1423 & 1439 \\
+58 & 1621 & 1373 & 1447 & 1451 \\
+59 & 1657 & 1409 & 1459 & 1487 \\
+60 & 1669 & 1433 & 1471 & 1499 \\
+61 & 1693 & 1481 & 1483 & 1511 \\
+62 & 1741 & 1493 & 1531 & 1523 \\
+63 & 1753 & 1553 & 1543 & 1559 \\
+64 & 1777 & 1601 & 1567 & 1571 \\
+65 & 1789 & 1613 & 1579 & 1583 \\
+66 & 1801 & 1637 & 1627 & 1607 \\
+67 & 1861 & 1697 & 1663 & 1619 \\
+68 & 1873 & 1709 & 1699 & 1667 \\
+69 & 1933 & 1721 & 1723 & 1787 \\
+70 & 1993 & 1733 & 1747 & 1811 \\
+71 & 2017 & 1877 & 1759 & 1823 \\
+72 & 2029 & 1889 & 1783 & 1847 \\
+73 & 2053 & 1901 & 1831 & 1871 \\
+74 & 2089 & 1913 & 1867 & 1907 \\
+75 & 2113 & 1949 & 1879 & 1931 \\
+76 & 2137 & 1973 & 1951 & 1979 \\
+77 & 2161 & 1997 & 1987 & 2003 \\
+78 & 2221 & 2069 & 1999 & 2027 \\
+79 & 2269 & 2081 & 2011 & 2039 \\
+80 & 2281 & 2129 & 2083 & 2063 \\
+81 & 2293 & 2141 & 2131 & 2087 \\
+82 & 2341 & 2153 & 2143 & 2099 \\
+83 & 2377 & 2213 & 2179 & 2111 \\
+84 & 2389 & 2237 & 2203 & 2207 \\
+85 & 2437 & 2273 & 2239 & 2243 \\
+86 & 2473 & 2297 & 2251 & 2267 \\
+87 & 2521 & 2309 & 2287 & 2339 \\
+88 & 2557 & 2333 & 2311 & 2351 \\
+89 & 2593 & 2357 & 2347 & 2399 \\
+90 & 2617 & 2381 & 2371 & 2411 \\
+91 & 2677 & 2393 & 2383 & 2423 \\
+92 & 2689 & 2417 & 2467 & 2447 \\
+93 & 2713 & 2441 & 2503 & 2459 \\
+94 & 2749 & 2477 & 2539 & 2531 \\
+95 & 2797 & 2549 & 2551 & 2543 \\
+96 & 2833 & 2609 & 2647 & 2579 \\
+97 & 2857 & 2621 & 2659 & 2591 \\
+98 & 2917 & 2633 & 2671 & 2663 \\
+99 & 2953 & 2657 & 2683 & 2687 \\
+100 & 3001 & 2693 & 2707 & 2699 \\
+\end{longtable}
+\endgroup
+
+\section{Terminologische Zusammenfassung}
+
+Die endgültige Nomenklatur lässt sich in fünf Regeln zusammenfassen:
+\begin{enumerate}[label=\textbf{T\arabic*.}]
+    \item Die vier Primklassen heißen $E$-, $A$-, $B$- und $C$-Familie bzw. Modulo-12-Einser-, Fünfer-, Siebener- und Elferprimzahlen.
+    \item $\suppE(n)$ heißt EABC-Familienträger; er enthält jede in der Primfaktorzerlegung von $n$ vertretene Familie genau einmal.
+    \item $\rankE(n)=|\suppE(n)|$ heißt EABC-Familienrang.
+    \item Die exakten Rangbezeichnungen lauten EABC-familienfrei, monofamilial, bifamilial, trifamilial und tetrafamilial.
+    \item Für die grobe Dreiteilung der Zahlen mit mindestens einem Primteiler $p>3$ werden die Klassen monofamilial, bifamilial und multifamilial verwendet, wobei multifamilial den Rangbereich $\ge3$ bezeichnet.
+\end{enumerate}
+
+Diese Terminologie trennt die vollständige Primfaktorinformation, das EABC-Familienprofil und die bloße Produktrestklasse. Sie vermeidet insbesondere die falsche Gleichsetzung von gleicher Restklassensignatur mit gleichem Familienträger.
+
+\section{Schluss}
+
+Die Modulo-$12$-Einteilung der Primzahlen größer drei führt zu einer natürlichen vierfarbigen Primfamilienstruktur. Für zusammengesetzte Zahlen ist der EABC-Familienträger die geeignete mengentheoretische Invariante, während der Familienrang ihre gröbste numerische Zusammenfassung liefert. Die exakte Theorie besitzt fünf Rangstufen einschließlich der $3$-glatten Zahlen. Auf dem Bereich der EABC-familienbehafteten Zahlen ergibt sich zugleich die gewünschte kanonische Dreiteilung in mono-, bi- und multifamiliale Zahlen. Der kleinste und größte Primteiler allein reichen für diese Klassifikation nicht aus; maßgeblich sind sämtliche Primteiler größer drei.
+
+\begin{thebibliography}{9}
+
+\bibitem{Davenport}
+H. Davenport,
+\emph{Multiplicative Number Theory},
+3. Auflage, überarbeitet von H. L. Montgomery,
+Graduate Texts in Mathematics 74, Springer, New York, 2000.
+
+\bibitem{HardyWright}
+G. H. Hardy und E. M. Wright,
+\emph{An Introduction to the Theory of Numbers},
+6. Auflage, Oxford University Press, Oxford, 2008.
+
+\bibitem{Niven}
+I. Niven, H. S. Zuckerman und H. L. Montgomery,
+\emph{An Introduction to the Theory of Numbers},
+5. Auflage, John Wiley \& Sons, New York, 1991.
+
+\end{thebibliography}
+
+\end{document}

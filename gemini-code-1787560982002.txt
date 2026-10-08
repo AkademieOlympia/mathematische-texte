@@ -1,0 +1,170 @@
+% !TeX program = pdflatex
+\documentclass[11pt,a4paper,reqno]{amsart}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{geometry}
+\geometry{a4paper,top=25mm,bottom=25mm,left=25mm,right=25mm}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!70!black,
+    citecolor=green!50!black,
+    urlcolor=blue!80!black
+}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{hypothesis}[theorem]{Open Interface}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Ztwo}{\mathbb{Z}_2}
+\newcommand{\val}{\nu_2}
+
+\title[Adaptive Crossing Bifurcation and Parity--Phase Rigidity]{The Adaptive Crossing Bifurcation and Parity--Phase Rigidity in $2$-Adic Syracuse Dynamics}
+\author{Thomas Hoffbauer}
+\date{August 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We establish the exact projective mechanics of the accelerated Collatz operator on $\Ztwo$ and analyze the adaptive crossing bifurcation $0 < E_m(n) \le \ln 2$. We prove that while the static $2$-adic representation of an integer $n \in \N$ stabilizes permanently at depth $m \ge L(n) = \lfloor \log_2 n \rfloor + 1$, the dynamic orbit-parity stream $v_m(n) = Q_\infty(n)_m$ remains unconstrained by this stabilization and can assume values $v_m \in \{0, 1\}$. Consequently, Sector~$\mathrm{A}_{\mathrm{cross}}$ is formulated as an adaptive parity--phase correlation problem on the integer image of the Bernstein--Lagarias embedding, where exclusion reduces to establishing arbitrarily late zero-parity crossings.
+\end{abstract}
+
+% =========================================================================
+\section{Projective Residue Dynamics and Static Bit Freezing}
+% =========================================================================
+
+Let $T: \N \to \N$ denote the accelerated Syracuse operator $T(n) = (3n+1)/2$ for $n$ odd and $T(n) = n/2$ for $n$ even. The accumulated parameters $(S_m(n), B_m(n))$ satisfy the exact integer identity $2^m T^m(n) = 3^{S_m(n)} n + B_m(n)$.
+
+\begin{definition}[Canonical Projective Residue]
+For $n \in \N_{>0}$, we define $\rho_0(n) := 0$ and, for each depth $m \ge 1$, the canonical residue
+\begin{equation}
+    \rho_m(n) := \left( -B_m(n) 3^{-S_m(n)} \bmod 2^m \right) \in \{0, 1, \dots, 2^m - 1\}.
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Projective Identity and Static Freezing]\label{thm:static_freezing}
+For every integer $n \in \N_{>0}$ and all $m \ge 0$:
+\begin{equation}
+    \rho_m(n) = n \bmod 2^m.
+\end{equation}
+The projective transition to depth $m+1$ is governed by
+\begin{equation}
+    \rho_{m+1}(n) = \rho_m(n) + d_m(n) \cdot 2^m,
+\end{equation}
+where $d_m(n) := \lfloor n / 2^m \rfloor \bmod 2$ is the $m$-th static binary digit of $n$. In particular, for all $m \ge L(n) = \lfloor \log_2 n \rfloor + 1$, we have $d_m(n) = 0$ and the canonical residue freezes permanently:
+\begin{equation}
+    \rho_m(n) = n \quad (\forall m \ge L(n)).
+\end{equation}
+\end{theorem}
+
+% =========================================================================
+\section{Decoupling of Static Bits and Dynamic Parity Streams}
+% =========================================================================
+
+\begin{definition}[Dynamic Parity Sequence]
+The dynamic parity stream $v_m(n) \in \{0, 1\}$ is defined by
+\begin{equation}
+    v_m(n) := T^m(n) \bmod 2 = Q_\infty(n)_m,
+\end{equation}
+where
+\begin{equation}
+    Q_\infty(n) := \sum_{m=0}^\infty v_m(n) \cdot 2^m \in \Ztwo
+\end{equation}
+denotes the Bernstein--Lagarias parity encoding.
+\end{definition}
+
+\begin{proposition}[Non-Vanishing of Parity Bits Beyond Bit-Length]\label{prop:non_vanishing}
+The static freezing $d_m(n) = 0$ for $m \ge L(n)$ does not imply $v_m(n) = 0$. In particular, positive integers $n \in \N$ generate odd states $v_m(n) = 1$ at depths $m \ge L(n)$.
+\end{proposition}
+\begin{proof}
+For $n = 703$, $L(703) = 10$ ($d_m(703) = 0$ for all $m \ge 10$). The orbit evaluates to $T^{10}(703) = 4511$, $T^{11}(703) = 6767$, $T^{12}(703) = 10151$, $T^{13}(703) = 15227$, and $T^{14}(703) = 22841$, all of which are odd. Hence,
+\begin{equation}
+    Q_\infty(703)_{10} = Q_\infty(703)_{11} = Q_\infty(703)_{12} = Q_\infty(703)_{13} = Q_\infty(703)_{14} = 1,
+\end{equation}
+demonstrating that static digit termination does not restrict dynamic parity complexity.
+\end{proof}
+
+% =========================================================================
+\section{The Adaptive Crossing Bifurcation}
+% =========================================================================
+
+Let $S_m(n) := \sum_{j=0}^{m-1} Q_\infty(n)_j$ and define the logarithmic phase:
+\begin{equation}
+    E_m(n) := S_m(n) \ln 3 - m \ln 2.
+\end{equation}
+
+\begin{definition}[Adaptive Crossing Set]
+The crossing index sequence is defined adaptively by
+\begin{equation}
+    \mathcal{M}_{\mathrm{cross}}(n) := \left\{ m \ge L(n) \;\Big|\; 0 < E_m(n) \le \ln 2 \right\}.
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Bifurcation Dynamics at Crossing]\label{thm:bifurcation}
+Let $m \in \mathcal{M}_{\mathrm{cross}}(n)$. The successor phase $E_{m+1}(n)$ satisfies:
+\begin{equation}
+    E_{m+1}(n) = \begin{cases}
+        E_m(n) - \ln 2 < 0, & \text{if } Q_\infty(n)_m = 0 \quad \text{(exit from persistent Sector A)}, \\[1mm]
+        E_m(n) + \ln(3/2) > 0, & \text{if } Q_\infty(n)_m = 1 \quad \text{(Sector-A phase sustained)}.
+    \end{cases}
+\end{equation}
+\end{theorem}
+\begin{proof}
+If $Q_\infty(n)_m = 0$, $E_{m+1} = E_m - \ln 2 \le 0$. The equality $E_m = \ln 2$ would imply $S_m \ln 3 = (m+1) \ln 2 \iff 3^{S_m} = 2^{m+1}$, which has no integer solutions for $m \ge 1$ by unique prime factorization. Hence, $E_{m+1}(n) < 0$ is strict. If $Q_\infty(n)_m = 1$, $E_{m+1} = E_m + \ln(3/2) > 0$.
+\end{proof}
+
+\begin{theorem}[Effective Anti-Resonance Corridor]\label{thm:anti_resonance}
+By the Baker--W{\"u}stholz theorem \cite{Baker1993}, there exist effective computable constants $c > 0$ and $\kappa > 0$ such that for all $m \in \mathcal{M}_{\mathrm{cross}}(n)$:
+\begin{equation}
+    c \, m^{-\kappa} < E_m(n) \le \ln 2.
+\end{equation}
+\end{theorem}
+
+% =========================================================================
+\section{The Sector $\mathrm{A}_{\mathrm{cross}}$ Interface}
+% =========================================================================
+
+\begin{hypothesis}[Sector $\mathrm{A}_{\mathrm{cross}}$ Crossing Rigidity]\label{hyp:crossing_rigidity}
+There exists no positive integer $n \in \N_{>1}$ such that simultaneously:
+\begin{enumerate}
+    \item $E_m(n) \ge 0$ for all sufficiently large $m$;
+    \item the adaptive crossing set is infinite: $|\mathcal{M}_{\mathrm{cross}}(n)| = \infty$;
+    \item the parity stream maintains deterministic alignment at every large crossing index:
+    \begin{equation}
+        Q_\infty(n)_m = 1 \qquad \text{for all sufficiently large } m \in \mathcal{M}_{\mathrm{cross}}(n).
+    \end{equation}
+\end{enumerate}
+\end{hypothesis}
+
+\begin{corollary}[Criterion for Sector $\mathrm{A}_{\mathrm{cross}}$ Exclusion]\label{cor:exclusion}
+To eliminate Subsector $\mathrm{A}_{\mathrm{cross}}$, it suffices to prove that for every positive integer trajectory with $|\mathcal{M}_{\mathrm{cross}}(n)| = \infty$, zero-parity crossings occur arbitrarily late:
+\begin{equation}
+    \forall M \in \N \; \exists m \ge M: \quad m \in \mathcal{M}_{\mathrm{cross}}(n) \quad \land \quad Q_\infty(n)_m = 0.
+\end{equation}
+Indeed, any such index occurring beyond a proposed persistence threshold $M_0$ forces $E_{m+1}(n) < 0$, strictly violating eventual non-negativity.
+\end{corollary}
+
+\begin{thebibliography}{9}
+\bibitem{Baker1993} A.~Baker, G.~W{\"u}stholz, \emph{Logarithmic forms and group varieties}, J. Reine Angew. Math. \textbf{442} (1993), 19--62.
+\bibitem{Lagarias1985} J.~C.~Lagarias, \emph{The $3x + 1$ problem and its generalizations}, Amer. Math. Monthly \textbf{92} (1985), 3--23.
+\end{thebibliography}
+
+\end{document}

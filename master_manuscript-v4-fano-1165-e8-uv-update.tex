@@ -1,0 +1,802 @@
+
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{boxedminipage}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\newtheorem{theorem}{Theorem}[section]
+\emergencystretch=2em
+
+\title{Master Manuscript V4: Structural Consistency and Residue Sanity}
+\author{Thomas Hoffbauer}
+\date{August 16, 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{The Residue Sanity Gate: Metric-Volumetric Invariance}
+
+To ensure structural consistency in the EABC framework, we establish the Residue Sanity Gate. For any full-dimensional Euclidean lattice $\Lambda \subset \mathbb{R}^d$, the radial Epstein-Zeta function is defined as:
+\[
+Z_{\Lambda}^{\mathrm{len}}(s) = \sum_{0 \neq x \in \Lambda} \|x\|^{-s}.
+\]
+The fundamental geometric consistency condition at the pole $s=d$ is:
+\begin{equation}
+\boxed{\operatorname*{Res}_{s=d} Z_{\Lambda}^{\mathrm{len}}(s) = \frac{2\pi^{d/2}}{\Gamma(d/2)\operatorname{covol}(\Lambda)}}
+\end{equation}
+
+\noindent\textbf{Crucial Clarification on Invariance:} 
+The residue is \emph{not} a topological invariant, but a \emph{metric-volumetric lattice invariant}. Under dilation $\Lambda \mapsto c\Lambda$, the zeta function transforms as $Z_{c\Lambda}^{\mathrm{len}}(s) = c^{-s}Z_\Lambda^{\mathrm{len}}(s)$, yielding:
+\[
+\operatorname*{Res}_{s=d} Z_{c\Lambda}^{\mathrm{len}} = c^{-d} \operatorname*{Res}_{s=d} Z_\Lambda^{\mathrm{len}}.
+\]
+More generally, for any $A \in GL(d, \mathbb{R})$, we have $\operatorname{covol}(A\Lambda) = |\det A|\operatorname{covol}(\Lambda)$, leading to:
+\[
+\boxed{
+\operatorname*{Res}_{s=d} Z_{A\Lambda}^{\mathrm{len}} = |\det A|^{-1} \operatorname*{Res}_{s=d} Z_\Lambda^{\mathrm{len}}.
+}
+\]
+Thus, the residue is invariant under all volume-preserving linear transformations ($|\det A| = 1$), including orientation-reversing ones.
+
+\section{Divisor Information and Winding Audit (Argument Principle)}
+
+For a meromorphic function, the winding number along a closed contour $\gamma$ in the resolvent set is given by the argument principle:
+\[
+\nu_\gamma = \frac{1}{2\pi i} \oint_\gamma \frac{Z'(s)}{Z(s)}\,ds = N_Z(\gamma) - N_P(\gamma) \in \mathbb{Z}.
+\]
+This integer is invariant under homotopies of the contour within the complement of the divisor. This forms the clean dichotomy:
+\[
+\begin{array}{rcl}
+\operatorname*{Res}_{s=d} Z_\Lambda &\longleftrightarrow& \text{metric/volumetric pole strength}, \\[2mm]
+\displaystyle \frac{1}{2\pi i}\oint_\gamma d\log Z_\Lambda &\longleftrightarrow& \text{discrete divisor / winding information}.
+\end{array}
+\]
+
+\section{Comparative Divisor and Winding Audit for $D_4$ and $E_8$}
+
+Because $D_4$ lives in dimension 4 and $E_8$ in dimension 8, there is no canonical continuous cross-dimensional transition along which a single winding number could be transported directly from $D_4$ to $E_8$. Instead, we perform a rigorous comparative divisor audit by analyzing the divisors $\operatorname{div} Z_{D_4}^{\mathrm{len}}$ and $\operatorname{div} Z_{E_8}^{\mathrm{len}}$ using concentric contours centered at the respective dimensional poles:
+\[
+\gamma_{D_4}(R): |s-4|=R, \quad \gamma_{E_8}(R): |s-8|=R.
+\]
+The audit maps the discrete step functions:
+\[
+R \mapsto \bigl(\nu_{D_4}(R), \nu_{E_8}(R)\bigr),
+\]
+designed to determine the radial distances at which zeros and secondary poles appear and to identify cancellations among factor singularities. No cross-dimensional transport law is assumed.
+
+
+
+\section{Monomial Fourier--Projection Uniqueness Theorem}
+
+Define the $L=1$ projection functional
+\[
+\mathcal P[f] := 2\int_0^1 (1-s)f(s)\,ds
+\]
+and, for integers $a\ge 0$ and $m\ge 1$, the monomial Fourier family
+\[
+f_{a,m}(s):=s^a\sin(2\pi m s).
+\]
+Set $k=2\pi m$ and
+\[
+M_a(k):=\int_0^1 s^a\sin(ks)\,ds.
+\]
+For $a\ge2$, two integrations by parts, together with $\sin k=0$ and $\cos k=1$, give
+\begin{equation}
+M_a(k)=-\frac1k-\frac{a(a-1)}{k^2}M_{a-2}(k),
+\end{equation}
+with initial values $M_0(k)=0$ and $M_1(k)=-1/k$.
+
+Introduce
+\[
+x:=\frac1{k^2},\qquad J_a(x):=kM_a(k).
+\]
+Then
+\[
+J_0=0,\qquad J_1=-1,
+\]
+and
+\begin{equation}
+J_a(x)=-1-a(a-1)xJ_{a-2}(x),\qquad a\ge2.
+\end{equation}
+Hence $J_a\in\mathbb Z[x]\subset\mathbb Q[x]$ for every $a$.
+
+Since
+\[
+\mathcal P[f_{a,m}]=2(M_a-M_{a+1}),
+\]
+define
+\[
+D_a(x):=J_a(x)-J_{a+1}(x).
+\]
+Then
+\begin{equation}
+\mathcal P[f_{a,m}]=\frac{2}{k}D_a\!\left(\frac{1}{4\pi^2m^2}\right).
+\end{equation}
+
+\begin{theorem}[Monomial Fourier--Projection Uniqueness]
+For every $a\in\mathbb N_0$ and $m\in\mathbb N$,
+\[
+\boxed{\mathcal P\!\left[s^a\sin(2\pi m s)\right]=0\iff a=1.}
+\]
+\end{theorem}
+
+\begin{proof}
+For $a=1$, the recursion gives $J_1=J_2=-1$, hence $D_1\equiv0$.
+For $a=0$, $D_0=1$. For $a=2$, one finds $D_2(x)=-6x\not\equiv0$.
+For every $a\ge3$, the recursion yields
+\[
+J_a(x)=-1+a(a-1)x+O(x^2),
+\qquad
+J_{a+1}(x)=-1+a(a+1)x+O(x^2),
+\]
+so
+\[
+D_a(x)=-2ax+O(x^2),
+\]
+and therefore $D_a$ is a nonzero polynomial in $\mathbb Q[x]$.
+
+For fixed $m\ge1$,
+\[
+x_m=\frac1{4\pi^2m^2}
+\]
+is transcendental because $\pi$ is transcendental. A nonzero polynomial with rational coefficients has only algebraic roots. Consequently $D_a(x_m)=0$ can occur only when $D_a\equiv0$, which happens exactly for $a=1$.
+\end{proof}
+
+The cancellation at $a=1$ is nontrivial at the level of moments:
+\[
+M_1(k)=M_2(k)=-\frac1k=-\frac1{2\pi m}\neq0,
+\]
+while
+\[
+\mathcal P[s\sin(2\pi m s)]=2(M_1-M_2)=0.
+\]
+Thus the linear exponent is the unique kernel exponent within this monomial Fourier family. This statement is algebraic-analytic; no physical vacuum interpretation is implied by the theorem itself.
+
+
+
+% -----------------------------------------------------------------------------
+% Intended placement in the extended master architecture: Section 4.5.2.
+% The present compact V4 source does not yet contain the complete 4.5 hierarchy;
+% therefore the semantic number is retained in the heading without falsifying the
+% automatic section counters of this standalone source.
+\subsection*{4.5.2 Disjoint Logarithmic Shell Audit: Support Weights and Detailed Balance}
+\addcontentsline{toc}{subsection}{4.5.2 Disjoint Logarithmic Shell Audit: Support Weights and Detailed Balance}
+
+To separate genuine bulk behavior from smoothing caused by cumulative averages, we
+repeat the support-weight and reversibility audit on disjoint prime-value shells.  Let
+\(\widehat\pi^{\mathrm{shell}}=(\widehat\pi_2,\widehat\pi_3,\widehat\pi_4)\)
+denote the empirical frequencies of the three coarse-grained support sectors
+\(S_2,S_3,S_4\) in a shell, and let
+\[
+\varpi=\left(\frac12,\frac14,\frac14\right)
+\]
+be the predicted reference weight vector.  For the shell transition matrix
+\(T^{\mathrm{shell}}\), define the detailed-balance defect by
+\begin{equation}
+D_{\mathrm{DB}}^{\mathrm{shell}}
+:=
+\left\|
+\operatorname{diag}(\varpi)T^{\mathrm{shell}}
+-
+\bigl(T^{\mathrm{shell}}\bigr)^{\!T}\operatorname{diag}(\varpi)
+\right\|_F .
+\end{equation}
+Thus \(D_{\mathrm{DB}}^{\mathrm{shell}}=0\) is the exact detailed-balance condition
+for the chosen reference weights, whereas a nonzero value measures the finite-shell
+defect in Frobenius norm.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Disjoint logarithmic shell audit for primes up to \(p=500{,}000\).  The
+reported values are finite-range numerical data.  They provide evidence for
+stabilization of the support frequencies and a reduced detailed-balance defect in the
+largest shell, but do not by themselves prove an asymptotic limit.}
+\label{tab:disjoint-shell-audit}
+\begin{tabularx}{\textwidth}{@{}c c r c c X@{}}
+\toprule
+Shell & Prime-value range \(p\) & Count &
+\(\widehat\pi^{\mathrm{shell}}(S_2,S_3,S_4)\) &
+\(D_{\mathrm{DB}}^{\mathrm{shell}}\) &
+Diagonal entries \((T_{22},T_{33},T_{44})\) \\
+\midrule
+1 & \([100,1{,}000)\) & 143 &
+\((0.4825,0.2587,0.2587)\) & 0.035057 &
+\((0.3529,0.0541,0.1622)\) \\
+2 & \([1{,}000,5{,}000)\) & 501 &
+\((0.4970,0.2475,0.2555)\) & 0.008821 &
+\((0.3735,0.1371,0.1181)\) \\
+3 & \([5{,}000,20{,}000)\) & 1,593 &
+\((0.4997,0.2530,0.2473)\) & 0.034353 &
+\((0.4138,0.1241,0.1269)\) \\
+4 & \([20{,}000,100{,}000)\) & 7,330 &
+\((0.4991,0.2508,0.2502)\) & 0.008211 &
+\((0.4155,0.1447,0.1468)\) \\
+5 & \([100{,}000,500{,}000)\) & 31,946 &
+\((0.4992,0.2507,0.2501)\) & \(\mathbf{0.006970}\) &
+\((0.4225,0.1587,0.1576)\) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{Support-weight stabilization.}
+The disjoint-shell frequencies approach the reference vector closely over the tested
+range.  In the largest shell,
+\[
+\widehat\pi^{\mathrm{shell}}=(0.4992,0.2507,0.2501),
+\]
+so the componentwise deviations from \(\varpi\) are
+\[
+(-8\times10^{-4},\;7\times10^{-4},\;1\times10^{-4}).
+\]
+This is strong finite-range shell evidence that the observed support weights are stable
+near the predicted values.  It is not, on its own, a proof that
+\(\widehat\pi^{\mathrm{shell}}\to\varpi\) as \(p\to\infty\).  Such an asymptotic
+statement requires an independent analytic argument, including an exact description of
+the pushforward from the underlying residue classes to the three support sectors.
+
+\paragraph{Detailed-balance defect.}
+The sequence
+\[
+0.035057,\;0.008821,\;0.034353,\;0.008211,\;0.006970
+\]
+is manifestly non-monotone.  Nevertheless, the largest shell attains the smallest
+reported defect.  The appropriate finite-data conclusion is therefore an overall
+endpoint reduction accompanied by substantial shell-to-shell fluctuations.  This is
+compatible with finite-size arithmetic correlations, but the present audit does not
+identify Hardy--Littlewood correlations as the unique cause and does not establish
+\[
+\lim_{p\to\infty}D_{\mathrm{DB}}^{\mathrm{shell}}=0.
+\]
+
+\paragraph{Diagonal persistence.}
+The diagonal entries are reported without qualitative dynamical labels.  In the largest
+shell one finds
+\[
+T_{22}=0.4225,\qquad T_{33}=0.1587,\qquad T_{44}=0.1576.
+\]
+Their differing magnitudes are an empirical property of the implemented coarse-grained
+transition matrix.  Any combinatorial explanation in terms of preimage multiplicities or
+cross-transition counts must be established separately from the numerical table.
+
+\paragraph{Epistemic status.}
+The shell audit strengthens the numerical evidence because the intervals are disjoint and
+therefore do not inherit the deterministic smoothing of cumulative averages.  The current
+status is
+\[
+\boxed{
+\begin{array}{ll}
+\text{Support-weight convergence} & \mathrm{STRONG\ FINITE\ RANGE\ EVIDENCE},\\
+\text{Detailed-balance defect} & \mathrm{ENDPOINT\ REDUCTION\ WITH\ FLUCTUATIONS},\\
+\text{Asymptotic detailed balance} & \mathrm{NOT\ YET\ PROVED},\\
+\text{Borel-measure generation} & \mathrm{NOT\ CLAIMED}.
+\end{array}}
+\]
+The terminology ``Borel weights'' is therefore avoided here: \(\varpi\) is treated as a
+predicted support-weight vector (or, once proved, as a Dirichlet-pushforward weight),
+while the standard Borel measure-theoretic framework is presupposed rather than derived
+from the discrete arithmetic model.
+
+
+\section{Residue Specializations for $E_8$ and $D_4$}
+
+For the standard $E_8$ lattice, $\operatorname{covol}(E_8)=1$, and therefore
+\[
+\boxed{\operatorname*{Res}_{s=8}Z_{E_8}^{\mathrm{len}}(s)=\frac{\pi^4}{3}.}
+\]
+For the standard root lattice
+\[
+D_4=\{x\in\mathbb Z^4: x_1+x_2+x_3+x_4\equiv0\pmod2\},
+\]
+we have $\operatorname{covol}(D_4)=2$, hence
+\[
+\boxed{\operatorname*{Res}_{s=4}Z_{D_4}^{\mathrm{len}}(s)=\pi^2.}
+\]
+If $D_4$ is rescaled to covolume $1$, the corresponding residue is $2\pi^2$.
+These values are normalization-sensitive consequences of the general residue formula and constitute mandatory consistency checks for any proposed product or Dirichlet-series representation.
+
+\subsection{Status of the comparative winding stairs}
+
+The comparative winding functions are defined by
+\[
+\nu_{D_4}(R)=\frac{1}{2\pi i}\oint_{|s-4|=R}d\log Z_{D_4}^{\mathrm{len}}(s),
+\qquad
+\nu_{E_8}(R)=\frac{1}{2\pi i}\oint_{|s-8|=R}d\log Z_{E_8}^{\mathrm{len}}(s).
+\]
+Their step locations are determined by the complete divisors of the corresponding meromorphic continuations. A proposed factorization may be used for this purpose only after it has passed both the pole-structure check and the Residue Sanity Gate. Accordingly, the comparative staircase is defined here as an audit object; a full $D_4$ staircase is not claimed until an independently validated $D_4$ factorization or divisor description is supplied.
+
+\section{Claim-Wall}
+
+\begin{itemize}
+    \item \textbf{Metric-Volumetric Residue Formula:} PROVEN
+    \item \textbf{$E_8$ specialization ($\operatorname{covol}=1$) and standard $D_4$ specialization ($\operatorname{covol}=2$):} PROVEN
+    \item \textbf{Argument Principle / Winding Invariance:} PROVEN
+    \item \textbf{Konkrete Produktdarstellung:} VALIDATED (only if pole structure matches the Gate)
+    \item \textbf{Comparative Divisor Audit ($D_4$ vs $E_8$):} DEFINED / AUDIT PENDING
+    \item \textbf{Monomial Fourier--Projection Uniqueness Theorem:} PROVEN
+    \item \textbf{Disjoint-shell support-weight stabilization:} STRONG FINITE-RANGE EVIDENCE
+    \item \textbf{Detailed-balance shell defect:} ENDPOINT REDUCTION WITH FLUCTUATIONS
+    \item \textbf{Asymptotic detailed balance:} NOT YET PROVED
+    \item \textbf{Generation of Borel measure theory from the discrete model:} NOT CLAIMED
+    \item \textbf{Physical / anyonic interpretation of divisor or winding data:} HEURISTIC / NOT CLAIMED
+\end{itemize}
+
+
+
+% -----------------------------------------------------------------------------
+% Intended placement in the extended master architecture: Section 11.6.1.
+% The compact V4 source does not yet contain the complete Chapter 11 hierarchy.
+% Therefore the semantic number is retained in the heading without falsifying
+% the automatic counters of this standalone source.
+\subsection*{11.6.1 Quaternionic Three-Dimensional Contraction of the Fano Rotational Term}
+\addcontentsline{toc}{subsection}{11.6.1 Quaternionic Three-Dimensional Contraction of the Fano Rotational Term}
+\label{sec:fano-3d-contraction}
+
+Let $\phi_{ijk}$ denote the totally antisymmetric Fano three-form associated with
+an oriented octonionic multiplication table.  On any chosen quaternionic
+subalgebra $\operatorname{span}\{1,e_a,e_b,e_c\}\cong\mathbb H$, the restriction
+of $\phi$ to the imaginary three-plane is, after choosing a standard
+Levi--Civita tensor $\epsilon$, of the form
+\begin{equation}
+\phi_{ijk}\big|_{\{a,b,c\}}=\sigma\,\epsilon_{ijk},\qquad \sigma\in\{+1,-1\}.
+\end{equation}
+The sign $\sigma$ records the relative orientation of the chosen Fano line and
+the standard orientation of the physical three-space.  In particular, for the
+orientation convention used in the present audit, the Fano line
+$(1,3,2)$ gives
+\begin{equation}
+\phi_{123}=-1=-\epsilon_{123},
+\end{equation}
+so that $\sigma=-1$ on the selected $\{1,2,3\}$ sector.
+
+Let the antisymmetric part of the three-dimensional velocity gradient be
+\begin{equation}
+\Omega_{jk}=\frac12(\partial_j u_k-\partial_k u_j)
+          =-\frac12\epsilon_{jkl}\omega_l,
+\end{equation}
+with the displayed sign fixing the vorticity convention.  Define the restricted
+Fano rotational contraction by
+\begin{equation}
+\mathcal R_F^{(3)}(\omega)
+:=\sum_{i,j,k=1}^{3}\phi_{ijk}\,\omega_i\Omega_{jk}.
+\end{equation}
+
+\begin{theorem}[Orientation-dependent quaternionic contraction]
+Under the above conventions,
+\begin{equation}
+\boxed{
+\mathcal R_F^{(3)}(\omega)=-\sigma\,|\omega|^2.
+}
+\end{equation}
+Hence the contraction is negative definite only when the Fano orientation and
+the spatial orientation are aligned ($\sigma=+1$).  For the project convention
+$(1,3,2)$, one has $\sigma=-1$ and therefore
+\begin{equation}
+\mathcal R_F^{(3)}(\omega)=+|\omega|^2.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Using $\phi_{ijk}=\sigma\epsilon_{ijk}$ and the three-dimensional vorticity
+identity,
+\begin{align}
+\mathcal R_F^{(3)}
+&=-\frac{\sigma}{2}
+  \sum_{i,j,k,l=1}^{3}
+  \epsilon_{ijk}\epsilon_{jkl}\,\omega_i\omega_l \\
+&=-\frac{\sigma}{2}
+  \sum_{i,l=1}^{3}2\delta_{il}\,\omega_i\omega_l \\
+&=-\sigma\sum_{i=1}^{3}\omega_i^2.
+\end{align}
+This proves the identity exactly.
+\end{proof}
+
+The preceding theorem is an algebraic contraction identity.  It does not, by
+itself, provide a coercive estimate for the classical Navier--Stokes vortex
+stretching term.  Two separate issues remain.
+
+First, changing the relative orientation $\sigma$ changes the sign of the
+contraction.  Consequently, negative definiteness is not an orientation-free
+consequence of the Fano algebra.  A dissipative interpretation therefore
+requires an independent dynamical or geometric principle that fixes the
+physical embedding, the orientation, and the coupling sign.
+
+Second, the classical three-dimensional enstrophy production is
+\begin{equation}
+\mathcal S_{\mathrm{NS}}
+=\int_{\mathbb R^3}\omega_i S_{ij}\omega_j\,dx,
+\end{equation}
+where $S$ is the symmetric strain tensor.  The Fano contraction above is a
+separate algebraic observable unless one proves that it enters the actual
+Navier--Stokes evolution with a fixed coefficient and controls
+$\mathcal S_{\mathrm{NS}}$ in a scaling-critical norm.  No such coercive bridge
+is established by the contraction identity alone.
+
+\paragraph{Gate status.}
+The precise status of the sixth Fano gate is therefore
+\[
+\boxed{
+\begin{array}{ll}
+G_{\mathrm{NS}}^{(6a)} & \mathrm{EXACT\ PASS}\quad
+  (\phi_{ijk}S_{jk}=0),\\
+G_{\mathrm{NS}}^{(6b)}\text{ algebraic reduction} & \mathrm{EXACT\ PASS},\\
+G_{\mathrm{NS}}^{(6b)}\text{ 3D contraction} &
+  \mathcal R_F^{(3)}=-\sigma|\omega|^2,\\
+\text{orientation-independent damping} & \mathrm{NOT\ ESTABLISHED},\\
+G_{\mathrm{NS}}^{(6c)}\text{ coercive bridge} & \mathrm{OPEN},\\
+\text{global 3D regularity} & \mathrm{NOT\ ESTABLISHED}.
+\end{array}}
+\]
+
+
+
+% -----------------------------------------------------------------------------
+% Intended placement in the extended master architecture: Section 11.6.4.
+% The compact V4 source does not yet contain the complete Chapter 11 hierarchy.
+% Therefore the semantic number is retained in the heading without falsifying
+% the automatic counters of this standalone source.
+\subsection*{11.6.4 Morrey Threshold and the Discrete $W^{1,6}$ Direction-Coherence Gate}
+\addcontentsline{toc}{subsection}{11.6.4 Morrey Threshold and the Discrete W1,6 Direction-Coherence Gate}
+\label{sec:fano-morrey-w16}
+
+The Fano-angle identity on a selected quaternionic three-plane gives an exact
+orientation-sensitive representation of the angle between two nonzero
+vorticity directions.  Writing
+\[
+\xi(x,t)=\frac{\omega(x,t)}{|\omega(x,t)|}
+\]
+wherever $\omega\neq0$, and using
+$\phi|_{\mathbb H_{\rm Im}}=\sigma\epsilon$ with $\sigma\in\{\pm1\}$, one has
+\begin{equation}
+\boxed{
+\|\phi(\xi(x,t),\xi(y,t),\cdot)\|
+=\|\xi(x,t)\times\xi(y,t)\|
+=|\sin\theta(x,y,t)|.
+}
+\end{equation}
+This identity is exact, but by itself it supplies no spatial modulus of
+continuity.  The remaining problem is therefore analytic: a discrete or
+coarse-grained EABC mechanism must yield a metric estimate strong enough to
+control the spatial variation of $\xi$.
+
+\paragraph{Sobolev obstruction in three dimensions.}
+A quadratic lattice energy of Dirichlet type can at best suggest an
+$H^1=W^{1,2}$ bound in the continuum.  In three dimensions the standard
+Sobolev embedding gives
+\begin{equation}
+W^{1,2}(\mathbb R^3)\hookrightarrow L^6(\mathbb R^3),
+\qquad
+W^{1,2}(\mathbb R^3)\not\hookrightarrow C^{0,\alpha}(\mathbb R^3)
+\quad(\alpha>0).
+\end{equation}
+Consequently, a purely quadratic direction-energy bound does not imply the
+Hölder control required by geometric depletion criteria for vortex stretching.
+
+\paragraph{Morrey threshold.}
+For $p>3$, Morrey's inequality yields, locally on regular bounded domains (and
+in the corresponding whole-space form),
+\begin{equation}
+W^{1,p}\hookrightarrow C^{0,\alpha},
+\qquad
+\alpha=1-\frac{3}{p}.
+\end{equation}
+Hence $p=6$ is the natural sufficient exponent for obtaining the one-half
+Hölder modulus
+\begin{equation}
+\boxed{
+W^{1,6}\hookrightarrow C^{0,1/2}.
+}
+\end{equation}
+Equivalently, for a representative of $\xi$ on a suitable domain $\Omega$,
+\begin{equation}
+|\xi(x)-\xi(y)|
+\le C_{\Omega}\|\nabla\xi\|_{L^6(\Omega)}|x-y|^{1/2}.
+\end{equation}
+This is a sufficient analytic route to a one-half Hölder estimate; it is not
+claimed to be a necessary or unique route to Navier--Stokes regularity.
+
+\paragraph{Scale-consistent discrete candidate.}
+Let $h>0$ denote the lattice spacing and let $x\sim y$ denote nearest-neighbour
+edges of a three-dimensional lattice.  The scale-consistent sixth-order
+finite-difference energy is
+\begin{equation}
+\boxed{
+E_h^{(6)}[\xi_h]
+:=h^{-3}\sum_{x\sim y}|\xi_x-\xi_y|^6.
+}
+\end{equation}
+Indeed, $|\xi_x-\xi_y|\sim h|\nabla\xi|$ and the number of edges per unit
+volume is of order $h^{-3}$, so that the prefactor $h^{-3}=h^{3-6}$ is the
+one compatible with a continuum $L^6$ gradient energy.  A uniform estimate
+\begin{equation}
+\sup_{0<h<h_0}E_h^{(6)}[\xi_h]\le C
+\label{eq:w16-discrete-gate}
+\end{equation}
+would therefore be the appropriate discrete compactness input for a
+$W^{1,6}$-type continuum bound, provided that the interpolation scheme,
+domain control, and boundary conditions are specified and proved compatible.
+
+\paragraph{A necessary sign-lift refinement of the Fano energy.}
+The Fano norm measures $|\sin\theta|$, not the full vector difference.  For
+unit vectors $a,b\in S^2$,
+\begin{equation}
+|a-b|^2=2(1-a\cdot b),
+\qquad
+|a\times b|^2=(1-a\cdot b)(1+a\cdot b).
+\end{equation}
+Thus $|a\times b|$ vanishes for both parallel and antiparallel vectors.  It
+cannot, without an additional orientation condition, control $|a-b|$.  This
+prevents one from inferring \eqref{eq:w16-discrete-gate} directly from a Fano
+energy of the form
+\begin{equation}
+E_{h,F}^{(6)}
+:=h^{-3}\sum_{x\sim y}
+\|\phi(\xi_x,\xi_y,\cdot)\|^6
+=h^{-3}\sum_{x\sim y}|\sin\theta_{xy}|^6.
+\end{equation}
+A local sign or hemisphere lock is sufficient.  For example, if neighbouring
+directions satisfy
+\begin{equation}
+\xi_x\cdot\xi_y\ge0,
+\label{eq:hemisphere-lock}
+\end{equation}
+then
+\begin{equation}
+|\xi_x-\xi_y|^2
+=2(1-\xi_x\cdot\xi_y)
+\le2|\xi_x\times\xi_y|^2,
+\end{equation}
+and hence
+\begin{equation}
+E_h^{(6)}[\xi_h]\le 8E_{h,F}^{(6)}[\xi_h].
+\end{equation}
+Therefore a genuine arithmetic-to-spatial bridge requires two independent
+ingredients: a uniform sixth-order Fano-angle bound and a mechanism excluding
+uncontrolled nearest-neighbour sign flips.
+
+\begin{theorem}[Conditional discrete-to-Morrey bridge]
+Let $\Omega\subset\mathbb R^3$ be a regular bounded domain and let $\xi_h$ be
+unit-vector lattice fields admitting a stable interpolation
+$I_h\xi_h\in W^{1,6}(\Omega)$.  Assume that the interpolation satisfies
+\begin{equation}
+\|\nabla I_h\xi_h\|_{L^6(\Omega)}^6
+\le C_0 E_h^{(6)}[\xi_h]
+\end{equation}
+with $C_0$ independent of $h$, and that
+\begin{equation}
+\sup_h E_h^{(6)}[\xi_h]<\infty.
+\end{equation}
+Then the interpolants are uniformly bounded in $W^{1,6}(\Omega)$ up to the
+usual control of their $L^6$ norm.  Morrey's inequality consequently gives
+\begin{equation}
+[I_h\xi_h]_{C^{0,1/2}(\Omega)}\le C
+\end{equation}
+with $C$ independent of $h$.  After extraction of a subsequence one obtains
+weak $W^{1,6}$ compactness and, for every $\beta<1/2$, strong compactness in
+$C^{0,\beta}$ on compact subsets under the standard hypotheses.
+\end{theorem}
+
+The theorem is deliberately conditional: the EABC framework has not yet
+proved the uniform bound \eqref{eq:w16-discrete-gate}, the interpolation
+estimate, or the hemisphere-lock condition \eqref{eq:hemisphere-lock}.  In
+addition, $\xi=\omega/|\omega|$ is undefined on the zero-vorticity set; a
+complete Navier--Stokes application must either work on high-vorticity regions
+or establish a compatible extension procedure.
+
+\paragraph{Relation to geometric depletion.}
+The Constantin--Fefferman direction-of-vorticity program shows that sufficient
+geometric coherence of vorticity directions can deplete the vortex-stretching
+nonlinearity.  The role of the present subsection is narrower: it identifies a
+concrete sufficient analytic target by which an EABC lattice mechanism could
+produce a one-half Hölder modulus.  No equivalence with the full hypotheses of
+any particular classical regularity theorem is asserted here.
+
+\paragraph{Gate status.}
+The resulting status is
+\[
+\boxed{
+\begin{array}{ll}
+G_{\mathrm{NS}}^{(8a)}\text{ topological-to-metric implication}
+  & \mathrm{FAILED\ WITHOUT\ AN\ ENERGY\ ESTIMATE},\\
+G_{\mathrm{NS}}^{(8b)}\text{ Sobolev obstruction}
+  & W^{1,2}(\mathbb R^3)\not\hookrightarrow C^{0,\alpha},\\
+G_{\mathrm{NS}}^{(8c)}\text{ Morrey threshold}
+  & W^{1,6}\hookrightarrow C^{0,1/2}\quad\mathrm{STANDARD\ THEOREM},\\
+G_{\mathrm{NS}}^{(8d)}\text{ uniform discrete }W^{1,6}\text{ bound}
+  & \mathrm{OPEN},\\
+G_{\mathrm{NS}}^{(8e)}\text{ Fano-to-vector sign lift}
+  & \mathrm{OPEN\ WITHOUT\ ORIENTATION\ LOCK},\\
+G_{\mathrm{NS}}^{(8f)}\text{ arithmetic-to-spatial bridge}
+  & \mathrm{OPEN},\\
+\text{global 3D Navier--Stokes regularity}
+  & \mathrm{NOT\ ESTABLISHED}.
+\end{array}}
+\]
+
+
+% -----------------------------------------------------------------------------
+% Intended placement in the extended master architecture: Section 11.6.5.
+% The compact V4 source does not yet contain the complete Chapter 11 hierarchy.
+% Therefore the semantic number is retained in the heading without falsifying
+% the automatic counters of this standalone source.
+\subsection*{11.6.5 Quartic $E_8$ Root Isotropy and a Conditional $H^2$ UV-Coercivity Route}
+\addcontentsline{toc}{subsection}{11.6.5 Quartic E8 Root Isotropy and a Conditional H2 UV-Coercivity Route}
+\label{sec:e8-quartic-uv}
+
+The direct $W^{1,6}$ route of Section~\ref{sec:fano-morrey-w16} asks for a
+sixth-order discrete gradient bound.  A spectrally more natural sufficient
+route is to obtain quadratic control of two spatial derivatives.  In three
+space dimensions, local $H^2$ control (together with the standard lower-order
+localization terms) implies
+\begin{equation}
+H^2(\Omega)\hookrightarrow W^{1,6}(\Omega)
+\hookrightarrow C^{0,1/2}(\Omega)
+\end{equation}
+on regular bounded domains.  Thus an isotropic positive fourth-order Fourier
+symbol is a natural candidate for a direction-coherence mechanism.
+
+\paragraph{Exact fourth moment of the $E_8$ root system.}
+Let $R(E_8)\subset\mathbb R^8$ denote the standard set of $240$ roots,
+normalized by $|r|^2=2$.  The normalized root directions form a spherical
+$7$-design.  Consequently all spherical moments through degree four coincide
+with their rotationally invariant spherical averages.  In particular, for
+arbitrary $k\in\mathbb R^8$,
+\begin{theorem}[Quartic $E_8$ root-moment identity]
+\begin{equation}
+\boxed{
+\sum_{r\in R(E_8)}(r\cdot k)^4=36\,|k|^4.
+}
+\label{eq:e8-fourth-moment}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Write $u=r/\sqrt2\in S^7$.  Since the normalized roots are a spherical
+$7$-design, their fourth moment equals the fourth spherical moment.  For the
+unit sphere in dimension $d=8$,
+\begin{equation}
+\frac{1}{|S^7|}\int_{S^7}(u\cdot k)^4\,dS(u)
+=\frac{3}{d(d+2)}|k|^4
+=\frac{3}{80}|k|^4.
+\end{equation}
+Because $(r\cdot k)^4=4(u\cdot k)^4$ and there are $240$ roots,
+\begin{equation}
+\sum_{r\in R(E_8)}(r\cdot k)^4
+=240\cdot4\cdot\frac{3}{80}|k|^4
+=36|k|^4.
+\end{equation}
+\end{proof}
+
+Equivalently, the fourth moment tensor is
+\begin{equation}
+\sum_{r\in R(E_8)}r_i r_j r_k r_l
+=12\bigl(\delta_{ij}\delta_{kl}
+        +\delta_{ik}\delta_{jl}
+        +\delta_{il}\delta_{jk}\bigr).
+\label{eq:e8-fourth-tensor}
+\end{equation}
+Equation~\eqref{eq:e8-fourth-moment} is therefore an exact algebraic-geometric
+identity.  It is logically independent of the dimensional pole of the
+$E_8$ Epstein zeta function at $s=8$; the latter supplies spectral information
+about the lattice but does not by itself generate the fourth-order operator
+below.
+
+\paragraph{Dimensionally consistent three-dimensional pullback.}
+A Navier--Stokes application lives in physical dimension three, whereas the
+roots $r$ lie in $\mathbb R^8$.  Therefore the expression $r\cdot\nabla$ is not
+defined until an embedding is specified.  Let
+\begin{equation}
+\iota:\mathbb R^3\longrightarrow\mathbb R^8,
+\qquad \iota^T\iota=I_3,
+\end{equation}
+be an isometric embedding of the physical spatial cotangent space, and define
+the pulled-back root directions
+\begin{equation}
+q_r:=\iota^T r\in\mathbb R^3.
+\end{equation}
+For every physical wave vector $\kappa\in\mathbb R^3$, applying
+\eqref{eq:e8-fourth-moment} to $k=\iota\kappa$ gives the exact identity
+\begin{equation}
+\boxed{
+\sum_{r\in R(E_8)}(q_r\cdot\kappa)^4
+=36|\kappa|^4.
+}
+\label{eq:e8-pullback-fourth}
+\end{equation}
+Thus the quartic isotropy survives every isometric choice of physical
+three-plane.  No preferred three-plane is selected by this identity alone.
+
+\paragraph{Exact quadratic fourth-order form.}
+For a sufficiently regular vector field $\xi:\mathbb R^3\to\mathbb R^3$ with
+suitable decay, define
+\begin{equation}
+\mathcal Q_{E_8}[\xi]
+:=\sum_{r\in R(E_8)}
+\bigl\|(q_r\cdot\nabla)^2\xi\bigr\|_{L^2}^2.
+\end{equation}
+By Plancherel and \eqref{eq:e8-pullback-fourth}, componentwise in $\xi$,
+\begin{equation}
+\boxed{
+\mathcal Q_{E_8}[\xi]
+=36\int_{\mathbb R^3}|\kappa|^4|\widehat\xi(\kappa)|^2\,d\kappa
+=36\,\|D^2\xi\|_{L^2}^2,
+}
+\label{eq:e8-h2-form}
+\end{equation}
+where the last equality uses the standard Frobenius norm of the Hessian.  This
+is an exact isotropic fourth-order quadratic form.
+
+\begin{theorem}[Conditional $E_8$ UV-coercivity bridge]
+Assume that the effective EABC evolution or action for the vorticity direction
+contains, on a specified physical three-plane, a positive term
+\begin{equation}
+\gamma\,\mathcal Q_{E_8}[\xi],
+\qquad \gamma>0,
+\label{eq:e8-positive-gamma}
+\end{equation}
+and that the resulting a priori energy estimate controls this term uniformly
+in time together with the lower-order norms required for localization.  Then
+\eqref{eq:e8-h2-form} yields uniform local $H^2$ control of $\xi$.  On regular
+bounded domains this implies
+\begin{equation}
+\xi\in H^2
+\quad\Longrightarrow\quad
+\xi\in W^{1,6}
+\quad\Longrightarrow\quad
+\xi\in C^{0,1/2},
+\end{equation}
+with the corresponding norm bounds.
+\end{theorem}
+
+The theorem is conditional in an essential sense.  The exact root identity
+fixes the isotropic symbol once the quadratic form $\mathcal Q_{E_8}$ is
+present, but it does not prove that the Navier--Stokes evolution contains such
+a term, does not determine a positive coupling $\gamma$, and does not establish
+an a priori bound for that term.  Moreover, since $\xi=\omega/|\omega|$ is
+undefined on the zero-vorticity set and need not lie in global $L^2(\mathbb
+R^3)$, a complete application must be formulated locally on high-vorticity
+regions or with a justified extension/localization procedure.
+
+\paragraph{Relation to the spectral pole at $s=8$.}
+The dimensional pole of the radial $E_8$ Epstein zeta function at $s=8$ and
+the fourth-root moment identity encode different pieces of structure.  The
+pole is a meromorphic spectral invariant tied to dimension and covolume.  The
+identity \eqref{eq:e8-fourth-moment} is a finite root-design identity.  A
+spectral-action derivation connecting the two and producing the positive
+coefficient $\gamma$ in \eqref{eq:e8-positive-gamma} is not established here.
+This separation prevents the pole itself from being interpreted as an
+unproved source of ultraviolet coercivity.
+
+\paragraph{Gate status.}
+The ninth Navier--Stokes symmetry gate is therefore
+\begin{center}
+\begin{boxedminipage}{0.96\textwidth}
+\small
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+$G_{\mathrm{NS}}^{(9a)}$ dimensional $E_8$ pole at $s=8$
+  & \textbf{EXACT/STANDARD}.\\
+$G_{\mathrm{NS}}^{(9b)}$ quartic root isotropy
+  & $\sum_r(r\cdot k)^4=36|k|^4$; \textbf{EXACT PASS}.\\
+$G_{\mathrm{NS}}^{(9c)}$ 3D isometric pullback
+  & $\sum_r(q_r\cdot\kappa)^4=36|\kappa|^4$; \textbf{EXACT PASS}.\\
+$G_{\mathrm{NS}}^{(9d)}$ positive spectral-action coupling $\gamma$
+  & \textbf{OPEN}.\\
+$G_{\mathrm{NS}}^{(9e)}$ $H^2$ coercivity
+  & \textbf{CONDITIONAL} on $\gamma>0$ and a uniform a priori energy bound.\\
+$G_{\mathrm{NS}}^{(9f)}$ $H^2\to W^{1,6}\to C^{0,1/2}$
+  & \textbf{STANDARD ANALYSIS}.\\
+$G_{\mathrm{NS}}^{(9g)}$ vorticity-direction regularity bridge
+  & \textbf{CONDITIONAL}.\\
+Global 3D Navier--Stokes regularity
+  & \textbf{NOT ESTABLISHED}.\\
+\end{tabularx}
+\end{boxedminipage}
+\end{center}
+
+
+\end{document}

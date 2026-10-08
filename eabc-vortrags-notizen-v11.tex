@@ -1,0 +1,348 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=18mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,booktabs,tabularx,array,xcolor,enumitem,tcolorbox}
+\usepackage[hidelinks]{hyperref}
+\definecolor{eabcblue}{RGB}{16,54,92}
+\definecolor{eabcgreen}{RGB}{36,112,75}
+\definecolor{eabcred}{RGB}{150,48,48}
+\definecolor{eabcgray}{RGB}{243,245,247}
+\newtcolorbox{statusbox}[1]{colback=eabcgray,colframe=eabcblue,title=\textbf{#1},boxrule=0.6pt,arc=1mm}
+\newtcolorbox{warningbox}{colback=red!3,colframe=eabcred,title=\textbf{Epistemische Grenze},boxrule=0.6pt,arc=1mm}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt}
+\setlist[enumerate]{leftmargin=1.5em,itemsep=2pt,topsep=3pt}
+\pagestyle{plain}
+\begin{document}
+
+\begin{center}
+{\Large\bfseries EABC Vortragsnotizen v11 -- Demarkations- und Bridge-Audit}\\[1mm]
+{\large G5/G\_ID-Audit, additive Dynamik und holografische Bridge Conjecture 4}\\[1mm]
+{\small Backup-Material für das Kolloquium -- Status: etablierte Mathematik, Modellannahmen und offene Brücken strikt getrennt}
+\end{center}
+
+\begin{warningbox}
+Diese Ergänzung dokumentiert ein \emph{Falsifikations- und Verifikationsprotokoll}. Ein nichttriviales Rédei-Symbol zeigt genuine ternäre arithmetische Information jenseits der paarweisen Legendre-Daten. Daraus folgt \textbf{nicht} automatisch ein Descent auf die EABC-Gradierung und erst recht keine Identität mit dem v26-Fano-/Oktonionen-Assoziator.
+\[
+\boxed{\text{genuine ternäre Arithmetik}\;\not\Rightarrow\;\text{Fano-/Oktonionen-Assoziator}}
+\]
+\end{warningbox}
+
+\section*{1. Die fünfstufige G5-Leiter}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{1.5cm} X p{3.2cm}}
+\toprule
+Gate & Prüf Frage & Status / Kriterium\\
+\midrule
+$G_{5.0}$ & Sind die relevanten paarweisen Legendre-Symbole trivial, sodass die binäre Reziprozitätsstruktur ausgeschaltet ist? & PASS/FAIL exakt berechenbar\\
+$G_{5.1}$ & Ist das Rédei-Symbol wohldefiniert und in einer normierten/minimal ramifizierten Konstruktion bestimmt? & arithmetisches Gate\\
+$G_{5.2}$ & Steigt $[p,q,r]$ auf die EABC-Grade ab, also $[p,q,r]=\psi(\deg p,\deg q,\deg r)$? & \textbf{OFFEN}\\
+$G_{5.3}$ & Ist ein möglicher Descent genuinely ternär und strukturell Fano-kompatibel (insb. Alternativität/Orientierung)? & \textbf{OFFEN}\\
+$G_{5.4}$ & Stimmt die resultierende Dreierstruktur exakt mit dem auditieren v26-Fano-Assoziator überein? & \textbf{OFFEN}\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{statusbox}{Vortragssatz}
+Nicht die Behauptung ``Rédei ist Fano'' ist der Fortschritt, sondern die Lokalisierung einer harten Kette unabhängiger Gates:
+\[
+[p,q,r]
+\stackrel{?}{\longrightarrow}
+\psi(\deg p,\deg q,\deg r)
+\stackrel{?}{\longrightarrow}
+\phi_{\mathrm{v26}}.
+\]
+Jeder Pfeil kann separat scheitern.
+\end{statusbox}
+
+\section*{2. Referenzlauf A -- Negativkontrolle $(13,17,97)$}
+
+Der Evaluator prüft zunächst die paarweisen Legendre-Symbole:
+\[
+\left(\frac{13}{17}\right)=+1,\qquad
+\left(\frac{13}{97}\right)=-1,\qquad
+\left(\frac{17}{97}\right)=-1.
+\]
+Damit ist bereits
+\[
+\boxed{G_{5.0}=\mathrm{FAIL}}.
+\]
+
+\textbf{Interpretation für den Vortrag.} Dieses Tripel wird nicht als Kandidat für einen ``reinen'' ternären Test weitergereicht. Die paarweise quadratische Reststruktur ist noch aktiv. Das ist eine saubere Negativkontrolle: Das Protokoll verwirft den Kandidaten, bevor ein höheres Symbol interpretiert wird.
+
+\begin{statusbox}{Evaluator-Ausgabe A}
+\texttt{(13/17)=+1, (13/97)=-1, (17/97)=-1}\\
+\texttt{STATUS: FAIL -- STOP before G5.1.}
+\end{statusbox}
+
+\newpage
+\section*{3. Referenzlauf B -- ternärer Anker $(5,41,61)$}
+
+Für das Tripel gilt paarweise
+\[
+\left(\frac{5}{41}\right)=
+\left(\frac{5}{61}\right)=
+\left(\frac{41}{61}\right)=+1,
+\]
+also
+\[
+\boxed{G_{5.0}=\mathrm{PASS}}.
+\]
+
+Eine rechnerisch einfache Lösung der zugehörigen quadratischen Form ist
+\[
+11^2-5\cdot4^2-41\cdot1^2=121-80-41=0,
+\]
+also $(x,y,z)=(11,4,1)$. Ferner ist
+\[
+26^2\equiv5\pmod{61}.
+\]
+Der demonstrative Projektionsschritt liefert
+\[
+11+4\cdot26=115\equiv54\pmod{61},
+\qquad
+\left(\frac{54}{61}\right)=-1.
+\]
+Dies reproduziert den verwendeten Referenzwert
+\[
+\boxed{[5,41,61]_{\rm R\acute{e}dei}=-1}.
+\]
+
+\begin{warningbox}
+Der obige Diophant-Schritt ist eine \textbf{Rechenillustration}, nicht allein der Wohldefiniertheitsbeweis des klassischen Rédei-Symbols. Für $G_{5.1}$ muss die normierte/minimal ramifizierte Rédei-Konstruktion (einschließlich ihrer lokalen Bedingungen) zugrunde gelegt oder der Wert durch eine unabhängige mathematische Referenz zertifiziert werden. Eine beliebige primitive Lösung von $x^2-py^2-qz^2=0$ darf nicht automatisch als vollständige Definition verwendet werden.
+\end{warningbox}
+
+\begin{statusbox}{Evaluator-Ausgabe B}
+\texttt{(5/41)=+1, (5/61)=+1, (41/61)=+1 -- G5.0 PASS.}\\
+\texttt{Demo: (x,y,z)=(11,4,1), a=26, projected Legendre value=-1.}\\
+\texttt{Reference Redei value: -1 -- ternary arithmetic anchor.}
+\end{statusbox}
+
+\section*{4. Was $G_{5.1}$ beweist -- und was nicht}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{X X}
+\toprule
+\textbf{Gesichert / zulässige Aussage} & \textbf{Nicht gesichert / unzulässige Verkürzung}\\
+\midrule
+Paarweise Legendre-Daten können trivial sein, während eine ternäre Rédei-Invariante nichttrivial ist. & ``Rédei ist der oktonionische Assoziator.''\\
+Das Rédei-Symbol ist ein ernsthafter Kandidat für ein höheres arithmetisches Testsignal. & ``$G_{5.1}$ beweist den EABC-$\mathbb F_2^3$-Descent.''\\
+$G_{5.2}$--$G_{5.4}$ sind getrennte, falsifizierbare Prüfungen. & ``Ein Vorzeichen $-1$ ist bereits eine Fano-Phase.''\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section*{5. Kritische Frage eines Gutachters}
+
+\textbf{Frage:} ``Wie stellen Sie sicher, dass die Fano-Struktur nicht nachträglich in die Arithmetik hineingelesen wird?''
+
+\textbf{Antwort:} ``Wir vergleichen nicht direkt ein ausgewähltes Primzahltripel mit einer Fano-Linie. Zuerst wird mit $G_{5.0}$ die paarweise Reziprozitätsstruktur isoliert. Danach wird mit $G_{5.1}$ ausschließlich die unabhängige ternäre Zahlentheorie bestimmt. Erst $G_{5.2}$ fragt nach einem Descent auf die EABC-Grade; $G_{5.3}$ prüft die nötigen Symmetrie- und Alternativitätseigenschaften; und erst $G_{5.4}$ vergleicht mit dem bereits festgelegten v26-Assoziator. Ein FAIL an irgendeiner Stufe beendet den Lift.''
+
+\begin{statusbox}{Kurzform für die Tafel}
+\[
+\boxed{
+\begin{array}{rcl}
+G_{5.0}&:&\text{pairwise neutral?}\\
+G_{5.1}&:&\text{ternary arithmetic real?}\\
+G_{5.2}&:&\text{EABC grade descent?}\\
+G_{5.3}&:&\text{Fano-compatible structure?}\\
+G_{5.4}&:&\text{exact v26 match?}
+\end{array}}
+\]
+\textbf{Kernaussage:} Das Werkzeug automatisiert die ersten arithmetischen Filter. Es automatisiert \emph{nicht} den Beweis der offenen geometrischen Brücken.
+\end{statusbox}
+
+\section*{6. Hinweis zum Evaluator}
+
+Das Forschungswerkzeug \texttt{redei\_gate\_evaluator.py} sollte in der Audit-Version folgende Governance erzwingen:
+\begin{enumerate}
+\item Primzahl- und Kongruenzprüfung;
+\item vollständige Ausgabe der paarweisen Legendre-Symbole;
+\item harter STOP bei $G_{5.0}=\mathrm{FAIL}$;
+\item bei $G_{5.1}$ getrennte Ausgabe von \emph{Demonstrationsrechnung} und \emph{zertifiziertem Rédei-Wert};
+\item $G_{5.2}$--$G_{5.4}$ niemals automatisch auf PASS setzen.
+\end{enumerate}
+
+
+\newpage
+\section*{7. Gate $G_{\mathrm{ID},4c.0}$ -- räumliche Starrheit versus interne $C_3$-Symmetrie}
+
+Die geometrische Klassifikation der $V_4$-äquivarianten Ikosaeder-Beschriftungen liefert nach globaler Labeltranslation $16$ Gauge-Klassen. Unter der vollständigen Normalisatorwirkung gilt exakt
+\[
+16=1+1+1+1+3+3+3+3.
+\]
+Damit existieren vier räumlich fixe Gauge-Klassen; eine ist trivial, drei sind nichttrivial. Diese drei Klassen werden im Folgenden mit $\mathcal C_1,\mathcal C_2,\mathcal C_3$ bezeichnet.
+
+\begin{statusbox}{Maschinenexakt bestätigte räumliche Reduktion}
+\[
+\boxed{
+64
+\xrightarrow{/V_4}
+16
+\xrightarrow{N_{A_5}(V_4)}
+4=1_{\rm trivial}+3_{\rm nontrivial}}
+\]
+Dabei ist $|N_{A_5}(V_4)|=12$ und $N_{A_5}(V_4)/V_4\cong C_3$. Die drei nichttrivialen Klassen sind unter der \emph{vollen geometrischen Normalisatorwirkung} jeweils Fixklassen.
+\end{statusbox}
+
+\subsection*{7.1 Interne Automorphismen von $V_4$}
+
+Schreibe
+\[
+V_4=\{0,a,b,c\},\qquad a+b=c,
+\]
+und identifiziere
+\[
+\operatorname{Aut}(V_4)\cong \mathrm{GL}(2,\mathbb F_2)\cong S_3.
+\]
+Die Untergruppe der Ordnung $3$ wird von der Automorphie
+\[
+\sigma:a\mapsto b,\qquad b\mapsto c,\qquad c\mapsto a
+\]
+erzeugt. Nach Gauge-Normierung des ersten Shifts auf $0$ können die drei nichttrivialen räumlich fixen Klassen als
+\[
+\mathcal C_1=(0,a,c),\qquad
+\mathcal C_2=(0,b,a),\qquad
+\mathcal C_3=(0,c,b)
+\]
+gewählt werden. Komponentweise Anwendung von $\sigma$ ergibt exakt
+\[
+\boxed{
+\sigma(\mathcal C_1)=\mathcal C_2,\qquad
+\sigma(\mathcal C_2)=\mathcal C_3,\qquad
+\sigma(\mathcal C_3)=\mathcal C_1.}
+\]
+Somit tragen die drei nichttrivialen Fixklassen zusätzlich zur räumlichen Starrheit eine kanonisch vorhandene interne zyklische $C_3$-Wirkung.
+
+\begin{warningbox}
+Die beiden $C_3$-Vorkommen dürfen nicht verwechselt werden. Die geometrische Wirkung des Quotienten $N_{A_5}(V_4)/V_4$ auf den Gauge-Klassen fixiert $\mathcal C_1,\mathcal C_2,\mathcal C_3$ jeweils. Die hier verwendete interne $C_3$-Wirkung ist die \emph{labelweise} Ordnung-$3$-Automorphie in $\operatorname{Aut}(V_4)$. Dass beide Gruppen abstrakt isomorph zu $C_3$ sind, macht ihre Wirkungen nicht identisch.
+\end{warningbox}
+
+\subsection*{7.2 Aktualisierte Gate-Leiter}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{2.2cm} X p{2.8cm}}
+\toprule
+Gate & Aussage & Status\\
+\midrule
+$G_{\mathrm{ID},4b}^{\rm geom}$ & $64\to16\to4=1+3$ unter Gauge- und Normalisatorwirkung & \textbf{PASS}\\
+$G_{\mathrm{ID},4c.0}$ & Die drei nichttrivialen räumlich fixen Klassen tragen unter $C_3<\operatorname{Aut}(V_4)$ einen zyklischen Orbit & \textbf{PASS}\\
+$G_{\mathrm{ID},4c.1}$ & Konstruktion einer geeigneten $\mu_3$-wertigen ternären arithmetischen Invariante (z.B. kubisches Triple-Symbol im Eisenstein-Sektor) & \textbf{KNOWN MATH / zu spezifizieren}\\
+$G_{\mathrm{ID},4c.2}$ & Existiert ein kanonischer äquivarianter Intertwiner $S:\mu_3\to\{\mathcal C_1,\mathcal C_2,\mathcal C_3\}$? & \textbf{OFFEN}\\
+$G_{\mathrm{ID},5}$ & Ist der ausgewählte Sektor mit Quaternionen-/Ikosian-/E$_8$-Lift kompatibel? & \textbf{OFFEN}\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{statusbox}{Neuer Vortragssatz}
+Die geometrische Flanke ist bis zur internen Dreizyklik geschlossen:
+\[
+\boxed{
+\text{räumlich fix}
+\quad\oplus\quad
+\text{intern }C_3\text{-zyklisch}.}
+\]
+Offen ist nun nicht mehr die Existenz einer Dreierstruktur, sondern die arithmetische Identifikation
+\[
+\boxed{
+\mu_3
+\stackrel{?}{\longrightarrow}
+\{\mathcal C_1,\mathcal C_2,\mathcal C_3\}}
+\]
+als \emph{kanonischer äquivarianter} Selektor. Erst danach darf ein Zusammenhang mit dem Quaternionen-/Ikosian-/E$_8$-Lift geprüft werden.
+\end{statusbox}
+
+\section*{8. Antwort auf die naheliegende Gutachterfrage}
+
+\textbf{Frage:} ``Sind die drei geometrischen Kandidaten nur deshalb mit $\mu_3$ verbunden, weil beide drei Elemente besitzen?''
+
+\textbf{Antwort:} ``Nein. Die drei Kandidaten sind zunächst unabhängig als nichttriviale Fixklassen der räumlichen Normalisatorwirkung bestimmt. Separat besitzt $V_4$ die interne Automorphismengruppe $\operatorname{Aut}(V_4)\cong S_3$; deren Ordnung-$3$-Untergruppe permutiert genau diese drei Fixklassen zyklisch. Damit existiert auf der geometrisch-algebraischen Seite bereits eine echte $C_3$-Wirkung. Was noch nicht bewiesen ist, ist die kanonische arithmetische Identifikation dieser Wirkung mit einem $\mu_3$-wertigen kubischen Triple-Symbol.''
+
+\begin{warningbox}
+$G_{\mathrm{ID},4c.0}=\mathrm{PASS}$ beweist keine kubische Rédei-/Triple-Symbol-Korrespondenz und keinen E$_8$-Lift. Es beweist ausschließlich, dass die drei nichttrivialen geometrischen Fixklassen eine interne zyklische $C_3$-Struktur tragen. Der Intertwiner zur Arithmetik bleibt ein separates, falsifizierbares Gate.
+\end{warningbox}
+
+\newpage
+\section*{Q\&A 20 -- Bridge Conjecture 4: dimensionsgeprüfte holografische Entropie-Kopplung}
+
+\textbf{Gutachterfrage:} ``Leiten Sie die Bekenstein--Hawking-Flächenentropie tatsächlich aus dem Leech-Sektor her, oder wird die gewünschte Flächenrelation nur in die Definition eingebaut?''
+
+\begin{statusbox}{Kurze Antwort für den Vortrag}
+Nein. Die gravitative Identifikation wird \emph{nicht} als bewiesen vorausgesetzt. Wir trennen drei Ebenen: (i) die etablierte Bekenstein--Hawking-Formel, (ii) die unabhängig zu bestimmende mikroskopische Entropie des konkret definierten Resonator-Hamiltonians und (iii) deren Identifikation als eigene \emph{Bridge Conjecture 4}. Die Flächenkopplung ist erst eine bedingte Folgerung aus (ii) und (iii).
+\end{statusbox}
+
+\subsection*{20.1 Dimensionsanalyse und Referenzskala}
+In Einheiten $k_B=1$ ist
+\[
+S_{\rm BH}=\frac{A}{4\ell_P^2}
+\]
+dimensionslos. Daher darf auf der mikroskopischen Seite nicht unmittelbar eine dimensionsbehaftete Energie $E_{\rm phys}$ unter einer Quadratwurzel stehen. Wir definieren
+\[
+\boxed{\varepsilon:=\frac{E_{\rm phys}}{E_0}},
+\]
+wobei $E_0$ eine separat festzulegende Referenzenergie ist. Eine Cardy-artige Zielasymptotik hätte dann die Form
+\[
+S_{\rm res}(\varepsilon)\sim 4\pi\sqrt{\varepsilon}.
+\]
+Erst unter der zusätzlichen Brückenhypothese $S_{\rm BH}=S_{\rm res}$ folgt
+\[
+\boxed{\frac{A}{4\ell_P^2}=4\pi\sqrt{\frac{E_{\rm phys}}{E_0}}
+\qquad\Longrightarrow\qquad
+A=16\pi\ell_P^2\sqrt{\frac{E_{\rm phys}}{E_0}}.}
+\]
+Die Wahl von $E_0$ ist Teil der Modellkalibrierung und darf nicht nachträglich so gewählt werden, dass das gewünschte Matching tautologisch entsteht.
+
+\subsection*{20.2 Was am Leech/$c=24$-Schritt bereits bekannt ist}
+Die Existenz einer holomorphen Leech-Lattice-CFT bzw. eines Leech-Lattice-VOA mit Zentralcharge $c=24$ gehört zur etablierten Mathematik. Für eine geeignete zweidimensionale konforme Theorie liefert die Cardy-Asymptotik schematisch
+\[
+S(E)\sim 2\pi\sqrt{\frac{c_{\rm eff}E}{6}},
+\]
+und bei $c_{\rm eff}=24$ entsteht formal der Koeffizient $4\pi\sqrt{E}$.
+
+\begin{warningbox}
+Daraus folgt \textbf{nicht}, dass der im EABC-Framework definierte Leech-Resonator bereits dieselbe Zustandzählung besitzt. Die offene Last ist die explizite Identifikation des konkreten Resonator-Hamiltonians, seiner Energievariable, des Vakuum-/Casimir-Shifts und seiner mikrokanonischen Degenerationen mit einem passenden $c=24$-CFT-Sektor. Cardy-Asymptotik darf nicht allein aus der Existenz des Leech-Gitters abgelesen werden.
+\end{warningbox}
+
+\subsection*{20.3 Epistemische Leiter BC4}
+\begin{center}
+\renewcommand{\arraystretch}{1.22}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{1.3cm} X p{3.0cm}}
+\toprule
+Stufe & Aussage & Status\\
+\midrule
+BH & $S_{\rm BH}=A/(4\ell_P^2)$ in der entsprechenden semiklassischen Schwarze-Loch-Thermodynamik & etablierte Physik\\
+C24 & Leech-Lattice-CFT/VOA mit $c=24$ existiert & etablierte Mathematik\\
+L1 & Der \emph{konkrete EABC-Resonator} besitzt nach festgelegter Normierung $\varepsilon=E_{\rm phys}/E_0$ die Asymptotik $S_{\rm res}(\varepsilon)\sim4\pi\sqrt{\varepsilon}$ & \textbf{OFFEN / herzuleiten}\\
+L2 & $S_{\rm BH}=S_{\rm res}$ für die zu identifizierenden makro-/mikroskopischen Zustände & \textbf{BC4 / OFFEN}\\
+Folge & $A=16\pi\ell_P^2\sqrt{E_{\rm phys}/E_0}$ & nur unter L1+L2\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{statusbox}{Demarkations-Protokoll}
+\[
+\boxed{
+\text{Leech-}c=24\text{-Struktur}
+\;\not\Rightarrow\;
+S_{\rm res}=4\pi\sqrt{\varepsilon}
+\;\not\Rightarrow\;
+S_{\rm BH}=S_{\rm res}.}
+\]
+Jeder Pfeil benötigt eine eigene Konstruktion. Insbesondere ist eine numerische oder experimentelle Übereinstimmung der Flächenformel phänomenologische Evidenz, aber kein Ersatz für L1 oder L2.
+\end{statusbox}
+
+\subsection*{20.4 Ein-Satz-Antwort für die Kommission}
+\begin{quote}
+``Die Bekenstein--Hawking-Formel und die Existenz einer Leech-$c=24$-CFT sind bekannte Strukturen; offen ist, ob unser konkreter Resonator nach einer unabhängig fixierten Energienormierung tatsächlich die erforderliche Cardy-artige Zustandzählung besitzt und ob diese mikroskopische Entropie mit der Horizontentropie identifiziert werden darf. Genau diese beiden Schritte sind L1 und Bridge Conjecture 4.''
+\end{quote}
+
+\vfill
+\begin{center}
+\small EABC Vortragsnotizen v11 -- Demarkations- und Bridge-Audit \quad | \quad 8. September 2026
+\end{center}
+\end{document}

@@ -1,0 +1,160 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{fullpage}
+
+% Theorem-Umgebungen auf Deutsch
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Beispiel}
+\newtheorem{remark}[theorem]{Bemerkung}
+
+\title{\textbf{Formale Verifikation der $V_4$-symmetrischen Semiprimzahl-Multiplikation und diskreter Klassenvektoren in der Arithmetik modulo 12}}
+
+\author{\textbf{Thomas Hoffbauer}\\
+	\small Bamberg Research Group / Akademie Olympia\\
+	\small \texttt{bamberg-model@akademie-olympia.de}}
+
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Wir präsentieren eine maschinell verifizierte Formalisierung in Lean~4 zur algebraischen und charaktertheoretischen Zerlegung von Restklassen modulo~$12$. Wir beweisen formal, dass die Einheiten-Gruppe $(\mathbb{Z}/12\mathbb{Z})^\times$ isomorph zur Klein'schen Vierergruppe $V_4 \cong C_2 \times C_2$ ist. Aufbauend auf dieser diskreten Symmetrie leiten wir die multiplikativen Strukturgesetze für ungerade Semiprimzahlen $N = p \cdot q$ ab. Insbesondere verifizieren wir, dass Produkte von Primfaktoren aus inerten ungeraden Klassen exakt in den positiven Charakter-Eigenraum ($H_+$) abgebildet werden — exemplarisch belegt durch $77 = 7 \cdot 11 \equiv 5 \pmod{12}$ —, obwohl sie das klassische Kriterium der Darstellung als Summe zweier Quadrate verletzen. Darüber hinaus konstruieren wir einen fundierten, diskreten Klassenzählvektor (\texttt{ClassVec}) zur Ankopplung an chirurgische Energie-Operatoren, der strikt von unbewiesenen analytischen Dichte-Fortsetzungen isoliert ist.
+	\end{abstract}
+	
+	\section{Einleitung}
+	
+	Die Verteilung von Primzahlen und zusammengesetzten Zahlen in arithmetischen Progressionen gehört zu den zentralen Themen der multiplikativen Zahlentheorie. Während analytische Werkzeuge wie Dirichlet'sche $L$-Funktionen die asymptotische Dichte steuern, erfordert die Formalisierung diskreter Restklassen in Beweisassistenten wie Lean~4 eine exakte algebraische Begrenzung.
+	
+	In dieser Arbeit dokumentieren wir die formale Verifikation der mathematischen Kerne der Modulo-12-Kanäle innerhalb der Lean~4 \texttt{Mathlib}. Die Wahl des Moduls $12$ dient als minimaler zyklischer Deckraum, der die vier fundamentalen Projektionsklassen $E, A, B, C$ mit der Einheiten-Gruppe $(\mathbb{Z}/12\mathbb{Z})^\times$ vereinigt.
+	
+	\subsection{Hauptergebnisse des formalen Kerns}
+	Der Lean-4-Kernel zertifiziert mechanisch die folgenden Resultate:
+	\begin{enumerate}
+		\item \textbf{Gruppen-Isomorphismus:} $(\mathbb{Z}/12\mathbb{Z})^\times \cong C_2 \times C_2$ via expliziter Bitwise/XOR-Charakterisierung auf \texttt{Nat}.
+		\item \textbf{Semiprimzahl-Paritätsinversion:} Das strukturelle Produktgesetz $H_- \times H_- \to H_+$ für zusammengesetzte Zahlen, verifiziert am Beispiel $77 = 7 \cdot 11 \in A_{12}$.
+		\item \textbf{Historisch-analytische Schranke:} Die saubere Entkopplung der diskreten Klassenvektoren (\texttt{ClassVec}) von stetigen Beta-Integralen und unbelegten Level-12-Funktionalgleichungen.
+	\end{enumerate}
+	
+	\section{Historische und mathematische Einordnung}
+	
+	\subsection{Vom Zwei-Quadrate-Satz zu den Restklassen modulo 12}
+	Die Frage, welche natürlichen Zahlen sich als Summe zweier Quadrate $x^2 + y^2$ darstellen lassen, geht auf Pierre de Fermat (1640) zurück und wurde von Leonhard Euler systematisiert. Ein zentrales Resultat lautet: Eine ungerade Primzahl $p$ ist genau dann als $p = x^2 + y^2$ darstellbar, wenn $p \equiv 1 \pmod 4$. In der Sprache des Zahlkörpers der Gaußschen Zahlen $\mathbb{Z}[i]$ zerfallen diese Primzahlen (sie sind spaltend), während Primzahlen mit $p \equiv 3 \pmod 4$ inert bleiben.
+	
+	Durch Betrachtung modulo 12 verfeinert sich diese Struktur:
+	Die Einheiten modulo 12 zerfallen in die vier Klassen $\{1, 5, 7, 11\} \pmod{12}$.
+	Hierbei entsprechen $1, 5 \pmod{12}$ den spaltenden Primzahlen ($1 \pmod 4$), während $7, 11 \pmod{12}$ den inerten Primzahlen ($3 \pmod 4$) entsprechen. 
+	
+	Die algebraische Komplikation bei zusammengesetzten Zahlen (Semiprimzahlen) besteht darin, dass das Produkt zweier inerter Primzahlen $p, q \equiv 3 \pmod 4$ eine Restklasse $N = p \cdot q \equiv 1 \pmod 4$ (also $A_{12} \equiv 5 \pmod{12}$) erzeugen kann, ohne dass $N$ selbst als Summe zweier Quadrate darstellbar ist. Das Beispiel $77 = 7 \cdot 11 \equiv 5 \pmod{12}$ illustriert klassisch, dass die Zugehörigkeit zur Restklasse $1 \pmod 4$ für zusammengesetzte Zahlen zwar eine notwendige, aber keine hinreichende Bedingung für die Quadratsummen-Darstellbarkeit ist.
+	
+	\subsection{Analytische Parität und die Legendre-Legierung}
+	In der analytischen Zahlentheorie nach Peter Gustav Lejeune Dirichlet (1837) entsprechen den Charakteren auf $(\mathbb{Z}/12\mathbb{Z})^\times$ spezifische $L$-Funktionen. 
+	Für die archimedische Komplettierung ist die Parität des Charakters unter der Negation $J: r \mapsto -r$ entscheidend:
+	\begin{itemize}
+		\item Der Hauptcharakter $\chi_{0,12}$ ist \textbf{gerade} ($\chi_{0,12}(-r) = \chi_{0,12}(r)$). Der zugehörige Faktor der archimedischen Komplettierung lautet $\Gamma_{\mathbb{R}}(s) = \pi^{-s/2} \Gamma(s/2)$.
+		\item Der gehobene Charakter $\psi_{12} = \chi_4 \uparrow_{12}$ ist \textbf{ungerade} ($\psi_{12}(-r) = -\psi_{12}(r)$). Der zugehörige Faktor lautet $\Gamma_{\mathbb{R}}(s+1) = \pi^{-(s+1)/2} \Gamma((s+1)/2)$.
+	\end{itemize}
+	
+	Die Verbindung zwischen dem geraden Kanal $U(s) = L(s, \chi_{0,12})$ und dem ungeraden Kanal $V(s) = L(s, \psi_{12})$ stellt die klassischen **Legendre'sche Verdopplungsformel** bereit:
+	\begin{equation}
+		\Gamma_{\mathbb{R}}(s) \cdot \Gamma_{\mathbb{R}}(s+1) = \Gamma_{\mathbb{C}}(s) = 2^{1-s} \pi^{-s} \Gamma(s).
+	\end{equation}
+	Diese Relation bildet die exakte kontinuierliche Brücke zwischen den reellen und komplexen Gamma-Faktoren. Sie zeigt auf, dass eine naive $2 \times 2$-Funktionalgleichung direkt auf den Kanälen $Z_{EA}$ und $Z_{BC}$ nicht geschlossen werden kann, da $\chi_{0,12}$ und $\psi_{12}$ imprimitive Charaktere sind und die Diskrete Fourier-Transformation (DFT) den Einheitenraum $(\mathbb{Z}/12\mathbb{Z})^\times$ verlässt.
+	
+	\section{Die algebraische Basis: $V_4$-Symmetrie}
+	
+	\begin{definition}[Restklassen-Projektoren]
+		Sei $n \in \mathbb{N}$ mit $\gcd(n, 6) = 1$. Wir definieren die kanonische Partition modulo 12 in vier disjunkte Klassen:
+		\[
+		E_{12} = \{1\}, \quad A_{12} = \{5\}, \quad B_{12} = \{7\}, \quad C_{12} = \{11\} \pmod{12}.
+		\]
+	\end{definition}
+	
+	\begin{theorem}[Lean 4: \texttt{unitsMod12\_iso\_V4}]
+		Die multiplikative Einheiten-Gruppe $(\mathbb{Z}/12\mathbb{Z})^\times = \{1, 5, 7, 11\}$ ist isomorph zur Klein'schen Vierergruppe $V_4 \cong C_2 \times C_2$.
+	\end{theorem}
+	\begin{proof}
+		Formal verifiziert in Lean~4 durch Auswertung von $x^2 \equiv 1 \pmod{12}$ für alle $x \in \{1, 5, 7, 11\}$. Damit ist bewiesen, dass jedes nicht-triviale Element die Ordnung 2 besitzt.
+	\end{proof}
+	
+	\begin{remark}[Governance-Schranke]
+		Die Einheiten-Gruppe $(\mathbb{Z}/12\mathbb{Z})^\times$ ist abelsch vom Exponenten 2. Jede Identifikation mit nicht-abelschen Gruppen (wie der Quaternionengruppe $Q_8$) ist formal widerlegt und hinter einer expliziten \texttt{ClaimWall} isoliert.
+	\end{remark}
+	
+	\section{Multiplikative Struktur von Semiprimzahlen}
+	
+	Sei $N = p \cdot q$ eine ungerade Semiprimzahl mit $\gcd(N, 6) = 1$. Der Charakter $\psi_{12} = \chi_4 \uparrow_{12}$ spaltet den Einheitenraum in zwei Eigenräume bezüglich des Paritätsoperators:
+	\[
+	H_+ = \operatorname{span}\{\delta_1, \delta_5\} \quad (E_{12} \cup A_{12}), \qquad H_- = \operatorname{span}\{\delta_7, \delta_{11}\} \quad (B_{12} \cup C_{12}).
+	\]
+	
+	\begin{theorem}[Charakter-Produktgesetz für Semiprimzahlen]
+		Seien $p, q \in H_-$. Dann gilt für das Produkt $N = p \cdot q \in H_+$. Insbesondere gilt: Ist $p \in B_{12}$ und $q \in C_{12}$, so liegt $N \in A_{12}$.
+	\end{theorem}
+	
+	\begin{example}[Formalisiertes Gegenbeispiel: $77 \in A_{12}$]
+		Betrachte $N = 77 = 7 \cdot 11$.
+		\begin{itemize}
+			\item $7 \in B_{12} \subset H_-$ ($7 \equiv 3 \pmod 4$)
+			\item $11 \in C_{12} \subset H_-$ ($11 \equiv 3 \pmod 4$)
+		\end{itemize}
+		Lean~4 verifiziert das Theorem \texttt{composite\_BC\_product\_A\_not\_two\_squares}:
+		\[
+		77 \equiv 5 \pmod{12} \implies 77 \in A_{12} \subset H_+.
+		\]
+		Obwohl $77 \in A_{12}$ (und $77 \equiv 1 \pmod 4$), lässt sich $77$ aufgrund der ungeraden Vielfachheit der inerten Primfaktoren $7 \equiv 3 \pmod 4$ und $11 \equiv 3 \pmod 4$ **nicht** als Summe zweier ganzer Quadrate darstellen ($77 \neq x^2 + y^2$).
+	\end{example}
+	
+	\section{Diskrete Klassenvektoren und chirurgische Energie}
+	
+	Um die arithmetische Multiplikation mit diskreten Operatorenauswertungen zu verknüpfen, formalisieren wir ein endliches Zählmodul ohne unbelegte kontinuierliche Dichte-Annahmen.
+	
+	\begin{definition}[Diskreter Klassenzählvektor]
+		Für eine endliche Menge von Semiprimzahlen $\mathcal{S}$ ordnet der diskrete Zählvektor $\mathtt{ClassCountVec}(\mathcal{S}) \in \mathbb{N}^4$ den vier Kanälen $(E, A, B, C)$ ganzzahlige Häufigkeiten zu. Lineare Projektionen transformieren $\mathtt{ClassCountVec}$ in den normierten Vektor $\mathtt{ClassVec} \in \mathbb{Q}^4$, welcher als Eingabe für den chirurgischen Energie-Operator $E_{\mathrm{surg}}$ dient.
+	\end{definition}
+	
+	\begin{remark}[System-Grenzen / Claim-Walls]
+		Die Transformation $\mathtt{ClassCountVec} \to \mathtt{ClassVec} \to E_{\mathrm{surg}}$ ist strikt diskret. Die folgenden Zuordnungen sind als unbewiesene Behauptungen gesperrt:
+		\begin{enumerate}
+			\item Identifikation von diskreten $\mathtt{ClassVec}$-Werten mit stetigen Beta-Integralen $B(u, n+1)$ als exakte Dichte-Aushüllende.
+			\item Direkte Äquivalenz zwischen $Z_{EA}(s)$ und physikalisch aktiven Operatoren $M_{\mathrm{eff}}$.
+		\end{enumerate}
+	\end{remark}
+	
+	\section{Übersicht verifizierter Lean 4 Module}
+	
+	Die Formalisierung ist in saubere, modulare Komponenten innerhalb des \texttt{KeplerHurwitz}-Repositorys gegliedert:
+	
+	\begin{table}[h]
+		\centering
+		\small
+		\begin{tabular}{lll}
+			\toprule
+			\textbf{Lean 4 Modul} & \textbf{Formaler Umfang} & \textbf{Status} \\
+			\midrule
+			\texttt{SemiprimeMod12Refinement.lean} & $(\mathbb{Z}/12\mathbb{Z})^\times \cong C_2 \times C_2$, $77 = B \cdot C \in A$ & Verifiziert (Grün) \\
+			\texttt{SemiprimeMod12Bridge.lean} & Multiplikatives $eabcMul$ vs. additive Kanäle & Verifiziert (Grün) \\
+			\texttt{ClassCountVec.lean} & Diskreter $\mathtt{ClassVec} \to E_{\mathrm{surg}}$ Operator & Verifiziert (Grün) \\
+			\texttt{EabcGammaBetaBridge.lean} & Euler-Reflexion \& Beta-Kernel $w_u(n)$ & Verifiziert (Grün) \\
+			\bottomrule
+		\end{tabular}
+		\caption{Übersicht der verifizierten Module im Lean 4 Kernel.}
+	\end{table}
+	
+	\section{Fazit}
+	
+	Durch den Aufbau eines maschinell verifizierten Kerns in Lean~4 haben wir gezeigt, dass die $V_4$-Symmetrie von $(\mathbb{Z}/12\mathbb{Z})^\times$ die multiplikativen Kanalübergänge von Semiprimzahlen exakt bestimmt. Die formalen Ergebnisse verbinden klassische mathematische Sätze von Fermat und Dirichlet mit modernen Beweisassistenten, indem sie bewiesene diskrete Arithmetik strikt von unvollständigen analytischen Kontinuums-Annahmen trennen.
+	
+\end{document}

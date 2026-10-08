@@ -1,0 +1,297 @@
+\documentclass[11pt,a4paper]{article}
+
+% --- PAKETE FÜR MATHE UND TYPOGRAFIE ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm,amsfonts}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{verbatim}
+
+\geometry{
+	a4paper,
+	left=25mm,
+	right=25mm,
+	top=30mm,
+	bottom=30mm
+}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	citecolor=blue,
+	urlcolor=blue
+}
+
+% --- THEOREM-UMGEBUNGEN ---
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Bemerkung}
+
+% --- BENUTZERDEFINIERTE MATHEMATISCHE MAKROS ---
+\newcommand{\Oalg}{\mathbb{O}}
+\newcommand{\ImO}{\operatorname{Im}(\mathbb{O})}
+\newcommand{\Assoc}{\operatorname{Assoc}}
+\newcommand{\Jac}{\operatorname{J}}
+\newcommand{\RePart}{\operatorname{Re}}
+\newcommand{\ImPart}{\operatorname{Im}}
+
+% --- TITEL UND AUTOREN-METADATEN ---
+\title{\textbf{Eine Vier-Ebenen-Systemarchitektur zur formalen und numerischen Trennung oktonionischer Kompositionsalgebren von analytischen Zeta-Schichten}}
+
+\author{%
+	\textbf{Thomas Hoffbauer}\thanks{Computer Institut Bamberg (CIB), Deutschland. E-Mail: \texttt{research@cib-bamberg.de}} \\[2mm]
+	\small\textit{Projekt \#Energiedoku -- Preprint-Reihe: Formalisierung und Renormierung (eabc-renorm)}
+}
+
+\date{3. August 2026}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Wir präsentieren eine typologisch und epistemisch rigorose Vier-Ebenen-Architektur zur Einbettung der Oktonionenalgebra $\Oalg$ in gittertheoretische und komplex-analytische Kontexte. Ausgehend von der expliziten Vektorraumzerlegung des Oktonionenassoziators $\Assoc(x,y,z) = (xy)z - x(yz)$ auf dem sieben-dimensionalen Imaginärraum $\ImO \cong \mathbb{R}^7$ zeigen wir die exakte Proportionalität des Kreuzprodukt-Jacobiators $J_\times = \frac{3}{2}\Assoc$ sowie die Unterscheidung zwischen der multiplikativen Norm $N(x) = \|x\|^2$ und der gittertheoretischen quadratischen Form $Q(x) = \frac{1}{2}\|x\|^2$. Wir beschreiben die Formalisierung dieser Trennung im Lean-4-Kernel unter Vermeidung assoziativer Typklassen (\texttt{[Ring A]}) sowie die reproduzierbare numerische Verifikation mittels einer tautologie-freien Python-Audit-Suite. Schließlich belegen wir anhand eines quaternionischen Gegenbeispiels, dass der alternierte ternäre Kommutator (Ternutator) keine universelle Proportionalitätsidentität $T = c \Assoc$ erfüllt, und verankern strikte Non-Claim-Guardrails gegen kategoriale Fehlschlüsse in der mathematischen Physik.
+	\end{abstract}
+	
+	\noindent\textbf{Keywords:} Oktonionen, Malcev-Algebra, $G_2$-Symmetrie, Assoziator, Epstein-Zeta-Funktion, Lean 4 Formalisierung, Formal Governance.
+	
+	\section{Einleitung}
+	
+	Die Untersuchung nicht-assoziativer Divisionsalgebren, insbesondere der Reellen Oktonionen $\Oalg$, nimmt in der modernen mathematischen Physik und algebraischen Topologie eine zentrale Rolle ein \cite{baez2002octonions}. Bei der Konstruktion von Modellen, die oktonionische Geometrie mit spektralen Eigenschaften diskreter Gitter (wie dem $E_8$-Gitter) oder komplex-analytischen Zählfunktionen (Epstein-Zeta-Funktionen) verknüpfen, entstehen häufig kategoriale Überdehnungen. Nicht-assoziative Identitäten werden dabei fälschlicherweise unmittelbar mit physikalischen Eichfeldern, Nambu-Dynamiken oder Paritätsverletzungen identifiziert.
+	
+	Das Ziel dieser Arbeit ist die Etablierung einer unumstößlichen
+	\textbf{Vier-Ebenen\-System\-architektur} im Rahmen des Projekts
+	\texttt{eabc-renorm} (Pull Request \#143, Commit \texttt{7ff7c62}). Diese Architektur trennt die lineare Gitterstruktur, die $G_2$-Malcev-Geometrie, die alternative Kompositionsalgebra sowie die komplex-analytische Zeta-Schicht formal-logisch (Lean 4) und numerisch (Python/SageMath).
+	
+	\section{Die Vier-Ebenen-Systemarchitektur}
+	
+	Um unbeabsichtigte Implikationen zu vermeiden, unterteilen wir den mathematischen Formalismus streng in vier epistemische Ebenen (siehe Tabelle~\ref{tab:four_levels}).
+	
+	\begin{table}[h!]
+		\centering
+		\caption{Systemarchitektur der vier epistemischen Ebenen mit zugehörigen Symmetrien und Formalisierungsklassen.}
+		\label{tab:four_levels}
+		\vspace{2mm}
+		\resizebox{\textwidth}{!}{%
+			\begin{tabular}{@{}lllll@{}}
+				\toprule
+				\textbf{Ebene} & \textbf{Algebraische Struktur} & \textbf{Kern-Operation} & \textbf{Symmetrie} & \textbf{Status-Typ} \\
+				\midrule
+				\textbf{I. Linear} & $(\mathbb{R}^8, +, \text{Einbettung})$ & Vektoraddition $x+y$ & Diskrete Automorphismen & \texttt{[I]} Rank-8-Interface \\
+				\textbf{II. Malcev} & $V = \ImO \cong \mathbb{R}^7$ & Kreuzprodukt $x \times y$ & $G_2 \subset SO(7)$ & \texttt{[I]} Normed Cross / \texttt{[A-ext]} \\
+				\textbf{III. Alternativ} & Unitale Algebra $\Oalg$ & Vollmultiplikation $x \cdot y$ & $G_2$ (Algebra-Aut.) & \texttt{[I]} Alternative Algebra \\
+				\textbf{IV. Analytisch} & Zeta-Schicht $Z_L(s)$ & Form $\omega_Z = \frac{Z'}{Z}ds$ & Komplex-Analytisch & \texttt{[I]} Analytische Schicht \\
+				\bottomrule
+			\end{tabular}%
+		}
+	\end{table}
+	
+	\subsection{Ebene I: Linear- und Gitterstruktur}
+	Ebene I stellt das Trägermedium bereit. Ein achtdimensionaler reeller Vektorraum $V \cong \mathbb{R}^8$ enthält eine injektive Einbettung $\iota \colon \mathbb{Z}^8 \hookrightarrow V$. Wir betonen, dass die reine Linearstruktur $V$ noch kein $E_8$-Gitter definiert; hierzu bedarf es der Angabe der positiv definiten, geraden, unimodularen Gram-Matrix.
+	
+	\subsection{Ebene II: \texorpdfstring{$G_2$}{G2}-Kreuzprodukt und Malcev-Struktur}
+	Auf dem Raum der rein imaginären Oktonionen $\ImO \cong \mathbb{R}^7$ wird das bilinear alternierende Kreuzprodukt über den Kommutator definiert:
+	\begin{equation}
+		x \times y \coloneqq \frac{1}{2} \ImPart(x \cdot y - y \cdot x) = \frac{1}{2} [x, y]_{\mathrm{comm}}.
+	\end{equation}
+	Die Kommutatoralgebra der Oktonionen ist keine Lie-Algebra, sondern bildet bezüglich dieses Produkts eine einfache Malcev-Algebra.
+	
+	\subsection{Ebene III: Alternative Kompositionsalgebra}
+	Die volle Oktonionenmultiplikation vereint den symmetrischen Skalaranteil und den antisymmetrischen Vektoranteil:
+	\begin{equation}
+		x \cdot y = -\langle x, y \rangle + x \times y \quad \forall\, x,y \in \ImO.
+	\end{equation}
+	$\Oalg$ bildet eine normierte alternative Algebra, deren Nichtnull-Elemente $\Oalg^\times$ einen Moufang-Loop bilden.
+	
+	\subsection{Ebene IV: Analytische Zeta-Schicht}
+	Aus der gittertheoretischen quadratischen Form $Q(x)$ wird die Epstein-Zeta-Funktion $Z_L(s) = \sum_{x \in L \setminus \{0\}} Q(x)^{-s}$ konstruiert. Die logarithmische Differentialform $\omega_Z = \frac{Z_L'(s)}{Z_L(s)} \, ds$ fungiert als analytische Zählform.
+	
+	\begin{proposition}[Entkopplung der Zeta-Linie]
+		Die meromorphe Fortsetzung von $Z_L(s)$ ist eine Eigenschaft der diskreten Gitterstruktur $(L, Q)$ und folgt \textbf{nicht} aus der Oktonionenmultiplikation auf Ebene III:
+		\begin{equation}
+			\begin{array}{ccccc}
+				(L, Q) &\longrightarrow& \Theta_L, \; Z_L &\longrightarrow& \dfrac{Z_L'}{Z_L} \, ds \\[2mm]
+				\mathbb{O} &\longrightarrow& \operatorname{Im}\mathbb{O}, \; \times, \; \operatorname{Assoc} &\longrightarrow& \text{Malcev-$G_2$-Geometrie}.
+			\end{array}
+		\end{equation}
+	\end{proposition}
+	
+	\section{Algebraische Identitäten des Assoziators}
+	
+	\begin{definition}[Oktonionenassoziator]
+		Für $x, y, z \in \Oalg$ ist der Assoziator definiert als
+		\begin{equation}
+			\Assoc(x,y,z) \coloneqq (xy)z - x(yz).
+		\end{equation}
+		Infolge der Alternativität von $\Oalg$ ist $\Assoc$ eine total schiefsymmetrische, alternierende 3-Operation.
+	\end{definition}
+	
+	\begin{theorem}[Exakte Vektorraumzerlegung]
+		Für rein imaginäre Oktonionen $x, y, z \in \ImO$ zerfällt der Assoziator exakt in Skalarprodukt- und Kreuzproduktkomponenten:
+		\begin{equation}
+			\label{eq:assoc_decomp}
+			\Assoc(x,y,z) = -\langle x,y \rangle z + \langle y,z \rangle x + (x \times y) \times z - x \times (y \times z).
+		\end{equation}
+	\end{theorem}
+	
+	\begin{proof}
+		Unter Nutzung von $xy = -\langle x,y \rangle + x \times y$ berechnet man:
+		\begin{align}
+			(xy)z &= -\langle x \times y, z \rangle - \langle x,y \rangle z + (x \times y) \times z, \\
+			x(yz) &= -\langle x, y \times z \rangle - \langle y,z \rangle x + x \times (y \times z).
+		\end{align}
+		Wegen der $G_2$-Invarianz der skalaren 3-Form $\varphi(x,y,z) = \langle x \times y, z \rangle = \langle x, y \times z \rangle$ heben sich die skalaren Dreifachprodukte in der Differenz $\Assoc(x,y,z) = (xy)z - x(yz)$ identisch auf. Es verbleibt Gl.~\eqref{eq:assoc_decomp}.
+	\end{proof}
+	
+	\begin{remark}[Alternativität via Kreuzprodukt-Identität]
+		Für $y = x$ reduziert sich Gl.~\eqref{eq:assoc_decomp} auf $\Assoc(x,x,z) = -\|x\|^2 z + \langle x,z \rangle x - x \times (x \times z)$. Durch Anwendung der 7D-Kreuzprodukt-Identität
+		\begin{equation}
+			x \times (x \times z) = \langle x,z \rangle x - \|x\|^2 z
+		\end{equation}
+		folgt $\Assoc(x,x,z) = 0$. Die Alternativität verschwindet im Imaginärraum somit nicht trivial, sondern durch ein exaktes algebraisches Aufheben.
+	\end{remark}
+	
+	\begin{theorem}[Kreuzprodukt-Jacobiator]
+		Der Jacobiator des $G_2$-Kreuzprodukts $J_\times(x,y,z) \coloneqq (x \times y) \times z + (y \times z) \times x + (z \times x) \times y$ erfüllt:
+		\begin{equation}
+			J_\times(x,y,z) = \frac{3}{2} \Assoc(x,y,z) \quad \forall\, x,y,z \in \ImO.
+		\end{equation}
+	\end{theorem}
+	
+	\begin{proposition}[Norm-Distinktion]
+		Zur Vermeidung von Skalierungsfehlern unterscheiden wir streng zwischen der multiplikativen Norm $N(x) \coloneqq \|x\|^2$ und der gittertheoretischen quadratischen Form $Q(x) \coloneqq \frac{1}{2}\|x\|^2$. Es gilt:
+		\begin{equation}
+			N(xy) = N(x) N(y), \qquad Q(xy) = 2 \, Q(x) Q(y).
+		\end{equation}
+	\end{proposition}
+	
+	\section{Lean 4 Formalisierung und Typologie}
+	
+	Die Implementierung im Theorem Prover Lean 4 (Modul \texttt{FourLevelArchitecture.lean}) stellt sicher, dass abstrakte Schnittstellen nicht fälschlich als bewiesene Kernel-Sätze ausgegeben werden.
+	
+	\subsection{Vermeidung der Typen-Falle \texttt{[Ring A]}}
+	Ein Lean-\texttt{Ring} beinhaltet per Konstruktion das Assoziativgesetz $(xy)z = x(yz)$. Eine Formalisierung von $\Oalg$ unter \texttt{[Ring A]} würde trivialerweise $\Assoc(x,y,z) = 0$ erzwingen. Ebene III wurde daher als \texttt{Level3\_UnitalAlternativeAlgebra} ohne \texttt{[Ring A]} modelliert:
+	
+	\begin{verbatim}
+		structure Level3_UnitalAlternativeAlgebra (A : Type*)
+		[AddCommGroup A] [Module R A] where
+		one : A
+		mul : A -> A -> A
+		left_alternative  : forall x y, mul (mul x x) y = mul x (mul x y)
+		right_alternative : forall x y, mul (mul x y) y = mul x (mul y y)
+		normSq : A -> R
+		normSq_mul : forall x y, normSq (mul x y) = normSq x * normSq y
+	\end{verbatim}
+	
+	\subsection{Dimensionierung über \texttt{Module.finrank}}
+	Zur Absicherung endlich-dimensionaler reeller Vektorräume wird nicht die kardinalwertige Funktion \texttt{Module.rank}, sondern \texttt{Module.finrank} unter Nutzung von \texttt{[FiniteDimensional R V]} eingesetzt:
+	\begin{align*}
+		&\texttt{finrank\_eight : Module.finrank}\ \mathbb{R}\ V = 8, \\
+		&\texttt{finrank\_seven : Module.finrank}\ \mathbb{R}\ V = 7.
+	\end{align*}
+	
+	\subsection{Typologische Status-Taxonomie}
+	Wir etablieren vier klar abgegrenzte Status-Klasses für alle Repository-Aussagen:
+	\begin{enumerate}
+		\item \texttt{[A-kernel]}: In Mathlib4/Kernel bewiesener mathematischer Satz.
+		\item \texttt{[A-ext]}: Extern in der Literatur etablierter mathematischer Satz.
+		\item \texttt{[I]}: Abstrakte Interface-Schnittstelle (Strukturdefinition).
+		\item \texttt{[B]}: Numerisch/Statistisch über die Python-Suite verifizierte Invariante.
+		\item \texttt{[G]}: Maschinenlesbarer Governance-Marker (\texttt{Bool := false}).
+	\end{enumerate}
+	
+	\section{Numerisches Audit und Tautologie-Freiheit}
+	
+	Die Python-Audit-Suite (\texttt{scripts/analyze\_octonionic\_lines.py}) führt eine umfassende Verifikation auf der Oktonionenalgebra durch.
+	
+	\subsection{Schließung der Reinheits-Tautologie}
+	In früheren Implementierungen wurde der 8D-Assoziator vor der Prüfung durch Einbettung gereinigter Imaginärteile konstruiert, was den Realteil per Konstruktion auf $0.0$ setzte. Im aktuellen Head-Commit (\texttt{7ff7c62}) wird der unbehandelte 8D-Assoziator ausgewertet:
+	\begin{equation}
+		\Assoc_{8D}(x,y,z) = (xy)z - x(yz) \in \mathbb{R}^8.
+	\end{equation}
+	Der Reinheitstest prüft den unmanipulierten Index $\RePart(\Assoc_{8D}) = \Assoc_{8D}[0]$ unabhängig gegen die skalierte Toleranz:
+	\begin{equation}
+		\text{\texttt{threshold}} = \text{\texttt{atol}} + \text{\texttt{rtol}} \cdot \max(1.0, \|\Assoc_{8D}\|).
+	\end{equation}
+	
+	\subsection{Widerlegung der universellen Ternutator-Proportionalität}
+	Der antisymmetrisierte ternäre Kommutator (Ternutator) ist definiert als:
+	\begin{equation}
+		T(x,y,z) \coloneqq \frac{1}{6} \sum_{\sigma \in S_3} \operatorname{sgn}(\sigma) \, x_{\sigma(1)} \bigl(x_{\sigma(2)} x_{\sigma(3)}\bigr).
+	\end{equation}
+	Für das Standard-Basis-Tripel der quaternionischen Unteralgebra $(e_1, e_2, e_3)$ mit $e_1 e_2 = e_3$ liefert das numerische Audit:
+	\begin{equation}
+		\|T(e_1, e_2, e_3)\| = 1.0 > \text{\texttt{threshold}} \quad \text{bei gleichzeitig} \quad \Assoc(e_1, e_2, e_3) = 0.0.
+	\end{equation}
+	
+	\begin{proposition}[Ternutator-Non-Claim]
+		Das Gegenbeispiel $T(e_1,e_2,e_3) \neq 0 = \Assoc(e_1,e_2,e_3)$ widerlegt jede universelle Proportionalitätsidentität $T = c \Assoc$ (insbesondere $T = \frac{1}{2}\Assoc$) auf $\Oalg$. Eine Zuordnung von $T$ als Filippov-3-Lie- oder Nambu-Klammer erfordert den separaten Nachweis der Fundamentalidentität.
+	\end{proposition}
+	
+	\subsection{Audit-Ergebnisse}
+	Sämtliche 6 Prüfpfeiler der Test-Suite wurden auf Head \texttt{7ff7c62} erfolgreich bestanden:
+	\begin{enumerate}
+		\item \textbf{Quaternion-Assoziator:} $\Assoc(e_1, e_2, e_3) = 0.0$ (\texttt{PASS}).
+		\item \textbf{Ternutator-Non-Proportionalität:} $\|T\| = 1.0 \neq 0$ (\texttt{PASS}).
+		\item \textbf{343 Basis-Triples:} Zerlegung und Reinheit für alle $7^3$ geordneten Basis-Tripel (\texttt{PASS}, Max Residual $0.0$).
+		\item \textbf{Malcev-Jacobiator:} 100 deterministische Seeded-Runs für $J_\times = \frac{3}{2}\Assoc$ (\texttt{PASS}).
+		\item \textbf{Kreuzprodukt-Normidentität:} 100 Seeded-Runs für $\|x \times y\|^2 = \|x\|^2 \|y\|^2 - \langle x,y \rangle^2$ (\texttt{PASS}).
+		\item \textbf{Lean 4 Build:} Fehlerfreie Kompilation von \texttt{FourLevelArchitecture.lean} (\texttt{PASS}).
+	\end{enumerate}
+	
+	\section{Governance-Schranken (Non-Claims)}
+	
+	Zur Vermeidung kategorialer Fehlschlüsse in der physikalischen Interpretation fixiert PR \#143 die folgenden unverrückbaren Schranken (Guardrails):
+	
+	\begin{equation}
+		\begin{gathered}
+			\boxed{x \times y \neq \text{Gruppenoperation}} \qquad
+			\boxed{\Assoc \neq \text{Nambu-Dynamik}} \\[1.2ex]
+			\boxed{\frac{Z_L'}{Z_L}\,ds \neq \text{Physikalisches Eichfeld}}
+		\end{gathered}
+	\end{equation}
+	
+	\begin{equation}
+		\boxed{\text{Struktur} \;\neq\; \text{Interpretation} \;\neq\; \text{Dynamik} \;\neq\; \text{Physikalischer Nachweis}}
+	\end{equation}
+	
+	\section{Fazit}
+	
+	Mit dem Pull Request \#143 (Head \texttt{7ff7c62}) im Repository \texttt{eabc-renorm} ist die Vier-Ebenen-Systemarchitektur formal-logisch, typologisch und numerisch lückenlos saniert. Das Modell trennt die algebraischen Operationen der Oktonionen sauber von den analytischen Eigenschaften der Epstein-Zeta-Funktionen. Das Repository befindet sich in einem vollständig konsolidierten, dokumentierten und merge-fähigen Zustand.
+	
+	\section*{Danksagung}
+	Diese Arbeit wurde im Rahmen des Forschungsprogramms \texttt{\#Energiedoku} am Computer Institut Bamberg (CIB) durchgeführt.
+	
+	% --- LITERATURVERZEICHNIS ---
+	\begin{thebibliography}{99}
+		
+		\bibitem{baez2002octonions}
+		J.~C. Baez, \emph{The Octonions}, Bull. Amer. Math. Soc. \textbf{39} (2002), 145--205.
+		
+		\bibitem{conway2003quaternions}
+		J.~H. Conway und D.~A. Smith, \emph{On Quaternions and Octonions: Their Geometry, Arithmetic, and Symmetry}, A K Peters / CRC Press, 2003.
+		
+		\bibitem{filippov1985n}
+		V.~T. Filippov, \emph{$n$-Lie algebras}, Sibirsk. Mat. Zh. \textbf{26} (1985), no.~6, 126--140.
+		
+		\bibitem{harvey1982calibrated}
+		R.~Harvey und H.~B. Lawson, \emph{Calibrated geometries}, Acta Math. \textbf{148} (1982), 47--157.
+		
+		\bibitem{malcev1955analytical}
+		A.~I. Malcev, \emph{Analytic loops}, Mat. Sbornik N.S. \textbf{36(78)} (1955), 569--576.
+		
+	\end{thebibliography}
+	
+\end{document}

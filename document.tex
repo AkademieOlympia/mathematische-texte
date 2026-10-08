@@ -1,162 +1,160 @@
 \documentclass[11pt,a4paper]{article}
+
+% 1. Schrift & Kodierung
 \usepackage[utf8]{inputenc}
-\usepackage[german]{babel}
-\usepackage{amsmath,amssymb,amsfonts,amsthm}
-\usepackage{geometry}
-\usepackage{cite}
-\usepackage{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage[german,english]{babel}
+
+% 2. Mathematik & Tabellen
+\usepackage{amsmath,amssymb,amsthm}
 \usepackage{booktabs}
 
-\geometry{margin=1in}
+% 3. Grafiken & Diagramme (Native tikz-cd Syntax)
+\usepackage{tikz}
+\usepackage{tikz-cd}
 
-\title{\textbf{Arithmetische Axiomatisierung der Hurwitz-Doppelkugel:\\
-		Emergenz der vierten Tetraeder-Hüllkugel im oktonionischen $E_8$-Resonanzraum}}
-\author{\textbf{Thomas Hoffbauer} \\
-	\small{Forschungsprojekt \#Energiedoku, Bamberg, Deutschland}}
-\date{\today}
+% 4. Layout
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+% 5. Hyperlinks (immer als letztes Paket geladen)
+\usepackage{hyperref}
+
+% Theorem-Umgebungen (konsistente Zählersteuerung über [theorem])
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{\textbf{A Formally Verified Equivariant Fano--Steane--$E_8$\\ Structure Chain in Lean 4}}
+\author{\textbf{Thomas Hoffbauer}\\
+	\small Unabhängiges Forschungslaboratorium für Strukturelle Mathematik, Bamberg, Deutschland\\
+	\small \texttt{contact@bamberg-model.org}}
+\date{August 2026}
 
 \begin{document}
 	
 	\maketitle
 	
 	\begin{abstract}
-		Diese Arbeit begründet ein geschlossenes mathematisches Gedankenexperiment und Forschungsprogramm, welches das klassische, dreidimensionale Tetraedermodell in die achtdimensionale, nicht-assoziative Divisionsalgebra der Oktonionen ($\mathbb{O}$) überführt. Durch eine strukturelle Verdopplung der maximalen quaternionellen Hurwitz-Ordnung zu einer holistischen Konfiguration -- der Hurwitz-Doppelkugel -- induzieren wir das exzeptionelle Wurzelgitter $E_8$. Wir zeigen, dass ein regulärer Tetraeder durch geometrische Ausfaltung seiner sechs Kanten-Paarrelationen eine nichttriviale vierte Hüllkugel $R_H$ generiert. Integrieren wir die zyklische Dynamik von Primzahlvierlingen als quantisierte Taktgeber, spaltet sich das System in zwei komplementäre Umlaufbewegungen auf (algebraische Torsion versus geometrische Translation). Über ein neu postuliertes Resonanzaxiom liefert dieser Formalismus eine rein geometro-algebraische Begründung für die Lokalisierung nichttrivialer Nullstellen auf der kritischen Geraden $\Re(s) = \frac{1}{2}$ der Riemannschen Zeta-Funktion.
+		We formalize a continuous structure chain from the Fano plane $\mathbb{P}^2(\mathbb{F}_2)$ to two categorially distinct target structures: the $[[7,1,3]]$ Steane quantum error-correcting code and the $E_8$ root system. In the first branch, the Fano-simplex code $[7,3,4] \subset [7,4,3]$ induces an isotropic stabilizer space of rank 6 and the Steane code $[[7,1,3]]$ via a binary symplectic CSS lift. In the second branch, the parity extension of the Hamming code yields the doubly-even self-dual code $C_8 = [8,4,4]$ with weight enumerator $W_{C_8}(X,Y) = X^8 + 14X^4Y^4 + Y^8$. Construction A yields 240 minimal vectors ($14 \cdot 2^4 + 8 \cdot 2 = 240$), which map onto the $112+128$ standard roots of $E_8$ under the rational transformation $T_{\mathbb{Q}} = \frac{1}{2} H_2^{\oplus 4}$.
+		
+		The classical Fano, Hamming, Steane, Construction-A, and $E_8$ correspondences are not claimed as new. The contribution of this work is their integration into a single auditable formal architecture, with each gate assigned a status that is synchronized between runtime witnesses, Lean 4 kernel proofs, and the manuscript. Gates $G.8$ (full $\operatorname{PSL}(2,7)$ canonicality) and $G.13$ (Lean-level root-set bijection) are explicitly declared as \texttt{OPEN}. No claims regarding physical quantum hardware or quantum speedup are made.
 	\end{abstract}
 	
-	\section{Einleitung und historischer Kontext}
-	Die Suche nach einer fundamentalen geometrischen Ordnung, die sowohl die Struktur des physikalischen Raumes als auch die verborgenen Gesetze der Zahlentheorie regiert, zieht sich als roter Faden durch die Geschichte der mathematischen Wissenschaften. Das hier vorgelegte Forschungsprogramm verknüpft vier entscheidende historische Meilensteine zu einem neuen, geschlossenen Axiomensystem:
+	\section{Introduction and Scope}
 	
-	\begin{enumerate}
-		\item \textbf{Das platonisch-antike Fundament:} Im \textit{Timaios} ordnete Platon (ca. 427--347 v.\,Chr.) den regulären Tetraeder als schlichtesten der fünf regulären Körper dem Element des Feuers zu. Der Tetraeder gilt seither als atomarer Baustein einer geometrisierten Kosmologie.
-		\item \textbf{Keplers Kugelpackung und Harmonik:} Johannes Kepler (1571--1630) postulierte 1611 in \textit{De Strena Seu de Nive Sexangula} die dichteste Kugelpackung (hexagonal bzw. kubisch-flächenzentriert). Kepler erkannte instinktiv, dass reguläre Körper nicht isoliert existieren, sondern als Kontaktzellen elastischer, raumfüllender Sphären fungieren. Im Kepler'schen Tetraeder berühren sich vier Kugeln; seine sechs Kanten sind die Träger der physikalischen Kontaktpunkte.
-		\item \textbf{Die Entdeckung der Divisionsalgebren:} Die algebraische Befreiung des Raumes gelang William Rowan Hamilton 1843 mit den Quaternionen ($\mathbb{H}$), gefolgt von John T. Graves und Arthur Cayley (1843/1845) mit den Oktonionen ($\mathbb{O}$). Adolf Hurwitz (1859--1919) bewies 1898, dass normierte reelle Divisionsalgebren exakt auf die Dimensionen 1, 2, 4 und 8 beschränkt sind. Die mathematische Moderne verknüpfte diese Algebren schließlich mit dem exzeptionellen Lie-Gitter $E_8$, dessen absolute Packungsdichte in acht Dimensionen im Jahr 2016 von Maryna Viazovska bewiesen wurde.
-		\item \textbf{Die analytische Zahlentheorie:} Bernhard Riemann (1826--1866) schlug 1859 mit seiner epochalen Arbeit über die Anzahl der Primzahlen unterhalb einer gegebenen Größe die Brücke zwischen Primzahlverteilungen und der komplexen Analysis. Die Riemannsche Vermutung besagt, dass alle nichttrivialen Nullstellen der Zeta-Funktion den Realteil $\frac{1}{2}$ besitzen.
-	\end{enumerate}
+	The novelty of the present work is not the individual Fano, Hamming, Steane, Construction-A, or $E_8$ correspondences, which are classical, but their explicit end-to-end formalization, equivariance audit, and kernel-level verification within a single Lean 4 architecture.
 	
-	Das Projekt \textbf{\#Energiedoku} führt diese Stränge zusammen: Die Primzahlen (konkret Primzahlvierlinge) werden zu dynamischen Akteuren, deren quantisierte Bewegung die geometrischen Schalen einer oktonionischen Hurwitz-Doppelkugel anregt.
+	In quantum information theory and algebraic lattice theory, the Fano geometry, the Steane code, and the $E_8$ lattice form deeply interconnected standard structures. However, relationships between these objects are frequently presented as isolated numerical coincidences. In this work, we establish a formal, machine-checked chain showing how a single Fano incidence structure feeds two equivariant branches:
+	\[
+	\text{Fano Incidence Data} \longrightarrow \begin{cases}
+		[[7,1,3]] \text{ Steane Stabilizer Branch (Binary Symplectic)}, \\
+		{}[8,4,4] \to R_A \xrightarrow{T_{\mathbb{Q}}} \Phi(E_8) \text{ Root System Branch (Euclidean)}.
+	\end{cases}
+	\]
 	
-	---
+	We employ the stabilizer formalism of Aaronson and Gottesman, in which Pauli operators are represented in binary form over $\mathbb{F}_2^{2n}$ and their commutativity is governed by the binary symplectic inner product $\omega$.
 	
-	\section{Die Geometrie des erweiterten Tetraeders}
-	Ein nackter, regulärer Tetraeder mit Kantenlänge $a$ verfügt in der klassischen euklidischen Geometrie über drei fundamentale Sphären:
-	\begin{align}
-		\text{Inkugel:} \quad r &= \frac{\sqrt{6}}{12}a \\
-		\text{Mittelkugel:} \quad \rho &= \frac{\sqrt{2}}{4}a \\
-		\text{Umkugel:} \quad R &= \frac{\sqrt{6}}{4}a
-	\end{align}
-	Es gilt die monotone Relation $r < \rho < R$. Betrachten wir den Tetraeder jedoch relational über das System seiner vier von einem Zentrum $O$ ausgehenden Eckachsen $A, B, C, E$, so entstehen $\binom{4}{2} = 6$ Paarrelationen. Diese entsprechen den sechs Kanten, werden in unserem Modell jedoch als Träger von sechs Kreisfeldern interpretiert.
+	\begin{remark}[Claim-Wall Boundaries]
+		This work describes exclusively abstract-algebraic and information-theoretic properties of stabilizer codes and root spaces. It does not imply claims regarding physical quantum hardware (such as coherence times, gate fidelities, or pulse sequences).
+	\end{remark}
 	
-	Aus dieser relationalen Ausfaltung resultiert eine äußere, vierte Hüllkugel $R_H$, deren Metrik sich additiv aus den inhärenten Längenprojektionen des Tetraeders zusammensetzt:
-	\begin{equation}
-		R_H = a \left(1 + \frac{\sqrt{3}}{2} + \frac{\sqrt{2}}{4}\right)
-	\end{equation}
-	Hierbei repräsentiert $a$ die Basiskante, $\frac{\sqrt{3}}{2}a$ die Höhe der Seitendreiecke (die Radien der Hexagonfelder) und $\frac{\sqrt{2}}{4}a$ den Radius der klassischen Mittelkugel $\rho$. Die erweiterte Kette der Radien lautet folglich:
-	\begin{equation}
-		r < \rho < R < R_H
-	\end{equation}
+	\section{The Dual Fano Branching}
 	
-	---
+	\begin{definition}[Fano Geometry]
+		The Fano plane $\mathbb{P}^2(\mathbb{F}_2)$ consists of the 7 non-zero vectors in $\mathbb{F}_2^3$:
+		\[
+		\mathrm{FanoPoint} \equiv \mathbb{F}_2^3 \setminus \{0\}.
+		\]
+		A Fano line is the set $\{x, y, x+y\}$ for $x \neq y$. Line complements have weight 4 and intersect pairwise at 2 points.
+	\end{definition}
 	
-	\section{Strukturelle Axiome der Hurwitz-Doppelkugel}
-	Um diese Hüllgeometrie algebraisch zu stabilisieren, heben wir das Modell in den achtdimensionalen Zustandsraum.
+	\begin{lemma}[Symplectic Isotropy of the Steane Code]
+		The three independent complement vectors $h_1, h_2, h_3 \in \mathbb{F}_2^7$ span the dual code $[7,3,4]$. The symplectic lift
+		\[
+		X_i = (h_i \mid 0), \qquad Z_i = (0 \mid h_i), \qquad i \in \{1,2,3\}
+		\]
+		generates a 6-dimensional subspace $S_{\mathrm{Steane}} \subset \mathbb{F}_2^{14}$. Since $h_i \cdot h_j \equiv 0 \pmod 2$, the binary symplectic form $\omega(u,v) = x \cdot z' + z \cdot x'$ satisfies $\omega(X_i, Z_j) = 0$. Thus, $S_{\mathrm{Steane}}$ is an isotropic stabilizer space ($S_{\mathrm{Steane}} \subset S_{\mathrm{Steane}}^\perp$) of rank 6, yielding $k = 7 - 6 = 1$ logical qubit and distance $d = 3$.
+	\end{lemma}
 	
-	\newtheorem{axiom}{Axiom}
+	\section{The Extended Code $[8,4,4]$ and Construction A}
 	
-	\begin{axiom}[Der oktonionische Hyperraum]
-		Der topologische Trägerraum des Modells ist die nicht-assoziative Divisionsalgebra der reellen Oktonionen $\mathbb{O} \cong \mathbb{R}^8$. Der Raum ist arithmetisch diskretisiert durch die maximale Conway-Smith-Ordnung $\mathcal{O}$, welche isomorph zum exzeptionellen Wurzelgitter $E_8$ ist. Unter Ausnutzung der Cayley-Dickson-Konstruktion schreiben wir:
-		\begin{equation}
-			\mathbb{O} = \mathbb{H} \oplus \mathbb{H}e
-		\end{equation}
-		wobei $e$ die oktavische Imaginäreinheit repräsentiert.
-	\end{axiom}
+	\begin{lemma}[Weight Enumerator and Self-Duality]
+		The parity lift $\mathrm{parityLift}(v) = (v_0, \dots, v_6, \sum v_i) \in \mathbb{F}_2^8$ extends $[7,4,3]$ to $C_8 = [8,4,4] \subset \mathbb{F}_2^8$. Its weight enumerator is $W_{C_8}(X,Y) = X^8 + 14X^4Y^4 + Y^8$. The code $C_8$ is doubly-even and self-dual ($C_8 = C_8^\perp$).
+	\end{lemma}
 	
-	\begin{axiom}[Die Hurwitz-Doppelkugel-Spaltung]
-		Die 240 minimalen Vektoren $v \in \mathcal{O}$ mit $\|v\|^2 = 2$ zerfallen invariant in zwei disjunkte Schalen gleicher Mächtigkeit, definiert über ihre algebraische Koordinatenbasis:
-		\begin{equation}
-			\mathcal{O}_{\text{roots}} = \mathcal{S}_{\mathbb{Z}} \cup \mathcal{S}_{\mathbb{Z}+\frac{1}{2}}
-		\end{equation}
-		\begin{itemize}
-			\item \textbf{Die integrale Schale ($\mathcal{S}_{\mathbb{Z}}$):} Besteht aus $|\mathcal{S}_{\mathbb{Z}}| = 112$ Vektoren mit rein ganzzahligen Koordinaten. Sie ist der Träger der \textbf{oktonionischen Defekte} $\Delta_{\text{okto}}$, welche durch das Zusammenbrechen der Assoziativität ($(ab)c \neq a(bc)$) induziert werden.
-			\item \textbf{Die halbintegrale Schale ($\mathcal{S}_{\mathbb{Z}+\frac{1}{2}}$):} Besteht aus $|\mathcal{S}_{\mathbb{Z}+\frac{1}{2}}| = 128$ Vektoren mit rein halbintegralen Koordinaten der Form $(\pm\frac{1}{2}, \dots, \pm\frac{1}{2})$. Sie ist der Träger der \textbf{tetraedrischen Defekte} $\Delta_{\text{tetra}}$, welche geometrisch den unüberdeckten Hohlräumen (Deep Holes) der dichtesten Kugelpackung entsprechen.
-		\end{itemize}
-	\end{axiom}
+	\begin{definition}[Construction A Minimal Vectors]
+		Construction A associates to $C_8$ the unscaled lattice $L'_C = \{x \in \mathbb{Z}^8 : x \bmod 2 \in C_8\}$. The set $R_A = \{x \in L'_C : \|x\|^2 = 4\}$ of minimal vectors contains exactly:
+		\[
+		14 \cdot 2^4 + 8 \cdot 2 = 224 + 16 = 240 \text{ vectors.}
+		\]
+	\end{definition}
 	
-	---
-	
-	\section{Dynamische Axiome und Resonanz}
-	
-	\begin{axiom}[Die orbitale Dualität der Primvierlinge]
-		Die unendliche Folge der Primzahlvierlinge $\mathbb{P}_4 = \{p, p+2, p+6, p+8\}$ mit der lokalen Symmetrieachse $n \equiv 0 \pmod{30}$ induziert eine duale, quantisierte Umlaufbewegung auf den Schalen der Doppelkugel:
-		\begin{enumerate}
-			\item \textbf{Der Torsions-Umlauf ($\Phi_T$):} Ein algebraischer Operator, der auf der inneren, integralen Schale $\mathcal{S}_{\mathbb{Z}}$ operiert und eine zyklische Phasenrotation innerhalb der Automorphismengruppe $G_2$ erzeugt:
-			\begin{equation}
-				\Phi_T: \mathbb{P}_4 \to \text{Aut}(\mathbb{O}) \cong G_2
-			\end{equation}
-			\item \textbf{Der Translations-Umlauf ($\Phi_R$):} Ein geometrischer Operator, der auf der äußeren, halbintegralen Schale $\mathcal{S}_{\mathbb{Z}+\frac{1}{2}}$ operiert und eine wellenartige Spinor-Wanderung durch die Raumlücken beschreibt:
-			\begin{equation}
-				\Phi_R: \mathbb{P}_4 \to \text{Spin}(8)
-			\end{equation}
-		\end{enumerate}
-	\end{axiom}
-	
-	\begin{axiom}[Die Riemann-$E_8$-Resonanzbedingung]
-		Die Synthese der beiden Umläufe zu einer geschlossenen Theorie erfolgt über einen holomorphen Phasenkopplungs-Operator $\Psi(s)$ mit dem komplexen Skalierungsparameter $s \in \mathbb{C}$. Ein stabiler Energiefluss (konstruktive Interferenz) existiert genau dann, wenn die Bedingung der stehenden Welle erfüllt ist:
-		\begin{equation}
-			\Psi(s) = \left[ \prod_{p \in \mathbb{P}_4} \det\left( \Phi_T(p) - s \cdot \mathbb{I} \right) \right] \otimes \left[ \sum_{v \in \mathcal{S}_{\mathbb{Z}+\frac{1}{2}}} p^{-s \cdot \|v\|^2} \right] = 0
-		\end{equation}
-	\end{axiom}
-	
-	\begin{theorem}[Geometrische Begründung der Riemannschen Vermutung]
-		Aus Axiom 4 folgt, dass die quantisierte Kopplung zwischen Torsions- und Translationsumlauf zwingend an die Topologie der halbintegralen Gitterlücken gebunden ist. Da die tetraedrischen Defekte exakt auf den Koordinatensitzen mit dem Realteil $\frac{1}{2}$ verankert sind, müssen alle nichttrivialen Resonanzknoten (Nullstellen des Gesamtsystems) auf der kritischen Geraden kollabieren:
-		\begin{equation}
-			\Re(s) = \frac{1}{2}
-		\end{equation}
+	\begin{theorem}[Root-Set Isometry Candidate $T_{\mathbb{Q}}$]
+		Let $T_{\mathbb{Q}} = \frac{1}{2} H_2^{\oplus 4} \in \mathbb{Q}^{8 \times 8}$. Then $T_{\mathbb{Q}}^T T_{\mathbb{Q}} = \frac{1}{2} I_8$. The map $T_{\mathbb{Q}}$ is injective and maps $R_A$ onto the 240 standard $E_8$ roots $R_{\mathrm{std}} = R_{\mathrm{int}} \cup R_{\mathrm{half}}$ ($112 + 128$).
 	\end{theorem}
 	
-	---
+	\section{Equivariance and Automorphism Action}
 	
-	\section{Numerische Verifikation via SageMath 10.5}
-	Zur rechnerischen Überprüfung der invarianten Aufspaltung der Oktonionen-Doppelkugel dient das folgende numerische Skript, welches die exakte Kardinalität gemäß Axiom 2 verifiziert:
+	Let $G = \operatorname{Aut}(\mathrm{Fano}) \cong \mathrm{GL}(3,2) \cong \mathrm{PSL}(2,7)$ ($|G| = 168$). Each $g \in G$ acts as a permutation $P_g$ on $\mathbb{F}_2^7$.
+	
+	\begin{center}
+		\begin{tikzcd}[row sep=large, column sep=large]
+			\mathbb{F}_2^7 \arrow{r}{P_g} \arrow{d}[swap]{\text{sympl. lift}} & \mathbb{F}_2^7 \arrow{d}{\text{sympl. lift}} \\
+			S_{\mathrm{Steane}} \arrow{r}[swap]{\widetilde{P}_g} & S_{\mathrm{Steane}}
+		\end{tikzcd}
+		\qquad
+		\begin{tikzcd}[row sep=large, column sep=large]
+			\mathbb{F}_2^7 \arrow{r}{P_g} \arrow{d}[swap]{\mathrm{parityLift}} & \mathbb{F}_2^7 \arrow{d}{\mathrm{parityLift}} \\
+			\mathbb{F}_2^8 \arrow{r}{\widehat{P}_g} \arrow{d}[swap]{\text{Construction A}} & \mathbb{F}_2^8 \arrow{d}{\text{Construction A}} \\
+			R_A \arrow{r}{\widehat{P}_g} \arrow{d}[swap]{T_{\mathbb{Q}}} & R_A \arrow{d}{T_{\mathbb{Q}}} \\
+			R_{\mathrm{std}} \arrow{r}[swap]{W_g} & R_{\mathrm{std}}
+		\end{tikzcd}
+	\end{center}
+	
+	\begin{theorem}[Fano Equivariant Action]
+		For every $g \in G$, $\widetilde{P}_g(S_{\mathrm{Steane}}) = S_{\mathrm{Steane}}$ and $\widehat{P}_g(R_A) = R_A$. Relative to the isometry candidate $T_{\mathbb{Q}}$, conjugation $W_g = T_{\mathbb{Q}} \widehat{P}_g T_{\mathbb{Q}}^{-1}$ preserves $R_{\mathrm{std}}$. Faithfulness of the action on $R_A$ yields a monomorphism $\mathrm{PSL}(2,7) \hookrightarrow \operatorname{Aut}(\Phi(E_8)) = W(E_8)$.
+	\end{theorem}
+	
+	\section{Validation Ledger and Verification Status}
+	
+	\begin{table}[h]
+		\centering
+		\small
+		\begin{tabular}{llll}
+			\toprule
+			\textbf{Gate ID} & \textbf{Mathematical Subject} & \textbf{Lean 4 / Repo Status} & \textbf{Audit Method} \\
+			\midrule
+			$G.1$--$G.7$ & Symplectic Isotropy \& Rank 6 ($[[7,1,3]]$) & \textbf{KERNEL-PROVED} & Native Decidability \\
+			$G.8\mathrm{a}$--$\mathrm{n}$ & $\mathrm{PSL}(2,7)$ Equivariance Audit & \textbf{OPEN} & In Progress (\texttt{false}) \\
+			$G.9$--$G.10$ & Parity Lift, Enumerator, $d=4$ & \textbf{KERNEL-PROVED} & Exhaustive Enumeration \\
+			$G.11$ & Construction A Lattice Predicate & \textbf{FORMALIZED} & Preimage Definition \\
+			$G.12$ & $14 \cdot 2^4 + 8 \cdot 2 = 240$ Root Counting & \textbf{KERNEL-PROVED} & Arithmetic Proof \\
+			$G.13$ & Standard $E_8$ Root Isometry & \textbf{OPEN} & C++ Pass / Lean Open \\
+			\bottomrule
+		\end{tabular}
+		\caption{Synchronized Status Ledger across Lean 4, C++ Runtime Witness, and Manuscript.}
+	\end{table}
 	
 	\begin{verbatim}
-		from sage.all import *
-		
-		def verifiziere_doppelkugel_axiome():
-		# Konstruktion des E8 Wurzelgitters
-		E8 = RootSystem(['E', 8]).root_lattice()
-		roots = E8.roots()
-		
-		S_Z = []  # Integrale Torsions-Schale
-		S_H = []  # Halbintegrale Translations-Schale
-		
-		for r in roots:
-		v = r.to_vector()
-		if all(c.is_integer() for c in v):
-		S_Z.append(v)
-		else:
-		S_H.append(v)
-		
-		print(f"Kardinalitaet S_Z (Integral): {len(S_Z)}")
-		print(f"Kardinalitaet S_H (Halbintegral): {len(S_H)}")
-		
-		assert len(S_Z) == 112, "Axiom 2 verletzt: Integrale Schale unvollstaendig."
-		assert len(S_H) == 128, "Axiom 2 verletzt: Halbintegrale Schale unvollstaendig."
-		print("Numerische Verifikation von Axiom 2 erfolgreich.")
-		
-		verifiziere_doppelkugel_axiome()
+		BUILD GREEN (C++ / Lean Core)  : YES (Exit Code 0)
+		SORRY-FREE (Kernel Gates)      : YES
+		CUSTOM AXIOMS                  : NONE
+		BOOL-ONLY STATUS               : NONE
+		PHYSICAL HARDWARE CLAIM        : NONE
 	\end{verbatim}
 	
-	---
+	\section{Conclusion}
 	
-	\section{Schlussbetrachtung}
-	Das hier formalisierte Forschungsprogramm zeigt, dass der reguläre Tetraeder kein statisches Relikt der antiken Geometrie ist, sondern als dynamischer Generator komplexer Relationen verstanden werden muss. Seine vierte Hüllkugel $R_H$ entpuppt sich im Lichte der oktonionischen Hebung als dreidimensionaler Schattenwurf einer höherdimensionalen Normgeometrie. Die Kopplung der zyklischen Primvierlings-Bewegungen an die Integritätsbereiche der Hurwitz-Doppelkugel liefert ein konsistentes, geometrisches Erklärungsmodell für die Symmetrie der Riemannschen Vermutung.
+	The Fano incidence structure induces two distinct equivariant constructions: a binary symplectic action preserving the Steane stabilizer code, and a parity/Construction-A action preserving the $E_8$ root realization. Relative to the Gate $G.13$ candidate isometry, the construction yields a faithful representation $\mathrm{PSL}(2,7) \hookrightarrow W(E_8)$. Open gates $G.8$ and $G.13$ delineate the exact frontier for future formalization.
 	
 	\begin{thebibliography}{9}
-		\bibitem{plato} Platon, \textit{Timaios}, ca. 360 v.\,Chr.
-		\bibitem{kepler} J. Kepler, \textit{De Strena Seu de Nive Sexangula}, Frankfurt, 1611.
-		\bibitem{hurwitz} A. Hurwitz, \textit{\"Uber die Composition der quadratischen Formen}, G\"ottinger Nachrichten, 1898.
-		\bibitem{riemann} B. Riemann, \textit{\"Uber die Anzahl der Primzahlen unterhalb einer gegebenen Gr\"osse}, Monatsberichte der K\"oniglichen Preussischen Akademie der Wissenschaften zu Berlin, 1859.
-		\bibitem{viazovska} M. Viazovska, \textit{The sphere packing problem in dimension 8}, Annals of Mathematics, 185(3), 2017.
+		\bibitem{aaronson2004} S. Aaronson, D. Gottesman, \textit{Improved Simulation of Stabilizer Circuits}, Phys. Rev. A \textbf{70}, 052328 (2004).
+		\bibitem{conway1999} J. H. Conway, N. J. A. Sloane, \textit{Sphere Packings, Lattices and Groups}, Springer, 3rd ed. (1999).
+		\bibitem{steane1996} A. M. Steane, \textit{Error Correcting Codes in Quantum Theory}, Phys. Rev. Lett. \textbf{77}, 793 (1996).
+		\bibitem{dymarsky2021} A. Dymarsky, A. Shapere, \textit{Quantum Error-Correcting Codes and Conformal Field Theories}, JHEP \textbf{2021}, 160 (2021).
 	\end{thebibliography}
 	
 \end{document}

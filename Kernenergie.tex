@@ -1,0 +1,611 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[ngerman]{babel}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{csquotes}
+\usepackage{setspace}
+\usepackage[bottom]{footmisc}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!40!black,
+            pdftitle={Kernfusion und Bindungsenergie im D9/E8-Modell},
+            pdfauthor={Thomas Hoffbauer}]{hyperref}
+
+\geometry{a4paper,tmargin=2.6cm,bmargin=2.8cm,lmargin=2.6cm,rmargin=2.6cm}
+\setstretch{1.12}
+\setlist[itemize]{leftmargin=1.4em,itemsep=0.25em,topsep=0.35em}
+\setlist[enumerate]{leftmargin=1.6em,itemsep=0.25em,topsep=0.35em}
+
+\definecolor{historienblau}{RGB}{18,52,86}
+\definecolor{kastengrund}{RGB}{244,247,250}
+\definecolor{kastenrand}{RGB}{36,72,108}
+\definecolor{goldton}{RGB}{140,96,32}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\theoremstyle{remark}
+\newtheorem{bemerkung}{Bemerkung}[section]
+
+\newcommand{\Dn}{D_9}
+\newcommand{\Ee}{E_8}
+\newcommand{\En}{E_9}
+\newcommand{\Vf}{V_4}
+\newcommand{\EB}{E_{\mathrm{B}}}
+\newcommand{\phig}{\phi}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\itshape Kernfusion und Bindungsenergie}
+\fancyhead[R]{\small Thomas Hoffbauer}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+
+\titleformat{\section}{\Large\bfseries\color{historienblau}}{\thesection}{0.75em}{}
+\titleformat{\subsection}{\large\bfseries\color{historienblau}}{\thesubsection}{0.7em}{}
+
+\newcommand{\historienbox}[2]{%
+  \par\medskip\noindent
+  \fboxsep=9pt\fboxrule=0.6pt
+  \fcolorbox{kastenrand}{kastengrund}{%
+    \begin{minipage}{0.92\textwidth}
+      \textbf{\color{goldton}#1}\par\vspace{0.35em}#2
+    \end{minipage}%
+  }%
+  \par\medskip
+}
+
+\title{\textbf{Kernfusion und Bindungsenergie}\\[0.35em]
+\large im \(\Dn/\Ee\)-Modell der Bamberger Geometrie}
+\author{Thomas Hoffbauer\\[0.25em]
+\small Computer Institut Bamberg\\
+\small Bamberger Modell / EABC}
+\date{Bamberg, 7.\ Oktober 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\noindent
+Die Vorlage beschreibt die Kernfusion als kaskadierte Verklebung neundimensionaler \(\Dn\)-Hyperkugeln, deren achtdimensionale Hüllen an den \(240\) kürzesten Vektoren des \(\Ee\)-Gitters zusammentreffen. Ladung und Sektor der Bausteine liegen in der Einheitengruppe \((\mathbb{Z}/12\mathbb{Z})^{\times}\), einer konkreten Form der Kleinschen Vierergruppe \(\Vf\). Die Bindungsenergie behält die Gestalt der Bethe--Weizsäcker-Formel. Diese Arbeit bringt den Entwurf in die Form eines Artikels: eine historische Einordnung von Tröpfchenmodell, Eisengruppe, Neutroneneinfang und Schalenabschluss, eine mathematische Fassung von Radius, Fusionsabbildung und Massenformel, die Auswertung der angegebenen geometrischen Ausdrücke und ein Ausblick auf die offenen Rechnungen. Algebra, die sich schließt, wird als Satz geführt. Zahlen, die die Vorlage gleichgesetzt hat, werden neu ausgerechnet und neben die Referenzwerte gestellt.
+\end{abstract}
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Einleitung}
+\label{sec:einleitung}
+
+Kernfusion ist in der geläufigen Beschreibung ein Zusammentreffen von Nukleonen auf der Skala einiger Femtometer, gefolgt von einer Energiebilanz der Bindung. Das \(\Dn/\Ee/\En\)- und EABC-Framework liest denselben Vorgang als Geometrie. Primäre Objekte sind abgeschlossene neundimensionale Kugeln. Ihre Berührung, die Sektorrechnung modulo \(12\) und die Bilanz der Bindungsenergie bilden drei aufeinander bezogene Schichten.
+
+\(\En\) bezeichnet im Framework die affine Erweiterung von \(\Ee\). Die Fusionsregeln dieses Textes brauchen das endliche Wurzelgitter und die Gruppe \(\Vf\). Die affine Stufe bleibt im Ausblick.
+
+Der Artikel folgt dem Gang der Vorlage und gibt ihm eine tragfähige Gliederung.
+Abschnitt~\ref{sec:historie} stellt die historischen Träger bereit: Tröpfchenmodell, Massenformel, Eisengruppe, \(s\)- und \(r\)-Prozess, magische Zahlen, Hoyle-Zustand.
+Abschnitt~\ref{sec:math} fixiert die mathematischen Objekte, insbesondere die drei verschiedenen Radien und das Gruppengesetz der Fusion.
+Abschnitt~\ref{sec:fusion} führt die vier Mechanismen der Vorlage in dieser Sprache aus.
+Abschnitt~\ref{sec:energie} wertet die geometrischen Ansätze für die fünf Koeffizienten der Massenformel aus.
+Abschnitt~\ref{sec:anker} stellt die angegebenen Gittermassen neben die Nuklidmassen.
+Abschnitt~\ref{sec:invarianten} sammelt die weiteren numerischen Anker der Vorlage.
+Abschnitt~\ref{sec:ausblick} nennt die Forschungsrichtungen, die sich aus den offenen Stellen ergeben.
+
+\historienbox{Was diese Fassung festhält}{%
+Die Gruppenrechnung modulo \(12\) ist exakt und wird unten als Satz ausgeschrieben. Die Energiebilanz der Deuterium-Tritium-Fusion reproduziert den gemessenen \(Q\)-Wert. Die geometrischen Ausdrücke für die Koeffizienten der Massenformel werden mit \(\hbar c=197{,}327\,\mathrm{MeV\,fm}\), \(r_0=1{,}25\,\mathrm{fm}\) und \(\phig=(1+\sqrt{5})/2\) ausgewertet. Sie treffen die Lehrbuchrundung \(15{,}67\), \(17{,}23\), \(0{,}714\), \(23{,}28\,\mathrm{MeV}\) in dieser Form noch nicht. Der Abstand ist ein Ergebnis der Rechnung und der erste Punkt des Ausblicks.}
+
+\section{Historische Umrahmung}
+\label{sec:historie}
+
+\subsection{Vom Tropfen zur Massenformel}
+
+George Gamow beschrieb den Kern \(1930\) als dichte Ansammlung von Teilchen mit einer Sättigung der Bindung: jedes Nukleon spürt im Inneren nur seine Nachbarn \cite{Gamow1930}. Daraus wird der Kern ein Tropfen. Das Volumen wächst mit der Massenzahl \(A\), die Oberfläche mit \(A^{2/3}\), und eine gleichmäßig verteilte Ladung \(Z\) kostet Coulomb-Energie.
+
+Carl Friedrich von~Weizsäcker gab \(1935\) dieser Vorstellung eine Formel für die Kernmassen \cite{Weizsaecker1935}. Hans Bethe und Robert Bacher bauten sie \(1936\) in den ersten großen Bericht der Kernphysik ein \cite{BetheBacher1936}. In der heute üblichen Schreibweise, ergänzt um eine Schalenkorrektur, lautet die Bindungsenergie
+\begin{equation}
+\label{eq:semf}
+\begin{aligned}
+\EB(A,Z)
+&= a_V A - a_S A^{2/3} - a_C \frac{Z(Z-1)}{A^{1/3}} \\
+&\quad - a_A \frac{(A-2Z)^2}{A} + \delta(A,Z) + \Delta_{\mathrm{shell}}(A,Z).
+\end{aligned}
+\end{equation}
+Die fünf klassischen Koeffizienten haben eine klare Bedeutung.
+\begin{itemize}
+  \item \(a_V\) ist die Bindung eines Nukleons im Inneren.
+  \item \(a_S\) ist der Fehlbetrag an der Oberfläche.
+  \item \(a_C\) ist die elektrostatische Selbstenergie einer homogen geladenen Kugel.
+  \item \(a_A\) bestraft die Abweichung von \(N=Z\), gemildert durch den wachsenden Neutronenüberschuss schwerer Kerne.
+  \item \(\delta\) ist der Paarungsbeitrag: gerade-gerade Kerne sind stärker gebunden als ungerade-ungerade.
+\end{itemize}
+In der semi-empirischen Massenformel sind \(a_V,a_S,a_C,a_A\) und der Paarungskoeffizient Anpassungen an gemessene Massen. Eine weit verbreitete Lehrbuchrundung lautet
+\begin{equation}
+\label{eq:richt}
+a_V=15{,}67,\quad
+a_S=17{,}23,\quad
+a_C=0{,}714,\quad
+a_A=23{,}28,\quad
+a_P=12{,}00
+\end{equation}
+in MeV. Andere Fits derselben Formel verschieben diese Zahlen um einige hundert keV, je nach Massenbereich. Sie sind Richtwerte einer Anpassung, keine Naturkonstanten mit unendlicher Stellenzahl.
+
+\historienbox{Der historische Auftrag der Formel}{%
+Weizsäcker und Bethe lieferten eine Bilanz mit freien Koeffizienten. Das \(\Dn/\Ee\)-Modell übernimmt die Bilanz und sucht die Koeffizienten in der Geometrie: eine Längenskala, der Goldene Schnitt und dimensionslose Faktoren aus dem Gitter. Ob die in der Vorlage angeschriebenen Faktoren diesen Auftrag schon erfüllen, entscheidet die Auswertung in Abschnitt~\ref{sec:auswertung}.}
+
+Der Coulomb-Term hat dabei eine ältere, rein elektrostatische Herleitung. Die Selbstenergie einer homogen geladenen Kugel vom Radius \(R=r_0 A^{1/3}\) ergibt
+\begin{equation}
+\label{eq:coulombklassisch}
+a_C = \frac{3}{5}\,\frac{e^2}{4\pi\varepsilon_0 r_0} = \frac{3}{5}\,\frac{\alpha\,\hbar c}{r_0}.
+\end{equation}
+Mit \(\hbar c=197{,}327\,\mathrm{MeV\,fm}\) und \(\alpha^{-1}=137{,}036\) ist \(\alpha\,\hbar c=1{,}440\,\mathrm{MeV\,fm}\). Bei \(r_0=1{,}25\,\mathrm{fm}\) folgt \(a_C=0{,}691\,\mathrm{MeV}\). Der Richtwert \(0{,}714\,\mathrm{MeV}\) gehört zu \(r_0\approx 1{,}210\,\mathrm{fm}\).
+
+\subsection{Eisengruppe und Neutroneneinfang}
+
+Die Bindung pro Nukleon \(\EB/A\) steigt von den leichten Kernen bis zur Eisengruppe und fällt danach langsam. Der höchste gemessene Wert liegt bei \(^{62}\mathrm{Ni}\); die astrophysikalische Häufigkeit stapelt sich bei \(^{56}\mathrm{Fe}\), weil die Konkurrenz von Photonen, \(\alpha\)-Teilchen und Neutronen in stellarem Gleichgewicht dorthin führt. Geladene Fusion, die Energie freisetzt, endet in dieser Gruppe.
+
+Schwerere Kerne entstehen auf einem anderen Weg. Burbidge, Burbidge, Fowler und Hoyle trennten \(1957\) den langsamen und den schnellen Neutroneneinfang, den \(s\)- und den \(r\)-Prozess \cite{B2FH}. Das Neutron trägt keine Coulomb-Schwelle. Es kann angelagert werden, wo ein Proton abgestoßen würde. Der anschließende \(\beta^-\)-Zerfall hebt die Ladung: aus einem Neutron wird ein Proton, ein Elektron und ein Antineutrino. Uran ist ein Produkt dieser Kette, kein Produkt fortgesetzter geladener Fusion.
+
+\begin{bemerkung}[Zwei Schwellen]
+Die Eisengruppe und die Spaltgrenze sind verschiedene Schwellen. In der Eisengruppe hat \(\EB/A\) sein Maximum; weitere geladene Fusion wird endotherm. Die spontane Spaltung wird erst bei
+\begin{equation}
+\label{eq:fissil}
+\frac{Z^2}{A}\approx 45\text{--}50
+\end{equation}
+zur dominanten Grenze des Tröpfchens, in der klassischen Analyse von Bohr und Wheeler \cite{BohrWheeler1939}. Für \(^{56}\mathrm{Fe}\) ist \(Z^2/A=12{,}07\). Für \(^{238}\mathrm{U}\) ist \(Z^2/A=35{,}56\). Dazwischen liegt das Gebiet des Neutroneneinfangs.
+\end{bemerkung}
+
+\subsection{Schalen und die Insel der Stabilität}
+
+Die glatte Tropfenformel verfehlt die sprichwörtlichen Sprünge bei bestimmten Protonen- und Neutronenzahlen. Maria Goeppert~Mayer und, unabhängig, Otto Haxel, J.~Hans~D.\ Jensen und Hans Suess erklärten \(1949\) diese magischen Zahlen durch abgeschlossene Schalen in einem mittleren Potential mit starker Spin-Bahn-Kopplung \cite{Mayer1949,Haxel1949}. Doppelt magische Kerne wie \(^{4}\mathrm{He}\), \(^{16}\mathrm{O}\) und \(^{208}\mathrm{Pb}\) sitzen in tiefen Mulden der Massenfläche.
+
+Myers und Swiatecki zerlegten die Masse in einen makroskopischen Tropfen und eine mikroskopische Schalenkorrektur \cite{Myers1966}. Dieselbe Zerlegung sagt jenseits der Actinoide eine Insel der Stabilität voraus, klassisch in der Nähe von \(Z=114\) und \(N=184\), also bei \(^{298}\mathrm{Fl}\). Das Nuklid ist nicht synthetisiert. Die bekannten Flerovium-Isotope liegen bei Massenzahlen um \(284\) bis \(290\) und leben Bruchteile von Sekunden bis wenige Sekunden. Eine Halbwertszeit für \(^{298}\mathrm{Fl}\) ist damit eine Vorhersage, keine Messung.
+
+\subsection{Drei mathematische Vorbilder}
+
+Drei ältere Strukturen tragen die Sprache des Modells.
+
+Felix Klein beschrieb die Vierergruppe in den \emph{Vorlesungen über das Ikosaeder} \cite{Klein1884}: eine Gruppe aus vier Elementen, in der jedes vom neutralen Element verschiedene Element die Ordnung zwei hat. In diesem Artikel erscheint sie als Einheitengruppe modulo \(12\).
+
+Thorold Gosset beschrieb \(1900\) die regelmäßigen und halbregelmäßigen Figuren höherer Dimension \cite{Gosset1900}. Das Wurzelgitter \(\Ee\subset\mathbb{R}^8\) hat \(240\) Vektoren der Länge \(\sqrt{2}\). Diese Zahl ist die Kusszahl der achtdimensionalen Kugel in ihrer dichtesten gitterförmigen Packung. Das Modell liest dieselben \(240\) Punkte als Berührstellen der Kernbausteine.
+
+Theodor Kaluza (\(1921\)) und Oskar Klein (\(1926\)) führten eine zusätzliche Dimension ein, deren Geometrie eine Kraft im niedrigerdimensionalen Raum trägt \cite{Kaluza1921,Klein1926}. Das Framework setzt eine Längenskala
+\begin{equation}
+\label{eq:E0}
+E_0=\frac{\hbar c}{r_0}
+\end{equation}
+und nennt sie Kaluza--Klein-Vakuumenergie. Mit der Kernskala \(r_0=1{,}25\,\mathrm{fm}\) ist
+\begin{equation}
+E_0=157{,}86\,\mathrm{MeV}.
+\end{equation}
+Diese Länge stammt aus der Systematik \(R=r_0 A^{1/3}\). Sie ist eine eingesetzte Skala. Parameterfrei können danach nur noch die dimensionslosen Vorfaktoren sein.
+
+\section{Mathematische Umrahmung}
+\label{sec:math}
+
+\subsection{Hyperkugeln und Berührpunkte}
+
+\begin{definition}[\(\Dn\)-Baustein]
+Ein primärer Baustein ist eine abgeschlossene neundimensionale Kugel \(\Dn\). Ihre für die Berührung maßgebliche Hülle ist die achtdimensionale Sphäre \(S^8\subset\Dn\). Die Berührstellen \(P_{\mathrm{kuss}}\) sind die \(240\) kürzesten Vektoren von \(\Ee\).
+\end{definition}
+
+Auf der Kernskala, Radien von etwa \(1\,\mathrm{fm}\) bis etwa \(8\,\mathrm{fm}\), berühren sich diese Hüllen. Das Modell zeichnet an der Berührung einen Hals und nennt ihn das Bild einer neundimensionalen Einstein--Rosen-Brücke. Die Brücke ist hier eine geometrische Lesart der Bindung, keine Lösung der vierdimensionalen Vakuumgleichungen. Die Zeitskala der starken Wechselwirkung liegt bei \(10^{-22}\,\mathrm{s}\); das Modell ordnet ihr die arithmetische Wiederkehrzeit \(T_{\mathrm{rec}}\) zu.
+
+\vspace{0.5em}
+\begin{center}
+\begin{tikzpicture}[font=\small, node distance=0.42cm]
+  \node[draw=kastenrand, fill=kastengrund, inner sep=6pt, align=center] (d9) {\(\Dn\)\\[-1pt]{\scriptsize Hyperkugeln}};
+  \node[draw=kastenrand, fill=kastengrund, inner sep=6pt, align=center, right=of d9] (e8) {\(240\) Punkte\\[-1pt]{\scriptsize von \(\Ee\)}};
+  \node[draw=kastenrand, fill=kastengrund, inner sep=6pt, align=center, right=of e8] (v4) {\(\Vf\)\\[-1pt]{\scriptsize Produkt mod \(12\)}};
+  \node[draw=goldton, fill=goldton!12, inner sep=6pt, align=center, right=of v4] (eb) {\(\EB\)\\[-1pt]{\scriptsize Bilanz}};
+  \draw[-latex, thick, kastenrand] (d9) -- (e8);
+  \draw[-latex, thick, kastenrand] (e8) -- (v4);
+  \draw[-latex, thick, goldton] (v4) -- (eb);
+  \node[font=\scriptsize\itshape, below=0.45cm of e8, text=historienblau] {Berührung, Sektor, Energie};
+\end{tikzpicture}
+\end{center}
+\vspace{0.3em}
+
+\subsection{Drei Radien}
+\label{sec:radien}
+
+Die Vorlage setzt eine Volumenerhaltung \(V_k=k\,V_0\) und folgert daraus \(R_k=\sqrt{k}\,R_0\). Diese Folgerung gehört zu einer bestimmten Dimension. Das Volumen der \(n\)-dimensionalen Kugel vom Radius \(R\) ist
+\begin{equation}
+V_n(R)=\frac{\pi^{n/2}}{\Gamma(n/2+1)}\,R^n.
+\end{equation}
+
+\begin{lemma}[Skalierung bei Volumenerhaltung]
+\label{lem:radius}
+Aus \(V_n(R_k)=k\,V_n(R_0)\) folgt
+\begin{equation}
+R_k=k^{1/n}R_0.
+\end{equation}
+Insbesondere gilt
+\begin{align}
+R_k^{(9)}&=k^{1/9}R_0 && \text{im \(\Dn\)-Bulk},\\
+R_k^{(3)}&=k^{1/3}R_0 && \text{im dreidimensionalen Kernradius},\\
+R_k^{(2)}&=\sqrt{k}\,R_0 && \text{in einem zweidimensionalen Schnitt}.
+\end{align}
+\end{lemma}
+
+Die Massenformel~\eqref{eq:semf} benutzt den dreidimensionalen Radius: Oberfläche \(\propto A^{2/3}\), Coulomb-Nenner \(\propto A^{1/3}\). Die Wurzel \(\sqrt{k}\) ist die Skalierung eines zweidimensionalen Schnitts. Sie folgt aus der neundimensionalen Volumenerhaltung nicht. Für \(k=56\) ist \(56^{1/9}\approx 1{,}56\), \(56^{1/3}\approx 3{,}83\) und \(\sqrt{56}\approx 7{,}48\). Welche dieser drei Längen in welcher Energieschicht steht, ist in Abschnitt~\ref{sec:ausblick} als eigene Aufgabe genannt. In der Energiebilanz dieses Artikels gilt der dreidimensionale Kernradius.
+
+\subsection{Die Gruppe \texorpdfstring{\(\Vf\)}{V4} und die Fusionsabbildung}
+
+\begin{definition}[Sektoren]
+Die Einheitengruppe modulo \(12\),
+\begin{equation}
+(\mathbb{Z}/12\mathbb{Z})^{\times}=\{1,5,7,11\},
+\end{equation}
+ist eine Realisierung der Kleinschen Vierergruppe: \(5^2\equiv 7^2\equiv 11^2\equiv 1\pmod{12}\). Das Modell belegt sie wie folgt.
+\begin{center}
+\begin{tabular}{@{}cll@{}}
+\toprule
+Sektor & Belegung & Ladung \\
+\midrule
+\(1\)  & Vakuum und Photon & \(Q=0\) \\
+\(5\)  & Proton & \(Q=+1\) \\
+\(7\)  & Elektron und die zugehörige Leptonlinie & \(Q=-1\) \\
+\(11\) & Neutron & \(Q=0\) \\
+\bottomrule
+\end{tabular}
+\end{center}
+Das Neutron trägt den Sektor des Produkts aus Proton und Elektron, denn \(5\cdot 7=35\equiv 11\pmod{12}\).
+\end{definition}
+
+\begin{satz}[Fusionsabbildung]
+\label{satz:fusion}
+Das Produkt zweier Sektoren ist die Gruppenverknüpfung
+\begin{equation}
+\label{eq:fusion}
+\mu(A,B)=(A\cdot B)\bmod 12.
+\end{equation}
+Für mehrere Bausteine ist der Sektor des Verbunds das Produkt aller eingehenden Sektoren. Diese Abbildung ist assoziativ, kommutativ, und jedes nichttriviale Element ist sein eigenes Inverses. Die volle Tafel lautet
+\begin{center}
+\begin{tabular}{@{}c|cccc@{}}
+\(\mu\) & \(1\) & \(5\) & \(7\) & \(11\) \\
+\hline
+\(1\) & \(1\) & \(5\) & \(7\) & \(11\) \\
+\(5\) & \(5\) & \(1\) & \(11\) & \(7\) \\
+\(7\) & \(7\) & \(11\) & \(1\) & \(5\) \\
+\(11\) & \(11\) & \(7\) & \(5\) & \(1\) \\
+\end{tabular}
+\end{center}
+\end{satz}
+
+\begin{bemerkung}[Sektor \(7\)]
+Deuterium, das Produkt aus Proton und Neutron, landet nach~\eqref{eq:fusion} in Sektor \(7\). Denselben Sektor trägt das Elektron. Die Zahl ist dieselbe. Die physikalische Belegung ist eine Lesart des Modells und identifiziert den Deuteriumkern nicht mit einem Lepton. Die Trennung der beiden Lesarten steht im Ausblick.
+\end{bemerkung}
+
+Der \(\beta^-\)-Zerfall des Neutrons,
+\begin{equation}
+n\to p+e^-+\bar\nu_e,
+\end{equation}
+erhält das Sektorprodukt, sobald das Antineutrino dem Sektor \(1\) zugeordnet wird:
+\begin{equation}
+5\cdot 7\cdot 1=35\equiv 11\pmod{12}.
+\end{equation}
+In der Sprache der Vorlage ist das das Umklappen \(11\mapsto 5\otimes 7\otimes 1\).
+
+\section{Der Fusionsprozess}
+\label{sec:fusion}
+
+\subsection{Verklebung an den Berührpunkten}
+
+Der erste Mechanismus ist geometrisch. Zwei \(\Dn\)-Kugeln treffen sich auf der Femtometerskala an Punkten aus der Menge der \(240\) kürzesten \(\Ee\)-Vektoren. Der Hals an dieser Stelle ist die Bindung. Die Wiederkehrzeit \(T_{\mathrm{rec}}\sim 10^{-22}\,\mathrm{s}\) setzt die Zeitskala, auf der diese Bindung besteht. Eine Herleitung dieser Zeit aus der Gittergeometrie, über die Zuordnung zur starken Zeitskala hinaus, enthält die Vorlage nicht.
+
+\subsection{Drei geschlossene Sektorrechnungen}
+
+Die folgenden drei Rechnungen benutzen nur Satz~\ref{satz:fusion} und die Belegung der Sektoren.
+
+\begin{enumerate}
+  \item \textbf{Deuterium.} Proton und Neutron, \(k=2\):
+  \begin{equation}
+  5\cdot 11=55\equiv 7\pmod{12}.
+  \end{equation}
+  Die Vorlage nennt das die bipolare Paarung.
+
+  \item \textbf{Alphateilchen.} Zwei Protonen und zwei Neutronen, \(k=4\):
+  \begin{equation}
+  5\cdot 5\cdot 11\cdot 11
+  \equiv 1\cdot 1
+  \equiv 1\pmod{12}.
+  \end{equation}
+  Der Verbund schließt im Sektor \(1\). Das Modell liest diesen Schluss als Grund der besonders hohen Bindung von \(^{4}\mathrm{He}\). Die Bindungsenergie selbst liefert erst die Massenformel, und für \(A=4\) nur zusammen mit einer Schalenkorrektur; vgl.\ Abschnitt~\ref{sec:dt}.
+
+  \item \textbf{Tripel-Alpha und Kohlenstoff-12.} Drei Alphateilchen bleiben im Sektor \(1\), weil \(\mu(1,1)=1\). Unabhängig davon ist die Massenzahl \(A=12\) ein Vielfaches von \(12\):
+  \begin{equation}
+  A\equiv 0\pmod{12}.
+  \end{equation}
+  Die beiden Kongruenzen leben in verschiedenen Gruppen. Die Sektorrechnung bleibt in \(\Vf\). Die Massenzahl schließt einen Zyklus der Länge \(12\). Die Vorlage legt beide auf den Hoyle-Zustand.
+\end{enumerate}
+
+\historienbox{Der Hoyle-Zustand}{%
+Fred Hoyle sagte \(1954\) eine Resonanz in \(^{12}\mathrm{C}\) knapp über der Schwelle dreier Alphateilchen voraus, weil sonst der Aufbau des Kohlenstoffs in Roten Riesen zu langsam bliebe \cite{Hoyle1954}. Die Resonanz liegt etwa \(7{,}65\,\mathrm{MeV}\) über dem Grundzustand von \(^{12}\mathrm{C}\). Das Modell setzt diese Resonanz auf den Zyklus \(A=12\). Die Resonanzenergie selbst wird in der Vorlage nicht aus dem Gitter berechnet.}
+
+\subsection{Eisengruppe und Spaltgrenze im Modell}
+
+Für geladene Bausteine wächst die Coulomb-Energie in der Massenformel mit \(Z(Z-1)/A^{1/3}\). Der Gewinn aus dem Volumenterm wächst nur linear in \(A\). Das Maximum von \(\EB/A\) liegt dadurch in der Eisengruppe. Das Modell nimmt \(^{56}\mathrm{Fe}\) (\(k=56\)) als Bezugskern dieses Maximums. Der gemessene Höchstwert von \(\EB/A\) liegt bei \(^{62}\mathrm{Ni}\); die Häufigkeitsspitze der Sternmaterie liegt bei \(^{56}\mathrm{Fe}\).
+
+Jenseits der Eisengruppe führt das Modell den Aufbau über den Neutroneneinfang und das Sektorumklappen des \(\beta^-\)-Zerfalls. Das reicht in der Vorlage bis \(^{238}\mathrm{U}\) (\(k=238\)).
+
+Die Spaltgrenze ist die zweite Schwelle. Mit dem Fissilitätsindex der Vorlage gilt für die beiden superschweren Bezugskerne
+\begin{align}
+\frac{Z^2}{A}\bigl(^{298}\mathrm{Fl}\bigr)&=\frac{114^2}{298}=43{,}61,\\
+\frac{Z^2}{A}\bigl(^{300}120\bigr)&=\frac{120^2}{300}=48{,}0.
+\end{align}
+\(^{298}\mathrm{Fl}\) liegt unter der klassischen Spaltgrenze~\eqref{eq:fissil}. \(^{300}120\) liegt auf ihr. Das Modell erwartet dort, dass die spontane Spaltung den \(\alpha\)-Zerfall verdrängt. Ein kritischer Wert \(48{,}25\), den die Vorlage nennt, wird von \(Z^2/A=48{,}0\) nicht überschritten; der Kern sitzt auf der Grenze.
+
+\section{Die Bindungsenergie}
+\label{sec:energie}
+
+\subsection{Die Formel im Framework}
+
+Die frei werdende Energie einer Fusion ist die Differenz der Bindungsenergien,
+\begin{equation}
+\label{eq:deltaE}
+\Delta E
+= \EB(A_{\mathrm{P}},Z_{\mathrm{P}})
+- \sum \EB(A_{\mathrm{E}},Z_{\mathrm{E}}).
+\end{equation}
+Ein positiver Wert bedeutet, dass der Endkern stärker gebunden ist als die Eingangskerne zusammen. Die Vorlage setzt für \(\EB\) die Formel~\eqref{eq:semf} an. Der Paarungsterm behält die übliche Stufung
+\begin{equation}
+\label{eq:delta}
+\delta(A,Z)=
+\begin{cases}
++a_P A^{-1/2}\,\mathrm{MeV} & \text{gerade \(Z\), gerade \(N\)},\\
+0 & \text{ungerade Massenzahl},\\
+-a_P A^{-1/2}\,\mathrm{MeV} & \text{ungerade \(Z\), ungerade \(N\)}.
+\end{cases}
+\end{equation}
+
+\begin{bemerkung}[Vorzeichen der Schalenkorrektur]
+Magische Kerne sind stärker gebunden. In der Bindungsenergie \(\EB\) ist die zugehörige Korrektur daher positiv, in der Kernmasse negativ. Die Vorlage schreibt \(\Delta E_{\mathrm{shell}}\approx -7{,}5\,\mathrm{MeV}\) und spricht zugleich von einer höheren Spaltbarriere. Gemeint ist zusätzliche Bindung. In diesem Artikel steht
+\begin{equation}
+\Delta_{\mathrm{shell}}=+7{,}5\,\mathrm{MeV}
+\end{equation}
+als Beitrag zu \(\EB\) an den genannten Attraktoren, darunter \(^{4}\mathrm{He}\), \(^{208}\mathrm{Pb}\) und \(^{298}\mathrm{Fl}\). Dieselbe Größe setzt das Modell als Beitrag zur Spaltbarriere an, in der Vorlage im Fenster \(7{,}5\) bis \(9\,\mathrm{MeV}\). Für \(^{298}\mathrm{Fl}\) setzt es eine Halbwertszeit von etwa \(300\,\mathrm{s}\) an. Beides sind Ansätze des Modells. Eine Ableitung aus der Voronoi-Zelle der \(240\) Berührpunkte liegt nicht vor, und \(^{298}\mathrm{Fl}\) ist nicht gemessen.
+\end{bemerkung}
+
+\subsection{Geometrische Ansätze und ihre Auswertung}
+\label{sec:auswertung}
+
+Die Vorlage gibt für die Koeffizienten die folgenden Ausdrücke an, mit dem Goldenen Schnitt \(\phig=(1+\sqrt{5})/2\) und der Fano-Größe \(\sqrt{3/5}\):
+\begin{align}
+a_V &= \frac{E_0}{2\phig^3+1},
+\label{eq:aV}\\
+a_S &= a_V\cdot\sqrt{\frac{3}{5}}\cdot\phig,
+\label{eq:aS}\\
+a_C &= \frac{3}{5}\,\frac{e^2}{4\pi\varepsilon_0 r_0},
+\label{eq:aC}\\
+a_A &= a_V\cdot\frac{2\phig}{\sqrt{3}}.
+\label{eq:aA}
+\end{align}
+Der Paarungskoeffizient wird als \(a_P=12{,}00\,\mathrm{MeV}\) angesetzt. Ein geometrischer Ausdruck, der diese \(12\) erzeugt, steht in der Vorlage nicht.
+
+\begin{satz}[Auswertung]
+\label{satz:auswertung}
+Es sei \(r_0=1{,}25\,\mathrm{fm}\), \(\hbar c=197{,}327\,\mathrm{MeV\,fm}\) und damit \(E_0=157{,}86\,\mathrm{MeV}\). Dann ist \(2\phig^3+1=9{,}472135955\), und die Ausdrücke~\eqref{eq:aV}--\eqref{eq:aA} ergeben
+\begin{align}
+a_V &= 16{,}666\,\mathrm{MeV},\\
+a_S &= 20{,}888\,\mathrm{MeV},\\
+a_C &= 0{,}691\,\mathrm{MeV},\\
+a_A &= 31{,}138\,\mathrm{MeV}.
+\end{align}
+\end{satz}
+
+\begin{table}[ht]
+\centering
+\caption{Geometrische Auswertung neben der Lehrbuchrundung~\eqref{eq:richt}. Die letzte Spalte ist \((a_{\mathrm{geom}}-a_{\mathrm{Richt}})/a_{\mathrm{Richt}}\).}
+\label{tab:koeff}
+\medskip
+\begin{tabular}{@{}llrrr@{}}
+\toprule
+Koeffizient & Ausdruck & Geom.\ [MeV] & Richtwert [MeV] & Abweichung \\
+\midrule
+\(a_V\) & \(E_0/(2\phig^3+1)\) & \(16{,}666\) & \(15{,}67\) & \(+6{,}4\,\%\) \\
+\(a_S\) & \(a_V\sqrt{3/5}\,\phig\) & \(20{,}888\) & \(17{,}23\) & \(+21{,}2\,\%\) \\
+\(a_C\) & \(\tfrac{3}{5}\alpha\hbar c/r_0\) & \(0{,}691\) & \(0{,}714\) & \(-3{,}2\,\%\) \\
+\(a_A\) & \(a_V\cdot 2\phig/\sqrt{3}\) & \(31{,}138\) & \(23{,}28\) & \(+33{,}8\,\%\) \\
+\(a_P\) & angesetzt & \(12{,}00\) & \(12{,}00\) & \(0\) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Der Coulomb-Term ist der klassische Kugelausdruck~\eqref{eq:coulombklassisch}. Sein Abstand zum Richtwert ist die Differenz zweier Wahlen von \(r_0\): \(1{,}25\,\mathrm{fm}\) gegen \(1{,}210\,\mathrm{fm}\). Die drei Ausdrücke, die \(\phig\) enthalten, liegen weiter von der Lehrbuchrundung entfernt. Die Gleichsetzungen der Vorlage mit \(15{,}67\), \(17{,}23\) und \(23{,}28\,\mathrm{MeV}\) beschreiben das Ziel der Identifikation. Satz~\ref{satz:auswertung} ist das Ergebnis der angeschriebenen Formeln.
+
+Mit denselben Lehrbuchkoeffizienten liefert~\eqref{eq:semf} für \(^{4}\mathrm{He}\) rund \(24{,}4\,\mathrm{MeV}\), gemessen sind \(28{,}30\,\mathrm{MeV}\). Für \(^{12}\mathrm{C}\) liefert sie rund \(92\,\mathrm{MeV}\), nahe am gemessenen Wert. Für \(^{2}\mathrm{H}\) versagt die Tropfenformel, wie seit Weizsäcker bekannt: sie ist für die leichtesten Kerne nicht gemacht. Eine Schalenkorrektur von pauschal \(+7{,}5\,\mathrm{MeV}\) hebt \(^{4}\mathrm{He}\) über den Messwert. Auch sie ist damit für das Alphateilchen noch kein abgeschlossener Term.
+
+\subsection{Energiebilanz der Deuterium-Tritium-Fusion}
+\label{sec:dt}
+
+Die Reaktion
+\begin{equation}
+{}^{2}\mathrm{H}+{}^{3}\mathrm{H}\to {}^{4}\mathrm{He}+n
+\end{equation}
+wird mit den gemessenen Bindungsenergien bilanziert. Das Neutron ist ungebunden, \(\EB(n)=0\).
+\begin{align}
+\EB({}^{2}\mathrm{H})&=2{,}224\,\mathrm{MeV},&
+\EB({}^{3}\mathrm{H})&=8{,}482\,\mathrm{MeV},\\
+\EB^{\mathrm{(ein)}}&=10{,}706\,\mathrm{MeV},&
+\EB({}^{4}\mathrm{He})&=28{,}296\,\mathrm{MeV}.
+\end{align}
+Gleichung~\eqref{eq:deltaE} ergibt
+\begin{equation}
+\Delta E=28{,}296\,\mathrm{MeV}-10{,}706\,\mathrm{MeV}=17{,}590\,\mathrm{MeV}.
+\end{equation}
+Auf Hundertstel-MeV gerundet ist das der Wert \(17{,}60\,\mathrm{MeV}\) der Vorlage. Die Bilanz prüft die Energieerhaltung an den Laborwerten. Sie prüft die geometrischen Koeffizienten nicht, weil für \(A=2\) und \(A=3\) die Tropfenformel keine tragfähigen Bindungsenergien liefert.
+
+\section{Ankerkerne}
+\label{sec:anker}
+
+Die Vorlage nennt Gittermassen von \(^{1}\mathrm{H}\) bis \(^{300}120\). Tabelle~\ref{tab:massen} stellt sie neben die Nuklidmassen der Atomic Mass Evaluation 2020 \cite{AME2020}. Die relative Abweichung ist \((m_{\mathrm{Gitter}}-m_{\mathrm{AME}})/m_{\mathrm{AME}}\).
+
+\begin{table}[ht]
+\centering
+\caption{Angegebene Gittermassen und Nuklidmassen. Für \(^{298}\mathrm{Fl}\) und \(^{300}120\) gibt es keinen AME-Wert.}
+\label{tab:massen}
+\medskip
+\small
+\begin{tabular}{@{}lrrrrlp{4.6cm}@{}}
+\toprule
+Nuklid & \(Z\) & \(A\) & Gitter [u] & AME [u] & \(\Delta\) & Stellung im Modell \\
+\midrule
+\(^{1}\mathrm{H}\) & \(1\) & \(1\) & \(1{,}007825\) & \(1{,}007825\) & \(0{,}000\,\%\) & einzelne Eingangskugel \\
+\(^{4}\mathrm{He}\) & \(2\) & \(4\) & \(4{,}001506\) & \(4{,}002603\) & \(-0{,}027\,\%\) & Sektor-\(1\)-Quartett \\
+\(^{12}\mathrm{C}\) & \(6\) & \(12\) & \(12{,}0108\) & \(12\) & \(+0{,}090\,\%\) & Tripel-Alpha, \(A\equiv 0\pmod{12}\) \\
+\(^{16}\mathrm{O}\) & \(8\) & \(16\) & \(15{,}9949\) & \(15{,}994915\) & \(0{,}000\,\%\) & abgeschlossene Schale \\
+\(^{56}\mathrm{Fe}\) & \(26\) & \(56\) & \(55{,}9438\) & \(55{,}93494\) & \(+0{,}016\,\%\) & Bezugskern der Eisengruppe \\
+\(^{208}\mathrm{Pb}\) & \(82\) & \(208\) & \(207{,}9766\) & \(207{,}97665\) & \(0{,}000\,\%\) & doppelt magisch, \(Z=82\), \(N=126\) \\
+\(^{238}\mathrm{U}\) & \(92\) & \(238\) & \(238{,}0508\) & \(238{,}05079\) & \(0{,}000\,\%\) & schwerer Kern nach Neutroneneinfang \\
+\(^{298}\mathrm{Fl}\) & \(114\) & \(298\) & \(298{,}194\) & --- & --- & Insel, Ansatz \(\Delta_{\mathrm{shell}}\) \\
+\(^{300}120\) & \(120\) & \(300\) & \(300{,}281\) & --- & --- & \(Z^2/A=48\), Spaltgrenze \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{bemerkung}[Nuklidmasse und Standardatomgewicht]
+Die Masse von \(^{12}\mathrm{C}\) ist durch die Definition der atomaren Masseneinheit exakt \(12\,\mathrm{u}\). Die Zahl \(12{,}011\,\mathrm{u}\) ist das Standardatomgewicht des Elements Kohlenstoff, also der irdischen Isotopenmischung. Ebenso ist \(55{,}845\,\mathrm{u}\) das Standardatomgewicht des Elements Eisen; die Nuklidmasse von \(^{56}\mathrm{Fe}\) ist \(55{,}93494\,\mathrm{u}\). Die Vorlage stellte \(12{,}0108\) neben \(12{,}011\) und \(55{,}9438\) neben \(55{,}845\). In Tabelle~\ref{tab:massen} stehen die Nuklidmassen. Für \(^{56}\mathrm{Fe}\) beträgt der Abstand zur Nuklidmasse \(+0{,}016\,\%\). Für \(^{12}\mathrm{C}\) beträgt er \(+0{,}090\,\%\) gegen die Definitionsmasse \(12\,\mathrm{u}\).
+\end{bemerkung}
+
+Wo die Vorlage bereits eine Nuklidmasse nennt, bleibt die Übereinstimmung auf der angegebenen Stellenzahl bestehen: \(^{1}\mathrm{H}\), \(^{16}\mathrm{O}\), \(^{208}\mathrm{Pb}\), \(^{238}\mathrm{U}\). \(^{4}\mathrm{He}\) liegt \(0{,}027\,\%\) unter der AME-Masse. Für die beiden nicht synthetisierten Kerne am Ende der Tabelle gibt es keinen Messwert, an dem ein Fehler in Prozent ausgewiesen werden könnte.
+
+\section{Weitere Invarianten der Vorlage}
+\label{sec:invarianten}
+
+Die Vorlage stellt neben die Kernmassen drei weitere numerische Anker. Sie werden hier als Angaben des Modells geführt und mit dem jeweiligen Referenzwert nebeneinandergestellt. Eine Herleitung aus dem Gitter enthält der Text der Vorlage für diese Größen nicht.
+
+\subsection{Feinstruktur und Wasserstoff}
+
+Das Modell nennt
+\begin{equation}
+\alpha^{-1}=137{,}035999,
+\end{equation}
+gewonnen aus der Diskriminante \(D_K=5\) und dem Fixpunkt \((\phig,1-\phig)\). Die CODATA-Empfehlungen seit \(2014\) beginnen mit denselben neun Ziffern \(137{,}035999\). Die letzten Stellen der jeweiligen Empfehlung liegen jenseits dieser Angabe.
+
+Für die Lyman-\(\alpha\)-Linie setzt das Modell eine ungekoppelte Bohr-Frequenz \(2466{,}000\,\mathrm{THz}\) und eine Gitterkorrektur \(+0{,}072\,\mathrm{THz}\) an, zusammen \(2466{,}072\,\mathrm{THz}\). Zur Wellenlänge \(121{,}567\,\mathrm{nm}\) gehört die Frequenz \(c/\lambda=2466{,}068\,\mathrm{THz}\). Der Abstand beträgt \(0{,}004\,\mathrm{THz}\).
+
+Für die Lamb-Verschiebung \(2s_{1/2}-2p_{1/2}\) nennt das Modell \(1{,}058\,\mathrm{GHz}\) neben dem Laborwert \(1{,}0578\,\mathrm{GHz}\). Für die Feinstruktur \(2p_{3/2}-2p_{1/2}\) nennt es \(10{,}953\,\mathrm{GHz}\) auf beiden Seiten. Auf der angegebenen Stellenzahl stimmen diese beiden Paare überein.
+
+\subsection{Fano-Größe, MOND-Skala, Wiederkehrzeit}
+
+Die dimensionslose Fano-Größe des Modells ist
+\begin{equation}
+\sqrt{\frac{3}{5}}=0{,}774597.
+\end{equation}
+Die Vorlage stellt daneben die Metrologezahl \(0{,}7746\).
+
+Die MOND-Beschleunigung von Milgrom \cite{Milgrom1983} verknüpft das Modell mit der Hubble-Konstanten durch
+\begin{equation}
+a_0=\frac{c\,H_0}{2\pi}.
+\end{equation}
+Bei \(H_0=70\,\mathrm{km\,s^{-1}\,Mpc^{-1}}\) folgt \(a_0=1{,}082\times 10^{-10}\,\mathrm{m\,s^{-2}}\). Die in der Vorlage genannte SPARC-Skala ist \(1{,}20\times 10^{-10}\,\mathrm{m\,s^{-2}}\); der relative Abstand beträgt \(9{,}8\,\%\). Die Hubble-Spannung verschiebt den Modellwert: \(1{,}042\times 10^{-10}\) bei \(H_0=67{,}4\) und \(1{,}129\times 10^{-10}\) bei \(H_0=73\), jeweils in \(\mathrm{m\,s^{-2}}\). Keiner dieser drei Werte trifft \(1{,}20\times 10^{-10}\).
+
+Die Wiederkehrzeit ist in der Vorlage eine geschlossene dimensionslose Formel,
+\begin{equation}
+\label{eq:trec}
+\frac{T_{\mathrm{rec}}}{T_0}
+=\frac{5+\sqrt{15}+5\sqrt{3}+5\sqrt{5}}{4}
+=7{,}178394.
+\end{equation}
+Ein Messwert, an dem dieses Verhältnis geprüft wäre, ist in der Vorlage nicht genannt. Die Formel steht als Invariante des Modells.
+
+\section{Abschluss und weitere Forschungsrichtungen}
+\label{sec:ausblick}
+
+Die Vorlage lässt sich als zusammenhängendes Bild lesen. Kerne sind Verbünde von \(\Dn\)-Kugeln. Ihre Berührung sitzt auf den \(240\) kürzesten Vektoren von \(\Ee\). Der Ladungssektor multipliziert sich in \(\Vf\), und diese Multiplikation schließt für das Alphateilchen, erhält sich im \(\beta^-\)-Zerfall und legt Deuterium auf die Restklasse \(7\). Die Energiebilanz behält die Form von Bethe und Weizsäcker. Geladene Fusion endet in der Eisengruppe. Der weitere Aufbau läuft über Neutroneneinfang. Eine zweite, höhere Schwelle ist die Spaltgrenze \(Z^2/A\sim 48\), an der das Modell \(^{300}120\) ablegt. Dieses Gerüst ist mathematisch und historisch anschlussfähig.
+
+Dieselbe Durcharbeitung zeigt, welche Identifikationen noch offen sind. Die folgenden Richtungen schließen unmittelbar an die ausgewerteten Stellen an.
+
+\begin{enumerate}
+  \item \textbf{Koeffizienten der Massenformel.}
+  Gesucht sind dimensionslose Vorfaktoren, deren Auswertung die Richtwerte~\eqref{eq:richt} trifft, oder eine begründete andere Zielmenge von Fits. Die angeschriebenen Ausdrücke ergeben nach Satz~\ref{satz:auswertung} \(16{,}67\), \(20{,}89\), \(0{,}691\) und \(31{,}14\,\mathrm{MeV}\). Der Paarungskoeffizient \(12\,\mathrm{MeV}\) braucht einen eigenen geometrischen Ausdruck.
+
+  \item \textbf{Die Längenskala \(r_0\).}
+  Solange \(r_0=1{,}25\,\mathrm{fm}\) aus der Kernsystematik eingesetzt wird, trägt \(E_0\) eine empirische Länge. Eine Herleitung dieser Länge aus \(\Ee\) würde die Skala der Femtometer an das Gitter binden. Parallel ist zu entscheiden, welcher der drei Radien aus Lemma~\ref{lem:radius} in Volumenterm, Oberflächenterm und Coulomb-Term steht.
+
+  \item \textbf{Schalenkorrektur aus der Voronoi-Zelle.}
+  Der Beitrag \(+7{,}5\,\mathrm{MeV}\) und das Fenster \(7{,}5\) bis \(9\,\mathrm{MeV}\) für die Spaltbarriere sind Ansätze. Eine Rechnung aus den \(240\) Berührpunkten hätte an \(^{4}\mathrm{He}\), \(^{16}\mathrm{O}\) und \(^{208}\mathrm{Pb}\) einen Prüfstein, bevor sie auf \(^{298}\mathrm{Fl}\) extrapoliert wird.
+
+  \item \textbf{Leichte Kerne und \(Q\)-Werte.}
+  Die Tropfenformel trägt \(^{2}\mathrm{H}\) nicht und \(^{4}\mathrm{He}\) nur unvollständig. Als Nächstes lassen sich die \(Q\)-Werte der Proton-Proton-Kette, des CNO-Zyklus und des Tripel-Alpha-Prozesses aus einer und derselben vervollständigten Formel rechnen und an die Laborwerte halten. Für den Hoyle-Zustand ist die Zielgröße die Resonanzenergie \(7{,}65\,\mathrm{MeV}\), neben der schon geschlossenen Kongruenz \(A\equiv 0\pmod{12}\).
+
+  \item \textbf{Massenkarte gegen AME.}
+  Tabelle~\ref{tab:massen} prüft neun Anker. Der natürliche nächste Schritt ist die ganze Nuklidkarte, Nuklidmasse gegen Nuklidmasse. Standardatomgewichte der Elemente bleiben eine eigene Spalte. Für \(^{12}\mathrm{C}\) ist der Bezug die Definitionsmasse \(12\,\mathrm{u}\).
+
+  \item \textbf{Insel der Stabilität als Vorhersage.}
+  Prüfen lässt sich das Modell zuerst an den synthetisierten Flerovium-Isotopen um \(A=284\) bis \(290\): Masse, Zerfallskanal, Halbwertszeit. Die Angaben für \(^{298}\mathrm{Fl}\) --- Gittermasse \(298{,}194\,\mathrm{u}\), zusätzliche Bindung \(7{,}5\,\mathrm{MeV}\), Halbwertszeit etwa \(300\,\mathrm{s}\) --- bleiben Vorhersagen für ein nicht beobachtetes Nuklid. Für \(^{300}120\) ist die auszuweisende Größe der Abstand von \(Z^2/A=48{,}0\) zur jeweils benutzten Spaltgrenze.
+
+  \item \textbf{Sektor \(7\).}
+  Die Fusionsabbildung legt das Proton-Neutron-Paar und das Elektron auf dieselbe Restklasse. Eine Darstellung, die beide Lesarten trägt, ohne sie zu identifizieren, fehlt.
+
+  \item \textbf{Metrologische Anker.}
+  Für \(\alpha^{-1}\) fehlt die Zwischenrechnung von \(D_K=5\) und \((\phig,1-\phig)\) zu \(137{,}035999\). Für Lyman-\(\alpha\) fehlt die Herleitung der Zerlegung \(2466{,}000+0{,}072\,\mathrm{THz}\). Für \(a_0=c H_0/(2\pi)\) ist zu klären, welches \(H_0\) die Bezugsgröße ist; die drei Werte \(67{,}4\), \(70\) und \(73\,\mathrm{km\,s^{-1}\,Mpc^{-1}}\) liegen \(13\) bis \(3\) Prozent unter der genannten SPARC-Skala. Die Wiederkehrzeit~\eqref{eq:trec} braucht eine messbare Frequenz, an der das Verhältnis \(7{,}178394\) geprüft werden kann.
+
+  \item \textbf{Affine Stufe \(\En\).}
+  Die Fusionsregeln dieses Artikels schließen im endlichen Gitter. Offen ist, welche Korrektur die affine Erweiterung \(\En\) an Wiederkehrzeit, Schalenkorrektur oder Sektorabbildung ändert.
+\end{enumerate}
+
+Das Programm des Frameworks bleibt die Ableitung der Kernbindung aus einer starren Geometrie. Diese Fassung stellt das Gerüst auf, das die Vorlage meint, und sie stellt die Zahlen daneben, die eine weitere Rechnung zu treffen hätte.
+
+\begin{thebibliography}{99}
+
+\bibitem{Gamow1930}
+G.~Gamow, \emph{Mass Defect Curve and Nuclear Constitution}, Proc.\ R.\ Soc.\ Lond.\ A \textbf{126} (1930), 632--644.
+
+\bibitem{Weizsaecker1935}
+C.~F. von~Weizsäcker, \emph{Zur Theorie der Kernmassen}, Z.\ Phys.\ \textbf{96} (1935), 431--458.
+
+\bibitem{BetheBacher1936}
+H.~A. Bethe, R.~F. Bacher, \emph{Nuclear Physics A. Stationary States of Nuclei}, Rev.\ Mod.\ Phys.\ \textbf{8} (1936), 82--229.
+
+\bibitem{BohrWheeler1939}
+N.~Bohr, J.~A. Wheeler, \emph{The Mechanism of Nuclear Fission}, Phys.\ Rev.\ \textbf{56} (1939), 426--450.
+
+\bibitem{Mayer1949}
+M.~Goeppert~Mayer, \emph{On Closed Shells in Nuclei. II}, Phys.\ Rev.\ \textbf{75} (1949), 1969--1970.
+
+\bibitem{Haxel1949}
+O.~Haxel, J.~H.~D. Jensen, H.~E. Suess, \emph{On the ``Magic Numbers'' in Nuclear Structure}, Phys.\ Rev.\ \textbf{75} (1949), 1766.
+
+\bibitem{Hoyle1954}
+F.~Hoyle, \emph{On Nuclear Reactions Occurring in Very Hot Stars. I. The Synthesis of Elements from Carbon to Nickel}, Astrophys.\ J.\ Suppl.\ \textbf{1} (1954), 121--146.
+
+\bibitem{B2FH}
+E.~M. Burbidge, G.~R. Burbidge, W.~A. Fowler, F.~Hoyle, \emph{Synthesis of the Elements in Stars}, Rev.\ Mod.\ Phys.\ \textbf{29} (1957), 547--650.
+
+\bibitem{Myers1966}
+W.~D. Myers, W.~J. Swiatecki, \emph{Nuclear Masses and Deformations}, Nucl.\ Phys.\ \textbf{81} (1966), 1--60.
+
+\bibitem{Klein1884}
+F.~Klein, \emph{Vorlesungen über das Ikosaeder und die Auflösung der Gleichungen vom fünften Grade}, Teubner, Leipzig, 1884.
+
+\bibitem{Gosset1900}
+T.~Gosset, \emph{On the Regular and Semi-Regular Figures in Space of \(n\) Dimensions}, Messenger of Mathematics \textbf{29} (1900), 43--48.
+
+\bibitem{Kaluza1921}
+Th.~Kaluza, \emph{Zum Unitätsproblem der Physik}, Sitzungsber.\ Preuss.\ Akad.\ Wiss.\ Berlin (1921), 966--972.
+
+\bibitem{Klein1926}
+O.~Klein, \emph{Quantentheorie und fünfdimensionale Relativitätstheorie}, Z.\ Phys.\ \textbf{37} (1926), 895--906.
+
+\bibitem{Milgrom1983}
+M.~Milgrom, \emph{A modification of the Newtonian dynamics as a possible alternative to the hidden mass hypothesis}, Astrophys.\ J.\ \textbf{270} (1983), 365--370.
+
+\bibitem{AME2020}
+M.~Wang, W.~J. Huang, F.~G. Kondev, G.~Audi, S.~Naimi, \emph{The AME 2020 atomic mass evaluation (II). Tables, graphs and references}, Chinese Physics C \textbf{45} (2021), 030003.
+
+\end{thebibliography}
+
+\end{document}

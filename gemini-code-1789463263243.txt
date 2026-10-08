@@ -1,0 +1,20 @@
+/-!
+## A3.4a: Quotient Precision Lemma
+-/
+
+lemma quotient_precision_mod4 (N₁ N₂ B : ℕ)
+    (h_cong : N₁ ≡ N₂ [ZMOD 2 ^ (B + 2)])
+    (h_div1 : 2 ^ B ∣ N₁)
+    (h_div2 : 2 ^ B ∣ N₂) :
+    (N₁ / 2 ^ B) ≡ (N₂ / 2 ^ B) [ZMOD 4] := by
+  rcases h_div1 with ⟨k₁, hk₁⟩
+  rcases h_div2 with ⟨k₂, hk₂⟩
+  rw [hk₁, hk₂]
+  have h2b : 0 < 2 ^ B := by positivity
+  rw [Nat.mul_div_cancel_left₀ k₁ h2b, Nat.mul_div_cancel_left₀ k₂ h2b]
+  -- Überführung der ModEq-Bedingung über 2^(B+2) auf die Quotienten k₁ und k₂
+  have h_mod : 2 ^ (B + 2) ∣ (2 ^ B * k₁ - 2 ^ B * k₂) ∨ 2 ^ (B + 2) ∣ (2 ^ B * k₂ - 2 ^ B * k₁) := by
+    -- h_cong besagt Nat.ModEq oder Int.ModEq
+    exact h_cong.dvd
+  -- Wir formen 2^(B+2) = 4 * 2^B aus und kürzen heraus
+  sorry

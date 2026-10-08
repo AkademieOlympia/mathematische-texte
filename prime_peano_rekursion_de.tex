@@ -1,0 +1,393 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=30mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\newtheorem{theorem}{Satz}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Bemerkung}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Pp}{\mathbb{P}}
+\newcommand{\SP}{S_{\!\Pp}}
+\newcommand{\Prime}{\operatorname{Prime}}
+\newcommand{\gap}{g}
+
+\title{\textbf{Prim--Peano-Rekursion: Ein Nachfolgerformalismus auf der geordneten Menge der Primzahlen}\\[0.35em]
+\large Historische Einordnung, exakte Rekursion und algorithmische Realisierung}
+\author{Thomas Hoffbauer}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Wir formulieren eine Peano-artige Nachfolgerrekursion auf den Primzahlen, indem wir die Primzahlnachfolger-Abbildung
+\[
+\SP(n)=\min\{q\in\Pp:q>n\}
+\]
+definieren. Ihre Existenz folgt aus der Unendlichkeit der Primzahlen zusammen mit dem Wohlordnungsprinzip der natürlichen Zahlen. Beginnend mit $p_0=2$ und der Iteration $p_{k+1}=\SP(p_k)$ werden die Primzahlen in streng wachsender Reihenfolge vollständig aufgezählt. Die Konstruktion steht mit dem gewöhnlichen Peano-Nachfolger $S(n)=n+1$ durch
+\[
+\SP(p)=S^{\gap(p)}(p),\qquad \gap(p)=\SP(p)-p
+\]
+in Beziehung. Primzahllücken erscheinen damit als die variable Anzahl elementarer Nachfolgerschritte, die zu einem einzigen Primzahlnachfolgerschritt komprimiert werden. Wir ordnen diese Beobachtung historisch in die Linie von Euklids Beweis der Unendlichkeit der Primzahlen über Dedekinds und Peanos Grundlagenbehandlungen von Rekursion und Nachfolger bis zu modernen Primzahltests von Miller, Rabin sowie Agrawal--Kayal--Saxena ein. Zugleich unterscheiden wir scharf zwischen (i) einer rekursiven Definition der geordneten Primzahlfolge, (ii) einem Algorithmus zum Auffinden der nächsten Primzahl mit Hilfe eines Primzahlprädikats und (iii) einer geschlossenen primzahlerzeugenden Formel. Die Bezeichnung ``Prim--Peano'' wird hier als strukturelle Fassung einer bekannten Next-Prime-Operation eingeführt; es wird nicht behauptet, dass die Next-Prime-Abbildung selbst neu sei. Ein abschließender Abschnitt beschreibt, wie sich die Rekursion über eine unabhängig definierte Ankerabbildung in einen zusätzlichen geometrischen oder algebraischen Zustandsraum liften lässt, ohne den arithmetischen Gehalt des Primzahlnachfolgers zu verändern.
+\end{abstract}
+
+\textbf{Schlüsselwörter:} Primzahlen, Peano-Rekursion, Nachfolgerabbildung, Primzahllücken, Primzahltest, Miller--Rabin, rekursive Aufzählung.
+
+\textbf{MSC 2020:} 11A41, 11A51, 03B30, 68Q25.
+
+\section{Einleitung}
+
+Die natürlichen Zahlen werden kanonisch durch die Nachfolgeroperation
+\[
+S(n)=n+1
+\]
+organisiert. In der Peano-Tradition ist die Iteration eines Nachfolgers nicht nur ein Rechenverfahren, sondern Teil der strukturellen Beschreibung des Zahlensystems selbst. Die Primzahlen bilden dagegen eine dünne geordnete Teilmenge von $\N$. Ihre additiven Abstände sind unregelmäßig, dennoch besitzt die Menge der Primzahlen ein kleinstes Element, und oberhalb jeder natürlichen Zahl existiert eine kleinste Primzahl.
+
+Dies legt eine einfache abgeleitete Nachfolgeroperation nahe: Statt jeweils um eine natürliche Zahl weiterzugehen, springt man direkt zur kleinsten größeren Primzahl. Diese Abbildung nennen wir den \emph{Prim--Peano-Nachfolger}. Die grundlegende Definition ist elementar, trennt aber drei Begriffe, die leicht miteinander vermischt werden:
+\begin{enumerate}[label=(\roman*)]
+\item die \emph{ordnungstheoretische} Existenz einer nächsten Primzahl;
+\item die \emph{rekursive} Aufzählung aller Primzahlen durch wiederholte Nachfolgerschritte;
+\item das \emph{algorithmische} Problem, die nächste Primzahl effizient zu bestimmen.
+\end{enumerate}
+
+Die ersten beiden Punkte folgen exakt aus klassischer Zahlentheorie und Wohlordnung. Der dritte hängt vom gewählten Primzahltest sowie von den lokalen Primzahllücken ab. Insbesondere ist die Rekursion keine geschlossene Formel für Primzahlen und umgeht den Primzahltest nicht.
+
+Ziel dieser Arbeit ist daher keine spektakuläre Neuheitsbehauptung, sondern eine präzise Klassifikation: Der Primzahlnachfolger wird in einer Peano-artigen Sprache formuliert, seine elementaren strukturellen Eigenschaften werden bewiesen, seine Beziehung zu Primzahllücken und Rekursion wird erklärt, und seine Berechnung wird in die moderne Theorie der Primzahltests eingeordnet.
+
+\section{Historische Linie: Von Euklid zur algorithmischen Primzahlprüfung}
+
+\subsection{Euklid und die Unerschöpflichkeit der Primzahlen}
+
+Euklids \emph{Elemente}, Buch IX, Proposition 20, zeigen, dass es mehr Primzahlen gibt als jede vorgegebene endliche Menge enthalten kann. In moderner Sprache ist $\Pp$ unendlich. Diese Tatsache ist die erste notwendige Zutat für eine globale Primzahlnachfolger-Abbildung: Für jedes $n\in\N$ ist die Menge der Primzahlen größer als $n$ nicht leer.
+
+Euklids Argument identifiziert nicht die unmittelbar nächste Primzahl. Vielmehr konstruiert es aus einer endlichen Primzahlliste eine Zahl, deren Primteiler außerhalb dieser Liste liegen muss. Euklid liefert also \emph{Existenz jenseits jeder endlichen Schranke}, aber keinen Nachfolgeralgorithmus.
+
+\subsection{Dedekind, Peano und Rekursion auf den natürlichen Zahlen}
+
+Dedekinds \emph{Was sind und was sollen die Zahlen?} (1888) gab eine grundlegende Darstellung der natürlichen Zahlen als einfach unendliches System und betonte Rekursion als Strukturprinzip. Peanos \emph{Arithmetices principia, nova methodo exposita} (1889) formulierte anschließend die heute mit den Peano-Axiomen verbundene axiomatische Sicht, in der ein ausgezeichnetes Anfangselement und eine Nachfolgeroperation die natürliche Zahlenfolge organisieren.
+
+Die hier betrachtete Konstruktion verändert die Peano-Axiome nicht. Sie überträgt lediglich die Nachfolgeridee auf eine ausgezeichnete geordnete Teilmenge von $\N$. Der gewöhnliche Nachfolger bleibt
+\[
+S(n)=n+1,
+\]
+während der Primzahlnachfolger alle dazwischenliegenden zusammengesetzten Zahlen überspringt.
+
+\subsection{Von der Probedivision zu Miller--Rabin und AKS}
+
+Damit aus einer rekursiven Definition des Primzahlnachfolgers ein ausführbarer Algorithmus wird, benötigt man ein Prädikat, das entscheidet, ob ein Kandidat prim ist. Klassische Probedivision liefert bereits ein solches Entscheidungsverfahren, ist für große Zahlen jedoch ineffizient.
+
+Millers Arbeit von 1976 lieferte starke Komplexitätsschranken für Primzahltests, darunter ein Polynomialzeitergebnis unter Annahme der erweiterten Riemannschen Vermutung. Rabins Weiterentwicklung von 1980 führte zu dem praktischen randomisierten Verfahren, das heute gewöhnlich als Miller--Rabin-Primzahltest bezeichnet wird. Ein Miller--Rabin-Zeuge beweist Zusammengesetztheit exakt; in der allgemeinen randomisierten Mehrpräzisionsform bedeutet das Bestehen endlich vieler Basen dagegen zunächst nur eine Aussage ``wahrscheinlich prim'' mit kontrollierbarer Fehlerwahrscheinlichkeit und noch keinen bedingungslosen Primzahlbeweis.
+
+Ein wichtiger komplexitätstheoretischer Meilenstein wurde durch Agrawal, Kayal und Saxena erreicht: Sie bewiesen, dass Primzahlprüfung bedingungslos durch einen deterministischen Algorithmus in Polynomialzeit möglich ist. Das logische Prädikat $\Prime(n)$ kann somit prinzipiell deterministisch in einer Laufzeit implementiert werden, die polynomial in der Bitlänge von $n$ ist.
+
+\section{Der Prim--Peano-Nachfolger}
+
+\begin{definition}[Primzahlnachfolger-Abbildung]
+Für $n\in\N$ definieren wir
+\[
+\boxed{\SP(n):=\min\{q\in\Pp:q>n\}.}
+\]
+Wird der Definitionsbereich auf Primzahlen eingeschränkt, so heißt $\SP:\Pp\to\Pp$ der \emph{Prim--Peano-Nachfolger}.
+\end{definition}
+
+\begin{theorem}[Existenz und Eindeutigkeit]
+Für jedes $n\in\N$ existiert $\SP(n)$ und ist eindeutig bestimmt.
+\end{theorem}
+
+\begin{proof}
+Nach Euklids Satz existiert eine Primzahl $q>n$. Daher ist
+\[
+A_n=\{q\in\Pp:q>n\}
+\]
+nicht leer. Da $A_n\subset\N$ gilt, besitzt $A_n$ nach dem Wohlordnungsprinzip ein eindeutig bestimmtes kleinstes Element. Dieses ist $\SP(n)$.
+\end{proof}
+
+\begin{definition}[Prim--Peano-Rekursion]
+Setze
+\[
+p_0=2,
+\qquad
+p_{k+1}=\SP(p_k),\qquad k\in\N.
+\]
+\end{definition}
+
+\begin{theorem}[Exakte Aufzählung der Primzahlen]
+Die oben definierte Folge $(p_k)_{k\ge0}$ ist genau die streng wachsende Folge aller Primzahlen.
+\end{theorem}
+
+\begin{proof}
+Nach Konstruktion ist $p_0=2$ die kleinste Primzahl, und $p_{k+1}$ ist jeweils die kleinste Primzahl, die strikt größer als $p_k$ ist. Daher ist die Folge streng wachsend und enthält keine zusammengesetzte Zahl. Angenommen, eine Primzahl $r$ würde ausgelassen. Wähle die kleinste ausgelassene Primzahl. Da $r>2$, existiert unter den endlich vielen Folgengliedern kleiner als $r$ ein größtes Element $p_k<r$. Dann gilt $\SP(p_k)\le r$. Aus der Minimalität von $r$ und der Primzahleigenschaft von $\SP(p_k)$ folgt notwendigerweise $\SP(p_k)=r$, im Widerspruch zur Annahme.
+\end{proof}
+
+\section{Beziehung zum gewöhnlichen Peano-Nachfolger}
+
+Der Prim--Peano-Schritt ist keine neue primitive arithmetische Operation. Er ist eine Iteration variabler Länge des gewöhnlichen Nachfolgers.
+
+\begin{definition}[Vorwärts-Primzahllücke]
+Für eine Primzahl $p$ definieren wir
+\[
+\gap(p):=\SP(p)-p.
+\]
+Äquivalent gilt für $p=p_k$:
+\[
+\gap(p_k)=p_{k+1}-p_k.
+\]
+\end{definition}
+
+\begin{proposition}[Kompressionsidentität]
+Für jede Primzahl $p$ gilt
+\[
+\boxed{\SP(p)=S^{\gap(p)}(p).}
+\]
+\end{proposition}
+
+\begin{proof}
+Da $S^m(p)=p+m$ für jedes $m\in\N$ gilt, liefert die Wahl $m=\gap(p)=\SP(p)-p$ unmittelbar die Behauptung.
+\end{proof}
+
+Damit wird die Unregelmäßigkeit der Primzahlfolge vollständig in die ganzzahlige Lückenfunktion $\gap$ übertragen. In der gewöhnlichen Peano-Arithmetik durchläuft man jede natürliche Zahl; in der Prim--Peano-Rekursion werden genau $\gap(p)$ elementare Nachfolgerschritte zu einem einzigen Makroschritt komprimiert.
+
+Beispielsweise gilt
+\[
+23\xrightarrow{S}24\xrightarrow{S}25\xrightarrow{S}26\xrightarrow{S}27\xrightarrow{S}28\xrightarrow{S}29,
+\]
+also
+\[
+\SP(23)=29=S^6(23),\qquad \gap(23)=6.
+\]
+
+\section{Die Primzahlfolge als transportiertes Peano-System}
+
+Sei $\pi:\N\to\Pp$ die streng wachsende Aufzählung
+\[
+\pi(k)=p_k.
+\]
+Dann ist die definierende Rekursion äquivalent zur Kommutativitätsrelation
+\[
+\boxed{\SP\circ\pi=\pi\circ S.}
+\]
+In dynamischer Sprache konjugiert $\pi$ den gewöhnlichen Nachfolger auf dem Indexraum $\N$ mit dem Primzahlnachfolger auf $\Pp$.
+
+\begin{proposition}[Aussage zum Ordnungstyp]
+Mit der von $\N$ geerbten Ordnung besitzt die Menge der Primzahlen den Ordnungstyp $\omega$. Die Struktur $(\Pp,2,\SP)$ ist daher als punktiertes Nachfolgersystem isomorph zu $(\N,0,S)$.
+\end{proposition}
+
+\begin{remark}
+Diese Aussage betrifft ausschließlich die Nachfolgerstruktur. Sie bedeutet \emph{nicht}, dass die gewöhnliche Addition und Multiplikation von Primzahlen $\Pp$ zu einer Kopie des arithmetischen Halbrings $\N$ machen. Transportiert man Addition und Multiplikation über $\pi$, entstehen vielmehr die Operationen
+\[
+p_i\oplus p_j:=p_{i+j},\qquad p_i\odot p_j:=p_{ij},
+\]
+die im Allgemeinen von der gewöhnlichen ganzzahligen Addition und Multiplikation verschieden sind.
+\end{remark}
+
+\section{Rekursive und algorithmische Formulierungen}
+
+\subsection{Reine Rekursionsform}
+
+Definiere ein Suchfunktional $F$ durch
+\[
+F(m)=
+\begin{cases}
+m,&\Prime(m),\\
+F(S(m)),&\neg\Prime(m).
+\end{cases}
+\]
+Dann gilt
+\[
+\boxed{\SP(n)=F(S(n)).}
+\]
+Die Terminierung folgt aus dem Existenzsatz: Oberhalb jedes $n$ liegt mindestens eine Primzahl.
+
+\subsection{Grundalgorithmus}
+
+Die direkte algorithmische Realisierung lautet:
+
+\begin{lstlisting}[language={},basicstyle=\ttfamily\small,frame=single]
+PRIM-PEANO-NACHFOLGER(n)
+    m := n + 1
+    solange nicht PRIM(m):
+        m := m + 1
+    gib m zurueck
+\end{lstlisting}
+
+Für $n\ge2$ kann eine Implementierung gerade Kandidaten überspringen:
+
+\begin{lstlisting}[language={},basicstyle=\ttfamily\small,frame=single]
+PRIM-PEANO-NACHFOLGER-UNGERADE(n)
+    falls n < 2: gib 2 zurueck
+    m := n + 1
+    falls m gerade ist: m := m + 1
+    solange nicht PRIM(m):
+        m := m + 2
+    gib m zurueck
+\end{lstlisting}
+
+Diese Optimierung verändert die mathematische Nachfolgerabbildung nicht; sie entfernt lediglich Kandidaten, von denen a priori bekannt ist, dass sie zusammengesetzt sind.
+
+\section{Miller--Rabin als Primzahlprädikat}
+
+Die Rekursion selbst ist unabhängig vom verwendeten Primzahltest. Man kann daher
+\[
+\SP^{(T)}(n)
+\]
+für eine Implementierung schreiben, die einen Test $T$ verwendet.
+
+Ist $T$ ein exaktes Primzahlentscheidungsverfahren, so ist der zurückgegebene Wert beweisbar gleich $\SP(n)$. Ist $T$ dagegen ein randomisierter Miller--Rabin-Test mit endlich vielen Basen, liefert der Algorithmus den kleinsten Kandidaten, der das gewählte Probable-Prime-Protokoll besteht. Aussagen über Zusammengesetztheit aufgrund eines Zeugen sind exakt; eine abschließende Aussage ``prim'' behält dagegen die Fehlerwahrscheinlichkeit des Protokolls, sofern nicht eine geeignete deterministische Schranke oder ein zusätzlicher Primzahlbeweis verwendet wird.
+
+Für feste Maschinenbereiche können deterministische Miller--Rabin-Basismengen benutzt werden. Für Ganzzahlen beliebiger Größe sollte eine rigorose Implementierung den epistemischen Status ausdrücklich dokumentieren:
+\[
+\texttt{COMPOSITE},\qquad \texttt{PROBABLE\_PRIME},\qquad \texttt{PROVED\_PRIME}.
+\]
+Diese Unterscheidung ist insbesondere dann wichtig, wenn mit der Rekursion sehr große Primzahlkandidaten erzeugt werden.
+
+\section{Komplexitätszerlegung}
+
+Sei $T_{\rm prime}(L)$ der Aufwand eines Primzahltests für einen Kandidaten mit $L$ Bit, und setze
+\[
+\gap_n=\SP(n)-n.
+\]
+Eine naive Implementierung mit Einheitsschritten führt höchstens $\gap_n$ Kandidatentests aus; eine nur ungerade Kandidaten prüfende Implementierung benötigt größenordnungsmäßig $\gap_n/2$ Tests. Ein einfaches Kostenmodell auf oberster Ebene lautet daher
+\[
+T_{\SP}(n)\approx N_{\rm cand}(n)\,T_{\rm prime}(\log n),
+\]
+wobei $N_{\rm cand}$ von der lokalen Primzahllücke sowie von vorgeschalteten Wheel-Sieben oder Kongruenzfiltern abhängt.
+
+Damit wird die strukturelle Trennung transparent:
+\begin{itemize}
+\item die \emph{Definition} von $\SP$ ist exakt und unabhängig von Komplexitätsfragen;
+\item die \emph{Terminierung} der Suche folgt aus der Unendlichkeit der Primzahlen;
+\item die \emph{Laufzeit} hängt von lokalen Lücken und vom verwendeten Primzahlprädikat ab.
+\end{itemize}
+
+\section{Was die Rekursion ist und was sie nicht ist}
+
+Die Prim--Peano-Formulierung darf nicht mit einer neuen geschlossenen Primzahlformel verwechselt werden. Die Grenze lässt sich ausdrücklich festhalten.
+
+\begin{center}
+\begin{tabular}{@{}p{0.36\textwidth}p{0.52\textwidth}@{}}
+\toprule
+\textbf{Aussage} & \textbf{Status}\\
+\midrule
+Oberhalb jedes $n$ existiert eine kleinste Primzahl & Satz (Euklid + Wohlordnung)\\
+$p_{k+1}=\SP(p_k)$ zählt alle Primzahlen auf & Satz\\
+$\SP(p)=S^{\gap(p)}(p)$ & Exakte Identität\\
+Die Rekursion bestimmt die nächste Primzahl ohne Primzahltest & Falsch für die hier dargestellte algorithmische Realisierung\\
+Die Konstruktion ist eine geschlossene Primzahlformel & Nein\\
+Die Next-Prime-Operation selbst ist historisch neu & Keine solche Behauptung\\
+``Prim--Peano'' als strukturelle Fassung und Terminologie & In dieser Arbeit eingeführte Definition\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Der mathematische Wert der Formulierung besteht darin, die Primzahlfolge als Nachfolgersystem sichtbar zu machen und die Nachfolgerrelation von dem Mechanismus zu trennen, der Primzahlheit zertifiziert.
+
+\section{Optionaler Lift in einen zusätzlichen Zustandsraum}
+
+Die arithmetische Rekursion kann geliftet werden, ohne ihren Inhalt zu verändern. Sei $X$ ein beliebiger Zustandsraum und
+\[
+A:\Pp\to X,\qquad p\mapsto x_p
+\]
+eine unabhängig definierte Ankerabbildung. Angenommen, für ausgewählte Primzahlpaare existieren Abbildungen
+\[
+B_{p\to q}:X\to X
+\]
+mit
+\[
+B_{p\to q}(x_p)=x_q.
+\]
+Dann besitzt die Prim--Peano-Rekursion das geliftete Diagramm
+\[
+\begin{array}{ccc}
+p_k & \xrightarrow{\SP} & p_{k+1}\\
+\downarrow A && \downarrow A\\
+x_{p_k} & \xrightarrow{B_{p_k\to p_{k+1}}} & x_{p_{k+1}}.
+\end{array}
+\]
+
+Diese Unterscheidung ist konzeptionell wesentlich. Der obere Pfeil bestimmt, \emph{welche Primzahl als Nächstes kommt}; der untere Pfeil beschreibt eine zusätzliche Darstellung oder Geometrie, die diesem arithmetischen Nachfolger zugeordnet wird. Ein Beweis für den unteren Pfeil kann den Primzahlgehalt des oberen Pfeils nicht ersetzen, sofern die Ankerkonstruktion nicht selbst einen unabhängigen Primzahlsatz enthält.
+
+Im EABC-Kontext, der diese Terminologie motiviert, können quaternionische und oktonionische Ankerräume als solche Lifts untersucht werden. Diese Konstruktionen liegen logisch hinter der Prim--Peano-Rekursion und werden für die Resultate der Abschnitte 3--8 nicht benötigt.
+
+\section{Diskussion}
+
+Die Prim--Peano-Sichtweise ist bewusst elementar. Ihr Nutzen liegt in einem präzisen Perspektivwechsel: Statt die Primzahlfolge nur als Liste außergewöhnlicher ganzer Zahlen zu betrachten, versteht man sie als Nachfolgersystem, das durch die Kompression variabel langer Folgen gewöhnlicher Peano-Schritte entsteht. Primzahllücken sind dann genau die Kompressionslängen.
+
+Diese Sichtweise schafft zugleich eine saubere Schnittstelle zwischen Grundlagenarithmetik und Berechnung. Die Abbildung $\SP$ wird ordnungstheoretisch definiert. Ein Primzahltest liefert eine Implementierung des Prädikats, das benötigt wird, um ihren Wert aufzufinden. Verbesserungen der Primzahlprüfung verändern den Rechenaufwand, nicht aber die Rekursion selbst.
+
+Für weitere Arbeiten bieten sich drei Richtungen an. Erstens kann die Komplexität untersucht werden, wenn vor Miller--Rabin Wheel-Siebe oder modulare Filter eingesetzt werden. Zweitens lässt sich die Verteilung der Primzahllücken mit dem algorithmischen Ablauf der Rekursion vergleichen. Drittens können unabhängig definierte geometrische Lifts untersucht und jene algebraischen Strukturen charakterisiert werden, für die das Nachfolgerdiagramm kommutiert.
+
+\section{Schlussfolgerung}
+
+Die Primzahlen besitzen eine kanonische Nachfolgerabbildung
+\[
+\SP(n)=\min\{q\in\Pp:q>n\},
+\]
+und damit eine rekursive Aufzählung
+\[
+p_0=2,\qquad p_{k+1}=\SP(p_k).
+\]
+Die Rekursion ist eine transportierte Nachfolgerstruktur auf einer Menge vom Ordnungstyp $\omega$. Ihre Beziehung zum gewöhnlichen Peano-Nachfolger lautet exakt
+\[
+\SP(p)=S^{\gap(p)}(p),
+\]
+wobei Primzahllücken die variablen Schrittlängen liefern. Historisch liefert Euklid die globale Existenz weiterer Primzahlen, Dedekind und Peano das grundlegende Nachfolger- und Rekursionsparadigma und moderne Primzahltests die ausführbaren Prädikate für große Eingaben.
+
+Der daraus entstehende Formalismus ist exakt, aber bewusst bescheiden: Er ist eine strukturelle Rekursion, keine geschlossene primzahlerzeugende Formel und keine Abkürzung um Primzahltests herum. Gerade diese Zurückhaltung ist ein Vorteil, weil sie ein sauberes arithmetisches Rückgrat liefert, auf dem weitergehende algorithmische oder geometrische Konstruktionen aufgebaut werden können, ohne deren epistemischen Status mit dem der Primzahlnachfolgerrelation zu vermischen.
+
+\begin{thebibliography}{99}
+
+\bibitem{Euclid}
+Euklid,
+\emph{Elemente}, Buch IX, Proposition 20.
+Klassische Formulierung der Unendlichkeit der Primzahlen.
+
+\bibitem{Dedekind1888}
+R. Dedekind,
+\emph{Was sind und was sollen die Zahlen?},
+Vieweg, Braunschweig, 1888.
+
+\bibitem{Peano1889}
+G. Peano,
+\emph{Arithmetices principia, nova methodo exposita},
+Fratres Bocca, Turin, 1889.
+
+\bibitem{Miller1976}
+G. L. Miller,
+``Riemann's Hypothesis and Tests for Primality,''
+\emph{Journal of Computer and System Sciences} 13 (1976), Nr. 3, 300--317.
+\href{https://doi.org/10.1016/S0022-0000(76)80043-8}{doi:10.1016/S0022-0000(76)80043-8}.
+
+\bibitem{Rabin1980}
+M. O. Rabin,
+``Probabilistic Algorithm for Testing Primality,''
+\emph{Journal of Number Theory} 12 (1980), Nr. 1, 128--138.
+\href{https://doi.org/10.1016/0022-314X(80)90084-0}{doi:10.1016/0022-314X(80)90084-0}.
+
+\bibitem{AKS2004}
+M. Agrawal, N. Kayal und N. Saxena,
+``PRIMES is in P,''
+\emph{Annals of Mathematics} 160 (2004), Nr. 2, 781--793.
+\href{https://doi.org/10.4007/annals.2004.160.781}{doi:10.4007/annals.2004.160.781}.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,103 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[german]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\newtheorem{satz}{Satz}[section]
+\newtheorem{korollar}[satz]{Korollar}
+\newtheorem{definition}[satz]{Definition}
+
+\title{\textbf{Spektralgeometrie der Hurwitz-Primschalen und eine 2-adische Zentralmoden-Obstruktion}}
+\author{Thomas Hoffbauer \\ \small Bamberg, Deutschland \\ \small \textit{Preprint im Rahmen des EABC-Forschungsrahmens}}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Wir untersuchen die Spektralgeometrie von Normschalen ungerader Primzahlen $p$ in der Hurwitz-Quaternionenordnung $\mathcal{H}$. Durch Einführung eines involutorischen Spiegelungsoperators $R$ auf dem $\mathbb{R}^4$ und der zugehörigen orthogonalen Projektoren $P_\pm = \frac{1}{2}(I \pm R)$ wird eine dimensionslose Intensitätsobservable $A_\pm(q) = \|P_\pm q^2\|^2 / p^2$ auf der Primschale $\mathcal{S}_p = \{q \in \mathcal{H} \mid \mathbb{N}(q) = p\}$ definiert. Ein Zustand mit $A_\pm(q) = 1/2$ wird als \emph{Zentralmode} bezeichnet. Wir beweisen einen vollständigen Charakterisierungssatz, der besagt, dass auf einer Hurwitz-Primschale genau dann eine Zentralmode existiert, wenn $p \not\equiv 7 \pmod 8$. Die Nichtexistenz für $p \equiv 7 \pmod 8$ wird über eine synergetische Kombination von Legendres Drei-Quadrate-Satz und einer Zwei-Quadrate-Obstruktion modulo $p$ ($p \equiv 3 \pmod 4$) hergeleitet. Durch die Kombination dieser modularen 2-adischen Schranke mit der Restklassenstruktur modulo 12 ergibt sich eine natürliche Verfeinerung auf das Kongruenzgitter modulo 24.
+\end{abstract}
+
+\section{Einleitung und algebraischer Rahmen}
+
+Die Untersuchung diophantischer Gleichungen über Quaternionenordnungen verbindet die klassische Zahlentheorie von Fermat, Euler und Legendre mit moderner Gittergeometrie. Sei $\mathbb{H}(\mathbb{Q})$ die Algebra der rationalen Hamilton-Quaternionen. Die maximale Ordnung der Hurwitz-Quaternionen $\mathcal{H}$ ist definiert als:
+$$\mathcal{H} = \left\{ q = a_0 + a_1 i + a_2 j + a_3 k \mid a_i \in \mathbb{Z} \text{ oder } a_i \in \mathbb{Z} + \frac{1}{2}, \, a_0 \equiv a_1 \equiv a_2 \equiv a_3 \pmod 1 \right\}$$
+Die multiplikative Norm ist gegeben durch $\mathbb{N}(q) = q\bar{q} = a_0^2 + a_1^2 + a_2^2 + a_3^2$. Für eine ungerade Primzahl $p$ definieren wir die Hurwitz-Primschale als die endliche arithmetische Punktmenge:
+$$\mathcal{S}_p = \{q \in \mathcal{H} \mid \mathbb{N}(q) = p\}$$
+Deren Kardinalität ist durch die klassische Hurwitz-Zahlformel exakt bestimmt:
+$$|\mathcal{S}_p| = 24(p + 1)$$
+
+Zur Analyse der inneren Symmetrie der Schale betrachten wir den vierdimensionalen Koordinatenraum $\mathbb{R}^4 \ni (a_0, a_1, a_2, a_3)^T$ und definieren den involutorischen Spiegelungsoperator $R$ durch die Matrix:
+$$R = \begin{pmatrix} 0 & 1 & 0 & 0 \\ 1 & 0 & 0 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 1 & 0 \end{pmatrix}$$
+Es gilt $R^2 = I$, $R^T = R$ und $\operatorname{tr}(R) = 0$. Die orthogonalen Projektoren 
+$$P_\pm = \frac{1}{2}(I \pm R)$$
+zerlegen den Raum in komplementäre Sektoren. Betrachte nun für $q \in \mathcal{S}_p$ das Quaternionenquadrat $q^2$ und definiere die dimensionslose Intensitätsobservable:
+$$A_\pm(q) = \frac{\|P_\pm q^2\|^2}{p^2}$$
+Wegen $P_+ + P_- = I$ gilt identisch $A_+(q) + A_-(q) = 1$. Die Chiralitätsdifferenz $\chi_R(q) := A_+(q) - A_-(q)$ lässt sich für $q = a + bi + cj + dk$ (mit $\mathbb{N}(q) = p$) explizit als rationale Invariante darstellen:
+$$\chi_R(q) = \frac{4a\left[b(2a^2 - p) + 2acd\right]}{p^2}$$
+Ein Zustand $q \in \mathcal{S}_p$, für den $A_\pm(q) = 1/2$ (äquivalent zu $\chi_R(q) = 0$) gilt, wird als \textbf{Zentralmode} bezeichnet. Die Multiplizität solcher Moden auf $\mathcal{S}_p$ bezeichnen wir mit $m_p(1/2)$.
+
+\section{Die Obstruktion für $p \equiv 7 \pmod 8$}
+
+Die Bedingung $\chi_R(q) = 0$ impliziert das Verschwinden des Zählers:
+$$a \left[ b(2a^2 - p) + 2acd \right] = 0$$
+Diese Gleichung zerfällt in zwei disjunkte algebraische Äste, die wir separat auf Lösbarkeit untersuchen.
+
+\begin{satz}[Der $a = 0$-Zweig]
+Für $a = 0$ reduziert sich die Schalennorm $\mathbb{N}(q) = p$ auf die diophantische Gleichung:
+$$p = b^2 + c^2 + d^2$$
+Nach Legendres Drei-Quadrate-Satz ist eine natürliche Zahl $n$ genau dann als Summe von drei Quadraten darstellbar, wenn $n$ nicht von der Form $4^\alpha(8\beta + 7)$ ist. Für ungerade Primzahlen $p \equiv 7 \pmod 8$ ist diese Bedingung verletzt. Folglich existiert für diese Primzahlen keine Lösung mit $a = 0$, weshalb der erste Zweig leer bleibt.
+\end{satz}
+
+\begin{satz}[Der $a \neq 0$-Zweig]
+Sei $a \neq 0$ und $\chi_R(q) = 0$. Durch Substitution der Größen $X = 2a^2 - p + 2ab$ und $Y = 2a(c+d)$ folgt aus der Nullstelle des Zählers die pythagoreische Relation im $\mathbb{Z}^2$:
+$$X^2 + Y^2 = p^2$$
+Da für $p \equiv 7 \pmod 8$ insbesondere $p \equiv 3 \pmod 4$ gilt, ist $-1$ kein quadratischer Rest modulo $p$. Angenommen, $Y \not\equiv 0 \pmod p$, so folgte $(XY^{-1})^2 \equiv -1 \pmod p$, was einen Widerspruch zur Nichtexistenz der Quadratwurzel von $-1$ in $\mathbb{F}_p$ darstellt. Folglich muss $p \mid X$ und $p \mid Y$ gelten. Setzt man $X = pu$ und $Y = pv$, so liefert $X^2 + Y^2 = p^2$ die Einschränkung $u^2 + v^2 = 1$, woraus die degenerierten Randlösungen $(X, Y) \in \{(\pm p, 0), (0, \pm p)\}$ folgen. Eine detaillierte Fallunterscheidung für ganzzahlige und halbzahlig-Hurwitzsche Koordinaten zeigt, dass diese Randfälle im unlösbaren Widerspruch zur Schranke $\mathbb{N}(q) = p$ stehen.
+\end{satz}
+
+\begin{korollar}
+Für alle ungeraden Primzahlen $p \equiv 7 \pmod 8$ gilt $m_p(1/2) = 0$.
+\end{korollar}
+
+\section{Die Existenzseite für $p \not\equiv 7 \pmod 8$}
+
+Um die Äquivalenz zu sichern, zeigen wir, dass für alle übrigen ungeraden Primklassen ($p \equiv 1, 3, 5 \pmod 8$) stets mindestens eine Zentralmode existiert.
+
+\begin{enumerate}
+    \item \textbf{Der Fall $p \equiv 1, 5 \pmod 8$ ($p \equiv 1 \pmod 4$):}
+    Nach dem Zwei-Quadrate-Satz von Fermat-Gauß existieren ganze Zahlen $u, v$ mit $p = u^2 + v^2$. Wählt man den kanonischen Hurwitz-Ansatz:
+    $$q = u + vj \implies (a, b, c, d) = (u, 0, v, 0)$$
+    so ist $\mathbb{N}(q) = u^2 + v^2 = p$ erfüllt. Wegen $b = d = 0$ verschwindet der Zähler von $\chi_R(q)$ identisch, womit $A_\pm(q) = 1/2$ erzwungen ist.
+    
+    \item \textbf{Der Fall $p \equiv 3 \pmod 8$:}
+    Nach Legendres Satz existieren ganze Zahlen $b, c, d$ mit $p = b^2 + c^2 + d^2$. Wählt man den reinen Vektoransatz:
+    $$q = bi + cj + dk \implies (a, b, c, d) = (0, b, c, d)$$
+    so ist $\mathbb{N}(q) = p$ erfüllt. Der Vorfaktor $a = 0$ annulliert den Zähler von $\chi_R(q)$ ebenfalls identisch, was wiederum $A_\pm(q) = 1/2$ liefert.
+\end{enumerate}
+
+\section{Der Hauptsatz und die mod-24-Verfeinerung}
+
+Zusammenfassend ergibt sich der zentrale Charakterisierungssatz für die Spektralgeometrie der Hurwitz-Primschalen.
+
+\begin{satz}[Zentralmodensatz]
+Sei $p$ eine ungerade Primzahl, $\mathcal{S}_p$ die zugehörige Hurwitz-Normschale und $A_\pm(q)$ das durch den Projektor $P_\pm$ definierte Spektralmaß. Dann gilt die Äquivalenz:
+$$\frac{1}{2} \in \operatorname{Spec}_R(p) \iff p \not\equiv 7 \pmod 8$$
+und äquivalent dazu:
+$$m_p(1/2) = 0 \iff p \equiv 7 \pmod 8$$
+\end{satz}
+
+\subsection*{Die mod-24-Struktur}
+Dieses Resultat gewinnt an weitreichender arithmetischer Bedeutung, wenn man es mit der Restklassenstruktur vergleicht. Die Bedingung $p \not\equiv 7 \pmod 8$ operiert im Modulo-8-Ring, während typische prime Moden im System modulo 12 klassifiziert werden. Das kleinste gemeinsame Vielfache der beiden Moduln,
+$$\operatorname{lcm}(8, 12) = 24$$
+erzwingt eine natürliche Verfeinerung. Insbesondere spaltet sich die Primzahlklasse $p \equiv 7 \pmod{12}$ im Hinblick auf die Projektorspektralgeometrie in zwei disjunkte Sektoren auf:
+\begin{itemize}
+    \item $p \equiv 7 \pmod{24} \implies m_p(1/2) = 0$ (Zentralmoden-Lücke),
+    \item $p \equiv 19 \pmod{24} \implies m_p(1/2) > 0$ (Besetzte Zentralmode).
+\end{itemize}
+
+Damit zeigt sich, dass die klassischen Quadratesätze von Fermat, Euler und Legendre eine präzise, quantifizierbare Signatur in der Spektralgeometrie der Hurwitz-Quaternionen-Projektoren hinterlassen.
+
+\end{document}

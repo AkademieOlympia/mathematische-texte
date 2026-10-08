@@ -1,0 +1,412 @@
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,tabularx,array}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+\geometry{left=24mm,right=24mm,top=23mm,bottom=25mm}
+\definecolor{deepblue}{HTML}{1F4E79}
+\definecolor{deepred}{HTML}{8B1E1E}
+\definecolor{softgray}{HTML}{F3F4F6}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=deepblue,
+  citecolor=deepblue,
+  urlcolor=deepblue,
+  pdftitle={EABC Forschungsbericht v23 - Kapitel 7: Yang-Mills Bridge Problem}
+}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\newtheorem{satz}{Satz}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+\newtheorem{annahme}{Annahme}
+\newtheorem{vermutung}{Brückenvermutung}
+\newtcolorbox{statusbox}[1]{colback=softgray,colframe=deepblue,title=\textbf{#1},boxrule=.7pt,arc=1mm}
+\newtcolorbox{warningbox}{colback=white,colframe=deepred,title=\textbf{Methodische Grenze},boxrule=.8pt,arc=1mm}
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries EABC Forschungsbericht v23}\\[2mm]
+{\large Kapitel 7: Vom algebraischen Skelett zur analytischen Yang--Mills-Brücke}\\[1mm]
+{\small Revidierte, epistemisch getrennte Fassung}
+\end{center}
+
+\begin{warningbox}
+Die in diesem Kapitel verwendeten gruppentheoretischen, kohomologischen,
+VOA-theoretischen und oktonionischen Strukturen liefern Bedingungen für die
+\emph{interne algebraische Konsistenz} des EABC-Modells. Insbesondere implizieren weder
+\[
+[\alpha]=0
+\]
+für eine relevante $H^3$-Anomalieklasse noch
+\[
+P_{\rm phys}[x,y,z]_{\mathbb O}=0
+\]
+für den projizierten oktonionischen Assoziator die Existenz einer positiven
+Massenlücke einer vierdimensionalen quantisierten Yang--Mills-Theorie.
+
+Diese Bedingungen kontrollieren Lift-, Assoziativitäts- und Sektorobstruktionen.
+Sie enthalten für sich genommen keine quantitative Information über die untere
+Spektralschranke eines vierdimensionalen Yang--Mills-Hamiltonoperators.
+
+Daher gilt im gesamten Kapitel strikt:
+\[
+\boxed{
+\text{algebraische Anomaliefreiheit}
+\;\not\Rightarrow\;
+\text{analytische Massenlücke}.
+}
+\]
+Ebenso gilt:
+\[
+\boxed{
+\text{Nullmoden- oder Leakage-Kontrolle}
+\;\not\Rightarrow\;
+\Delta_{\rm YM}>0.
+}
+\]
+\end{warningbox}
+
+\section*{7.1 Logische Verortung der algebraischen Strukturen}
+
+Die bisher untersuchten Strukturen
+\[
+V_4,\qquad Q_8,\qquad H^2,\qquad H^3,\qquad
+\text{VOA/Leech},\qquad \mathbb O
+\]
+stehen logisch \emph{vor} der analytischen Yang--Mills-Kette. Sie können einen
+diskreten Zustandsraum organisieren, projektive Liftklassen kodieren,
+kategorielle Kohärenzbedingungen formulieren und bestimmte interne
+Obstruktionen ausschließen.
+
+Ihre mathematische Rolle ist damit kinematisch beziehungsweise algebraisch.
+Sie liefern nicht automatisch Lorentz-Kovarianz, eine vierdimensionale
+Kontinuumstheorie oder eine positive untere Spektralschranke.
+
+\begin{statusbox}{Epistemische Dreiteilung}
+\[
+\boxed{
+\begin{array}{c}
+\text{algebraische / kategorielle Kohärenz}\\
+\Downarrow\\
+\text{regulierte spektrale Modellstruktur}\\
+\Downarrow\\
+\text{offene analytische Kontinuumsbrücke}
+\end{array}}
+\]
+Kein Pfeil in dieser Kette wird allein durch Symmetrie oder Kohomologie ersetzt.
+\end{statusbox}
+
+\section*{7.2 Erste Hürde: eichinvariante vierdimensionale Quantenstruktur}
+
+Ein endlicher oder diskreter Gitter-Hamiltonoperator kann ein wohldefiniertes
+Spektralmodell liefern, ist aber noch keine quantisierte Yang--Mills-Theorie auf
+$\mathbb R^4$.
+
+Für eine Clay-relevante Brücke muss eine mathematisch kontrollierte
+vierdimensionale Theorie konstruiert werden. In einer euklidischen Formulierung
+bedeutet dies schematisch eine Familie von eichinvarianten Korrelationsfunktionen
+oder ein geeignetes Maß auf regulierten Eichfeldkonfigurationen, aus dem eine
+physikalische Theorie rekonstruiert werden kann.
+
+Die logische Zielkette lautet:
+\[
+\boxed{
+\text{regulierte Eichfelder}
+\longrightarrow
+\text{euklidische QFT}
+\longrightarrow
+\text{physikalischer Hilbertraum}.
+}
+\]
+
+Eichinvarianz, Lokalität, Nichttrivialität und die geeigneten
+Rekonstruktionsaxiome müssen im Grenzübergang erhalten bleiben.
+
+\section*{7.3 Zweite Hürde: kontrollierter UV-/IR-Grenzübergang}
+
+Sei
+\[
+H_{a,L}
+\]
+eine regulierte Familie, wobei $a>0$ den Gitterabstand und $L<\infty$ die
+Volumenskala bezeichnet.
+
+Die Kontinuumstheorie erfordert
+\[
+\boxed{
+a\to0,\qquad L\to\infty.
+}
+\]
+
+Der erste Grenzübergang entfernt den UV-Regulator, der zweite den
+endlichen Volumenregulator. Es genügt nicht, dass jedes einzelne regulierte
+Modell mathematisch wohldefiniert ist.
+
+Für geeignete Observablen $\mathcal O_1,\ldots,\mathcal O_n$ muss vielmehr eine
+kontrollierte Konvergenz der Form
+\[
+\lim_{\substack{a\to0\\L\to\infty}}
+\left\langle
+\mathcal O_1\cdots\mathcal O_n
+\right\rangle_{a,L}
+=
+S_n
+\]
+zu einer konsistenten Familie von Kontinuumsfunktionen $S_n$ nachgewiesen
+werden.
+
+\section*{7.4 Dritte Hürde: uniforme Spektrallücke}
+
+Für jedes regulierte Modell definiere
+\[
+\Delta(a,L)
+=
+\inf\Bigl(
+\operatorname{spec}H_{a,L}\setminus\{E_0(a,L)\}
+\Bigr)
+-
+E_0(a,L).
+\]
+
+Die Aussage
+\[
+\Delta(a,L)>0
+\]
+für jedes feste $a,L$ ist nicht ausreichend. Beispielsweise könnten
+\[
+\Delta(a,L)\sim a
+\qquad\text{oder}\qquad
+\Delta(a,L)\sim\frac{1}{\log L}
+\]
+gelten, sodass die Lücke im physikalischen Grenzübergang verschwindet.
+
+Das analytische Ziel ist eine regulatorunabhängige Koerzivitätsabschätzung:
+\[
+\boxed{
+\exists\,\Delta_*>0:\qquad
+\mathfrak q_{a,L}[u]
+-
+E_0(a,L)\|u\|^2
+\ge
+\Delta_*\|u\|^2
+}
+\]
+für alle physikalischen Zustände
+\[
+u\perp\psi_{0,a,L}
+\]
+und für alle hinreichend kleinen $a$ sowie hinreichend großen $L$.
+
+Insbesondere muss gelten:
+\[
+\boxed{
+\liminf_{\substack{a\to0\\L\to\infty}}
+\Delta(a,L)>0.
+}
+\]
+
+Dies ist die zentrale funktionalanalytische Beweislast. Eine endliche
+Gruppen-, Gitter- oder VOA-Symmetrie liefert diese Uniformität nicht von selbst.
+
+\section*{7.5 Vierte Hürde: Osterwalder--Schrader-Rekonstruktion}
+
+Selbst konvergierende euklidische Korrelationsfunktionen ergeben nicht
+automatisch eine physikalische relativistische Quantentheorie.
+
+Eine zentrale Positivitätsbedingung ist die Reflexionspositivität. Für geeignete
+Observablen $F$, deren euklidischer Zeitträger in der positiven Halbzeit liegt,
+muss schematisch
+\[
+\boxed{
+\langle \Theta F,F\rangle_{\rm E}\ge0
+}
+\]
+gelten, wobei $\Theta$ die euklidische Zeitreflexion bezeichnet.
+
+Diese Positivität ist wesentlich für die Konstruktion eines
+positiven Hilbertraum-Skalarprodukts in der Osterwalder--Schrader-Rekonstruktion.
+Ohne sie ist die gewünschte Rekonstruktion einer unitären physikalischen
+Theorie mit positivem Zustandsraum nicht gewährleistet.
+
+Reflexionspositivität ist daher kein kosmetisches Zusatzaxiom, sondern ein
+eigenständiges analytisches Gate.
+
+
+\section*{7.6 Methodische Statushierarchie}
+
+Die relevanten Aussageebenen werden bewusst getrennt:
+
+\begin{itemize}[leftmargin=1.6em]
+\item \textbf{\([\alpha]=0\):}
+Trivialität einer relevanten kategoriellen Anomalieklasse.
+\textbf{Status:} algebraische/kategorielle Bedingung.
+
+\item \textbf{\(P_{\rm phys}\operatorname{Assoc}_{\mathbb O}=0\):}
+Neutralität des projizierten oktonionischen Assoziators.
+\textbf{Status:} modellinterne Bedingung; separat zu beweisen.
+
+\item \textbf{\(\Delta(a,L)>0\):}
+Positive Spektrallücke eines regulierten endlichen Modells.
+\textbf{Status:} finite Spektraltheorie.
+
+\item \textbf{\(\liminf \Delta(a,L)>0\):}
+Regulatorunabhängige positive Kontinuumslücke.
+\textbf{Status:} offen.
+
+\item \textbf{OS-Rekonstruktion:}
+Rekonstruktion eines positiven physikalischen Hilbertraums aus der
+euklidischen Theorie.
+\textbf{Status:} offen.
+
+\item \textbf{4D Yang--Mills + Mass Gap:}
+Konstruktive vierdimensionale QFT mit positiver physikalischer Massenlücke.
+\textbf{Status:} nicht bewiesen / nicht behauptet.
+\end{itemize}
+
+In Kurzform:
+\[
+\boxed{
+[\alpha]=0
+\;\neq\;
+\Delta(a,L)>0
+\;\neq\;
+\Delta_{\rm YM}>0.
+}
+\]
+
+\section*{7.7 Zentrales EABC--Yang--Mills Bridge Theorem Candidate}
+
+Der wissenschaftlich relevante offene Pfeil lautet nicht
+\[
+\text{Symmetrie}\Longrightarrow\text{Mass Gap},
+\]
+sondern verlangt zusätzliche analytische Hypothesen.
+
+\begin{vermutung}[EABC--Yang--Mills Continuum Bridge]
+Es existiere eine eichinvariante regulierte Familie
+\[
+\{H_{a,L}^{\rm EABC}\}_{a,L}
+\]
+mit zugehörigen euklidischen Korrelationsfunktionen und quadratischen Formen
+$\mathfrak q_{a,L}$.
+
+Angenommen:
+
+\begin{enumerate}[label=(\roman*)]
+\item die regulierte Familie besitzt eine kontrollierte euklidische
+Kontinuums- und unendliche-Volumen-Grenze;
+
+\item die Grenzkorrelatoren erfüllen geeignete
+Osterwalder--Schrader-Bedingungen einschließlich Reflexionspositivität;
+
+\item der rekonstruierte physikalische Sektor definiert eine nichttriviale
+vierdimensionale Yang--Mills-Theorie;
+
+\item es existiert $\Delta_*>0$ mit der uniformen Koerzivitätsabschätzung
+\[
+\mathfrak q_{a,L}[u]-E_0(a,L)\|u\|^2
+\ge
+\Delta_*\|u\|^2
+\]
+für alle physikalischen
+$u\perp\psi_{0,a,L}$,
+uniform in $a$ und $L$ im relevanten Regime.
+\end{enumerate}
+
+Dann besitzt die rekonstruierte physikalische Theorie eine positive
+Spektrallücke von mindestens $\Delta_*$.
+\end{vermutung}
+
+\begin{statusbox}{Status des Bridge Theorem Candidate}
+Der letzte Implikationsschritt ist unter den formulierten Hypothesen
+spektraltheoretisch unmittelbar. Die eigentliche offene Beweislast liegt in
+der Konstruktion einer Yang--Mills-regulierten Familie, im kontrollierten
+doppelten Grenzübergang, in der Osterwalder--Schrader-Struktur und vor allem
+in der Herleitung einer \emph{uniformen} Koerzivitätskonstante $\Delta_*>0$.
+Die VOA/Leech-, $H^2/H^3$- und Oktonionen-Schichten können hierfür
+Strukturbedingungen liefern, ersetzen jedoch keine dieser analytischen
+Hypothesen.
+\end{statusbox}
+
+\section*{7.8 Falsifikations- und Abbruchkriterien}
+
+Die gegenwärtige EABC--Yang--Mills-Brücke scheitert in ihrer starken Form,
+wenn mindestens eines der folgenden Gates verletzt wird:
+
+\begin{enumerate}[leftmargin=1.6em]
+\item Die regulierte EABC-Familie lässt sich nicht als konsistente
+eichinvariante Yang--Mills-Regulierung formulieren.
+
+\item Der Grenzübergang $a\to0$, $L\to\infty$ existiert nicht oder liefert
+keine nichttriviale vierdimensionale QFT.
+
+\item Reflexionspositivität oder eine andere notwendige
+Rekonstruktionsbedingung versagt.
+
+\item Die spektrale Lücke kollabiert:
+\[
+\liminf_{\substack{a\to0\\L\to\infty}}\Delta(a,L)=0.
+\]
+
+\item Die bisherige algebraische Stabilität lässt sich nicht in eine
+regulatorunabhängige funktionalanalytische Abschätzung übertragen.
+\end{enumerate}
+
+Ein solcher negativer Befund widerlegt die entsprechende Yang--Mills-Brücke,
+nicht jedoch automatisch die internen algebraischen EABC-Konstruktionen.
+
+\section*{7.9 Abschließende wissenschaftliche Synthese}
+
+Die methodische Architektur des EABC-Programms wird damit in zwei streng
+getrennte Ebenen zerlegt:
+
+\[
+\boxed{
+\begin{array}{c}
+\textbf{Algebraisches Skelett}\\
+V_4,\ Q_8,\ H^2,\ H^3,\ \text{VOA/Leech},\ \mathbb O
+\end{array}}
+\]
+
+und
+
+\[
+\boxed{
+\begin{array}{c}
+\textbf{Analytischer Körper}\\
+\text{4D-Eichfeldkonstruktion}\\
+\Downarrow\\
+(a,L)\text{-Grenzübergang}\\
+\Downarrow\\
+\text{OS-Rekonstruktion}\\
+\Downarrow\\
+\text{uniforme Koerzivität}\\
+\Downarrow\\
+\Delta_{\rm YM}>0.
+\end{array}}
+\]
+
+Die erste Ebene kann notwendig sein, um einen widerspruchsfreien
+diskreten Zustandsraum und geeignete Symmetrie- beziehungsweise
+Sektorstrukturen zu formulieren. Sie ist jedoch nicht hinreichend für die
+zweite Ebene.
+
+\begin{warningbox}
+Kein Resultat dieses Kapitels darf als Lösung oder als Teilbeweis des
+Clay-Yang--Mills-Problems zitiert werden, solange weder die konstruktive
+vierdimensionale Theorie noch eine regulatorunabhängige koerzitive
+Spektralabschätzung für genau diese Theorie bewiesen sind.
+\end{warningbox}
+
+\end{document}

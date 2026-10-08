@@ -1,0 +1,825 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!45!black,
+  citecolor=blue!45!black,
+  urlcolor=blue!45!black,
+  pdftitle={Eine Kreis-Sehnen-Kodierung von Primzahlvierlingen},
+  pdfsubject={Primzahlvierlinge, Restklassen, Kleinsche Vierergruppe, Kreis-Sehnen-Decoder},
+  pdfkeywords={Primzahlvierlinge, prime quadruplets, Dirichlet-Charaktere, Kleinsche Vierergruppe, Restklassen, Lean}
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlist[itemize]{topsep=0.3em,itemsep=0.15em}
+\setlist[enumerate]{topsep=0.3em,itemsep=0.15em}
+
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{korollar}[satz]{Korollar}
+\newtheorem{proposition}[satz]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+\theoremstyle{remark}
+\newtheorem{beispiel}[satz]{Beispiel}
+
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\F}{\mathbb F}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\modulo}[1]{\; (\mathrm{mod}\,#1)}
+\newcommand{\ABCE}{\mathrm{ABCE}}
+\newcommand{\CEAB}{\mathrm{CEAB}}
+\newcommand{\Vfour}{V_4}
+\DeclareMathOperator{\Prime}{Prime}
+
+\title{\textbf{Eine Kreis-Sehnen-Kodierung von Primzahlvierlingen}\\
+\large Lokale Restklassen, Kleinsche Vierergruppe, dyadischer Decoder und eine Lean-formalisierbare Zerlegung}
+\author{}
+\date{7. Oktober 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Wir untersuchen Primzahlvierlinge der Form
+\[
+Q(p)=(p,p+2,p+6,p+8)
+\]
+über ihre Zentralzahl $M=p+4$. Für alle nicht-exzeptionellen Vierlinge $p>5$ wird elementar gezeigt, dass
+\[
+M\equiv 15\pmod{30},\qquad M\pmod 7\in\{-1,0,+1\},
+\]
+und damit genau drei Restklassen $M\equiv15,105,195\pmod{210}$ auftreten. Die vier Primstellen des Vierlings liegen modulo $12$ in den vier Einheitenklassen $\{1,5,7,11\}$, die als Kleinsche Vierergruppe $(\Z/12\Z)^\times\simeq C_2\times C_2$ aufgefasst werden. Mit zwei reellen Dirichlet-Charakteren modulo $4$ und $3$ zerfällt diese Viererstruktur in einen starren Positionskanal und ein einziges mod-$4$-Orientierungsbit; dieses unterscheidet die beiden Orientierungen $\ABCE$ und $\CEAB$.
+
+Als geometrisch-kominatorische Darstellung führen wir einen regulären Kreis mit $2M+1$ beschrifteten Punkten $-M,\ldots,0,\ldots,M$ ein und summieren gerichtete Differenzen über Parallelklassen von Sehnen. Für die resultierende Observable $D_M(c)$ wird die geschlossene Formel
+\[
+D_M(c)=M^2-(c-1)M-\Big\lfloor\frac c2\Big\rfloor
+\]
+hergeleitet. Insbesondere gilt die exakte Decoderidentität
+\[
+M=D_M(2)-D_M(3).
+\]
+Die drei mod-$210$-Zellen werden durch das mod-$4$-Orientierungsbit in sechs mod-$420$-Zellen aufgespalten. Ein allgemeiner dyadischer Lift zeigt, wie gerade und ungerade Sehnenrichtungen sukzessive zusätzliche $2$-adische Restklassenbits unterscheiden. Die Konstruktion liefert keine neue Primzahlexistenz- oder Dichtenaussage; sie ist eine invertierbare geometrisch-algebraische Kodierung bereits vorhandener lokaler Restklasseninformation. Abschließend werden eine Charakterprojektion, numerische Beispiele bis $10^7$ und ein Lean-4-Formalisierungsschema angegeben.
+\end{abstract}
+
+\medskip
+\noindent\textbf{Schlüsselwörter:} Primzahlvierlinge; Primzahlkonstellationen; Restklassen; Dirichlet-Charaktere; Kleinsche Vierergruppe; Siebbedingungen; Kreis-Sehnen-Kodierung; Lean 4.\\
+\textbf{MSC 2020:} 11A07, 11N05, 11N13, 20K01, 68V20.
+
+\tableofcontents
+
+\section{Einleitung und Geltungsbereich}
+
+Primzahlvierlinge
+\[
+(p,p+2,p+6,p+8)
+\]
+gehören zu den dichtesten zulässigen Primzahlkonstellationen. Die lokale Zulässigkeit solcher Muster ist ein klassischer Ausgangspunkt der Theorie der Primzahl-$k$-Tupel: Eine endliche Verschiebungsmenge $\mathcal H$ kann nur dann unendlich oft vollständig prim auftreten, wenn sie modulo keiner Primzahl sämtliche Restklassen überdeckt. Die Hardy--Littlewood-Heuristik ordnet einer solchen Konstellation eine singuläre Reihe zu und sagt eine asymptotische Häufigkeit der Größenordnung $x/(\log x)^4$ voraus \cite{HardyLittlewood1923,IwaniecKowalski2004}. Für die spezielle Konstellation $\{0,2,6,8\}$ ist die Unendlichkeit der Primzahlvierlinge weiterhin unbewiesen.
+
+Das Ziel dieser Arbeit ist bescheidener und zugleich strukturell: Wir isolieren die lokale Restklasseninformation eines Primzahlvierlings über seine Mitte
+\[
+M=p+4,
+\]
+zerlegen die vier Primstellen modulo $12$ in die Kleinsche Vierergruppe und geben eine Kreis-Sehnen-Kodierung an, aus der $M$ durch die Differenz zweier benachbarter Parallelklassensummen exakt zurückgewonnen wird.
+
+Die Bezeichnungen $E,A,B,C$ sind \emph{keine Standardnotation der Zahlentheorie}; sie werden in diesem Manuskript als Kürzel für die vier Einheitenklassen modulo $12$ eingeführt. Ebenso ist der Ausdruck \emph{Kreis-Sehnen-Decoder} eine Bezeichnung für die hier definierte kombinatorische Kodierung.
+
+Die zentrale methodische Grenze ist wichtig: Der Decoder ist invertierbar. Er kann daher keine zusätzliche arithmetische Information erzeugen, die nicht bereits in $M$ enthalten ist. Sein Nutzen liegt in der kanonischen Trennung verschiedener lokaler Kanäle und in einer geometrisch anschaulichen Darstellung der mod-$210$-, mod-$420$- und dyadischen Restklassenhierarchie.
+
+\section{Historische und mathematische Einordnung}
+
+\subsection{Von Dirichlet zu Charakteren}
+
+Dirichlets Beweis von 1837 über unendlich viele Primzahlen in jeder reduzierten arithmetischen Progression markiert einen Ausgangspunkt der analytischen Zahlentheorie \cite{Dirichlet1837}. In diesem Zusammenhang traten jene multiplikativen Restklassenfunktionen auf, die heute als Dirichlet-Charaktere bezeichnet werden. Für die vorliegende Konstruktion benötigen wir keine analytische Theorie der $L$-Funktionen; wir verwenden lediglich zwei elementare reelle Charaktere auf den Einheiten modulo $12$.
+
+Der historische Bezug ist dennoch sachlich: Die Zerlegung von Primzahlen nach Restklassen wird hier in derselben Sprache von Charakteren organisiert, die Dirichlet für die Untersuchung von Primzahlen in Progressionen eingeführt hat.
+
+\subsection{Die Kleinsche Vierergruppe}
+
+Die Gruppe mit vier Elementen, in der jedes von der Identität verschiedene Element Ordnung zwei besitzt, ist heute als Kleinsche Vierergruppe $V_4$ bekannt. Die Bezeichnung \emph{Vierergruppe} findet sich bei Felix Klein in seinen \emph{Vorlesungen über das Ikosaeder} von 1884 \cite{Klein1884}. In unserem Kontext erscheint $V_4$ nicht durch Geometriesymmetrien eines Rechtecks, sondern als Einheitengruppe
+\[
+(\Z/12\Z)^\times=\{1,5,7,11\}\simeq C_2\times C_2.
+\]
+Diese Identifikation ist elementar, aber für die Vierstellenstruktur eines Primzahlvierlings besonders passend.
+
+\subsection{Hardy--Littlewood und lokale Zulässigkeit}
+
+Hardy und Littlewood formulierten in den 1920er Jahren eine weitreichende Heuristik für Primzahlkonstellationen \cite{HardyLittlewood1923}. Für eine endliche Verschiebungsmenge $\mathcal H$ mit $k$ Elementen sei $\nu_{\mathcal H}(\ell)$ die Zahl der von $\mathcal H$ belegten Restklassen modulo einer Primzahl $\ell$. Die zugehörige singuläre Reihe lautet formal
+\[
+\mathfrak S(\mathcal H)
+ =\prod_{\ell\ \mathrm{prim}}
+ \frac{1-\nu_{\mathcal H}(\ell)/\ell}{(1-1/\ell)^k}.
+\]
+Für $\mathcal H=\{0,2,6,8\}$ gilt $k=4$. Lokale Zulässigkeit bedeutet $\nu_{\mathcal H}(\ell)<\ell$ für jede Primzahl $\ell$.
+
+Unsere Zentralzahlformulierung ist eine symmetrische Version derselben lokalen Information. Die vier Primstellen lauten
+\[
+M-4,\quad M-2,\quad M+2,\quad M+4.
+\]
+Für jede Primzahl $\ell$ definieren wir daher die zulässigen Mittelpunkte
+\[
+\mathcal A_\ell
+ =\bigl\{m\in\Z/\ell\Z:\;m\pm2\not\equiv0,\;m\pm4\not\equiv0\pmod\ell\bigr\}.
+\]
+Für $\ell=3,5,7$ erhält man unmittelbar
+\[
+\mathcal A_3=\{0\},\qquad
+\mathcal A_5=\{0\},\qquad
+\mathcal A_7=\{-1,0,+1\}.
+\]
+Gerade diese drei lokalen Aussagen bilden später den mod-$210$-Träger.
+
+\section{Primzahlvierlinge und ihre Zentralzahl}
+
+\begin{definition}[Primzahlvierling und Zentrum]
+Für $p\in\N$ heiße
+\[
+Q(p)=(p,p+2,p+6,p+8)
+\]
+ein \emph{Primzahlvierling}, wenn alle vier Einträge prim sind. Seine Zentralzahl ist
+\[
+M:=p+4,
+\]
+sodass
+\[
+Q(p)=(M-4,M-2,M+2,M+4).
+\]
+\end{definition}
+
+Der Vierling $Q(5)=(5,7,11,13)$ ist für die mod-$30$-Struktur ein kleiner Ausnahmefall. Im Folgenden heißt ein Primzahlvierling \emph{regulär}, wenn $p>5$.
+
+\begin{lemma}[Lokale Bedingungen bei $2,3,5$]\label{lem:235}
+Sei $Q(p)$ ein regulärer Primzahlvierling mit Zentralzahl $M$. Dann gilt
+\[
+M\equiv1\pmod2,\qquad M\equiv0\pmod3,\qquad M\equiv0\pmod5.
+\]
+Insbesondere
+\[
+\boxed{M\equiv15\pmod{30}.}
+\]
+\end{lemma}
+
+\begin{proof}
+Da $p>5$ prim ist, ist $p$ ungerade; damit ist auch $M=p+4$ ungerade. Modulo $3$ dürfen weder $M-4\equiv M-1$ noch $M-2\equiv M+1$ durch $3$ teilbar sein. Die Restklassen $M\equiv\pm1\pmod3$ sind daher ausgeschlossen, also $M\equiv0\pmod3$.
+
+Modulo $5$ sind die vier verbotenen Werte
+\[
+M\equiv\pm2,\pm4\pmod5
+\]
+genau die vier von Null verschiedenen Restklassen. Daher bleibt nur $M\equiv0\pmod5$. Die drei Kongruenzen bestimmen durch den chinesischen Restsatz eindeutig $M\equiv15\pmod{30}$.
+\end{proof}
+
+\begin{lemma}[Siebung modulo $7$]\label{lem:7}
+Für einen regulären Primzahlvierling gilt
+\[
+\boxed{M\pmod7\in\{-1,0,+1\}.}
+\]
+\end{lemma}
+
+\begin{proof}
+Eine Teilbarkeit einer der vier Zahlen $M\pm2,M\pm4$ durch $7$ ist ausgeschlossen. Somit sind die vier Mittelpunktklassen
+\[
+M\equiv\pm2,\pm4\pmod7
+\]
+verboten. Von den sieben Klassen bleiben genau $-1,0,+1$.
+\end{proof}
+
+\begin{satz}[Dreizellenstruktur modulo $210$]\label{thm:210}
+Für jeden regulären Primzahlvierling gilt genau eine der drei Kongruenzen
+\[
+\boxed{M\equiv15,\ 105,\ 195\pmod{210}.}
+\]
+Äquivalent gilt für den Anfangsprimwert $p=M-4$
+\[
+\boxed{p\equiv11,\ 101,\ 191\pmod{210}.}
+\]
+\end{satz}
+
+\begin{proof}
+Nach Lemma~\ref{lem:235} ist $M\equiv15\pmod{30}$, nach Lemma~\ref{lem:7} ist $M\equiv1,0,-1\pmod7$. Da $\gcd(30,7)=1$, liefert der chinesische Restsatz genau drei Klassen modulo $210$. Direkte Einsetzung ergibt $15,105,195$.
+\end{proof}
+
+\section{Die EABC-Faser als Kleinsche Vierergruppe}
+
+\begin{definition}[EABC-Sektoren]
+Wir bezeichnen die vier Einheitenklassen modulo $12$ durch
+\[
+E\equiv1,\qquad A\equiv5,\qquad B\equiv7,\qquad C\equiv11\pmod{12}.
+\]
+\end{definition}
+
+Multiplikativ bilden diese Klassen die Gruppe
+\[
+(\Z/12\Z)^\times=\{1,5,7,11\}\simeq V_4.
+\]
+Die Zerlegung folgt auch direkt aus
+\[
+\Z/12\Z\simeq \Z/4\Z\times\Z/3\Z
+\]
+und damit
+\[
+(\Z/12\Z)^\times\simeq(\Z/4\Z)^\times\times(\Z/3\Z)^\times\simeq C_2\times C_2.
+\]
+
+Wir definieren auf zu $6$ teilerfremden ganzen Zahlen
+\[
+\chi_4(n)=
+\begin{cases}
++1,&n\equiv1\pmod4,\\
+-1,&n\equiv3\pmod4,
+\end{cases}
+\qquad
+\chi_3(n)=
+\begin{cases}
++1,&n\equiv1\pmod3,\\
+-1,&n\equiv2\pmod3.
+\end{cases}
+\]
+Dann ergibt sich die Charaktertabelle
+\begin{equation}\label{eq:char-table}
+\begin{array}{c|cc}
+ &\chi_4&\chi_3\\ \hline
+E=1 &(+1)&(+1)\\
+A=5 &(+1)&(-1)\\
+B=7 &(-1)&(+1)\\
+C=11&(-1)&(-1)
+\end{array}
+\end{equation}
+und damit eine explizite Identifikation von $V_4$ mit $\{\pm1\}^2$.
+
+\subsection{Das Orientierungsbit}
+
+Für die vier Offsets
+\[
+d\in\{-4,-2,+2,+4\}
+\]
+setzen wir
+\[
+\sigma=(+1,-1,-1,+1),\qquad
+\tau=(-1,+1,-1,+1).
+\]
+Ferner definieren wir für ungerades $M$
+\[
+\eps(M)=
+\begin{cases}
++1,&M\equiv1\pmod4,\\
+-1,&M\equiv3\pmod4.
+\end{cases}
+\]
+
+\begin{satz}[Charakterfaktorisierung]\label{thm:char-factor}
+Sei $M\equiv0\pmod3$ ungerade. Dann gilt für alle $d\in\{-4,-2,+2,+4\}$
+\[
+\boxed{\chi_4(M+d)=\eps(M)\,\sigma(d),}
+\]
+\[
+\boxed{\chi_3(M+d)=\tau(d),}
+\]
+und daher mit $\chi_{12}=\chi_4\chi_3$
+\[
+\boxed{\chi_{12}(M+d)=\eps(M)\,\sigma(d)\tau(d).}
+\]
+\end{satz}
+
+\begin{proof}
+Modulo $3$ ist $M\equiv0$, daher hängen die Werte von $\chi_3(M+d)$ ausschließlich von $d\pmod3$ ab; die vier Werte sind $(-,+,-,+)$. Modulo $4$ lassen die Verschiebungen $\pm4$ die Klasse von $M$ unverändert, während $\pm2$ sie zwischen $1$ und $3$ vertauschen. Daraus folgt das Muster $\eps(M)(+,-,-,+)$.
+\end{proof}
+
+\begin{definition}[Orientierungen]
+Ein Primzahlvierling heißt \emph{$\ABCE$-orientiert}, wenn seine vier Primstellen modulo $12$ die Folge
+\[
+(5,7,11,1)
+\]
+bilden. Er heißt \emph{$\CEAB$-orientiert}, wenn die Folge
+\[
+(11,1,5,7)
+\]
+auftritt.
+\end{definition}
+
+\begin{korollar}[Orientierung aus der Mitte]\label{cor:orientation}
+Für jeden regulären Primzahlvierling gilt
+\[
+\boxed{M\equiv1\pmod4\iff \ABCE,}
+\qquad
+\boxed{M\equiv3\pmod4\iff \CEAB.}
+\]
+\end{korollar}
+
+\begin{proof}
+Setzt man $\eps(M)=+1$ beziehungsweise $-1$ in Satz~\ref{thm:char-factor} und liest die vier Paare $(\chi_4,\chi_3)$ über \eqref{eq:char-table} zurück, entstehen genau die beiden angegebenen Folgen.
+\end{proof}
+
+\section{Die Kreis-Sehnen-Kodierung}
+
+\subsection{Das reguläre Kreismodell}
+
+Sei $M\ge1$ und
+\[
+N:=2M+1.
+\]
+Wir betrachten ein reguläres $N$-Eck auf dem Einheitskreis. Die Ecken werden im Uhrzeigersinn mit den zyklischen Indizes
+\[
+0,1,\ldots,2M
+\]
+nummeriert und durch die zentrierte Beschriftungsfunktion
+\[
+\lambda_M(r)=
+\begin{cases}
+r,&0\le r\le M,\\
+r-N,&M<r\le2M
+\end{cases}
+\]
+mit den ganzen Zahlen
+\[
+0,1,\ldots,M,-M,\ldots,-1
+\]
+versehen. Der Punkt $0$ liegt am oberen Scheitel; positive Beschriftungen liegen auf der rechten, negative auf der linken Kreishälfte.
+
+Für zwei verschiedene Ecken $r,s$ sei $[r,s]$ die zugehörige Sehne. Bei einem regulären $N$-Eck ist die Sehnenrichtung modulo $\pi$ durch die Summe $r+s\pmod N$ bestimmt. Daher definieren wir die Parallelklasse
+\[
+\mathcal C_c
+=\bigl\{\{r,s\}:r\ne s,\ r+s\equiv c\pmod N\bigr\}.
+\]
+Da $N$ ungerade ist, besitzt die Kongruenz $2r\equiv c\pmod N$ genau eine Lösung; dieser degenerierte Fall $r=s$ wird entfernt. Die übrigen $2M$ Ecken paaren sich zu genau $M$ Sehnen.
+
+Für eine Sehne sei $r_R$ der geometrisch weiter rechts liegende und $r_L$ der weiter links liegende Endpunkt. Wir setzen
+\[
+\delta_M([r,s])=\lambda_M(r_R)-\lambda_M(r_L)
+\]
+und definieren die gerichtete Parallelklassensumme
+\[
+D_M(c):=\sum_{\gamma\in\mathcal C_c}\delta_M(\gamma).
+\]
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[scale=1.05]
+  \def\M{5}
+  \def\N{11}
+  \draw[thick] (0,0) circle (2.5);
+  \foreach \i in {0,...,10} {
+    \pgfmathsetmacro{\ang}{90-360*\i/11}
+    \coordinate (v\i) at (\ang:2.5);
+    \fill (v\i) circle (1.4pt);
+  }
+  \node[above] at (v0) {$0$};
+  \node[right] at (v1) {$1$};
+  \node[right] at (v2) {$2$};
+  \node[right] at (v3) {$3$};
+  \node[right] at (v4) {$4$};
+  \node[below right] at (v5) {$5$};
+  \node[below left] at (v6) {$-5$};
+  \node[left] at (v7) {$-4$};
+  \node[left] at (v8) {$-3$};
+  \node[left] at (v9) {$-2$};
+  \node[left] at (v10) {$-1$};
+  % c=2 chords, excluding fixed vertex 1
+  \draw[blue!60!black, line width=.9pt] (v0)--(v2);
+  \draw[blue!60!black, line width=.9pt] (v3)--(v10);
+  \draw[blue!60!black, line width=.9pt] (v4)--(v9);
+  \draw[blue!60!black, line width=.9pt] (v5)--(v8);
+  \draw[blue!60!black, line width=.9pt] (v6)--(v7);
+  \node[blue!60!black] at (3.7,1.8) {$c=2$};
+\end{tikzpicture}
+\caption{Schematisches Kreismodell für $M=5$ und $N=11$. Die blau eingezeichneten Sehnen bilden die Parallelklasse $c=2$, denn für ihre Endpunktindizes gilt jeweils $r+s\equiv2\pmod{11}$. Der eindeutige Fixpunkt der Gleichung $2r\equiv2$ ist keine Sehne.}
+\label{fig:circle}
+\end{figure}
+
+\subsection{Geschlossene Formel}
+
+\begin{satz}[Kreis-Sehnen-Formel]\label{thm:Dformula}
+Für $1\le c\le M$ gilt
+\[
+\boxed{
+D_M(c)=M^2-(c-1)M-\Big\lfloor\frac c2\Big\rfloor.
+}
+\]
+\end{satz}
+
+\begin{proof}
+Wir unterscheiden gerade und ungerade Richtungen.
+
+Sei zunächst $c=2h$. Die $M$ Sehnen zerfallen in drei Gruppen: Sehnen vollständig auf der rechten Kreishälfte, Sehnen zwischen rechter und linker Hälfte und Sehnen vollständig auf der linken Hälfte. Die jeweiligen Summen der gerichteten Differenzen sind
+\[
+h(h+1),\qquad (M-2h)(M+1),\qquad -h^2.
+\]
+Die erste Summe ist die Summe der geraden Zahlen $2,4,\ldots,2h$; die dritte ist das Negative der Summe der ersten $h$ ungeraden Zahlen. Für die kreuzenden Sehnen ergibt die explizite Paarung der Indizes die mittlere Summe $(M-2h)(M+1)$. Insgesamt
+\begin{align*}
+D_M(2h)
+&=h(h+1)+(M-2h)(M+1)-h^2\\
+&=M^2-(2h-1)M-h.
+\end{align*}
+Dies ist die behauptete Formel, da $\lfloor(2h)/2\rfloor=h$.
+
+Sei nun $c=2h+1$. Die drei analogen Teilsummen lauten
+\[
+(h+1)^2,\qquad (M-2h-1)(M+1),\qquad -h(h+1).
+\]
+Daraus folgt
+\begin{align*}
+D_M(2h+1)
+&=(h+1)^2+(M-2h-1)(M+1)-h(h+1)\\
+&=M^2-2hM-h,
+\end{align*}
+und wiederum stimmt dies mit der Formel überein, weil $\lfloor(2h+1)/2\rfloor=h$.
+\end{proof}
+
+\begin{korollar}[Nachbarrichtungen]\label{cor:adjacent}
+Für $c\ge1$ mit $c+1\le M$ gilt
+\[
+\boxed{
+D_M(c)-D_M(c+1)=
+\begin{cases}
+M,&c\text{ gerade},\\
+M+1,&c\text{ ungerade}.
+\end{cases}}
+\]
+\end{korollar}
+
+\begin{proof}
+Subtraktion der beiden Ausdrücke aus Satz~\ref{thm:Dformula} liefert
+\[
+M+\left\lfloor\frac{c+1}{2}\right\rfloor-\left\lfloor\frac c2\right\rfloor,
+\]
+was je nach Parität von $c$ gleich $M$ oder $M+1$ ist.
+\end{proof}
+
+\begin{satz}[Fundamentale Decoderidentität]\label{thm:decoder}
+Für $M\ge3$ gilt
+\[
+\boxed{M=D_M(2)-D_M(3).}
+\]
+Insbesondere gilt für jeden Modul $q\ge1$
+\[
+\boxed{M\equiv D_M(2)-D_M(3)\pmod q.}
+\]
+\end{satz}
+
+\begin{proof}
+Dies ist der gerade Fall $c=2$ von Korollar~\ref{cor:adjacent}. Explizit
+\[
+D_M(2)=M^2-M-1,\qquad D_M(3)=M^2-2M-1.
+\]
+Die Differenz ist $M$.
+\end{proof}
+
+\begin{bemerkung}[Informationsgehalt]
+Satz~\ref{thm:decoder} ist zugleich eine positive und eine negative Aussage. Positiv ist die Kreis-Sehnen-Kodierung verlustfrei: Aus zwei Richtungen wird $M$ exakt rekonstruiert. Negativ folgt daraus, dass der vollständige Vektor $\bigl(D_M(c)\bigr)_c$ keine von $M$ unabhängige Primzahlinformation enthalten kann. Jede weitergehende statistische Aussage muss daher aus der Verteilung der zugrunde liegenden Primzahlvierlinge auf Restklassen stammen, nicht aus einer Informationsvermehrung durch die Geometrie.
+\end{bemerkung}
+
+\section{Die \texorpdfstring{$3\times2$}{3x2}-Struktur modulo 420}
+
+Die Dreizelle aus Satz~\ref{thm:210} wird durch das Orientierungsbit $M\pmod4$ verfeinert. Da $210\equiv2\pmod4$, besitzt jede Klasse modulo $210$ genau zwei Lifts modulo $420$ mit entgegengesetztem mod-$4$-Wert.
+
+\begin{satz}[Sechs Zellen modulo $420$]\label{thm:420}
+Für reguläre Primzahlvierlinge treten genau die folgenden sechs zulässigen Mittelpunktklassen auf:
+\[
+\boxed{15,225,105,315,195,405\pmod{420}.}
+\]
+Die Zuordnung zu Siebzelle und EABC-Orientierung ist
+\[
+\begin{array}{c|cc}
+M\pmod7 & \ABCE\;(M\equiv1\!\pmod4) & \CEAB\;(M\equiv3\!\pmod4)\\ \hline
++1&225&15\\
+0&105&315\\
+-1&405&195
+\end{array}
+\]
+jeweils modulo $420$.
+\end{satz}
+
+\begin{proof}
+Die drei Klassen modulo $210$ sind $15,105,195$. Ihre beiden Lifts modulo $420$ sind jeweils $r$ und $r+210$. Die mod-$4$-Werte und Korollar~\ref{cor:orientation} geben die Tabelle.
+\end{proof}
+
+Damit wird die lokale Struktur in der Form
+\[
+\boxed{
+\{+1,0,-1\}_{M\bmod7}\times\{+1,-1\}_{\eps(M)}
+}
+\]
+sichtbar. Es handelt sich um eine $3\times2$-Zerlegung: drei Siebzellen und ein binäres Orientierungsbit.
+
+\section{Dyadische Lifts}
+
+\begin{satz}[Exakter Lift]\label{thm:lift}
+Für ganze $Q$ gilt
+\[
+\boxed{
+D_{M+Q}(c)-D_M(c)=Q\bigl(2M+Q-c+1\bigr).
+}
+\]
+\end{satz}
+
+\begin{proof}
+Einsetzen von $M+Q$ in Satz~\ref{thm:Dformula} und Subtraktion; der Boden-Term hängt nur von $c$ ab und kürzt sich weg.
+\end{proof}
+
+Setze nun
+\[
+Q_k:=210\cdot2^k.
+\]
+Für eine reguläre Mittelpunktzahl ist $M$ ungerade und $Q_k$ gerade. Daher ist
+\[
+2M+Q_k-c+1
+\]
+gerade genau dann, wenn $c$ ungerade ist.
+
+\begin{korollar}[Dyadischer Richtungsdetektor]\label{cor:dyadic}
+Modulo $2Q_k$ gilt
+\[
+\boxed{
+D_{M+Q_k}(c)-D_M(c)\equiv
+\begin{cases}
+0,&c\text{ ungerade},\\
+Q_k,&c\text{ gerade}
+\end{cases}
+\pmod{2Q_k}.}
+\]
+\end{korollar}
+
+Damit sind ungerade Richtungen für das bei $Q_k\to2Q_k$ neu hinzukommende binäre Lift-Bit blind, während gerade Richtungen dieses Bit unterscheiden. Die Zahl der durch die lokalen Bedingungen bei $2,3,5,7$ zugelassenen Mittelpunktklassen wächst entlang
+\[
+210,420,840,1680,\ldots
+\]
+formal wie
+\[
+3,6,12,24,\ldots=3\cdot2^k.
+\]
+Dies ist eine Aussage über zulässige Restklassen, nicht darüber, ob oder wie häufig jede Klasse tatsächlich Primzahlvierlinge enthält.
+
+\section{Hadamard- und Dirichlet-Projektionen}
+
+Die vier Positionsvektoren
+\[
+\begin{aligned}
+\mathbf 1&=(1,1,1,1), & \sigma&=(1,-1,-1,1),\\
+\tau&=(-1,1,-1,1), & \sigma\tau&=(-1,-1,1,1)
+\end{aligned}
+\]
+bilden eine orthogonale Hadamard-Basis von $\mathbb R^4$. Mit
+\[
+\langle f,g\rangle=\frac14\sum_{d\in\{-4,-2,2,4\}}f(d)g(d)
+\]
+folgt aus Satz~\ref{thm:char-factor} sofort:
+
+\begin{proposition}[Charakterprojektionen]\label{prop:proj}
+Für einen regulären Primzahlvierling gilt
+\[
+\boxed{\langle\sigma,\chi_4\rangle=\eps(M),}
+\qquad
+\boxed{\langle\tau,\chi_3\rangle=1,}
+\qquad
+\boxed{\langle\sigma\tau,\chi_{12}\rangle=\eps(M),}
+\]
+während die entsprechenden Kreuzprojektionen verschwinden.
+\end{proposition}
+
+Der $\chi_3$-Kanal ist somit ein starrer Positionskanal. Die Kanäle $\chi_4$ und $\chi_{12}$ tragen das Orientierungsbit.
+
+Für eine der drei Anfangsprimzahlzellen $r\in\{11,101,191\}\pmod{210}$ seien
+\[
+N_r=N_{r,\ABCE}+N_{r,\CEAB},\qquad
+\Delta_r=N_{r,\ABCE}-N_{r,\CEAB}.
+\]
+Dann ist $N_r$ die Population der Zelle und $\Delta_r$ ihr Orientierungsbias. Summiert man Proposition~\ref{prop:proj} über alle Vierlinge einer Zelle, erhält man
+\[
+\sum_{Q\in r}\sum_d\tau(d)\chi_3(M+d)=4N_r,
+\]
+\[
+\sum_{Q\in r}\sum_d\sigma(d)\chi_4(M+d)=4\Delta_r,
+\]
+und analog für $\chi_{12}$.
+
+Diese Identitäten sind exakt. Ob $\Delta_r(X)$ bei wachsendem $X$ systematische Vorzeichen- oder Größenmuster zeigt, ist hingegen eine statistische Frage und nicht durch die algebraische Zerlegung entschieden.
+
+\section{Numerische Illustration}
+
+Zur Illustration wurde für $p\le X$ mit einem elementaren Eratosthenes-Sieb geprüft, wann
+\[
+p,\ p+2,\ p+6,\ p+8
+\]
+prim sind. Die folgenden Zahlen sind reproduzierbare endliche Zählwerte; sie werden nicht als asymptotische Aussage interpretiert.
+
+\begin{table}[h]
+\centering
+\caption{Primzahlvierlinge bis $p\le X$ und Zellbias $\Delta_r=N_{r,\ABCE}-N_{r,\CEAB}$. Der Ausnahmevierling $p=5$ ist in der Gesamtzahl und der Gesamt-Orientierung enthalten, nicht jedoch in den drei regulären mod-$210$-Zellen.}
+\label{tab:counts}
+\begin{tabular}{r r r r c r}
+\toprule
+$X$ & $N(X)$ & $N_{\ABCE}$ & $N_{\CEAB}$ & $(\Delta_{11},\Delta_{101},\Delta_{191})$ & $\sum\Delta_r$\\
+\midrule
+$10^6$ & 166 & 84 & 82 & $(-1,2,0)$ & 1\\
+$2\cdot10^6$ & 295 & 152 & 143 & $(1,7,0)$ & 8\\
+$10^7$ & 899 & 450 & 449 & $(4,8,-12)$ & 0\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Für $X=10^7$ ergibt sich detailliert
+\[
+\begin{array}{c|rrrr}
+p\pmod{210}&N_r&N_{r,\ABCE}&N_{r,\CEAB}&\Delta_r\\ \hline
+11&318&161&157&4\\
+101&288&148&140&8\\
+191&292&140&152&-12
+\end{array}
+\]
+und damit $\Delta_{11}+\Delta_{101}+\Delta_{191}=0$. Der einzelne Ausnahmevierling $p=5$ ist $\ABCE$-orientiert; deshalb lautet die Gesamtbilanz bis $10^7$ dennoch $450:449$.
+
+Die exakte Aufhebung bei diesem speziellen Cutoff ist ein endliches numerisches Phänomen. Aus ihr folgt weder ein Symmetriesatz für alle $X$ noch eine asymptotische Gleichverteilung.
+
+\section{Lean-4-Formalisierungsschema}
+
+Die elementaren Teile der Arbeit eignen sich gut für eine Formalisierung in Lean 4 \cite{deMouraUllrich2021}. Die sinnvollste Beweisarchitektur besteht aus kleinen Lemmata statt eines monolithischen Hauptsatzes:
+
+\begin{enumerate}
+\item Definition von \texttt{PrimeQuadruplet p} und \texttt{center p := p + 4};
+\item Herleitung der lokalen Kongruenzen modulo $2,3,5,7$ aus der Primzahligkeit;
+\item Zusammenbau der drei Klassen modulo $210$ durch lineare Ganzzahlarithmetik;
+\item Definition der Prädikate \texttt{ABCE} und \texttt{CEAB} und Nachweis ihrer Äquivalenz zu $M\equiv1$ bzw. $3\pmod4$;
+\item Definition der algebraischen Funktion
+\[
+D(M,c)=M^2-(c-1)M-\lfloor c/2\rfloor
+\]
+und maschineller Beweis von $D(M,2)-D(M,3)=M$;
+\item in einer zweiten Formalisierungsstufe Definition des tatsächlichen regulären $(2M+1)$-Ecks, der Parallelklassen als endliche Mengen von Sehnen und Beweis, dass deren endliche Summe mit der geschlossenen Formel übereinstimmt.
+\end{enumerate}
+
+Ein kompakter Zielsatz kann mathematisch als
+\begin{align*}
+\operatorname{PrimeQuadruplet}(p)\land p>5
+\;\Longrightarrow\;&
+M\pmod{210}\in\{15,105,195\}\\
+&\land\ (\ABCE\lor\CEAB)\\
+&\land\ M=D_M(2)-D_M(3)
+\end{align*}
+formuliert werden, mit $M=p+4$. Für die mod-$420$-Verfeinerung kommt die entsprechende Sechszellenaussage hinzu.
+
+Die in dieser Arbeit angegebene Lean-Struktur ist ein Formalisierungsschema; eine vollständig geometrische, maschinengeprüfte Datei müsste zusätzlich die Sehnengeometrie selbst als endliche kombinatorische Struktur implementieren.
+
+\section{Hauptsatz in zusammengefasster Form}
+
+\begin{satz}[EABC-Kreis-Sehnen-Zerlegungs- und Decodersatz]\label{thm:main}
+Sei
+\[
+Q(p)=(p,p+2,p+6,p+8)
+\]
+ein Primzahlvierling mit $p>5$ und Zentralzahl $M=p+4$. Dann gelten:
+
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item \textbf{Lokaler Zentralträger:}
+\[
+M\equiv15\pmod{30}.
+\]
+
+\item \textbf{Dreizellen-Sieb:}
+\[
+M\pmod7\in\{-1,0,+1\},
+\]
+und daher
+\[
+M\equiv15,105,195\pmod{210}.
+\]
+
+\item \textbf{$V_4$-Faser und Orientierung:}
+Die vier Primstellen liegen in
+\[
+(\Z/12\Z)^\times\simeq V_4,
+\]
+und
+\[
+M\equiv1\pmod4\iff\ABCE,
+\qquad
+M\equiv3\pmod4\iff\CEAB.
+\]
+Damit entstehen genau sechs zulässige Klassen modulo $420$.
+
+\item \textbf{Kreis-Sehnen-Decoder:}
+Für die gerichteten Parallelklassensummen des regulären $(2M+1)$-Ecks gilt
+\[
+D_M(c)=M^2-(c-1)M-\Big\lfloor\frac c2\Big\rfloor
+\]
+und insbesondere
+\[
+\boxed{M=D_M(2)-D_M(3).}
+\]
+
+\item \textbf{Dyadischer Lift:}
+Für $Q_k=210\cdot2^k$ unterscheidet der Übergang $M\mapsto M+Q_k$ modulo $2Q_k$ das neu hinzukommende Bit genau in den geraden Sehnenrichtungen, während ungerade Richtungen dafür blind sind.
+\end{enumerate}
+\end{satz}
+
+\begin{proof}
+Die Aussagen (i) und (ii) folgen aus Lemma~\ref{lem:235}, Lemma~\ref{lem:7} und Satz~\ref{thm:210}; Aussage (iii) folgt aus Satz~\ref{thm:char-factor}, Korollar~\ref{cor:orientation} und Satz~\ref{thm:420}; Aussage (iv) folgt aus Satz~\ref{thm:Dformula} und Satz~\ref{thm:decoder}; Aussage (v) folgt aus Satz~\ref{thm:lift} und Korollar~\ref{cor:dyadic}.
+\end{proof}
+
+\section{Diskussion und Grenzen}
+
+Die Konstruktion legt eine saubere Trennung mehrerer Ebenen nahe:
+\[
+\begin{aligned}
+&\underbrace{M\equiv15\pmod{30}}_{\text{lokaler Zentralträger}}
+\quad\times\quad
+\underbrace{M\pmod7\in\{-1,0,+1\}}_{\text{Dreizellen-Sieb}}\\
+&\hspace{5em}\times\quad
+\underbrace{\eps(M)\in C_2}_{\text{EABC-Orientierung}}.
+\end{aligned}
+\]
+Die vier äußeren Primstellen bilden zugleich eine $V_4$-Faser. Man sollte jedoch nicht sagen, $V_4$ sei von der $2,3$-Struktur unabhängig: Gerade
+\[
+(\Z/12\Z)^\times\simeq(\Z/4\Z)^\times\times(\Z/3\Z)^\times
+\]
+zeigt, dass die Vierergruppe selbst aus den lokalen Einheiteninformationen bei $2$ und $3$ entsteht. Die sinnvolle Trennung lautet daher: \emph{nichtinvertierbare Zentralbedingungen} versus \emph{invertierbare Charakterfaser der vier Primstellen}.
+
+Ebenso ist der mod-$420$-Schritt keine neue Primzahltheorie. Er kombiniert die mod-$210$-Siebzelle mit dem bereits in $M$ enthaltenen mod-$4$-Bit. Der Kreisdecoder macht diese Information sichtbar und rekonstruiert sie exakt, erzeugt sie aber nicht.
+
+Was offen und potenziell interessant bleibt, ist die \emph{Verteilung} der Primzahlvierlinge auf den sechs Zellen. Dafür bieten sich die Größen
+\[
+\Delta_r(X)=N_{r,\ABCE}(X)-N_{r,\CEAB}(X)
+\]
+als Charakter-bewertete Primzahlrennen an. Eine ernsthafte Untersuchung müsste Hardy--Littlewood-artige Erwartungswerte, lokale Faktoren, mögliche Chebyshev-Bias-Mechanismen und robuste Fehlerkontrollen einbeziehen. Die vorliegende Arbeit stellt hierfür vor allem die algebraische Koordinatisierung bereit.
+
+\section{Ausblick}
+
+Drei Fortsetzungen erscheinen natürlich:
+
+\begin{enumerate}
+\item \textbf{Analytische Verteilung:} Untersuchung der sechs mod-$420$-Zellen und ihrer Charakterdifferenzen mit Methoden für Primzahlrennen und $L$-Funktionen.
+\item \textbf{Höhere lokale Primfaktoren:} Erweiterung der Mittelpunkt-Siebmenge $\mathcal A_\ell$ auf $\ell=11,13,\ldots$ und Vergleich mit der singulären Reihe des Primzahlvierlings.
+\item \textbf{Vollständige Formalisierung:} Umsetzung der Kreisgeometrie als endliche Struktur in Lean 4 und maschineller Beweis der geschlossenen Sehnensummenformel.
+\end{enumerate}
+
+Die elementare Kernidentität
+\[
+M=D_M(2)-D_M(3)
+\]
+bleibt dabei der einfachste Ausdruck der Konstruktion: Zwei benachbarte gerichtete Sehnenrichtungen rekonstruieren die Zentralzahl und damit sämtliche lokalen Restklasseninformationen des betrachteten Primzahlvierlings.
+
+\section*{Danksagung und Reproduzierbarkeit}
+
+Die numerischen Tabellen beruhen auf einem deterministischen Primzahlsieb und können mit wenigen Zeilen Code reproduziert werden. Für eine arXiv-Einreichung empfiehlt es sich, den verwendeten Quellcode und eine Lean-Datei als ergänzendes Material beizulegen. Die vorliegende Fassung macht ausdrücklich keinen Anspruch auf einen Beweis der Unendlichkeit von Primzahlvierlingen oder auf eine Verbesserung der Hardy--Littlewood-$k$-Tupel-Heuristik.
+
+\begin{thebibliography}{99}
+
+\bibitem{Dirichlet1837}
+P.~G.~L. Dirichlet,
+\newblock Beweis des Satzes, dass jede unbegrenzte arithmetische Progression, deren erstes Glied und Differenz ganze Zahlen ohne gemeinschaftlichen Factor sind, unendlich viele Primzahlen enthält,
+\newblock \emph{Abhandlungen der Königlichen Preußischen Akademie der Wissenschaften} (1837), 45--81.
+
+\bibitem{Dickson1904}
+L.~E. Dickson,
+\newblock A new extension of Dirichlet's theorem on prime numbers,
+\newblock \emph{Messenger of Mathematics} (2) \textbf{33} (1904), 155--161.
+
+\bibitem{HardyLittlewood1923}
+G.~H. Hardy and J.~E. Littlewood,
+\newblock Some problems of ``Partitio Numerorum''; III: On the expression of a number as a sum of primes,
+\newblock \emph{Acta Mathematica} \textbf{44} (1923), 1--70.
+
+\bibitem{Klein1884}
+F. Klein,
+\newblock \emph{Vorlesungen über das Ikosaeder und die Auflösung der Gleichungen vom fünften Grade},
+\newblock Teubner, Leipzig, 1884.
+
+\bibitem{IwaniecKowalski2004}
+H. Iwaniec and E. Kowalski,
+\newblock \emph{Analytic Number Theory},
+\newblock American Mathematical Society Colloquium Publications, Vol.~53, Providence, 2004.
+
+\bibitem{HardyWright2008}
+G.~H. Hardy and E.~M. Wright,
+\newblock \emph{An Introduction to the Theory of Numbers}, 6th ed.,
+\newblock revised by D.~R. Heath-Brown and J.~H. Silverman, Oxford University Press, 2008.
+
+\bibitem{OEISA007530}
+OEIS Foundation Inc.,
+\newblock The On-Line Encyclopedia of Integer Sequences, A007530: Prime quadruples,
+\newblock \url{https://oeis.org/A007530}, abgerufen am 7. Oktober 2026.
+
+\bibitem{deMouraUllrich2021}
+L. de Moura and S. Ullrich,
+\newblock The Lean 4 theorem prover and programming language,
+\newblock in: A. Platzer and G. Sutcliffe (eds.), \emph{Automated Deduction -- CADE 28}, LNCS 12699, Springer, 2021, 625--635.
+\newblock DOI: \url{https://doi.org/10.1007/978-3-030-79876-5_37}.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,41 @@
+import Mathlib.Data.Nat.Basic
+import Mathlib.Order.WellFounded
+import Mathlib.Tactic
+
+namespace CollatzWellFoundedClosure
+
+def Reaches (T : ℕ → ℕ) (x y : ℕ) : Prop :=
+  ∃ m : ℕ, (T^[m]) x = y
+
+def ReachesOne (T : ℕ → ℕ) (x : ℕ) : Prop :=
+  Reaches T x 1
+
+theorem reaches_trans (T : ℕ → ℕ) {x y z : ℕ}
+    (hxy : Reaches T x y) (hyz : Reaches T y z) :
+    Reaches T x z := by
+  rcases hxy with ⟨m1, hm1⟩
+  rcases hyz with ⟨m2, hm2⟩
+  use (m1 + m2)
+  rw [Function.iterate_add_apply, hm1, hm2]
+
+/--
+Level IV Master Theorem:
+Finite descent on (ℕ, <) unconditionally forces global termination at 1.
+-/
+theorem collatz_well_founded_closure (T : ℕ → ℕ)
+    (h_descent : ∀ x > 1, ∃ y, y < x ∧ y > 0 ∧ Reaches T x y) :
+    ∀ x > 0, ReachesOne T x := by
+  intro x
+  induction x using Nat.strong_induction_on with
+  | h n ih =>
+    intro hn_pos
+    by_cases hn1 : n = 1
+    · subst hn1
+      use 0
+      rfl
+    · have hn_gt1 : n > 1 := by omega
+      rcases h_descent n hn_gt1 with ⟨y, hy_lt, hy_pos, h_reach_y⟩
+      have h_y_reaches_one : ReachesOne T y := ih y hy_lt hy_pos
+      exact reaches_trans T h_reach_y h_y_reaches_one
+
+end CollatzWellFoundedClosure

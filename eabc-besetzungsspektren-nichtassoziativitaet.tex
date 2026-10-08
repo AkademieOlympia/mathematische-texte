@@ -1,0 +1,365 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.7cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{bm}
+
+\newtheorem{theorem}{Satz}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Bemerkung}
+
+\newcommand{\PP}{\mathbb P}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\OO}{\mathbb O}
+\newcommand{\HH}{\mathbb H}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\Span}{\operatorname{span}}
+
+\title{\textbf{Arithmetische Besetzungsspektren und die erste oktonionische Nichtassoziativitätsschwelle}}
+\author{EABC Research Note}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Wir führen eine kanonische Besetzungsraum-Darstellung der natürlichen Zahlen ein, die ausschließlich auf der eindeutigen Primfaktorzerlegung beruht. Für
+\[
+N=\prod_{p\in\PP}p^{\nu_p}
+\]
+ist das zugehörige Faktorwort
+\[
+W(N)=\sum_p\nu_p e_p,
+\]
+mit den arithmetischen Besetzungszahlen
+\[
+\Omega(N)=\sum_p\nu_p,
+\qquad
+\omega(N)=\#\{p:\nu_p>0\}.
+\]
+Der logarithmische diagonale Operator besitzt den exakten Spektralwert
+\[
+E_\times(N)=\sum_p\nu_p\log p=\log N.
+\]
+Primzahlpotenzen sind damit Mehrfachbesetzungen eines atomaren Primmodus, während Produkte verschiedener Primzahlen echte Mehrmodenzustände bilden. Wir zeigen, dass sich im Sektor $\Omega=3$ die drei Besetzungstypen $p^3$, $p^2q$ und $pqr$ zu einer exakten Hierarchie ordnen: Aufgrund der Alternativität und des Satzes von Artin ist genuine Drei-Erzeuger-Nichtassoziativität für die ersten beiden Typen unmöglich und wird erstmals im quadratfreien Typ $pqr$ möglich. Anschließend trennen wir das euklidische Tetraedervolumen von der $G_2$-Kalibrierung und vom oktonionischen Assoziatordefekt,
+\[
+V_{\rm tet}=\frac16\sqrt{\det G},\qquad
+\varphi(u,v,w)=\langle uv,w\rangle,\qquad
+\mathfrak t=\frac14\|[u,v,w]\|^2=\det G-\varphi^2.
+\]
+Eine dynamische Prime-Orbit-Realisierung oder physikalische Interpretation von $E_\times$ wird nicht vorausgesetzt.
+\end{abstract}
+
+\section{Faktorwort-Normalform}
+Sei
+\[
+\mathfrak M=\bigoplus_{p\in\PP}\NN_0 e_p
+\]
+das freie kommutative Monoid über den Primzahlbezeichnungen $e_p$. Aufgrund der eindeutigen Primfaktorzerlegung besitzt jedes $N\ge1$ eine eindeutige Darstellung
+\[
+N=\prod_{p\in\PP}p^{\nu_p}
+\]
+mit nur endlich vielen von Null verschiedenen $\nu_p$ und damit ein kanonisches Faktorwort
+\begin{equation}
+W(N)=\sum_p\nu_p e_p.
+\end{equation}
+Zusammengesetzte Teilprodukte erzeugen keine neuen Generatoren. Somit gilt
+\[
+W(pq)=e_p+e_q,\qquad
+W(p^2q)=2e_p+e_q,\qquad
+W(pqr)=e_p+e_q+e_r.
+\]
+
+\begin{definition}[Arithmetische Besetzungszahlen]
+Wir definieren
+\[
+\Omega(N)=\sum_p\nu_p,
+\qquad
+\omega(N)=\#\{p:\nu_p>0\}.
+\]
+Dabei zählt $\Omega$ die Primfaktoren mit Multiplizität, während $\omega$ die Zahl der verschiedenen besetzten Primmoden zählt.
+\end{definition}
+
+\section{Logarithmisches Besetzungsspektrum}
+Wir betrachten die Hilbertbasis $\{|N\rangle:N\in\NN\}$, indiziert durch Faktorwörter. Definiere den diagonalen Operator
+\begin{equation}
+H_\times|N\rangle
+=\left(\sum_p\nu_p\log p\right)|N\rangle.
+\end{equation}
+
+\begin{proposition}[Exakte arithmetische Energie]
+Für jedes $N\in\NN$ gilt
+\[
+E_\times(N)=\log N.
+\]
+Ferner gilt für alle $M,N\in\NN$
+\[
+E_\times(MN)=E_\times(M)+E_\times(N).
+\]
+\end{proposition}
+
+\begin{proof}
+Dies folgt unmittelbar aus
+\[
+\log\left(\prod_pp^{\nu_p}\right)=\sum_p\nu_p\log p
+\]
+und $\log(MN)=\log M+\log N$.
+\end{proof}
+
+Die atomaren Primmodus-Energien sind somit
+\[
+\varepsilon_p=\log p,
+\]
+und ein allgemeiner Besetzungszustand besitzt den freien additiven Spektralwert
+\[
+E_\times(N)=\sum_p\nu_p\varepsilon_p.
+\]
+Dies ist eine arithmetische Spektralaussage und noch keine physikalische Energiebehauptung.
+
+\section{Primale, semiprimale und dreifache Besetzungssektoren}
+Für $\Omega=1$ existieren ausschließlich Primzustände
+\[
+p:\quad W(p)=e_p,\qquad E_\times(p)=\log p.
+\]
+Für $\Omega=2$ existieren genau zwei Besetzungstypen:
+\[
+p^2:\quad W=2e_p,\quad \omega=1,\quad E_\times=2\log p,
+\]
+\[
+pq\ (p\ne q):\quad W=e_p+e_q,\quad \omega=2,\quad E_\times=\log p+\log q.
+\]
+Damit ist $p^2$ eine Mehrfachbesetzung eines einzigen Modus, während $pq$ ein echter Zweimodenzustand ist.
+
+Für $\Omega=3$ liefert die eindeutige Primfaktorzerlegung exakt die Partitionstypen $3$, $2+1$ und $1+1+1$:
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+Arithmetischer Typ & Faktorwort & $\omega(N)$ & $E_\times(N)$ \\
+\midrule
+$p^3$ & $3e_p$ & $1$ & $3\log p$ \\
+$p^2q$, $p\ne q$ & $2e_p+e_q$ & $2$ & $2\log p+\log q$ \\
+$pqr$, paarweise verschieden & $e_p+e_q+e_r$ & $3$ & $\log p+\log q+\log r$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+In bosonischer Besetzungsnotation entsprechen diese formal
+\[
+|3_p\rangle,\qquad |2_p,1_q\rangle,\qquad |1_p,1_q,1_r\rangle
+\]
+in $\Sym^3\mathcal H_1$. Diese symmetrische Besetzungsstruktur darf nicht mit Exteriorpotenzen aus Fredholm-Determinantenentwicklungen identifiziert werden.
+
+\section{Oktonionische Realisierung besetzter Moden}
+Wir nehmen an, dass jedem verschiedenen besetzten Primmodus eine feste imaginäre oktonionische Richtung zugeordnet wird,
+\[
+p\longmapsto u_p\in\operatorname{Im}\OO.
+\]
+Eine Kanonizität dieser Zuordnung wird nicht vorausgesetzt.
+
+Für $x,y,z\in\OO$ definieren wir den Assoziator
+\[
+[x,y,z]=(xy)z-x(yz).
+\]
+Die Oktonionen sind alternativ, also
+\[
+[x,x,y]=[y,x,x]=0.
+\]
+Darüber hinaus besagt der Satz von Artin, dass jede von zwei Elementen einer alternativen Algebra erzeugte Unteralgebra assoziativ ist.
+
+\begin{theorem}[Besetzungs--Assoziativitäts-Schwelle]\label{thm:threshold}
+Sei $N$ mit $\Omega(N)=3$ gegeben, und jedem verschiedenen besetzten Primmodus sei ein oktonionischer Generator zugeordnet. Dann gilt:
+\begin{enumerate}[label=(\roman*)]
+\item Für $N=p^3$ verschwindet jeder lokale Dreiwort-Assoziator.
+\item Für $N=p^2q$ mit $p\ne q$ verschwindet jeder Assoziator, der aus den beiden besetzten Generatoren $u_p,u_q$ gebildet wird.
+\item Für $N=pqr$ mit paarweise verschiedenen $p,q,r$ wird ein nichtverschwindender Assoziator $[u_p,u_q,u_r]$ erstmals möglich.
+\end{enumerate}
+Folglich gilt
+\[
+\omega(N)\le2
+\quad\Longrightarrow\quad
+\text{genuine Drei-Erzeuger-Nichtassoziativität ist unmöglich},
+\]
+während $\omega(N)=3$ die erste Besetzungsschwelle ist, an der sie auftreten kann.
+\end{theorem}
+
+\begin{proof}
+Für $p^3$ sind alle drei Einträge derselbe Generator, daher folgt aus der Alternativität $[u_p,u_p,u_p]=0$. Für $p^2q$ treten höchstens die beiden Generatoren $u_p,u_q$ auf. Nach dem Satz von Artin ist die von ihnen erzeugte Unteralgebra assoziativ, weshalb jeder aus diesen Generatoren gebildete Dreiwort-Assoziator verschwindet. Für $pqr$ treten drei verschiedene Generatoren auf; der Zwei-Erzeuger-Satz von Artin erzwingt dann keine Assoziativität mehr. Nichtverschwindende Assoziatoren sind daher möglich, aber nicht notwendig.
+\end{proof}
+
+\begin{remark}
+Die Quadratfreiheit impliziert keine Nichtassoziativität. Drei verschiedene oktonionische Generatoren können weiterhin in einer gemeinsamen assoziativen quaternionischen Unteralgebra liegen. Der Satz identifiziert den ersten \emph{möglichen} nichtassoziativen Besetzungstyp, nicht ein hinreichendes arithmetisches Kriterium.
+\end{remark}
+
+\section{$G_2$-Geometrie der Dreimodenkonfiguration}
+Seien $u,v,w\in\operatorname{Im}\OO\cong\RR^7$. Wir bezeichnen mit
+\[
+G=(\langle u_i,u_j\rangle)_{i,j=1}^3
+\]
+ihre Gram-Matrix. Das euklidische Volumen des Simplex $\{0,u,v,w\}$ lautet
+\begin{equation}
+V_{\rm tet}(u,v,w)=\frac16\sqrt{\det G}.
+\end{equation}
+Dies ist eine rein metrische Invariante und darf nicht mit dem Assoziatordefekt verwechselt werden.
+
+Die standardmäßige assoziative $G_2$-Dreiform ist bis auf die Orientierungskonvention
+\begin{equation}
+\varphi(u,v,w)=\langle uv,w\rangle.
+\end{equation}
+Definiere den Nichtassoziativitätsdefekt
+\begin{equation}
+\mathfrak t(u,v,w)=\frac14\|[u,v,w]\|^2.
+\end{equation}
+Für imaginäre Oktonionen gilt die Identität
+\begin{equation}\label{eq:g2identity}
+\boxed{\mathfrak t=\det G-\varphi^2.}
+\end{equation}
+Äquivalent dazu gilt
+\begin{equation}
+\boxed{\mathfrak t=36V_{\rm tet}^2-\varphi^2.}
+\end{equation}
+Somit sind $V_{\rm tet}$, $\varphi$ und $\mathfrak t$ miteinander verknüpfte Observablen und keine drei unabhängigen Invarianten.
+
+Für ein orthonormales Tripel gilt $G=I_3$ und damit
+\[
+V_{\rm tet}=\frac16,
+\qquad
+\mathfrak t=1-\varphi^2,
+\qquad
+0\le\mathfrak t\le1.
+\]
+Allgemeine orthonormale $G_2$-Tripel müssen nicht binär sein: Zwischenwerte von $|\varphi|$ und $\mathfrak t$ sind möglich.
+
+\section{Diskreter Fano-Basissektor}
+Seien $e_1,\dots,e_7$ die sieben imaginären Basiseinheiten einer festen Oktonionen-Multiplikationstafel. Es existieren
+\[
+\binom73=35
+\]
+unordnete Tripel verschiedener Basisrichtungen. Genau sieben davon sind Fano-Linien-Tripel und achtundzwanzig sind Nicht-Fano-Tripel.
+
+Jedes Basistripel ist orthonormal. Daher erfüllen alle fünfunddreißig zugehörigen euklidischen Tetraeder
+\[
+V_{\rm tet}=\frac16.
+\]
+Die $G_2$-Multiplikation trennt sie dennoch:
+\begin{center}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Typ & Anzahl & $\det G$ & $|\varphi|$ & $\mathfrak t$ \\
+\midrule
+Fano-Linie & $7$ & $1$ & $1$ & $0$ \\
+Nicht-Fano-Basistripel & $28$ & $1$ & $0$ & $1$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+Damit sind die fünfunddreißig Basistetraeder euklidisch volumengleich, aber oktonionisch nicht äquivalent. Der Unterschied liegt in der kalibrierten Multiplikationsstruktur und nicht im gewöhnlichen metrischen Volumen.
+
+\section{Konfigurationsinvarianten versus arithmetische Invarianten}
+Für ein festes Tripel $(u_p,u_q,u_r)$ sind die Größen
+\[
+G,\qquad V_{\rm tet},\qquad\varphi,\qquad\mathfrak t
+\]
+mathematisch wohldefiniert. Sie sind daher Konfigurationsinvarianten.
+
+Sie sind jedoch noch keine Invarianten des bloßen Primzahltripels $(p,q,r)$. Um eine solche arithmetische Invariante zu erhalten, benötigt man eine kanonische oder quotientstabile Zuordnung
+\[
+p\longmapsto u_p
+\]
+oder ein invariantes Mittelungsverfahren über eine mathematisch spezifizierte Darstellungsfaser. Die Wahl einer einzelnen Vierquadratedarstellung
+\[
+p=a^2+b^2+c^2+d^2
+\]
+und eine willkürliche Einbettung dieser Koordinaten in $\operatorname{Im}\OO$ liefern eine solche Kanonizität nicht.
+
+Insbesondere löst auch die Quotientierung eines einzelnen Einheitsvektors nach der vollen Gruppe $G_2=\Aut(\OO)$ das Problem nicht: $G_2$ wirkt transitiv auf der Einheitssphäre $S^6\subset\operatorname{Im}\OO$. Relevante $G_2$-Invarianten entstehen erst für Mehrvektorkonfigurationen.
+
+\section{Primzahlpotenzen, Mehrmodenzustände und mögliche Orbit-Realisierungen}
+Die exakte arithmetische Identität
+\[
+E_\times(p^k)=k\log p
+\]
+zeigt Primzahlpotenzen als Besetzungsleiter
+\[
+|1_p\rangle,\ |2_p\rangle,\ |3_p\rangle,\dots
+\]
+entlang eines einzigen Primmodus. Gemischte Produkte aktivieren mehrere Modi.
+
+Die Formel ähnelt dem Wiederholungsgesetz
+\[
+\ell(\gamma^k)=k\ell(\gamma)
+\]
+für periodische Orbits. Die Existenz einer Dynamik mit
+\[
+p\longmapsto\gamma_p,\qquad \ell(\gamma_p)=\log p
+\]
+ist jedoch ein separates Realisierungsproblem und wird hier nicht vorausgesetzt. Insbesondere darf die arithmetische Gleichheit $E_\times(p)=\log p$ ohne zusätzlichen Beweis nicht mit einer physikalisch oder dynamisch realisierten primitiven Periode identifiziert werden.
+
+Ebenso dürfen bosonische Besetzungssektoren
+\[
+\Sym^k\mathcal H_1
+\]
+nicht mit Fredholm-Exteriorpotenzen
+\[
+\Lambda^k\mathcal H
+\]
+verwechselt werden. Jede Brücke zwischen diesen Konstruktionen benötigt einen unabhängigen Satz.
+
+\section{Epistemischer Status und offene Gates}
+Die folgenden Aussagen sind innerhalb des algebraischen Rahmens etabliert:
+\begin{itemize}
+\item das kanonische Faktorwort $W(N)=\sum_p\nu_pe_p$;
+\item die arithmetischen Besetzungsdaten $\Omega(N)$ und $\omega(N)$;
+\item das exakte logarithmische Spektrum $E_\times(N)=\log N$;
+\item die vollständige $\Omega=3$-Zerlegung in $p^3$, $p^2q$ und $pqr$;
+\item Satz~\ref{thm:threshold};
+\item für ein festes oktonionisches Tripel die geometrischen Größen $G$, $V_{\rm tet}$, $\varphi$ und $\mathfrak t$ sowie die Identität~\eqref{eq:g2identity};
+\item die diskrete Fano-Basisklassifikation $35=7+28$.
+\end{itemize}
+
+Die folgenden Punkte bleiben offene Realisierungsprobleme:
+\begin{enumerate}
+\item eine kanonische arithmetische Zuordnung $p\mapsto u_p$;
+\item Darstellungsunabhängigkeit der oktonionischen Konfigurationsinvarianten;
+\item eine periodische Orbit-Realisierung mit primitiven Perioden $\log p$;
+\item eine physikalische Interpretation von $E_\times$ als messbare Energie;
+\item jede Identifikation zwischen Faktorwort-Fockbesetzung und Fredholm-Exteriorpotenz-Kombinatorik.
+\end{enumerate}
+
+\section{Schlussfolgerung}
+Die eindeutige Primfaktorzerlegung bestimmt einen kanonischen Besetzungsvektor, und die logarithmische Auswertung überführt die multiplikative Arithmetik in ein exakt additives Spektrum:
+\[
+\boxed{
+N=\prod_pp^{\nu_p}
+\quad\longmapsto\quad
+W(N)=\sum_p\nu_pe_p,
+\qquad
+E_\times(N)=\sum_p\nu_p\log p=\log N.
+}
+\]
+Primzahlpotenzen kodieren Mehrfachbesetzungen eines atomaren Modus, während gemischte Produkte echte Modenvielfalt kodieren. Bei Besetzungszahl drei erzwingen Alternativität und der Satz von Artin, dass die Sektoren $p^3$ und $p^2q$ assoziativ bleiben, und identifizieren den quadratfreien Sektor $pqr$ als den ersten, in dem ein genuiner oktonionischer Assoziator auftreten kann.
+
+Daraus ergibt sich das Strukturprinzip
+\[
+\boxed{
+\text{arithmetische Modenkomplexität}
+\;\Longrightarrow\;
+\text{erste mögliche algebraische Nichtassoziativitätsschwelle}.
+}
+\]
+Diese Schlussfolgerung ist rein algebraisch. Die verbleibende Aufgabe ist die arithmetische Verankerung der oktonionischen Konfiguration, nicht die interne $G_2$-Geometrie selbst.
+
+\end{document}

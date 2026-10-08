@@ -1,0 +1,188 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsfonts,amsthm,mathtools}
+\usepackage{geometry}
+\geometry{a4paper, left=25mm, right=25mm, top=25mm, bottom=25mm}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{microtype}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric}
+
+\tcbuselibrary{skins,breakable}
+
+\newtcolorbox{auditbox}[1][]{
+  colback=gray!5!white,
+  colframe=black!75!black,
+  fonttitle=\bfseries\small,
+  title=#1,
+  boxrule=0.8pt,
+  arc=1.5mm,
+  breakable
+}
+
+\title{\textbf{Master-Audit-Abschlussbericht}\\\Large Mathematische und feldtheoretische Prüfung des Bamberg-$\mathfrak{e}_{8(8)}$-Gravitationsmodells}
+\author{\textbf{Thomas Hoffbauer} \\ \small Bamberg, Deutschland}
+\date{September 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Dieser Abschlussbericht arretiert die vollständige mathematische und operatorielle Überprüfung des Bamberg-$\mathfrak{e}_{8(8)}$-Modells zur Reduktion auf den 4D-Schattenraum. Untersucht werden die topologische Phase (Pfad~A, $0\ \text{DOF}$), die metrisch gelötete Gravitationsphase (Pfad~B, $2\ \text{DOF}$), die spektralen Instabilitäten des $56\text{D}$-Hook-Sektors ($\mathbf{14}_L$) im de-Sitter-Raum sowie das Vorzeichen der induzierten Einstein--Hilbert-Kopplung über die Schwinger--DeWitt-Wärmeleitungskern-Entwicklung ($G_{\mathrm{N}} < 0$).
+\end{abstract}
+
+\vspace{0.5em}
+
+---
+
+\section{Algebraische Basis \& 48er-Zerlegung ($\mathcal{L}_0$)}
+
+Die Grade-0-Subalgebra der $\mathbb{Z}_5$-Gradierung von $\mathfrak{e}_{8(8)}$ lautet:
+\begin{equation}
+\mathcal{L}_0 = \mathfrak{sl}(5)_L \oplus \mathfrak{sl}(5)_R \quad (\dim = 24 + 24 = 48).
+\end{equation}
+Unter der Einbettung des de-Sitter-Gravitationssektors $\mathfrak{so}(4,1) \subset \mathfrak{sl}(5)_L$ zerfällt $\mathcal{L}_0$ linear in:
+\begin{equation}
+\mathcal{L}_0 = \mathbf{10}_{\mathrm{Pal}} \oplus \mathbf{14}_L \oplus \mathbf{24}_R.
+\end{equation}
+
+\begin{itemize}
+    \item \textbf{Dimensionsprüfung:} $10 + 14 + 24 = 48$ (\texttt{PASS}).
+    \item \textbf{Vierbein-Einbettung $e^a \subset A_{\mathrm{Pal}}$:} Rein linear deklariert; kein dynamischer Transfer ohne expliziten Intertwiner.
+    \item \textbf{Bimodul-Sektoren $\mathcal{L}_{1..4}$:} $4 \times 50 = 200$ Komplementrichtungen; Gesamtdimension $\dim(\mathfrak{e}_8) = 48 + 200 = 248$.
+\end{itemize}
+
+---
+
+\section{Phasen-Bifurkation: Pfad A vs. Pfad B}
+
+\begin{table}[h!]
+\centering
+\small
+\begin{tabular}{lp{6.2cm}p{6.2cm}}
+\toprule
+\textbf{Kriterium} & \textbf{Pfad A: Topologische Wirkung} & \textbf{Pfad B: Metrisches Soldering ($e^a$)} \\
+\midrule
+\textbf{Wirkung} & $S_{\mathbb{Z}_5} = \int_{\mathcal{M}_4} \kappa(F \wedge F)$ & $S_{\mathrm{met}} = \int \varepsilon_{abcd} e^a e^b F^{cd} + S_{\mathrm{YM}}[\star_g]$ \\
+\textbf{Metrik $g_{\mu\nu}$} & Nicht vorhanden (reine 4-Form) & Dynamisch induziert über $e_\mu^a$ \\
+\textbf{Diffeomorphismen $\delta_\xi$} & Trivial on-shell ($\delta S \equiv 0$ via $D_A F = 0$) & Schließt über Palatini-Feldgleichungen \\
+\textbf{Freiheitsgrade} & \textbf{0 DOF (keine lokalen Propagatoren)} & \textbf{2 DOF im Gravitonsektor} \\
+\textbf{$\mathbb{Z}_5$-Auswahl} & Exakt erhalten & Gebrochen durch Skala $\ell^{-1}$ \\
+\bottomrule
+\end{tabular}
+\caption{Vergleich der Phasen im Bamberg-Modell.}
+\end{table}
+
+\textbf{Befund:} Pfad~A beschreibt eine topologische Phase ohne Gravitonen. Pfad~B bricht die $\mathbb{Z}_5$-Symmetrie explizit und führt die kosmologische Skala $\ell^{-1}$ ein.
+
+---
+
+\section{Der Palatini-Gravitationssektor $\mathfrak{so}(4,1)$}
+
+Auf dem isolierten 10-dimensionalen Sektor $\mathcal{A}_{\mathrm{Pal}} = \omega^{ab} J_{ab} + \ell^{-1} e^a P_a$ liefert die MacDowell--Mansouri-Wirkung modulo Euler-Dichte:
+\begin{equation}
+S_{\mathrm{MM}}\big|_{\mathfrak{so}(4,1)} = \frac{1}{16\pi G} \int_{\mathcal{M}_4} \varepsilon_{abcd} \left( e^a \wedge e^b \wedge R^{cd} - \frac{1}{2\ell^2} e^a \wedge e^b \wedge e^c \wedge e^d \right).
+\end{equation}
+\begin{itemize}
+    \item Kinetischer Operator: Lichnerowicz-Laplacian auf $\mathrm{dS}_4$.
+    \item Spektrum: $p^2 = 0$, strikt 2 transversale Tensor-Polarisationen ($h_+, h_\times$).
+    \item \textbf{Status:} \texttt{PASS} (isoliert unitär, reproduziert masselose Allgemeine Relativitätstheorie).
+\end{itemize}
+
+---
+
+\section{Der 56D-Hook-Sektor ($\mathbf{4}_{\mathrm{spacetime}} \otimes \mathbf{14}_{\mathrm{int}}$)}
+
+Das Feld $\chi_\mu \in \Omega^1(\mathcal{M}_4, \mathbf{14}_L)$ umfasst 56 Komponenten. Die Stabilitätsanalyse bifurkiert nach der Wahl des Hintergrundzusammenhangs:
+
+\begin{center}
+\begin{tikzpicture}[
+    node distance=1.2cm and 0.8cm,
+    block/.style={rectangle, draw=black, fill=gray!8, text width=6.2cm, font=\small, rounded corners, inner sep=6pt},
+    arrow/.style={-Latex, thick}
+]
+\node[block, align=center, text width=9cm] (root) {\textbf{56D-Feldraum ($\mathbf{4}_{\mathrm{spacetime}} \otimes \mathbf{14}_{\mathrm{int}}$)}};
+\node[block, below left=of root, xshift=0.5cm] (cartan) {\textbf{Cartan-Zweig ($\bar{F}(\bar{A}) = 0$)}\\
+$\bar{A} = \bar{\omega} + \ell^{-1}\bar{e}P$\\
+Ableitungsmischung: $\mathbf{1} \leftrightarrow \mathbf{4} \leftrightarrow \mathbf{9}$\\
+Polynom: $x^3 + 17.75x^2 + 143.75x + 650$\\
+Diskriminante: $\Delta < 0$};
+\node[block, below right=of root, xshift=-0.5cm] (lorentz) {\textbf{Lorentz-Zweig ($R(\bar{\omega}) \neq 0$)}\\
+$\bar{A} = \bar{\omega}$, keine Mischung\\
+7 reelle irreduzible Blöcke\\
+51 Moden mit $m^2 > 0$\\
+5 tachyonische Moden ($m^2 < 0$)};
+
+\node[block, fill=red!10, draw=red!80!black, below=0.8cm of cartan, align=center] (c_fail) {\textbf{FAIL: Lee-Wick-Geister}\\(komplex-konjugierte Pole)};
+\node[block, fill=red!10, draw=red!80!black, below=0.8cm of lorentz, align=center] (l_fail) {\textbf{FAIL: IR-Tachyonen}\\($m^2 = -3\ell^{-2}$ und $-5\ell^{-2}$)};
+
+\draw[arrow] (root) -| (cartan);
+\draw[arrow] (root) -| (lorentz);
+\draw[arrow] (cartan) -- (c_fail);
+\draw[arrow] (lorentz) -- (l_fail);
+\end{tikzpicture}
+\end{center}
+
+---
+
+\section{Bimodul-Entkopplung \& das 14-Hook-Dilemma}
+
+Ein Higgs-VEV $\langle \Phi_R \rangle = v \cdot \operatorname{diag}(1,1,1,1,-4) \in \mathbf{24}_R \subset \mathfrak{sl}(5)_R$ operiert im Kommutanten:
+\begin{equation}
+\mathcal{Z}_{\mathfrak{e}_{8(8)}}(\mathfrak{so}(4,1)) = \mathfrak{sl}(5)_R \implies [\mathfrak{so}(4,1), \langle \Phi_R \rangle] \equiv 0.
+\end{equation}
+\begin{itemize}
+    \item \textbf{Bimoduln $\mathcal{L}_{1..4}$:} Alle 200 Richtungen erhalten $M^2 \ge v^2 > 0$ (\texttt{PASS}).
+    \item \textbf{Hook-Sektor $\mathbf{14}_L$:} Da $[\mathfrak{sl}(5)_R, \mathfrak{sl}(5)_L] \equiv 0$, bleibt $\mathbf{14}_L$ auf Baum-Ebene masselos geschützt.
+    \item \textbf{1-Schleifen-Ward-Schutz:} Für ungebrochenes $\mathfrak{sl}(5)_L$ verbietet die Slavnov--Taylor-Identität eine Proca-Masse ($\delta m_{\mathbf{10}}^2 = \delta m_{\mathbf{14}}^2 = 0$). Als reduzierte Komplementmaterie bleibt $\mathbf{14}_L$ strikt an die de-Sitter-Skala $\ell^{-1}$ gebunden.
+\end{itemize}
+
+---
+
+\section{Sakharov-Positivitäts-Gate ($G_{\mathrm{N}} > 0$)}
+
+In der Schwinger--DeWitt-Wärmeleitungskern-Entwicklung $P = -\nabla^2\mathbf{1} + Q$ lautet die Korrektur zur Planck-Masse:
+\begin{equation}
+\Delta\left(\frac{1}{16\pi G_{\mathrm{N}}}\right) = \sum_i c_i M_i^2.
+\end{equation}
+Für die bosonischen Vektorkomponenten von $\mathfrak{e}_{8(8)}$ ergeben sich die Koeffizienten:
+\begin{itemize}
+    \item Proca-Vektoren (Bimoduln $\mathcal{L}_{1..4}$): $c_{\mathrm{Proca}} = -\frac{1}{4} \implies \Sigma_{\mathrm{Bimodul}} \approx 200 \times \left(-\frac{1}{4}\right) v^2 = -50\,v^2$.
+    \item Gebrochener Eichsektor $\mathbf{24}_R$: $c_{\mathrm{Proca}} = -\frac{1}{4} \implies \Sigma_{\mathbf{24}} \approx 24 \times \left(-\frac{1}{4}\right) M_R^2 = -6\,M_R^2$.
+    \item Homogener Hook-Sektor $\mathbf{14}_L$: $c_{\mathbf{14}} = -\frac{7}{3} \implies \Sigma_{\mathbf{14}} = -\frac{7}{3} m_\chi^2$.
+\end{itemize}
+
+\begin{equation}
+\Sigma_{\mathrm{boson}}(\mathfrak{e}_8) \approx -56\,v^2 < 0 \implies \mathbf{G_{\mathrm{N}} < 0 \quad (\text{Induzierte Antigravitation})}.
+\end{equation}
+
+\subsection{Kompensationsversuche}
+\begin{enumerate}
+    \item \textbf{$\mathcal{N}=8$ Supergravitation:} Das volle Multiplett (70 Skalare, 56 Dilatinos, 8 Gravitinos, 28 Vektoren) liefert netto lediglich $\Sigma_{\mathcal{N}=8} = +5.5\,v^2$. Dies deckt nur ca.~$9.8\%$ des Defizits ab.
+    \item \textbf{Nicht-minimale Kopplung $\xi R \phi^2$:} Erfordert $\xi \le -1.443$ auf den 70 Skalaren. Dies führt auf $\mathrm{dS}_4$ zu $m_{\mathrm{eff}}^2 \le -17.32\ell^{-2}$ und einem explosiven Infrarot-Vakuumzerfall ($\tau \approx 0.17 H^{-1}$) mit konformer Singularität im Einstein-Frame.
+\end{enumerate}
+
+---
+
+\section{Arretiertes Gesamt-Audit-Register}
+
+\begin{auditbox}[Gesamt-Status: Bamberg-$\mathfrak{e}_{8(8)}$-Gravitationsaudit]
+\begin{align*}
+\texttt{PALATINI GRAVITY GATE} &\implies \mathbf{PASS\ (ISO\text{-}\mathfrak{so}(4,1)\ MASSLESS\ GRAVITON,\ 2\ DOF)},\\
+\texttt{PATH A (TOPOLOGICAL)} &\implies \mathbf{CLOSED\ (0\ LOCAL\ DOF,\ NO\ DYNAMICAL\ METRIC)},\\
+\texttt{PATH B (CARTAN 56D)} &\implies \mathbf{FAIL\ (LEE\text{-}WICK\ COMPLEX\ GHOST\ POLES)},\\
+\texttt{PATH B (LORENTZ 56D)} &\implies \mathbf{FAIL\ (5\ TACHYONIC\ IR\ MODES\ ON\ dS_4)},\\
+\texttt{BIMODULE GAP (200)} &\implies \mathbf{PASS\ (M \ge v\ VIA\ \mathfrak{sl}(5)_R\ VEV)},\\
+\texttt{HOOK 14\_L PROTECTION} &\implies \mathbf{FAIL\ (CANNOT\ BE\ GAPPED\ TO\ PLANCK\ SCALE)},\\
+\texttt{SAKHAROV POSITIVITY} &\implies \mathbf{FAIL\ (PURE\ BOSONIC\ } \mathfrak{e}_8 \implies G_{\mathrm{N}} < 0\mathbf{)},\\
+\texttt{N=8 COMPENSATION} &\implies \mathbf{INSUFFICIENT\ (NET\ DEFICIT\ -50.5\,v^2)},\\
+\texttt{NON-MINIMAL RETRIEVAL} &\implies \mathbf{UNPHYSICAL\ (INDUCED\ VACUUM\ RUNAWAY)}.
+\end{align*}
+\end{auditbox}
+
+\end{document}

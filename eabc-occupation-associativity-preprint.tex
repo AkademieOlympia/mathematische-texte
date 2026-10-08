@@ -1,0 +1,366 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.7cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{bm}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\PP}{\mathbb P}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\OO}{\mathbb O}
+\newcommand{\HH}{\mathbb H}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\divisor}{\operatorname{div}}
+
+\title{\textbf{Arithmetic Occupation Spectra and the First Octonionic Nonassociativity Threshold}}
+\author{EABC Research Note}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We introduce a canonical occupation-space representation of natural numbers based solely on unique prime factorization. For
+\[
+N=\prod_{p\in\PP}p^{\nu_p},
+\]
+the associated factor word is
+\[
+W(N)=\sum_p\nu_p e_p,
+\]
+with arithmetic occupation numbers
+\[
+\Omega(N)=\sum_p\nu_p,
+\qquad
+\omega(N)=\#\{p:\nu_p>0\}.
+\]
+The logarithmic diagonal operator has exact spectral value
+\[
+E_\times(N)=\sum_p\nu_p\log p=\log N.
+\]
+Prime powers are therefore repeated occupations of one atomic prime mode, while products of distinct primes are genuine multimode states. We prove that in the sector $\Omega=3$ the three occupation types $p^3$, $p^2q$, and $pqr$ form an exact hierarchy: by alternativity and Artin's theorem, genuine three-generator octonionic nonassociativity is impossible for the first two types and becomes possible for the first time in the squarefree type $pqr$. We then separate the Euclidean tetrahedron volume from the $G_2$ calibration and the octonionic associator defect,
+\[
+V_{\rm tet}=\frac16\sqrt{\det G},\qquad
+\varphi(u,v,w)=\langle uv,w\rangle,\qquad
+\mathfrak t=\frac14\|[u,v,w]\|^2=\det G-\varphi^2.
+\]
+No dynamical prime-orbit realization or physical energy interpretation is assumed.
+\end{abstract}
+
+\section{Factor-word normal form}
+Let
+\[
+\mathfrak M=\bigoplus_{p\in\PP}\NN_0 e_p
+\]
+be the free commutative monoid on the prime labels $e_p$. By unique prime factorization every $N\ge1$ has a unique representation
+\[
+N=\prod_{p\in\PP}p^{\nu_p}
+\]
+with finitely many nonzero $\nu_p$, and hence a canonical factor word
+\begin{equation}
+W(N)=\sum_p\nu_p e_p.
+\end{equation}
+Composite partial products create no new generators. Thus
+\[
+W(pq)=e_p+e_q,\qquad
+W(p^2q)=2e_p+e_q,\qquad
+W(pqr)=e_p+e_q+e_r.
+\]
+
+\begin{definition}[Arithmetic occupation numbers]
+Define
+\[
+\Omega(N)=\sum_p\nu_p,
+\qquad
+\omega(N)=\#\{p:\nu_p>0\}.
+\]
+Thus $\Omega$ counts prime factors with multiplicity, while $\omega$ counts distinct occupied prime modes.
+\end{definition}
+
+\section{Logarithmic occupation spectrum}
+Consider the Hilbert basis $\{|N\rangle:N\in\NN\}$ indexed by factor words. Define the diagonal operator
+\begin{equation}
+H_\times|N\rangle
+=\left(\sum_p\nu_p\log p\right)|N\rangle.
+\end{equation}
+
+\begin{proposition}[Exact arithmetic energy]
+For every $N\in\NN$,
+\[
+E_\times(N)=\log N.
+\]
+Moreover,
+\[
+E_\times(MN)=E_\times(M)+E_\times(N)
+\]
+for all $M,N\in\NN$.
+\end{proposition}
+
+\begin{proof}
+Immediate from
+\[
+\log\left(\prod_pp^{\nu_p}\right)=\sum_p\nu_p\log p
+\]
+and $\log(MN)=\log M+\log N$.
+\end{proof}
+
+The atomic prime-mode energies are therefore
+\[
+\varepsilon_p=\log p,
+\]
+and a general occupation state has the free additive spectral value
+\[
+E_\times(N)=\sum_p\nu_p\varepsilon_p.
+\]
+This is an arithmetic spectral statement, not yet a physical energy claim.
+
+\section{Prime, semiprime, and triple occupation sectors}
+For $\Omega=1$ one has only prime states
+\[
+p:\quad W(p)=e_p,\qquad E_\times(p)=\log p.
+\]
+For $\Omega=2$ there are exactly two occupation types:
+\[
+p^2:\quad W=2e_p,\quad \omega=1,\quad E_\times=2\log p,
+\]
+\[
+pq\ (p\ne q):\quad W=e_p+e_q,\quad \omega=2,\quad E_\times=\log p+\log q.
+\]
+Thus $p^2$ is repeated occupation of one mode, whereas $pq$ is a genuine two-mode state.
+
+For $\Omega=3$ unique factorization yields exactly the partition types $3$, $2+1$, and $1+1+1$:
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+Arithmetic type & Factor word & $\omega(N)$ & $E_\times(N)$ \\
+\midrule
+$p^3$ & $3e_p$ & $1$ & $3\log p$ \\
+$p^2q$, $p\ne q$ & $2e_p+e_q$ & $2$ & $2\log p+\log q$ \\
+$pqr$, pairwise distinct & $e_p+e_q+e_r$ & $3$ & $\log p+\log q+\log r$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+If one uses bosonic occupation notation, these correspond formally to
+\[
+|3_p\rangle,\qquad |2_p,1_q\rangle,\qquad |1_p,1_q,1_r\rangle
+\]
+in $\Sym^3\mathcal H_1$. This symmetric occupation structure must not be identified with exterior powers appearing in Fredholm determinant expansions.
+
+\section{Octonionic realization of occupied modes}
+Assume that each distinct occupied prime mode is assigned a fixed imaginary octonionic direction
+\[
+p\longmapsto u_p\in\operatorname{Im}\OO.
+\]
+No canonicity of this assignment is assumed.
+
+For $x,y,z\in\OO$, define the associator
+\[
+[x,y,z]=(xy)z-x(yz).
+\]
+The octonions are alternative, so
+\[
+[x,x,y]=[y,x,x]=0.
+\]
+Moreover, Artin's theorem implies that every subalgebra generated by two elements of an alternative algebra is associative.
+
+\begin{theorem}[Occupation--associativity threshold]\label{thm:threshold}
+Let $N$ satisfy $\Omega(N)=3$, and assign an octonionic generator to every distinct occupied prime mode. Then:
+\begin{enumerate}[label=(\roman*)]
+\item for $N=p^3$, every local three-word associator vanishes;
+\item for $N=p^2q$ with $p\ne q$, every associator built from the two occupied generators $u_p,u_q$ vanishes;
+\item for $N=pqr$ with $p,q,r$ pairwise distinct, a nonzero associator $[u_p,u_q,u_r]$ becomes possible.
+\end{enumerate}
+Consequently,
+\[
+\omega(N)\le2
+\quad\Longrightarrow\quad
+\text{genuine three-generator nonassociativity is impossible},
+\]
+whereas $\omega(N)=3$ is the first occupation threshold at which it may occur.
+\end{theorem}
+
+\begin{proof}
+For $p^3$, all three entries are the same generator, hence alternativity gives $[u_p,u_p,u_p]=0$. For $p^2q$, at most the two generators $u_p,u_q$ occur. By Artin's theorem the subalgebra generated by them is associative, so every three-word associator formed from these generators vanishes. For $pqr$, three distinct generators occur and Artin's two-generator theorem no longer forces associativity. Thus nonzero associators are possible, though not necessary.
+\end{proof}
+
+\begin{remark}
+The squarefree condition does not imply nonassociativity. Three distinct octonionic generators can still lie in a common associative quaternionic subalgebra. The theorem identifies the first \emph{possible} nonassociative occupation type, not a sufficient arithmetical criterion.
+\end{remark}
+
+\section{$G_2$ geometry of the three-mode configuration}
+Let $u,v,w\in\operatorname{Im}\OO\cong\RR^7$. Write
+\[
+G=(\langle u_i,u_j\rangle)_{i,j=1}^3
+\]
+for their Gram matrix. The Euclidean volume of the simplex $\{0,u,v,w\}$ is
+\begin{equation}
+V_{\rm tet}(u,v,w)=\frac16\sqrt{\det G}.
+\end{equation}
+This is a purely metric invariant and must not be confused with the associator defect.
+
+The standard associative $G_2$ three-form is, up to orientation convention,
+\begin{equation}
+\varphi(u,v,w)=\langle uv,w\rangle.
+\end{equation}
+Define the nonassociativity defect
+\begin{equation}
+\mathfrak t(u,v,w)=\frac14\|[u,v,w]\|^2.
+\end{equation}
+For imaginary octonions one has the identity
+\begin{equation}\label{eq:g2identity}
+\boxed{\mathfrak t=\det G-\varphi^2.}
+\end{equation}
+Equivalently,
+\begin{equation}
+\boxed{\mathfrak t=36V_{\rm tet}^2-\varphi^2.}
+\end{equation}
+Thus $V_{\rm tet}$, $\varphi$, and $\mathfrak t$ are related observables, not three independent invariants.
+
+For an orthonormal triple, $G=I_3$ and hence
+\[
+V_{\rm tet}=\frac16,
+\qquad
+\mathfrak t=1-\varphi^2,
+\qquad
+0\le\mathfrak t\le1.
+\]
+General orthonormal $G_2$ triples need not be binary: intermediate values of $|\varphi|$ and $\mathfrak t$ are possible.
+
+\section{Discrete Fano basis sector}
+Let $e_1,\dots,e_7$ be the seven imaginary basis units in a fixed octonion multiplication table. There are
+\[
+\binom73=35
+\]
+unordered triples of distinct basis directions. Exactly seven are Fano-line triples and twenty-eight are non-Fano triples.
+
+Every basis triple is orthonormal, hence all thirty-five associated Euclidean tetrahedra satisfy
+\[
+V_{\rm tet}=\frac16.
+\]
+The $G_2$ multiplication nevertheless separates them:
+\begin{center}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Type & Number & $\det G$ & $|\varphi|$ & $\mathfrak t$ \\
+\midrule
+Fano line & $7$ & $1$ & $1$ & $0$ \\
+Non-Fano basis triple & $28$ & $1$ & $0$ & $1$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+Thus the thirty-five basis tetrahedra are Euclidean-volume equivalent but octonionically inequivalent. The distinction lies in the calibrated multiplication structure, not in ordinary metric volume.
+
+\section{Configuration invariants versus arithmetic invariants}
+For a fixed triple $(u_p,u_q,u_r)$ the quantities
+\[
+G,\qquad V_{\rm tet},\qquad\varphi,\qquad\mathfrak t
+\]
+are mathematically well-defined. They are therefore configuration invariants.
+
+They are not yet invariants of the bare prime triple $(p,q,r)$. To obtain such an arithmetic invariant one would need a canonical or quotient-stable assignment
+\[
+p\longmapsto u_p
+\]
+or an invariant averaging procedure over a mathematically specified representation fiber. A choice of one four-square representation
+\[
+p=a^2+b^2+c^2+d^2
+\]
+and an arbitrary embedding of those coordinates into $\operatorname{Im}\OO$ does not supply such canonicity.
+
+In particular, quotienting a single unit vector by the full group $G_2=\Aut(\OO)$ does not solve the problem: $G_2$ acts transitively on the unit sphere $S^6\subset\operatorname{Im}\OO$. Relevant $G_2$ invariants arise only for multi-vector configurations.
+
+\section{Prime powers, multimode states, and possible orbit realizations}
+The exact arithmetic identity
+\[
+E_\times(p^k)=k\log p
+\]
+exhibits prime powers as the occupation ladder
+\[
+|1_p\rangle,\ |2_p\rangle,\ |3_p\rangle,\dots
+\]
+along one prime mode. Mixed products activate several modes.
+
+The formula resembles the repetition law
+\[
+\ell(\gamma^k)=k\ell(\gamma)
+\]
+for periodic orbits. However, the existence of a dynamics with
+\[
+p\mapsto\gamma_p,\qquad \ell(\gamma_p)=\log p
+\]
+is a separate realization problem and is not assumed here. In particular, the arithmetic equality $E_\times(p)=\log p$ must not be identified with a physically or dynamically realized primitive period without proof.
+
+Likewise, bosonic occupation sectors
+\[
+\Sym^k\mathcal H_1
+\]
+must not be conflated with Fredholm exterior powers
+\[
+\Lambda^k\mathcal H.
+\]
+Any bridge between these constructions requires an independent theorem.
+
+\section{Epistemic status and open gates}
+The following statements are established within the algebraic framework:
+\begin{itemize}
+\item the canonical factor word $W(N)=\sum_p\nu_pe_p$;
+\item the arithmetic occupation data $\Omega(N)$ and $\omega(N)$;
+\item the exact logarithmic spectrum $E_\times(N)=\log N$;
+\item the complete $\Omega=3$ decomposition into $p^3$, $p^2q$, and $pqr$;
+\item Theorem~\ref{thm:threshold};
+\item for a fixed octonionic triple, the geometric quantities $G$, $V_{\rm tet}$, $\varphi$, and $\mathfrak t$ and identity~\eqref{eq:g2identity};
+\item the discrete $35=7+28$ Fano-basis classification.
+\end{itemize}
+
+The following remain open realization problems:
+\begin{enumerate}
+\item a canonical arithmetic assignment $p\mapsto u_p$;
+\item representation-independence of the octonionic configuration invariants;
+\item a periodic-orbit realization with primitive periods $\log p$;
+\item a physical interpretation of $E_\times$ as measured energy;
+\item any identification between factor-word Fock occupation and Fredholm exterior-power combinatorics.
+\end{enumerate}
+
+\section{Conclusion}
+Unique prime factorization determines a canonical occupation vector, and logarithmic evaluation converts multiplicative arithmetic into an exactly additive spectrum:
+\[
+\boxed{
+N=\prod_pp^{\nu_p}
+\quad\longmapsto\quad
+W(N)=\sum_p\nu_pe_p,
+\qquad
+E_\times(N)=\sum_p\nu_p\log p=\log N.
+}
+\]
+Prime powers encode repeated occupation of one atomic mode, whereas mixed products encode genuine mode multiplicity. At occupation number three, alternativity and Artin's theorem force the $p^3$ and $p^2q$ sectors to remain associative and identify the squarefree $pqr$ sector as the first one in which a genuine octonionic associator can occur.
+
+The resulting structural principle is
+\[
+\boxed{
+\text{arithmetic mode complexity}
+\;\Longrightarrow\;
+\text{first possible algebraic nonassociativity threshold}.
+}
+\]
+This conclusion is entirely algebraic. The remaining task is the arithmetic anchoring of the octonionic configuration, not the internal $G_2$ geometry itself.
+
+\end{document}

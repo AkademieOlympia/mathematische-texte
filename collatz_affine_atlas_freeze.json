@@ -1,0 +1,79 @@
+{
+  "title": "Affine Collatz Operator Atlas \u2014 Freeze",
+  "status": "local mechanism closed; global covering open",
+  "pipeline": "word -> (A,x*) -> R_k(n) -> k* -> Q,D,S",
+  "theses": {
+    "E1_local_channel": "x* in {0,1,2} iff stable channel",
+    "E2_radius": "R_k<=2 iff enter",
+    "E3_scaling": "Q(n)=k*/log2 n typically O(1)-O(15)",
+    "E4_compression": "D(n,k*)=O(1) at entry",
+    "E5_fixpoint": "|x*|_{k*}=O(1); S may spike on transient",
+    "E6_open": "forall n exists k<=C log n: R_k(n)<=2",
+    "E7_no_step_lyapunov": "block/radius/covering, not step V"
+  },
+  "summary": {
+    "Q": {
+      "min": 0.5,
+      "median": 3.9348141685017577,
+      "max": 14.511384332143521,
+      "mean": 4.654412399781984
+    },
+    "S": {
+      "min": 0.0,
+      "median": 48.52843848712264,
+      "max": 23710.170027344306,
+      "mean": 296.7846615953171
+    },
+    "S_over_log": {
+      "min": 0.0,
+      "median": 2.864812278781649,
+      "max": 1208.4349336359771,
+      "mean": 15.419962099735569
+    },
+    "D_star": {
+      "min": -1.0,
+      "median": -0.7639251164913929,
+      "max": -0.6750616259953901,
+      "mean": -0.788905989046851
+    },
+    "abs_x_star": {
+      "min": 0.0,
+      "median": 0.3020458026702596,
+      "max": 0.7142857142857143,
+      "mean": 0.27433987471534294
+    },
+    "R_star": {
+      "min": 1.2857142857142858,
+      "median": 1.6979541973297403,
+      "max": 2.0,
+      "mean": 1.725660125284657
+    },
+    "neg_Lambda_star": {
+      "min": 0.8300749985576878,
+      "median": 16.99698746177873,
+      "max": 52.255624891826585,
+      "mean": 18.901388717689734
+    }
+  },
+  "covering_checks": {
+    "R_star_le_2": 429,
+    "R_prev_ge_2": 429,
+    "D_star_in_[-2,5]": 429,
+    "abs_x_star_le_2": 429,
+    "abs_x_star_le_5": 429,
+    "S_le_1e6": 429,
+    "S_le_1e12": 429
+  },
+  "scripts": [
+    "CollatzFixpointSpectrum.py",
+    "CollatzPathFixpointSpectrum.py",
+    "CollatzFixpointDrift.py",
+    "CollatzBlockSelector.py",
+    "CollatzBlockRadius.py",
+    "CollatzAffineRadiusCover.py",
+    "CollatzRadiusScaling.py",
+    "CollatzAffineAtlasClose.py"
+  ],
+  "open_equivalent_to_collatz": "exists C forall n exists k<=C log2(n): R_k(n)<=2",
+  "not_claimed": "proof of Collatz conjecture"
+}

@@ -1,0 +1,733 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{csquotes}
+\usepackage{bm}
+\geometry{margin=26mm}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,pdftitle={Arithmetisch induzierte Selektionsregeln in diskreten Quaternionenspektren},pdfauthor={Mathematischer und physikalischer Arbeitsentwurf}}
+\pagestyle{fancy}
+\setlength{\headheight}{14pt}
+\fancyhf{}
+\lhead{Arithmetisch induzierte Selektionsregeln}
+\rhead{Hurwitz-Zentralmoden}
+\cfoot{\thepage}
+
+\newtheorem{satz}{Satz}[section]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{proposition}[satz]{Proposition}
+\newtheorem{korollar}[satz]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+\newtheorem{beispiel}[satz]{Beispiel}
+\newtheorem{hypothese}[satz]{Physikalische Hypothese}
+
+\newcommand{\HH}{\mathcal H}
+\newcommand{\SSp}{\mathcal S_p}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\e}{\mathrm e}
+
+\title{\textbf{Arithmetisch induzierte Selektionsregeln in diskreten Quaternionenspektren}\\[2mm]
+\large Physikalische Interpretation des Zentralmodensatzes auf Hurwitz-Primschalen, effektive Phasenkopplungen und interferometrische Signaturen}
+\author{Physikalisch-mathematischer Arbeitsentwurf}
+\date{9. September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Wir untersuchen die physikalische Bedeutung einer diskreten Projektorobservable auf Primnormschalen der Hurwitz-Quaternionen. Für eine ungerade Primzahl $p$ sei $\mathcal S_p=\{q\in\mathcal H:N(q)=p\}$ und $R(a,b,c,d)=(b,a,d,c)$ eine symmetrische Involution des umgebenden reellen Viererraums. Mit $P_\pm=\frac12(I\pm R)$ definieren wir
+\[
+A_\pm(q)=\frac{\|P_\pm q^2\|^2}{p^2},\qquad A_+(q)+A_-(q)=1.
+\]
+Der zentrale Mischungswert $A_+=A_-=1/2$ existiert genau dann, wenn $p\not\equiv7\pmod8$. Für $p\equiv7\pmod8$ ist er arithmetisch verboten. Der zugrunde liegende mathematische Satz verbindet Fermat-Eulers Zwei-Quadrate-Theorem und den Legendre-Gauss-Drei-Quadrate-Satz mit der Spektralgeometrie des Operators $q\mapsto P_\pm q^2$.
+
+Die vorliegende Arbeit fragt, was eine solche Zentralmoden-Obstruktion physikalisch bedeuten wuerde, falls eine reale Quantendynamik ihre internen Zustände nach einer derartigen diskreten Quaternionengeometrie organisiert. Die natuerliche Lesart ist nicht eine Modifikation der de-Broglie-Beziehung $\lambda=h/p$ und auch nicht primaer eine neue Kraft, sondern eine arithmetisch induzierte Selektionsregel fuer die Mischung zweier komplementaerer Freiheitsgrade. Wir formulieren eine minimale effektive Kopplung, in der $A(q)$ eine Phase gewichtet, und zeigen, dass das beobachtbare Interferenzsignal die charakteristische Funktion eines diskreten Spektralmasses ist. Zentralmoden, spektrale Luecken, Linienverbreiterung, Kontrastverlust und Beat-Strukturen erscheinen damit als verschiedene Manifestationen derselben Verteilung $\rho_{p,R}$. Eine moegliche mod-12-Klassifikation wird durch die unabhaengige mod-8-Struktur zu modulo $24$ verfeinert. Abschliessend werden ein differentieller Solenoidaufbau und Atominterferometrie als Testumgebungen diskutiert. Die mathematischen Resultate werden strikt von der noch hypothetischen physikalischen Kopplung getrennt.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Motivation: Von einer arithmetischen Luecke zu einer physikalischen Selektionsregel}
+In einer kontinuierlichen klassischen Beschreibung kann eine normierte Mischungsvariable prinzipiell jeden Wert im Intervall $[0,1]$ annehmen. In einem diskreten Quantensystem ist dies nicht zwingend der Fall. Schon die elementare Quantisierung lehrt, dass ein klassisch kontinuierlicher Zustandsraum nach der Einfuehrung einer inneren Algebra nur noch eine diskrete Menge zulaessiger Spektralwerte tragen kann. Der hier betrachtete Quaternionenoperator liefert ein besonders scharfes Beispiel: Auf einer endlichen Hurwitz-Normschale ist die dimensionslose Projektorintensitaet $A_+(q)$ diskret; fuer eine ganze arithmetische Klasse von Primnormen fehlt sogar der besonders symmetrische Wert $1/2$ vollstaendig.
+
+Diese Beobachtung legt eine physikalische Lesart nahe, die ueber eine blosse Analogie hinausgeht, ohne bereits eine neue Naturkraft zu postulieren. Falls zwei komplementaere Freiheitsgrade eines realen Systems durch die Projektoren $P_+$ und $P_-$ repraesentiert werden und ein interner Zustand $q$ die Aufteilung zwischen ihnen bestimmt, dann bezeichnet
+\[
+A_+(q)=A_-(q)=\frac12
+\]
+einen exakt ausbalancierten Mischungszustand. Das Fehlen dieses Wertes ist dann eine Selektionsregel: Das System darf sich dem symmetrischen Punkt annaehren, kann ihn aber fuer die betroffene Normklasse nicht exakt realisieren.
+
+Die zentrale physikalische Idee dieser Arbeit lautet deshalb:
+\begin{quote}
+Eine arithmetische Obstruktion im internen Gitter kann sich in einer effektiven Quantentheorie als fehlender Mischungs-, Resonanz- oder Koharenzkanal manifestieren.
+\end{quote}
+
+Diese Aussage ist bewusst konditional. Der mathematische Satz ueber die Hurwitz-Schalen ist eigenstaendig. Ob und wie eine reale atomare oder feldtheoretische Dynamik diesen internen Zustandsraum realisiert, ist eine zweite, experimentell zu entscheidende Frage.
+
+\section{Mathematischer Kern}
+\subsection{Hurwitz-Primschalen}
+Wir arbeiten in der rationalen Hamilton-Quaternionenalgebra
+\[
+\mathbb H(\QQ)=\QQ\oplus\QQ i\oplus\QQ j\oplus\QQ k,
+\qquad i^2=j^2=k^2=ijk=-1.
+\]
+Fuer
+\[
+q=a+bi+cj+dk
+\]
+ist die reduzierte Norm
+\[
+N(q)=a^2+b^2+c^2+d^2.
+\]
+Die Hurwitz-Ordnung $\mathcal H$ besteht aus den ganzzahligen Quaternionen sowie den Quaternionen, deren vier Koordinaten simultan echt halbzahlig sind. Fuer eine ungerade Primzahl $p$ definieren wir die Primnormschale
+\[
+\mathcal S_p=\{q\in\mathcal H:N(q)=p\}.
+\]
+Klassisch gilt
+\[
+|\mathcal S_p|=24(p+1),
+\]
+wobei alle Hurwitzpunkte einschliesslich Vorzeichen und Assoziierter gezaehlt werden.
+
+\subsection{Die Involution und ihre Projektoren}
+Auf $\RR^4$ fixieren wir die symmetrische Involution
+\[
+R(a,b,c,d)=(b,a,d,c),
+\]
+mit Matrix
+\[
+R=
+\begin{pmatrix}
+0&1&0&0\\
+1&0&0&0\\
+0&0&0&1\\
+0&0&1&0
+\end{pmatrix}.
+\]
+Es gilt
+\[
+R^2=I,\qquad R^T=R,\qquad \tr R=0.
+\]
+Damit sind
+\[
+P_+=\frac12(I+R),\qquad P_-=\frac12(I-R)
+\]
+orthogonale komplementaere Projektoren auf zwei zweidimensionale Unterraeume.
+
+\begin{definition}[Projektorintensitaet]
+Fuer $q\in\mathcal S_p$ definieren wir
+\[
+A_\pm(q)=\frac{\|P_\pm q^2\|^2}{p^2}.
+\]
+Das diskrete Spektrum sei
+\[
+\Spec_R(p)=\{A_+(q):q\in\mathcal S_p\}.
+\]
+Die Multiplizitaet von $x$ ist
+\[
+m_p(x)=\#\{q\in\mathcal S_p:A_+(q)=x\}.
+\]
+\end{definition}
+
+Da $P_+$ und $P_-$ orthogonal und komplementaer sind und $N(q^2)=N(q)^2=p^2$, folgt identisch
+\[
+\boxed{A_+(q)+A_-(q)=1.}
+\]
+
+\subsection{Chiralitaetsobservable}
+Fuer $q=a+bi+cj+dk$ und $N(q)=p$ ist
+\[
+q^2=(2a^2-p)+2ab\,i+2ac\,j+2ad\,k.
+\]
+Eine direkte Rechnung liefert
+\[
+\boxed{
+\chi_R(q):=A_+(q)-A_-(q)
+=\frac{4a\left[b(2a^2-p)+2acd\right]}{p^2}.}
+\]
+Damit
+\[
+A_\pm(q)=\frac{1\pm\chi_R(q)}2.
+\]
+Der zentrale Wert ist daher aequivalent zu
+\[
+A_+(q)=A_-(q)=\frac12
+\quad\Longleftrightarrow\quad
+\chi_R(q)=0.
+\]
+Wir nennen einen solchen Zustand eine \emph{Zentralmode}.
+
+\subsection{Zentralmodensatz}
+Der mathematische Hauptbefund lautet:
+
+\begin{satz}[Zentralmodensatz fuer Hurwitz-Primschalen]\label{thm:center}
+Sei $p$ eine ungerade Primzahl. Dann gilt
+\[
+\boxed{
+\frac12\in\Spec_R(p)
+\quad\Longleftrightarrow\quad
+p\not\equiv7\pmod8.}
+\]
+Aequivalent:
+\[
+\boxed{m_p(1/2)=0\quad\Longleftrightarrow\quad p\equiv7\pmod8.}
+\]
+\end{satz}
+
+Die Existenzseite fuer $p\equiv1,5\pmod8$ folgt konstruktiv aus dem Zwei-Quadrate-Satz: Aus $p=u^2+v^2$ liefert
+\[
+q=u+vj
+\]
+eine Zentralmode, weil $b=d=0$. Fuer $p\equiv3\pmod8$ liefert der Drei-Quadrate-Satz eine Darstellung
+\[
+p=b^2+c^2+d^2,
+\]
+und damit eine Zentralmode mit $a=0$.
+
+Fuer $p\equiv7\pmod8$ ist der Zweig $a=0$ durch die Drei-Quadrate-Obstruktion ausgeschlossen. Im Zweig $a\neq0$ kann die Zentralbedingung als
+\[
+X^2+Y^2=p^2
+\]
+mit
+\[
+X=2a^2-p+2ab,
+\qquad
+Y=2a(c+d)
+\]
+geschrieben werden. Weil dann $p\equiv3\pmod4$ und $-1$ modulo $p$ kein Quadrat ist, muessen $p\mid X$ und $p\mid Y$ gelten; es verbleiben nur $(X,Y)=(\pm p,0),(0,\pm p)$. Die Ganzzahl- und Halbzahlfaelle der Hurwitz-Koordinaten kollidieren in diesen degenerierten Faellen mit Paritaet und Normschranken. Damit ist die Zentralmode auf der gesamten Schale ausgeschlossen.
+
+\section{Was der Satz physikalisch bedeuten kann}
+\subsection{Zwei komplementaere Freiheitsgrade}
+Die mathematische Konstruktion legt eine allgemeine physikalische Interpretation nahe. Man denke an einen internen Zustandsraum, der in zwei komplementaere Sektoren zerfaellt,
+\[
+\mathcal V=\mathcal V_+\oplus\mathcal V_-,
+\]
+mit Projektoren $P_+$ und $P_-$. Diese Sektoren koennen je nach konkreter Realisierung beispielsweise symmetrische und antisymmetrische Randzustaende, zwei Paritaetskanaele, zwei interne Moden oder zwei gekoppelte Teilraeume eines effektiven Hamiltonoperators repraesentieren.
+
+Die Intensitaeten
+\[
+A_+(q),\qquad A_-(q)=1-A_+(q)
+\]
+geben dann den Anteil des quadrierten internen Zustands $q^2$ in den beiden Sektoren an. Der Zustand
+\[
+A_+=A_-=\frac12
+\]
+ist der exakt symmetrische Mischungszustand. Der Zentralmodensatz besagt, dass dieser Punkt fuer $p\equiv7\pmod8$ nicht zum diskreten Zustandsraum gehoert.
+
+Physikalisch ist dies am ehesten mit einer \emph{Selektionsregel} zu vergleichen. In Atomen sind bestimmte Uebergaenge wegen Drehimpuls, Paritaet oder Symmetrie verboten, obwohl sie klassisch denkbar waeren. Hier wuerde der Ausschluss nicht aus einer kontinuierlichen Lie-Symmetrie stammen, sondern aus der arithmetischen Struktur einer diskreten Normschale.
+
+\subsection{Arithmetisch induzierte Quantisierung einer Mischungsvariablen}
+Im kontinuierlichen Modell waere
+\[
+A\in[0,1].
+\]
+Auf einer Hurwitz-Schale ist dagegen
+\[
+A\in\Spec_R(p),
+\]
+eine endliche Menge rationaler Werte. Die interne Mischung ist also quantisiert. Der Zentralmodensatz sagt darueber hinaus, dass die Quantisierung fuer eine Restklasse eine Luecke an einem besonders ausgezeichneten Punkt erzeugt.
+
+Diese Struktur kann man als
+\[
+\boxed{\text{arithmetisch induzierte Quantisierung einer Mischungsvariablen}}
+\]
+lesen. Entscheidend ist, dass die Obstruktion ohne frei justierbaren Parameter auftritt. Sie folgt allein aus der Normklasse und dem festgelegten Operator $R$.
+
+\subsection{Keine notwendige globale Chiralitaet}
+Ueber die vollstaendige symmetrische Schale gilt
+\[
+\langle A_+\rangle=\langle A_-\rangle=\frac12.
+\]
+Der Mittelwert traegt daher keine globale Chiralitaets-Asymmetrie. Die physikalische Information liegt nicht in einer makroskopischen Verschiebung, sondern in der Form der diskreten Verteilung. Das verschiebt die Aufmerksamkeit von Einpunkt-Observablen zu Spektralstatistiken, Linienformen und Korrelationen.
+
+\section{Das Spektralmass als eigentliche Observable}
+\begin{definition}[Diskretes Spektralmass]
+Fuer eine gleichgewichtete Normschale definieren wir
+\[
+\rho_{p,R}(A)
+=\frac1{|\mathcal S_p|}\sum_{q\in\mathcal S_p}
+\delta\bigl(A-A_+(q)\bigr).
+\]
+Allgemeiner kann eine physikalische Praeparation Gewichte $w_q\ge0$ mit $\sum_qw_q=1$ erzeugen:
+\[
+\rho^{(w)}_{p,R}(A)
+=\sum_qw_q\,\delta\bigl(A-A_+(q)\bigr).
+\]
+\end{definition}
+
+Die Verteilung enthaelt wesentlich mehr Information als Mittelwert und Varianz. Zwei Normschalen koennen denselben Mittelwert $1/2$ besitzen und dennoch voellig unterschiedliche Multiplizitaeten, Zentralmoden und Randhaeufungen aufweisen.
+
+Fuer $p\equiv7\pmod8$ gilt nach Satz \ref{thm:center}
+\[
+\rho_{p,R}(\{1/2\})=0.
+\]
+Fuer die uebrigen ungeraden Primklassen ist dieser diskrete Atomanteil positiv. Das ist die praezise mathematische Bedeutung der \emph{Zentralmoden-Luecke}.
+
+\section{Minimaler effektiver Quantendynamik-Ansatz}
+\subsection{Die de-Broglie-Beziehung bleibt unveraendert}
+Die physikalisch konservativste Einbettung veraendert nicht
+\[
+\lambda_{\rm dB}=\frac{h}{p_{\rm phys}}.
+\]
+Stattdessen wird angenommen, dass der interne Zustand $q$ eine zusaetzliche Phase oder einen kleinen Impulskorrekturterm erzeugt. Ein minimaler Ansatz lautet
+\[
+\Delta p(q)=\epsilon\,p_0\,F(A(q)),
+\]
+wobei $\epsilon$ dimensionslos, $p_0$ eine physikalische Impulsskala und $F$ eine dimensionslose Kopplungsfunktion ist. Die einfachste lineare Wahl ist $F(A)=A$.
+
+Fuer eine Wechselwirkungsstrecke $L$ folgt dann
+\[
+\Delta\phi(q)=\frac{L\,\Delta p(q)}{\hbar}.
+\]
+Mit $p_0=p_{\rm phys}$ erhaelt man
+\[
+\boxed{
+\Delta\phi(q)=\kappa A(q),
+\qquad
+\kappa:=\epsilon\frac{p_{\rm phys}L}{\hbar}.}
+\]
+Die Standardphysik wird im Grenzfall $\epsilon=0$ exakt wiederhergestellt.
+
+\subsection{Effektiver Hamiltonoperator}
+Eine allgemeinere Formulierung verwendet einen internen Hilbertraum $\mathcal H_{\rm int}$ und einen Hamiltonoperator
+\[
+H=H_0+H_{\rm int}+\epsilon V_{\rm cpl}.
+\]
+Eine diagonal wirkende Modellkopplung kann etwa
+\[
+V_{\rm cpl}|q\rangle=E_*A(q)|q\rangle
+\]
+sein. Fuer eine Wechselwirkungszeit $T$ entsteht
+\[
+\Delta\phi_q=\frac{\epsilon E_*T}{\hbar}A(q).
+\]
+Der projektorgeometrische Inhalt ist damit von der speziellen physikalischen Realisierung getrennt: Die Mathematik liefert $A(q)$; die Dynamik muss $E_*$, $T$ und die Praeparationsgewichte bestimmen.
+
+\section{Interferenz als Fouriertransformierte des Spektralmasses}
+Nehmen wir einen koharenten Strahl mit internen Zustaenden $q$ und Gewichten $w_q$. Nach einer Kopplungsphase $\kappa A(q)$ ist die komplexe Koharenzamplitude
+\[
+\boxed{
+\mathcal C_p(\kappa)
+=\sum_{q\in\mathcal S_p}w_q\,\e^{\ii\kappa A(q)}.}
+\]
+Fuer gleichgewichtete Schalen
+\[
+\mathcal C_p(\kappa)
+=\frac1{|\mathcal S_p|}
+\sum_{q\in\mathcal S_p}\e^{\ii\kappa A(q)}.
+\]
+Dies ist exakt die charakteristische Funktion des diskreten Spektralmasses:
+\[
+\mathcal C_p(\kappa)
+=\int_0^1\e^{\ii\kappa A}\,\rho_{p,R}(\dd A).
+\]
+
+Damit erhalten die zuvor intuitiv genannten Signaturen einen gemeinsamen mathematischen Ursprung:
+\begin{itemize}[leftmargin=1.7em]
+\item Die Phase von $\mathcal C_p$ beschreibt die mittlere interferometrische Verschiebung.
+\item $|\mathcal C_p|$ beschreibt den verbleibenden Kontrast bzw. die Koharenz.
+\item Mehrere stark besetzte Spektralwerte erzeugen Beat-Strukturen als Funktion von $\kappa$.
+\item Eine breite Verteilung von $A$ kann dephasieren und den Kontrast reduzieren.
+\item Ein diskreter Atomanteil bei $A=1/2$ erzeugt den Term
+\[
+\frac{m_p(1/2)}{|\mathcal S_p|}\e^{\ii\kappa/2}.
+\]
+\item Fuer $p\equiv7\pmod8$ fehlt dieser Term exakt.
+\end{itemize}
+
+Diese Formulierung ist physikalisch wesentlich praeziser als die Aussage, die Zentralmoden-Luecke muesse unmittelbar als sichtbares Loch in einem Interferenzbild auftreten. Die konkrete Linienform haengt von Praeparation, Kopplung, Aufloesung und Standard-Systematiken ab; arithmetisch festgelegt ist nur die interne Verteilung.
+
+\section{Kleine Kopplung: Mittelwert, Varianz und Dekoharenz}
+Fuer kleine $\kappa$ laesst sich die charakteristische Funktion entwickeln:
+\[
+\mathcal C_p(\kappa)
+=1+\ii\kappa\langle A\rangle
+-\frac{\kappa^2}{2}\langle A^2\rangle+O(\kappa^3).
+\]
+Da fuer die vollstaendige symmetrische Schale
+\[
+\langle A\rangle=\frac12
+\]
+gilt, ist der lineare Mittelwert universell. Die erste schalenabhaengige Information tritt in der Varianz
+\[
+\operatorname{Var}_p(A)=\langle A^2\rangle-\frac14
+\]
+und in hoeheren Kumulanten auf.
+
+Schreibt man die Kumulantenentwicklung
+\[
+\log\mathcal C_p(\kappa)
+=\sum_{n\ge1}\frac{(\ii\kappa)^n}{n!}\kappa_n(A),
+\]
+so ist die zweite Kumulante die Varianz. Im schwachen Kopplungsregime folgt approximativ
+\[
+|\mathcal C_p(\kappa)|
+\simeq
+\exp\!\left[-\frac{\kappa^2}{2}\operatorname{Var}_p(A)\right]
+\]
+sofern hoehere Kumulanten vernachlaessigbar sind. Die natuerliche experimentelle Signatur waere dann nicht zwingend ein Mittelwertshift, sondern eine schalenabhaengige Kontrastkurve.
+
+\section{Eine arithmetische Analogie zu verbotenen Uebergaengen und Bandluecken}
+Der Zentralmodensatz erinnert strukturell an mehrere bekannte Mechanismen der Physik, ohne mit ihnen identisch zu sein.
+
+\subsection{Selektionsregeln}
+Atomare Selektionsregeln bestimmen, welche Matrixelemente aufgrund von Symmetrie verschwinden. Hier verschwindet nicht ein Uebergangsmatrixelement; vielmehr fehlt ein interner Mischungswert aus dem diskreten Zustandsraum. Gemeinsam ist beiden Faellen, dass eine scheinbar plausible klassische Konfiguration durch eine innere Struktur verboten wird.
+
+\subsection{Avoided crossings}
+Bei einem avoided crossing verhindert eine Kopplung, dass zwei Energieniveaus sich exakt kreuzen. Die Zentralmoden-Luecke hat eine aehnliche Geometrie im Raum einer Mischungsvariable: Der Punkt $A=1/2$ kann fuer bestimmte Schalen fehlen. Die Ursache ist jedoch nicht dynamische Niveauabstossung, sondern Diophantische Nichtdarstellbarkeit.
+
+\subsection{Bandluecken und topologische Luecken}
+In Festkoerpern bezeichnet eine Bandluecke einen Energiebereich ohne Eigenzustaende. Hier liegt eine Luecke im diskreten Spektrum einer Projektorintensitaet. Ob sie im strengen topologischen Sinn geschuetzt ist, erfordert eine zusaetzliche Familie von Operatoren und eine Stabilitaetsanalyse unter zulassigen Deformationen. Der Begriff \enquote{topologische Luecke} sollte daher nur als Analogie, nicht als bewiesene Klassifikation verwendet werden.
+
+\section{Die Rolle der 2-adischen Struktur}
+Die Zentralmode wird exakt durch die Restklasse modulo $8$ kontrolliert. Dies kann man als lokale Information an der Primstelle $2$ lesen. Fuer ungerade Primzahlen sind
+\[
+p\equiv1,3,5,7\pmod8
+\]
+die vier moeglichen Klassen, und die Klasse $7$ ist ausgezeichnet.
+
+Die physikalisch interessante Hypothese ist nicht, dass der makroskopische Raum selbst $2$-adisch sein muesse. Zurueckhaltender lautet sie:
+\begin{quote}
+Eine diskrete interne Quantisierung kann lokale arithmetische Information an der Primstelle $2$ in beobachtbare Selektionsregeln uebersetzen.
+\end{quote}
+
+Das waere konzeptionell verwandt mit dem Auftreten von $\mathbb Z_2$-Strukturen in Paritaet, Kramers-Degenerationen oder topologischen Klassifikationen, unterscheidet sich jedoch in der Quelle: Die Zweierstruktur entsteht hier aus quadratischen Darstellungsobstruktionen in einer arithmetischen Ordnung.
+
+\section{Von modulo 12 zu modulo 24}
+In einem zusaetzlichen EABC-Toy-Kontext wird eine grobe Primklassifikation modulo $12$ verwendet. Diese Klassifikation ist fuer den Zentralmodensatz nicht notwendig. Kombiniert man sie jedoch mit der unabhaengigen mod-8-Struktur, ist modulo $24$ der kleinste gemeinsame endliche Rahmen:
+\[
+\operatorname{lcm}(12,8)=24.
+\]
+
+Insbesondere zerfaellt die grobe Klasse
+\[
+p\equiv7\pmod{12}
+\]
+in
+\[
+p\equiv7\pmod{24}
+\quad\text{und}\quad
+p\equiv19\pmod{24}.
+\]
+Die erste ist $7\pmod8$ und besitzt keine Zentralmode; die zweite ist $3\pmod8$ und besitzt eine Zentralmode. Damit kann dieselbe mod-12-Familie intern zwei verschiedene Projektorspektraltypen tragen.
+
+Physikalisch liesse sich dies als Feinstruktur einer groberen diskreten Spezies lesen: Die mod-12-Klasse bezeichnet den groben Sektor, die zusaetzliche 2-adische Information entscheidet ueber die Existenz eines symmetrischen Mischungszustands. Diese Interpretation ist mathematisch sauber als Klassifikationsverfeinerung, aber noch keine etablierte Teilchen- oder Feldphysik.
+
+\section{Solenoid als geometrische Testumgebung}
+\subsection{Warum ein endliches Solenoid interessant ist}
+Ein endliches Solenoid besitzt zwei raeumlich klar ausgezeichnete Endbereiche und damit eine natuerliche Zweikanal-Geometrie. Die elektromagnetischen Rand- und Streufelder sind Standardphysik. Ein symmetrischer und antisymmetrischer Randkanal kann formal als
+\[
+|+\rangle=\frac{|A\rangle+|B\rangle}{\sqrt2},
+\qquad
+|-\rangle=\frac{|A\rangle-|B\rangle}{\sqrt2}
+\]
+geschrieben werden. Dies motiviert Projektoren auf zwei komplementaere Sektoren, ohne bereits zu behaupten, dass der konkrete Quaternionenoperator $R$ durch Maxwelltheorie erzwungen wird.
+
+Die fruehere heuristische Gewichtung durch zwei Zahlen $c$ und $1-c$ wird damit durch eine saubere Projektorstruktur ersetzt. Die Komplementaritaet
+\[
+P_++P_-=I
+\]
+ist operatoralgebraisch exakt; die physikalische Identifikation mit den beiden Enden bleibt eine Modellhypothese.
+
+\subsection{Differentieller Randtest}
+Seien $\phi_A$ und $\phi_B$ interferometrisch gemessene Phasen in den beiden Randzonen. Dann sind die natuerlichen Kombinationen
+\[
+\phi_+=\frac{\phi_A+\phi_B}{2},
+\qquad
+\phi_-=\frac{\phi_A-\phi_B}{2}.
+\]
+Standardmagnetische Effekte muessen aus Feldstaerke, Gradienten, Zeemanstruktur und Trajektorien modelliert werden. Ein hypothetischer EABC-Restterm waere danach
+\[
+\Delta\phi_{\rm res}
+=\phi_{\rm obs}-\phi_{\rm EM/atom}.
+\]
+Das mathematische Modell wuerde nicht einfach einen konstanten Offset vorhersagen, sondern eine Verteilung von Phasenantworten gemaess $\rho_{p,R}$.
+
+\section{Atominterferometrie als denkbare Messplattform}
+Materiewelleninterferometrie ist besonders geeignet, kleine Phasenunterschiede in messbare Intensitaetsunterschiede zu ueberfuehren. Fuer ein Atom mit Impuls $p_{\rm phys}$ bleibt
+\[
+\lambda_{\rm dB}=\frac{h}{p_{\rm phys}}
+\]
+die Standardrelation. Eine EABC-artige Struktur wuerde nicht die de-Broglie-Konstante aendern, sondern die Phase eines internen oder randgekoppelten Kanals modulieren.
+
+Ein idealisierter Versuch koennte zwei Interferometerarme verwenden: einen Referenzarm ohne Randfeldkopplung und einen Messarm in einer kontrollierten Solenoid-Randzone. Die experimentelle Herausforderung besteht darin, die bekannten magnetischen und atomaren Beitraege so genau zu modellieren, dass ein residualer, reproduzierbarer spektraler Effekt isoliert werden kann.
+
+Wenn verschiedene interne Zustandsklassen unterschiedlich gewichtet werden koennen, waere ein differenzieller Vergleich besonders aussagekraeftig. Entscheidend waere nicht, ob ein einzelner Messwert exakt $A=1/2$ entspricht, sondern ob die gemessene Koharenzfunktion als Funktion einer steuerbaren Kopplungsstaerke $\kappa$ mit der diskreten charakteristischen Funktion $\mathcal C_p(\kappa)$ kompatibel ist.
+
+\section{Isotopen- und Schalenvergleich}
+Ein Isotopenvergleich kann Standardmasseneffekte differenziell unterdruecken, sofern eine konkrete physikalische Zuordnung zwischen Isotop und internem diskreten Zustand existiert. Formal seien zwei Praeparationen $I_1$ und $I_2$ mit Standardphasen $\phi^{(0)}_1,\phi^{(0)}_2$ und hypothetischen EABC-Beitraegen $\Delta\phi_1,\Delta\phi_2$ gegeben. Dann kann eine Kombination
+\[
+D=\phi_1-\alpha\phi_2
+\]
+so gewaehlt werden, dass ein dominanter bekannter Masseneffekt kompensiert wird.
+
+Wesentlich ist jedoch: Die Mathematik allein identifiziert weder $^6\mathrm{Li}$ noch $^7\mathrm{Li}$ mit einer bestimmten Hurwitz-Primnorm. Eine solche Zuordnung muesste aus einem unabhaengigen baryonischen oder atomaren Modell folgen. Ohne sie ist die Normschale ein mathematischer interner Index, nicht die Massenzahl des Isotops.
+
+\section{Feldtheoretische Minimalform}
+Die physikalische Idee kann formal in eine effektive Feldtheorie uebersetzt werden. Seien $\Psi_+$ und $\Psi_-$ zwei komplementaere Felder oder Moden. Eine minimale diagonal gewichtete Wechselwirkung lautet
+\[
+\mathcal L_{\rm int}
+=-g\left[A_+(q)|\Psi_+|^2+A_-(q)|\Psi_-|^2\right].
+\]
+Wegen
+\[
+A_++A_-=1
+\]
+bleibt die Gesamtgewichtung konstant, waehrend ihre Verteilung auf die beiden Sektoren diskret variiert.
+
+Die Zentralmode entspricht
+\[
+A_+=A_-=\frac12,
+\]
+also einem exakt symmetrischen Kopplungspunkt. Fuer $p\equiv7\pmod8$ ist dieser interne Kopplungspunkt nicht zulaessig. In einem effektiven Hamiltonoperator koennte sich dies als fehlende Symmetriestelle, fehlender Resonanzkanal oder diskrete Aufspaltung manifestieren.
+
+Diese Lagrange-Dichte ist keine Ableitung aus dem Standardmodell. Sie ist eine minimale mathematische Verpackung der Idee, die eine spaetere renormierbare, gauge-invariante oder mikroskopische Theorie erst ersetzen muesste.
+
+\section{Was der Satz nicht bedeutet}
+Die arithmetische Eleganz des Resultats darf nicht mit einer physikalischen Identifikation verwechselt werden. Insbesondere folgt aus dem Zentralmodensatz allein nicht:
+\begin{itemize}[leftmargin=1.7em]
+\item dass Photonen und Gravitationswellen die beiden Projektorsektoren $P_\pm$ sind;
+\item dass Primzahlen unmittelbar Teilchenmassen oder Isotope erzeugen;
+\item dass ein Solenoid eine neue gravitative Kraft oder einen nicht-Maxwellschen Impulsuebertrag erzeugt;
+\item dass der reale Raum oder die Raumzeit $2$-adisch ist;
+\item dass eine fehlende mathematische Zentralmode automatisch als makroskopisches Loch in einem Interferenzbild erscheint.
+\end{itemize}
+
+Der robuste Inhalt lautet stattdessen: \emph{Wenn} ein reales Quantensystem einen internen Zustandsraum realisiert, dessen relevante Observable durch $A_\pm(q)$ beschrieben wird, \emph{dann} sind seine Mischungs- und Interferenzsignaturen arithmetisch selektiert.
+
+\section{Falsifizierbare Form der physikalischen Hypothese}
+Eine physikalisch brauchbare Version des Modells sollte eine Nullhypothese und eine alternative Hypothese besitzen. Sei
+\[
+\phi_{\rm obs}
+=\phi_{\rm known}+\phi_{\rm new}.
+\]
+Die Standardterme $\phi_{\rm known}$ koennen beispielsweise kinetische, Zeeman-, Stark-, gravitative und geometrische Phasen enthalten. Die neue Komponente sei
+\[
+\phi_{\rm new}(q)=\kappa A(q).
+\]
+Dann lautet
+\[
+H_0:\ \kappa=0,
+\]
+waehrend
+\[
+H_1:\ \kappa\neq0
+\]
+und die Verteilung der residualen Phasen durch $\rho_{p,R}$ strukturiert ist.
+
+Eine besonders starke Signatur waere nicht bloss ein statistisch signifikanter Rest, sondern ein Rest, der bei Aenderung der internen Schalenklasse, der Projektororientierung oder der Praeparation genau nach der vorher festgelegten Spektralstruktur transformiert. Damit wird ein nachtraeglicher Parameterfit vermieden.
+
+\section{Konkrete experimentelle Signaturen}
+Unter einer realen Kopplung sind mehrere Klassen von Observablen denkbar:
+
+\subsection{Kontrastkurve}
+Die Sichtbarkeit eines Interferenzmusters ist proportional zu
+\[
+V(\kappa)\propto|\mathcal C_p(\kappa)|.
+\]
+Verschiedene Normschalen koennen damit unterschiedliche, reproduzierbare Kontrastoszillationen besitzen.
+
+\subsection{Beat-Spektrum}
+Ist
+\[
+\rho_{p,R}=\sum_j w_j\delta(A-A_j),
+\]
+dann
+\[
+\mathcal C_p(\kappa)=\sum_jw_j\e^{\ii\kappa A_j}.
+\]
+Die Differenzen $A_i-A_j$ erzeugen charakteristische Frequenzen im Parameter $\kappa$. Ein Fourierbild von $\mathcal C_p$ koennte das diskrete Spektrum rekonstruieren.
+
+\subsection{Zentralmodenbeitrag}
+Bei $m_p(1/2)>0$ besitzt die Koharenz den Term
+\[
+w_{1/2}\e^{\ii\kappa/2}.
+\]
+Fuer $p\equiv7\pmod8$ ist $w_{1/2}=0$. Dieser Unterschied ist arithmetisch exakt, auch wenn seine experimentelle Sichtbarkeit von der Kopplungsstaerke abhaengt.
+
+\subsection{Hoehere Kumulanten}
+Wenn der Mittelwert wegen Symmetrie universell ist, koennen Varianz, Schiefe und hoehere Kumulanten die Schaleninformation tragen. Ein experimenteller Scan ueber $\kappa$ ist deshalb staerker als eine Einzelmessung.
+
+\section{Warum die physikalische Interpretation trotz ihrer Spekulation interessant ist}
+Das Modell verbindet drei Ebenen, die in der Physik haeufig getrennt auftreten:
+\begin{enumerate}[leftmargin=1.8em]
+\item \textbf{Diskrete interne Geometrie:} Die Hurwitz-Schale liefert eine endliche Menge algebraischer Zustaende.
+\item \textbf{Projektive Messung:} $P_\pm$ uebersetzen die Geometrie in eine komplementaere Intensitaetsvariable.
+\item \textbf{Arithmetische Selektionsregel:} Klassische Quadratesaetze entscheiden, ob der exakt symmetrische Mischungswert existiert.
+\end{enumerate}
+
+Diese Kombination ist konzeptionell neuartig, weil die Selektionsregel nicht aus einem frei gewaehlteten Potential, sondern aus Diophantischer Darstellbarkeit stammt. Die physikalische Frage ist damit sehr scharf: Gibt es ein reales System, dessen interne oder effektive Dynamik diese konkrete Projektorobservable abbildet?
+
+\section{Forschungsprogramm}
+Ein ernsthaftes Forschungsprogramm kann in vier voneinander unabhaengige Stufen zerlegt werden.
+
+\subsection{Stufe A: Reine Mathematik}
+Zu untersuchen sind Spektralmasse $\rho_{p,R}$, Orbitzerlegungen unter dem Stabilisator von $R$, Extremwerte, Kumulanten, asymptotische Verteilungen und die Abhaengigkeit von der Wahl der Involution. Besonders wichtig ist die Frage, welche Eigenschaften operatorinvariant und welche artefaktspezifisch fuer das konkrete $R$ sind.
+
+\subsection{Stufe B: Effektive Quantentheorie}
+Eine mikroskopisch konsistente Kopplung muss festlegen, welche physikalische Groesse $A(q)$ gewichtet, welche Einheitsskala auftritt und welche Symmetrien erhalten bleiben. Eine blosse dimensionslose Zusatzphase ist fuer eine phenomenologische Suche ausreichend, aber nicht fuer eine fundamentale Theorie.
+
+\subsection{Stufe C: Systematik und Nulltests}
+Jede experimentelle Suche muss bekannte Magnetfeld-, Zeeman-, Stark-, Trajektorien- und Gravitationsbeitraege kontrollieren. Entscheidender als absolute Sensitivitaet sind Symmetrieumkehrungen, Differentialmessungen und Blindanalysen, die eine diskrete EABC-artige Signatur von glatten systematischen Fehlern unterscheiden.
+
+\subsection{Stufe D: Experiment}
+Erst wenn Stufe B eine quantitative Kopplung liefert, kann aus dem mathematischen Spektrum eine absolute Prognose fuer eine Phase oder einen Kontrast gewonnen werden. Vorher ist die richtige experimentelle Frage eine Grenzwertmessung auf $\epsilon$ oder $\kappa$.
+
+\section{Diskussion}
+Der Zentralmodensatz besitzt eine bemerkenswerte doppelte Lesart. Rein mathematisch uebersetzt er klassische Quadratedarstellung in das Spektrum eines nichttrivialen Projektoroperators auf einer Quaternionenordnung. Physikalisch legt er das Bild eines Systems nahe, in dem bestimmte Mischungsverhaeltnisse nicht dynamisch unwahrscheinlich, sondern strukturell unzulaessig sind.
+
+Die besondere Rolle von $p\equiv7\pmod8$ ist dabei kein numerisches Muster. Sie ist eine Folge klassischer arithmetischer Obstruktionen. In einer realen physikalischen Realisierung waere dies attraktiv, weil die Signatur nicht kontinuierlich angepasst werden kann: Die Existenz oder Abwesenheit der Zentralmode ist diskret.
+
+Gleichzeitig ist genau diese mathematische Starrheit eine strenge Anforderung an die Physik. Eine reale Kopplung muss erklaeren, warum ein Atom, ein Randfeld oder ein anderer Quantenzustand ausgerechnet eine Hurwitz-Normschale und den festgelegten Projektor $R$ realisiert. Ohne diesen Mechanismus bleibt die Konstruktion ein mathematisch reiches Toy-Modell.
+
+\section{Schlussfolgerung}
+Die physikalisch staerkste Interpretation des Zentralmodensatzes ist nicht die Behauptung einer neuen Kraft, einer veraenderten Lichtgeschwindigkeit oder einer Modifikation der de-Broglie-Beziehung. Sie ist subtiler und zugleich klarer:
+\begin{quote}
+Eine diskrete arithmetische Geometrie kann eine Mischungsvariable quantisieren und fuer bestimmte Normklassen einen exakt symmetrischen Zustand verbieten. Wird diese interne Geometrie von einem realen Quantensystem abgebildet, erscheint die Obstruktion als Selektionsregel in Spektrum, Koharenz oder Interferenz.
+\end{quote}
+
+Der mathematische Kern ist die Aequivalenz
+\[
+\boxed{
+m_p(1/2)=0
+\quad\Longleftrightarrow\quad
+p\equiv7\pmod8,
+}
+\]
+fuer den konkret definierten Operator $q\mapsto P_\pm q^2$ auf Hurwitz-Primschalen. Die natuerliche physikalische Observable ist nicht nur $A$ selbst, sondern das gesamte diskrete Spektralmass $\rho_{p,R}$ und dessen charakteristische Funktion
+\[
+\boxed{
+\mathcal C_p(\kappa)
+=\int\e^{\ii\kappa A}\rho_{p,R}(\dd A).
+}
+\]
+Damit werden Zentralmode, spektrale Luecke, Linienverbreiterung, Kontrastverlust und Beat-Struktur zu verschiedenen Aspekten einer einzigen mathematischen Verteilung.
+
+Sollte eine reale mikroskopische Kopplung an diese Struktur gefunden werden, waere der entscheidende physikalische Befund nicht, dass Primzahlen unmittelbar Teilchen erzeugen, sondern dass klassische Zahlentheorie als Selektionsregel eines quantisierten internen Zustandsraums messbar wird.
+
+\appendix
+\section{Kurze Herleitung von $A_\pm$ und $\chi_R$}
+Setze
+\[
+s=2a^2-p,\quad x=2ab,\quad y=2ac,\quad z=2ad.
+\]
+Dann ist der Koordinatenvektor von $q^2$ gleich $(s,x,y,z)^T$. Die Projektoren liefern
+\[
+P_+(s,x,y,z)^T
+=\frac12(s+x,s+x,y+z,y+z)^T,
+\]
+\[
+P_-(s,x,y,z)^T
+=\frac12(s-x,-s+x,y-z,-y+z)^T.
+\]
+Daher
+\[
+A_+(q)=\frac{(s+x)^2+(y+z)^2}{2p^2},
+\]
+\[
+A_-(q)=\frac{(s-x)^2+(y-z)^2}{2p^2}.
+\]
+Subtraktion ergibt
+\[
+A_+-A_-
+=\frac{2sx+2yz}{p^2}
+=\frac{4a[b(2a^2-p)+2acd]}{p^2}.
+\]
+
+\section{SageMath-Skizze fuer Spektralmass und Koharenz}
+\begin{lstlisting}[language=Python,basicstyle=\ttfamily\small,breaklines=true]
+from sage.all import *
+
+R = Matrix(QQ, [[0,1,0,0],
+                [1,0,0,0],
+                [0,0,0,1],
+                [0,0,1,0]])
+I4 = identity_matrix(QQ, 4)
+Pp = QQ(1)/2 * (I4 + R)
+Pm = QQ(1)/2 * (I4 - R)
+
+def A_plus(a,b,c,d,p):
+    s = 2*a*a - p
+    v = vector(QQ, [s, 2*a*b, 2*a*c, 2*a*d])
+    vp = Pp*v
+    return vp.dot_product(vp) / QQ(p*p)
+
+def coherence(Avals, kappa):
+    # Numerische charakteristische Funktion bei gleichen Gewichten
+    CC = ComplexField(80)
+    z = CC(0)
+    for A in Avals:
+        z += exp(CC(I)*CC(kappa)*CC(A))
+    return z / len(Avals)
+\end{lstlisting}
+
+\section{Terminologische Hinweise}
+Der Ausdruck \enquote{Chiralitaet} bezeichnet in dieser Arbeit die Differenz $\chi_R=A_+-A_-$ des konkret definierten Projektors und nicht automatisch die Lorentz-Chiralitaet relativistischer Fermionfelder. Ebenso bezeichnet \enquote{Zentralmoden-Luecke} die Abwesenheit des Spektralwerts $1/2$ in $\Spec_R(p)$, nicht ohne weitere Analyse eine Energie- oder Bandluecke eines physikalischen Hamiltonoperators.
+
+\begin{thebibliography}{99}
+\bibitem{HardyWright}
+G. H. Hardy und E. M. Wright,
+\emph{An Introduction to the Theory of Numbers},
+Oxford University Press.
+
+\bibitem{Cox}
+D. A. Cox,
+\emph{Primes of the Form $x^2+ny^2$},
+Wiley.
+
+\bibitem{ConwaySmith}
+J. H. Conway und D. A. Smith,
+\emph{On Quaternions and Octonions: Their Geometry, Arithmetic, and Symmetry},
+A K Peters, 2003.
+
+\bibitem{Hurwitz}
+A. Hurwitz,
+\emph{Vorlesungen ueber die Zahlentheorie der Quaternionen},
+Springer, 1919.
+
+\bibitem{Baez}
+J. C. Baez,
+\emph{The Octonions},
+Bulletin of the American Mathematical Society 39 (2002), 145--205.
+
+\bibitem{Cronin}
+A. D. Cronin, J. Schmiedmayer und D. E. Pritchard,
+\emph{Optics and interferometry with atoms and molecules},
+Reviews of Modern Physics 81 (2009), 1051--1129.
+
+\bibitem{Berman}
+P. R. Berman (Hrsg.),
+\emph{Atom Interferometry},
+Academic Press, 1997.
+
+\bibitem{Sakurai}
+J. J. Sakurai und J. Napolitano,
+\emph{Modern Quantum Mechanics},
+Cambridge University Press.
+
+\bibitem{Nakahara}
+M. Nakahara,
+\emph{Geometry, Topology and Physics},
+CRC Press.
+\end{thebibliography}
+
+\end{document}

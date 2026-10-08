@@ -1,0 +1,98 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{geometry}
+\usepackage{hyperref}
+
+\geometry{margin=2.5cm}
+
+\newtheorem{theorem}{Satz}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Bemerkung}
+
+\title{\textbf{Arithmetik oktonionischer Schalen, $G_2(2)$-Orbitobstruktionen und die konditionale Statistische Mechanik des EABC-Frameworks}}
+\author{Thomas Hoffbauer \\ \small Bamberg, Deutschland}
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		Wir untersuchen die Erreichbarkeit (Reachability) zwischen diskreten oktonionischen Fasern $P(p)$ über gaußsch gespaltenen Primschalen $p \equiv 1 \pmod 4$ im Rahmen des EABC-Frameworks. Es wird gezeigt, dass naive Brücken-Operatoren der Version v0.7 durch ein universelles Mod-2-Kongruenz-Lemma (Rehm-Paritätsobstruktion) vollständig blockiert werden. Durch Einführung des v0.8-Mod-2-Paritäts-Gates $[\bar{\alpha}\beta] = [1] \in \mathcal{C}/2\mathcal{C}$ in Kombination mit der Fano-Achsen-Kopplung (Konfiguration B) wird diese Obstruktion algebraisch aufgehoben. Dies ermöglicht die Konstruktion einer zertifizierten Brücken-Leiter von $P(37)$ über $P(41)$ bis hin zu $P(89)$. Darauf aufbauend wird eine geschlossene, konditionale statistische Mechanik der Schalenkaskade auf Basis einer heuristischen Kontinuumshülle entwickelt, welche exakte analytische Ausdrücke für die Zustandssumme $Z(T)$, die innere Energie $U(T)$ und deren Hochtemperatur-Sättigung liefert.
+	\end{abstract}
+	
+	\section{Einleitung und architektonischer Kontext}
+	
+	Das EABC-Framework untersucht die algebraische Topologie und Arithmetik diskreter Oktonionen-Gitter (Coxeter/Rehm-Ordnungen $\mathcal{C}$) sowie deren Symmetriegruppen, insbesondere die Automorphismengruppe $G_2(2)$. Ein zentrales Untersuchungsobjekt bilden die Fasern $P(p)$ für Primzahlen $p$, deren Kardinalität durch die Einbettung in das oktonionische Raster gegeben ist als:
+	\begin{equation}
+		|P(p)| = p^3 + 1
+	\end{equation}
+	Die Kernfrage der Reachability-Architektur lautet: Unter welchen Bedingungen existiert ein normändernder, integraler Schalenpfad zwischen zwei Fasern $P(p)$ und $P(p')$?
+	
+	\section{Die Mod-2-Paritätsobstruktion (v0.7)}
+	
+	Für den Übergang von $P(29)$ nach $P(37)$ über die eingefrorene 28-elementige Brücken-Familie $\mathcal{B}_{\text{Gauss}}^{\text{v0.7}}$ wurde ein exakter, exhaustiver Computerbefund erzielt, der sich in ein analytisches Theorem gießen lässt.
+	
+	\begin{theorem}[Mod-2-Kongruenz-Lemma für v0.7]
+		Sei $\mathcal{C}$ die Coxeter/Rehm-Ordnung und $P(p)$ die zugehörige Faser. Für die Brücken-Operatoren $B_{k,\sigma,\tau}$ mit Parametern $\alpha_{29} = 5 + \sigma 2e_k$ und $\alpha_{37} = 6 + \tau e_k$ gilt:
+		\begin{equation}
+			\forall B \in \mathcal{B}_{\text{Gauss}}^{\text{v0.7}}: \quad B(P(29)) \cap P(37) = \emptyset
+		\end{equation}
+	\end{theorem}
+	\begin{proof}
+		Für $x \in P(29)$ gilt definitionsgemäß $x \equiv 1 \pmod{2\mathcal{C}}$. Die Modulo-2-Reduktion der Brückenparameter liefert $\bar{\alpha}_{29} \equiv 1 \pmod{2\mathcal{C}}$ und $\alpha_{37} \equiv e_k \pmod{2\mathcal{C}}$. Da $29 \equiv 1 \pmod 2$, folgt für jeden integralen Bridge-Wert:
+		\begin{equation}
+			B_{k,\sigma,\tau}(x) \equiv e_k \pmod{2\mathcal{C}}
+		\end{equation}
+		Da jedoch für alle sieben imaginären Basiseinheiten $e_k \not\equiv 1 \pmod{2\mathcal{C}}$ gilt, wird die definierende Rehm-Normalisierung der Zielschale $P(37)$ ($y \equiv 1 \pmod{2\mathcal{C}}$) universell verletzt. Nicht-integrale Quotienten scheitern ohnehin an der Gitterbedingung.
+	\end{proof}
+	
+	\section{Das v0.8-Paritäts-Gate und die Brücken-Leiter}
+	
+	Um die Paritätsobstruktion zu umgehen, führt Version v0.8 das notwendige Vorfilter-Gate ein:
+	\begin{equation}
+		[\bar{\alpha}\beta] = [1] \in \mathcal{C}/2\mathcal{C}
+	\end{equation}
+	Unter Verwendung der Konfiguration B (gerader Realteil $a_0 = 4$, ungerader Imaginärteil $a_k = 5$ entlang der Fano-Achse $e_k$) wird über die algebraische Relation $e_k^2 = -1 \equiv 1 \pmod 2$ die Parität kontrolliert kompensiert. 
+	
+	Dies öffnet die arithmetische Brücken-Leiter durch höhere gaußsch gespaltene Primschalen ($p \equiv 1 \pmod 4$):
+	\begin{equation}
+		P(37) \xrightarrow{\text{certified}} P(41) \xrightarrow{\text{bridge}} P(53) \xrightarrow{\text{bridge}} P(61) \xrightarrow{\text{bridge}} P(73) \xrightarrow{\text{bridge}} P(89)
+	\end{equation}
+	Dabei ist der Schritt $37 \to 41$ durch vollständige $G_2(2)$-Generatorwort-Zertifikate als $CERTIFIED\_REACHABLE$ verifiziert, während die nachfolgenden Übergänge den Status $BRIDGE\_EXISTS$ tragen.
+	
+	\section{Konditionale Statistische Mechanik}
+	
+	Zur Modellierung der makroskopischen Eigenschaften wird die heuristische Kontinuumshülle der Zustandsdichte eingeführt:
+	\begin{equation}
+		\rho_{\text{env}}(N) = \frac{N^3}{12096}
+	\end{equation}
+	Auf Basis dieser Dichte lässt sich die Zustandssumme $Z(T)$ für das endliche Schalenfenster $[17, 89]$ in geschlossener Form über die unvollständige Gamma-Funktion bzw. das Polynom $P_3(x) = x^3 + 3x^2 + 6x + 6$ darstellen:
+	\begin{equation}
+		Z(T) = \frac{T^4}{12096} \left[ e^{-17/T} P_3\left(\frac{17}{T}\right) - e^{-89/T} P_3\left(\frac{89}{T}\right) \right]
+	\end{equation}
+	Für die innere Energie $U(T)$ ergibt sich analog mit $P_4(x) = x^4 + 4x^3 + 12x^2 + 24x + 24$:
+	\begin{equation}
+		U(T) = T \, \frac{e^{-17/T}P_4(17/T) - e^{-89/T}P_4(89/T)}{e^{-17/T}P_3(17/T) - e^{-89/T}P_3(89/T)}
+	\end{equation}
+	
+	Im Hochtemperaturlimes $T \to \infty$ zeigt das System eine Sättigung:
+	\begin{equation}
+		Z_\infty = \frac{89^4 - 17^4}{4 \times 12096} \approx 1295.03, \quad U_\infty \approx 71.28
+	\end{equation}
+	wobei die Verteilung aufgrund der Dichte persistenterweise als $p_\infty(N) \propto N^3$ verbleibt.
+	
+	\section{Epistemische Hierarchie}
+	
+	Das Framework gliedert sich in drei strenge epistemische Ebenen:
+	\begin{enumerate}
+		\item \textbf{Exact / Theorem:} Rehm/Coxeter-Arithmetik, Mod-2-Obstruktion, geschlossene Momente.
+		\item \textbf{Heuristic Continuum Envelope:} $\rho_{\text{env}}(N) = N^3 / 12096$ (als glatte Interpolation, da die $G_2(2)$-Operation nicht frei ist).
+		\item \textbf{Open Kinetic Layer:} Übergangsraten $W_{p \to q}$, $\Gamma(T)$ und Aktivierungsbarrieren $\Delta F^\ddagger$, die Gegenstand nachgelagerter dynamischer Untersuchungen sind.
+	\end{enumerate}
+	
+\end{document}

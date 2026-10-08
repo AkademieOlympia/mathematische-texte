@@ -1,0 +1,448 @@
+\documentclass[11pt,a4paper]{article}
+
+% ==============================================================================
+% Pakete und Grundeinstellungen
+% ==============================================================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{geometry}
+\geometry{a4paper, left=25mm, right=25mm, top=25mm, bottom=25mm}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!80!black,
+    citecolor=blue!80!black,
+    urlcolor=blue!80!black
+}
+
+% ==============================================================================
+% Mathematische Sätze und Definitionen
+% ==============================================================================
+\theoremstyle{plain}
+\newtheorem{theorem}{Satz}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Korollar}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Bemerkung}
+\newtheorem{example}[theorem]{Beispiel}
+
+% Standard-Symbole
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\OK}{\mathcal{O}_K}
+\newcommand{\E}{\mathbb{E}}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\im}{im}
+
+% ==============================================================================
+% Titel und Metadaten
+% ==============================================================================
+\title{\textbf{Geometrische Phasenraum-Transformation $\Psi\_{9,\log}^{(2)}$ und die orthogonale Zerlegung der Collatz-Hyperfläche $H$}}
+\author{\textbf{Thomas Hofbauer} \\ Bamberg, Deutschland}
+\date{Oktober 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Wir präsentieren die rigorose mathematische Grundlegung der 9-dimensionalen logarithmischen Galois-Minkowski-Phasenraumtransformation $\Psi_{9,\log}^{(2)}$. Durch die simultane Doppelquotientierung bezüglich der Fundamenteinheit $\phi$ und der Galois-Konjugation im reell-quadratischen Zahlkörper $\Q(\sqrt{5})$ wird eine kanonische transversale Minkowski-Koordinate $\delta_{\mathrm{can}} \in (0, \log\phi]$ für alle zerlegten Primzahlen konstruiert. Wir beweisen analytisch und konstruktiv über eine explizite Minimalbasis den vollen reellen Rang $\rank_\R \Psi_{9,\log}^{(2)} = 9$. 
+
+Für die beschleunigte ungerade Collatz-Abbildung $T_*(o) = (3o+1)/2^{v_2(3o+1)}$ beweisen wir, dass jedes ungerade Argument $o$ nach spätestens einem Schritt eine zu 6 teilerfremde Zahl liefert ($\gcd(T_*(o), 6) = 1$) und somit strikt auf die 8-dimensionale lineare Hyperfläche $H = \{\tau - 2(U_0 + S_0) = 0\}$ kollabiert. Schließlich leiten wir die spektrale Zerlegung des orthogonalen Projektors $P_H = I_9 - \frac{1}{9}\boldsymbol{\nu}_H \boldsymbol{\nu}_H^T$ her und etablieren die kanonische Hauptachsenzerlegung $\R^9 \cong \R^3_U \oplus \R^2_B \oplus \R^3_S \oplus \R_N$ ($9 = 3 + 2 + 3 + 1$).
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+% ==============================================================================
+\section{Die Einbettung \texorpdfstring{$\Psi_{9,\log}^{(2)}$}{Psi9,log(2)} und der Rang-9-Satz}
+% ==============================================================================
+
+\subsection{Arithmetische Definition und kanonische Minkowski-Koordinaten}
+
+Sei $K = \Q(\sqrt{5})$ der reell-quadratische Zahlkörper mit Ganzheitsring $\OK = \Z[\phi]$, wobei $\phi = \frac{1+\sqrt{5}}{2}$ die fundamentale Einheit mit Norm $N(\phi) = \phi \sigma(\phi) = -1$ ist. Die beiden reellen Einbettungen bezeichnen wir mit $\sigma_+, \sigma_-: K \to \R$.
+
+Für eine ungerade Primzahl $p > 3$ bestimmt das Legendre-Symbol $\left(\frac{5}{p}\right)$ das Zerlegungsverhalten in $\OK$:
+\begin{enumerate}
+    \item $p \equiv 2, 3 \pmod 5$: $p$ bleibt \emph{träge} in $\OK$. Das Ideal $(p)$ ist prim.
+    \item $p \equiv 1, 4 \pmod 5$: $p$ ist \emph{voll zerlegt}, d.\,h. $(p) = \mathfrak{p} \bar{\mathfrak{p}}$ mit Hauptidealen $\mathfrak{p} = (\pi)$. Für die algebraische Norm gilt $N(\pi) = \vert{}\sigma_+(\pi)\sigma_-(\pi)\vert{} = p$.
+\end{enumerate}
+
+\begin{definition}[Kanonische Differenzkoordinate $\delta_{\mathrm{can}}$]
+Sei $q \equiv 1, 4 \pmod 5$ eine zerlegte Primzahl mit $q \neq 5$. Die logarithmische Differenz eines Erzeugers $\pi \in \OK$ mit $N(\pi) = q$ ist gegeben durch:
+\begin{equation}
+    \delta(\pi) := \log |\sigma_+(\pi)| - \log |\sigma_-(\pi)|.
+\end{equation}
+Da die Einheitengruppe durch $\pm \phi^\Z$ erzeugt wird, wirkt eine Multiplikation mit $\phi^k$ als Verschiebung $\delta \mapsto \delta + 2k\log\phi$. Der Übergang zum Galois-konjugierten Ideal $\bar{\mathfrak{p}}$ induziert die Vorzeichenumkehr $\delta \mapsto -\delta$. 
+
+Durch simultane Quotientierung bezüglich der Gruppe $\Z \rtimes (\Z/2\Z)$ definieren wir die kanonische Minkowski-Differenzkoordinate:
+\begin{equation}
+    \delta_{\mathrm{can}}(q) := \bigl|\, \delta(\pi) \pmod{2\log\phi} \,\bigr| \in [0, \log\phi].
+\end{equation}
+\end{definition}
+
+\begin{lemma}[Nicht-Entartung der kanonischen Koordinate]
+\label{lem:delta_pos}
+Für jede zerlegte rationale Primzahl $q \equiv 1, 4 \pmod 5$ mit $q \neq 5$ gilt strikt:
+\begin{equation}
+    \delta_{\mathrm{can}}(q) > 0.
+\end{equation}
+Insbesondere liegt $\delta_{\mathrm{can}}(q)$ im halboffenen Fundamentalintervall $(0, \log\phi]$.
+\end{lemma}
+
+\begin{proof}
+Angenommen, es wäre $\delta_{\mathrm{can}}(q) = 0$. Dann existiert ein Erzeuger $\pi \in \OK$ mit $\vert{}\sigma_+(\pi)\vert{} = \vert{}\sigma_-(\pi)\vert{}$. Daraus folgt entweder:
+\begin{enumerate}
+    \item $\sigma_+(\pi) = \sigma_-(\pi)$: In diesem Fall ist $\pi \in \Q$. Da $\pi \in \OK$, folgt $\pi \in \Z$. Dann wäre $N(\pi) = \pi^2 = q$, was der Primität von $q$ über $\Z$ widerspricht.
+    \item $\sigma_+(\pi) = -\sigma_-(\pi)$: In diesem Fall hat $\pi$ die Spur $\Tr(\pi) = 0$. Folglich ist $\pi = b\sqrt{5}$ mit $b \in \frac{1}{2}\Z$. Dann gilt $N(\pi) = 5b^2 = q$, woraus $5 \mid q$ folgt. Dies widerspricht der Voraussetzung $q \neq 5$.
+\end{enumerate}
+Folglich ist $\delta_{\mathrm{can}}(q) \neq 0$, und somit $\delta_{\mathrm{can}}(q) > 0$.
+\end{proof}
+
+\begin{definition}[Einbettungsvektor $\Psi_{9,\log}^{(2)}$]
+Jeder Primzahl $p > 3$ wird anhand ihrer Restklasse modulo 12 ein EABC-Index $R(p) \in \{E, A, B, C\} \equiv \{1, 5, 7, 11\} \pmod{12}$ und ein Koordinatenpaar $(\ell_+(p), \ell_-(p)) \in \R^2$ zugeordnet:
+\begin{equation}
+    \ell(p) := 
+    \begin{cases}
+        \left(\dfrac{\log p}{2}, \dfrac{\log p}{2}\right), & \text{falls } p \equiv 2, 3 \pmod 5,\\[1em]
+        \left(\dfrac{\log p + \delta_{\mathrm{can}}(p)}{2}, \dfrac{\log p - \delta_{\mathrm{can}}(p)}{2}\right), & \text{falls } p \equiv 1, 4 \pmod 5.
+    \end{cases}
+\end{equation}
+Für eine beliebige natürliche Zahl $n = 2^{v_2(n)} 3^{v_3(n)} \prod_{p > 3} p^{v_p(n)} \in \N_{>0}$ setzen wir additiv fort:
+\begin{equation}
+    \boldsymbol{\ell}_\pm(n) := \sum_{p > 3} v_p(n) \ell_\pm(p) \mathbf{e}_{R(p)} \in \R^4.
+\end{equation}
+Mit der normierten orthogonalen Walsh-Hadamard-Matrix
+\begin{equation}
+    W_4 = \frac{1}{2} \begin{pmatrix}
+        1 &  1 &  1 &  1 \\
+        1 & -1 &  1 & -1 \\
+        1 &  1 & -1 & -1 \\
+        1 & -1 & -1 &  1
+    \end{pmatrix} \in \mathrm{O}(4)
+\end{equation}
+ist die Phasenraumtransformation $\Psi_{9,\log}^{(2)}: \N_{>0} \to \R^9$ definiert durch:
+\begin{equation}
+    \Psi_{9,\log}^{(2)}(n) := \bigl(\tau(n);\, U(n);\, S(n)\bigr) = \bigl(\log n;\, W_4 \boldsymbol{\ell}_+(n);\, W_4 \boldsymbol{\ell}_-(n)\bigr).
+\end{equation}
+\end{definition}
+
+\subsection{Der analytische und konstruktive Rang-9-Satz}
+
+\begin{theorem}[Rang-9-Satz für $\Psi_{9,\log}^{(2)}$]
+\label{thm:rank9}
+Das reelle Bild $\Psi_{9,\log}^{(2)}(\N_{>0})$ spannt einen 9-dimensionalen Vektorraum auf:
+\begin{equation}
+    \dim_\R \operatorname{span} \Psi_{9,\log}^{(2)}(\N_{>0}) = 9.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Wir wählen für jede der vier EABC-Klassen $R \in \{E, A, B, C\} \equiv \{1, 5, 7, 11\} \pmod{12}$ ein träges Prim $p_R$ und ein gespaltenes Prim $q_R \neq 5$:
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+Klasse $R$ & $E$ ($1 \bmod 12$) & $A$ ($5 \bmod 12$) & $B$ ($7 \bmod 12$) & $C$ ($11 \bmod 12$) \\
+\midrule
+Träges Prim $p_R$ & $13$ ($p \equiv 3 \bmod 5$) & $17$ ($p \equiv 2 \bmod 5$) & $7$ ($p \equiv 2 \bmod 5$) & $23$ ($p \equiv 3 \bmod 5$) \\
+Gespaltenes Prim $q_R$ & $61$ ($q \equiv 1 \bmod 5$) & $29$ ($q \equiv 4 \bmod 5$) & $19$ ($q \equiv 4 \bmod 5$) & $11$ ($q \equiv 1 \bmod 5$) \\
+\bottomrule
+\end{tabular}
+\end{center}
+Zusammen mit der Sonderprimzahl $2$ bildet $\mathcal{B} = \{2, p_E, q_E, p_A, q_A, p_B, q_B, p_C, q_C\}$ eine 9-elementige Menge. Vor Anwendung der orthogonalen Transformation $W_4$ bilden die Vektoren $(\tau(p), \boldsymbol{\ell}_+(p), \boldsymbol{\ell}_-(p))$ die Zeilen der Matrix $M_{\mathrm{raw}} \in \R^{9 \times 9}$.
+
+Da die Primzahl 2 im internen EABC-Sektor verschwindet ($\boldsymbol{\ell}_\pm(2) = \mathbf{0}$) und jede Primzahl $p \in \mathcal{B} \setminus \{2\}$ genau eine EABC-Komponente belegt, zerfällt $M_{\mathrm{raw}}$ in eine Blockdreiecksmatrix:
+\begin{equation}
+    M_{\mathrm{raw}} = \begin{pmatrix}
+        \log 2 & \mathbf{0}^T & \mathbf{0}^T \\
+        \boldsymbol{\tau}_E & \Delta_E & \mathbf{0} & \mathbf{0} & \mathbf{0} \\
+        \boldsymbol{\tau}_A & \mathbf{0} & \Delta_A & \mathbf{0} & \mathbf{0} \\
+        \boldsymbol{\tau}_B & \mathbf{0} & \mathbf{0} & \Delta_B & \mathbf{0} \\
+        \boldsymbol{\tau}_C & \mathbf{0} & \mathbf{0} & \mathbf{0} & \Delta_C
+    \end{pmatrix},
+\end{equation}
+wobei die $2 \times 2$-Blöcke $\Delta_R$ für $R \in \{E, A, B, C\}$ gegeben sind durch:
+\begin{equation}
+    \Delta_R = \begin{pmatrix}
+        \frac{1}{2}\log p_R & \frac{1}{2}\log p_R \\[0.5em]
+        \frac{\log q_R + \delta_R}{2} & \frac{\log q_R - \delta_R}{2}
+    \end{pmatrix}, \qquad \delta_R := \delta_{\mathrm{can}}(q_R) > 0.
+\end{equation}
+Die Determinante jedes Blocks errechnet sich exakt zu:
+\begin{equation}
+    \det \Delta_R = \left(\frac{1}{2}\log p_R\right)\left(\frac{\log q_R - \delta_R}{2}\right) - \left(\frac{1}{2}\log p_R\right)\left(\frac{\log q_R + \delta_R}{2}\right) = -\frac{1}{2} \log p_R \cdot \delta_R.
+\end{equation}
+Damit lautet die Gesamtdeterminante der Rohmatrix:
+\begin{equation}
+    \det M_{\mathrm{raw}} = \log 2 \cdot \prod_{R \in \{E,A,B,C\}} \det \Delta_R = \frac{\log 2}{16} \prod_{R} \log p_R \prod_{R} \delta_R.
+\end{equation}
+Da $p_R \ge 7 > 1$, ist $\log p_R > 0$. Nach Lemma~\ref{lem:delta_pos} gilt $\delta_R > 0$. Folglich ist $\det M_{\mathrm{raw}} \neq 0$.
+
+Die vollständige Bildmatrix $M$ entsteht durch Multiplikation mit der orthogonalen Blockmatrix:
+\begin{equation}
+    M = M_{\mathrm{raw}} \cdot \diag(1, W_4^T, W_4^T).
+\end{equation}
+Wegen $\vert{}\det W_4\vert{} = 1$ gilt $\vert{}\det M\vert{} = \vert{}\det M_{\mathrm{raw}}\vert{} > 0$. Somit ist $\rank_\R M = 9$.
+\end{proof}
+
+\begin{remark}[Konstruktive Generatoren in $\Z[\phi]$]
+Die Minimalbasis erfordert keine algorithmische Heuristik (`gens\_reduced`), da für die vier gespaltenen Primzahlen explizite Erzeuger $\pi_q = a + b\phi \in \Z[\phi]$ mit $N(a+b\phi) = a^2 + ab - b^2 = q$ existieren:
+\begin{align}
+    11 &= N(3+\phi) = 3^2 + 3\cdot 1 - 1^2, \\
+    19 &= N(4+\phi) = 4^2 + 4\cdot 1 - 1^2, \\
+    29 &= N(5+\phi) = 5^2 + 5\cdot 1 - 1^2, \\
+    61 &= N(7+3\phi) = 7^2 + 7\cdot 3 - 3^2.
+\end{align}
+Damit ist der Rang-9-Beweis vollständig konstruktiv über algebraischen Zahlen verifiziert.
+\end{remark}
+
+% ==============================================================================
+\section{Collatz-Dynamik und der Ein-Schritt-Kollaps auf \texorpdfstring{$H$}{H}}
+% ==============================================================================
+
+\subsection{Die invariante Hyperfläche \texorpdfstring{$H$}{H}}
+
+Auf dem multiplikativen Untermonoid $\N_{>0,(6)} := \{n \in \N_{>0} \mid \gcd(n, 6) = 1\}$ gilt nach Konstruktion der Minkowski-Koordinaten für jeden Primfaktor $p > 3$ die Summenidentität $\ell_+(p) + \ell_-(p) = \log p$. Durch Summation über alle Faktoren folgt:
+\begin{equation}
+    \sum_{R \in \{E,A,B,C\}} \bigl(\ell_{+,R}(n) + \ell_{-,R}(n)\bigr) = \log n = \tau(n).
+\end{equation}
+Da die nullte Zeile von $W_4$ die normierte Summe bildet ($U_0 = \frac{1}{2}\sum_R \ell_{+,R}$ und $S_0 = \frac{1}{2}\sum_R \ell_{-,R}$), erhalten wir die fundamentale Identität:
+\begin{equation}
+    \tau(n) = 2\bigl(U_0(n) + S_0(n)\bigr).
+\end{equation}
+
+\begin{definition}[Hyperfläche $H$ und Normalenfunktion $\nu$]
+Die lineare 8-dimensionale Hyperfläche $H \subset \R^9$ ist definiert durch:
+\begin{equation}
+    H := \left\{ (\tau, U, S) \in \R^9 \;\middle|\; \tau - 2(U_0 + S_0) = 0 \right\}.
+\end{equation}
+Der zugehörige normierte Einheitsnormalenvektor lautet $\widehat{\boldsymbol{\nu}}_H = \frac{1}{3}(1, -2, 0, 0, 0, -2, 0, 0, 0)^T$. Wir definieren die skalare Normalenfunktion:
+\begin{equation}
+    \nu(n) := \langle \Psi_{9,\log}^{(2)}(n),\, \widehat{\boldsymbol{\nu}}_H \rangle = \frac{\tau(n) - 2(U_0(n) + S_0(n))}{3}.
+\end{equation}
+\end{definition}
+
+\begin{proposition}[Exakte Normalenkoordinate]
+Für jedes $n \in \N_{>0}$ gilt:
+\begin{equation}
+    \nu(n) = \frac{v_2(n)\log 2 + v_3(n)\log 3}{3}.
+\end{equation}
+Für ungerade Zahlen $o \in \N_{\mathrm{odd}}$ vereinfacht sich dies zu $\nu(o) = \frac{1}{3} v_3(o)\log 3$.
+\end{proposition}
+
+\subsection{Der Kollaps-Satz für den beschleunigten Collatz-Schritt}
+
+Sei $\N_{\mathrm{odd}} = \{2m+1 \mid m \in \N_0\}$ die Menge der ungeraden natürlichen Zahlen. Der beschleunigte Collatz-Operator $T_*: \N_{\mathrm{odd}} \to \N_{\mathrm{odd}}$ ist definiert durch:
+\begin{equation}
+    T_*(o) := \frac{3o+1}{2^{k(o)}}, \qquad k(o) := v_2(3o+1).
+\end{equation}
+
+\begin{lemma}[Teilerfremdheit zu 6]
+\label{lem:gcd6}
+Für alle $o \in \N_{\mathrm{odd}}$ gilt:
+\begin{equation}
+    \gcd(T_*(o), 6) = 1.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Da $o$ ungerade ist, ist $3o+1$ gerade. Durch Division durch $2^{v_2(3o+1)}$ wird die maximale Zweierpotenz gekürzt, sodass $v_2(T_*(o)) = 0$ und folglich $\gcd(T_*(o), 2) = 1$ gilt.
+
+Weiterhin gilt modulo 3 stets:
+\begin{equation}
+    3o+1 \equiv 1 \pmod 3.
+\end{equation}
+Da 2 modulo 3 invertierbar ist ($2 \cdot 2 \equiv 1 \pmod 3$), kann die Division durch $2^{k(o)}$ keinen Faktor 3 erzeugen:
+\begin{equation}
+    T_*(o) = (3o+1) \cdot 2^{-k(o)} \equiv 1 \cdot 2^{-k(o)} \not\equiv 0 \pmod 3.
+\end{equation}
+Somit ist $v_3(T_*(o)) = 0$ und $\gcd(T_*(o), 3) = 1$. Hieraus folgt $\gcd(T_*(o), 6) = 1$.
+\end{proof}
+
+\begin{theorem}[Ein-Schritt-Kollaps auf $H$]
+\label{thm:collatz_collapse}
+Für jeden ungeraden Ausgangswert $o \in \N_{\mathrm{odd}}$ gilt:
+\begin{equation}
+    \nu(T_*(o)) = 0 \quad \Longleftrightarrow \quad \Psi_{9,\log}^{(2)}(T_*(o)) \in H.
+\end{equation}
+Die induzierte Phasenabbildung $\mathcal{C} = \Psi \circ T_* \circ \Psi^{-1}$ bildet $\Psi(\N_{\mathrm{odd}})$ in die Hyperfläche $H$ ab:
+\begin{equation}
+    \mathcal{C}\bigl(\Psi(\N_{\mathrm{odd}})\bigr) \subset H \cap \Psi(\N_{>0,(6)}).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Folgt unmittelbar aus Lemma~\ref{lem:gcd6} und der Auswertung von $\nu(n)$ für $v_2 = v_3 = 0$.
+\end{proof}
+
+\begin{corollary}[Tangentialität für $k \ge 1$]
+Ist $n_0 \in \N_{\mathrm{odd}}$ und bezeichnet $n_k = T_*^k(n_0)$ die Collatz-Trajektorie, so gilt für alle $k \ge 1$:
+\begin{equation}
+    \Delta\Psi_k := \Psi(n_{k+1}) - \Psi(n_k) \in TH.
+\end{equation}
+Die gesamte Dynamik verläuft nach der ersten Iteration rein tangential innerhalb von $H$.
+\end{corollary}
+
+% ==============================================================================
+\section{Projektorgeometrie und die kanonische \texorpdfstring{$3+2+3+1$}{3+2+3+1}-Zerlegung}
+% ==============================================================================
+
+\subsection{Der orthogonale Projektor \texorpdfstring{$P_H$}{PH}}
+
+Der orthogonale Projektor $P_N$ auf den 1-dimensionalen Normalenraum $NH = \operatorname{span}(\widehat{\boldsymbol{\nu}}_H)$ lautet:
+\begin{equation}
+    P_N = \widehat{\boldsymbol{\nu}}_H \widehat{\boldsymbol{\nu}}_H^T = \frac{1}{9} \boldsymbol{\nu}_H \boldsymbol{\nu}_H^T.
+\end{equation}
+Der orthogonale Projektor auf die 8-dimensionale Hyperfläche $H$ ist somit $P_H = I_9 - P_N$.
+
+\begin{theorem}[Explizite Darstellung und algebraische Eigenschaften]
+In der Standardbasis $(\mathbf{e}_0, \dots, \mathbf{e}_8) \equiv (\tau, U_0, U_x, U_y, U_z, S_0, S_x, S_y, S_z)$ lautet $P_H \in \Q^{9 \times 9}$:
+\begin{equation}
+    P_H = \frac{1}{9} \begin{pmatrix}
+         8 &  2 & 0 & 0 & 0 &  2 & 0 & 0 & 0 \\
+         2 &  5 & 0 & 0 & 0 & -4 & 0 & 0 & 0 \\
+         0 &  0 & 9 & 0 & 0 &  0 & 0 & 0 & 0 \\
+         0 &  0 & 0 & 9 & 0 &  0 & 0 & 0 & 0 \\
+         0 &  0 & 0 & 0 & 9 &  0 & 0 & 0 & 0 \\
+         2 & -4 & 0 & 0 & 0 &  5 & 0 & 0 & 0 \\
+         0 &  0 & 0 & 0 & 0 &  0 & 9 & 0 & 0 \\
+         0 &  0 & 0 & 0 & 0 &  0 & 0 & 9 & 0 \\
+         0 &  0 & 0 & 0 & 0 &  0 & 0 & 0 & 9
+    \end{pmatrix}.
+\end{equation}
+$P_H$ ist symmetrisch ($P_H^T = P_H$), idempotent ($P_H^2 = P_H$) und besitzt die Spur $\Tr(P_H) = 8$. Es gilt:
+\begin{equation}
+    P_H \boldsymbol{\nu}_H = \mathbf{0}, \qquad P_H \mathbf{v} = \mathbf{v} \quad \forall \mathbf{v} \in H.
+\end{equation}
+\end{theorem}
+
+\subsection{Eigenbasis des Singulettsektors und Hauptachsenzerlegung}
+
+Im 3-dimensionalen Singulettsektor $\R^3_{\mathrm{sing}} = \operatorname{span}\{\mathbf{e}_0, \mathbf{e}_1, \mathbf{e}_5\}$ mit Koordinaten $(\tau, U_0, S_0)$ operiert der nichttriviale $3 \times 3$-Brückenblock:
+\begin{equation}
+    M_{\mathrm{bridge}} = \frac{1}{9} \begin{pmatrix}
+        8 &  2 &  2 \\
+        2 &  5 & -4 \\
+        2 & -4 &  5
+    \end{pmatrix}.
+\end{equation}
+
+\begin{proposition}[Orthogonale Eigenbasis]
+Der Block $M_{\mathrm{bridge}}$ besitzt die paarweise orthogonalen Eigenvektoren:
+\begin{equation}
+    \mathbf{n} = \begin{pmatrix} 1 \\ -2 \\ -2 \end{pmatrix}, \qquad \mathbf{b} = \begin{pmatrix} 0 \\ 1 \\ -1 \end{pmatrix}, \qquad \mathbf{h} = \begin{pmatrix} 4 \\ 1 \\ 1 \end{pmatrix},
+\end{equation}
+mit den zugehörigen Eigenwerten $\lambda(\mathbf{n}) = 0$ sowie $\lambda(\mathbf{b}) = 1$ und $\lambda(\mathbf{h}) = 1$.
+\end{proposition}
+
+\begin{proof}
+Die paarweise Orthogonalität folgt direkt über das euklidische Skalarprodukt:
+$\langle \mathbf{n}, \mathbf{b} \rangle = 0 - 2 + 2 = 0$, $\langle \mathbf{n}, \mathbf{h} \rangle = 4 - 2 - 2 = 0$, $\langle \mathbf{b}, \mathbf{h} \rangle = 0 + 1 - 1 = 0$. 
+Die Matrix-Vektor-Multiplikation ergibt:
+\begin{align}
+    M_{\mathrm{bridge}} \mathbf{n} &= \frac{1}{9} \begin{pmatrix} 8-4-4 \\ 2-10+8 \\ 2+8-10 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix} = 0 \cdot \mathbf{n}, \\
+    M_{\mathrm{bridge}} \mathbf{b} &= \frac{1}{9} \begin{pmatrix} 0+2-2 \\ 0+5+4 \\ 0-4-5 \end{pmatrix} = \begin{pmatrix} 0 \\ 1 \\ -1 \end{pmatrix} = 1 \cdot \mathbf{b}, \\
+    M_{\mathrm{bridge}} \mathbf{h} &= \frac{1}{9} \begin{pmatrix} 32+2+2 \\ 8+5-4 \\ 8-4+5 \end{pmatrix} = \begin{pmatrix} 4 \\ 1 \\ 1 \end{pmatrix} = 1 \cdot \mathbf{h}.
+\end{align}
+\end{proof}
+
+\begin{theorem}[Kanonische $3+2+3+1$-Zerlegung]
+\label{thm:decomp3231}
+Der gesamte 9-dimensionale Phasenraum zerfällt orthogonal in:
+\begin{equation}
+    \R^9 = \mathbb{R}^3_U \oplus \mathbb{R}^2_B \oplus \mathbb{R}^3_S \oplus \mathbb{R}_N, \qquad (9 = 3 + 2 + 3 + 1),
+\end{equation}
+wobei:
+\begin{itemize}
+    \item $\mathbb{R}^3_U = \operatorname{span}\{\mathbf{e}_2, \mathbf{e}_3, \mathbf{e}_4\}$ das Walsh-Triplett $\mathbf{U} = (U_x, U_y, U_z)$ ist,
+    \item $\mathbb{R}^2_B = \operatorname{span}\{\mathbf{h}, \mathbf{b}\}$ die tangentiale Brückenebene mit Koordinaten $(\tau, B)$ und $B = U_0 - S_0$ darstellt,
+    \item $\mathbb{R}^3_S = \operatorname{span}\{\mathbf{e}_6, \mathbf{e}_7, \mathbf{e}_8\}$ das Walsh-Triplett $\mathbf{S} = (S_x, S_y, S_z)$ ist,
+    \item $\mathbb{R}_N = \operatorname{span}\{\boldsymbol{\nu}_H\}$ den 1-dimensionalen Normalenraum $NH$ bildet.
+\end{itemize}
+Insbesondere ist die Hyperfläche $H$ als Vektorraum kanonisch isomorph zu $\R^3 \oplus \R^2 \oplus \R^3$ vermöge der expliziten Rekonstruktion:
+\begin{equation}
+    U_0 = \frac{\tau}{4} + \frac{B}{2}, \qquad S_0 = \frac{\tau}{4} - \frac{B}{2}.
+\end{equation}
+\end{theorem}
+
+% ==============================================================================
+\section{Dynamische Wirkungsmechanismen und der Defektoperator \texorpdfstring{$D_3$}{D3}}
+% ==============================================================================
+
+\subsection{Skalare Kontraktion und das 2-adische Restklassenmodell}
+
+Für einen ungeraden Zustand $o \in \N_{\mathrm{odd}}$ lautet die exakte deterministische Skalenänderung unter $T_*(o)$:
+\begin{equation}
+    \Delta\tau(o) = \log T_*(o) - \log o = \log\left(3 + \frac{1}{o}\right) - k(o)\log 2.
+\end{equation}
+
+\begin{theorem}[Asymptotischer Ensemble-Drift unter dem Haar-Maß]
+Sei $\mu_{\mathrm{Haar}}$ das normalisierte Haar-Maß auf den ungeraden 2-adischen Einheiten $\Z_2^\times$ ($\mu_{\mathrm{Haar}}(\Z_2^\times) = 1$). Dann ist die Zufallsvariable $K = v_2(3o+1)$ strikt geometrisch verteilt:
+\begin{equation}
+    \Pr(K = j) = 2^{-j} \qquad (j \ge 1),
+\end{equation}
+woraus $\E_{\mathrm{Haar}}[K] = \sum_{j=1}^\infty j 2^{-j} = 2$ folgt. Im Restklassen-Nullmodell gilt für jedes feste $o$:
+\begin{equation}
+    \E_{\mathrm{res}}[\Delta\tau \mid o] = \log\left(3 + \frac{1}{o}\right) - 2\log 2,
+\end{equation}
+und unter dem reellen Grenzübergang $o \to \infty$ ergibt sich der negative Ensemble-Drift:
+\begin{equation}
+    \lim_{o \to \infty} \E_{\mathrm{res}}[\Delta\tau \mid o] = \log 3 - 2\log 2 = \log\left(\frac{3}{4}\right) \approx -0{,}287682 < 0.
+\end{equation}
+\end{theorem}
+
+\subsection{Der arithmetische Defektoperator \texorpdfstring{$D_3(o)$}{D3(o)}}
+
+Sei $\boldsymbol{\Lambda}(n) = (\boldsymbol{\ell}_+(n), \boldsymbol{\ell}_-(n))^T \in \R^8$ der EABC-Minkowski-Faktorisierungsvektor. Der interne 8-dimensionale Phasenraumvektor lautet $\mathbf{Y}(n) = (U(n), S(n)) = \mathcal{W}_8 \boldsymbol{\Lambda}(n)$ mit $\mathcal{W}_8 = \diag(W_4, W_4)$.
+
+\begin{definition}[Arithmetischer Defektoperator $D_3$]
+Für jedes ungerade $o \in \N_{\mathrm{odd}}$ ist der arithmetische Defektoperator $D_3(o) \in \R^8$ definiert durch:
+\begin{equation}
+    D_3(o) := \boldsymbol{\Lambda}(3o+1) - \boldsymbol{\Lambda}(o).
+\end{equation}
+\end{definition}
+
+Da Zweierpotenzen $2^{k(o)}$ im EABC-Minkowski-Vektor $\boldsymbol{\Lambda}$ per Konstruktion verschwinden, gilt $\boldsymbol{\Lambda}(T_*(o)) = \boldsymbol{\Lambda}(3o+1)$. Der interne Phasenraumsprung $J(o) := \mathbf{Y}(T_*(o)) - \mathbf{Y}(o)$ lautet daher exakt:
+\begin{equation}
+    J(o) = \mathcal{W}_8 D_3(o).
+\end{equation}
+Da $\mathcal{W}_8$ eine orthogonale Matrix ist ($\mathcal{W}_8^T \mathcal{W}_8 = I_8$), ist die Abbildung isometrisch:
+\begin{equation}
+    \|J(o)\| = \|D_3(o)\|.
+\end{equation}
+
+\begin{remark}[Algebraische Lokalisierung der Collatz-Nichtlinearität]
+Die geometrische Konstruktion entkoppelt die Collatz-Dynamik exakt in zwei Bestandteile:
+\begin{equation}
+    \text{Collatz-Operator} = \underbrace{\text{linearer 8D-Phasenraum } H}_{\text{isometrische Walsh-Minkowski-Geometrie}} + \underbrace{\text{Faktorisierungsdefekt } D_3(o)}_{\text{nichtlineare Primzahlrekombination von } 3o+1}.
+\end{equation}
+Die Nichtlinearität des Problems liegt mithin nicht im geometrischen Darstellungsraum, sondern ausschließlich in der additiven Störung $o \mapsto 3o+1$ der Primfaktorzerlegung.
+\end{remark}
+
+% ==============================================================================
+\section{Zusammenfassung und Ausblick}
+% ==============================================================================
+
+Das Diagramm der Collatz-Dynamik im $\Psi_{9,\log}^{(2)}$-Phasenraum schließt kommutativ ab:
+\begin{equation}
+\begin{array}{ccc}
+    \N_{\mathrm{odd}} & \xrightarrow{\quad T_* \quad} & \N_{>0,(6)} \\[1em]
+    \Big\downarrow \Psi_{9,\log}^{(2)} & & \Big\downarrow \Psi_{9,\log}^{(2)} \\[1em]
+    \mathcal{X}_{\mathrm{odd}} \subset \R^9 & \xrightarrow{\quad \mathcal{C} \quad} & H \cong \R^3_U \oplus \R^2_B \oplus \R^3_S
+\end{array}
+\end{equation}
+Nach dem ersten Schritt kollabiert jede Trajektorie ausnahmslos in die 8-dimensionale Hyperfläche $H$. Entlang der tangentialen Brückenebene $\R^2_B$ zieht der negative Erwartungsdrift $\log(3/4)$ das Ensemble radial zusammen, während der transversale Defekt $D_3(o)$ in den Walsh-Tripletts $\R^3_U \oplus \R^3_S$ pseudozufällig gestreut wird.
+
+\end{document}

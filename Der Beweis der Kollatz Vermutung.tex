@@ -1,0 +1,288 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage[ngerman]{babel}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{geometry}
+\usepackage{hyperref}
+
+\geometry{a4paper, top=2.2cm, bottom=2.2cm, left=2.5cm, right=2.5cm}
+\hypersetup{colorlinks=true, linkcolor=black, citecolor=black, urlcolor=black}
+
+\newtheorem{theorem}{Satz}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Bemerkung}
+
+\numberwithin{equation}{section}
+
+\title{\textbf{\texorpdfstring{Collatz im $E_8$-Rahmen:\\
+Einbettung, Drift-Heuristik und die offene L\"ucke}{Collatz im E8-Rahmen: Einbettung, Drift-Heuristik und die offene Luecke}}}
+\author{\textbf{Thomas Hoffbauer}\thanks{Bamberger Modell f\"ur Mathematische Physik, Zahlentheorie und Spektralgeometrie.
+Korrespondenz: \texttt{t.hoffbauer@posteo.de}}}
+\date{14.~September 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\noindent
+Die Collatz-Vermutung besagt, dass jede positive ganze Zahl unter der Syracuse-Abbildung
+$T$ den trivialen Zyklus \(\{1,2\}\) erreicht.
+Zwei Hindernisse stehen einem Beweis entgegen: unbeschr\"ankte Trajektorien und fremde Zyklen.
+Diese Note bettet \(T\) als \emph{Analogie} in die \(2\)-adische Vervollst\"andigung und in die
+Spektralgeometrie von \(E_8\) ein.
+Die logarithmische Drift \(\mathbb{E}[\Delta\log n]=\tfrac12\log(3/4)<0\) und die
+Hoffbauer-Klammer \(\sqrt{D_r^2-D_t^2}\) sind Heuristiken bzw.\ Sonden aus dem EABC-Modell;
+sie liefern keine Uniformschranke an \(T^k(n)\).
+Die klassische Zyklusgleichung bleibt diophantisch.
+Die Kongruenz \(2^K\equiv 3^M\pmod{24}\) ist daf\"ur \emph{nicht} notwendig;
+Dedekind-Stufe \(24\) und \(\Delta_{41}=861\) ersetzen sie nicht.
+Die Collatz-Vermutung bleibt unbewiesen.
+\end{abstract}
+
+\noindent\textbf{MSC (2020):} 11B83, 37P35, 11S82, 37A25 \\
+\textbf{Schl\"usselw\"orter:} Collatz-Vermutung (offen), Syracuse-Abbildung, \(2\)-adische Dynamik,
+\(E_8\), \(\mathrm{Spin}(8)\)-Trialit\"at, Hoffbauer-Klammer, Drift-Heuristik.
+
+\section{Problemstellung}
+
+Auf \(\mathbb{N}=\{1,2,3,\dots\}\) sei die komprimierte Syracuse-Abbildung
+\begin{equation}
+T(n)=\begin{cases}
+n/2, & n\equiv 0\pmod{2},\\[0.4em]
+(3n+1)/2, & n\equiv 1\pmod{2}.
+\end{cases}
+\end{equation}
+Die Collatz-Vermutung fordert: zu jedem \(n\in\mathbb{N}\) existiert ein \(k\in\mathbb{N}_0\) mit \(T^k(n)=1\).
+Danach gilt der triviale \(2\)-Zyklus \(1\mapsto 2\mapsto 1\).
+In der unkomprimierten Form \(n\mapsto 3n+1\) (ungerade) bzw.\ \(n\mapsto n/2\) (gerade)
+ist derselbe Orbit der \(3\)-Zyklus \(\{1,4,2\}\).
+
+Trotz Verifikation weit \"uber \(n>2^{68}\) und trotz Taos Satz, dass \emph{fast alle} Orbits
+(logarithmische Dichte) unter jedes langsam wachsende \(f(n)\to\infty\) fallen~\cite{Tao2019},
+fehlt ein Beweis f\"ur \emph{jedes} \(n\).
+Die Schwierigkeit hat zwei klassische Formen~\cite{Lagarias1985}:
+\begin{enumerate}
+\item \textbf{Divergenz.} Es k\"onnte ein \(n_0\) geben mit \(\limsup_{k\to\infty}T^k(n_0)=\infty\).
+\item \textbf{Fremde Zyklen.} Es k\"onnte eine Periode \(L\ge 3\) in der Syracuse-Z\"ahlung geben,
+die nicht \(\{1,2\}\) ist.
+Steiner schloss \(1\)-Zyklen au\ss{}er dem trivialen aus~\cite{Steiner1977};
+Simons und de Weger erweiterten das auf kleine \(m\)-Zyklen~\cite{SimonsDeWeger2005}.
+Ein genereller Ausschluss fehlt.
+\end{enumerate}
+
+Eine beschr\"ankte Trajektorie in \(\mathbb{N}\) trifft nach dem Schubfachprinzip einen Zyklus.
+W\"are zus\"atzlich gezeigt, dass (i)~jede Trajektorie beschr\"ankt ist und (ii)~nur \(\{1,2\}\)
+als Zyklus vorkommt, so folgte Collatz.
+Genau (i) und (ii) sind offen.
+Diese Note trennt Analogie, Heuristik und L\"ucke; sie behauptet keinen Hauptsatz.
+
+\section{\texorpdfstring{Analogie: \(\mathbb{Z}_2\) und \(E_8\)}{Analogie: Z2 und E8}}
+
+Die Fallunterscheidung \(n\bmod 2\) legt die \(2\)-adische Vervollst\"andigung nahe.
+Im Ring \(\mathbb{Z}_2=\varprojlim\mathbb{Z}/2^k\mathbb{Z}\) besitzt jedes Element eine
+eindeutige Entwicklung \(n=\sum_{j\ge 0}a_j 2^j\) mit \(a_j\in\{0,1\}\).
+Die Abbildung \(T\) setzt sich dort zu einer stetigen Transformation fort
+(Bernstein--Lagarias, \(2\)-adische Collatz-Dynamik).
+Maßtreue bez\"uglich des Haar-Maßes auf \(\mathbb{Z}_2\) ist ein Satz \"uber den
+\emph{kompakten} Ring, kein Transfer auf den positiven Tr\"ager \(\mathbb{N}\subset\mathbb{Z}\).
+Ergodizit\"at auf \(\mathbb{Z}_2\) schließt divergierende positive Orbits nicht aus.
+
+Im EABC-Rahmen lesen wir zwei weitere Analogien, nicht \"Aquivalenzen von dynamischen Systemen:
+\begin{itemize}
+\item Division durch \(2\) als Verschiebung entlang des geraden Untergitters \(D_8\subset E_8\).
+\item Der Faktor \(3\) als Ordnung von \(\mathrm{Out}(\mathrm{Spin}(8))\cong\mathfrak{S}_3\).
+\end{itemize}
+Die Fano-Ebene der Oktonionen und eine Drehung um \(2\pi/3\) auf \(S^7\) sind geometrische
+Bilder derselben Zahl \(3\).
+Sie ersetzen weder die Fallunterscheidung in \(T\) noch eine H\"ohe auf \(\mathbb{N}\).
+
+\section{Drift-Heuristik}
+
+F\"ur unabh\"angige Parit\"aten mit Wahrscheinlichkeit \(1/2\) gilt die klassische Erwartung
+\begin{equation}
+\mathbb{E}[\Delta\log n]
+=\tfrac12\log\bigl(\tfrac12\bigr)+\tfrac12\log\bigl(\tfrac32\bigr)
+=\tfrac12\log\bigl(\tfrac34\bigr)<0.
+\end{equation}
+Numerisch ist \(\log(3/4)\approx -0{,}28768\).
+Das ist die Standard-Heuristik f\"ur \emph{typische} Orbits, kein Ausschluss pathologischer
+Parit\"atsfolgen, in denen ungerade Schritte dauerhaft dominieren.
+Die kritische Dichte ungerader Schritte f\"ur Wachstum ist
+\(\alpha_{\mathrm{crit}}=\log 2/\log 3\approx 0{,}6309\)
+in der unkomprimierten Z\"ahlung; unabh\"angige M\"unzw\"urfe liegen darunter, abh\"angige
+Folgen m\"ussen das nicht.
+
+Tao~\cite{Tao2019} macht daraus einen Satz \"uber logarithmische Dichte.
+Einzeltrajektorien bleiben außerhalb der Reichweite maßtheoretischer Mittelwerte.
+
+\section{Hoffbauer-Klammer als Sonde, nicht als Schranke}
+
+Im EABC-Modell ist die hyperbolische Defektklammer
+\begin{equation}
+\Delta_{\mathrm{EABC}}
+=[D_r,D_t]_{\mathcal{H}}
+:=\sqrt{D_r^2-D_t^2},
+\end{equation}
+mit den festgehaltenen rationalen Daten
+\begin{equation}
+D_r=\frac{8}{137\,\varphi},\qquad
+D_t=\frac{126}{49457},\qquad
+\varphi=\frac{1+\sqrt{5}}{2},\qquad
+126=\frac{\tau(3)}{2}.
+\end{equation}
+Hier ist \(\tau(3)=252\) der Ramanujan-Wert der Spitzenform \(\Delta\in S_{12}(\mathrm{SL}_2(\mathbb{Z}))\),
+und \(49457=361\cdot 137\) mit der Hecke-Stufe \(c=361/126\).
+Numerisch gilt \(\Delta_{\mathrm{EABC}}\approx 0{,}03599954\); das ist der Nachkommaanteil
+der konstruierten Größe \(\alpha^{-1}_{\mathrm{EABC}}=137+\Delta_{\mathrm{EABC}}\)~\cite{EABC2026}.
+
+\begin{remark}[Keine Uniformschranke]
+Eine unbeschr\"ankte Collatz-Trajektorie w\"urde weder \(\tau(3)\) noch \(D_t>0\) aufheben.
+Die Planck-Sonde \(\ell_P=2\sqrt{\alpha^{-1}_{\mathrm{EABC}}}\approx 23{,}412\) des geometrischen
+Einheitensystems \(e=c=1\), \(G=4\) ist dimensionslos im EABC-Rahmen; sie ist keine Schranke
+an \(T^k(n)\in\mathbb{N}\).
+Dissipation in \(\mathbb{H}^\perp\subset\mathbb{O}\) ist ein Bild, kein Lyapunov-Funktional
+auf \(\mathbb{N}\).
+Insbesondere folgt \emph{nicht}
+\[
+\sup_{k\ge 0}T^k(n)<\infty\qquad\text{f\"ur alle }n\in\mathbb{N}.
+\]
+\end{remark}
+
+Die Klammer bleibt eine sinnvolle \emph{Probe}: dieselbe algebraische \(3\), die in
+\(\mathrm{Out}(\mathrm{Spin}(8))\) und in \(T_3\) auftritt, steuert den ungeraden Collatz-Schritt.
+Das ist Motiv, kein Abstiegssatz.
+
+\section{Zyklen: diophantische Gleichung}
+
+Ein Zyklus mit \(M\) ungeraden Schritten und insgesamt \(K\) Divisionen durch \(2\)
+(unkomprimierte Z\"ahlung) erf\"ullt eine Gleichung der Form
+\begin{equation}
+\label{eq:cycle}
+(2^K-3^M)\,n_0
+=\sum_{j=0}^{M-1} 3^{M-1-j}\,2^{A_j},
+\end{equation}
+mit strikt wachsenden Exponenten \(0=A_0<A_1<\dots<A_{M-1}<K\).
+F\"ur positives \(n_0\) braucht man \(2^K>3^M\), also \(K>M\log 3/\log 2\).
+Das ist klassisch~\cite{Lagarias1985}.
+Notwendig ist, dass \(2^K-3^M\) die rechte Seite \emph{teilt}.
+Nicht notwendig ist
+\begin{equation}
+\label{eq:false-cong}
+2^K\equiv 3^M\pmod{24}.
+\end{equation}
+
+Die Kongruenz~\eqref{eq:false-cong} ist sogar f\"ur \(K\ge 3\) und \(M\ge 1\)
+stets falsch: \(3^M\bmod 24\in\{3,9\}\), w\"ahrend \(2^K\bmod 24\in\{8,16\}\)
+(nie \(0\), weil \(2^K\) nie durch \(3\) teilbar ist).
+Die leere Schnittmenge \(\{3,9\}\cap\{8,16\}=\emptyset\) ist daher eine Tatsache
+\"uber Potenzreste, keine Bedingung an~\eqref{eq:cycle}.
+Der triviale Zyklus hat in der unkomprimierten Z\"ahlung \(K=2\), \(M=1\)
+und umgeht~\eqref{eq:false-cong} nur deshalb, weil \(K<3\);
+das rettet~\eqref{eq:false-cong} nicht als Kriterium f\"ur \(K\ge 3\).
+
+\begin{remark}[Modularit\"at als Mnemotechnik]
+Die Zahl \(24\) tritt als \(8\cdot 3=\mathrm{rk}(E_8)\cdot 3\),
+als Wurzelzahl von \(D_4\) und als Gewicht von \(\Delta(\tau)\) auf.
+Das sind parallele Vorkommen derselben ganzen Zahl, keine Homologiebedingung
+an Collatz-Zyklen in \(H_1(T^8/\mathcal{H}^\times,\mathbb{Z})\).
+Ebenso ist \(\lfloor h\rfloor=861=\Delta_{41}\) im EABC-Planck-Bild eine
+Zirkulationssonde, keine teilerfremde Obstruktion gegen Linearkombinationen
+von Potenzen von \(2\) und \(3\).
+\end{remark}
+
+Was bleibt, ist die echte Literatur: Ausschluss kleiner \(m\)-Zyklen,
+explizite untere Schranken an die Zyklusl\"ange, und die offene diophantische
+Frage, ob~\eqref{eq:cycle} außer dem trivialen Orbit positive L\"osungen hat.
+
+\section{Was eine Schließung br\"auchte}
+
+Drei Schichten sind zu trennen.
+\begin{itemize}
+\item \textbf{Bestand.}
+Syracuse-Abbildung \(T\), Zyklusgleichung~\eqref{eq:cycle},
+Steiner, Simons--de Weger, Tao (fast alle Orbits).
+\item \textbf{Analogie / Sonde.}
+Fortsetzung von \(T\) auf \(\mathbb{Z}_2\);
+\(\times 3\leftrightarrow\mathfrak{S}_3\); \(/2\leftrightarrow D_8\);
+Hoffbauer-Klammer; \(\tau(3)=252\); \(\Delta_{41}\).
+\item \textbf{Offen.}
+Uniformschranke an \(T^k(n)\);
+Ausschluss aller fremden Zyklen;
+Transfer vom kompakten Ring \(\mathbb{Z}_2\) auf \(\mathbb{N}_{>0}\).
+\end{itemize}
+
+\vspace{0.6em}
+Ein Beweis m\"usste mindestens eines der folgenden liefern:
+\begin{enumerate}
+\item ein Lyapunov-Funktional \(V:\mathbb{N}\to\mathbb{R}\) mit \(V(T(n))\le V(n)-\delta\)
+außerhalb einer expliziten endlichen Menge, oder eine vergleichbare H\"ohenfunktion
+mit kontrolliertem Anstieg;
+\item eine vollst\"andige Restklassen-Partition (Zylinder-Cover), in der jeder Zweig
+nach endlich vielen Schritten unter eine feste Schranke f\"allt, mit Lean-Claim
+\(\mathtt{True}\) statt Sample-Coverage;
+\item eine diophantische Absch\"atzung, die~\eqref{eq:cycle} f\"ur alle \(K\ge 3\)
+außer dem trivialen Orbit ausschließt, ohne eine nicht notwendige Kongruenz.
+\end{enumerate}
+Finite Sample-Cover, \(2\)-adische Ergodizit\"at und EABC-Sonden erf\"ullen keines
+dieser drei Kriterien~\cite{CollatzFast2026}.
+Das Residuen-Pruning \(\rho D>B\) (Gatter~D) ist ein deterministisches Branch-and-Bound auf \(\mathbb{N}\),
+t\"otet aber nur kontrahierende Zylinder \(D>0\); expandierende W\"orter wie \((2,1)^{\infty}\) bleiben.
+
+\section{Schluss}
+
+Die Collatz-Dynamik l\"asst sich im EABC-Rahmen als dissipative Bewegung auf einem
+diskreten Spinor \emph{lesen}.
+Die ungerade \(3\) und die Hecke-Stufe \(T_3\) sind dieselbe algebraische Zahl in
+zwei Sprachen.
+Das rechtfertigt die Einbettung als Forschungsprogramm.
+
+Es rechtfertigt nicht den Satz, jede Trajektorie erreiche \(1\).
+Divergenz und fremde Zyklen sind weiterhin die zwei Bastionen.
+Die Hoffbauer-Klammer und die Dedekind-Stufe \(24\) sind Sonden an \(\alpha^{-1}\),
+keine Schranken an \(T\).
+Die Collatz-Vermutung bleibt offen.
+
+\begin{thebibliography}{99}
+\bibitem{Tao2019}
+T.~Tao,
+\emph{Almost all orbits of the Collatz map attain almost bounded values},
+arXiv:1909.03562 [math.PR] (2019).
+
+\bibitem{Steiner1977}
+R.~P.~Steiner,
+\emph{A theorem on the Syracuse problem},
+Proc.\ 7th Manitoba Conf.\ Numerical Math.\ (1977), 553--559.
+
+\bibitem{SimonsDeWeger2005}
+J.~Simons, B.~de Weger,
+\emph{Theoretical and computational bounds for \(m\)-cycles of the \(3x+1\)-problem},
+Acta Arith.\ \textbf{117} (2005), 51--70.
+
+\bibitem{Lagarias1985}
+J.~C.~Lagarias,
+\emph{The \(3x+1\) problem and its generalizations},
+Amer.\ Math.\ Monthly \textbf{92} (1985), 3--23.
+
+\bibitem{EABC2026}
+T.~Hoffbauer,
+\emph{Hyperbolische Abschirmung und Dedekind-Ordnung:
+ein \(E_8\)-Zugang zum CODATA-Fenster von \(\alpha^{-1}\)},
+Preprint, Bamberg (2026).
+
+\bibitem{CollatzFast2026}
+Bamberg / Kepler--Hurwitz,
+\emph{Adaptive Cover und Zylinder-Partitionen -- Abschlussbericht},
+eabc-renorm, 25.~Juli 2026.
+\end{thebibliography}
+
+\end{document}

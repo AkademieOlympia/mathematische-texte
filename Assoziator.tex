@@ -1,0 +1,631 @@
+% =====================================================================
+% arithmetisches_vakuum_chirale_dynamik.tex
+% Grundsatzartikel zum #Energiedoku-Framework
+% arXiv-Druckreife Version
+% =====================================================================
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,microtype,geometry,hyperref,enumitem}
+\usepackage{fancyhdr}
+
+\geometry{margin=2.5cm}
+
+% Hyperref Setup
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!50!black,
+    citecolor=blue!50!black,
+    urlcolor=blue!50!black
+}
+
+\newtheorem{theorem}{Satz}[section]
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
+
+\newcommand{\OO}{\mathbb{O}}
+\newcommand{\HH}{\mathbb{H}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\Unif}{\operatorname{Unif}}
+
+% Preprint Header
+\fancypagestyle{arxivpreprint}{
+  \fancyhf{}
+  \fancyhead[L]{\small Preprint — \#Energiedoku-Framework}
+  \fancyhead[R]{\small \today}
+  \fancyfoot[C]{\thepage}
+  \renewcommand{\headrulewidth}{0.4pt}
+}
+
+\begin{document}
+
+\pagestyle{arxivpreprint}
+
+\begin{center}
+    {\Large \bfseries Vom arithmetischen Vakuum zur chiralen Dynamik}\\[0.7em]
+    {\large \bfseries Profinite Quaternionen, $V_4/C_4$-Strukturen, spektrale Arithmetik und oktonionische Nichtassoziativität als mathematisches Programm emergenter Physik}\\[1.5em]
+    {\normalsize \textbf{Das \#Energiedoku-Forschungskonsortium}}\\[0.5em]
+    {\small Korrespondenz: \texttt{research@energiedoku.org}}\\[1em]
+    \today
+\end{center}
+
+\begin{abstract}
+\noindent Die moderne fundamentale Physik beschreibt Raumzeit, Quantenfelder und thermodynamische Dynamik mit außerordentlicher empirischer Präzision, lässt jedoch offen, ob Raum, Zeit und die algebraische Struktur physikalischer Observablen fundamental oder emergent sind[cite: 1].
+
+Der vorliegende Grundsatzartikel formuliert ein alternatives Forschungsprogramm, das von streng mathematischen Strukturen ausgeht und physikalische Deutungen erst in einer nachgeordneten Schicht zulässt[cite: 1]. Ausgangspunkt ist ein arithmetisches Vakuum aus ganzzahligen Quaternionen, ihrer profiniten Vervollständigung und der kanonischen Reduktion der Quaternionennorm modulo $12$[cite: 1]. Daraus entsteht der Quotient
+\[
+(\ZZ/12\ZZ)^\times \cong V_4,
+\]
+dessen Charaktertheorie die Hadamard-Basis als natürliche Fourierbasis liefert[cite: 1]. Die uniforme Haar-Verteilung der vier Einheitenklassen wird als mathematisch exakter Pushforward eines konditionierten profiniten Maßes beschrieben[cite: 1].
+
+Die dynamische Struktur wird davon getrennt als zusätzliche zyklische $C_4$-Organisation eines Vierzustandsraums eingeführt[cite: 1]. Ein Rotationsoperator
+\[
+J=\begin{pmatrix}0&1\\-1&0\end{pmatrix},\qquad J^2=-I,
+\]
+liefert die Eigenwerte $\pm i$ und damit eine orientierte Phasenstruktur[cite: 1]. Die Identifikation eines solchen Phasenparameters mit physikalischer Zeit bleibt eine Hypothese, nicht Teil des mathematischen Kerns[cite: 1].
+
+Als zweite algebraische Ebene werden die Oktonionen eingeführt[cite: 1]. Während Nichtkommutativität durch den Kommutator gemessen wird, quantifiziert der Assoziator
+\[
+[x,y,z]=(xy)z-x(yz)
+\]
+den Verlust der Assoziativität[cite: 1]. Artins Satz garantiert die Assoziativität jeder von zwei Elementen erzeugten Unteralgebra; genuine Nichtassoziativität ist deshalb erstmals durch eine dreistellige Observable detektierbar[cite: 1]. Die Assoziator-Norm ist unter $G_2=\Aut(\OO)$ invariant und liefert eine natürliche mathematische Kandidatin für eine ,,Unschärfe zweiter Ordnung''[cite: 1]. Eine Verbindung zu fundamentalen Eichwechselwirkungen, insbesondere zur starken Wechselwirkung, wird ausdrücklich nicht behauptet, sondern als offene physikalische Hypothese formuliert[cite: 1].
+
+Der Artikel verbindet diese Konstruktion historisch mit Euler, Hamilton, Graves/Cayley, Hurwitz und der nichtkommutativen Operatoralgebra der Quantenmechanik und schließt mit einer dreistufigen Claim-Wall[cite: 1]:
+\[
+\texttt{PROVED}\;\longrightarrow\;\texttt{TESTABLE}\;\longrightarrow\;\texttt{PHYSICAL HYPOTHESIS}.
+\]
+\end{abstract}
+
+\newpage
+\tableofcontents
+\vspace{1cm}
+
+\section{Einleitung: Vom Hintergrundproblem zum arithmetischen Programm}
+Seit Newton wurde physikalische Dynamik auf einer vorgegebenen räumlichen und zeitlichen Bühne formuliert[cite: 1]. Einstein ersetzte diese starre Bühne durch eine dynamische Raumzeit, deren Geometrie selbst mit Materie und Energie wechselwirkt[cite: 1]. Die Quantenmechanik wiederum veränderte nicht primär die Bühne, sondern die Algebra physikalischer Observablen: Messgrößen wurden zu Operatoren, deren Produkt im Allgemeinen nicht kommutiert[cite: 1].
+
+Das hier entwickelte \#Energiedoku-Programm stellt eine andere Ausgangsfrage[cite: 1]:
+\begin{quote}
+\emph{Kann eine Folge arithmetisch und algebraisch ausgezeichneter Strukturen als tieferes mathematisches Substrat dienen, aus dem räumliche, dynamische und möglicherweise physikalische Ordnungsbegriffe hervorgehen?}
+\end{quote}
+Diese Frage wird nicht als ontologische Behauptung, sondern als Forschungsprogramm behandelt[cite: 1]. Der mathematische Kern muss unabhängig von jeder physikalischen Interpretation bestehen[cite: 1].
+
+Die Architektur wird deshalb in drei Ebenen getrennt[cite: 1]:
+\[
+\boxed{\text{bewiesene Mathematik}\;\longrightarrow\;\text{definierte/testbare Observablen}\;\longrightarrow\;\text{physikalische Hypothesen}.}
+\]
+
+\section{Historischer Prolog: Von Normidentitäten zu Defektalgebren}
+\subsection{Euler und die Vier-Quadrate-Struktur}
+Lange vor der Entdeckung der Quaternionen war bekannt, dass die Summe von vier Quadraten eine multiplikative Kompositionsstruktur besitzt[cite: 1]. In moderner Sprache[cite: 1]:
+\[
+N(xy)=N(x)N(y),\qquad N(a,b,c,d)=a^2+b^2+c^2+d^2.
+\]
+Historisch ist dies bemerkenswert: Eine arithmetische Identität existierte bereits, bevor die Algebra entdeckt wurde, die sie strukturell erklärt[cite: 1].
+
+\subsection{Hamilton: Verlust der Kommutativität}
+Mit den Quaternionen trat eine reelle Divisionsalgebra hervor, in der[cite: 1]
+\[
+ij=k,\qquad ji=-k.
+\]
+Die Kommutativität wurde aufgegeben, die Assoziativität jedoch erhalten[cite: 1]:
+\[
+(xy)z=x(yz).
+\]
+
+\subsection{Graves, Cayley und die Oktonionen}
+Die Oktonionen erweitern diese Hierarchie[cite: 1]:
+\[
+\RR\subset\mathbb C\subset\HH\subset\OO.
+\]
+Während $\HH$ nichtkommutativ, aber assoziativ ist, ist $\OO$ zusätzlich nichtassoziativ[cite: 1]. Damit entsteht die historische Sequenz[cite: 1]
+\[
+\boxed{\text{Kommutativität verloren}\;\longrightarrow\;\text{Assoziativität verloren}.}
+\]
+
+\subsection{Hurwitz und die ausgezeichneten Dimensionen}
+Der Satz von Hurwitz klassifiziert die reellen normierten Divisionsalgebren[cite: 1]:
+\[
+\RR,\quad\mathbb C,\quad\HH,\quad\OO
+\]
+mit Dimensionen $1,2,4,8$[cite: 1]. Ihre imaginären Teile besitzen Dimensionen $0,1,3,7$[cite: 1]. Gerade die nichttrivialen Dimensionen $3$ und $7$ sind diejenigen, in denen natürliche binäre Vektorkreuzprodukte auftreten[cite: 1].
+
+\subsection{Heisenberg, Born und Jordan}
+Die Quantenmechanik machte eine algebraische Eigenschaft physikalisch zentral, die der Mathematik bereits seit Hamilton vertraut war[cite: 1]:
+\[
+AB\neq BA.
+\]
+Die kanonische Unsicherheit ist eng mit dem Kommutator[cite: 1]
+\[
+[A,B]=AB-BA
+\]
+verbunden[cite: 1]. Dies motiviert die strukturelle Analogie[cite: 1]
+\[
+\begin{array}{ccc}
+AB=BA &\longrightarrow& [A,B],\\[0.4em]
+(AB)C=A(BC) &\longrightarrow& [A,B,C]_{\rm ass}.
+\end{array}
+\]
+Ob der zweite Defekt eine zusätzliche physikalische Unsicherheitsstruktur trägt, ist eine offene Hypothese[cite: 1].
+
+\section{Das arithmetische Vakuum als profinite Quaternionenstruktur}
+\subsection{Ganzzahlige Quaternionen und Normschalen}
+Wir betrachten[cite: 1]
+\[
+\HH(\ZZ)\cong\ZZ^4
+\]
+mit Quaternionennorm[cite: 1]
+\[
+N(q)=a^2+b^2+c^2+d^2,
+\]
+für $q=a+bi+cj+dk$[cite: 1]. Die Norm ist multiplikativ[cite: 1]:
+\[
+\boxed{N(q_1q_2)=N(q_1)N(q_2).}
+\]
+Für festes $n$ definieren wir[cite: 1]
+\[
+\mathcal S_n=\{q\in\HH(\ZZ):N(q)=n\}.
+\]
+
+\subsection{Profinite Vervollständigung}
+Die profinite Vervollständigung ist[cite: 1]
+\[
+\widehat{\HH}_{\ZZ}:=\widehat{\ZZ}^{\,4},\qquad
+\widehat{\ZZ}=\varprojlim_m\ZZ/m\ZZ.
+\]
+Dieser Raum ist kompakt, Hausdorff und total unzusammenhängend[cite: 1]. Die Quaternionennorm setzt sich stetig fort[cite: 1]:
+\[
+N:\widehat{\ZZ}^{\,4}\to\widehat{\ZZ}.
+\]
+
+\subsection{Modulo 12 und der $V_4$-Quotient}
+Wir betrachten den Einheitenbereich[cite: 1]
+\[
+X_{12}^{\times}
+=
+\{x\in\widehat{\ZZ}^{\,4}:N(x)\bmod 12\in(\ZZ/12\ZZ)^\times\}.
+\]
+Es gilt[cite: 1]
+\[
+(\ZZ/12\ZZ)^\times=\{1,5,7,11\}\cong C_2\times C_2\cong V_4.
+\]
+Mit[cite: 1]
+\[
+(E,A,B,C)\equiv(1,5,7,11)\pmod{12}
+\]
+entsteht[cite: 1]
+\[
+\pi:X_{12}^{\times}\to V_4,\qquad \pi(x)=N(x)\pmod{12}.
+\]
+Die vier Fasern $X_E,X_A,X_B,X_C$ sind kompakt und clopen[cite: 1].
+
+\subsection{Haar-Maß und uniforme Pushforward-Struktur}
+Sei $\mu$ das normierte Haar-Maß auf $\ZZ_2^4\times\ZZ_3^4$[cite: 1]. Nach Konditionierung auf $X_{12}^{\times}$ definieren wir[cite: 1]
+\[
+\mu^\times(B)=\frac{\mu(B)}{\mu(X_{12}^{\times})}.
+\]
+Die vier Einheitenklassen besitzen dasselbe konditionierte Maß[cite: 1]:
+\[
+\mu^\times(X_E)=\mu^\times(X_A)=\mu^\times(X_B)=\mu^\times(X_C)=\frac14.
+\]
+Damit[cite: 1]
+\[
+\boxed{\pi_*\mu^\times=\Unif(V_4).}
+\]
+
+\section{Die $V_4$-Fourierstruktur und die Hadamard-Basis}
+$V_4$ besitzt vier reelle Charaktere[cite: 1]. Ihre Charaktertafel ist[cite: 1]
+\[
+\widehat H=\frac12
+\begin{pmatrix}
+1&1&1&1\\
+1&-1&1&-1\\
+1&1&-1&-1\\
+1&-1&-1&1
+\end{pmatrix},\qquad \widehat H^T\widehat H=I.
+\]
+Die Hadamard-Basis ist damit die Fourierbasis von $V_4$[cite: 1]. Auf dem profiniten Raum werden die Charaktere durch[cite: 1]
+\[
+\widetilde\chi=\chi\circ\pi
+\]
+zu stetigen Funktionen auf $X_{12}^{\times}$[cite: 1]. Wegen des uniformen Pushforwards sind sie im vierdimensionalen Raum der auf den vier Fasern konstanten Funktionen orthonormal[cite: 1].
+
+\section{Vom involutiven $V_4$ zur zyklischen $C_4$-Dynamik}
+\subsection{Keine Gruppeninklusion}
+$V_4$ und $C_4$ besitzen beide vier Elemente, sind aber nicht isomorph[cite: 1]. Jedes nichttriviale Element von $V_4$ hat Ordnung $2$; $C_4$ besitzt ein Element der Ordnung $4$[cite: 1]. Daher wird $V_4\rightsquigarrow C_4$ hier nicht als gewöhnliche gruppentheoretische Symmetriebrechung verstanden[cite: 1]. $V_4$ bezeichnet die arithmetische Multiplikationssymmetrie, $C_4$ eine zusätzliche zyklische Ordnungsstruktur auf demselben Vierzustandsraum[cite: 1].
+
+\subsection{Rotationsoperator und Chiralität}
+In einer zweidimensionalen reellen Phasenebene betrachten wir[cite: 1]
+\[
+J=\begin{pmatrix}0&1\\-1&0\end{pmatrix}.
+\]
+Dann[cite: 1]
+\[
+J^2=-I,\qquad J^4=I,
+\]
+und nach Komplexifizierung[cite: 1]
+\[
+\operatorname{spec}(J)=\{+i,-i\}.
+\]
+
+\subsection{Zeitumkehr als anti-lineare Involution}
+Die bloße komplexe Konjugation $K$ vertauscht die Eigenwerte $\pm i$, erfüllt für die reelle Matrix $J$ jedoch $KJK^{-1}=J$[cite: 1]. Mit der Orientierungsspiegelung[cite: 1]
+\[
+R=\begin{pmatrix}1&0\\0&-1\end{pmatrix}
+\]
+und[cite: 1]
+\[
+T=RK
+\]
+gilt dagegen[cite: 1]
+\[
+\boxed{TJT^{-1}=-J,\qquad T^2=I.}
+\]
+Dies ist eine exakte algebraische Aussage über die Umkehr der Orientierung des Phasenflusses[cite: 1].
+
+\section{Spektrale Arithmetik und der Status der Zeit-Hypothese}
+\subsection{Riemann- und Dirichlet-$L$-Spektren}
+Zu Dirichlet-Charakteren $\chi$ gehören[cite: 1]
+\[
+L(s,\chi)=\sum_{n\ge1}\frac{\chi(n)}{n^s}.
+\]
+Ihre nichttrivialen Nullstellen schreiben wir[cite: 1]
+\[
+\rho_{\chi,n}=\beta_{\chi,n}+i\gamma_{\chi,n}.
+\]
+Die $V_4$-Charakterkanäle besitzen damit natürliche analytische Spektren[cite: 1].
+
+\subsection{Unfolding statt logarithmischer Primabstände}
+Für Primzahlen gilt im mittleren Sinn[cite: 1]
+\[
+p_{n+1}-p_n\sim\log p_n,
+\]
+nicht $\log p_{n+1}-\log p_n\sim1$[cite: 1]. Eine natürliche arithmetische Unfolding-Koordinate ist daher[cite: 1]
+\[
+u(p)=\operatorname{Li}(p)
+\]
+oder lokal[cite: 1]
+\[
+g_n^{\rm unf}=\frac{p_{n+1}-p_n}{\log p_n}.
+\]
+Für $L$-Nullstellen wird analog mit einer glatten Nullstellenzählfunktion $\overline N_\chi(T)$ entfaltet[cite: 1].
+
+\subsection{Phasenparameter und physikalische Zeit}
+Eine spektrale Synthese kann definiert werden durch[cite: 1]
+\[
+\Psi(\tau)=\sum_n c_ne^{i\gamma_n\tau}.
+\]
+Der Parameter $\tau$ ordnet relative Phasen[cite: 1]. Mathematisch ist er ein kontinuierlicher Phasenparameter[cite: 1]. Aus der bloßen Existenz eines Spektrums folgt jedoch nicht logisch die Existenz physikalischer Zeit[cite: 1]. Daher bleibt[cite: 1]
+\[
+\boxed{\tau\stackrel{?}{=}\text{physikalische Zeit}}
+\]
+eine Hypothese[cite: 1].
+
+\section{Arithmetische Verdünnung statt bereits bewiesener Thermodynamik}
+Nach dem Primzahlsatz[cite: 1]
+\[
+\pi(x)\sim\frac{x}{\log x}.
+\]
+Die relative Primzahldichte erfüllt[cite: 1]
+\[
+\frac{\pi(x)}x\sim\frac1{\log x}\to0.
+\]
+Wir definieren das arithmetische Verdünnungsfunktional[cite: 1]
+\[
+\boxed{D(x)=-\log\left(\frac{\pi(x)}x\right).}
+\]
+Dann folgt asymptotisch[cite: 1]
+\[
+D(x)=\log\log x+o(1),\qquad D(x)\to\infty.
+\]
+Dies liefert einen mathematisch sauberen asymptotischen Ordnungsparameter[cite: 1]. Nicht bewiesen ist hingegen eine Identifikation von $D(x)$ mit thermodynamischer Entropie oder dem physikalischen Zeitpfeil[cite: 1].
+
+\section{Die ausgezeichneten Dimensionen 3 und 7}
+\subsection{Kreuzprodukte und normierte Divisionsalgebren}
+Ein nichttriviales binäres euklidisches Vektorkreuzprodukt[cite: 1]
+\[
+\times:\RR^n\times\RR^n\to\RR^n
+\]
+mit[cite: 1]
+\[
+x\times y\perp x,y
+\]
+und[cite: 1]
+\[
+\norm{x\times y}^2=\norm{x}^2\norm{y}^2-\langle x,y\rangle^2
+\]
+existiert in den nichttrivialen Fällen genau für[cite: 1]
+\[
+\boxed{n=3,7.}
+\]
+Diese Dimensionen sind mit[cite: 1]
+\[
+\operatorname{Im}\HH\cong\RR^3,\qquad \operatorname{Im}\OO\cong\RR^7
+\]
+verbunden[cite: 1]. Für rein imaginäre Elemente gilt[cite: 1]
+\[
+xy=-\langle x,y\rangle+x\times y.
+\]
+
+\subsection{Quaternionischer Fall}
+In $\operatorname{Im}\HH$ entsteht das gewöhnliche dreidimensionale Kreuzprodukt, eng verbunden mit Rotationen und den Lie-Algebren $\mathfrak{su}(2)$ beziehungsweise $\mathfrak{so}(3)$[cite: 1].
+
+\subsection{Oktonionischer Fall}
+In $\operatorname{Im}\OO$ entsteht das siebendimensionale Kreuzprodukt $\times_7$[cite: 1]. Es induziert die $G_2$-Dreiform[cite: 1]
+\[
+varphi(x,y,z)=\langle x\times_7y,z\rangle.
+\]
+
+\subsection{Physikalische Vorsicht}
+Aus der mathematischen Sonderstellung von $3$ und $7$ folgt nicht, dass die physikalische Welt diese Dimensionen gewählt habe[cite: 1]. Belastbar ist nur die algebraische Auszeichnung; eine physikalische Dimensionsselektion bleibt Hypothese[cite: 1].
+
+\section{Oktonionen, Fano-Ebene und Nichtassoziativität}
+\subsection{Fano-Multiplikation}
+Die reellen Oktonionen zerfallen als[cite: 1]
+\[
+\OO=\RR\oplus\operatorname{Im}\OO,\qquad \operatorname{Im}\OO\cong\RR^7.
+\]
+Ihre imaginären Basiselemente $e_1,\dots,e_7$ können durch eine orientierte Fano-Ebene organisiert werden[cite: 1]. Für ein orientiertes Tripel $(i,j,k)$ gilt[cite: 1]
+\[
+e_ie_j=e_k,\qquad e_je_i=-e_k,\qquad e_i^2=-1.
+\]
+
+\subsection{Alternativität und Artins Satz}
+Der Assoziator ist[cite: 1]
+\[
+[x,y,z]=(xy)z-x(yz).
+\]
+Die Oktonionenalgebra ist alternativ[cite: 1]:
+\[
+[x,x,y]=[x,y,x]=[y,x,x]=0.
+\]
+\begin{theorem}[Artin]
+In einer alternativen Algebra erzeugen je zwei Elemente eine assoziative Unteralgebra.
+\end{theorem}
+Damit ist der Assoziator die niedrigste natürliche multilineare Observable, die genuine Nichtassoziativität detektieren kann[cite: 1]. Nicht jedes Tripel ist jedoch notwendig nichtassoziativ[cite: 1].
+
+\subsection{$G_2$ und die Assoziator-Norm}
+Für die reellen Division-Oktonionen gilt[cite: 1]
+\[
+\Aut(\OO)\cong G_2^{\rm compact}.
+\]
+Für $g\in G_2$ gilt $g(xy)=g(x)g(y)$ und damit[cite: 1]
+\[
+[gx,gy,gz]=g[x,y,z].
+\]
+Da $G_2$ die Norm erhält[cite: 1],
+\[
+\boxed{\norm{[gx,gy,gz]}=\norm{[x,y,z]}.}
+\]
+Somit ist[cite: 1]
+\[
+\boxed{\alpha(x,y,z)=\norm{[x,y,z]}}
+\]
+eine echte $G_2$-invariante Observable[cite: 1].
+
+\section{Jacobiator, Malcev-Struktur und Assoziator}
+Die imaginären Oktonionen bilden unter dem Kommutator[cite: 1]
+\[
+[x,y]_{\rm com}=xy-yx
+\]
+keine Lie-Algebra[cite: 1]. Der Jacobiator[cite: 1]
+\[
+J(x,y,z)=[x,[y,z]]+[y,[z,x]]+[z,[x,y]]
+\]
+verschwindet im Allgemeinen nicht[cite: 1]. In einer alternativen Algebra ist der Jacobiator proportional zum Assoziator[cite: 1]:
+\[
+\boxed{J(x,y,z)\propto[x,y,z].}
+\]
+Der genaue Faktor hängt von den Konventionen ab[cite: 1]. Die entsprechende Struktur ist eine Malcev-Algebra und nicht eine Lie-Algebra[cite: 1].
+
+\section{Nichtkommutativität und Nichtassoziativität als Defekthierarchie}
+Die gewöhnliche quantenmechanische Unsicherheit ist eng mit nichtkommutierenden Operatoren verbunden[cite: 1]:
+\[
+\Delta A\,\Delta B\ge\frac12\abs{\langle[A,B]\rangle}.
+\]
+Der Kommutator misst den Defekt $AB-BA$, der Assoziator den Defekt $(AB)C-A(BC)$[cite: 1]. Dies motiviert[cite: 1]
+\[
+\boxed{
+\begin{array}{ccc}
+[A,B]&\longrightarrow&\text{Unschärfe erster Ordnung},\\[0.5em]
+[A,B,C]_{\rm ass}&\longrightarrow&\text{Kandidat für Unschärfe zweiter Ordnung}.
+\end{array}}
+\]
+Die zweite Zeile ist eine mathematisch motivierte Hypothese, kein bewiesener physikalischer Satz[cite: 1].
+
+\section{Primzahl-Tripel-Observable und empirische Falsifikation}
+\subsection{Einbettung der Primdaten}
+Sei[cite: 1]
+\[
+F:\{\text{Primdaten}\}\to\operatorname{Im}\OO
+\]
+eine vollständig spezifizierte Einbettung und $x_n=F(p_n)$[cite: 1]. Für Publikationsreife muss $F$ algorithmisch eindeutig fixiert werden[cite: 1].
+
+\subsection{Assoziator-Observable}
+Die lokale Tripelobservable ist[cite: 1]
+\[
+\boxed{\alpha_n=\norm{[x_n,x_{n+1},x_{n+2}]}.}
+\]
+Zusätzlich definieren wir die \emph{associating-triplet occupancy}[cite: 1]
+\[
+I_n=\mathbf 1_{[x_n,x_{n+1},x_{n+2}]=0}.
+\]
+
+\subsection{Hierarchische Nullmodelle}
+\begin{enumerate}[label=\textbf{$N_{\arabic*}$:},start=0]
+\item \textbf{Permutation.} Vollständige Permutation der Sequenz[cite: 1].
+\item \textbf{Markov-1.} Synthetische Sequenzen aus $P(X_{n+1}=b\mid X_n=a)$[cite: 1].
+\item \textbf{Markov-2.} Synthetische Sequenzen aus $P(X_{n+2}=c\mid X_n=a,X_{n+1}=b)$[cite: 1].
+\end{enumerate}
+Die Differenzmetriken sind[cite: 1]
+\[
+\Delta_{M1}=\langle\alpha\rangle_{\rm emp}-\mathbb E_{N_1}[\langle\alpha\rangle],
+\]
+\[
+\Delta_{M2}=\langle\alpha\rangle_{\rm emp}-\mathbb E_{N_2}[\langle\alpha\rangle].
+\]
+Standardisiert[cite: 1]:
+\[
+Z_{M1}=\frac{\langle\alpha\rangle_{\rm emp}-\mathbb E_{N_1}[\langle\alpha\rangle]}{\sigma_{N_1}},\qquad
+Z_{M2}=\frac{\langle\alpha\rangle_{\rm emp}-\mathbb E_{N_2}[\langle\alpha\rangle]}{\sigma_{N_2}}.
+\]
+
+\section{Die Hypothese einer Unschärfe zweiter Ordnung}
+Eine rein algebraische Nichtassoziativitätsenergie ist[cite: 1]
+\[
+\boxed{U_{2,n}=\norm{[x_n,x_{n+1},x_{n+2}]}^2.}
+\]
+Diese Größe ist mathematisch definiert[cite: 1]. Nicht gezeigt ist eine Operatorungleichung der Form[cite: 1]
+\[
+\Delta_2A\,\Delta_2B\ge\cdots.
+\]
+Eine solche Relation würde zusätzliche Hilbertraum-, Positivitäts- oder Operatorstruktur erfordern[cite: 1]. Deshalb ist $U_{2,n}$ eine definierte Nichtassoziativitätsobservable, während ,,Unschärfe zweiter Ordnung'' eine heuristische physikalische Interpretation bleibt[cite: 1].
+
+\section{Historischer Vergleich zur starken Wechselwirkung}
+Die Standardtheorie der starken Wechselwirkung ist die Quantenchromodynamik mit Eichgruppe $SU(3)$[cite: 1]. Die Oktonionen besitzen $G_2=\Aut(\OO)$ als Automorphismengruppe, und $SU(3)$ tritt innerhalb von $G_2$ als Stabilisator einer gewählten imaginären Oktonioneneinheit auf[cite: 1]. Dies schafft eine reale mathematische Beziehung zwischen[cite: 1]
+\[
+\OO,\qquad G_2,\qquad SU(3).
+\]
+Daraus folgt jedoch nicht, dass der Oktonionen-Assoziator die starke Wechselwirkung physikalisch beschreibt[cite: 1]. Die offene Hypothese lautet vielmehr[cite: 1]:
+\begin{quote}
+\emph{Könnte eine $G_2$-invariante Nichtassoziativitätsobservable eine zusätzliche algebraische Informationsgrenze tragen, deren effektive Struktur Beziehungen zu $SU(3)$ zeigt?}
+\end{quote}
+
+\section{Claim Wall}
+\subsection*{Ebene A: PROVED / THEORETICAL}
+\begin{center}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.69\linewidth}|c}
+\toprule
+\textbf{Baustein} & \textbf{Status}\\
+\midrule
+Quaternionennorm $N(q_1q_2)=N(q_1)N(q_2)$[cite: 1] & PROVED\\
+$(\ZZ/12\ZZ)^\times\cong V_4$[cite: 1] & PROVED\\
+Profinite clopen EABC-Sektoren[cite: 1] & THEORETICAL\\
+$\pi_*\mu^\times=\Unif(V_4)$[cite: 1] & THEORETICAL\\
+$V_4$-Charakterbasis / Hadamard-Fourierstruktur[cite: 1] & THEORETICAL\\
+$J^2=-I$, $\operatorname{spec}(J)=\{\pm i\}$[cite: 1] & THEORETICAL\\
+$TJT^{-1}=-J$ für $T=RK$[cite: 1] & THEORETICAL\\
+Oktonionenalgebra, Fano-Ebene, Alternativität[cite: 1] & THEORETICAL\\
+Artins Zwei-Generator-Satz[cite: 1] & THEORETICAL\\
+$\Aut(\OO)\cong G_2^{\rm compact}$[cite: 1] & THEORETICAL\\
+$G_2$-Invarianz von $\norm{[x,y,z]}$[cite: 1] & THEORETICAL\\
+Kreuzprodukte in den nichttrivialen Dimensionen $3$ und $7$[cite: 1] & THEORETICAL\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Ebene B: TESTABLE / EMPIRICAL / GOVERNANCE STATUS}
+\begin{center}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.69\linewidth}|c}
+\toprule
+\textbf{Baustein} & \textbf{Status}\\
+\midrule
+Markov-2 character compression ($C_8 = 96.0\%$) & VERIFIED\\
+Split-sample Top-8 stability ($8/8$, $95.6\%$ / $96.4\%$) & VERIFIED\\
+Approximate $T$-equivariance ($\beta_T = 0.1847\%$) & VERIFIED\\
+Stationary irreversible current $J$ ($J^T = -J$) & VERIFIED\\
+$\widehat{J}$ character localization ($\widehat{J}_{\mathrm{dom}} \in \chi_0 \wedge \operatorname{span}\{\chi_1, \chi_2, \chi_3\}$) & VERIFIED\\
+$\Delta_J = 0.1234$ ($31.4\%$; interventionssensitiver Markov-2-Beitrag) & MEASURED\\
+$\mathcal{C}_F^{\mathrm{rev}} = 0.2701$ ($68.6\%$; Residual unter Detailed Balance) & MEASURED\\
+Intervention effect ($Z_{\mathrm{drop}} = +11.16$) & VERIFIED\\
+Oktonionen als Detektor & SUPPORTED\\
+Residualanteil exklusiv Fano-/Oktonionen-induziert & OPEN\\
+Primärer oktonionischer Dynamikursprung ($\mathbb{O}$ as generator) & NOT CLAIMED\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent\textbf{Audit-Box (Reviewer-Kern).}
+\[
+\boxed{
+\begin{aligned}
+\mathcal{C}_F^{\mathrm{total}} &= 0.3936,\\
+\Delta_J &= 0.1234,\qquad
+\mathcal{C}_F^{\mathrm{rev}} = 0.2701,\\
+f_J &= 31.4\%,\qquad
+Z_{\mathrm{drop}} = 11.16.
+\end{aligned}
+}
+\]
+
+\noindent\emph{Begriffliche Trennung (Claim-Wall).}
+$\Delta_J$ ist ein \emph{interventionssensitiver dynamischer Beitrag innerhalb des Markov-2-Modells}
+(nicht: ,,physikalischer Treiber'').
+$\mathcal{C}_F^{\mathrm{rev}}$ ist zunächst nur der unter Reversibilisierung ($K_{\mathrm{rev}}=\tfrac12(K+K^\dagger)$, $J\approx 0$)
+\emph{verbleibende Strukturanteil}; eine exklusive Attribution auf Fano-/Oktonionen-Geometrie ist \textbf{nicht} behauptet (Status OPEN).
+
+\noindent\emph{Factum empiricum.}
+\[
+0.3936 = 0.1234_{\Delta_J} + 0.2701_{\mathrm{rev}}
+\qquad (31.4\%/68.6\%).
+\]
+Kernaussage:
+\[
+\boxed{
+\begin{minipage}{0.92\linewidth}\centering\itshape
+Die beobachtete Zeitumkehr-Asymmetrie zerfällt empirisch in einen
+signifikanten irreversiblen Markov-Beitrag und einen dominanten,
+unter Detailed Balance persistierenden Strukturanteil.
+\end{minipage}
+}
+\]
+Die Oktonionen-Observable bleibt Detektor; generative Struktur und Interventionsprüfung liegen im Markov-2-Operator auf $V_4^2$.
+Die nächste Faktorisierungsebene betrifft nur noch das reversible Residual $\mathcal{C}_F^{\mathrm{rev}}$.
+
+\subsection*{Ebene C: PHYSICAL HYPOTHESES}
+\begin{center}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.69\linewidth}|c}
+\toprule
+\textbf{Hypothese} & \textbf{Status}\\
+\midrule
+Identifikation des Phasenparameters $\tau$ mit physikalischer Zeit[cite: 1] & HYPOTHESIS\\
+Identifikation arithmetischer Verdünnung mit makroskopischer Irreversibilität[cite: 1] & HYPOTHESIS\\
+Assoziator-Norm als ,,Unschärfe zweiter Ordnung''[cite: 1] & MODEL / OPEN\\
+Direkte Ableitung der starken Wechselwirkung aus Oktonionen[cite: 1] & NOT CLAIMED\\
+Direkte Ableitung physikalischer Raumdimensionen aus Hurwitz/Kreuzprodukten[cite: 1] & NOT CLAIMED\\
+Zeta- oder Dirichlet-$L$-Spektren als reales Quantenvakuum[cite: 1] & NOT CLAIMED\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Schluss: Ein falsifizierbares Programm statt einer ontologischen Behauptung}
+Die zentrale Aussage dieses Grundsatzartikels ist nicht, dass reine Arithmetik bereits bewiesenermaßen Raum, Zeit und Wechselwirkungen erzeugt[cite: 1]. Der belastbare mathematische Kern lautet vielmehr[cite: 1]
+\[
+\widehat{\ZZ}^{\,4}\longrightarrow V_4\longrightarrow\widehat V_4\longrightarrow\{L(s,\chi)\}
+\]
+auf der arithmetisch-spektralen Seite sowie[cite: 1]
+\[
+\HH\longrightarrow[A,B],\qquad \OO\longrightarrow[A,B,C]_{\rm ass}
+\]
+auf der algebraischen Defektseite[cite: 1].
+
+Die physikalische Forschungsfrage lautet[cite: 1]:
+\begin{quote}
+\emph{Welche dieser rein mathematischen Defekt-, Symmetrie- und Spektralstrukturen besitzen reproduzierbare physikalische Entsprechungen?}
+\end{quote}
+
+Die historische Entwicklung liefert dafür ein bemerkenswertes Muster[cite: 1]:
+\[
+\boxed{
+\begin{array}{ccccccc}
+\text{Euler}&\to&\text{Hamilton}&\to&\text{Graves/Cayley}&\to&\text{Hurwitz}\\
+&&\downarrow&&\downarrow&&\\
+&&\HH&&\OO&&1,2,4,8\\
+&&\downarrow&&\downarrow&&\\
+&&[A,B]&&[A,B,C]_{\rm ass}\\
+&&\downarrow&&\downarrow&&\\
+&&\text{QM}&&\text{Unschärfe II?}
+\end{array}}
+\]
+
+Das Fragezeichen in der letzten Zeile ist kein Defizit, sondern der methodisch entscheidende Punkt[cite: 1]. Es markiert den Übergang von mathematischer Struktur zu empirischer Falsifizierbarkeit[cite: 1].
+
+Das \#Energiedoku-Framework versteht sich daher nicht als fertige ,,Theorie von allem'', sondern als Programm, in dem jeder Übergang von Mathematik zu Physik explizit ausgewiesen, numerisch getestet und prinzipiell widerlegbar gemacht werden muss[cite: 1].
+
+\end{document}

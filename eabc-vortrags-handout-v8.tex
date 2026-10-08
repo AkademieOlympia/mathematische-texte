@@ -1,0 +1,355 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=12mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,booktabs,tabularx,array,xcolor,tcolorbox,microtype}
+\usepackage{enumitem}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+\definecolor{navy}{RGB}{18,48,82}
+\definecolor{green}{RGB}{29,112,76}
+\definecolor{amber}{RGB}{171,111,0}
+\definecolor{red}{RGB}{151,45,45}
+\definecolor{softblue}{RGB}{239,245,251}
+\definecolor{softgray}{RGB}{246,247,249}
+\newtcolorbox{proofbox}[1][]{colback=softblue,colframe=navy,boxrule=.7pt,arc=1.5mm,left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,#1}
+\newtcolorbox{statusbox}[1][]{colback=softgray,colframe=black!45,boxrule=.6pt,arc=1.5mm,left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,#1}
+\newcommand{\PASS}{\textcolor{green}{\textbf{PASS}}}
+\newcommand{\OPEN}{\textcolor{amber}{\textbf{OFFEN}}}
+\newcommand{\FAIL}{\textcolor{red}{\textbf{FAIL}}}
+\begin{document}
+
+{\Large\bfseries EABC -- Beweisfahrplan für das Kolloquium}\hfill{\small Handout v8}\\[-1mm]
+{\small Arithmetik, ternäre Gates und platonisch-quaternionische Geometrie -- Status strikt getrennt}
+\vspace{2mm}
+\hrule
+\vspace{3mm}
+
+\begin{proofbox}
+\textbf{Leitprinzip.} Keine Struktur wird durch Analogie aufgewertet. Jeder Übergang wird als eigener, falsifizierbarer Pfeil behandelt:
+\[
+\text{arithmetische Invariante}
+\;\stackrel{?}{\longrightarrow}\;
+\text{Grad-/Faserstruktur}
+\;\stackrel{?}{\longrightarrow}\;
+\text{Fano-/Gitterstruktur}.
+\]
+\end{proofbox}
+
+\textbf{1. Quadratische Reziprozität: exakt lokalisierte Reichweite}
+
+Für Primzahlen $p>3$ wird die EABC-Klasse durch
+\[
+(\mathbb Z/12\mathbb Z)^\times=\{1,5,7,11\}\cong V_4
+\]
+organisiert. Der reziproke Symmetriedefekt reduziert sich exakt auf das mod-$4$-Bit
+\[
+c(p,q)=b(p)b(q)\in\mathbb F_2.
+\]
+Damit entsteht ein sauberer binärer Superbraiding-Sektor. Der daraus gebildete ternäre Orientierungsdefekt
+\[
+T(x,y,z)=b_xb_y+b_yb_z+b_zb_x
+\]
+ist jedoch paarweise rekonstruierbar und verletzt die Alternativität, denn $T(x,x,z)=b_x$. Daher:
+\[
+\boxed{\text{quadratische Reziprozität}\not\Rightarrow\text{oktonionischer Assoziator}.}
+\]
+
+\textbf{2. Gate $G_5$: genuine ternäre Arithmetik}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{>{\bfseries}l X l}
+\toprule
+Gate & Prüfgegenstand & Status\\
+\midrule
+$G_{5.0}$ & paarweise Legendre-Trivialität / Eingang in den ternären Testsektor & exakt prüfbar\\
+$G_{5.1}$ & Rédei-Symbol als unabhängige ternäre arithmetische Invariante & Referenzanker vorhanden\\
+$G_{5.2}$ & Abstieg auf EABC-Grade & \OPEN\\
+$G_{5.3}$ & volle ternäre/Fano-kompatible Struktur & \OPEN\\
+$G_{5.4}$ & exakter Match mit v26-Fano-Assoziator & \OPEN\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{statusbox}
+\textbf{Referenzpaar.} $(13,17,97)$ scheitert bereits an $G_{5.0}$. Das Tripel $(5,41,61)$ besitzt paarweise triviale Legendre-Daten und dient mit dem klassischen Rédei-Wert $[5,41,61]=-1$ als ternärer Anker. Daraus folgt \emph{nicht} bereits ein Fano-Descent.
+\end{statusbox}
+
+\textbf{3. Klassische geometrische Kette}
+\[
+\boxed{
+\text{Ikosaeder}\to A_5\to 2I\subset\mathbb H\to H_4\to\text{Ikosianen}\to E_8
+}
+\]
+Diese Kette ist etablierte Mathematik. Offen ist nicht ihre Existenz, sondern die kanonische Kopplung der EABC-Faktorwort-/mod-$12$-Gradierung an diese Geometrie.
+
+\vfill
+{\footnotesize Statussprache: \PASS\ = mathematisch/auditiert gesichert; \OPEN\ = explizite Brücke fehlt; \FAIL\ = vorgeschlagene direkte Identifikation falsifiziert.}
+
+\newpage
+
+{\Large\bfseries Seite 2 -- Geometrische Reduktion an $G_{\mathrm{ID}}$}\hfill{\small Maschinenexakter Gruppentheorie-Audit}
+\vspace{2mm}
+\hrule
+\vspace{3mm}
+
+\begin{proofbox}
+\textbf{Ausgangspunkt.} Eine Kleinsche Vierergruppe $V_4\le A_5$ wirkt frei auf den 12 Ikosaederecken. Daher zerfällt die Eckenmenge in genau drei freie $V_4$-Orbits zu je vier Punkten. Eine $V_4$-äquivariante EABC-Beschriftung ist auf jedem Orbit durch einen Shift $s_i\in V_4$ bestimmt.
+\end{proofbox}
+
+\begin{center}
+\vspace{1mm}
+{\Large\bfseries
+$\boxed{64}$
+$\;\xrightarrow{\ /V_4\ \text{Gauge}\ }\;$
+$\boxed{16}$
+$\;\xrightarrow{\ N_{A_5}(V_4)/V_4\cong\mathbb Z_3\ }\;$
+$\boxed{4}$}
+\vspace{2mm}
+
+\small
+\begin{tabular}{c@{\qquad}c@{\qquad}c}
+$4^3$ äquivariante Labelings & Translationsklassen & Normalisator-Fixklassen\\
+\end{tabular}
+\end{center}
+
+\vspace{3mm}
+\textbf{Exakter Audit.}
+\[
+|A_5|=60,\qquad |V_4|=4,\qquad |N_{A_5}(V_4)|=12.
+\]
+Auf den 16 Gauge-Klassen wirkt der Quotient
+\[
+N_{A_5}(V_4)/V_4\cong C_3.
+\]
+Die Orbitzerlegung lautet exakt
+\[
+\boxed{1+1+1+1+3+3+3+3=16.}
+\]
+Äquivalent auf den 64 ursprünglichen Beschriftungen:
+\[
+\boxed{4+4+4+4+12+12+12+12=64.}
+\]
+
+\begin{center}
+\begin{tcolorbox}[width=.88\textwidth,colback=softblue,colframe=navy,boxrule=.8pt,arc=1.5mm]
+\centering
+{\large\bfseries Die Fixpunkt-Triade}\\[1mm]
+\[
+\boxed{4\text{ normalisator-fixe Gauge-Klassen}}
+=\boxed{1\text{ trivial}}\;\sqcup\;\boxed{3\text{ nichttriviale Kandidaten }\mathcal C_1,\mathcal C_2,\mathcal C_3}.
+\]
+\end{tcolorbox}
+\end{center}
+
+\textbf{Gate-Status nach dem Audit}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{>{\bfseries}l X l}
+\toprule
+Gate & Aussage & Status\\
+\midrule
+$G_{\mathrm{ID},4a}$ & $V_4$-äquivariante $3+3+3+3$-Beschriftungen existieren & \PASS\\
+$G_{\mathrm{ID},4b}^{\rm geom}$ & Geometrie reduziert $16$ Gauge-Klassen auf $4$ Fixklassen & \PASS\\
+$G_{\mathrm{ID},4c}$ & arithmetischer Selektor wählt kanonisch unter $\mathcal C_1,\mathcal C_2,\mathcal C_3$ & \OPEN\\
+$G_{\mathrm{ID},5}$ & kompatibler Faktorwort-$\to$Quaternionen-/Ikosian-/E8-Lift & \OPEN\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{statusbox}
+\textbf{Verbleibende Forschungsfrage.} Die Geometrie liefert drei nichttriviale, normalisator-fixe Kandidaten. Zu prüfen ist, ob eine unabhängige arithmetische Invariante -- etwa Rédei-/höhere ternäre Daten -- eine wohldefinierte, repräsentantenunabhängige Auswahl
+\[
+\{\mathcal C_1,\mathcal C_2,\mathcal C_3\}\stackrel{?}{\longrightarrow}\mathcal C_{\rm arith}
+\]
+erzeugt. Ein solcher Selektor wäre ein neues Theorem; er wird nicht vorausgesetzt.
+\end{statusbox}
+
+\begin{proofbox}
+\textbf{Prüfungssatz für die Kommission.} Die Reduktion $64\to16\to4$ ist ein endliches, maschinenexakt reproduziertes Gruppentheorie-Resultat. Die Auswahl einer der drei nichttrivialen Fixklassen und ihr möglicher $E_8$-Lift bleiben ausdrücklich getrennte offene Gates.
+\end{proofbox}
+
+\vfill
+{\footnotesize Reproduzierbarer Audit: $A_5/C_5$ als 12-Eckenmenge, $V_4$-Normalisator in $A_5$, kombinierte Normalisator-/Gauge-Wirkung. Keine Aussage über thermische oder dynamische Stabilität wird aus dem Stabilisator allein abgeleitet.}
+
+
+\newpage
+
+{\Large\bfseries Seite 3 -- Additive Conservation Sector}\hfill{\small Additive Bilanz und Faktorwort strikt getrennt}
+\vspace{2mm}
+\hrule
+\vspace{3mm}
+\small
+
+\begin{proofbox}
+\textbf{Definition (additive Ladung).} Für einen endlichen Zustand $X=\{x_1,\dots,x_k\}$ aus zugelassenen arithmetischen Labels definieren wir
+\[
+Q(X):=\sum_{j=1}^{k}x_j.
+\]
+Ein Übergang $X\to Y$ heißt \emph{additiv zulässig}, wenn
+\[
+\boxed{Q(X)=Q(Y).}
+\]
+Dies ist zunächst eine definierte kombinatorische Invariante. Eine Interpretation als Energie- oder Noether-Ladung erfordert zusätzlich eine Dynamik, eine Wirkung und eine zugehörige kontinuierliche Symmetrie und wird hier nicht vorausgesetzt.
+\end{proofbox}
+
+\textbf{4. Additiver und multiplikativer Sektor}
+
+Die additive Bilanz wird vom bisherigen multiplikativen Faktorwortsektor getrennt geführt:
+\[
+\boxed{Q(X)=\sum_{x\in X}x}
+\qquad\text{gegenüber}\qquad
+\boxed{W(N)=(p_1,\ldots,p_{\Omega(N)})}.
+\]
+Im Faktorwortsektor bleiben ausschließlich die atomaren Primfaktoren mit Multiplizität erhalten; zusammengesetzte Teilprodukte erzeugen keine neuen Generatoren. Der additive Sektor klassifiziert dagegen zulässige Umordnungen beziehungsweise Zerlegungen mit konstantem $Q$.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{>{\bfseries}p{3.2cm} X X}
+\toprule
+Objekt & Mathematische Rolle & Status im Modell\\
+\midrule
+$Q(X)$ & additive Summeninvariante & definitorisch exakt\\
+$W(N)$ & eindeutiges multiplikatives Faktorwort & arithmetische Grundstruktur\\
+$1$ & multiplikatives neutrales Element; keine Primzahl & exakt\\
+$1$ im additiven Sektor & optionaler Bilanzausgleich in zugelassenen Zerlegungen & Modellkonvention\\
+``Energie'' von $Q$ & physikalische Interpretation & nicht vorausgesetzt\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\textbf{5. Die Doppelrolle der $1$}
+
+Die Zahl $1$ wird ausdrücklich \emph{nicht} als Primzahl behandelt. Multiplikativ gilt
+\[
+1\cdot p=p,
+\]
+und für das leere Faktorwort kann konsistent
+\[
+W(1)=\varnothing
+\]
+gesetzt werden. Additiv darf $1$, sofern die gewählte Zustandsklasse dies zulässt, als kleinster Bilanzausgleich auftreten, etwa
+\[
+2+2=3+1.
+\]
+Diese Gleichung ist eine additive Partition von $4$; sie beweist weder eine Primzahlerzeugung noch eine physikalische Selbstenergie.
+
+\begin{statusbox}
+\textbf{Epistemische Grenze.} Die Formulierung
+\[
+X\to Y\;\Longrightarrow\;Q(X)=Q(Y)
+\]
+ist ein mathematisch testbarer Erhaltungskanal innerhalb des definierten Übergangssystems. Erst ein separat konstruierter Hamiltonoperator $H$, eine Wirkung $S$ oder eine kontinuierliche Symmetrie könnte eine Noether- beziehungsweise Energieinterpretation rechtfertigen.
+\end{statusbox}
+
+\textbf{6. Primzahlzwillinge als Observable, nicht als Postulat}
+
+Für ungerade Primzahlen ist $\Delta p=2$ der kleinste mögliche positive Abstand zweier verschiedener Primzahlen. Das Modell darf daher untersuchen, ob seine \emph{eigenständig definierte} Dynamik Übergänge mit
+\[
+\Delta p=2
+\]
+statistisch bevorzugt. Die zulässige Forschungsfrage lautet
+\[
+\boxed{\text{Erzeugt die arithmetische Übergangsdynamik einen Bias bei }\Delta p=2\text{?}}
+\]
+Eine positive numerische Antwort wäre zunächst ein statistischer Befund des Modells und kein Beweis der Primzahlzwillingsvermutung.
+
+\begin{proofbox}
+\textbf{Prüfungssatz für die Kommission.} Der Additive Conservation Sector ergänzt die Faktorwortarchitektur um eine exakt definierte Summeninvariante, ohne die $1$ zur Primzahl oder zu einer postulierten Vakuumenergie aufzuwerten. Additive Bilanz, multiplikative Faktorisierung und physikalische Interpretation bleiben drei getrennte Ebenen.
+\end{proofbox}
+
+\vfill
+{\footnotesize Methodischer Status: mathematische Definitionen und arithmetische Identitäten = exakt; dynamischer $\Delta p=2$-Bias = testbare Hypothese; Noether-/QFT-Deutung = nur nach separater Konstruktion einer geeigneten Dynamik.}
+
+
+\newpage
+
+{\Large\bfseries Seite 4 -- Airy-Kalibrierung des lokalen Cusp-Operators}\hfill{\small Exakte Referenzlösung}
+\vspace{2mm}
+\hrule
+\vspace{3mm}
+\small
+
+\begin{proofbox}
+\textbf{Lokales Referenzproblem.} Für
+\[
+H_a=-\frac{d^2}{dT^2}+a|T|,\qquad a>0,
+\]
+führt die Skalierung $T=a^{-1/3}x$ exakt auf
+\[
+H_a=a^{2/3}\left(-\frac{d^2}{dx^2}+|x|\right).
+\]
+Damit gilt für alle Eigenwerte
+\[
+\boxed{E_n(a)=a^{2/3}E_n(1).}
+\]
+Für $a=8$ ist die universelle Skaleneinheit daher $8^{2/3}=4$.
+\end{proofbox}
+
+\textbf{7. Parität und Airy-Nullstellen}
+
+Auf der ganzen Geraden zerfällt das Spektrum nach Parität. Für $T>0$ erfüllt die Eigenfunktion die Airy-Gleichung. Gerade Zustände gehorchen $\psi'(0)=0$ und werden durch Nullstellen von $\operatorname{Ai}'$ bestimmt; ungerade Zustände gehorchen $\psi(0)=0$ und werden durch Nullstellen von $\operatorname{Ai}$ bestimmt. Mit den positiven Beträgen der negativen Nullstellen $|a_k'|$ bzw. $|a_k|$ gilt insbesondere
+\[
+E_0=4|a_1'|,\qquad E_1=4|a_1|.
+\]
+Numerisch
+\[
+|a_1'|\approx1.018793,\qquad |a_1|\approx2.338107,
+\]
+also
+\[
+\boxed{E_0\approx4.07517},\qquad
+\boxed{E_1\approx9.35243}.
+\]
+Die Abweichung von $E_0$ gegenüber der bloßen Skaleneinheit $4$ ist daher kein Gitterfehler, sondern der exakte dimensionslose Airy-Faktor $|a_1'|$.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{>{\bfseries}p{2.4cm} X X}
+\toprule
+Größe & Analytische Referenz & Bedeutung\\
+\midrule
+$a^{2/3}$ & $4$ bei $a=8$ & universelle Skaleneinheit\\
+$E_0$ & $4|a_1'|\approx4.07517$ & gerader Grundzustand\\
+$E_1$ & $4|a_1|\approx9.35243$ & erster ungerader Zustand\\
+$\Delta E$ & $4(|a_1|-|a_1'|)\approx5.2773$ & fundamentale Spektrallücke des Cusp-Modells\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\textbf{8. Exakte lokale Spektrallücke}
+
+Die erste Lücke ist analytisch bestimmt durch
+\[
+\boxed{\Delta E=E_1-E_0=4\bigl(|a_1|-|a_1'|\bigr)\approx5.2773.}
+\]
+Sie ist damit keine Fitgröße des numerischen Solvers. Eine numerische Rechnung am diskretisierten Operator dient hier als Reproduktion einer geschlossenen Referenzlösung.
+
+\begin{statusbox}
+\textbf{Cusp statt Singularität.} Das Potential $8|T|$ ist endlich und stetig auf ganz $\mathbb R$, aber bei $T=0$ nicht differenzierbar. Der Ursprung ist daher ein \emph{Cusp} beziehungsweise Knick, keine divergierende Potentialsingularität.
+\end{statusbox}
+
+\textbf{9. Grenze zum vollständigen exponentiellen Confinement}
+
+Für das im Confinement-Sektor betrachtete Potential
+\[
+U_8(T)=1+e^{8|T|}
+\]
+gilt lokal
+\[
+U_8(T)=2+8|T|+32T^2+\frac{256}{3}|T|^3+O(T^4).
+\]
+Der Operator mit $8|T|$ ist daher die führende nichtkonstante lokale Cusp-Referenz. Seine Eigenwerte sind \emph{nicht} mit dem vollständigen Spektrum von $-d^2/dT^2+U_8(T)$ gleichzusetzen.
+
+\begin{proofbox}
+\textbf{Prüfungssatz für die Kommission.} Die Numerik wird an einem analytisch exakt lösbaren Airy-Problem kalibriert. Für $a=8$ ist $a^{2/3}=4$, während die exakten Eigenwerte durch die Nullstellen von $\operatorname{Ai}$ und $\operatorname{Ai}'$ festgelegt werden; insbesondere $\Delta E\approx5.2773$. Diese Übereinstimmung validiert den lokalen numerischen Solver und die Cusp-Kalibrierung, nicht bereits das globale exponentielle Confinement oder eine weitergehende physikalische Interpretation.
+\end{proofbox}
+
+\vfill
+{\footnotesize Status: Airy-Spektrum des linearen Cusp-Operators = analytisch exakt; numerische Übereinstimmung = Solver-Kalibrierung; Übertragung auf $U_8(T)=1+e^{8|T|}$ = lokale Referenz, keine Spektralidentität.}
+
+\end{document}

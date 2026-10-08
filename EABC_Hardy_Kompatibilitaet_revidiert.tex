@@ -1,0 +1,404 @@
+\documentclass[11pt,a4paper,reqno]{amsart}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm,amsfonts,mathtools}
+\usepackage{geometry}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{tikz-cd}
+\usetikzlibrary{babel}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\geometry{tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  citecolor=blue!50!black,
+  urlcolor=blue!50!black,
+  pdftitle={Diskrete EABC-Sektoridentifikatoren, Faserdynamik und Hardy-Kompatibilitaet},
+  pdfauthor={Thomas Hoffbauer}
+}
+\setlength{\emergencystretch}{2em}
+\raggedbottom
+
+% Theorem-Umgebungen
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{hypothesis}[theorem]{Hypothese}
+\newtheorem{example}[theorem]{Beispiel}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Bemerkung}
+
+% Abkürzungen
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\Pur}{\operatorname{Pur}}
+\newcommand{\Supp}{\operatorname{supp}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\SEABC}{\mathcal{S}_{EABC}}
+\newcommand{\StatusA}{\textnormal{\textbf{[A]}}}
+\newcommand{\StatusC}{\textnormal{\textbf{[C]}}}
+\newcommand{\StatusORQ}{\textnormal{\textbf{[ORQ]}}}
+
+\title[EABC-Sektoren und Hardy-Kompatibilität]{Diskrete EABC-Sektoridentifikatoren, Faserdynamik und Hardy-Kompatibilität}
+\author{Thomas Hoffbauer}
+\address{Computer Institut Bamberg, Deutschland}
+\email{research@cib.de}
+\date{5. August 2026}
+
+\begin{document}
+
+\begin{abstract}
+We analyze the precise relation between the discrete EABC prime-classification framework and Hardy's operational reconstruction of quantum theory. We prove a no-go result: a nontrivial discrete EABC signature space cannot itself satisfy Hardy's continuity axiom, because every continuous path into a discrete space is constant. EABC signatures may instead serve as discrete fiber indices or component labels for a continuous state model. We formulate a conditional fiber construction and prove that every connected topological group, together with an action of the Klein four-group, yields a split operator extension
+\[
+1\longrightarrow G_{\mathrm{cont}}\longrightarrow G_{\mathrm{op}}\longrightarrow V_4\longrightarrow 1.
+\]
+The paper strictly separates formally established statements \textbf{[A]}, conditional model assumptions \textbf{[C]}, and open operational research questions \textbf{[ORQ]}. No derivation of quantum mechanics, of $K=N^2$, or of a complex Hilbert-space structure is claimed.
+\end{abstract}
+
+\maketitle
+
+\section{Einleitung und Geltungsbereich}
+
+Die EABC-Arithmetik ordnet natürlichen Zahlen diskrete Daten zu: einen Primfamilienträger, einen Paritätsvektor und eine multiplikative Restklassensignatur. Parallel dazu erlaubt die Fasersprache, mehrere Modellrepräsentanten über demselben skalaren Wert zusammenzufassen. Die vorliegende Arbeit untersucht, ob und in welchem präzisen Sinn diese diskreten Strukturen mit Hardys Kontinuitätsaxiom für reine Zustände vereinbar sind.
+
+Die Zielsetzung ist bewusst begrenzt. Es wird weder eine Herleitung der Quantenmechanik aus der EABC-Arithmetik noch eine physikalische Interpretation der Primfamilien behauptet. Bewiesen werden ein topologisches No-Go-Resultat und eine algebraische Existenzkonstruktion für diskret-kontinuierliche Operatorerweiterungen. Die Identifikation dieser Konstruktionen mit einem operationalen Quantensystem bleibt eine zusätzliche Modellhypothese.
+
+Wir verwenden folgende epistemische Kennzeichnung:
+\begin{itemize}[leftmargin=2.2em]
+  \item \StatusA{} bezeichnet formal bewiesene oder unmittelbar aus der zitierten Quelle übernommene Aussagen;
+  \item \StatusC{} bezeichnet zusätzliche, mathematisch konsistente Modellannahmen;
+  \item \StatusORQ{} bezeichnet offene Forschungsfragen.
+\end{itemize}
+
+\section{Hardys Parameter \texorpdfstring{$N$ und $K$}{N und K}}
+
+Hardy charakterisiert einen Systemtyp durch zwei positive ganze Zahlen \cite{Hardy2001}:
+\begin{itemize}[leftmargin=2.2em]
+  \item $N$ ist die maximale Anzahl von Zuständen, die in einer Einzelmessung zuverlässig voneinander unterschieden werden können;
+  \item $K$ ist die minimale Anzahl von Wahrscheinlichkeitsmessungen beziehungsweise reellen Parametern, die den Zustand vollständig bestimmen.
+\end{itemize}
+
+Für zusammengesetzte Systeme fordert Hardy
+\begin{equation}
+N_{AB}=N_A N_B,
+\qquad
+K_{AB}=K_A K_B.
+\end{equation}
+Aus seinen Axiomen folgt zunächst
+\begin{equation}
+K=N^r
+\qquad\text{mit einem }r\in\N_{>0}.
+\end{equation}
+
+\begin{proposition}[Ausschluss- und Selektionsschritt nach Hardy \StatusA]
+\label{prop:hardy-selection}
+Hardys Axiom 5 verlangt eine kontinuierliche reversible Transformation zwischen je zwei reinen Zuständen desselben Systems. Dieses Axiom schließt den klassischen Zweig $r=1$ aus. Das Einfachheitsaxiom wählt anschließend den kleinsten noch zulässigen Exponenten, also $r=2$.
+\end{proposition}
+
+\begin{remark}
+Die logische Reihenfolge ist wesentlich:
+\begin{equation}
+\boxed{
+\text{Kontinuität verwirft }r=1;
+\qquad
+\text{Einfachheit wählt danach }r=2.
+}
+\end{equation}
+Axiom 5 allein beweist daher nicht die Gleichung $K=N^2$. Hardys Originaldarstellung formuliert genau diese Aufgabenteilung zwischen Kontinuität und Einfachheit \cite{Hardy2001}.
+\end{remark}
+
+\section{Diskrete EABC-Signaturen}
+
+Für $n\in\N_{>0}$ sei
+\begin{equation}
+\Sigma_{EABC}(n)
+:=
+\bigl(
+\Supp_{EABC}(n),\varepsilon(n),\sigma_{EABC}(n)
+\bigr)
+\in\SEABC,
+\end{equation}
+wobei
+\begin{equation}
+\SEABC
+:=
+\mathcal P(\{E,A,B,C\})\times\FF_2^3\times V_4
+\end{equation}
+mit der diskreten Topologie versehen wird. Die drei Komponenten bezeichnen den EABC-Familienträger, den ABC-Paritätsvektor und die Restklassensignatur in
+\begin{equation}
+V_4\cong (\ZZ/12\ZZ)^\times.
+\end{equation}
+Hier und im Folgenden ist die Signatur eine diskrete arithmetische Invariante; sie ist nicht bereits ein operationaler Quantenzustand.
+
+\section{Das No-Go-Resultat}
+
+\begin{lemma}[Stetige Abbildungen in diskrete Räume \StatusA]
+\label{lem:discrete-map}
+Es sei $X$ ein wegzusammenhängender topologischer Raum und $D$ ein diskreter Raum. Dann ist jede stetige Abbildung
+\[
+\Sigma:X\longrightarrow D
+\]
+konstant.
+\end{lemma}
+
+\begin{proof}
+Für $x,y\in X$ existiert ein stetiger Weg $\gamma:[0,1]\to X$ mit $\gamma(0)=x$ und $\gamma(1)=y$. Die Komposition $\Sigma\circ\gamma:[0,1]\to D$ ist stetig. Da $[0,1]$ zusammenhängend und $D$ diskret ist, besteht das Bild aus genau einem Punkt. Somit gilt $\Sigma(x)=\Sigma(y)$.
+\end{proof}
+
+\begin{theorem}[No-Go für eine reine EABC-Signaturdynamik \StatusA]
+\label{thm:no-go}
+Sei $D$ ein diskreter Raum mit mindestens zwei Punkten. Identifiziert man die reinen Zustände eines Systems unmittelbar mit den Elementen von $D$, so kann zwischen zwei verschiedenen Zuständen kein stetiger Pfad existieren. Hardys Axiom 5 kann daher auf einer nichttrivialen diskreten EABC-Signaturebene nicht erfüllt werden.
+\end{theorem}
+
+\begin{proof}
+Eine stetige Abbildung $[0,1]\to D$ ist nach Lemma~\ref{lem:discrete-map} konstant. Sie kann deshalb keine zwei verschiedenen Punkte von $D$ verbinden.
+\end{proof}
+
+\begin{corollary}[Konstanz auf Hardy-Bahnen \StatusA]
+\label{cor:hardy-orbits}
+Sei $\Omega$ ein topologischer Zustandsraum, und die reinen Zustände $\Pur(\Omega)$ seien durch kontinuierliche reversible Transformationspfade paarweise verbunden. Dann ist jede stetige diskrete Signatur
+\[
+\Sigma:\Pur(\Omega)\longrightarrow D
+\]
+auf $\Pur(\Omega)$ konstant.
+\end{corollary}
+
+\begin{remark}[Sektorbegriff]
+Aus Korollar~\ref{cor:hardy-orbits} folgt zunächst nur, dass verschiedene EABC-Signaturen nicht verschiedene reine Zustände derselben wegzusammenhängenden Hardy-Bahn unterscheiden können. Neutral gesprochen können sie als \emph{diskrete Sektorlabels}, Faserindizes oder Komponentenlabels dienen. Der stärkere physikalische Begriff eines Superselektionssektors würde zusätzlich Aussagen über zulässige Transformationen, Effekte und kohärente Superpositionen erfordern und wird hier nicht beansprucht.
+\end{remark}
+
+\section{Kontinuierliche Zustandsfasern \StatusC}
+
+\begin{hypothesis}[Gefaserter Zustandsraum]
+\label{hyp:fibers}
+Es existiere ein topologischer Zustandsraum
+\begin{equation}
+\mathfrak S
+=
+\bigsqcup_{n\in\N_{>0}}\Omega_n
+\end{equation}
+mit einer Projektion $\pi:\mathfrak S\to\N_{>0}$ und Fasern $\pi^{-1}(n)=\Omega_n$. Die EABC-Signatur werde nur über den diskreten Basiswert $n$ ausgewertet.
+\end{hypothesis}
+
+Dann ergibt sich das kommutative Schema
+\begin{equation}
+\begin{tikzcd}[row sep=large,column sep=large]
+\Pur(\Omega_n)
+  \arrow[r,"g_t"]
+  \arrow[d,"\pi"']
+&
+\Pur(\Omega_n)
+  \arrow[d,"\pi"]
+\\
+n
+  \arrow[d,"\Sigma_{EABC}"']
+&
+n
+  \arrow[d,"\Sigma_{EABC}"]
+\\
+\Sigma_{EABC}(n)
+  \arrow[r,equal]
+&
+\Sigma_{EABC}(n).
+\end{tikzcd}
+\end{equation}
+Die kontinuierliche Dynamik verändert den Zustand innerhalb der Faser, nicht aber deren diskretes arithmetisches Label.
+
+\begin{hypothesis}[Transitive Faserwirkung]
+\label{hyp:transitive}
+Für jedes $n$ wirke die Identitätskomponente $G_n^0$ einer topologischen Gruppe $G_n$ stetig und transitiv auf $\Pur(\Omega_n)$.
+\end{hypothesis}
+
+\begin{proposition}[Hinreichende Realisierung der Hardy-Pfade \StatusC]
+Unter Hypothese~\ref{hyp:transitive} und der zusätzlichen Voraussetzung, dass jedes Element von $G_n^0$ durch einen Weg mit der Identität verbunden ist, können je zwei reine Zustände derselben Faser durch einen stetigen Pfad reversibler Transformationen verbunden werden.
+\end{proposition}
+
+\begin{proof}
+Seien $\psi,\phi\in\Pur(\Omega_n)$. Nach Transitivität existiert $g\in G_n^0$ mit $g\psi=\phi$. Nach Voraussetzung gibt es einen Weg $g_t$ in $G_n^0$ von $\id$ nach $g$. Wegen der Stetigkeit der Gruppenwirkung ist $t\mapsto g_t\psi$ ein stetiger Weg von $\psi$ nach $\phi$.
+\end{proof}
+
+\begin{remark}
+Die Annahme einer Lie-Gruppe ist stärker als Hardys Axiom 5. Ist $G_n^0$ eine zusammenhängende Lie-Gruppe, so ist sie wegzusammenhängend und erfüllt die in der Proposition verwendete Zusatzvoraussetzung. Die Lie-Struktur ist somit eine mögliche hinreichende Realisierung, aber kein Bestandteil des No-Go-Theorems.
+\end{remark}
+
+\section{Operatorlift und Komponentengruppe}
+
+\begin{hypothesis}[EABC-Operatorlift \StatusC]
+\label{hyp:operator-lift}
+Es existiere eine topologische Gruppe $G_{\mathrm{op}}$ und eine kurze exakte Sequenz
+\begin{equation}
+\begin{tikzcd}
+1 \arrow[r]
+& G_{\mathrm{cont}} \arrow[r]
+& G_{\mathrm{op}} \arrow[r,"q"]
+& V_4 \arrow[r]
+& 1,
+\end{tikzcd}
+\end{equation}
+wobei
+\begin{equation}
+G_{\mathrm{cont}}=G_{\mathrm{op}}^0=\ker(q).
+\end{equation}
+Dann gilt
+\begin{equation}
+\pi_0(G_{\mathrm{op}})
+\cong
+G_{\mathrm{op}}/G_{\mathrm{op}}^0
+\cong V_4.
+\end{equation}
+Die vier Zusammenhangskomponenten werden durch $E,A,B,C$ bezeichnet.
+\end{hypothesis}
+
+\begin{proposition}[Explizite gespaltene Operatorerweiterung \StatusA]
+\label{prop:semidirect}
+Sei $G$ eine wegzusammenhängende topologische Gruppe und
+\begin{equation}
+\alpha:V_4\longrightarrow\Aut_{\mathrm{top}}(G)
+\end{equation}
+ein Gruppenhomomorphismus in die Gruppe der stetigen topologischen Automorphismen von $G$. Dann ist das semidirekte Produkt
+\begin{equation}
+G_{\mathrm{op}}:=G\rtimes_\alpha V_4
+\end{equation}
+mit der Produkttopologie eine topologische Gruppe. Es existiert eine gespaltene kurze exakte Sequenz
+\begin{equation}
+1\longrightarrow G
+\longrightarrow G\rtimes_\alpha V_4
+\xrightarrow{\ q\ }V_4
+\longrightarrow1,
+\end{equation}
+und die Identitätskomponente ist
+\begin{equation}
+(G\rtimes_\alpha V_4)^0=G\times\{E\}.
+\end{equation}
+Insbesondere gilt
+\begin{equation}
+\pi_0(G\rtimes_\alpha V_4)\cong V_4.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Die Multiplikation ist
+\begin{equation}
+(g,X)(h,Y)
+=
+\bigl(g\,\alpha_X(h),X\star Y\bigr).
+\end{equation}
+Die Projektion $q(g,X)=X$ ist ein surjektiver Gruppenhomomorphismus mit Kern $G\times\{E\}$. Die Abbildung $X\mapsto(e_G,X)$ spaltet $q$. Da $V_4$ diskret ist, sind die Mengen $G\times\{X\}$ offen und abgeschlossen. Weil $G$ wegzusammenhängend ist, sind sie genau die Zusammenhangskomponenten; die Komponente der Identität ist daher $G\times\{E\}$.
+\end{proof}
+
+\begin{remark}[Direktes und semidirektes Produkt]
+Für die triviale Wirkung $\alpha_X=\id_G$ erhält man das direkte Produkt $G\times V_4$. Eine nichttriviale Wirkung koppelt die diskreten EABC-Komponenten an die kontinuierliche Operatorgruppe. Proposition~\ref{prop:semidirect} beweist die mathematische Existenz solcher Erweiterungen, nicht ihre physikalische Relevanz.
+\end{remark}
+
+\section{Revidierte Fünf-Ebenen-Architektur}
+
+Die Rollen der verschiedenen Strukturen lassen sich wie folgt ordnen:
+\begin{align}
+\textbf{Ebene 0:}\quad
+& (\N_{>0},\cdot)
+&& \text{Skalararithmetik},
+\\
+\textbf{Ebene 1:}\quad
+& (\SEABC,\odot)
+&& \text{diskrete EABC-Signatur},
+\\
+\textbf{Ebene 2:}\quad
+& \Omega_n,\ \Pur(\Omega_n)
+&& \text{Zustandsfaser},
+\\
+\textbf{Ebene 3:}\quad
+& G_n^0\curvearrowright\Pur(\Omega_n)
+&& \text{kontinuierliche reversible Dynamik},
+\\
+\textbf{Ebene 4:}\quad
+& \Omega_m\boxtimes\Omega_n\longrightarrow\Omega_{mn},
+\quad
+\mathcal O_m\otimes\mathcal O_n\longrightarrow\mathcal O_{mn}
+&& \text{System- und Operatorkomposition}.
+\end{align}
+
+\begin{remark}[Die Rolle der Komposition \StatusORQ]
+Eine tensorielle Operatorenebene kann die Multiplikativität
+\[
+K_{AB}=K_AK_B
+\]
+strukturell modellieren. Sie impliziert jedoch allein weder $K=N^2$ noch eine komplexe Hilbertraumstruktur. Dafür müssten die vollständigen operationalen Voraussetzungen, insbesondere eine geeignete Zustands-, Effekt-, Subraum- und Kompositionsstruktur, nachgewiesen werden.
+\end{remark}
+
+\section{Epistemischer Status}
+
+\subsection*{Formal gesichert \StatusA}
+\begin{itemize}[leftmargin=2.2em]
+  \item Hardys Axiom 5 fordert kontinuierliche reversible Transformationen zwischen reinen Zuständen und schließt den klassischen Zweig aus \cite{Hardy2001}.
+  \item Nichttriviale diskrete EABC-Signaturräume erfüllen diese Pfadforderung nicht.
+  \item Stetige diskrete Signaturen sind auf wegzusammenhängenden Transformationsbahnen konstant.
+  \item Direkte und semidirekte Produkte $G\rtimes_\alpha V_4$ liefern gespaltene Gruppenerweiterungen mit Komponentengruppe $V_4$.
+\end{itemize}
+
+\subsection*{Bedingter Modellrahmen \StatusC}
+\begin{itemize}[leftmargin=2.2em]
+  \item Die Existenz operationaler Zustandsfasern $\Omega_n$ über natürlichen Zahlen.
+  \item Transitive kontinuierliche Gruppenwirkungen $G_n^0\curvearrowright\Pur(\Omega_n)$.
+  \item Die physikalische Identifikation von $V_4$ mit der Komponentengruppe einer Operatorgruppe.
+  \item Eine nichttriviale Wirkung $\alpha:V_4\to\Aut_{\mathrm{top}}(G_{\mathrm{cont}})$ mit physikalischer Bedeutung.
+\end{itemize}
+
+\subsection*{Offene Forschungsfragen \StatusORQ}
+\begin{itemize}[leftmargin=2.2em]
+  \item Konstruktion einer expliziten Mess- und Effektstruktur;
+  \item Nachweis lokaler Tomographie und einer geeigneten Systemkomposition;
+  \item Herleitung von $K=N^2$ innerhalb eines EABC-basierten operationalen Modells;
+  \item Konstruktion oder Ausschluss nichttrivialer Operatorwirkungen $\alpha$;
+  \item Herleitung einer komplexen Hilbertraumdarstellung, statt ihrer Postulierung.
+\end{itemize}
+
+\begin{theorem}[Präzisiertes Gesamtresultat]
+\label{thm:conclusion}
+Es gelten folgende zwei Aussagen.
+\begin{enumerate}[label=\textup{(\arabic*)},leftmargin=2.5em]
+  \item \StatusA{} Die diskrete EABC-Signatur realisiert Hardys fünftes Axiom nicht selbst. Auf jeder wegzusammenhängenden Bahn reiner Zustände ist eine stetige EABC-Signatur konstant.
+  \item \StatusC{} Eine Hardy-kompatible Erweiterung kann bedingt durch kontinuierliche Zustandsfasern und transitive reversible Gruppenwirkungen modelliert werden. Ein Operatorlift mit Quotient $V_4$ ist algebraisch konsistent und wird durch Proposition~\ref{prop:semidirect} explizit realisiert; daraus folgen jedoch weder $K=N^2$ noch eine komplexe Hilbertraumstruktur.
+\end{enumerate}
+\end{theorem}
+
+\section{Schluss}
+
+Die EABC-Arithmetik liefert ein diskretes Signaturgerüst. Hardys Kontinuitätsaxiom gehört dagegen auf die Ebene kontinuierlicher Zustandsbahnen. Die mathematisch tragfähige Brücke besteht deshalb nicht in einer Identifikation beider Ebenen, sondern in einer Faser- und Erweiterungsarchitektur:
+\begin{equation}
+\N_{>0}
+\xrightarrow{\ \Sigma_{EABC}\ }
+\SEABC,
+\qquad
+1\longrightarrow G_{\mathrm{cont}}
+\longrightarrow G_{\mathrm{op}}
+\longrightarrow V_4
+\longrightarrow1.
+\end{equation}
+Das No-Go-Theorem ist formal; die operationale und physikalische Interpretation des Operatorlifts bleibt ein Forschungsprogramm.
+
+\begin{thebibliography}{99}
+\bibitem{Hardy2001}
+L. Hardy,
+\emph{Quantum Theory From Five Reasonable Axioms},
+arXiv:quant-ph/0101012v4, 2001.
+
+\bibitem{Hoffbauer2026}
+T. Hoffbauer,
+\emph{Skalare Projektionen, Faserquotienten und EABC-Paritätsebenen in Modellräumen},
+Preprint, August 2026.
+\end{thebibliography}
+
+\end{document}

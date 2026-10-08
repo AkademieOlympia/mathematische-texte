@@ -1,0 +1,714 @@
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{geometry}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\geometry{margin=27mm}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\newtheorem{theorem}{Satz}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{gate}[theorem]{Gate}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Bemerkung}
+\newcommand{\BK}{\mathrm{BK}}
+\newcommand{\QI}{Q_{\mathcal I}}
+\newcommand{\Ico}{\mathcal I}
+\newcommand{\HH}{\mathbb H}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\twoI}{2I}
+\newcommand{\Afive}{A_5}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,frame=single,columns=fullflexible,showstringspaces=false}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Bamberg-Kugel: Forschungsbericht}
+\fancyhead[R]{\thepage}
+
+\title{\textbf{Die Bamberg-Kugel:}\\
+Von der Ikosaedersymmetrie über Icosianen und $E_8$ zu starr gekoppelten dreidimensionalen Quotientensektoren\\
+\large Historische Einordnung, exakte Konstruktion und ein falsifizierbares Forschungsprogramm}
+\author{Forschungsmanuskript}
+\date{10. September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Dieses Manuskript ordnet das Forschungsprogramm der sogenannten Bamberg-Kugel in die klassische Entwicklung von Ikosaedergeometrie, Quaternionen, binär-ikosaedrischer Gruppe, Icosianen, $E_8$-Gitter und Kugelpackungen ein. Der mathematisch gesicherte Kern beginnt beim orientierten Kantenraum des regulären Ikosaeders: Die 60 Darts bilden einen regulären $A_5$-Torsor und tragen einen kubischen Graphen, der zum Graphen des abgestumpften Ikosaeders isomorph ist. Der Spin-Lift über die zentrale Erweiterung
+\[
+1\longrightarrow\{\pm1\}\longrightarrow 2I\longrightarrow A_5\longrightarrow1
+\]
+führt nicht zu einem naiven kubischen Cayley-Graphen auf $2I$, sondern zu einem $C_2$-Voltage-Lift. Dies beseitigt eine wesentliche frühere Fehlannahme und liefert eine 120-knotige, 180-kantige Struktur mit expliziter Bijektion in die 120 Einheitsicosianen.
+
+Mit der Icosianenform $\QI$ erhält jede Bamberg-Kante exakt dieselbe quadratische Länge $\QI(\delta)=2$. Die globale Paarstatistik der 120 Einheitsicosianen zerfällt in die vier Schalen $\QI=1,2,3,4$ mit den Paarzahlen $1920,3240,1920,60$; die Bamberg-Kanten wählen innerhalb der 54-regulären $\QI=2$-Schale exakt drei Richtungen pro Knoten, also den Anteil $1/18$. Diese Zahl stimmt algebraisch mit $\Delta_3^2/\pi^2$ für die Kepler-Dichte $\Delta_3=\pi/\sqrt{18}$ überein. Das Manuskript behandelt diese Übereinstimmung ausdrücklich nicht als Beweis einer dreidimensionalen Packungsgeometrie, sondern als zu erklärendes Strukturmotiv.
+
+Ein zweiter Schwerpunkt ist die Rigidity-Galois-Konstruktion: Ein metrisch kompatibles Erzeugerpaar $(a,b)$ mit Ordnungen $10$ und $4$ wird mit den beiden reellen Einbettungen von $\QQ(\sqrt5)$ kombiniert. Daraus entstehen vier Rang-3-Projektionssektoren. Für das Gate BK-I2.7C wird ein exaktes SageMath-10.5-Zertifikatsprogramm formuliert, das Rang, Nichtkollaps, Orbitinvarianz, Icosianenmetrik, orthogonale Kernprojektoren und paarweise Spektralsignaturen prüft. Der mathematische Status wird strikt getrennt: klassische Sätze, bereits hergeleitete BK-Strukturen, maschinell zu zertifizierende Aussagen und offene Kepler-Brücken.
+\end{abstract}
+
+\textbf{Schlüsselwörter:} Ikosaeder, binär-ikosaedrische Gruppe, Icosianen, $E_8$, 600-Zell, Cayley-Graph, Voltage-Graph, Kugelpackung, Kepler-Vermutung, Galois-Einbettung, Hauptwinkel, SageMath.
+
+\textbf{MSC 2020 (Vorschlag):} 05C25, 11H31, 20F05, 20G20, 52C17, 52B15.
+
+\tableofcontents
+
+\section{Einleitung: Ziel und wissenschaftlicher Status}
+Die Bamberg-Kugel ist kein neuer Name für ein bereits bekanntes Polyeder, sondern ein Forschungsprogramm, das eine Reihe klassischer Strukturen in einer spezifischen diskreten und metrischen Konstruktion zusammenführt. Ausgangspunkt ist die Symmetrie des regulären Ikosaeders. Von dort führt die Konstruktion über den orientierten Kantenraum, die zentrale Spin-Erweiterung $2I$, die 120 Einheitsicosianen und die $E_8$-Metrik zu einem ausgezeichneten kubischen Graphen auf 120 Zuständen.
+
+Die leitende Frage lautet nicht, ob zwischen Ikosaeder, $2I$, Icosianen und $E_8$ Beziehungen existieren -- diese sind klassisch --, sondern ob eine \emph{bestimmte} Auswahlstruktur innerhalb dieses klassischen Gefüges eine zusätzliche, kanonische dreidimensionale Quotientengeometrie trägt. Insbesondere wird untersucht, ob vier durch Rigidity und Galois-Dualität erzeugte Rang-3-Sektoren dieselbe lokale 12-Kontakt-Geometrie besitzen und ob daraus die Kepler-Dichte intrinsisch folgt.
+
+Dieses Manuskript verwendet vier Statusklassen:
+\begin{enumerate}[label=\textbf{S\arabic*:}]
+\item \textbf{Klassisch bewiesen:} Literaturresultate, die unabhängig vom BK-Programm gelten.
+\item \textbf{BK-hergeleitet:} Aussagen, die aus den angegebenen Definitionen algebraisch folgen.
+\item \textbf{Maschinell zu zertifizieren:} endliche exakte Aussagen mit bereitgestelltem SageMath-Prüfprogramm.
+\item \textbf{Offen/Hypothese:} insbesondere die Kepler-Brücke und jede globale Packungsinterpretation.
+\end{enumerate}
+
+\section{Historische Linie: vom Ikosaeder zu $E_8$ und zur Packungsgeometrie}
+\subsection{Antike und Ikosaedersymmetrie}
+Der reguläre Ikosaeder gehört zu den fünf platonischen Körpern. Seine kombinatorischen Daten sind
+\[
+|V|=12,\qquad |E|=30,\qquad |F|=20.
+\]
+Seine orientierungserhaltende Symmetriegruppe ist isomorph zu $A_5$ und hat Ordnung $60$. Die historische Tradition verbindet die Klassifikation der regulären Körper mit Theaitetos; in der modernen Algebra wird die Ikosaedersymmetrie zu einem Musterbeispiel für die Verschränkung von Geometrie und endlichen Gruppen.
+
+\subsection{Hamilton, Quaternionen und der Spin-Doppeldecker}
+Hamiltons Quaternionen $\HH$ erweitern die komplexen Zahlen zu einer vierdimensionalen reellen Divisionsalgebra. Die Einheitsquaternionen bilden die Gruppe $\mathrm{SU}(2)$, den zweifachen Überlagerungsraum von $\mathrm{SO}(3)$. Hebt man $A_5\subset\mathrm{SO}(3)$ nach $\mathrm{SU}(2)$ an, erhält man die binär-ikosaedrische Gruppe
+\[
+\twoI\subset\mathrm{SU}(2),\qquad |\twoI|=120,
+\]
+mit exakter Sequenz
+\[
+1\to\{\pm1\}\to\twoI\to A_5\to1.
+\]
+Die 120 Elemente von $2I$ sind zugleich die 120 Ecken des regulären 600-Zells.
+
+\subsection{Klein, ADE und McKay}
+Kleins Ikosaedertheorie machte die Gruppe $A_5$ zu einem zentralen Objekt der Invariantentheorie. Im 20. Jahrhundert erhielt diese Linie durch die ADE- und McKay-Korrespondenz eine neue Form: Die endlichen Untergruppen von $\mathrm{SU}(2)$ korrespondieren mit affinen Dynkin-Diagrammen; dem binären Ikosaeder entspricht der Typ $\widetilde E_8$. Diese Beziehung ist konzeptionell von der Icosianen-Konstruktion des $E_8$-Gitters zu unterscheiden, weist aber auf dieselbe außergewöhnliche Symmetrie hin.
+
+\subsection{Icosianen und $E_8$}
+Der Icosianenring $\Ico$ ist ein Quaternionenring über dem goldenen Zahlkörper
+\[
+K=\QQ(\sqrt5).
+\]
+Seine 120 Einheiten der Norm $1$ realisieren $2I$. Für
+\[
+N_{\HH}(q)=x+\sqrt5\,y
+\]
+wird die Icosianenform
+\[
+\QI(q)=x+y
+\]
+verwendet. Als $\ZZ$-Modul besitzt $\Ico$ Rang $8$; mit dieser quadratischen Form erhält man eine skalierte Realisierung des $E_8$-Gitters. In der hier verwendeten Normierung haben die 120 Einheitsicosianen $\QI=1$, während die konventionellen $E_8$-Wurzeln meist quadratische Norm $2$ besitzen. Diese Skalierungsfrage ist wesentlich: BK-Kanten der Norm $2$ dürfen nicht ohne Weiteres als $E_8$-Wurzeln bezeichnet werden.
+
+\subsection{Kepler, Hales und Viazovska}
+Keplers Problem der dichtesten Kugelpackung in $\RR^3$ hat die optimale Dichte
+\[
+\Delta_3=\frac{\pi}{\sqrt{18}}.
+\]
+Hales bewies die Kepler-Vermutung; die spätere Flyspeck-Formalisierung machte den Beweis maschinenprüfbar. In Dimension $8$ bewies Viazovska die Optimalität der $E_8$-Gitterpackung. Historisch treffen sich damit zwei Linien, die für das BK-Programm wichtig sind: dreidimensionale Packungsgeometrie einerseits und die außergewöhnliche acht-dimensionale $E_8$-Geometrie andererseits.
+
+\section{Der 60-Zustands-Kern: orientierte Ikosaederkanten}
+\begin{definition}
+Sei $I$ der reguläre Ikosaeder. Sein Dart-Raum ist
+\[
+D(I)=\{(X,Y):\{X,Y\}\in E(I)\}.
+\]
+Da jede der 30 Kanten zwei Orientierungen besitzt, gilt $|D(I)|=60$.
+\end{definition}
+
+Die Gruppe $A_5$ wirkt frei und transitiv auf $D(I)$. Nach Wahl eines Referenzdarts kann daher
+\[
+D(I)\cong A_5
+\]
+als $A_5$-Torsor identifiziert werden.
+
+Wir definieren zwei Arten von Nachbarschaft: zwei zyklische Nachbarn um denselben Ursprungsknoten und die Umkehrung eines Darts. Jeder Zustand besitzt damit Grad $3$.
+
+\begin{proposition}[BK-Basisgraph]
+Der so definierte Graph $G_0$ besitzt 60 Knoten und 90 Kanten und ist zum 1-Skelett des abgestumpften Ikosaeders isomorph.
+\end{proposition}
+
+Gruppentheoretisch kann nach geeigneter Wahl von $a,b\in A_5$ mit
+\[
+a^5=b^2=(ab)^3=1
+\]
+geschrieben werden
+\[
+G_0\cong\operatorname{Cay}\!\left(A_5,\{a,a^{-1},b\}\right).
+\]
+
+\section{Warum der naive Spin-Cayley-Graph scheitert}
+Hebt man $a,b$ nach $\tilde a,\tilde b\in2I$ an, so können die Spin-Relationen
+\[
+\tilde a^5=\tilde b^2=(\tilde a\tilde b)^3=-1
+\]
+gelten. Daraus folgt insbesondere
+\[
+\tilde b^{-1}=-\tilde b\neq\tilde b.
+\]
+
+\begin{proposition}[No-Go für den naiven kubischen Cayley-Graphen]
+Der ungerichtete Cayley-Graph
+\[
+\operatorname{Cay}\!\left(2I,\{\tilde a,\tilde a^{-1},\tilde b\}\right)
+\]
+ist nicht kubisch. Die inverse Abgeschlossenheit fügt $\tilde b^{-1}$ als vierte Richtung hinzu.
+\end{proposition}
+
+Diese Korrektur ist methodisch zentral. Der 120-Zustands-Graph ist kein naiver Cayley-Graph auf $2I$.
+
+\section{Der korrekte Spin-Lift als $C_2$-Voltage-Graph}
+Wähle eine Sektion
+\[
+s:A_5\to2I
+\]
+und identifiziere die beiden Blätter durch
+\[
+\lambda(g,\varepsilon)=(-1)^\varepsilon s(g),
+\qquad \varepsilon\in\ZZ/2\ZZ.
+\]
+Für eine gerichtete Basiskante $g\to gh$ definiert
+\[
+s(g)\tilde h=(-1)^{\alpha(g,h)}s(gh)
+\]
+eine Spannung
+\[
+\alpha(g,h)\in\ZZ/2\ZZ.
+\]
+Der Lift lautet
+\[
+(g,\varepsilon)\longmapsto
+(gh,\varepsilon+\alpha(g,h)).
+\]
+
+\begin{theorem}[BK-I1.0, strukturelle Form]
+Der Voltage-Lift $\widehat G_0$ besitzt 120 Knoten, 180 Kanten, ist kubisch und trägt eine explizite Bijektion
+\[
+\lambda:V(\widehat G_0)\to2I.
+\]
+\end{theorem}
+
+Der entscheidende Punkt ist, dass jede ungerichtete Basiskante genau einmal orientiert und mit genau einer Spannung versehen wird. Dadurch entstehen aus 90 Basiskanten exakt 180 Liftkanten.
+
+\section{Metrische Einbettung in den Icosianenraum}
+Für eine Liftkante mit lokalem Schritt $g$ gilt
+\[
+\lambda(v)=\lambda(u)g.
+\]
+Damit ist der Differenzvektor
+\[
+\delta=\lambda(v)-\lambda(u)=\lambda(u)(g-1).
+\]
+Da $\lambda(u)$ eine Einheitsicosiane ist, folgt aus der Multiplikativität der Quaternionennorm
+\[
+N_{\HH}(\delta)=N_{\HH}(g-1).
+\]
+Für das metrisch ausgewählte Erzeugerpaar wird
+\[
+\QI(a-1)=\QI(b-1)=2
+\]
+verlangt.
+
+\begin{theorem}[BK-I1.0, metrische Form]
+Für jede der 180 BK-Liftkanten gilt exakt
+\[
+\boxed{\QI(\lambda(v)-\lambda(u))=2.}
+\]
+\end{theorem}
+
+Dies ist eine uniforme Zweitschalen-Einbettung. Es ist ausdrücklich \emph{kein} Beweis, dass die 180 Differenzen $E_8$-Wurzeln sind.
+
+\section{Die globale Paargeometrie der 120 Einheitsicosianen}
+Für Einheiten $q,r\in2I$ gilt
+\[
+\QI(r-q)=\QI(q^{-1}r-1).
+\]
+Die Distanzklasse hängt daher nur vom relativen Gruppenelement ab.
+
+Die exakte Schalenzerlegung des vollständigen ungeordneten Paarraums
+\[
+\binom{120}{2}=7140
+\]
+lautet:
+\[
+\begin{array}{c|r|r}
+\QI(r-q)&\text{ungeordnete Paare}&\text{Nachbarn pro Knoten}\\
+\hline
+1&1920&32\\
+2&3240&54\\
+3&1920&32\\
+4&60&1
+\end{array}
+\]
+Die Summenprüfungen sind
+\[
+1920+3240+1920+60=7140,
+\qquad
+32+54+32+1=119.
+\]
+
+Die vollständige Norm-$2$-Schale bildet damit einen 54-regulären Graphen $\Gamma_2$ mit 3240 Kanten. Der BK-Graph ist ein kubischer spannender Teilgraph mit 180 Kanten.
+
+\begin{definition}[BK-Selektivität]
+\[
+\sigma_{\BK}:=\frac{|E(\BK)|}{|E(\Gamma_2)|}
+=\frac{180}{3240}
+=\frac{3}{54}
+=\boxed{\frac1{18}}.
+\]
+\end{definition}
+
+\section{Konjugationsklassen hinter der Norm-$2$-Schale}
+Für eine Einheitsquaternion $g$ gilt
+\[
+N_{\HH}(g-1)=2-2\operatorname{Re}(g).
+\]
+Die 54 metrisch zulässigen Richtungen der $\QI=2$-Schale zerfallen in drei Konjugationsklassen:
+\[
+54=30+12+12.
+\]
+Genauer:
+\[
+\begin{array}{c|c|c|c}
+\operatorname{Re}(g)&|C|&\operatorname{ord}(g)&\QI(g-1)\\
+\hline
+0&30&4&2\\
+(\sqrt5-1)/4&12&5&2\\
+-(\sqrt5-1)/4&12&10&2
+\end{array}
+\]
+
+Das BK-Erzeugerpaar wählt einen Schritt $b$ aus der Ordnung-4-Klasse und einen Schritt $a$ aus der metrisch passenden Ordnung-10-Klasse. Lokal werden eine Ordnung-4-Richtung und zwei inverse Ordnung-10-Richtungen realisiert. Die Ordnung-5-Klasse ist metrisch zulässig, wird aber von keiner gerichteten BK-Kante realisiert.
+
+\section{Rigidity des Erzeugerpaars}
+Definiere
+\[
+C_4=\{g\in2I:\operatorname{ord}(g)=4,\ \QI(g-1)=2\}
+\]
+und die ausgewählte Ordnung-10-Klasse $C_{10}^{\BK}$. Setze
+\[
+\mathcal P_{\mathrm{all}}
+=
+\{(a,b)\in C_{10}^{\BK}\times C_4:(ab)^3=-1\},
+\]
+\[
+\mathcal P_{\mathrm{gen}}
+=
+\{(a,b)\in\mathcal P_{\mathrm{all}}:\langle a,b\rangle=2I\}.
+\]
+
+$2I$ wirkt durch simultane Konjugation. Für ein erzeugendes Paar ist
+\[
+\operatorname{Stab}(a,b)
+=C_{2I}(a)\cap C_{2I}(b)
+=Z(2I)=\{\pm1\}.
+\]
+Daher besitzt jede solche Bahn Größe
+\[
+\frac{120}{2}=60.
+\]
+
+\begin{gate}[BK-I2.6 Rigidity]
+Ein exakter endlicher Test entscheidet, ob $|\mathcal P_{\mathrm{gen}}|=60$ und damit genau eine Bahn erzeugender metrisch kompatibler Paare vorliegt. Die stärkere Variante prüft zusätzlich $\mathcal P_{\mathrm{all}}=\mathcal P_{\mathrm{gen}}$.
+\end{gate}
+
+\section{Die Zahl 18 und die Kepler-Dichte: exakte Identität, noch keine Geometrie}
+Die Kepler-Dichte ist
+\[
+\Delta_3=\frac{\pi}{\sqrt{18}}.
+\]
+Daraus folgt algebraisch
+\[
+\boxed{
+\sigma_{\BK}
+=\frac1{18}
+=\frac{\Delta_3^2}{\pi^2}.
+}
+\]
+
+Diese Identität ist exakt, aber ihre Herkunft ist bislang verschieden:
+\begin{itemize}
+\item In der BK-Struktur entsteht $18$ als Verhältnis $54/3$ zwischen metrisch zulässigen und tatsächlich ausgewählten Richtungen.
+\item In der Kepler-Theorie entsteht $\sqrt{18}$ aus der dreidimensionalen Packungsdichte.
+\end{itemize}
+
+Daraus folgt \emph{noch keine} kausale oder geometrische Herleitung der Kepler-Dichte aus BK. Eine solche Brücke müsste eine kanonische dreidimensionale Geometrie aus der acht-dimensionalen Icosianenstruktur gewinnen.
+
+\section{No-Go-Sätze für zu einfache 3D-Projektionen}
+\subsection{Innere Konjugation}
+Für einen Einheitsquaternion $u$ und eine reelle Einbettung $\tau$ gilt
+\[
+\operatorname{Im}\tau(uqu^{-1})
+=
+R_{\tau(u)}\operatorname{Im}\tau(q)
+\]
+mit $R_{\tau(u)}\in SO(3)$. Innere Konjugation erzeugt daher nur eine Zielraumrotation und keinen neuen metrischen Sektor.
+
+\subsection{Links- und Rechtsmultiplikation}
+Weiter gilt
+\[
+qu=u^{-1}(uq)u.
+\]
+Daher unterscheiden sich
+\[
+q\mapsto\operatorname{Im}\tau(uq)
+\quad\text{und}\quad
+q\mapsto\operatorname{Im}\tau(qu)
+\]
+wieder nur durch eine Zielraumrotation. Eine vermeintliche Links-Rechts-Chiralität liefert also keine vier unabhängigen metrischen Sektoren.
+
+Diese beiden No-Go-Sätze reduzieren den Suchraum wesentlich.
+
+\section{Rigidity $\times$ Galois: die natürliche Vierfachstruktur}
+Der goldene Zahlkörper besitzt zwei reelle Einbettungen
+\[
+\tau_\pm:\QQ(\sqrt5)\hookrightarrow\RR,
+\qquad
+\tau_\pm(\sqrt5)=\pm\sqrt5.
+\]
+Kombiniert man diese mit den beiden ausgezeichneten Erzeugertypen $a$ und $b$, entstehen vier Abbildungen
+\[
+P_{a,+},\quad P_{a,-},\quad P_{b,+},\quad P_{b,-},
+\]
+wobei
+\[
+P_{u,\pm}(q)=\operatorname{Im}\bigl(\tau_\pm(uq)\bigr).
+\]
+
+In Icosianenkoordinaten sind dies $3\times8$-Matrizen. Bei Rang $3$ besitzt jeder Kern Dimension $5$.
+
+Für zwei Sektoren $s,t$ ist
+\[
+\iota(s,t)
+=
+\dim(\ker P_s\cap\ker P_t)
+=
+8-\operatorname{rank}
+\begin{pmatrix}
+P_s\\P_t
+\end{pmatrix}.
+\]
+
+\section{Gate BK-I2.7C: Nichtkollaps, Orbitinvarianz und metrischer Kern}
+Das Gate wird in vier Stufen organisiert.
+
+\subsection{C1: Rang}
+Für alle vier Sektoren wird
+\[
+\operatorname{rank}P_s=3
+\]
+gefordert.
+
+\subsection{C2: Nichtkollaps}
+Für $s\neq t$ wird
+\[
+\operatorname{rank}
+\begin{pmatrix}P_s\\P_t\end{pmatrix}>3
+\]
+gefordert. Damit sind die fünfdimensionalen Kerne paarweise verschieden.
+
+\subsection{C3: Rigidity-Orbit-Invarianz}
+Da $(a,b)$ nur bis auf simultane Konjugation kanonisch ist, wird für jedes $h\in2I$
+\[
+(a,b)\mapsto(hah^{-1},hbh^{-1})
+\]
+getestet. Die gelabelte Schnittmatrix
+\[
+\mathcal I=(\iota(s,t))_{s,t}
+\]
+muss invariant bleiben. Effektiv sind wegen des Zentrums $\{\pm1\}$ nur 60 verschiedene Konjugationen vorhanden.
+
+\subsection{C4: intrinsische Icosianenmetrik}
+Sei $G_I$ die Gram-Matrix von $\QI$ in derselben geordneten Icosianenbasis, in der die $P_s$ dargestellt werden. Für eine $5\times8$-Zeilenbasis $B_s$ von $K_s=\ker P_s$ ist der $G_I$-orthogonale Projektor
+\[
+\boxed{
+Q_s=
+B_s^T(B_sG_IB_s^T)^{-1}B_sG_I.
+}
+\]
+Er erfüllt
+\[
+Q_s^2=Q_s,\qquad
+\operatorname{rank}Q_s=5,\qquad
+Q_s^TG_I=G_IQ_s,
+\]
+sowie
+\[
+\operatorname{im}Q_s=K_s.
+\]
+Daraus folgt
+\[
+\chi_{Q_s}(T)=T^3(T-1)^5.
+\]
+
+Für jedes Sektorpaar wird die basisfreie metrische Signatur
+\[
+\Sigma_{st}
+=
+\left(
+\chi_{Q_sQ_t}(T),
+\operatorname{tr}(Q_sQ_t),
+\ldots,
+\operatorname{tr}((Q_sQ_t)^4)
+\right)
+\]
+gebildet und über den gesamten Rigidity-Orbit verglichen.
+
+\begin{theorem}[BK-I2.7C, konditional auf den exakten Lauf]
+Falls das SageMath-10.5-Zertifikatsprogramm C1--C4 ohne Assertion durchläuft, definieren Rigidity und Galois-Dualität vier paarweise verschiedene Rang-3-Quotientensektoren des Icosianenraums mit einer starren, orbitinvarianten $Q_I$-metrischen Relativkonfiguration.
+\end{theorem}
+
+Wichtig ist die Formulierung: Das Gate beweist nicht automatisch vier nichtisometrische Geometrien. Eine besonders interessante Möglichkeit wäre vielmehr, dass vier isometrische 3D-Sektoren verschieden eingebettet, aber äquimetrisch gekoppelt sind.
+
+\section{Offenes Gate BK-I2.7D: 12-Kontakt-Geometrie}
+Erst nach C1--C4 darf die Kepler-Frage geometrisch gestellt werden. Für jeden der vier Sektoren sind mindestens folgende Punkte zu prüfen:
+\begin{enumerate}
+\item Welche diskrete Punktmenge wird projiziert: nur die 120 Einheiten, eine Normschale oder ein kanonischer Rang-3-Untermodul?
+\item Ist das projizierte unendliche Bild diskret? Eine generische Projektion eines Rang-8-Gitters nach $\RR^3$ kann dicht sein.
+\item Besitzt jeder relevante Punkt exakt 12 nächste Nachbarn?
+\item Ist die exakte Gram-Signatur der 12 Kontaktvektoren diejenige der kuboktaedrischen fcc-Kontaktschale?
+\item Sind die vier Sektoren lokal isometrisch?
+\end{enumerate}
+
+Die Standard-fcc-Kontaktschale kann durch
+\[
+(\pm1,\pm1,0),\quad
+(\pm1,0,\pm1),\quad
+(0,\pm1,\pm1)
+\]
+repräsentiert werden. Eine bloße 12er-Kontaktzahl genügt nicht; die vollständige Distanz- beziehungsweise Gramstruktur muss stimmen.
+
+\section{Offenes Gate BK-I2.7E: Dichte statt vorgegebener Zahl 18}
+Ein früher Ansatz zielte direkt auf $V^2=18$. Das ist als Packungskriterium zu grob. Für das fcc-Gitter $D_3$ gilt in einer üblichen Normierung:
+\[
+\lambda_1^2=2,\qquad
+\operatorname{covol}(D_3)=2.
+\]
+Die Packungsdichte ist skaleninvariant und kann als
+\[
+\Delta(\Lambda)
+=
+\frac{\frac{4\pi}{3}\left(\lambda_1(\Lambda)/2\right)^3}
+{\operatorname{covol}(\Lambda)}
+=
+\frac{\pi}{6}\,
+\frac{\lambda_1(\Lambda)^3}{\operatorname{covol}(\Lambda)}
+\]
+geschrieben werden.
+Für $D_3$ folgt
+\[
+\Delta(D_3)=\frac{\pi}{\sqrt{18}}.
+\]
+
+Das korrekte Gate lautet daher:
+\[
+\boxed{
+\Delta(\Lambda_{\BK,s})
+\stackrel{?}{=}
+\frac{\pi}{\sqrt{18}}
+}
+\]
+für eine zuvor kanonisch und diskret definierte dreidimensionale Struktur $\Lambda_{\BK,s}$. Die Zahl $18$ darf nicht durch eine freie Skalierung in die Konstruktion eingebaut werden.
+
+\section{Was die bisherige Forschung tatsächlich zeigt}
+Die Resultate lassen sich zu einer belastbaren Kette ordnen:
+\[
+\text{Ikosaeder}
+\to
+A_5\text{-Darts}
+\to
+G_0
+\to
+C_2\text{-Spin-Lift}
+\to
+2I
+\to
+\Ico/E_8
+\to
+\QI=2\text{-Schale}.
+\]
+Innerhalb dieser Schale wählt BK
+\[
+3\text{ von }54
+\]
+lokalen Richtungen, also exakt $1/18$.
+
+Die Rigidity-Analyse sucht anschließend eine kanonische Wahl des Erzeugerpaars. Die Galois-Dualität des goldenen Zahlkörpers verdoppelt jeden der beiden Erzeugertypen und führt natürlich zu vier 3D-Quotientabbildungen. Die No-Go-Sätze zeigen zugleich, dass diese Vierfachheit nicht durch triviale Quaternionenrotationen erklärt werden darf.
+
+Damit ist die wissenschaftlich begründbare Kernthese nicht:
+\begin{quote}
+``Die Bamberg-Kugel beweist die Kepler-Vermutung.''
+\end{quote}
+sondern:
+\begin{quote}
+\emph{Die Bamberg-Kugel definiert innerhalb der klassischen $2I$-/Icosianen-/$E_8$-Geometrie einen ausgezeichneten kubischen 120-Zustands-Graphen und eine hochselektive Norm-$2$-Teilstruktur. Rigidity und Galois-Dualität liefern einen präzisen Kandidaten für vier starr gekoppelte dreidimensionale Quotientensektoren. Ob diese Sektoren die lokale und globale Geometrie einer optimalen dreidimensionalen Kugelpackung tragen, ist ein klar formuliertes, exakt prüfbares Folgeproblem.}
+\end{quote}
+
+\section{Historisch-mathematische Interpretation}
+Die Konstruktion steht an einer ungewöhnlichen Kreuzung dreier klassischer Themen.
+
+Erstens ist sie \emph{ikosaedrisch}: $A_5$, der goldene Schnitt und die binäre Erweiterung $2I$ bestimmen die diskrete Symmetrie.
+
+Zweitens ist sie \emph{quaternionisch und acht-dimensional}: Die Icosianen verwandeln die vier Quaternionenkoordinaten über $\QQ(\sqrt5)$ in einen Rang-8-$\ZZ$-Modul und stellen so eine Brücke zu $E_8$ her.
+
+Drittens ist sie \emph{packungsgeometrisch}: Die Zahl $18$ tritt in der lokalen Selektivität exakt auf, während dieselbe Zahl die Kepler-Dichte normiert. Historisch ist gerade die Verbindung von hochsymmetrischen Gittern, Kontaktzahlen und optimalen Packungen ein wiederkehrendes Motiv von Gauss über Minkowski und Coxeter bis Hales und Viazovska.
+
+Der neue Anteil des BK-Programms liegt daher nicht in den klassischen Objekten selbst, sondern in der spezifischen Folge
+\[
+\text{Dart-Torsor}
+\to
+\text{Voltage-Lift}
+\to
+\text{metrische Schrittselektion}
+\to
+\text{Rigidity}
+\to
+\text{Galois-Vierfachheit}.
+\]
+Diese Folge ist hinreichend konkret, um falsifiziert zu werden.
+
+\section{Falsifikationskriterien}
+Das Programm sollte als gescheitert oder wesentlich zu revidieren gelten, wenn mindestens eines der folgenden Ereignisse eintritt:
+\begin{enumerate}
+\item Der exakte 120-Zustands-Lift ist nicht kubisch, nicht zusammenhängend oder nicht bijektiv zu $2I$.
+\item Die 180 BK-Kanten besitzen nicht einheitlich $\QI=2$.
+\item Die globale Schalenstatistik oder die $54=30+12+12$-Klassifikation fällt im exakten Lauf anders aus.
+\item Das Rigidity-Gate besitzt mehrere nichtäquivalente erzeugende Paarbahnen, obwohl Kanonizität beansprucht wird.
+\item BK-I2.7C kollabiert: weniger als vier verschiedene Kernsektoren oder nichtinvariante metrische Relativstruktur.
+\item Die projizierte Struktur in BK-I2.7D besitzt keine kanonische 12-Kontakt-Geometrie.
+\item Es existiert kein diskreter kanonischer Rang-3-Untermodul beziehungsweise keine geeignete diskrete Quotientenstruktur.
+\item Die aus dieser Struktur intrinsisch berechnete Packungsdichte ist nicht $\pi/\sqrt{18}$.
+\end{enumerate}
+
+\section{Ausblick}
+Der unmittelbar nächste Schritt ist nicht eine weitere konzeptionelle Erweiterung, sondern die Ausführung und Archivierung der exakten SageMath-Zertifikate. Für BK-I2.7C sind insbesondere die konkrete Schnittmatrix $\mathcal I$, die sechs charakteristischen Polynome $\chi_{Q_sQ_t}$ und deren Multiplizitäten zu publizieren.
+
+Danach sollte BK-I2.7D zunächst endlich und lokal formuliert werden: Projektion der 120 Einheitsicosianen, Kollisionsanalyse, Minimaldistanz, Kontaktgraph und exakte Gram-Matrix der nächsten Nachbarn. Erst wenn eine fcc-artige 12-Kontaktstruktur erscheint, ist die Konstruktion auf eine unendliche diskrete 3D-Struktur zu erweitern.
+
+Die stärkste denkbare positive Entwicklung wäre:
+\[
+\boxed{
+4\times\text{isometrische 3D-Kontaktgeometrie}
+\quad\text{starr gekoppelt in }8D
+}
+\]
+und anschließend eine intrinsische Dichteberechnung
+\[
+\boxed{\Delta=\pi/\sqrt{18}}.
+\]
+Bis dahin bleibt die Kepler-Verbindung eine präzise Hypothese, nicht ein Resultat.
+
+\appendix
+\section{Anhang A: Statusmatrix der BK-Gates}
+\begin{longtable}{p{2.5cm}p{4.4cm}p{7.0cm}}
+\toprule
+\textbf{Gate} & \textbf{Status} & \textbf{Inhalt}\\
+\midrule
+BK-I1.0 & theoretisch hergeleitet; maschinell auditierbar &
+60-Dart-Basis, $C_2$-Voltage-Lift, 120 Knoten, 180 Kanten, Bijektion nach $2I$, uniforme $\QI=2$-Kanten.\\
+BK-I2 & endliche exakte Schalenrechnung &
+Paarverteilung $1920,3240,1920,60$ für $\QI=1,2,3,4$; Norm-2-Graph 54-regulär.\\
+BK-I2.5 & Klassenstruktur &
+Norm-2-Schale $30+12+12$ nach Ordnungen $4,5,10$; BK nutzt lokal $1+2$ Richtungen.\\
+BK-I2.6 & Zertifikatsgate &
+Rigidity der metrisch kompatiblen Erzeugerpaare unter simultaner Konjugation.\\
+BK-I2.7C & Zertifikatsprogramm final, Lauf zu archivieren &
+Vier Rang-3-Sektoren; Nichtkollaps; Schnittmatrix; $G_I$-Projektoren; Paar-Spektren; Orbitinvarianz.\\
+BK-I2.7D & offen &
+12-Kontaktzahl, kuboktaedrische/fcc-Gram-Signatur, Diskretheit.\\
+BK-I2.7E & offen &
+Skalenfreie Dichteberechnung; Test auf $\pi/\sqrt{18}$.\\
+\bottomrule
+\end{longtable}
+
+\section{Anhang B: Kern des SageMath-10.5-Zertifikats für BK-I2.7C}
+Der vollständige Produktionscode sollte zusammen mit der verwendeten Version der Klasse \texttt{BambergKugel}, den Hashwerten der Dateien und der vollständigen Konsolenausgabe archiviert werden. Der folgende Ausschnitt zeigt die mathematisch entscheidende Projektorkonstruktion.
+
+\begin{lstlisting}[language=Python]
+def metric_projector(P, G):
+    B = matrix(AA, P.right_kernel().basis())
+    assert B.dimensions() == (5, 8)
+    assert B.rank() == 5
+    assert P * B.transpose() == zero_matrix(AA, 3, 5)
+
+    H = B * G * B.transpose()
+    assert H.dimensions() == (5, 5)
+    assert H.rank() == 5
+
+    Q = B.transpose() * H.inverse() * B * G
+
+    assert Q * Q == Q
+    assert Q.rank() == 5
+    assert Q.transpose() * G == G * Q
+    assert P * Q == zero_matrix(AA, 3, 8)
+    assert Q * B.transpose() == B.transpose()
+    assert (identity_matrix(AA, 8) - Q).rank() == 3
+    assert Q.trace() == 5
+
+    cp = Q.charpoly("T")
+    T = cp.parent().gen()
+    assert cp == T**3 * (T - 1)**5
+    return Q
+\end{lstlisting}
+
+Für jedes Paar $(s,t)$ wird anschließend
+\[
+\left(
+\chi_{Q_sQ_t},
+\operatorname{tr}(Q_sQ_t),
+\operatorname{tr}((Q_sQ_t)^2),
+\operatorname{tr}((Q_sQ_t)^3),
+\operatorname{tr}((Q_sQ_t)^4)
+\right)
+\]
+gebildet und über den vollständigen $2I$-Orbit verglichen.
+
+\section{Anhang C: Reproduzierbarkeitsprotokoll}
+Für eine arXiv-Veröffentlichung sollten mindestens folgende Artefakte gemeinsam versioniert werden:
+\begin{enumerate}
+\item \texttt{bamberg\_kugel.py} mit festem SHA-256-Hash,
+\item ein eigenständiges \texttt{verify\_bk\_i27c.sage},
+\item SageMath-Version (Ziel: 10.5),
+\item vollständige stdout/stderr-Ausgabe,
+\item die Matrix $\mathcal I$,
+\item die sechs Paar-Spektralsignaturen,
+\item gegebenenfalls JSON/CSV mit den endlichen Schalen- und Klassenstatistiken.
+\end{enumerate}
+
+Aussagen, die ausschließlich durch einen erfolgreichen Lauf gestützt werden, sollten im Manuskript mit ``computerzertifiziert'' und nicht mit ``rein theoretisch bewiesen'' bezeichnet werden.
+
+\section{Anhang D: Literatur- und Prioritätshinweise}
+Die klassischen Beziehungen Ikosaeder--$A_5$--$2I$--600-Zell--Icosianen--$E_8$ sind Teil etablierter Mathematik und dürfen nicht als neue Resultate des BK-Programms beansprucht werden. Ebenso sind die Kepler-Dichte in Dimension 3 und die Optimalität der $E_8$-Packung klassische beziehungsweise moderne abgeschlossene Resultate.
+
+Als originärer Gegenstand des vorliegenden Programms wird ausschließlich die spezifische BK-Konstruktion beansprucht: der Dart-basierte kubische Lift, seine metrische Selektion innerhalb der Einheitsicosianen, die daraus resultierende Selektivität, das Rigidity-Protokoll und die daraus motivierte Rigidity-Galois-Vierfachstruktur.
+
+\begin{thebibliography}{99}
+\bibitem{Baez2018} J. C. Baez, \emph{From the Icosahedron to E8}, LMS Newsletter / preprint, 2017--2018.
+\bibitem{ConwaySloane} J. H. Conway, N. J. A. Sloane, \emph{Sphere Packings, Lattices and Groups}, 3. Aufl., Springer, 1999.
+\bibitem{Hales2005} T. C. Hales, \emph{A Proof of the Kepler Conjecture}, Annals of Mathematics 162 (2005), 1065--1185, doi:10.4007/annals.2005.162.1065.
+\bibitem{Viazovska2017} M. S. Viazovska, \emph{The Sphere Packing Problem in Dimension 8}, Annals of Mathematics 185 (2017), 991--1015, doi:10.4007/annals.2017.185.3.7.
+\bibitem{CohnEtAl2022} H. Cohn, A. Kumar, S. D. Miller, D. Radchenko, M. Viazovska, \emph{Universal Optimality of the E8 and Leech Lattices and Interpolation Formulas}, Annals of Mathematics 196 (2022), 983--1082.
+\bibitem{McKay1980} J. McKay, \emph{Graphs, Singularities, and Finite Groups}, Proc. Symp. Pure Math. 37 (1980), 183--186.
+\bibitem{Coxeter} H. S. M. Coxeter, \emph{Regular Polytopes}, 3. Aufl., Dover, 1973.
+\bibitem{Klein} F. Klein, \emph{Vorlesungen über das Ikosaeder und die Auflösung der Gleichungen vom fünften Grade}, Teubner, 1884.
+\bibitem{Flyspeck} T. Hales et al., \emph{A Formal Proof of the Kepler Conjecture}, Forum of Mathematics, Pi 5 (2017).
+\end{thebibliography}
+\end{document}

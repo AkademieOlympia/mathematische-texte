@@ -1,0 +1,389 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=30mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Pp}{\mathbb{P}}
+\newcommand{\SP}{S_{\!\Pp}}
+\newcommand{\Prime}{\operatorname{Prime}}
+\newcommand{\gap}{g}
+
+\title{\textbf{Prime--Peano Recursion: A Successor Formalism on the Ordered Set of Prime Numbers}\\[0.35em]
+\large Historical context, exact recursion, and algorithmic realization}
+\author{Thomas Hoffbauer}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We formulate a Peano-type successor recursion on the prime numbers by defining the prime-successor map
+\[
+\SP(n)=\min\{q\in\Pp:q>n\}.
+\]
+Its existence follows from the infinitude of primes together with the well-ordering of the natural numbers. Starting with $p_0=2$ and iterating $p_{k+1}=\SP(p_k)$ enumerates the primes in increasing order. The construction is related to the ordinary Peano successor $S(n)=n+1$ by
+\[
+\SP(p)=S^{\gap(p)}(p),\qquad \gap(p)=\SP(p)-p,
+\]
+so prime gaps appear as the variable number of elementary successor steps compressed into one prime-successor step. We place this observation in the historical line from Euclid's proof of the infinitude of primes, through Dedekind's and Peano's foundational treatments of recursion and successor, to modern primality testing by Miller, Rabin, and Agrawal--Kayal--Saxena. We also distinguish sharply between (i) a recursive definition of the ordered prime sequence, (ii) an algorithm for locating the next prime using a primality oracle, and (iii) a closed prime-generating formula. The ``Prime--Peano'' terminology is introduced here as a structural packaging of a standard next-prime operation; no claim is made that the next-prime map itself is new. A final section records how the recursion can be lifted through an independently defined anchor map into an auxiliary geometric or algebraic state space without altering the arithmetic content of the prime successor.
+\end{abstract}
+
+\textbf{Keywords:} prime numbers, Peano recursion, successor map, prime gaps, primality testing, Miller--Rabin, recursive enumeration.
+
+\textbf{MSC 2020:} 11A41, 11A51, 03B30, 68Q25.
+
+\section{Introduction}
+
+The natural numbers are canonically organized by the successor operation
+\[
+S(n)=n+1.
+\]
+In the Peano tradition, iteration of a successor is not merely a computational device: it is part of the structural description of the number system itself. Prime numbers, in contrast, form a sparse ordered subset of $\N$. Their additive spacings are irregular, yet the set of primes still has a unique first element and, above every integer, a least prime.
+
+This suggests a simple derived successor operation: instead of advancing by one integer, advance directly to the least larger prime. We call this the \emph{Prime--Peano successor}. The basic definition is elementary, but it separates three ideas that are often conflated:
+\begin{enumerate}[label=(\roman*)]
+\item the \emph{order-theoretic} existence of a next prime;
+\item the \emph{recursive} enumeration of all primes by repeated successor steps;
+\item the \emph{algorithmic} problem of finding the next prime efficiently.
+\end{enumerate}
+
+The first two are exact consequences of classical number theory and well-ordering. The third depends on the chosen primality test and on prime gaps. In particular, the recursion is not a closed formula for primes and does not bypass primality testing.
+
+The purpose of this paper is therefore classificatory rather than sensational: to state the prime successor in a Peano-style language, prove the elementary structural properties cleanly, explain its relation to prime gaps and recursion, and situate its computation within the modern theory of primality testing.
+
+\section{Historical line: from Euclid to algorithmic primality}
+
+\subsection{Euclid and the inexhaustibility of the primes}
+
+Euclid's \emph{Elements}, Book IX, Proposition 20, establishes that prime numbers are more numerous than any prescribed finite collection. In modern language, $\Pp$ is infinite. This fact is the first ingredient needed for a global prime-successor map: for every $n\in\N$, the set of primes larger than $n$ is nonempty.
+
+Euclid's argument does not identify the immediate next prime. Rather, from a finite list of primes it constructs a number whose prime divisor lies outside that list. Thus Euclid provides \emph{existence beyond every finite bound}, not a successor algorithm.
+
+\subsection{Dedekind, Peano, and recursion on the natural numbers}
+
+Dedekind's \emph{Was sind und was sollen die Zahlen?} (1888) gave a foundational account of the natural numbers in terms of a simply infinite system and emphasized recursion as a structural principle. Peano's \emph{Arithmetices principia, nova methodo exposita} (1889) subsequently gave the axiomatic formulation now associated with the Peano axioms, in which a distinguished initial element and a successor operation organize the natural-number sequence.
+
+The present construction does not modify the Peano axioms. Instead, it transports the successor idea to a distinguished ordered subset of $\N$. The ordinary successor remains
+\[
+S(n)=n+1,
+\]
+while the prime successor skips all intervening composite numbers.
+
+\subsection{From trial division to Miller--Rabin and AKS}
+
+For a recursive prime successor to become an executable algorithm, one needs a predicate deciding whether a candidate is prime. Classical trial division already provides such a decision procedure, but it is inefficient for large integers.
+
+Miller's 1976 work gave strong complexity bounds for primality testing, including a polynomial-time result under the Extended Riemann Hypothesis. Rabin's 1980 refinement produced the practical randomized test now commonly referred to as the Miller--Rabin primality test. A Miller--Rabin witness proves compositeness; in its general arbitrary-precision randomized form, passing a finite number of bases yields a probable-prime statement with controlled error probability rather than an unconditional proof of primality.
+
+A major complexity-theoretic milestone was reached by Agrawal, Kayal, and Saxena, who proved that primality testing admits an unconditional deterministic polynomial-time algorithm. Hence the logical predicate $\Prime(n)$ can, in principle, be implemented deterministically in time polynomial in the bit length of $n$.
+
+\section{The Prime--Peano successor}
+
+\begin{definition}[Prime-successor map]
+For $n\in\N$, define
+\[
+\boxed{\SP(n):=\min\{q\in\Pp:q>n\}.}
+\]
+When the domain is restricted to primes, $\SP:\Pp\to\Pp$ is called the \emph{Prime--Peano successor}.
+\end{definition}
+
+\begin{theorem}[Existence and uniqueness]
+For every $n\in\N$, $\SP(n)$ exists and is unique.
+\end{theorem}
+
+\begin{proof}
+By Euclid's theorem, there exists a prime $q>n$, so the set
+\[
+A_n=\{q\in\Pp:q>n\}
+\]
+is nonempty. Since $A_n\subset\N$, the well-ordering principle gives a unique least element. This element is $\SP(n)$.
+\end{proof}
+
+\begin{definition}[Prime--Peano recursion]
+Set
+\[
+p_0=2,
+\qquad
+p_{k+1}=\SP(p_k),\qquad k\in\N.
+\]
+\end{definition}
+
+\begin{theorem}[Exact enumeration of the primes]
+The sequence $(p_k)_{k\ge0}$ defined above is precisely the increasing sequence of all prime numbers.
+\end{theorem}
+
+\begin{proof}
+By construction, $p_0=2$ is the least prime, and $p_{k+1}$ is the least prime strictly larger than $p_k$. Hence the sequence is strictly increasing and contains no composite number. If a prime $r$ were omitted, choose the least omitted prime. Since $r>2$, there is a largest sequence element $p_k<r$ among the finitely many sequence elements below $r$. But then $\SP(p_k)\le r$. Minimality of $r$ and primality of $\SP(p_k)$ force $\SP(p_k)=r$, a contradiction.
+\end{proof}
+
+\section{Relation to the ordinary Peano successor}
+
+The Prime--Peano step is not a new primitive arithmetic operation. It is a variable-length iterate of the ordinary successor.
+
+\begin{definition}[Forward prime gap]
+For a prime $p$, define
+\[
+\gap(p):=\SP(p)-p.
+\]
+Equivalently, if $p=p_k$, then $\gap(p_k)=p_{k+1}-p_k$.
+\end{definition}
+
+\begin{proposition}[Compression identity]
+For every prime $p$,
+\[
+\boxed{\SP(p)=S^{\gap(p)}(p).}
+\]
+\end{proposition}
+
+\begin{proof}
+Since $S^m(p)=p+m$ for every $m\in\N$, taking $m=\gap(p)=\SP(p)-p$ gives the identity.
+\end{proof}
+
+Thus the irregularity of the prime sequence is transferred entirely into the integer-valued gap function $\gap$. In ordinary Peano arithmetic, one moves through every integer; in the prime recursion, one compresses exactly $\gap(p)$ elementary successor steps into one macro-step.
+
+For example,
+\[
+23\xrightarrow{S}24\xrightarrow{S}25\xrightarrow{S}26\xrightarrow{S}27\xrightarrow{S}28\xrightarrow{S}29,
+\]
+so
+\[
+\SP(23)=29=S^6(23),\qquad \gap(23)=6.
+\]
+
+\section{The prime sequence as a transported Peano system}
+
+Let $\pi:\N\to\Pp$ be the increasing enumeration
+\[
+\pi(k)=p_k.
+\]
+Then the defining recursion is equivalent to the commutative relation
+\[
+\boxed{\SP\circ\pi=\pi\circ S.}
+\]
+In dynamical language, $\pi$ conjugates the ordinary successor on the index set $\N$ to the prime successor on $\Pp$.
+
+\begin{proposition}[Order-type statement]
+With the inherited order from $\N$, the set of primes has order type $\omega$. The structure $(\Pp,2,\SP)$ is therefore isomorphic, as a pointed successor system, to $(\N,0,S)$.
+\end{proposition}
+
+\begin{remark}
+This statement concerns only the successor structure. It does \emph{not} mean that the ordinary addition and multiplication of prime numbers turn $\Pp$ into a copy of the arithmetic semiring $\N$. If one transports addition and multiplication through $\pi$, the induced operations would be
+\[
+p_i\oplus p_j:=p_{i+j},\qquad p_i\odot p_j:=p_{ij},
+\]
+which are generally different from ordinary integer addition and multiplication.
+\end{remark}
+
+\section{Recursive and algorithmic formulations}
+
+\subsection{Pure recursive form}
+
+Define a search functional $F$ by
+\[
+F(m)=
+\begin{cases}
+m,&\Prime(m),\\
+F(S(m)),&\neg\Prime(m).
+\end{cases}
+\]
+Then
+\[
+\boxed{\SP(n)=F(S(n)).}
+\]
+Termination follows from the existence theorem: some prime lies above every $n$.
+
+\subsection{Basic algorithm}
+
+The direct algorithmic realization is:
+
+\begin{lstlisting}[language={},basicstyle=\ttfamily\small,frame=single]
+PRIME-PEANO-SUCCESSOR(n)
+    m := n + 1
+    while not PRIME(m):
+        m := m + 1
+    return m
+\end{lstlisting}
+
+For $n\ge2$, an implementation may skip even candidates:
+
+\begin{lstlisting}[language={},basicstyle=\ttfamily\small,frame=single]
+PRIME-PEANO-SUCCESSOR-ODD(n)
+    if n < 2: return 2
+    m := n + 1
+    if m is even: m := m + 1
+    while not PRIME(m):
+        m := m + 2
+    return m
+\end{lstlisting}
+
+This optimization does not change the mathematical successor map; it only removes candidates known a priori to be composite.
+
+\section{Miller--Rabin as the primality predicate}
+
+The recursion itself is independent of the primality test. One may therefore write
+\[
+\SP^{(T)}(n)
+\]
+for an implementation using a test $T$.
+
+If $T$ is an exact primality decision procedure, the returned value is provably $\SP(n)$. If $T$ is a randomized Miller--Rabin test with finitely many bases, then the algorithm returns the least candidate that passes the chosen probable-prime protocol. Compositeness conclusions from witnesses are exact; a final ``prime'' conclusion retains the protocol's error probability unless an appropriate deterministic bound or an additional proof step is used.
+
+For fixed machine ranges, deterministic Miller--Rabin base sets can be used. For arbitrary-precision integers, a rigorous implementation should record the epistemic status explicitly:
+\[
+\texttt{COMPOSITE},\qquad \texttt{PROBABLE\_PRIME},\qquad \texttt{PROVED\_PRIME}.
+\]
+This distinction is particularly important when the recursion is used to generate very large candidate primes.
+
+\section{Complexity decomposition}
+
+Let $T_{\rm prime}(L)$ denote the cost of one primality test on an $L$-bit candidate, and let
+\[
+\gap_n=\SP(n)-n.
+\]
+A naive unit-step implementation performs at most $\gap_n$ candidate tests; an odd-only implementation performs on the order of $\gap_n/2$ tests. Thus a simple upper-level cost model is
+\[
+T_{\SP}(n)\approx N_{\rm cand}(n)\,T_{\rm prime}(\log n),
+\]
+where $N_{\rm cand}$ depends on the local prime gap and on the wheel or congruence filters used before primality testing.
+
+This makes the structural separation transparent:
+\begin{itemize}
+\item the \emph{definition} of $\SP$ is exact and independent of complexity;
+\item the \emph{termination} of the search follows from infinitude of primes;
+\item the \emph{runtime} depends on local gaps and on the primality oracle.
+\end{itemize}
+
+\section{What the recursion is, and what it is not}
+
+The Prime--Peano formulation should not be confused with a new closed formula for primes. It is useful to state the boundary explicitly.
+
+\begin{center}
+\begin{tabular}{@{}p{0.36\textwidth}p{0.52\textwidth}@{}}
+\toprule
+\textbf{Claim} & \textbf{Status}\\
+\midrule
+A least prime greater than every $n$ exists & Theorem (Euclid + well-ordering)\\
+$p_{k+1}=\SP(p_k)$ enumerates all primes & Theorem\\
+$\SP(p)=S^{\gap(p)}(p)$ & Exact identity\\
+The recursion determines the next prime without primality testing & False in the presented algorithmic realization\\
+The construction is a closed-form prime formula & No\\
+The next-prime operation itself is historically new & No such claim\\
+``Prime--Peano'' as a structural packaging and terminology & Definition adopted in this paper\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The mathematical value of the formulation lies in exposing the prime sequence as a successor system and in separating the successor relation from the mechanism used to certify primality.
+
+\section{Optional lift to an auxiliary state space}
+
+The arithmetic recursion can be lifted without altering its content. Let $X$ be any state space and let
+\[
+A:\Pp\to X,\qquad p\mapsto x_p
+\]
+be an independently defined anchor map. Suppose that for selected pairs of primes one has maps
+\[
+B_{p\to q}:X\to X
+\]
+satisfying
+\[
+B_{p\to q}(x_p)=x_q.
+\]
+Then the Prime--Peano recursion admits the lifted diagram
+\[
+\begin{array}{ccc}
+p_k & \xrightarrow{\SP} & p_{k+1}\\
+\downarrow A && \downarrow A\\
+x_{p_k} & \xrightarrow{B_{p_k\to p_{k+1}}} & x_{p_{k+1}}.
+\end{array}
+\]
+
+This distinction is conceptually important. The upper arrow determines \emph{which prime is next}; the lower arrow describes an additional representation or geometry attached to that arithmetic successor. A proof of the lower arrow cannot replace the primality content of the upper arrow unless the anchor construction itself includes an independent primality theorem.
+
+In the EABC setting motivating this terminology, quaternionic and octonionic anchor spaces may be studied as such lifts. Those constructions are logically downstream from the Prime--Peano recursion and are not required for the results of Sections 3--8.
+
+\section{Discussion}
+
+The Prime--Peano viewpoint is deliberately elementary. Its usefulness comes from a precise change of perspective: instead of viewing the prime sequence merely as a list of exceptional integers, one views it as a successor system obtained by compressing variable-length runs of ordinary Peano steps. Prime gaps are then the compression lengths.
+
+This perspective also creates a clean interface between foundational arithmetic and computation. The map $\SP$ is defined order-theoretically. A primality test supplies an implementation of the predicate needed to locate its value. Improvements in primality testing change the computational cost but not the recursion itself.
+
+For further work, three directions are natural. First, one may study complexity after introducing wheel sieves or modular filters before Miller--Rabin. Second, one may compare the distribution of gap lengths with the computational trace of the recursion. Third, one may investigate independently defined geometric lifts and ask which algebraic structures make the successor diagram commute.
+
+\section{Conclusion}
+
+The prime numbers admit a canonical successor map
+\[
+\SP(n)=\min\{q\in\Pp:q>n\},
+\]
+and hence a recursive enumeration
+\[
+p_0=2,\qquad p_{k+1}=\SP(p_k).
+\]
+The recursion is a transported successor structure on a set of order type $\omega$. Its relation to ordinary Peano succession is exactly
+\[
+\SP(p)=S^{\gap(p)}(p),
+\]
+with prime gaps providing the variable step lengths. Historically, Euclid supplies global existence of further primes, Dedekind and Peano supply the foundational successor-recursion paradigm, and modern primality tests supply executable predicates for large inputs.
+
+The resulting formalism is exact but modest: it is a structural recursion, not a closed-form generator and not a shortcut around primality testing. This modesty is also its advantage, because it gives a clean arithmetic backbone on which more elaborate computational or geometric constructions may be built without confusing their epistemic status with that of the prime-successor relation itself.
+
+\begin{thebibliography}{99}
+
+\bibitem{Euclid}
+Euclid,
+\emph{Elements}, Book IX, Proposition 20.
+Classical statement of the infinitude of prime numbers.
+
+\bibitem{Dedekind1888}
+R. Dedekind,
+\emph{Was sind und was sollen die Zahlen?},
+Vieweg, Braunschweig, 1888.
+
+\bibitem{Peano1889}
+G. Peano,
+\emph{Arithmetices principia, nova methodo exposita},
+Fratres Bocca, Turin, 1889.
+
+\bibitem{Miller1976}
+G. L. Miller,
+``Riemann's Hypothesis and Tests for Primality,''
+\emph{Journal of Computer and System Sciences} 13 (1976), no. 3, 300--317.
+\href{https://doi.org/10.1016/S0022-0000(76)80043-8}{doi:10.1016/S0022-0000(76)80043-8}.
+
+\bibitem{Rabin1980}
+M. O. Rabin,
+``Probabilistic Algorithm for Testing Primality,''
+\emph{Journal of Number Theory} 12 (1980), no. 1, 128--138.
+\href{https://doi.org/10.1016/0022-314X(80)90084-0}{doi:10.1016/0022-314X(80)90084-0}.
+
+\bibitem{AKS2004}
+M. Agrawal, N. Kayal, and N. Saxena,
+``PRIMES is in P,''
+\emph{Annals of Mathematics} 160 (2004), no. 2, 781--793.
+\href{https://doi.org/10.4007/annals.2004.160.781}{doi:10.4007/annals.2004.160.781}.
+
+\end{thebibliography}
+
+\end{document}

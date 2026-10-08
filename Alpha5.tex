@@ -1,0 +1,137 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{microtype}
+
+\geometry{margin=2.5cm}
+
+\title{\textbf{Alpha 5: Metrik-Divergenz der primitiven Grad-8-Restriktion und das Selektionsproblem}}
+\author{Thomas Hoffbauer}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Für die Ausnahme-Einbettung $\mathfrak{g}_2 \oplus \mathfrak{f}_4 \hookrightarrow \mathfrak{e}_8$ wird die algebraische Restriktion im primitiven Grad-8-Quotienten untersucht. Während der Branching-Koeffizient starr fixiert ist ($\lambda_8 = 24$), zeigt sich eine fundamentale Metrik-Divergenz zwischen der flachen Fischer-Metrik und der durch die Weyl-Orbitdichte gewichteten Jacobian-Metrik. Das Dokument formuliert das Metrik-Selektionsprinzip (C-Alpha-H5), stellt den rein mathematischen Invarianten-Freeze vor und trennt diesen strikt von einem nachgelagerten externen Benchmark-Vergleich sowie einer phänomenologischen Skalenanalyse.
+\end{abstract}
+
+\section{Ausgangslage und algebraischer Kern}
+
+Für die Ausnahme-Einbettung $\mathfrak{g}_2 \oplus \mathfrak{f}_4 \hookrightarrow \mathfrak{e}_8$ wurde die adjungierte Verzweigung
+$$\mathbf{248} = (\mathbf{14},\mathbf{1}) \oplus (\mathbf{7},\mathbf{26}) \oplus (\mathbf{1},\mathbf{52})$$
+zugrunde gelegt. Im primitiven Grad-8-Quotienten induziert die Restriktion bei festgelegter Spur-Normalisierung den exakten Branching-Koeffizienten
+$$\lambda_8 = 24.$$
+Damit ist die algebraische Restriktion starr fixiert. Eine normierte Restriktionsstärke entsteht jedoch erst, wenn auf den invarianten Polynomräumen Skalarprodukte gewählt werden. Genau an dieser Stelle treten zwei voneinander verschiedene, jeweils natürliche Geometrien auf.
+
+\subsection{1. Flache Tensorgeometrie: Fischer-Metrik}
+Aus der normalisierten euklidischen beziehungsweise Killing-Struktur des Cartanraums folgt auf den symmetrischen Tensoren die Fischer-Paarung
+$$\langle p, q \rangle_F = p(\partial)q\big|_0.$$
+Ihre harmonische Zerlegung wird durch den gewöhnlichen Laplace-Operator $\Delta$ bestimmt. Der primitive Grad-8-Quotient wird daher durch gewöhnlich harmonische Repräsentanten realisiert. Für die primitive Restriktion ergibt sich die normierte Singularstärke
+$$\sigma_{8,F}^2 = \frac{3}{80} \implies \sigma_{8,F} = \frac{3}{4\sqrt{15}} \approx 0.1936491673.$$
+
+\subsection{2. Weyl-Orbitgeometrie: Jacobian-Metrik}
+Eine zweite natürliche Struktur entsteht durch die Reduktion auf den Cartanraum unter Berücksichtigung der Weyl-Orbitdichte. Mit der Weyl-Diskriminante
+$$\Delta_R(x) = \prod_{\alpha > 0} \langle \alpha, x \rangle$$
+wird das normalisierte Weyl-Gaußmaß
+$$d\mu_R(x) = Z_R^{-1} e^{-\|x\|^2/2} \Delta_R(x)^2 \, dx$$
+definiert. Das zugehörige Skalarprodukt lautet
+$$\langle p, q \rangle_J = \int p(x)q(x) \, d\mu_R(x).$$
+Der zugehörige gewichtete Laplace-Operator ist der Dunkl-Operator mit Weyl-Driftterm:
+$$\mathcal{L}_R = \Delta + 2 \sum_{\alpha > 0} \frac{\alpha \cdot \nabla}{\alpha \cdot x} = \Delta + \nabla \log \Delta_R^2 \cdot \nabla.$$
+Der Weyl-Driftterm $\nabla \log \Delta_R^2 \cdot \nabla$ erzeugt die Abweichung der Jacobian-harmonischen Zerlegung von der gewöhnlichen Fischer-harmonischen Zerlegung.
+
+\subsection{3. Exakte Jacobian-harmonische Repräsentanten}
+Unter der Langwurzel-Normierung $\|\text{long}\|^2 = 2$ ergeben sich die primitiven Grad-8-Vertreter aus der Kernbedingung $\mathcal{L}_R H = 0$. Für $\mathfrak{e}_8$ gilt exakt
+$$H_{E_8} = P_8 - \frac{313}{137160000} P_2^4 \quad \text{mit} \quad \mathcal{L}_{E_8} H_{E_8} = 0,$$
+während für $\mathfrak{f}_4$
+$$H_{F_4} = f_8 + \frac{205}{133632} f_2^4 - \frac{7}{24} f_2 f_6 \quad \text{mit} \quad \mathcal{L}_{F_4} H_{F_4} = 0$$
+gilt.
+
+\section{C-Alpha-H5 — Mikroskopisches Maß als mögliches Selektionsprinzip}
+
+Die primitive Grad-8-Restriktion $Q_8(E_8) \longrightarrow Q_8(F_4)$ besitzt eine eindeutig bestimmte algebraische Komponente $\lambda_8 = 24$, aber keine metrikunabhängige normierte Restriktionsstärke. Für die beiden kanonischen Metriken wurden die exakten Werte $\sigma_{8,F}^2 = \frac{3}{80}$ und $\sigma_{8,J}^2 = \frac{1397}{31932480}$ gefunden. Damit wird die Wahl der Metrik selbst zu einer eigenständigen Selektionsfrage.
+
+\subsection*{Selektionsprinzip}
+C-Alpha-H5 formuliert diese offene Frage konditional:
+\begin{quote}
+\textit{Falls eine physikalische effektive Kopplung aus der Ausnahme-Einbettung $\mathfrak{g}_2 \oplus \mathfrak{f}_4 \hookrightarrow \mathfrak{e}_8$ hervorgeht, muss das für ihre normierte Restriktionsstärke relevante Skalarprodukt aus dem mikroskopischen Wirkungs-, Pfadintegral- oder Quantisierungsmaß selbst folgen. Eine Metrik darf nicht aufgrund ihres numerischen Ergebnisses ausgewählt werden.}
+\end{quote}
+
+Dabei sind zwei mathematische Mechanismen zu unterscheiden:
+\begin{itemize}
+    \item Unter einer entsprechenden gaußschen Tensor- beziehungsweise Fock-Quantisierung wäre die Fischer-Paarung $\langle p, q \rangle_F$ die natürliche Struktur. Dies führt zur flachen harmonischen Zerlegung durch den gewöhnlichen Laplace-Operator $\Delta$.
+    \item Unter einer geeigneten Reduktion auf Cartanvariablen würde das Weyl-Determinantenquadrat $\Delta_R(x)^2$ die Jacobian-Metrik nahelegen.
+\end{itemize}
+
+Diese Aussagen beschreiben Selektionsmechanismen unter jeweils expliziten Annahmen; sie sind kein Nachweis dafür, dass eine konkrete $\mathfrak{e}_8$-ExFT oder Niederenergie-EFT eine der beiden Metriken physikalisch realisiert.
+
+\section{Rein mathematischer Freeze (Invarianter Sektor)}
+
+Die folgenden Größen werden vollständig ohne Verwendung von $\alpha$, $\phi$ oder experimentellen Zielwerten bestimmt:
+
+\begin{center}
+\begin{tabular}{lccl}
+\toprule
+\textbf{Größe} & \textbf{Exakter Ausdruck} & \textbf{Dezimalwert} & \textbf{Status / Geometrie} \\
+\midrule
+Branching-Koeffizient ($\lambda_8$) & $24$ & $24.0000000000$ & Algebraischer Strukturwert \\
+Fischer-Stärke ($\sigma_{8,F}$) & $\frac{3}{4\sqrt{15}}$ & $0.1936491673$ & Flache Tensorgeometrie \\
+Fischer-Stärke² ($\sigma_{8,F}^2$) & $\frac{3}{80}$ & $0.0375000000$ & Exakter Quotient \\
+Jacobian-Stärke ($\sigma_{8,J}$) & $\sqrt{\frac{1397}{31932480}}$ & $0.0066142694$ & Weyl-Orbitgeometrie \\
+Jacobian-Stärke² ($\sigma_{8,J}^2$) & $\frac{1397}{31932480}$ & $4.374855946 \times 10^{-5}$ & Exakter Quotient \\
+Metrik-Transferquotient ($R_{J/F}$) & $\sqrt{\frac{1397}{1197468}}$ & $0.0341559402$ & Mathematische Strukturgröße \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Insbesondere gilt:
+$$\boxed{ \sigma_{8,J} \neq \sigma_{8,F}. }$$
+
+\section{Externer Vergleich — strikt nachgelagert}
+
+Erst nach dem vollständigen Freeze der mathematischen Größen darf ein externer Referenzwert daneben gestellt werden. Für $\mathcal{V}_{\mathrm{CQ}} = 4\pi^3 + \pi^2 + \pi$ und den CODATA-2022-Wert $\alpha_{2022}^{-1} = 137.035999177$ ist der empirisch definierte Residualkoeffizient $\Delta_\alpha^{(2022)} = \frac{\mathcal{V}_{\mathrm{CQ}} - \alpha_{2022}^{-1}}{\phi^3}$ gleich
+$$\boxed{ \Delta_\alpha^{(2022)} = 7.190604118 \times 10^{-5}. }$$
+Dieser Wert dient ausschließlich als externer Benchmark für eine spätere physikalische Matching-Frage.
+
+\subsection*{Audit des Größenordnungsabstands}
+Der Vergleich liefert:
+$$\frac{\sigma_{8,F}}{\Delta_\alpha^{(2022)}} \approx 2693.09, \qquad \frac{\sigma_{8,J}}{\Delta_\alpha^{(2022)}} \approx 91.985$$
+sowie
+$$\Delta_\alpha^{(2022)} - \sigma_{8,F} \approx -0.1935772613, \qquad \Delta_\alpha^{(2022)} - \sigma_{8,J} \approx -0.0065423633.$$
+Diese Quotienten dokumentieren lediglich quantitativ, dass weder die Fischer- noch die Jacobian-Singularzahl mit dem empirischen Residualkoeffizienten zusammenfällt.
+
+\section{Phänomenologische Skalenanalyse der Resonator-Präzession}
+
+Die folgenden Resonatorplots sind phänomenologische Skalenanalysen der Ansatzformeln
+$$\Delta\theta_E = \frac{4\mathcal{F}L}{\lambda} \, \kappa \, \delta_{G_2} \left(\frac{E_{\text{ext}}}{E_c}\right)^2 \quad \text{bzw.} \quad \Delta\theta_B = \frac{4\mathcal{F}L}{\lambda} \, \kappa \, \delta_{G_2} \left(\frac{B_{\text{ext}}}{B_c}\right)^2$$
+und keine aus einem vollständig spezifizierten dimensionsrichtigen Effektivoperator abgeleiteten EFT-/ExFT-Vorhersagen. Sie illustrieren ausschließlich, welche Größenordnungen sich innerhalb dieser Skalenformeln für elektrische beziehungsweise magnetische Hintergrundfelder sowie für verschiedene Resonator-Finessen ergeben.
+
+\section{Governance-Richtlinien}
+
+\begin{itemize}
+    \item \textbf{G-Alpha-11:} Keine Metrik erhält aufgrund ihres numerischen Ergebnisses physikalischen Vorrang.
+    \item \textbf{G-Alpha-12:} Eine physikalische Auswahl der Metrik ist erst zulässig, wenn ein explizites Wirkungs-, Pfadintegral- oder Quantisierungsprinzip sie reproduziert.
+    \item \textbf{G-Alpha-13:} Der Metrik-Transferquotient $R_{J/F}$ ist eine mathematische Strukturgröße und kein frei einsetzbarer Korrekturfaktor.
+    \item \textbf{G-Alpha-14:} Die Größen $\lambda_8, \sigma_{8,F}, \sigma_{8,J}, R_{J/F}$ werden vollständig vor jedem Vergleich mit einer physikalischen Konstante eingefroren.
+    \item \textbf{G-Alpha-15:} Der externe Residualwert $\Delta_\alpha$ darf ausschließlich in einem nachgelagerten Vergleichsabschnitt auftreten. Er darf weder zur Auswahl einer Metrik noch zur Definition, Normalisierung oder Kombination mathematischer Invarianten verwendet werden.
+\end{itemize}
+
+\section{Status von C-Alpha-H5 und Schlussfolgerung}
+
+Der gegenwärtige Stand lautet nicht: \textit{„Die jacobsonsche Metrik erklärt $\alpha$.“} 
+Er lautet vielmehr:
+$$\boxed{ \text{Die Mathematik liefert zwei kanonische, aber verschiedene Restriktionsstärken.} }$$
+
+Das offene physikalische Problem besteht darin, aus einem unabhängig spezifizierten mikroskopischen Modell eine exakte Abbildung
+$$\boxed{ S_{\mathrm{micro}} \longrightarrow D\Phi \longrightarrow d\mu_{\mathrm{eff}} \longrightarrow \langle \cdot, \cdot \rangle_{\mathrm{phys}} }$$
+herzuleiten. Erst danach darf entschieden werden, ob $\langle \cdot, \cdot \rangle_{\mathrm{phys}}$ identisch mit $\langle \cdot, \cdot \rangle_F$, $\langle \cdot, \cdot \rangle_J$ oder einer dritten, unabhängig aus der Theorie folgenden Struktur ist. 
+
+Damit bleibt die gesamte Grad-8-Invarianztheorie unerschütterlich und absolut unabhängig von $\alpha$, $\phi$, $\Delta_\alpha$ sowie von jeder experimentellen Zielzahl.
+
+\end{document}

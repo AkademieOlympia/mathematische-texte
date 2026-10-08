@@ -1,0 +1,502 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{microtype}
+\usepackage{geometry}
+\usepackage[ngerman]{babel}
+\usepackage{hyperref}
+
+\geometry{a4paper,margin=2.5cm,top=2.4cm,bottom=2.4cm}
+\hypersetup{colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black}
+
+\newtheorem{theorem}{Satz}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Korollar}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Bemerkung}
+\numberwithin{equation}{section}
+
+\title{\textbf{\texorpdfstring{Die Geometrisierung der Naturkonstanten\\
+und die Grenzen der Kontinuumsbeschreibung}{Die Geometrisierung der Naturkonstanten}}\\[0.4em]
+\large Axiomatische Grundlegung des EABC-Frameworks:\\
+Hoffbauer-Klammer, $E_8$-Gitter und Hecke-$T_3$}
+\author{\textbf{T. Hoffbauer}\thanks{Unabhängige theoretische Forschung, Bamberg, Deutschland.
+E-Mail: \texttt{t.hoffbauer@posteo.de}}}
+\date{14.\ September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+Seit Newton und Leibniz ist das stetige Raum-Zeit-Kontinuum das Arbeitsparadigma der theoretischen Physik.
+Die Häufung offener Fundamentalprobleme -- die Herkunft der Feinstrukturkonstante, Divergenzen der QFT, Singularitäten der ART, die Clay-Probleme der Hydrodynamik und Eichentheorie -- markiert Grenzen dieser Beschreibung, keine bereits geschlossenen Beweise ihrer Ablösung.
+
+Das EABC-Framework bettet die Raumzeit in die Einheits-Normschale $S^7\subset\mathbb{R}^8\cong\mathbb{O}$ des Gitters $E_8$ ein.
+Der gesicherte Kern dieser Note ist die parameterfreie Form
+\[
+\alpha^{-1}_{\mathrm{EABC}}
+=137+\sqrt{D_r^2-D_t^2},\qquad
+D_r=\frac{8}{137\varphi}=\frac{4(\sqrt{5}-1)}{137},\qquad
+D_t=\frac{126}{49457},
+\]
+mit $\varphi=(1+\sqrt{5})/2$ und $126=\tau(3)/2$.
+Numerisch $\alpha^{-1}_{\mathrm{EABC}}\approx 137{,}03599954005601$.
+Das Lean-4-Theorem \texttt{alpha\_inv\_hecke\_sub\_ppb} schließt das Sub-PPB-Fenster
+$137{,}03599954005$ bis $137{,}03599954007$ über $\mathbb{Q}$ ohne Fließkomma-Axiome.
+Der Abstand zum CODATA-2022-Zentralwert $137{,}035999177(21)$ beträgt $3{,}63\times 10^{-7}$
+(etwa $17\sigma$ jenes Bandes) und darf nicht mit dem $0{,}41\,\mathrm{ppt}$-Residuum
+gegen die Fenstermitte $137{,}03599954$ verwechselt werden.
+
+Im geometrischen Einheitensystem $e=c=1$ und dem Postulat $G=4=\dim_{\mathbb{R}}\mathbb{H}$ folgen $\hbar=\alpha^{-1}$,
+$\ell_P=2\sqrt{\alpha^{-1}}$, $m_P=\tfrac12\sqrt{\alpha^{-1}}$ und $h=2\pi\hbar\approx 861{,}02257886$.
+Die Kapitel zu Navier--Stokes, Yang--Mills, $\Lambda$CDM, Hubble-Spannung, $g-2$ und den 25 SM-Parametern sind geometrische Lesarten und Probeformeln.
+Sie sind keine Clay-vollständigen Existenzbeweise und keine Elimination der freien Parameter im Sinne einer abgeschlossenen QFT.
+\end{abstract}
+
+\noindent\textbf{MSC (2020):}
+11F11, 17B25, 35Q30, 81T13, 81V10, 83C45, 03B35.\\
+\textbf{Schlüsselwörter:}
+EABC, Hoffbauer-Klammer, $E_8$, Feinstrukturkonstante, Hecke-$T_3$, Lean~4, Intervallarithmetik.
+
+\tableofcontents
+
+\section{Historische und erkenntnistheoretische Grundlagen}
+
+\subsection{Die Illusion des Kontinuums}
+Die mathematische Modellierung der physikalischen Natur ruht seit mehr als drei Jahrhunderten auf dem Dogma des Kontinuums.
+Als Newton in den \emph{Principia} (1687) und Leibniz zeitgleich den Differentialkalkül formulierten, begründeten sie ein Fundament, dessen Siegeszug beispiellos war~\cite{newton1687}.
+Raum und Zeit wurden als differenzierbare Mannigfaltigkeiten postuliert, auf denen infinitesimale Schritte $dt$ und $dx$ bis in jede Kleinheit getrieben werden durften.
+
+Dieses Postulat ermöglichte klassische Mechanik, Maxwellsche Elektrodynamik, Einsteinsche Gravitation und relativistische Quantenfeldtheorie.
+Doch der methodische Triumph trug den Keim einer epistemologischen Verschiebung:
+der Grenzübergang $\Delta x\to 0$ war ursprünglich Rechenerleichterung, ein Kalkül zur Annäherung diskreter Summen.
+Im 19.\ und 20.\ Jahrhundert wurde aus dieser Idealisierung oft ein ontologischer Anspruch:
+das Kontinuum nicht mehr als Hilfsmittel, sondern als physikalische Realität selbst.
+
+Das EABC-Framework bestreitet nicht den empirischen Erfolg der Kontinuumsphysik oberhalb atomarer Skalen.
+Es bestreitet, dass der Erfolg einen Beweis für unbegrenzte Teilbarkeit von Raum, Zeit und Feld liefert.
+Die vorliegende Monografie trennt deshalb scharf: was sich über $\mathbb{Q}$ einschließen lässt, und was geometrische Lesart bleibt.
+
+\subsection{Drei Krisen der kontinuierlichen Physik}
+\begin{enumerate}
+\item \textbf{Ultraviolett-Katastrophe der Hohlraumstrahlung (1900).}
+Im Rahmen der klassischen statistischen Mechanik verlangt das Rayleigh--Jeans-Gesetz, dass ein Hohlraumstrahler im thermischen Gleichgewicht unendliche Energiedichten im Ultravioletten abstrahle.
+Die Annahme, jedem kontinuierlichen Schwingungsmodus komme dieselbe Energie $k_B T$ zu, führt zur Divergenz
+\begin{equation}
+U=\int_0^\infty \frac{8\pi\nu^2}{c^3}k_B T\,d\nu\longrightarrow\infty.
+\end{equation}
+Planck überwand dies im Dezember 1900 durch einen Bruch mit der Kontinuität: Energie nur in Quanten $E=h\nu$~\cite{planck1900}.
+Damit trat die erste fundamentale diskrete Schnittgrenze in die Physik ein.
+
+\item \textbf{Raum-Zeit-Singularitäten der Gravitation (1965--1970).}
+Einstein hielt die Singularitäten der Feldgleichungen von 1915 lange für Artefakte unphysikalischer Symmetrieannahmen.
+Penrose (1965) und Hawking--Penrose (1970) zeigten mit differentialtopologischen Methoden, dass unendliche Krümmung $R_{\mu\nu\rho\sigma}R^{\mu\nu\rho\sigma}\to\infty$ unter realistischen Energiebedingungen generisch ist~\cite{penrose1965,hawking1970}.
+Die Singularität markiert den Zusammenbruch der Riemannschen Kontinuumsgeometrie.
+
+\item \textbf{Divergenzen der Quantenfeldtheorie und der Landau-Pol.}
+Die relativistische QFT stieß auf unendliche Selbstenergien, Vakuumpolarisationen und den Landau-Pol.
+Regularisierung und Renormierung -- Cutoffs $\Lambda\to\infty$, Subtraktion von Unendlichkeiten -- lieferten endliche Messwerte.
+Dirac betonte, dass dies kein Zeichen einer vollständigen Theorie sei, sondern ein Indiz, die kontinuierliche Raumzeit bei ultrakurzen Distanzen durch eine andere Kategorie zu ersetzen~\cite{dirac1975}.
+\end{enumerate}
+
+\subsection{Sommerfelds kinematische Intuition und Paulis Rätsel}
+Im Jahre 1916 führte Sommerfeld zur Feinstruktur des Wasserstoffs die dimensionslose Zahl
+\begin{equation}
+\alpha=\frac{e^2}{\hbar c}=\frac{v_1}{c}\approx\frac{1}{137}
+\end{equation}
+ein~\cite{sommerfeld1916}.
+In seinem Gedankenexperiment war $\alpha$ das Verhältnis der Bahngeschwindigkeit auf der innersten Bohrschen Kreisbahn zur Lichtgeschwindigkeit.
+Mit der QED wurde daraus eine abstrakte Eichkopplung bei verschwindendem Impulsübertrag, experimentell bestimmt, theoretisch nicht hergeleitet.
+
+Pauli war von der Zahl $137$ besessen.
+Er forderte, eine fundamentale Physik dürfe nicht zwanzig freie Parameter anpassen, sondern müsse eine Zahlentheorie des Vakuums sein~\cite{pauli1946}.
+Eddington versuchte in den 1930er Jahren, $\alpha^{-1}$ kombinatorisch als $136+1=137$ aus Spinorkomponenten zu gewinnen~\cite{eddington1936}.
+Als die Nachkommastellen unmissverständlich bei $137{,}036$ lagen, geriet jede numerische Deduktion in den Geruch der Numerologie.
+
+Das EABC-Framework knüpft an Sommerfeld und Pauli an:
+$137$ ist der diskrete Kern eines $E_8$-Torusumlaufs, die Nachkommastellen sind die Hoffbauer-Klammer.
+Der Einschluss dieser Klammer ist formal; die Ontologie ``die Natur ist $E_8$'' ist es nicht.
+
+\section{Die algebraische Architektur des $E_8$-Gitters und der Fano-Fluss}
+
+\subsection{Wurzelgeometrie}
+Das Fundament ist die größte exzeptionelle Lie-Gruppe $E_8$ mit Rang $8$ und Dimension $248$.
+Das Wurzelgitter $\Gamma_8\subset\mathbb{R}^8$ ist das einzige gerade unimodulare Gitter in Dimension~$8$ und maximiert die Packungsdichte~\cite{viazovska2017,conwaysloane}.
+Das Wurzelsystem $\Phi(E_8)$ besteht aus $240$ Vektoren der Norm $|x|^2=2$:
+\begin{equation}
+\Phi(E_8)
+=\bigl\{ x\in\mathbb{Z}^8\cup(\mathbb{Z}+\tfrac12)^8
+:\textstyle\sum x_i\equiv 0\pmod 2,\; \sum x_i^2=2\bigr\}.
+\end{equation}
+Sie zerfallen in $112$ Vektoren vom Typ $(\pm 1,\pm 1,0,\dots)$ (das $D_8$-System) und $128$ Halbzahlenvektoren mit gerader Anzahl von Minuszeichen.
+Die Theta-Reihe ist die Eisensteinreihe vom Gewicht~$4$,
+\begin{equation}
+\Theta_{E_8}(\tau)=E_4(\tau)=1+240\sum_{n\ge 1}\sigma_3(n)q^n,\qquad q=e^{2\pi i\tau}.
+\end{equation}
+
+\subsection{Oktonionen und Nichtassoziativität}
+Der 8-dimensionale Raum ist isomorph zur Divisionsalgebra $\mathbb{O}$ mit Basis $\{1,e_1,\dots,e_7\}$ und Fano-Multiplikation
+$e_ie_j=-\delta_{ij}+\sum_k\epsilon_{ijk}e_k$.
+Die Oktonionen sind alternativ und strikt nichtassoziativ:
+$[x,y,z]=(xy)z-x(yz)\neq 0$ für geeignete Tripel.
+Die Automorphismengruppe ist $G_2=\mathrm{Aut}(\mathbb{O})\subset SO(7)$.
+
+\subsection{Die Schale $S^7$ und der Fano-Fluss}
+\begin{equation}
+S^7:=\{x\in\mathbb{O}:|x|=1\}.
+\end{equation}
+Die Hopf-Faserung $S^3\hookrightarrow S^7\to S^4$ hat $S^3\cong SU(2)\cong\mathrm{Sp}(1)$ als Einheitsquaternionen.
+Im Modell bewegen sich Zustände als gekoppelte Zirkulationen auf Geodäten dieser Schale, geführt durch $\epsilon_{ijk}$.
+Das ist die kinematische Bühne der Hoffbauer-Klammer, nicht bereits eine QFT auf $S^7$.
+
+\section{Die Hoffbauer-Klammer}
+
+Der ungestörte Basiswert für den geschlossenen Phasenzyklus auf dem $E_8$-Gitter ist $\alpha_0^{-1}=137$.
+Die primäre Projektion der acht Dimensionen auf die Achse von $\mathbb{Q}(\sqrt{5})$ erzeugt den radialen Massendefekt
+\begin{equation}
+D_r:=\frac{\mathrm{rk}(E_8)}{137\varphi}=\frac{8}{137\varphi}=\frac{4(\sqrt{5}-1)}{137}.
+\end{equation}
+Mit $\varphi\approx 1{,}618033988749895$ folgt $D_r\approx 0{,}036089575985395$.
+Gegen die empirische Fenstermitte $\varepsilon\approx 0{,}03599954$ bleibt
+$\Delta_{\mathrm{res}}=D_r-\varepsilon\approx +9{,}00\times 10^{-5}>0$.
+(Der Vergleich mit dem CODATA-2022-Zentralwert $0{,}035999177$ ändert das Vorzeichen des Residuums nicht und vergrößert es sogar.)
+
+Hier liegt das Vorzeichen-Paradoxon jeder euklidischen Modellierung.
+
+\begin{proposition}[Ausschluss euklidischer Kopplung]
+\label{prop:eukl}
+Für $D_t>0$ gilt $\sqrt{D_r^2+D_t^2}\ge D_r>\varepsilon$.
+Jeder euklidisch additive Torusanteil treibt $\alpha^{-1}$ aus dem Fenster.
+\end{proposition}
+
+\begin{definition}[Hoffbauer-Klammer]
+\label{def:hoff}
+\[
+[D_r,D_t]_{\mathcal{H}}:=\sqrt{D_r^2-D_t^2},\qquad
+\alpha^{-1}_{\mathrm{EABC}}:=137+[D_r,D_t]_{\mathcal{H}}.
+\]
+\end{definition}
+Das Minuszeichen ist Vakuumpolarisation: transversale $T^8$-Zirkulation schirmt radiale Trägheit ab.
+Lineares Nenner-Feedback $137\mapsto\alpha^{-1}$ ist zu grob und wird nicht benutzt, sobald $c$ feiner als $3$ ist.
+
+\section{Dreistufige Hecke-Filtrierung}
+
+$D_t=1/(c\cdot 137)$ mit $c\in\mathbb{Q}$ aus drei kanonischen Stufen.
+
+\subsection{Stufe 1: Dedekind}
+$\mathrm{Spin}(8)$ ist die einzige einfach zusammenhängende Lie-Gruppe mit $\mathrm{Out}(\mathrm{Spin}(8))\cong\mathfrak{S}_3$, Ordnung $6$.
+Die zyklische Untergruppe $\mathbb{Z}_3$ permutiert $\mathbf{8}_v\to\mathbf{8}_s\to\mathbf{8}_c\to\mathbf{8}_v$.
+Die Diskriminante $\Delta(\tau)=\eta(\tau)^{24}$ hat Gewicht $12$; die Stufe $24$ ist die Wurzelzahl von $D_4\subset E_8$.
+Die Dämpfung der Trialität liefert
+$c_1=3(1-1/24)=23/8$.
+Dann $D_{t,1}=8/(23\cdot 137)=8/3151$ und
+$\alpha^{-1}_1\approx 137{,}03600016112$, Residuum $+6{,}21\times 10^{-7}$ gegen die Fenstermitte.
+
+\subsection{Stufe 2: Modulo-12}
+Der Cartan-Rang $8$ koppelt an die Periode $12$ der Spitzen:
+$N=8\times 12=96$, $c_2=23/8-1/96=275/96$.
+(Hier ist $275=5^2\cdot 11$ eine ganzzahlige Beobachtung, kein zusätzliches Axiom.)
+$D_{t,2}=96/37675$, $\alpha^{-1}_2\approx 137{,}03599950883$, Residuum $-3{,}12\times 10^{-8}$.
+
+\subsection{Stufe 3: Hecke $T_3$}
+Der Raum $S_{12}(\mathrm{SL}_2(\mathbb{Z}))$ wird von $\Delta(\tau)=\sum\tau(n)q^n$ erzeugt, $\tau(3)=252$.
+Die Trialitäts-Involution halbiert die Weyl-Kammer: $\kappa=\tau(3)/2=126$.
+Die Verschiebung $\delta c=1/(8\cdot 252)=1/2016$ setzt sich mit Stufe~2 zusammen:
+\begin{equation}
+c_3=\frac{275}{96}+\frac{1}{2016}=\frac{361}{126}=\frac{19^2}{\tau(3)/2}.
+\end{equation}
+$19$ ist Heegner-Zahl; das ist Kommentar, nicht Fit.
+\begin{equation}
+D_t=\frac{126}{361\cdot 137}=\frac{126}{49457}.
+\end{equation}
+
+\section{Analytischer Wert und Zertifizierung}
+
+\begin{theorem}[Analytische Form]
+\label{thm:alpha}
+\[
+\alpha^{-1}_{\mathrm{EABC}}
+=137+\sqrt{\Bigl(\frac{8}{137\varphi}\Bigr)^2-\Bigl(\frac{126}{49457}\Bigr)^2}.
+\]
+Äquivalent ist der Radikand
+\[
+\frac{32(3-\sqrt{5})}{137^2}-\frac{15876}{2445994849}.
+\]
+Numerisch $\alpha^{-1}_{\mathrm{EABC}}\approx 137{,}03599954005601$.
+\end{theorem}
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Stufe & $c$ & $\alpha^{-1}$ & Residuum vs.\ $137{,}03599954$ \\
+\midrule
+$D_r$ allein & $\infty$ & $137{,}036089576$ & $+9{,}04\times 10^{-5}$ \\
+Dedekind & $23/8$ & $137{,}036000161$ & $+6{,}21\times 10^{-7}$ \\
+Modulo-12 & $275/96$ & $137{,}035999509$ & $-3{,}12\times 10^{-8}$ \\
+Hecke $T_3$ & $361/126$ & $137{,}035999540056$ & $+5{,}60\times 10^{-11}$ \\
+\midrule
+CODATA 2022 & -- & $137{,}035999177(21)$ & $+3{,}63\times 10^{-7}$ \\
+\bottomrule
+\end{tabular}
+\caption{Konvergenz gegen die Fenstermitte; letzte Zeile ist der CODATA-2022-Abstand, kein ppt-Treffer.}
+\end{table}
+
+Das $0{,}41\,\mathrm{ppt}$-Residuum gilt gegen $137{,}03599954$, nicht gegen CODATA~2022.
+
+C++ (\texttt{eabc\_alpha.hpp}) benutzt \texttt{save\_state<rounded\_transc\_std<double>>};
+das Maschinenintervall hat Breite eines ULP um $137{,}035999540056$.
+Lean~4 (Mathlib 4.29) beweist
+\begin{equation}
+137{,}03599954005<\alpha^{-1}_{\mathrm{EABC}}<137{,}03599954007
+\end{equation}
+über zwölfstellige $\sqrt{5}$-Zertifikate und \texttt{norm\_num} auf $\mathbb{Q}$~\cite{demoura2021,mathlib}.
+Die Identitäten $D_r=4(\sqrt{5}-1)/137$, $D_r^2=32(3-\sqrt{5})/137^2$ und $D_t^2=15876/2445994849$ sind formalisiert.
+
+\section{Planck-Skalen und $G=4$}
+
+Im geometrischen Maß $e=c=1$ ist $\hbar=\alpha^{-1}_{\mathrm{EABC}}$.
+Das Postulat $G:=4=\dim_{\mathbb{R}}\mathbb{H}$ ist holografisch motiviert durch $S_{\mathrm{BH}}=A/(4\ell_P^2)$~\cite{bekenstein1973,hawking1975}, nicht der SI-Wert von $G$.
+Dann
+\begin{align}
+\ell_P&=2\sqrt{\alpha^{-1}}\approx 23{,}41247526769,\\
+m_P&=\tfrac12\sqrt{\alpha^{-1}}\approx 5{,}85311881692,\\
+\ell_P m_P&=\alpha^{-1},\qquad \ell_P/m_P=4,\\
+\mathcal{A}_0&=16\alpha^{-1}\approx 2192{,}57599264090,\\
+h&=2\pi\hbar\approx 861{,}02257886475.
+\end{align}
+Es gilt $h_0=2\pi\cdot 137\approx 860{,}79638708<861=\Delta_{41}<h$.
+Der Sprung über die 41.\ Dreieckszahl folgt bereits aus $D_r>861/(2\pi)-137\approx 0{,}0324$;
+Hecke setzt nur den Rest $h-861\approx 0{,}02257886$.
+Euler-Polynom und Heegner-Zahl $41$ sind Beobachtungen, keine Eingangsparameter.
+Auf der Einheitsmasse ist $F_g=4F_e$.
+Die SI-Hierarchie ist damit nicht gelöst.
+
+\section{Navier--Stokes: Regularitätsvorschlag, kein Clay-Beweis}
+
+Das Millennium-Problem verlangt, ob die dreidimensionalen inkompressiblen Navier--Stokes-Gleichungen für glatte, schnell fallende Anfangsdaten globale glatte Lösungen besitzen oder in endlicher Zeit eine Singularität bilden~\cite{fefferman2000,clay2000}.
+Das Beale--Kato--Majda-Kriterium verknüpft den Blow-up mit unintegrierbarer Vortizität
+$\int_0^{T^*}\|\omega(\cdot,\tau)\|_\infty\,d\tau=\infty$.
+
+Im Modell ist ein solcher Blow-up ein Signal, dass die kontinuierliche PDE unterhalb einer Gitterlänge unvollständig ist.
+Ein kontrahierender Wirbelkern mit Radius $R(t)\to 0$ wird an $R_{\min}=\ell_P=2\sqrt{\alpha^{-1}}$ im geometrischen Maß gestoppt gelesen;
+die Hoffbauer-Klammer bleibt strikt kleiner als $D_r$, und die Zirkulation ist durch $h=2\pi\alpha^{-1}$ quantisiert.
+Das Kelvin-Theorem $\mathrm{d}\Gamma/\mathrm{d}t=0$ setzt stetig verformbare Kurven voraus; unterhalb der Fläche $\mathcal{A}_0=16\alpha^{-1}$ ist diese Voraussetzung im Modell verletzt.
+
+\begin{remark}
+Das ist ein Regularitätsmechanismus im geometrischen Maß, kein Existenz- und Glattheitssatz auf $\mathbb{R}^3$.
+$\ell_P\approx 23{,}41$ ist dimensionslos, nicht die SI-Planck-Länge.
+Machine-learning-gestützte Blow-up-Kandidaten der Euler- oder Navier--Stokes-Literatur werden hier nicht geprüft.
+Die Clay-Prämie ist durch diese Note nicht beansprucht.
+\end{remark}
+
+\section{Yang--Mills: Modell-Massenlücke, kein Clay-Beweis}
+
+Das Clay-Problem verlangt die Konstruktion einer nichtabelschen Eichentheorie auf $\mathbb{R}^4$ im Sinne der Wightman- oder Osterwalder--Schrader-Axiome und den Beweis einer strikt positiven Lücke zwischen Vakuum und erstem Glueball~\cite{jaffewitten2000}.
+Ein Kontinuums-Pfadintegral $\int\mathcal{D}A\,e^{-S}$ wird im EABC-Modell nicht konstruiert.
+Das Vakuum wird als Zustandssumme $\Theta_{E_8}=E_4$ gelesen -- ebenfalls eine Analogie, keine OS-Rekonstruktion.
+
+Definiert man $\Delta_{\mathrm{YM}}:=m_P[D_r,D_t]_{\mathcal{H}}$, so ist $\Delta_{\mathrm{YM}}>0$ äquivalent zu $D_r\neq D_t$.
+Gleichheit erzwänge $\varphi=8\cdot 49457/(137\cdot 126)\in\mathbb{Q}$, Widerspruch zur Irrationalität von $\sqrt{5}$.
+
+\begin{remark}
+Die Irrationalität von $\varphi$ schützt den Radikanden der Hoffbauer-Klammer, nicht die Massenlücke der Kontinuums-Yang--Mills-Theorie.
+Ein Vergleich $M(0^{++})\approx 1{,}7\,\mathrm{GeV}$ mit Gitter-QCD ist hier nicht hergeleitet.
+\end{remark}
+
+\section{Kosmologie: Probeformeln}
+
+Die folgenden Ausdrücke sind spekulativ.
+Ehrliche Auswertung, ohne Anpassung an Planck-2018-Zentralwerte:
+\begin{align}
+\Omega_\Lambda^{\mathrm{(Probe)}}&=1-\varphi^{-2}-1/(24\varphi)\approx 0{,}5923
+\quad\text{(Planck 2018: }0{,}6847\pm 0{,}0073\text{)},\\
+n_s^{\mathrm{(Probe)}}&=1-1/24-1/(24\varphi^3)\approx 0{,}9485
+\quad\text{(Planck 2018: }0{,}9649\pm 0{,}0042\text{)}.
+\end{align}
+Die in Entwürfen behauptete Identität mit $0{,}6847$ bzw.\ $0{,}9649$ ist arithmetisch falsch.
+
+Der Hubble-Faktor
+\begin{equation}
+\Bigl(\frac{12}{\sqrt{\alpha^{-1}}}\Bigr)^3\approx 1{,}07719
+\end{equation}
+liefert $67{,}40\times 1{,}07719\approx 72{,}60\,\mathrm{km\,s^{-1}\,Mpc^{-1}}$.
+Das ist eine Skalenprobe, keine Lösung der Hubble-Spannung:
+CMB und SH0ES messen verschiedene Observable, nicht $S^7$ versus Chandrasekhar-Volumen als bewiesenen Dimensionssprung~\cite{planck2018,riess2022}.
+
+\section{Familien, Higgs, Spektroskopie}
+
+$\mathrm{Out}(\mathrm{Spin}(8))\cong\mathfrak{S}_3$ permutiert $\mathbf{8}_v,\mathbf{8}_s,\mathbf{8}_c$.
+Drei Familien als $\mathbb{Z}_3$-Orbit und Higgs als Radialmode von $S^7$ mit $\mathbb{H}^\perp\cong\mathbb{R}^4$ sind geometrische Lesarten~\cite{adams}.
+\begin{equation}
+\frac{1}{\sqrt{2\varphi}}\approx 0{,}55589,\qquad
+v\cdot\frac{1}{\sqrt{2\varphi}}\approx 136{,}87\,\mathrm{GeV}\neq 125{,}25\,\mathrm{GeV}.
+\end{equation}
+Die Kette $246{,}22\times 0{,}5559\approx 125{,}3$ ist falsch.
+$\varphi^{-40}$ reproduziert $v\approx 246\,\mathrm{GeV}$ nicht.
+
+Der Schwinger-Term $a^{(1)}=\alpha/(2\pi)=1/(2\pi\alpha^{-1})$ ist in den Modell-Einheiten $1/h$.
+Die Subtraktion $\Delta_{\mathrm{EABC}}/(2\pi(\alpha^{-1})^2)$ trifft den Gabrielse-Wert $0{,}00115965218073$ nicht~\cite{gabrielse2023}.
+Eine geschlossene Lösung von $a_e$ oder $a_\mu$ wird hier nicht behauptet.
+
+\section{Gesicherte versus offene Größen}
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+Größe & Status & Ausdruck & Wert \\
+\midrule
+$\alpha^{-1}$ & Lean/C++ & $137+\sqrt{D_r^2-D_t^2}$ & $137{,}03599954005601$ \\
+$D_r$ & Lean & $4(\sqrt{5}-1)/137$ & $0{,}036089575985395$ \\
+$D_t$ & Lean & $126/49457$ & $0{,}002547667670906$ \\
+$\hbar$ & Postulat $e=c=1$ & $\alpha^{-1}$ & $137{,}03599954005601$ \\
+$h$ & $2\pi\hbar$ & $2\pi\alpha^{-1}$ & $861{,}02257886475$ \\
+$G$ & Postulat & $4$ & $4$ \\
+$\ell_P,m_P$ & aus $G=4$ & $2\sqrt{\alpha^{-1}}$, $\tfrac12\sqrt{\alpha^{-1}}$ & $23{,}41247527$, $5{,}85311882$ \\
+\midrule
+NS/YM Clay & offen & Regularitätslesart & -- \\
+$\Omega_\Lambda,n_s,m_H,a_e$ & nicht geschlossen & Probeformeln weichen ab & -- \\
+CODATA-2022-$1\sigma$ & nicht getroffen & Abstand $3{,}63\times 10^{-7}$ & $\sim 17\sigma$ \\
+\bottomrule
+\end{tabular}
+\caption{Was zertifiziert ist, und was Lesart bleibt.}
+\end{table}
+
+\section{Epilog}
+
+Die Hoffbauer-Klammer
+\begin{equation}
+[D_r,D_t]_{\mathcal{H}}
+=\sqrt{\Bigl(\frac{8}{137\varphi}\Bigr)^2-\Bigl(\frac{126}{49457}\Bigr)^2}
+\end{equation}
+ist der gesicherte arithmetische Kern:
+sie verbindet $\mathbb{Q}(\sqrt{5})$ mit $\tau(3)$ und schließt $\alpha^{-1}$ in ein Sub-PPB-Fenster.
+Das Kontinuum bleibt für makroskopische Skalen die richtige effektive Beschreibung.
+Wo Theorien divergieren, ist eine Gittergrenze \emph{denkbar} -- sie ist durch die vorliegende Note nicht als Lösung der Millennium-Probleme oder als Elimination des Standardmodells bewiesen.
+
+\begin{thebibliography}{99}
+
+\bibitem{newton1687}
+I.~Newton,
+\emph{Philosophi{\ae} Naturalis Principia Mathematica},
+London, 1687.
+
+\bibitem{planck1900}
+M.~Planck,
+\emph{Zur Theorie des Gesetzes der Energieverteilung im Normalspektrum},
+Verh.\ Dtsch.\ Phys.\ Ges.\ \textbf{2} (1900), 237--245.
+
+\bibitem{sommerfeld1916}
+A.~Sommerfeld,
+\emph{Zur Quantentheorie der Spektrallinien},
+Ann.\ Phys.\ \textbf{51} (1916), 1--94.
+
+\bibitem{eddington1936}
+A.~S.~Eddington,
+\emph{Relativity Theory of Protons and Electrons},
+Cambridge University Press, 1936.
+
+\bibitem{pauli1946}
+W.~Pauli,
+\emph{Exclusion Principle and Quantum Mechanics},
+Nobel Lecture, 1946.
+
+\bibitem{dirac1975}
+P.~A.~M.~Dirac,
+in: \emph{Directions in Physics}, Wiley, 1978.
+
+\bibitem{penrose1965}
+R.~Penrose,
+Gravitational collapse and space-time singularities,
+Phys.\ Rev.\ Lett.\ \textbf{14} (1965), 57--59.
+
+\bibitem{hawking1970}
+S.~W.~Hawking, R.~Penrose,
+The singularities of gravitational collapse and cosmology,
+Proc.\ R.\ Soc.\ Lond.\ A \textbf{314} (1970), 529--548.
+
+\bibitem{bekenstein1973}
+J.~D.~Bekenstein,
+Black holes and entropy,
+Phys.\ Rev.\ D \textbf{7} (1973), 2333--2346.
+
+\bibitem{hawking1975}
+S.~W.~Hawking,
+Particle creation by black holes,
+Commun.\ Math.\ Phys.\ \textbf{43} (1975), 199--220.
+
+\bibitem{codata2022}
+P.~J.~Mohr, D.~B.~Newell, B.~N.~Taylor, E.~Tiesinga,
+CODATA recommended values of the fundamental physical constants: 2022,
+Rev.\ Mod.\ Phys.\ \textbf{97} (2025), 025002.
+
+\bibitem{conwaysloane}
+J.~H.~Conway, N.~J.~A.~Sloane,
+\emph{Sphere Packings, Lattices and Groups},
+Springer, 3.\ Aufl., 1999.
+
+\bibitem{viazovska2017}
+M.~S.~Viazovska,
+The sphere packing problem in dimension 8,
+Ann.\ of Math.\ \textbf{185} (2017), 991--1015.
+
+\bibitem{adams}
+J.~F.~Adams,
+\emph{Lectures on Exceptional Lie Groups},
+University of Chicago Press, 1996.
+
+\bibitem{clay2000}
+J.~Carlson, A.~Jaffe, A.~Wiles (Hrsg.),
+\emph{The Millennium Prize Problems},
+CMI/AMS, 2006.
+
+\bibitem{fefferman2000}
+C.~L.~Fefferman,
+Existence and smoothness of the Navier--Stokes equation,
+in~\cite{clay2000}.
+
+\bibitem{jaffewitten2000}
+A.~Jaffe, E.~Witten,
+Quantum Yang--Mills theory,
+in~\cite{clay2000}.
+
+\bibitem{planck2018}
+Planck Collaboration,
+Planck 2018 results.\ VI.\ Cosmological parameters,
+Astron.\ Astrophys.\ \textbf{641} (2020), A6.
+
+\bibitem{riess2022}
+A.~G.~Riess et al.,
+A comprehensive measurement of the local value of the Hubble constant,
+Astrophys.\ J.\ Lett.\ \textbf{934} (2022), L7.
+
+\bibitem{gabrielse2023}
+X.~Fan, T.~G.~Myers, B.~A.~D.~Sukra, G.~Gabrielse,
+Measurement of the electron magnetic moment,
+Phys.\ Rev.\ Lett.\ \textbf{130} (2023), 071801.
+
+\bibitem{demoura2021}
+L.~de~Moura, S.~Ullrich,
+The Lean~4 Theorem Prover,
+in: CADE 28, LNCS 12699, Springer, 2021.
+
+\bibitem{mathlib}
+The mathlib Community,
+The Lean mathematical library,
+in: CPP 2020, ACM, 2020.
+
+\end{thebibliography}
+
+\end{document}

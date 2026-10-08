@@ -17,8 +17,8 @@
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{remark}[theorem]{Bemerkung}
 
-\title{\textbf{Hyperbolische Abschirmung und Dedekind-Ordnung:\\
-ein $E_8$-Zugang zum CODATA-Fenster von $\alpha^{-1}$}}
+\title{\textbf{\texorpdfstring{Hyperbolische Abschirmung und Dedekind-Ordnung:\\
+ein $E_8$-Zugang zum CODATA-Fenster von $\alpha^{-1}$}{Hyperbolische Abschirmung und Dedekind-Ordnung: ein E8-Zugang zum CODATA-Fenster von alpha^{-1}}}}
 \author{\textbf{T. Hoffbauer}\thanks{Unabhängige theoretische Forschung, Bamberg, Deutschland.
 E-Mail: \texttt{t.hoffbauer@posteo.de}}}
 \date{September 2026}
@@ -30,28 +30,34 @@ E-Mail: \texttt{t.hoffbauer@posteo.de}}}
 \noindent
 Der Kehrwert der Feinstrukturkonstante ist seit Sommerfeld eine empirische Zahl und seit Eddington ein Gegenstand geometrischer Spekulation.
 Wir berichten über eine geschlossene, parameterfreie Konstruktion im EABC-Rahmen:
-eine $8$-dimensionale Radialprojektion auf dem $E_8$-Gitter, kombiniert mit einer \emph{hyperbolischen} statt euklidischen Defektklammer und einer ganzzahligen Dedekind--Ramanujan-Verfeinerung der $\mathrm{Spin}(8)$-Trialität.
+eine $8$-dimensionale Radialprojektion auf dem $E_8$-Gitter, kombiniert mit einer \emph{hyperbolischen} statt euklidischen Defektklammer und der Hecke-$T_3$-Verfeinerung der $\mathrm{Spin}(8)$-Trialität.
 Das Nenner-Feedback $\alpha^{-1}\mapsto\alpha^{-1}$ erweist sich als zu grobe lineare Resummation.
 Die stabile Form ist
 \[
 \alpha^{-1}_{\mathrm{EABC}}
 = 137 + \sqrt{D_r^2 - D_t^2},\qquad
 D_r=\frac{8}{137\,\varphi},\qquad
-D_t=\frac{96}{275\cdot 137},\qquad
-c=\frac{275}{96},
+D_t=\frac{126}{361\cdot 137},\qquad
+c=\frac{361}{126},
 \]
-mit $\varphi=(1+\sqrt{5})/2$.
-Diese Größe liegt im rationalen Fenster $[137{,}03599908,\,137{,}036]$.
+mit $\varphi=(1+\sqrt{5})/2$ und $126=\tau(3)/2$.
+Diese Größe liegt im Sub-PPB-Fenster $137{,}03599954005$ bis $137{,}03599954007$.
 Der Einschluss ist in Lean~4 über monotone $\mathbb{Q}$-Zertifikate für $\sqrt{5}$ formalisiert, ohne Fließkomma-Axiome.
+Im geometrischen Einheitensystem $e=c=1$ und dem holografischen Postulat $G=4$ schließen sich $\hbar c$, Planck-Länge und Planck-Masse algebraisch an $\alpha^{-1}_{\mathrm{EABC}}$ an.
 \end{abstract}
 
 \noindent\textbf{Schlüsselwörter:}
-Feinstrukturkonstante, $E_8$, $\mathrm{Spin}(8)$-Trialität, Dedekind-$\eta$,\\
-Ramanujan-Ordnung~$24$, hyperbolische Signatur, Lean~4.
+Feinstrukturkonstante, $E_8$, $\mathrm{Spin}(8)$-Trialität, Hecke-$T_3$,\\
+Dedekind-$\eta$, hyperbolische Signatur, Planck-Einheiten, $G=4$, Lean~4.
 
 \section{Historische Lage}
 
 Sommerfeld führte $\alpha$ 1916 als dimensionslose Kopplung der Feinstruktur ein~\cite{sommerfeld1916}.
+Im ursprünglichen Modell ist
+\begin{equation}
+\alpha=\frac{v_1}{c}
+\end{equation}
+das Verhältnis der Bahngeschwindigkeit des Elektrons auf der ersten Bohrschen Kreisbahn zur Lichtgeschwindigkeit.
 Ihre heutige metrologische Schärfe -- CODATA~2018 gibt $\alpha^{-1}=137{,}035999084(21)$,
 CODATA~2022 $\alpha^{-1}=137{,}035999177(21)$~\cite{codata2018,codata2022} --
 steht in auffälligem Kontrast zur Abwesenheit einer allgemein anerkannten \emph{geometrischen} Herleitung.
@@ -64,7 +70,7 @@ Die erste unterschätzt die Nachkommastellen, die zweite hängt an der Auswahl e
 Unabhängig davon ist $E_8$ seit Gosset das ausgezeichnete unimodulare Gitter in Dimension~$8$~\cite{conwaysloane}.
 Seine Weyl-Gruppe, die Coxeter-Zahl $h=30$ und die Trialität von $\mathrm{Spin}(8)$~\cite{adams} sind kanonische Invarianten, keine Fitparameter.
 Die Zahl $24$ tritt parallel als Gewicht der Dedekindschen $\eta$-Funktion, als Ramanujan-Tau-Grad und als kritische Dimension der bosonischen Saite auf.
-Die vorliegende Note verbindet genau diese drei Stränge -- Gitterrang~$8$, Trialität~$3$, Dedekind-Ordnung~$24$ -- mit der empirischen Basis $137$.
+Die vorliegende Note verbindet genau diese drei Stränge -- Gitterrang~$8$, Trialität~$3$, Dedekind-Ordnung~$24$ -- mit der empirischen Basis $137$, und liest die Formelkette kinematisch als Umlauf eines dualen Paares auf der Einheits-Normschale $S^7\subset\mathbb{R}^8$.
 
 Sie steht neben, nicht anstelle, der Haar-Kapazitätsreihe
 $\Omega_{P_0}=4\pi^3+\pi^2+\pi$ im selben Forschungsprogramm~\cite{hoffbauer2026haar}.
@@ -106,7 +112,7 @@ Der für exaktes $\varepsilon$ nötige Torusanteil ist
 D_t^{\mathrm{soll}}=\sqrt{D_r^2-\varepsilon^2}\approx 2{,}54767\times 10^{-3}.
 \end{equation}
 
-\subsection{Von der Trialität zur Dedekind-Ordnung}
+\subsection{Von der Trialität zur Hecke-$T_3$-Ordnung}
 Reine $\mathrm{Spin}(8)$-Trialität liefert $D_t=1/(3\cdot 137)\approx 2{,}433\times 10^{-3}$ und schirmt zu schwach ab
 ($\alpha^{-1}\approx 137{,}0360075$).
 Die Modulkorrektur $3\mapsto 3(1-1/24)=23/8$ -- Euler-Charakteristik bzw.\ $\eta$-Gewicht -- ergibt
@@ -114,43 +120,97 @@ $c=23/8=2{,}875$ und
 $\alpha^{-1}\approx 137{,}036000161$,
 nur $1{,}61\times 10^{-7}$ über der hier verwendeten Oberkante $137{,}036$.
 
-Die restliche relative Lücke $\Delta c/c\approx -1/290$ wird nicht durch $\alpha$-Feedback geschlossen, sondern durch die gemeinsame Periode von Rang und Ramanujan-Stufe:
+Die erste ganzzahlige Verfeinerung ist die gemeinsame Periode von Rang und Ramanujan-Stufe:
 \begin{equation}
-\label{eq:c}
-c=\frac{23}{8}-\frac{1}{96}=\frac{275}{96},\qquad 96=8\times 12=\mathrm{Rang}(E_8)\times 12.
+\label{eq:c2}
+c_2=\frac{23}{8}-\frac{1}{96}=\frac{275}{96},\qquad 96=8\times 12=\mathrm{Rang}(E_8)\times 12.
 \end{equation}
-Hier ist $12$ die kanonische Halbierung von $24$, und $96=4\times 24$.
+Sie liefert $\alpha^{-1}\approx 137{,}0359995088$, Residuum $-3{,}12\times 10^{-8}$ gegen die Fenstermitte.
+
+Die restliche Lücke schließt die Hecke-Korrektur am Eigenwert $\tau(3)=252$:
+\begin{equation}
+\label{eq:c3}
+c_3=\frac{275}{96}+\frac{1}{8\cdot 252}=\frac{361}{126},\qquad 126=\frac{\tau(3)}{2}.
+\end{equation}
 Man erhält
 \begin{equation}
-D_t=\frac{1}{c\cdot 137}=\frac{96}{275\cdot 137}=\frac{96}{37675}
+D_t=\frac{1}{c_3\cdot 137}=\frac{126}{361\cdot 137}=\frac{126}{49457}
 \end{equation}
 und numerisch
 \begin{equation}
-\alpha^{-1}_{\mathrm{EABC}}=137{,}0359995088,
+\label{eq:hecke}
+\alpha^{-1}_{\mathrm{EABC}}=137{,}03599954006,
 \end{equation}
-Residuum $-3{,}12\times 10^{-8}$ gegen die Fenstermitte $137{,}03599954$, relativ $2{,}3\times 10^{-10}$ (Sub-ppb).
+Residuum $+5{,}60\times 10^{-11}$ gegen die Fenstermitte $137{,}03599954$, relativ $4{,}1\times 10^{-13}$ ($0{,}41\,\mathrm{ppt}$).
 
 \subsection{Was verworfen wurde}
 Coxeter-Dämpfung $3\cdot(29/30)$ und der Modul-Fluss $3-1/(2\varphi^2)$ landen ebenfalls nahe, aber entweder außerhalb des Fensters oder weiter von der Mitte.
 Die zweite Dedekind-Schleife $3(1-1/24-8/(24^2\varphi^2))$ unterschießt.
 Entscheidend ist die methodische Regel: \emph{keine} lineare $\alpha$-Rückkopplung im Nenner, sobald $c$ feiner als $3$ ist.
 
+\section{Kinematische Deutung}
+
+Die folgende Lesart ist ein Gedankenexperiment, keine Ableitung der QED.
+Sie überträgt Sommerfelds $\alpha=v_1/c$ auf ein duales Paar -- Hurwitz-Quaternionen bzw.\ split-oktonionische Struktur -- das auf der Einheits-Normschale $S^7\subset\mathbb{R}^8$ fließt.
+
+\subsection{Grundfrequenz und Basis-Umlauf}
+Mit der Lichtgeschwindigkeit als maximaler Phasenpropagation, normiert auf $c=1$, bedeutet $\alpha_0=1/137$, dass ein vollständiger synchroner Umlauf des dualen Paares $137$ elementare Takte benötigt, um eine geschlossene Geodäte auf dem $E_8$-Gitter abzufahren.
+Die Zahl $137$ ist in diesem Bild die topologische Windungszahl: auf der ungestörten Gitterkugel schließen sich die Orbits nach $137$ diskreten Hopf-Faser-Transfers.
+Auf einem ungekrümmten flachen Torus wäre der Umlauf exakt, $\alpha^{-1}=137$.
+
+\subsection{Radialer Bremsdefekt}
+Die Partner bewegen sich nicht flach, sondern auf der durch $\mathrm{rk}(E_8)=8$ aufgespannten Schale $S^7$.
+Der Zähler $8$ zählt die kinematischen Freiheitsgrade der Oktonionenbasis.
+Der Goldene Schnitt $\phi$ ist die irrationalste Kettenbruchzahl; er unterbindet rationale Resonanz und erzwingt eine permanente Phasenpräzession, analog zur Periheldrehung.
+Die Schwingungsdauer dehnt sich radial um $D_r$ aus,
+\begin{equation}
+T_{\mathrm{radial}}=137+D_r\approx 137{,}036089576.
+\end{equation}
+Die Bahngeschwindigkeit sinkt, die nackte Kopplung wird schwächer.
+
+\subsection{Transversaler Torus-Schlupf}
+Die Partner sind über die Eichalgebra gebunden und erzeugen ein Wirbelfeld auf dem maximalen Torus $T^8$.
+Der Faktor $c_3=361/126$ misst das effektive Trägheitsmoment dieser Kopplung.
+Die $\mathrm{Spin}(8)$-Trialität macht aus der Kreisbahn eine dreifach verschränkte Zopfbewegung (Vektor, linker Spinor, rechter Spinor).
+Der Hecke-Eigenwert $\tau(3)=252$ zählt die dissipationsfreie Gitterkopplung des Zopfes;
+$126=\tau(3)/2$ ist die Bahnhalbierung unter der Trialitäts-Involution, die Paritätsspiegelung zwischen Entität und dualem Zwilling.
+Während $D_r$ die Schale radial aufweitet, wirkt $D_t$ als transversaler Polarisationskanal und zieht die Partner aufeinander zu.
+
+\subsection{Hyperbolische Eigenzeit}
+Die Signatur $(+,-)$ ist die kinematische Invarianz auf der $8$D-Weltfläche:
+$D_r$ ist die raumartige Ausdehnung entlang der Hauptgeodäten der $S^7$,
+$D_t$ die innere Eigenrotation um den gemeinsamen Schwerpunkt.
+Analog zur Minkowski-Form $ds^2=c^2\,dt^2-dx^2$ verkürzt eine Zunahme von $D_t$ die effektive Eigenzeit der Bahnpräzession.
+Mit den Hecke-Werten
+\begin{equation}
+\Delta_{\mathrm{EABC}}
+=\sqrt{D_r^2-D_t^2}
+\approx\sqrt{(0{,}036089576)^2-(0{,}002547668)^2}
+=0{,}03599954006
+\end{equation}
+folgt die Umlaufperiode
+\begin{equation}
+T_{\mathrm{eff}}=137+\sqrt{D_r^2-D_t^2}\approx 137{,}03599954006.
+\end{equation}
+In Feldtheoriesprache: $1/137$ ist die nackte Frequenz, $D_r$ der Kompaktifizierungswiderstand der acht $\mathbb{Q}(\sqrt{5})$-gekrümmten Achsen, $D_t$ die Hecke-modulierte Selbstenergie-Abschirmung.
+Sommerfelds um den Kern laufendes Elektron wird zum selbstkonsistenten Tanz zweier algebraischer Pole auf $S^7$:
+$\alpha$ ist die mittlere Driftgeschwindigkeit, bei der dieser Zwillingsorbit unter Hecke- und Modulo-$12$-Geometrie des $E_8$-Gitters weder kollabiert noch dephasierend auseinanderdriftet.
+
 \section{Formale Sicherung}
 
 Quadratwurzeln $\sqrt{5}$ und $\sqrt{D_r^2-D_t^2}$ werden in Lean~4 nicht numerisch ausgewertet, sondern durch monotone rationale Schranken eingeschlossen~\cite{deMoura2021,mathlib}.
 Aus
-$2{,}236067977^2<5<2{,}236067978^2$
+$2{,}236067977499^2<5<2{,}236067977500^2$
 folgen Schranken für $\varphi$, daraus wegen Antimonotonie Schranken für $D_r$, daraus Schranken $R_{\mathrm{lo}}<D_r^2-D_t^2<R_{\mathrm{hi}}$.
 Es genügt,
 \begin{equation}
 \varepsilon_{\min}^2<R_{\mathrm{lo}}\qquad\text{und}\qquad R_{\mathrm{hi}}<\varepsilon_{\max}^2
 \end{equation}
-über $\mathbb{Q}$ zu prüfen, mit $\varepsilon_{\min}=0{,}03599908$ und $\varepsilon_{\max}=0{,}036$.
-Das zugehörige Lean-Theorem liegt im Modul \texttt{EABC.AlphaEabcBounds}
-und ist in Mathlib~4.29 ohne Zusatzaxiome geschlossen.
+über $\mathbb{Q}$ zu prüfen.
+Das Modul \texttt{EABC.AlphaEabcBounds} ist in Mathlib~4.29 ohne Zusatzaxiome geschlossen.
 
 \begin{theorem}[CODATA-Einschluss]
-Sei $\varphi=(1+\sqrt{5})/2$, $D_r=8/(137\varphi)$, $D_t=96/37675$ und
+Sei $\varphi=(1+\sqrt{5})/2$, $D_r=8/(137\varphi)$, $D_t=126/49457$ und
 $\alpha^{-1}_{\mathrm{EABC}}=137+\sqrt{D_r^2-D_t^2}$, definiert über den nichtnegativen Radikanden.
 Dann gilt
 \[
@@ -158,18 +218,198 @@ Dann gilt
 \]
 \end{theorem}
 
+\begin{theorem}[Hecke-Sub-PPB-Einschluss]
+Unter denselben Voraussetzungen gilt
+\[
+137{,}03599954005<\alpha^{-1}_{\mathrm{EABC}}<137{,}03599954007.
+\]
+\end{theorem}
+
+\section{Exakte Kette: Eichkopplung, Hecke-Einschluss, $G=4$}
+
+Drei Pfeiler schließen sich im geometrischen Einheitensystem $e=c=1$:
+die Gaußsche Eichgleichung $\alpha=e^2/(\hbar c)$,
+der hyperbolische Hecke-$T_3$-Einschluss für $\alpha^{-1}$,
+und das gravitative Postulat $G=4$ auf $S^7$.
+
+\subsection{Defektidentitäten in $\mathbb{Q}(\sqrt{5})$}
+Mit $\varphi=(1+\sqrt{5})/2$ gilt die rationale Umformung
+\begin{equation}
+\label{eq:Dr}
+D_r=\frac{8}{137\,\varphi}=\frac{16}{137(1+\sqrt{5})}=\frac{4(\sqrt{5}-1)}{137}.
+\end{equation}
+Quadrieren liefert nicht $16(3-\sqrt{5})/137^2$, sondern
+\begin{equation}
+\label{eq:Drsq}
+D_r^2=\frac{16(\sqrt{5}-1)^2}{137^2}=\frac{32(3-\sqrt{5})}{137^2}.
+\end{equation}
+Der Torusanteil ist rein rational,
+\begin{equation}
+D_t=\frac{126}{49457},\qquad
+D_t^2=\frac{15876}{2445994849}.
+\end{equation}
+Der Radikand der Hoffbauer-Klammer ist daher
+\begin{equation}
+\label{eq:rad}
+D_r^2-D_t^2
+=\frac{32(3-\sqrt{5})}{137^2}-\frac{15876}{2445994849},
+\end{equation}
+numerisch $0{,}001295966884244$.
+Die Wurzel ist
+\begin{equation}
+\Delta_{\mathrm{EABC}}\approx 0{,}035999540056010,
+\end{equation}
+also
+\begin{equation}
+\alpha^{-1}_{\mathrm{EABC}}=137+\Delta_{\mathrm{EABC}}\approx 137{,}03599954005601.
+\end{equation}
+Mit $e=c=1$ folgt $\hbar=\alpha^{-1}_{\mathrm{EABC}}$: das Wirkungsquantum ist die effektive Umlaufperiode auf $S^7$.
+
+\subsection{Planck-Skalen}
+Aus $G_{\mathrm{EABC}}:=4$ und $S_{\mathrm{BH}}=A/(4\ell_P^2)$~\cite{bekenstein1973,hawking1975} folgt
+\begin{equation}
+\label{eq:planck}
+\ell_P=2\sqrt{\alpha^{-1}_{\mathrm{EABC}}},\qquad
+m_P=\tfrac12\sqrt{\alpha^{-1}_{\mathrm{EABC}}}.
+\end{equation}
+Numerisch
+\begin{equation}
+\sqrt{\alpha^{-1}_{\mathrm{EABC}}}\approx 11{,}70623763384530,\qquad
+\ell_P\approx 23{,}41247526769060,\qquad
+m_P\approx 5{,}85311881692265.
+\end{equation}
+Die Dualitätsinvarianten sind streng
+\begin{equation}
+\ell_P\cdot m_P=\alpha^{-1}_{\mathrm{EABC}},\qquad
+\frac{\ell_P}{m_P}=G_{\mathrm{EABC}}=4=\dim_{\mathbb{R}}\mathbb{H}.
+\end{equation}
+Das minimale Horizontflächenquantum ist
+\begin{equation}
+\mathcal{A}_0=4\ell_P^2=16\,\alpha^{-1}_{\mathrm{EABC}}\approx 2192{,}57599264090,
+\end{equation}
+mit $16=G^2=(\dim_{\mathbb{R}}\mathbb{H})^2$.
+
+\subsection{Kraftverhältnis}
+Auf der Einheits-Gittermasse $m_0=1$ gilt
+\begin{equation}
+\frac{F_e}{F_g}=\frac{1}{G}=\frac14,\qquad F_g=4\,F_e.
+\end{equation}
+Auf der fundamentalen Schale ist die Gravitation also vierfach stärker als die Coulombkraft.
+Die makroskopische SI-Schwäche $G_{\mathrm{SI}}\approx 6{,}674\times 10^{-11}$ entsteht im Modell erst durch Projektion aus $\mathbb{R}^8$ und Kompaktifizierung von $T^8$;
+sie ist keine Eigenschaft der nackten Kopplungen $e$ und $G$.
+
+\subsection{Volle Wirkung $h=2\pi\hbar$}
+Die reduzierte Wirkung ist $\hbar=\alpha^{-1}_{\mathrm{EABC}}$.
+Der volle Umlauf überstreicht die Phasenfläche
+\begin{equation}
+\label{eq:h}
+h=2\pi\,\hbar
+=2\pi\left(137+\sqrt{\Bigl(\frac{8}{137\,\varphi}\Bigr)^2-\Bigl(\frac{126}{49457}\Bigr)^2}\right).
+\end{equation}
+Mit $2\pi\approx 6{,}283185307179586$ folgt
+\begin{equation}
+h_0:=2\pi\cdot 137\approx 860{,}79638708360,\qquad
+\Delta h:=2\pi\cdot\Delta_{\mathrm{EABC}}\approx 0{,}22619178115,
+\end{equation}
+also
+\begin{equation}
+h=h_0+\Delta h\approx 861{,}02257886475.
+\end{equation}
+Die ganze Zahl $861=\Delta_{41}=41\cdot 42/2$ ist die 41.\ Dreieckszahl.
+Es gilt $h_0<861<h$, weil bereits
+\begin{equation}
+\frac{861}{2\pi}-137\approx 0{,}032406<D_r:
+\end{equation}
+der radiale Defekt allein überschreitet die Dreiecksgrenze; die Hecke-Korrektur setzt nur den Rest
+$h-861\approx 0{,}02257886$.
+Dass $41$ die Euler-Primzahl von $n^2+n+41$ und eine Heegner-Zahl der Klassenzahl~$1$ ist, bleibt eine zahlentheoretische Beobachtung, kein Eingangsparameter der Formelkette.
+
+\begin{center}
+{\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Größe & Ausdruck & Wert \\
+\midrule
+$D_r$ & $4(\sqrt{5}-1)/137$ & $0{,}036089575985395$ \\
+$D_t$ & $126/49457$ & $0{,}002547667670906$ \\
+$\hbar=\alpha^{-1}$ & $137+\sqrt{D_r^2-D_t^2}$ & $137{,}03599954005601$ \\
+$h$ & $2\pi\,\hbar$ & $861{,}02257886475$ \\
+$G$ & $4$ (Postulat) & $4$ \\
+$\ell_P$ & $2\sqrt{\alpha^{-1}}$ & $23{,}41247526769060$ \\
+$m_P$ & $\frac12\sqrt{\alpha^{-1}}$ & $5{,}85311881692265$ \\
+$\mathcal{A}_0$ & $16\,\alpha^{-1}$ & $2192{,}57599264090$ \\
+\bottomrule
+\end{tabular}}
+\end{center}
+
+\section{Drei Familien und der Higgs-Sektor}
+
+Die folgenden Aussagen sind geometrische Lesarten der bereits benutzten $E_8$- und $\mathrm{Spin}(8)$-Invarianten, keine Ableitung des Standardmodells und kein Ersatz für die Yukawa-Matrix.
+
+\subsection{Trialität und drei Generationen}
+$E_8$ enthält die Ketten $E_8\supset E_6\times SU(3)$ und, nach Reduktion $\mathfrak{so}(16)\supset\mathfrak{so}(8)\oplus\mathfrak{so}(8)$, eine trialitätssymmetrische Zerlegung der $\mathbf{248}$ in Paare von $\mathbf{8}_v$, $\mathbf{8}_s$ und $\mathbf{8}_c$~\cite{adams,conwaysloane}.
+$\mathrm{Spin}(8)$ ist die einzige einfach zusammenhängende Lie-Gruppe mit
+\begin{equation}
+\mathrm{Out}(\mathrm{Spin}(8))\cong\mathfrak{S}_3.
+\end{equation}
+Die äußere $\mathfrak{S}_3$ permutiert zyklisch die drei achtdimensionalen Darstellungen $\mathbf{8}_v$, $\mathbf{8}_s$, $\mathbf{8}_c$.
+Die zyklische Untergruppe $\mathbb{Z}_3\subset\mathfrak{S}_3$ hat Ordnung~$3$; $\mathfrak{S}_3$ besitzt kein Element der Ordnung~$4$ oder~$5$.
+Im Modell sind die drei Fermionfamilien die drei Projektionsebenen desselben oktonionischen Zustands unter dieser $\mathbb{Z}_3$-Aktion nach Einbettung $T^8\to\mathbb{R}^{1,3}$:
+die erste Familie als Hurwitz-Schnitt $\mathbb{H}\subset\mathbb{O}$,
+die zweite und dritte als Phasendrehungen $2\pi/3$ und $4\pi/3$ im Fano-Fluss.
+Eine vierte Familie wird von diesem zyklischen Orbit nicht erzeugt.
+Parallel dazu liefert der Faktor $\mathbf{3}$ von $SU(3)$ in $E_8\supset E_6\times SU(3)$ denselben Zählindex; beides sind Einbettungslesarten, kein Unitätssatz der Natur.
+
+\subsection{Higgs als Radialmode von $S^7$}
+Das Higgs-Dublett wird als lokale Auslenkung des Normschalenradius $\sum_{i=1}^8 x_i^2=R^2$ gelesen, nicht als unabhängiges Elementarteilchen.
+Die vier reellen Freiheitsgrade entsprechen $\mathbb{H}^\perp\cong\mathbb{R}^4$ beim Kollaps der oktonionischen Multiplikation auf die assoziative Unteralgebra,
+\begin{equation}
+\mathbb{O}\longrightarrow\mathbb{H}\oplus\mathbb{H}^\perp.
+\end{equation}
+Drei Richtungen sind Goldstone-Moden und werden von $W^\pm,Z^0$ als longitudinale Polarisation absorbiert; die vierte ist das physikalische $H^0$, als radiale Schwingung der Hoffbauer-Klammer senkrecht zur Schale.
+
+Der empirische Vakuumerwartungswert $v\approx 246{,}22\,\mathrm{GeV}$ bleibt in dieser Note eine 4D-Skala, kein aus $m_P$, $\ell_P$ und $\varphi^{-40}$ geschlossener Wert:
+die Probe $m_P^{\mathrm{(SI)}}\varphi^{-40}\cdot 24/\ell_P$ liegt um viele Größenordnungen über $246\,\mathrm{GeV}$ und ist daher kein Modell-Lock.
+
+Ebenso liefert das geometrische Verhältnis
+\begin{equation}
+\frac{1}{\sqrt{2\varphi}}\approx 0{,}55589
+\end{equation}
+mit $v\approx 246{,}22\,\mathrm{GeV}$ die Masse $m_H\approx 136{,}87\,\mathrm{GeV}$, nicht den LHC-Wert $125{,}25\pm 0{,}17\,\mathrm{GeV}$.
+Die oft zitierte Produktkette $246{,}22\times 0{,}5559\approx 125{,}3$ ist arithmetisch falsch ($246{,}22\times 0{,}5559\approx 136{,}87$).
+Ein lockender Einschluss von $m_H$ analog zu $\alpha^{-1}$ steht hier nicht.
+
+\begin{center}
+{\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Phänomen & Standardmodell & EABC-Lesart \\
+\midrule
+3 Familien & Parameter & $\mathbb{Z}_3\subset\mathrm{Out}(\mathrm{Spin}(8))$ \\
+Higgs-Feld & postuliertes Skalar & Radialmode von $S^7$, $\mathbb{H}^\perp$ \\
+Goldstone-Moden & 3 Eichfreiheitsgrade & imaginäre Achsen von $\mathbb{H}^\perp$ \\
+$H^0$ & elementares Skalar & radiale Hoffbauer-Schwingung \\
+Yukawa-Matrix & freie Parameter & Projektion der drei Trialitätsebenen \\
+\bottomrule
+\end{tabular}}
+\end{center}
+
 \section{Einordnung und Grenzen}
 
-Das Ergebnis ist ein \emph{algebraischer Einschluss}, kein Ersatz für die QED-Renormierung und kein Beweis, dass die Natur $E_8$ ``wählt''.
-Die Basis $137$ bleibt die ganzzahlige Eddington-Schwelle; die Nachkommastellen entstehen aus Rang, goldenem Schnitt, hyperbolischer Abschirmung und der Ordnung $275/96$.
-Das zertifizierte Fenster ist das in der Intervallanalyse benutzte Intervall $[137{,}03599908,\,137{,}036]$, angelehnt an CODATA~2018, nicht das $1\sigma$-Band von CODATA~2022 um $137{,}035999177(21)$.
-Eine Verschärfung auf dieses Band würde eine weitere, wiederum ganzzahlige, Verfeinerung von $c$ oder den Übergang zur Haar-Reihe~\cite{hoffbauer2026haar} verlangen.
+Das Ergebnis ist ein \emph{algebraischer Einschluss} von $\alpha^{-1}$ samt kinematischer, Planck-geometrischer und darstellungstheoretischer Lesart.
+Es ist kein Ersatz für die QED-Renormierung, keine Ableitung des Standardmodells und kein Beweis, dass die Natur $E_8$ ``wählt''.
+Drei Familien und das Higgs-Dublett folgen im Modell aus Trialität und $\mathbb{O}\to\mathbb{H}$; die numerischen Skalen $v$ und $m_H$ sind damit nicht geschlossen.
+Die Basis $137$ bleibt die Windungszahl des ungestörten Umlaufs; die Nachkommastellen entstehen aus Rang, goldenem Schnitt, hyperbolischer Abschirmung und $361/126$.
+$G=4$ ist ein holografisches Postulat im geometrischen Einheitensystem, nicht der CODATA-Wert von $G$ in SI.
+Das scharfe Fenster ist $(137{,}03599954005,\,137{,}03599954007)$;
+der äußere Korridor $[137{,}03599908,\,137{,}036]$ fällt nicht mit dem $1\sigma$-Band von CODATA~2022 um $137{,}035999177(21)$ zusammen.
 
-Historisch steht die Konstruktion zwischen Eddingtons Ganzzahligkeit und Wylers Volumenformeln:
-sie nimmt die Ganzahligkeit aus $E_8$ und $24$, die Irrationalität allein aus $\varphi=\frac{1+\sqrt{5}}{2}$, und ersetzt euklidische Defektaddition durch hyperbolische Vakuumabschirmung.
+Historisch steht die Konstruktion zwischen Sommerfelds $v_1/c$, Eddingtons Ganzzahligkeit und Wylers Volumenformeln:
+Ganzahligkeit aus $E_8$, $24$ und $\tau(3)$, Irrationalität allein aus $\varphi$, und hyperbolische statt euklidischer Defektaddition.
 
-{\small
-\begin{thebibliography}{9}
+{\footnotesize
+\setlength{\itemsep}{0.12em}
+\begin{thebibliography}{12}
 
 \bibitem{sommerfeld1916}
 A.~Sommerfeld,
@@ -201,10 +441,20 @@ J.~H.~Conway, N.~J.~A.~Sloane,
 \emph{Sphere Packings, Lattices and Groups},
 Springer, 3.\ Aufl., 1999.
 
+\bibitem{bekenstein1973}
+J.~D.~Bekenstein,
+\emph{Black holes and entropy},
+Phys.\ Rev.\ D \textbf{7} (1973), 2333--2346.
+
 \bibitem{adams}
 J.~F.~Adams,
 \emph{Lectures on Exceptional Lie Groups},
 University of Chicago Press, 1996.
+
+\bibitem{hawking1975}
+S.~W.~Hawking,
+\emph{Particle creation by black holes},
+Commun.\ Math.\ Phys.\ \textbf{43} (1975), 199--220.
 
 \bibitem{hoffbauer2026haar}
 T.~Hoffbauer,

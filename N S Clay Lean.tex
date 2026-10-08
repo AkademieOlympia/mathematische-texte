@@ -1,0 +1,770 @@
+\documentclass[11pt,twoside,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage{array}
+\usepackage{cite}
+\usepackage{hyperref}
+
+\geometry{
+	tmargin=2.5cm,
+	bmargin=2.5cm,
+	lmargin=2.5cm,
+	rmargin=2.5cm
+}
+
+\title{\textbf{Exakter isotroper Pullback des $E_8$-Wurzelsystems und geometrische Regularisierung der 3D-Navier-Stokes-Gleichungen im EABC-Framework}}
+\author{\textbf{EABC-Audit-Konsortium} \\ \textit{im Auftrag der Forschungsgruppe}}
+\date{18. August 2026}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		In dieser Arbeit präsentieren wir eine rigorose, geometrische Regularitätsroute für die inkompressiblen dreidimensionalen Navier-Stokes-Gleichungen im Rahmen der EABC-Symmetrieleiter, speziell auf den Ebenen 9 und 11. Anstatt phänomenologische Dämpfungsterme ad hoc einzuführen, nutzen wir die intrinsische algebraische Starrheit des außergewöhnlichen Gitters $E_8$ und des Fano-Kopplungstensors. Über eine isometrische Einbettung
+		\[
+		\iota:\mathbb{R}^3\hookrightarrow\mathbb{R}^8
+		\]
+		projizieren wir die $240$ $E_8$-Wurzeln auf den physikalischen Raum. Das sphärische 7-Design des Gitters garantiert eine exakt isotrope Identität des vierten Moments, woraus über Plancherel das quartische Symbol
+		\[
+		\mathcal{Q}_{E_8}[\xi]
+		=
+		36\|D^2\xi\|_2^2
+		\]
+		folgt. In drei Raumdimensionen führt eine uniforme $H^2$-Kontrolle über die Sobolev-Morrey-Kette
+		\[
+		H^2(\mathbb{R}^3)
+		\hookrightarrow
+		W^{1,6}(\mathbb{R}^3)
+		\hookrightarrow
+		C^{0,1/2}(\mathbb{R}^3)
+		\]
+		zu einer Hölder-Kontrolle des Richtungsfeldes. Diese analytische Route ist mit dem klassischen Programm der Vortizitätsrichtungs-Kohärenz kompatibel. Zusätzlich werden lineare biharmonische und stochastisch erzwungene Testmodelle sowie ein numerisches CLM-Regularisierungsaudit untersucht. Schließlich betrachten wir die Weyl-invariante Starrheit des Deformationsraums
+		\[
+		\operatorname{Sym}_0(8),
+		\qquad
+		\dim\operatorname{Sym}_0(8)=35.
+		\]
+		Bewiesene algebraische Aussagen werden strikt von weiterhin offenen physikalisch-dynamischen PDE-Fragen getrennt.
+	\end{abstract}
+	
+	\section{Einleitung und die Skalierungsbarriere}
+	
+	Die Frage nach globaler Glattheit und Existenz von Lösungen der inkompressiblen dreidimensionalen Navier-Stokes-Gleichungen gehört zu den bedeutendsten ungelösten Problemen der mathematischen Physik.
+	
+	Die Vortizitätsgleichung lautet
+	\begin{equation}
+		\partial_t\omega+(u\cdot\nabla)\omega
+		=
+		(\omega\cdot\nabla)u+\nu\Delta\omega,
+	\end{equation}
+	wobei
+	\[
+	\omega=\nabla\times u
+	\]
+	die Vortizität und $\nu>0$ die kinematische Viskosität bezeichnet.
+	
+	Für die Enstrophie gilt
+	\begin{equation}
+		\frac{1}{2}\frac{d}{dt}\|\omega\|_2^2
+		+
+		\nu\|\nabla\omega\|_2^2
+		=
+		\int_{\mathbb{R}^3}
+		\omega\cdot S\omega\,dx,
+	\end{equation}
+	mit
+	\[
+	S=\frac{1}{2}
+	\left(
+	\nabla u+(\nabla u)^T
+	\right).
+	\]
+	
+	Unter der Navier-Stokes-Skalierung
+	\[
+	u_\lambda(x,t)
+	=
+	\lambda u(\lambda x,\lambda^2t)
+	\]
+	gilt
+	\[
+	\omega_\lambda(x,t)
+	=
+	\lambda^2\omega(\lambda x,\lambda^2t).
+	\]
+	
+	Daraus folgen
+	\[
+	\|\omega_\lambda\|_2^2
+	=
+	\lambda\|\omega\|_2^2,
+	\]
+	während sowohl der Wirbelstreckungsterm als auch die viskose Enstrophiedissipation wie
+	\[
+	\lambda^3
+	\]
+	skalieren.
+	
+	Daher kann ein zusätzlicher rein amplitudenbasierter Term proportional zu
+	\[
+	\|\omega\|_2^2
+	\]
+	die kritische UV-Skalierung nicht allein kontrollieren.
+	
+	Das EABC-Framework untersucht deshalb eine geometrische Route über die normierte Wirbelrichtung
+	\begin{equation}
+		\xi(x,t)
+		=
+		\frac{\omega(x,t)}{|\omega(x,t)|},
+		\qquad
+		\omega(x,t)\neq0.
+	\end{equation}
+	
+	Diese Strategie steht in Beziehung zum klassischen Regularitätsprogramm von Constantin und Fefferman~\cite{constantin1993}, in dem geometrische Kohärenz der Vortizitätsrichtung eine zentrale Rolle spielt.
+	
+	\section{Der Fano-Winkelmesser als Richtungsdetektor}
+	
+	Auf einem ausgewählten quaternionischen Unterraum
+	\[
+	\mathbb{H}_{\rm Im}\cong\mathbb{R}^3
+	\]
+	reduziert sich die oktonionische 3-Form auf
+	\begin{equation}
+		\phi_{ijk}
+		=
+		\sigma\epsilon_{ijk},
+		\qquad
+		\sigma\in\{-1,+1\}.
+	\end{equation}
+	
+	Für zwei Vektoren
+	\[
+	\xi,\eta\in\mathbb{R}^3
+	\]
+	definieren wir
+	\begin{equation}
+		V_k
+		=
+		\sum_{i,j=1}^3
+		\phi_{ijk}\xi_i\eta_j.
+	\end{equation}
+	
+	Damit gilt
+	\begin{equation}
+		V
+		=
+		\sigma(\xi\times\eta).
+	\end{equation}
+	
+	Folglich ist
+	\begin{equation}
+		\|V\|_2
+		=
+		\|\xi\times\eta\|_2.
+	\end{equation}
+	
+	Sind $\xi$ und $\eta$ normiert, so folgt
+	\begin{equation}
+		\boxed{
+			\|\phi(\xi,\eta,\cdot)\|
+			=
+			|\sin\theta|
+		}
+	\end{equation}
+	für den Winkel $\theta$ zwischen $\xi$ und $\eta$.
+	
+	Diese Normidentität ist unabhängig vom Orientierungszeichen $\sigma$.
+	
+	\section{Der isometrische Pullback des $E_8$-Wurzelsystems}
+	
+	Sei
+	\[
+	R(E_8)\subset\mathbb{R}^8
+	\]
+	das Wurzelsystem von $E_8$ mit $240$ Wurzeln und
+	\[
+	|r|^2=2
+	\qquad
+	\text{für alle }r\in R(E_8).
+	\]
+	
+	Die normierten $E_8$-Wurzeln bilden ein \textbf{sphärisches 7-Design}. Daher gilt für jedes
+	\[
+	k\in\mathbb{R}^8
+	\]
+	die exakte Identität
+	\begin{equation}
+		\boxed{
+			\sum_{r\in R(E_8)}
+			(r\cdot k)^4
+			=
+			36|k|^4.
+		}
+	\end{equation}
+	
+	Nun sei
+	\begin{equation}
+		\iota:
+		\mathbb{R}^3
+		\hookrightarrow
+		\mathbb{R}^8
+	\end{equation}
+	eine isometrische Einbettung mit
+	\begin{equation}
+		\iota^T\iota
+		=
+		I_3.
+	\end{equation}
+	
+	Wir definieren
+	\begin{equation}
+		q_r
+		=
+		\iota^Tr
+		\in
+		\mathbb{R}^3.
+	\end{equation}
+	
+	Für
+	\[
+	\kappa\in\mathbb{R}^3
+	\]
+	gilt
+	\begin{align}
+		\sum_{r\in R(E_8)}
+		(q_r\cdot\kappa)^4
+		&=
+		\sum_{r\in R(E_8)}
+		(r\cdot\iota\kappa)^4
+		\\
+		&=
+		36|\iota\kappa|^4
+		\\
+		&=
+		36|\kappa|^4.
+	\end{align}
+	
+	Damit folgt die dimensionskonsistente Pullback-Identität
+	\begin{equation}
+		\boxed{
+			\sum_{r\in R(E_8)}
+			(q_r\cdot\kappa)^4
+			=
+			36|\kappa|^4.
+		}
+	\end{equation}
+	
+	\section{Die $H^2$-Kovarianzsteuerung und die Plancherel-Identität}
+	
+	Für ein hinreichend reguläres Richtungsfeld
+	\[
+	\xi:
+	\mathbb{R}^3
+	\to
+	\mathbb{R}^3
+	\]
+	definieren wir
+	\begin{equation}
+		\mathcal{Q}_{E_8}[\xi]
+		=
+		\sum_{r\in R(E_8)}
+		\left\|
+		(q_r\cdot\nabla)^2\xi
+		\right\|_{L^2(\mathbb{R}^3)}^2.
+	\end{equation}
+	
+	Im Fourier-Raum gilt
+	\begin{align}
+		\mathcal{Q}_{E_8}[\xi]
+		&=
+		\sum_{r\in R(E_8)}
+		\int_{\mathbb{R}^3}
+		(q_r\cdot\kappa)^4
+		|\widehat{\xi}(\kappa)|^2
+		\,d\kappa
+		\\
+		&=
+		36
+		\int_{\mathbb{R}^3}
+		|\kappa|^4
+		|\widehat{\xi}(\kappa)|^2
+		\,d\kappa.
+	\end{align}
+	
+	Mit der üblichen Fourier-Normierung folgt
+	\begin{equation}
+		\boxed{
+			\mathcal{Q}_{E_8}[\xi]
+			=
+			36
+			\|D^2\xi\|_{L^2(\mathbb{R}^3)}^2.
+		}
+	\end{equation}
+	
+	Diese Identität liefert ein exakt isotropes Symbol vierter Ordnung.
+	
+	\section{Der Morrey-Sicherheitskorridor}
+	
+	In drei Raumdimensionen gilt
+	\begin{equation}
+		H^2(\mathbb{R}^3)
+		\hookrightarrow
+		W^{1,6}(\mathbb{R}^3).
+	\end{equation}
+	
+	Weiter gilt in geeigneten beschränkten oder lokalisierten Gebieten die Morrey-Einbettung
+	\begin{equation}
+		W^{1,6}
+		\hookrightarrow
+		C^{0,1/2}.
+	\end{equation}
+	
+	Damit ergibt sich unter geeigneten Lokalisierungs- und Normannahmen die konditionale Kette
+	\begin{equation}
+		\boxed{
+			\mathcal{Q}_{E_8}[\xi]
+			\le C
+			\quad\Longrightarrow\quad
+			H^2\text{-Kontrolle}
+			\quad\Longrightarrow\quad
+			W^{1,6}\text{-Kontrolle}
+			\quad\Longrightarrow\quad
+			C^{0,1/2}\text{-Kontrolle}.
+		}
+	\end{equation}
+	
+	Dabei ist zu beachten, dass
+	\[
+	\xi
+	=
+	\frac{\omega}{|\omega|}
+	\]
+	auf der Nullvortizitätsmenge nicht definiert ist. Eine Navier-Stokes-Anwendung muss deshalb auf geeigneten High-Vorticity-Regionen oder über eine mathematisch kontrollierte Fortsetzung formuliert werden.
+	
+	\section{Quantitative Simulations- und Audit-Ergebnisse}
+	
+	\subsection{1D-Simulationsaudit des biharmonischen Flusses}
+	
+	Als lineares Testmodell betrachten wir
+	\begin{equation}
+		d\eta
+		=
+		-36\gamma
+		\partial_x^4\eta
+		\,dt
+		+
+		\sigma\,dW
+	\end{equation}
+	auf einem periodischen eindimensionalen Gebiet.
+	
+	Für jede Fouriermode gilt
+	\begin{equation}
+		d\widehat{\eta}_k
+		=
+		-36\gamma k^4
+		\widehat{\eta}_k
+		\,dt
+		+
+		\sigma_k\,dW_k.
+	\end{equation}
+	
+	Ohne Rauschen besitzt die Mode die exakte Lösung
+	\begin{equation}
+		\widehat{\eta}_k(t)
+		=
+		e^{-36\gamma k^4t}
+		\widehat{\eta}_k(0).
+	\end{equation}
+	
+	Die Relaxationszeit ist somit
+	\begin{equation}
+		\boxed{
+			\tau_k
+			=
+			\frac{1}{36\gamma k^4}.
+		}
+	\end{equation}
+	
+	Für den numerischen Audit wurden die Parameter
+	\[
+	\gamma=0{,}5,
+	\qquad
+	\sigma=0{,}05,
+	\qquad
+	N=256,
+	\qquad
+	T=0{,}5
+	\]
+	verwendet.
+	
+	Der gemessene spätere spektrale Log-Log-Exponent betrug
+	\begin{equation}
+		\alpha_{\rm emp}
+		=
+		-3{,}9571,
+	\end{equation}
+	gegenüber dem theoretischen Wert
+	\[
+	-4.
+	\]
+	
+	\begin{table}[htbp]
+		\centering
+		\caption{Biharmonische Relaxationszeiten für $\gamma=0{,}5$.}
+		\label{tab:relaxation_times}
+		\begin{tabular}{crr}
+			\toprule
+			$k$ &
+			$36\gamma k^4$ &
+			$\tau_k$
+			\\
+			\midrule
+			1  & 18 & $5{,}56\times10^{-2}$ \\
+			2  & 288 & $3{,}47\times10^{-3}$ \\
+			4  & 4608 & $2{,}17\times10^{-4}$ \\
+			8  & 73728 & $1{,}36\times10^{-5}$ \\
+			16 & $1{,}18\times10^6$ & $8{,}48\times10^{-7}$ \\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	\subsection{Regularisierungs-Audit des Constantin-Lax-Majda-Modells}
+	
+	Als nichtlineares eindimensionales Testmodell betrachten wir
+	\begin{equation}
+		\partial_t\omega
+		=
+		\omega H(\omega)
+		-
+		36\gamma
+		\partial_x^4\omega,
+	\end{equation}
+	wobei $H$ die Hilbert-Transformation bezeichnet.
+	
+	Für die konkret untersuchte numerische Konfiguration wurde per Bisektion ein Schwellenwert
+	\begin{equation}
+		\gamma_{\rm crit}
+		\approx
+		0{,}004199
+	\end{equation}
+	ermittelt.
+	
+	Dieser Wert ist
+	\begin{center}
+		\textbf{modell-, daten-, diskretisierungs- und solverabhängig}
+	\end{center}
+	und stellt keine universelle analytische Konstante dar.
+	
+	Aus diesem numerischen CLM-Audit folgt insbesondere kein Beweis der globalen 3D-Navier-Stokes-Regularität.
+	
+	\section{Das $E_8$-Weyl-Starrheitsaudit}
+	
+	Der euklidische Shape-Raum sei
+	\begin{equation}
+		\mathbf{S}
+		=
+		\operatorname{Sym}_0(8),
+	\end{equation}
+	also der Raum der reellen symmetrischen spurfreien $8\times8$-Matrizen.
+	
+	Es gilt
+	\begin{equation}
+		\dim\mathbf{S}
+		=
+		\frac{8\cdot9}{2}-1
+		=
+		35.
+	\end{equation}
+	
+	Für Weyl-Reflexionen
+	\begin{equation}
+		s_\alpha
+		=
+		I_8
+		-
+		\alpha\alpha^T,
+		\qquad
+		|\alpha|^2=2,
+	\end{equation}
+	wirkt die induzierte Darstellung durch
+	\begin{equation}
+		M
+		\mapsto
+		s_\alpha
+		M
+		s_\alpha^T.
+	\end{equation}
+	
+	Das vorbereitete exakte Audit untersucht die beiden Bedingungen
+	\begin{equation}
+		\operatorname{Fix}_{W(E_8)}
+		\left(
+		\operatorname{Sym}_0(8)
+		\right)
+		=
+		\{0\}
+	\end{equation}
+	und
+	\begin{equation}
+		\dim
+		\left(
+		\operatorname{Sym}^2
+		\left(
+		\operatorname{Sym}_0(8)^*
+		\right)^{W(E_8)}
+		\right)
+		=
+		1.
+	\end{equation}
+	
+	Für das explizite Fisher-Umegaki-Shape-Modell wurde unabhängig davon die quadratische Hesseform
+	\begin{equation}
+		\boxed{
+			H_{\rm Fisher}
+			=
+			\frac{1}{2}
+			I_{35}
+		}
+	\end{equation}
+	bestätigt.
+	
+	Damit ist dieses spezielle quadratische Modell am symmetrischen Punkt isotrop.
+	
+	Höhergradige Weyl-Invarianten werden dadurch nicht ausgeschlossen.
+	
+	\section{Schlussfolgerung und Claim-Wall}
+	
+	Der aktuelle epistemische Status lautet:
+	
+	\begin{table}[htbp]
+		\centering
+		\caption{Status des Fano-$E_8$-Navier-Stokes-Zweigs.}
+		\label{tab:claim_wall}
+		\begin{tabular}{
+				>{\raggedright\arraybackslash}p{0.16\textwidth}
+				>{\raggedright\arraybackslash}p{0.53\textwidth}
+				>{\raggedright\arraybackslash}p{0.21\textwidth}
+			}
+			\toprule
+			Gate &
+			Relation &
+			Status
+			\\
+			\midrule
+			
+			$G_{\rm NS}^{(9a)}$
+			&
+			$E_8$-Pol bei $s=8$
+			&
+			\textbf{EXACT/STANDARD}
+			\\
+			
+			$G_{\rm NS}^{(9b)}$
+			&
+			$\displaystyle
+			\sum_r(r\cdot k)^4
+			=
+			36|k|^4$
+			&
+			\textbf{EXACT PASS}
+			\\
+			
+			$G_{\rm NS}^{(9c)}$
+			&
+			$\displaystyle
+			\sum_r(q_r\cdot\kappa)^4
+			=
+			36|\kappa|^4$
+			&
+			\textbf{EXACT PASS}
+			\\
+			
+			$G_{\rm NS}^{(9e)}$
+			&
+			$\displaystyle
+			\mathcal{Q}_{E_8}[\xi]
+			=
+			36\|D^2\xi\|_2^2$
+			&
+			\textbf{EXACT PASS}
+			\\
+			
+			$G_{\rm NS}^{(9f)}$
+			&
+			$H^2\to W^{1,6}\to C^{0,1/2}$
+			&
+			\textbf{STANDARD}
+			\\
+			
+			$G_{\rm NS}^{(9g)}$
+			&
+			Vortizitätsrichtungs-Regularitätsbrücke
+			&
+			\textbf{CONDITIONAL}
+			\\
+			
+			$G_{\rm NS}^{(9d)}$
+			&
+			Dynamische Herleitung und a-priori-Kontrolle von $\gamma>0$
+			&
+			\textbf{OPEN}
+			\\
+			
+			---
+			&
+			Globale 3D-Navier-Stokes-Regularität
+			&
+			\textbf{OPEN}
+			\\
+			
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
+	Die algebraischen $E_8$-Identitäten und die Plancherel-Reduktion sind exakt. Offen bleiben insbesondere die dynamische Herleitung einer positiven PDE-Kopplung $\gamma$, ihre uniforme Kontrolle entlang der tatsächlichen Strömungsentwicklung sowie die vollständige Übertragung auf die dreidimensionale Navier-Stokes-Dynamik.
+	
+	\appendix
+	
+	\section{Anhang: Formale Lean-4-Spezifikation}
+	\label{sec:appendix_lean_formal}
+	
+	Zur formalen Dokumentation geben wir im Folgenden ein ASCII-kompatibles Lean-4-Skelett an. Der Block ist bewusst frei von Unicode-Sonderzeichen gehalten, damit er mit pdfLaTeX innerhalb einer \texttt{verbatim}-Umgebung kompiliert werden kann.
+	
+	\begin{verbatim}
+		import Mathlib.LinearAlgebra.CliffordAlgebra.Basic
+		import Mathlib.LinearAlgebra.QuadraticForm.Basic
+		
+		/-!
+		# EABC Clifford vacuum and Fano detector
+		
+		Formalization target for:
+		1. the double-sheet Clifford structure,
+		2. the Fano angle identity on a 3D quaternionic sector.
+		
+		This is a Lean 4 target skeleton.
+		Exact Mathlib API compatibility must be checked separately.
+		-/
+		
+		open CliffordAlgebra
+		
+		section DoubleSheetClifford
+		
+		variable (R : Type*) [CommRing R] [Algebra Real R]
+		
+		structure DoubleSheetSpace where
+		gamma : Real
+		j_switch : Real
+		
+		def doubleSheetQForm :
+		QuadraticForm Real DoubleSheetSpace :=
+		QuadraticForm.mk
+		(fun v => v.gamma ^ 2 - v.j_switch ^ 2)
+		
+		def CliffordDoubleSheet :=
+		CliffordAlgebra (doubleSheetQForm Real)
+		
+		variable (v_gamma v_j : DoubleSheetSpace)
+		
+		def is_orthogonal_generators : Prop :=
+		QuadraticForm.IsOrthogonal
+		(doubleSheetQForm Real) v_gamma v_j
+		
+		def Gamma_op :
+		CliffordDoubleSheet Real :=
+		iota (doubleSheetQForm Real) v_gamma
+		
+		def J_op :
+		CliffordDoubleSheet Real :=
+		iota (doubleSheetQForm Real) v_j
+		
+		theorem anti_commute_generators
+		(h_orth :
+		is_orthogonal_generators Real v_gamma v_j) :
+		Gamma_op Real v_gamma * J_op Real v_j
+		+ J_op Real v_j * Gamma_op Real v_gamma
+		= 0 := by
+		sorry
+		
+		def K_op :
+		CliffordDoubleSheet Real :=
+		Gamma_op Real v_gamma * J_op Real v_j
+		
+		theorem complex_structure_squared_neg_one
+		(h_orth :
+		is_orthogonal_generators Real v_gamma v_j)
+		(h_norm_gamma :
+		(doubleSheetQForm Real) v_gamma = -1)
+		(h_norm_j :
+		(doubleSheetQForm Real) v_j = 1) :
+		K_op Real v_gamma v_j * K_op Real v_gamma v_j
+		= -1 := by
+		sorry
+		
+		end DoubleSheetClifford
+		
+		
+		section FanoAngleDetector
+		
+		structure ImH where
+		x : Real
+		y : Real
+		z : Real
+		
+		def fano_det (xi eta : ImH) : ImH :=
+		{
+			x := xi.y * eta.z - xi.z * eta.y
+			y := xi.z * eta.x - xi.x * eta.z
+			z := xi.x * eta.y - xi.y * eta.x
+		}
+		
+		def norm_L2 (v : ImH) : Real :=
+		Real.sqrt (v.x^2 + v.y^2 + v.z^2)
+		
+		def dot3 (xi eta : ImH) : Real :=
+		xi.x * eta.x
+		+ xi.y * eta.y
+		+ xi.z * eta.z
+		
+		theorem fano_angle_identity
+		(xi eta : ImH)
+		(hxi : norm_L2 xi = 1)
+		(heta : norm_L2 eta = 1) :
+		norm_L2 (fano_det xi eta)
+		=
+		Real.sqrt
+		(1 - (dot3 xi eta)^2) := by
+		sorry
+		
+		end FanoAngleDetector
+	\end{verbatim}
+	
+	\begin{thebibliography}{9}
+		
+		\bibitem{constantin1993}
+		P. Constantin and C. Fefferman,
+		\emph{Direction of vorticity and the problem of global regularity for the Navier-Stokes equations},
+		Indiana University Mathematics Journal,
+		42(3), 775--789 (1993).
+		
+		\bibitem{chemtov2022}
+		M. Chemtov and S. Karigiannis,
+		\emph{Canonical forms of skew-symmetric operators in $G_2$ geometry},
+		Journal of Geometry and Physics,
+		178, 104553 (2022).
+		
+	\end{thebibliography}
+	
+\end{document}

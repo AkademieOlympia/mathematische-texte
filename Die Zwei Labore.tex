@@ -1,0 +1,129 @@
+\documentclass[11pt,a4paper]{article}
+
+% --- Typografie & Sprache ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% --- Layout & Geometrie ---
+\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=2.3cm,right=2.3cm]{geometry}
+\usepackage{titling}
+\usepackage{abstract}
+
+% --- Mathematik & Physik ---
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{mathtools}
+\usepackage{braket}
+
+% --- Tabellen & Grafiken ---
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{xcolor}
+
+% --- Links & Metadaten ---
+\usepackage[colorlinks=true,
+            linkcolor=blue!70!black,
+            citecolor=blue!70!black,
+            urlcolor=blue!70!black,
+            pdfauthor={Thomas Hofbauer},
+            pdftitle={Mathematischer Freeze und duale spektroskopische Laborpfade des EABC-Modells}]{hyperref}
+
+% Farbcodes für Gate-Status
+\definecolor{closedGreen}{RGB}{20, 120, 40}
+\definecolor{definedBlue}{RGB}{20, 70, 160}
+\definecolor{forecastOrange}{RGB}{180, 80, 10}
+\definecolor{openRed}{RGB}{160, 20, 20}
+
+\newcommand{\statusClosed}{\textbf{\textcolor{closedGreen}{GESCHLOSSEN}}}
+\newcommand{\statusDefined}{\textbf{\textcolor{definedBlue}{DEFINIERT}}}
+\newcommand{\statusForecast}{\textbf{\textcolor{forecastOrange}{FORECAST}}}
+\newcommand{\statusOpen}{\textbf{\textcolor{openRed}{OFFENE BRIDGE}}}
+
+% Gestaltung der Abstract-Überschrift
+\renewcommand{\abstractname}{\large\bfseries Zusammenfassung}
+\setlength{\absleftmargin}{1.0cm}
+\setlength{\absrightmargin}{1.0cm}
+
+\begin{document}
+
+% --- Titelkopf ---
+\begin{center}
+    {\LARGE\bfseries Mathematischer Modell-Freeze und duale spektroskopische Laborpfade der nicht-assoziativen EABC-Phasenraumtopologie\par}
+    \vspace{0.8em}
+    {\large Technisches Whitepaper \& Formale Spezifikation \texttt{Spec-Bridge-01}\par}
+    \vspace{1.2em}
+    {\textbf{Thomas Hofbauer}\par}
+    {\small Bamberg, Deutschland\par}
+    \vspace{0.6em}
+    {\small Datum: 27. September 2026\par}
+\end{center}
+
+\vspace{0.5em}
+\hrule
+\vspace{1.0em}
+
+% --- Abstract ---
+\begin{abstract}
+\noindent
+Diese Arbeit konsolidiert die Schnittstelle zwischen der nicht-assoziativen Phasenraum-Topologie des EABC-Modells und der Präzisionsspektroskopie des atomaren Wasserstoffs. Auf der algebraischen Ebene wird der Operator-Block über $\mathbb{Q}$ formal geschlossen: Für ein orthogonales Einheitspaar $e_1, e_2 \in \mathbb{O}$ bildet das normierte Assoziator-Quadrat $P_A = \frac{1}{4}K_{12}$ den exakten orthogonalen Projektor auf das Komplement der Quaternionen-Unteralgebra $\mathbb{H}_{12}$ mit $\operatorname{spec}(K_{12}) = \{0^4, 4^4\}$. Unter der Automorphismengruppe $G_2$ liefert der Gruppen-Twirl erster Ordnung das universelle Moment $\mathcal{M}_1 = 0_{\mathbb{R}1} \oplus \frac{4}{7}I_7$, wodurch der oktonionische Ursprung in linearer Näherung zu einer isotropen Skalarkopplung $\eta_A^{\rm eff} = \frac{4}{7}\eta_A$ entartet. Die genuine Fano-Tensorgeometrie überlebt erst im zweiten Moment $\left.\mathcal{M}_2\right|_{\operatorname{Sym}^2(7)} = \frac{4}{7}\Pi_{\mathbf{1}} \oplus \frac{22}{63}\Pi_{\mathbf{27}}$, während gezeigt wird, dass die diskreten 7 Fano-Projektoren kein sphärisches 2-Design bilden. 
+
+Zur empirischen Überprüfung formulieren wir zwei komplementäre Laborpfade: \textbf{Pfad I} fungiert als quantitativer Präzisionsfilter. Durch Einbindung des Mikrowellen-Lamb-Shifts ($2S_{1/2} - 2P_{1/2}$) wird die Kollinearität im optischen $2S\text{--}1S$-Kanal aufgebrochen ($\kappa_2(F) \sim 10^7$), was einen Modell-Forecast von $\sigma_{\rm forecast}(\eta_A^{\rm eff}) \lesssim 1.2 \times 10^{-13}$ ermöglicht. \textbf{Pfad II} adressiert als geometrischer Falsifikator die interne $\mathbf{27}_{G_2}$-Tensorstruktur im Doppler-freien $1S \to 2S$-Zwei-Photonen-Nulltest bei orthogonaler Polarisation ($\boldsymbol{\epsilon}_1 \perp \boldsymbol{\epsilon}_2$). Die Kopplung wird über einen Clebsch-Gordan-Intertwiner $\Xi : \mathbf{27}_{G_2} \to \operatorname{Sym}_0^2(\mathbb{R}^3)$ mit Hebelarm $\operatorname{Tr}(\Xi \mathcal{M}_2) = \frac{110}{63}$ parameterfrei fixiert. Bei Berücksichtigung des relativistischen $E1\text{--}M1$-Standardmodell-Untergrunds ergibt sich eine Sensitivität von $\eta_A \lesssim 10^{-2}$ (quartische Rate) bzw. $\sim 3 \times 10^{-3}$ (Interferenz bei $45^\circ$). Damit trennt das Dossier strikt zwischen mathematischem Beweis, Parameterschärfe und struktureller Falsifikation.
+\end{abstract}
+
+\vspace{0.8em}
+\noindent\textbf{Keywords:} Oktonionenalgebra, $G_2$-Automorphismen, Fano-Projektor, $1S\text{--}2S$ Spektroskopie, Lamb-Shift, Fisher-Matrix, Clebsch-Gordan-Intertwiner, 2-Design.
+
+\vspace{1.2em}
+\hrule
+\vspace{1.5em}
+
+% --- Leitmotiv-Box ---
+\begin{center}
+\colorbox{gray!10}{
+    \parbox{0.95\textwidth}{
+        \centering\vspace{0.4em}
+        \textbf{Methodisches Leitmotiv der Modellvalidierung:}\\[0.2em]
+        \emph{Pfad I misst skalare Stärke (Quantitativer Filter via $\mathcal{M}_1 = \frac{4}{7}I_7$).}\\
+        \emph{Pfad II misst interne Struktur (Geometrischer Falsifikator via $\mathcal{M}_2 \supset \mathbf{27}_{G_2}$).}
+        \vspace{0.4em}
+    }
+}
+\end{center}
+
+\vspace{1.5em}
+
+% --- Audit-Tabelle ---
+\subsection*{Formale Gate-Audit-Checkliste (\texttt{Spec-Bridge-01})}
+\vspace{-0.5em}
+
+\begin{table}[h!]
+\centering
+\small
+\begin{tabularx}{\textwidth}{@{} c l l X c @{}}
+\toprule
+\textbf{Gate} & \textbf{Sektor} & \textbf{Objekt / Theorem} & \textbf{Mathematischer / Physikalischer Befund} & \textbf{Status} \\
+\midrule
+\texttt{G-01} & Algebra & $P_A = \frac{1}{4}K_{12}$ & Exakter Projektor über $\mathbb{Q}$, $\operatorname{spec}(K_{12}) = \{0^4, 4^4\}$ & \statusClosed \\
+\texttt{G-02} & Algebra & $\ker(K_{12}) = \mathbb{H}_{12}$ & Kern ist Quaternionen-Unteralgebra $\operatorname{span}_{\mathbb{Q}}\{1, e_1, e_2, e_1e_2\}$ & \statusClosed \\
+\texttt{G-03} & Geometrie & $\operatorname{Stab}_{G_2}(P_A) \cong SO(4)$ & Fixierung der Unteralgebra $\mathbb{H}$ bestimmt $SO(4)$ & \statusClosed \\
+\texttt{G-04} & Vakuum & $\mathcal{M}_{\rm vac} \cong G_2/SO(4)$ & 8-dimensionale Mannigfaltigkeit der internen Projektoren & \statusClosed \\
+\texttt{G-05} & 1. Moment & $\mathcal{M}_1^{\rm Haar} = 0 \oplus \frac{4}{7}I_7$ & Schursches Lemma auf $\mathbb{R}1 \oplus \operatorname{Im}(\mathbb{O})$; kein $\mathbb{O}$-Signal in $\mathcal{O}(1)$ & \statusClosed \\
+\texttt{G-06} & 2. Moment & $\mathcal{M}_2^{\rm Haar}\big|_{\operatorname{Sym}^2} = \frac{4}{7}\Pi_{\mathbf{1}} \oplus \frac{22}{63}\Pi_{\mathbf{27}}$ & Normenschranke $M_2 \le I$ erfüllt; $c_{\mathbf{1}}=\frac{4}{7}, c_{\mathbf{27}}=\frac{22}{63}$ & \statusClosed \\
+\texttt{G-07} & Sphärik & Fano-2-Design & 7 Fano-Projektoren spalten auf $\mathbf{27}$ in $\frac{4}{7}$ und $\frac{2}{7}$ auf ($1$-Design, kein $2$-Design) & \statusClosed \\
+\texttt{G-08} & Intertwiner & $\Xi : \mathbf{27}_{G_2} \to \operatorname{Sym}_0^2(\mathbb{R}^3)$ & Kanonischer Clebsch-Gordan-Projektor via $\mathfrak{so}(3) \hookrightarrow \mathfrak{g}_2$; $\operatorname{Tr}(\Xi \mathcal{M}_2) = \frac{110}{63}$ & \statusDefined \\
+\texttt{G-09} & Design & Kollinearitätsbrechung & $2S_{1/2}\text{--}2P_{1/2}$ Lamb-Shift bricht Rydberg-Entartung ($\partial_{\epsilon_h}\Delta E^{(0)}=0$) & \statusClosed \\
+\texttt{G-10} & Pfad I & Fisher-Matrix $F$ & Forecast-Sensitivität $\sigma_{\rm forecast}(\eta_A^{\rm eff}) \lesssim 1.2 \times 10^{-13}$ & \statusForecast \\
+\texttt{G-11} & Pfad II & Nullkanal $\Gamma_\perp$ & Nichtrelativistischer E1E1-Limes $\mathcal{A}_\perp=0$; Rate $\Gamma_\perp \propto \eta_A^4$ & \statusDefined \\
+\texttt{G-12} & Kopplung & $V_{\rm coupling}(\mathbf{r}, \mathbf{p})$ & Dynamischer Ursprung des mikroskopischen Nahfeld-Operators & \statusOpen \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\vfill
+\noindent\footnotesize\textit{Hinweis zur Verifikation:} Die Sektoren \texttt{G-01} bis \texttt{G-07} sind über $\mathbb{Q}$ bzw. $\mathbb{Z}/2\mathbb{Z}$ in SageMath 10.5 und Lean 4 formal auditiert und als unveränderlicher algebraischer Kern eingefroren.
+
+\end{document}

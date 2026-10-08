@@ -1,0 +1,233 @@
+% Drop-in supplement for the E8/G2 manuscript
+% Generated as a fail-closed audit-safe section.
+%
+% IMPORTANT AUDIT STATUS:
+% The file G2SpectralPairingBreakingProof.py was reported by the author,
+% but was not available in the currently accessible workspace at generation time.
+% Therefore the theorem below is stated conditionally on the explicit operator-
+% level identities and heat-coefficient calculation listed as hypotheses.
+
+\section{Spectral Pairing, Controlled Breaking, and the Degree-Eight Heat Anomaly}
+\label{sec:spectral-pairing-breaking}
+
+\subsection{Unperturbed chiral pairing}
+
+Let
+\[
+D_0=
+\begin{pmatrix}
+0 & A^\ast\\
+A & 0
+\end{pmatrix}
+\]
+be the unperturbed $\mathbb Z_2$-graded Dirac operator on the relevant homogeneous
+spinor bundle over
+\[
+M=G_2/SO(4),
+\qquad \dim M=8,
+\]
+and set
+\[
+H_+^{(0)}=A^\ast A,
+\qquad
+H_-^{(0)}=AA^\ast.
+\]
+
+\begin{proposition}[Positive spectral pairing]
+\label{prop:positive-pairing}
+The non-zero spectra of $H_+^{(0)}$ and $H_-^{(0)}$ agree including
+multiplicities. Consequently, after removing zero modes,
+\[
+K_+^{(0),\ast}(t)=K_-^{(0),\ast}(t)
+\qquad (t>0),
+\]
+and therefore
+\[
+\zeta_+^{(0)}(s)=\zeta_-^{(0)}(s)
+\]
+wherever the zeta functions are initially defined, hence by meromorphic
+continuation on their common domain. In particular,
+\[
+\Delta\zeta^{(0)\prime}(0)=0.
+\]
+\end{proposition}
+
+\begin{proof}
+For every $\lambda>0$, the map
+\[
+A:\ker(A^\ast A-\lambda)\longrightarrow\ker(AA^\ast-\lambda)
+\]
+is an isomorphism with inverse $\lambda^{-1}A^\ast$. Thus the positive
+spectra agree with multiplicity. The identities for the reduced heat traces
+and spectral zeta functions follow term by term.
+\end{proof}
+
+\subsection{Sector-dependent Fano--Chern--Weil deformation}
+
+We now consider a genuinely sector-dependent even deformation
+\[
+H_+=H_+^{(0)}+V_+,
+\qquad
+H_-=H_-^{(0)}+V_-,
+\]
+where $V_\pm$ are self-adjoint bundle endomorphism terms determined by the
+Fano--Chern--Weil construction.
+
+The crucial point is that a non-trivial determinant ratio requires more than
+a deformation of the off-diagonal Dirac block.  If a deformed Dirac operator
+retained the form
+\[
+D_{\rm eff}=
+\begin{pmatrix}
+0&B^\ast\\
+B&0
+\end{pmatrix},
+\]
+then $B^\ast B$ and $BB^\ast$ would remain positively isospectral.
+Accordingly, the anomaly channel requires an operator-level breaking of this
+partner structure, for example through
+\[
+V_+\neq V_-.
+\]
+
+\begin{theorem}[Conditional pairing-breaking anomaly]
+\label{thm:pairing-breaking-anomaly}
+Assume the following four statements have been established independently:
+
+\begin{enumerate}
+\item $H_\pm$ are self-adjoint elliptic Laplace-type operators on the
+      corresponding chiral/twisted bundles over $M$;
+\item the sector-dependent Fano--Chern--Weil terms break the positive
+      partner-spectrum relation of Proposition~\ref{prop:positive-pairing};
+\item the complete eight-dimensional heat traces possess the standard
+      asymptotic expansions
+      \[
+      K_\pm^\ast(t)\sim
+      (4\pi t)^{-4}
+      \left(
+      A_0^\pm+A_2^\pm t+A_4^\pm t^2+A_6^\pm t^3+A_8^\pm t^4+\cdots
+      \right);
+      \]
+\item the explicit local invariant calculation yields
+      \[
+      \Delta A_0=\Delta A_2=\Delta A_4=\Delta A_6=0,
+      \qquad
+      \Delta A_8
+      :=
+      A_8^- - A_8^+
+      =
+      -\frac{1}{20736}
+      =
+      -\frac{1}{12^4}.
+      \]
+\end{enumerate}
+
+Then the reduced heat-trace difference is regular at $t=0$ and satisfies
+\[
+\Delta K^\ast(t)
+=
+(4\pi)^{-4}\Delta A_8+O(t),
+\qquad
+t\to0^+.
+\]
+In particular, the Fano--Chern--Weil deformation produces a non-vanishing
+degree-eight local heat anomaly while the lower ultraviolet divergences
+cancel.
+\end{theorem}
+
+\begin{proof}
+Subtract the two eight-dimensional heat expansions.  By the assumed
+cancellations of $A_0,A_2,A_4,A_6$, all terms proportional to
+$t^{-4},t^{-3},t^{-2},t^{-1}$ vanish.  The first surviving term is therefore
+the constant term
+\[
+(4\pi)^{-4}\Delta A_8,
+\]
+which gives the stated result.
+\end{proof}
+
+\subsection{What the local anomaly does and does not determine}
+
+The identity
+\[
+\Delta A_8=-\frac{1}{20736}
+\]
+is a local ultraviolet statement.  It controls the constant term in the
+eight-dimensional heat-trace difference and, with the standard treatment of
+zero modes, contributes to $\Delta\zeta(0)$.  It does \emph{not}, by itself,
+determine the global determinant difference
+\[
+\Delta\zeta'(0).
+\]
+
+Indeed, for a split point $T>0$ one must still evaluate the full Mellin
+expression
+\[
+\Delta\zeta'(0)
+=
+\int_0^T
+\frac{
+\Delta K^\ast(t)-(4\pi)^{-4}\Delta A_8
+}{t}\,dt
++
+\int_T^\infty
+\frac{\Delta K^\ast(t)}{t}\,dt
++
+(4\pi)^{-4}\Delta A_8\,
+(\gamma_E+\log T),
+\]
+provided the stated ultraviolet subtraction is sufficient and the infrared
+integral is controlled by the proven positive spectral gap.
+
+Thus
+\[
+\boxed{
+\Delta A_8\neq0
+}
+\]
+establishes the possibility and local source of a non-trivial determinant
+ratio, whereas
+\[
+\boxed{
+\Delta\zeta'(0)\in[L,U]
+}
+\]
+requires the complete deformed spectrum, a certified ultraviolet remainder,
+a certified infrared tail, and directed interval quadrature.
+
+\subsection{Fail-closed gate statement}
+
+For the purposes of the audit DAG we therefore distinguish
+\[
+\texttt{UNBROKEN\_PAIRING\_THEOREM\_PASS}
+\]
+from
+\[
+\texttt{SPECTRAL\_PAIRING\_BREAKING\_PASS}
+\]
+and from the strictly downstream condition
+\[
+\texttt{DIRECTED\_MELLIN\_INTERVAL\_PASS}.
+\]
+
+The global determinant gate may be promoted to \texttt{PASS} only if
+\[
+\begin{aligned}
+\texttt{SPECTRAL\_PAIRING\_BREAKING\_PASS}
+&=\mathrm{True},\\
+\texttt{FULL\_MULTIPLICITY\_BRANCHING\_PASS}
+&=\mathrm{True},\\
+\texttt{C12\_UV\_PASS}
+&=\mathrm{True},\\
+\texttt{DIRECTED\_MELLIN\_INTERVAL\_PASS}
+&=\mathrm{True}.
+\end{aligned}
+\]
+
+\paragraph{Audit status.}
+At the time of insertion, the claimed module
+\texttt{G2SpectralPairingBreakingProof.py} is treated as
+\texttt{REPORTED PASS} until its operator definitions, sector potentials,
+heat-coefficient identities, and exact arithmetic have been independently
+reproduced from the source artifact.  This status is intentionally
+non-propagating in the fail-closed DAG.

@@ -1,0 +1,378 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm,amsfonts}
+\usepackage{mathtools}
+\usepackage{mathrsfs}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usepackage{cite}
+
+\geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+
+\newtheorem{theorem}{Satz}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Bemerkung}
+
+\newcommand{\Oalg}{\mathbb{O}}
+\newcommand{\ImO}{\operatorname{Im}(\mathbb{O})}
+\newcommand{\Assoc}{\operatorname{Assoc}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\Mmon}{\mathcal{M}_{2,3}}
+\newcommand{\mmon}{\mu_{2,3}}
+
+\hypersetup{
+  pdftitle={Oktonionische Assoziatorgeometrie, Kusszahlen und S-Einheiten},
+  pdfauthor={Thomas Hoffbauer},
+  colorlinks=true,
+  linkcolor=blue!45!black,
+  citecolor=blue!45!black,
+  urlcolor=blue!45!black
+}
+
+\title{\textbf{Oktonionische Assoziatorgeometrie, Kusszahlen und $S$-Einheiten:}\\[0.5em]
+\Large Eine funktorielle Faseranalyse von $E_8$, Leech und $\mathcal{M}_{2,3}$ im Projekt \texttt{eabc-renorm}}
+
+\author{\textbf{Thomas Hoffbauer}\\
+\small Computer Institut Bamberg (CIB) / Akademie Olympia\\
+\small \href{mailto:research@cib-bamberg.de}{\texttt{research@cib-bamberg.de}}}
+
+\date{3. August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Wir untersuchen drei strukturell eng verbundene, jedoch epistemisch strikt zu trennende mathematische Ebenen: erstens die exakte Zerlegung des oktonionischen Assoziators auf $\ImO$ einschließlich der Gram-$G_2$-Identität; zweitens das dyadisch-triadische Skalierungsmonoid $\Mmon$ aus der Perspektive von $S$-Einheiten über $\mathbb{Z}[1/6]$ und seiner lokalen Realisierungen an den Stellen $\infty$, $2$ und $3$; drittens die modulare Fasercharakterisierung der 24 Niemeier-Gitter im zweidimensionalen Modulformenraum $M_{12}(\mathrm{SL}_2(\mathbb{Z}))$, bei der das Leech-Gitter $\Lambda_{24}$ durch die Nullfaser des Wurzelfunktionals $a_1$ isoliert wird. Ergänzend betrachten wir die exakten Kusszahlen $K(d)$ optimaler Gitterpackungen als geometrische Vergleichsparameter. Zur Vermeidung unzulässiger Übergeneralisierungen formulieren wir eine formale \emph{Claim Wall}. Ein projektinternes SageMath-Hochpräzisionsaudit auf \texttt{RealField(200)} prüft die numerische Konsistenz ausgewählter oktonionischer Zerlegungs-, Orthogonalitäts- und Homogenitätsidentitäten.
+\end{abstract}
+
+\noindent\textbf{Schlüsselwörter:} Oktonionen, Assoziator, Kusszahlen, $G_2$-Geometrie, $S$-Einheiten, Niemeier-Gitter, Leech-Gitter, Modulformen, epistemische Governance.
+
+\tableofcontents
+\newpage
+
+\section{Einleitung und epistemische Governance}
+
+Nichtassoziative Algebren, hochdimensionale Gitterstrukturen und Kugelpackungen besitzen eine doppelte Natur: Einerseits bilden sie exakte algebraische und geometrische Objekte; andererseits verleiten ihre Symmetrien und Winkelkoeffizienten häufig zu spekulativen physikalischen Interpretationen \cite{schafer,baez}.
+
+Im Projekt \texttt{eabc-renorm} wird daher eine strikte \emph{epistemische Governance} verwendet \cite{eabcAudit}. Unter einer \emph{Claim Wall} verstehen wir eine formalisierte Menge epistemischer Ausschlussregeln, die unzulässige Schlussfolgerungen zwischen verschiedenen Aussageebenen verhindert.
+
+\begin{table}[h!]
+\centering
+\begin{tabularx}{\textwidth}{@{}p{0.24\textwidth}p{0.16\textwidth}X@{}}
+\toprule
+\textbf{Kategorie} & \textbf{Rang} & \textbf{Geltungsbereich und Charakter} \\
+\midrule
+Algebraische Kernidentitäten & \texttt{[A-kernel]} & Exakte Theoreme über $\mathbb{R}$, $\mathbb{Q}$ und $\mathbb{O}$, insbesondere Assoziator, Artin und Gram-$G_2$. \\
+Exakte Kusszahlen & \texttt{[A-kernel]} & Bewiesene Werte $K(d)$ und Minimalvektorzahlen optimaler Gitterpackungen. \\
+Modellkonstruktionen & \texttt{[A-def]} & Mathematische Definitionen, etwa $\Mmon$ und $\mathbb{Z}[1/6]$-Moduln. \\
+Kusszahlvergleich & \texttt{[B-heuristic]} & Dimensionsübergreifende Gegenüberstellung ohne behaupteten gemeinsamen Funktor. \\
+Modellentscheidungen & \texttt{[B-model]} & Wahl einer konkreten Skalierungsarchitektur. \\
+Numerisches Audit & \texttt{[B-audit]} & Hochpräzise Implementierungstests in SageMath. \\
+Epistemische Schranke & \texttt{NON-CLAIM} & Ausschluss unzulässiger Ableitungen physikalischer Dynamik aus algebraischen Formeln. \\
+Physikalische Dynamik & \texttt{[C]} & Hypothesen über Raumzeit oder Renormierungsflüsse. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Die Kernregel lautet \cite{eabcAudit}:
+\begin{equation}
+\text{Strukturidentität}\neq\text{Modelloperator}\neq\text{physikalische Dynamik}.
+\end{equation}
+
+\begin{definition}[Faser und Faseranalyse]
+Unter einer \emph{Faser} verstehen wir die Urbildmenge eines Punktes unter einer Abbildung von mathematischen Objekten oder Moduli in einen Invariantenraum. Im vorliegenden Beitrag ist insbesondere
+\[
+M_{12}^{(1)}\cap a_1^{-1}(0)
+\]
+die Nullfaser des ersten Fourierkoeffizientenfunktionals. Die Familie der Endofunktoren $\mathscr{S}_{a,b}$ ist hiervon zu unterscheiden: Sie bildet eine durch $\mathbb{N}_0^2$ parametrisierte Monoidwirkung und keine Faser im eigentlichen Sinn.
+\end{definition}
+
+\subsection*{Originale Beiträge dieser Arbeit}
+Die verwendeten algebraischen und analytischen Grundlagen sind etablierte Resultate der Literatur \cite{baez,conway,serre,cassels,weil,ebeling}. Die konzeptionelle Eigenleistung besteht insbesondere in:
+\begin{itemize}
+  \item der gemeinsamen Governance-Architektur zur Trennung von Strukturidentität, Modelloperator und physikalischem Claim \cite{eabcAudit};
+  \item der Auswahl und systematischen Einordnung des Monoids $\Mmon$ als durch positive kontrahierende $S$-Einheiten erzeugtes Operatorenmonoid;
+  \item der Formulierung seiner elementaren Wirkung auf $\mathsf{Quad}_{R_S}$ durch Endofunktoren $\mathscr{S}_{a,b}$;
+  \item der Zusammenführung dieser Modellschicht mit der Theta-Faserbeschreibung des Leech-Gitters;
+  \item der dokumentierten numerischen Auditarchitektur auf \texttt{RealField(200)}.
+\end{itemize}
+
+\section{Oktonionische Assoziatorgeometrie}
+
+\subsection{Algebraische Grundlagen und Assoziatorzerlegung}
+Wir betrachten $\Oalg=\mathbb{R}\oplus\ImO$ \cite{baez}. Für $x,y\in\ImO$ gilt
+\[
+xy=-\langle x,y\rangle+x\times y,
+\]
+wobei $x\times y$ das siebendimensionale Kreuzprodukt bezeichnet \cite{harvey}.
+
+\begin{definition}[Assoziator]
+Für $x,y,z\in\Oalg$ ist
+\[
+\Assoc(x,y,z)\coloneqq(xy)z-x(yz)
+\]
+der Assoziator \cite{schafer}.
+\end{definition}
+
+\begin{theorem}[Vektorraumzerlegung]
+Für $x,y,z\in\ImO$ gilt
+\begin{equation}
+\Assoc(x,y,z)=-\langle x,y\rangle z+\langle y,z\rangle x+(x\times y)\times z-x\times(y\times z).
+\end{equation}
+\end{theorem}
+
+\begin{proposition}[Winkelterm ohne longitudinalen Nettoanteil]
+Seien $x,y\in\ImO$ Einheitsvektoren mit $\langle x,y\rangle=\cos(120^\circ)=-\tfrac12$. Dann ist der erste Summand der Zerlegung $\tfrac12z$. Dennoch gilt für alle $z\in\ImO$:
+\[
+\langle\Assoc(x,y,z),z\rangle=0.
+\]
+\end{proposition}
+
+\begin{remark}[Artin-Kontrollfall]
+Für $z\in\operatorname{alg}_{\mathbb{R}}\langle x,y\rangle\cap\ImO$ verschwindet $\Assoc(x,y,z)$ nach dem Satz von Artin. Der Koeffizient $\tfrac12$ ist daher ein winkelabhängiger Summand einer Zerlegung und kein aus ihr abgeleiteter Skalierungsoperator.
+\end{remark}
+
+\subsection{Gram-$G_2$-Identität}
+\begin{theorem}[Gram-$G_2$-Identität]
+Für $x,y,z\in\ImO$ und $\varphi(x,y,z)=\langle x\times y,z\rangle$ gilt \cite{harvey}
+\begin{equation}
+\|\Assoc(x,y,z)\|^2=4\left(\det G(x,y,z)-\varphi(x,y,z)^2\right),
+\end{equation}
+wobei $G(x,y,z)=(\langle v_i,v_j\rangle)_{i,j=1}^3$ die Gram-Matrix der drei Vektoren ist.
+\end{theorem}
+
+\section{Exakte Kusszahlen und Theta-Koeffizienten optimaler Gitter}
+Für $d\ge1$ bezeichnet $K(d)$ die maximale Anzahl paarweise nicht überlappender Einheitskugeln im $\mathbb{R}^d$, die eine feste Einheitskugel berühren können \cite{conway}. Exakte Werte sind insbesondere
+\[
+K(1)=2,\quad K(2)=6,\quad K(3)=12,\quad K(4)=24,\quad K(8)=240,\quad K(24)=196560.
+\]
+Schütte und van der Waerden bewiesen den Fall $K(3)=12$ \cite{schuette}; Musin bewies $K(4)=24$ \cite{musin}.
+
+Sei $L\subset\mathbb{R}^d$ ein Gitter mit Minimalnorm
+\[
+m(L)=\min_{0\neq x\in L}\|x\|^2.
+\]
+Die Anzahl
+\[
+\kappa(L)=\#\{x\in L:\|x\|^2=m(L)\}
+\]
+ist die Kontaktzahl der zugehörigen Gitterpackung. Bei der Normierung
+\[
+\Theta_L(\tau)=\sum_{x\in L}q^{\|x\|^2/2},\qquad q=e^{2\pi i\tau},
+\]
+ist $\kappa(L)$ der Koeffizient von $q^{m(L)/2}$.
+
+\begin{itemize}
+  \item Für $L=\mathbb{Z}$ gilt $[q^{1/2}]\Theta_{\mathbb{Z}}=2=K(1)$.
+  \item Für $D_4$ gilt $\Theta_{D_4}(\tau)=1+24q+24q^2+96q^3+\cdots$, also $[q]\Theta_{D_4}=24=K(4)$.
+  \item Für $E_8$ gilt $\Theta_{E_8}(\tau)=E_4(\tau)=1+240q+2160q^2+\cdots$, also $[q]\Theta_{E_8}=240=K(8)$.
+  \item Für das Leech-Gitter gilt $\Theta_{\Lambda_{24}}(\tau)=1+196560q^2+\cdots$, also $[q^2]\Theta_{\Lambda_{24}}=196560=K(24)$.
+\end{itemize}
+
+\begin{remark}[Epistemische Schranke zur Numerologie]
+Für ein Wurzel-Niemeier-Gitter ist $r_L(2)$ die Kontaktzahl der konkreten Gitterpackung, im Allgemeinen jedoch kleiner als $K(24)$. Die numerische Gleichheit $2\cdot3=6=K(2)$ begründet keinen strukturellen Morphismus zwischen der $S$-Einheiten-Wirkung und der $A_2$-Kontaktgeometrie.
+\end{remark}
+
+\section{$S$-Einheiten-Analyse des Monoids $\Mmon$}
+Wir unterscheiden das skalare Monoid
+\begin{equation}
+\mmon\coloneqq\langle2^{-1},3^{-1}\rangle_{\mathrm{mon}}=\{2^{-a}3^{-b}:a,b\in\mathbb{N}_0\}
+\end{equation}
+vom zugehörigen Operatorenmonoid
+\begin{equation}
+\Mmon\coloneqq\{\lambda\id:\lambda\in\mmon\}.
+\end{equation}
+Es gilt
+\begin{equation}
+\mmon\subsetneq\mathbb{Z}[1/6]_{>0}^{\times}\cap(0,1].
+\end{equation}
+Beispielsweise liegt $3/4=2^{-2}3$ in der rechten Seite, aber nicht in $\mmon$.
+
+\subsection{$S$-lokale Realisierung und Normprofil}
+Sei $S=\{\infty,2,3\}$ und
+\[
+\mathbb{Q}_S\coloneqq\mathbb{R}\times\mathbb{Q}_2\times\mathbb{Q}_3
+\]
+\cite{weil}. Für einen rationalen Vektorraum $V_{\mathbb{Q}}$ setzen wir
+\[
+V_S\coloneqq V_{\mathbb{Q}}\otimes_{\mathbb{Q}}\mathbb{Q}_S\cong V_{\mathbb{R}}\times V_{\mathbb{Q}_2}\times V_{\mathbb{Q}_3}.
+\]
+
+Für $T=\tfrac13\id$ gilt
+\[
+\left|\frac13\right|_\infty=\frac13,\qquad
+\left|\frac13\right|_2=1,\qquad
+\left|\frac13\right|_3=3,
+\]
+und damit die Produktformel
+\[
+\left|\frac13\right|_\infty\left|\frac13\right|_2\left|\frac13\right|_3=1.
+\]
+Analog gilt für $D=\tfrac12\id$:
+\[
+\left|\frac12\right|_\infty=\frac12,\qquad
+\left|\frac12\right|_2=2,\qquad
+\left|\frac12\right|_3=1.
+\]
+
+Sei $R_S=\mathbb{Z}[1/6]$. Die Kategorie $\mathsf{Quad}_{R_S}$ habe als Objekte Paare $(V,Q_V)$ aus einem $R_S$-Modul $V$ und einer $R_S$-wertigen quadratischen Form $Q_V:V\to R_S$. Ein Morphismus
+\[
+f:(V,Q_V)\longrightarrow(W,Q_W)
+\]
+ist eine $R_S$-lineare Abbildung mit $Q_W\circ f=Q_V$ \cite{cassels}.
+
+\begin{proposition}[Monoidwirkung durch Endofunktoren]
+Für $(a,b)\in\mathbb{N}_0^2$ definiert
+\[
+\mathscr{S}_{a,b}(V,Q_V)=\bigl(V,4^{-a}9^{-b}Q_V\bigr),\qquad \mathscr{S}_{a,b}(f)=f,
+\]
+einen Endofunktor von $\mathsf{Quad}_{R_S}$. Ferner gilt
+\[
+\mathscr{S}_{a,b}\circ\mathscr{S}_{c,d}=\mathscr{S}_{a+c,b+d},\qquad \mathscr{S}_{0,0}=\operatorname{Id}_{\mathsf{Quad}_{R_S}}.
+\]
+Somit definiert $(a,b)\mapsto\mathscr{S}_{a,b}$ einen Monoidhomomorphismus von $\mathbb{N}_0^2$ in das Monoid der Endofunktoren von $\mathsf{Quad}_{R_S}$.
+\end{proposition}
+
+\subsection{Zählung dyadisch-triadischer Exponenten}
+\begin{proposition}
+Für $X\ge1$ sei
+\[
+A_{2,3}(X)=\#\{(a,b)\in\mathbb{N}_0^2:2^a3^b\le X\}.
+\]
+Dann gilt
+\[
+A_{2,3}(X)=\frac{(\log X)^2}{2\log2\,\log3}+O(\log X).
+\]
+\end{proposition}
+
+\begin{proof}
+Setze $Y=\log X$. Die zu zählenden Paare sind die Gitterpunkte im Dreieck
+\[
+\mathcal{D}_Y=\{(u,v)\in\mathbb{R}_{\ge0}^2:u\log2+v\log3\le Y\}.
+\]
+Seine Fläche ist $Y^2/(2\log2\,\log3)$, und sein Rand besitzt Länge $O(Y)$. Eine elementare Gitterpunktabschätzung liefert daher
+\[
+\#(\mathcal{D}_Y\cap\mathbb{Z}^2)=\operatorname{vol}(\mathcal{D}_Y)+O(Y).
+\]
+Die implizite Konstante ist unabhängig von $X$.
+\end{proof}
+
+Für feste Primzahlen $p<q$ gilt entsprechend
+\[
+A_{p,q}(X)=\frac{(\log X)^2}{2\log p\,\log q}+O_{p,q}(\log X).
+\]
+
+\section{Niemeier-Gitter und die Leech-Faser}
+Sei $\mathscr{N}_{24}$ das Gruppoid der geraden unimodularen Gitter vom Rang $24$ mit Isometrien als Morphismen \cite{ebeling}. Nach Niemeier besitzt $\pi_0(\mathscr{N}_{24})$ genau 24 Elemente \cite{niemeier}.
+
+Jedem $L\in\mathscr{N}_{24}$ ordnen wir
+\[
+\Theta_L(\tau)=\sum_{x\in L}q^{\langle x,x\rangle/2}
+\]
+zu. Dies definiert eine Modulform vom Gewicht 12 für $\mathrm{SL}_2(\mathbb{Z})$ \cite{serre}. Da
+\[
+M_{12}=\mathbb{C}E_{12}\oplus\mathbb{C}\Delta,
+\]
+gibt es ein eindeutiges $c_L\in\mathbb{Q}$ mit
+\[
+\Theta_L=E_{12}+c_L\Delta.
+\]
+
+Für das Funktional $a_1(f)=[q]f$ gilt
+\[
+a_1(\Theta_L)=r_L(2),\qquad c_L=r_L(2)-\frac{65520}{691}.
+\]
+Das Leech-Gitter ist das einzige wurzellose Niemeier-Gitter und daher durch
+\[
+a_1(\Theta_{\Lambda_{24}})=0
+\]
+gekennzeichnet. Somit
+\[
+\Theta_{\Lambda_{24}}=E_{12}-\frac{65520}{691}\Delta.
+\]
+
+\begin{remark}[Nichtinjektivität]
+Für ein Niemeier-Gitter mit Wurzeln gilt $r_L(2)=24h_L$, wobei $h_L$ die gemeinsame Coxeter-Zahl der irreduziblen Komponenten ist. Daher hängt die gewöhnliche Theta-Reihe nur von $h_L$ ab und klassifiziert die Niemeier-Gitter nicht vollständig.
+\end{remark}
+
+\begin{remark}[Packungsoptimalität]
+Die Koeffizienten $a_1=0$ und $a_2=196560$ bestimmen Minimalnorm und Gitter-Kusszahl des Leech-Gitters. Seine globale Packungsoptimalität ist ein eigenständiger Satz von Cohn, Kumar, Miller, Radchenko und Viazovska \cite{cohn}.
+\end{remark}
+
+\subsection{Epstein-Zetafunktionen}
+Für $\operatorname{Re}(s)>12$ gilt
+\[
+Z_L(s)=\sum_{x\in L\setminus\{0\}}\langle x,x\rangle^{-s}
+=2^{-s}\left(\frac{65520}{691}\zeta(s)\zeta(s-11)+c_LL(s,\Delta)\right).
+\]
+Die rechte Seite liefert die meromorphe Fortsetzung. Die Nullstellen werden im Allgemeinen durch eine additive Auslöschungsbedingung bestimmt; daraus folgt weder eine allgemeine kritische Gerade noch ein bewiesenes Verschiebungsgesetz.
+
+\section{SageMath-Hochpräzisionsaudit}
+Die numerischen Audits dienen ausschließlich der Implementierungsvalidierung. Sie ersetzen keinen mathematischen Beweis und erweitern den Gültigkeitsbereich der algebraischen Sätze nicht.
+
+Zwei getrennte, teilweise implementierungsentkoppelte Auditpfade wurden auf \texttt{RealField(200)} mit \texttt{samples=100} und $\varepsilon_{\mathrm{tol}}=10^{-45}$ ausgeführt \cite{eabcAudit}.
+
+\begin{table}[h!]
+\centering
+\caption{Projektintern berichtete Auditdaten \cite{eabcAudit}.}
+\begin{tabularx}{\textwidth}{@{}Xll@{}}
+\toprule
+\textbf{Prüfdimension} & \textbf{Residuum/Wert} & \textbf{Status} \\
+\midrule
+Fano-Basiskalibrierung & $0$ & \texttt{PASS} \\
+Unprojizierte Reinheit (8D) & $0$ & \texttt{PASS} \\
+$120^\circ$-Winkelbedingung & $0$ & \texttt{PASS} \\
+Fano-Assoziatorrekonstruktion & $3{,}9443\times10^{-59}$ & \texttt{PASS} \\
+Longitudinale Orthogonalität & $1{,}9721\times10^{-59}$ & \texttt{PASS} \\
+Artin-Nullkontrolle & $0$ & \texttt{PASS} \\
+Gram-$G_2$-Identität & $1{,}5777\times10^{-58}$ & \texttt{PASS} \\
+Beobachteter Minimal-Gap & $1{,}4712\times10^{-3}$ & \texttt{PASS} \\
+Monoid-Kommutativität & $0$ & \texttt{PASS} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection*{Reproduzierbarkeit}
+Die Auditwerte sind reproduzierbar, sofern Quellskripte, vollständige Commit-Hashes, Random-Seed, Parameter und Maschinenprotokoll gemeinsam archiviert werden. Die berichteten Werte beziehen sich ausschließlich auf die konkret bezeichnete Softwareumgebung.
+
+\section{Ausblick}
+Offen bleiben insbesondere:
+\begin{itemize}
+  \item die Frage, ob sich die Monoidwirkung nach Einführung zusätzlicher monoidaler Strukturen und geeigneter Faserfunktoren in Richtung Tannaka-artiger Rekonstruktionsfragen erweitern lässt;
+  \item verfeinerte Theta-Invarianten zur Trennung von Niemeier-Gittern gleicher Coxeter-Zahl;
+  \item Verallgemeinerungen auf Skalierungsmonoide über anderen Mengen endlicher Stellen und über Zahlkörpern;
+  \item die Formalisierung ausgewählter Kernaussagen in Lean 4.
+\end{itemize}
+
+\section{Formale Claim Wall und Schlussfolgerung}
+\begin{quote}
+\textbf{Formale Claim Wall:} Der Faktor $\tfrac12$ in der $120^\circ$-Assoziatorzerlegung ist ein winkelabhängiger Koeffizient einer algebraischen Identität und erzeugt keine dyadische Homothetie. Das Monoid $\Mmon$ entsteht erst durch explizite Definition seiner Generatoren. Seine Verwendung als Modellschicht begründet weder einen physikalischen Renormierungsfluss noch eine Raumzeitquantisierung.
+\end{quote}
+
+Die mathematische Analyse trennt Zerlegungskoeffizienten strikt von Modelloperatoren. Die Gram-$G_2$-Identität charakterisiert die Assoziatornorm exakt. Exakte Kusszahlen optimaler Gitter erscheinen als besetzte Schalenkoeffizienten ihrer Theta-Reihen, begründen jedoch keine dimensionsübergreifende Einheitskaskade. Das Monoid $\Mmon$ ist als explizite kontrahierende Operatorenstruktur mit $S$-lokalem Normprofil und endofunktorieller Wirkung definiert. Das Wurzelfunktional $a_1$ isoliert das Leech-Gitter als ausgezeichnete Nullfaser.
+
+\begin{thebibliography}{99}
+\bibitem{baez} J. C. Baez, \emph{The Octonions}, Bulletin of the American Mathematical Society \textbf{39} (2002), 145--205.
+\bibitem{cassels} J. W. S. Cassels, \emph{Rational Quadratic Forms}, Academic Press, London, 1978.
+\bibitem{cohn} H. Cohn, A. Kumar, S. Miller, D. Radchenko, M. Viazovska, \emph{The sphere packing problem in dimension 24}, Annals of Mathematics \textbf{185} (2017), 1017--1033.
+\bibitem{conway} J. H. Conway, N. J. A. Sloane, \emph{Sphere Packings, Lattices and Groups}, 3rd ed., Springer, New York, 1999.
+\bibitem{ebeling} W. Ebeling, \emph{Lattices and Codes}, 3rd ed., Springer Spektrum, Wiesbaden, 2013.
+\bibitem{harvey} F. R. Harvey, \emph{Spinors and Calibrations}, Academic Press, Boston, 1990.
+\bibitem{eabcAudit} T. Hoffbauer, \emph{Formal Governance and High-Precision Audit Report for eabc-renorm}, Technical Report LAB-REPORT-2026-08-03-EABC-RENORM-01, Computer Institut Bamberg, 2026.
+\bibitem{musin} O. R. Musin, \emph{The kissing number in four dimensions}, Annals of Mathematics \textbf{168} (2008), 1--32.
+\bibitem{niemeier} H.-D. Niemeier, \emph{Definite quadratische Formen der Dimension 24 und Diskriminante 1}, Journal of Number Theory \textbf{5} (1973), 142--178.
+\bibitem{schafer} R. D. Schafer, \emph{An Introduction to Nonassociative Algebras}, Academic Press, New York, 1966.
+\bibitem{schuette} K. Schütte und B. L. van der Waerden, \emph{Das Problem der dreizehn Kugeln}, Mathematische Annalen \textbf{125} (1953), 325--334.
+\bibitem{serre} J.-P. Serre, \emph{A Course in Arithmetic}, Springer, New York, 1973.
+\bibitem{viazovska} M. Viazovska, \emph{The sphere packing problem in dimension 8}, Annals of Mathematics \textbf{185} (2017), 991--1015.
+\bibitem{weil} A. Weil, \emph{Basic Number Theory}, 3rd ed., Springer, Berlin, 1974.
+\end{thebibliography}
+
+\end{document}

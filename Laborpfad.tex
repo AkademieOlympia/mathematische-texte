@@ -1,0 +1,164 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+
+% --- Schriftarten & Sprache ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+
+% --- Mathematik & TikZ ---
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,arrows.meta,positioning,calc,fit,backgrounds}
+\usepackage{adjustbox}
+
+% --- Theme-Einstellungen ---
+\usetheme{Madrid}
+\usecolortheme{whale}
+\setbeamertemplate{navigation symbols}{}
+
+\title{Präzisionsspektroskopie im EABC-Phasenraum}
+\subtitle{Laborpfad II: Doppler-freier 2-Photonen-Polarisationskanal}
+\author{Thomas Hofbauer}
+\institute{Bamberg}
+\date{27. September 2026}
+
+\begin{document}
+
+% ==============================================================================
+% FOLIE: PARAMETER UND FEHLERGRENZEN VON LABORPFAD II
+% ==============================================================================
+\begin{frame}[t]{Laborpfad II: Spezifikation des Doppler-freien $2 \times 243$\,nm-Nulltests}
+    \framesubtitle{Geometrischer Nachweis der $\mathbf{27}_{G_2}$-Tensorstruktur und Raten-Skalierung}
+
+    \begin{center}
+        % VARIANTE A: Falls als vorkompiliertes PDF vorhanden (beste Performance)
+        % \includegraphics[width=0.96\textwidth,height=0.76\textheight,keepaspectratio]{laborpfad2_tikz.pdf}
+
+        % VARIANTE B: Direktes Rendering via adjustbox (automatische Skalierung)
+        \begin{adjustbox}{max width=0.98\textwidth, max height=0.77\textheight}
+        \begin{tikzpicture}[
+            font=\sffamily,
+            >=Stealth,
+            node distance=1.0cm and 0.8cm,
+            every node/.style={align=center},
+            header/.style={
+                rectangle, rounded corners=3pt, fill=blue!80!black, text=white,
+                font=\bfseries\normalsize, minimum width=4.8cm, minimum height=0.75cm
+            },
+            block/.style={
+                rectangle, rounded corners=4pt, draw=black!60, fill=white,
+                minimum width=4.8cm, minimum height=1.05cm, inner sep=5pt, font=\small
+            },
+            accentblock/.style={
+                rectangle, rounded corners=4pt, draw=red!70!black, fill=red!5,
+                minimum width=4.8cm, minimum height=1.05cm, inner sep=5pt, font=\small
+            },
+            mathhighlight/.style={
+                font=\bfseries\small, text=blue!80!black
+            },
+            boundtag/.style={
+                font=\bfseries\small, text=red!70!black
+            }
+        ]
+
+        % SPALTE 1: LASER, OPTIK & POLARISATION
+        \node[header] (col1_head) {1. Optischer Aufbau \& Geometrie};
+
+        \node[block, below=0.5cm of col1_head] (opt1) {
+            \textbf{Gegenläufige 2-Photonen-Resonanz}\\
+            $2 \times 243.135\,\text{nm}$ (doppler-frei)\\
+            \textsf{\footnotesize Übergang: $1S_{1/2} \to 2S_{1/2}$}
+        };
+
+        \node[block, below=of opt1] (opt2) {
+            \textbf{Polarisations-Extinktion}\\
+            Glan-Thompson: $> 10^{-7}$\\
+            \textsf{\footnotesize Kaskaden-Filterung: $\le 10^{-12}$}
+        };
+
+        \node[block, below=of opt2] (opt3) {
+            \textbf{Winkel-Konfigurationen}\\
+            $\theta = 90^\circ$: Reiner Nullkanal ($\boldsymbol{\epsilon}_1 \perp \boldsymbol{\epsilon}_2$)\\
+            $\theta = 45^\circ$: Kohärente Interferenz
+        };
+
+        % SPALTE 2: EXPERIMENTELLE SCHRANKEN & REGIME
+        \node[header, right=1.2cm of col1_head] (col2_head) {2. Signalskalierung \& Schranken};
+
+        \node[accentblock, below=0.5cm of col2_head] (reg1) {
+            \textbf{Reiner Nullkanal ($\theta = 90^\circ$)}\\
+            $\Gamma_\perp \propto \eta_A^4 \cdot \left(\frac{110}{63}\right)$\\
+            \span \node[boundtag] {Nachweisgrenze: $\eta_A \lesssim 1.0 \times 10^{-2}$};
+        };
+
+        \node[accentblock, below=of reg1] (reg2) {
+            \textbf{Interferenz-Kanal ($\theta = 45^\circ$)}\\
+            $\Delta\Gamma \propto \eta_A^2 \cdot 2\operatorname{Re}[\mathcal{A}_{\rm SM}^* a_{27}]$\\
+            \span \node[boundtag] {Nachweisgrenze: $\eta_A \lesssim 3.2 \times 10^{-3}$};
+        };
+
+        \node[block, below=of reg2] (reg3) {
+            \textbf{Standardmodell-Untergrund}\\
+            $\mathcal{R}_\perp^{\rm SM} \sim 2.5 \times 10^{-5} \cdot \mathcal{A}_\parallel$\\
+            \textsf{\footnotesize Relativistisches $E1\text{--}M1$ \& HFS-Mischung}
+        };
+
+        % SPALTE 3: ALGEBRAISCHE FINGERABDRÜCKE (G2)
+        \node[header, right=1.2cm of col2_head] (col3_head) {3. Gruppentheorie \& Signatur};
+
+        \node[block, below=0.5cm of col3_head] (alg1) {
+            \textbf{Fano-$2$-Design-Gate}\\
+            $\left.\mathcal{M}_2^{\rm Haar}\right|_{\operatorname{Sym}^2(7)} = \frac{4}{7}\Pi_{\mathbf{1}} \oplus \frac{22}{63}\Pi_{\mathbf{27}}$\\
+            \span \node[mathhighlight] {Universalfaktor: $c_{\mathbf{27}} = \frac{22}{63}$};
+        };
+
+        \node[block, below=of alg1] (alg2) {
+            \textbf{Clebsch-Gordan-Intertwiner $\Xi$}\\
+            $\mathbf{27}_{G_2} \longrightarrow \operatorname{Sym}_0^2(\mathbb{R}^3) \quad (J=2)$\\
+            \span \node[mathhighlight] {Trace-Hebelarm: $\operatorname{Tr}(\Xi \mathcal{M}_2) = \frac{110}{63}$};
+        };
+
+        \node[block, below=of alg2] (alg3) {
+            \textbf{Winkelcharakteristik}\\
+            Signalmuster: $\beta \cdot \sin^2(2\theta)$\\
+            \textsf{\footnotesize Eindeutige $d$-Wellen-Torsionssymmetrie}
+        };
+
+        % UNTERE LEISTE: SYSTEMATIK-KONTROLLE
+        \node[rectangle, rounded corners=4pt, draw=black!40, fill=gray!10, 
+              below=0.7cm of opt3.south west, anchor=north west, 
+              minimum width=16.8cm, minimum height=1.1cm, inner sep=6pt] (sysbar) {
+            \parbox{16.4cm}{\footnotesize
+            \textbf{Systematische Kontrollmaßnahmen im Vakuumapparat:}\\
+            $\bullet$ \textbf{Stark-Kompensation:} Aktive 3D-Helmholtz-Regelung drückt elektrostatische Streufelder auf $< 1\,\text{mV/cm}$.\\
+            $\bullet$ \textbf{Laser-Stabilisierung:} PDH-Lock auf kryogenen Siliziumresonator sichert Sub-Hz-Linienbreiten.\\
+            $\bullet$ \textbf{Rest-Extinktion:} Instrumenteller $10^{-7}$-Parallelanteil wird über die $\Gamma(\theta)$-Fitkurve kalibriert.}
+        };
+
+        % VERBINDUNGEN
+        \draw[->, thick, color=blue!70!black] (opt1) -- (opt2);
+        \draw[->, thick, color=blue!70!black] (opt2) -- (opt3);
+
+        \draw[->, thick, color=red!70!black] (reg1) -- (reg2);
+        \draw[->, thick, color=red!70!black] (reg2) -- (reg3);
+
+        \draw[->, thick, color=blue!70!black] (alg1) -- (alg2);
+        \draw[->, thick, color=blue!70!black] (alg2) -- (alg3);
+
+        \draw[->, dashed, thick, color=black!60] (opt3.east) -- (reg1.west);
+        \draw[->, dashed, thick, color=black!60] (alg2.west) -- (reg1.east);
+
+        % HINTERGRÜNDE
+        \begin{scope}[on background layer]
+            \node[fill=blue!3, rounded corners=5pt, inner sep=4pt, fit=(col1_head) (opt3)] {};
+            \node[fill=red!3, rounded corners=5pt, inner sep=4pt, fit=(col2_head) (reg3)] {};
+            \node[fill=blue!3, rounded corners=5pt, inner sep=4pt, fit=(col3_head) (alg3)] {};
+        \end{scope}
+
+        \end{tikzpicture}
+        \end{adjustbox}
+    \end{center}
+\end{frame}
+
+\end{document}

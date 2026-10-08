@@ -1,0 +1,919 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,tabularx,array}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+\geometry{left=24mm,right=24mm,top=23mm,bottom=25mm}
+\definecolor{deepblue}{HTML}{1F4E79}
+\definecolor{deepred}{HTML}{8B1E1E}
+\definecolor{softgray}{HTML}{F3F4F6}
+\hypersetup{colorlinks=true,linkcolor=deepblue,citecolor=deepblue,urlcolor=deepblue,pdftitle={EABC Report v12 - G5, platonische Faserung, Zeta-Metrik und operatorielle Stabilisierung}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\newtheorem{satz}{Satz}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+\newtheorem{annahme}{Annahme}
+\newtheorem{vermutung}{Brückenvermutung}
+\newtcolorbox{statusbox}[1]{colback=softgray,colframe=deepblue,title=\textbf{#1},boxrule=.7pt,arc=1mm}
+\newtcolorbox{warningbox}{colback=white,colframe=deepred,title=\textbf{Methodische Grenze},boxrule=.8pt,arc=1mm}
+\begin{document}
+\begin{center}
+{\Large\bfseries EABC Forschungsbericht v12}\\[2mm]
+{\large Kapitel 3.6--3.7, 3.15 und 4.3: Phasen, Operatoren, platonische Faserung und Zeta-Metrik}\\[1mm]
+{\small Revidierte, epistemisch getrennte Fassung}
+\end{center}
+
+\begin{warningbox}
+Dieses Kapitel beweist die destruktive Auslöschung \emph{bedingt} unter explizit ausgewiesenen Strukturannahmen. Die zentrale Identifikation zwischen Fermat-Parität, Pfadpaarung und unabhängiger $E_8$-Gitterselektion wird nicht aus Fermats Zwei-Quadrate-Satz allein hergeleitet. Sie bleibt eine zu beweisende Brücke. Insbesondere folgt aus der Inertheit einer Primzahl in $\mathbb Z[i]$ weder ein physikalisches Potential noch die Kompaktheit eines Resolventen.
+\end{warningbox}
+
+\section*{3.6.1 Arithmetische $U(1)$-Phasenspur}
+Für Primzahlen $p>3$ wird das EABC-Alphabet durch
+\[
+(\mathbb Z/12\mathbb Z)^\times=\{1,5,7,11\}\cong V_4
+\]
+organisiert. Der quadratische Charakter modulo $4$ teilt es in
+\[
+\{1,5\}\quad (p\equiv1\!\!\pmod4),\qquad
+\{7,11\}\quad (p\equiv3\!\!\pmod4).
+\]
+Für eine split-Primzahl $p\equiv1\pmod4$ existiert
+\[
+p=x_p^2+y_p^2=(x_p+i y_p)(x_p-i y_p).
+\]
+Nach Fixierung einer Fundamentalregion, etwa $x_p>y_p>0$, definieren wir
+\[
+u_p:=\frac{x_p+i y_p}{\sqrt p}=e^{i\theta_p},\qquad
+0<\theta_p<\frac\pi4.
+\]
+Für ein endliches split-Wort $w=(p_1,\ldots,p_n)$ setzen wir
+\[
+U_{\rm arith}(w):=\prod_{k=1}^n u_{p_k}=e^{i\Theta(w)},\qquad
+\Theta(w):=\sum_{k=1}^n\theta_{p_k}\pmod{2\pi}.
+\]
+Diese Konstruktion ist reine Zahlentheorie und liefert eine wohldefinierte $U(1)$-wertige Phasenspur auf dem split-Wortmonoid.
+
+\section*{3.6.2 Fermat-Charakter und Paritätsselektor}
+Der Dirichlet-Charakter
+\[
+\chi_{-4}(p)=\begin{cases}
++1,&p\equiv1\pmod4,\\
+-1,&p\equiv3\pmod4
+\end{cases}
+\]
+induziert für ein allgemeines Primwort $w$ den Selektor
+\[
+\Xi(w)=\prod_{p^a\parallel w}\chi_{-4}(p)^a=(-1)^{N_{\rm inert}(w)}.
+\]
+Damit ist exakt
+\[
+\Xi(w)=+1\iff N_{\rm inert}(w)\equiv0\pmod2.
+\]
+Dies ist ein arithmetischer $\mathbb Z_2$-Selektor. Eine Identifikation mit einer $E_8$-Integritätsbedingung ist hiermit noch nicht bewiesen.
+
+\section*{3.6.3 Unabhängige Gitterselektion}
+Sei $\mathcal W$ der Wort-/Lift-Raum und
+\[
+\Phi:\mathcal W\longrightarrow \mathbb R^8
+\]
+eine explizit festgelegte Liftabbildung. Für einen Zielpunkt $r$ sei
+\[
+\mathcal P(r):=\{w\in\mathcal W:\Phi(w)=r\}
+\]
+die Menge seiner ansteuernden Wortpfade. Unabhängig von jeder Phase definieren wir
+\[
+\mathcal I_{\rm lattice}(r):=\mathbf 1_{E_8}(r),
+\]
+wobei in einer Standardrealisierung
+\[
+E_8=\left\{x\in\mathbb Z^8:\sum_i x_i\equiv0\pmod2\right\}
+\cup
+\left\{x\in\left(\mathbb Z+\tfrac12\right)^8:\sum_i x_i\equiv0\pmod2\right\}.
+\]
+Für Wurzeln gilt zusätzlich $\|r\|^2=2$; daraus entstehen die $240$ Wurzeln des $E_8$-Wurzelsystems.
+
+\section*{3.6.4 Phasenamplitude}
+\begin{definition}[Arithmetische Pfadamplitude]
+Für einen Zielpunkt $r$ mit endlicher Pfadklasse $\mathcal P(r)$ sei
+\[
+\mathcal A(r):=\sum_{w\in\mathcal P(r)} c_w e^{i\Theta(w)},
+\]
+wobei $c_w\in\mathbb C$ vorab festgelegte Gewichte sind. Im ungewichteten Modell gilt $c_w=1$.
+\end{definition}
+Der Phasenselektor ist
+\[
+\mathcal I_{\rm phase}(r):=\mathbf 1_{\{\mathcal A(r)\neq0\}}.
+\]
+
+\section*{3.6.5 Bedingter Interferenzsatz}
+Die behauptete vollständige Auslöschung folgt rigoros, sobald die folgenden Annahmen separat bewiesen sind.
+
+\begin{annahme}[A1: Paritäts-Lift-Korrespondenz]
+Für jeden unzulässigen Zielpunkt $r$ tragen die Pfade in $\mathcal P(r)$ genau diejenige zentrale $\mathbb Z_2$-Signatur, die durch den Lift als verletzte Gitterparität ausgewiesen wird.
+\end{annahme}
+
+\begin{annahme}[A2: Fixpunktfreie Pfadinvolution]
+Für jeden unzulässigen Zielpunkt existiert eine fixpunktfreie Involution
+\[
+\iota_r:\mathcal P(r)\to\mathcal P(r),\qquad \iota_r^2=\mathrm{id},\quad \iota_r(w)\neq w.
+\]
+Damit zerfällt $\mathcal P(r)$ in disjunkte Zweierorbits $\{w,\iota_r(w)\}$.
+\end{annahme}
+
+\begin{annahme}[A3: Antipodale Phasenrelation]
+Für jeden unzulässigen Zielpunkt und jeden Pfad $w\in\mathcal P(r)$ gilt
+\[
+\Theta(\iota_r(w))\equiv\Theta(w)+\pi\pmod{2\pi},
+\]
+und die Gewichte sind paarweise gleich: $c_{\iota_r(w)}=c_w$.
+\end{annahme}
+
+\begin{annahme}[A4: Nichtauslöschung zulässiger Zustände]
+Für jeden zulässigen $E_8$-Zustand $r$ gilt $\mathcal A(r)\neq0$. Eine hinreichende, aber stärkere Bedingung wäre
+\[
+\Theta(w)\equiv\Theta(w')\pmod{2\pi}\quad\forall w,w'\in\mathcal P(r)
+\]
+bei gleichphasigen Gewichten.
+\end{annahme}
+
+\begin{satz}[Bedingte Phasen-Elimination]
+Unter A1--A4 gilt für alle betrachteten Zielpunkte
+\[
+\boxed{\mathcal I_{\rm phase}(r)=\mathcal I_{\rm lattice}(r).}
+\]
+Insbesondere verschwindet die arithmetische Amplitude jedes unzulässigen Zustands vollständig.
+\end{satz}
+
+\begin{proof}
+Sei zunächst $\mathcal I_{\rm lattice}(r)=0$. Nach A2 zerfällt $\mathcal P(r)$ in disjunkte Paare $\{w,\iota_r(w)\}$. Für jedes Paar folgt aus A3
+\[
+\begin{aligned}
+c_w e^{i\Theta(w)}+c_{\iota_r(w)}e^{i\Theta(\iota_r(w))}
+&=c_w e^{i\Theta(w)}\bigl(1+e^{i\pi}\bigr)\\
+&=0.
+\end{aligned}
+\]
+Summation über alle Zweierorbits liefert $\mathcal A(r)=0$, also $\mathcal I_{\rm phase}(r)=0$. Ist dagegen $\mathcal I_{\rm lattice}(r)=1$, so garantiert A4 unmittelbar $\mathcal A(r)\neq0$ und damit $\mathcal I_{\rm phase}(r)=1$.
+\end{proof}
+
+\begin{statusbox}{Was dieser Satz tatsächlich beweist}
+Der Auslöschungsschritt selbst ist elementar und vollständig: Eine fixpunktfreie Paarung mit exakt antipodalen Phasen erzwingt paarweise Cancellation. Die wissenschaftliche Beweislast liegt daher nicht mehr im letzten Summationsschritt, sondern vollständig in A1--A4, insbesondere in der Herleitung der Pfadinvolution und der exakten $\pi$-Phasenverschiebung aus einer unabhängig definierten $E_8$/Hurwitz-/Weyl-Struktur.
+\end{statusbox}
+
+\section*{3.6.6 Warum $\Xi(w)=-1$ allein noch keine $\pi$-Verschiebung beweist}
+Aus
+\[
+\Xi(w)=-1
+\]
+folgt nur eine ungerade Anzahl inert bleibender Primfaktoren. Der split-Phasenwinkel $\Theta(w)$ wird dagegen aus Gauß-Faktoren der split-Primzahlen aufgebaut. Deshalb existiert ohne eine zusätzliche Kopplungsabbildung kein rein zahlentheoretischer Schluss
+\[
+\Xi(w)=-1\quad\Longrightarrow\quad\Delta\Theta=\pi.
+\]
+Eine zulässige Brücke müsste beispielsweise ein Homomorphismus oder eine zentrale Erweiterung
+\[
+\kappa:\mathcal W\longrightarrow U(1)
+\]
+mit
+\[
+\kappa(-1)=-1=e^{i\pi}
+\]
+und einer nachgewiesenen Kompatibilität zwischen dem quaternionischen Zentrum, dem Fermat-Charakter und der Gauß-Phasenspur liefern.
+
+\section*{3.6.7 Weyl-Kovarianz als stärkerer Test}
+Sei $W(E_8)$ die Weylgruppe und
+\[
+s_\alpha(v)=v-2\frac{(v,\alpha)}{(\alpha,\alpha)}\alpha
+\]
+die Spiegelung an einer Wurzel $\alpha$. Ein stärkerer Strukturtest ist eine unitäre Darstellung
+\[
+\Pi:W(E_8)\to U(\mathcal H)
+\]
+mit der Kovarianzrelation
+\[
+U_{g\cdot w}=\Pi(g)U_w\Pi(g)^{-1}.
+\]
+Ist zusätzlich $U_w=e^{i\Theta(w)\Lambda}$ mit selbstadjungiertem $\Lambda$ und
+\[
+[\Pi(g),\Lambda]=0,
+\]
+so folgt die Weyl-Invarianz der Phase
+\[
+\Theta(g\cdot w)\equiv\Theta(w)\pmod{2\pi}
+\]
+modulo möglicher Spektralentartungen des Generators. Diese Kommutatorbedingung ist eine eigene, prüfbare Operatorbrücke.
+
+\section*{3.6.8 Epistemische Statusmatrix}
+\begin{center}
+\begin{tabularx}{\textwidth}{>{\bfseries}l X l}
+\toprule
+Baustein & Aussage & Status\\
+\midrule
+GF-A & $p\equiv1\pmod4$ zerfällt in $\mathbb Z[i]$; normierter Gaußfaktor liegt in $U(1)$ & Theorem\\
+GF-B & $\Xi(w)=(-1)^{N_{\rm inert}(w)}$ & Theorem\\
+PI-A & Paarweise antipodale Phasen löschen sich exakt aus & Theorem\\
+PI-B & Unzulässige Liftzustände besitzen eine fixpunktfreie Pfadinvolution & offen\\
+PI-C & Diese Involution verschiebt die Gaußphase exakt um $\pi$ & offen\\
+PI-D & Zulässige $E_8$-Zustände besitzen stets nichtverschwindende Gesamtamplitude & offen\\
+PI-E & $\mathcal I_{\rm phase}=\mathcal I_{\rm lattice}$ ohne Zusatzannahmen & Brückenvermutung\\
+PHYS & Interpretation als quantenmechanische Modenauslöschung & physikalische Brücke\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section*{3.6.9 Falsifikationsprotokoll}
+Vor einer Aufwertung von PI-B--PI-E zu Theoremen sind mindestens folgende Tests erforderlich:
+\begin{enumerate}[leftmargin=1.6em]
+\item Explizite Definition der Liftabbildung $\Phi$ und vollständige Enumeration ihrer Fasern $\mathcal P(r)$ für die relevanten Niedrignormzustände.
+\item Unabhängige Bestimmung von $\mathcal I_{\rm lattice}$ aus der Standard-$E_8$-Integritätsbedingung, ohne Verwendung der Phasenlabels.
+\item Konstruktion der Involution $\iota_r$ und Beweis ihrer Fixpunktfreiheit für sämtliche unzulässigen Fasern.
+\item Exakter Nachweis von $\Theta(\iota_r(w))-\Theta(w)\equiv\pi\pmod{2\pi}$; numerische Nähe genügt nicht.
+\item Vollständiger Census der 240 $E_8$-Wurzeln sowie aller im gewählten pre-Gitter auftretenden Niedrignorm-Nichtwurzeln.
+\end{enumerate}
+
+
+\section*{3.6.10 Gate $G_5$: von paarweiser Reziprozität zu genuin ternärer Arithmetik}
+Die vorangehenden binären und ternären Tests erzwingen eine zusätzliche Demarkation. Quadratische Reziprozität liefert auf der groben Gradierung einen sektorstabilen Superkommutator, aber keinen oktonionischen Assoziator. Insbesondere genügt eine aus paarweisen Legendre-Daten rekonstruierbare Dreiergröße nicht: Ein Fano-kompatibler Kandidat muss genuinely ternäre Information tragen und die Alternativitätsbedingung bei wiederholten Argumenten respektieren.
+
+Als klassisches arithmetisches Testinstrument wird deshalb das Rédei-Triple-Symbol herangezogen. Für verschiedene Primzahlen $p_1,p_2,p_3\equiv1\pmod4$ mit
+\[
+\left(\frac{p_i}{p_j}\right)=1\qquad(1\le i<j\le3)
+\]
+ist $[p_1,p_2,p_3]\in\{\pm1\}$ definiert; es beschreibt das Zerlegungsverhalten von $p_3$ in einer zu $p_1,p_2$ gehörigen dihedralen Erweiterung vom Grad $8$. Ein literaturbelegtes Referenztripel ist
+\[
+\boxed{(p_1,p_2,p_3)=(5,41,61),\qquad [5,41,61]_{\rm R\acute ede i}=-1,}
+\]
+obwohl die paarweisen Legendre-Symbole trivial sind. Damit existiert arithmetische Dreierinformation jenseits der bloßen Paarstruktur.\footnote{Vgl. \href{https://link.springer.com/article/10.1007/s40687-024-00476-5}{\emph{Linking invariants for valuations and orderings on fields}}, Research in the Mathematical Sciences (2024), Beispiel $5,41,61$; zur kohomologischen Formulierung und Rédei-Erweiterung siehe auch \href{https://link.springer.com/article/10.1007/s40993-025-00648-4}{Kim--Morishita, \emph{Triple symbols in arithmetic}}.}
+
+Dies schließt die Fano-Brücke ausdrücklich \emph{nicht}. Das klassische Rédei-Symbol besitzt eine starke Reziprozitäts-/Symmetriestruktur, während der oktonionische Assoziator alternierend und orientierungssensitiv ist. Daher wird $G_5$ als fünfstufiges Prüfprotokoll definiert:
+
+\begin{center}
+\begin{tabularx}{\textwidth}{>{\bfseries}l X l}
+\toprule
+Gate & Prüfauftrag & Status\\
+\midrule
+$G_{5.0}$ & Definitions- und Paar-Gate: geeignete Kongruenzen sowie paarweise triviale Legendre-Symbole & exakt prüfbar\\
+$G_{5.1}$ & Rédei-Gate: $[p,q,r]$ wohldefiniert und exakt bestimmt; Nachweis genuinely ternärer Arithmetik & klassische Zahlentheorie\\
+$G_{5.2}$ & EABC-Descent: existiert $\psi$ mit $[p,q,r]=\psi(\deg p,\deg q,\deg r)$ auf dem gewählten $\mathbb F_2^3$-Gradraum? & offen\\
+$G_{5.3}$ & Strukturgate: trägt ein solcher Descent volle dreidimensionale Information und die für einen Fano-Assoziator erforderliche Alternativitäts-/Orientierungsstruktur? & offen\\
+$G_{5.4}$ & Exakter algebraischer Vergleich mit dem festgelegten v26-Fano-Assoziator, ohne nachträgliche Wahl des Twists & offen\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Als Negativkontrolle für $G_{5.0}$ dient etwa $(13,17,97)$: Nicht alle paarweisen Legendre-Symbole sind $+1$, sodass das Tripel bereits vor jeder Rédei-/Fano-Interpretation ausgeschieden wird. Das Positivbeispiel $(5,41,61)$ zeigt dagegen nur den Übergang von paarweiser Trivialität zu nichttrivialer ternärer Arithmetik; es ist \emph{kein} Beweis eines EABC-Grad-Descents und erst recht kein Beweis einer oktonionischen Identifikation.
+
+\begin{statusbox}{$G_5$-Demarkation}
+\[
+\boxed{
+\text{genuine ternäre Arithmetik}
+\;\not\Rightarrow\;
+\text{Fano-/Oktonionen-Assoziator}
+}
+\]
+Der mathematisch zulässige Forschungsweg lautet
+\[
+[p,q,r]
+\stackrel{?}{\longrightarrow}
+\psi(\deg p,\deg q,\deg r)
+\stackrel{?}{\longrightarrow}
+\phi_{\rm v26}.
+\]
+Die Fragezeichen sind Bestandteil des Satzstatus: Der Rédei-Sektor liefert ein unabhängiges Testfeld für ternäre Arithmetik, nicht die vorausgesetzte Lösung der Fano-Brücke.
+\end{statusbox}
+
+\begin{statusbox}{v8-Kernaussage}
+\[
+\boxed{
+\text{Antipodale Pfadpaarung}
+\Longrightarrow
+\text{exakte destruktive Interferenz}
+}
+\]
+ist bewiesen. Offen bleibt die entscheidende Identifikation
+\[
+\boxed{
+\text{$E_8$-Unzulässigkeit}
+\stackrel{?}{\Longrightarrow}
+\text{antipodale arithmetische Pfadpaarung}.
+}
+\]
+Damit ist die Beweislast lokalisiert und das Modell unmittelbar falsifizierbar, ohne die klassische Zahlentheorie oder die $E_8$-Gitterintegrität zu überdehnen.
+\end{statusbox}
+
+
+\newpage
+\section*{3.7 Operatorielle Realisierung des Phasen-Gitterselektors und spektrale Stabilisierung}
+
+\begin{warningbox}
+Dieses Kapitel hebt die in Abschnitt 3.6 formulierte bedingte Phasen-Elimination auf die Ebene selbstadjungierter Operatoren. Dabei ist insbesondere zu beachten: Abschnitt 3.6 beweist \emph{nicht} voraussetzungslos $P_{\rm phase}=P_{\rm lattice}$; diese Identifikation bleibt an die dortigen Annahmen A1--A4 gebunden. Ebenso folgt aus $[P,H_0]\neq0$ nicht, dass jeder physikalische Anfangszustand zwangsläufig leckt; es zeigt vielmehr, dass der physikalische Unterraum im Allgemeinen nicht als reduzierender Unterraum garantiert ist. Die folgenden Sätze machen die jeweils erforderlichen Operatorannahmen explizit.
+\end{warningbox}
+
+\subsection*{3.7.1 Hilbertraumzerlegung und Projektor}
+Sei $\mathcal H_{\rm pre}$ ein komplexer Hilbertraum und $P=P^*=P^2$ ein orthogonaler Projektor. Wir setzen
+\[
+\mathcal H_{\rm phys}:=\operatorname{Ran}P,
+\qquad
+\mathcal H_{\rm unphys}:=\ker P=\operatorname{Ran}(I-P),
+\]
+sodass
+\[
+\boxed{\mathcal H_{\rm pre}=\mathcal H_{\rm phys}\oplus\mathcal H_{\rm unphys}.}
+\]
+Wenn der in Abschnitt 3.6 definierte binäre Selektor auf einer orthonormalen Basis $\{|r\rangle\}$ wohldefiniert ist, kann formal
+\[
+P_{\rm phase}:=\sum_r \mathcal I_{\rm phase}(r)\,|r\rangle\langle r|
+\]
+gesetzt werden. Unter der zusätzlichen, separat zu beweisenden Identifikation
+\[
+\mathcal I_{\rm phase}(r)=\mathcal I_{\rm lattice}(r)\quad\forall r
+\]
+folgt
+\[
+\boxed{P_{\rm phase}=P_{\rm lattice}.}
+\]
+Diese Gleichheit ist im vorliegenden Stand eine Brückenbedingung (OP2), kein voraussetzungsloses Resultat aus Fermats Zwei-Quadrate-Satz.
+
+\subsection*{3.7.2 Der Interferenzoperator}
+Sei $\Lambda=\Lambda^*$ ein selbstadjungierter Generator und für ein Wort $w$
+\[
+U_w:=e^{i\Theta(w)\Lambda}.
+\]
+Nach dem Spektralsatz ist $U_w$ unitär. Für eine endliche Pfadfaser $\mathcal P(r)$ definieren wir
+\[
+\boxed{\mathbb A_r:=\sum_{w\in\mathcal P(r)} c_w U_w.}
+\]
+Besitzt $\Lambda$ die Spektralauflösung
+\[
+\Lambda=\int_{\sigma(\Lambda)}\lambda\,dE_\lambda,
+\]
+so gilt
+\[
+\mathbb A_r
+=
+\int_{\sigma(\Lambda)}
+\left(\sum_{w\in\mathcal P(r)}c_w e^{i\Theta(w)\lambda}\right)dE_\lambda
+=:F_r(\Lambda).
+\]
+Damit ist die Pfadinterferenz ein spektralfunktionales Objekt und nicht bloß eine skalare Analogie.
+
+\begin{annahme}[OP1: antipodale Generatorbedingung]
+Auf dem relevanten Spektralsektor gelte
+\[
+\boxed{e^{i\pi\Lambda}=-I.}
+\]
+Eine hinreichende Spektralbedingung ist beispielsweise $\sigma(\Lambda)\subset 2\mathbb Z+1$ auf diesem Sektor.
+\end{annahme}
+
+\begin{lemma}[Operatorielle Paar-Auslöschung]
+Gelte OP1 und für eine Pfadinvolution $\iota$ die Relation
+\[
+\Theta(\iota w)\equiv\Theta(w)+\pi\pmod{2\pi},
+\qquad c_{\iota w}=c_w.
+\]
+Dann gilt
+\[
+U_{\iota w}=-U_w
+\]
+und somit für jedes Paar
+\[
+c_wU_w+c_{\iota w}U_{\iota w}=0.
+\]
+\end{lemma}
+
+\begin{proof}
+Aus der Funktionalkalkül-Eigenschaft für denselben selbstadjungierten Generator folgt
+\[
+U_{\iota w}
+=e^{i(\Theta(w)+\pi)\Lambda}
+=e^{i\Theta(w)\Lambda}e^{i\pi\Lambda}
+=-U_w.
+\]
+\end{proof}
+
+\subsection*{3.7.3 Dynamische Invarianz und OP3}
+Sei $H_0=H_0^*$ ein selbstadjungierter Hamiltonoperator. Für unbeschränkte Operatoren wird die Kommutationsforderung in der starken Form formuliert: $P$ erhalte $D(H_0)$ und
+\[
+PH_0\psi=H_0P\psi\qquad\forall\psi\in D(H_0).
+\]
+Äquivalent genügt, dass $P$ mit der unitären Gruppe $e^{-itH_0}$ für alle $t\in\mathbb R$ kommutiert.
+
+\begin{annahme}[OP3: dynamische Reduktion]
+\[
+\boxed{[P,H_0]=0}
+\]
+im obigen starken Sinn.
+\end{annahme}
+
+\begin{satz}[Invarianz des physikalischen Sektors]
+Unter OP3 reduzieren $\mathcal H_{\rm phys}$ und $\mathcal H_{\rm unphys}$ den Hamiltonoperator $H_0$. Insbesondere gilt
+\[
+e^{-itH_0}\mathcal H_{\rm phys}\subseteq\mathcal H_{\rm phys},
+\qquad
+ e^{-itH_0}\mathcal H_{\rm unphys}\subseteq\mathcal H_{\rm unphys}
+\]
+für alle $t\in\mathbb R$.
+\end{satz}
+
+\begin{proof}
+Aus $Pe^{-itH_0}=e^{-itH_0}P$ folgt für $\psi\in\operatorname{Ran}P$
+\[
+P e^{-itH_0}\psi=e^{-itH_0}P\psi=e^{-itH_0}\psi.
+\]
+Also liegt $e^{-itH_0}\psi$ wiederum in $\operatorname{Ran}P$. Dieselbe Rechnung mit $Q=I-P$ liefert die Invarianz des Komplements.
+\end{proof}
+
+Im Heisenberg-Bild folgt dann
+\[
+P(t)=e^{itH_0}Pe^{-itH_0}=P
+\]
+und damit für jeden Zustand $\psi(t)=e^{-itH_0}\psi(0)$
+\[
+\boxed{\langle\psi(t),P\psi(t)\rangle
+=\langle\psi(0),P\psi(0)\rangle.}
+\]
+Für $P\psi(0)=\psi(0)$ bleibt diese Wahrscheinlichkeit exakt $1$.
+
+\begin{statusbox}{Was $[P,H_0]\neq0$ tatsächlich bedeutet}
+Ein nichtverschwindender Kommutator zeigt, dass $P$ keine allgemeine Erhaltungsgröße von $H_0$ ist und der physikalische Sektor nicht allein aus dieser Projektorstruktur als invariant folgt. Daraus folgt jedoch nicht, dass \emph{jeder} einzelne physikalische Anfangszustand zwingend leckt; spezielle Eigenzustände oder weitere invariante Teilräume können bestehen bleiben. Der relevante Leakage-Term ist der Off-Diagonalblock $QH_0P$.
+\end{statusbox}
+
+\subsection*{3.7.4 Blockstruktur und Leakage-Operator}
+Bezüglich
+\[
+\mathcal H_{\rm pre}=P\mathcal H\oplus Q\mathcal H,
+\qquad Q:=I-P,
+\]
+hat $H_0$ formal die Blockgestalt
+\[
+H_0=
+\begin{pmatrix}
+PH_0P & PH_0Q\\
+QH_0P & QH_0Q
+\end{pmatrix}.
+\]
+Der Operator
+\[
+\boxed{L:=QH_0P}
+\]
+misst die unmittelbare Kopplung aus dem physikalischen in den unphysikalischen Sektor. OP3 ist äquivalent zum Verschwinden beider Off-Diagonalblöcke (unter den genannten Domänenbedingungen):
+\[
+QH_0P=0,
+\qquad
+PH_0Q=0.
+\]
+Für einen normierten Anfangszustand $\psi\in P\mathcal H\cap D(H_0)$ lautet die Kurzzeitentwicklung
+\[
+Qe^{-itH_0}\psi=-it\,QH_0P\psi+O(t^2),
+\]
+sodass
+\[
+\|Qe^{-itH_0}\psi\|^2
+=t^2\|QH_0P\psi\|^2+O(t^3).
+\]
+Dies liefert eine quantitative Leakage-Diagnostik.
+
+\subsection*{3.7.5 Penalty-Hamiltonian: zwei strikt zu trennende Konstruktionen}
+Hier ist eine wichtige algebraische Unterscheidung erforderlich.
+
+\paragraph{(A) Erhalt des ursprünglichen unphysikalischen Blocks.}
+Wenn OP3 gilt, ist
+\[
+\boxed{H_\Delta:=H_0+\Delta Q,\qquad\Delta>0}
+\]
+selbstadjungiert auf $D(H_0)$, da $Q$ beschränkt und selbstadjungiert ist. In Blockform gilt exakt
+\[
+\boxed{
+H_\Delta=
+\begin{pmatrix}
+H_{\rm phys}^{(0)}&0\\
+0&H_{\rm unphys}^{(0)}+\Delta I
+\end{pmatrix}.}
+\]
+Dies ist die Konstruktion, die den ursprünglichen unphysikalischen Hamiltonblock um $\Delta$ anhebt.
+
+\paragraph{(B) Komprimierter Projektor-Hamiltonian.}
+Dagegen ergibt
+\[
+\widetilde H_\Delta:=PH_0P+\Delta Q
+\]
+in Blockform
+\[
+\widetilde H_\Delta=
+\begin{pmatrix}
+H_{\rm phys}^{(0)}&0\\
+0&\Delta I
+\end{pmatrix},
+\]
+also \emph{nicht} $H_{\rm unphys}^{(0)}+\Delta I$. Diese Variante verwirft die ursprüngliche Dynamik im unphysikalischen Sektor. Beide Konstruktionen dürfen nicht miteinander identifiziert werden.
+
+\subsection*{3.7.6 Spektrale Grundzustandsstabilisierung}
+Setze unter OP3
+\[
+E_{\rm phys}:=\inf\sigma(H_{\rm phys}^{(0)}),
+\qquad
+E_{\rm unphys}:=\inf\sigma(H_{\rm unphys}^{(0)}).
+\]
+Für $H_\Delta=H_0+\Delta Q$ gilt
+\[
+\inf\sigma(H_\Delta|_{Q\mathcal H})=E_{\rm unphys}+\Delta.
+\]
+Daher ist die hinreichende Bedingung
+\[
+\boxed{E_{\rm unphys}+\Delta>E_{\rm phys}}
+\]
+genau die Bedingung dafür, dass die spektrale Unterkante des unphysikalischen Blocks oberhalb derjenigen des physikalischen Blocks liegt. Äquivalent genügt
+\[
+\Delta>E_{\rm phys}-E_{\rm unphys}.
+\]
+Existiert im physikalischen Block ein normierter Grundzustand $\psi_0$ mit Eigenwert $E_{\rm phys}$, so bleibt er Eigenzustand von $H_\Delta$ mit demselben Eigenwert, weil $Q\psi_0=0$.
+
+Für normierte $\psi\in D(H_0)$ gilt außerdem
+\[
+\boxed{
+\langle\psi,H_\Delta\psi\rangle
+=
+\langle\psi,H_0\psi\rangle
++\Delta\|Q\psi\|^2.}
+\]
+Der Penalty-Term ist also nichtnegativ und verschwindet genau auf $P\mathcal H$.
+
+\subsection*{3.7.7 OP1--OP3 als geschlossener bedingter Operatorapparat}
+Wir fassen die drei Bedingungen zusammen:
+\[
+\boxed{
+\begin{aligned}
+\textbf{OP1:}\;&e^{i\pi\Lambda}=-I
+\\[1mm]
+\textbf{OP2:}\;&P_{\rm phase}=P_{\rm lattice}
+\\[1mm]
+\textbf{OP3:}\;&[P_{\rm phase},H_0]=0
+\end{aligned}}
+\]
+mit den Statusangaben:
+\begin{center}
+\begin{tabularx}{\textwidth}{>{\bfseries}l X l}
+\toprule
+Bedingung & Mathematische Rolle & Status in v9\\
+\midrule
+OP1 & Hebt die skalare $\pi$-Verschiebung zur Operatorantisymmetrie $U_{\iota w}=-U_w$ & zu beweisen für konkretes $\Lambda$\\
+OP2 & Identifiziert arithmetischen Phasenprojektor und unabhängigen Gitterprojektor & bedingt durch A1--A4 / offen als unbedingter Satz\\
+OP3 & Macht den physikalischen Sektor zu einem reduzierenden Unterraum der Dynamik & zu beweisen für konkretes $H_0$\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{satz}[Bedingter Stabilitätssatz]
+Seien $H_0=H_0^*$ und $\Lambda=\Lambda^*$ wie oben. Gelten OP1--OP3 sowie die in Abschnitt 3.6 benötigten Voraussetzungen für OP2, dann besitzt das Modell folgende Struktur:
+\begin{enumerate}[leftmargin=1.6em]
+\item antipodal gepaarte unzulässige Pfade löschen sich auch operatoriell aus;
+\item $\mathcal H_{\rm phys}=\operatorname{Ran}P$ und $\mathcal H_{\rm unphys}=\ker P$ sind unter $e^{-itH_0}$ invariant;
+\item $P$ ist eine Erhaltungsgröße;
+\item für $H_\Delta=H_0+\Delta(I-P)$ wird der unphysikalische Spektralblock exakt um $\Delta$ angehoben;
+\item falls $E_{\rm unphys}+\Delta>E_{\rm phys}$, liegt die spektrale Unterkante im physikalischen Sektor.
+\end{enumerate}
+\end{satz}
+
+\begin{statusbox}{v9-Kernaussage}
+Die operatorielle Stabilisierung ist nun als präziser bedingter Satz formuliert. Der entscheidende neue Prüfstein ist nicht mehr die Identität $1+e^{i\pi}=0$, sondern die konkrete Verifikation
+\[
+\boxed{QH_0P=0}
+\]
+beziehungsweise äquivalent OP3. Erst dieser Nachweis für einen explizit definierten EABC-/Sonin-Hamiltonoperator macht die statische Gitterselektion zu einer dynamisch invarianten Quantensektorstruktur.
+\end{statusbox}
+
+\subsection*{3.7.8 Falsifikations- und Verifikationsprogramm}
+Für eine Aufwertung des Operatorapparats sind die folgenden Schritte erforderlich:
+\begin{enumerate}[leftmargin=1.6em]
+\item Explizite Definition von $\mathcal H_{\rm pre}$, $D(H_0)$ und $D(\Lambda)$.
+\item Beweis der Selbstadjungiertheit von $H_0$ und $\Lambda$ beziehungsweise Angabe geeigneter selbstadjungierter Erweiterungen.
+\item Spektraler Test von OP1: Bestimmung von $e^{i\pi\Lambda}$ auf dem relevanten Sektor.
+\item Unabhängiger Abschluss von OP2 durch einen Beweis der Annahmen A1--A4 aus der Lift-/Weyl-/Hurwitz-Geometrie.
+\item Direkte Berechnung des Leakage-Blocks $QH_0P$ und Prüfung, ob er identisch verschwindet.
+\item Falls $QH_0P\neq0$, quantitative Bestimmung der Leakage-Skala $\|QH_0P\|$ oder geeigneter Formschranken statt einer Schutzbehauptung.
+\item Falls OP3 gilt, Bestimmung von $E_{\rm phys}$ und $E_{\rm unphys}$ sowie des minimal erforderlichen Penalty-Gaps $\Delta$.
+\end{enumerate}
+
+
+
+\newpage
+\section*{3.15 Die platonische Faserungsfrage an Gate $G_{\mathrm{ID}}$}
+
+\begin{warningbox}
+Die klassische Ikosaeder--Quaternionen--$E_8$-Kette und die EABC-Arithmetik sind zwei zunächst getrennte Strukturen. Aus der bloßen Gleichheit ``12 Ikosaederecken'' und ``Modulus 12'' folgt keine kanonische arithmetisch-geometrische Identifikation. Dieses Kapitel trennt deshalb (i) etablierte platonisch-quaternionische Mathematik, (ii) eine exakt lösbare $V_4$-Äquivarianzfrage und (iii) die weiterhin offene EABC-spezifische Intertwiner-Brücke.
+\end{warningbox}
+
+\subsection*{3.15.1 Etablierte platonisch-quaternionische Kette}
+Das reguläre Ikosaeder und das reguläre Dodekaeder sind dual. Ihre Eck-, Flächen- und Kantenzahlen sind
+\[
+(V,F,E)_{\rm ico}=(12,20,30),\qquad
+(V,F,E)_{\rm dod}=(20,12,30).
+\]
+Die orientierungserhaltende Symmetriegruppe ist die ikosaedrische Rotationsgruppe
+\[
+I\cong A_5,\qquad |A_5|=60.
+\]
+Unter der Doppelüberlagerung $SU(2)\to SO(3)$ ist das Urbild von $A_5$ die binäre ikosaedrische Gruppe
+\[
+1\longrightarrow\{\pm1\}\longrightarrow 2I\longrightarrow A_5\longrightarrow1,
+\qquad |2I|=120.
+\]
+Als Einheitsquaternionen realisiert, bilden die $120$ Elemente von $2I$ das $H_4$-Wurzelsystem beziehungsweise die Vertexmenge des regulären 600-Zells. Über den Ikosianring existiert eine klassische Konstruktion des $E_8$-Gitters aus dieser ikosaedrisch-quaternionischen Struktur. Eine kompakte Referenz ist J.~C.~Baez, \emph{From the Icosahedron to $E_8$}, arXiv:1712.06436, der zwei Konstruktionen des $E_8$-Gitters aus dem Ikosaeder beschreibt, darunter die Ikosianen-Konstruktion.
+
+Damit ist die folgende Provenienzkette als etablierte Mathematik zu lesen:
+\[
+\boxed{
+\text{Ikosaeder}
+\longrightarrow A_5
+\longleftarrow 2I\subset S^3\subset\mathbb H
+\longleftrightarrow H_4
+\longrightarrow \text{Ikosianen}
+\longrightarrow E_8.}
+\]
+Der Pfeil von der EABC-Restklassenarithmetik in diese Kette ist damit noch nicht gegeben.
+
+\subsection*{3.15.2 Die $V_4$-Wirkung auf den zwölf Ikosaederecken}
+Wähle eine Kleinsche Vierergruppe $V_4\subset A_5$. Sei $X$ die Menge der zwölf Ikosaederecken. Der Stabilisator einer Ecke unter $A_5$ hat Ordnung $5$. Für $x\in X$ gilt daher
+\[
+\operatorname{Stab}_{V_4}(x)
+=
+V_4\cap \operatorname{Stab}_{A_5}(x)
+=
+\{e\},
+\]
+denn eine Untergruppe der Ordnung $4$ und eine Untergruppe der Ordnung $5$ haben trivialen Schnitt. Somit wirkt $V_4$ frei auf $X$. Nach Orbit--Stabilisator besitzt jeder $V_4$-Orbit genau vier Elemente, und daher
+\[
+\boxed{X=\mathcal O_1\sqcup\mathcal O_2\sqcup\mathcal O_3,
+\qquad |\mathcal O_i|=4.}
+\]
+
+\begin{satz}[$V_4$-äquivariante 3+3+3+3-Beschriftung]
+Identifiziere die EABC-Labelmenge $L=\{E,A,B,C\}$ als regulären $V_4$-Mengenraum, also als $V_4$ mit seiner Translationwirkung. Dann existieren $V_4$-äquivariante Abbildungen
+\[
+\lambda:X\longrightarrow L
+\]
+mit exakt ausgeglichener Fasergröße
+\[
+|\lambda^{-1}(E)|=|\lambda^{-1}(A)|=|\lambda^{-1}(B)|=|\lambda^{-1}(C)|=3.
+\]
+Genauer: Auf jedem freien Orbit $\mathcal O_i\cong V_4$ ist eine äquivariante Abbildung nach $L\cong V_4$ notwendig eine Bijektion. Daher enthält jede Labelfaser genau einen Punkt aus jedem der drei Orbits.
+\end{satz}
+
+\emph{Beweis.}
+Wähle in jedem Orbit einen Repräsentanten $x_i$. Für einen beliebigen Startwert $\ell_i\in L$ definiere
+\[
+\lambda(gx_i):=g\ell_i,\qquad g\in V_4.
+\]
+Wegen der freien Wirkung ist dies wohldefiniert und äquivariant. Da die reguläre Wirkung auf $L$ transitiv und frei ist, trifft jeder Orbit jedes Label genau einmal. Über drei Orbits erhält jedes Label exakt drei Urbilder. \hfill$\square$
+
+Damit ist eine wichtige frühere Vermutung zu korrigieren: Die Zerlegung in drei Orbits der Größe vier verhindert die EABC-Balance \emph{nicht}; sie ermöglicht vielmehr abstrakt eine ausgeglichene äquivariante Viererbeschriftung.
+
+\subsection*{3.15.3 Die wirkliche Obstruktion: Nicht-Kanonizität}
+Existenz ist jedoch nicht Kanonizität. Für jeden der drei freien Orbits kann das Bild eines gewählten Repräsentanten unabhängig unter vier Labels gewählt werden. Daher gibt es bereits
+\[
+4^3=64
+\]
+$V_4$-äquivariante Beschriftungen, sobald Orbitrepräsentanten fixiert sind. Quotientiert man nur die gemeinsame globale Translation der vier Labels heraus, verbleiben noch
+\[
+\frac{4^3}{4}=16
+\]
+Klassen. Zusätzliche geometrische Symmetrien können diese Zahl weiter identifizieren; entscheidend bleibt jedoch: Die reine $V_4$-Wirkung wählt keine eindeutige EABC-Beschriftung aus.
+
+Die echte EABC-Brückenfrage lautet deshalb nicht mehr
+\[
+\text{``Existiert eine }3+3+3+3\text{-Faserung?''}
+\]
+-- diese Existenz ist auf abstrakter $V_4$-Ebene positiv beantwortet --, sondern
+\begin{center}
+\fbox{\parbox{0.88\textwidth}{\centering
+\textbf{Welche unabhängige arithmetische oder geometrische Bedingung selektiert kanonisch eine dieser Beschriftungen?}}}
+\end{center}
+Eine solche Selektionsregel muss insbesondere ohne Rückgriff auf die gewünschte Schlussgeometrie definiert werden.
+
+\subsection*{3.15.4 Quaternionischer Darstellungsraum statt Gruppenidentifikation}
+Eine direkte Identifikation
+\[
+\mathbb F_2^3\cong 2I
+\]
+ist ausgeschlossen: $\mathbb F_2^3$ ist abelsch von Ordnung $8$, während $2I$ nichtabelsch von Ordnung $120$ ist. Ebenso ist
+\[
+(\mathbb Z/12\mathbb Z)^\times\cong V_4
+\]
+nicht selbst die binäre ikosaedrische Gruppe.
+
+Die mathematisch zulässige Architektur ist stattdessen eine Darstellung beziehungsweise ein Intertwiner. Für die Faktorwortalgebra $\mathcal A_{\rm prime}$ wäre beispielsweise eine explizit zu definierende Abbildung
+\[
+\rho:\mathcal A_{\rm prime}\longrightarrow\mathbb H
+\]
+zu untersuchen. Die Primzahlen bleiben dabei atomare Generatoren beziehungsweise Labels; ihre mod-12-Klasse liefert eine Gradinformation, während $\rho$ eine quaternionische Darstellung bereitstellt. Composite Teilprodukte werden dadurch nicht zu neuen atomaren Generatoren.
+
+Für eine belastbare Brücke wären mindestens zu fordern:
+\begin{enumerate}[leftmargin=1.6em]
+\item eine explizite Definition von $\rho$ auf atomaren Primfaktoren und ihre Fortsetzung auf Faktorwörter unter Erhaltung der Multiplizitäten;
+\item eine präzise Verträglichkeitsrelation zwischen EABC-Gradierung und $2I/H_4$-Geometrie;
+\item ein Nachweis, dass die Konstruktion nicht von einer nachträglich gewählten Fano-/Ikosianen-Basis abhängt;
+\item eine wohldefinierte Liftregel vom quaternionischen Bild in die verwendete $E_8$-Konstruktion;
+\item ein Nachweis von Fasern, Normverhalten und relevanter Äquivarianz.
+\end{enumerate}
+
+\subsection*{3.15.5 Gate-Matrix $G_{\mathrm{ID}}$}
+\begin{center}
+\begin{tabularx}{\textwidth}{>{\bfseries}l X l}
+\toprule
+Gate & Prüfauftrag & Status\\
+\midrule
+$G_{\mathrm{ID},0}$ & Ikosaeder--Dodekaeder-Dualität und Rotationsgruppe $A_5$ & PASS: klassische Geometrie\\
+$G_{\mathrm{ID},1}$ & Doppelüberlagerung $2I\to A_5$ in den Einheitsquaternionen & PASS: klassische Gruppentheorie\\
+$G_{\mathrm{ID},2}$ & Identifikation der $120$ Einheitsquaternionen mit dem $H_4$/600-Zell-Sektor & PASS: klassische Geometrie\\
+$G_{\mathrm{ID},3}$ & Ikosianen-basierte Konstruktion des $E_8$-Gitters & PASS: etablierte Konstruktion\\
+$G_{\mathrm{ID},4a}$ & Existenz einer ausgeglichenen $V_4$-äquivarianten EABC-Beschriftung der 12 Ecken & PASS: Satz 3.15.2\\
+$G_{\mathrm{ID},4b}^{\rm geom}$ & Reduktion $64\to16\to4=1+3$ unter Gauge- und Normalisatorwirkung & PASS: maschinenexakte endliche Gruppentheorie\\
+$G_{\mathrm{ID},4c.0}$ & Interne Ordnung-$3$-Automorphie zyklisiert die drei nichttrivialen räumlichen Fixklassen & PASS: exakte $\operatorname{Aut}(V_4)$-Wirkung\\
+$G_{\mathrm{ID},4c.2}$ & Kanonischer arithmetischer, $C_3$-äquivariater Selektor der drei Klassen & OFFEN\\
+$G_{\mathrm{ID},5}$ & Faktorwort-kompatibler Intertwiner $\rho$ und wohldefinierter Lift in die Ikosianen/$E_8$-Struktur & OFFEN\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{statusbox}{$G_{\mathrm{ID}}$-Demarkation}
+Die platonisch-quaternionische Kette bis $E_8$ ist etablierte Mathematik. Neu und exakt sind außerdem drei endliche Strukturresultate: (i) die ausgeglichene $3+3+3+3$-Beschriftung existiert, (ii) die kombinierte Gauge-/Normalisatorwirkung reduziert die $64$ äquivarianten Beschriftungen auf $16$ Gaugeklassen und weiter auf vier räumliche Fixklassen, davon eine triviale und drei nichttriviale, und (iii) eine Ordnung-$3$-Automorphie in $\operatorname{Aut}(V_4)\cong S_3$ permutiert die drei nichttrivialen Fixklassen zyklisch. Damit ist die geometrisch-interne $C_3$-Zielstruktur konstruiert. Nicht hergeleitet ist weiterhin eine \emph{kanonische arithmetische} Auswahl beziehungsweise ein $C_3$-äquivariater Intertwiner aus Primzahl-/Faktorwortdaten sowie der anschließende faktorwort-kompatible Lift in die Quaternionen-/Ikosianengeometrie. Die offene Brücke lautet nun
+\[
+\boxed{
+\text{arithmetische ternäre Invariante}
+\stackrel{?}{\longrightarrow}
+\{\mathcal C_1,\mathcal C_2,\mathcal C_3\}
+\stackrel{?}{\longrightarrow}
+\rho(\mathcal A_{\rm prime})\subset\mathbb H
+\stackrel{?}{\longrightarrow}
+E_8.}
+\]
+Insbesondere folgt aus der räumlichen Fixierung noch keine dynamische oder thermische Stabilität; dafür wäre ein expliziter Hamiltonoperator beziehungsweise ein Störungsmodell erforderlich.
+\end{statusbox}
+
+
+\newpage
+\section*{4.3 Topologische Stetigkeit und metrische Interpolation im Zeta-Raum}
+
+\begin{warningbox}
+Dieser Abschnitt schließt eine \emph{topologisch-metrische} Lücke, nicht automatisch eine dynamische. Aus einer positiv definiten Gram-Metrik und stetig realisierten Hasse-Kanten folgt ein kompakter metrischer Graph beziehungsweise ein eindimensionaler CW-Komplex. Daraus folgt weder, dass der Raum an Verzweigungspunkten eine glatte Mannigfaltigkeit ist, noch ergibt sich ohne zusätzliche Operator-, Domänen- und Randbedingungen bereits eine Schrödinger-Gleichung oder ein Pfadintegral.
+\end{warningbox}
+
+\subsection*{4.3.1 Zeta-Basis und Gram-Matrix}
+Sei
+\[
+\mathcal B_3=\mathcal P(\{1,2,3\})
+\]
+der Boolesche Verband mit acht Elementen. Wir verwenden eine orthonormale Referenzbasis
+\[
+\{J(Y):Y\in\mathcal B_3\}\subset\mathbb R^8,
+\qquad
+\langle J(Y),J(Z)\rangle=\delta_{YZ},
+\]
+und definieren die Zeta-Basis durch
+\[
+v_X:=\sum_{Y\subseteq X}J(Y),\qquad X\in\mathcal B_3.
+\]
+Dann gilt unmittelbar
+\[
+\boxed{\langle v_X,v_Y\rangle=2^{|X\cap Y|}.}
+\]
+Denn genau die Basisvektoren $J(Z)$ mit $Z\subseteq X\cap Y$ tragen zum Skalarprodukt bei.
+
+\begin{satz}[Positive Definittheit der Zeta-Gram-Matrix]
+Für
+\[
+G=(G_{XY})_{X,Y\in\mathcal B_3},\qquad G_{XY}=2^{|X\cap Y|},
+\]
+gilt $G>0$. Insbesondere definiert $G$ eine echte euklidische Norm auf dem Zeta-Koordinatenraum. Bei einer inklusionsverträglichen Ordnung der Teilmengen gilt sogar
+\[
+\boxed{\det G=1.}
+\]
+\end{satz}
+
+\textit{Beweis.}
+Sei $Z$ die Zeta-Transformationsmatrix mit
+\[
+Z_{XY}=\mathbf 1_{\{Y\subseteq X\}}.
+\]
+Dann ist $Z$ bei inklusionsverträglicher Ordnung unitriangulär, also $\det Z=1$, und wegen der Orthonormalität der $J$-Basis gilt
+\[
+G=ZZ^{\mathsf T}.
+\]
+Daher ist für jedes $c\neq0$
+\[
+c^{\mathsf T}Gc=\|Z^{\mathsf T}c\|_2^2>0,
+\]
+und $\det G=(\det Z)^2=1$. \hfill$\square$
+
+Für $\mathcal B_3$ kann die Positivität zusätzlich maschinenexakt durch die Eigenwerte
+\[
+9\pm4\sqrt5,
+\qquad
+\frac{3\pm\sqrt5}{2}
+\quad\text{(jeweils letzteres mit Multiplizität $3$)}
+\]
+kontrolliert werden; sämtliche Werte sind strikt positiv.
+
+\subsection*{4.3.2 Lineare Realisierung der Hasse-Kanten}
+Sei $X\lessdot Y$ eine Hasse-Kante, also
+\[
+Y=X\cup\{i\},\qquad i\notin X.
+\]
+Dann setzen wir
+\[
+\psi_{X,Y}(t):=(1-t)v_X+t v_Y,
+\qquad 0\le t\le1.
+\]
+Dies ist ein stetiger Weg in $\mathbb R^8$. Ferner gilt
+\[
+v_Y-v_X
+=\sum_{S\subseteq X}J(S\cup\{i\}),
+\]
+und die Summanden sind paarweise orthonormal. Folglich
+\[
+\boxed{
+\|v_Y-v_X\|^2=2^{|X|},
+\qquad
+\ell(X,Y)=2^{|X|/2}.}
+\]
+Das Liniensegment ist die eindeutige euklidische Geodäte zwischen seinen Endpunkten im umgebenden Zeta-Raum.
+
+Verklebt man sämtliche Hasse-Kanten an ihren gemeinsamen Endpunkten, erhält man einen endlichen metrischen Graphen
+\[
+\Gamma_{\mathcal B_3}:=\bigcup_{X\lessdot Y}[v_X,v_Y]\subset\mathbb R^8
+\]
+mit der von den Kantenlängen induzierten Wegmetrik. Als endlicher metrischer Graph ist $\Gamma_{\mathcal B_3}$ kompakt und Hausdorff. Damit sind Grenzwerte entlang der realisierten Kanten und stetige Pfade wohldefiniert.
+
+\begin{warningbox}
+Der metrische Graph ist im Allgemeinen \emph{keine glatte Mannigfaltigkeit}: An Hasse-Vertices treffen mehrere Kanten zusammen. Die Kontinuumsbrücke besteht hier exakt in der stetigen geometrischen Realisierung des diskreten Posets, nicht in einer bereits bewiesenen lokalen Euklidizität beliebiger Dimension.
+\end{warningbox}
+
+\subsection*{4.3.3 Möbius-Dualität und algebraischer Twist}
+Die Zeta-Transformation ist invertierbar. Ihre Inverse ist die Möbius-Transformation des Booleschen Verbandes:
+\[
+\boxed{
+J(X)=\sum_{Y\subseteq X}(-1)^{|X\setminus Y|}v_Y.}
+\]
+Damit beschreiben $\{J(X)\}$ und $\{v_X\}$ denselben reellen Vektorraum in zwei exakt ineinander überführbaren Koordinatensystemen.
+
+Wird auf der $J$-Basis zusätzlich eine Fano-/Oktonionen-Multiplikation oder ein Twist \emph{explizit} definiert, so kann diese algebraische Struktur durch die invertierbare Zeta-/Möbius-Transformation in die $v$-Koordinaten transportiert werden. Daraus folgt jedoch nicht automatisch eine dynamische Entkopplung nach dem Schema ``Zeta = Metrik, Fano = Randbedingung''. Eine solche Interpretation benötigt einen gesonderten Verträglichkeitssatz zwischen Multiplikation, Metrik und dem gewählten Evolutionsoperator.
+
+\subsection*{4.3.4 Was die Stetigkeitskonstruktion für Dynamik tatsächlich leistet}
+Die Konstruktion beseitigt den elementaren topologischen Einwand, ein Faktorwort-/Poset-Modell könne ausschließlich aus isolierten Sprüngen bestehen: Die Hasse-Kanten besitzen nun eine explizite stetige Realisierung mit exakten Längen. Damit kann auf $\Gamma_{\mathcal B_3}$ beispielsweise ein Funktionenraum wie
+\[
+L^2(\Gamma_{\mathcal B_3})
+\]
+definiert werden. Ein Schrödingeroperator auf diesem metrischen Graphen würde jedoch zusätzlich Differentialausdrücke auf den Kanten sowie selbstadjungierte Vertex-Randbedingungen benötigen. Alternativ kann eine zeitstetige finite-dimensionale Dynamik auf $\mathbb R^8$ erst nach Angabe eines selbstadjungierten Hamiltonoperators $H$ durch
+\[
+i\,\partial_t\Psi(t)=H\Psi(t)
+\]
+festgelegt werden. Die Gram-Matrix allein bestimmt einen solchen Operator nicht.
+
+\subsection*{4.3.5 Statusmatrix}
+\begin{center}
+\small
+\begin{tabular}{>{\bfseries}p{0.10\textwidth} p{0.54\textwidth} p{0.27\textwidth}}
+\toprule
+Baustein & Aussage & Status\\
+\midrule
+$Z_1$ & $G_{XY}=2^{|X\cap Y|}$ ist positiv definit, $\det G=1$ & PASS: exakter Satz\\[1mm]
+$Z_2$ & Hasse-Kanten besitzen stetige lineare Realisierungen mit $\ell(X,Y)=2^{|X|/2}$ & PASS: exakter Satz\\[1mm]
+$Z_3$ & Verklebung ergibt einen kompakten Hausdorff-metrischen Graphen & PASS: Standardfolge aus $Z_1$--$Z_2$\\[1mm]
+$Z_4$ & Zeta- und $J$-Basis sind durch Möbius-Inversion exakt dual & PASS: exakte Inversion\\[1mm]
+$Z_5$ & Fano-Twist wirkt als konkrete topologische Randbedingung eines Evolutionsoperators & OFFEN: Verträglichkeitssatz erforderlich\\[1mm]
+$Z_6$ & Schrödinger-/Pfadintegraldynamik folgt aus der Gram-Metrik allein & FAIL als Schlussfolgerung; Hamiltonoperator/Randdaten nötig\\
+\bottomrule
+\end{tabular}
+\normalsize
+\end{center}
+
+\begin{statusbox}{4.3-Kernaussage}
+Die diskrete Boolesche/Faktorwort-Kombinatorik besitzt eine rigorose stetige metrische Realisierung:
+\[
+\boxed{
+\mathcal B_3\ \longrightarrow\ \Gamma_{\mathcal B_3}\subset\mathbb R^8,
+\qquad
+G_{XY}=2^{|X\cap Y|},
+\qquad
+\ell(X,X\cup\{i\})=2^{|X|/2}.}
+\]
+Damit ist die topologisch-metrische Kontinuumsbrücke geschlossen. Offen bleibt der eigenständige dynamische Schritt
+\[
+\boxed{
+\text{metrischer Zeta-Raum}
+\stackrel{?}{\longrightarrow}
+\text{selbstadjungierter EABC-Hamiltonoperator / Pfadintegral}
+}
+\]
+sowie die exakte Verträglichkeit dieses Operators mit einem Fano-/Oktonionen-Twist.
+\end{statusbox}
+
+\end{document}

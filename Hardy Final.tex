@@ -1,0 +1,222 @@
+\documentclass[11pt,a4paper,reqno]{amsart}
+\usepackage[utf8]{inputenc}
+\usepackage[german]{babel}
+\usepackage{amsmath,amssymb,amsthm,amsfonts,mathtools}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{tikz-cd}
+
+\geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+
+% Theorem-Umgebungen
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% Mathematische Abk\"urzungen
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Pset}{\mathbb{P}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Pur}{\operatorname{Pur}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Fact}{\operatorname{Fact}}
+
+\title[Diskrete EABC-Sektoren und Hardy-Kompatibilit\"at]{Diskrete EABC-Sektoridentifikatoren, Faserdynamik und Hardy-Kompatibilit\"at}
+\author{Thomas Hoffbauer}
+\address{Computer Institut Bamberg, Deutschland}
+\email{research@cib.de}
+\date{5. August 2026}
+
+\begin{document}
+	
+	\begin{abstract}
+		We analyze the precise relation between the discrete EABC prime-classification framework and Lucien Hardy's operational reconstruction of quantum theory (arXiv:quant-ph/0101012v4). We prove a topological no-go result: a nontrivial discrete EABC signature space cannot itself satisfy Hardy's continuity axiom, because every continuous path into a discrete space is constant. EABC signatures serve instead as discrete fiber indices or component labels for a continuous state model. We prove the exact power-law relation $K(N) = N^r$ ($r \in \mathbb{N}_{>0}$) via an integral forward-difference lemma for discrete integers. Furthermore, we construct a split operator extension $1 \to G_{\mathrm{cont}} \to G_{\mathrm{op}} \to V_4 \to 1$ yielding a $V_4$-graded operator algebra $\mathcal{O}_X \cdot \mathcal{O}_Z \subseteq \mathcal{O}_{X \star Z}$ over the dual annihilator space $\operatorname{ker}(\varphi)^\perp \cong \mathbb{F}_2^2$. The paper strictly separates formally established statements [A], Hardy's axiomatic framework [H], conditional model assumptions [C], and open operational research questions [ORQ].
+	\end{abstract}
+	
+	\maketitle
+	
+	\section{Einleitung und Geltungsbereich}
+	
+	Die EABC-Arithmetik ordnet nat\"urlichen Zahlen diskrete Daten zu: einen Primfamilientr\"ager, einen Parit\"atsvektor und eine multiplikative Restklassensignatur. Parallel dazu erlaubt die Fasersprache, mehrere Modellrepr\"asentanten \"uber demselben skalaren Wert zusammenzufassen. Die vorliegende Arbeit untersucht, ob und in welchem pr\"azisen Sinn diese diskreten Strukturen mit Hardys Kontinuit\"atsaxiom f\"ur reine Zust\"ande vereinbar sind.
+	
+	Die Zielsetzung ist bewusst begrenzt. Es wird weder eine Herleitung der Quantenmechanik aus der EABC-Arithmetik noch eine physikalische Interpretation der Primfamilien behauptet. Bewiesen werden ein topologisches No-Go-Resultat, ein analytisches Vorw\"artsdifferenzen-Integral-Lemma f\"ur das Potenzgesetz $K(N)=N^r$ und eine algebraische Existenzkonstruktion f\"ur diskret-kontinuierliche Operatorerweiterungen.
+	
+	Wir verwenden folgende epistemische Kennzeichnung:
+	\begin{itemize}
+		\item \textbf{[A]} bezeichnet formal bewiesene mathematische S\"atze;
+		\item \textbf{[H]} bezeichnet unmittelbar aus Hardys Axiomatik \cite{Hardy2001} \"ubernommene Resultate;
+		\item \textbf{[C]} bezeichnet zus\"atzliche, mathematisch konsistente Modellannahmen;
+		\item \textbf{[CDP/Bell/PBR/KS]} bezeichnet etablierte externe No-Go-Theoreme und Postulate;
+		\item \textbf{[ORQ]} bezeichnet offene Forschungsfragen.
+	\end{itemize}
+	
+	\section{Hardys Parameter $N$ und $K$ sowie das Potenzgesetz}
+	
+	Hardy charakterisiert einen Systemtyp durch zwei positive ganze Zahlen \cite{Hardy2001}:
+	\begin{itemize}
+		\item $N$ ist die maximale Anzahl von Zust\"anden, die in einer Einzelmessung zuverl\"assig voneinander unterschieden werden k\"onnen (Systemdimension) \textbf{[H]};
+		\item $K$ ist die minimale Anzahl von Wahrscheinlichkeitsmessungen bzw. reellen Parametern, die den Zustand vollst\"andig bestimmen (Freiheitsgrade) \textbf{[H]}.
+	\end{itemize}
+	
+	F\"ur zusammengesetzte Systeme fordert Hardys Axiom 4: $N_{AB} = N_A N_B$ und $K_{AB} = K_A K_B$ \textbf{[H]}.
+	
+	\begin{lemma}[Vorw\"artsdifferenzen-Integral-Lemma] \textbf{[A]}
+		\label{lem:integral_diff}
+		Sei $\alpha > 0$ und gelte $n^\alpha \in \mathbb{Z}$ f\"ur alle $n \in \mathbb{N}_{>0}$. Dann ist $\alpha \in \mathbb{N}_{>0}$ zwingend eine positive ganze Zahl.
+	\end{lemma}
+	
+	\begin{proof}
+		Angenommen $\alpha \notin \mathbb{N}$, setze $d = \lfloor \alpha \rfloor \in \mathbb{N}_0$ mit $d < \alpha < d+1$. Die $(d+1)$-te Vorw\"artsdifferenz $\Delta^{d+1} n^\alpha = \sum_{j=0}^{d+1} (-1)^{d+1-j} \binom{d+1}{j} (n+j)^\alpha$ ist ganzzahlig. Nach der Integralformel der Differenzenrechnung gilt:
+		\begin{equation}
+			\Delta^{d+1} n^\alpha = c_\alpha \int_{[0,1]^{d+1}} (n + t_1 + \dots + t_{d+1})^{\alpha - d - 1} \, dt_1 \dots dt_{d+1}
+		\end{equation}
+		mit $c_\alpha = \alpha(\alpha-1)\cdots(\alpha-d) > 0$. Wegen $\alpha - d - 1 < 0$ ist der Integrand streng positiv und f\"ur $n \to \infty$ streng monoton fallend gegen Null:
+		\begin{equation}
+			0 < \Delta^{d+1} n^\alpha \le c_\alpha \, n^{\alpha - d - 1} \xrightarrow{\quad n \to \infty \quad} 0.
+		\end{equation}
+		F\"ur hinreichend gro\ss{}es $n$ entsteht der Widerspruch $0 < \Delta^{d+1} n^\alpha < 1$. Mithin ist $\alpha = r \in \mathbb{N}_{>0}$.
+	\end{proof}
+	
+	\begin{proposition}[Herleitung der Potenzbeziehung $K = N^r$] \textbf{[A]}
+		Aus der strengen Monotonie von $K: \mathbb{N}_{>0} \to \mathbb{N}_{>0}$ (Axiom 3) \cite{Hardy2001} und der vollst\"andigen Multiplikativit\"at $K(mn) = K(m)K(n)$ (Axiom 4) \cite{Hardy2001} folgt zusammen mit Lemma~\ref{lem:integral_diff} analytisch strikt:
+		\begin{equation}
+			\boxed{ K(N) = N^r \quad \text{f\"ur ein festes } r \in \mathbb{N}_{>0}. }
+		\end{equation}
+	\end{proposition}
+	
+	\begin{proposition}[Ausschluss- und Selektionsschritt nach Hardy] \cite{Hardy2001} \textbf{[H]}
+		Hardys Axiom 5 verlangt eine kontinuierliche reversible Transformation zwischen je zwei reinen Zust\"anden desselben Systems. Dieses Axiom schlie\ss{}t den klassischen Zweig $r=1$ aus. Das Einfachheitsaxiom (Axiom 2) w\"ahlt anschlie\ss{}end den kleinsten noch zul\"assigen Exponenten $r=2$ ($K=N^2$).
+	\end{proposition}
+	
+	\section{Diskrete EABC-Signaturen und das No-Go-Theorem}
+	
+	F\"ur $n \in \mathbb{N}_{>0}$ sei $\Sigma_{EABC}(n) := \left( \supp_{EABC}(n), \, \varepsilon(n), \, \sigma_{EABC}(n) \right) \in \mathcal{S}_{EABC}$ mit
+	\begin{equation}
+		\mathcal{S}_{EABC} := \mathcal{P}(\{E,A,B,C\}) \times \F_2^3 \times V_4
+	\end{equation}
+	in der diskreten Topologie. Die Isomorphie $V_4 \cong (\mathbb{Z}/12\mathbb{Z})^\times$ resultiert aus der Primzahlklassifikation modulo 12, deren multiplikative Kern-Struktur von den vier primen Restklassen $\{1, 5, 7, 11\}$ gebildet wird.
+	
+	\begin{theorem}[No-Go f\"ur reine EABC-Signaturdynamik] \textbf{[A]}
+		\label{thm:nogo}
+		Sei $D$ ein diskreter Raum mit mindestens zwei Punkten. Identifiziert man die reinen Zust\"ande eines Systems unmittelbar mit den Elementen von $D$, so kann zwischen zwei verschiedenen Zust\"anden kein stetiger Pfad existieren. Hardys Axiom 5 kann daher auf einer nichttrivialen diskreten EABC-Signaturebene nicht erf\"ullt werden.
+	\end{theorem}
+	
+	\begin{proof}
+		Sei $\gamma: [0,1] \to D$ stetig. Da $[0,1]$ zusammenh\"angend und $D$ diskret ist, ist das Bild einkelementig. Eine stetige Abbildung ist konstant und kann keine zwei verschiedenen Punkte verbinden.
+	\end{proof}
+	
+	\begin{corollary}[Konstanz auf Hardy-Bahnen] \textbf{[A]}
+		Sei $\Omega$ ein topologischer Zustandsraum, und die reinen Zust\"ande $\Pur(\Omega)$ seien durch kontinuierliche reversible Transformationspfade paarweise verbunden. Dann ist jede stetige diskrete Signatur $\Sigma: \Pur(\Omega) \to D$ auf $\Pur(\Omega)$ konstant.
+	\end{corollary}
+	
+	\section{Operatorlift und spektrale $V_4$-Fourier-Graduierung}
+	
+	\begin{definition}[EABC-Operatorlift] \textbf{[C]}
+		Es existiere eine topologische Gruppe $G_{\mathrm{op}}$ und eine kurze exakte Sequenz $1 \to G_{\mathrm{cont}} \to G_{\mathrm{op}} \xrightarrow{q} V_4 \to 1$ mit $G_{\mathrm{cont}} = G_{\mathrm{op}}^0 = \operatorname{ker}(q)$ und $\pi_0(G_{\mathrm{op}}) \cong V_4$.
+	\end{definition}
+	
+	\begin{proposition}[Explizite gespaltene Operatorerweiterung] \cite{Serre1977} \textbf{[A]}
+		\label{prop:split_extension}
+		Sei $G$ eine wegzusammenh\"angende topologische Gruppe und $\alpha: V_4 \to \operatorname{Aut}_{\mathrm{top}}(G)$ ein Gruppenhomomorphismus. Dann ist das semidirekte Produkt $G_{\mathrm{op}} := G \rtimes_\alpha V_4$ eine topologische Gruppe mit gespaltener exakter Sequenz $1 \to G \to G \rtimes_\alpha V_4 \to V_4 \to 1$ und $(G \rtimes_\alpha V_4)^0 = G \times \{E\}$.
+	\end{proposition}
+	
+	\begin{proposition}[Fourier-Zerlegung und $V_4$-Graduierung] \cite{Serre1977} \textbf{[A]}
+		Nach Fixierung einer Selbstdualit\"atsidentifikation $\iota: V_4 \xrightarrow{\sim} \widehat{V_4}$ induziert jede komplexe lineare Darstellung $\rho: V_4 \to \operatorname{GL}(\mathcal{O})$ \"uber die Charaktere $\chi_X \in \widehat{V_4}$ paarweise annihilierende idempotente Fourier-Projektoren:
+		\begin{equation}
+			\mathcal{P}_X := \frac{1}{4} \sum_{Y \in V_4} \chi_X(Y) \, \rho(Y) \qquad (X \in \{E,A,B,C\}).
+		\end{equation}
+		\begin{enumerate}
+			\item \textbf{Lineare Zerlegung:} Die Projektoren erf\"ullen $\mathcal{P}_X \mathcal{P}_Z = \delta_{XZ} \mathcal{P}_X$ und $\sum_X \mathcal{P}_X = \mathbb{I}$. Ist $\mathcal{O}$ ein Hilbertraum und $\rho: V_4 \to U(\mathcal{O})$ unit\"ar, gilt zus\"atzlich die Selbstadjungiertheit $\mathcal{P}_X^\dagger = \mathcal{P}_X$. Der Operatorraum zerf\"allt in vier paarweise disjunkte isotypische Sektoren $\mathcal{O}_X = \operatorname{im}(\mathcal{P}_X)$:
+			\begin{equation}
+				\mathcal{O} = \mathcal{O}_E \oplus \mathcal{O}_A \oplus \mathcal{O}_B \oplus \mathcal{O}_C \qquad (\mathcal{O}_X \cap \mathcal{O}_Z = \{0\} \text{ f\"ur } X \neq Z).
+			\end{equation}
+			\item \textbf{Multiplikative Graduierung:} Wirken die $V_4$-Elemente als Algebra-Automorphismen auf $\mathcal{O}$, so respektiert die Operatorenmultiplikation die $V_4$-Gruppenstruktur:
+			\begin{equation}
+				\boxed{ \mathcal{O}_X \cdot \mathcal{O}_Z \;\subseteq\; \mathcal{O}_{X \star Z} } \quad (X,Z \in V_4).
+			\end{equation}
+		\end{enumerate}
+	\end{proposition}
+	
+	\begin{proposition}[Duale Einbettung \"uber den Annihilatorraum] \textbf{[A]}
+		Der Epimorphismus $\varphi: \F_2^3 \to V_4$ mit $\operatorname{ker}(\varphi) = \langle (1,1,1)^T \rangle$ induziert einen Isomorphismus zwischen $\widehat{V_4}$ und dem Annihilatorraum $\operatorname{ker}(\varphi)^\perp = \{ v \in \F_2^3 \mid v_1 + v_2 + v_3 \equiv 0 \pmod 2 \} \cong \F_2^2$. Die Charaktere erf\"ullen:
+		\begin{equation}
+			\boxed{ \chi_v\bigl(\varphi(\varepsilon)\bigr) = (-1)^{v \cdot \varepsilon} \qquad \text{f\"ur } v \in \operatorname{ker}(\varphi)^\perp = \{000, 110, 101, 011\}. }
+		\end{equation}
+		Das Parit\"atstripel $(1,1,1)^T$ ($ABC = E$) ist f\"ur alle Quotientencharaktere spektral neutral.
+	\end{proposition}
+	
+	\section{Revidierte F\"unf-Ebenen-Architektur}
+	
+	\begin{align}
+		\textbf{Ebene 0:}\quad & (\mathbb{N}_{>0}, \cdot) && \text{Skalararithmetik \& Faserquotient } M/{\equiv_\pi} \cong \operatorname{Im}(\pi) \quad \mathbf{[A]}, \\
+		\textbf{Ebene 1:}\quad & (\mathcal{S}_{EABC}, \odot) && \text{diskrete EABC-Signatur } \mathbf{[A]}, \\
+		\textbf{Ebene 2:}\quad & \Omega_n, \quad \Pur(\Omega_n) && \text{Zustandsfaser } \mathbf{[C]}, \\
+		\textbf{Ebene 3:}\quad & G_n^0 \curvearrowright \Pur(\Omega_n) && \text{kontinuierliche reversible Dynamik (Hardy Axiom 5) } \mathbf{[H]/[C]}, \\
+		\textbf{Ebene 4:}\quad & \Omega_m \boxtimes \Omega_n \to \Omega_{mn}, \quad \mathcal{O}_m \otimes \mathcal{O}_n \to \mathcal{O}_{mn} && \text{Systemkomposition (Hardy Axiom 4) } \mathbf{[H]/[C]}.
+	\end{align}
+	
+	\section{Ausblick: Prozesstheorie und externe No-Go-Schranken}
+	
+	\subsection{Kausalit\"at und kausale Invarianz}
+	
+	\begin{definition}[Kausalit\"atsprinzip] \cite{Chiribella2011} \textbf{[CDP]}
+		Ein operationaler Prozess $\mathcal{E}$ von System $A$ nach System $B$ ist \emph{kausal}, wenn die Wahrscheinlichkeit eines Messausgangs an $A$ unabh\"angig von der Wahl sp\"aterer Operationen an $B$ ist.
+	\end{definition}
+	
+	\begin{proposition}[Kausale Invarianz der EABC-Sektoren] \textbf{[C]}
+		F\"ur jeden kausalen Kanal $\mathcal{E}: \Omega_m \to \Omega_n$ bleiben die diskreten EABC-Sektorlabels strikt erhalten:
+		\begin{equation}
+			\boxed{ \Sigma_{EABC}\bigl(\pi(\mathcal{E}(\psi))\bigr) = \Sigma_{EABC}\bigl(\pi(\psi)\bigr) \qquad \forall \psi \in \Pur(\Omega_m). }
+		\end{equation}
+	\end{proposition}
+	
+	\subsection{Fundationale Randbedingungen: Bell, PBR und Kochen--Specker}
+	
+	\begin{definition}[EABC-Neutralit\"atsbedingung] \textbf{[C]}
+		Die EABC-Signatur $\Sigma_{EABC}(n)$ wirkt als passives Faserlabel. Eine hinreichende Bedingung ist die Faktorisierung des ontischen Zustands in $\lambda = (\Sigma_{EABC}(n), \, \lambda_{\mathrm{dyn}})$, wobei Messwahrscheinlichkeiten $p(k \mid \lambda)$ rein durch $\lambda_{\mathrm{dyn}}$ gesteuert werden.
+	\end{definition}
+	
+	\begin{proposition}[Bedingte externe No-Go-Konsequenzen] \cite{Bell1964, PBR2012, KochenSpecker1967} \textbf{[A]}
+		Unter der EABC-Neutralit\"atsbedingung gelten f\"ur ein konkretes Faser-Modell folgende konditionale Implikationen:
+		\begin{enumerate}
+			\item \textbf{PBR-Konsequenz \cite{PBR2012}:} Erf\"ullt eine ontologische Realisierung der Faserzust\"ande die mikroskopische Pr\"aparationsunabh\"angigkeit $\mu_{\psi \boxtimes \phi} = \mu_\psi \times \mu_\phi$, so sind reine Faserzust\"ande $\psi$-ontisch ($\operatorname{supp}(\mu_\psi) \cap \operatorname{supp}(\mu_\phi) = \varnothing$ fast \"uberall).
+			\item \textbf{Bell-Konsequenz \cite{Bell1964}:} Erzeugt das Modell Bell-verletzende Korrelationsstatistiken, existiert keine Bell-lokale ontologische Realisierung auf $\Omega_{mn}$.
+			\item \textbf{Kochen--Specker-Konsequenz \cite{KochenSpecker1967}:} F\"ur Faserdimensionen $N \ge 3$ schlie\ss{}t das Kochen--Specker-Theorem nichtkontextuelle deterministische Wertzuweisungen aus.
+		\end{enumerate}
+	\end{proposition}
+	
+	\section{Epistemischer Status und Gesamtresultat}
+	
+	\begin{theorem}[Manuskriptf\"ahiges Gesamtergebnis] \textbf{[A] + [C]}
+		\begin{enumerate}
+			\item \textbf{[A]} Das Vorw\"artsdifferenzen-Integral-Lemma beweist strikt $K(N) = N^r$ ($r \in \mathbb{N}_{>0}$). Hardys Axiom 5 verwirft $r=1$, und das Einfachheitsaxiom selektiert den komplexen Quantenzweig $r=2$ ($K=N^2$).
+			\item \textbf{[A]} Das No-Go-Lemma beweist, dass diskrete EABC-Signaturen nicht selbst die kontinuierliche Dynamik erzeugen k\"onnen, sondern als neutrale Faser- und Sektor-Labels wirken.
+			\item \textbf{[A] + [C]} Der gespaltene Operatorlift $1 \to G_{\mathrm{cont}} \to G_{\mathrm{op}} \to V_4 \to 1$ realisiert $V_4 \cong (\mathbb{Z}/12\mathbb{Z})^\times$ \"uber $\operatorname{ker}(\varphi)^\perp \cong \mathbb{F}_2^2$ als graduierten Operatorquotienten $\mathcal{O}_X \cdot \mathcal{O}_Z \subseteq \mathcal{O}_{X \star Z}$.
+			\item \textbf{[A]} Externe No-Go-Theoreme (Bell, PBR, Kochen--Specker) formulieren bedingte Prüfsteine, die erst nach Nachweis der jeweiligen Modellvoraussetzungen auf EABC-Fasern anwendbar werden.
+		\end{enumerate}
+	\end{theorem}
+	
+	\begin{thebibliography}{99}
+		\bibitem{Hardy2001} L. Hardy, \emph{Quantum Theory From Five Reasonable Axioms}, arXiv preprint quant-ph/0101012v4, 2001.
+		\bibitem{Hoffbauer2026} T. Hoffbauer, \emph{Skalare Projektionen, Faserquotienten und EABC-Parit\"atsebenen in Modellr\"aumen}, Preprint, August 2026.
+		\bibitem{Serre1977} J.-P. Serre, \emph{Linear Representations of Finite Groups}, Graduate Texts in Mathematics, Springer-Verlag, 1977.
+		\bibitem{FultonHarris1991} W. Fulton, J. Harris, \emph{Representation Theory: A First Course}, Graduate Texts in Mathematics, Springer-Verlag, 1991.
+		\bibitem{Chiribella2011} G. Chiribella, G. M. D’Ariano, P. Perinotti, \emph{Informing quantum theory by probabilistic postulates}, Phys. Rev. A 84, 012311, 2011.
+		\bibitem{Bell1964} J. S. Bell, \emph{On the Einstein Podolsky Rosen paradox}, Physics Physique Fizika 1, 195--200, 1964.
+		\bibitem{PBR2012} M. F. Pusey, J. Barrett, T. Rudolph, \emph{On the reality of the quantum state}, Nature Physics 8, 475--478, 2012.
+		\bibitem{KochenSpecker1967} S. Kochen, E. P. Specker, \emph{The problem of hidden variables in quantum mechanics}, Journal of Mathematics and Mechanics 17, 59--87, 1967.
+	\end{thebibliography}
+	
+\end{document}

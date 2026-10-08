@@ -1,0 +1,509 @@
+\documentclass[11pt,a4paper,reqno]{amsart}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,amsfonts,mathtools}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{tikz-cd}
+\usetikzlibrary{babel}
+\usepackage{hyperref}
+
+\geometry{margin=25mm}
+\setlength{\emergencystretch}{2em}
+\raggedbottom
+
+\hypersetup{
+  pdftitle={Skalare Invarianten und Faserrepraesentationen},
+  pdfauthor={Thomas Hoffbauer},
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  citecolor=blue!50!black,
+  urlcolor=blue!50!black
+}
+
+% Theorem-Umgebungen
+\newtheorem{theorem}{Satz}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Korollar}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Beispiel}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Bemerkung}
+
+% Mathematische Abkürzungen
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Npos}{\mathbb{N}_{>0}}
+\newcommand{\Nzero}{\mathbb{N}_{0}}
+\newcommand{\Pset}{\mathbb{P}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Fact}{\operatorname{Fact}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\eqpi}{\mathrel{\equiv_{\pi}}}
+\newcommand{\eqpim}{\mathrel{\equiv_{\pi_M}}}
+\newcommand{\eqpip}{\mathrel{\equiv_{\pi_{M'}}}}
+
+\title[Skalare Invarianten und Faserrepräsentationen]{Skalare Invarianten und Faserrepräsentationen:\\Ein typisierter Kompatibilitätsrahmen}
+
+\author{Thomas Hoffbauer}
+\address{Computer Institut Bamberg, Deutschland}
+\email{research@cib.de}
+\date{5. August 2026}
+
+\subjclass[2020]{03E99, 11A51, 15A21, 18A05}
+\keywords{skalare Invariante, Faserquotient, Projektionsäquivalenz, Faktorisierungssignatur, Smith-Normalform}
+
+\begin{document}
+
+\begin{abstract}
+Die in dieser Note verwendeten Einzelkonstruktionen -- Äquivalenzrelationen als Fasern einer Abbildung, Quotientenmengen, universelle Faktorisierung und Primzahlbewertungsvektoren -- sind Standard. Der Beitrag liegt in ihrer systematischen Verbindung zu einer typisierten Schnittstelle zwischen skalaren arithmetischen Invarianten und strukturierten Repräsentanten. Für eine Abbildung $\pi\colon M\to\Npos$ untersuchen wir die Projektionsäquivalenz $x\eqpi y\iff\pi(x)=\pi(y)$, den kanonischen Quotienten $M/{\equiv_\pi}\cong\im(\pi)$ und dessen universelle Eigenschaft. Projektionsverträgliche Morphismen induzieren funktoriell Abbildungen zwischen den Quotienten. Die eindeutige Primfaktorzerlegung im Skalarraum liefert eine faserkonstante Faktorisierungssignatur, bestimmt aber keine Faktorisierung der Repräsentanten in $M$. Neben Beispielen in $\Z[i]$ und $\Z[\omega]$ zeigt eine Anwendung auf ganzzahlige Matrizen und Untergitter, dass derselbe Determinanten- beziehungsweise Indexwert unterschiedliche Smith-Daten und verschiedene endliche Quotientenmodule zulassen kann. Es wird weder eine Erweiterung des Hauptsatzes der Arithmetik noch ein neuer Faktorisierungssatz für die Modellräume behauptet.
+\end{abstract}
+
+\maketitle
+
+\section{Einleitung und Beitrag}
+
+Viele algebraische und diskrete Modelle tragen eine Abbildung
+\[
+  \pi\colon M\longrightarrow\Npos,
+\]
+die einem strukturierten Objekt einen positiven ganzzahligen Skalar zuordnet. Beispiele sind Normen in Zahlringen, der Betrag einer Determinante oder der Index eines Untergitters. Verschiedene Objekte können denselben Skalarwert besitzen, obwohl sie weder gleich noch durch die im Modell natürliche Äquivalenzrelation identifiziert sind.
+
+Die elementare, aber in Anwendungen leicht übersehene Trennung lautet:
+\[
+  \text{Faktorisierung von }\pi(x)\text{ in }\Npos
+  \quad\neq\quad
+  \text{Faktorisierung oder Struktur von }x\text{ in }M.
+\]
+Diese Arbeit erweitert den Hauptsatz der Arithmetik nicht. Sie ordnet vielmehr standardmäßige Konstruktionen zu einem wiederverwendbaren Kompatibilitätsrahmen. Der Neuheitsanspruch betrifft die explizite Typisierung der Schnittstelle zwischen Skalar und Repräsentant sowie ihre funktorielle Formulierung, nicht die einzelnen Quotienten- oder Faktorisierungssätze.
+
+Die Argumentationslinie ist:
+\begin{enumerate}[label=\textup{(\roman*)}]
+  \item Projektionsäquivalenz und kanonischer Faserquotient;
+  \item universelle Eigenschaft faserkonstanter Abbildungen;
+  \item Funktorialität unter projektionsverträglichen Morphismen;
+  \item skalare Faktorisierungssignatur;
+  \item typisierte Repräsentationsdaten und konkrete Beispiele.
+\end{enumerate}
+
+\begin{remark}[Keine physikalische Voraussetzung]
+Für die mathematischen Resultate ist keine physikalische Interpretation erforderlich. Begriffe wie Zustand oder Repräsentant bezeichnen ausschließlich Elemente eines strukturierten mathematischen Raums.
+\end{remark}
+
+\section{Skalare Modelle und ihre Fasern}
+
+\begin{definition}[Skalares Modell]
+Ein \emph{skalares Modell} ist ein Paar $(M,\pi)$ aus einer nichtleeren Menge $M$ und einer Abbildung
+\[
+  \pi\colon M\longrightarrow\Npos.
+\]
+Für $n\in\im(\pi)$ heißt
+\[
+  M_n:=\pi^{-1}(n)=\{x\in M\mid \pi(x)=n\}
+\]
+die \emph{Projektionsfaser über $n$}.
+\end{definition}
+
+Schematisch liegt eine Familie disjunkter Repräsentantenmengen über ihren skalaren Werten:
+\[
+\begin{tikzcd}[column sep=huge]
+M_{25} \arrow[d,"\pi|_{M_{25}}"'] &
+M_{49} \arrow[d,"\pi|_{M_{49}}"'] &
+M_{77} \arrow[d,"\pi|_{M_{77}}"']\\
+25 & 49 & 77
+\end{tikzcd}
+\]
+Die senkrechten Abbildungen sind konstant; innerhalb einer Faser können dennoch verschiedenartige Objekte liegen.
+
+\begin{definition}[Projektionsäquivalenz]
+Für $x,y\in M$ definieren wir
+\[
+  x\eqpi y
+  \quad:\Longleftrightarrow\quad
+  \pi(x)=\pi(y).
+\]
+\end{definition}
+
+\begin{lemma}
+Die Relation $\equiv_\pi$ ist eine Äquivalenzrelation auf $M$. Ihre Äquivalenzklassen sind genau die nichtleeren Fasern $M_n$, $n\in\im(\pi)$.
+\end{lemma}
+
+\begin{proof}
+Reflexivität, Symmetrie und Transitivität folgen aus den entsprechenden Eigenschaften der Gleichheit. Für jedes $x\in M$ gilt
+\[
+  [x]_\pi=\{y\in M\mid \pi(y)=\pi(x)\}=M_{\pi(x)}.
+\]
+\end{proof}
+
+\begin{theorem}[Theorem A: Kanonischer Quotientensatz]
+\label{thm:quotient}
+Sei $q_M\colon M\to M/{\equiv_\pi}$ die Quotientenabbildung $x\mapsto[x]_\pi$. Dann existiert genau eine Bijektion
+\[
+  \overline\pi_M\colon M/{\equiv_\pi}\longrightarrow\im(\pi)
+\]
+mit $\pi=\overline\pi_M\circ q_M$. Sie ist gegeben durch
+\[
+  \overline\pi_M([x]_\pi)=\pi(x).
+\]
+Insbesondere gilt
+\[
+  M=\bigsqcup_{n\in\im(\pi)}M_n.
+\]
+\end{theorem}
+
+\begin{proof}
+Die Definition ist wegen $[x]_\pi=[y]_\pi\Rightarrow\pi(x)=\pi(y)$ wohldefiniert. Aus $\overline\pi_M([x]_\pi)=\overline\pi_M([y]_\pi)$ folgt $x\eqpi y$ und damit $[x]_\pi=[y]_\pi$, also Injektivität. Die Surjektivität folgt aus der Definition von $\im(\pi)$.
+\end{proof}
+
+\begin{theorem}[Theorem B: Universelle Eigenschaft]
+\label{thm:universal}
+Sei $f\colon M\to X$ eine Abbildung in eine Menge $X$, die auf jeder $\pi$-Faser konstant ist. Dann existiert genau eine Abbildung
+\[
+  \widetilde f\colon M/{\equiv_\pi}\longrightarrow X
+\]
+mit $f=\widetilde f\circ q_M$.
+\[
+\begin{tikzcd}[column sep=large,row sep=large]
+M \arrow[r,"f"] \arrow[d,"q_M"'] & X\\
+M/{\equiv_\pi} \arrow[ur,dashed,"\exists!\,\widetilde f"'] &
+\end{tikzcd}
+\]
+\end{theorem}
+
+\begin{proof}
+Setze $\widetilde f([x]_\pi):=f(x)$. Die Faserkonstanz macht die Definition repräsentantenunabhängig. Da $q_M$ surjektiv ist, ist die Faktorisierung eindeutig.
+\end{proof}
+
+\section{Funktorialität projektierter Modelle}
+
+Die kategoriale Sprache wird nicht nur als Einordnung verwendet, sondern liefert eine natürliche Verträglichkeit der Quotienten mit Morphismen.
+
+\begin{definition}[Kategorie projektierter Mengen]
+Für eine feste Menge $B$ sei $\mathbf{Proj}(B):=\mathbf{Set}/B$ die Überkategorie. Ihre Objekte sind Abbildungen $\pi_M\colon M\to B$. Ein Morphismus
+\[
+  f\colon(M,\pi_M)\longrightarrow(M',\pi_{M'})
+\]
+ist eine Abbildung $f\colon M\to M'$ mit
+\[
+  \pi_{M'}\circ f=\pi_M.
+\]
+\end{definition}
+
+\begin{theorem}[Theorem C: Induzierter Quotientenmorphismus]
+\label{thm:functoriality}
+Jeder Morphismus $f\colon(M,\pi_M)\to(M',\pi_{M'})$ in $\mathbf{Proj}(B)$ induziert genau eine Abbildung
+\[
+  \overline f\colon M/{\equiv_{\pi_M}}
+  \longrightarrow M'/{\equiv_{\pi_{M'}}},
+  \qquad
+  \overline f([x]_{\pi_M})=[f(x)]_{\pi_{M'}},
+\]
+mit $\overline f\circ q_M=q_{M'}\circ f$. Die Zuordnung
+\[
+  (M,\pi_M)\longmapsto M/{\equiv_{\pi_M}},
+  \qquad f\longmapsto\overline f,
+\]
+definiert einen Funktor $Q_B\colon\mathbf{Proj}(B)\to\mathbf{Set}$.
+\end{theorem}
+
+\begin{proof}
+Gilt $x\eqpim y$, so ist $\pi_M(x)=\pi_M(y)$. Wegen $\pi_{M'}\circ f=\pi_M$ folgt
+\[
+  \pi_{M'}(f(x))=\pi_{M'}(f(y)),
+\]
+also $f(x)\eqpip f(y)$. Damit ist $\overline f$ wohldefiniert. Die Gleichung $\overline f\circ q_M=q_{M'}\circ f$ folgt direkt. Für Identitäten und Kompositionen gilt
+\[
+  \overline{\id_M}=\id_{M/{\equiv_{\pi_M}}},
+  \qquad
+  \overline{g\circ f}=\overline g\circ\overline f,
+\]
+weil beide Seiten auf jeder Klasse $[x]_{\pi_M}$ denselben Wert besitzen.
+\end{proof}
+
+\begin{corollary}[Beschreibung über die Skalarbilder]
+Unter den kanonischen Bijektionen aus Satz~\ref{thm:quotient} entspricht $\overline f$ der Inklusion
+\[
+  \im(\pi_M)\hookrightarrow\im(\pi_{M'}).
+\]
+Insbesondere ist $\overline f$ injektiv. Sind beide Projektionen surjektiv auf $B$, so entspricht $\overline f$ der Identität von $B$.
+\end{corollary}
+
+\begin{proof}
+Aus $\pi_M=\pi_{M'}\circ f$ folgt $\im(\pi_M)\subseteq\im(\pi_{M'})$. Für $[x]_{\pi_M}$ gilt
+\[
+  \overline\pi_{M'}\bigl(\overline f([x]_{\pi_M})\bigr)
+  =\pi_{M'}(f(x))
+  =\pi_M(x)
+  =\overline\pi_M([x]_{\pi_M}).
+\]
+Damit ist die induzierte Abbildung unter den Identifikationen gerade die Inklusion der Bilder.
+\end{proof}
+
+\section{Skalare Faktorisierungssignatur}
+
+Für $n\in\Npos$ bezeichnet $v_p(n)$ die $p$-adische Bewertung. Der Hauptsatz der Arithmetik liefert den endlich getragenen Bewertungsvektor
+\[
+  \Fact_{\Npos}(n):=(v_p(n))_{p\in\Pset}
+  \in\bigoplus_{p\in\Pset}\Nzero.
+\]
+
+\begin{theorem}[Theorem D: Faktorisierungssignatur]
+\label{thm:factor-signature}
+Für jedes skalare Modell $(M,\pi)$ ist
+\[
+  \Phi_{\mathrm{fact}}
+  :=\Fact_{\Npos}\circ\pi
+  \colon M\longrightarrow\bigoplus_{p\in\Pset}\Nzero
+\]
+faserkonstant. Daher existiert genau eine Abbildung
+\[
+  \widetilde\Phi_{\mathrm{fact}}
+  \colon M/{\equiv_\pi}
+  \longrightarrow\bigoplus_{p\in\Pset}\Nzero
+\]
+mit $\Phi_{\mathrm{fact}}=\widetilde\Phi_{\mathrm{fact}}\circ q_M$.
+
+Ist $M$ ein Monoid und
+\[
+  \pi\colon(M,\star,1_M)\longrightarrow(\Npos,\cdot,1)
+\]
+ein Monoidhomomorphismus, so gilt für jedes $p\in\Pset$
+\[
+  v_p\!\left(\pi(x\star y)\right)
+  =v_p(\pi(x))+v_p(\pi(y)).
+\]
+\end{theorem}
+
+\begin{proof}
+Aus $\pi(x)=\pi(y)$ folgt unmittelbar
+$\Fact_{\Npos}(\pi(x))=\Fact_{\Npos}(\pi(y))$. Satz~\ref{thm:universal} liefert die eindeutige Faktorisierung über den Quotienten. Im multiplikativen Fall gilt $\pi(x\star y)=\pi(x)\pi(y)$; die letzte Gleichung ist die Additivität der $p$-adischen Bewertung.
+\end{proof}
+
+\begin{corollary}[Nichtimplikationsprinzip]
+\label{cor:nonimplication}
+Aus der Voraussetzung $\pi(x)=\pi(y)$ allein sind ohne weitere Strukturannahmen im Allgemeinen weder
+\[
+  x=y,
+  \qquad x\sim y,
+  \qquad\text{noch}\qquad
+  \Fact_M(x)=\Fact_M(y)
+\]
+herleitbar, sofern Assoziiertheit und $\Fact_M$ im betrachteten Modell überhaupt definiert sind.
+\end{corollary}
+
+\begin{proof}
+Die Aussagen folgen nicht aus den Axiomen eines skalaren Modells. Konkrete Gegenbeispiele liefern die Abschnitte~\ref{sec:gauss} und~\ref{sec:matrices}. Ist $\pi$ dagegen injektiv oder werden zusätzliche Klassifikationssätze vorausgesetzt, können einzelne Folgerungen durchaus gelten.
+\end{proof}
+
+\section{Typisierte Repräsentationsdaten}
+
+\begin{definition}[Typisierter Repräsentationsdatensatz]
+Sei $(M,\pi)$ ein skalares Modell, $n\in\im(\pi)$ und $c\in M_n$. Der Datensatz
+\[
+  \mathcal D(n;c)
+  :=\bigl(n,\Fact_{\Npos}(n);c\bigr)
+\]
+trennt den skalaren Wert und seine kanonische Primfaktorisierung vom gewählten Repräsentanten $c$.
+\end{definition}
+
+\begin{definition}[Semiprimer Spezialfall]
+Ist $n=ab$ mit $a,b\in\Pset$, so kann der Datensatz als
+\[
+  \mathcal D(a,b;c)
+  :=\bigl(ab,\Fact_{\Npos}(ab);c\bigr)
+\]
+geschrieben werden. Die Kurznotation $(a,b;c)_M$ ist lediglich typisierende Buchführung; sie behauptet weder $c=ab$ noch eine Produktzerlegung von $c$ in $M$.
+\end{definition}
+
+Wird zusätzlich eine Produktdarstellung
+\[
+  x=\iota(a)\star\iota(b)\star E_1,
+  \qquad y=c\star E_2
+\]
+verwendet, müssen eine Einbettung $\iota\colon\Npos\to M$, eine Produktstruktur auf $M$ und die Projektionsregeln für $\iota,E_1,E_2$ ausdrücklich angegeben werden. Ohne diese Zusatzdaten ist die Notation nicht typkorrekt.
+
+\begin{proposition}[Ausschluss einer natürlichen dritten Primzahl]
+Angenommen, $c\in\Pset\subset\Npos$, $\pi(c)=c$ und ein projektionsneutraler Sektorfaktor erfüllt $\pi(c\star E_2)=\pi(c)$. Gilt zugleich
+\[
+  \pi(c\star E_2)=ab
+\]
+für Primzahlen $a,b>1$, so entsteht ein Widerspruch. Ein Repräsentant mit Skalarwert $ab$ kann unter diesen Voraussetzungen nicht zugleich die natürliche Primzahl $c=ab$ sein.
+\end{proposition}
+
+\begin{proof}
+Die Voraussetzungen ergeben $c=ab$. Das Produkt zweier Zahlen größer als $1$ ist in $\Npos$ zusammengesetzt.
+\end{proof}
+
+\section{Normbeispiele}
+
+\subsection{Gaußsche Zahlen}
+\label{sec:gauss}
+
+\begin{proposition}[Gleiche Norm, verschiedene Faktorisierung]
+Im Ring $\Z[i]$ mit $N(a+bi)=a^2+b^2$ seien
+\[
+  x=5,
+  \qquad y=3+4i.
+\]
+Dann gilt $N(x)=N(y)=25$, aber $x\neq y$ und $x\not\sim y$. Ferner
+\[
+  5=(2+i)(2-i),
+  \qquad
+  3+4i=(2+i)^2,
+\]
+wobei $2+i$ und $2-i$ nicht assoziiert sind.
+\end{proposition}
+
+\begin{proof}
+Die Normgleichheit ist unmittelbar. Wären $x$ und $y$ assoziiert, so wäre $x/y$ eine Einheit. Es gilt jedoch
+\[
+  \frac{5}{3+4i}=\frac{3-4i}{5}\notin\Z[i].
+\]
+Die angegebenen Faktorisierungen werden direkt ausmultipliziert. Keine Einheit aus $\{\pm1,\pm i\}$ überführt $2+i$ in $2-i$.
+\end{proof}
+
+\begin{remark}
+Das Beispiel betrifft die Normfaser über $25$. Es darf unter der üblichen Einbettung $\Npos\hookrightarrow\Z[i]$ nicht als Produktdarstellung $5\star5$ gelesen werden, denn $N(25)=625$.
+\end{remark}
+
+\subsection{Eisensteinsche Zahlen}
+
+Sei $\omega^2+\omega+1=0$ und
+\[
+  N(a+b\omega)=a^2-ab+b^2.
+\]
+
+\begin{proposition}[Eisensteinsches Analogon]
+Für
+\[
+  x=7,
+  \qquad u=3+8\omega
+\]
+gilt $N(x)=N(u)=49$. Außerdem
+\[
+  7=(3+\omega)(2-\omega),
+  \qquad
+  3+8\omega=(1+\omega)(3+\omega)^2.
+\]
+Dabei ist $1+\omega$ eine Einheit, und $3+\omega$ sowie $2-\omega$ sind nicht assoziierte irreduzible Elemente der Norm $7$.
+\end{proposition}
+
+\begin{proof}
+Es gilt $N(7)=49$ und $N(3+8\omega)=9-24+64=49$. Aus $\omega^2=-1-\omega$ folgen die beiden Produktidentitäten. Da $N(1+\omega)=1$, ist $1+\omega$ eine Einheit. Elemente natürlicher Primnorm sind wegen der Multiplikativität der Norm irreduzibel. Ein Vergleich mit den sechs Einheiten zeigt, dass $3+\omega$ und $2-\omega$ nicht assoziiert sind.
+\end{proof}
+
+\section{Anwendung: Matrizen, Untergitter und Smith-Daten}
+\label{sec:matrices}
+
+Das folgende Beispiel zeigt einen strukturellen Mehrwert außerhalb quadratischer Zahlringe. Sei
+\[
+  M=\{A\in\operatorname{Mat}_2(\Z)\mid\det A\neq0\},
+  \qquad
+  \pi(A)=|\det A|.
+\]
+Dann ist $M$ unter Matrixmultiplikation ein Monoid und $\pi$ ein Monoidhomomorphismus nach $(\Npos,\cdot)$.
+
+\begin{proposition}[Gleicher Index, verschiedene Quotientenmodule]
+Seien
+\[
+  A=\begin{pmatrix}5&0\\0&5\end{pmatrix},
+  \qquad
+  B=\begin{pmatrix}3&4\\-4&3\end{pmatrix}.
+\]
+Dann gilt
+\[
+  \pi(A)=\pi(B)=25.
+\]
+Die zugehörigen Untergitter $A\Z^2$ und $B\Z^2$ besitzen denselben Index $25$ in $\Z^2$, aber
+\[
+  \Z^2/A\Z^2\cong(\Z/5\Z)^2,
+  \qquad
+  \Z^2/B\Z^2\cong\Z/25\Z.
+\]
+Insbesondere liegen $A$ und $B$ nicht in derselben $\GL_2(\Z)\times\GL_2(\Z)$-Bahn und sind nicht durch Links- und Rechtsmultiplikation mit unimodularen Matrizen ineinander überführbar.
+\end{proposition}
+
+\begin{proof}
+Beide Determinanten haben Betrag $25$. Die Smith-Normalform von $A$ ist $\operatorname{diag}(5,5)$. Für $B$ ist der größte gemeinsame Teiler aller Einträge gleich $1$; da $|\det B|=25$, lautet die Smith-Normalform $\operatorname{diag}(1,25)$. Der Struktursatz für endlich erzeugte abelsche Gruppen liefert die angegebenen Quotientenmodule. Verschiedene Smith-Normalformen schließen die Äquivalenz unter unimodularer Links- und Rechtsmultiplikation aus.
+\end{proof}
+
+\begin{remark}[Interpretation]
+Der skalare Bewertungsvektor ist in beiden Fällen durch $v_5(25)=2$ gegeben. Er erfasst den Index, unterscheidet aber nicht zwischen einem elementar-abelschen Quotienten $(\Z/5\Z)^2$ und einem zyklischen Quotienten $\Z/25\Z$. Dies ist ein konkreter Fall, in dem die Faserstruktur zusätzliche algebraische Information trägt, die im Skalar verloren geht.
+\end{remark}
+
+\section{Grenzen und offene Aufgaben}
+
+Der Rahmen beweist insbesondere nicht:
+\begin{enumerate}[label=\textup{(\arabic*)}]
+  \item Existenz oder Eindeutigkeit bevorzugter Repräsentanten in einer Faser;
+  \item eine kanonische Konstruktion aus den Primfaktoren eines Skalars;
+  \item eine Klassifikation der Faktorisierungen in einem konkreten Modellraum;
+  \item dass $\equiv_\pi$ ohne Multiplikativitätsannahmen eine Monoid- oder Ringkongruenz ist;
+  \item physikalische Folgerungen aus den mengentheoretischen oder algebraischen Aussagen.
+\end{enumerate}
+
+Für eine weiterführende Arbeit bieten sich insbesondere an: Klassifikationsprobleme innerhalb fester Fasern, die Wechselwirkung mit Smith- oder Idealtheorie sowie funktorielle Invarianten, die mehr Struktur als der skalare Wert bewahren.
+
+\section{Fazit}
+
+Die Arbeit formuliert keine neue Zahlentheorie. Sie verbindet standardmäßige Quotienten- und Faktorisierungskonstruktionen zu einer typisierten Infrastruktur, die Skalararithmetik und Repräsentantenstruktur auseinanderhält. Der Quotient
+\[
+  M/{\equiv_\pi}\cong\im(\pi)
+\]
+beschreibt genau die vom Skalar sichtbare Information; die einzelnen Fasern enthalten die darüber hinausgehende Modellstruktur. Die Funktorialität zeigt, dass diese Trennung mit projektionsverträglichen Abbildungen vereinbar ist. Das Matrix- und Untergitterbeispiel macht sichtbar, dass identische skalare Primfaktordaten unterschiedliche Modulstrukturen überdecken können.
+
+\section*{Rechnerisches Begleitmaterial}
+
+Das separate SageMath-Skript \texttt{gaussian\_fiber\_audit.sage} prüft für die gaußsche Normfaser über $25$ die Normgleichheit, Nichtidentität, Nichtassoziiertheit, die beiden Faktorisierungsmuster und die zwölf Gitterpunkte der Faser innerhalb der vollständigen Suchbox. Es ist Begleitmaterial und kein Bestandteil der Beweise.
+
+\begin{thebibliography}{99}
+
+\bibitem{AtiyahMacdonald}
+M.~F. Atiyah and I.~G. Macdonald,
+\emph{Introduction to Commutative Algebra},
+Addison--Wesley, 1969.
+
+\bibitem{ConwaySmith}
+J.~H. Conway and D.~A. Smith,
+\emph{On Quaternions and Octonions: Their Geometry, Arithmetic, and Symmetry},
+A K Peters, 2003.
+
+\bibitem{IrelandRosen}
+K. Ireland and M. Rosen,
+\emph{A Classical Introduction to Modern Number Theory}, 2nd ed.,
+Graduate Texts in Mathematics 84, Springer, 1990.
+
+\bibitem{MacLane}
+S. Mac Lane,
+\emph{Categories for the Working Mathematician}, 2nd ed.,
+Graduate Texts in Mathematics 5, Springer, 1998.
+
+\bibitem{Newman}
+M. Newman,
+\emph{Integral Matrices},
+Pure and Applied Mathematics 45, Academic Press, 1972.
+
+\bibitem{NivenZuckermanMontgomery}
+I. Niven, H.~S. Zuckerman, and H.~L. Montgomery,
+\emph{An Introduction to the Theory of Numbers}, 5th ed.,
+Wiley, 1991.
+
+\bibitem{Riehl}
+E. Riehl,
+\emph{Category Theory in Context},
+Dover Publications, 2016.
+
+\end{thebibliography}
+
+\end{document}

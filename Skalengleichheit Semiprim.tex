@@ -1,0 +1,168 @@
+\documentclass[11pt,a4paper,reqno]{amsart}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[german,english]{babel}
+\usepackage{amsmath,amssymb,amsthm,amsfonts,mathtools}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+
+% Theorem Environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{example}[theorem]{Example}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% Custom Commands
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Fact}{\operatorname{Fact}}
+
+\title[Scalar Invariance and Model Space Factorization]{On the Compatibility of Model-Space Representations with the Fundamental Theorem of Arithmetic}
+
+\author{Thomas Hoffbauer}
+\address{Computer Institut Bamberg, Germany}
+\email{research@cib.de}
+
+\date{\today}
+
+\begin{document}
+	
+	\begin{abstract}
+		We formalize the algebraic interface between a structured model space $\M$ and the classical set of natural numbers $\N$. Specifically, we address the apparent contradiction when a natural number $n \in \N$ admits both a semi-prime decomposition representation $a \star b \star E_1$ and a compact state representation $c \star E_2$ within $\M$. By strictly disentangling the unique prime factorization of the projected scalar $n = \pi(x)$ from the factorization theory of state elements $x \in \M$, we prove that scalar equivalence $\pi(x) = \pi(y)$ implies neither algebraic association ($x \sim y$) nor isomorphism of state-level factorizations ($\Fact(x) = \Fact(y)$). This provides a rigorous mathematical safeguard preserving the Fundamental Theorem of Arithmetic across non-trivial model spaces.
+	\end{abstract}
+	
+	\maketitle
+	
+	\section{Introduction}
+	
+	In various structural and algebraic physics models, state spaces $\M$ are equipped with product operations $\star$ and special unit-like elements $E_i \in \M$. A recurring structural question concerns the validity of the Fundamental Theorem of Arithmetic when a given scalar quantity admits multiple algebraic representations.
+	
+	Consider two states $x, y \in \M$ given by
+	\begin{equation}
+		x = a \star b \star E_1, \quad \text{and} \quad y = c \star E_2,
+	\end{equation}
+	where $a, b$ correspond to prime numbers in $\N$, $E_1, E_2$ act as sectorial boundary or phase operators, and $c \in \M$ is an irreducible element in the state space. If one naively equates $x = y$ within $\N$, an immediate contradiction with the uniqueness of prime factorizations arises, as $c$ would simultaneously act as a new prime and as a composite scalar $a \cdot b$.
+	
+	The goal of this paper is to construct a rigorous projection framework $\pi: \M \to \N$ that reconciles the algebraic richness of $\M$ with the absolute uniqueness of factorizations in $\N$.
+	
+	\section{Formal Framework and Projection Semantics}
+	
+	Let $\M$ be a non-empty set (the \emph{model space}) endowed with a binary operation $\star: \M \times \M \to \M$.
+	
+	\begin{definition}[Scalar Projection Map]
+		A map $\pi: \M \to \N$ is called a \emph{scalar projection}. For any state $x \in \M$, the image $n = \pi(x) \in \N$ is called the \emph{projected scalar value} of $x$.
+	\end{definition}
+	
+	\begin{remark}[Fiber Structure vs. Fundamental Theorem]
+		The Hauptsatz (Fundamental Theorem of Arithmetic) applies strictly to the target object $n = \pi(x) \in \N$. It does not constrain the cardinality or structural complexity of the fiber (pre-image):
+		\begin{equation}
+			\pi^{-1}(n) = \{ x \in \M \mid \pi(x) = n \}.
+		\end{equation}
+		While $n$ possesses a unique canonical prime factorization
+		\begin{equation}
+			n = \prod_{p \text{ prime}} p^{v_p(n)}, \quad v_p(n) \in \mathbb{N}_0,
+		\end{equation}
+		the fiber $\pi^{-1}(n)$ may contain an arbitrarily large number of distinct model states $x \neq y$.
+	\end{remark}
+	
+	\begin{definition}[Distinction between Projection and Norm]
+		A scalar projection $\pi: \M \to \N$ must be carefully distinguished from an algebraic norm $N: \M \to \N_0$:
+		\begin{enumerate}
+			\item A \emph{multiplicative projection} satisfies $\pi(x \star y) = \pi(x) \cdot \pi(y)$ for all $x, y \in \M$.
+			\item A \emph{state-level identity} requires merely $\pi(x) = \pi(y)$ for specific pairs $x, y \in \M$, without imposing homomorphism properties on the entirety of $\M \times \M$.
+		\end{enumerate}
+	\end{definition}
+	
+	\section{Factorization and Irreducibility in $\M$}
+	
+	To avoid equivocation, we explicitly distinguish between irreducibility and primality within non-commutative or extended model spaces $\M$.
+	
+	\begin{definition}[Irreducibility]
+		An element $c \in \M \setminus (\M^\times \cup \{0\})$ is \emph{irreducible} if $c = u \star v$ implies that either $u \in \M^\times$ or $v \in \M^\times$, where $\M^\times$ denotes the set of units in $\M$.
+	\end{definition}
+	
+	\begin{remark}[Composite Norms of Irreducible Elements]
+		An element $c \in \M$ can be irreducible in $\M$ while its projected scalar $n = \pi(c)$ is composite in $\N$. 
+		A well-known classical analogue is found in the Gaussian integers $\Z[i]$, where a rational prime $p \equiv 3 \pmod 4$ remains irreducible in $\Z[i]$, yet its norm $N(p) = p^2$ is composite in $\N$.
+	\end{remark}
+	
+	\begin{lemma}[Action of Units on Reducibility]
+		Let $\M$ be an algebra with unit group $\M^\times$. For any $x \in \M$ and $u, v \in \M^\times$, $x$ is reducible in $\M$ if and only if $u \star x \star v$ is reducible in $\M$.
+	\end{lemma}
+	
+	\begin{proof}
+		Suppose $x = y \star z$ with non-units $y, z \in \M \setminus \M^\times$. Then $u \star x \star v = (u \star y) \star (z \star v)$. Since $u, v \in \M^\times$, $u \star y \notin \M^\times$ and $z \star v \notin \M^\times$. Thus $u \star x \star v$ is reducible. The converse follows by applying $u^{-1}$ and $v^{-1}$.
+	\end{proof}
+	
+	\begin{corollary}
+		Multiplication by units preserves reducibility and irreducibility. However, unit multiplication cannot be assumed to preserve a uniquely defined "number of prime factors" unless $\M$ is proven to be a Unique Factorization Domain (UFD) or a length-preserving Krull monoid.
+	\end{corollary}
+	
+	\section{The Fundamental Safeguard Theorem}
+	
+	We now state the principal theorem resolving the multi-representation question.
+	
+	\begin{theorem}[Scalar Invariance vs. Model Equivalence]
+		\label{thm:safeguard}
+		Let $\M$ be a model space, $\pi: \M \to \N$ a scalar projection, and $x = a \star b \star E_1$, $y = c \star E_2$ two elements in $\M$. Assume that:
+		\begin{equation}
+			\pi(x) = \pi(y) = n \in \N.
+		\end{equation}
+		Then:
+		\begin{enumerate}
+			\item The natural scalar $n$ obeys the Fundamental Theorem of Arithmetic uniquely:
+			\begin{equation}
+				n = \prod_{p \text{ prime}} p^{v_p(n)}.
+			\end{equation}
+			\item The equality $\pi(x) = \pi(y)$ does \textbf{not} imply $x = y$, nor does it imply association $x \sim y$.
+			\item The equality $\pi(x) = \pi(y)$ does \textbf{not} imply isomorphism of state-level factorizations:
+			\begin{equation}
+				\Fact(x) = \Fact(y).
+			\end{equation}
+		\end{enumerate}
+	\end{theorem}
+	
+	\begin{proof}
+		Assertion (1) follows directly from the fact that $n \in \N$ and $\N$ is a Unique Factorization Monoid under standard multiplication. 
+		
+		For assertions (2) and (3), it suffices to give a counterexample to the implication. Let $\M = \Z[i]$, $\pi(z) = N(z) = z \bar{z}$. Set $a = 5$, so $n = 25$. 
+		Consider $x = 5 \in \Z[i]$ (which is irreducible in $\Z[i]$ as $5 \equiv 1 \pmod 4$ decomposes as $(2+i)(2-i)$, hence $x = (2+i)(2-i)$ is composite) and $y = 3 + 4i$.
+		We have $\pi(x) = N(5) = 25$ and $\pi(y) = N(3+4i) = 3^2 + 4^2 = 25$. 
+		Here $\pi(x) = \pi(y) = 25$. 
+		However, $5 \neq 3+4i$, and $5 \not\sim 3+4i$ because $5 / (3+4i) = (15 - 20i)/25 \notin \Z[i]$. 
+		Furthermore, in $\Z[i]$, $5 = (2+i)(2-i)$ has two irreducible factors of norm 5, whereas $3+4i = (2+i)^2$ consists of a square of a single prime up to units. Thus $\Fact(x) \neq \Fact(y)$.
+	\end{proof}
+	
+	\begin{corollary}[Core Protection Formula]
+		The fundamental boundary formula protecting the consistency of the model framework is given by:
+		\begin{equation}
+			\boxed{
+				\pi(x) = \pi(y) \;\;\not\Rightarrow\;\; x = y, \quad x \sim y \quad \text{or} \quad \Fact(x) = \Fact(y)
+			}
+		\end{equation}
+	\end{corollary}
+	
+	\section{Conclusion}
+	
+	The existence of dual representations $a \star b \star E_1$ and $c \star E_2$ yielding identical scalar projections $\pi(x) = \pi(y) = n$ presents zero contradiction to the Fundamental Theorem of Arithmetic. The uniqueness of factorization is a property of the scalar target domain $\N$, whereas the structural multiplicity resides in the fiber $\pi^{-1}(n) \subseteq \M$. Model states represent different geometric or algebraic configurations whose projected invariant scalar coincides, without collapsing the distinct state-level factorizations into a single identity.
+	
+	\begin{thebibliography}{99}
+		\bibitem{Niven} I. Niven, H. S. Zuckerman, H. L. Montgomery, \emph{An Introduction to the Theory of Numbers}, 5th ed., John Wiley \& Sons, 1991.
+		\bibitem{Conway} J. H. Conway, D. A. Smith, \emph{On Quaternions and Octonions: Their Geometry, Arithmetic, and Symmetry}, A K Peters/CRC Press, 2003.
+	\end{thebibliography}
+	
+\end{document}
+
+```

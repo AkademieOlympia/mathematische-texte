@@ -1,0 +1,842 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{tikz-cd}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\F}{\mathbb F}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\RA}{R_{\mathrm A}}
+\newcommand{\Rstd}{R_{\mathrm{std}}}
+\newcommand{\TQ}{T_{\mathbb Q}}
+\newcommand{\wt}{\operatorname{wt}}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\Span}{\operatorname{span}}
+
+\title{
+Formal Root Reconstruction of $E_8$ from the Extended Binary Hamming Code\\
+and Lean~4 Kernel Verification
+}
+
+\author{
+Thomas Hoffbauer\\
+\small Independent Research, Bamberg, Germany
+}
+
+\date{August 2026}
+
+\begin{document}
+
+\maketitle
+
+% ============================================================================
+% ABSTRACT
+% ============================================================================
+
+\begin{abstract}
+We give an explicit and formally auditable construction relating the extended
+binary Hamming code $C_8=[8,4,4]$ to the standard $240$-root realization of
+the exceptional root system $E_8$.
+
+Starting from the Fano-plane realization of the binary Simplex/Hamming pair
+$[7,3,4]\subset[7,4,3]$, we distinguish two algebraically separate
+construction branches.  The first yields the $[[7,1,3]]$ Steane stabilizer
+code through a binary symplectic CSS construction.  The second extends the
+Hamming code by a parity coordinate to the doubly-even self-dual code
+$C_8=[8,4,4]$ and applies Construction~A.
+
+The unscaled Construction~A minimal-vector set $\RA$ contains exactly
+\[
+16+224=240
+\]
+vectors of squared norm $4$.  We define the rational linear transformation
+\[
+\TQ=\frac12 H_2^{\oplus4},
+\qquad
+H_2=
+\begin{pmatrix}
+1&1\\
+1&-1
+\end{pmatrix},
+\]
+prove
+\[
+\TQ^{\,T}\TQ=\frac12I_8,
+\]
+construct an explicit left inverse, and establish injectivity.  The image of
+$\RA$ is then shown to lie in the standard $E_8$ root set
+\[
+\Rstd=R_{\mathrm{int}}\cup R_{\mathrm{half}},
+\qquad
+|R_{\mathrm{int}}|=112,\quad |R_{\mathrm{half}}|=128.
+\]
+Injectivity together with the equality of finite cardinalities yields the
+root-set identity
+\[
+\TQ(\RA)=\Rstd.
+\]
+
+The finite algebraic certificates are implemented in Lean~4/mathlib.
+Verification status is attached directly to mathematical theorems rather
+than Boolean status flags.  Classical runtime programs are used only as
+independent companion witnesses.  No claim concerning physical quantum
+hardware or quantum computational speedup is made.
+\end{abstract}
+
+% ============================================================================
+\section{Introduction}
+% ============================================================================
+
+Relations among finite geometry, coding theory, quantum stabilizer codes, and
+exceptional lattices are classical.  However, numerical coincidences among
+quantities such as $7$, $8$, or $240$ do not by themselves establish a
+structural connection.
+
+The purpose of this work is therefore not to claim a new discovery of the
+classical Fano--Hamming--Steane or Hamming--$E_8$ correspondences.  Rather,
+we construct an explicit end-to-end chain whose individual algebraic maps,
+finite enumerations, and root-set identification can be audited in a single
+formal environment.
+
+The main chain studied here is
+\[
+\text{Fano incidence}
+\longrightarrow
+[7,3,4]\subset[7,4,3]
+\longrightarrow
+[8,4,4]
+\longrightarrow
+\RA
+\overset{\TQ}{\longrightarrow}
+\Phi(E_8).
+\]
+
+A parallel branch produces the $[[7,1,3]]$ Steane code from the same
+seven-coordinate Fano/Hamming data.
+
+These two branches are deliberately kept separate:
+\[
+S_{\mathrm{Steane}}\subset\F_2^{14},
+\qquad
+\Rstd\subset\Q^8.
+\]
+There is no direct map from the stabilizer space to the $E_8$ root set in
+the present construction.
+
+\subsection*{Claim wall}
+
+The results proved in this paper are statements in finite geometry, coding
+theory, symplectic linear algebra, and lattice/root-system geometry.
+
+In particular, we make no claims about:
+\begin{itemize}[nosep]
+    \item physical quantum hardware,
+    \item decoherence or error rates of physical qubits,
+    \item implementation of Shor order finding,
+    \item quantum computational advantage,
+    \item a physical realization of $E_8$.
+\end{itemize}
+
+% ============================================================================
+\section{Fano geometry and the Steane branch}
+% ============================================================================
+
+\begin{definition}[Fano points]
+We identify the seven points of the Fano plane with
+\[
+\F_2^3\setminus\{0\}.
+\]
+For distinct nonzero $x,y\in\F_2^3$, the corresponding line is
+\[
+\{x,y,x+y\}.
+\]
+\end{definition}
+
+Every Fano line has three points.  Its complement therefore has four points.
+The incidence vectors of the seven complements form the nonzero weight-$4$
+words of the binary Simplex code $[7,3,4]$.
+
+Let
+\[
+h_1,h_2,h_3\in\F_2^7
+\]
+be three independent complement vectors.  Then
+\[
+h_i\cdot h_j=0
+\qquad
+\text{for all }i,j.
+\]
+
+\subsection{Binary symplectic lift}
+
+For $u=(x\mid z)$ and $v=(x'\mid z')$ in $\F_2^{14}$, define
+\[
+\omega(u,v)
+=
+x\cdot z'+z\cdot x'.
+\]
+
+This is the standard binary symplectic form underlying stabilizer
+representations.
+
+For each $h_i$ define
+\[
+X_i=(h_i\mid0),
+\qquad
+Z_i=(0\mid h_i).
+\]
+
+Since
+\[
+h_i\cdot h_j=0,
+\]
+all six generators are mutually symplectically orthogonal.
+
+\begin{proposition}[Steane stabilizer isotropy]
+Let
+\[
+S_{\mathrm{Steane}}
+=
+\Span_{\F_2}
+\{X_1,X_2,X_3,Z_1,Z_2,Z_3\}.
+\]
+Then
+\[
+S_{\mathrm{Steane}}
+\subseteq
+S_{\mathrm{Steane}}^\perp
+\]
+and
+\[
+\dim S_{\mathrm{Steane}}=6.
+\]
+Consequently the associated stabilizer code has
+\[
+k=7-6=1
+\]
+logical qubit.
+\end{proposition}
+
+The minimum Pauli weight of
+\[
+S_{\mathrm{Steane}}^\perp
+\setminus
+S_{\mathrm{Steane}}
+\]
+is $3$, yielding the familiar parameters
+\[
+[[7,1,3]].
+\]
+
+The binary symplectic representation is precisely the type of structure used
+in the stabilizer tableau formalism: Pauli commutation and anticommutation
+are encoded by a symplectic product over $\F_2$.
+
+% ============================================================================
+\section{The extended Hamming code}
+% ============================================================================
+
+Let
+\[
+C_7=[7,4,3]
+\]
+denote the binary Hamming code dual to the Simplex code.
+
+\begin{definition}[Parity extension]
+For
+\[
+v=(v_0,\ldots,v_6)\in C_7,
+\]
+define
+\[
+\operatorname{parityLift}(v)
+=
+\left(
+v_0,\ldots,v_6,
+\sum_{i=0}^{6}v_i
+\right).
+\]
+The sum is taken in $\F_2$.
+\end{definition}
+
+Its image is the extended Hamming code
+\[
+C_8=[8,4,4].
+\]
+
+\begin{theorem}[Weight enumerator]
+The code $C_8$ has weight enumerator
+\[
+W_{C_8}(X,Y)
+=
+X^8+14X^4Y^4+Y^8.
+\]
+Hence the $16$ codewords consist of
+\[
+1\text{ word of weight }0,\qquad
+14\text{ words of weight }4,\qquad
+1\text{ word of weight }8.
+\]
+\end{theorem}
+
+\begin{corollary}
+The code $C_8$ has minimum distance $4$, is doubly even,
+\[
+\wt(c)\equiv0\pmod4
+\qquad(c\in C_8),
+\]
+and is self-dual,
+\[
+C_8=C_8^\perp.
+\]
+\end{corollary}
+
+% ============================================================================
+\section{Construction A and its 240 minimal vectors}
+% ============================================================================
+
+\begin{definition}[Unscaled Construction A preimage]
+Define
+\[
+L'_C
+=
+\left\{
+x\in\Z^8:
+x\bmod2\in C_8
+\right\}.
+\]
+The usual Construction~A lattice is
+\[
+L(C_8)
+=
+\frac1{\sqrt2}L'_C.
+\]
+\end{definition}
+
+We focus on the norm-$4$ vectors of the unscaled model:
+\[
+\RA
+=
+\{x\in L'_C:\|x\|^2=4\}.
+\]
+
+They split naturally into two sectors.
+
+\subsection{Zero-codeword sector}
+
+The zero codeword produces
+\[
+\pm2e_i,
+\qquad i=1,\ldots,8.
+\]
+Thus
+\[
+|R_0|=8\cdot2=16.
+\]
+
+\subsection{Weight-four sector}
+
+Each of the $14$ weight-$4$ codewords has a support of cardinality $4$.
+Assigning independent signs on that support gives
+\[
+2^4=16
+\]
+minimal vectors per codeword.
+
+Hence
+\[
+|R_4|
+=
+14\cdot16
+=
+224.
+\]
+
+The sectors are disjoint, so
+\[
+\boxed{
+|\RA|
+=
+16+224
+=
+240.
+}
+\]
+
+After the usual Construction~A scaling by $1/\sqrt2$, their norm becomes
+\[
+\frac12\cdot4=2,
+\]
+the standard squared length of $E_8$ roots.
+
+% ============================================================================
+\section{Rational root reconstruction}
+% ============================================================================
+
+Define
+\[
+H_2=
+\begin{pmatrix}
+1&1\\
+1&-1
+\end{pmatrix}
+\]
+and
+\[
+M=
+H_2\oplus H_2\oplus H_2\oplus H_2.
+\]
+
+Explicitly,
+\[
+M=
+\begin{pmatrix}
+1&1&0&0&0&0&0&0\\
+1&-1&0&0&0&0&0&0\\
+0&0&1&1&0&0&0&0\\
+0&0&1&-1&0&0&0&0\\
+0&0&0&0&1&1&0&0\\
+0&0&0&0&1&-1&0&0\\
+0&0&0&0&0&0&1&1\\
+0&0&0&0&0&0&1&-1
+\end{pmatrix}.
+\]
+
+Set
+\[
+\TQ=\frac12M.
+\]
+
+\subsection{Gram identity}
+
+Since
+\[
+H_2^TH_2=2I_2,
+\]
+one obtains
+\[
+M^TM=2I_8.
+\]
+
+Therefore
+\[
+\boxed{
+\TQ^T\TQ
+=
+\frac12I_8.
+}
+\]
+
+Consequently
+\[
+\|\TQ v\|^2
+=
+\frac12\|v\|^2.
+\]
+
+For every $v\in\RA$,
+\[
+\|v\|^2=4,
+\]
+hence
+\[
+\|\TQ v\|^2=2.
+\]
+
+\subsection{Explicit left inverse}
+
+Define
+\[
+L=2\TQ^T.
+\]
+
+Then
+\[
+L\TQ
+=
+2\TQ^T\TQ
+=
+I_8.
+\]
+
+\begin{lemma}[Injectivity]
+The linear map
+\[
+\TQ:\Q^8\to\Q^8
+\]
+is injective.
+\end{lemma}
+
+\begin{proof}
+If $\TQ u=\TQ v$, then applying $L$ gives
+\[
+u
+=
+L\TQ u
+=
+L\TQ v
+=
+v.
+\]
+\end{proof}
+
+% ============================================================================
+\section{The standard $E_8$ root system}
+% ============================================================================
+
+We use the standard rational realization
+\[
+\Rstd
+=
+R_{\mathrm{int}}
+\cup
+R_{\mathrm{half}}.
+\]
+
+The integer sector consists of
+\[
+(\pm1,\pm1,0^6)
+\]
+with arbitrary positions of the two nonzero entries.  Thus
+\[
+|R_{\mathrm{int}}|
+=
+\binom82\cdot4
+=
+112.
+\]
+
+The half-integer sector consists of
+\[
+\frac12(\pm1,\ldots,\pm1)
+\]
+with an even number of minus signs.  Thus
+\[
+|R_{\mathrm{half}}|
+=
+2^7
+=
+128.
+\]
+
+Hence
+\[
+\boxed{
+|\Rstd|=112+128=240.
+}
+\]
+
+% ============================================================================
+\section{Gate G.13: root-set image theorem}
+% ============================================================================
+
+The remaining structural task is to identify the image of the two
+Construction~A sectors.
+
+\begin{lemma}[Zero-sector containment]
+\[
+\TQ(R_0)\subseteq R_{\mathrm{int}}.
+\]
+\end{lemma}
+
+Indeed, every vector $\pm2e_i$ is mapped to a vector containing exactly two
+nonzero coordinates, each equal to $\pm1$.
+
+\begin{lemma}[Weight-four-sector containment]
+\[
+\TQ(R_4)
+\subseteq
+\Rstd.
+\]
+\end{lemma}
+
+This finite statement is checked sectorially in the formal implementation.
+The action of each $2\times2$ Hadamard block is
+\[
+(a,b)
+\longmapsto
+\left(
+\frac{a+b}{2},
+\frac{a-b}{2}
+\right),
+\]
+so weight-$4$ signed supports map either to integer roots or to the
+half-integer parity sector.
+
+Combining the two lemmas gives
+\[
+\boxed{
+\TQ(\RA)\subseteq\Rstd.
+}
+\]
+
+We can now state the main result.
+
+\begin{theorem}[Exact root-set reconstruction]
+\label{thm:root-reconstruction}
+The rational transformation
+\[
+\TQ=\frac12H_2^{\oplus4}
+\]
+induces a bijection
+\[
+\boxed{
+\TQ(\RA)=\Rstd.
+}
+\]
+\end{theorem}
+
+\begin{proof}
+Injectivity gives
+\[
+|\TQ(\RA)|=|\RA|=240.
+\]
+By the sector containment theorem,
+\[
+\TQ(\RA)\subseteq\Rstd.
+\]
+But
+\[
+|\Rstd|=240.
+\]
+A finite subset of a finite set having the same cardinality is equal to the
+whole set.  Therefore
+\[
+\TQ(\RA)=\Rstd.
+\]
+\end{proof}
+
+% ============================================================================
+\section{Lean 4 formalization}
+% ============================================================================
+
+The formal development separates mathematical certificates into small gates.
+The purpose of this decomposition is epistemic as well as technical:
+a global status is never represented merely by a Boolean flag.
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Gate & Statement & Status\\
+\midrule
+G.13a &
+$M^TM=2I_8$, $\TQ^T\TQ=\frac12I_8$
+&
+kernel theorem
+\\
+G.13b &
+explicit left inverse and injectivity
+&
+kernel theorem
+\\
+G.13c &
+$|\RA|=240$
+&
+kernel theorem
+\\
+G.13d &
+$\TQ(\RA)\subseteq\Rstd$
+&
+kernel theorem
+\\
+G.13e &
+$|\Rstd|=240$
+&
+kernel theorem
+\\
+G.13f &
+$\TQ(\RA)=\Rstd$
+&
+derived kernel theorem
+\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The final Lean argument follows the same finite-cardinality proof as
+Theorem~\ref{thm:root-reconstruction}.  Schematically,
+
+\begin{verbatim}
+theorem g13_root_set_bijection :
+    R_A.image TQ.mulVec = R_std := by
+  apply Finset.eq_of_subset_of_card_le r_A_subset_r_std
+  rw [Finset.card_image_of_injective _ tq_injective]
+  rw [r_A_card_240, r_std_card_240]
+\end{verbatim}
+
+The repository governance principle is that the final status theorem is
+logically coupled to this equality itself, rather than to an unrelated
+Boolean marker.
+
+% ============================================================================
+\section{Independent runtime witnesses}
+% ============================================================================
+
+Finite C++ companion programs reproduce selected cardinalities, sector
+decompositions, and arithmetic identities.
+
+These programs are \emph{not} treated as formal proofs.  Their role is to
+provide independent runtime witnesses and regression tests for the same
+finite structures represented in Lean.
+
+The epistemic hierarchy is therefore
+
+\[
+\boxed{
+\text{runtime witness}
+\neq
+\text{kernel proof}.
+}
+\]
+
+Agreement between the two is useful for software validation, but only the
+formal theorem establishes the corresponding kernel-level mathematical
+certificate.
+
+% ============================================================================
+\section{Relation to the Steane/Fano branch}
+% ============================================================================
+
+The $E_8$ reconstruction and the Steane stabilizer construction share the
+same binary Fano/Hamming origin, but belong to different ambient categories.
+
+The structural diagram is
+
+\[
+\begin{array}{ccccc}
+&&\text{Fano incidence}&&\\[1mm]
+&\swarrow&&\searrow&\\
+[7,3,4]&&&&[7,4,3]\\
+\downarrow&&&&\downarrow\\
+[[7,1,3]]&&&&[8,4,4]\\
+&&&&\downarrow\\
+&&&&\RA\\
+&&&&\downarrow\TQ\\
+&&&&\Phi(E_8).
+\end{array}
+\]
+
+This diagram should not be interpreted as a direct map from the quantum
+stabilizer space into the $E_8$ root space.  Rather, the two constructions
+share a common finite-geometric origin.
+
+% ============================================================================
+\section{Scope and limitations}
+% ============================================================================
+
+Several limitations are essential.
+
+First, the individual correspondences among the Fano plane, Hamming codes,
+the Steane code, Construction~A, and $E_8$ are classical.  The contribution
+here is their explicit integration into one audited formal architecture.
+
+Second, the theorem
+\[
+\TQ(\RA)=\Rstd
+\]
+is a root-set identification.  It should not be silently strengthened to a
+formal equality of complete lattice objects unless the corresponding lattice
+generation theorem is also formalized.
+
+Third, no statement about physical quantum hardware follows from the
+stabilizer construction.
+
+Finally, no computational speedup is claimed from the existence of a
+classical stabilizer simulation or from the finite runtime companion
+programs.
+
+% ============================================================================
+\section{Conclusion}
+% ============================================================================
+
+We have given an explicit root reconstruction beginning with the extended
+binary Hamming code $[8,4,4]$.
+
+Construction~A produces a norm-$4$ root set
+\[
+\RA=R_0\sqcup R_4
+\]
+with
+\[
+|R_0|=16,
+\qquad
+|R_4|=224,
+\qquad
+|\RA|=240.
+\]
+
+The rational map
+\[
+\TQ=\frac12H_2^{\oplus4}
+\]
+satisfies
+\[
+\TQ^T\TQ=\frac12I_8
+\]
+and possesses the explicit left inverse
+\[
+2\TQ^T.
+\]
+
+Its image is contained in the standard $E_8$ root set and has the same
+cardinality.  Hence
+\[
+\boxed{
+\TQ(\RA)=\Phi(E_8).
+}
+\]
+
+The main value of the formal development is not the rediscovery of these
+classical correspondences, but the construction of an end-to-end,
+machine-auditable chain in which algebraic claims, finite computational
+witnesses, and formal kernel certificates are kept explicitly distinct.
+
+% ============================================================================
+\begin{thebibliography}{99}
+
+\bibitem{AaronsonGottesman}
+S.~Aaronson and D.~Gottesman,
+\newblock Improved Simulation of Stabilizer Circuits,
+\newblock \emph{Physical Review A} \textbf{70}, 052328 (2004),
+\newblock arXiv:quant-ph/0406196.
+
+\bibitem{ConwaySloane}
+J.~H. Conway and N.~J.~A. Sloane,
+\newblock \emph{Sphere Packings, Lattices and Groups},
+\newblock 3rd ed., Springer, New York, 1999.
+
+\bibitem{Steane}
+A.~M. Steane,
+\newblock Error Correcting Codes in Quantum Theory,
+\newblock \emph{Physical Review Letters} \textbf{77},
+793--797 (1996).
+
+\bibitem{GottesmanThesis}
+D.~Gottesman,
+\newblock \emph{Stabilizer Codes and Quantum Error Correction},
+\newblock Ph.D. thesis, California Institute of Technology, 1997.
+
+\bibitem{MacWilliamsSloane}
+F.~J. MacWilliams and N.~J.~A. Sloane,
+\newblock \emph{The Theory of Error-Correcting Codes},
+\newblock North-Holland, Amsterdam, 1977.
+
+\end{thebibliography}
+
+\end{document}

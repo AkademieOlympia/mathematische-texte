@@ -1,0 +1,67 @@
+{
+  "protocol": "random L-bit seed -> 10 nextprimes, same seeds, same hardware",
+  "master_seed": "eabc-commercial-v1",
+  "hardware": {
+    "cpu": "Apple M5",
+    "ncpu": 10,
+    "ram_bytes": 34359738368,
+    "os": "macOS 26.7 arm64"
+  },
+  "libraries": {
+    "gmp": "6.3.0",
+    "openssl": "OpenSSL 3.6.3 9 Jun 2026",
+    "compiler": "Apple clang 21.0.0 -O3 -march=native"
+  },
+  "peano_mr_rounds": 25,
+  "verify_reps": 64,
+  "prime_count": 10,
+  "trials": 1,
+  "runs": [
+    {
+      "bits": 512,
+      "trial": 0,
+      "fips_mr_rounds": 5,
+      "seed_hex": "8b258daf2736ad86379ad5397f4ef22aed53b123158fa579b152d527058a3ac2ae92e79411cf4919a8d6b99a1752bb931ff37b01089c5c1e84238a24ee096a72",
+      "engines_agree": 1,
+      "engines": {
+    "gmp_stock": {
+      "t_prime_ns": 1390125,
+      "t_10_ns": 10036916,
+      "cpu_ns": 9582667,
+      "rss_kb_after": 2129920,
+      "mr_rounds": 0,
+      "candidates_tested": 0,
+      "sieve_survivors": 0,
+      "bitlen_ok": 1,
+      "verified": 1,
+      "primes_sha256": "e37e8dac1ad2a6304a544abbb254b8f6cae213fc8d91ab00009f5cc40c2d91ed"
+    },
+    "openssl_stock": {
+      "t_prime_ns": 4408375,
+      "t_10_ns": 29324542,
+      "cpu_ns": 27888250,
+      "rss_kb_after": 4767744,
+      "mr_rounds": 0,
+      "candidates_tested": 1059,
+      "sieve_survivors": 0,
+      "bitlen_ok": 1,
+      "verified": 1,
+      "primes_sha256": "e37e8dac1ad2a6304a544abbb254b8f6cae213fc8d91ab00009f5cc40c2d91ed"
+    },
+    "prime_peano": {
+      "t_prime_ns": 1180917,
+      "t_10_ns": 14468459,
+      "cpu_ns": 14415208,
+      "rss_kb_after": 4964352,
+      "mr_rounds": 379,
+      "candidates_tested": 139,
+      "sieve_survivors": 139,
+      "bitlen_ok": 1,
+      "verified": 1,
+      "primes_sha256": "e37e8dac1ad2a6304a544abbb254b8f6cae213fc8d91ab00009f5cc40c2d91ed"
+    }
+      }
+    }
+  ],
+  "failures": 0
+}

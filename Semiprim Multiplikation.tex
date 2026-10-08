@@ -1,0 +1,133 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{fullpage}
+
+% Theorem Environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{\textbf{Formal Verification of $V_4$-Symmetrical Semiprime Multiplications and Discrete Class Vectors in Modulo 12 Arithmetic}}
+
+\author{\textbf{Thomas Hoffbauer}\\
+	\small Bamberg Research Group / Akademie Olympia\\
+	\small \texttt{bamberg-model@akademie-olympia.de}}
+
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		We present a mechanically verified formalization in Lean~4 addressing the algebraic and character-theoretic decomposition of residues modulo~$12$. We prove that the unit group $(\mathbb{Z}/12\mathbb{Z})^\times$ is isomorphic to Klein's four-group $V_4 \cong C_2 \times C_2$. Building upon this discrete symmetry, we establish the multiplicative structural laws governing odd semiprimes $N = p \cdot q$. In particular, we formally verify that products of prime factors from distinct inert odd classes map strictly to the positive character eigenspace ($H_+$), as exemplified by $77 = 7 \cdot 11 \equiv 5 \pmod{12}$, while failing the classical sum-of-two-squares condition. Furthermore, we construct a sound, discrete class-counting vector (\texttt{ClassVec}) mapping directly to surgical energy operators without relying on unproven analytic density continuations.
+	\end{abstract}
+	
+	\section{Introduction}
+	
+	The distribution of primes and semiprimes in arithmetic progressions represents a foundational topic in multiplicative number theory. While analytic tools such as Dirichlet $L$-functions dictate density asymptotics, the formalization of discrete residue classes in proof assistants requires rigorous algebraic boundaries.
+	
+	In this paper, we document the formal verification within Lean~4 (using \texttt{Mathlib}) of the core algebraic structures governing modulo 12 residue channels. The choice of modulus $12$ serves as the minimal cyclic cover uniting the four fundamental quaternion/gitter projection classes $E, A, B, C$ with the unit group $(\mathbb{Z}/12\mathbb{Z})^\times$.
+	
+	\subsection{Main Formalized Results}
+	The Lean~4 kernel formally certifies the following results:
+	\begin{enumerate}
+		\item \textbf{Group Isomorphism:} $(\mathbb{Z}/12\mathbb{Z})^\times \cong C_2 \times C_2$ via explicit bitwise/XOR characterizations on \texttt{Nat}.
+		\item \textbf{Semiprime Parity-Inversion:} The structural product law $H_- \times H_- \to H_+$ for composite numbers, highlighted by the verified instance $77 = 7 \cdot 11 \in A_{12}$.
+		\item \textbf{Discrete Class Counting:} The construction of a finite \texttt{ClassVec} projection avoiding unproven continuous limit assumptions.
+	\end{enumerate}
+	
+	\section{The Algebraic Foundation: $V_4$ Symmetry}
+	
+	\begin{definition}[Residue Projection Classes]
+		Let $n \in \mathbb{N}$ with $\gcd(n, 6) = 1$. We define the canonical modulo 12 partition into four residue classes:
+		\[
+		E_{12} = \{1\}, \quad A_{12} = \{5\}, \quad B_{12} = \{7\}, \quad C_{12} = \{11\} \pmod{12}.
+		\]
+	\end{definition}
+	
+	\begin{theorem}[Lean 4: \texttt{unitsMod12\_iso\_V4}]
+		The multiplicative group of units $(\mathbb{Z}/12\mathbb{Z})^\times = \{1, 5, 7, 11\}$ is isomorphic to Klein's four-group $V_4 \cong C_2 \times C_2$.
+	\end{theorem}
+	\begin{proof}
+		Formally verified in Lean~4 by evaluating $x^2 \equiv 1 \pmod{12}$ for all $x \in \{1, 5, 7, 11\}$, establishing that every non-identity element has order 2.
+	\end{proof}
+	
+	\begin{remark}[Governance Wall]
+		The unit group $(\mathbb{Z}/12\mathbb{Z})^\times$ is abelian of exponent 2. Any identification with non-abelian groups (such as the quaternion group $Q_8$) is formally disproved and isolated behind an explicit \texttt{ClaimWall}.
+	\end{remark}
+	
+	\section{Multiplicative Structure of Semiprimes}
+	
+	Let $N = p \cdot q$ be an odd semiprime with $\gcd(N, 6) = 1$. The character representation $\psi_{12} = \chi_4 \uparrow_{12}$ decomposes the unit space into two eigenspaces under the parity operator:
+	\[
+	H_+ = \operatorname{span}\{\delta_1, \delta_5\} \quad (E_{12} \cup A_{12}), \qquad H_- = \operatorname{span}\{\delta_7, \delta_{11}\} \quad (B_{12} \cup C_{12}).
+	\]
+	
+	\begin{theorem}[Semiprime Character Product Law]
+		Let $p, q \in H_-$. Then the product $N = p \cdot q$ satisfies $N \in H_+$. Specifically, if $p \in B_{12}$ and $q \in C_{12}$, then $N \in A_{12}$.
+	\end{theorem}
+	
+	\begin{example}[Formalized Counterexample: $77 \in A_{12}$]
+		Consider $N = 77 = 7 \cdot 11$.
+		\begin{itemize}
+			\item $7 \in B_{12} \subset H_-$ ($7 \equiv 3 \pmod 4$)
+			\item $11 \in C_{12} \subset H_-$ ($11 \equiv 3 \pmod 4$)
+		\end{itemize}
+		Lean 4 verifies \texttt{composite\_BC\_product\_A\_not\_two\_squares}:
+		\[
+		77 \equiv 5 \pmod{12} \implies 77 \in A_{12} \subset H_+.
+		\]
+		Although $77 \in A_{12}$ (and $77 \equiv 1 \pmod 4$), $77$ cannot be represented as a sum of two integer squares ($77 \neq x^2 + y^2$) due to the odd multiplicity of inert prime factors $7 \equiv 3 \pmod 4$ and $11 \equiv 3 \pmod 4$.
+	\end{example}
+	
+	\section{Discrete Class Vectors and Surgical Energy}
+	
+	To bridge multiplicative arithmetic with discrete operator evaluations, we formalize a finite counting module without making unwarranted continuous density claims.
+	
+	\begin{definition}[Discrete Class Counting Vector]
+		For a finite set of semiprimes $\mathcal{S}$, the discrete counting vector $\mathtt{ClassCountVec}(\mathcal{S}) \in \mathbb{N}^4$ assigns integer counts to the four channels $(E, A, B, C)$. Linear projections transform $\mathtt{ClassCountVec}$ into the normalized vector $\mathtt{ClassVec} \in \mathbb{Q}^4$, providing input for the surgical energy operator $E_{\mathrm{surg}}$.
+	\end{definition}
+	
+	\begin{remark}[Governance Boundaries]
+		The transformation $\mathtt{ClassCountVec} \to \mathtt{ClassVec} \to E_{\mathrm{surg}}$ is strictly discrete. The following identifications are explicitly blocked as unproven claims:
+		\begin{enumerate}
+			\item Identification of discrete $\mathtt{ClassVec}$ with continuous Beta-integrals $B(u, n+1)$ as exact density envelopes.
+			\item Direct equivalence between $Z_{EA}(s)$ and active physical operators $M_{\mathrm{eff}}$.
+		\end{enumerate}
+	\end{remark}
+	
+	\section{Summary of Verified Lean 4 Modules}
+	
+	The formalization is organized into clean, modular components inside the \texttt{KeplerHurwitz} repository:
+	
+	\begin{table}[h]
+		\centering
+		\small
+		\begin{tabular}{lll}
+			\toprule
+			\textbf{Lean 4 Module} & \textbf{Formal Scope} & \textbf{Status} \\
+			\midrule
+			\texttt{SemiprimeMod12Refinement.lean} & $(\mathbb{Z}/12\mathbb{Z})^\times \cong C_2 \times C_2$, $77 = B \cdot C \in A$ & Verified (Green) \\
+			\texttt{SemiprimeMod12Bridge.lean} & Multiplicative $eabcMul$ vs Additive Channels & Verified (Green) \\
+			\texttt{ClassCountVec.lean} & Discrete $\mathtt{ClassVec} \to E_{\mathrm{surg}}$ Operator & Verified (Green) \\
+			\texttt{EabcGammaBetaBridge.lean} & Euler Reflection \& Beta Kernel $w_u(n)$ & Verified (Green) \\
+			\bottomrule
+		\end{tabular}
+		\caption{Overview of verified modules in the Lean 4 kernel.}
+	\end{table}
+	
+	\section{Conclusion}
+	
+	By establishing a mechanically certified kernel in Lean 4, we have shown that the $V_4$-symmetry of $(\mathbb{Z}/12\mathbb{Z})^\times$ rigorously governs the multiplicative channel transitions of semiprimes. The formalization guarantees model hygiene by strictly separating proven discrete algebraic facts from unverified continuous or physical claims.
+	
+\end{document}
