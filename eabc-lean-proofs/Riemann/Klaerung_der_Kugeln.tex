@@ -1,0 +1,263 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=2.5cm}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{array}
+
+\definecolor{navyblue}{RGB}{20, 45, 85}
+\definecolor{accentblue}{RGB}{0, 102, 204}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=navyblue,
+  citecolor=navyblue,
+  urlcolor=accentblue,
+  pdftitle={Klaerung der Kugeln},
+  pdfauthor={Thomas Hoffbauer}
+}
+
+\newtheorem{theorem}{Satz}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{corollary}[theorem]{Korollar}
+\newtheorem{remark}[theorem]{Bemerkung}
+
+\title{\textbf{\Large Kl\"arung der Kugeln}\\[0.45em]
+  \large Freeze von Gate~3 und Er\"offnung des Fortsetzungsprojekts\\
+  zur geometrischen Kl\"arung der Bamberg-Kugel}
+\author{\textbf{Thomas Hoffbauer}\\[0.2em]
+  \small Bamberg}
+\date{9. Oktober 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Gate~3A--3E der klassisch-analytischen $E_8$-Br\"ucke ist eingefroren.
+Der kritische Pfad ist in Lean~4.34.1 gegen Mathlib derselben Fassung
+kernelverifiziert. Sein Axiom-Footprint besteht aus \texttt{propext},
+\texttt{Classical.choice} und \texttt{Quot.sound}. Die Riemannsche
+Vermutung wird dabei nicht bewiesen, sondern exakt rekodiert.
+Dieses Dokument setzt das fr\"uhere Manuskript \emph{Riemann Final}
+au\ss er Kraft, soweit jenes einen Beweis der Vermutung beansprucht,
+und er\"offnet das Fortsetzungsprojekt \emph{Kl\"arung der Kugeln}.
+Die Firewall lautet
+\[
+  \text{Gate 3} \;\not\Rightarrow\; \text{BK-I2.7D}
+  \;\not\Rightarrow_{\text{derzeit}}\; \text{BK-I2.7E}.
+\]
+Die Zahlen $240$, $12$ und $18$ bleiben getrennt.
+\end{abstract}
+
+\section{Gegenstand und Abgrenzung}
+
+Die Kette, die mit diesem Freeze festgeschrieben wird, reicht von der
+Gittergeometrie bis zur Nullstellengeometrie:
+\begin{align*}
+  \mathbb{Z}^{8}\text{-Poisson}
+  &\longrightarrow E_8\text{-Poisson}\\
+  &\longrightarrow \Theta_{E_8}\in M_4(\mathrm{SL}_2(\mathbb{Z}))\\
+  &\longrightarrow \Theta_{E_8}=E_4\\
+  &\longrightarrow r_{E_8}(2n)=240\,\sigma_3(n)\\
+  &\longrightarrow D_{E_8}(s)=240\,\zeta(s)\zeta(s-3)\\
+  &\longrightarrow \Lambda_{E_8}(4-s)=\Lambda_{E_8}(s)\\
+  &\longrightarrow \text{Gamma-Br\"ucke}\\
+  &\longrightarrow \text{Nullstellengeometrie}.
+\end{align*}
+Sie ist eine Rekodierung der klassischen Theorie in zwei um drei
+verschobene Zeta-Familien. Sie ist keine Evidenz f\"ur die Wahrheit
+der Riemannschen Vermutung und kein Satz \"uber dreidimensionale
+Kugelpackungen.
+
+\begin{remark}[Was nicht mitgemeint ist]
+  \emph{Riemann Final} vom 8.~Oktober 2026 formuliert einen spektralen
+  Beweis der Vermutung. Dieser Anspruch geh\"ort nicht zum
+  zertifizierten Pfad. Ma\ss geblich ist der \"Aquivalenzsatz von
+  Gate~3E. Zwei isolierte \texttt{sorry}-Deklarationen,
+  \texttt{integer\_lattice\_poisson\_8} und die rohe
+  Plancherel-Fassung in \texttt{E8PQC.lean}, liegen au\ss erhalb dieses
+  Pfads und werden durch den Freeze weder geschlossen noch als Beleg
+  verwendet.
+\end{remark}
+
+\section{Der eingefrorene Block}
+
+Die folgenden Aussagen stehen als Theoreme in den Dateien
+\begin{quote}\raggedright
+\texttt{E8ThetaQExpansion.lean},\ 
+\texttt{E8Dirichlet.lean},\ 
+\texttt{E8DirichletFunctionalEquation.lean},\ 
+\texttt{E8DirichletGammaBridge.lean}\ und
+\texttt{E8DirichletZeroGeometry.lean}.
+\end{quote}
+$\Theta_{E_8}$ bezeichnet die Theta-Reihe auf der oberen Halbebene,
+$E_4$ die normierte Eisensteinreihe vom Gewicht~$4$,
+$\Lambda$ Mathlibs \texttt{completedRiemannZeta} und
+$\Gamma_{\mathbb{R}}$ Delignes reellen Gamma-Faktor.
+
+\begin{theorem}[Gate 3A und 3B]
+  F\"ur jede positive ganze Zahl $n$ gilt
+  $r_{E_8}(2n)=240\,\sigma_3(n)$.
+  F\"ur $\operatorname{Re}s>4$ konvergiert die Dirichlet-Reihe absolut,
+  und
+  \[
+    \sum_{n=1}^{\infty} r_{E_8}(2n)\,n^{-s}
+    = 240\,\zeta(s)\zeta(s-3).
+  \]
+  Die linke Seite ist der Wert der totalisierten Funktion
+  $D_{E_8}(s)=240\,\zeta(s)\zeta(s-3)$.
+\end{theorem}
+
+\begin{theorem}[Gate 3C]
+  Die vervollst\"andigte Funktion
+  $\Lambda_{E_8}(s)=240\,\Lambda(s)\Lambda(s-3)$
+  erf\"ullt $\Lambda_{E_8}(4-s)=\Lambda_{E_8}(s)$ f\"ur jedes
+  $s\in\mathbb{C}$.
+  $D_{E_8}$ ist \"uberall meromorph. L\"angs der punktierten Umgebung
+  von $s=1$ gilt
+  \[
+    \lim_{\substack{s\to 1\\ s\neq 1}} D_{E_8}(s)
+    = 240\,\zeta'(-2),
+  \]
+  und $(s-4)D_{E_8}(s)$ strebt punktiert gegen $240\,\zeta(4)\neq 0$.
+\end{theorem}
+
+\begin{theorem}[Gate 3D]
+  Sei $G(s)=\Gamma_{\mathbb{R}}(s)\Gamma_{\mathbb{R}}(s-3)$.
+  Aus $G(s)\neq 0$ folgt $\Lambda_{E_8}(s)=G(s)\,D_{E_8}(s)$.
+  Aus $G(s)\neq 0$ und $G(4-s)\neq 0$ folgen die multiplikative
+  Gleichung $G(s)D_{E_8}(s)=G(4-s)D_{E_8}(4-s)$ und
+  \[
+    D_{E_8}(4-s)
+    = \frac{G(s)}{G(4-s)}\,D_{E_8}(s).
+  \]
+  Die Nullstellen der totalisierten Funktion $G$ sind genau die Stellen
+  $s=-2n$ und $s=3-2n$. Jede solche Stelle ist eine
+  Unstetigkeitsstelle. Die Gleichung ohne diese
+  Nichtverschwindensbedingung ist falsch; der Beleg ist $s=-2$.
+\end{theorem}
+
+\begin{definition}[Nichttriviale $E_8$-Nullstelle]
+  $E_8^{\mathrm{nt}}(s)$ bedeutet: entweder
+  $\zeta(s)=0$ und $0<\operatorname{Re}s<1$, oder
+  $\zeta(s-3)=0$ und $0<\operatorname{Re}(s-3)<1$.
+\end{definition}
+
+\begin{theorem}[Gate 3E]
+  \label{thm:3e}
+  F\"ur die totalisierte Funktion gilt f\"ur jedes $s\in\mathbb{C}$
+  \[
+    D_{E_8}(s)=0
+    \iff
+    \zeta(s)=0 \lor \zeta(s-3)=0.
+  \]
+  Insbesondere ist der Funktionswert $D_{E_8}(1)=0$.
+  Aus $E_8^{\mathrm{nt}}(s)$ folgt $\operatorname{Re}s\neq 2$, ohne
+  die Riemannsche Vermutung.
+  Mathlibs Aussage \texttt{RiemannHypothesis} ist \"aquivalent zu
+  \[
+    \forall s,\ 
+    E_8^{\mathrm{nt}}(s)
+    \rightarrow
+    \bigl(\operatorname{Re}s=\tfrac12 \lor \operatorname{Re}s=\tfrac72\bigr).
+  \]
+  Die Identit\"at $4-\rho=3+(1-\rho)$ ist eine Gleichung in
+  $\mathbb{C}$. Sie transportiert keine Nullstellen von $D_{E_8}$.
+\end{theorem}
+
+\section{Drei ausgeschlossene Fehldeutungen}
+
+\begin{enumerate}
+  \item Totalisierung und meromorphe Lesart sind verschieden.
+  Der Lean-Wert $D_{E_8}(1)$ ist $0$, weil $\zeta(-2)=0$.
+  Der punktierte Grenzwert ist $240\,\zeta'(-2)$.
+  Dass diese Ableitung nicht verschwindet, ist nicht behauptet.
+  \item $\operatorname{Re}s=2$ ist die Symmetrieachse von
+  $\Lambda_{E_8}$, nicht eine kritische Linie von $D_{E_8}$.
+  Satz~\ref{thm:3e} schlie\ss t nichttriviale $E_8$-Nullstellen auf
+  dieser Achse aus, ohne eine Nullstelle von $\zeta$ zu lokalisieren.
+  \item Der st\"arkste Satz \"uber die Vermutung ist eine
+  \"Aquivalenz. $E_8$ liefert zwei um drei verschobene Familien der
+  klassischen Nullstellen, keine zus\"atzliche Evidenz.
+\end{enumerate}
+
+\section{Firewall zur Bamberg-Kugel}
+
+Die offenen Gates des Kugelprogramms sind BK-I2.7D und BK-I2.7E.
+BK-I2.7D verlangt eine diskrete Punktmenge in $\mathbb{R}^3$, zw\"olf
+n\"achste Nachbarn und die Gram-Matrix der kuboktaedrischen
+fcc-Schale. BK-I2.7E verlangt f\"ur ein zuvor definiertes
+dreidimensionales Gitter $\Lambda_{\mathrm{BK},s}$ die Dichte
+$\pi/\sqrt{18}$.
+
+\begin{theorem}[Keine Implikation]
+  Aus den S\"atzen von Gate~3 folgt weder BK-I2.7D noch BK-I2.7E.
+  Der Koeffizient $r_{E_8}(2)=240$ ist die Kusszahl von $E_8$ in
+  $\mathbb{R}^8$. Er erzwingt keine zw\"olf Nachbarn in
+  $\mathbb{R}^3$. Die Zahl $18=54/3=180/3240$ z\"ahlt Richtungen in
+  der endlichen Norm-$2$-Schale der $120$ Einheitsicosianen. Sie ist
+  kein Kovolumen und keine Minimaldistanz.
+\end{theorem}
+
+\section{Er\"offnung: Kl\"arung der Kugeln}
+
+Das Fortsetzungsprojekt beginnt bei BK-I2.7D. Der offene Claim besteht
+aus drei Schritten in fester Reihenfolge.
+\begin{enumerate}
+  \item \textbf{Konstruktion.}
+  Eine Menge $S$ und eine Abbildung $\Pi:S\to\mathbb{R}^3$,
+  hingeschrieben aus den vier Rang-$3$-Sektoren.
+  \item \textbf{Diskretheit und Kontakt.}
+  Das Bild ist diskret, und seine Minimalschale besteht aus zw\"olf
+  Punkten.
+  \item \textbf{fcc-Identifikation.}
+  Die Gram-Matrix des Bildes ist bis auf eine orthogonale
+  Transformation und eine Umnummerierung die Gram-Matrix der
+  fcc-Kontaktschale.
+\end{enumerate}
+Schritt~2 und Schritt~3 sind erst definiert, wenn $\Pi$ hingeschrieben
+ist. Der Zentralkosinus benachbarter Ecken des regul\"aren Ikosaeders
+ist $\sqrt{5}/5$. Die paarweisen Kosinus der fcc-Kontaktschale liegen
+in $\{-1,-1/2,0,1/2\}$. Eine orthogonale Abbildung erh\"alt diese
+Skalarprodukte und f\"uhrt die eine Schale nicht in die andere.
+$\sqrt{5}/3$ ist der Betrag des Kosinus des Diederwinkels.
+
+BK-I2.7E bleibt downstream. Die Kepler-Verbindung bleibt eine Hypothese.
+Ein Gate~3F wird nicht er\"offnet. Solange die drei Schritte nicht als
+eigene S\"atze vorliegen, wird aus Gate~3 keine Dichte, keine
+Kepler-Aussage und keine physikalische Kugelinterpretation abgeleitet.
+Gate~3 bleibt die unver\"anderte Referenzbibliothek.
+
+\noindent
+\begin{minipage}{\textwidth}
+\textbf{Freeze-Status}
+
+\vspace{0.7em}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}ll>{\raggedright\arraybackslash}p{6.4cm}@{}}
+  \toprule
+  Komplex & Status & Charakterisierung \\
+  \midrule
+  Gate 3A--3E & eingefroren &
+  $E_8$, Modulform, Dirichlet-Reihe, Gamma-Br\"ucke,
+  Nullstellengeometrie. Kernelverifiziert. \\
+  BK-I2.7D & Engpass &
+  Zuerst $\Pi$, dann Diskretheit und zw\"olf Punkte, dann die
+  fcc-Gram-Matrix. \\
+  BK-I2.7E & downstream &
+  Kovolumen und Dichte $\pi/\sqrt{18}$, abh\"angig von I2.7D. \\
+  Kepler-Verbindung & Hypothese &
+  Strukturelle Koinzidenz der Zahl $18$, kein Beweis. \\
+  \bottomrule
+\end{tabular}
+\end{minipage}
+
+\end{document}

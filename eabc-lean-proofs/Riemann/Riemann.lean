@@ -1,3 +1,6 @@
 -- This module serves as the root of the `Riemann` library.
 -- Import modules here that should be built as part of the library.
 import Riemann.Basic
+import Riemann.AnalyticNumberTheory
+import Riemann.E8PQC
+import Riemann.E8ArithmeticBridge
